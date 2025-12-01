@@ -119,7 +119,7 @@
     <string name="notification_certificate_error_public">El certificado no funciona</string>
     <string name="notification_certificate_error_title">Error de certificado para <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Comprueba los ajustes del servidor</string>
-    <string name="notification_authentication_error_title">Fallo de autenticación</string>
+    <string name="notification_authentication_error_title">No se pudo iniciar sesión</string>
     <string name="notification_authentication_error_text">Fallo de autenticación en <xliff:g id="account">%s</xliff:g>. Actualiza y revisa los ajustes del servidor.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Notificación fallida</string>
@@ -141,7 +141,7 @@
     <string name="debug_enable_debug_logging_title">Activar registro de depuración</string>
     <string name="debug_enable_debug_logging_summary">Registrar el estado del programa con información adicional para diagnosticar posibles problemas</string>
     <string name="debug_enable_sensitive_logging_title">Incluir información sensible</string>
-    <string name="debug_enable_sensitive_logging_summary">Las contraseñas pueden aparecer tal cual en los registros</string>
+    <string name="debug_enable_sensitive_logging_summary">Las contraseñas pueden aparecer tal cual en los registros.</string>
     <string name="debug_export_logs_title">Exportar registros de depuración</string>
     <string name="debug_export_logs_success">Se han exportado correctamente. Ten en cuenta que los registros pueden contener datos privados; así que ten cuidado y asegúrate de que te fias de las personas a las que se los mandas.</string>
     <string name="debug_export_logs_failure">No se han podido exportar los registros.</string>
@@ -905,7 +905,20 @@
     <string name="debug_enable_sync_debug_logging_summary">Registra los datos de sincronización durante 24 horas</string>
     <string name="debug_sync_export_logs_title">Exportar registros de sincronización</string>
     <string name="swipe_action_archive_folder_not_set">Configurar carpeta para archivar</string>
-    <string name="swipe_action_change_swipe_gestures">Cambiar \nGestos al deslizar</string>
+    <string name="swipe_action_change_swipe_gestures">Cambiar \ngestos al deslizar</string>
     <string name="archiving_not_available_for_this_account">El archivamiento no está disponible para esta cuenta.</string>
     <string name="debug_open_secret_debug_screen">Abrir la pantalla secreta de desarrollo</string>
+    <string name="debug_invalidate_access_token">Prueba: Invalidar token de acceso</string>
+    <string name="debug_invalidate_access_token_done">Token de acceso invalidado. La próxima petición lo actualizará.</string>
+    <string name="debug_invalidate_access_token_unavailable">No existe ningún token OAuth para esta cuenta.</string>
+    <string name="debug_invalidate_access_token_local">Prueba: Invalidar token de acceso (local)</string>
+    <string name="debug_invalidate_access_token_local_done">Petición para invalidar en local. La próxima petición recuperará un nuevo token.</string>
+    <string name="debug_invalidate_access_token_server">Prueba: Invalidar token de acceso (servidor)</string>
+    <string name="debug_invalidate_access_token_server_done">El token de acceso almacenado está corrupto. La siguiente petición fallará y actualizará el token.</string>
+    <string name="debug_force_auth_failure">Prueba: Forzar un fallo de autenticación</string>
+    <string name="debug_force_auth_failure_done">Estado de OAuth borrado. La próxima petición fallará.</string>
+    <string name="debug_force_auth_failure_unavailable">Esta cuenta no tiene ninguna configuración OAuth.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">No se pudo guardar el token de acceso. Prueba recreándolo de forma local.</string>
+    <string name="debug_invalidate_access_token_already_modified">El token de acceso almacenado ya se ha modificado.</string>
+    <string name="message_view_menu_action_export_eml">Exportar como EML</string>
 </resources>

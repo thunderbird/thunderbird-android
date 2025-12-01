@@ -570,8 +570,8 @@
     <string name="dialog_confirm_delete_title">تأیید حذف</string>
     <string name="dialog_confirm_delete_message">آیا این پیام حذف شود؟</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">آیا واقعا می‌خواهید این پیام را حذف کنید؟</item>
-        <item quantity="other">آیا واقعا می‌خواهید پیام <xliff:g id="message_count">%1$d</xliff:g> را حذف کنید؟</item>
+        <item quantity="one">واقعاً می‌خواهید این پیام را حذف کنید؟</item>
+        <item quantity="other">واقعاً می‌خواهید <xliff:g id="message_count">%1$d</xliff:g> پیام را حذف کنید؟</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">بله</string>
     <string name="dialog_confirm_delete_cancel_button">خیر</string>
@@ -583,8 +583,8 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">خیر</string>
     <string name="dialog_confirm_spam_title">تأیید انتقال به پوشهٔ هرزنامه</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">آیا واقعا می‌خواهید این پیام را به پوشه هرزنامه منتقل کنید؟</item>
-        <item quantity="other">آیا واقعا می‌خواهید پیام <xliff:g id="message_count">%1$d</xliff:g> را به پوشه هرزنامه منتقل کنید؟</item>
+        <item quantity="one">واقعاً می‌خواهید این پیام را به شاخهٔ هرزنامه منتقل کنید؟</item>
+        <item quantity="other">واقعاً می‌خواهید <xliff:g id="message_count">%1$d</xliff:g> پیام را به شاخهٔ هرزنامه منتقل کنید؟</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">بله</string>
     <string name="dialog_confirm_spam_cancel_button">خیر</string>
@@ -909,4 +909,10 @@
     <string name="swipe_action_change_swipe_gestures">تغییر \nژست‌های کشیدن</string>
     <string name="archiving_not_available_for_this_account">بایگانی کردن برای این حساب در دسترس نیست.</string>
     <string name="debug_open_secret_debug_screen">گشودن صفحهٔ اشکال‌زدایی مخفی</string>
+    <string name="message_view_menu_action_export_eml">برون‌ریزی به EML</string>
+    <string name="debug_invalidate_access_token">آزمون: بی‌اعتباری ژتون دسترسی</string>
+    <string name="debug_invalidate_access_token_local">آزمون: بی‌اعتباری ژتون دسترسی (محلی)</string>
+    <string name="debug_invalidate_access_token_server">آزمون: بی‌اعتباری ژتون دسترسی (کارساز)</string>
+    <string name="debug_force_auth_failure">آزمون: اجبار شکست فوری</string>
+    <string name="debug_invalidate_access_token_already_modified">ژتون دسترسی ذخیره شده از پیش تغییر کرده.</string>
 </resources>

@@ -2,6 +2,7 @@ package net.thunderbird.feature.notification.impl.inject
 
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
+import net.thunderbird.feature.notification.api.ui.dialog.ErrorNotificationsDialogFragmentFactory
 import net.thunderbird.feature.notification.impl.intent.action.AlarmPermissionMissingNotificationTapActionIntentCreator
 import net.thunderbird.feature.notification.impl.intent.action.DefaultNotificationActionIntentCreator
 import net.thunderbird.feature.notification.impl.intent.action.NotificationActionIntentCreator
@@ -10,6 +11,7 @@ import net.thunderbird.feature.notification.impl.receiver.AndroidSystemNotificat
 import net.thunderbird.feature.notification.impl.receiver.SystemNotificationNotifier
 import net.thunderbird.feature.notification.impl.ui.action.DefaultSystemNotificationActionCreator
 import net.thunderbird.feature.notification.impl.ui.action.NotificationActionCreator
+import net.thunderbird.feature.notification.impl.ui.dialog.ErrorNotificationsDialogFragment
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
@@ -46,9 +48,12 @@ internal actual val platformFeatureNotificationModule: Module = module {
         AndroidSystemNotificationNotifier(
             logger = get(),
             applicationContext = androidApplication(),
+            notificationRegistry = get(),
             notificationActionCreator = get(named(NotificationActionCreator.TypeQualifier.System)),
         )
     }.onClose { notifier ->
         notifier?.dispose()
     }
+
+    factory<ErrorNotificationsDialogFragmentFactory> { ErrorNotificationsDialogFragment.Factory }
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Sinkronisasi (Dorongan)</string>
+    <string name="notification_channel_push_description">Ditampilkan saat menunggu pesan baru</string>
+    <string name="notification_channel_messages_title">Pesan</string>
+    <string name="notification_channel_messages_description">Notifikasi terkait dengan pesan</string>
+    <string name="notification_channel_miscellaneous_title">Lain-lain</string>
+    <string name="notification_channel_miscellaneous_description">Notifikasi lainnya seperti kesalahan, dll.</string>
+    <string name="notification_notify_error_title">Kesalahan notifikasi</string>
+    <string name="notification_notify_error_text">Kesalahan telah terjadi saat mencoba untuk membuat notifikasi sistem untuk pesan baru. Kemungkinan besar penyebabnya yaitu hilangnya suara notifikasi.
+\n
+\nKetuk untuk membuka pengaturan notifikasi.</string>
+    <string name="notification_authentication_error_title">Autentikasi gagal</string>
+    <string name="notification_certificate_error_public">Kesalahan sertifikat</string>
+    <string name="notification_certificate_error_title">Kesalahan sertifikat untuk %1$s</string>
+    <string name="notification_certificate_error_text">Periksa pengaturan server Anda</string>
+    <string name="notification_bg_sync_ticker">Memeriksa pesan: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Memeriksa pesan</string>
+    <string name="notification_bg_send_ticker">Mengirimkan pesan: %1$s</string>
+    <string name="notification_bg_send_title">Mengirimkan pesan</string>
+    <string name="send_failure_subject">Gagal mengirim beberapa pesan</string>
+    <string name="notification_additional_messages">+ %1$d lagi pada %2$s</string>
+    <string name="push_notification_state_initializing">Inisialisasi…</string>
+    <string name="push_notification_state_listening">Menunggu surel baru</string>
+    <string name="push_notification_state_wait_background_sync">Tidur hingga sinkronisasi latar belakang diizinkan</string>
+    <string name="push_notification_state_wait_network">Tidur hingga jaringan tersedia</string>
+    <string name="push_notification_state_alarm_permission_missing">Tidak ada izin untuk menjadwalkan alarm</string>
+    <string name="push_notification_info">Ketuk untuk mempelajari lebih lanjut.</string>
+    <string name="push_notification_grant_alarm_permission">Ketuk untuk memberikan izin.</string>
+    <string name="push_info_disable_push_action">Nonaktifkan Dorongan</string>
+    <string name="notification_action_reply">Balas</string>
+    <string name="notification_action_mark_as_read">Tandai Sudah Dibaca</string>
+    <string name="notification_action_mark_all_as_read">Tandai Semua Sudah Dibaca</string>
+    <string name="notification_action_delete">Hapus</string>
+    <string name="notification_action_delete_all">Hapus Semua</string>
+    <string name="notification_action_archive">Arsipkan</string>
+    <string name="notification_action_archive_all">Arsipkan Semua</string>
+    <string name="notification_action_spam">Spam</string>
+</resources>

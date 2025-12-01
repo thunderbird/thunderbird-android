@@ -27,7 +27,7 @@ fun ServerSettingsPasswordInput(
             contentPadding = contentPadding,
         )
     } else {
-        BiometricPasswordInput(
+        ProtectedPasswordInput(
             onPasswordChange = onPasswordChange,
             modifier = modifier,
             password = password,

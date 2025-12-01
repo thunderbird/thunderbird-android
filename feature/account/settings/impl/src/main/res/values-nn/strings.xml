@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_settings_general_title">Generelle innstillingar</string>
+    <string name="account_settings_general_profile_indicator_title">Profilindikator</string>
+    <string name="account_settings_general_profile_indicator_monogram">Monogram</string>
+    <string name="account_settings_general_profile_indicator_image">Bilete</string>
+    <string name="account_settings_general_profile_indicator_icon">Ikon</string>
+    <string name="account_settings_general_name_title">Kontonamn</string>
+    <string name="account_settings_general_name_description">Namnet er ikkje assosiert med kontoen din.</string>
+    <string name="account_settings_general_color_title">Kontofarge</string>
+    <string name="account_settings_general_color_description">Aksentfargen for denne kontoen, som vert brukt for mapper og kontolister.</string>
+</resources>

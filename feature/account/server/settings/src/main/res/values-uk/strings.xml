@@ -32,4 +32,6 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">Щоб переглянути тут свій пароль, увімкніть блокування екрана на цьому пристрої.</string>
     <string name="account_server_settings_password_authentication_title">Підтвердьте свою особистість</string>
     <string name="account_server_settings_password_authentication_subtitle">Розблокуйте, щоб переглянути пароль</string>
+    <string name="account_server_settings_password_authentication_failed">Не вдалося виконати автентифікацію!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Не вдалося розпочати біометричну розпізнавання.</string>
 </resources>

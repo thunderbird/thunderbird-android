@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sent_folder_not_found_dialog_title">Map Verzonden niet gevonden</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Stel in Accountinstellingen een map Verzonden in, om dit e-mailbericht na verzending te bewaren.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Map Verzonden toekennen</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Annuleren</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Verzenden en verwijderen</string>
+</resources>

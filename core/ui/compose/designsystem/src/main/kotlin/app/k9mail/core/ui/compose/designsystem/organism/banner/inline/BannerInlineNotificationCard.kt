@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.card.CardColors
 import app.k9mail.core.ui.compose.designsystem.atom.card.CardOutlined
@@ -54,6 +55,7 @@ internal fun BannerInlineNotificationCard(
     border: BorderStroke = BannerNotificationCardDefaults.errorCardBorder(),
     shape: Shape = BannerNotificationCardDefaults.bannerInlineShape,
     behaviour: BannerInlineNotificationCardBehaviour = BannerNotificationCardDefaults.bannerInlineBehaviour,
+    onSupportingTextOverflow: (hasVisualOverflow: Boolean) -> Unit = {},
 ) {
     val maxLines = when (behaviour) {
         BannerInlineNotificationCardBehaviour.Clipped -> 2
@@ -74,6 +76,11 @@ internal fun BannerInlineNotificationCard(
                 supportingText = supportingText,
                 behaviour = behaviour,
                 maxLines = maxLines,
+                onTextOverflow = { hasVisualOverflow ->
+                    if (behaviour == BannerInlineNotificationCardBehaviour.Clipped) {
+                        onSupportingTextOverflow(hasVisualOverflow)
+                    }
+                },
             )
         },
         actions = actions,
@@ -186,11 +193,12 @@ private fun BannerInlineNotificationTitle(
 }
 
 @Composable
-fun BannerInlineNotificationSupportingText(
+private fun BannerInlineNotificationSupportingText(
     supportingText: CharSequence,
     behaviour: BannerInlineNotificationCardBehaviour,
     maxLines: Int,
     modifier: Modifier = Modifier,
+    onTextOverflow: (hasVisualOverflow: Boolean) -> Unit = {},
 ) {
     val clippedSupportingText = remember(supportingText, behaviour) {
         when (behaviour) {
@@ -200,12 +208,16 @@ fun BannerInlineNotificationSupportingText(
             else -> supportingText
         }
     }
+    val onTextLayout = remember<(TextLayoutResult) -> Unit>(onTextOverflow) {
+        { textLayoutResult -> onTextOverflow(textLayoutResult.hasVisualOverflow) }
+    }
     when (clippedSupportingText) {
         is String -> TextBodyMedium(
             text = clippedSupportingText,
             maxLines = maxLines,
             overflow = TextOverflow.Ellipsis,
             modifier = modifier,
+            onTextLayout = onTextLayout,
         )
 
         is AnnotatedString -> TextBodyMedium(
@@ -213,6 +225,7 @@ fun BannerInlineNotificationSupportingText(
             maxLines = maxLines,
             overflow = TextOverflow.Ellipsis,
             modifier = modifier,
+            onTextLayout = onTextLayout,
         )
 
         else -> TextBodyMedium(
@@ -220,6 +233,7 @@ fun BannerInlineNotificationSupportingText(
             maxLines = maxLines,
             overflow = TextOverflow.Ellipsis,
             modifier = modifier,
+            onTextLayout = onTextLayout,
         )
     }
 }

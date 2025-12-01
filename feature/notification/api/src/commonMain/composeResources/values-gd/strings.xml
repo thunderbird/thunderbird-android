@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Sioncronaich (Put)</string>
+    <string name="notification_channel_push_description">Ga shealltainn fhad ’s a thathar a’ feitheamh ri teachdaireachdan ùra</string>
+    <string name="notification_channel_messages_title">Teachdaireachdan</string>
+    <string name="notification_channel_messages_description">Brathan co-cheangailte ri teachdaireachdan</string>
+    <string name="notification_channel_miscellaneous_title">An corr</string>
+    <string name="notification_channel_miscellaneous_description">Measgachadh de bhrathan, mar mhearachdan is msaa.</string>
+    <string name="notification_notify_error_title">Mearachd bratha</string>
+    <string name="notification_notify_error_text">Dh’èirich mearachd fhad ’s a bha sinn airson brath siostaim a chruthachadh airson teachdaireachd ùr. Mar is trice, tachraidh sin ma tha fuaim bratha a dhìth.\n\nThoir gnogag a dh’fhosgladh roghainnean nam fuaimean.</string>
+    <string name="notification_authentication_error_title">Dh’fhàillig an dearbhadh</string>
+    <string name="notification_certificate_error_public">Mearachd an teisteanais</string>
+    <string name="notification_certificate_error_title">Mearachd an teisteanais aig %1$s</string>
+    <string name="notification_certificate_error_text">Thoir sùil air roghainnean an fhrithealaiche agad</string>
+    <string name="notification_bg_sync_ticker">A’ toirt sùil airson post: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">A’ toirt sùil airson post</string>
+    <string name="notification_bg_send_ticker">A’ cur a’ phuist: %1$s</string>
+    <string name="notification_bg_send_title">A’ cur a’ phuist</string>
+    <string name="send_failure_subject">Cha deach cuid dhe na teachdaireachdan a chur</string>
+    <string name="notification_additional_messages">⁊ %1$d a bharrachd air %2$s</string>
+    <string name="push_notification_state_initializing">Ga ro-shuidheachadh…</string>
+    <string name="push_notification_state_listening">A’ feitheamh ri post-d ùr</string>
+    <string name="push_notification_state_wait_background_sync">Na chadal gus an tèid sioncronachadh sa chùlaich a cheadachadh</string>
+    <string name="push_notification_state_wait_network">Na chadal gus am bi lìonra ri làimh</string>
+    <string name="push_notification_state_alarm_permission_missing">Chan eil cead againn caismeachadh a sgeidealachadh</string>
+    <string name="push_notification_info">Thoir gnogag airson barrachd fiosrachaidh.</string>
+    <string name="push_notification_grant_alarm_permission">Thoir gnogag airson cead a thoirt.</string>
+    <string name="push_info_disable_push_action">Cuir Push à comas</string>
+    <string name="notification_action_reply">Freagair</string>
+    <string name="notification_action_mark_as_read">Comharraich gun deach a leughadh</string>
+    <string name="notification_action_mark_all_as_read">Comharraich gun deach iad uile a leughadh</string>
+    <string name="notification_action_delete">Sguab às</string>
+    <string name="notification_action_delete_all">Sguab às na h-uile</string>
+    <string name="notification_action_archive">Tasglannaich</string>
+    <string name="notification_action_archive_all">Tasglannaich na h-uile</string>
+    <string name="notification_action_spam">Spama</string>
+</resources>

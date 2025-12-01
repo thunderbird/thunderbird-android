@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_push_title">Synchroniseren (Push)</string>
+    <string name="notification_channel_push_description">Wordt in afwachting van nieuwe berichten getoond</string>
+    <string name="notification_channel_messages_title">Berichten</string>
+    <string name="notification_channel_messages_description">Aan meldingen gerelateerde berichten</string>
+    <string name="notification_channel_miscellaneous_title">Overig</string>
+    <string name="notification_channel_miscellaneous_description">Overige meldingen, zoals fouten en dergelijke.</string>
+    <string name="notification_notify_error_title">Meldingsfout</string>
+    <string name="notification_notify_error_text">Er is een fout opgetreden tijdens het maken van een systeemmelding voor een nieuw bericht. De reden is waarschijnlijk een ontbrekend meldingsgeluid.\n\nTik om meldingsinstellingen te openen.</string>
+    <string name="notification_authentication_error_title">Authenticatie mislukt</string>
+    <string name="notification_certificate_error_public">Certificaatfout</string>
+    <string name="notification_certificate_error_title">Certificaatfout voor %1$s</string>
+    <string name="notification_certificate_error_text">Controleer uw serverinstellingen</string>
+    <string name="notification_bg_sync_ticker">Op berichten controleren: %1$s: %2$s</string>
+    <string name="notification_bg_sync_title">Berichten controleren</string>
+    <string name="notification_bg_send_ticker">Berichten versturen: %1$s</string>
+    <string name="notification_bg_send_title">E-mailbericht(en) verzenden</string>
+    <string name="send_failure_subject">Fout bij verzenden van enkele berichten</string>
+    <string name="notification_additional_messages">+ %1$d meer bij %2$s</string>
+    <string name="push_notification_state_initializing">Initialiseren…</string>
+    <string name="push_notification_state_listening">In afwachting van nieuwe e-mailberichten</string>
+    <string name="push_notification_state_wait_background_sync">Wacht tot achtergrondsynchronisatie wordt toegestaan</string>
+    <string name="push_notification_state_wait_network">Wacht tot er netwerk beschikbaar is</string>
+    <string name="push_notification_state_alarm_permission_missing">Toestemming om alarmen te plannen ontbreekt</string>
+    <string name="push_notification_info">Tik voor meer info.</string>
+    <string name="push_notification_grant_alarm_permission">Tik om toestemming te geven.</string>
+    <string name="push_info_disable_push_action">Push uitschakelen</string>
+    <string name="notification_action_reply">Beantwoorden</string>
+    <string name="notification_action_mark_as_read">Als gelezen markeren</string>
+    <string name="notification_action_mark_all_as_read">Alle als gelezen markeren</string>
+    <string name="notification_action_delete">Verwijderen</string>
+    <string name="notification_action_delete_all">Alle verwijderen</string>
+    <string name="notification_action_archive">Archiveren</string>
+    <string name="notification_action_archive_all">Alle archiveren</string>
+    <string name="notification_action_spam">Spam</string>
+    <string name="notification_authentication_incoming_server_error_text">Authenticatie voor %1$s is mislukt. Werk uw instellingen voor de inkomende server bij.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Authenticatie voor %1$s is mislukt. Werk uw instellingen voor de uitgaande server bij.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d nieuw bericht</item>
+        <item quantity="other">%1$d nieuwe berichten</item>
+    </plurals>
+    <string name="notification_action_retry">Opnieuw proberen</string>
+    <string name="banner_inline_notification_learn_more">Meer info</string>
+    <string name="banner_inline_notification_view_support_article">Kennisbankartikel bekijken</string>
+    <string name="sent_folder_not_found_title">Map Verzonden niet beschikbaar.</string>
+    <string name="notification_action_update_server_settings">Serverinstellingen bijwerken</string>
+    <string name="notification_action_assign_sent_folder">Map toewijzen</string>
+    <string name="banner_inline_notification_check_error_notifications">Foutmeldingen controleren</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Enkele berichten vereisen uw aandacht.</string>
+    <string name="banner_inline_notification_open_notifications">Meldingen openen</string>
+</resources>

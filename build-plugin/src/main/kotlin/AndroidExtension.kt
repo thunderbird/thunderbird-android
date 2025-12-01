@@ -28,12 +28,6 @@ internal fun CommonExtension<*, *, *, *, *, *>.configureSharedConfig(project: Pr
         checkReleaseBuilds = System.getenv("CI_CHECK_RELEASE_BUILDS")?.toBoolean() ?: true
     }
 
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
-
     packaging {
         resources {
             excludes += listOf(

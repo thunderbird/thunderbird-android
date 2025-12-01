@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_archive_folder_dialog_done">Farite</string>
+    <string name="setup_archive_folder_dialog_cancel">Nuligi</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Sinkronigante…</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Preterpasi nun</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Detaloj pri eraro: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Krei novan dosierujon</string>
+    <string name="setup_archive_folder_unhandled_error">Netraktita eraro: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Fora dosierujo kreiĝis.</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Agordi arĥivujon nun</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">Konto (%1$s) ne troviĝis</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Nevalida dosieruja nomo «%1$s»</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Krei & agordi novan dosierujon]]></string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Nomo de dosierujo ne povas esti malplena</string>
+    <string name="setup_archive_folder_dialog_dont_show_again">Ne plu montri ĉi tiun mesaĝon</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">Malsukcesis krei lokan dosierujon «%1$s».</string>
+</resources>

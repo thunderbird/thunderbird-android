@@ -1,5 +1,6 @@
 package net.thunderbird.core.logging.file
 
+import com.eygraber.uri.Uri
 import net.thunderbird.core.logging.LogEvent
 import net.thunderbird.core.logging.LogLevel
 
@@ -14,7 +15,7 @@ internal class JvmFileLogSink(
         event.throwable?.printStackTrace()
     }
 
-    override suspend fun export(uriString: String) {
+    override suspend fun export(uri: Uri) {
         // TODO: Implementation https://github.com/thunderbird/thunderbird-android/issues/9435
     }
 

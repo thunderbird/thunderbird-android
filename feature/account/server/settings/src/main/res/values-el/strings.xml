@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_server_settings_authentication_none">Καμία</string>
+    <string name="account_server_settings_authentication_none">Κανένα</string>
     <string name="account_server_settings_authentication_password_encrypted">Κρυπτογραφημένος κωδικός πρόσβασης</string>
     <string name="account_server_settings_incoming_imap_namespace_label">Αυτόματος εντοπισμός χώρου ονομάτων IMAP</string>
     <string name="account_server_settings_authentication_password_cleartext">Κανονικός κωδικός πρόσβασης</string>
-    <string name="account_server_settings_authentication_label">Ταυτοποίηση</string>
+    <string name="account_server_settings_authentication_label">Πιστοποίηση</string>
     <string name="account_server_settings_connection_security_none">Καμία</string>
     <string name="account_server_settings_port_label">Θύρα</string>
     <string name="account_server_settings_authentication_client_certificate">Πιστοποητικό πελάτη</string>

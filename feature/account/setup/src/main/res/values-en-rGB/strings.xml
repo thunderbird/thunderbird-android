@@ -28,7 +28,7 @@
     <string name="account_setup_error_network">Network error. Please check your connection status and try again.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">This is not recognised as a valid email address.</string>
     <string name="account_setup_options_email_check_frequency_never">Never</string>
-    <string name="account_setup_auto_discovery_loading_message">Finding email details</string>
+    <string name="account_setup_auto_discovery_loading_message">Looking up configuration…</string>
     <string name="account_setup_options_section_sync_options">Sync options</string>
     <string name="account_setup_options_show_notifications_label">Show notifications</string>
     <string name="account_setup_options_section_display_options">Display options</string>

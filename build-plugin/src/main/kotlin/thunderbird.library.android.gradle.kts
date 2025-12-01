@@ -11,19 +11,12 @@ android {
     buildFeatures {
         buildConfig = false
     }
-
-    kotlinOptions {
-        jvmTarget = ThunderbirdProjectConfig.Compiler.javaCompatibility.toString()
-    }
-
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
 }
 
 kotlin {
+    compilerOptions {
+        jvmTarget.set(ThunderbirdProjectConfig.Compiler.jvmTarget)
+    }
     sourceSets.all {
         compilerOptions {
             freeCompilerArgs.add("-Xwhen-guards")

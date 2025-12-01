@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_oauth_sign_in_with_google_button">Вписване чрез Google</string>
+    <string name="account_oauth_sign_in_with_google_button">Вписване с Гугъл</string>
     <string name="account_oauth_loading_error">Вписването чрез OAuth се провали</string>
     <string name="account_oauth_error_failed">Разрешаването се провали и даде следната грешка: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">Приложението не успя да намери браузър, който да използва за разрешаване на достъп до акаунта Ви.</string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 с този доставчик не се поддържа в момента.</string>
     <string name="account_oauth_error_canceled">Разрешението е отменено</string>
     <string name="account_oauth_loading_message">Вписване чрез OAuth</string>
-    <string name="account_oauth_sign_in_description">Пренасочваме ви към вашият доставчик на имейл услуги. Трябва да дадете на приложението достъп до профила си.</string>
+    <string name="account_oauth_sign_in_description">Пренасочваме ви към вашият доставчик на пощенски услуги. Трябва да дадете на приложението достъп до профила си.</string>
     <string name="account_oauth_sign_in_button">Вписване</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">статия за поддръжка</string>
     <string name="account_oauth_google_sign_in_support_text">Ако имате проблеми при влизането с Google, моля, консултирайте се с нашия {placeHolder}.</string>

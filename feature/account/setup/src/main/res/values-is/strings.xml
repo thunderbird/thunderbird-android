@@ -57,4 +57,6 @@
         <item quantity="one">1 skilaboð</item>
         <item quantity="other">%d skilaboð</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Nafnið þitt</string>
+    <string name="account_setup_options_your_name_error_required">Nafn þitt er nauðsynlegt.</string>
 </resources>

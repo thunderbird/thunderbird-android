@@ -1,27 +1,29 @@
 package app.k9mail.feature.account.server.settings.domain.usecase
 
 import app.k9mail.feature.account.server.settings.domain.ServerSettingsDomainContract.UseCase
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 import net.thunderbird.core.common.net.HostNameUtils
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.core.validation.ValidationOutcome
+import net.thunderbird.core.validation.ValidationSuccess
 
 internal class ValidateServer : UseCase.ValidateServer {
 
-    override fun execute(server: String): ValidationResult {
+    override fun execute(server: String): ValidationOutcome {
         if (server.isBlank()) {
-            return ValidationResult.Failure(ValidateServerError.EmptyServer)
+            return Outcome.Failure(ValidateServerError.EmptyServer)
         }
 
         return validateHostnameOrIpAddress(server)
     }
 
-    private fun validateHostnameOrIpAddress(server: String): ValidationResult {
+    private fun validateHostnameOrIpAddress(server: String): ValidationOutcome {
         val isLegalHostNameOrIP = HostNameUtils.isLegalHostNameOrIP(server) != null
 
         return if (isLegalHostNameOrIP) {
-            ValidationResult.Success
+            ValidationSuccess
         } else {
-            ValidationResult.Failure(ValidateServerError.InvalidHostnameOrIpAddress)
+            Outcome.Failure(ValidateServerError.InvalidHostnameOrIpAddress)
         }
     }
 

@@ -6,8 +6,6 @@ import app.k9mail.feature.account.common.domain.entity.toAuthType
 import app.k9mail.feature.account.common.domain.entity.toAuthenticationType
 import app.k9mail.feature.account.common.domain.entity.toConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.toMailConnectionSecurity
-import app.k9mail.feature.account.common.domain.input.NumberInputField
-import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.server.settings.ui.common.toInvalidEmailDomain
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import com.fsck.k9.mail.ServerSettings
@@ -16,6 +14,8 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientInfo
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
+import net.thunderbird.core.validation.input.NumberInputField
+import net.thunderbird.core.validation.input.StringInputField
 
 fun AccountState.toIncomingServerSettingsState() = incomingServerSettings?.toIncomingServerSettingsState()
     ?: State(

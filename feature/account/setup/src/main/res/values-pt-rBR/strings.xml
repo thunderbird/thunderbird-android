@@ -46,17 +46,17 @@
     <string name="account_setup_special_folders_drafts_folder_label">Pasta de rascunhos</string>
     <string name="account_setup_special_folders_sent_folder_label">Pasta de enviados</string>
     <plurals name="account_setup_options_email_check_frequency_minutes">
-        <item quantity="one">A cada minuto</item>
+        <item quantity="one">A cada%d minuto</item>
         <item quantity="many">A cada %d minutos</item>
         <item quantity="other">A cada %d minutos</item>
     </plurals>
     <plurals name="account_setup_options_email_check_frequency_hours">
-        <item quantity="one">A cada hora</item>
+        <item quantity="one">A cada %dhora</item>
         <item quantity="many">A cada %d horas</item>
         <item quantity="other">A cada %d horas</item>
     </plurals>
     <plurals name="account_setup_options_email_display_count_messages">
-        <item quantity="one">1 mensagem</item>
+        <item quantity="one">%d1 mensagem</item>
         <item quantity="many">%d mensagens</item>
         <item quantity="other">%d mensagens</item>
     </plurals>

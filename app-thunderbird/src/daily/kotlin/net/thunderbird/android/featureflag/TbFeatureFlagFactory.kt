@@ -1,10 +1,12 @@
 package net.thunderbird.android.featureflag
 
 import com.fsck.k9.ui.messagelist.MessageListFeatureFlags
+import com.fsck.k9.ui.messageview.MessageViewFeatureFlags
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagFactory
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 
 /**
  * Feature flags for Thunderbird Daily
@@ -21,6 +23,8 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = true),
             FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = false),
             FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
+            FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = true),
+            FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = false),
         )
     }
 }

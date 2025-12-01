@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sent_folder_not_found_dialog_title">Dosarul „Trimise” nu a fost găsit</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Pentru a salva acest mesaj după trimitere, configurați un dosar „Trimise” în Configurările contului.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Atribuie dosarul „Trimise”</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Anulare</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Trimite și șterge</string>
+</resources>

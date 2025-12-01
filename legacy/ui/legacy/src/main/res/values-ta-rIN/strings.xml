@@ -892,7 +892,7 @@
     <string name="dialog_openkeychain_info_title">OpenPGP பயன்பாடு எதுவும் நிறுவப்படவில்லை</string>
     <string name="ac_transfer_setting_title">ஆட்டோகிரிப்ட் அமைவு செய்தியை அனுப்பவும்</string>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">%2$d முடிவுகளின் %1$d ஐப் பெறுகிறது</item>
+        <item quantity="one">%2$d முடிவின் %1$d ஐப் பெறுகிறது</item>
         <item quantity="other">%2$d முடிவுகளின் %1$d ஐப் பெறுகிறது</item>
     </plurals>
     <string name="ac_transfer_show_code">அமைவு குறியீட்டைக் காட்டு</string>
@@ -909,4 +909,17 @@
     <string name="swipe_action_archive_folder_not_set">காப்பக கோப்புறையை அமைக்கவும்</string>
     <string name="swipe_action_change_swipe_gestures">மாற்றம் \nசைகைகளை ச்வைப் செய்யுங்கள்</string>
     <string name="archiving_not_available_for_this_account">இந்த கணக்கிற்கு காப்பகம் கிடைக்கவில்லை.</string>
+    <string name="debug_open_secret_debug_screen">இரகசிய பிழைத்திருத்தத் திரையைத் திறக்கவும்</string>
+    <string name="debug_invalidate_access_token">சோதனை: அணுகல் கிள்ளாக்கை செல்லாததாக்கு</string>
+    <string name="debug_invalidate_access_token_done">அணுகல் கிள்ளாக்கு செல்லாதது. அடுத்த கோரிக்கை புதுப்பிக்கப்படும்.</string>
+    <string name="debug_invalidate_access_token_unavailable">இந்தக் கணக்கிற்கு OAuth கிள்ளாக்கு எதுவும் இல்லை.</string>
+    <string name="debug_invalidate_access_token_local">சோதனை: செல்லாத அணுகல் கிள்ளாக்கை (உள்ளூர்)</string>
+    <string name="debug_invalidate_access_token_local_done">உள்ளக செல்லாததாக்குதல் கோரப்பட்டது. அடுத்த கோரிக்கை புதிய கிள்ளாக்கைப் பெறும்.</string>
+    <string name="debug_invalidate_access_token_server">சோதனை: செல்லாத அணுகல் கிள்ளாக்கை (சேவையகம்)</string>
+    <string name="debug_invalidate_access_token_server_done">சேமிக்கப்பட்ட அணுகல் கிள்ளாக்கு சிதைந்துள்ளது. அடுத்த கோரிக்கை தோல்வியடைந்து புதுப்பிக்கப்படும்.</string>
+    <string name="debug_force_auth_failure">சோதனை: இப்போது கட்டாய அங்கீகார தோல்வி</string>
+    <string name="debug_force_auth_failure_done">OAuth மாநிலம் அழிக்கப்பட்டது. அடுத்த கோரிக்கை தோல்வியடையும்.</string>
+    <string name="debug_force_auth_failure_unavailable">இந்தக் கணக்கிற்கு OAuth உள்ளமைவு எதுவும் இல்லை.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">சேமிக்கப்பட்ட அணுகல் கிள்ளாக்கை மாற்ற முடியவில்லை. உள்ளக செல்லாததை முயற்சிக்கவும்.</string>
+    <string name="debug_invalidate_access_token_already_modified">சேமிக்கப்பட்ட அணுகல் கிள்ளாக்கு ஏற்கனவே மாற்றியமைக்கப்பட்டுள்ளது.</string>
 </resources>

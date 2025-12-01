@@ -1,14 +1,13 @@
 package net.thunderbird.feature.account.settings.impl.ui.general
 
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import net.thunderbird.core.ui.compose.preference.api.Preference
-import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
+import net.thunderbird.core.ui.setting.SettingValue
+import net.thunderbird.core.ui.setting.Settings
 
 internal object FakeData {
 
-    val preferences: ImmutableList<Preference> = persistentListOf(
-        PreferenceSetting.Text(
+    val settings: Settings = persistentListOf(
+        SettingValue.Text(
             id = "test_id",
             title = { "Title" },
             description = { "Description" },

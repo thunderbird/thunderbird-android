@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_push_title">Synchronizovat (Push)</string>
+    <string name="notification_channel_push_description">Zobrazeno po dobu čekání na nové zprávy</string>
+    <string name="notification_channel_messages_title">Zpráva</string>
+    <string name="notification_channel_messages_description">Oznámení související se zprávami</string>
+    <string name="notification_channel_miscellaneous_title">Různé</string>
+    <string name="notification_channel_miscellaneous_description">Různá oznámení, jako chyby atd.</string>
+    <string name="notification_notify_error_title">Chyba oznámení</string>
+    <string name="notification_notify_error_text">Vyskytla se chyba při vytvoření systémového oznámení pro novou zprávu. Důvodem je nejspíš chybějící zvuk oznámení.
+\n
+\nKlepnutím otevřete nastavení oznámení.</string>
+    <string name="notification_authentication_error_title">Přihlášení se nezdařilo</string>
+    <string name="notification_certificate_error_public">Chyba certifikátu</string>
+    <string name="notification_certificate_error_title">Chyba certifikátu účtu %1$s</string>
+    <string name="notification_certificate_error_text">Zkontrolujte nastavení serveru</string>
+    <string name="notification_bg_sync_ticker">Kontrola nové pošty: %1$s: %2$s</string>
+    <string name="notification_bg_sync_title">Kontrola nové pošty</string>
+    <string name="notification_bg_send_ticker">Odesílání pošty: %1$s</string>
+    <string name="notification_bg_send_title">Odesílání pošty</string>
+    <string name="send_failure_subject">Selhalo odeslání některých zpráv</string>
+    <string name="notification_additional_messages">+ %1$d pro účet %2$s</string>
+    <string name="push_notification_state_initializing">Inicializace…</string>
+    <string name="push_notification_state_listening">Čeká se na nové e-maily</string>
+    <string name="push_notification_state_wait_background_sync">Uspáno do doby, než bude umožněna synchronizace na pozadí</string>
+    <string name="push_notification_state_wait_network">Uspáno do doby, než bude k dispozici síť</string>
+    <string name="push_notification_state_alarm_permission_missing">Chybí oprávnění pro nastavování alarmů</string>
+    <string name="push_notification_info">Klepněte, pokud se chcete dozvědět víc.</string>
+    <string name="push_notification_grant_alarm_permission">Klepnutím udělíte oprávnění.</string>
+    <string name="push_info_disable_push_action">Vypnout Push</string>
+    <string name="notification_action_reply">Odpovědět</string>
+    <string name="notification_action_mark_as_read">Přečteno</string>
+    <string name="notification_action_mark_all_as_read">Označit vše jako přečtené</string>
+    <string name="notification_action_delete">Smazat</string>
+    <string name="notification_action_delete_all">Smazat vše</string>
+    <string name="notification_action_archive">Archivovat</string>
+    <string name="notification_action_archive_all">Archivovat vše</string>
+    <string name="notification_action_spam">Nevyžádaná</string>
+    <string name="notification_authentication_incoming_server_error_text">Autentifikace účtu %1$s selhala. Upravte svá nastavení příchozího serveru.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Autentifikace účtu %1$s selhala. Upravte svá nastavení odchozího serveru.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d nová zpráva</item>
+        <item quantity="few">%1$d nové zprávy</item>
+        <item quantity="many">%1$d nových zpráv</item>
+        <item quantity="other">%1$d nových zpráv</item>
+    </plurals>
+    <string name="notification_action_retry">Zkusit znovu</string>
+    <string name="notification_action_update_server_settings">Upravit nastavení serveru</string>
+    <string name="notification_action_assign_sent_folder">Přiřadit složku</string>
+    <string name="banner_inline_notification_check_error_notifications">Zkontrolovat oznámení o chybách</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Některé zprávy vyžadují vaši pozornost.</string>
+    <string name="banner_inline_notification_open_notifications">Otevřít oznámení</string>
+    <string name="banner_inline_notification_learn_more">Zjistit více</string>
+    <string name="banner_inline_notification_view_support_article">Zobrazit článek nápovědy</string>
+    <string name="sent_folder_not_found_title">Složka Odeslané je nedostupná.</string>
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_push_title">Synkronisera (Push)</string>
+    <string name="notification_channel_push_description">Visas i väntan på nya meddelanden</string>
+    <string name="notification_channel_messages_title">Meddelanden</string>
+    <string name="notification_channel_messages_description">Aviseringar relaterade till meddelanden</string>
+    <string name="notification_channel_miscellaneous_title">Diverse</string>
+    <string name="notification_channel_miscellaneous_description">Diverse aviseringar som fel m.m.</string>
+    <string name="notification_notify_error_title">Aviseringsfel</string>
+    <string name="notification_notify_error_text">Ett fel uppstod vid försök att skapa en systemavisering för ett nytt meddelande. Anledningen är troligen att ett aviseringsljud saknas.\n\nTryck för att öppna aviseringsinställningarna.</string>
+    <string name="notification_authentication_error_title">Autentisering misslyckades</string>
+    <string name="notification_certificate_error_public">Certifikatfel</string>
+    <string name="notification_certificate_error_title">Certifikatfel för %1$s</string>
+    <string name="notification_certificate_error_text">Kontrollera dina serverinställningar</string>
+    <string name="notification_bg_sync_ticker">Kontrollerar e-post: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Kontrollerar e-post</string>
+    <string name="notification_bg_send_ticker">Skickar e-post: %1$s</string>
+    <string name="notification_bg_send_title">Skickar e-post</string>
+    <string name="send_failure_subject">Det gick inte att skicka några meddelanden</string>
+    <string name="notification_additional_messages">+ %1$d fler på %2$s</string>
+    <string name="push_notification_state_initializing">Initierar…</string>
+    <string name="push_notification_state_listening">Väntar på nya e-postmeddelanden</string>
+    <string name="push_notification_state_wait_background_sync">Sover tills bakgrundssynkronisering är tillåten</string>
+    <string name="push_notification_state_wait_network">Sover tills nätverket är tillgängligt</string>
+    <string name="push_notification_state_alarm_permission_missing">Saknar behörigheter för att schemalägga larm</string>
+    <string name="push_notification_info">Tryck för att läsa mer.</string>
+    <string name="push_notification_grant_alarm_permission">Tryck för att ge behörigheter.</string>
+    <string name="push_info_disable_push_action">Inaktivera Push</string>
+    <string name="notification_action_reply">Svara</string>
+    <string name="notification_action_mark_as_read">Markera som läst</string>
+    <string name="notification_action_mark_all_as_read">Markera alla som lästa</string>
+    <string name="notification_action_delete">Ta bort</string>
+    <string name="notification_action_delete_all">Ta bort alla</string>
+    <string name="notification_action_archive">Arkivera</string>
+    <string name="notification_action_archive_all">Arkivera alla</string>
+    <string name="notification_action_spam">Skräppost</string>
+    <string name="notification_authentication_incoming_server_error_text">Autentisering misslyckades för %1$s. Uppdatera dina inställningar för inkommande server.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Autentisering misslyckades för %1$s. Uppdatera dina inställningar för utgående server.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d nytt meddelande</item>
+        <item quantity="other">%1$d nya meddelanden</item>
+    </plurals>
+    <string name="notification_action_retry">Försök igen</string>
+    <string name="notification_action_update_server_settings">Uppdatera serverinställningar</string>
+    <string name="notification_action_assign_sent_folder">Tilldela mapp</string>
+    <string name="banner_inline_notification_check_error_notifications">Kontrollera felmeddelanden</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Vissa meddelanden kräver din uppmärksamhet.</string>
+    <string name="banner_inline_notification_open_notifications">Öppna meddelanden</string>
+    <string name="banner_inline_notification_learn_more">Läs mer</string>
+    <string name="banner_inline_notification_view_support_article">Visa supportartikel</string>
+    <string name="sent_folder_not_found_title">Mappen Skickat är inte tillgänglig.</string>
+</resources>

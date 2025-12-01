@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_migration_thunderbird_qr_code_import_title">Already using Thunderbird on desktop?</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_text">Easily import your account settings by scanning a QR code.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">In Thunderbird desktop, go to:</string>
@@ -11,4 +11,6 @@
     <string name="onboarding_migration_thunderbird_import_title">Moving from another app or device?</string>
     <string name="onboarding_migration_thunderbird_import_button_text">Import your account settings now</string>
     <string name="onboarding_migration_thunderbird_link_open_error">No app found to open the link.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">‘Settings’ in the Spaces Toolbar (bottom left)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Import requires the latest version of Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
 </resources>

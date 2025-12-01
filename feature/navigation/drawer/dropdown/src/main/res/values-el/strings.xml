@@ -2,10 +2,13 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_dropdown_action_settings">Ρυθμίσεις</string>
     <string name="navigation_drawer_dropdown_action_manage_folders">Διαχείριση φακέλων</string>
-    <string name="navigation_drawer_dropdown_unified_inbox_title">Ενιαία Εισερχόμενα</string>
+    <string name="navigation_drawer_dropdown_unified_inbox_title">Εισερχόμενα</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000">1χ+</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">99+</string>
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Συγχρονισμός όλων των λογαριασμών</string>
     <string name="navigation_drawer_dropdown_action_show_accounts">Εμφάνιση λογαριασμών</string>
     <string name="navigation_drawer_dropdown_action_hide_accounts">Απόκρυψη λογαριασμών</string>
+    <string name="navigation_drawer_dropdown_avount_view_selection_title">Λίστα λογαριασμών</string>
+    <string name="navigation_drawer_dropdown_unified_account_title">Ενοποιημένος Λογαριασμός</string>
+    <string name="navigation_drawer_dropdown_action_add_account">Προσθήκη λογαριασμού</string>
 </resources>

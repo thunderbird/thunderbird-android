@@ -16,8 +16,8 @@ import com.fsck.k9.mail.folders.FolderFetcherException
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.outcome.Outcome
 
 class SpecialFoldersViewModel(
     private val formUiModel: SpecialFoldersContract.FormUiModel,
@@ -60,7 +60,7 @@ class SpecialFoldersViewModel(
 
             val result = validateSpecialFolderOptions(specialFolderOptions)
             when (result) {
-                is ValidationResult.Failure -> {
+                is Outcome.Failure -> {
                     updateState {
                         it.copy(
                             isManualSetup = true,
@@ -70,7 +70,7 @@ class SpecialFoldersViewModel(
                     }
                 }
 
-                ValidationResult.Success -> {
+                is Outcome.Success<Unit> -> {
                     updateState {
                         it.copy(
                             isSuccess = true,

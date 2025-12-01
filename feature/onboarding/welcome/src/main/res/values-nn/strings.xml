@@ -2,6 +2,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Kom i gang</string>
     <string name="onboarding_welcome_import_button">Importer innstillingar</string>
-    <string name="onboarding_welcome_text">Ein privatliv-fokusert og reklamefri app for Android med open kjeldekode.</string>
+    <string name="onboarding_welcome_text">Ein privatlivfokusert og reklamefri app for Android med open kjeldekode.</string>
     <string name="onboarding_welcome_developed_by">Utvikla av eit dedikert team frå MZLA Technologies, og eit globalt fellesskap av frivillige. Ein del av Mozilla-familien.</string>
 </resources>

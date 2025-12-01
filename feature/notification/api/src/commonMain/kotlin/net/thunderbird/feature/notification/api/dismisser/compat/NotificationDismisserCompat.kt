@@ -9,6 +9,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.dismisser.NotificationDismisser
@@ -31,6 +32,12 @@ class NotificationDismisserCompat @JvmOverloads constructor(
     mainImmediateDispatcher: CoroutineDispatcher = Dispatchers.Main.immediate,
 ) : DisposableHandle {
     private val scope = CoroutineScope(SupervisorJob() + mainImmediateDispatcher)
+
+    fun dismiss(notificationId: Int, onResultListener: OnResultListener) {
+        notificationDismisser.dismiss(NotificationId(notificationId))
+            .onEach { outcome -> onResultListener.onResult(outcome) }
+            .launchIn(scope)
+    }
 
     fun dismiss(notification: Notification, onResultListener: OnResultListener) {
         notificationDismisser.dismiss(notification)

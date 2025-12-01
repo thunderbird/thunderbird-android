@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">تزامن (إرسال)</string>
+    <string name="notification_channel_push_description">يتم عرضها أثناء انتظار رسائل جديدة</string>
+    <string name="notification_channel_messages_title">الرسائل</string>
+    <string name="notification_channel_messages_description">إشعارات ذات علاقة بالرسائل</string>
+    <string name="notification_channel_miscellaneous_title">مُتنوع</string>
+    <string name="notification_channel_miscellaneous_description">تنبيهات متفرقة مثل الأخطاء وغيرها من الأمور.</string>
+    <string name="notification_notify_error_title">إشعار خطأ</string>
+    <string name="notification_notify_error_text">حدث خطأ أثناء محاولة إنشاء إشعار نظام برسالة جديدة. السبب على الأرجح هو فقدان صوت الإشعار. \n\nانقر لفتح إعدادات الإشعارات.</string>
+    <string name="notification_authentication_error_title">فشل المصادقة</string>
+    <string name="notification_certificate_error_public">خطأ في الشهادة</string>
+    <string name="notification_certificate_error_title">خطأ في شهادة %1$s</string>
+    <string name="notification_certificate_error_text">تأكد من إعدادات الخادم</string>
+    <string name="notification_bg_sync_ticker">تفقد البريد: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">التحقق من البريد</string>
+    <string name="notification_bg_send_ticker">إرسال البريد: %1$s</string>
+    <string name="notification_bg_send_title">إرسال البريد</string>
+    <string name="send_failure_subject">فشِلَت عملية إرسال بعض الرسائل</string>
+    <string name="notification_additional_messages">+%1$d المزيد علي %2$s</string>
+    <string name="push_notification_state_initializing">جار تهيئة… </string>
+    <string name="push_notification_state_listening">في انتظار رسائل البريد الإلكتروني الجديدة </string>
+    <string name="push_notification_state_wait_background_sync">السكون حتى يتم السماح بالمزامنة في الخلفية </string>
+    <string name="push_notification_state_wait_network">السكون حتى تتوفر الشبكة </string>
+    <string name="push_notification_state_alarm_permission_missing">إذن مفقود لجدولة التنبيهات</string>
+    <string name="push_notification_info">انقر لمعرفة المزيد. </string>
+    <string name="push_notification_grant_alarm_permission">انقر لمنح الإذن.</string>
+    <string name="push_info_disable_push_action">تعطيل الدفع </string>
+    <string name="notification_action_reply">رُد</string>
+    <string name="notification_action_mark_as_read">إعتبارها مقروءة</string>
+    <string name="notification_action_mark_all_as_read">إعتبار الكل كمقروء</string>
+    <string name="notification_action_delete">احذف</string>
+    <string name="notification_action_delete_all">احذف الكل</string>
+    <string name="notification_action_archive">أرشيف</string>
+    <string name="notification_action_archive_all">أرشفة الكل</string>
+    <string name="notification_action_spam">بريد مُزعج</string>
+</resources>

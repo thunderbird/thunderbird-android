@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">Ikke vis denne meldingen igjen</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">E-posten kan ikke arkiveres</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Konfigurer arkivmappe nå</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Hopp over inntil videre</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Sett arkivmappe</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">Oi, her gikk noe galt under innhentningen av kontomappene!</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Informasjon om feilen: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Lag en ny mappe</string>
+    <string name="setup_archive_folder_dialog_done">Ferdig</string>
+    <string name="setup_archive_folder_dialog_cancel">Avbryt</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Lag og sett en ny mappe]]></string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">Kunne ikke finne en konto koblet til UUID-en «%1$s»</string>
+    <string name="setup_archive_folder_unhandled_error">Uhåndtert feil: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Synkroniserer…</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">Lokal mappe laget. Starter synkronisering…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Fjernmappe laget.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">Lager mappe hos e-postleverandøren…</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">Oppdaterer regler for spesielle mapper…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">Konto (%1$s) ikke funnet</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">Kunne ikke lage den lokale mappen «%1$s».</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Kunne ikke synkronisere mappen «%1$s» med fjernmappen. Melding: %2$s</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Mappenavnet kan ikke være tomt</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Ugyldig mappenavn «%1$s»</string>
+</resources>

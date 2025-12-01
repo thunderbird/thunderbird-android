@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sent_folder_not_found_dialog_title">Saadetud kirjade kausta ei leidu</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Et kirja saaks peale saatmist salvestada, siis palun määra kasutajakonto seadistustes saadetud kirjade kaust.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Vali saadetud kirjade kaust</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Katkesta</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Saada ja kustuta kiri</string>
+</resources>

@@ -39,7 +39,7 @@
     <string name="notification_certificate_error_title">Earráid deimhnithe le haghaidh <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_authentication_error_text">Theip ar fhíordheimhniú <xliff:g id="account">%s</xliff:g>. Nuashonraigh socruithe do fhreastalaí.</string>
     <string name="notification_bg_sync_title">Post á sheiceáil</string>
-    <string name="notification_bg_sync_ticker">Ríomhphost á sheiceáil: <xliff:g id="account">%1$s</xliff:g>: <xliff:g id="fhillteán">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Ag seiceáil ríomhphoist: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_send_ticker">Ríomhphost á sheoladh: <xliff:g id="account">%s</xliff:g></string>
     <string name="debug_enable_sensitive_logging_title">Faisnéis íogair a logáil</string>
     <string name="message_to_fmt">Chuig:<xliff:g id="counterParty">%s</xliff:g></string>
@@ -260,7 +260,7 @@
     <string name="remove_attachment_action">Bain iatán</string>
     <string name="message_to_label">Go dtí:</string>
     <string name="message_view_cc_label">Cc:</string>
-    <string name="message_view_bcc_label">Bcc:</string>
+    <string name="message_view_bcc_label">Cóip charbóin dall:</string>
     <string name="message_view_status_attachment_not_saved">Ní féidir iatán a shábháil.</string>
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="message_view_me_text">mise</string>
@@ -858,4 +858,17 @@
     <string name="swipe_action_change_swipe_gestures">Athraigh\nGothaí Svaidhpe</string>
     <string name="archiving_not_available_for_this_account">Níl cartlannú ar fáil don chuntas seo.</string>
     <string name="debug_open_secret_debug_screen">Oscail an scáileán dífhabhtaithe Rúnda</string>
+    <string name="debug_invalidate_access_token">Tástáil: Comhartha rochtana neamhbhailí</string>
+    <string name="debug_invalidate_access_token_done">Comhartha rochtana neamhbhailí. Athnuachanfar an chéad iarratas eile.</string>
+    <string name="debug_invalidate_access_token_local_done">Iarradh neamhbhailíochtú áitiúil. Gheobhaidh an chéad iarratas eile comhartha nua.</string>
+    <string name="debug_invalidate_access_token_server">Tástáil: Comhartha rochtana neamhbhailí (freastalaí)</string>
+    <string name="debug_invalidate_access_token_server_done">Tá an comhartha rochtana stóráilte truaillithe. Teipfidh ar an gcéad iarratas eile agus ansin athnuachan.</string>
+    <string name="debug_force_auth_failure">Tástáil: Teip údaraithe a fhorchur anois</string>
+    <string name="debug_force_auth_failure_done">Glanadh staid OAuth. Teipfidh ar an chéad iarratas eile.</string>
+    <string name="debug_force_auth_failure_unavailable">Níl aon chumraíocht OAuth ar fáil don chuntas seo.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Níorbh fhéidir an comhartha rochtana stóráilte a mhodhnú. Bain triail as neamhbhailíochtú áitiúil.</string>
+    <string name="debug_invalidate_access_token_already_modified">Tá an comhartha rochtana stóráilte modhnaithe cheana féin.</string>
+    <string name="debug_invalidate_access_token_unavailable">Níl aon chomhartha OAuth ar fáil don chuntas seo.</string>
+    <string name="debug_invalidate_access_token_local">Tástáil: Comhartha rochtana neamhbhailí (áitiúil)</string>
+    <string name="message_view_menu_action_export_eml">Easpórtáil mar EML</string>
 </resources>

@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_new_account_title">Ĉu nova uzanto de Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Aldoni retpoŝtan konton nun</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Ĉu vi jam uzas Thunderbird sur labortabla komputilo?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Facile enportu kontajn detalojn skanante QR-kodon.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">En la labortabla Thunderbird, iru al:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">«Agordoj» en la Spacoj-Ilobreto (malsupra maldekstro)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Elektu «Elporti al Poŝaparato»</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Enportado postulas la plej novan version de Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Lernu kiel ĝisdatigi Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Agordoj pri enportado</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Enporti viajn kontajn agordojn nun</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Neniu programo troviĝis por malfermi la hiperligon.</string>
+    <string name="onboarding_migration_thunderbird_import_title">Ĉu vi moviĝas de alia programo aŭ aparato?</string>
+</resources>

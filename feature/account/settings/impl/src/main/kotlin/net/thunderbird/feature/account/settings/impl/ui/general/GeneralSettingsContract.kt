@@ -2,10 +2,9 @@ package net.thunderbird.feature.account.settings.impl.ui.general
 
 import androidx.compose.runtime.Stable
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import net.thunderbird.core.ui.compose.preference.api.Preference
-import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
+import net.thunderbird.core.ui.setting.SettingValue
+import net.thunderbird.core.ui.setting.Settings
+import net.thunderbird.core.ui.setting.emptySettings
 
 internal interface GeneralSettingsContract {
 
@@ -14,12 +13,12 @@ internal interface GeneralSettingsContract {
     @Stable
     data class State(
         val subtitle: String? = null,
-        val preferences: ImmutableList<Preference> = persistentListOf<Preference>(),
+        val settings: Settings = emptySettings(),
     )
 
     sealed interface Event {
-        data class OnPreferenceSettingChange(
-            val preference: PreferenceSetting<*>,
+        data class OnSettingValueChange(
+            val setting: SettingValue<*>,
         ) : Event
 
         data object OnBackPressed : Event

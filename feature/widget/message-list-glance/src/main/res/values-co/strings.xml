@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message_list_glance_widget_label">Lista di i messaghji</string>
+    <string name="message_list_glance_widget_compose_action">Cumpone</string>
+    <string name="message_list_glance_widget_inbox_title">Ricezzione cuncolta</string>
+</resources>

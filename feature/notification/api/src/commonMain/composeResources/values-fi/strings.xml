@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Synkronoi (Push)</string>
+    <string name="notification_channel_push_description">Näytetään kun odotetaan uusia viestejä</string>
+    <string name="notification_channel_messages_title">Viestit</string>
+    <string name="notification_channel_messages_description">Viesteihin liittyvät ilmoitukset</string>
+    <string name="notification_channel_miscellaneous_title">Muut</string>
+    <string name="notification_channel_miscellaneous_description">Virheet ja muut sekalaiset ilmoitukset</string>
+    <string name="notification_notify_error_title">Ilmoitusvirhe</string>
+    <string name="notification_notify_error_text">Uuteen viestiin liittyvää järjestelmäilmoitusta luotaessa tapahtui virhe. Syy on mitä luultavimmin puuttuva ilmoitusääni.\n\nNapauta avataksesi ilmoitusasetukset.</string>
+    <string name="notification_authentication_error_title">Tunnistautuminen epäonnistui</string>
+    <string name="notification_certificate_error_public">Varmennevirhe</string>
+    <string name="notification_certificate_error_title">Varmennevirhe tilissä %1$s</string>
+    <string name="notification_certificate_error_text">Tarkista palvelinasetuksesi</string>
+    <string name="notification_bg_sync_ticker">Tarkistetaan viestejä: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Tarkistetaan viestejä</string>
+    <string name="notification_bg_send_ticker">Lähetetään viestejä: %1$s</string>
+    <string name="notification_bg_send_title">Lähetetään viestejä</string>
+    <string name="send_failure_subject">Joidenkin viestien lähettäminen epäonnistui</string>
+    <string name="notification_additional_messages">+ %1$d lisää tilillä %2$s</string>
+    <string name="push_notification_state_initializing">Alustetaan…</string>
+    <string name="push_notification_state_listening">Odotetaan uusia viestejä</string>
+    <string name="push_notification_state_wait_background_sync">Nukutaan kunnes taustasynkronointi on sallittu</string>
+    <string name="push_notification_state_wait_network">Nukutaan kunnes verkko on käytettävissä</string>
+    <string name="push_notification_state_alarm_permission_missing">Puuttuva lupa hälytysten ajoittamiseksi</string>
+    <string name="push_notification_info">Napauta saadaksesi lisätietoja.</string>
+    <string name="push_notification_grant_alarm_permission">Napauta myöntääksesi luvan.</string>
+    <string name="push_info_disable_push_action">Poista push käytöstä</string>
+    <string name="notification_action_reply">Vastaa</string>
+    <string name="notification_action_mark_as_read">Merkitse luetuksi</string>
+    <string name="notification_action_mark_all_as_read">Merkitse kaikki luetuiksi</string>
+    <string name="notification_action_delete">Poista</string>
+    <string name="notification_action_delete_all">Poista kaikki</string>
+    <string name="notification_action_archive">Arkistoi</string>
+    <string name="notification_action_archive_all">Arkistoi kaikki</string>
+    <string name="notification_action_spam">Roskaposti</string>
+</resources>

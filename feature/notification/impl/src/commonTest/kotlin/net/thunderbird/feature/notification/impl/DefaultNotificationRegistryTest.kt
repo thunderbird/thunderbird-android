@@ -1,5 +1,6 @@
 package net.thunderbird.feature.notification.impl
 
+import app.cash.turbine.test
 import assertk.assertThat
 import assertk.assertions.containsAtLeast
 import assertk.assertions.hasSize
@@ -9,19 +10,25 @@ import assertk.assertions.isNull
 import kotlin.concurrent.thread
 import kotlin.test.Test
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.testing.fake.FakeNotification
+import org.junit.Rule
 
 @Suppress("MaxLineLength")
 class DefaultNotificationRegistryTest {
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule(StandardTestDispatcher())
+
     @Test
     fun `register should return NotificationId given notification`() = runTest {
         // Arrange
         val notification = FakeNotification()
         val registry = DefaultNotificationRegistry()
 
-        // Act
+        // Ac
         val notificationId = registry.register(notification)
 
         // Assert
@@ -80,10 +87,14 @@ class DefaultNotificationRegistryTest {
         }
 
         // Assert
-        val registrar = registry.registrar
-        assertThat(registrar).hasSize(notificationSize)
-        assertThat(registrar)
-            .containsAtLeast(elements = expectedNotificationIds.zip(notifications).toTypedArray())
+        registry.registrar.test {
+            // skip initial value
+            skipItems(1)
+            val notificationIds = awaitItem()
+            assertThat(notificationIds).hasSize(notificationSize)
+            assertThat(notificationIds)
+                .containsAtLeast(elements = expectedNotificationIds.zip(notifications).toTypedArray())
+        }
     }
 
     @Test

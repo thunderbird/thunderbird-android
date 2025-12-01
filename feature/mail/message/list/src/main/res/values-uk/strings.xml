@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">Не показувати це повідомлення більше</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">Електронний лист не може бути архівований</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Налаштуйте папку архіву зараз</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Пропустити поки що</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Встановити папку архіву</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">Ой, щось пішло не так під час отримання папок облікового запису!</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Деталі помилки: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Створити нову папку</string>
+    <string name="setup_archive_folder_dialog_done">Готово</string>
+    <string name="setup_archive_folder_dialog_cancel">Скасувати</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Створити та налаштувати нову папку]]></string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">Не вдалося знайти обліковий запис, пов\'язаний з UUID \'%1$s\'</string>
+    <string name="setup_archive_folder_unhandled_error">Необроблена помилка: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Синхронізуємо…</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">Локальну папку створено. Розпочато синхронізацію…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Віддалену папку створено.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">Створення папки на сайті постачальника послуг електронної пошти…</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">Оновлення правил спеціальних папок…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">Обліковий запис (%1$s) не знайдено</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">Не вдалося створити локальну папку \'%1$s\'.</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Не вдалося синхронізувати папку «%1$s» з віддаленим комп’ютером. Повідомлення: %2$s</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Назва папки не може бути пустою</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Недійсна назва папки \'%1$s\'</string>
+</resources>

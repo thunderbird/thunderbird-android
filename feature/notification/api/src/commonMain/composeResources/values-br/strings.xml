@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Goubredañ (bountañ)</string>
+    <string name="notification_channel_push_description">Skrammet pa vez gortozet posteloù nevez</string>
+    <string name="notification_channel_messages_title">Kemennadennoù</string>
+    <string name="notification_channel_messages_description">Rebuzadurioù liammet da gemennadennoù</string>
+    <string name="notification_channel_miscellaneous_title">Liesseurt</string>
+    <string name="notification_channel_miscellaneous_description">Rebuzadurioù a-bep seurt evel fazioù hag all.</string>
+    <string name="notification_notify_error_title">Fazi rebuzadur</string>
+    <string name="notification_notify_error_text">Degouezhet ez eus bet ur fazi en ur glask krouiñ ur rebuzadur evit ur postel nevez. Moarvat e vank ur son evit ar rebuzadur.\n\nStokit da zigeriñ arventennoù ar rebuzadurioù.</string>
+    <string name="notification_authentication_error_title">C’hwiadenn war an dilesa</string>
+    <string name="notification_certificate_error_public">Fazi testeni</string>
+    <string name="notification_certificate_error_title">Fazi testeni evit %1$s</string>
+    <string name="notification_certificate_error_text">Gwiriit an arventennoù dafariad</string>
+    <string name="notification_bg_sync_ticker">O kerc’hat ar posteloù: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Kerc’hat ar posteloù</string>
+    <string name="notification_bg_send_ticker">O kas ar postel: %1$s</string>
+    <string name="notification_bg_send_title">O kas ar postel</string>
+    <string name="send_failure_subject">C’hwitadenn en ur gas kemennadennoù ’zo</string>
+    <string name="notification_additional_messages">+ %1$d ouzhpenn war %2$s</string>
+    <string name="push_notification_state_initializing">O teraouekaat…</string>
+    <string name="push_notification_state_listening">O c\'hortoz posteloù nevez</string>
+    <string name="push_notification_state_wait_background_sync">O kousket betek ma vefe gweredekaet ar goubredañ en-dro</string>
+    <string name="push_notification_state_wait_network">O kousket betek ma vefe kennasket ar rouedad</string>
+    <string name="push_notification_state_alarm_permission_missing">Mankout a ra un aotren evit programmiñ galvoù-diwall</string>
+    <string name="push_notification_info">Stokit da zeskiñ muioc\'h.</string>
+    <string name="push_notification_grant_alarm_permission">Stokit da reiñ an aotre.</string>
+    <string name="push_info_disable_push_action">Diweredekaat ar bountañ</string>
+    <string name="notification_action_reply">Respont</string>
+    <string name="notification_action_mark_as_read">Merkañ evel lennet</string>
+    <string name="notification_action_mark_all_as_read">Merkañ an holl evel lennet</string>
+    <string name="notification_action_delete">Dilemel</string>
+    <string name="notification_action_delete_all">Dilemel an holl</string>
+    <string name="notification_action_archive">Diellaouiñ</string>
+    <string name="notification_action_archive_all">Diellaouiñ an holl</string>
+    <string name="notification_action_spam">Lastez</string>
+</resources>

@@ -46,7 +46,7 @@
     <string name="funding_googleplay_contribution_tfa_recurring_l_description">您是我们能够做到这些的重要原因！您的慷慨解囊帮助我们迈向了新的里程碑。</string>
     <string name="funding_googleplay_contribution_reminder_title">支持 Thunderbird</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">是</string>
-    <string name="funding_googleplay_contribution_reminder_negative_button">现在不</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">以后再说</string>
     <string name="funding_googleplay_contribution_reminder_message">加入我们的使命，共同创造尊重隐私、可定制的最佳电子邮件体验。</string>
     <string name="funding_googleplay_contribution_header_thank_you_message">您的支持促进了 Thunderbird 的发展，我们衷心感谢您的支持。</string>
     <string name="funding_googleplay_contribution_header_thank_you">我们向您表示衷心的感谢！</string>

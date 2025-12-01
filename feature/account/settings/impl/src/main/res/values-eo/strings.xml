@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_settings_general_title">Ĝeneralaj agordoj</string>
+    <string name="account_settings_general_profile_indicator_image">Bildo</string>
+    <string name="account_settings_general_profile_indicator_icon">Piktogramo</string>
+    <string name="account_settings_general_name_title">Nomo de konto</string>
+    <string name="account_settings_general_name_description">La nomo asociita al via konto.</string>
+    <string name="account_settings_general_color_title">Koloro de konto</string>
+</resources>

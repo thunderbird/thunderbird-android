@@ -144,9 +144,6 @@ object K9 : KoinComponent {
     var messageListDensity: UiDensity = UiDensity.Default
 
     @JvmStatic
-    var messageListPreviewLines = 2
-
-    @JvmStatic
     var contactNameColor = 0xFF1093F5.toInt()
 
     var messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
@@ -154,8 +151,6 @@ object K9 : KoinComponent {
 
     @JvmStatic
     var isShowAccountSelector = true
-
-    var isNotificationDuringQuietTimeEnabled = true
 
     @get:Synchronized
     @set:Synchronized
@@ -235,9 +230,6 @@ object K9 : KoinComponent {
     @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
-        messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
-
-        isNotificationDuringQuietTimeEnabled = storage.getBoolean("notificationDuringQuietTimeEnabled", true)
 
         messageListDensity = storage.getEnum("messageListDensity", UiDensity.Default)
         contactNameColor = storage.getInt("registeredNameColor", 0xFF1093F5.toInt())
@@ -296,10 +288,8 @@ object K9 : KoinComponent {
 
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
-        editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
         editor.putEnum("messageListDensity", messageListDensity)
         editor.putBoolean("showAccountSelector", isShowAccountSelector)
-        editor.putInt("messageListPreviewLines", messageListPreviewLines)
         editor.putInt("registeredNameColor", contactNameColor)
         editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
 

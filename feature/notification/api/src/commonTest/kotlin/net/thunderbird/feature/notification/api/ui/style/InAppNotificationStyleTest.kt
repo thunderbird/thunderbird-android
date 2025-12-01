@@ -24,10 +24,11 @@ class InAppNotificationStyleTest {
     @Test
     fun `inAppNotificationStyle dsl should create a banner global in-app notification style`() {
         // Arrange
-        val expectedStyle = InAppNotificationStyle.BannerGlobalNotification(priority = 0)
+        val priority = NotificationPriority(1u)
+        val expectedStyle = InAppNotificationStyle.BannerGlobalNotification(priority = priority)
 
         // Act
-        val inAppStyle = inAppNotificationStyle { bannerGlobal() }
+        val inAppStyle = inAppNotificationStyle { bannerGlobal(priority = priority) }
 
         // Assert
         assertThat(inAppStyle).isEqualTo(expectedStyle)

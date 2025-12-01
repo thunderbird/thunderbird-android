@@ -4,7 +4,6 @@ import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.command.NotificationCommand
 import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed
 import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
@@ -26,7 +25,6 @@ private const val TAG = "DisplayInAppNotificationCommand"
 internal class DisplayInAppNotificationCommand(
     private val logger: Logger,
     private val featureFlagProvider: FeatureFlagProvider,
-    private val notificationRegistry: NotificationRegistry,
     notification: InAppNotification,
     notifier: NotificationNotifier<InAppNotification>,
 ) : NotificationCommand<InAppNotification>(notification, notifier) {
@@ -44,8 +42,7 @@ internal class DisplayInAppNotificationCommand(
                 )
 
             canExecuteCommand() -> {
-                val id = notificationRegistry.register(notification)
-                notifier.show(id = id, notification = notification)
+                val id = notifier.show(notification = notification)
                 Outcome.success(Success(notificationId = id, command = this))
             }
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_messages_title">Iznan</string>
+    <string name="notification_channel_miscellaneous_title">Ayen nniḍen</string>
+    <string name="notification_action_reply">Tiririt</string>
+    <string name="notification_action_delete">Kkes</string>
+    <string name="notification_action_archive">Seɣber</string>
+    <string name="notification_action_spam">Aspam</string>
+</resources>

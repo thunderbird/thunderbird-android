@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Sincronitza-ho (Empeny)</string>
+    <string name="notification_channel_push_description">Mostrat mentre s\'esperen missatges nous</string>
+    <string name="notification_channel_messages_title">Missatges</string>
+    <string name="notification_channel_messages_description">Notificacions relacionades amb missatges</string>
+    <string name="notification_channel_miscellaneous_title">Miscel·lània</string>
+    <string name="notification_channel_miscellaneous_description">Notificacions diverses, com ara errors, etc.</string>
+    <string name="notification_notify_error_title">Error de notificació</string>
+    <string name="notification_notify_error_text">S\'ha produït un error en intentar crear una notificació del sistema per a un missatge nou. El motiu més probable és que falti un so de notificació.
+\n
+\nToqueu per obrir la configuració de notificació.</string>
+    <string name="notification_authentication_error_title">Ha fallat l\'autenticació</string>
+    <string name="notification_certificate_error_public">Error de certificat</string>
+    <string name="notification_certificate_error_title">Error al certificat de %1$s</string>
+    <string name="notification_certificate_error_text">Comproveu la configuració del servidor</string>
+    <string name="notification_bg_sync_ticker">S\'està comprovant el correu: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">S\'està comprovant el correu</string>
+    <string name="notification_bg_send_ticker">S\'està enviant correu: %1$s</string>
+    <string name="notification_bg_send_title">S\'està enviant correu</string>
+    <string name="send_failure_subject">La tramesa d\'alguns missatges ha fallat</string>
+    <string name="notification_additional_messages">+ %1$d més sobre %2$s</string>
+    <string name="push_notification_state_initializing">S\'està iniciant…</string>
+    <string name="push_notification_state_listening">S\'està esperant nous correus electrònics</string>
+    <string name="push_notification_state_wait_background_sync">Inactiu fins que es permeti la sincronització</string>
+    <string name="push_notification_state_wait_network">Inactiu fins que la xarxa estigui disponible</string>
+    <string name="push_notification_state_alarm_permission_missing">Falta permís per a programar alarmes</string>
+    <string name="push_notification_info">Toca per obtenir més informació.</string>
+    <string name="push_notification_grant_alarm_permission">Toca per a concedir permís.</string>
+    <string name="push_info_disable_push_action">Desactiva la Tramesa</string>
+    <string name="notification_action_reply">Respon</string>
+    <string name="notification_action_mark_as_read">Marca com a llegit</string>
+    <string name="notification_action_mark_all_as_read">Marca\'ls tots com a llegits</string>
+    <string name="notification_action_delete">Suprimeix</string>
+    <string name="notification_action_delete_all">Elimina-ho tot</string>
+    <string name="notification_action_archive">Arxiva</string>
+    <string name="notification_action_archive_all">Arxiva-ho tot</string>
+    <string name="notification_action_spam">Correu brossa</string>
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_messages_title">მესიჯები</string>
+    <string name="notification_authentication_error_title">აუთენტიკაცია ჩავარდა</string>
+    <string name="notification_certificate_error_title">სერტიფიკატის შეცდომა: %1$s</string>
+    <string name="notification_certificate_error_text">შეამოწმეთ თქვენი სერვერის პარამეტრები</string>
+    <string name="notification_bg_sync_ticker">წერილის ძებნა: %1$s:%2$s</string>
+    <string name="notification_bg_send_ticker">წერილის გაგზავნა: %1$s</string>
+    <string name="notification_bg_send_title">წერილის გაგზავნა</string>
+    <string name="notification_action_reply">პასუხი</string>
+    <string name="notification_action_mark_as_read">მონიშვნა წაკითხულად</string>
+    <string name="notification_action_mark_all_as_read">ყველას მონიშვნა წაკითხულად</string>
+    <string name="notification_action_delete">წაშლა</string>
+    <string name="notification_action_delete_all">ყველას წაშლა</string>
+    <string name="notification_action_archive">არქივაცია</string>
+    <string name="notification_action_archive_all">ყველას დაარქივება</string>
+    <string name="notification_action_spam">სპამი</string>
+</resources>

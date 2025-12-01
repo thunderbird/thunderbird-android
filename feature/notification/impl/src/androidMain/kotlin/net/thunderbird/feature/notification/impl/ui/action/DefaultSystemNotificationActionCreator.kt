@@ -16,7 +16,6 @@ internal class DefaultSystemNotificationActionCreator(
         notification: SystemNotification,
         action: NotificationAction,
     ): AndroidNotificationAction {
-        logger.debug(TAG) { "create() called with: notification = $notification, action = $action" }
         val intent = actionIntentCreators
             .first { it.accept(notification, action) }
             .create(notification, action)

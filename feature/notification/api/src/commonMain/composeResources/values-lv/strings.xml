@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Sinhronizē grūdeni/stūmekli (push)</string>
+    <string name="notification_channel_push_description">Tiek rādīts, kamēr gaida jaunas ziņas</string>
+    <string name="notification_channel_messages_title">Ziņas</string>
+    <string name="notification_channel_messages_description">Paziņojumi par ziņām</string>
+    <string name="notification_channel_miscellaneous_title">Dažādi</string>
+    <string name="notification_channel_miscellaneous_description">Dažādi paziņojumi, piemēram, par kļūdām u.tml.</string>
+    <string name="notification_notify_error_title">Paziņojuma kļūda</string>
+    <string name="notification_notify_error_text">Neizdevās izveidot sistēmas paziņojumu par jaunu ziņu. Visdrīzākais, ka trūkst paziņojuma skaņas.
+\n
+\nPieskarieties, lai atvērtu paziņojumu iestatījumus.</string>
+    <string name="notification_authentication_error_title">Autentifikācija neizdevās</string>
+    <string name="notification_certificate_error_public">Sertifikāta kļūda</string>
+    <string name="notification_certificate_error_title">Sertifikāta kļūda kontam %1$s</string>
+    <string name="notification_certificate_error_text">Pārbaudiet sava servera iestatījumus</string>
+    <string name="notification_bg_sync_ticker">Pārbauda pastu: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Pārbauda pastu</string>
+    <string name="notification_bg_send_ticker">Sūta pastu: %1$s</string>
+    <string name="notification_bg_send_title">Sūta pastu</string>
+    <string name="send_failure_subject">Neizdevās nosūtīt dažas ziņas</string>
+    <string name="notification_additional_messages">+ %1$d vairāk %2$s</string>
+    <string name="push_notification_state_initializing">Inicializē…</string>
+    <string name="push_notification_state_listening">Tiek gaidītas jaunas ziņas</string>
+    <string name="push_notification_state_wait_background_sync">Snauduļot, kamēr fona sinhronizēšana atļauta</string>
+    <string name="push_notification_state_wait_network">Snaust, kamēr pieejams tīkls</string>
+    <string name="push_notification_state_alarm_permission_missing">Trūkst atļaujas ieplānot trauksmes signālus</string>
+    <string name="push_notification_info">Pieskarieties, lai uzzinātu vairāk.</string>
+    <string name="push_notification_grant_alarm_permission">Pieskarieties, lai piešķirtu atļauju.</string>
+    <string name="push_info_disable_push_action">Atspējot grūdeni/stūmekli (push)</string>
+    <string name="notification_action_reply">Atbildēt</string>
+    <string name="notification_action_mark_as_read">Atzīmēt kā lasītu</string>
+    <string name="notification_action_mark_all_as_read">Atzīmēt visas kā lasītas</string>
+    <string name="notification_action_delete">Dzēst</string>
+    <string name="notification_action_delete_all">Dzēst visu</string>
+    <string name="notification_action_archive">Arhivēt</string>
+    <string name="notification_action_archive_all">Arhivēt visu</string>
+    <string name="notification_action_spam">Surogātpasts</string>
+</resources>

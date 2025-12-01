@@ -1,1 +1,1 @@
-Thunderbird é um aplicativo de email, totalmente de código aberto e com foco na privacidade.
+Thunderbird é um app de e-mail 100% open source e focado em privacidade.

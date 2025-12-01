@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_k9">K-9 遛狗人</string>
     <string name="source_code">源代码</string>
     <string name="app_license">Apache License, Version 2.0</string>
     <string name="about_project_title">开源项目</string>
@@ -121,7 +121,7 @@
     <string name="notification_notify_error_title">通知错误</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_text">尝试为新邮件创建系统通知时出错。原因很可能是缺少通知提示音。\n\n请点按以打开通知设置。</string>
-    <string name="notification_bg_sync_ticker">正在检查邮件：<xliff:g id="account">%1$s</xliff:g>：<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">正在检查邮件：<xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">正在检查邮件</string>
     <string name="notification_bg_send_ticker">正在发送邮件：<xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">正在发送邮件</string>
@@ -132,7 +132,7 @@
     <string name="notification_channel_messages_description">与邮件相关的通知</string>
     <string name="notification_channel_miscellaneous_title">杂项</string>
     <string name="notification_channel_miscellaneous_description">错误等杂项通知。</string>
-    <string name="send_failure_subject">无法发送某些邮件</string>
+    <string name="send_failure_subject">无法发送部分邮件</string>
     <string name="version">版本</string>
     <string name="debug_enable_debug_logging_title">启用调试日志记录</string>
     <string name="debug_enable_debug_logging_summary">记录额外的诊断信息</string>
@@ -157,8 +157,8 @@
     <string name="message_compose_error_no_recipients">您必须至少添加一位收件人。</string>
     <string name="compose_error_incomplete_recipient">收件人字段输入不完整！</string>
     <string name="error_contact_address_not_found">找不到此联系人的电子邮件地址。</string>
-    <string name="message_compose_attachments_skipped_toast">某些附件因尚未下载而无法转发。</string>
-    <string name="message_compose_attachments_forward_toast">此邮件因某些附件尚未下载而无法转发。</string>
+    <string name="message_compose_attachments_skipped_toast">部分附件尚未下载，无法转发。</string>
+    <string name="message_compose_attachments_forward_toast">由于部分附件尚未下载，邮件无法转发。</string>
     <string name="message_compose_show_quoted_text_action">包含引用邮件</string>
     <string name="message_compose_description_delete_quoted_text">移除引用文本</string>
     <string name="message_compose_description_edit_quoted_text">编辑引用文本</string>
@@ -611,7 +611,7 @@
     <string name="webview_contextmenu_email_send_action">发送邮件</string>
     <string name="webview_contextmenu_email_save_action">保存到联系人</string>
     <string name="webview_contextmenu_email_copy_action">复制地址到剪贴板</string>
-    <string name="webview_contextmenu_email_clipboard_label">邮件地址</string>
+    <string name="webview_contextmenu_email_clipboard_label">电子邮件地址</string>
     <string name="account_settings_remote_search_num_results_entries_all">全部</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
@@ -673,7 +673,7 @@
     <string name="compose_error_no_key_configured">此账号未配置密钥！请检查您的设置。</string>
     <string name="error_crypto_provider_incompatible">加密提供程序使用不兼容的版本。请检查您的设置！</string>
     <string name="error_crypto_provider_connect">无法连接到加密提供程序，请检查您的设置或点击加密图标重试！</string>
-    <string name="error_crypto_provider_ui_required">端到端加密初始化失败，请检查您的设置</string>
+    <string name="error_crypto_provider_ui_required">无法初始化端到端加密，请检查您的设置‌</string>
     <string name="error_crypto_inline_attach">PGP/INLINE 模式不支持附件！</string>
     <string name="enable_inline_pgp">启用 PGP/INLINE</string>
     <string name="disable_inline_pgp">禁用 PGP/INLINE</string>
@@ -694,7 +694,7 @@
     <string name="openpgp_dialog_sign_only_text">在此模式下，您的 PGP 密钥将用于为未加密的电子邮件创建加密签名。</string>
     <string name="openpgp_dialog_sign_only_plus_verified">这不会对电子邮件进行加密，但会验证电子邮件是从您的密钥发送的。</string>
     <string name="openpgp_dialog_sign_only_minus_break">发送到邮件列表时，签名可能会损坏。</string>
-    <string name="openpgp_dialog_sign_only_minus_attach">在某些客户端中，签名可能显示为“signature.asc”附件。</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">签名可能在部分客户端中显示为“signature.asc”附件。</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">加密邮件始终包含签名。</string>
     <string name="crypto_msg_title_plaintext">纯文本</string>
     <string name="crypto_msg_unencrypted_sign_error">端到端签名包含错误</string>
@@ -747,11 +747,11 @@
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">无法加密</string>
-    <string name="openpgp_enabled_error_msg">某些选定的收件人不支持此功能！</string>
+    <string name="openpgp_enabled_error_msg">部分所选收件人不支持此功能！</string>
     <string name="enable_encryption">启用加密</string>
     <string name="disable_encryption">禁用加密</string>
     <string name="openpgp_description_text1">对邮件进行加密可确保只有收件人才能阅读，其他人无法阅读。</string>
-    <string name="openpgp_description_text3">加密功能只有在所有收件人都支持的情况下才会显示，而且收件人必须曾经给您发送过电子邮件。</string>
+    <string name="openpgp_description_text3">加密功能只有在所有收件人都支持的情况下才会显示，并且他们必须之前给您发送过邮件。</string>
     <string name="openpgp_description_text2">点击此图标切换加密。</string>
     <string name="openpgp_enabled_error_gotit">知道了</string>
     <string name="openpgp_enabled_error_back">返回</string>
@@ -766,8 +766,8 @@
     <string name="dialog_openkeychain_info_title">未安装 OpenPGP 应用</string>
     <string name="dialog_openkeychain_info_install">安装</string>
     <string name="account_settings_crypto_encrypt_subject">加密邮件主题</string>
-    <string name="account_settings_crypto_encrypt_subject_subtitle">某些收件人可能不支持</string>
-    <string name="toast_account_not_found">内部错误：无效账号！</string>
+    <string name="account_settings_crypto_encrypt_subject_subtitle">部分收件人可能不支持</string>
+    <string name="toast_account_not_found">内部错误：账号无效！</string>
     <string name="toast_openpgp_provider_error">连接到 %s 时出错！</string>
     <string name="ac_transfer_setting_title">发送 Autocrypt 设置邮件</string>
     <string name="ac_transfer_setting_summary">与其他设备安全地共享端到端设置</string>
@@ -869,7 +869,7 @@
     <string name="about_title">关于 <xliff:g id="app_name">%s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">启用对端到端加密的支持需要使用 OpenKeychain。</string>
     <string name="push_info_notification_explanation_text">使用推送功能时，<xliff:g id="app_name">%1$s</xliff:g> 会保持与邮件服务器的连接。Android 要求在应用处于后台活动状态时显示持续通知。<xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
+    <string name="about_app_authors_thunderbird">Thunderbird 移动版团队</string>
     <string name="folder_settings_notifications_label">通知</string>
     <string name="settings_ui_data_collection">数据收集</string>
     <string name="settings_ui_telemetry_title">使用情况和技术数据</string>
@@ -896,4 +896,17 @@
     <string name="archiving_not_available_for_this_account">此账号无法使用归档功能。</string>
     <string name="swipe_action_archive_folder_not_set">设置归档文件夹</string>
     <string name="debug_open_secret_debug_screen">打开秘密调试屏幕</string>
+    <string name="debug_invalidate_access_token">测试：使访问令牌失效</string>
+    <string name="debug_invalidate_access_token_done">访问令牌已失效。下次请求将刷新。</string>
+    <string name="debug_invalidate_access_token_unavailable">此账号没有可用的 OAuth 令牌。</string>
+    <string name="debug_invalidate_access_token_local">测试：使访问令牌失效（本地）</string>
+    <string name="debug_invalidate_access_token_local_done">本地失效已请求。下次请求将获取新令牌。</string>
+    <string name="debug_invalidate_access_token_server">测试：使访问令牌失效（服务器）</string>
+    <string name="debug_invalidate_access_token_server_done">存储的访问令牌已损坏。下次请求将失败，然后刷新。</string>
+    <string name="debug_force_auth_failure">测试：现在强制身份验证失败</string>
+    <string name="debug_force_auth_failure_done">OAuth 状态已清除。下次请求将失败。</string>
+    <string name="debug_force_auth_failure_unavailable">此账号没有可用的 OAuth 配置。</string>
+    <string name="debug_invalidate_access_token_cannot_modify">无法修改存储的访问令牌。请尝试本地失效。</string>
+    <string name="debug_invalidate_access_token_already_modified">存储的访问令牌已修改。</string>
+    <string name="message_view_menu_action_export_eml">导出为 EML</string>
 </resources>

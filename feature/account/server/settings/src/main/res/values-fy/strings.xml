@@ -32,4 +32,6 @@
     <string name="account_server_settings_security_label">Befeiliging</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Ferkeard IP-adres of hostnamme</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Clientynformaasje ferstjoere</string>
+    <string name="account_server_settings_password_authentication_failed">Autentikaasje mislearre!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Kin biometryske prompt net starte.</string>
 </resources>

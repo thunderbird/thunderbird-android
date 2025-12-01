@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_oauth_sign_in_description">Vi kopplar vidare till din e-postoperatör för inloggning. Du behöver godkänna appåtkomst till ditt e-postkonto.</string>
+    <string name="account_oauth_sign_in_description">Vi omdirigerar dig till din e-postleverantör för att logga in. Du måste ge appen åtkomst till ditt e-postkonto.</string>
     <string name="account_oauth_sign_in_with_google_button">Logga in med Google</string>
     <string name="account_oauth_error_browser_not_available">Appen kunde inte hitta en webbläsare att använda för att ge åtkomst till ditt konto.</string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 stöds för närvarande inte av denna leverantör.</string>
@@ -8,7 +8,7 @@
     <string name="account_oauth_loading_error">OAuth-inloggning misslyckades</string>
     <string name="account_oauth_error_failed">Auktoriseringen misslyckades med följande fel: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_canceled">Auktoriseringen avbröts</string>
-    <string name="account_oauth_loading_message">Logga in med OAuth</string>
+    <string name="account_oauth_loading_message">Inloggning med OAuth</string>
     <string name="account_oauth_google_sign_in_support_text">Om du upplever problem när du loggar in med Google, vänligen uppsök vår {placeHolder}.</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">support artikel</string>
 </resources>

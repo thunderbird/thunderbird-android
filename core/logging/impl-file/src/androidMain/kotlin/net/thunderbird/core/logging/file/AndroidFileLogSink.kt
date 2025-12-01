@@ -1,7 +1,9 @@
 package net.thunderbird.core.logging.file
 
+import androidx.core.net.toUri
+import com.eygraber.uri.Uri
+import com.eygraber.uri.toKmpUri
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.ExperimentalTime
@@ -16,19 +18,19 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.io.Buffer
-import kotlinx.io.RawSink
 import kotlinx.io.asSink
+import net.thunderbird.core.file.FileManager
 import net.thunderbird.core.logging.LogEvent
 import net.thunderbird.core.logging.LogLevel
+import net.thunderbird.core.outcome.Outcome
 
-private const val BUFFER_SIZE = 8192 // 8KB buffer size
 private const val LOG_BUFFER_COUNT = 4
 
 open class AndroidFileLogSink(
     override val level: LogLevel,
     fileName: String,
     fileLocation: String,
-    private val fileSystemManager: FileSystemManager,
+    private val fileManager: FileManager,
     coroutineContext: CoroutineContext = Dispatchers.IO,
 ) : FileLogSink {
 
@@ -93,14 +95,18 @@ open class AndroidFileLogSink(
         }
     }
 
-    override suspend fun export(uriString: String) {
+    override suspend fun export(uri: Uri) {
         if (accumulatedLogs.isNotEmpty()) {
             writeToLogFile()
         }
-        val sink = fileSystemManager.openSink(uriString, "wt")
-            ?: error("Error opening contentUri for writing")
 
-        copyInternalFileToExternal(sink)
+        val sourceUri = logFile.toUri().toKmpUri()
+        val result = fileManager.copy(sourceUri = sourceUri, destinationUri = uri)
+        if (result is Outcome.Failure) {
+            error(
+                "Error copying log to destination: ${result.error}",
+            )
+        }
 
         // Clear the log file after export
         val outputStream = FileOutputStream(logFile)
@@ -114,27 +120,6 @@ open class AndroidFileLogSink(
         } finally {
             clearSink.close()
             outputStream.close()
-        }
-    }
-
-    private fun copyInternalFileToExternal(sink: RawSink) {
-        val inputStream = FileInputStream(logFile)
-
-        try {
-            val buffer = Buffer()
-            val byteArray = ByteArray(BUFFER_SIZE)
-            var bytesRead: Int
-
-            while (inputStream.read(byteArray).also { bytesRead = it } != -1) {
-                buffer.write(byteArray, 0, bytesRead)
-                sink.write(buffer, buffer.size)
-                buffer.clear()
-            }
-
-            sink.flush()
-        } finally {
-            inputStream.close()
-            sink.close()
         }
     }
 }

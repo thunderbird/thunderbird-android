@@ -74,7 +74,7 @@ native-code: 'arm64-v8a' 'armeabi-v7a' 'x86' 'x86_64'
 other-activities
 other-receivers
 other-services
-package: name='com.fsck.k9' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+package: name='com.fsck.k9' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'
 property: name='android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE' value='This service is used to maintain a continuous connection to an IMAP server to be able to provide instant notifications to the user when a new email arrives. Firebase Cloud Messaging is not suitable for this task, neither are mechanisms like AndroidX WorkManager. Other foreground service types aren't a good fit for this use case.' 
 provides-component:'app-widget'
 supports-any-density: 'true'

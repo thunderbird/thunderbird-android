@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Синхронизирай (Push)</string>
+    <string name="notification_channel_push_description">Да се показва докато чака за нови съобщения</string>
+    <string name="notification_channel_messages_title">Съобщения</string>
+    <string name="notification_channel_messages_description">Известия свързани със съобщения</string>
+    <string name="notification_channel_miscellaneous_title">Разни</string>
+    <string name="notification_channel_miscellaneous_description">Разни известия като грешки и т.н.</string>
+    <string name="notification_notify_error_title">Грешка при известие</string>
+    <string name="notification_notify_error_text">Възникна грешка при създаването на известие за ново съобщение. Причината най-вероятно е липсващ звук за известия.
+\n
+\nДокоснете тук, за да отворите настройките на известията.</string>
+    <string name="notification_authentication_error_title">Неуспешна идентификация</string>
+    <string name="notification_certificate_error_public">Грешка в сертификата</string>
+    <string name="notification_certificate_error_title">Грешка в сертификата на %1$s</string>
+    <string name="notification_certificate_error_text">Проверете настройките на сървара</string>
+    <string name="notification_bg_sync_ticker">Проверка на поща: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Проверка на поща</string>
+    <string name="notification_bg_send_ticker">Изпраща писмо: %1$s</string>
+    <string name="notification_bg_send_title">Изпраща писмо</string>
+    <string name="send_failure_subject">Грешка при изпращане на някой съобщения</string>
+    <string name="notification_additional_messages">+ %1$d в %2$s</string>
+    <string name="push_notification_state_initializing">Инициализира…</string>
+    <string name="push_notification_state_listening">Изчаква за нови съобщения</string>
+    <string name="push_notification_state_wait_background_sync">Заспива докато синхронизирането на заден фон е разрешено</string>
+    <string name="push_notification_state_wait_network">Спи докато чака за мрежа</string>
+    <string name="push_notification_state_alarm_permission_missing">Липсва разрешение за настройка на будилник</string>
+    <string name="push_notification_info">Натиснете за да научите повече.</string>
+    <string name="push_notification_grant_alarm_permission">Докоснете, за да дадете разрешение.</string>
+    <string name="push_info_disable_push_action">Изключи Push</string>
+    <string name="notification_action_reply">Отговори</string>
+    <string name="notification_action_mark_as_read">Маркирай като прочетено</string>
+    <string name="notification_action_mark_all_as_read">Маркирате всички като прочетени</string>
+    <string name="notification_action_delete">Изтриване</string>
+    <string name="notification_action_delete_all">Изтрите всички</string>
+    <string name="notification_action_archive">Архивиране</string>
+    <string name="notification_action_archive_all">Архивиране на всички</string>
+    <string name="notification_action_spam">Спам</string>
+</resources>

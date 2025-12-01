@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">סנכרן (דחיפה)</string>
+    <string name="notification_channel_push_description">מוצג בעת המתנה להודעות חדשות</string>
+    <string name="notification_channel_messages_title">הודעות</string>
+    <string name="notification_channel_messages_description">התראות הקשורות להודעות</string>
+    <string name="notification_channel_miscellaneous_title">שונות</string>
+    <string name="notification_channel_miscellaneous_description">התראות שונות כגון שגיאות וכו\'.</string>
+    <string name="notification_notify_error_title">שגיאת התראה</string>
+    <string name="notification_notify_error_text">אירעה שגיאה בעת נסיון יצירת התראת מערכת עבור הודעה חדשה. הסיבה ככל הנראה היא צליל התראה חסר.
+\n
+\nלחץ כדי לפתוח הגדרות התראה.</string>
+    <string name="notification_authentication_error_title">נכשל באימות</string>
+    <string name="notification_certificate_error_public">שגיאה בתעודה</string>
+    <string name="notification_certificate_error_title">בעיה בתעודה עבור %1$s</string>
+    <string name="notification_certificate_error_text">בדוק את הגדרות השרת</string>
+    <string name="notification_bg_sync_ticker">בודק דואל: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">בודק דוא\"ל</string>
+    <string name="notification_bg_send_ticker">שולח דוא"ל: %1$s</string>
+    <string name="notification_bg_send_title">שולח דוא\"ל</string>
+    <string name="send_failure_subject">נכשל בשליחת חלק מההודעות</string>
+    <string name="notification_additional_messages">+ %1$d עוד עלינו%2$s</string>
+    <string name="push_notification_state_initializing">מאתחל…</string>
+    <string name="push_notification_state_listening">ממתין לדוא\"ל חדש</string>
+    <string name="push_notification_state_wait_background_sync">במצב שינה עד שיאופשר סנכרון ברקע</string>
+    <string name="push_notification_state_wait_network">במצב שינה עד שתהיה רשת זמינה</string>
+    <string name="push_notification_state_alarm_permission_missing">חסרות הרשאות לתזמון התרעות</string>
+    <string name="push_notification_info">לחץ כדי ללמוד עוד.</string>
+    <string name="push_notification_grant_alarm_permission">לחצו למתן הרשאות.</string>
+    <string name="push_info_disable_push_action">כבה דחיפה (Push)</string>
+    <string name="notification_action_reply">השב</string>
+    <string name="notification_action_mark_as_read">סמן כנקרא</string>
+    <string name="notification_action_mark_all_as_read">סמן הכל כנקרא</string>
+    <string name="notification_action_delete">מחק</string>
+    <string name="notification_action_delete_all">מחק הכל</string>
+    <string name="notification_action_archive">העבר לארכיון</string>
+    <string name="notification_action_archive_all">העבר הכל לארכיון</string>
+    <string name="notification_action_spam">דואר זבל</string>
+</resources>

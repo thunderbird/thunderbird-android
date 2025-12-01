@@ -57,4 +57,6 @@
     <string name="account_setup_special_folders_trash_folder_label">Папка \"Кошче\"</string>
     <string name="account_setup_special_folders_folder_none">Никаква</string>
     <string name="account_setup_special_folders_folder_automatic">Автоматично (%s)</string>
+    <string name="account_setup_options_your_name_label">Име</string>
+    <string name="account_setup_options_your_name_error_required">Име е задължително.</string>
 </resources>

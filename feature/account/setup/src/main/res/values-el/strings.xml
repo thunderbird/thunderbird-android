@@ -57,4 +57,6 @@
         <item quantity="one">Κάθε λεπτό</item>
         <item quantity="other">Κάθε %d λεπτά</item>
     </plurals>
+    <string name="account_setup_options_your_name_error_required">Το όνομά σας είναι υποχρεωτικό.</string>
+    <string name="account_setup_options_your_name_label">Όνομα</string>
 </resources>

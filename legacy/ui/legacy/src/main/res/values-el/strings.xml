@@ -899,4 +899,8 @@
     <string name="debug_enable_sync_debug_logging_summary">Καταγραφή διαγνωστικών πληροφοριών συγχρονισμού για 24 ώρες</string>
     <string name="debug_enable_sync_debug_logging_title">Ενεργοποίηση καταγραφής εντοπισμού σφαλμάτων συγχρονισμού</string>
     <string name="debug_sync_export_logs_title">Εξαγωγή αρχείων καταγραφής συγχρονισμού</string>
+    <string name="swipe_action_archive_folder_not_set">Ρυθμίστε το φάκελο αρχειοθέτησης</string>
+    <string name="message_view_menu_action_export_eml">Εξαγωγή ως EML</string>
+    <string name="debug_open_secret_debug_screen">Άνοιγμα οθόνης αποσφαλμάτωσης</string>
+    <string name="archiving_not_available_for_this_account">Η αρχειοθέτηση δεν είναι δυνατή για αυτόν τον λογαριασμό.</string>
 </resources>

@@ -304,7 +304,7 @@
     <string name="account_settings_title_fmt">Nastavitve računa</string>
     <string name="account_settings_notify_label">Obvestila za prejem nove pošte</string>
     <string name="account_settings_notify_sync_label">Obvestila usklajevanja</string>
-    <string name="account_settings_email_label">Elektronski naslov</string>
+    <string name="account_settings_email_label">Vaš e-poštni naslov</string>
     <string name="account_settings_notify_summary">Pokaže obvestilo v vrstici stanja ob prihodu novega sporočila</string>
     <string name="account_settings_notify_sync_summary">Pokaži obvestilo med pregledom za novo pošto</string>
     <string name="account_settings_notify_self_label">Obveščaj ob pošiljanju sporočil</string>
@@ -447,7 +447,7 @@
     <string name="edit_identity_description_hint">(izbirno)</string>
     <string name="edit_identity_name_label">Ime</string>
     <string name="edit_identity_name_hint">(izbirno)</string>
-    <string name="edit_identity_email_label">Elektronski naslov</string>
+    <string name="edit_identity_email_label">E-poštni naslov</string>
     <string name="edit_identity_email_hint">(zahtevano)</string>
     <string name="edit_identity_reply_to_label">Naslov za odgovor</string>
     <string name="edit_identity_reply_to_hint">(izbirno)</string>
@@ -583,10 +583,10 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Ne</string>
     <string name="dialog_confirm_spam_title">Potrditev premikanja v mapo neželene pošte</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Ali zares želiš premakniti to sporočilo v mapo neželene pošte\?</item>
-        <item quantity="two">Ali zares želiš premakniti <xliff:g id="message_count">%1$d</xliff:g> sporočili v mapo neželene pošte\?</item>
-        <item quantity="few">Ali zares želiš premakniti <xliff:g id="message_count">%1$d</xliff:g> sporočila v mapo neželene pošte\?</item>
-        <item quantity="other">Ali zares želiš premakniti <xliff:g id="message_count">%1$d</xliff:g> sporočil v mapo neželene pošte\?</item>
+        <item quantity="one">Ali zares želiš premakniti <xliff:g id="message_count">%1$d</xliff:g> sporočilo v mapo neželene pošte?</item>
+        <item quantity="two">Ali zares želiš premakniti <xliff:g id="message_count">%1$d</xliff:g> sporočili v mapo neželene pošte?</item>
+        <item quantity="few">Ali zares želiš premakniti <xliff:g id="message_count">%1$d</xliff:g> sporočila v mapo neželene pošte?</item>
+        <item quantity="other">Ali zares želiš premakniti <xliff:g id="message_count">%1$d</xliff:g> sporočil v mapo neželene pošte?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Da</string>
     <string name="dialog_confirm_spam_cancel_button">Ne</string>
@@ -919,4 +919,17 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="attach_file">Priloži datoteko</string>
     <string name="swipe_action_archive_folder_not_set">Nastavi mapo za arhiviranje</string>
     <string name="swipe_action_change_swipe_gestures">Spremeni\ndejanja potega</string>
+    <string name="debug_invalidate_access_token">Preizkus: razveljavi žeton za dostop</string>
+    <string name="debug_invalidate_access_token_done">Žeton za dostop je bil razveljavljen. Naslednja zahteva bo pridobila novega.</string>
+    <string name="debug_invalidate_access_token_unavailable">Za ta račun žeton OAuth ni na voljo.</string>
+    <string name="debug_invalidate_access_token_local">Preizkus: razveljavi žeton za dostop (krajevno)</string>
+    <string name="debug_invalidate_access_token_local_done">Zahtevana je bila krajevna razveljavitev. Naslednja bo pridobila nov žeton.</string>
+    <string name="debug_invalidate_access_token_server">Preizkus: razveljavi žeton za dostop (strežnik)</string>
+    <string name="debug_invalidate_access_token_server_done">Shranjen žeton za dostop je poškodovan. Naslednja zahteva ne bo pridobila novega.</string>
+    <string name="debug_force_auth_failure">Preizkus: vsili spodletelo overitev zdaj</string>
+    <string name="debug_force_auth_failure_done">Stanje OAuth je počiščeno. Naslednja zahteva bo spodletela.</string>
+    <string name="debug_force_auth_failure_unavailable">Za ta račun nastavitev OAuth ni na voljo.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Shranjenega žeton za dostop ni bilo mogoče spremeniti. Poizkusite s krajevno razveljavitvijo.</string>
+    <string name="debug_invalidate_access_token_already_modified">Shranjen žeton za dostop je bil že spremenjen.</string>
+    <string name="message_view_menu_action_export_eml">Izvozi kot EML</string>
 </resources>

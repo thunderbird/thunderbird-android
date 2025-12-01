@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_oauth_sign_in_with_google_button">ورود با حساب گوگل</string>
-    <string name="account_oauth_loading_error">خطا در ورود با OAuth</string>
+    <string name="account_oauth_sign_in_with_google_button">ورود با گوگل</string>
+    <string name="account_oauth_loading_error">ورود با OAuth شکست خورد</string>
     <string name="account_oauth_error_failed">مجوزدهی به علت این خطا ناتمام ماند: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">مرورگری یافت نشد.</string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 توسط این ارایه دهنده پشتیبانی نمی‌شود.</string>
     <string name="account_oauth_error_canceled">مجوزدهی لغو شد</string>
     <string name="account_oauth_loading_message">ورود با استفاده از OAuth</string>
     <string name="account_oauth_sign_in_description">برای ورود به‌فراهم‌کنندهٔ رایانامه‌تان هدایتتان می‌کنیم. باید دسترسی حساب رایانامه‌تان را به برنامه بدهید.</string>
-    <string name="account_oauth_sign_in_button">ثبت نام</string>
+    <string name="account_oauth_sign_in_button">ورود</string>
     <string name="account_oauth_google_sign_in_support_text">اگر هنگام ورود به سیستم با Google با مشکل مواجه شدید، لطفاً با {placeHolder} ما مشورت کنید.</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">بند پشتیبانی</string>
 </resources>

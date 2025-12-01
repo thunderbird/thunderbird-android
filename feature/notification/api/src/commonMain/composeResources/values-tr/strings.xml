@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_push_title">Eşitle (anında ilet)</string>
+    <string name="notification_channel_push_description">Yeni iletiler beklenirken görüntülenir</string>
+    <string name="notification_channel_messages_title">İletiler</string>
+    <string name="notification_channel_messages_description">İletilerle ilgili bildirimler</string>
+    <string name="notification_channel_miscellaneous_title">Çeşitli</string>
+    <string name="notification_channel_miscellaneous_description">Hata vb. çeşitli bildirimler</string>
+    <string name="notification_notify_error_title">Bildirim hatası</string>
+    <string name="notification_notify_error_text">Yeni bir ileti için sistem bildirimi oluşturmaya çalışırken bir hata oluştu. Bunun nedeni büyük olasılıkla eksik bir bildirim sesidir.\n\nBildirim ayarlarını açmak için dokunun.</string>
+    <string name="notification_authentication_error_title">Kimlik doğrulama başarısız oldu</string>
+    <string name="notification_certificate_error_public">Sertifika hatası</string>
+    <string name="notification_certificate_error_title">%1$s için sertifika hatası</string>
+    <string name="notification_certificate_error_text">Sunucu ayarlarınızı gözden geçirin</string>
+    <string name="notification_bg_sync_ticker">E-posta denetleniyor: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">E-posta denetleniyor</string>
+    <string name="notification_bg_send_ticker">E-posta gönderiliyor: %1$s</string>
+    <string name="notification_bg_send_title">E-posta gönderiliyor</string>
+    <string name="send_failure_subject">Bazı iletiler gönderilemedi</string>
+    <string name="notification_additional_messages">+%2$s hesabında %1$d tane daha</string>
+    <string name="push_notification_state_initializing">Başlatılıyor…</string>
+    <string name="push_notification_state_listening">Yeni e-postalar bekleniyor</string>
+    <string name="push_notification_state_wait_background_sync">Arka planda eşitlemeye izin verilene kadar uyku halinde</string>
+    <string name="push_notification_state_wait_network">Ağa erişilene kadar uyku halinde</string>
+    <string name="push_notification_state_alarm_permission_missing">Alarmları zamanlamak için izin eksik</string>
+    <string name="push_notification_info">Bilgi almak için dokunun.</string>
+    <string name="push_notification_grant_alarm_permission">İzin vermek için dokunun.</string>
+    <string name="push_info_disable_push_action">Anında iletmeyi devre dışı bırak</string>
+    <string name="notification_action_reply">Yanıtla</string>
+    <string name="notification_action_mark_as_read">Okundu olarak işaretle</string>
+    <string name="notification_action_mark_all_as_read">Tümünü okundu olarak işaretle</string>
+    <string name="notification_action_delete">Sil</string>
+    <string name="notification_action_delete_all">Tümünü sil</string>
+    <string name="notification_action_archive">Arşivle</string>
+    <string name="notification_action_archive_all">Tümünü arşivle</string>
+    <string name="notification_action_spam">Spam</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d yeni ileti</item>
+        <item quantity="other">%1$d yeni ileti</item>
+    </plurals>
+    <string name="notification_action_retry">Yeniden dene</string>
+</resources>

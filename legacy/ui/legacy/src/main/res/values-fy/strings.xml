@@ -116,25 +116,25 @@
     <string name="notification_action_spam">Spam</string>
     <string name="notification_certificate_error_public">Sertifikaatflater</string>
     <string name="notification_certificate_error_title">Sertifikaatflater foar <xliff:g id="account">%s</xliff:g></string>
-    <string name="notification_certificate_error_text">Kontrolearje de serverynstellingen</string>
+    <string name="notification_certificate_error_text">Kontrolearje jo serverynstellingen</string>
     <string name="notification_authentication_error_title">Autentikaasje mislearre</string>
     <string name="notification_authentication_error_text">Autentikaasje foar <xliff:g id="account">%s</xliff:g> mislearre. Wurkje de serverynstellingen by.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Meldingsflater</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Der is in flater bard wylst it meitsjen fan in systeemmelding foar in nij berjocht. De reden is wierskynlik in ûntbrekken fan in meldingslûd.\n\nTik om meldingsynstellingen te iepenjen.</string>
+    <string name="notification_notify_error_text">Der is in flater bard wylst it meitsjen fan in systeemmelding foar in nij berjocht. De reden is wierskynlik in ûntbrekkend meldingslûd.\n\nTik om meldingsynstellingen te iepenjen.</string>
     <string name="notification_bg_sync_ticker">Berjochten kontrolearje: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Berjochten kontrolearje</string>
     <string name="notification_bg_send_ticker">Berjochten ferstjoere: <xliff:g id="account">%s</xliff:g></string>
-    <string name="notification_bg_send_title">Berjochten ferstjoere</string>
+    <string name="notification_bg_send_title">E-mailberjocht(en) ferstjoere</string>
     <string name="notification_bg_title_separator">:</string>
     <string name="notification_channel_push_title">Syngronisearje (Push)</string>
     <string name="notification_channel_push_description">Wurdt yn ôfwachting fan nije berjochten toand</string>
     <string name="notification_channel_messages_title">Berjochten</string>
-    <string name="notification_channel_messages_description">Meldingen relatearre oan berjochten</string>
-    <string name="notification_channel_miscellaneous_title">Diversken</string>
+    <string name="notification_channel_messages_description">Oan meldingen relatearre berjochten</string>
+    <string name="notification_channel_miscellaneous_title">Oare saken</string>
     <string name="notification_channel_miscellaneous_description">Oare meldingen, lykas flaters en soksawat.</string>
-    <string name="send_failure_subject">Flater by ferstjoeren fan berjochten</string>
+    <string name="send_failure_subject">Flater by ferstjoeren fan inkelde berjochten</string>
     <string name="version">Ferzje</string>
     <string name="debug_enable_debug_logging_title">Debuglochboek tastean</string>
     <string name="debug_enable_debug_logging_summary">Ekstra diagnostyske ynformaasje logge</string>
@@ -791,10 +791,10 @@
     <string name="switch_on">Oan</string>
     <string name="switch_off">Ut</string>
     <string name="generic_loading_error">Der is in flater bard by it laden fan de gegevens</string>
-    <string name="push_notification_state_initializing">Oan it inisjalisearjen…</string>
+    <string name="push_notification_state_initializing">Inisjalisearje…</string>
     <string name="push_notification_state_listening">Yn ôfwachting fan nije e-mailberjochten</string>
-    <string name="push_notification_state_wait_background_sync">Docht neat oant eftergrûnsyngronisaasje tastien wurdt</string>
-    <string name="push_notification_state_wait_network">Docht neat oant der in netwurk beskikber is</string>
+    <string name="push_notification_state_wait_background_sync">Wacht oant eftergrûnsyngronisaasje tastien wurdt</string>
+    <string name="push_notification_state_wait_network">Wacht oant der netwurk beskikber is</string>
     <string name="push_notification_info">Tik hjir foar mear ynfo.</string>
     <string name="push_info_title">Push-ynformaasje</string>
     <string name="push_info_configure_notification_text">Android makket it echter ek mooglik om meldingen te ferstopjen.</string>
@@ -902,4 +902,17 @@
     <string name="swipe_action_archive_folder_not_set">Argyfmap ynstelle</string>
     <string name="archiving_not_available_for_this_account">Argivearring is foar dizze account net beskikber.</string>
     <string name="debug_open_secret_debug_screen">Geheim debugskerm iepenje</string>
+    <string name="debug_invalidate_access_token">Test: Unjildich tagongstoken</string>
+    <string name="debug_invalidate_access_token_done">Unjildich tagongstoken. Wurdt by folgjende fersyk ferfarske.</string>
+    <string name="debug_invalidate_access_token_unavailable">Gjin OAuth-token beskikber foar dizze account.</string>
+    <string name="debug_invalidate_access_token_local">Test: Unjildich tagongstoken (lokaal)</string>
+    <string name="debug_invalidate_access_token_local_done">Lokale ûnjildichheid frege. Folgjende fersyk sil in nij token ophelje.</string>
+    <string name="debug_invalidate_access_token_server">Test: Unjildich tagongstoken (server)</string>
+    <string name="debug_invalidate_access_token_server_done">Bewarre tagongstoken is skansearre. Folgjende fersyk sil mislearre en dan ferfarskje.</string>
+    <string name="debug_force_auth_failure">Test: Mislearre autentikaasje no forsearje</string>
+    <string name="debug_force_auth_failure_done">OAuth-status wiske. Folgjende fersyk sil mislearre.</string>
+    <string name="debug_force_auth_failure_unavailable">Gjin OAuth-konfiguraasje beskikber foar dizze account.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Kin bewarre tagongstoken net bewurkje. Probearje lokale ûnjildichheid.</string>
+    <string name="debug_invalidate_access_token_already_modified">Bewarre tagongstoken is al oanpast.</string>
+    <string name="message_view_menu_action_export_eml">Eksportearje as EML</string>
 </resources>

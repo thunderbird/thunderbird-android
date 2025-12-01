@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_notify_error_title">Erro de notificação</string>
+    <string name="notification_authentication_error_title">Falha na autenticação</string>
+    <string name="notification_certificate_error_text">Verifique as suas definições do servidor</string>
+    <string name="notification_action_delete">Apagar</string>
+    <string name="notification_action_delete_all">Apagar tudo</string>
+    <string name="notification_action_archive">Arquivar</string>
+    <string name="notification_action_archive_all">Arquivar Todos</string>
+</resources>

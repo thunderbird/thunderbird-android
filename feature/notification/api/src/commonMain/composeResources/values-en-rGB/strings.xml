@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Synchronise (Push)</string>
+    <string name="notification_channel_push_description">Displayed while waiting for new messages</string>
+    <string name="notification_channel_messages_title">Messages</string>
+    <string name="notification_channel_messages_description">Notifications related to messages</string>
+    <string name="notification_channel_miscellaneous_title">Miscellaneous</string>
+    <string name="notification_channel_miscellaneous_description">Miscellaneous notifications like errors etc.</string>
+    <string name="notification_notify_error_title">Notification error</string>
+    <string name="notification_notify_error_text">An error has occurred while trying to create a system notification for a new message. The reason is most likely a missing notification sound.
+\n
+\nTap to open notification settings.</string>
+    <string name="notification_authentication_error_title">Authentication failed</string>
+    <string name="notification_certificate_error_public">Certificate error</string>
+    <string name="notification_certificate_error_title">Certificate error for %1$s</string>
+    <string name="notification_certificate_error_text">Check your server settings</string>
+    <string name="notification_bg_sync_ticker">Checking mail: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Checking mail</string>
+    <string name="notification_bg_send_ticker">Sending mail: %1$s</string>
+    <string name="notification_bg_send_title">Sending mail</string>
+    <string name="send_failure_subject">Failed to send some messages</string>
+    <string name="notification_additional_messages">+ %1$d more on %2$s</string>
+    <string name="push_notification_state_initializing">Initialising…</string>
+    <string name="push_notification_state_listening">Waiting for new emails</string>
+    <string name="push_notification_state_wait_background_sync">Sleeping until background sync is allowed</string>
+    <string name="push_notification_state_wait_network">Sleeping until network is available</string>
+    <string name="push_notification_state_alarm_permission_missing">Missing permission to schedule alarms</string>
+    <string name="push_notification_info">Tap to learn more.</string>
+    <string name="push_notification_grant_alarm_permission">Tap to grant permission.</string>
+    <string name="push_info_disable_push_action">Disable Push</string>
+    <string name="notification_action_reply">Reply</string>
+    <string name="notification_action_mark_as_read">Mark Read</string>
+    <string name="notification_action_mark_all_as_read">Mark All Read</string>
+    <string name="notification_action_delete">Delete</string>
+    <string name="notification_action_delete_all">Delete All</string>
+    <string name="notification_action_archive">Archive</string>
+    <string name="notification_action_archive_all">Archive All</string>
+    <string name="notification_action_spam">Spam</string>
+</resources>
