@@ -62,7 +62,7 @@ internal fun DrawerContent(
                 AccountView(
                     account = selectedAccount,
                     onClick = { onEvent(Event.OnAccountSelectorClick) },
-                    onAvatarClick = { onEvent(Event.OnAvatarClick) },
+                    onAvatarClick = { onEvent(Event.OnAccountViewClick(selectedAccount)) },
                     showAccountSelection = state.showAccountSelection,
                 )
 

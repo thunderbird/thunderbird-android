@@ -1,5 +1,11 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui.account
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,6 +43,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAc
 internal fun AccountView(
     account: DisplayAccount,
     onClick: () -> Unit,
+    onAvatarClick: () -> Unit,
     showAccountSelection: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -49,6 +56,7 @@ internal fun AccountView(
         } else {
             AccountSelectedView(
                 account = account,
+                onAvatarClick = onAvatarClick,
             )
         }
 
@@ -63,31 +71,50 @@ internal fun AccountView(
 @Composable
 private fun RowScope.AccountSelectedView(
     account: DisplayAccount,
+    onAvatarClick: () -> Unit,
 ) {
-    val name = getDisplayAccountName(account)
-
-    AccountAvatar(
-        account = account,
-        selected = false,
-        modifier = Modifier,
-    )
-    Column(
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+    AnimatedContent(
+        targetState = account,
+        transitionSpec = {
+            (slideInHorizontally { it } + fadeIn()) togetherWith
+                (slideOutHorizontally { -it } + fadeOut())
+        },
+        label = "AccountSelectedContent",
+        contentKey = { it.id },
         modifier = Modifier
             .fillMaxWidth()
             .weight(1f),
-    ) {
-        TextBodyLarge(
-            text = buildAnnotatedString {
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append(name)
-                }
-            },
-        )
-        if (account is MailDisplayAccount && account.name != account.email) {
-            TextBodyMedium(
-                text = account.email,
+    ) { targetAccount ->
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+        ) {
+            AccountAvatar(
+                account = targetAccount,
+                onClick = { onAvatarClick() },
+                selected = false,
             )
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+            ) {
+                val name = getDisplayAccountName(targetAccount)
+                TextBodyLarge(
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(name)
+                        }
+                    },
+                )
+                if (targetAccount is MailDisplayAccount && targetAccount.name != targetAccount.email) {
+                    TextBodyMedium(
+                        text = targetAccount.email,
+                    )
+                }
+            }
         }
     }
 }
