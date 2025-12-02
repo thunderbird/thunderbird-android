@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.messagelist
+package net.thunderbird.feature.mail.message.list
 
 import net.thunderbird.core.featureflag.FeatureFlagKey
 
