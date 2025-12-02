@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -53,6 +54,7 @@ import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.core.ui.compose.common.date.LocalDateTimeConfiguration
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.core.ui.compose.designsystem.molecule.message.AccountIndicatorIcon
 
 private const val WEEK_DAYS = 7
 
@@ -103,6 +105,7 @@ internal fun MessageItem(
     contentPadding: PaddingValues = MessageItemDefaults.defaultContentPadding,
     showAccountIndicator: Boolean = false,
     accountIndicatorColor: Int? = null,
+    swapSenderWithSubject: Boolean = false,
 ) {
     val outlineVariant = MainTheme.colors.outlineVariant
     var contentStart by remember { mutableFloatStateOf(0f) }
@@ -143,9 +146,23 @@ internal fun MessageItem(
                     .weight(1f)
                     .onPlaced { contentStart = it.positionInParent().x },
             ) {
-                sender()
+                Row {
+                    if (swapSenderWithSubject && showAccountIndicator && accountIndicatorColor != null) {
+                        AccountIndicatorIcon(accountIndicatorColor)
+                        // todo replace with constant in account indicator icon
+                        Spacer(modifier = Modifier.width(2.dp))
+                    }
+                    sender()
+                }
                 CompositionLocalProvider(LocalContentColor provides colors.subjectColor) {
-                    subject()
+                    Row {
+                        if (!swapSenderWithSubject && showAccountIndicator && accountIndicatorColor != null) {
+                            AccountIndicatorIcon(accountIndicatorColor)
+                            // todo replace with constant in account indicator icon
+                            Spacer(modifier = Modifier.width(2.dp))
+                        }
+                        subject()
+                    }
                 }
                 Spacer(modifier = Modifier.height(MainTheme.spacings.half))
                 PreviewText(preview = preview, maxLines = maxPreviewLines)
