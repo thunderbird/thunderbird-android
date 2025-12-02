@@ -21,7 +21,7 @@ class InMemoryFeatureFlagProviderTest {
         val featureFlagProvider = InMemoryFeatureFlagProvider(
             featureFlagFactory = { flowOf(listOf(FeatureFlag(key = feature1Key, enabled = true))) },
             featureFlagOverrides = FakeFeatureFlagOverrides(),
-            mainDispatcher = UnconfinedTestDispatcher(),
+            mainImmediateDispatcher = UnconfinedTestDispatcher(),
         )
 
         val result = featureFlagProvider.provide(feature1Key)
@@ -35,7 +35,7 @@ class InMemoryFeatureFlagProviderTest {
         val featureFlagProvider = InMemoryFeatureFlagProvider(
             featureFlagFactory = { flowOf(listOf(FeatureFlag(key = feature1Key, enabled = false))) },
             featureFlagOverrides = FakeFeatureFlagOverrides(),
-            mainDispatcher = UnconfinedTestDispatcher(),
+            mainImmediateDispatcher = UnconfinedTestDispatcher(),
         )
 
         val result = featureFlagProvider.provide(feature1Key)
@@ -50,7 +50,7 @@ class InMemoryFeatureFlagProviderTest {
         val featureFlagProvider = InMemoryFeatureFlagProvider(
             featureFlagFactory = { flowOf(listOf(FeatureFlag(key = feature1Key, enabled = false))) },
             featureFlagOverrides = FakeFeatureFlagOverrides(),
-            mainDispatcher = UnconfinedTestDispatcher(),
+            mainImmediateDispatcher = UnconfinedTestDispatcher(),
         )
 
         val result = featureFlagProvider.provide(feature2Key)
@@ -67,7 +67,7 @@ class InMemoryFeatureFlagProviderTest {
             featureFlagOverrides = FakeFeatureFlagOverrides(
                 initialOverrides = mapOf(key to true),
             ),
-            mainDispatcher = UnconfinedTestDispatcher(),
+            mainImmediateDispatcher = UnconfinedTestDispatcher(),
         )
         val expected = FeatureFlagResult.Enabled
 
@@ -87,7 +87,7 @@ class InMemoryFeatureFlagProviderTest {
             featureFlagOverrides = FakeFeatureFlagOverrides(
                 initialOverrides = mapOf(key to false),
             ),
-            mainDispatcher = UnconfinedTestDispatcher(),
+            mainImmediateDispatcher = UnconfinedTestDispatcher(),
         )
         val expected = FeatureFlagResult.Disabled
 
