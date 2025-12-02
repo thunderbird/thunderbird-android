@@ -183,6 +183,11 @@ private fun mapFolderIcon(folder: DisplayFolder): ImageVector {
 }
 
 private fun mapDisplayAccountFolderIcon(folder: MailDisplayFolder): ImageVector {
+    // Show a special icon for top-group regular folders, but not for placeholders (accountId == null)
+    if (folder.folder.type == FolderType.REGULAR && folder.isInTopGroup && folder.accountId != null) {
+        return Icons.Outlined.FavoriteFolder
+    }
+
     return when (folder.folder.type) {
         FolderType.INBOX -> Icons.Outlined.Inbox
         FolderType.OUTBOX -> Icons.Outlined.Outbox
