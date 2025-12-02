@@ -44,7 +44,7 @@ import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.AbstractMessageListFragment
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
-import com.fsck.k9.ui.messagelist.MessageListFragment
+import com.fsck.k9.ui.messagelist.LegacyMessageListFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
@@ -53,7 +53,6 @@ import com.fsck.k9.ui.settings.SettingsActivity
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
-import kotlin.getValue
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
@@ -285,7 +284,7 @@ open class MainActivity :
         val hasMessageListFragment = messageListFragment != null
         if (!hasMessageListFragment) {
             val fragmentTransaction = fragmentManager.beginTransaction()
-            val messageListFragment = MessageListFragment.newInstance(
+            val messageListFragment = LegacyMessageListFragment.newInstance(
                 search!!,
                 false,
                 generalSettingsManager.getConfig()
@@ -743,7 +742,7 @@ open class MainActivity :
         }
 
         val openFolderTransaction = fragmentManager.beginTransaction()
-        val messageListFragment = MessageListFragment.newInstance(
+        val messageListFragment = LegacyMessageListFragment.newInstance(
             search,
             false,
             generalSettingsManager.getConfig().display.inboxSettings.isThreadedViewEnabled,
@@ -1231,7 +1230,7 @@ open class MainActivity :
 
         initializeFromLocalSearch(tmpSearch)
 
-        val fragment = MessageListFragment.newInstance(tmpSearch, true, false)
+        val fragment = LegacyMessageListFragment.newInstance(tmpSearch, true, false)
         addMessageListFragment(fragment)
     }
 
