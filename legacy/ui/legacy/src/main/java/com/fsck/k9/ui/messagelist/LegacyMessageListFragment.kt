@@ -7,7 +7,7 @@ import net.thunderbird.feature.search.legacy.serialization.LocalMessageSearchSer
 private const val TAG = "LegacyMessageListFragment"
 
 @Suppress("LargeClass", "TooManyFunctions")
-class MessageListFragment : AbstractMessageListFragment() {
+class LegacyMessageListFragment : AbstractMessageListFragment() {
     override val logTag: String = TAG
 
     companion object {
@@ -15,10 +15,10 @@ class MessageListFragment : AbstractMessageListFragment() {
             search: LocalMessageSearch,
             isThreadDisplay: Boolean,
             threadedList: Boolean,
-        ): MessageListFragment {
+        ): LegacyMessageListFragment {
             val searchBytes = LocalMessageSearchSerializer.serialize(search)
 
-            return MessageListFragment().apply {
+            return LegacyMessageListFragment().apply {
                 arguments = bundleOf(
                     ARG_SEARCH to searchBytes,
                     ARG_IS_THREAD_DISPLAY to isThreadDisplay,
