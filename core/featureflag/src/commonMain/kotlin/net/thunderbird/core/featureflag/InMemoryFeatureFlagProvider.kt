@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.stateIn
 class InMemoryFeatureFlagProvider(
     featureFlagFactory: FeatureFlagFactory,
     featureFlagOverrides: FeatureFlagOverrides,
-    private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main,
-    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + mainDispatcher),
+    private val mainImmediateDispatcher: CoroutineDispatcher = Dispatchers.Main.immediate,
+    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + mainImmediateDispatcher),
 ) : FeatureFlagProvider {
     private val combinedFeatureFlags = combine(
         featureFlagFactory.getCatalog(),
