@@ -21,9 +21,9 @@ public class MessageListHandler extends Handler {
     private static final int ACTION_PROGRESS = 3;
     private static final int ACTION_REMOTE_SEARCH_FINISHED = 4;
 
-    private WeakReference<MessageListFragment> mFragment;
+    private WeakReference<AbstractMessageListFragment> mFragment;
 
-    public MessageListHandler(MessageListFragment fragment) {
+    public MessageListHandler(AbstractMessageListFragment fragment) {
         mFragment = new WeakReference<>(fragment);
     }
     public void folderLoading(long folderId, boolean loading) {
@@ -52,7 +52,7 @@ public class MessageListHandler extends Handler {
         post(new Runnable() {
             @Override
             public void run() {
-                MessageListFragment fragment = mFragment.get();
+                AbstractMessageListFragment fragment = mFragment.get();
                 if (fragment != null) {
                     fragment.updateFooterText(message);
                 }
@@ -62,7 +62,7 @@ public class MessageListHandler extends Handler {
 
     @Override
     public void handleMessage(android.os.Message msg) {
-        MessageListFragment fragment = mFragment.get();
+        AbstractMessageListFragment fragment = mFragment.get();
         if (fragment == null) {
             return;
         }

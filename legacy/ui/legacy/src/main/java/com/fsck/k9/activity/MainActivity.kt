@@ -42,9 +42,9 @@ import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
+import com.fsck.k9.ui.messagelist.AbstractMessageListFragment
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.messagelist.MessageListFragment
-import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
@@ -86,7 +86,7 @@ private const val TAG = "MainActivity"
  * "View Message" notification.
  *
  * `MainActivity` manages the overall layout, including the navigation drawer and the main content area,
- * which currently displays either a [MessageListFragment] or a [MessageViewContainerFragment]. It orchestrates
+ * which currently displays either a [AbstractMessageListFragment] or a [MessageViewContainerFragment]. It orchestrates
  * the interactions between these fragments and handles the back stack. The responsibilities for managing the
  * action bar, search functionality, and single-pane/split-view layout logic are currently handled here but
  * are intended to be refactored into more dedicated components over time.
@@ -94,7 +94,7 @@ private const val TAG = "MainActivity"
 @Suppress("TooManyFunctions", "LargeClass")
 open class MainActivity :
     BaseActivity(),
-    MessageListFragmentListener,
+    AbstractMessageListFragment.MessageListFragmentListener,
     MessageViewFragmentListener,
     MessageViewContainerListener,
     FragmentManager.OnBackStackChangedListener,
@@ -121,7 +121,7 @@ open class MainActivity :
     private var openFolderTransaction: FragmentTransaction? = null
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
-    private var messageListFragment: MessageListFragment? = null
+    private var messageListFragment: AbstractMessageListFragment? = null
     private var messageViewContainerFragment: MessageViewContainerFragment? = null
     private var account: LegacyAccountDto? = null
     private var search: LocalMessageSearch? = null
@@ -266,12 +266,14 @@ open class MainActivity :
 
     private fun findFragments() {
         val fragmentManager = supportFragmentManager
-        messageListFragment = fragmentManager.findFragmentById(R.id.message_list_container) as? MessageListFragment
+        messageListFragment = fragmentManager.findFragmentById(
+            R.id.message_list_container,
+        ) as? AbstractMessageListFragment
         messageViewContainerFragment =
             fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER) as? MessageViewContainerFragment
 
         messageListFragment?.let { messageListFragment ->
-            messageViewContainerFragment?.setViewModel(messageListFragment.viewModel)
+            messageViewContainerFragment?.setViewModel(messageListFragment.legacyViewModel)
             initializeFromLocalSearch(messageListFragment.localSearch)
         }
     }
@@ -1108,7 +1110,7 @@ open class MainActivity :
             messageViewContainerFragment = fragment
 
             messageListFragment?.let { messageListFragment ->
-                fragment.setViewModel(messageListFragment.viewModel)
+                fragment.setViewModel(messageListFragment.legacyViewModel)
             }
 
             if (displayMode == DisplayMode.SPLIT_VIEW) {
@@ -1159,7 +1161,7 @@ open class MainActivity :
         }
     }
 
-    private fun addMessageListFragment(fragment: MessageListFragment) {
+    private fun addMessageListFragment(fragment: AbstractMessageListFragment) {
         messageListFragment?.isActive = false
 
         supportFragmentManager.commit {
@@ -1459,7 +1461,7 @@ open class MainActivity :
         }
     }
 
-    private fun MessageListFragment.setFullyActive() {
+    private fun AbstractMessageListFragment.setFullyActive() {
         isActive = true
         onFullyActive()
     }
