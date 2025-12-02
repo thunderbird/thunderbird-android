@@ -114,6 +114,7 @@ private fun AccountContent(
             AccountSettingList(
                 onAddAccountClick = { onEvent(Event.OnAddAccountClick) },
                 onSyncAllAccountsClick = { onEvent(Event.OnSyncAllAccounts) },
+                onSettingsClick = { onEvent(Event.OnSettingsClick) },
             )
         }
     }

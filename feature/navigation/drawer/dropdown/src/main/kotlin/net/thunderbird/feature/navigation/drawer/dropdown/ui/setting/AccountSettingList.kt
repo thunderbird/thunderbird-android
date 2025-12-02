@@ -13,6 +13,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.R
 internal fun AccountSettingList(
     onAddAccountClick: () -> Unit,
     onSyncAllAccountsClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     SettingList(
@@ -32,6 +33,13 @@ internal fun AccountSettingList(
                 label = stringResource(id = R.string.navigation_drawer_dropdown_action_add_account),
                 onClick = onAddAccountClick,
                 icon = Icons.Outlined.Add,
+            )
+        }
+        item {
+            SettingListItem(
+                label = stringResource(id = R.string.navigation_drawer_dropdown_action_settings),
+                onClick = onSettingsClick,
+                icon = Icons.Outlined.Settings,
             )
         }
     }
