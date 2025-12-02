@@ -4,9 +4,11 @@ import androidx.core.os.bundleOf
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.serialization.LocalMessageSearchSerializer
 
-private const val TAG = "LegacyMessageListFragment"
+private const val TAG = "MessageListFragment"
 
-class LegacyMessageListFragment : AbstractMessageListFragment() {
+// TODO: Move this fragment to :feature:mail:message:list once all migration to the new
+//       MessageListFragment to MVI is done.
+class MessageListFragment : AbstractMessageListFragment() {
     override val logTag: String = TAG
 
     companion object Factory : AbstractMessageListFragment.Factory {
@@ -14,10 +16,10 @@ class LegacyMessageListFragment : AbstractMessageListFragment() {
             search: LocalMessageSearch,
             isThreadDisplay: Boolean,
             threadedList: Boolean,
-        ): LegacyMessageListFragment {
+        ): MessageListFragment {
             val searchBytes = LocalMessageSearchSerializer.serialize(search)
 
-            return LegacyMessageListFragment().apply {
+            return MessageListFragment().apply {
                 arguments = bundleOf(
                     ARG_SEARCH to searchBytes,
                     ARG_IS_THREAD_DISPLAY to isThreadDisplay,
