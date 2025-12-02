@@ -44,7 +44,6 @@ import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.AbstractMessageListFragment
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
-import com.fsck.k9.ui.messagelist.LegacyMessageListFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
@@ -120,6 +119,7 @@ open class MainActivity :
     private var openFolderTransaction: FragmentTransaction? = null
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
+    private val messageListFragmentFactory: AbstractMessageListFragment.Factory by inject()
     private var messageListFragment: AbstractMessageListFragment? = null
     private var messageViewContainerFragment: MessageViewContainerFragment? = null
     private var account: LegacyAccountDto? = null
@@ -284,7 +284,7 @@ open class MainActivity :
         val hasMessageListFragment = messageListFragment != null
         if (!hasMessageListFragment) {
             val fragmentTransaction = fragmentManager.beginTransaction()
-            val messageListFragment = LegacyMessageListFragment.newInstance(
+            val messageListFragment = messageListFragmentFactory.newInstance(
                 search!!,
                 false,
                 generalSettingsManager.getConfig()
@@ -742,7 +742,7 @@ open class MainActivity :
         }
 
         val openFolderTransaction = fragmentManager.beginTransaction()
-        val messageListFragment = LegacyMessageListFragment.newInstance(
+        val messageListFragment = messageListFragmentFactory.newInstance(
             search,
             false,
             generalSettingsManager.getConfig().display.inboxSettings.isThreadedViewEnabled,
@@ -1230,7 +1230,11 @@ open class MainActivity :
 
         initializeFromLocalSearch(tmpSearch)
 
-        val fragment = LegacyMessageListFragment.newInstance(tmpSearch, true, false)
+        val fragment = messageListFragmentFactory.newInstance(
+            search = tmpSearch,
+            isThreadDisplay = true,
+            threadedList = false,
+        )
         addMessageListFragment(fragment)
     }
 
