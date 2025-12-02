@@ -91,5 +91,5 @@ sealed interface MessageListEvent {
      *
      * @param sortType The new [SortType] to apply to the message list.
      */
-    data class ChangeSortType(val sortType: SortType) : UserEvent
+    data class ChangeSortType(val accountId: AccountId, val sortType: SortType) : UserEvent
 }
