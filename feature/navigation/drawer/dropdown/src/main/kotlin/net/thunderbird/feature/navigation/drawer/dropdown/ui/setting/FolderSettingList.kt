@@ -11,9 +11,11 @@ import net.thunderbird.feature.navigation.drawer.dropdown.R
 
 @Composable
 internal fun FolderSettingList(
+    onSyncAccountClick: () -> Unit,
     onManageFoldersClick: () -> Unit,
     onSettingsClick: () -> Unit,
     isUnifiedAccount: Boolean,
+    isLoading: Boolean,
     modifier: Modifier = Modifier,
 ) {
     SettingList(
@@ -22,6 +24,14 @@ internal fun FolderSettingList(
             .fillMaxWidth(),
     ) {
         if (isUnifiedAccount.not()) {
+            item {
+                SettingListItem(
+                    label = stringResource(id = R.string.navigation_drawer_dropdown_action_sync_account),
+                    onClick = onSyncAccountClick,
+                    icon = Icons.Outlined.Sync,
+                    isLoading = isLoading,
+                )
+            }
             item {
                 SettingListItem(
                     label = stringResource(R.string.navigation_drawer_dropdown_action_manage_folders),

@@ -14,6 +14,7 @@ internal fun AccountSettingList(
     onAddAccountClick: () -> Unit,
     onSyncAllAccountsClick: () -> Unit,
     onSettingsClick: () -> Unit,
+    isLoading: Boolean,
     modifier: Modifier = Modifier,
 ) {
     SettingList(
@@ -26,6 +27,7 @@ internal fun AccountSettingList(
                 label = stringResource(id = R.string.navigation_drawer_dropdown_action_sync_all_accounts),
                 onClick = onSyncAllAccountsClick,
                 icon = Icons.Outlined.Sync,
+                isLoading = isLoading,
             )
         }
         item {
