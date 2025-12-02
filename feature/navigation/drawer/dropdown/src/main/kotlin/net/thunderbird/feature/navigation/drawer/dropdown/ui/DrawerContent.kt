@@ -1,6 +1,7 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.IntOffset
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -30,6 +32,8 @@ import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getAdditiona
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.folder.FolderList
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.AccountSettingList
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.FolderSettingList
+
+private const val ANIMATION_DURATION_MS = 200
 
 @Composable
 internal fun DrawerContent(
@@ -58,6 +62,7 @@ internal fun DrawerContent(
                 AccountView(
                     account = selectedAccount,
                     onClick = { onEvent(Event.OnAccountSelectorClick) },
+                    onAvatarClick = { onEvent(Event.OnAvatarClick) },
                     showAccountSelection = state.showAccountSelection,
                 )
 
@@ -67,10 +72,13 @@ internal fun DrawerContent(
                 targetState = state.showAccountSelection,
                 label = "AccountSelectorVisibility",
                 transitionSpec = {
+                    val animationSpec = tween<IntOffset>(durationMillis = ANIMATION_DURATION_MS)
                     if (targetState) {
-                        slideInVertically { -it } togetherWith slideOutVertically { it }
+                        slideInVertically(animationSpec = animationSpec) { -it } togetherWith
+                            slideOutVertically(animationSpec = animationSpec) { it }
                     } else {
-                        slideInVertically { it } togetherWith slideOutVertically { -it }
+                        slideInVertically(animationSpec = animationSpec) { it } togetherWith
+                            slideOutVertically(animationSpec = animationSpec) { -it }
                     }
                 },
             ) { targetState ->
