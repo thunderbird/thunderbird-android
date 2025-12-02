@@ -25,6 +25,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = true),
                 FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = false),
                 FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
+                FeatureFlag(MessageListFeatureFlags.EnableMessageListNewState, enabled = true),
             ),
         )
     }
