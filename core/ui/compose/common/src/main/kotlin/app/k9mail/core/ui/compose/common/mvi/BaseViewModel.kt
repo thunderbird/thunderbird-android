@@ -42,7 +42,7 @@ abstract class BaseViewModel<STATE, EVENT, EFFECT>(
      *
      * @param update A function that takes the current [STATE] and produces a new [STATE].
      */
-    protected fun updateState(update: (STATE) -> STATE) {
+    protected open fun updateState(update: (STATE) -> STATE) {
         _state.update(update)
     }
 
