@@ -8,4 +8,14 @@
     <string name="account_settings_general_name_description">Namnet som är kopplat till ditt konto.</string>
     <string name="account_settings_general_color_title">Kontofärg</string>
     <string name="account_settings_general_color_description">Accentfärgen för det här kontot som används i mappar och kontolistor.</string>
+    <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_description">Välj hur din kontoavatar visas.</string>
+    <string name="account_settings_general_name_error_empty">Namnet kan inte vara tomt</string>
+    <string name="account_settings_general_name_error_too_long">Namnet är för långt</string>
+    <string name="account_settings_general_avatar_monogram_title">Avatarmonogram</string>
+    <string name="account_settings_general_avatar_monogram_description">Monogrammet som används som din avatar.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Monogram kan inte vara tomt</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Monogrammet är för långt</string>
+    <string name="account_settings_general_avatar_icon_title">Avatarikon</string>
+    <string name="account_settings_general_avatar_icon_description">Välj en av ikonerna att använda som din avatar.</string>
 </resources>

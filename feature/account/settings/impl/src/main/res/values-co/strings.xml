@@ -1,3 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Parametri generali</string>
+    <string name="account_settings_general_avatar_title">Riprisentazione virtuale</string>
+    <string name="account_settings_general_avatar_description">Sceglie cumu a vostra riprisentazione virtuale di contu serà affissata.</string>
+    <string name="account_settings_general_avatar_option_monogram">Monogramma</string>
+    <string name="account_settings_general_avatar_option_image">Fiura</string>
+    <string name="account_settings_general_avatar_option_icon">Icona</string>
+    <string name="account_settings_general_name_title">Nome di u contu</string>
+    <string name="account_settings_general_name_description">U nome assuciatu à u vostru contu.</string>
+    <string name="account_settings_general_name_error_empty">U nome ùn pò micca esse viotu</string>
+    <string name="account_settings_general_name_error_too_long">U nome hè troppu longu</string>
+    <string name="account_settings_general_color_title">Culore di u contu</string>
+    <string name="account_settings_general_color_description">U culore accentuatu attrubuitu à stu contu è impiegatu in i cartulari è in e liste di conti.</string>
+    <string name="account_settings_general_avatar_monogram_title">Monogramma di a riprisentazione virtuale</string>
+    <string name="account_settings_general_avatar_monogram_description">U monogramma impiegatu cum’è a vostra riprisentazione virtuale.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">U monogramma ùn pò micca esse viotu</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">U monogramma hè troppu longu</string>
+    <string name="account_settings_general_avatar_icon_title">Icona di a riprisentazione virtuale</string>
+    <string name="account_settings_general_avatar_icon_description">Sceglie una di l’icone per impiegalla cum’è a vostra riprisentazione virtuale.</string>
 </resources>

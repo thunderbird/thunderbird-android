@@ -5,14 +5,14 @@
     <string name="notification_channel_messages_title">İletiler</string>
     <string name="notification_channel_messages_description">İletilerle ilgili bildirimler</string>
     <string name="notification_channel_miscellaneous_title">Çeşitli</string>
-    <string name="notification_channel_miscellaneous_description">Hata vb. çeşitli bildirimler</string>
+    <string name="notification_channel_miscellaneous_description">Hatalar vb gibi çeşitli bildirimler.</string>
     <string name="notification_notify_error_title">Bildirim hatası</string>
     <string name="notification_notify_error_text">Yeni bir ileti için sistem bildirimi oluşturmaya çalışırken bir hata oluştu. Bunun nedeni büyük olasılıkla eksik bir bildirim sesidir.\n\nBildirim ayarlarını açmak için dokunun.</string>
     <string name="notification_authentication_error_title">Kimlik doğrulama başarısız oldu</string>
     <string name="notification_certificate_error_public">Sertifika hatası</string>
     <string name="notification_certificate_error_title">%1$s için sertifika hatası</string>
     <string name="notification_certificate_error_text">Sunucu ayarlarınızı gözden geçirin</string>
-    <string name="notification_bg_sync_ticker">E-posta denetleniyor: %1$s:%2$s</string>
+    <string name="notification_bg_sync_ticker">E-posta denetleniyor: %1$s: %2$s</string>
     <string name="notification_bg_sync_title">E-posta denetleniyor</string>
     <string name="notification_bg_send_ticker">E-posta gönderiliyor: %1$s</string>
     <string name="notification_bg_send_title">E-posta gönderiliyor</string>
@@ -39,4 +39,15 @@
         <item quantity="other">%1$d yeni ileti</item>
     </plurals>
     <string name="notification_action_retry">Yeniden dene</string>
+    <string name="notification_authentication_incoming_server_error_text">%1$s için kimlik doğrulama başarısız oldu. Gelen sunucu ayarlarınızı güncelleyin.</string>
+    <string name="notification_authentication_outgoing_server_error_text">%1$s için kimlik doğrulama başarısız oldu. Giden sunucu ayarlarınızı güncelleyin.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <string name="notification_action_update_server_settings">Sunucu Ayarlarını Güncelle</string>
+    <string name="notification_action_assign_sent_folder">Klasör atayın</string>
+    <string name="banner_inline_notification_check_error_notifications">Hata Bildirimlerini Kontrol Et</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Bazı mesajlar dikkatinizi gerektiriyor.</string>
+    <string name="banner_inline_notification_open_notifications">Bildirimleri aç</string>
+    <string name="banner_inline_notification_learn_more">Daha fazla bilgi edinin</string>
+    <string name="banner_inline_notification_view_support_article">Destek makalesini görüntüle</string>
+    <string name="sent_folder_not_found_title">Gönderilen klasör mevcut değil.</string>
 </resources>

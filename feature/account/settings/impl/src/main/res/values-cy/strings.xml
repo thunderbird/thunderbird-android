@@ -1,3 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Gosodiadau Cyffredinol</string>
+    <string name="account_settings_general_avatar_title">Afatar</string>
+    <string name="account_settings_general_avatar_option_monogram">Monogram</string>
+    <string name="account_settings_general_name_title">Enw cyfrif</string>
+    <string name="account_settings_general_name_description">Yr enw sy\'n gysylltiedig â\'ch cyfrif.</string>
+    <string name="account_settings_general_name_error_empty">Does dim modd i\'r enw fod yn wag</string>
+    <string name="account_settings_general_name_error_too_long">Enw\'n rhy hir</string>
+    <string name="account_settings_general_color_title">Lliw cyfrif</string>
+    <string name="account_settings_general_color_description">Lliw\'r cyfrif sy\'n cael ei ddefnyddio mewn ffolderi a rhestrau cyfrifon.</string>
+    <string name="account_settings_general_avatar_monogram_title">Monogram Afatar</string>
+    <string name="account_settings_general_avatar_monogram_description">Y monogram sy\'n cael ei ddefnyddio fel eich afatar.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Does dim modd i\'r monogram fod yn wag</string>
+    <string name="account_settings_general_avatar_description">Dewis sut mae afatar eich cyfrif yn cael ei ddangos.</string>
+    <string name="account_settings_general_avatar_option_image">Delwedd</string>
+    <string name="account_settings_general_avatar_option_icon">Eicon</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Monogram yn rhy hir</string>
+    <string name="account_settings_general_avatar_icon_title">Eicon Avatar</string>
+    <string name="account_settings_general_avatar_icon_description">Dewis un o\'r eiconau i\'w ddefnyddio fel eich afatar.</string>
 </resources>

@@ -8,4 +8,14 @@
     <string name="account_settings_general_name_description">Nazwa powiązana z Twoim kontem.</string>
     <string name="account_settings_general_color_title">Kolor konta</string>
     <string name="account_settings_general_color_description">Kolor wiodący tego konta używany w folderach i na listach kont.</string>
+    <string name="account_settings_general_avatar_title">Awatar</string>
+    <string name="account_settings_general_avatar_description">Wybierz sposób wyświetlania awatara konta.</string>
+    <string name="account_settings_general_name_error_empty">Nazwa nie może być pusta</string>
+    <string name="account_settings_general_name_error_too_long">Nazwa jest zbyt długa</string>
+    <string name="account_settings_general_avatar_monogram_title">Monogram awatara</string>
+    <string name="account_settings_general_avatar_monogram_description">Monogram używany jako awatar.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Monogram nie może być pusty</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Monogram jest zbyt długi</string>
+    <string name="account_settings_general_avatar_icon_title">Ikona awatara</string>
+    <string name="account_settings_general_avatar_icon_description">Wybierz jedną z ikon, która będzie Twoim awatarem.</string>
 </resources>

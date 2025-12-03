@@ -8,4 +8,14 @@
     <string name="account_settings_general_color_title">Litur aðgangsins</string>
     <string name="account_settings_general_color_description">Áherslulitur aðgangsins, notaður í möppum og listum yfir reikninga.</string>
     <string name="account_settings_general_avatar_option_monogram">Fangamark</string>
+    <string name="account_settings_general_avatar_title">Auðkennismynd</string>
+    <string name="account_settings_general_avatar_description">Veldu hvernig auðkennismynd reikningsins þíns birtist.</string>
+    <string name="account_settings_general_name_error_empty">Heitið má ekki vera tómt</string>
+    <string name="account_settings_general_name_error_too_long">Heitið er of langt</string>
+    <string name="account_settings_general_avatar_monogram_title">Fangamark auðkennis</string>
+    <string name="account_settings_general_avatar_monogram_description">Fangamarkið sem notað er sem auðkennismynd þín.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Fangamark má ekki vera autt</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Fangamarkið er of langt</string>
+    <string name="account_settings_general_avatar_icon_title">Auðkennistáknmynd</string>
+    <string name="account_settings_general_avatar_icon_description">Veldu eitt tákn til að nota sem auðkennismynd þína.</string>
 </resources>

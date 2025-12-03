@@ -1,3 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">Peidio dangos y neges hon eto</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">Does dim modd archifo\'r e-bost</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Hepgar am nawr</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Manylion gwall: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Crëwch ffolder newydd</string>
+    <string name="setup_archive_folder_dialog_done">Gorffen</string>
+    <string name="setup_archive_folder_dialog_cancel">Diddymu</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Create & set new folder]]></string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">Methu canfod cyfrif sy\'n gysylltiedig â UUID \'%1$s\'</string>
+    <string name="setup_archive_folder_unhandled_error">Gwall heb ei drin: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Yn cydweddu…</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">Crëwyd ffolder lleol. Yn cychwyn cydweddu…</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Ffurfweddu ffolder archif nawr</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Gosod ffolder archif</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">Wps, aeth rhywbeth o\'i le wrth adfer ffolderi cyfrif!</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Crëwyd ffolder o bell.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">Yn creu ffolder ar ddarparwr e-bost…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">Heb ganfod cyfrif (%1$s)</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">Methwyd creu ffolder lleol \'%1$s\'.</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Methodd cydweddu ffolder \'%1$s\' gyda\'r teclyn rheoli. Neges: %2$s</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Gall enw\'r ffolder ddim bod yn wag</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Enw ffolder annilys \'%1$s\'</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">Yn diweddaru rheolau ffolder arbennig…</string>
 </resources>

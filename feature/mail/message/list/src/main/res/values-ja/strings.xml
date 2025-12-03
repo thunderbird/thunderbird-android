@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">次回からこのメッセージを表示しない</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">メールをアーカイブできません</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">アーカイブフォルダーを設定してください</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">今はしない</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">アーカイブフォルダーを設定</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">アカウントフォルダーの回復中に問題が発生しました！</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">エラーの詳細: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">新しいフォルダーを作成</string>
+    <string name="setup_archive_folder_dialog_done">完了</string>
+    <string name="setup_archive_folder_dialog_cancel">キャンセル</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[新しいフォルダーを作成して設定]]></string>
 </resources>
