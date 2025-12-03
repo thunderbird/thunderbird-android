@@ -41,6 +41,7 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedA
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedBadgeIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedBankIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedBookIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedFavoriteFolderIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedFingerprintIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedFlowerIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedFolderManagedIcon
@@ -117,6 +118,7 @@ object Icons {
         val ExpandMore: ImageVector = Icons.Outlined.ExpandMore
         val ExpandLess: ImageVector = Icons.Outlined.ExpandLess
 
+        val FavoriteFolder: ImageVector = OutlinedFavoriteFolderIcon
         val Fingerprint: ImageVector = OutlinedFingerprintIcon
         val Flower: ImageVector = OutlinedFlowerIcon
         val Folder: ImageVector = Icons.Outlined.Folder
