@@ -6,9 +6,11 @@ import net.thunderbird.feature.mail.message.list.internal.domain.usecase.BuildSw
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.CreateArchiveFolder
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.GetAccountFolders
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.GetMessageListPreferences
+import net.thunderbird.feature.mail.message.list.internal.domain.usecase.GetSortTypes
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.SetArchiveFolder
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogFragment
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogViewModel
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSortTypeStateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSwipeActionsStateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
@@ -57,12 +59,24 @@ val featureMessageListModule = module {
             interactionPreferenceManager = get(),
         )
     }
-
+    factory<DomainContract.UseCase.GetSortTypes> {
+        GetSortTypes(
+            accountManager = get(),
+            getDefaultSortType = get(),
+        )
+    }
     factoryListOf<StateSideEffectHandler.Factory>(
         { parameters ->
             LoadSwipeActionsStateSideEffectHandler.Factory(
                 logger = get(),
                 buildSwipeActions = get(),
+            )
+        },
+        { parameters ->
+            LoadSortTypeStateSideEffectHandler.Factory(
+                accounts = parameters.get(),
+                logger = get(),
+                getSortTypes = get(),
             )
         },
     )
