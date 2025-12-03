@@ -1,5 +1,6 @@
 package net.thunderbird.feature.mail.message.list.internal
 
+import net.thunderbird.core.common.inject.factoryListOf
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.BuildSwipeActions
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.CreateArchiveFolder
@@ -8,6 +9,8 @@ import net.thunderbird.feature.mail.message.list.internal.domain.usecase.GetMess
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.SetArchiveFolder
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogFragment
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogViewModel
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSwipeActionsStateSideEffectHandler
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import org.koin.core.module.dsl.viewModel
@@ -54,4 +57,13 @@ val featureMessageListModule = module {
             interactionPreferenceManager = get(),
         )
     }
+
+    factoryListOf<StateSideEffectHandler.Factory>(
+        { parameters ->
+            LoadSwipeActionsStateSideEffectHandler.Factory(
+                logger = get(),
+                buildSwipeActions = get(),
+            )
+        },
+    )
 }
