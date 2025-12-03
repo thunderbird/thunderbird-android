@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
@@ -134,9 +133,7 @@ private fun FolderContent(
     state: State,
     onEvent: (Event) -> Unit,
 ) {
-    val isUnifiedAccount = remember(state.selectedAccountId) {
-        state.accounts.any { it.id == state.selectedAccountId && it is UnifiedDisplayAccount }
-    }
+    val isUnifiedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId } is UnifiedDisplayAccount
 
     Surface(
         color = MainTheme.colors.surfaceContainerLow,
