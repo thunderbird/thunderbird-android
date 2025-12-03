@@ -122,6 +122,7 @@ private fun PreviewDefault(
             colors = MessageItemDefaults.newMessageItemColors(),
             showAccountIndicator = true,
             accountIndicatorColor = Color.RED,
+            swapSenderWithSubject = false,
         )
     }
 }
@@ -162,6 +163,7 @@ private fun PreviewCompact(
             colors = MessageItemDefaults.unreadMessageItemColors(),
             showAccountIndicator = true,
             accountIndicatorColor = Color.RED,
+            swapSenderWithSubject = false,
         )
     }
 }
@@ -203,6 +205,7 @@ private fun PreviewRelaxed(
             colors = MessageItemDefaults.readMessageItemColors(),
             showAccountIndicator = true,
             accountIndicatorColor = Color.RED,
+            swapSenderWithSubject = false,
         )
     }
 }
@@ -243,6 +246,7 @@ private fun PreviewDefaultWithoutAccountIndicator(
             colors = MessageItemDefaults.newMessageItemColors(),
             showAccountIndicator = false,
             accountIndicatorColor = null,
+            swapSenderWithSubject = false,
         )
     }
 }
