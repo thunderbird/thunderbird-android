@@ -1,5 +1,6 @@
 package net.thunderbird.core.common.state.builder
 
+import kotlinx.coroutines.CoroutineScope
 import net.thunderbird.core.common.state.StateMachine
 
 @DslMarker
@@ -46,5 +47,6 @@ annotation class StateMachineBuilderDsl
  */
 @StateMachineBuilderDsl
 fun <TState : Any, TEvent : Any> stateMachine(
+    scope: CoroutineScope,
     init: StateMachineBuilder<TState, TEvent>.() -> Unit,
-): StateMachine<TState, TEvent> = StateMachineBuilder<TState, TEvent>().apply(init).build()
+): StateMachine<TState, TEvent> = StateMachineBuilder<TState, TEvent>(scope).apply(init).build()

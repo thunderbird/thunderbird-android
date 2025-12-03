@@ -1,10 +1,14 @@
 package net.thunderbird.core.common.state
 
 import kotlin.reflect.KClass
+import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -48,6 +52,7 @@ interface StateMachine<TState : Any, TEvent : Any> {
 }
 
 internal class DefaultStateMachine<TState : Any, TEvent : Any>(
+    scope: CoroutineScope,
     initialState: TState,
     internal val stateRegistrar: Map<KClass<out TState>, StateRegistry<TState, TState, TEvent>>,
     private val transitions: Map<TransactionKey<out TState, out TEvent>, Transition<TState, TEvent>>,
@@ -74,7 +79,11 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
     override val currentState: StateFlow<TState> = _currentState.asStateFlow()
 
     init {
-        stateRegistrar[initialState::class]?.listeners?.onEnter?.invoke(null, null, currentStateSnapshot)
+        scope.launch {
+            // delay onEnter initialization so the viewModels are ready to receive the state
+            delay(500.milliseconds)
+            stateRegistrar[initialState::class]?.listeners?.onEnter?.invoke(null, null, currentStateSnapshot)
+        }
     }
 
     override suspend fun process(event: TEvent): TState {

@@ -30,10 +30,10 @@ class StateMachineTest {
     }
 
     @Test
-    fun `onEntry from initialState should be called when state machine is created`() {
+    fun `onEntry from initialState should be called when state machine is created`() = runTest {
         // Arrange && Act
         var onEntryCalled = false
-        stateMachine<State, Event> {
+        stateMachine<State, Event>(scope = this) {
             initialState(State.Init) {
                 onEnter { _, _ -> onEntryCalled = true }
                 transition<Event.LoadData> { _, _ -> State.Loading }
@@ -51,7 +51,7 @@ class StateMachineTest {
     @Test
     fun `process should return the new state when transition is defined and guard passes`() = runTest {
         // Arrange
-        val stateMachine = stateMachine {
+        val stateMachine = stateMachine(scope = this) {
             initialState(State.Init) {
                 transition<Event.LoadData> { _, _ -> State.Loading }
             }
@@ -82,7 +82,7 @@ class StateMachineTest {
     fun `process should return the current state when no transition between current state and even is defined`() =
         runTest {
             // Arrange
-            val stateMachine = stateMachine {
+            val stateMachine = stateMachine(scope = this) {
                 initialState(State.Init) {
                     transition<Event.LoadData> { _, _ -> State.Loading }
                 }
@@ -105,7 +105,7 @@ class StateMachineTest {
     @Test
     fun `process should return the current state when guard fails`() = runTest {
         // Arrange
-        val stateMachine = stateMachine {
+        val stateMachine = stateMachine(scope = this) {
             initialState(State.Init) {
                 transition<Event.LoadData> { _, _ -> State.Loading }
             }
@@ -148,7 +148,7 @@ class StateMachineTest {
 
         val onEnterCalled = mutableMapOf<KClass<out State>, Int>()
         val onExitCalled = mutableMapOf<KClass<out State>, Int>()
-        val stateMachine = stateMachine<State, Event> {
+        val stateMachine = stateMachine<State, Event>(scope = this) {
             initialState(State.Init) {
                 onEnter { _, _ -> onEnterCalled.increment(stateClass) }
                 onExit { _ -> onExitCalled.increment(stateClass) }
@@ -198,7 +198,7 @@ class StateMachineTest {
     fun `process should not process events and return final state when state machine is in final state`() = runTest {
         // Arrange
         var successStateExited = 0
-        val stateMachine = stateMachine {
+        val stateMachine = stateMachine(scope = this) {
             initialState(State.Init) {
                 transition<Event.LoadData> { _, _ -> State.Loading }
             }
@@ -238,33 +238,34 @@ class StateMachineTest {
     }
 
     @Test
-    fun `state onEnter - when initial state - should be triggered with null state receiver, null event and Init state`() {
-        // Arrange & Act
-        var actualPreviousState: State? = null
-        var actualEvent: Event? = null
-        var actualNewState: State? = null
-        stateMachine<State, Event> {
-            initialState(State.Init) {
-                onEnter { event, newState ->
-                    actualPreviousState = this
-                    actualNewState = newState
-                    actualEvent = event
+    fun `state onEnter - when initial state - should be triggered with null state receiver, null event and Init state`() =
+        runTest {
+            // Arrange & Act
+            var actualPreviousState: State? = null
+            var actualEvent: Event? = null
+            var actualNewState: State? = null
+            stateMachine<State, Event>(scope = this) {
+                initialState(State.Init) {
+                    onEnter { event, newState ->
+                        actualPreviousState = this
+                        actualNewState = newState
+                        actualEvent = event
+                    }
+                    transition<Event.LoadData> { _, _ -> State.Loading }
                 }
-                transition<Event.LoadData> { _, _ -> State.Loading }
+                state<State.Loading> {
+                    transition<Event.LoadedData> { _, _ -> State.Success }
+                }
+                finalState<State.Success>()
             }
-            state<State.Loading> {
-                transition<Event.LoadedData> { _, _ -> State.Success }
-            }
-            finalState<State.Success>()
-        }
 
-        // Assert
-        assertThat(actualPreviousState).isNull()
-        assertThat(actualEvent).isNull()
-        assertThat(actualNewState)
-            .isNotNull()
-            .isEqualTo(State.Init)
-    }
+            // Assert
+            assertThat(actualPreviousState).isNull()
+            assertThat(actualEvent).isNull()
+            assertThat(actualNewState)
+                .isNotNull()
+                .isEqualTo(State.Init)
+        }
 
     @Test
     fun `state onEnter - when not in initial state - should be triggered with previous state receiver, event and new state`() =
@@ -273,7 +274,7 @@ class StateMachineTest {
             var actualPreviousState: State? = null
             var actualEvent: Event? = null
             var actualNewState: State? = null
-            val stateMachine = stateMachine<State, Event> {
+            val stateMachine = stateMachine<State, Event>(scope = this) {
                 initialState(State.Init) {
                     transition<Event.LoadData> { _, _ -> State.Loading }
                 }
@@ -311,7 +312,7 @@ class StateMachineTest {
         // Arrange
         var actualCurrentState: State? = null
         var actualEvent: Event? = null
-        val stateMachine = stateMachine<State, Event> {
+        val stateMachine = stateMachine<State, Event>(scope = this) {
             initialState(State.Init) {
                 transition<Event.LoadData> { _, _ -> State.Loading }
             }
@@ -346,7 +347,7 @@ class StateMachineTest {
             // Arrange
             var actualCurrentState: State? = null
             var actualEvent: Event? = null
-            val stateMachine = stateMachine<State, Event> {
+            val stateMachine = stateMachine<State, Event>(scope = this) {
                 initialState(State.Init) {
                     transition<Event.LoadData> { _, _ -> State.Loading }
                 }

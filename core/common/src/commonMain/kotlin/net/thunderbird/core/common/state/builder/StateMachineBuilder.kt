@@ -1,6 +1,7 @@
 package net.thunderbird.core.common.state.builder
 
 import kotlin.reflect.KClass
+import kotlinx.coroutines.CoroutineScope
 import net.thunderbird.core.common.state.DefaultStateMachine
 import net.thunderbird.core.common.state.DefaultStateMachine.StateRegistry
 import net.thunderbird.core.common.state.DefaultStateMachine.Transition
@@ -20,7 +21,9 @@ import net.thunderbird.core.common.state.TransactionKey
  * @see stateMachine
  */
 @StateMachineBuilderDsl
-class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor() {
+class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
+    private val scope: CoroutineScope,
+) {
     private var initialState: TState? = null
     private val stateRegistrar = mutableMapOf<KClass<out TState>, StateRegistry<TState, TState, TEvent>>()
 
@@ -159,6 +162,7 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor() {
             } ]"
         }
         return DefaultStateMachine(
+            scope = scope,
             initialState = initialState,
             transitions = transitions,
             stateRegistrar = stateRegistrar,

@@ -6,6 +6,7 @@ import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
+import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.state.DefaultStateMachine
 import org.junit.Test
 
@@ -25,9 +26,9 @@ class StateMachineBuilderKtTest {
     }
 
     @Test
-    fun `stateMachine should create state machine successfully`() {
+    fun `stateMachine should create state machine successfully`() = runTest {
         // Arrange & Act
-        val machine = stateMachine {
+        val machine = stateMachine(scope = this) {
             initialState(State.Init) {
                 transition<Event.LoadData> { _, _ -> State.Loading }
                 transition<Event.Failure> { _, _ -> State.Error }
@@ -49,10 +50,10 @@ class StateMachineBuilderKtTest {
     }
 
     @Test
-    fun `stateMachine should throw exception when missing initial state`() {
+    fun `stateMachine should throw exception when missing initial state`() = runTest {
         // Arrange & Act
         val exception = assertFailure {
-            stateMachine {
+            stateMachine(scope = this) {
                 state<State.Init> {
                     transition<Event.LoadData> { _, _ -> State.Loading }
                     transition<Event.Failure> { _, _ -> State.Error }
@@ -77,10 +78,10 @@ class StateMachineBuilderKtTest {
     }
 
     @Test
-    fun `stateMachine should throw exception when initial state is also registered as a state`() {
+    fun `stateMachine should throw exception when initial state is also registered as a state`() = runTest {
         // Arrange & Act
         val exception = assertFailure {
-            stateMachine {
+            stateMachine(scope = this) {
                 initialState(State.Init) {
                     transition<Event.LoadData> { _, _ -> State.Loading }
                     transition<Event.Failure> { _, _ -> State.Error }
@@ -106,10 +107,10 @@ class StateMachineBuilderKtTest {
     }
 
     @Test
-    fun `stateMachine should throw exception when state is already registered`() {
+    fun `stateMachine should throw exception when state is already registered`() = runTest {
         // Arrange & Act
         val exception = assertFailure {
-            stateMachine {
+            stateMachine(scope = this) {
                 initialState(State.Init) {
                     transition<Event.LoadData> { _, _ -> State.Loading }
                     transition<Event.Failure> { _, _ -> State.Error }
@@ -136,10 +137,10 @@ class StateMachineBuilderKtTest {
     }
 
     @Test
-    fun `stateMachine should throw exception when no transitions are defined`() {
+    fun `stateMachine should throw exception when no transitions are defined`() = runTest {
         // Arrange & Act
         val exception = assertFailure {
-            stateMachine<State, Event> {
+            stateMachine<State, Event>(scope = this) {
                 initialState(State.Init) {}
                 state<State.Loading> {}
                 state<State.Success> {}
@@ -154,10 +155,10 @@ class StateMachineBuilderKtTest {
     }
 
     @Test
-    fun `stateMachine should throw exception when only the initial state is defined`() {
+    fun `stateMachine should throw exception when only the initial state is defined`() = runTest {
         // Arrange & Act
         val exception = assertFailure {
-            stateMachine<State, Event> {
+            stateMachine<State, Event>(scope = this) {
                 initialState(State.Init) {}
             }
         }
@@ -169,10 +170,10 @@ class StateMachineBuilderKtTest {
     }
 
     @Test
-    fun `stateMachine should throw exception when a state has no transitions and it isn't the final state`() {
+    fun `stateMachine should throw exception when a state has no transitions and it isn't the final state`() = runTest {
         // Arrange & Act
         val exception = assertFailure {
-            stateMachine {
+            stateMachine(scope = this) {
                 initialState(State.Init) {
                     transition<Event.LoadData> { _, _ -> State.Loading }
                     transition<Event.Failure> { _, _ -> State.Error }
@@ -197,9 +198,9 @@ class StateMachineBuilderKtTest {
     }
 
     @Test
-    fun `stateMachine - initialState should allow setting onEntry listener`() {
+    fun `stateMachine - initialState should allow setting onEntry listener`() = runTest {
         // Arrange & Act
-        val machine = stateMachine<State, Event> {
+        val machine = stateMachine<State, Event>(scope = this) {
             initialState(State.Init) {
                 onEnter { _, _ -> println("No op.") }
                 transition<Event.LoadData> { _, _ -> State.Loading }
@@ -226,9 +227,9 @@ class StateMachineBuilderKtTest {
     }
 
     @Test
-    fun `stateMachine - initialState should allow setting onExit listener`() {
+    fun `stateMachine - initialState should allow setting onExit listener`() = runTest {
         // Arrange & Act
-        val machine = stateMachine {
+        val machine = stateMachine(scope = this) {
             initialState(State.Init) {
                 onExit { println("No op.") }
                 transition<Event.LoadData> { _, _ -> State.Loading }
@@ -255,9 +256,9 @@ class StateMachineBuilderKtTest {
     }
 
     @Test
-    fun `stateMachine - state should allow setting onEntry listener`() {
+    fun `stateMachine - state should allow setting onEntry listener`() = runTest {
         // Arrange & Act
-        val machine = stateMachine {
+        val machine = stateMachine(scope = this) {
             initialState(State.Init) {
                 transition<Event.LoadData> { _, _ -> State.Loading }
                 transition<Event.Failure> { _, _ -> State.Error }
@@ -284,9 +285,9 @@ class StateMachineBuilderKtTest {
     }
 
     @Test
-    fun `stateMachine - state should allow setting onExit listener`() {
+    fun `stateMachine - state should allow setting onExit listener`() = runTest {
         // Arrange & Act
-        val machine = stateMachine {
+        val machine = stateMachine(scope = this) {
             initialState(State.Init) {
                 transition<Event.LoadData> { _, _ -> State.Loading }
                 transition<Event.Failure> { _, _ -> State.Error }
@@ -313,9 +314,9 @@ class StateMachineBuilderKtTest {
     }
 
     @Test
-    fun `stateMachine - finalState should allow setting onEntry listener`() {
+    fun `stateMachine - finalState should allow setting onEntry listener`() = runTest {
         // Arrange & Act
-        val machine = stateMachine {
+        val machine = stateMachine(scope = this) {
             initialState(State.Init) {
                 transition<Event.LoadData> { _, _ -> State.Loading }
                 transition<Event.Failure> { _, _ -> State.Error }
@@ -343,9 +344,9 @@ class StateMachineBuilderKtTest {
     }
 
     @Test
-    fun `stateMachine - finalState should allow setting onExit listener`() {
+    fun `stateMachine - finalState should allow setting onExit listener`() = runTest {
         // Arrange & Act
-        val machine = stateMachine {
+        val machine = stateMachine(scope = this) {
             initialState(State.Init) {
                 transition<Event.LoadData> { _, _ -> State.Loading }
                 transition<Event.Failure> { _, _ -> State.Error }
