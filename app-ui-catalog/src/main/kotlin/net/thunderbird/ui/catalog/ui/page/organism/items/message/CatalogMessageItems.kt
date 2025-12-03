@@ -1,5 +1,6 @@
 package net.thunderbird.ui.catalog.ui.page.organism.items.message
 
+import android.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -240,6 +241,8 @@ private fun ColumnScope.CatalogNewMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
+        showAccountIndicator = true,
+        accountIndicatorColor = Color.MAGENTA,
     )
 
     SnackbarHost(snackbarHostState)
@@ -295,6 +298,8 @@ private fun ColumnScope.CatalogUnreadMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
+        showAccountIndicator = true,
+        accountIndicatorColor = Color.MAGENTA,
     )
 
     SnackbarHost(snackbarHostState)
@@ -350,6 +355,8 @@ private fun ColumnScope.CatalogReadMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
+        showAccountIndicator = true,
+        accountIndicatorColor = Color.MAGENTA,
     )
 
     SnackbarHost(snackbarHostState)
@@ -405,6 +412,8 @@ private fun ColumnScope.CatalogActiveMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
+        showAccountIndicator = true,
+        accountIndicatorColor = Color.MAGENTA,
     )
 
     SnackbarHost(snackbarHostState)
@@ -457,6 +466,8 @@ private fun ColumnScope.CatalogJunkMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
+        showAccountIndicator = true,
+        accountIndicatorColor = Color.MAGENTA,
     )
 
     SnackbarHost(snackbarHostState)
