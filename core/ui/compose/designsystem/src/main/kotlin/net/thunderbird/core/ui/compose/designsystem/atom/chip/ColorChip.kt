@@ -54,7 +54,7 @@ private fun PreviewBigRed() {
     )
 }
 
-internal object ColorChip {
+private object ColorChip {
     val chipDefaultHeight = 20.dp
     val chipDefaultWidth = 3.dp
 }
