@@ -26,7 +26,7 @@ fun ColorChip(
                 brush = brush,
                 cornerRadius = CornerRadius(width.value, width.value),
             )
-        }
+        },
     )
 }
 
@@ -40,7 +40,7 @@ private fun PreviewDefault() {
 @Composable
 private fun PreviewMagenta() {
     ColorChip(
-        color = Color.MAGENTA
+        color = Color.MAGENTA,
     )
 }
 

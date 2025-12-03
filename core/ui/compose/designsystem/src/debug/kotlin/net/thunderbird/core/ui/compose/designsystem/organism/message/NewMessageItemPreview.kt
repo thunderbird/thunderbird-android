@@ -245,4 +245,3 @@ private fun PreviewDefaultWithoutAccountIndicator(
         )
     }
 }
-
