@@ -3,7 +3,7 @@ package net.thunderbird.core.common.inject
 import org.koin.core.definition.Definition
 import org.koin.core.module.KoinDslMarker
 import org.koin.core.module.Module
-import org.koin.core.parameter.parametersOf
+import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import org.koin.core.qualifier.named
 import org.koin.core.scope.Scope
@@ -24,8 +24,8 @@ import org.koin.core.scope.Scope
  */
 @KoinDslMarker
 inline fun <reified T> Module.singleListOf(vararg items: Definition<T>, qualifier: Qualifier? = null) {
-    single(qualifier ?: defaultListQualifier<T>(), createdAtStart = true) {
-        items.map { definition -> definition(this, parametersOf()) }
+    single(qualifier ?: defaultListQualifier<T>(), createdAtStart = true) { parameters ->
+        items.map { definition -> definition(this, parameters) }
     }
 }
 
@@ -43,8 +43,8 @@ inline fun <reified T> Module.singleListOf(vararg items: Definition<T>, qualifie
  */
 @KoinDslMarker
 inline fun <reified T> Module.factoryListOf(vararg items: Definition<T>, qualifier: Qualifier? = null) {
-    factory(qualifier ?: defaultListQualifier<T>()) {
-        items.map { definition -> definition(this, parametersOf()) }
+    factory(qualifier ?: defaultListQualifier<T>()) { parametersHolder ->
+        items.map { definition -> definition(this, parametersHolder) }
     }
 }
 
@@ -58,8 +58,10 @@ inline fun <reified T> Module.factoryListOf(vararg items: Definition<T>, qualifi
  * @param qualifier An optional [Qualifier] to distinguish between different lists of the same type.
  * @return The resolved [MutableList] of instances of type [T].
  */
-inline fun <reified T> Scope.getList(qualifier: Qualifier? = null) =
-    get<List<T>>(qualifier ?: defaultListQualifier<T>())
+inline fun <reified T> Scope.getList(
+    qualifier: Qualifier? = null,
+    noinline parameters: ParametersDefinition? = null,
+) = get<List<T>>(qualifier ?: defaultListQualifier<T>(), parameters = parameters)
 
 /**
  * Creates a qualifier for a set of a specific type.
