@@ -27,12 +27,14 @@ class GetMessageListPreferences(
                 showCorrespondentNames = messageListSettings.isShowCorrespondentNames,
                 showMessageAvatar = messageListSettings.isShowContactPicture,
                 showFavouriteButton = inboxSettings.isShowMessageListStars,
+                senderAboveSubject = inboxSettings.isMessageListSenderAboveSubject,
                 excerptLines = messageListSettings.previewLines,
                 // TODO(#10202): update to fetch dateTimeFormat from preferences
                 dateTimeFormat = MessageListDateTimeFormat.Auto,
                 useVolumeKeyNavigation = interactionSettings.useVolumeKeysForNavigation,
                 serverSearchLimit = -1,
                 actionRequiringUserConfirmation = interactionSettings.actionRequiringUserConfirmation.toImmutableSet(),
+                colorizeBackgroundWhenRead = messageListSettings.isUseBackgroundAsUnreadIndicator,
             )
         }
 
