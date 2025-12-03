@@ -132,7 +132,7 @@ abstract class AbstractMessageListFragment :
     abstract val logTag: String
 
     val legacyViewModel: MessageListViewModel by viewModel()
-    private val viewModel: MessageListViewModel = legacyViewModel
+    private val viewModel: MessageListViewModel get() = legacyViewModel
     private val recentChangesViewModel: RecentChangesViewModel by viewModel()
 
     private val generalSettingsManager: GeneralSettingsManager by inject()
@@ -189,15 +189,15 @@ abstract class AbstractMessageListFragment :
     protected lateinit var accountUuids: Array<String>
     private var accounts: List<LegacyAccount> = emptyList()
 
-    private var account: LegacyAccount? = null
+    protected var account: LegacyAccount? = null
 
     private var currentFolder: FolderInfoHolder? = null
     private var remoteSearchFuture: Future<*>? = null
     private var extraSearchResults: List<String>? = null
     private var threadTitle: String? = null
     private var allAccounts = false
-    private var sortType = SortType.SORT_DATE
-    private var sortAscending = true
+    protected open var sortType = SortType.SORT_DATE
+    protected open var sortAscending = true
     private var sortDateAscending = false
     private var actionMode: ActionMode? = null
     private var hasConnectivity: Boolean? = null
@@ -612,7 +612,7 @@ abstract class AbstractMessageListFragment :
         startActivity(intent)
     }
 
-    private fun initializeSortSettings() {
+    protected open fun initializeSortSettings() {
         if (isSingleAccountMode) {
             val account = checkNotNull(this.account)
             sortType = account.sortType
