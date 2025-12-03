@@ -158,6 +158,7 @@ private fun FolderContent(
             FolderSettingList(
                 onSyncAccountClick = { onEvent(Event.OnSyncAccount) },
                 onManageFoldersClick = { onEvent(Event.OnManageFoldersClick) },
+                onSyncAllAccountsClick = { onEvent(Event.OnSyncAllAccounts) },
                 onSettingsClick = { onEvent(Event.OnSettingsClick) },
                 isUnifiedAccount = isUnifiedAccount,
                 isLoading = state.isLoading,

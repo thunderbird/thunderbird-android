@@ -11,6 +11,7 @@ internal fun SettingListPreview() {
         FolderSettingList(
             onSyncAccountClick = {},
             onManageFoldersClick = {},
+            onSyncAllAccountsClick = {},
             onSettingsClick = {},
             isUnifiedAccount = false,
             isLoading = true,
@@ -25,6 +26,7 @@ internal fun SettingListWithUnifiedAccountPreview() {
         FolderSettingList(
             onSyncAccountClick = {},
             onManageFoldersClick = {},
+            onSyncAllAccountsClick = {},
             onSettingsClick = {},
             isUnifiedAccount = true,
             isLoading = false,
