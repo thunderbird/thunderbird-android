@@ -250,4 +250,3 @@ private fun PreviewDefaultWithoutAccountIndicator(
         )
     }
 }
-

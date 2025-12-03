@@ -18,7 +18,7 @@ fun AccountIndicatorIcon(
         width = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_WIDTH,
         height = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT,
         modifier = modifier.padding(
-            end = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_PADDING
+            end = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_PADDING,
         ),
     )
 }
