@@ -147,19 +147,15 @@ internal fun MessageItem(
                     .onPlaced { contentStart = it.positionInParent().x },
             ) {
                 Row {
-                    if (swapSenderWithSubject && showAccountIndicator && accountIndicatorColor != null) {
+                    if (!swapSenderWithSubject && showAccountIndicator && accountIndicatorColor != null) {
                         AccountIndicatorIcon(accountIndicatorColor)
-                        // todo replace with constant in account indicator icon
-                        Spacer(modifier = Modifier.width(2.dp))
                     }
                     sender()
                 }
                 CompositionLocalProvider(LocalContentColor provides colors.subjectColor) {
                     Row {
-                        if (!swapSenderWithSubject && showAccountIndicator && accountIndicatorColor != null) {
+                        if (swapSenderWithSubject && showAccountIndicator && accountIndicatorColor != null) {
                             AccountIndicatorIcon(accountIndicatorColor)
-                            // todo replace with constant in account indicator icon
-                            Spacer(modifier = Modifier.width(2.dp))
                         }
                         subject()
                     }
