@@ -19,15 +19,20 @@ class MessageListViewModel(
     messageListStateMachineFactory: MessageListStateMachine.Factory,
     getMessageListPreferences: DomainContract.UseCase.GetMessageListPreferences,
 ) : MessageListContract.ViewModel() {
-    private val stateMachine = messageListStateMachineFactory.create(dispatch = ::event).also {
-        it.currentState.onEach { state ->
-            logger.debug(TAG) { "stateMachine.currentState() called with: state = $state" }
-        }.launchIn(viewModelScope)
-    }
+    private val stateMachine = messageListStateMachineFactory.create(
+        scope = viewModelScope,
+        dispatch = ::event,
+    )
     override val state: StateFlow<MessageListState> = stateMachine.currentState
 
     init {
         logger.debug(TAG) { "init() called" }
+        stateMachine
+            .currentState
+            .onEach { state ->
+                logger.debug(TAG) { "stateMachine.currentState() called with: state = $state" }
+            }
+            .launchIn(viewModelScope)
         getMessageListPreferences()
             .onEach { preferences ->
                 logger.verbose(TAG) { "getMessageListPreferences() called with: preferences = $preferences" }

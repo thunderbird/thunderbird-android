@@ -34,7 +34,7 @@ class MessageListStateMachine(
     private val logger: Logger,
     private val stateSideEffectHandlersFactories: List<StateSideEffectHandler.Factory>,
     private val dispatch: (MessageListEvent) -> Unit,
-    private val stateMachine: StateMachine<MessageListState, MessageListEvent> = stateMachine {
+    private val stateMachine: StateMachine<MessageListState, MessageListEvent> = stateMachine(scope) {
         warmingUpInitialState(initialState = MessageListState.WarmingUp(), dispatch)
         globalState()
         loadingMessagesState()
