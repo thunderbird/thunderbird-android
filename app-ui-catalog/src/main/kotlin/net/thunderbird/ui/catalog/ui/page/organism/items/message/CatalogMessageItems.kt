@@ -72,6 +72,7 @@ fun LazyGridScope.messageItems() {
                     swapSenderAndSubject = false,
                     randomizeAttachment = false,
                     maxPreviewLines = 2,
+                    showAccountIndicator = true,
                 ),
             )
         }
@@ -86,6 +87,7 @@ fun LazyGridScope.messageItems() {
                 onSwapSenderAndSubjectChange = { config = config.copy(swapSenderAndSubject = it) },
                 onRandomizeAttachmentChange = { config = config.copy(randomizeAttachment = it) },
                 onMaxPreviewLines = { config = config.copy(maxPreviewLines = it) },
+                onShowAccountIndicator = { config = config.copy(showAccountIndicator = it) },
             )
             DividerHorizontal(modifier = Modifier.padding(MainTheme.spacings.default))
             CatalogMessageItems(config = config)
@@ -102,6 +104,7 @@ private data class MessageItemConfiguration(
     val swapSenderAndSubject: Boolean,
     val randomizeAttachment: Boolean,
     val maxPreviewLines: Int,
+    val showAccountIndicator: Boolean,
 )
 
 @Suppress("LongMethod")
@@ -117,6 +120,7 @@ private fun MessageItemConfiguration(
     onSwapSenderAndSubjectChange: (Boolean) -> Unit = {},
     onRandomizeAttachmentChange: (Boolean) -> Unit = {},
     onMaxPreviewLines: (Int) -> Unit = {},
+    onShowAccountIndicator: (Boolean) -> Unit = {},
 ) {
     Column(
         modifier = modifier,
@@ -168,6 +172,11 @@ private fun MessageItemConfiguration(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = MainTheme.spacings.double),
+        )
+        CheckboxInput(
+            text = "Show Account Indicator",
+            onCheckedChange = onShowAccountIndicator,
+            checked = config.showAccountIndicator,
         )
         Column(modifier = Modifier.padding(horizontal = MainTheme.spacings.double)) {
             TextLabelSmall(text = "Preview lines: ${config.maxPreviewLines}")
@@ -241,7 +250,7 @@ private fun ColumnScope.CatalogNewMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
-        showAccountIndicator = true,
+        showAccountIndicator = config.showAccountIndicator,
         accountIndicatorColor = Color.MAGENTA,
     )
 
@@ -298,7 +307,7 @@ private fun ColumnScope.CatalogUnreadMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
-        showAccountIndicator = true,
+        showAccountIndicator = config.showAccountIndicator,
         accountIndicatorColor = Color.MAGENTA,
     )
 
@@ -355,7 +364,7 @@ private fun ColumnScope.CatalogReadMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
-        showAccountIndicator = true,
+        showAccountIndicator = config.showAccountIndicator,
         accountIndicatorColor = Color.MAGENTA,
     )
 
@@ -412,7 +421,7 @@ private fun ColumnScope.CatalogActiveMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
-        showAccountIndicator = true,
+        showAccountIndicator = config.showAccountIndicator,
         accountIndicatorColor = Color.MAGENTA,
     )
 
@@ -466,7 +475,7 @@ private fun ColumnScope.CatalogJunkMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
-        showAccountIndicator = true,
+        showAccountIndicator = config.showAccountIndicator,
         accountIndicatorColor = Color.MAGENTA,
     )
 
