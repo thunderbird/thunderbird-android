@@ -93,6 +93,5 @@ fun ActiveMessageItem(
         contentPadding = contentPadding,
         showAccountIndicator = showAccountIndicator,
         accountIndicatorColor = accountIndicatorColor,
-        swapSenderWithSubject = swapSenderWithSubject,
     )
 }

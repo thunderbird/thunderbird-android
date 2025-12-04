@@ -75,6 +75,5 @@ fun JunkMessageItem(
         contentPadding = contentPadding,
         showAccountIndicator = showAccountIndicator,
         accountIndicatorColor = accountIndicatorColor,
-        swapSenderWithSubject = swapSenderWithSubject,
     )
 }
