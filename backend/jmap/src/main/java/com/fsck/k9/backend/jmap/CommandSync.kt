@@ -5,10 +5,10 @@ import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.mail.AuthenticationFailedException
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.internet.MimeMessage
 import java.util.Date
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.legacy.Log
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient

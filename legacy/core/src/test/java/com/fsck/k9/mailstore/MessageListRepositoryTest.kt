@@ -11,8 +11,8 @@ import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.Address
-import com.fsck.k9.mail.Flag
 import java.util.UUID
+import net.thunderbird.core.common.mail.Flag
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

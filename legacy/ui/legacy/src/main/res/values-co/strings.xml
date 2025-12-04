@@ -155,7 +155,7 @@
     <string name="global_settings_registered_name_color_changed">Culurisce i nomi in a vostra lista di cuntatti</string>
     <string name="general_settings_contact_name_color_label">Culore di i nomi di cuntattu</string>
     <string name="global_settings_messageview_fixedwidth_label">Grafie à larghezza fissa</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Impiegà una grafia à larghezza fissa per affissà i messaghji in testu simplice</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Impiegà una grafia à larghezza fissa per affissà i messaghji in testu rozu</string>
     <string name="global_settings_messageview_autofit_width_label">Adattazione autumatica di i messaghji</string>
     <string name="global_settings_messageview_autofit_width_summary">Strittisce i messaghji per adattassi à u screnu</string>
     <string name="general_settings_post_remove_action_title">Dopu avè squassatu o dispiazzatu un messaghju</string>
@@ -260,7 +260,6 @@
     <string name="account_setup_incoming_delete_policy_never_label">Ùn squassà micca nant’à u servitore</string>
     <string name="trash_folder_label">Cartulare di a curbella</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Affissà solu i cartulari à quelli mi sò abbunatu</string>
-    <string name="account_setup_auto_expand_folder">Spiegà autumaticamente u cartulare</string>
     <string name="account_setup_options_mail_check_frequency_never">Mai</string>
     <string name="account_setup_options_mail_check_frequency_15min">Tutti i 15 minuti</string>
     <string name="account_setup_options_mail_check_frequency_30min">Tutti i 30 minuti</string>
@@ -313,7 +312,7 @@
     <string name="account_settings_strip_signature_label">Caccià e segnature di e risposte</string>
     <string name="account_settings_strip_signature_summary">E segnature seranu cacciate da i messaghji menziunati</string>
     <string name="account_settings_message_format_label">Furmatu di messaghju</string>
-    <string name="account_settings_message_format_text">Testu in chjaru (caccià e fiure è a messa in forma)</string>
+    <string name="account_settings_message_format_text">Testu rozu (caccià e fiure è a messa in forma)</string>
     <string name="account_settings_message_format_html">HTML (cunservà e fiure è a messa in forma)</string>
     <string name="account_settings_always_show_cc_bcc_label">Sempre affissà Cc/Cci</string>
     <string name="account_settings_message_read_receipt_label">Cunferma di lettura</string>
@@ -335,8 +334,6 @@
     <string name="account_settings_crypto_summary_off">Alcuna appiecazione OpenPGP ùn hè cunfigurata</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Cifrà e bruttacopie solu s’è a cifratura hè attivata</string>
     <string name="account_settings_mail_check_frequency_label">Frequenza di sullicitazione di i cartulari</string>
-    <string name="account_settings_color_label">Culore di u contu</string>
-    <string name="account_settings_color_summary">U culore accentuatu di stu contu impiegatu in a lista di i cartulari et di i conti</string>
     <string name="account_settings_mail_display_count_label">Dimensione di u cartulare lucale</string>
     <string name="account_settings_autodownload_message_size_1">1 Kio</string>
     <string name="account_settings_autodownload_message_size_512">512 Kio</string>
@@ -403,7 +400,6 @@
     <string name="account_settings_incoming_label">Servitore d’entrata</string>
     <string name="account_settings_incoming_summary">Cunfigurà u servitore d’entrata di i messaghji</string>
     <string name="account_settings_outgoing_label">Servitore d’esciuta</string>
-    <string name="account_settings_description_label">Nome di u contu</string>
     <string name="account_settings_name_label">U vostru nome</string>
     <string name="notifications_title">Nutificazioni</string>
     <string name="account_settings_ringtone">Suneria di messaghju novu</string>
@@ -673,7 +669,7 @@
     <string name="openpgp_dialog_sign_only_neutral_encsigned">I messaghji cifrati cuntenenu sempre una segnatura.</string>
     <string name="crypto_msg_unencrypted_sign_error">A segnatura da un capu à l’altru cuntinia un sbagliu</string>
     <string name="crypto_msg_cancelled">U messaghju hè cifratu, ma a dicifratura hè stata abbandunata.</string>
-    <string name="crypto_msg_title_unencrypted_signed_e2e">Testu in chjaru firmatu da un capu à l’altru</string>
+    <string name="crypto_msg_title_unencrypted_signed_e2e">Testu rozu firmatu da un capu à l’altru</string>
     <string name="crypto_msg_unencrypted_sign_revoked">ma a chjave da un capu à l’altru hè revucata</string>
     <string name="crypto_msg_unencrypted_sign_unknown">da una chjave da un capu à l’altru scunnisciuta</string>
     <string name="crypto_msg_title_encrypted_unknown">Cifratu</string>
@@ -723,7 +719,7 @@
     <string name="crypto_msg_incomplete_signed">u messaghju deve esse scaricatu sanu sanu per trattà a segnatura</string>
     <string name="crypto_msg_unsupported_signed">cuntene una segnatura da un capu à l’altru chì ùn hè micca accettata</string>
     <string name="crypto_msg_unsupported_encrypted">U messaghju hè cifratu, ma in un furmatu chì ùn hè micca accettatu.</string>
-    <string name="crypto_msg_title_unencrypted_signed">Testu in chjaru firmatu</string>
+    <string name="crypto_msg_title_unencrypted_signed">Testu rozu firmatu</string>
     <string name="crypto_msg_unencrypted_sign_mismatch">ma a chjave da un capu à l’altru ùn currispundia micca à u speditore</string>
     <string name="crypto_msg_unencrypted_sign_expired">ma a chjave da un capu à l’altru hè scaduta</string>
     <string name="crypto_msg_unencrypted_sign_insecure">ma a chjave da un capu à l’altru ùn hè micca cunsiderata cum’è sicura</string>
@@ -758,7 +754,7 @@
     <string name="openpgp_sign_only_disable">Disattivà</string>
     <string name="openpgp_dialog_sign_only_title">Modu PGP Sign-Only</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Stu modu ùn cifra micca u messaghju, ma verificheghja ch’ellu hè statu mandatu da a vostra chjave.</string>
-    <string name="crypto_msg_title_plaintext">Testu in chjaru</string>
+    <string name="crypto_msg_title_plaintext">Testu rozu</string>
     <string name="crypto_msg_unencrypted_sign_verified">da un signatariu verificatu</string>
     <string name="crypto_msg_encrypted_sign_expired">ma a chjave da un capu à l’altru hè scaduta</string>
     <string name="locked_attach_unlock">Spalancà</string>
@@ -857,4 +853,15 @@
     <string name="debug_invalidate_access_token_cannot_modify">Ùn si pò micca mudificà u gettone d’accessu arregistratu. Pruvate un’invalidazione lucale.</string>
     <string name="debug_invalidate_access_token_already_modified">U gettone d’accessu arregistratu hè dighjà mudificatu.</string>
     <string name="message_view_menu_action_export_eml">Espurtà cum’è EML</string>
+    <string name="set_format_html_action">Impiegà a messa in forma d’origine</string>
+    <string name="set_format_html_condensed_action">Affissà a messa in forma</string>
+    <string name="set_format_plain_action">Affissà u messaghju non messu in forma</string>
+    <string name="set_format_plain_condensed_action">Affissà senza messa in forma</string>
+    <string name="global_settings_messageview_body_content_type_title">Tipu di cuntenutu di u corpu di messaghju</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (testu/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Testu rozu(testu/rozu)</string>
+    <string name="account_setup_auto_select_folder">Selezzione autumatica di u cartulare</string>
+    <string name="navigation_drawer_preferences">Listinu laterale</string>
+    <string name="expand_folders">Spiegà i cartulari</string>
+    <string name="debug_feature_flags">SPANNATURA : Bandere di funzione</string>
 </resources>

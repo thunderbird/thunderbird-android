@@ -8,8 +8,8 @@ import assertk.assertions.isNotSameInstanceAs
 import assertk.assertions.isNull
 import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
-import com.fsck.k9.mail.Flag
 import java.util.UUID
+import net.thunderbird.core.common.mail.Flag
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

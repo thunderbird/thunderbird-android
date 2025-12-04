@@ -11,8 +11,7 @@ import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageReference
-import com.fsck.k9.K9
-import com.fsck.k9.activity.MessageList
+import com.fsck.k9.activity.MainActivity
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.notification.DeleteConfirmationActivity
@@ -38,6 +37,7 @@ internal class K9NotificationActionCreator(
     private val messageStoreManager: MessageStoreManager,
     private val generalSettingsManager: GeneralSettingsManager,
 ) : NotificationActionCreator {
+    private val interactionSettings get() = generalSettingsManager.getConfig().interaction
 
     override fun createViewMessagePendingIntent(messageReference: MessageReference): PendingIntent {
         val openInUnifiedInbox =
@@ -136,7 +136,7 @@ internal class K9NotificationActionCreator(
     }
 
     override fun createDeleteMessagePendingIntent(messageReference: MessageReference): PendingIntent {
-        return if (K9.isConfirmDeleteFromNotification) {
+        return if (interactionSettings.isConfirmDeleteFromNotification) {
             createDeleteConfirmationPendingIntent(messageReference)
         } else {
             createDeleteServicePendingIntent(messageReference)
@@ -161,7 +161,7 @@ internal class K9NotificationActionCreator(
         account: LegacyAccountDto,
         messageReferences: List<MessageReference>,
     ): PendingIntent {
-        return if (K9.isConfirmDeleteFromNotification) {
+        return if (interactionSettings.isConfirmDeleteFromNotification) {
             getDeleteAllConfirmationPendingIntent(messageReferences)
         } else {
             getDeleteAllServicePendingIntent(account, messageReferences)
@@ -218,7 +218,7 @@ internal class K9NotificationActionCreator(
             addAccountUuid(account.uuid)
         }
 
-        return MessageList.intentDisplaySearch(
+        return MainActivity.intentDisplaySearch(
             context = context,
             search = search,
             noThreading = false,
@@ -235,7 +235,7 @@ internal class K9NotificationActionCreator(
             addAccountUuid(account.uuid)
         }
 
-        return MessageList.intentDisplaySearch(
+        return MainActivity.intentDisplaySearch(
             context = context,
             search = search,
             noThreading = false,
@@ -247,19 +247,19 @@ internal class K9NotificationActionCreator(
     }
 
     private fun createMessageViewIntent(messageReference: MessageReference, openInUnifiedInbox: Boolean): Intent {
-        return MessageList.actionDisplayMessageIntent(context, messageReference, openInUnifiedInbox).apply {
+        return MainActivity.actionDisplayMessageIntent(context, messageReference, openInUnifiedInbox).apply {
             data = Uri.parse("data:,messageView/${messageReference.toIdentityString()}")
         }
     }
 
     private fun createUnifiedInboxIntent(account: LegacyAccountDto): Intent {
-        return MessageList.createUnifiedInboxIntent(context, account).apply {
+        return MainActivity.createUnifiedInboxIntent(context, account).apply {
             data = Uri.parse("data:,unifiedInbox/${account.uuid}")
         }
     }
 
     private fun createNewMessagesIntent(account: LegacyAccountDto): Intent {
-        return MessageList.createNewMessagesIntent(context, account).apply {
+        return MainActivity.createNewMessagesIntent(context, account).apply {
             data = Uri.parse("data:,newMessages/${account.uuid}")
         }
     }

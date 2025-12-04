@@ -23,7 +23,7 @@ import com.fsck.k9.crypto.MessageCryptoStructureDetector;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.Flag;
+import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.Message;
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.Multipart;

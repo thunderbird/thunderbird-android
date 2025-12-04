@@ -2,11 +2,11 @@ plugins {
     id(ThunderbirdPlugins.Library.kmp)
 }
 
-android {
-    namespace = "net.thunderbird.core.file"
-}
-
 kotlin {
+    androidLibrary {
+        namespace = "net.thunderbird.core.file"
+        withHostTest {}
+    }
     sourceSets {
         commonMain.dependencies {
             api(libs.uri)
@@ -15,7 +15,7 @@ kotlin {
 
             implementation(libs.kotlinx.io.core)
         }
-        androidUnitTest.dependencies {
+        androidHostTest.dependencies {
             implementation(libs.robolectric)
         }
     }

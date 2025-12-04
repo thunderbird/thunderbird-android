@@ -1,16 +1,13 @@
 package net.thunderbird.feature.navigation.drawer.siderail.ui.setting
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.SettingListItem
 
@@ -24,7 +21,6 @@ internal fun SideRailSettingList(
     Column(
         modifier = modifier
             .padding(vertical = MainTheme.spacings.default)
-            .windowInsetsPadding(WindowInsets.navigationBars)
             .fillMaxWidth(),
     ) {
         SettingListItem(

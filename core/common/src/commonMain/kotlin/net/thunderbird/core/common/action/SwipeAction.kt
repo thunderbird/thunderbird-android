@@ -16,9 +16,4 @@ enum class SwipeAction(val removesItem: Boolean) {
 data class SwipeActions(
     val leftAction: SwipeAction,
     val rightAction: SwipeAction,
-) {
-    companion object {
-        const val KEY_SWIPE_ACTION_LEFT = "swipeLeftAction"
-        const val KEY_SWIPE_ACTION_RIGHT = "swipeRightAction"
-    }
-}
+)

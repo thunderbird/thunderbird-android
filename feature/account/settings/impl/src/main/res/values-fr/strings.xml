@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_settings_general_title">Paramètres généraux</string>
-    <string name="account_settings_general_profile_indicator_title">Indicateur de profil</string>
-    <string name="account_settings_general_profile_indicator_monogram">Monogramme</string>
-    <string name="account_settings_general_profile_indicator_image">Image</string>
-    <string name="account_settings_general_profile_indicator_icon">Icône</string>
+    <string name="account_settings_general_avatar_option_monogram">Monogramme</string>
+    <string name="account_settings_general_avatar_option_image">Image</string>
+    <string name="account_settings_general_avatar_option_icon">Icône</string>
     <string name="account_settings_general_name_title">Nom du compte</string>
     <string name="account_settings_general_name_description">Le nom associé à votre compte.</string>
     <string name="account_settings_general_color_title">Couleur du compte</string>
     <string name="account_settings_general_color_description">La couleur d’accentuation de ce compte, utilisée dans les dossiers et les listes de comptes.</string>
+    <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_description">Choisissez comment votre avatar de compte est affiché.</string>
+    <string name="account_settings_general_name_error_empty">Le nom ne peut pas être vide</string>
+    <string name="account_settings_general_name_error_too_long">Le nom est trop long</string>
+    <string name="account_settings_general_avatar_monogram_title">Monogramme de l’avatar</string>
+    <string name="account_settings_general_avatar_monogram_description">Le monogramme utilisé comme avatar.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Le monogramme ne peut pas être vide</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Le monogramme est trop long</string>
+    <string name="account_settings_general_avatar_icon_title">Icône de l’avatar</string>
+    <string name="account_settings_general_avatar_icon_description">Choisissez l’une des icônes pour l’utiliser comme avatar.</string>
 </resources>

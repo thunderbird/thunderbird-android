@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">Paremti „Thunderbird“</string>
     <string name="funding_googleplay_contribution_title">Paremti „Thunderbird“</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Nuoširdi padėka jum, nuo mūsų visų!</string>
+    <string name="funding_googleplay_contribution_list_title">Saugus prisidėjimas</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Duoti kartą</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Kas mėnesį</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Neprieinama</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Pakartoti</string>
+    <string name="funding_googleplay_contribution_error_show_more">Rodyti plačiau</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">Nepaisyti klaidos</string>
+    <string name="funding_googleplay_contribution_error_unknown">Nežinoma klaida</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">Taip</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">Ne dabar</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Aplankykite <xliff:g id="link_text">%s</xliff:g> norėdami pamatyti daugiau būdų palaikyti Thunderbird.</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Tęsti mokėjimą</string>
+    <string name="funding_googleplay_contribution_reminder_title">Palaikyti Thunderbird</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird yra nemokama ir atviro kodo programa.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Mes nerodome reklamų.</string>
 </resources>

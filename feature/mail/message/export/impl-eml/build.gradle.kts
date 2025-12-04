@@ -3,6 +3,10 @@ plugins {
 }
 
 kotlin {
+    androidLibrary {
+        namespace = "net.thunderbird.feature.mail.message.export.eml"
+        withHostTest {}
+    }
     sourceSets {
         commonMain.dependencies {
             api(projects.feature.mail.message.export.api)
@@ -13,8 +17,4 @@ kotlin {
             implementation(libs.uri)
         }
     }
-}
-
-android {
-    namespace = "net.thunderbird.feature.mail.message.export.eml"
 }

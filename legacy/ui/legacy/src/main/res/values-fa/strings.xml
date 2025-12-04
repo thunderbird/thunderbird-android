@@ -271,7 +271,6 @@
     <string name="archive_folder_label">پوشهٔ بایگانی</string>
     <string name="spam_folder_label">پوشهٔ هرزنامه</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">فقط پوشه‌هایی که مشترک آن‌ها هستم را نمایش بده</string>
-    <string name="account_setup_auto_expand_folder">پوشهٔ آغازین</string>
     <string name="account_setup_options_mail_check_frequency_never">هرگز</string>
     <string name="account_setup_options_mail_check_frequency_15min">هر ۱۵ دقیقه</string>
     <string name="account_setup_options_mail_check_frequency_30min">هر ۳۰ دقیقه</string>
@@ -345,7 +344,7 @@
     <string name="account_settings_quote_style_header">سرایند (مثل اوت‌لوک)</string>
     <string name="account_settings_upload_sent_messages_label">بارگذاری پیام‌های ارسالی</string>
     <string name="account_settings_upload_sent_messages_summary">پیام‌ها پس از ارسال در پوشه ارسال (Sent) بارگذاری شوند</string>
-    <string name="account_settings_general_title">تنظیمات کلی</string>
+    <string name="account_settings_general_title">تنظیمات عمومی</string>
     <string name="account_settings_reading_mail">خواندن رایانامه</string>
     <string name="account_settings_sync">واکشی رایانامه</string>
     <string name="account_settings_folders">پوشه‌ها</string>
@@ -361,8 +360,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">همهٔ پیش‌نویس‌ها به‌صورت رمزنگاری‌شده ذخیره می‌شوند</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">پیش‌نویس‌ها فقط در صورتی رمزنگاری شوند که رمزنگاری فعال باشد</string>
     <string name="account_settings_mail_check_frequency_label">تکرار سرکشی به پوشه</string>
-    <string name="account_settings_color_label">رنگ حساب کاربری</string>
-    <string name="account_settings_color_summary">رنگ مشخصهٔ این حساب که در سیاههٔ پوشه‌ها و حساب‌ها استفاده می‌شود</string>
     <string name="account_settings_mail_display_count_label">گنجایش پوشهٔ محلی</string>
     <string name="account_settings_autodownload_message_size_label">واکشی پیام‌ها تا این حجم</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -403,7 +400,6 @@
     <string name="account_settings_incoming_summary">کارساز ورودی رایانامه را پیکربندی کنید</string>
     <string name="account_settings_outgoing_label">کارساز خروجی</string>
     <string name="account_settings_outgoing_summary">کارساز خروجی رایانامه (SMTP) را پیکربندی کنید</string>
-    <string name="account_settings_description_label">نام حساب</string>
     <string name="account_settings_name_label">نام شما</string>
     <string name="notifications_title">آگاهی‌ها</string>
     <string name="account_settings_vibration">لرزش</string>
@@ -770,8 +766,8 @@
     <string name="dialog_autocrypt_mutual_description_1">پیام‌ها معمولاً یا به‌انتخاب رمزنگاری می‌شوند یا زمانی که در پاسخ به پیام رمزنگاری‌شده‌ای ارسال شوند.</string>
     <string name="dialog_autocrypt_mutual_description_2">اگر هم فرستنده و هم گیرنده حالت دوسره را فعال کنند، رمزنگاری به‌طور پیش‌فرض فعال خواهد شد.</string>
     <string name="dialog_autocrypt_mutual_learn_more">برای اطلاعات بیشتر <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">اینجا کلیک کنید</a>.</string>
-    <string name="general_settings_title">تنظیمات کلی</string>
-    <string name="dialog_openkeychain_info_title">برنامه‌ای برای OpenPGP نصب نیست</string>
+    <string name="general_settings_title">تنظیمات عمومی</string>
+    <string name="dialog_openkeychain_info_title">هیچ کارهٔ OpenPGPای نصب نشده</string>
     <string name="dialog_openkeychain_info_install">نصب</string>
     <string name="account_settings_crypto_encrypt_subject">موضوع پیام رمزنگاری شود</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">شاید برخی گیرندگان از آن پشتیبانی نکنند</string>
@@ -915,4 +911,22 @@
     <string name="debug_invalidate_access_token_server">آزمون: بی‌اعتباری ژتون دسترسی (کارساز)</string>
     <string name="debug_force_auth_failure">آزمون: اجبار شکست فوری</string>
     <string name="debug_invalidate_access_token_already_modified">ژتون دسترسی ذخیره شده از پیش تغییر کرده.</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">متن خام (text/plain)</string>
+    <string name="set_format_html_action">استفاده از قالب‌بندی اصلی</string>
+    <string name="set_format_html_condensed_action">نمایش قالب بسته</string>
+    <string name="set_format_plain_action">نمایش پیام بدون قالب بندی</string>
+    <string name="set_format_plain_condensed_action">نمایش بدون قالب بندی</string>
+    <string name="global_settings_messageview_body_content_type_title">گونهٔ محتوای بدنه</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="account_setup_auto_select_folder">گزینش خودکار شاخه</string>
+    <string name="navigation_drawer_preferences">فهرست کناری</string>
+    <string name="expand_folders">گسترش شاخه‌ها</string>
+    <string name="debug_invalidate_access_token_done">ژتون دسترسی از اعتبار ساقط شد. درخواست بعدی باز خواهد خواند.</string>
+    <string name="debug_invalidate_access_token_unavailable">هیچ ژتون OAuthای برای این حساب موجود نیست.</string>
+    <string name="debug_invalidate_access_token_local_done">درخواست نامعتبر سازی محلی شد. درخواست بعدی ژتونی جدید واخواهد کشید.</string>
+    <string name="debug_invalidate_access_token_server_done">ژتون دسترسی ذخیره شده خراب شد. درخواست بعدی شکست خورده و سپس بازخواهد خوانده شد.</string>
+    <string name="debug_force_auth_failure_done">وضعیت OAuth پاک شد. درخواست بعدی شکست خواهد خورد.</string>
+    <string name="debug_force_auth_failure_unavailable">هیچ پیکربندی OAuthای برای این حساب موجود نیست.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">نتوانست ژتون دسترسی ذخیره شده را دستگاری کند. آزمودن نامعتبر سازی محلی.</string>
+    <string name="debug_feature_flags">اشکال‌زدایی: پرچم‌های ویژگی</string>
 </resources>

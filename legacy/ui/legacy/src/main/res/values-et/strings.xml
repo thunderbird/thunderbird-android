@@ -270,7 +270,6 @@
     <string name="archive_folder_label">Arhiivi kaust</string>
     <string name="spam_folder_label">Rämpsposti kaust</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Näita üksnes tellitud kaustu</string>
-    <string name="account_setup_auto_expand_folder">Kaustade automaatne laiendamine</string>
     <string name="account_setup_options_mail_check_frequency_never">Mitte kunagi</string>
     <string name="account_setup_options_mail_check_frequency_15min">Iga 15 minuti tagant</string>
     <string name="account_setup_options_mail_check_frequency_30min">Iga 30 minuti tagant</string>
@@ -360,8 +359,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Kõik mustandid salvestatakse krüpteeritult</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Krüpteeri mustandid vaid siis, kui krüpteerimine on lubatud</string>
     <string name="account_settings_mail_check_frequency_label">Kausta pollimise sagedus</string>
-    <string name="account_settings_color_label">Konto värv</string>
-    <string name="account_settings_color_summary">Konto rõhutamise värvi kasutatakse selle konto kaustades ja nimekirjades</string>
     <string name="account_settings_mail_display_count_label">Lokaalse kausta suurus</string>
     <string name="account_settings_autodownload_message_size_label">Laadi kirju kuni</string>
     <string name="account_settings_autodownload_message_size_1">1 KB</string>
@@ -402,7 +399,6 @@
     <string name="account_settings_incoming_summary">Konfigureeri sisse tuleva meili server</string>
     <string name="account_settings_outgoing_label">Väljuva meili server</string>
     <string name="account_settings_outgoing_summary">Konfigureeri väljuva meili server (SMTP)</string>
-    <string name="account_settings_description_label">Konto nimi</string>
     <string name="account_settings_name_label">Sinu nimi</string>
     <string name="notifications_title">Teated</string>
     <string name="account_settings_vibration">Värinaalarm</string>
@@ -921,4 +917,15 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="debug_force_auth_failure_done">OAuthi olek on kustutatud. Järgmine päring ei õnnestu.</string>
     <string name="debug_force_auth_failure">Katse: käivita autentimise ebaõnnestumine</string>
     <string name="message_view_menu_action_export_eml">Ekspordi EML-failina</string>
+    <string name="account_setup_auto_select_folder">Vali kaust automaatselt</string>
+    <string name="navigation_drawer_preferences">Külgmenüü</string>
+    <string name="expand_folders">Laienda kaustad</string>
+    <string name="set_format_html_action">Kasuta algset vormindust</string>
+    <string name="set_format_html_condensed_action">Näita vormindatuna</string>
+    <string name="set_format_plain_action">Näita vormindamata kirja</string>
+    <string name="set_format_plain_condensed_action">Näita vormindamata kujul</string>
+    <string name="global_settings_messageview_body_content_type_title">Kirja sisu „Content-Type“</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Vormindamata tekst (text/plain)</string>
+    <string name="debug_feature_flags">VEAOTSING: funktsionaalsuste võtmed</string>
 </resources>

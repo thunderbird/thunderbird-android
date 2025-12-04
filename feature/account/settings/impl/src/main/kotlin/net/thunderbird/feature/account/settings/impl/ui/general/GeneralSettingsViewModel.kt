@@ -2,73 +2,80 @@ package net.thunderbird.feature.account.settings.impl.ui.general
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.handle
-import net.thunderbird.core.ui.setting.SettingValue
+import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.AccountSettingError
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UpdateGeneralSettingCommand
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Event
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.State
 
+@Suppress("TooManyFunctions")
 internal class GeneralSettingsViewModel(
     private val accountId: AccountId,
     private val getAccountName: UseCase.GetAccountName,
-    private val getGeneralSettings: UseCase.GetGeneralSettings,
+    private val getAccountProfile: UseCase.GetAccountProfile,
     private val updateGeneralSettings: UseCase.UpdateGeneralSettings,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), GeneralSettingsContract.ViewModel {
 
     init {
-        viewModelScope.launch {
-            getAccountName(accountId).collect { outcome ->
-                outcome.handle(
-                    onSuccess = { accountName ->
-                        updateState { state ->
-                            state.copy(
-                                subtitle = accountName,
-                            )
-                        }
-                    },
-                    onFailure = { handleError(it) },
-                )
-            }
-        }
-
-        viewModelScope.launch {
-            getGeneralSettings(accountId).collect { outcome ->
-                outcome.handle(
-                    onSuccess = { settings ->
-                        updateState { state ->
-                            state.copy(
-                                settings = settings,
-                            )
-                        }
-                    },
-                    onFailure = { handleError(it) },
-                )
-            }
-        }
+        observeAccountName()
+        observeGeneralSettings()
     }
 
     override fun event(event: Event) {
         when (event) {
-            is Event.OnSettingValueChange -> updatePreference(event.setting)
             is Event.OnBackPressed -> emitEffect(Effect.NavigateBack)
+            is Event.OnAvatarChange -> updateSetting(UpdateGeneralSettingCommand.UpdateAvatar(event.avatar))
+            is Event.OnColorChange -> updateSetting(UpdateGeneralSettingCommand.UpdateColor(event.color))
+            is Event.OnNameChange -> updateSetting(UpdateGeneralSettingCommand.UpdateName(event.name))
         }
     }
 
-    private fun updatePreference(setting: SettingValue<*>) {
+    private fun observeAccountName() {
+        getAccountName(accountId)
+            .onEach { outcome ->
+                outcome.handle(
+                    onSuccess = { updateState { state -> state.copy(subtitle = it) } },
+                    onFailure = { handleError(it) },
+                )
+            }.launchIn(viewModelScope)
+    }
+
+    private fun observeGeneralSettings() {
+        getAccountProfile(accountId)
+            .onEach { outcome ->
+                outcome.handle(
+                    onSuccess = { profile ->
+                        updateState { state ->
+                            state.copy(
+                                name = state.name.updateValue(profile.name),
+                                color = IntegerInputField(value = profile.color),
+                                avatar = profile.avatar,
+                            )
+                        }
+                    },
+                    onFailure = { handleError(it) },
+                )
+            }.launchIn(viewModelScope)
+    }
+
+    private fun updateSetting(command: UpdateGeneralSettingCommand) {
         viewModelScope.launch {
-            updateGeneralSettings(accountId, setting)
+            updateGeneralSettings(accountId, command)
         }
     }
 
-    private fun handleError(error: SettingsError) {
+    private fun handleError(error: AccountSettingError) {
         when (error) {
-            is SettingsError.NotFound -> Log.w(error.message)
+            is AccountSettingError.NotFound -> Log.w(error.message)
         }
     }
 }

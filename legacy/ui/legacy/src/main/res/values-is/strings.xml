@@ -74,7 +74,7 @@
     <string name="unsubscribe_action">Hætta áskrift</string>
     <string name="show_headers_action">Birta hausa</string>
     <plurals name="copy_address_to_clipboard">
-        <item quantity="one">Netfang afritað á klippispjald</item>
+        <item quantity="one">Póstfang afritað á klippispjald</item>
         <item quantity="other">Póstföng afrituð á klippispjald</item>
     </plurals>
     <string name="copy_subject_to_clipboard">Texti viðfangsefnis afritaður á klippispjald</string>
@@ -270,7 +270,6 @@
     <string name="archive_folder_label">Setja möppu í geymslu</string>
     <string name="spam_folder_label">Ruslpóstmappa</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Sýna einungis möppur í áskrift</string>
-    <string name="account_setup_auto_expand_folder">Fletta möppu út sjálfvirkt</string>
     <string name="account_setup_options_mail_check_frequency_never">Aldrei</string>
     <string name="account_setup_options_mail_check_frequency_15min">Á 15 mínútna fresti</string>
     <string name="account_setup_options_mail_check_frequency_30min">Á 30 mínútna fresti</string>
@@ -360,8 +359,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Öll drög verða geymd dulrituð</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Dulrita drög einungis ef dulritun er virk</string>
     <string name="account_settings_mail_check_frequency_label">Tíðni athugana á möppu</string>
-    <string name="account_settings_color_label">Litur aðgangsins</string>
-    <string name="account_settings_color_summary">Liturinn sem notaður er til að auðkenna þennan aðgang í listum</string>
     <string name="account_settings_mail_display_count_label">Stærð staðværrar möppu</string>
     <string name="account_settings_autodownload_message_size_label">Ná í skilaboð upp að</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -402,7 +399,6 @@
     <string name="account_settings_incoming_summary">Stilla móttöku-póstþjón</string>
     <string name="account_settings_outgoing_label">Sendinga-póstþjónn</string>
     <string name="account_settings_outgoing_summary">Stilla sendinga-póstþjón (SMTP)</string>
-    <string name="account_settings_description_label">Nafn aðgangsins</string>
     <string name="account_settings_name_label">Nafnið þitt</string>
     <string name="notifications_title">Tilkynningar</string>
     <string name="account_settings_vibration">Titringur</string>
@@ -615,7 +611,7 @@
     <string name="webview_contextmenu_phone_clipboard_label">Símanúmer</string>
     <string name="webview_contextmenu_email_send_action">Senda póst</string>
     <string name="webview_contextmenu_email_save_action">Vista í Tengiliði</string>
-    <string name="webview_contextmenu_email_copy_action">Afrita vistfang á klippispjald</string>
+    <string name="webview_contextmenu_email_copy_action">Afrita póstfang á klippispjald</string>
     <string name="webview_contextmenu_email_clipboard_label">Tölvupóstfang</string>
     <string name="account_settings_remote_search_num_results_entries_all">Allt</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
@@ -909,4 +905,15 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
     <string name="debug_enable_sync_debug_logging_summary">Virkja skráningu upplýsinga um samstillingu í 24 klst</string>
     <string name="debug_sync_export_logs_title">Flytja út atvikaskrár samstillingar</string>
     <string name="debug_open_secret_debug_screen">Opna leynilegan villuleitarskjá</string>
+    <string name="set_format_html_action">Nota upprunalegt snið</string>
+    <string name="set_format_html_condensed_action">Sýna sem sniðið</string>
+    <string name="set_format_plain_action">Sýna ósniðin skilaboð</string>
+    <string name="set_format_plain_condensed_action">Sýna ósniðið</string>
+    <string name="global_settings_messageview_body_content_type_title">Efnistegund meginmáls</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (texti/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Hreinn texti (text/plain)</string>
+    <string name="account_setup_auto_select_folder">Velja möppu sjálfvirkt</string>
+    <string name="navigation_drawer_preferences">Hliðarvalmynd</string>
+    <string name="expand_folders">Fletta út möppum</string>
+    <string name="debug_invalidate_access_token_already_modified">Geymt aðgangsteikn þegar breytt.</string>
 </resources>

@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Általános beállítások</string>
+    <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_description">Válassza ki hogyan jelenjen meg az avatárja.</string>
+    <string name="account_settings_general_avatar_option_monogram">Monogram</string>
+    <string name="account_settings_general_avatar_option_image">Kép</string>
+    <string name="account_settings_general_avatar_option_icon">Ikon</string>
+    <string name="account_settings_general_name_title">Fiók Neve</string>
+    <string name="account_settings_general_name_description">A fiókjához tartozó név.</string>
+    <string name="account_settings_general_name_error_empty">A név nem lehet üres</string>
+    <string name="account_settings_general_name_error_too_long">A név túl hosszú</string>
+    <string name="account_settings_general_color_title">Fiók színe</string>
 </resources>

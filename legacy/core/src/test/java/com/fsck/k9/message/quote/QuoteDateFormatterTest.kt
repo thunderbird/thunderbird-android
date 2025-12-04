@@ -2,6 +2,7 @@ package com.fsck.k9.message.quote
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.fsck.k9.notification.FakePlatformConfigProvider
 import java.time.ZonedDateTime
 import java.util.Date
 import java.util.Locale
@@ -28,6 +29,7 @@ class QuoteDateFormatterTest {
         network = NetworkSettings(),
         notification = NotificationPreference(),
         privacy = PrivacySettings(),
+        platformConfigProvider = FakePlatformConfigProvider(),
 
     )
     private val quoteDateFormatter = QuoteDateFormatter(

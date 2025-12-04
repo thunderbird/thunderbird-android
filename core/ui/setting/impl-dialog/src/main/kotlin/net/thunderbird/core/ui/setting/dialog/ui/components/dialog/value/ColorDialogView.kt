@@ -1,7 +1,9 @@
 package net.thunderbird.core.ui.setting.dialog.ui.components.dialog.value
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -11,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -42,6 +45,7 @@ internal fun ColorDialogView(
 
             Spacer(modifier = Modifier.height(MainTheme.spacings.double))
         }
+
         LazyVerticalGrid(
             state = gridState,
             columns = GridCells.Adaptive(minSize = MainTheme.sizes.iconAvatar),
@@ -49,14 +53,19 @@ internal fun ColorDialogView(
             horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
         ) {
             items(setting.colors) { color ->
-                ColorView(
-                    color = color,
-                    onClick = { newColor ->
-                        currentColor.intValue = newColor
-                    },
-                    isSelected = color == currentColor.intValue,
-                    modifier = Modifier.size(MainTheme.sizes.iconAvatar),
-                )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    ColorView(
+                        color = color,
+                        onClick = { newColor ->
+                            currentColor.intValue = newColor
+                        },
+                        isSelected = color == currentColor.intValue,
+                        modifier = Modifier.size(MainTheme.sizes.iconAvatar),
+                    )
+                }
             }
         }
     }

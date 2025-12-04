@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_title">U cartulare di i messaghji mandati hè intruvevule</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Per arregistrà stu messaghju dopu à u so inviu, definite un cartulare di i messaghji mandati in i parametri di u contu.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Attribuisce un cartulare di i messaghji mandati</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Abbandunà</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Mandà è squassà</string>
 </resources>

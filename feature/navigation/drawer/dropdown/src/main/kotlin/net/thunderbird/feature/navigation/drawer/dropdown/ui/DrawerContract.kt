@@ -19,6 +19,7 @@ internal interface DrawerContract {
             showUnifiedFolders = false,
             showStarredCount = false,
             showAccountSelector = true,
+            expandAllFolder = false,
         ),
         val accounts: ImmutableList<DisplayAccount> = persistentListOf(),
         val selectedAccountId: String? = null,

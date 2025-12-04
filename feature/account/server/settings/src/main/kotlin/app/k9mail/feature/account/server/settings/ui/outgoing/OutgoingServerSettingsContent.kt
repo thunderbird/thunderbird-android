@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
@@ -27,7 +27,7 @@ internal fun OutgoingServerSettingsContent(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    val resources = LocalContext.current.resources
+    val resources = LocalResources.current
 
     ResponsiveWidthContainer(
         modifier = Modifier

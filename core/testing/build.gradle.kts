@@ -2,11 +2,11 @@ plugins {
     id(ThunderbirdPlugins.Library.kmp)
 }
 
-android {
-    namespace = "net.thunderbird.core.testing"
-}
-
 kotlin {
+    androidLibrary {
+        namespace = "net.thunderbird.core.testing"
+        withHostTest {}
+    }
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kotlin.test)

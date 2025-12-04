@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
@@ -21,8 +21,9 @@ internal fun FolderList(
     onFolderClick: (DisplayFolder) -> Unit,
     showStarredCount: Boolean,
     modifier: Modifier = Modifier,
+    isExpandedInitial: Boolean = false,
 ) {
-    val resources = LocalContext.current.resources
+    val resources = LocalResources.current
     val folderNameFormatter = remember { FolderNameFormatter(resources) }
     val listState = rememberLazyListState()
 
@@ -45,6 +46,7 @@ internal fun FolderList(
                 onClick = onFolderClick,
                 folderNameFormatter = folderNameFormatter,
                 selectedFolderId = selectedFolder?.id,
+                isExpandInitial = isExpandedInitial,
             )
         }
     }

@@ -358,7 +358,6 @@
     <string name="archive_folder_label">காப்பக கோப்புறை</string>
     <string name="spam_folder_label">ச்பேம் கோப்புறை</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">சந்தா கோப்புறைகளை மட்டுமே காட்டு</string>
-    <string name="account_setup_auto_expand_folder">தானாக காலாவதியான கோப்புறை</string>
     <string name="account_setup_options_mail_check_frequency_1hour">ஒவ்வொரு மணி நேரமும்</string>
     <string name="account_setup_options_mail_check_frequency_2hour">ஒவ்வொரு 2 மணி நேரமும்</string>
     <string name="account_setup_options_mail_check_frequency_3hour">ஒவ்வொரு 3 மணி நேரமும்</string>
@@ -533,7 +532,6 @@
     <string name="account_settings_sync_remote_deletetions_summary">சேவையகத்தில் நீக்கப்படும் போது செய்திகளை அகற்று</string>
     <string name="account_settings_incoming_label">உள்வரும் சேவையகம்</string>
     <string name="account_settings_outgoing_summary">வெளிச்செல்லும் அஞ்சல் (SMTP) சேவையகத்தை உள்ளமைக்கவும்</string>
-    <string name="account_settings_description_label">கணக்கு பெயர்</string>
     <string name="notifications_title">அறிவிப்புகள்</string>
     <string name="account_settings_vibration">அதிர்வு</string>
     <string name="account_settings_vibrate_enable">அதிர்வு</string>
@@ -693,7 +691,6 @@
     <string name="account_settings_crypto_key">இறுதி முதல் இறுதி விசையை உள்ளமைக்கவும்</string>
     <string name="account_settings_crypto_encrypt_all_drafts">குறியாக்கப்பட்ட அனைத்து வரைவுகளையும் சேமிக்கவும்</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">அனைத்து வரைவுகளும் குறியாக்கம் செய்யப்படும்</string>
-    <string name="account_settings_color_summary">கோப்புறை மற்றும் கணக்கு பட்டியலில் பயன்படுத்தப்படும் இந்த கணக்கின் உச்சரிப்பு நிறம்</string>
     <string name="account_settings_mail_display_count_label">உள்ளக கோப்புறை அளவு</string>
     <string name="account_settings_autodownload_message_size_4">4 இன்</string>
     <string name="account_settings_message_age_label">இருந்து செய்திகளை ஒத்திசைக்கவும்</string>
@@ -853,7 +850,6 @@
     <string name="account_settings_show_pictures_never">இல்லை</string>
     <string name="account_settings_show_pictures_only_from_contacts">தொடர்புகளிலிருந்து</string>
     <string name="account_settings_quote_prefix_label">மேற்கோள் உரை முன்னொட்டு</string>
-    <string name="account_settings_color_label">கணக்கு நிறம்</string>
     <string name="crypto_msg_encrypted_sign_verified">சரிபார்க்கப்பட்ட அனுப்புநரிடமிருந்து</string>
     <string name="account_settings_crypto_hide_sign_only_off">அனைத்து கையொப்பங்களும் காண்பிக்கப்படும்</string>
     <string name="disable_encryption">குறியாக்கத்தை முடக்கு</string>

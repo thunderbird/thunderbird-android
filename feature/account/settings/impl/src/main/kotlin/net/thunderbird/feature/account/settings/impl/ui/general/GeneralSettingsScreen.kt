@@ -6,6 +6,7 @@ import app.k9mail.core.ui.compose.common.mvi.observe
 import net.thunderbird.core.ui.setting.SettingViewProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
+import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.SettingsBuilder
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
@@ -18,6 +19,7 @@ internal fun GeneralSettingsScreen(
         parametersOf(accountId)
     },
     provider: SettingViewProvider = koinInject(),
+    builder: SettingsBuilder = koinInject(),
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
@@ -31,5 +33,6 @@ internal fun GeneralSettingsScreen(
         state = state.value,
         onEvent = { dispatch(it) },
         provider = provider,
+        builder = builder,
     )
 }

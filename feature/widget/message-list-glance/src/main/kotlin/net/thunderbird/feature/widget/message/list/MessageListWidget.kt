@@ -12,7 +12,7 @@ import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.activity.MessageList.Companion.intentDisplaySearch
+import com.fsck.k9.activity.MainActivity.Companion.intentDisplaySearch
 import kotlin.random.Random.Default.nextInt
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope

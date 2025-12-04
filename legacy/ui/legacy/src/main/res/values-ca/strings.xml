@@ -273,7 +273,6 @@
     <string name="archive_folder_label">Carpeta d\'arxiu</string>
     <string name="spam_folder_label">Carpeta brossa</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Mostra només carpetes subscrites</string>
-    <string name="account_setup_auto_expand_folder">Autoexpandeix la carpeta</string>
     <string name="account_setup_options_mail_check_frequency_never">Mai</string>
     <string name="account_setup_options_mail_check_frequency_15min">Cada 15 minuts</string>
     <string name="account_setup_options_mail_check_frequency_30min">Cada 30 minuts</string>
@@ -363,8 +362,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Tots els esborranys es desaran encriptats</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Encripta els esborranys només si l\'encriptació està habilitada</string>
     <string name="account_settings_mail_check_frequency_label">Freqüència de comprovació de la carpeta</string>
-    <string name="account_settings_color_label">Color del compte</string>
-    <string name="account_settings_color_summary">Tria el color del compte utilitzat a la llista de carpetes i de comptes</string>
     <string name="account_settings_mail_display_count_label">Mida de la carpeta local</string>
     <string name="account_settings_autodownload_message_size_label">Recupera missatges fins a</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -405,7 +402,6 @@
     <string name="account_settings_incoming_summary">Configura el servidor d\'entrada</string>
     <string name="account_settings_outgoing_label">Servidor de sortida</string>
     <string name="account_settings_outgoing_summary">Configura el servidor del correu de sortida (SMTP)</string>
-    <string name="account_settings_description_label">Nom del compte</string>
     <string name="account_settings_name_label">El vostre nom</string>
     <string name="notifications_title">Notificacions</string>
     <string name="account_settings_vibration">Vibració</string>

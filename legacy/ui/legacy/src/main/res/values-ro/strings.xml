@@ -271,7 +271,6 @@
     <string name="archive_folder_label">Dosar arhive</string>
     <string name="spam_folder_label">Dosar spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Arată doar dosarele înregistrate</string>
-    <string name="account_setup_auto_expand_folder">Auto-extinde dosar</string>
     <string name="account_setup_options_mail_check_frequency_never">Niciodată</string>
     <string name="account_setup_options_mail_check_frequency_15min">La fiecare 15 minute</string>
     <string name="account_setup_options_mail_check_frequency_30min">La fiecare 30 de minute</string>
@@ -361,8 +360,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Toate ciornele vor fi stocate criptate</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Criptează ciornele doar dacă criptarea este activată</string>
     <string name="account_settings_mail_check_frequency_label">Frecvență interogare dosar</string>
-    <string name="account_settings_color_label">Culoarea contului</string>
-    <string name="account_settings_color_summary">Culoarea contului folosită în lista de dosare și conturi</string>
     <string name="account_settings_mail_display_count_label">Mărimea dosarului local</string>
     <string name="account_settings_autodownload_message_size_label">Preia mesaje până la</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -403,7 +400,6 @@
     <string name="account_settings_incoming_summary">Configurare server primire</string>
     <string name="account_settings_outgoing_label">Server trimitere</string>
     <string name="account_settings_outgoing_summary">Configurare server trimitere (SMTP)</string>
-    <string name="account_settings_description_label">Nume cont</string>
     <string name="account_settings_name_label">Nume</string>
     <string name="notifications_title">Notificări</string>
     <string name="account_settings_vibration">Vibrație</string>
@@ -926,4 +922,15 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="debug_invalidate_access_token_cannot_modify">Nu s-a putut modifica jetonul de acces stocat. Încercați invalidarea locală.</string>
     <string name="debug_invalidate_access_token_already_modified">Jetonul de acces stocat a fost deja modificat.</string>
     <string name="message_view_menu_action_export_eml">Exportă ca EML</string>
+    <string name="account_setup_auto_select_folder">Selectare automată a dosarului</string>
+    <string name="navigation_drawer_preferences">Meniu lateral</string>
+    <string name="expand_folders">Expandare dosare</string>
+    <string name="set_format_html_action">Utilizați formatarea originală</string>
+    <string name="set_format_html_condensed_action">Afișează formatat</string>
+    <string name="set_format_plain_action">Afișează mesajul neformatat</string>
+    <string name="set_format_plain_condensed_action">Afișează neformatat</string>
+    <string name="global_settings_messageview_body_content_type_title">Tipul conținutului corpului</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Text simplu (text/plain)</string>
+    <string name="debug_feature_flags">DEPANARE: fanioane de funcție</string>
 </resources>

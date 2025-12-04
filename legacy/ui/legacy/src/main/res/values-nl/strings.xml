@@ -42,7 +42,7 @@
     <string name="reply_all_action">Allen beantwoorden</string>
     <string name="delete_action">Verwijderen</string>
     <string name="archive_action">Archiveren</string>
-    <string name="spam_action">Spam</string>
+    <string name="spam_action">Ongewenst</string>
     <string name="forward_action">Doorsturen</string>
     <string name="forward_as_attachment_action">Als bijlage doorsturen</string>
     <string name="edit_as_new_message_action">Als nieuw bericht bewerken</string>
@@ -113,7 +113,7 @@
     <string name="notification_action_delete_all">Alle verwijderen</string>
     <string name="notification_action_archive">Archiveren</string>
     <string name="notification_action_archive_all">Alle archiveren</string>
-    <string name="notification_action_spam">Spam</string>
+    <string name="notification_action_spam">Ongewenst</string>
     <string name="notification_certificate_error_public">Certificaatfout</string>
     <string name="notification_certificate_error_title">Certificaatfout voor <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Controleer de serverinstellingen</string>
@@ -203,7 +203,7 @@
     <string name="global_settings_confirm_actions_summary">Wanneer u de geselecteerde acties uitvoert, altijd een dialoogvenster tonen</string>
     <string name="global_settings_confirm_action_delete">Verwijderen</string>
     <string name="global_settings_confirm_action_delete_starred">Berichten met een ster verwijderen (in berichtweergave)</string>
-    <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_spam">Ongewenst</string>
     <string name="global_settings_confirm_menu_discard">Bericht afbreken</string>
     <string name="global_settings_confirm_menu_mark_all_read">Alle berichten als gelezen markeren</string>
     <string name="global_settings_confirm_action_delete_notif">Verwijderen (van meldingen)</string>
@@ -226,7 +226,7 @@
     <!--Name of the swipe action to delete a message-->
     <string name="general_settings_swipe_action_delete">Verwijderen</string>
     <!--Name of the swipe action to move a message to the spam folder-->
-    <string name="general_settings_swipe_action_spam">Spam</string>
+    <string name="general_settings_swipe_action_spam">Ongewenst</string>
     <!--Name of the swipe action to move a message to another folder-->
     <string name="general_settings_swipe_action_move">Verplaatsen</string>
     <!--Title of the setting to specify the density of the message list-->
@@ -267,9 +267,8 @@
     <string name="sent_folder_label">Verzonden</string>
     <string name="trash_folder_label">Prullenbak</string>
     <string name="archive_folder_label">Archief</string>
-    <string name="spam_folder_label">Spam</string>
+    <string name="spam_folder_label">Ongewenst</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Alleen geabonneerde mappen tonen</string>
-    <string name="account_setup_auto_expand_folder">Map automatisch uitvouwen</string>
     <string name="account_setup_options_mail_check_frequency_never">Nooit</string>
     <string name="account_setup_options_mail_check_frequency_15min">Elke 15 minuten</string>
     <string name="account_setup_options_mail_check_frequency_30min">Elke 30 minuten</string>
@@ -359,8 +358,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle concepten zullen versleuteld worden opgeslagen</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Versleutel concepten alleen als versleuteling is ingeschakeld</string>
     <string name="account_settings_mail_check_frequency_label">Map-peilingsfrequentie</string>
-    <string name="account_settings_color_label">Accountkleur</string>
-    <string name="account_settings_color_summary">De accountkleur gebruikt bij mappen- en accountlijst</string>
     <string name="account_settings_mail_display_count_label">Grootte van lokale map</string>
     <string name="account_settings_autodownload_message_size_label">Automatisch berichten downloaden tot</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -401,7 +398,6 @@
     <string name="account_settings_incoming_summary">Inkomende mailserver instellen</string>
     <string name="account_settings_outgoing_label">Uitgaande server</string>
     <string name="account_settings_outgoing_summary">Uitgaande (SMTP)-server instellen</string>
-    <string name="account_settings_description_label">Accountnaam</string>
     <string name="account_settings_name_label">Uw naam</string>
     <string name="notifications_title">Meldingen</string>
     <string name="account_settings_vibration">Trilling</string>
@@ -579,10 +575,10 @@
     <string name="dialog_confirm_empty_trash_message">Wilt u de prullenbak leegmaken?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Ja</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Nee</string>
-    <string name="dialog_confirm_spam_title">Verplaatsing naar map Spam bevestigen</string>
+    <string name="dialog_confirm_spam_title">Verplaatsing naar map Ongewenst bevestigen</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Wilt u dit bericht echt naar de map Spam verplaatsen?</item>
-        <item quantity="other">Wilt u echt <xliff:g id="message_count">%1$d</xliff:g> berichten naar de map Spam verplaatsen?</item>
+        <item quantity="one">Wilt u dit bericht echt naar de map Ongewenst verplaatsen?</item>
+        <item quantity="other">Wilt u echt <xliff:g id="message_count">%1$d</xliff:g> berichten naar de map Ongewenst verplaatsen?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Ja</string>
     <string name="dialog_confirm_spam_cancel_button">Nee</string>
@@ -819,7 +815,7 @@
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
     <string name="swipe_action_delete">Verwijderen</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
+    <string name="swipe_action_spam">Ongewenst</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <string name="swipe_action_move">Verplaatsen…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
@@ -889,9 +885,9 @@
     <string name="volume_navigation_title_short">Navigatie met volumeknoppen</string>
     <string name="volume_navigation_summary">Gebruik de volumeknoppen om te navigeren tussen berichten in het berichtenoverzicht</string>
     <string name="expand_content_description">Uitvouwen</string>
-    <string name="dialog_confirm_empty_spam_message">Wilt u de spammap legen?</string>
-    <string name="empty_spam_action">Spam legen</string>
-    <string name="dialog_confirm_empty_spam_title">Spam legen bevestigen</string>
+    <string name="dialog_confirm_empty_spam_message">Wilt u de map Ongewenst legen?</string>
+    <string name="empty_spam_action">Ongewenst legen</string>
+    <string name="dialog_confirm_empty_spam_title">Ongewenst legen bevestigen</string>
     <string name="attach_file">Bestand toevoegen</string>
     <string name="camera_permission_denied">Cameratoegang geweigerd! Niet mogelijk om een foto te maken</string>
     <string name="open_camera">Camera openen</string>
@@ -915,4 +911,15 @@
     <string name="debug_invalidate_access_token_cannot_modify">Kan opgeslagen toegangstoken niet bewerken. Probeer lokale ongeldigheid.</string>
     <string name="debug_invalidate_access_token_already_modified">Opgeslagen toegangstoken is al aangepast.</string>
     <string name="message_view_menu_action_export_eml">Exporteren als EML</string>
+    <string name="account_setup_auto_select_folder">Map automatisch selecteren</string>
+    <string name="navigation_drawer_preferences">Zijmenu</string>
+    <string name="expand_folders">Mappen uitvouwen</string>
+    <string name="set_format_html_action">Originele opmaak gebruiken</string>
+    <string name="set_format_html_condensed_action">Opgemaakt tonen</string>
+    <string name="set_format_plain_action">Niet-opgemaakt bericht tonen</string>
+    <string name="set_format_plain_condensed_action">Niet-opgemaakt tonen</string>
+    <string name="global_settings_messageview_body_content_type_title">Inhoudstype tekst</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Platte tekst (text/plain)</string>
+    <string name="debug_feature_flags">DEBUGGEN: Functielabels</string>
 </resources>

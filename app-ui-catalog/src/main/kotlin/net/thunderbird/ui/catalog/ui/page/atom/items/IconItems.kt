@@ -10,10 +10,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import kotlin.reflect.full.declaredMemberProperties
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcons
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem
@@ -23,7 +25,7 @@ import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons as LegacyIcons
 
 fun LazyGridScope.iconItems() {
     sectionHeaderItem(
-        text = "Compose Icons",
+        text = "Icons",
     )
     sectionSubtitleItem(text = "Sizes")
     defaultItem {
@@ -47,29 +49,33 @@ fun LazyGridScope.iconItems() {
             modifier = Modifier.size(MainTheme.sizes.iconLarge),
         )
     }
+    sectionSubtitleItem(text = "DualTone")
+    getIconsFor(Icons.DualTone)
     sectionSubtitleItem(text = "Filled")
     getIconsFor(Icons.Filled)
     sectionSubtitleItem(text = "Outlined")
     getIconsFor(Icons.Outlined)
-    sectionHeaderItem(
-        text = "Legacy Icons",
-    )
+
+    sectionHeaderItem(text = "Badge Icons")
+    sectionSubtitleItem(text = "Filled")
+    getIconsFor(BadgeIcons.Filled)
+
+    sectionHeaderItem(text = "Legacy Icons")
     sectionSubtitleItem(text = "Filled")
     getLegacyIconsFor(LegacyIcons.Filled)
     sectionSubtitleItem(text = "Outlined")
     getLegacyIconsFor(LegacyIcons.Outlined)
 }
 
-private inline fun <reified T> LazyGridScope.getIconsFor(icons: T) {
-    for (method in T::class.java.methods) {
-        if (exclusions.contains(method.name)) {
+private inline fun <reified T : Any> LazyGridScope.getIconsFor(icons: T) {
+    for (property in T::class.declaredMemberProperties) {
+        if (exclusions.contains(property.name)) {
             continue
-        } else if (method.name.startsWith("get")) {
+        } else if (property.returnType.classifier == ImageVector::class) {
             defaultItem {
-                method.isAccessible = true
-                val imageVector = method.invoke(icons) as ImageVector
+                val imageVector = property.get(icons) as ImageVector
                 IconItem(
-                    name = method.name.replaceFirst("get", ""),
+                    name = property.name,
                     imageVector = imageVector,
                 )
             }

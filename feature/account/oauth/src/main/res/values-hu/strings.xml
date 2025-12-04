@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_oauth_sign_in_with_google_button">Bejelentkezés Google használatával</string>
-    <string name="account_oauth_loading_error">Az OAuth bejelentkezés sikertelen volt.</string>
+    <string name="account_oauth_sign_in_with_google_button">Bejelentkezés Google-lel</string>
+    <string name="account_oauth_loading_error">Sikertelen OAuth bejelentkezés</string>
     <string name="account_oauth_error_failed">A hitelesítés sikertelen volt a következő hiba miatt: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">Az alkalmazás nem talált böngészőt, amellyel hozzáférést biztosíthatna fiókhoz.</string>
     <string name="account_oauth_error_not_supported">Az OAuth 2.0 jelenleg nem támogatott ennél a szolgáltatónál.</string>
     <string name="account_oauth_error_canceled">A hitelesítés megszakításra került</string>
     <string name="account_oauth_loading_message">Bejelentkezés OAuth használatával</string>
-    <string name="account_oauth_sign_in_description">A bejelentkezéshez átirányítjuk az e-mail-szolgáltatóhoz. Meg kell adni az alkalmazásnak a hozzáférést az e-mail-fiókhoz.</string>
+    <string name="account_oauth_sign_in_description">Átirányítjuk az email szolgáltatójához bejelentkezésre. Hozzáférést kell adnia az appnak az emailfiókjához.</string>
     <string name="account_oauth_sign_in_button">Bejelentkezés</string>
     <string name="account_oauth_google_sign_in_support_text">Ha problémákat tapasztal a Google-lel történő bejelentkezéssel, tekintse meg a {placeHolder}.</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">támogatási leírásunkat</string>

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="navigation_drawer_siderail_action_settings">Баптаулар</string>
-    <string name="navigation_drawer_siderail_action_show_accounts">Тіркелгілерді көрсету</string>
-    <string name="navigation_drawer_siderail_folder_item_badge_count_greater_than_99">99+</string>
-</resources>

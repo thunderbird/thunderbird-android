@@ -2,45 +2,81 @@ package com.fsck.k9.message.html
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.mail.testing.crlf
 import com.fsck.k9.mail.testing.removeLineBreaks
+import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
+import net.thunderbird.feature.mail.message.reader.api.css.CssVariableNameProvider
+import org.intellij.lang.annotations.Language
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.koin.test.mock.MockProviderRule
+import org.koin.test.mock.declareMock
+import org.mockito.Mockito
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
-class HtmlConverterTest {
+class HtmlConverterTest : K9RobolectricTest() {
+    private val mockedBlockquoteVarName = "--mocked-blockquote-var"
+    private val mockedPreClassName = "mocked-classname"
+
+    @get:Rule
+    val mockProvider = MockProviderRule.create { clazz ->
+        Mockito.mock(clazz.java)
+    }
+
+    @Before
+    fun setup() {
+        declareMock<CssVariableNameProvider> {
+            mock {
+                whenever(blockquoteDefaultBorderLeftColor) doReturn mockedBlockquoteVarName
+            }
+        }
+
+        declareMock<CssClassNameProvider> {
+            mock {
+                whenever(plainTextMessagePreClassName) doReturn mockedPreClassName
+            }
+        }
+    }
+
     @Test
     fun `textToHtml() should convert quoted text using blockquote tags`() {
+        @Language("Markdown")
         val message =
             """
             Panama!
-            
+
             Bob Barker <bob@aol.com> wrote:
             > a canal
             >
             > Dorothy Jo Gideon <dorothy@aol.com> espoused:
             > >A man, a plan...
             > Too easy!
-            
+
             Nice job :)
             >> Guess!
             """.trimIndent().crlf()
 
         val result = HtmlConverter.textToHtml(message)
 
-        assertThat(result).isEqualTo(
-            """
-            |<pre class="k9mail">
+        @Language("HTML")
+        val expected = """
+            |<pre class="$mockedPreClassName">
             |<div dir="auto">
             |Panama!<br>
             |<br>
             |Bob Barker &lt;bob@aol.com&gt; wrote:<br>
             |</div>
-            |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;">
+            |<blockquote class="gmail_quote" style="margin-bottom: 1ex; $mockedBlockquoteVarName: #729fcf;">
             |<div dir="auto">
             | a canal<br>
             |<br>
             | Dorothy Jo Gideon &lt;dorothy@aol.com&gt; espoused:<br>
             |</div>
-            |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ad7fa8; padding-left: 1ex;">
+            |<blockquote class="gmail_quote" style="margin-bottom: 1ex; $mockedBlockquoteVarName: #ad7fa8;">
             |<div dir="auto">
             |A man, a plan...<br>
             |</div>
@@ -53,24 +89,25 @@ class HtmlConverterTest {
             |<br>
             |Nice job :)<br>
             |</div>
-            |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;">
-            |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ad7fa8; padding-left: 1ex;">
+            |<blockquote class="gmail_quote" style="margin-bottom: 1ex; $mockedBlockquoteVarName: #729fcf;">
+            |<blockquote class="gmail_quote" style="margin-bottom: 1ex; $mockedBlockquoteVarName: #ad7fa8;">
             |<div dir="auto">
             |Guess!
             |</div>
             |</blockquote>
             |</blockquote>
             |</pre>
-            """.trimMargin().removeLineBreaks(),
-        )
+        """.trimMargin().removeLineBreaks()
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
     fun `textToHtml() should retain indentation inside quoted text`() {
+        @Language("Markdown")
         val message =
             """
             *facepalm*
-            
+
             Bob Barker <bob@aol.com> wrote:
             > A wise man once said...
             >
@@ -81,15 +118,15 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(message)
 
-        assertThat(result).isEqualTo(
-            """
-            |<pre class="k9mail">
+        @Language("HTML")
+        val expected = """
+            |<pre class="$mockedPreClassName">
             |<div dir="auto">
             |*facepalm*<br>
             |<br>
             |Bob Barker &lt;bob@aol.com&gt; wrote:<br>
             |</div>
-            |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;">
+            |<blockquote class="gmail_quote" style="margin-bottom: 1ex; $mockedBlockquoteVarName: #729fcf;">
             |<div dir="auto">
             | A wise man once said...<br>
             |<br>
@@ -99,12 +136,13 @@ class HtmlConverterTest {
             |</div>
             |</blockquote>
             |</pre>
-            """.trimMargin().removeLineBreaks(),
-        )
+        """.trimMargin().removeLineBreaks()
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
     fun `textToHtml() with various quotation depths`() {
+        @Language("Markdown")
         val message =
             """
             zero
@@ -118,33 +156,33 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(message)
 
-        assertThat(result).isEqualTo(
-            """
-            |<pre class="k9mail">
+        @Language("HTML")
+        val expected = """
+            |<pre class="$mockedPreClassName">
             |<div dir="auto">
             |zero<br>
             |</div>
-            |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;">
+            |<blockquote class="gmail_quote" style="margin-bottom: 1ex; $mockedBlockquoteVarName: #729fcf;">
             |<div dir="auto">
             |one<br>
             |</div>
-            |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ad7fa8; padding-left: 1ex;">
+            |<blockquote class="gmail_quote" style="margin-bottom: 1ex; $mockedBlockquoteVarName: #ad7fa8;">
             |<div dir="auto">
             |two<br>
             |</div>
-            |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #8ae234; padding-left: 1ex;">
+            |<blockquote class="gmail_quote" style="margin-bottom: 1ex; $mockedBlockquoteVarName: #8ae234;">
             |<div dir="auto">
             |three<br>
             |</div>
-            |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #fcaf3e; padding-left: 1ex;">
+            |<blockquote class="gmail_quote" style="margin-bottom: 1ex; $mockedBlockquoteVarName: #fcaf3e;">
             |<div dir="auto">
             |four<br>
             |</div>
-            |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #e9b96e; padding-left: 1ex;">
+            |<blockquote class="gmail_quote" style="margin-bottom: 1ex; $mockedBlockquoteVarName: #e9b96e;">
             |<div dir="auto">
             |five<br>
             |</div>
-            |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #ccc; padding-left: 1ex;">
+            |<blockquote class="gmail_quote" style="margin-bottom: 1ex; $mockedBlockquoteVarName: #ccc;">
             |<div dir="auto">
             |six
             |</div>
@@ -155,12 +193,13 @@ class HtmlConverterTest {
             |</blockquote>
             |</blockquote>
             |</pre>
-            """.trimMargin().removeLineBreaks(),
-        )
+        """.trimMargin().removeLineBreaks()
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
     fun `textToHtml() should preserve spaces at the start of a line`() {
+        @Language("Markdown")
         val message =
             """
             |foo
@@ -171,24 +210,25 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(message)
 
-        assertThat(result).isEqualTo(
-            """
-            |<pre class="k9mail">
+        @Language("HTML")
+        val expected = """
+            |<pre class="$mockedPreClassName">
             |<div dir="auto">
             |foo<br>
             | bar<br>
             |  baz<br>
             |</div>
             |</pre>
-            """.trimMargin().removeLineBreaks(),
-        )
+        """.trimMargin().removeLineBreaks()
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
     fun `textToHtml() should preserve spaces at the start of a line followed by special characters`() {
+        @Language("Markdown")
         val message =
             """
-            | 
+            |${" "}
             |  &
             |   ${" "}
             |   <
@@ -198,27 +238,27 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(message)
 
-        assertThat(result).isEqualTo(
-            """
-            |<pre class="k9mail">
+        val expected = """
+            |<pre class="$mockedPreClassName">
             |<div dir="auto">
             | <br>
             |  &amp;<br>
             |    <br>
             |   &lt;<br>
             |</div>
-            |<blockquote class="gmail_quote" style="margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;">
+            |<blockquote class="gmail_quote" style="margin-bottom: 1ex; $mockedBlockquoteVarName: #729fcf;">
             |<div dir="auto">
             |<br>
             |</div>
             |</blockquote>
             |</pre>
-            """.trimMargin().removeLineBreaks(),
-        )
+        """.trimMargin().removeLineBreaks()
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
     fun `textToHtml() should replace common horizontal divider ASCII patterns with HR tags`() {
+        @Language("Markdown")
         val text =
             """
             text
@@ -236,9 +276,9 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo(
-            """
-            <pre class="k9mail">
+        @Language("HTML")
+        val expected = """
+            <pre class="$mockedPreClassName">
             <div dir="auto">
             text
             <hr>
@@ -253,12 +293,13 @@ class HtmlConverterTest {
             end
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks(),
-        )
+        """.trimIndent().removeLineBreaks()
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
     fun `textToHtml() should not convert dashes mixed with spaces to an HR tag`() {
+        @Language("Markdown")
         val text =
             """
             hello
@@ -268,21 +309,22 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo(
-            """
-            <pre class="k9mail">
+        @Language("HTML")
+        val expected = """
+            <pre class="$mockedPreClassName">
             <div dir="auto">
             hello<br>
             --- --- --- --- ---<br>
             foo bar
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks(),
-        )
+        """.trimIndent().removeLineBreaks()
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
     fun `textToHtml() should merge consecutive horizontal dividers into a single HR tag`() {
+        @Language("Markdown")
         val text =
             """
             hello
@@ -293,35 +335,37 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo(
-            """
-            <pre class="k9mail">
+        @Language("HTML")
+        val expected = """
+            <pre class="$mockedPreClassName">
             <div dir="auto">
             hello
             <hr>
             foo bar
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks(),
-        )
+        """.trimIndent().removeLineBreaks()
+
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
     fun `textToHtml() should not replace dashed horizontal divider prefixed with text`() {
+        @Language("Markdown")
         val text = "hello----\n\n"
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo(
-            """
-            <pre class="k9mail">
+        val expected = """
+            <pre class="$mockedPreClassName">
             <div dir="auto">
             hello----<br>
             <br>
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks(),
-        )
+        """.trimIndent().removeLineBreaks()
+        @Language("HTML")
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
@@ -330,7 +374,9 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo("""<pre class="k9mail"><div dir="auto">--<br></div></pre>""")
+        @Language("HTML")
+        val expected = """<pre class="$mockedPreClassName"><div dir="auto">--<br></div></pre>"""
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
@@ -339,7 +385,7 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo("""<pre class="k9mail"><div dir="auto">==<br></div></pre>""")
+        assertThat(result).isEqualTo("""<pre class="$mockedPreClassName"><div dir="auto">==<br></div></pre>""")
     }
 
     @Test
@@ -348,11 +394,14 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo("""<pre class="k9mail"><div dir="auto">__<br></div></pre>""")
+        @Language("HTML")
+        val expected = """<pre class="$mockedPreClassName"><div dir="auto">__<br></div></pre>"""
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
     fun `textToHtml() should replace any combination of three consecutive divider characters with an HR tag`() {
+        @Language("Markdown")
         val text =
             """
             --=
@@ -364,47 +413,51 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo("""<pre class="k9mail"><div dir="auto"><hr></div></pre>""")
+        @Language("HTML")
+        val expected = """<pre class="$mockedPreClassName"><div dir="auto"><hr></div></pre>"""
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
     fun `textToHtml() should replace dashes at the start of the input`() {
+        @Language("Markdown")
         val text = "---------------------------\nfoo bar"
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo(
-            """
-            <pre class="k9mail">
+        val expected = """
+            <pre class="$mockedPreClassName">
             <div dir="auto">
             <hr>
             foo bar
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks(),
-        )
+        """.trimIndent().removeLineBreaks()
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
     fun `textToHtml() should replace dashes at the end of the input`() {
+        @Language("Markdown")
         val text = "hello\n__________________________________"
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo(
-            """
-            <pre class="k9mail">
+        @Language("HTML")
+        val expected = """
+            <pre class="$mockedPreClassName">
             <div dir="auto">
             hello
             <hr>
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks(),
-        )
+        """.trimIndent().removeLineBreaks()
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
     fun `textToHtml() should replace horizontal divider using ASCII scissors with an HR tag`() {
+        @Language("Markdown")
         val text =
             """
             hello
@@ -414,21 +467,22 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo(
-            """
-            <pre class="k9mail">
+        @Language("HTML")
+        val expected = """
+            <pre class="$mockedPreClassName">
             <div dir="auto">
             hello
             <hr>
             world
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks(),
-        )
+        """.trimIndent().removeLineBreaks()
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
     fun `textToHtml() should wrap email signature in a DIV`() {
+        @Language("Markdown")
         val text =
             """
             text
@@ -438,9 +492,9 @@ class HtmlConverterTest {
 
         val result = HtmlConverter.textToHtml(text)
 
-        assertThat(result).isEqualTo(
-            """
-            <pre class="k9mail">
+        @Language("HTML")
+        val expected = """
+            <pre class="$mockedPreClassName">
             <div dir="auto">
             text<br>
             <div class='k9mail-signature'>
@@ -449,8 +503,8 @@ class HtmlConverterTest {
             </div>
             </div>
             </pre>
-            """.trimIndent().removeLineBreaks(),
-        )
+        """.trimIndent().removeLineBreaks()
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
@@ -549,7 +603,7 @@ class HtmlConverterTest {
 
             Two
             Three
-            
+
             Four
             """.trimIndent(),
         )

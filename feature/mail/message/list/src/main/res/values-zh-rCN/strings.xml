@@ -8,7 +8,7 @@
     <string name="setup_archive_folder_dialog_email_can_not_be_archived">无法归档邮件</string>
     <string name="setup_archive_folder_dialog_configure_archive_folder">立即配置归档文件夹</string>
     <string name="setup_archive_folder_dialog_skip_for_now">暂时跳过</string>
-    <string name="setup_archive_folder_dialog_set_archive_folder">设置归档文件夹‌</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">设置归档文件夹</string>
     <string name="setup_archive_folder_dialog_error_retrieve_folders">糟糕，检索账号文件夹时出了点问题！</string>
     <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">错误详情：%1$s</string>
     <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[创建并设置新文件夹]]></string>
@@ -21,6 +21,6 @@
     <string name="setup_archive_folder_create_archive_folder_account_not_found">未找到账号（%1$s）</string>
     <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">无法创建本地文件夹“%1$s”。</string>
     <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">与远程同步文件夹“%1$s”失败。消息：%2$s</string>
-    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">文件夹名称不能为空‌</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">文件夹名称不能为空</string>
     <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">文件夹名称“%1$s”无效</string>
 </resources>

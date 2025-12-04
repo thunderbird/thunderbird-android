@@ -500,11 +500,13 @@ internal class DrawerViewModelTest {
         showUnifiedInbox: Boolean = false,
         showStarredCount: Boolean = false,
         showAccountSelector: Boolean = true,
+        expandAllFolder: Boolean = false,
     ): DrawerConfig {
         return DrawerConfig(
             showUnifiedFolders = showUnifiedInbox,
             showStarredCount = showStarredCount,
             showAccountSelector = showAccountSelector,
+            expandAllFolder = expandAllFolder,
         )
     }
 

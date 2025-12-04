@@ -1,20 +1,27 @@
 package net.thunderbird.core.featureflag
 
 import assertk.assertThat
+import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class InMemoryFeatureFlagProviderTest {
 
     @Test
     fun `should return FeatureFlagResult#Enabled when feature is enabled`() {
         val feature1Key = FeatureFlagKey("feature1")
         val featureFlagProvider = InMemoryFeatureFlagProvider(
-            featureFlagFactory = {
-                listOf(
-                    FeatureFlag(key = feature1Key, enabled = true),
-                )
-            },
+            featureFlagFactory = { flowOf(listOf(FeatureFlag(key = feature1Key, enabled = true))) },
+            featureFlagOverrides = FakeFeatureFlagOverrides(),
+            mainImmediateDispatcher = UnconfinedTestDispatcher(),
         )
 
         val result = featureFlagProvider.provide(feature1Key)
@@ -26,11 +33,9 @@ class InMemoryFeatureFlagProviderTest {
     fun `should return FeatureFlagResult#Disabled when feature is disabled`() {
         val feature1Key = FeatureFlagKey("feature1")
         val featureFlagProvider = InMemoryFeatureFlagProvider(
-            featureFlagFactory = {
-                listOf(
-                    FeatureFlag(key = feature1Key, enabled = false),
-                )
-            },
+            featureFlagFactory = { flowOf(listOf(FeatureFlag(key = feature1Key, enabled = false))) },
+            featureFlagOverrides = FakeFeatureFlagOverrides(),
+            mainImmediateDispatcher = UnconfinedTestDispatcher(),
         )
 
         val result = featureFlagProvider.provide(feature1Key)
@@ -43,15 +48,74 @@ class InMemoryFeatureFlagProviderTest {
         val feature1Key = FeatureFlagKey("feature1")
         val feature2Key = FeatureFlagKey("feature2")
         val featureFlagProvider = InMemoryFeatureFlagProvider(
-            featureFlagFactory = {
-                listOf(
-                    FeatureFlag(key = feature1Key, enabled = false),
-                )
-            },
+            featureFlagFactory = { flowOf(listOf(FeatureFlag(key = feature1Key, enabled = false))) },
+            featureFlagOverrides = FakeFeatureFlagOverrides(),
+            mainImmediateDispatcher = UnconfinedTestDispatcher(),
         )
 
         val result = featureFlagProvider.provide(feature2Key)
 
         assertThat(result).isInstanceOf<FeatureFlagResult.Unavailable>()
+    }
+
+    @Test
+    fun `should return FeatureFlagResult#Enabled when feature is disabled by default but overridden`() {
+        // Arrange
+        val key = FeatureFlagKey("feature1")
+        val featureFlagProvider = InMemoryFeatureFlagProvider(
+            featureFlagFactory = { flowOf(listOf(FeatureFlag(key = key, enabled = false))) },
+            featureFlagOverrides = FakeFeatureFlagOverrides(
+                initialOverrides = mapOf(key to true),
+            ),
+            mainImmediateDispatcher = UnconfinedTestDispatcher(),
+        )
+        val expected = FeatureFlagResult.Enabled
+
+        // Act
+        val actual = featureFlagProvider.provide(key)
+
+        // Assert
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `should return FeatureFlagResult#Disabled when feature is enabled by default but overridden`() {
+        // Arrange
+        val key = FeatureFlagKey("feature1")
+        val featureFlagProvider = InMemoryFeatureFlagProvider(
+            featureFlagFactory = { flowOf(listOf(FeatureFlag(key = key, enabled = true))) },
+            featureFlagOverrides = FakeFeatureFlagOverrides(
+                initialOverrides = mapOf(key to false),
+            ),
+            mainImmediateDispatcher = UnconfinedTestDispatcher(),
+        )
+        val expected = FeatureFlagResult.Disabled
+
+        // Act
+        val actual = featureFlagProvider.provide(key)
+
+        // Assert
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    private class FakeFeatureFlagOverrides(
+        initialOverrides: Map<FeatureFlagKey, Boolean> = emptyMap(),
+    ) : FeatureFlagOverrides {
+        private val _overrides = MutableStateFlow(initialOverrides)
+        override val overrides: StateFlow<Map<FeatureFlagKey, Boolean>> = _overrides.asStateFlow()
+
+        override fun get(key: FeatureFlagKey): Boolean? = overrides.value[key]
+
+        override fun set(key: FeatureFlagKey, value: Boolean) {
+            _overrides.update { it + (key to value) }
+        }
+
+        override fun clear(key: FeatureFlagKey) {
+            _overrides.update { it - key }
+        }
+
+        override fun clearAll() {
+            _overrides.update { emptyMap() }
+        }
     }
 }

@@ -21,8 +21,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -43,7 +41,6 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.helper.HttpsUnsubscribeUri
 import com.fsck.k9.helper.MailtoUnsubscribeUri
 import com.fsck.k9.helper.UnsubscribeUri
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.MessageViewInfo
@@ -64,9 +61,11 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.theme.api.Theme
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
@@ -109,6 +108,7 @@ class MessageViewFragment :
     private lateinit var messageLoaderHelper: MessageLoaderHelper
     private lateinit var messageCryptoPresenter: MessageCryptoPresenter
     private var showProgressThreshold: Long? = null
+    private var mMessageViewInfo: MessageViewInfo? = null
     private var preferredUnsubscribeUri: UnsubscribeUri? = null
 
     private val messageExporter: MessageExporter by inject()
@@ -135,6 +135,9 @@ class MessageViewFragment :
 
     private var isActive: Boolean = false
         private set
+
+    private val interactionSettings: InteractionSettings
+        get() = generalSettingsManager.getConfig().interaction
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -206,19 +209,6 @@ class MessageViewFragment :
 
         messageTopView.setOnDownloadButtonClickListener {
             onDownloadButtonClicked()
-        }
-
-        initializeMessageTopViewInsets(messageTopView)
-    }
-
-    private fun initializeMessageTopViewInsets(messageTopView: MessageTopView) {
-        val view = messageTopView.findViewById<View>(R.id.message_container)
-
-        ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowsInsets ->
-            val insets = windowsInsets.getInsets(navigationBars())
-            v.setPadding(0, 0, 0, insets.bottom)
-
-            windowsInsets
         }
     }
 
@@ -325,6 +315,9 @@ class MessageViewFragment :
             menu.findItem(R.id.refile).isVisible = false
         }
 
+        menu.findItem(R.id.set_format_plain).isVisible = !isRenderPlainFormat()
+        menu.findItem(R.id.set_format_html).isVisible = isRenderPlainFormat()
+
         if (isCopyCapable) {
             menu.findItem(R.id.copy).isVisible = K9.isMessageViewCopyActionVisible
             menu.findItem(R.id.refile_copy).isVisible = true
@@ -381,6 +374,8 @@ class MessageViewFragment :
             } else {
                 return true
             }
+            R.id.set_format_plain -> onDisplayPlainText()
+            R.id.set_format_html -> onDisplayHTML()
             else -> return false
         }
 
@@ -477,11 +472,28 @@ class MessageViewFragment :
     fun onDelete() {
         val message = checkNotNull(message)
 
-        if (K9.isConfirmDelete || K9.isConfirmDeleteStarred && message.isSet(Flag.FLAGGED)) {
+        if (interactionSettings.isConfirmDelete ||
+            interactionSettings.isConfirmDeleteStarred &&
+            message.isSet(Flag.FLAGGED)
+        ) {
             showDialog(R.id.dialog_confirm_delete)
         } else {
             delete()
         }
+    }
+
+    private fun onDisplayPlainText() {
+        messageTopView.renderPlainFormat = true
+        mMessageViewInfo?.let { showMessage(it) }
+    }
+
+    private fun onDisplayHTML() {
+        messageTopView.renderPlainFormat = false
+        mMessageViewInfo?.let { showMessage(it) }
+    }
+
+    private fun isRenderPlainFormat(): Boolean {
+        return messageTopView.renderPlainFormat
     }
 
     private fun delete() {
@@ -507,7 +519,7 @@ class MessageViewFragment :
             return
         }
 
-        if (destinationFolderId == account.spamFolderId && K9.isConfirmSpam) {
+        if (destinationFolderId == account.spamFolderId && interactionSettings.isConfirmSpam) {
             this.destinationFolderId = destinationFolderId
             showDialog(R.id.dialog_confirm_spam)
         } else {
@@ -983,6 +995,7 @@ class MessageViewFragment :
         }
 
         override fun onMessageViewInfoLoadFinished(messageViewInfo: MessageViewInfo) {
+            mMessageViewInfo = messageViewInfo
             showMessage(messageViewInfo)
             preferredUnsubscribeUri = messageViewInfo.preferredUnsubscribeUri
             showProgressThreshold = null

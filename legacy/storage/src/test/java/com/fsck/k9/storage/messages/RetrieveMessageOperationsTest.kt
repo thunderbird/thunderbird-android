@@ -6,11 +6,11 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mail.testing.crlf
 import com.fsck.k9.storage.RobolectricTest
 import java.util.Date
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Before

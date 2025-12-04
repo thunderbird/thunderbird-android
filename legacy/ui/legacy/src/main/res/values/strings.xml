@@ -88,6 +88,12 @@
     <string name="unsubscribe_action">Unsubscribe</string>
     <string name="show_headers_action">Show headers</string>
     <string name="message_view_menu_action_export_eml">Export as EML</string>
+
+    <string name="set_format_html_action">Use original formatting</string>
+    <string name="set_format_html_condensed_action">Show formatted</string>
+    <string name="set_format_plain_action">Show unformatted message</string>
+    <string name="set_format_plain_condensed_action">Show unformatted</string>
+
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Address copied to clipboard</item>
         <item quantity="other">Addresses copied to clipboard</item>
@@ -250,6 +256,10 @@
     <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>
     <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>
 
+    <string name="global_settings_messageview_body_content_type_title">Body Content-Type</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Plain text (text/plain)</string>
+
     <!-- Name of the setting to configure the navigation action to perform after the user has deleted or moved a message from the message view screen -->
     <string name="general_settings_post_remove_action_title">After deleting or moving a message</string>
     <string name="general_settings_post_remove_action_return_to_list">Return to message list</string>
@@ -346,7 +356,7 @@
     <string name="spam_folder_label">Spam folder</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Show only subscribed folders</string>
-    <string name="account_setup_auto_expand_folder">Auto-expand folder</string>
+    <string name="account_setup_auto_select_folder">Auto-select folder</string>
 
     <string name="account_setup_options_mail_check_frequency_never">Never</string>
     <string name="account_setup_options_mail_check_frequency_15min">Every 15 minutes</string>
@@ -456,9 +466,6 @@
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 
-    <string name="account_settings_color_label">Account color</string>
-    <string name="account_settings_color_summary">The accent color of this account used in folder and account list</string>
-
     <string name="account_settings_mail_display_count_label">Local folder size</string>
 
     <string name="account_settings_autodownload_message_size_label">Fetch messages up to</string>
@@ -511,7 +518,6 @@
     <string name="account_settings_incoming_summary">Configure the incoming mail server</string>
     <string name="account_settings_outgoing_label">Outgoing server</string>
     <string name="account_settings_outgoing_summary">Configure the outgoing mail (SMTP) server</string>
-    <string name="account_settings_description_label">Account name</string>
     <string name="account_settings_name_label">Your name</string>
     <string name="notifications_title">Notifications</string>
     <string name="account_settings_vibration">Vibration</string>
@@ -623,6 +629,7 @@
     <string name="network_preferences">Network</string>
     <string name="interaction_preferences">Interaction</string>
     <string name="accountlist_preferences">Account list</string>
+    <string name="navigation_drawer_preferences">Side Menu</string>
     <string name="messagelist_preferences">Message lists</string>
     <string name="messageview_preferences">Messages</string>
     <string name="settings_theme_label">Theme</string>
@@ -663,6 +670,7 @@
 
     <string name="show_unified_inbox_title">Show Unified Inbox</string>
     <string name="show_starred_count_title">Show starred count</string>
+    <string name="expand_folders">Expand Folders</string>
 
     <string name="integrated_inbox_title">Unified Inbox</string>
     <string name="integrated_inbox_detail">All messages in unified folders</string>
@@ -1106,4 +1114,5 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="debug_force_auth_failure_unavailable">No OAuth configuration available for this account.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Could not modify stored access token. Try local invalidation.</string>
     <string name="debug_invalidate_access_token_already_modified">Stored access token already modified.</string>
+    <string name="debug_feature_flags">DEBUG: Feature Flags</string>
 </resources>

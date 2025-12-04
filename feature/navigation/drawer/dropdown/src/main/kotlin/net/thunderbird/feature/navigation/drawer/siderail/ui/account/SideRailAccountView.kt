@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,11 +50,8 @@ internal fun SideRailAccountView(
                 color = MainTheme.colors.surfaceContainer,
                 modifier = Modifier.fillMaxHeight(),
             ) {
-                val horizontalInsetPadding = getDisplayCutOutHorizontalInsetPadding()
-
                 Box(
                     modifier = Modifier
-                        .windowInsetsPadding(horizontalInsetPadding)
                         .width(MainTheme.sizes.large),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -63,6 +59,7 @@ internal fun SideRailAccountView(
                         account = account,
                         onClick = null,
                         selected = false,
+                        showBadge = true,
                     )
                 }
             }

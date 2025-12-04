@@ -5,6 +5,7 @@
     <string name="navigation_drawer_dropdown_unified_account_title">Unified Account</string>
     <string name="navigation_drawer_dropdown_action_manage_folders">Manage folders</string>
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Sync all accounts</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Sync account</string>
     <string name="navigation_drawer_dropdown_action_add_account">Add account</string>
     <string name="navigation_drawer_dropdown_action_show_accounts">Show accounts</string>
     <string name="navigation_drawer_dropdown_action_hide_accounts">Hide accounts</string>

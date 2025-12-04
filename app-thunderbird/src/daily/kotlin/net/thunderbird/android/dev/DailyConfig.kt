@@ -3,6 +3,7 @@ package net.thunderbird.android.dev
 import app.k9mail.autodiscovery.api.AutoDiscovery
 import app.k9mail.autodiscovery.demo.DemoAutoDiscovery
 import com.fsck.k9.backend.BackendFactory
+import net.thunderbird.core.featureflag.FeatureFlagOverrides
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 
@@ -14,4 +15,5 @@ fun Module.developmentModuleAdditions() {
     single<List<AutoDiscovery>>(named("extraAutoDiscoveries")) {
         listOf(DemoAutoDiscovery())
     }
+    single<FeatureFlagOverrides> { FeatureFlagOverrides() }
 }

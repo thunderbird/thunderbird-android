@@ -33,8 +33,6 @@
     <!--Title of the setting to specify the density of the message list-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronised with the server</string>
-    <string name="account_settings_color_label">Account colour</string>
-    <string name="account_settings_color_summary">The accent colour of this account used in folder and account list</string>
     <string name="account_settings_notification_light_account_color">Account colour</string>
     <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
@@ -247,7 +245,6 @@
     <string name="account_settings_message_format_text">Plain Text (remove images and formatting)</string>
     <string name="sort_unread_first">Unread messages first</string>
     <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>
-    <string name="account_settings_description_label">Account name</string>
     <string name="font_size_message_view_recipients">Recipients</string>
     <string name="font_size_default">Default</string>
     <string name="debug_preferences">Debugging</string>
@@ -353,7 +350,7 @@
     <string name="account_setup_expunge_policy_label">Erase deleted messages on server</string>
     <string name="account_settings_incoming_summary">Configure the incoming mail server</string>
     <string name="edit_identity_reply_to_hint">(Optional)</string>
-    <string name="dialog_confirm_empty_trash_title">Confirm empty trash</string>
+    <string name="dialog_confirm_empty_trash_title">Confirm empty Deleted Items folder</string>
     <string name="account_settings_show_pictures_always">From anyone</string>
     <string name="global_settings_lock_screen_notification_visibility_title">Lock Screen Notifications</string>
     <string name="debug_enable_debug_logging_summary">Log extra diagnostic information</string>
@@ -384,7 +381,7 @@
     <string name="idle_refresh_period_2min">Every 2 minutes</string>
     <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>
     <string name="font_size_small">Small</string>
-    <string name="empty_trash_action">Empty Trash</string>
+    <string name="empty_trash_action">Empty Bin</string>
     <string name="account_setup_incoming_delete_policy_label">When I delete a message</string>
     <string name="account_settings_signature__location_before_quoted_text">Before quoted message</string>
     <string name="compose_error_incomplete_recipient">Recipient field contains incomplete input!</string>
@@ -407,7 +404,7 @@
     <string name="font_size_medium">Medium</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
     <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>
-    <string name="dialog_confirm_empty_trash_message">Do you want to empty the trash folder?</string>
+    <string name="dialog_confirm_empty_trash_message">Do you want to empty the Deleted Items folder?</string>
     <string name="account_settings_signature__location_label">Signature position</string>
     <string name="account_settings_outgoing_summary">Configure the outgoing mail (SMTP) server</string>
     <string name="notification_action_delete">Delete</string>
@@ -536,7 +533,6 @@
     <string name="account_settings_autodownload_message_size_4">4 KiB</string>
     <string name="notification_bg_sync_title">Checking mail</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove messages when deleted on server</string>
-    <string name="account_setup_auto_expand_folder">Auto-expand folder</string>
     <string name="remove_attachment_action">Remove attachment</string>
     <string name="general_settings_swipe_action_delete">Delete</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Show only subscribed folders</string>
@@ -574,7 +570,7 @@
     <string name="idle_refresh_period_3min">Every 3 minutes</string>
     <string name="messageview_preferences">Messages</string>
     <string name="sent_folder_label">Sent folder</string>
-    <string name="trash_folder_label">Trash folder</string>
+    <string name="trash_folder_label">Deleted Items folder</string>
     <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>
     <string name="global_settings_confirm_menu_mark_all_read">Mark all messages as read</string>
     <string name="account_setup_options_mail_display_count_50">50 messages</string>
@@ -925,4 +921,15 @@
     <string name="debug_invalidate_access_token_cannot_modify">Could not modify stored access token. Try local invalidation.</string>
     <string name="debug_invalidate_access_token_already_modified">Stored access token already modified.</string>
     <string name="message_view_menu_action_export_eml">Export as EML</string>
+    <string name="account_setup_auto_select_folder">Auto-select folder</string>
+    <string name="navigation_drawer_preferences">Side Menu</string>
+    <string name="expand_folders">Expand Folders</string>
+    <string name="set_format_html_action">Use original formatting</string>
+    <string name="set_format_html_condensed_action">Show formatted</string>
+    <string name="set_format_plain_action">Show unformatted message</string>
+    <string name="set_format_plain_condensed_action">Show unformatted</string>
+    <string name="global_settings_messageview_body_content_type_title">Body Content-Type</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Plain text (text/plain)</string>
+    <string name="debug_feature_flags">DEBUG: Feature Flags</string>
 </resources>

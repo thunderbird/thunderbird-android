@@ -8,7 +8,6 @@ import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.BoundaryGenerator
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mail.MessageDownloadState
@@ -30,6 +29,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.Stack
 import java.util.UUID
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.feature.account.AccountId
 import org.apache.commons.io.IOUtils
 import org.apache.james.mime4j.codec.Base64InputStream

@@ -31,9 +31,10 @@ val legacyCommonAppModule = module {
     single<StoragePersister> {
         K9StoragePersister(get(), get())
     }
-    single<FeatureFlagProvider> {
+    single<FeatureFlagProvider>(createdAtStart = true) {
         InMemoryFeatureFlagProvider(
             featureFlagFactory = get(),
+            featureFlagOverrides = get(),
         )
     }
 }

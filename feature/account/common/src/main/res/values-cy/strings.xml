@@ -2,5 +2,5 @@
 <resources>
     <string name="account_common_button_next">Nesaf</string>
     <string name="account_common_button_back">Nôl</string>
-    <string name="account_common_error_server_message">Dychwelodd y gweinydd y negae ganlynol:\n%s</string>
+    <string name="account_common_error_server_message">Dychwelodd y gweinydd y neges ganlynol:\n%s</string>
 </resources>

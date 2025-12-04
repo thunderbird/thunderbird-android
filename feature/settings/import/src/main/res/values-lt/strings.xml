@@ -31,7 +31,7 @@
     <string name="settings_import_outgoing_server_password_hint">Siunčiamo serverio slaptažodis</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Naudoti tą patį slaptažodį siunčiamajame serveryje</string>
     <string name="settings_import_server_name_format">Serverio pavadinimas: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Norėdami naudoti šią el. pašto paskyrą su K-9 Mail, turite prisijungti ir suteikti programėlei prieigą prie savo el. laiškų.</string>
+    <string name="settings_import_oauth_description">Norėdami naudoti šią el. pašto paskyrą, turite prisijungti ir suteikti programėlei prieigą prie savo el. laiškų.</string>
     <string name="settings_import_oauth_sign_in">Prisijungti</string>
     <string name="settings_import_oauth_sign_in_with_google">Prisijungti su Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Leidimas atšauktas</string>
@@ -41,4 +41,6 @@
     <string name="settings_import_general_settings_item">Bendri nustatymai</string>
     <string name="settings_import_pick_app_button">Importuoti iš programos</string>
     <string name="settings_import_scan_qr_code_button">Skenuoti QR kodą</string>
+    <string name="settings_import_pick_app_dialog_title">Importuoti iš programos</string>
+    <string name="settings_import_app_version_not_supported">Programos versija nepalaikoma.</string>
 </resources>

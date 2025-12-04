@@ -38,6 +38,7 @@ import net.thunderbird.core.common.action.SwipeAction;
 import net.thunderbird.core.preference.AppTheme;
 import net.thunderbird.core.preference.BackgroundOps;
 import net.thunderbird.core.preference.GeneralSettingsManager;
+import net.thunderbird.core.preference.BodyContentType;
 import net.thunderbird.core.preference.SplitViewMode;
 import net.thunderbird.core.preference.SubTheme;
 import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsKt;
@@ -333,6 +334,12 @@ class GeneralSettingsDescriptions {
         s.put("shouldShowSetupArchiveFolderDialog", Settings.versions(
             new V(105, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG)))
         );
+        s.put("drawerExpandAllFolder", Settings.versions(
+            new V(108, new BooleanSetting(false))
+        ));
+        s.put("messageViewBodyContentType", Settings.versions(
+            new V(109, new EnumSetting<>(BodyContentType.class, BodyContentType.TEXT_HTML))
+        ));
 
         // TODO: Add a way to properly support feature-specific settings.
         if (telemetryManager.isTelemetryFeatureIncluded()) {

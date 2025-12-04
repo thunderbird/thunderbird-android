@@ -12,7 +12,7 @@ import java.util.Set;
 
 import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.Flag;
+import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import net.thunderbird.core.common.exception.MessagingException;

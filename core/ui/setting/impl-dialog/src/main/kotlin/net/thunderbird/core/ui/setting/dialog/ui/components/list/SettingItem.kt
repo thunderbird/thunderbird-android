@@ -9,8 +9,9 @@ import net.thunderbird.core.ui.setting.dialog.ui.components.list.decoration.Cust
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.decoration.SectionDividerItem
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.decoration.SectionHeaderItem
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.ColorItem
-import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.CompactSelectSingleOptionItem
-import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.SelectSingleOptionItem
+import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.IconListItem
+import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.SegmentedButtonItem
+import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.SelectItem
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.SwitchItem
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.TextItem
 
@@ -63,16 +64,24 @@ private fun RenderSettingValue(
             )
         }
 
-        is SettingValue.CompactSelectSingleOption<*> -> {
-            CompactSelectSingleOptionItem(
+        is SettingValue.IconList -> {
+            IconListItem(
                 setting = setting,
                 onSettingValueChange = onSettingValueChange,
                 modifier = modifier,
             )
         }
 
-        is SettingValue.SelectSingleOption -> {
-            SelectSingleOptionItem(
+        is SettingValue.SegmentedButton<*> -> {
+            SegmentedButtonItem(
+                setting = setting,
+                onSettingValueChange = onSettingValueChange,
+                modifier = modifier,
+            )
+        }
+
+        is SettingValue.Select -> {
+            SelectItem(
                 setting = setting,
                 onClick = onClick,
                 modifier = modifier,

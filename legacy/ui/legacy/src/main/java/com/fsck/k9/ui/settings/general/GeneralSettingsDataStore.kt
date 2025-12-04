@@ -8,8 +8,10 @@ import com.fsck.k9.UiDensity
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.base.AppLanguageManager
 import net.thunderbird.core.common.action.SwipeAction
+import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.BackgroundOps
+import net.thunderbird.core.preference.BodyContentType
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
@@ -64,6 +66,8 @@ class GeneralSettingsDataStore(
 
             "messageview_autofit_width" -> generalSettingsManager.getConfig()
                 .display.visualSettings.isAutoFitWidth
+            "drawerExpandAllFolder" -> generalSettingsManager.getConfig()
+                .display.visualSettings.drawerExpandAllFolder
 
             "quiet_time_enabled" -> generalSettingsManager.getConfig()
                 .notification.isQuietTimeEnabled
@@ -86,6 +90,7 @@ class GeneralSettingsDataStore(
         when (key) {
             "fixed_message_view_theme" -> setFixedMessageViewTheme(value)
             "animations" -> setIsShowAnimations(isShowAnimations = value)
+            "drawerExpandAllFolder" -> setDrawerExpandAllFolder(drawerExpandAllFolder = value)
             "show_unified_inbox" -> setIsShowUnifiedInbox(value)
             "show_starred_count" -> setIsShowStarredCount(isShowStarredCount = value)
             "messagelist_stars" -> setIsShowMessageListStars(isShowMessageListStars = value)
@@ -143,6 +148,7 @@ class GeneralSettingsDataStore(
     }
 
     override fun getString(key: String, defValue: String?): String? {
+        val interactionSettings = generalSettingsManager.getConfig().interaction
         return when (key) {
             "language" -> appLanguageManager.getAppLanguage()
             "theme" -> appThemeToString(generalSettingsManager.getConfig().display.coreSettings.appTheme)
@@ -163,6 +169,8 @@ class GeneralSettingsDataStore(
             "background_ops" -> generalSettingsManager.getConfig().network.backgroundOps.name
             "quiet_time_starts" -> generalSettingsManager.getConfig().notification.quietTimeStarts
             "quiet_time_ends" -> generalSettingsManager.getConfig().notification.quietTimeEnds
+            "messageview_body_content_type" ->
+                generalSettingsManager.getConfig().display.visualSettings.bodyContentType.name
             "message_list_subject_font" -> K9.fontSizes.messageListSubject.toString()
             "message_list_sender_font" -> K9.fontSizes.messageListSender.toString()
             "message_list_date_font" -> K9.fontSizes.messageListDate.toString()
@@ -173,10 +181,10 @@ class GeneralSettingsDataStore(
             "message_view_subject_font" -> K9.fontSizes.messageViewSubject.toString()
             "message_view_date_font" -> K9.fontSizes.messageViewDate.toString()
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput.toString()
-            "swipe_action_right" -> swipeActionToString(K9.swipeRightAction)
-            "swipe_action_left" -> swipeActionToString(K9.swipeLeftAction)
+            "swipe_action_right" -> swipeActionToString(interactionSettings.swipeActions.rightAction)
+            "swipe_action_left" -> swipeActionToString(interactionSettings.swipeActions.leftAction)
             "message_list_density" -> K9.messageListDensity.toString()
-            "post_remove_navigation" -> generalSettingsManager.getConfig().interaction.messageViewPostRemoveNavigation
+            "post_remove_navigation" -> interactionSettings.messageViewPostRemoveNavigation
             "post_mark_as_unread_navigation" -> K9.messageViewPostMarkAsUnreadNavigation.name
             else -> defValue
         }
@@ -205,6 +213,7 @@ class GeneralSettingsDataStore(
             }
 
             "background_ops" -> setBackgroundOps(value)
+            "messageview_body_content_type" -> setBodyContentType(value)
             "quiet_time_starts" -> setQuietTimeStarts(quietTimeStarts = value)
             "quiet_time_ends" -> setQuietTimeEnds(quietTimeEnds = value)
             "message_list_subject_font" -> K9.fontSizes.messageListSubject = value.toInt()
@@ -217,8 +226,8 @@ class GeneralSettingsDataStore(
             "message_view_subject_font" -> K9.fontSizes.messageViewSubject = value.toInt()
             "message_view_date_font" -> K9.fontSizes.messageViewDate = value.toInt()
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput = value.toInt()
-            "swipe_action_right" -> K9.swipeRightAction = stringToSwipeAction(value)
-            "swipe_action_left" -> K9.swipeLeftAction = stringToSwipeAction(value)
+            "swipe_action_right" -> updateSwipeAction(value) { swipeAction -> copy(rightAction = swipeAction) }
+            "swipe_action_left" -> updateSwipeAction(value) { swipeAction -> copy(leftAction = swipeAction) }
             "message_list_density" -> K9.messageListDensity = UiDensity.valueOf(value)
             "post_remove_navigation" -> setMessageViewPostRemoveNavigation(value)
             "post_mark_as_unread_navigation" -> {
@@ -235,12 +244,13 @@ class GeneralSettingsDataStore(
         return when (key) {
             "confirm_actions" -> {
                 mutableSetOf<String>().apply {
-                    if (K9.isConfirmDelete) add("delete")
-                    if (K9.isConfirmDeleteStarred) add("delete_starred")
-                    if (K9.isConfirmDeleteFromNotification) add("delete_notif")
-                    if (K9.isConfirmSpam) add("spam")
-                    if (K9.isConfirmDiscardMessage) add("discard")
-                    if (K9.isConfirmMarkAllRead) add("mark_all_read")
+                    val interactionSettings = generalSettingsManager.getConfig().interaction
+                    if (interactionSettings.isConfirmDelete) add("delete")
+                    if (interactionSettings.isConfirmDeleteStarred) add("delete_starred")
+                    if (interactionSettings.isConfirmDeleteFromNotification) add("delete_notif")
+                    if (interactionSettings.isConfirmSpam) add("spam")
+                    if (interactionSettings.isConfirmDiscardMessage) add("discard")
+                    if (interactionSettings.isConfirmMarkAllRead) add("mark_all_read")
                 }
             }
 
@@ -262,12 +272,19 @@ class GeneralSettingsDataStore(
         val checkedValues = values ?: emptySet<String>()
         when (key) {
             "confirm_actions" -> {
-                K9.isConfirmDelete = "delete" in checkedValues
-                K9.isConfirmDeleteStarred = "delete_starred" in checkedValues
-                K9.isConfirmDeleteFromNotification = "delete_notif" in checkedValues
-                K9.isConfirmSpam = "spam" in checkedValues
-                K9.isConfirmDiscardMessage = "discard" in checkedValues
-                K9.isConfirmMarkAllRead = "mark_all_read" in checkedValues
+                skipSaveSettings = true
+                generalSettingsManager.update { settings ->
+                    settings.copy(
+                        interaction = settings.interaction.copy(
+                            isConfirmDelete = "delete" in checkedValues,
+                            isConfirmDeleteStarred = "delete_starred" in checkedValues,
+                            isConfirmDeleteFromNotification = "delete_notif" in checkedValues,
+                            isConfirmSpam = "spam" in checkedValues,
+                            isConfirmDiscardMessage = "discard" in checkedValues,
+                            isConfirmMarkAllRead = "mark_all_read" in checkedValues,
+                        ),
+                    )
+                }
             }
 
             "messageview_visible_refile_actions" -> {
@@ -420,6 +437,19 @@ class GeneralSettingsDataStore(
                 display = settings.display.copy(
                     visualSettings = settings.display.visualSettings.copy(
                         isShowAnimations = isShowAnimations,
+                    ),
+                ),
+            )
+        }
+    }
+
+    private fun setDrawerExpandAllFolder(drawerExpandAllFolder: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        drawerExpandAllFolder = drawerExpandAllFolder,
                     ),
                 ),
             )
@@ -750,8 +780,33 @@ class GeneralSettingsDataStore(
         else -> throw AssertionError()
     }
 
+    private fun setBodyContentType(value: String) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        bodyContentType = BodyContentType.valueOf(value),
+                    ),
+                ),
+            )
+        }
+    }
+
     private fun setTelemetryEnabled(enable: Boolean) {
         K9.isTelemetryEnabled = enable
         telemetryManager.setEnabled(enable)
+    }
+
+    private fun updateSwipeAction(value: String, update: SwipeActions.(SwipeAction) -> SwipeActions) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            val interaction = settings.interaction
+            settings.copy(
+                interaction = interaction.copy(
+                    swipeActions = interaction.swipeActions.update(stringToSwipeAction(value)),
+                ),
+            )
+        }
     }
 }

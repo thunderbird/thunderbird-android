@@ -1,59 +1,43 @@
 package com.fsck.k9.message.html
 
 import app.k9mail.html.cleaner.HtmlHeadProvider
+import net.thunderbird.core.common.mail.html.HtmlSettings
+import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
+import net.thunderbird.feature.mail.message.reader.api.css.CssStyleProvider
+import org.intellij.lang.annotations.Language
 
-class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
+class DisplayHtml(
+    private val htmlSettings: HtmlSettings,
+    private val cssClassNameProvider: CssClassNameProvider,
+    private val cssStyleProviders: List<CssStyleProvider.Factory>,
+) : HtmlHeadProvider {
     override val headHtml: String
-        get() {
-            return """<meta name="viewport" content="width=device-width"/>""" +
-                cssStyleTheme() +
-                cssStylePre() +
-                cssStyleSignature()
-        }
+        @Language("HTML")
+        get() = """
+            |<meta name="viewport" content="width=device-width"/>
+            |${cssStyleProviders.joinToString("\n") { it.create(htmlSettings).style }}
+        """.trimMargin()
 
     fun wrapStatusMessage(status: CharSequence): String {
         return wrapMessageContent("<div style=\"text-align:center; color: grey;\">$status</div>")
     }
 
+    @Language("HTML")
     fun wrapMessageContent(messageContent: CharSequence): String {
+        // TODO(#10074): This should be consolidated in a single place. There are many places that
+        //               build an HTML document to almost the same purpose (Viewer, Composer, etc).
+        //               Current files that build the HTML document: this, HtmlProcessor.kt, and
+        //               HtmlQuoteCreator.java (maybe).
         // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
-        return "<html dir=\"auto\"><head><meta name=\"viewport\" content=\"width=device-width\"/>" +
-            cssStyleTheme() +
-            cssStylePre() +
-            "</head><body>" +
-            messageContent +
-            "</body></html>"
-    }
-
-    private fun cssStyleTheme(): String {
-        return if (settings.useDarkMode) {
-            // TODO: Don't hardcode these values. Inject them via HtmlSettings.
-            "<style type=\"text/css\">" +
-                "* { background: #121212 ! important; color: #F3F3F3 !important }" +
-                ":link, :link * { color: #CCFF33 !important }" +
-                ":visited, :visited * { color: #551A8B !important }</style> "
-        } else {
-            ""
-        }
-    }
-
-    /**
-     * Dynamically generate a CSS style for `<pre>` elements.
-     *
-     * The style incorporates the user's current preference setting for the font family used for plain text messages.
-     *
-     * @return A `<style>` element that can be dynamically included in the HTML `<head>` element when messages are
-     * displayed.
-     */
-    private fun cssStylePre(): String {
-        val font = if (settings.useFixedWidthFont) "monospace" else "sans-serif"
-
-        return "<style type=\"text/css\"> pre." + EmailTextToHtml.K9MAIL_CSS_CLASS +
-            " {white-space: pre-wrap; word-wrap:break-word; " +
-            "font-family: " + font + "; margin-top: 0px}</style>"
-    }
-
-    private fun cssStyleSignature(): String {
-        return """<style type="text/css">.k9mail-signature { opacity: 0.5 }</style>"""
+        return """
+            |<html dir="auto">
+            |  <head>
+            |    $headHtml
+            |  </head>
+            |  <body class="${cssClassNameProvider.rootClassName} ${cssClassNameProvider.mainContentClassName}">
+            |    $messageContent
+            |  </body>
+            |</html>
+        """.trimMargin()
     }
 }

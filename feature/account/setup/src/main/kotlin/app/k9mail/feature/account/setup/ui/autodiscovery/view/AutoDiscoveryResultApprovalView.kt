@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -18,7 +18,7 @@ internal fun AutoDiscoveryResultApprovalView(
     approvalState: BooleanInputField,
     onApprovalChange: (Boolean) -> Unit,
 ) {
-    val resources = LocalContext.current.resources
+    val resources = LocalResources.current
 
     Spacer(modifier = Modifier.height(MainTheme.spacings.default))
 

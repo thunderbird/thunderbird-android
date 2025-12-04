@@ -49,10 +49,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.content.IntentCompat;
-import androidx.core.graphics.Insets;
 import androidx.core.os.BundleCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
@@ -101,7 +98,7 @@ import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.ReplyToParser;
 import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.Flag;
+import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import net.thunderbird.core.common.exception.MessagingException;
@@ -119,7 +116,7 @@ import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.ui.R;
-import com.fsck.k9.ui.base.K9Activity;
+import com.fsck.k9.ui.base.BaseActivity;
 import com.fsck.k9.ui.compose.IntentData;
 import com.fsck.k9.ui.compose.IntentDataMapper;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
@@ -158,7 +155,7 @@ import static net.thunderbird.feature.notification.api.content.SentFolderNotFoun
 
 
 @SuppressWarnings("deprecation") // TODO get rid of activity dialogs and indeterminate progress bars
-public class MessageCompose extends K9Activity implements OnClickListener,
+public class MessageCompose extends BaseActivity implements OnClickListener,
     CancelListener, AttachmentDownloadCancelListener, OnFocusChangeListener,
     OnOpenPgpInlineChangeListener, OnOpenPgpSignOnlyChangeListener, MessageBuilder.Callback,
     AttachmentPresenter.AttachmentsChangedListener, OnOpenPgpDisableListener {
@@ -336,7 +333,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              * There are no accounts set up. This should not have happened. Prompt the
              * user to set up an account as an acceptable bailout.
              */
-            MessageList.launch(this);
+            MainActivity.launch(this);
             changesMadeSinceLastSave = false;
             finish();
             return;
@@ -377,12 +374,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         messageContentView = findViewById(R.id.message_content);
         messageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
-
-        ViewCompat.setOnApplyWindowInsetsListener(messageContentView.getRootView(), (v, windowInsets) -> {
-            final Insets newInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout() | WindowInsetsCompat.Type.ime());
-            v.setPadding(newInsets.left, 0, newInsets.right, newInsets.bottom);
-            return windowInsets;
-        });
 
         attachmentsView = findViewById(R.id.attachments);
 
@@ -1121,7 +1112,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void askBeforeDiscard() {
-        if (K9.isConfirmDiscardMessage()) {
+        final boolean isConfirmDiscardMessage = generalSettingsManager.getConfig().getInteraction()
+            .isConfirmDiscardMessage();
+        if (isConfirmDiscardMessage) {
             showDialog(DIALOG_CONFIRM_DISCARD);
         } else {
             onDiscard();
@@ -1229,7 +1222,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         LocalMessageSearch search = new LocalMessageSearch();
         search.addAccountUuid(account.getUuid());
         search.addAllowedFolder(folderId);
-        MessageList.actionDisplaySearch(this, search, false, true);
+        MainActivity.actionDisplaySearch(this, search, false, true);
         finish();
     }
 

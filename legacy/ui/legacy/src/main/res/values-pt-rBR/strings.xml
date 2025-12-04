@@ -271,7 +271,6 @@
     <string name="archive_folder_label">Pasta de arquivamento</string>
     <string name="spam_folder_label">Pasta de spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Exibir somente pastas assinadas</string>
-    <string name="account_setup_auto_expand_folder">Expandir as pastas automaticamente</string>
     <string name="account_setup_options_mail_check_frequency_never">Nunca</string>
     <string name="account_setup_options_mail_check_frequency_15min">A cada 15 minutos</string>
     <string name="account_setup_options_mail_check_frequency_30min">A cada 30 minutos</string>
@@ -361,8 +360,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Todos os rascunhos serão armazenados criptografados</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Só criptografar rascunhos se a criptografia estiver ativada</string>
     <string name="account_settings_mail_check_frequency_label">Frequência de verificação da pasta</string>
-    <string name="account_settings_color_label">Cor da conta</string>
-    <string name="account_settings_color_summary">A cor desta conta é usada na pasta e na lista de contas</string>
     <string name="account_settings_mail_display_count_label">Tamanho da pasta local</string>
     <string name="account_settings_autodownload_message_size_label">Buscar mensagens com tamanho até</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -403,7 +400,6 @@
     <string name="account_settings_incoming_summary">Configure o servidor recebimento de mensagens</string>
     <string name="account_settings_outgoing_label">Servidor de envio</string>
     <string name="account_settings_outgoing_summary">Configure o servidor de envio de mensagens (SMTP)</string>
-    <string name="account_settings_description_label">Nome da conta</string>
     <string name="account_settings_name_label">Seu nome</string>
     <string name="notifications_title">Notificações</string>
     <string name="account_settings_vibration">Vibração</string>

@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_settings_general_title">常规设置</string>
-    <string name="account_settings_general_profile_indicator_monogram">字母组合</string>
-    <string name="account_settings_general_profile_indicator_image">图片</string>
-    <string name="account_settings_general_profile_indicator_icon">图标</string>
+    <string name="account_settings_general_avatar_option_monogram">字母组合</string>
+    <string name="account_settings_general_avatar_option_image">图片</string>
+    <string name="account_settings_general_avatar_option_icon">图标</string>
     <string name="account_settings_general_name_title">账号名称</string>
     <string name="account_settings_general_name_description">与您的账号关联的名称。</string>
     <string name="account_settings_general_color_title">账号颜色</string>
     <string name="account_settings_general_color_description">此账号在文件夹和账号列表中使用的强调色。</string>
-    <string name="account_settings_general_profile_indicator_title">个人资料标识</string>
+    <string name="account_settings_general_avatar_title">头像</string>
+    <string name="account_settings_general_avatar_description">选择账号头像的显示方式。</string>
+    <string name="account_settings_general_name_error_empty">名称不能为空</string>
+    <string name="account_settings_general_name_error_too_long">名称太长</string>
+    <string name="account_settings_general_avatar_monogram_title">头像字母组合</string>
+    <string name="account_settings_general_avatar_monogram_description">用作头像的字母组合。</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">字母组合不能为空</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">字母组合太长</string>
+    <string name="account_settings_general_avatar_icon_title">头像图标</string>
+    <string name="account_settings_general_avatar_icon_description">请选择其中一个图标用作您的头像。</string>
 </resources>

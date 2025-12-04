@@ -1,8 +1,16 @@
 plugins {
-    id(ThunderbirdPlugins.Library.jvm)
-    alias(libs.plugins.android.lint)
+    id(ThunderbirdPlugins.Library.kmp)
 }
 
-dependencies {
-    api(projects.feature.account.api)
+kotlin {
+    androidLibrary {
+        namespace = "net.thunderbird.feature.account.core"
+        withHostTest {}
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.feature.account.api)
+        }
+    }
 }

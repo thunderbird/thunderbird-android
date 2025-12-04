@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_title">Elküldöttek mappa nem található</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Ahhoz, hogy elmentse ezt az üzenetet, előbb állítson be egy Kimenő mappát a fiókbeállításokban.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Elküldött mappa hozzáadása</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Mégse</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Küldés és Törlés</string>
 </resources>

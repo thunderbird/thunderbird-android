@@ -1,3 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">Ne mutassa többet ezt az üzenetet</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">Levél nem arhíválható</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Arhív mappa konfigurálása most</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Kihagyás</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Arhív fiók beállítása</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">Oppá, valami hiba történt a fiók mappáinak beolvasása közben!</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Hiba részletei: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Új mappa létrehozása</string>
+    <string name="setup_archive_folder_dialog_done">Kész</string>
+    <string name="setup_archive_folder_dialog_cancel">Mégse</string>
 </resources>

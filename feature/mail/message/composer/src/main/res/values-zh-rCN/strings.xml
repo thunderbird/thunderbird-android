@@ -4,5 +4,5 @@
     <string name="sent_folder_not_found_dialog_supporting_text">要在发送后保存此邮件，请在账号设置中设置已发送邮件文件夹。</string>
     <string name="sent_folder_not_found_dialog_assign_folder_action">分配已发送邮件文件夹</string>
     <string name="sent_folder_not_found_dialog_cancel_action">取消</string>
-    <string name="sent_folder_not_found_dialog_send_and_delete_action">发送并删除‌</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">发送并删除</string>
 </resources>

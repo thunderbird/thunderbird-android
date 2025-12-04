@@ -2,10 +2,10 @@ package com.fsck.k9.controller
 
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.message.controller.MessagingListener
-import com.fsck.k9.mail.Flag
 import java.util.concurrent.Future
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.feature.account.AccountId
 
 /**

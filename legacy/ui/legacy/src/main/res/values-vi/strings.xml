@@ -354,7 +354,6 @@
     <string name="account_setup_options_mail_check_frequency_24hour">Mỗi 24 giờ</string>
     <string name="account_setup_options_mail_check_frequency_2hour">Mỗi 2 giờ</string>
     <string name="drafts_folder_label">Thư mục bản nháp</string>
-    <string name="account_setup_auto_expand_folder">Tự động mở rộng thư mục</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Chỉ hiển thị các thư mục đã đăng ký</string>
     <string name="account_setup_options_mail_check_frequency_6hour">Mỗi 6 giờ</string>
     <string name="archive_folder_label">Thư mục lưu trữ</string>
@@ -433,10 +432,8 @@
     <string name="account_settings_message_age_0">hôm nay</string>
     <string name="account_settings_upload_sent_messages_summary">Tải tin nhắn lên thư mục Đã gửi sau khi gửi</string>
     <string name="account_settings_sync_remote_deletetions_label">Đồng bộ hóa việc xóa máy chủ</string>
-    <string name="account_settings_color_summary">Màu nhấn của tài khoản này được sử dụng trong danh sách thư mục và tài khoản</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
     <string name="account_settings_autodownload_message_size_8">8 KiB</string>
-    <string name="account_settings_color_label">Màu tài khoản</string>
     <string name="account_settings_autodownload_message_size_label">Tìm nạp tin nhắn lên đến</string>
     <string name="account_settings_crypto_encrypt_all_drafts">Lưu trữ tất cả các bản nháp được mã hóa</string>
     <string name="account_settings_crypto_summary_config">Đang định cấu hình…</string>
@@ -541,7 +538,6 @@
     <string name="general_settings_post_mark_as_unread_action_title">Sau khi đánh dấu tin nhắn là chưa đọc</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Quay lại danh sách tin nhắn</string>
     <string name="account_settings_vibration">Rung</string>
-    <string name="account_settings_description_label">Tên tài khoản</string>
     <string name="account_settings_notification_light_label">Đèn thông báo</string>
     <string name="account_settings_vibrate_enable">Rung</string>
     <string name="account_settings_notification_light_default_color">Màu mặc định của hệ thống</string>

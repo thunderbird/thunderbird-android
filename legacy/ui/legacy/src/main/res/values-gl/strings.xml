@@ -249,7 +249,6 @@
     <string name="archive_folder_label">Carpeta Arquivados</string>
     <string name="spam_folder_label">Carpeta SPAM</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Ver só carpetas	suscritas</string>
-    <string name="account_setup_auto_expand_folder">Autoexpandir carpeta</string>
     <string name="account_setup_options_mail_check_frequency_never">Nunca</string>
     <string name="account_setup_options_mail_check_frequency_15min">Cada 15 minutos</string>
     <string name="account_setup_options_mail_check_frequency_30min">Cada 30 minutos</string>
@@ -339,8 +338,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Todos os borradores almacenaranse cifrados</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Cifra os borradores só se o cifrado está activado</string>
     <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
-    <string name="account_settings_color_label">Cor da conta</string>
-    <string name="account_settings_color_summary">Elixe a cor a usar na carpeta e na conta</string>
     <string name="account_settings_mail_display_count_label">Tamaño carpeta local</string>
     <string name="account_settings_autodownload_message_size_label">Obter mensaxes hata</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -381,7 +378,6 @@
     <string name="account_settings_incoming_summary">Configurar servidor de entrada</string>
     <string name="account_settings_outgoing_label">Servidor de saída</string>
     <string name="account_settings_outgoing_summary">Configurar servidor de saída (SMTP)</string>
-    <string name="account_settings_description_label">Nome da conta</string>
     <string name="account_settings_name_label">O teu nome</string>
     <string name="notifications_title">Notificacións</string>
     <string name="account_settings_vibrate_enable">Vibrar</string>

@@ -273,7 +273,6 @@
     <string name="archive_folder_label">Arhīva mape</string>
     <string name="spam_folder_label">Mēstuļu mape</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Rādīt tikai izvēlētās mapes</string>
-    <string name="account_setup_auto_expand_folder">Automātiski izvērst mapi</string>
     <string name="account_setup_options_mail_check_frequency_never">Nekad</string>
     <string name="account_setup_options_mail_check_frequency_15min">Ik 15 minūtes</string>
     <string name="account_setup_options_mail_check_frequency_30min">Katras 30 minūtes</string>
@@ -363,8 +362,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Visi melnraksti glabāsies šifrēti</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Šifrēt melnrakstus tikai tad, ja iespējota šifrēšana</string>
     <string name="account_settings_mail_check_frequency_label">Mapes pārbaudes biežums</string>
-    <string name="account_settings_color_label">Konta krāsa</string>
-    <string name="account_settings_color_summary">Noteicošā šī konta krāsa mapju un konta sarakstā</string>
     <string name="account_settings_mail_display_count_label">Vietējās mapes izmērs</string>
     <string name="account_settings_autodownload_message_size_label">Ielasīt ziņas ne lielākas par</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -405,7 +402,6 @@
     <string name="account_settings_incoming_summary">Iestatīt ienākošā pasta serveri</string>
     <string name="account_settings_outgoing_label">Izejošais serveris</string>
     <string name="account_settings_outgoing_summary">Iestatīt izejošā pasta (SMTP) serveri</string>
-    <string name="account_settings_description_label">Konta nosaukums</string>
     <string name="account_settings_name_label">Jūsu vārds</string>
     <string name="notifications_title">Paziņojumi</string>
     <string name="account_settings_vibration">Vibrācija</string>

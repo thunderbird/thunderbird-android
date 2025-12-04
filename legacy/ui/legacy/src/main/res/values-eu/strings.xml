@@ -269,7 +269,6 @@
     <string name="archive_folder_label">Artxibatuen karpeta</string>
     <string name="spam_folder_label">Zabor-posta karpeta</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Erakutsi harpidetutako karpetak bakarrik</string>
-    <string name="account_setup_auto_expand_folder">Automatikoki irekitako karpeta</string>
     <string name="account_setup_options_mail_check_frequency_never">Inoiz ez</string>
     <string name="account_setup_options_mail_check_frequency_15min">15 minutuero</string>
     <string name="account_setup_options_mail_check_frequency_30min">30 minutuero</string>
@@ -359,8 +358,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Zirriborro guztiak zifratuta gordeko dira</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Zifratu zirriborroak zifratzea aktibatuta badago</string>
     <string name="account_settings_mail_check_frequency_label">Karpeta atzitzeko maiztasuna</string>
-    <string name="account_settings_color_label">Kontuaren kolorea</string>
-    <string name="account_settings_color_summary">Kontu honen azenturako kolorea karpeta eta kontuen zerrendetan erabiltzeko</string>
     <string name="account_settings_mail_display_count_label">Karpeta lokalaren tamaina</string>
     <string name="account_settings_autodownload_message_size_label">Honenbesterainoko mezuak eskuratu</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -401,7 +398,6 @@
     <string name="account_settings_incoming_summary">Konfiguratu sarrerako posta zerbitzaria</string>
     <string name="account_settings_outgoing_label">Irteerako zerbitzaria</string>
     <string name="account_settings_outgoing_summary">Irteerako posta zerbitzaria (SMTP) konfiguratu</string>
-    <string name="account_settings_description_label">Kontu izena</string>
     <string name="account_settings_name_label">Zure izena</string>
     <string name="notifications_title">Jakinarazpenak</string>
     <string name="account_settings_vibration">Bibrazioa</string>

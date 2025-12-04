@@ -21,7 +21,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat.Type.navigationBars
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -54,7 +54,6 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.mail.AuthType
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.search.getLegacyAccounts
 import com.fsck.k9.ui.BuildConfig
@@ -91,6 +90,7 @@ import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.exception.MessagingException
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
@@ -98,6 +98,7 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
@@ -240,6 +241,8 @@ class MessageListFragment :
     private var error: Error? = null
 
     private var messageListSwipeCallback: MessageListSwipeCallback? = null
+    private val interactionSettings: InteractionSettings
+        get() = generalSettingsManager.getConfig().interaction
 
     /**
      * Set this to `true` when the fragment should be considered active. When active, the fragment adds its actions to
@@ -417,19 +420,6 @@ class MessageListFragment :
         initializeSortSettings()
 
         loadMessageList()
-
-        initializeInsets(view)
-    }
-
-    private fun initializeInsets(view: View) {
-        val messageList = view.findViewById<View>(R.id.message_list)
-
-        ViewCompat.setOnApplyWindowInsetsListener(messageList) { v, windowsInsets ->
-            val insets = windowsInsets.getInsets(navigationBars())
-            v.setPadding(0, 0, 0, insets.bottom)
-
-            windowsInsets
-        }
     }
 
     private fun initializeSwipeRefreshLayout(view: View) {
@@ -481,6 +471,19 @@ class MessageListFragment :
 
     private fun enableFloatingActionButton(view: View) {
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floating_action_button)
+
+        ViewCompat.setOnApplyWindowInsetsListener(floatingActionButton) { view, windowInsets ->
+            val insets = windowInsets.getInsets(systemBars())
+            val margin = resources.getDimensionPixelSize(R.dimen.floatingActionButtonMargin)
+
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                leftMargin = margin + insets.left
+                bottomMargin = margin + insets.bottom
+                rightMargin = margin + insets.right
+            }
+
+            WindowInsetsCompat.CONSUMED
+        }
 
         floatingActionButton.setOnClickListener {
             onCompose()
@@ -933,7 +936,7 @@ class MessageListFragment :
     }
 
     private fun onDelete(messages: List<MessageReference>) {
-        if (K9.isConfirmDelete) {
+        if (interactionSettings.isConfirmDelete) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages
             showDialog(R.id.dialog_confirm_delete)
@@ -1078,6 +1081,7 @@ class MessageListFragment :
         menu.findItem(R.id.debug_invalidate_access_token_local).isVisible = showDebug
         menu.findItem(R.id.debug_invalidate_access_token_server).isVisible = showDebug
         menu.findItem(R.id.debug_force_auth_failure).isVisible = showDebug
+        menu.findItem(R.id.debug_feature_flags).isVisible = BuildConfig.DEBUG
     }
 
     private fun hideMenu(menu: Menu) {
@@ -1095,6 +1099,7 @@ class MessageListFragment :
         menu.findItem(R.id.debug_invalidate_access_token_local).isVisible = false
         menu.findItem(R.id.debug_invalidate_access_token_server).isVisible = false
         menu.findItem(R.id.debug_force_auth_failure).isVisible = false
+        menu.findItem(R.id.debug_feature_flags).isVisible = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -1118,6 +1123,11 @@ class MessageListFragment :
             R.id.debug_invalidate_access_token_local -> onDebugInvalidateAccessTokenLocal()
             R.id.debug_invalidate_access_token_server -> onDebugInvalidateAccessTokenServer()
             R.id.debug_force_auth_failure -> onDebugForceAuthFailure()
+            R.id.debug_feature_flags -> FeatureLauncherActivity.launch(
+                context = requireContext(),
+                target = FeatureLauncherTarget.SecretDebugSettingsFeatureFlag,
+            )
+
             else -> return super.onOptionsItemSelected(item)
         }
 
@@ -1160,6 +1170,7 @@ class MessageListFragment :
                     Toast.LENGTH_SHORT,
                 ).show()
             }
+
             is Outcome.Failure -> {
                 when (outcome.error) {
                     is AuthDebugActions.Error.AccountNotFound,
@@ -1171,6 +1182,7 @@ class MessageListFragment :
                             Toast.LENGTH_SHORT,
                         ).show()
                     }
+
                     is AuthDebugActions.Error.CannotModifyAccessToken -> {
                         Toast.makeText(
                             requireContext(),
@@ -1178,6 +1190,7 @@ class MessageListFragment :
                             Toast.LENGTH_SHORT,
                         ).show()
                     }
+
                     is AuthDebugActions.Error.AlreadyModified -> {
                         Toast.makeText(
                             requireContext(),
@@ -1208,6 +1221,7 @@ class MessageListFragment :
                     Toast.LENGTH_SHORT,
                 ).show()
             }
+
             is Outcome.Failure -> {
                 when (outcome.error) {
                     is AuthDebugActions.Error.AccountNotFound,
@@ -1236,6 +1250,7 @@ class MessageListFragment :
             is Outcome.Success -> {
                 Toast.makeText(requireContext(), R.string.debug_force_auth_failure_done, Toast.LENGTH_SHORT).show()
             }
+
             is Outcome.Failure -> {
                 when (outcome.error) {
                     is AuthDebugActions.Error.AccountNotFound -> Toast.makeText(
@@ -1243,6 +1258,7 @@ class MessageListFragment :
                         R.string.debug_force_auth_failure_unavailable,
                         Toast.LENGTH_SHORT,
                     ).show()
+
                     is AuthDebugActions.Error.NoOAuthState -> {
                         // Clearing is already the desired state; still report done so user knows it's in effect
                         Toast.makeText(
@@ -1251,6 +1267,7 @@ class MessageListFragment :
                             Toast.LENGTH_SHORT,
                         ).show()
                     }
+
                     is AuthDebugActions.Error.CannotModifyAccessToken,
                     is AuthDebugActions.Error.AlreadyModified,
                     -> {
@@ -1537,7 +1554,7 @@ class MessageListFragment :
     }
 
     private fun onSpam(messages: List<MessageReference>) {
-        if (K9.isConfirmSpam) {
+        if (interactionSettings.isConfirmSpam) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages
             showDialog(R.id.dialog_confirm_spam)
@@ -2043,7 +2060,7 @@ class MessageListFragment :
         get() = isSingleAccountMode && isSingleFolderMode && !isOutbox
 
     private fun confirmMarkAllAsRead() {
-        if (K9.isConfirmMarkAllRead) {
+        if (interactionSettings.isConfirmMarkAllRead) {
             showDialog(R.id.dialog_confirm_mark_all_as_read)
         } else {
             markAllAsRead()

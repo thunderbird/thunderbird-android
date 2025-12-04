@@ -37,8 +37,6 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.common.provider.AppNameProvider
-import net.thunderbird.core.featureflag.FeatureFlagKey
-import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import org.koin.android.ext.android.inject
@@ -59,7 +57,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val notificationSettingsUpdater: NotificationSettingsUpdater by inject()
     private val vibrator: Vibrator by inject()
     private val appNameProvider: AppNameProvider by inject()
-    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private lateinit var dataStore: AccountSettingsDataStore
 
@@ -141,19 +138,12 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun initializeGeneralSettings() {
-        featureFlagProvider.provide(FeatureFlagKey("new_account_settings"))
-            .onEnabled {
-                findPreference<Preference>(PREFERENCE_GENERAL_LEGACY)?.remove()
-
-                findPreference<Preference>(PREFERENCE_GENERAL)?.onClick {
-                    FeatureLauncherActivity.launch(
-                        context = requireActivity(),
-                        target = FeatureLauncherTarget.AccountSettings(accountUuid),
-                    )
-                }
-            }.onDisabledOrUnavailable {
-                findPreference<Preference>(PREFERENCE_GENERAL)?.remove()
-            }
+        findPreference<Preference>(PREFERENCE_GENERAL)?.onClick {
+            FeatureLauncherActivity.launch(
+                context = requireActivity(),
+                target = FeatureLauncherTarget.AccountSettings(accountUuid),
+            )
+        }
     }
 
     private fun initializeIncomingServer() {
@@ -476,7 +466,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         internal const val PREFERENCE_OPENPGP = "openpgp"
         private const val ARG_ACCOUNT_UUID = "accountUuid"
         private const val PREFERENCE_GENERAL = "general"
-        private const val PREFERENCE_GENERAL_LEGACY = "account_settings"
         private const val PREFERENCE_INCOMING_SERVER = "incoming"
         private const val PREFERENCE_COMPOSITION = "composition"
         private const val PREFERENCE_MANAGE_IDENTITIES = "manage_identities"

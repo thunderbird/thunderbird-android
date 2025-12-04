@@ -1,22 +1,21 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.IntOffset
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.common.modifier.safeDrawingPaddingCompat
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
@@ -24,12 +23,13 @@ import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Even
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountList
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountView
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.getDisplayCutOutHorizontalInsetPadding
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.DRAWER_WIDTH
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getAdditionalWidth
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.folder.FolderList
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.AccountSettingList
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.FolderSettingList
+
+private const val ANIMATION_DURATION_MS = 200
 
 @Composable
 internal fun DrawerContent(
@@ -47,17 +47,15 @@ internal fun DrawerContent(
         color = MainTheme.colors.surfaceContainerLow,
     ) {
         val selectedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId }
-        val horizontalInsetPadding = getDisplayCutOutHorizontalInsetPadding()
 
         Column(
-            modifier = Modifier
-                .windowInsetsPadding(WindowInsets.safeDrawing)
-                .windowInsetsPadding(horizontalInsetPadding),
+            modifier = Modifier.safeDrawingPaddingCompat(),
         ) {
             selectedAccount?.let {
                 AccountView(
                     account = selectedAccount,
                     onClick = { onEvent(Event.OnAccountSelectorClick) },
+                    onAvatarClick = { onEvent(Event.OnAccountViewClick(selectedAccount)) },
                     showAccountSelection = state.showAccountSelection,
                 )
 
@@ -67,10 +65,13 @@ internal fun DrawerContent(
                 targetState = state.showAccountSelection,
                 label = "AccountSelectorVisibility",
                 transitionSpec = {
+                    val animationSpec = tween<IntOffset>(durationMillis = ANIMATION_DURATION_MS)
                     if (targetState) {
-                        slideInVertically { -it } togetherWith slideOutVertically { it }
+                        slideInVertically(animationSpec = animationSpec) { -it } togetherWith
+                            slideOutVertically(animationSpec = animationSpec) { it }
                     } else {
-                        slideInVertically { it } togetherWith slideOutVertically { -it }
+                        slideInVertically(animationSpec = animationSpec) { it } togetherWith
+                            slideOutVertically(animationSpec = animationSpec) { -it }
                     }
                 },
             ) { targetState ->
@@ -114,6 +115,8 @@ private fun AccountContent(
             AccountSettingList(
                 onAddAccountClick = { onEvent(Event.OnAddAccountClick) },
                 onSyncAllAccountsClick = { onEvent(Event.OnSyncAllAccounts) },
+                onSettingsClick = { onEvent(Event.OnSettingsClick) },
+                isLoading = state.isLoading,
             )
         }
     }
@@ -124,9 +127,7 @@ private fun FolderContent(
     state: State,
     onEvent: (Event) -> Unit,
 ) {
-    val isUnifiedAccount = remember(state.selectedAccountId) {
-        state.accounts.any { it.id == state.selectedAccountId && it is UnifiedDisplayAccount }
-    }
+    val isUnifiedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId } is UnifiedDisplayAccount
 
     Surface(
         color = MainTheme.colors.surfaceContainerLow,
@@ -135,6 +136,7 @@ private fun FolderContent(
             modifier = Modifier.fillMaxSize(),
         ) {
             FolderList(
+                isExpandedInitial = state.config.expandAllFolder,
                 rootFolder = state.rootFolder,
                 selectedFolder = state.selectedFolder,
                 onFolderClick = { folder ->
@@ -145,9 +147,12 @@ private fun FolderContent(
             )
             DividerHorizontal()
             FolderSettingList(
+                onSyncAccountClick = { onEvent(Event.OnSyncAccount) },
                 onManageFoldersClick = { onEvent(Event.OnManageFoldersClick) },
+                onSyncAllAccountsClick = { onEvent(Event.OnSyncAllAccounts) },
                 onSettingsClick = { onEvent(Event.OnSettingsClick) },
                 isUnifiedAccount = isUnifiedAccount,
+                isLoading = state.isLoading,
             )
         }
     }

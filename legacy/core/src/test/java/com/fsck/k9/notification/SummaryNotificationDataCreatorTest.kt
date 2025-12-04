@@ -26,6 +26,7 @@ import org.junit.Test
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
@@ -43,11 +44,16 @@ class SummaryNotificationDataCreatorTest {
             quietTimeEnds = "00:00",
         ),
         privacy = PrivacySettings(),
+        platformConfigProvider = FakePlatformConfigProvider(),
     )
     private val notificationDataCreator = SummaryNotificationDataCreator(
-        singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),
+        singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
+            interactionPreferences = mock {
+                on { getConfig() } doAnswer { generalSettings.interaction }
+            },
+        ),
         generalSettingsManager = mock {
-            on { getConfig() } doReturn generalSettings
+            on { getConfig() } doAnswer { generalSettings }
         },
     )
 
@@ -87,7 +93,11 @@ class SummaryNotificationDataCreatorTest {
         val notificationData = createNotificationData()
 
         val result = SummaryNotificationDataCreator(
-            singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),
+            singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
+                interactionPreferences = mock {
+                    on { getConfig() } doReturn generalSettings.interaction
+                },
+            ),
             generalSettingsManager = mock {
                 on { getConfig() } doReturn generalSettings.copy(
                     notification = generalSettings.notification.copy(isQuietTimeEnabled = true),
@@ -124,7 +134,11 @@ class SummaryNotificationDataCreatorTest {
         val notificationData = createNotificationDataWithMultipleMessages()
 
         val result = SummaryNotificationDataCreator(
-            singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),
+            singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
+                interactionPreferences = mock {
+                    on { getConfig() } doReturn generalSettings.interaction
+                },
+            ),
             generalSettingsManager = mock {
                 on { getConfig() } doReturn generalSettings.copy(
                     notification = generalSettings.notification.copy(isQuietTimeEnabled = true),
@@ -286,7 +300,11 @@ class SummaryNotificationDataCreatorTest {
     }
 
     private fun setConfirmDeleteFromNotification(confirm: Boolean) {
-        K9.isConfirmDeleteFromNotification = confirm
+        generalSettings = generalSettings.copy(
+            interaction = generalSettings.interaction.copy(
+                isConfirmDeleteFromNotification = confirm,
+            ),
+        )
     }
 
     private fun createAccount(): LegacyAccountDto {

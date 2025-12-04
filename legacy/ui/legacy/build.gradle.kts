@@ -23,7 +23,6 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.feature.navigation.drawer.api)
     implementation(projects.feature.navigation.drawer.dropdown)
-    implementation(projects.feature.navigation.drawer.siderail)
     implementation(projects.feature.notification.api)
     // TODO: Remove AccountOauth dependency
     implementation(projects.feature.account.oauth)
@@ -36,6 +35,7 @@ dependencies {
     implementation(projects.feature.mail.message.list)
     implementation(projects.feature.mail.message.composer)
     implementation(projects.feature.mail.message.export.api)
+    implementation(projects.feature.mail.message.reader.api)
 
     compileOnly(projects.mail.protocols.imap)
 

@@ -42,7 +42,7 @@
     <string name="reply_all_action">Allen beäntwurdzje</string>
     <string name="delete_action">Fuortsmite</string>
     <string name="archive_action">Argivearje</string>
-    <string name="spam_action">Spam</string>
+    <string name="spam_action">Net-winske</string>
     <string name="forward_action">Trochstjoere</string>
     <string name="forward_as_attachment_action">As bylage trochstjoere</string>
     <string name="edit_as_new_message_action">As nij berjocht bewurkje</string>
@@ -113,7 +113,7 @@
     <string name="notification_action_delete_all">Alle fuortsmite</string>
     <string name="notification_action_archive">Argivearje</string>
     <string name="notification_action_archive_all">Alle argivearje</string>
-    <string name="notification_action_spam">Spam</string>
+    <string name="notification_action_spam">Net-winske</string>
     <string name="notification_certificate_error_public">Sertifikaatflater</string>
     <string name="notification_certificate_error_title">Sertifikaatflater foar <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Kontrolearje jo serverynstellingen</string>
@@ -203,7 +203,7 @@
     <string name="global_settings_confirm_actions_summary">Wannear’t jo de selektearre aksjes útfiere, altyd in dialoochfinster toane</string>
     <string name="global_settings_confirm_action_delete">Fuortsmite</string>
     <string name="global_settings_confirm_action_delete_starred">Berjochten mei in stjer fuortsmite (yn berjochtewerjefte)</string>
-    <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_spam">Net-winske</string>
     <string name="global_settings_confirm_menu_discard">Berjocht ôfbrekke</string>
     <string name="global_settings_confirm_menu_mark_all_read">Alle berjochten as lêzen markearje</string>
     <string name="global_settings_confirm_action_delete_notif">Fuortsmite (fan meldingen)</string>
@@ -226,7 +226,7 @@
     <!--Name of the swipe action to delete a message-->
     <string name="general_settings_swipe_action_delete">Fuortsmite</string>
     <!--Name of the swipe action to move a message to the spam folder-->
-    <string name="general_settings_swipe_action_spam">Spam</string>
+    <string name="general_settings_swipe_action_spam">Net-winske</string>
     <!--Name of the swipe action to move a message to another folder-->
     <string name="general_settings_swipe_action_move">Ferpleatse</string>
     <!--Title of the setting to specify the density of the message list-->
@@ -269,7 +269,6 @@
     <string name="archive_folder_label">Argyf</string>
     <string name="spam_folder_label">Net-winske</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Allinnich abonnearre mappen toane</string>
-    <string name="account_setup_auto_expand_folder">Map automatysk útklappe</string>
     <string name="account_setup_options_mail_check_frequency_never">Nea</string>
     <string name="account_setup_options_mail_check_frequency_15min">Elke 15 minuten</string>
     <string name="account_setup_options_mail_check_frequency_30min">Elke 30 minuten</string>
@@ -359,8 +358,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle konsepten sille fersifere bewarre wurde</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Konsepten allinnich fersiferje as fersifering ynskeakele is</string>
     <string name="account_settings_mail_check_frequency_label">Map-peilingsfrekwinsje</string>
-    <string name="account_settings_color_label">Accountkleur</string>
-    <string name="account_settings_color_summary">De accountkleur brûkt by mappen- en accountlist</string>
     <string name="account_settings_mail_display_count_label">Grutte fan lokale map</string>
     <string name="account_settings_autodownload_message_size_label">Automatysk berjochten downloade oant</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -401,7 +398,6 @@
     <string name="account_settings_incoming_summary">Ynkommende mailserver ynstelle</string>
     <string name="account_settings_outgoing_label">Utgeande server</string>
     <string name="account_settings_outgoing_summary">Utgeande (SMTP-)server ynstelle</string>
-    <string name="account_settings_description_label">Accountnamme</string>
     <string name="account_settings_name_label">Jo namme</string>
     <string name="notifications_title">Meldingen</string>
     <string name="account_settings_vibration">Trilling</string>
@@ -819,7 +815,7 @@
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
     <string name="swipe_action_delete">Fuortsmite</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
+    <string name="swipe_action_spam">Net-winske</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <string name="swipe_action_move">Ferpleatse…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
@@ -889,9 +885,9 @@
     <string name="volume_navigation_title_short">Navigaasje mei folumeknoppen</string>
     <string name="volume_navigation_summary">Brûk de folumeknoppen om te navigearjen tusken berjochten yn it berjochteoersjoch</string>
     <string name="expand_content_description">Utklappe</string>
-    <string name="dialog_confirm_empty_spam_title">Spam leegje befêstigje</string>
-    <string name="dialog_confirm_empty_spam_message">Wolle jo de spammap leegje?</string>
-    <string name="empty_spam_action">Spam leegje</string>
+    <string name="dialog_confirm_empty_spam_title">Net-winske leegje befêstigje</string>
+    <string name="dialog_confirm_empty_spam_message">Wolle jo de map Net-winske leegje?</string>
+    <string name="empty_spam_action">Net-winske leegje</string>
     <string name="camera_permission_denied">Kameratagong wegere! Net mooglik om in foto te meitsjen</string>
     <string name="attach_file">Bestân tafoegje</string>
     <string name="open_camera">Kamera iepenje</string>
@@ -915,4 +911,15 @@
     <string name="debug_invalidate_access_token_cannot_modify">Kin bewarre tagongstoken net bewurkje. Probearje lokale ûnjildichheid.</string>
     <string name="debug_invalidate_access_token_already_modified">Bewarre tagongstoken is al oanpast.</string>
     <string name="message_view_menu_action_export_eml">Eksportearje as EML</string>
+    <string name="account_setup_auto_select_folder">Map automatysk selektearje</string>
+    <string name="navigation_drawer_preferences">Sidemenu</string>
+    <string name="expand_folders">Mappen útklappe</string>
+    <string name="set_format_html_action">Orizjinele opmaak brûke</string>
+    <string name="set_format_html_condensed_action">Opmakke toane</string>
+    <string name="set_format_plain_action">Net-opmakke berjocht toane</string>
+    <string name="set_format_plain_condensed_action">Net-opmakke toane</string>
+    <string name="global_settings_messageview_body_content_type_title">Ynhâldstype tekst</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Platte tekst (text/plain)</string>
+    <string name="debug_feature_flags">DEBUGGE: Funksjelabels</string>
 </resources>

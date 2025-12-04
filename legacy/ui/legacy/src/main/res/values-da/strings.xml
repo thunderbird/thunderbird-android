@@ -268,7 +268,6 @@
     <string name="archive_folder_label">Arkiv mappen</string>
     <string name="spam_folder_label">Spam mappe</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Vis kun mapper du abonerer på</string>
-    <string name="account_setup_auto_expand_folder">Udvid mapper automatisk</string>
     <string name="account_setup_options_mail_check_frequency_never">Aldrig</string>
     <string name="account_setup_options_mail_check_frequency_15min">Hver 15 minut</string>
     <string name="account_setup_options_mail_check_frequency_30min">Hver 30 minut</string>
@@ -357,8 +356,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle kladder vil blive gemt krypteret</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Kryptere kun kladder hvis kryptering er aktiveret</string>
     <string name="account_settings_mail_check_frequency_label">Frekvens for hentning af mails</string>
-    <string name="account_settings_color_label">Kontofarve</string>
-    <string name="account_settings_color_summary">Vælg en farve til konto (benyttes ved mappevisning og listning af konti)</string>
     <string name="account_settings_mail_display_count_label">Lokal mappestørrelse</string>
     <string name="account_settings_autodownload_message_size_label">Hent automatisk mail hvis indhold fylder op til</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -399,7 +396,6 @@
     <string name="account_settings_incoming_summary">Konfigurer indgående mail server</string>
     <string name="account_settings_outgoing_label">Udgående server</string>
     <string name="account_settings_outgoing_summary">Konfigurer udgående mail (SMTP) server</string>
-    <string name="account_settings_description_label">Kontonavn</string>
     <string name="account_settings_name_label">Dit navn</string>
     <string name="notifications_title">Beskeder</string>
     <string name="account_settings_vibration">Vibration</string>

@@ -268,7 +268,6 @@
     <string name="archive_folder_label">Ordner für archivierte Nachrichten</string>
     <string name="spam_folder_label">Ordner für Spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Nur ausgewählte Ordner anzeigen</string>
-    <string name="account_setup_auto_expand_folder">Startordner</string>
     <string name="account_setup_options_mail_check_frequency_never">Nie (nur manuell)</string>
     <string name="account_setup_options_mail_check_frequency_15min">Alle 15 Minuten</string>
     <string name="account_setup_options_mail_check_frequency_30min">Alle 30 Minuten</string>
@@ -358,8 +357,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle Entwürfe werden verschlüsselt gespeichert</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Entwürfe nur verschlüsseln, wenn Verschlüsselung aktiviert ist</string>
     <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
-    <string name="account_settings_color_label">Kontofarbe</string>
-    <string name="account_settings_color_summary">Farbe, in der das Konto in der Konten- und Ordnerliste dargestellt wird</string>
     <string name="account_settings_mail_display_count_label">Anzahl anzuzeigender Nachrichten</string>
     <string name="account_settings_autodownload_message_size_label">Nachrichten automatisch laden bis</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -400,7 +397,6 @@
     <string name="account_settings_incoming_summary">Einstellungen des Posteingangsservers bearbeiten</string>
     <string name="account_settings_outgoing_label">Postausgangsserver</string>
     <string name="account_settings_outgoing_summary">Einstellungen des Postausgangsservers (SMTP) bearbeiten</string>
-    <string name="account_settings_description_label">Kontoname</string>
     <string name="account_settings_name_label">Dein Name</string>
     <string name="notifications_title">Benachrichtigungen</string>
     <string name="account_settings_vibration">Vibration</string>
@@ -919,4 +915,14 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="debug_invalidate_access_token_cannot_modify">Das gespeicherte Zugriffstoken konnte nicht geändert werden. Versuche eine lokale Ungültigkeitserklärung.</string>
     <string name="debug_invalidate_access_token_already_modified">Gespeichertes Zugriffstoken bereits geändert.</string>
     <string name="message_view_menu_action_export_eml">Als EML exportieren</string>
+    <string name="expand_folders">Ordner erweitern</string>
+    <string name="navigation_drawer_preferences">Seitenmenü</string>
+    <string name="set_format_html_action">Originalformatierung verwenden</string>
+    <string name="set_format_html_condensed_action">Formatiert anzeigen</string>
+    <string name="set_format_plain_condensed_action">Unformatiert anzeigen</string>
+    <string name="set_format_plain_action">Unformatierte Nachricht anzeigen</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (Text/HTML)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Nur Text (Text/Klartext)</string>
+    <string name="account_setup_auto_select_folder">Ordner automatisch auswählen</string>
+    <string name="global_settings_messageview_body_content_type_title">Inhaltstyp des Textes</string>
 </resources>

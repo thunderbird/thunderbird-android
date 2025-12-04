@@ -1,3 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Bendrieji nustatymai</string>
+    <string name="account_settings_general_avatar_title">Paveikslėlis</string>
+    <string name="account_settings_general_avatar_description">Pasirinkite kaip bus atvaizduojamas paskyros paveikslėlis.</string>
+    <string name="account_settings_general_avatar_option_monogram">Monograma</string>
+    <string name="account_settings_general_avatar_option_image">Paveikslėlis</string>
+    <string name="account_settings_general_avatar_option_icon">Piktograma</string>
+    <string name="account_settings_general_name_title">Paskyros pavadinimas</string>
+    <string name="account_settings_general_name_description">Vardas susietas su jūsų paskyra.</string>
+    <string name="account_settings_general_name_error_empty">Pavadinimas negali būti tuščias</string>
+    <string name="account_settings_general_name_error_too_long">Pavadinimas per ilgas</string>
+    <string name="account_settings_general_color_title">Paskyros spalva</string>
+    <string name="account_settings_general_color_description">Šios paskyros akcento spalva naudojama aplankuose ir paskyrų sąraše.</string>
+    <string name="account_settings_general_avatar_monogram_title">Paskyros paveikslėlis</string>
+    <string name="account_settings_general_avatar_monogram_description">Paveikslėlis naudojamas kaip jūsų paskyros paveikslėlis.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Turite pasirinkti paveikslėlį</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Per ilgas</string>
+    <string name="account_settings_general_avatar_icon_title">Paveikslėlio piktograma</string>
+    <string name="account_settings_general_avatar_icon_description">Pasirinkite vieną iš piktogramų kuri bus naudojama kaip paveikslėlis.</string>
 </resources>

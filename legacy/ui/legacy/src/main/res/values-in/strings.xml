@@ -236,7 +236,6 @@
     <string name="archive_folder_label">Folder arsip</string>
     <string name="spam_folder_label">Folder spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Hanya tampilkan folder langganan</string>
-    <string name="account_setup_auto_expand_folder">Otomatis lebarkan folder</string>
     <string name="account_setup_options_mail_check_frequency_never">Tidak pernah</string>
     <string name="account_setup_options_mail_check_frequency_15min">Setiap 15 menit</string>
     <string name="account_setup_options_mail_check_frequency_30min">Setiap 30 menit</string>
@@ -321,8 +320,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Semua draf akan disimpan secara terenkripsi</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Enkripsi draft berlaku hanya jika enkripsi diaktifkan</string>
     <string name="account_settings_mail_check_frequency_label">Frekuensi pengecekan folder</string>
-    <string name="account_settings_color_label">Warna akun</string>
-    <string name="account_settings_color_summary">Warna aksen akun ini digunakan dalam folder dan daftar akun</string>
     <string name="account_settings_mail_display_count_label">Ukuran folder lokal</string>
     <string name="account_settings_autodownload_message_size_label">Ambil pesan hingga</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -363,7 +360,6 @@
     <string name="account_settings_incoming_summary">Konfigurasikan server surat masuk</string>
     <string name="account_settings_outgoing_label">Server keluar</string>
     <string name="account_settings_outgoing_summary">Konfigurasikan server surat keluar (SMTP)</string>
-    <string name="account_settings_description_label">Nama akun</string>
     <string name="account_settings_name_label">Nama Anda</string>
     <string name="notifications_title">Notifikasi</string>
     <string name="account_settings_vibrate_enable">Getar</string>
