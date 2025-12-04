@@ -146,6 +146,11 @@ private fun MessageItemConfiguration(
             onCheckedChange = onRandomizeAttachmentChange,
             checked = config.randomizeAttachment,
         )
+        CheckboxInput(
+            text = "Show Account Indicator",
+            onCheckedChange = onShowAccountIndicator,
+            checked = config.showAccountIndicator,
+        )
         TextFieldOutlined(
             value = config.sender,
             label = "Sender",
@@ -172,11 +177,6 @@ private fun MessageItemConfiguration(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = MainTheme.spacings.double),
-        )
-        CheckboxInput(
-            text = "Show Account Indicator",
-            onCheckedChange = onShowAccountIndicator,
-            checked = config.showAccountIndicator,
         )
         Column(modifier = Modifier.padding(horizontal = MainTheme.spacings.double)) {
             TextLabelSmall(text = "Preview lines: ${config.maxPreviewLines}")

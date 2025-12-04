@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -145,14 +146,24 @@ internal fun MessageItem(
                     .weight(1f)
                     .onPlaced { contentStart = it.positionInParent().x },
             ) {
-                Row {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.defaultMinSize(
+                        minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT
+                    )
+                ) {
                     if (!swapSenderWithSubject && showAccountIndicator && accountIndicatorColor != null) {
                         AccountIndicatorIcon(accountIndicatorColor)
                     }
                     sender()
                 }
                 CompositionLocalProvider(LocalContentColor provides colors.subjectColor) {
-                    Row {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.defaultMinSize(
+                            minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT
+                        )
+                    ) {
                         if (swapSenderWithSubject && showAccountIndicator && accountIndicatorColor != null) {
                             AccountIndicatorIcon(accountIndicatorColor)
                         }
