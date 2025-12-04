@@ -32,8 +32,8 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.warmingUpIn
         transition<MessageListEvent.UpdatePreferences> { state, event ->
             state.copy(preferences = event.preferences)
         }
-        transition<MessageListEvent.SwipeActionsLoaded> { state, event ->
-            state.copy(swipeActions = event.swipeActions.toImmutableMap())
+        transition<MessageListEvent.SortTypesLoaded> { state, event ->
+            state.copy(selectedSortTypes = event.sortTypes.toImmutableMap())
         }
         transition<MessageListEvent.AllConfigsReady>(
             guard = { state, _ -> state.isReady },

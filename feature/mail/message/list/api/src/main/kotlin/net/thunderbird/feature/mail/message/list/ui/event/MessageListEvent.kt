@@ -89,7 +89,9 @@ sealed interface MessageListEvent {
     /**
      * An event that is triggered when the user changes the sort order of the message list.
      *
+     * @param accountId The [AccountId] of the account for which the sort order is being changed. When `null`,
+     *  the sort type is for the Unified Inbox.
      * @param sortType The new [SortType] to apply to the message list.
      */
-    data class ChangeSortType(val accountId: AccountId, val sortType: SortType) : UserEvent
+    data class ChangeSortType(val accountId: AccountId?, val sortType: SortType) : UserEvent
 }

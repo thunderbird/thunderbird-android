@@ -9,6 +9,7 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.internal.ui.state.machine.MessageListStateMachine
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
+import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 
@@ -31,6 +32,13 @@ class MessageListViewModel(
             .currentState
             .onEach { state ->
                 logger.debug(TAG) { "stateMachine.currentState() called with: state = $state" }
+                when (state) {
+                    // TODO(#10251): Required as the current implementation of sortType and sortAscending
+                    //  returns null before we load the sort type. That should be removed when
+                    //  the message list item's load is switched to the new state.
+                    is MessageListState.LoadingMessages -> emitEffect(MessageListEffect.RefreshMessageList)
+                    else -> Unit
+                }
             }
             .launchIn(viewModelScope)
         getMessageListPreferences()

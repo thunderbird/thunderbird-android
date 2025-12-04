@@ -625,7 +625,7 @@ abstract class AbstractMessageListFragment :
         }
     }
 
-    private fun loadMessageList(forceUpdate: Boolean = false) {
+    protected fun loadMessageList(forceUpdate: Boolean = false) {
         val config = MessageListConfig(
             localSearch,
             showingThreadedList,
