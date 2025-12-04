@@ -157,12 +157,13 @@ public class MockPop3Server {
         checkServerRunning();
 
         try {
-            waitForConnectionClosed.await(300L, TimeUnit.MILLISECONDS);
+            // CI can be slower; allow more time for the server thread to observe the close and signal
+            waitForConnectionClosed.await(1000L, TimeUnit.MILLISECONDS);
         } catch (InterruptedException ignored) {
         }
 
         if (!mockServerThread.isClientConnectionClosed()) {
-            throw new AssertionError("Connection open when is shouldn't be");
+            throw new AssertionError("Connection open when it shouldn't be");
         }
     }
 
@@ -283,7 +284,6 @@ public class MockPop3Server {
                     readAdditionalCommands();
                 }
 
-                waitForConnectionClosed.countDown();
             } catch (UnexpectedCommandException e) {
                 unexpectedCommandException = e;
             } catch (IOException e) {
@@ -293,11 +293,14 @@ public class MockPop3Server {
             } catch (KeyStoreException | CertificateException | UnrecoverableKeyException |
                     NoSuchAlgorithmException | KeyManagementException e) {
                 throw new RuntimeException(e);
+            } finally {
+                // Ensure we always close the socket and signal that the connection has been closed,
+                // even when we exit due to exceptions (e.g., client-initiated close).
+                IOUtils.closeQuietly(socket);
+                waitForConnectionClosed.countDown();
+
+                logger.log("Exiting");
             }
-
-            IOUtils.closeQuietly(socket);
-
-            logger.log("Exiting");
         }
 
         private void handleInteractions(Socket socket) throws IOException, KeyStoreException,
