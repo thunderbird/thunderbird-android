@@ -31,7 +31,7 @@ private fun PreviewAccountIndicatorIconDefault() {
     )
 }
 
-private object AccountIndicatorIcon {
+internal object AccountIndicatorIcon {
     val ACCOUNT_INDICATOR_DEFAULT_WIDTH = 3.dp
     val ACCOUNT_INDICATOR_DEFAULT_HEIGHT = 20.dp
     val ACCOUNT_INDICATOR_DEFAULT_PADDING = 4.dp
