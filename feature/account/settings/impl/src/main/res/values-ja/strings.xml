@@ -1,3 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">一般設定</string>
+    <string name="account_settings_general_avatar_title">アバター</string>
+    <string name="account_settings_general_avatar_description">どのアカウントアバターを使用するか選択してください。</string>
+    <string name="account_settings_general_avatar_option_monogram">モノグラム</string>
+    <string name="account_settings_general_avatar_option_image">画像</string>
+    <string name="account_settings_general_avatar_option_icon">アイコン</string>
+    <string name="account_settings_general_name_title">アカウント名</string>
+    <string name="account_settings_general_name_description">この名前がアカウントに関連付けられます。</string>
+    <string name="account_settings_general_name_error_empty">アカウント名は空欄にできません</string>
+    <string name="account_settings_general_name_error_too_long">名前が長すぎます</string>
+    <string name="account_settings_general_color_title">アカウントの色</string>
+    <string name="account_settings_general_color_description">フォルダーとアカウント一覧に表示される、このアカウントのアクセントカラーです。</string>
+    <string name="account_settings_general_avatar_monogram_title">アバターのモノグラム</string>
+    <string name="account_settings_general_avatar_monogram_description">あなたのアバターに使用するモノグラムです。</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">モノグラムは空欄にできません</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">モノグラムが長すぎます</string>
+    <string name="account_settings_general_avatar_icon_title">アバターのアイコン</string>
+    <string name="account_settings_general_avatar_icon_description">あなたのアバターに使用したいアイコンを選択してください。</string>
 </resources>

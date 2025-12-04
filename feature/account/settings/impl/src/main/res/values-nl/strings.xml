@@ -8,4 +8,14 @@
     <string name="account_settings_general_name_description">De met uw account geassocieerd naam.</string>
     <string name="account_settings_general_color_title">Accountkleur</string>
     <string name="account_settings_general_color_description">De accentkleur van deze account gebruikt in mappen en accountlijsten.</string>
+    <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_description">Kies hoe uw accountavatar wordt getoond.</string>
+    <string name="account_settings_general_name_error_empty">Naam mag niet leeg zijn</string>
+    <string name="account_settings_general_name_error_too_long">Naam is te lang</string>
+    <string name="account_settings_general_avatar_monogram_title">Avatar-monogram</string>
+    <string name="account_settings_general_avatar_monogram_description">Het monogram gebruikt als uw avatar.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Monogram mag niet leeg zijn</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Monogram is te lang</string>
+    <string name="account_settings_general_avatar_icon_title">Avatarpictogram</string>
+    <string name="account_settings_general_avatar_icon_description">Kies een van de pictogrammen om als uw avatar te gebruiken.</string>
 </resources>

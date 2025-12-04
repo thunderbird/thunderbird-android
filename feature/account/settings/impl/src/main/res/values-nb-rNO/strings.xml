@@ -8,4 +8,14 @@
     <string name="account_settings_general_name_description">Navnet som er koblet til kontoen din.</string>
     <string name="account_settings_general_color_title">Kontofarge</string>
     <string name="account_settings_general_color_description">Aksentfargen som brukes med denne kontoen i mapper og kontolister.</string>
+    <string name="account_settings_general_avatar_title">Profilbilde</string>
+    <string name="account_settings_general_avatar_description">Velg hvordan profilbildet ditt vises.</string>
+    <string name="account_settings_general_name_error_empty">Navnet kan ikke være tomt</string>
+    <string name="account_settings_general_name_error_too_long">Navnet er for langt</string>
+    <string name="account_settings_general_avatar_monogram_title">Avatarmonogram</string>
+    <string name="account_settings_general_avatar_monogram_description">Monogrammet som brukes som avataren din.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Monogrammet kan ikke være tomt</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Monogrammet er for langt</string>
+    <string name="account_settings_general_avatar_icon_title">Avatarikon</string>
+    <string name="account_settings_general_avatar_icon_description">Velg ett av ikonene som du vil bruke som avatar.</string>
 </resources>

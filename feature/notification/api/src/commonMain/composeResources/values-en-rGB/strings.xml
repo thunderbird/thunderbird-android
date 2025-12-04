@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Synchronise (Push)</string>
     <string name="notification_channel_push_description">Displayed while waiting for new messages</string>
@@ -14,7 +14,7 @@
     <string name="notification_certificate_error_public">Certificate error</string>
     <string name="notification_certificate_error_title">Certificate error for %1$s</string>
     <string name="notification_certificate_error_text">Check your server settings</string>
-    <string name="notification_bg_sync_ticker">Checking mail: %1$s:%2$s</string>
+    <string name="notification_bg_sync_ticker">Checking mail: %1$s: %2$s</string>
     <string name="notification_bg_sync_title">Checking mail</string>
     <string name="notification_bg_send_ticker">Sending mail: %1$s</string>
     <string name="notification_bg_send_title">Sending mail</string>
@@ -36,4 +36,20 @@
     <string name="notification_action_archive">Archive</string>
     <string name="notification_action_archive_all">Archive All</string>
     <string name="notification_action_spam">Spam</string>
+    <string name="notification_authentication_incoming_server_error_text">Authentication failed for %1$s. Update your incoming server settings.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Authentication failed for %1$s. Update your outgoing server settings.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d new message</item>
+        <item quantity="other">%1$d new messages</item>
+    </plurals>
+    <string name="notification_action_retry">Retry</string>
+    <string name="notification_action_update_server_settings">Update Server Settings</string>
+    <string name="notification_action_assign_sent_folder">Assign folder</string>
+    <string name="banner_inline_notification_check_error_notifications">Check Error Notifications</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Some messages need your attention.</string>
+    <string name="banner_inline_notification_open_notifications">Open notifications</string>
+    <string name="banner_inline_notification_learn_more">Learn more</string>
+    <string name="banner_inline_notification_view_support_article">View support article</string>
+    <string name="sent_folder_not_found_title">Sent folder not available.</string>
 </resources>

@@ -8,4 +8,14 @@
     <string name="account_settings_general_name_description">Sinu kasutajakontoga seotud nimi.</string>
     <string name="account_settings_general_color_title">Kasutajakonto värv</string>
     <string name="account_settings_general_color_description">Selle kasutajakonto tunnusvärv, mida kasutatakse kaustades ja kontode loendis.</string>
+    <string name="account_settings_general_avatar_title">Tunnuspilt</string>
+    <string name="account_settings_general_avatar_description">Vali sinu kasutajakonto tunnuspildi kuvamise viis.</string>
+    <string name="account_settings_general_name_error_empty">Nime väli ei saa olla tühi</string>
+    <string name="account_settings_general_name_error_too_long">Nimi on liiga pikk</string>
+    <string name="account_settings_general_avatar_monogram_title">Monogramm tunnuspildina</string>
+    <string name="account_settings_general_avatar_monogram_description">Monogrammi kasutatakse sinu konto tunnuspildina.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Monogramm ei saa jääda tühjaks</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Monogramm on liiga pikk</string>
+    <string name="account_settings_general_avatar_icon_title">Ikoon tunnuspildina</string>
+    <string name="account_settings_general_avatar_icon_description">Vali mõni ikoon kasutamiseks oma tunnuspildina (avatarina).</string>
 </resources>

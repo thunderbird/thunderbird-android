@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_title">送信済みフォルダーが見つかりません</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">送信後もこのメールを保存しておくには、アカウント設定で送信済みフォルダーを設定してください。</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">送信済みフォルダーを指定</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">キャンセル</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">送信して削除</string>
 </resources>

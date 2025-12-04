@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Sincrunizà (Catapughjà)</string>
     <string name="notification_channel_push_description">Affissatu durante l’attesa di i messaghji novi</string>
@@ -36,4 +36,20 @@
     <string name="notification_action_archive">Archiviu</string>
     <string name="notification_action_archive_all">Tuttu in archiviu</string>
     <string name="notification_action_spam">Merzaghju</string>
+    <string name="notification_authentication_incoming_server_error_text">Fiascu d’autenticazione per %1$s. Mittite à livellu i vostri parametri di servitore d’entrata.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Fiascu d’autenticazione per %1$s. Mittite à livellu i vostri parametri di servitore d’esciuta.</string>
+    <string name="notification_bg_sync_text">%1$s : %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d messaghju novu</item>
+        <item quantity="other">%1$d messaghji novi</item>
+    </plurals>
+    <string name="notification_action_retry">Pruvà torna</string>
+    <string name="notification_action_update_server_settings">Mudificà i parametri di u servitore</string>
+    <string name="notification_action_assign_sent_folder">Attribuisce un cartulare</string>
+    <string name="banner_inline_notification_check_error_notifications">Verificà e nutificazioni di sbagliu</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Certi messaghji richiedenu a vostra primura.</string>
+    <string name="banner_inline_notification_open_notifications">Apre e nutificazioni</string>
+    <string name="banner_inline_notification_learn_more">Per sapene di più</string>
+    <string name="banner_inline_notification_view_support_article">Affissà l’articulu d’assistenza</string>
+    <string name="sent_folder_not_found_title">U cartulare di i messaghji mandati ùn hè dispunibule.</string>
 </resources>

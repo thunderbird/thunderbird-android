@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Szinkronizálás (leküldés)</string>
     <string name="notification_channel_push_description">Az új levelekre várakozáskor jelenik meg</string>
@@ -12,7 +12,7 @@
     <string name="notification_certificate_error_public">Tanúsítványhiba</string>
     <string name="notification_certificate_error_title">Tanúsítványhiba: %1$s</string>
     <string name="notification_certificate_error_text">Kiszolgálóbeállítások ellenőrzése</string>
-    <string name="notification_bg_sync_ticker">Levelek ellenőrzése: %1$s:%2$s</string>
+    <string name="notification_bg_sync_ticker">Levelek ellenőrzése: %1$s: %2$s</string>
     <string name="notification_bg_sync_title">Levelek ellenőrzése</string>
     <string name="notification_bg_send_ticker">Levél küldése: %1$s</string>
     <string name="notification_bg_send_title">Levél küldése</string>
@@ -34,4 +34,6 @@
     <string name="notification_action_archive">Archiválás</string>
     <string name="notification_action_archive_all">Összes archiválása</string>
     <string name="notification_action_spam">Levélszemét</string>
+    <string name="notification_authentication_incoming_server_error_text">Azonosítás sikertelen %1$s. Ellenőrizze a bejövő szerver beállításait.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Azonosítás sikertelen %1$s. Ellenőrizze a kimenő szerver beállításait.</string>
 </resources>

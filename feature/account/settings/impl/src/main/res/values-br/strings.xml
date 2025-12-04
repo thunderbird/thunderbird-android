@@ -1,3 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_avatar_icon_description">Tapit unan eus an arlunioù da vezañ implijet evel ho avatar deoc\'h.</string>
+    <string name="account_settings_general_title">Arventennoù hollek</string>
+    <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_description">Dibabit penaos e vo diskwelet avatar ho kont.</string>
+    <string name="account_settings_general_avatar_option_monogram">Monogramm</string>
+    <string name="account_settings_general_avatar_option_image">Skeudenn</string>
+    <string name="account_settings_general_avatar_option_icon">Arlun</string>
+    <string name="account_settings_general_name_title">Anv ar gont</string>
+    <string name="account_settings_general_name_description">An anv liammet ouzh ho kont.</string>
+    <string name="account_settings_general_name_error_empty">Ne c\'hall ket an anv bezañ goullo</string>
+    <string name="account_settings_general_name_error_too_long">Re hir eo an anv</string>
+    <string name="account_settings_general_color_title">Liv ar gont</string>
+    <string name="account_settings_general_color_description">Liv tiredoù ar gont-mañ, implijet en teuliadoù hag er rolloù kontoù.</string>
+    <string name="account_settings_general_avatar_monogram_title">Monogramm an avatar</string>
+    <string name="account_settings_general_avatar_monogram_description">Ar monogramm implijet da avatar.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Ne c\'hall ket ar monogramm bezañ goullo</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Re hir eo ar monogramm</string>
+    <string name="account_settings_general_avatar_icon_title">Arlun an avatar</string>
 </resources>
