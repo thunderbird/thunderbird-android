@@ -119,6 +119,8 @@ private fun PreviewDefault(
             subject = params.subject,
             preview = params.preview,
             receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.RED,
             avatar = {
                 Box(
                     modifier = Modifier
@@ -142,8 +144,6 @@ private fun PreviewDefault(
             favourite = params.favourite,
             threadCount = params.threadCount,
             swapSenderWithSubject = params.swapSenderWithSubject,
-            showAccountIndicator = true,
-            accountIndicatorColor = Color.RED,
         )
     }
 }
@@ -159,6 +159,8 @@ private fun PreviewCompact(
             subject = params.subject,
             preview = params.preview,
             receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.RED,
             avatar = { },
             onClick = { },
             onLongClick = { },
@@ -171,8 +173,6 @@ private fun PreviewCompact(
             threadCount = params.threadCount,
             swapSenderWithSubject = params.swapSenderWithSubject,
             contentPadding = MessageItemDefaults.compactContentPadding,
-            showAccountIndicator = true,
-            accountIndicatorColor = Color.RED,
         )
     }
 }
@@ -188,6 +188,8 @@ private fun PreviewRelaxed(
             subject = params.subject,
             preview = params.preview,
             receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.RED,
             avatar = { },
             onClick = { },
             onLongClick = { },
@@ -200,8 +202,6 @@ private fun PreviewRelaxed(
             threadCount = params.threadCount,
             swapSenderWithSubject = params.swapSenderWithSubject,
             contentPadding = MessageItemDefaults.relaxedContentPadding,
-            showAccountIndicator = true,
-            accountIndicatorColor = Color.RED,
         )
     }
 }

@@ -48,6 +48,8 @@ fun UnreadMessageItem(
     subject: String,
     preview: String,
     receivedAt: LocalDateTime,
+    showAccountIndicator: Boolean,
+    accountIndicatorColor: Int?,
     avatar: @Composable () -> Unit,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
@@ -61,8 +63,6 @@ fun UnreadMessageItem(
     maxPreviewLines: Int = 2,
     contentPadding: PaddingValues = MessageItemDefaults.defaultContentPadding,
     swapSenderWithSubject: Boolean = false,
-    showAccountIndicator: Boolean,
-    accountIndicatorColor: Int?,
 ) {
     MessageItem(
         leading = {
