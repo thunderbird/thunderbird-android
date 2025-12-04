@@ -23,7 +23,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag("email_notification_default".toFeatureFlagKey(), enabled = true),
                 FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = true),
                 FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = true),
-                FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = true), // TODO REMOVE
+                FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
                 FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = true),
                 FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = true),
                 FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
