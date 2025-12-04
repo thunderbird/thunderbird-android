@@ -105,7 +105,6 @@ internal fun MessageItem(
     contentPadding: PaddingValues = MessageItemDefaults.defaultContentPadding,
     showAccountIndicator: Boolean = false,
     accountIndicatorColor: Int? = null,
-    swapSenderWithSubject: Boolean = false,
 ) {
     val outlineVariant = MainTheme.colors.outlineVariant
     var contentStart by remember { mutableFloatStateOf(0f) }
@@ -152,23 +151,13 @@ internal fun MessageItem(
                         minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT,
                     ),
                 ) {
-                    if (!swapSenderWithSubject && showAccountIndicator && accountIndicatorColor != null) {
+                    if (showAccountIndicator && accountIndicatorColor != null) {
                         AccountIndicatorIcon(accountIndicatorColor)
                     }
                     sender()
                 }
                 CompositionLocalProvider(LocalContentColor provides colors.subjectColor) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.defaultMinSize(
-                            minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT,
-                        ),
-                    ) {
-                        if (swapSenderWithSubject && showAccountIndicator && accountIndicatorColor != null) {
-                            AccountIndicatorIcon(accountIndicatorColor)
-                        }
-                        subject()
-                    }
+                    subject()
                 }
                 Spacer(modifier = Modifier.height(MainTheme.spacings.half))
                 PreviewText(preview = preview, maxLines = maxPreviewLines)
