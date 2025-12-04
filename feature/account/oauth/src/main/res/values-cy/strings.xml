@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_description">Byddwn yn eich ailgyfeirio i\'ch darparwr e-bost er mwyn mewngofnodi. Mae angen i chi gyflwyno mynediad i\'r ap i\'ch cyfrif e-bost.</string>
+    <string name="account_oauth_sign_in_button">Mewngofnodi</string>
+    <string name="account_oauth_sign_in_with_google_button">Mewngofnodi gyda Google</string>
+    <string name="account_oauth_loading_error">Mewngofnodi OAuth wedi methu</string>
+    <string name="account_oauth_error_not_supported">Dyw OAuth 2.0 ddim yn cael ei gefnogi ar hyn o bryd gan y darparydd hwn.</string>
+    <string name="account_oauth_google_sign_in_support_text">Os ydych yn profi anhawsterau wrth fewngofnodi gyda Google, cysylltwch â\'n {placeHolder}.</string>
+    <string name="account_oauth_loading_message">Yn mewngofnodi gydag OAuth</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">erthygl gwybodaeth</string>
+    <string name="account_oauth_error_canceled">Dilysu wedi\'i ddiddymu</string>
+    <string name="account_oauth_error_failed">Methodd y dilysu oherwydd y gwall canlynol: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_browser_not_available">Dyw\'r ap ddim yn gallu canfod porwr i\'w ddefnyddio i gynnig mynediad i\'ch cyfrif.</string>
 </resources>

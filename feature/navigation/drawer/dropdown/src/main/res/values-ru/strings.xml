@@ -11,4 +11,5 @@
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Список учётных записей</string>
     <string name="navigation_drawer_dropdown_action_add_account">Добавить учётную запись</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Общая учётная запись</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Синхронизировать учётную запись</string>
 </resources>

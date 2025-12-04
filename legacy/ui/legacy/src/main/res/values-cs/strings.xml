@@ -941,4 +941,5 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
     <string name="global_settings_messageview_body_content_type_text_plain">Pouze text (text/plain)</string>
     <string name="global_settings_messageview_body_content_type_title">Typ obsahu těla</string>
+    <string name="debug_feature_flags">LADĚNÍ: Příznaky funkcí</string>
 </resources>

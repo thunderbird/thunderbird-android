@@ -927,4 +927,5 @@
     <string name="account_setup_auto_select_folder">Choix automatique du dossier</string>
     <string name="navigation_drawer_preferences">Menu latéral</string>
     <string name="expand_folders">Développer les dossiers</string>
+    <string name="debug_feature_flags">DÉBOGAGE : Drapeaux de fonction</string>
 </resources>

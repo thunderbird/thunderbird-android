@@ -863,4 +863,5 @@
     <string name="account_setup_auto_select_folder">Selezzione autumatica di u cartulare</string>
     <string name="navigation_drawer_preferences">Listinu laterale</string>
     <string name="expand_folders">Spiegà i cartulari</string>
+    <string name="debug_feature_flags">SPANNATURA : Bandere di funzione</string>
 </resources>

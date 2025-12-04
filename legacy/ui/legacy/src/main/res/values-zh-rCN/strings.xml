@@ -191,7 +191,7 @@
     <string name="global_settings_show_contact_name_label">显示联系人名称</string>
     <string name="global_settings_show_contact_name_summary">如果有收件人名称，请使用联系人中的收件人名称</string>
     <string name="global_settings_registered_name_color_label">为联系人着色</string>
-    <string name="global_settings_registered_name_color_changed">在您的联系人列表中着色名称</string>
+    <string name="global_settings_registered_name_color_changed">为联系人列表中的名称着色</string>
     <string name="general_settings_contact_name_color_label">联系人名称颜色</string>
     <string name="global_settings_messageview_fixedwidth_label">等宽字体</string>
     <string name="global_settings_messageview_fixedwidth_summary">使用等宽字体显示纯文本邮件</string>
@@ -266,7 +266,7 @@
     <string name="trash_folder_label">已删除邮件文件夹</string>
     <string name="archive_folder_label">归档文件夹</string>
     <string name="spam_folder_label">垃圾邮件文件夹</string>
-    <string name="account_setup_incoming_subscribed_folders_only_label">只显示订阅的文件夹</string>
+    <string name="account_setup_incoming_subscribed_folders_only_label">仅显示已订阅的文件夹</string>
     <string name="account_setup_options_mail_check_frequency_never">从不</string>
     <string name="account_setup_options_mail_check_frequency_15min">每 15 分钟</string>
     <string name="account_setup_options_mail_check_frequency_30min">每 30 分钟</string>
@@ -302,10 +302,10 @@
     <string name="account_settings_notify_label">新邮件通知</string>
     <string name="account_settings_notify_sync_label">同步通知</string>
     <string name="account_settings_email_label">您的电子邮件地址</string>
-    <string name="account_settings_notify_summary">邮件到达时在状态栏中通知</string>
-    <string name="account_settings_notify_sync_summary">检查邮件时在状态栏中通知</string>
-    <string name="account_settings_notify_self_label">包括外发邮件</string>
-    <string name="account_settings_notify_self_summary">显示我发送的邮件的通知</string>
+    <string name="account_settings_notify_summary">邮件到达时在状态栏显示通知</string>
+    <string name="account_settings_notify_sync_summary">检查邮件时在状态栏显示通知</string>
+    <string name="account_settings_notify_self_label">包含外发邮件</string>
+    <string name="account_settings_notify_self_summary">为我发送的邮件显示通知</string>
     <string name="account_notify_contacts_mail_only_label">仅联系人</string>
     <string name="account_notify_contacts_mail_only_summary">仅显示来自已知联系人的邮件通知</string>
     <string name="account_settings_ignore_chat_messages_label">忽略聊天邮件</string>
@@ -318,7 +318,7 @@
     <string name="account_settings_open_notification_settings_messages_summary">为新邮件配置通知</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">配置错误和状态通知</string>
     <string name="account_settings_show_pictures_label">始终显示图片</string>
-    <string name="account_settings_show_pictures_never">从不</string>
+    <string name="account_settings_show_pictures_never">不显示</string>
     <string name="account_settings_show_pictures_only_from_contacts">来自联系人</string>
     <string name="account_settings_show_pictures_always">来自任何人</string>
     <string name="account_settings_composition">发送邮件</string>
@@ -438,20 +438,20 @@
     <string name="manage_identities_move_top_action">移至顶部/设为默认</string>
     <string name="manage_identities_remove_action">移除</string>
     <string name="edit_identity_description_label">身份描述</string>
-    <string name="edit_identity_description_hint">（可选）</string>
+    <string name="edit_identity_description_hint">（选填）</string>
     <string name="edit_identity_name_label">您的名称</string>
-    <string name="edit_identity_name_hint">（可选）</string>
+    <string name="edit_identity_name_hint">（选填）</string>
     <string name="edit_identity_email_label">电子邮件地址</string>
     <string name="edit_identity_email_hint">（必填）</string>
     <string name="edit_identity_reply_to_label">回复地址</string>
-    <string name="edit_identity_reply_to_hint">（可选）</string>
+    <string name="edit_identity_reply_to_hint">（选填）</string>
     <string name="edit_identity_signature_label">签名</string>
-    <string name="edit_identity_signature_hint">（可选）</string>
+    <string name="edit_identity_signature_hint">（选填）</string>
     <string name="account_settings_signature_use_label">使用签名</string>
     <string name="account_settings_signature_label">签名</string>
     <string name="default_identity_description">初始身份</string>
     <string name="choose_identity_title">选择身份</string>
-    <string name="send_as">发送为</string>
+    <string name="send_as">发送身份为</string>
     <string name="no_removable_identity">您不能移除您唯一的身份</string>
     <string name="identity_has_no_email">没有电子邮件地址就无法使用身份</string>
     <string name="sort_earliest_first">最早的邮件在前</string>
@@ -494,7 +494,7 @@
     <string name="messageview_preferences">邮件</string>
     <string name="settings_theme_label">主题</string>
     <string name="settings_message_theme_label">邮件视图主题</string>
-    <string name="settings_compose_theme_label">邮件撰写主题</string>
+    <string name="settings_compose_theme_label">编辑器主题</string>
     <string name="settings_language_label">语言</string>
     <string name="preference_search_no_results">未找到设置</string>
     <string name="settings_message_theme_selection_label">固定邮件主题</string>
@@ -915,4 +915,5 @@
     <string name="global_settings_messageview_body_content_type_title">正文内容类型</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
     <string name="global_settings_messageview_body_content_type_text_plain">纯文本（text/plain）</string>
+    <string name="debug_feature_flags">调试：功能标识</string>
 </resources>

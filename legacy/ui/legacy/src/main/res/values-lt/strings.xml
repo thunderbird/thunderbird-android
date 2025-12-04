@@ -73,18 +73,18 @@
     <string name="unsubscribe_action">Atsisakyti prenumeratos</string>
     <string name="show_headers_action">Rodyti antraštes</string>
     <plurals name="copy_address_to_clipboard">
-        <item quantity="one">Nukopijuotas adresas į iškarpinę</item>
-        <item quantity="few">Nukopijuoti adresai į iškarpinę</item>
-        <item quantity="many">Nukopijuota adresų į iškarpinę</item>
-        <item quantity="other">Nukopijuota adresų į iškarpinę</item>
+        <item quantity="one">Adresas nukopijuotas į iškarpinę</item>
+        <item quantity="few">Adresai nukopijuoti į iškarpinę</item>
+        <item quantity="many">Adresų nukopijuota į iškarpinę</item>
+        <item quantity="other">Adresų nukopijuota į iškarpinę</item>
     </plurals>
     <string name="copy_subject_to_clipboard">Nukopijuotas temos tekstas į iškarpinę</string>
     <string name="message_view_theme_action_dark">Perjungti į tamsią temą</string>
     <string name="message_view_theme_action_light">Perjungti į šviesią temą</string>
     <string name="mark_as_unread_action">Žymėti kaip neskaitytą</string>
-    <string name="read_receipt">Skaitymo pranešimas</string>
-    <string name="read_receipt_enabled">Prašys skaitymo pranešimą</string>
-    <string name="read_receipt_disabled">Neprašys skaitymo pranešimo</string>
+    <string name="read_receipt">Pranešimas apie perskaitymą</string>
+    <string name="read_receipt_enabled">Prašys pranešti apie perskaitymą</string>
+    <string name="read_receipt_disabled">Neprašys pranešimo apie perskaitymą</string>
     <string name="add_attachment_action">Pridėti priedą</string>
     <string name="empty_trash_action">Valyti šiukšlinę</string>
     <string name="expunge_action">Valyti</string>
@@ -117,7 +117,7 @@
     <string name="notification_action_archive">Archyvuoti</string>
     <string name="notification_action_archive_all">Archyvuoti viską</string>
     <string name="notification_action_spam">Brukalas</string>
-    <string name="notification_certificate_error_public">Sertifikato klaida.</string>
+    <string name="notification_certificate_error_public">Sertifikato klaida</string>
     <string name="notification_certificate_error_title">Sertifikato klaida <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Patikrinkite serverio nustatymus</string>
     <string name="notification_authentication_error_title">Autentifikavimas nepavyko</string>
@@ -141,7 +141,7 @@
     <string name="debug_enable_debug_logging_title">Įjungti derinimo žurnalą</string>
     <string name="debug_enable_debug_logging_summary">Įrašyti papildomą diagnostinę informaciją</string>
     <string name="debug_enable_sensitive_logging_title">Įrašyti jautrią informaciją</string>
-    <string name="debug_enable_sensitive_logging_summary">Žurnaluose gali būti rodomi slaptažodžiai</string>
+    <string name="debug_enable_sensitive_logging_summary">Žurnaluose gali būti rodomi slaptažodžiai.</string>
     <string name="debug_export_logs_title">Eksportuoti žurnalus</string>
     <string name="debug_export_logs_success">Eksportas sėkmingas. Žurnaluose gali būti konfidencialios informacijos. Būkite atsargūs, kam juos siunčiate.</string>
     <string name="debug_export_logs_failure">Eksportas nepavyko.</string>
@@ -628,7 +628,7 @@
         <item quantity="other">Gauname %d rezultatus</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">Gauname %1$d iš %2$d rezultatų</item>
+        <item quantity="one">Gauname %1$d iš %2$d rezultato</item>
         <item quantity="few">Gauname %1$d iš %2$d rezultatų</item>
         <item quantity="many">Gauname %1$d iš %2$d rezultatų</item>
         <item quantity="other">Gauname %1$d iš %2$d rezultatų</item>
@@ -638,7 +638,7 @@
     <string name="action_remote_search">Ieškoti laiškų serveryje</string>
     <string name="remote_search_unavailable_no_network">Paieškai serveryje reikia interneto ryšio.</string>
     <string name="global_settings_background_as_unread_indicator_label">Pakeisti spalvą, kai perskaityta</string>
-    <string name="global_settings_background_as_unread_indicator_summary">Kitoks fonas rodys, kad pranešimas buvo perskaitytas.</string>
+    <string name="global_settings_background_as_unread_indicator_summary">Kitoks fonas rodys, kad pranešimas buvo perskaitytas</string>
     <string name="global_settings_threaded_view_label">Teminis rodinys</string>
     <string name="global_settings_threaded_view_summary">Grupuoti laiškus pagal pokalbį</string>
     <string name="upgrade_databases_title">Atnaujinamos duomenų bazės</string>
@@ -899,4 +899,33 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
     <string name="dialog_confirm_empty_spam_message">Ar tikrai norite išvalyti brukalo aplanką?</string>
     <string name="folder_settings_visible_label">Rodyti aplanką</string>
     <string name="folder_settings_sync_label">Sinchronizuoti</string>
+    <string name="open_camera">Atverti kamerą</string>
+    <string name="attach_file">Prisegti failą</string>
+    <string name="camera_permission_denied">Negautas leidimas naudoti kamerą! Nepavyko padaryti foto</string>
+    <string name="dialog_openkeychain_info_text">Norint naudoti visapusišką šifravimą reikalinga programa \"OpenKeychain\".</string>
+    <string name="push_info_notification_explanation_text">Naudojant \"Push\", <xliff:g id="app_name">%1$s</xliff:g> palaiko ryšį su pašto serveriu. Android sistemai turi būti rodomas pranešimas kol programa veikia fone. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="push_notification_state_alarm_permission_missing">Trūksta leidimo nustatyti pranešimus</string>
+    <string name="push_notification_grant_alarm_permission">Paspauskite norėdami suteikti leidimą.</string>
+    <string name="settings_ui_data_collection">Duomenų rinkimas</string>
+    <string name="settings_ui_telemetry_title">Naudojimas ir techniniai duomenys</string>
+    <string name="folder_settings_push_label">Įjungti \"Push\"</string>
+    <string name="settings_list_action_support">Palaikyti <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="expand_content_description">Išplėsti</string>
+    <string name="debug_enable_sync_debug_logging_title">Įjungti klaidų rašymo sinchronizavimą</string>
+    <string name="swipe_action_archive_folder_not_set">Nustatyti archyvo aplanką</string>
+    <string name="swipe_action_change_swipe_gestures">Pakeisti \nPerbraukimo gestas</string>
+    <string name="archiving_not_available_for_this_account">Šiai paskyrai archyvavimas neprieinamas.</string>
+    <string name="debug_open_secret_debug_screen">Atverti slaptą derinimo ekraną</string>
+    <string name="debug_invalidate_access_token_unavailable">Šiai paskyrai OAuth rakas neprieinamas.</string>
+    <string name="message_view_menu_action_export_eml">Eksportuoti kaip EML</string>
+    <string name="account_setup_auto_select_folder">Automatiškai pasirinkti aplanką</string>
+    <string name="navigation_drawer_preferences">Šoninis meniu</string>
+    <string name="expand_folders">Išplėsti aplankus</string>
+    <string name="set_format_html_action">Naudoti orginalų formatavimą</string>
+    <string name="set_format_html_condensed_action">Rodyti formatuotą</string>
+    <string name="set_format_plain_action">Rodyti neformatuotą</string>
+    <string name="set_format_plain_condensed_action">Rodyti neformatuotą</string>
+    <string name="global_settings_messageview_body_content_type_title">Laiško turinio tipas</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Grynasis tekstas (text/plain)</string>
 </resources>

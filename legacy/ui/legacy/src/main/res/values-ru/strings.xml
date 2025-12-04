@@ -941,4 +941,5 @@
     <string name="account_setup_auto_select_folder">Автовыбор папки</string>
     <string name="navigation_drawer_preferences">Боковое меню</string>
     <string name="expand_folders">Развернуть папки</string>
+    <string name="debug_feature_flags">ОТЛАДКА: флаги функций</string>
 </resources>

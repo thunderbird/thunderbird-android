@@ -877,4 +877,5 @@
     <string name="global_settings_messageview_body_content_type_title">Cineál Ábhair Choirp</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (téacs/html)</string>
     <string name="global_settings_messageview_body_content_type_text_plain">Téacs simplí (téacs/simplí)</string>
+    <string name="debug_feature_flags">Dífhabhtú: Bratacha Gnéithe</string>
 </resources>

@@ -350,7 +350,7 @@
     <string name="account_setup_expunge_policy_label">Erase deleted messages on server</string>
     <string name="account_settings_incoming_summary">Configure the incoming mail server</string>
     <string name="edit_identity_reply_to_hint">(Optional)</string>
-    <string name="dialog_confirm_empty_trash_title">Confirm empty trash</string>
+    <string name="dialog_confirm_empty_trash_title">Confirm empty Deleted Items folder</string>
     <string name="account_settings_show_pictures_always">From anyone</string>
     <string name="global_settings_lock_screen_notification_visibility_title">Lock Screen Notifications</string>
     <string name="debug_enable_debug_logging_summary">Log extra diagnostic information</string>
@@ -404,7 +404,7 @@
     <string name="font_size_medium">Medium</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
     <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>
-    <string name="dialog_confirm_empty_trash_message">Do you want to empty the trash folder?</string>
+    <string name="dialog_confirm_empty_trash_message">Do you want to empty the Deleted Items folder?</string>
     <string name="account_settings_signature__location_label">Signature position</string>
     <string name="account_settings_outgoing_summary">Configure the outgoing mail (SMTP) server</string>
     <string name="notification_action_delete">Delete</string>
@@ -570,7 +570,7 @@
     <string name="idle_refresh_period_3min">Every 3 minutes</string>
     <string name="messageview_preferences">Messages</string>
     <string name="sent_folder_label">Sent folder</string>
-    <string name="trash_folder_label">Trash folder</string>
+    <string name="trash_folder_label">Deleted Items folder</string>
     <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>
     <string name="global_settings_confirm_menu_mark_all_read">Mark all messages as read</string>
     <string name="account_setup_options_mail_display_count_50">50 messages</string>
@@ -931,4 +931,5 @@
     <string name="global_settings_messageview_body_content_type_title">Body Content-Type</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
     <string name="global_settings_messageview_body_content_type_text_plain">Plain text (text/plain)</string>
+    <string name="debug_feature_flags">DEBUG: Feature Flags</string>
 </resources>

@@ -906,10 +906,17 @@
     <string name="set_format_html_condensed_action">フォーマット付きで表示</string>
     <string name="set_format_plain_condensed_action">フォーマットなしで表示</string>
     <string name="account_setup_auto_select_folder">自動選択のフォルダー</string>
-    <string name="debug_invalidate_access_token">テスト: 無効なアクセストークン</string>
+    <string name="debug_invalidate_access_token">テスト: アクセストークンを無効化する</string>
     <string name="debug_invalidate_access_token_done">アクセストークンが無効です。再度リクエストするとリフレッシュします。</string>
     <string name="debug_invalidate_access_token_unavailable">このアカウントで利用可能な OAuth トークンはありません。</string>
-    <string name="debug_invalidate_access_token_local">テスト: 無効なアクセストークン (ローカル)</string>
+    <string name="debug_invalidate_access_token_local">テスト: アクセストークンを無効化する (ローカル)</string>
     <string name="debug_invalidate_access_token_local_done">ローカルで無効化が要求されました。次のリクエストで新しいトークンを取得します。</string>
-    <string name="debug_invalidate_access_token_server">テスト: 無効なアクセストークン (サーバー)</string>
+    <string name="debug_invalidate_access_token_server">テスト: アクセストークンを無効化する (サーバー)</string>
+    <string name="debug_invalidate_access_token_server_done">保存したアクセストークンが破損しています。次のリクエストに失敗し、その後リフレッシュします。</string>
+    <string name="debug_force_auth_failure">テスト: 今すぐ認可を失敗させる</string>
+    <string name="debug_force_auth_failure_done">OAuth のステートがクリアされました。次のリクエストに失敗します。</string>
+    <string name="debug_force_auth_failure_unavailable">このアカウントには利用可能な OAuth 設定がありません。</string>
+    <string name="debug_invalidate_access_token_cannot_modify">保存したトークンを編集できません。ローカルで無効化してみてください。</string>
+    <string name="debug_invalidate_access_token_already_modified">保存したアクセストークンは既に編集されています。</string>
+    <string name="debug_feature_flags">デバッグ: 機能フラグ</string>
 </resources>

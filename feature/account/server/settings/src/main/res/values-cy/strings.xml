@@ -1,4 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_server_settings_protocol_type_label">Protocol</string>
+    <string name="account_server_settings_server_label">Gweinydd</string>
+    <string name="account_server_settings_security_label">Diogelwch</string>
+    <string name="account_server_settings_authentication_label">Dilysu</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_authentication_none">Dim</string>
+    <string name="account_server_settings_authentication_password_cleartext">Cyfrinair arferol</string>
+    <string name="account_server_settings_authentication_password_encrypted">Cyfrinair amgryptiedig</string>
+    <string name="account_server_settings_authentication_client_certificate">Tystysgrif cleient</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_client_certificate_none_selected">Dim</string>
+    <string name="account_server_settings_port_label">Porth</string>
+    <string name="account_server_settings_username_label">Enw defnyddiwr</string>
+    <string name="account_server_settings_connection_security_none">Dim</string>
+    <string name="account_server_settings_client_certificate_label">Tystysgrif cleient</string>
+    <string name="account_server_settings_incoming_top_bar_title">Gosodiadau gweinydd Derbyn</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Canfod gofod enwau IMAP yn awtomatig</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Rhagddodiad llwybr IMAP</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Defnyddio cywasgu</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Anfon manylion y rhaglen</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Gosodiadau gweinydd Anfon</string>
+    <string name="account_server_settings_validation_error_server_required">Mae angen enw\'r gweinydd.</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP neu enw gwesteiwr annilys</string>
+    <string name="account_server_settings_validation_error_port_required">Mae angen porth.</string>
+    <string name="account_server_settings_validation_error_port_invalid">Porth annilys (rhaid iddo fod yn 1–65535).</string>
+    <string name="account_server_settings_validation_error_username_required">Angen enw defnyddiwr FTP.</string>
+    <string name="account_server_settings_validation_error_password_required">Angen cyfrinair.</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Gall rhagddodiad IMAP ddim bod yn wag.</string>
+    <string name="account_server_settings_password_authentication_title">Gwiriwch eich hunaniaeth</string>
+    <string name="account_server_settings_password_authentication_subtitle">Datgloi i weld eich cyfrinair</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">I weld eich cyfrinair yma, galluogwch glo sgrin ar y ddyfais hon.</string>
+    <string name="account_server_settings_password_authentication_failed">Methodd y dilysu!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Methu cychwyn yr anogwr biometrig.</string>
 </resources>

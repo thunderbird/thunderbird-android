@@ -791,7 +791,7 @@
     <string name="ac_transfer_msg_body">Questo messaggio contiene tutte le informazioni per trasferire in modo sicuro le tue impostazioni di Autocrypt insieme alla tua chiave segreta dal tuo dispositivo originale. Per configurare il tuo nuovo dispositivo per Autocrypt, segui le istruzioni che dovrebbero essere presentate dal nuovo dispositivo. Puoi conservare questo messaggio e utilizzarlo come backup della tua chiave segreta. Se intendi farlo, dovresti annotare la password e conservarla in modo sicuro.</string>
     <string name="ac_transfer_error_send">Si è verificato un errore durante l\'invio del messaggio. Controlla la tua connessione di rete e la configurazione del server di uscita.</string>
     <string name="switch_on">On</string>
-    <string name="switch_off">Off</string>
+    <string name="switch_off">Spento</string>
     <string name="generic_loading_error">Si è verificato un errore durante il caricamento dei dati</string>
     <string name="push_notification_state_initializing">Inizializzazione…</string>
     <string name="push_notification_state_listening">In attesa di nuove email</string>
@@ -903,7 +903,7 @@
     <string name="debug_enable_sync_debug_logging_title">Abilita la registrazione del debug di sincronizzazione</string>
     <string name="debug_enable_sync_debug_logging_summary">Registra le informazioni diagnostiche di sincronizzazione per 24 ore</string>
     <string name="debug_open_secret_debug_screen">Apri la schermata di debug segreta</string>
-    <string name="swipe_action_change_swipe_gestures">Cambia</string>
+    <string name="swipe_action_change_swipe_gestures">Cambia\nGesti di Scorrimento</string>
     <string name="debug_invalidate_access_token_already_modified">Token di accesso memorizzato già modificato.</string>
     <string name="set_format_html_action">Usa formattazione originale</string>
     <string name="set_format_html_condensed_action">Mostra formattato</string>
@@ -927,4 +927,5 @@
     <string name="debug_invalidate_access_token_cannot_modify">Impossibile modificare il token di accesso memorizzato. Prova l\'invalidazione locale.</string>
     <string name="message_view_menu_action_export_eml">Esporta come EML</string>
     <string name="global_settings_messageview_body_content_type_title">Corpo del messaggio come</string>
+    <string name="debug_feature_flags">DEBUG: Flag Caratteristiche</string>
 </resources>

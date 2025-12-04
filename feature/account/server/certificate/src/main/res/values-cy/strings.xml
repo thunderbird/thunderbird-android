@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_warning_title">Rhybudd</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Gwall tystysgrif</string>
+    <string name="account_server_certificate_unknown_error_description_format">Mae\'r ap wedi canfod bygythiad diogelwch posib ac nid yw wedi parhau i gysylltu â <xliff:g id="serverName">%s</xliff:g>.\nOs fyddwch yn parhau, bydd ymosodwyr i geisio dwyn manylion fel eich cyfrineiriau ac e-byst.</string>
+    <string name="account_server_certificate_button_advanced">Uwch</string>
+    <string name="account_server_certificate_section_title">Tystysgrif gweinydd</string>
+    <string name="account_server_certificate_subject_alternative_names">Enwau eraill y pwnc</string>
+    <string name="account_server_certificate_not_valid_before">Ddim yn ddilys cyn</string>
+    <string name="account_server_certificate_not_valid_after">Dim yn ddilys ar ôl</string>
+    <string name="account_server_certificate_subject">Pwnc</string>
+    <string name="account_server_certificate_issuer">Cyhoeddwr</string>
+    <string name="account_server_certificate_fingerprints_section">Bysbrintiau</string>
+    <string name="account_server_certificate_button_back">Nôl (argymelliad)</string>
+    <string name="account_server_certificate_button_continue">Derbyn y perygl a pharhau</string>
 </resources>

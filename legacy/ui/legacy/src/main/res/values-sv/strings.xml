@@ -927,4 +927,5 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="global_settings_messageview_body_content_type_title">Innehållstyp för brödtext</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
     <string name="global_settings_messageview_body_content_type_text_plain">Oformaterad text (text/oformaterad)</string>
+    <string name="debug_feature_flags">FELSÖKNING: Funktionsflaggor</string>
 </resources>

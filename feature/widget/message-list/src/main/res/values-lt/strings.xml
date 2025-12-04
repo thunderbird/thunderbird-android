@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="message_list_widget_compose_action">Sukurti</string>
     <string name="message_list_widget_list_item_loading">Įkeliama…</string>
     <string name="message_list_widget_initializing">Įkeliama…</string>
     <string name="message_list_widget_inbox_title">Suvestiniai gautieji</string>
+    <string name="message_list_widget_label">Laiškų sąrašas</string>
 </resources>
