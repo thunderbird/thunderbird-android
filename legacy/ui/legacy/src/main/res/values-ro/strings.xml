@@ -932,4 +932,5 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="global_settings_messageview_body_content_type_title">Tipul conținutului corpului</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
     <string name="global_settings_messageview_body_content_type_text_plain">Text simplu (text/plain)</string>
+    <string name="debug_feature_flags">DEPANARE: fanioane de funcție</string>
 </resources>

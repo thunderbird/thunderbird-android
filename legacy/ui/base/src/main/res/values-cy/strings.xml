@@ -3,5 +3,5 @@
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">Iawn</string>
     <string name="cancel_action">Diddymu</string>
-    <string name="star_button_description">Enw hygyrch ar gyfer y botwm seren</string>
+    <string name="star_button_description">Seren</string>
 </resources>

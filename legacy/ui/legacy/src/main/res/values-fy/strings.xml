@@ -42,7 +42,7 @@
     <string name="reply_all_action">Allen beäntwurdzje</string>
     <string name="delete_action">Fuortsmite</string>
     <string name="archive_action">Argivearje</string>
-    <string name="spam_action">Spam</string>
+    <string name="spam_action">Net-winske</string>
     <string name="forward_action">Trochstjoere</string>
     <string name="forward_as_attachment_action">As bylage trochstjoere</string>
     <string name="edit_as_new_message_action">As nij berjocht bewurkje</string>
@@ -113,7 +113,7 @@
     <string name="notification_action_delete_all">Alle fuortsmite</string>
     <string name="notification_action_archive">Argivearje</string>
     <string name="notification_action_archive_all">Alle argivearje</string>
-    <string name="notification_action_spam">Spam</string>
+    <string name="notification_action_spam">Net-winske</string>
     <string name="notification_certificate_error_public">Sertifikaatflater</string>
     <string name="notification_certificate_error_title">Sertifikaatflater foar <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Kontrolearje jo serverynstellingen</string>
@@ -203,7 +203,7 @@
     <string name="global_settings_confirm_actions_summary">Wannear’t jo de selektearre aksjes útfiere, altyd in dialoochfinster toane</string>
     <string name="global_settings_confirm_action_delete">Fuortsmite</string>
     <string name="global_settings_confirm_action_delete_starred">Berjochten mei in stjer fuortsmite (yn berjochtewerjefte)</string>
-    <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_action_spam">Net-winske</string>
     <string name="global_settings_confirm_menu_discard">Berjocht ôfbrekke</string>
     <string name="global_settings_confirm_menu_mark_all_read">Alle berjochten as lêzen markearje</string>
     <string name="global_settings_confirm_action_delete_notif">Fuortsmite (fan meldingen)</string>
@@ -226,7 +226,7 @@
     <!--Name of the swipe action to delete a message-->
     <string name="general_settings_swipe_action_delete">Fuortsmite</string>
     <!--Name of the swipe action to move a message to the spam folder-->
-    <string name="general_settings_swipe_action_spam">Spam</string>
+    <string name="general_settings_swipe_action_spam">Net-winske</string>
     <!--Name of the swipe action to move a message to another folder-->
     <string name="general_settings_swipe_action_move">Ferpleatse</string>
     <!--Title of the setting to specify the density of the message list-->
@@ -815,7 +815,7 @@
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
     <string name="swipe_action_delete">Fuortsmite</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
+    <string name="swipe_action_spam">Net-winske</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <string name="swipe_action_move">Ferpleatse…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
@@ -885,9 +885,9 @@
     <string name="volume_navigation_title_short">Navigaasje mei folumeknoppen</string>
     <string name="volume_navigation_summary">Brûk de folumeknoppen om te navigearjen tusken berjochten yn it berjochteoersjoch</string>
     <string name="expand_content_description">Utklappe</string>
-    <string name="dialog_confirm_empty_spam_title">Spam leegje befêstigje</string>
-    <string name="dialog_confirm_empty_spam_message">Wolle jo de spammap leegje?</string>
-    <string name="empty_spam_action">Spam leegje</string>
+    <string name="dialog_confirm_empty_spam_title">Net-winske leegje befêstigje</string>
+    <string name="dialog_confirm_empty_spam_message">Wolle jo de map Net-winske leegje?</string>
+    <string name="empty_spam_action">Net-winske leegje</string>
     <string name="camera_permission_denied">Kameratagong wegere! Net mooglik om in foto te meitsjen</string>
     <string name="attach_file">Bestân tafoegje</string>
     <string name="open_camera">Kamera iepenje</string>
@@ -921,4 +921,5 @@
     <string name="global_settings_messageview_body_content_type_title">Ynhâldstype tekst</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
     <string name="global_settings_messageview_body_content_type_text_plain">Platte tekst (text/plain)</string>
+    <string name="debug_feature_flags">DEBUGGE: Funksjelabels</string>
 </resources>

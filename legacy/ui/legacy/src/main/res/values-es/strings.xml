@@ -904,18 +904,18 @@
     <string name="swipe_action_change_swipe_gestures">Cambiar \ngestos al deslizar</string>
     <string name="archiving_not_available_for_this_account">El archivamiento no está disponible para esta cuenta.</string>
     <string name="debug_open_secret_debug_screen">Abrir la pantalla secreta de desarrollo</string>
-    <string name="debug_invalidate_access_token">Prueba: Invalidar token de acceso</string>
-    <string name="debug_invalidate_access_token_done">Token de acceso invalidado. La próxima petición lo actualizará.</string>
-    <string name="debug_invalidate_access_token_unavailable">No existe ningún token OAuth para esta cuenta.</string>
-    <string name="debug_invalidate_access_token_local">Prueba: Invalidar token de acceso (local)</string>
-    <string name="debug_invalidate_access_token_local_done">Petición para invalidar en local. La próxima petición recuperará un nuevo token.</string>
-    <string name="debug_invalidate_access_token_server">Prueba: Invalidar token de acceso (servidor)</string>
-    <string name="debug_invalidate_access_token_server_done">El token de acceso almacenado está corrupto. La siguiente petición fallará y actualizará el token.</string>
+    <string name="debug_invalidate_access_token">Prueba: Invalidar vale de acceso</string>
+    <string name="debug_invalidate_access_token_done">Vale de acceso invalidado. La próxima petición lo actualizará.</string>
+    <string name="debug_invalidate_access_token_unavailable">No existe ningún vale OAuth para esta cuenta.</string>
+    <string name="debug_invalidate_access_token_local">Prueba: Invalidar vale de acceso (local)</string>
+    <string name="debug_invalidate_access_token_local_done">Petición para invalidar en local. La próxima petición recuperará un vale nuevo.</string>
+    <string name="debug_invalidate_access_token_server">Prueba: Invalidar vale de acceso (servidor)</string>
+    <string name="debug_invalidate_access_token_server_done">El vale de acceso almacenado está corrupto. La siguiente petición fallará y actualizará el vale.</string>
     <string name="debug_force_auth_failure">Prueba: Forzar un fallo de autenticación</string>
     <string name="debug_force_auth_failure_done">Estado de OAuth borrado. La próxima petición fallará.</string>
     <string name="debug_force_auth_failure_unavailable">Esta cuenta no tiene ninguna configuración OAuth.</string>
-    <string name="debug_invalidate_access_token_cannot_modify">No se pudo guardar el token de acceso. Prueba recreándolo de forma local.</string>
-    <string name="debug_invalidate_access_token_already_modified">El token de acceso almacenado ya se ha modificado.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">No se pudo guardar el vale de acceso. Prueba recreándolo de forma local.</string>
+    <string name="debug_invalidate_access_token_already_modified">El vale de acceso almacenado ya se ha modificado.</string>
     <string name="message_view_menu_action_export_eml">Exportar como EML</string>
     <string name="account_setup_auto_select_folder">Seleccionar carpeta automáticamente</string>
     <string name="navigation_drawer_preferences">Menú lateral</string>
@@ -927,4 +927,5 @@
     <string name="global_settings_messageview_body_content_type_text_plain">Texto plano (text/plain)</string>
     <string name="global_settings_messageview_body_content_type_title">Tipo de contenido del cuerpo del mensaje</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="debug_feature_flags">DEPURACIÓN: Indicadores de características</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_welcome_start_button">Cychwyn arni</string>
-    <string name="onboarding_welcome_import_button">Importer les paramètres</string>
+    <string name="onboarding_welcome_import_button">Mewnforio gosodiadau</string>
     <string name="onboarding_welcome_text">Ap e-bost cod agored, preifat, heb hysbysebion ar gyfer Android.</string>
     <string name="onboarding_welcome_developed_by">Wedi\'i ddatblygu gan dîm bychan yn MZLA Technologies a chymuned fyd-eang o wirfoddolwyr. Rhan o deulu Mozilla.</string>
 </resources>

@@ -938,4 +938,5 @@
     <string name="global_settings_messageview_body_content_type_title">Тип вмісту тіла</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (текст/html)</string>
     <string name="global_settings_messageview_body_content_type_text_plain">Звичайний текст (текст/звичайний)</string>
+    <string name="debug_feature_flags">НАЛАГОДЖЕННЯ: Прапорці функцій</string>
 </resources>

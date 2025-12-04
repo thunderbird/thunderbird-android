@@ -3,4 +3,5 @@
     <string name="navigation_drawer_dropdown_action_settings">Indstillinger</string>
     <string name="navigation_drawer_dropdown_action_manage_folders">Håndtér mapper</string>
     <string name="navigation_drawer_dropdown_unified_inbox_title">Fælles indbakke</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Synkronisér konto</string>
 </resources>

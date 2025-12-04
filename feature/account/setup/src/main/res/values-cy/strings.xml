@@ -1,4 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_setup_error_network">Gwall rhwydwaith. Gwiriwch eich statws cysylltu a cheisio eto.</string>
+    <string name="account_setup_error_unknown">Gwall anhysbys</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Angen cyfeiriad e-bost.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Dyw\'r cyfeiriad e-bost yma ddim yn cael ei gefnogi.</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Angen cyfrinair.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_loading_message">Yn chwilio am ffurfweddiad…</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Wedi canfod y ffurfweddiad</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Heb ganfod y ffurfweddiad</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Ffurfweddu\'n awtomatig</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Does dim ymddiriedaeth i\'r ffurfweddiad yma</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Does dim caniatâd i\'r cyfeiriad e-bost hwn.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Dyw hwn ddim yn cael ei gydnabod fel cyfeiriad e-bost dilys.</string>
+    <string name="account_setup_auto_discovery_loading_error">Methwyd llwytho ffurfweddiad e-bost</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Fe wnaethon ni dderbyn y ffurfweddiad ar gyfer eich gweinydd e-bost dros gysylltiad nad yw mor ddiogel ag yr hoffem. Mae hyn yn golygu bod siawns fach iawn y gallai rhywun fod wedi\'i newid. A allech chi wirio\'r ffurfweddiad a ddarparwyd ddwywaith i wneud yn siŵr ei fod fel y dylai fod?</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Ffurfweddu â llaw</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Golygu ffurfweddiad</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Rwy\'n ymddiried yn y ffurfweddiad hwn</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Mae\'n ofynnol cymeradwyo\'r ffurfweddiad.</string>
+    <string name="account_setup_special_folders_form_description">Nodwch y ffolderi arbennig ar gyfer eich cyfrif.</string>
+    <string name="account_setup_special_folders_form_description_automatic">Bydd y cofnod \"Awtomatig\" yn dilyn newidiadau sy\'n cael ei wneud gan y gweinydd yn awtomatig. Mae\'r gwerth cyfredol y gweinydd mewn cromfachau.</string>
+    <string name="account_setup_special_folders_loading_message">Yn nôl rhestr o ffolderi…</string>
+    <string name="account_setup_special_folders_error_message">Methwyd nôl y rhestr o ffolderi o\'r gweinydd</string>
+    <string name="account_setup_special_folders_success_message">Mae\'r holl ffolderi arbennig wedi\'u ffurfweddu\'n awtomatig gan y gweinydd.</string>
+    <string name="account_setup_special_folders_archive_folder_label">Ffolder archif</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Ffolder Drafftiau</string>
+    <string name="account_setup_special_folders_sent_folder_label">Ffolder Anfonwyd</string>
+    <string name="account_setup_special_folders_spam_folder_label">Ffolder Sbam</string>
+    <string name="account_setup_special_folders_trash_folder_label">Ffolder Sbwriel</string>
+    <string name="account_setup_special_folders_folder_none">Dim</string>
+    <string name="account_setup_special_folders_folder_automatic">Awtomatig (%s)</string>
+    <string name="account_setup_options_section_display_options">Dewisiadau dangos</string>
+    <string name="account_setup_options_account_name_label">Enw\'r cyfrif</string>
+    <string name="account_setup_options_account_name_error_blank">Rhaid cael enw\'r cyfrif.</string>
+    <string name="account_setup_options_your_name_label">Eich enw</string>
+    <string name="account_setup_options_your_name_error_required">Mae angen eich enw.</string>
+    <string name="account_setup_options_email_signature_label">Llofnod e-bost</string>
+    <string name="account_setup_options_email_signature_error_blank">Rhaid cael enw llofnod e-bost.</string>
+    <string name="account_setup_options_section_sync_options">Dewisiadau cydweddu</string>
+    <string name="account_setup_options_account_check_frequency_label">Gwirio\'r amlder</string>
+    <string name="account_setup_options_email_check_frequency_never">Byth</string>
+    <string name="account_setup_options_email_display_count_label">Faint o negeseuon i\'w dangos</string>
+    <string name="account_setup_options_show_notifications_label">Dangos hysbysiadau</string>
+    <string name="account_setup_create_account_creating">Wrthi\'n creu cyfrif…</string>
+    <string name="account_setup_create_account_error">Digwyddodd gwall wrth geisio creu\'r cyfrif</string>
+    <string name="account_setup_create_account_created">Cyfrif wedi\'i greu\'n llwyddiannus</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="zero">Bob %d munudau</item>
+        <item quantity="one">Bob munud</item>
+        <item quantity="two">Bob %d funud</item>
+        <item quantity="few">Bob %d munud</item>
+        <item quantity="many">Bob %d munud</item>
+        <item quantity="other">Bob %d munud</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="zero">Bob %d oriau</item>
+        <item quantity="one">Bob %d awr</item>
+        <item quantity="two">Bob %d awr</item>
+        <item quantity="few">Bob %d awr</item>
+        <item quantity="many">Bob %d awr</item>
+        <item quantity="other">Bob %d awr</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="zero">%d negeseuon</item>
+        <item quantity="one">%d neges</item>
+        <item quantity="two">%d neges</item>
+        <item quantity="few">%d neges</item>
+        <item quantity="many">%d neges</item>
+        <item quantity="other">%d neges</item>
+    </plurals>
 </resources>

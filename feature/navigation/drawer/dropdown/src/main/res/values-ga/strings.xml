@@ -11,4 +11,5 @@
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Liosta cuntas</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Cuntas Aontaithe</string>
     <string name="navigation_drawer_dropdown_action_add_account">Cuir cuntas leis</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Cuntas sioncrónaithe</string>
 </resources>

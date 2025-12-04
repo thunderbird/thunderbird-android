@@ -5,4 +5,5 @@
     <string name="migration_qrcode_go_to_settings_button_text">Eiti į nustatymus</string>
     <string name="migration_qrcode_scanning_progress">Nuskenuota %1$s iš %2$s</string>
     <string name="migration_qrcode_done_button_text">Atlikta</string>
+    <string name="migration_qrcode_scanning_instructions">Nukreipkite į QR kodą iš \"Thunderbird Desktop\"</string>
 </resources>

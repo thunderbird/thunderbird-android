@@ -1,1 +1,1 @@
-A Thunderbird 100%-ban nyílt forráskódú, adatvédelem-központú levelezőalkalmazás
+A Thunderbird 100%-ban nyílt forráskódú, adatvédelem-központú levelezőalkalmazás.

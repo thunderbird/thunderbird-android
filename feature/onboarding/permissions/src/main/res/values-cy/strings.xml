@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_permissions_screen_title">Gwella\'r profiad</string>
+    <string name="onboarding_permissions_contacts_title">Cysylltiadau</string>
+    <string name="onboarding_permissions_contacts_description">Caniatáu mynediad i allu darparu awgrymiadau am gysylltiadau ac i ddangos enwau a lluniau cysylltiadau.</string>
+    <string name="onboarding_permissions_notifications_description">Disgrifiad o pam rydym yn gofyn am ganiatâd i bostio hysbysiadau.</string>
+    <string name="onboarding_permissions_notifications_title">Hysbysiadau</string>
+    <string name="onboarding_permissions_allow_button">Caniatáu</string>
+    <string name="onboarding_permissions_skip_button">Hepgor</string>
 </resources>
