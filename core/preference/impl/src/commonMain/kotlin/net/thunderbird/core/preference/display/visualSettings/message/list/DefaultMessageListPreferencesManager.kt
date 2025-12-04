@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.update
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.getEnumOrDefault
+import net.thunderbird.core.preference.storage.putEnum
 
 private const val TAG = "DefaultMessageListPreferencesManager"
 
@@ -50,6 +52,10 @@ class DefaultMessageListPreferencesManager(
             KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES,
             MESSAGE_LIST_SETTINGS_DEFAULT_PREVIEW_LINES,
         ),
+        uiDensity = storage.getEnumOrDefault(
+            KEY_MESSAGE_LIST_VIEW_DENSITY,
+            MESSAGE_LIST_SETTINGS_DEFAULT_UI_DENSITY,
+        ),
     )
 
     private fun write(preferences: DisplayMessageListSettings) {
@@ -60,6 +66,7 @@ class DefaultMessageListPreferencesManager(
         storageEditor.putBoolean(KEY_SHOW_CONTACT_NAME, preferences.isShowContactName)
         storageEditor.putBoolean(KEY_SHOW_CORRESPONDENT_NAMES, preferences.isShowCorrespondentNames)
         storageEditor.putInt(KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES, preferences.previewLines)
+        storageEditor.putEnum(KEY_MESSAGE_LIST_VIEW_DENSITY, preferences.uiDensity)
     }
 
     override fun getConfig(): DisplayMessageListSettings = preferences.value

@@ -812,7 +812,7 @@ class MessageListFragment :
             showingThreadedList = showingThreadedList,
             backGroundAsReadIndicator = messageListSettings.isUseBackgroundAsUnreadIndicator,
             showAccountIndicator = isShowAccountIndicator,
-            density = K9.messageListDensity,
+            density = messageListSettings.uiDensity,
         )
 
     private fun getFolderInfoHolder(account: LegacyAccount, folderId: Long): FolderInfoHolder {

@@ -61,7 +61,7 @@ data class MessageListActivityConfig(
                 contactNameColor = K9.contactNameColor,
                 messageViewTheme = settings.display.coreSettings.messageViewTheme,
                 messageListPreviewLines = messageListPreferences.previewLines,
-                messageListDensity = K9.messageListDensity,
+                messageListDensity = messageListPreferences.uiDensity,
                 splitViewMode = settings.display.coreSettings.splitViewMode,
                 fontSizeMessageListSubject = K9.fontSizes.messageListSubject,
                 fontSizeMessageListSender = K9.fontSizes.messageListSender,

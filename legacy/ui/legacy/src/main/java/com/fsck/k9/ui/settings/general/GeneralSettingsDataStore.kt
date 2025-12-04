@@ -163,7 +163,7 @@ class GeneralSettingsDataStore(
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput.toString()
             "swipe_action_right" -> swipeActionToString(interactionSettings.swipeActions.rightAction)
             "swipe_action_left" -> swipeActionToString(interactionSettings.swipeActions.leftAction)
-            "message_list_density" -> K9.messageListDensity.toString()
+            "message_list_density" -> messageListSettings.uiDensity.toString()
             "post_remove_navigation" -> interactionSettings.messageViewPostRemoveNavigation
             "post_mark_as_unread_navigation" -> K9.messageViewPostMarkAsUnreadNavigation.name
             else -> defValue
@@ -208,7 +208,7 @@ class GeneralSettingsDataStore(
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput = value.toInt()
             "swipe_action_right" -> updateSwipeAction(value) { swipeAction -> copy(rightAction = swipeAction) }
             "swipe_action_left" -> updateSwipeAction(value) { swipeAction -> copy(leftAction = swipeAction) }
-            "message_list_density" -> K9.messageListDensity = UiDensity.valueOf(value)
+            "message_list_density" -> updateMessageListDensity(value)
             "post_remove_navigation" -> setMessageViewPostRemoveNavigation(value)
             "post_mark_as_unread_navigation" -> {
                 K9.messageViewPostMarkAsUnreadNavigation = PostMarkAsUnreadNavigation.valueOf(value)
@@ -806,6 +806,21 @@ class GeneralSettingsDataStore(
             settings.copy(
                 interaction = interaction.copy(
                     swipeActions = interaction.swipeActions.update(stringToSwipeAction(value)),
+                ),
+            )
+        }
+    }
+
+    private fun updateMessageListDensity(value: String) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        messageListSettings = settings.display.visualSettings.messageListSettings.copy(
+                            uiDensity = UiDensity.valueOf(value),
+                        ),
+                    ),
                 ),
             )
         }
