@@ -34,6 +34,10 @@
         <item name="android:tint">?attr/tintColorBulletPointNegative</item>
     </style>
 
+    <style name="Widget.App.AppBarLayout" parent="Widget.Material3.AppBarLayout">
+        <item name="android:background">?attr/colorSurfaceContainer</item>
+    </style>
+
     <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:background">?attr/colorSurfaceContainer</item>
     </style>

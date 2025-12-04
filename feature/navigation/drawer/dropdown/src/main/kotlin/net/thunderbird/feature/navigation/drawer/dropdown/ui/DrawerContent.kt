@@ -6,18 +6,16 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.common.modifier.safeDrawingPaddingCompat
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
@@ -25,7 +23,6 @@ import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Even
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountList
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountView
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.getDisplayCutOutHorizontalInsetPadding
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.DRAWER_WIDTH
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getAdditionalWidth
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.folder.FolderList
@@ -50,12 +47,9 @@ internal fun DrawerContent(
         color = MainTheme.colors.surfaceContainerLow,
     ) {
         val selectedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId }
-        val horizontalInsetPadding = getDisplayCutOutHorizontalInsetPadding()
 
         Column(
-            modifier = Modifier
-                .windowInsetsPadding(WindowInsets.safeDrawing)
-                .windowInsetsPadding(horizontalInsetPadding),
+            modifier = Modifier.safeDrawingPaddingCompat(),
         ) {
             selectedAccount?.let {
                 AccountView(

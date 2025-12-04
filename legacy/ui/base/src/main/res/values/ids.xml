@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="coordinator_layout" type="id" />
+    <item name="app_bar_layout" type="id" />
+    <item name="toolbar" type="id" />
+    <item name="content_container" type="id" />
+</resources>

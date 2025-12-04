@@ -1,6 +1,10 @@
 package app.k9mail.feature.account.setup.ui.options.display
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -40,9 +44,10 @@ internal fun DisplayOptionsScreen(
             WizardNavigationBar(
                 onNextClick = { dispatch(Event.OnNextClicked) },
                 onBackClick = { dispatch(Event.OnBackClicked) },
+                modifier = Modifier.imePadding(),
             )
         },
-        modifier = modifier,
+        modifier = modifier.windowInsetsPadding(WindowInsets.navigationBars),
     ) { innerPadding ->
         DisplayOptionsContent(
             state = state.value,

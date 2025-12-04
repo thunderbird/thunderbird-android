@@ -1,37 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
     tools:context=".settings.account.AccountSettingsActivity"
     >
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        style="?attr/toolbarStyle"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        style="@style/Widget.App.AppBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        tools:navigationIcon="@drawable/ic_arrow_back"
         >
 
-        <com.fsck.k9.ui.settings.account.AccountSelectionSpinner
-            android:id="@+id/accountSpinner"
-            android:layout_width="wrap_content"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="?attr/toolbarStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/toolbarTitleMarginVertical"
-            tools:listitem="@layout/account_spinner_item"
+            android:minHeight="?attr/actionBarSize"
+            tools:navigationIcon="@drawable/ic_arrow_back"
+            >
+
+            <com.fsck.k9.ui.settings.account.AccountSelectionSpinner
+                android:id="@+id/accountSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/toolbarTitleMarginVertical"
+                tools:listitem="@layout/account_spinner_item"
+                />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:id="@+id/content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/accountSettingsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             />
 
-    </com.google.android.material.appbar.MaterialToolbar>
+    </FrameLayout>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/accountSettingsContainer"
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        />
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

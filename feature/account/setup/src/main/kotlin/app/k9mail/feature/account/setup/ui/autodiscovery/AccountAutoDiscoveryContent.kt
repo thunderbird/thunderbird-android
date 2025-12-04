@@ -4,6 +4,7 @@ import android.content.res.Resources
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
@@ -39,16 +40,19 @@ internal fun AccountAutoDiscoveryContent(
     onEvent: (Event) -> Unit,
     oAuthViewModel: AccountOAuthContract.ViewModel,
     brandName: String,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberScrollState()
 
     ResponsiveWidthContainer(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .testTagAsResourceId("AccountAutoDiscoveryContent")
-            .then(modifier),
-    ) { paddingValues ->
+            .padding(contentPadding)
+            .consumeWindowInsets(contentPadding)
+            .imePadding()
+            .testTagAsResourceId("AccountAutoDiscoveryContent"),
+    ) { responsiveWidthPadding ->
         Column(
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -56,8 +60,7 @@ internal fun AccountAutoDiscoveryContent(
                 modifier = Modifier
                     .weight(1f)
                     .verticalScroll(scrollState)
-                    .padding(paddingValues)
-                    .imePadding(),
+                    .padding(responsiveWidthPadding),
             ) {
                 AppTitleTopHeader(
                     title = brandName,

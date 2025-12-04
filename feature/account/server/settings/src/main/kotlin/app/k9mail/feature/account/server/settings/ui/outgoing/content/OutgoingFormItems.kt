@@ -117,4 +117,8 @@ internal fun LazyListScope.outgoingFormItems(
             contentPadding = defaultItemPadding(),
         )
     }
+
+    item {
+        Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
+    }
 }

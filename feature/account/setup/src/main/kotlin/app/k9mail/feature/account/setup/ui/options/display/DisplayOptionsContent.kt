@@ -39,17 +39,16 @@ internal fun DisplayOptionsContent(
     val resources = LocalResources.current
 
     ResponsiveWidthContainer(
-        modifier = Modifier
+        modifier = modifier
+            .fillMaxSize()
             .testTagAsResourceId("DisplayOptionsContent")
-            .consumeWindowInsets(contentPadding)
             .padding(contentPadding)
-            .then(modifier),
-    ) { contentPadding ->
+            .consumeWindowInsets(contentPadding)
+            .imePadding(),
+    ) { responsiveWidthPadding ->
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .imePadding(),
-            contentPadding = contentPadding,
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = responsiveWidthPadding,
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
         ) {
