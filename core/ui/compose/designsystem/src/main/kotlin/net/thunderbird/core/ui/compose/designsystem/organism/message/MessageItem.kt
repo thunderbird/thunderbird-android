@@ -149,8 +149,8 @@ internal fun MessageItem(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.defaultMinSize(
-                        minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT
-                    )
+                        minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT,
+                    ),
                 ) {
                     if (!swapSenderWithSubject && showAccountIndicator && accountIndicatorColor != null) {
                         AccountIndicatorIcon(accountIndicatorColor)
@@ -161,8 +161,8 @@ internal fun MessageItem(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.defaultMinSize(
-                            minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT
-                        )
+                            minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT,
+                        ),
                     ) {
                         if (swapSenderWithSubject && showAccountIndicator && accountIndicatorColor != null) {
                             AccountIndicatorIcon(accountIndicatorColor)
