@@ -8,13 +8,13 @@ import com.fsck.k9.ui.helper.DisplayAddressHelper
 import java.util.Calendar
 import java.util.Locale
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 
 internal class MessageListItemMapper(
     private val messageHelper: MessageHelper,
     private val account: LegacyAccount,
-    private val generalSettingsManager: GeneralSettingsManager,
+    private val messageListPreferencesManager: MessageListPreferencesManager,
     private val outboxFolderManager: OutboxFolderManager,
 ) : MessageMapper<MessageListItem> {
     private val calendar: Calendar = Calendar.getInstance()
@@ -28,12 +28,11 @@ internal class MessageListItemMapper(
         val showRecipients = DisplayAddressHelper.shouldShowRecipients(outboxFolderManager, account, message.folderId)
         val displayAddress = if (showRecipients) toAddresses.firstOrNull() else fromAddresses.firstOrNull()
         val displayName = if (showRecipients) {
+            val messageListSettings = messageListPreferencesManager.getConfig()
             messageHelper.getRecipientDisplayNames(
                 addresses = toAddresses.toTypedArray(),
-                isShowCorrespondentNames = generalSettingsManager
-                    .getConfig().display.visualSettings.isShowCorrespondentNames,
-                isChangeContactNameColor = generalSettingsManager
-                    .getConfig().display.visualSettings.isChangeContactNameColor,
+                isShowCorrespondentNames = messageListSettings.isShowCorrespondentNames,
+                isChangeContactNameColor = messageListSettings.isChangeContactNameColor,
             ).toString()
         } else {
             messageHelper.getSenderDisplayName(displayAddress).toString()

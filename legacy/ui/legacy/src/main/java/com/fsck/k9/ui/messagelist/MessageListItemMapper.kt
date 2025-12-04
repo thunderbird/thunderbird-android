@@ -6,13 +6,13 @@ import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.ui.helper.DisplayAddressHelper
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 
 class MessageListItemMapper(
     private val messageHelper: MessageHelper,
     private val account: LegacyAccount,
-    private val generalSettingsManager: GeneralSettingsManager,
+    private val messageListPreferencesManager: MessageListPreferencesManager,
     private val outboxFolderManager: OutboxFolderManager,
 ) : MessageMapper<MessageListItem> {
 
@@ -25,13 +25,12 @@ class MessageListItemMapper(
         val uniqueId = createUniqueId(account, message.id)
         val showRecipients = DisplayAddressHelper.shouldShowRecipients(outboxFolderManager, account, message.folderId)
         val displayAddress = if (showRecipients) toAddresses.firstOrNull() else fromAddresses.firstOrNull()
+        val messageListSettings = messageListPreferencesManager.getConfig()
         val displayName = if (showRecipients) {
             messageHelper.getRecipientDisplayNames(
                 addresses = toAddresses.toTypedArray(),
-                isShowCorrespondentNames = generalSettingsManager
-                    .getConfig().display.visualSettings.isShowCorrespondentNames,
-                isChangeContactNameColor = generalSettingsManager
-                    .getConfig().display.visualSettings.isChangeContactNameColor,
+                isShowCorrespondentNames = messageListSettings.isShowCorrespondentNames,
+                isChangeContactNameColor = messageListSettings.isChangeContactNameColor,
             )
         } else {
             messageHelper.getSenderDisplayName(displayAddress)

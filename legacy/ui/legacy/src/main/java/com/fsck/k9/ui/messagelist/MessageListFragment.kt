@@ -98,6 +98,7 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettings
 import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
@@ -243,6 +244,8 @@ class MessageListFragment :
     private var messageListSwipeCallback: MessageListSwipeCallback? = null
     private val interactionSettings: InteractionSettings
         get() = generalSettingsManager.getConfig().interaction
+    private val messageListSettings: DisplayMessageListSettings
+        get() = generalSettingsManager.getConfig().display.visualSettings.messageListSettings
 
     /**
      * Set this to `true` when the fragment should be considered active. When active, the fragment adds its actions to
@@ -798,17 +801,16 @@ class MessageListFragment :
     private val messageListAppearance: MessageListAppearance
         get() = MessageListAppearance(
             fontSizes = K9.fontSizes,
-            previewLines = generalSettingsManager.getConfig().display.visualSettings.messageListPreviewLines,
+            previewLines = messageListSettings.previewLines,
             stars = !isOutbox && generalSettingsManager.getConfig().display.inboxSettings.isShowMessageListStars,
             senderAboveSubject = generalSettingsManager
                 .getConfig()
                 .display
                 .inboxSettings
                 .isMessageListSenderAboveSubject,
-            showContactPicture = generalSettingsManager.getConfig().display.visualSettings.isShowContactPicture,
+            showContactPicture = messageListSettings.isShowContactPicture,
             showingThreadedList = showingThreadedList,
-            backGroundAsReadIndicator = generalSettingsManager
-                .getConfig().display.visualSettings.isUseBackgroundAsUnreadIndicator,
+            backGroundAsReadIndicator = messageListSettings.isUseBackgroundAsUnreadIndicator,
             showAccountIndicator = isShowAccountIndicator,
             density = K9.messageListDensity,
         )

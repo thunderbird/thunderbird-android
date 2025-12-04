@@ -93,7 +93,7 @@ val coreNotificationModule = module {
         NotificationContentCreator(
             resourceProvider = get(),
             contactRepository = get(),
-            generalSettingsManager = get(),
+            messageListPreferencesManager = get(),
         )
     }
     factory { BaseNotificationDataCreator() }

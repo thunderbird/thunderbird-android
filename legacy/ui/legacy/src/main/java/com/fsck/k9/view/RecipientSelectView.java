@@ -34,7 +34,6 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.app.LoaderManager.LoaderCallbacks;
 import androidx.loader.content.Loader;
 import app.k9mail.legacy.di.DI;
-import com.fsck.k9.K9;
 import com.fsck.k9.activity.AlternateRecipientAdapter;
 import com.fsck.k9.activity.AlternateRecipientAdapter.AlternateRecipientListener;
 import com.fsck.k9.activity.compose.RecipientAdapter;
@@ -47,8 +46,8 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.google.android.material.textview.MaterialTextView;
 import com.tokenautocomplete.TokenCompleteTextView;
 import de.hdodenhof.circleimageview.CircleImageView;
-import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager;
 
 import static com.fsck.k9.FontSizes.FONT_DEFAULT;
 
@@ -66,7 +65,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     private final UserInputEmailAddressParser emailAddressParser = DI.get(UserInputEmailAddressParser.class);
 
-    private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
+    private final MessageListPreferencesManager messageListPreferencesManager =
+        DI.get(MessageListPreferencesManager.class);
 
     private RecipientAdapter adapter;
     @Nullable
@@ -153,7 +153,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         RecipientTokenViewHolder holder = (RecipientTokenViewHolder) view.getTag();
 
         holder.vName.setText(recipient.getDisplayNameOrAddress(
-            generalSettingsManager.getConfig().getDisplay().getVisualSettings().isShowCorrespondentNames()
+            messageListPreferencesManager.getConfig().isShowCorrespondentNames()
         ));
         if (tokenTextSize != FONT_DEFAULT) {
             holder.vName.setTextSize(TypedValue.COMPLEX_UNIT_SP, tokenTextSize);
