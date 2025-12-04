@@ -93,6 +93,11 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
 
             val key = _currentState.value::class to event::class
             val transition = transitions[key]
+                ?: transitions
+                    .filterKeys { (stateClass, eventClass) ->
+                        stateClass.isInstance(_currentState.value) && eventClass == event::class
+                    }
+                    .firstNotNullOfOrNull { it.value }
 
             return when {
                 transition != null && transition.guard(_currentState.value, event) -> {

@@ -23,7 +23,7 @@ class GetSortTypes(
             putAll(
                 accounts
                     .associate {
-                        it.id to it.sortType.toSortType(isAscending = it.sortType in it.sortAscending)
+                        it.id to it.sortType.toSortType(isAscending = it.sortAscending[it.sortType] ?: false)
                     },
             )
         }
