@@ -70,6 +70,8 @@ private const val WEEK_DAYS = 7
  * @param preview The message preview text.
  * @param action A composable function to display actions related to the message (e.g., star).
  * @param receivedAt The date and time the message was received.
+ * @param showAccountIndicator Whether or not account indicator for universal inbox is shown.
+ * @param accountIndicatorColor The color of the account indicator, if shown.
  * @param onClick A callback function to be invoked when the message item is clicked.
  * @param onLongClick A lambda function to be invoked when the message item is long-clicked.
  * @param onLeadingClick A callback function to be invoked when the leading content is clicked.
@@ -85,7 +87,7 @@ private const val WEEK_DAYS = 7
  *  Defaults to [MessageItemDefaults.defaultContentPadding].
  * @see MessageItemDefaults
  */
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "LongMethod")
 @Composable
 internal fun MessageItem(
     leading: @Composable () -> Unit,
@@ -94,6 +96,8 @@ internal fun MessageItem(
     preview: CharSequence,
     action: @Composable () -> Unit,
     receivedAt: LocalDateTime,
+    showAccountIndicator: Boolean,
+    accountIndicatorColor: Int?,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     onLeadingClick: () -> Unit,
@@ -103,8 +107,6 @@ internal fun MessageItem(
     selected: Boolean = false,
     maxPreviewLines: Int = 2,
     contentPadding: PaddingValues = MessageItemDefaults.defaultContentPadding,
-    showAccountIndicator: Boolean = false,
-    accountIndicatorColor: Int? = null,
 ) {
     val outlineVariant = MainTheme.colors.outlineVariant
     var contentStart by remember { mutableFloatStateOf(0f) }

@@ -48,6 +48,8 @@ fun NewMessageItem(
     subject: String,
     preview: String,
     receivedAt: LocalDateTime,
+    showAccountIndicator: Boolean,
+    accountIndicatorColor: Int?,
     avatar: @Composable () -> Unit,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
@@ -61,8 +63,6 @@ fun NewMessageItem(
     maxPreviewLines: Int = 2,
     contentPadding: PaddingValues = MessageItemDefaults.defaultContentPadding,
     swapSenderWithSubject: Boolean = false,
-    showAccountIndicator: Boolean,
-    accountIndicatorColor: Int?,
 ) {
     MessageItem(
         leading = {
@@ -95,6 +95,8 @@ fun NewMessageItem(
         preview = preview,
         action = { FavouriteButtonIcon(favourite = favourite, onFavouriteChange = onFavouriteChange) },
         receivedAt = receivedAt,
+        showAccountIndicator = showAccountIndicator,
+        accountIndicatorColor = accountIndicatorColor,
         onClick = onClick,
         onLongClick = onLongClick,
         onLeadingClick = onLeadingClick,
@@ -110,7 +112,5 @@ fun NewMessageItem(
         selected = selected,
         maxPreviewLines = maxPreviewLines,
         contentPadding = contentPadding,
-        showAccountIndicator = showAccountIndicator,
-        accountIndicatorColor = accountIndicatorColor,
     )
 }
