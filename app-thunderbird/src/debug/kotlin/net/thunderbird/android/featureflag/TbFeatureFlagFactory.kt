@@ -24,7 +24,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag("enable_dropdown_drawer_ui".toFeatureFlagKey(), enabled = true),
                 FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = true),
                 FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = true),
-                FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = true), // TODO REMOVE
+                FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
                 FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = true),
                 FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = false),
                 FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
