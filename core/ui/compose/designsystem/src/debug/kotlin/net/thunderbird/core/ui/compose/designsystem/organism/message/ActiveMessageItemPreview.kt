@@ -1,5 +1,6 @@
 package net.thunderbird.core.ui.compose.designsystem.organism.message
 
+import android.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -118,6 +119,8 @@ private fun PreviewDefault(
             subject = params.subject,
             preview = params.preview,
             receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.RED,
             avatar = {
                 Box(
                     modifier = Modifier
@@ -156,6 +159,8 @@ private fun PreviewCompact(
             subject = params.subject,
             preview = params.preview,
             receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.RED,
             avatar = { },
             onClick = { },
             onLongClick = { },
@@ -183,6 +188,8 @@ private fun PreviewRelaxed(
             subject = params.subject,
             preview = params.preview,
             receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.RED,
             avatar = { },
             onClick = { },
             onLongClick = { },
@@ -195,6 +202,46 @@ private fun PreviewRelaxed(
             threadCount = params.threadCount,
             swapSenderWithSubject = params.swapSenderWithSubject,
             contentPadding = MessageItemDefaults.relaxedContentPadding,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewDefaultWithoutAccountIndicator(
+    @PreviewParameter(ActiveMessageItemPrevParamCol::class) params: MessageItemPrevParams,
+) {
+    PreviewWithThemes {
+        ActiveMessageItem(
+            sender = params.sender,
+            subject = params.subject,
+            preview = params.preview,
+            receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
+            avatar = {
+                Box(
+                    modifier = Modifier
+                        .size(MainTheme.sizes.iconAvatar)
+                        .background(
+                            color = MainTheme.colors.primaryContainer.copy(alpha = 0.15f),
+                            shape = CircleShape,
+                        )
+                        .border(width = 1.dp, color = MainTheme.colors.primary, shape = CircleShape),
+                ) {
+                    TextTitleSmall(text = "SN", modifier = Modifier.align(Alignment.Center))
+                }
+            },
+            onClick = { },
+            onLongClick = { },
+            onLeadingClick = { },
+            onFavouriteChange = { },
+            modifier = Modifier.padding(MainTheme.spacings.double),
+            hasAttachments = params.hasAttachments,
+            selected = params.selected,
+            favourite = params.favourite,
+            threadCount = params.threadCount,
+            swapSenderWithSubject = params.swapSenderWithSubject,
+            showAccountIndicator = false,
+            accountIndicatorColor = null,
         )
     }
 }

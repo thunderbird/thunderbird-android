@@ -40,6 +40,8 @@ fun ReadMessageItem(
     subject: String,
     preview: String,
     receivedAt: LocalDateTime,
+    showAccountIndicator: Boolean,
+    accountIndicatorColor: Int?,
     avatar: @Composable () -> Unit,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
@@ -89,5 +91,7 @@ fun ReadMessageItem(
         selected = selected,
         maxPreviewLines = maxPreviewLines,
         contentPadding = contentPadding,
+        showAccountIndicator = showAccountIndicator,
+        accountIndicatorColor = accountIndicatorColor,
     )
 }
