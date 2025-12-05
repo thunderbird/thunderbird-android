@@ -14,7 +14,6 @@ import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation;
-import com.fsck.k9.UiDensity;
 import com.fsck.k9.core.R;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.ColorSetting;
@@ -45,6 +44,7 @@ import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsK
 import net.thunderbird.core.preference.interaction.PostRemoveNavigation;
 import net.thunderbird.core.preference.network.NetworkSettingsKt;
 import net.thunderbird.core.preference.storage.Storage;
+import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity;
 
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 import static net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_MESSAGE_LIST_SENDER_ABOVE_SUBJECT;
@@ -55,11 +55,11 @@ import static net.thunderbird.core.preference.display.inboxSettings.DisplayInbox
 import static net.thunderbird.core.preference.display.miscSettings.DisplayMiscSettingsKt.DISPLAY_SETTINGS_DEFAULT_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG;
 import static net.thunderbird.core.preference.display.miscSettings.DisplayMiscSettingsKt.DISPLAY_SETTINGS_DEFAULT_SHOW_RECENT_CHANGES;
 import static net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH;
-import static net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_CHANGE_CONTACT_NAME_COLOR;
+import static net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettingsKt.MESSAGE_LIST_SETTINGS_DEFAULT_IS_CHANGE_CONTACT_NAME_COLOR;
 import static net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_ANIMATION;
-import static net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_NAME;
-import static net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE;
-import static net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CORRESPONDENT_NAMES;
+import static net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettingsKt.MESSAGE_LIST_SETTINGS_DEFAULT_IS_SHOW_CONTACT_NAME;
+import static net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettingsKt.MESSAGE_LIST_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE;
+import static net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettingsKt.MESSAGE_LIST_SETTINGS_DEFAULT_IS_SHOW_CORRESPONDENT_NAMES;
 import static net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_USE_MESSAGE_VIEW_FIXED_WIDTH_FONT;
 import static net.thunderbird.core.preference.notification.NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_IS_QUIET_TIME_ENABLED;
 import static net.thunderbird.core.preference.notification.NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_END;
@@ -91,7 +91,7 @@ class GeneralSettingsDescriptions {
             new V(83, new EnumSetting<>(BackgroundOps.class, NetworkSettingsKt.getNETWORK_SETTINGS_DEFAULT_BACKGROUND_OPS()))
         ));
         s.put("changeRegisteredNameColor", Settings.versions(
-            new V(1, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_CHANGE_CONTACT_NAME_COLOR))
+            new V(1, new BooleanSetting(MESSAGE_LIST_SETTINGS_DEFAULT_IS_CHANGE_CONTACT_NAME_COLOR))
         ));
         s.put("confirmDelete", Settings.versions(
             new V(1, new BooleanSetting(false))
@@ -192,10 +192,10 @@ class GeneralSettingsDescriptions {
             new V(79, new ColorSetting(0xFF1093F5))
         ));
         s.put("showContactName", Settings.versions(
-            new V(1, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_NAME))
+            new V(1, new BooleanSetting(MESSAGE_LIST_SETTINGS_DEFAULT_IS_SHOW_CONTACT_NAME))
         ));
         s.put("showCorrespondentNames", Settings.versions(
-            new V(1, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CORRESPONDENT_NAMES))
+            new V(1, new BooleanSetting(MESSAGE_LIST_SETTINGS_DEFAULT_IS_SHOW_CORRESPONDENT_NAMES))
         ));
         s.put("showUnifiedInbox", Settings.versions(
             new V(69, new BooleanSetting(true)),
@@ -238,7 +238,7 @@ class GeneralSettingsDescriptions {
             new V(24, new BooleanSetting(DisplayCoreSettingsKt.DISPLAY_SETTINGS_DEFAULT_FIXED_MESSAGE_VIEW_THEME))
         ));
         s.put("showContactPicture", Settings.versions(
-            new V(25, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE))
+            new V(25, new BooleanSetting(MESSAGE_LIST_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE))
         ));
         s.put("autofitWidth", Settings.versions(
             new V(28, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH))

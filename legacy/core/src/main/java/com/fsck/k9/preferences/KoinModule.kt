@@ -21,6 +21,8 @@ import net.thunderbird.core.preference.display.miscSettings.DefaultDisplayMiscSe
 import net.thunderbird.core.preference.display.miscSettings.DisplayMiscSettingsPreferenceManager
 import net.thunderbird.core.preference.display.visualSettings.DefaultDisplayVisualSettingsPreferenceManager
 import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsPreferenceManager
+import net.thunderbird.core.preference.display.visualSettings.message.list.DefaultMessageListPreferencesManager
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.core.preference.interaction.DefaultInteractionSettingsPreferenceManager
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 import net.thunderbird.core.preference.network.DefaultNetworkSettingsPreferenceManager
@@ -80,6 +82,7 @@ val preferencesModule = module {
             logger = get(),
             storage = get<Preferences>().storage,
             storageEditor = get<Preferences>().createStorageEditor(),
+            messageListPreferences = get(),
         )
     }
     single<DisplayMiscSettingsPreferenceManager> {
@@ -103,6 +106,13 @@ val preferencesModule = module {
             inboxSettingsPreferenceManager = get(),
             visualSettingsPreferenceManager = get(),
             miscSettingsPreferenceManager = get(),
+        )
+    }
+    single<MessageListPreferencesManager> {
+        DefaultMessageListPreferencesManager(
+            logger = get(),
+            storage = get(),
+            storageEditor = get(),
         )
     }
     single<NetworkSettingsPreferenceManager> {

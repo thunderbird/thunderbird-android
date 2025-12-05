@@ -16,7 +16,7 @@ val messageListUiModule = module {
             localStoreProvider = get(),
             messageListRepository = get(),
             messageHelper = get(),
-            generalSettingsManager = get(),
+            messageListPreferencesManager = get(),
             outboxFolderManager = get(),
         )
     }

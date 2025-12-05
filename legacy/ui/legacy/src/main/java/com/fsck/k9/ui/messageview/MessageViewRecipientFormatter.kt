@@ -10,7 +10,7 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 
 /**
  * Get the display name for a recipient to be shown in the message view screen.
@@ -80,19 +80,14 @@ internal class RealMessageViewRecipientFormatter(
 internal fun createMessageViewRecipientFormatter(
     contactNameProvider: ContactNameProvider,
     resources: Resources,
-    generalSettingsManager: GeneralSettingsManager,
+    messageListPreferencesManager: MessageListPreferencesManager,
 ): MessageViewRecipientFormatter {
+    val messageListSettings = messageListPreferencesManager.getConfig()
     return RealMessageViewRecipientFormatter(
         contactNameProvider = contactNameProvider,
-        showCorrespondentNames = generalSettingsManager.getConfig().display.visualSettings.isShowCorrespondentNames,
-        showContactNames = generalSettingsManager.getConfig().display.visualSettings.isShowContactName,
-        contactNameColor = if (
-            generalSettingsManager.getConfig().display.visualSettings.isChangeContactNameColor
-        ) {
-            K9.contactNameColor
-        } else {
-            null
-        },
+        showCorrespondentNames = messageListSettings.isShowCorrespondentNames,
+        showContactNames = messageListSettings.isShowContactName,
+        contactNameColor = if (messageListSettings.isChangeContactNameColor) K9.contactNameColor else null,
         meText = resources.getString(R.string.message_view_me_text),
     )
 }

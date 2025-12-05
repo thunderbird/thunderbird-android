@@ -121,9 +121,6 @@ object K9 : KoinComponent {
     var lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT
 
     @JvmStatic
-    var messageListDensity: UiDensity = UiDensity.Default
-
-    @JvmStatic
     var contactNameColor = 0xFF1093F5.toInt()
 
     var messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
@@ -205,7 +202,6 @@ object K9 : KoinComponent {
     fun loadPrefs(storage: Storage) {
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
 
-        messageListDensity = storage.getEnum("messageListDensity", UiDensity.Default)
         contactNameColor = storage.getInt("registeredNameColor", 0xFF1093F5.toInt())
         messageViewPostMarkAsUnreadNavigation =
             storage.getEnum("messageViewPostMarkAsUnreadAction", PostMarkAsUnreadNavigation.ReturnToMessageList)
@@ -246,7 +242,6 @@ object K9 : KoinComponent {
 
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
-        editor.putEnum("messageListDensity", messageListDensity)
         editor.putBoolean("showAccountSelector", isShowAccountSelector)
         editor.putInt("registeredNameColor", contactNameColor)
         editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)

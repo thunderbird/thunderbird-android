@@ -4,7 +4,6 @@ import androidx.preference.PreferenceDataStore
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import com.fsck.k9.K9
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation
-import com.fsck.k9.UiDensity
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.base.AppLanguageManager
 import net.thunderbird.core.common.action.SwipeAction
@@ -15,6 +14,7 @@ import net.thunderbird.core.preference.BodyContentType
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.core.preference.update
 
 @Suppress("LargeClass")
@@ -27,60 +27,43 @@ class GeneralSettingsDataStore(
 
     private var skipSaveSettings = false
 
+    @Suppress("CyclomaticComplexMethod")
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
+        val config = generalSettingsManager.getConfig()
+        val coreSettings = config.display.coreSettings
+        val debuggingSettings = config.debugging
+        val inboxSettings = config.display.inboxSettings
+        val interactionSettings = config.interaction
+        val notificationSettings = config.notification
+        val privacySettings = config.privacy
+        val visualSettings = config.display.visualSettings
+        val messageListSettings = visualSettings.messageListSettings
         return when (key) {
-            "fixed_message_view_theme" -> generalSettingsManager.getConfig().display.coreSettings.fixedMessageViewTheme
-            "animations" -> generalSettingsManager.getConfig().display.visualSettings.isShowAnimations
-            "show_unified_inbox" -> generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox
-            "show_starred_count" -> generalSettingsManager.getConfig().display.inboxSettings.isShowStarredCount
-            "messagelist_stars" -> generalSettingsManager.getConfig().display.inboxSettings.isShowMessageListStars
-            "messagelist_show_correspondent_names" -> generalSettingsManager.getConfig()
-                .display.visualSettings.isShowCorrespondentNames
-
-            "messagelist_sender_above_subject" -> generalSettingsManager.getConfig()
-                .display.inboxSettings.isMessageListSenderAboveSubject
-
-            "messagelist_show_contact_name" -> generalSettingsManager.getConfig()
-                .display.visualSettings.isShowContactName
-
-            "messagelist_change_contact_name_color" -> generalSettingsManager.getConfig()
-                .display.visualSettings.isChangeContactNameColor
-
-            "messagelist_show_contact_picture" -> generalSettingsManager.getConfig()
-                .display.visualSettings.isShowContactPicture
-
-            "messagelist_colorize_missing_contact_pictures" -> generalSettingsManager.getConfig()
-                .display.visualSettings.isColorizeMissingContactPictures
-
-            "messagelist_background_as_unread_indicator" -> generalSettingsManager.getConfig()
-                .display.visualSettings.isUseBackgroundAsUnreadIndicator
-
-            "show_compose_button" -> generalSettingsManager.getConfig()
-                .display.inboxSettings.isShowComposeButtonOnMessageList
-
-            "threaded_view" -> generalSettingsManager.getConfig()
-                .display.inboxSettings.isThreadedViewEnabled
-
-            "messageview_fixedwidth_font" -> generalSettingsManager.getConfig()
-                .display.visualSettings.isUseMessageViewFixedWidthFont
-
-            "messageview_autofit_width" -> generalSettingsManager.getConfig()
-                .display.visualSettings.isAutoFitWidth
-            "drawerExpandAllFolder" -> generalSettingsManager.getConfig()
-                .display.visualSettings.drawerExpandAllFolder
-
-            "quiet_time_enabled" -> generalSettingsManager.getConfig()
-                .notification.isQuietTimeEnabled
-
-            "disable_notifications_during_quiet_time" -> !generalSettingsManager.getConfig()
-                .notification.isNotificationDuringQuietTimeEnabled
-
-            "privacy_hide_useragent" -> generalSettingsManager.getConfig().privacy.isHideUserAgent
-            "privacy_hide_timezone" -> generalSettingsManager.getConfig().privacy.isHideTimeZone
-            "debug_logging" -> generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled
-            "sync_debug_logging" -> generalSettingsManager.getConfig().debugging.isSyncLoggingEnabled
-            "sensitive_logging" -> generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled
-            "volume_navigation" -> generalSettingsManager.getConfig().interaction.useVolumeKeysForNavigation
+            "fixed_message_view_theme" -> coreSettings.fixedMessageViewTheme
+            "animations" -> visualSettings.isShowAnimations
+            "show_unified_inbox" -> inboxSettings.isShowUnifiedInbox
+            "show_starred_count" -> inboxSettings.isShowStarredCount
+            "messagelist_stars" -> inboxSettings.isShowMessageListStars
+            "messagelist_show_correspondent_names" -> messageListSettings.isShowCorrespondentNames
+            "messagelist_sender_above_subject" -> inboxSettings.isMessageListSenderAboveSubject
+            "messagelist_show_contact_name" -> messageListSettings.isShowContactName
+            "messagelist_change_contact_name_color" -> messageListSettings.isChangeContactNameColor
+            "messagelist_show_contact_picture" -> messageListSettings.isShowContactPicture
+            "messagelist_colorize_missing_contact_pictures" -> messageListSettings.isColorizeMissingContactPictures
+            "messagelist_background_as_unread_indicator" -> messageListSettings.isUseBackgroundAsUnreadIndicator
+            "show_compose_button" -> inboxSettings.isShowComposeButtonOnMessageList
+            "threaded_view" -> inboxSettings.isThreadedViewEnabled
+            "messageview_fixedwidth_font" -> visualSettings.isUseMessageViewFixedWidthFont
+            "messageview_autofit_width" -> visualSettings.isAutoFitWidth
+            "drawerExpandAllFolder" -> visualSettings.drawerExpandAllFolder
+            "quiet_time_enabled" -> notificationSettings.isQuietTimeEnabled
+            "disable_notifications_during_quiet_time" -> !notificationSettings.isNotificationDuringQuietTimeEnabled
+            "privacy_hide_useragent" -> privacySettings.isHideUserAgent
+            "privacy_hide_timezone" -> privacySettings.isHideTimeZone
+            "debug_logging" -> debuggingSettings.isDebugLoggingEnabled
+            "sync_debug_logging" -> debuggingSettings.isSyncLoggingEnabled
+            "sensitive_logging" -> debuggingSettings.isSensitiveLoggingEnabled
+            "volume_navigation" -> interactionSettings.useVolumeKeysForNavigation
             "enable_telemetry" -> K9.isTelemetryEnabled
             else -> defValue
         }
@@ -148,29 +131,26 @@ class GeneralSettingsDataStore(
     }
 
     override fun getString(key: String, defValue: String?): String? {
-        val interactionSettings = generalSettingsManager.getConfig().interaction
+        val config = generalSettingsManager.getConfig()
+        val coreSettings = config.display.coreSettings
+        val interactionSettings = config.interaction
+        val notificationSettings = config.notification
+        val networkSettings = config.network
+        val visualSettings = config.display.visualSettings
+        val messageListSettings = visualSettings.messageListSettings
         return when (key) {
             "language" -> appLanguageManager.getAppLanguage()
-            "theme" -> appThemeToString(generalSettingsManager.getConfig().display.coreSettings.appTheme)
-            "message_compose_theme" -> subThemeToString(
-                generalSettingsManager.getConfig().display.coreSettings.messageComposeTheme,
-            )
-
-            "messageViewTheme" -> subThemeToString(
-                generalSettingsManager.getConfig().display.coreSettings.messageViewTheme,
-            )
-
-            "messagelist_preview_lines" -> generalSettingsManager.getConfig()
-                .display.visualSettings.messageListPreviewLines.toString()
-
-            "splitview_mode" -> generalSettingsManager.getConfig().display.coreSettings.splitViewMode.name
+            "theme" -> appThemeToString(coreSettings.appTheme)
+            "message_compose_theme" -> subThemeToString(coreSettings.messageComposeTheme)
+            "messageViewTheme" -> subThemeToString(coreSettings.messageViewTheme)
+            "messagelist_preview_lines" -> messageListSettings.previewLines.toString()
+            "splitview_mode" -> coreSettings.splitViewMode.name
             "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
             "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
-            "background_ops" -> generalSettingsManager.getConfig().network.backgroundOps.name
-            "quiet_time_starts" -> generalSettingsManager.getConfig().notification.quietTimeStarts
-            "quiet_time_ends" -> generalSettingsManager.getConfig().notification.quietTimeEnds
-            "messageview_body_content_type" ->
-                generalSettingsManager.getConfig().display.visualSettings.bodyContentType.name
+            "background_ops" -> networkSettings.backgroundOps.name
+            "quiet_time_starts" -> notificationSettings.quietTimeStarts
+            "quiet_time_ends" -> notificationSettings.quietTimeEnds
+            "messageview_body_content_type" -> visualSettings.bodyContentType.name
             "message_list_subject_font" -> K9.fontSizes.messageListSubject.toString()
             "message_list_sender_font" -> K9.fontSizes.messageListSender.toString()
             "message_list_date_font" -> K9.fontSizes.messageListDate.toString()
@@ -183,7 +163,7 @@ class GeneralSettingsDataStore(
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput.toString()
             "swipe_action_right" -> swipeActionToString(interactionSettings.swipeActions.rightAction)
             "swipe_action_left" -> swipeActionToString(interactionSettings.swipeActions.leftAction)
-            "message_list_density" -> K9.messageListDensity.toString()
+            "message_list_density" -> messageListSettings.uiDensity.toString()
             "post_remove_navigation" -> interactionSettings.messageViewPostRemoveNavigation
             "post_mark_as_unread_navigation" -> K9.messageViewPostMarkAsUnreadNavigation.name
             else -> defValue
@@ -228,7 +208,7 @@ class GeneralSettingsDataStore(
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput = value.toInt()
             "swipe_action_right" -> updateSwipeAction(value) { swipeAction -> copy(rightAction = swipeAction) }
             "swipe_action_left" -> updateSwipeAction(value) { swipeAction -> copy(leftAction = swipeAction) }
-            "message_list_density" -> K9.messageListDensity = UiDensity.valueOf(value)
+            "message_list_density" -> updateMessageListDensity(value)
             "post_remove_navigation" -> setMessageViewPostRemoveNavigation(value)
             "post_mark_as_unread_navigation" -> {
                 K9.messageViewPostMarkAsUnreadNavigation = PostMarkAsUnreadNavigation.valueOf(value)
@@ -355,10 +335,13 @@ class GeneralSettingsDataStore(
     private fun setMessageListPreviewLines(previewLines: Int) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
+            val displaySettings = settings.display
             settings.copy(
-                display = settings.display.copy(
-                    visualSettings = settings.display.visualSettings.copy(
-                        messageListPreviewLines = previewLines,
+                display = displaySettings.copy(
+                    visualSettings = displaySettings.visualSettings.copy(
+                        messageListSettings = displaySettings.visualSettings.messageListSettings.copy(
+                            previewLines = previewLines,
+                        ),
                     ),
                 ),
             )
@@ -459,10 +442,13 @@ class GeneralSettingsDataStore(
     private fun setIsShowCorrespondentNames(isShowCorrespondentNames: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
+            val displaySettings = settings.display
             settings.copy(
-                display = settings.display.copy(
-                    visualSettings = settings.display.visualSettings.copy(
-                        isShowCorrespondentNames = isShowCorrespondentNames,
+                display = displaySettings.copy(
+                    visualSettings = displaySettings.visualSettings.copy(
+                        messageListSettings = displaySettings.visualSettings.messageListSettings.copy(
+                            isShowCorrespondentNames = isShowCorrespondentNames,
+                        ),
                     ),
                 ),
             )
@@ -485,10 +471,13 @@ class GeneralSettingsDataStore(
     private fun setIsShowContactName(isShowContactName: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
+            val displaySettings = settings.display
             settings.copy(
-                display = settings.display.copy(
-                    visualSettings = settings.display.visualSettings.copy(
-                        isShowContactName = isShowContactName,
+                display = displaySettings.copy(
+                    visualSettings = displaySettings.visualSettings.copy(
+                        messageListSettings = displaySettings.visualSettings.messageListSettings.copy(
+                            isShowContactName = isShowContactName,
+                        ),
                     ),
                 ),
             )
@@ -498,10 +487,13 @@ class GeneralSettingsDataStore(
     private fun setIsShowContactPicture(isShowContactPicture: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
+            val displaySettings = settings.display
             settings.copy(
-                display = settings.display.copy(
-                    visualSettings = settings.display.visualSettings.copy(
-                        isShowContactPicture = isShowContactPicture,
+                display = displaySettings.copy(
+                    visualSettings = displaySettings.visualSettings.copy(
+                        messageListSettings = displaySettings.visualSettings.messageListSettings.copy(
+                            isShowContactPicture = isShowContactPicture,
+                        ),
                     ),
                 ),
             )
@@ -511,10 +503,13 @@ class GeneralSettingsDataStore(
     private fun setIsChangeContactNameColor(isChangeContactNameColor: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
+            val displaySettings = settings.display
             settings.copy(
-                display = settings.display.copy(
-                    visualSettings = settings.display.visualSettings.copy(
-                        isChangeContactNameColor = isChangeContactNameColor,
+                display = displaySettings.copy(
+                    visualSettings = displaySettings.visualSettings.copy(
+                        messageListSettings = displaySettings.visualSettings.messageListSettings.copy(
+                            isChangeContactNameColor = isChangeContactNameColor,
+                        ),
                     ),
                 ),
             )
@@ -524,10 +519,13 @@ class GeneralSettingsDataStore(
     private fun setIsColorizeMissingContactPictures(isColorizeMissingContactPictures: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
+            val displaySettings = settings.display
             settings.copy(
-                display = settings.display.copy(
-                    visualSettings = settings.display.visualSettings.copy(
-                        isColorizeMissingContactPictures = isColorizeMissingContactPictures,
+                display = displaySettings.copy(
+                    visualSettings = displaySettings.visualSettings.copy(
+                        messageListSettings = displaySettings.visualSettings.messageListSettings.copy(
+                            isColorizeMissingContactPictures = isColorizeMissingContactPictures,
+                        ),
                     ),
                 ),
             )
@@ -537,10 +535,13 @@ class GeneralSettingsDataStore(
     private fun setIsUseBackgroundAsUnreadIndicator(isUseBackgroundAsUnreadIndicator: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
+            val displaySettings = settings.display
             settings.copy(
-                display = settings.display.copy(
-                    visualSettings = settings.display.visualSettings.copy(
-                        isUseBackgroundAsUnreadIndicator = isUseBackgroundAsUnreadIndicator,
+                display = displaySettings.copy(
+                    visualSettings = displaySettings.visualSettings.copy(
+                        messageListSettings = displaySettings.visualSettings.messageListSettings.copy(
+                            isUseBackgroundAsUnreadIndicator = isUseBackgroundAsUnreadIndicator,
+                        ),
                     ),
                 ),
             )
@@ -805,6 +806,21 @@ class GeneralSettingsDataStore(
             settings.copy(
                 interaction = interaction.copy(
                     swipeActions = interaction.swipeActions.update(stringToSwipeAction(value)),
+                ),
+            )
+        }
+    }
+
+    private fun updateMessageListDensity(value: String) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        messageListSettings = settings.display.visualSettings.messageListSettings.copy(
+                            uiDensity = UiDensity.valueOf(value),
+                        ),
+                    ),
                 ),
             )
         }

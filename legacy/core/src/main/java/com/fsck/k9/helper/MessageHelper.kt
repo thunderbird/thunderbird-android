@@ -11,29 +11,28 @@ import com.fsck.k9.K9.contactNameColor
 import com.fsck.k9.mail.Address
 import java.util.regex.Pattern
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
-import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 
 class MessageHelper(
     private val resourceProvider: CoreResourceProvider,
     private val contactRepository: ContactRepository,
-    private val generalSettingsManager: GeneralSettingsManager,
+    private val messageListPreferencesManager: MessageListPreferencesManager,
 ) {
+    val messageListPreferences get() = messageListPreferencesManager.getConfig()
 
     fun getSenderDisplayName(address: Address?): CharSequence {
         if (address == null) {
             return resourceProvider.contactUnknownSender()
         }
-        val repository = if (
-            generalSettingsManager.getConfig().display.visualSettings.isShowContactName
-        ) {
+        val repository = if (messageListPreferences.isShowContactName) {
             contactRepository
         } else {
             null
         }
         return toFriendly(
             address,
-            generalSettingsManager.getConfig().display.visualSettings.isShowCorrespondentNames,
-            generalSettingsManager.getConfig().display.visualSettings.isChangeContactNameColor,
+            messageListPreferences.isShowCorrespondentNames,
+            messageListPreferences.isChangeContactNameColor,
             repository,
         )
     }
@@ -47,7 +46,7 @@ class MessageHelper(
             return resourceProvider.contactUnknownRecipient()
         }
         val repository =
-            if (generalSettingsManager.getConfig().display.visualSettings.isShowContactName) contactRepository else null
+            if (messageListPreferences.isShowContactName) contactRepository else null
         val recipients = toFriendly(addresses, isShowCorrespondentNames, isChangeContactNameColor, repository)
         return SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(' ').append(recipients)
     }
