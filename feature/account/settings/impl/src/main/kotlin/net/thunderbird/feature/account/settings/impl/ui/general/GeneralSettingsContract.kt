@@ -2,6 +2,7 @@ package net.thunderbird.feature.account.settings.impl.ui.general
 
 import androidx.compose.runtime.Stable
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import com.eygraber.uri.Uri
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.core.validation.input.IntegerInputField
@@ -34,12 +35,15 @@ internal interface GeneralSettingsContract {
         data class OnNameChange(val name: String) : Event
         data class OnColorChange(val color: Int) : Event
         data class OnAvatarChange(val avatar: Avatar) : Event
+        data object OnSelectAvatarImageClick : Event
+        data class OnAvatarImagePicked(val uri: Uri) : Event
 
         data object OnBackPressed : Event
     }
 
     sealed interface Effect {
         object NavigateBack : Effect
+        object OpenAvatarImagePicker : Effect
     }
 
     interface Validator {
@@ -48,6 +52,9 @@ internal interface GeneralSettingsContract {
     }
 
     fun interface SettingsBuilder {
-        fun build(state: State): Settings
+        fun build(
+            state: State,
+            onEvent: (Event) -> Unit,
+        ): Settings
     }
 }

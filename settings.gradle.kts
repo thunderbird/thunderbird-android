@@ -70,6 +70,7 @@ include(
     ":feature:account:edit",
     ":feature:account:fake",
     ":feature:account:oauth",
+    ":feature:account:profile:api",
     ":feature:account:settings:api",
     ":feature:account:settings:impl",
     ":feature:account:server:certificate",
@@ -189,6 +190,7 @@ include(
 
 include(
     ":core:ui:setting:api",
+    ":core:ui:setting:component",
     ":core:ui:setting:impl-dialog",
 )
 

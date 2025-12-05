@@ -5,7 +5,6 @@ A small, feature‑agnostic API for representing accounts by identity only. It p
 - Strongly‑typed account identifiers (`AccountId`)
 - A minimal Account interface (identity only)
 - A unified account sentinel for aggregated views
-- Profile types for UI (`AccountProfile`) and an abstraction to fetch/update them (AccountProfileRepository)
 
 This module intentionally avoids feature‑specific fields (like email addresses). Mail, calendar, sync, etc. should
 attach their own capability models keyed by `AccountId`.
@@ -18,8 +17,6 @@ attach their own capability models keyed by `AccountId`.
 - `UnifiedAccountId`: Reserved `AccountId` (UUID nil) used to represent the virtual “Unified” scope across accounts.
   - `AccountId.isUnified`: Shorthand check for unified account id.
   - `AccountId.requireReal()`: Throws if called with the unified ID. Use in repositories/mutation paths.
-- `AccountProfile`: Display/profile data for UI (name, color, avatar) keyed by AccountId.
-- `AccountProfileRepository`: Abstraction to read/update profiles.
 
 ## Usage
 
@@ -40,13 +37,6 @@ if (id.isUnified) {
 }
 ```
 
-Fetch/update an account profile:
-
-```kotlin
-val profiles: Flow<AccountProfile?> = repo.getById(id)
-repo.update(AccountProfile(id, name = "Alice", color = 0xFFAA66, avatar = Avatar.Monogram(value = "A")))
-```
-
 ## Design guidelines
 
 - Keep Account minimal (identity only). Do not add mail/calendar/sync fields here.
@@ -54,7 +44,7 @@ repo.update(AccountProfile(id, name = "Alice", color = 0xFFAA66, avatar = Avatar
 - Do not persist data for `UnifiedAccountId`. Compute unified profiles/labels in UI where needed.
 - Prefer strong types (`AccountId`) over raw strings for safety and consistency.
 
-## Related types
+## Related modules and types
 
 - `Id<T>`: Generic UUID‑backed identifier (core/architecture/api)
 

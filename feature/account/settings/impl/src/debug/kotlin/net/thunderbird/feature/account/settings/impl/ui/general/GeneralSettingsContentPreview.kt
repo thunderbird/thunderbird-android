@@ -22,7 +22,7 @@ internal fun GeneralSettingsContentPreview() {
             ),
             onEvent = {},
             provider = DialogSettingViewProvider(),
-            builder = { emptySettings() },
+            builder = { _, _ -> emptySettings() },
         )
     }
 }
