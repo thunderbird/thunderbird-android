@@ -15,7 +15,6 @@ import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
-import com.fsck.k9.ui.messagelist.MessageListFeatureFlags.UseComposeForMessageListItems
 import com.fsck.k9.ui.messagelist.item.BannerInlineListInAppNotificationViewHolder
 import com.fsck.k9.ui.messagelist.item.ComposableMessageViewHolder
 import com.fsck.k9.ui.messagelist.item.FooterViewHolder
@@ -27,6 +26,7 @@ import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.mail.message.list.MessageListFeatureFlags.UseComposeForMessageListItems
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 
