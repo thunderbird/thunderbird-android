@@ -13,17 +13,20 @@ import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StoragePersister
 
 private const val TAG = "DefaultNotificationPreferenceManager"
 
 class DefaultNotificationPreferenceManager(
     private val logger: Logger,
-    storage: Storage,
+    private val storagePersister: StoragePersister,
     private val storageEditor: StorageEditor,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
 ) : NotificationPreferenceManager {
     private val mutex = Mutex()
+    private val storage: Storage
+        get() = storagePersister.loadValues()
     private val configState = MutableStateFlow(
         value = NotificationPreference(
             isQuietTimeEnabled = storage.getBoolean(

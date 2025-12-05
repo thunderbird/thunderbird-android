@@ -13,18 +13,21 @@ import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StoragePersister
 
 private const val TAG = "DefaultPrivacySettingsPreferenceManager"
 
 class DefaultPrivacySettingsPreferenceManager(
     private val logger: Logger,
-    private val storage: Storage,
+    private val storagePersister: StoragePersister,
     private val storageEditor: StorageEditor,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
 ) : PrivacySettingsPreferenceManager {
     private val configState: MutableStateFlow<PrivacySettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
+    private val storage: Storage
+        get() = storagePersister.loadValues()
 
     override fun getConfig(): PrivacySettings = configState.value
     override fun getConfigFlow(): Flow<PrivacySettings> = configState

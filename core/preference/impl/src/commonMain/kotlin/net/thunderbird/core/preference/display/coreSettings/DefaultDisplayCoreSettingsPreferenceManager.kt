@@ -13,6 +13,7 @@ import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.core.preference.storage.putEnum
 
@@ -20,7 +21,7 @@ private const val TAG = "DefaultDisplayCoreSettingsPreferenceManager"
 
 class DefaultDisplayCoreSettingsPreferenceManager(
     private val logger: Logger,
-    private val storage: Storage,
+    private val storagePersister: StoragePersister,
     private val storageEditor: StorageEditor,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
@@ -28,6 +29,8 @@ class DefaultDisplayCoreSettingsPreferenceManager(
 
     private val configState: MutableStateFlow<DisplayCoreSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
+    private val storage: Storage
+        get() = storagePersister.loadValues()
 
     override fun getConfig(): DisplayCoreSettings = configState.value
 
