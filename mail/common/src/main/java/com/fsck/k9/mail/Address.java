@@ -74,7 +74,7 @@ public class Address implements Serializable {
                 Log.e("Invalid address: %s", address);
             }
         } else {
-            mAddress = address;
+            mAddress = Rfc822Token.withULabelDomain(address);
             mPersonal = personal;
         }
     }
