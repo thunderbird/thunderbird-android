@@ -14,9 +14,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ColorChip(
     modifier: Modifier = Modifier,
-    height: Dp = ColorChip.chipDefaultHeight,
-    width: Dp = ColorChip.chipDefaultWidth,
-    color: Int = Color.BLUE,
+    height: Dp = ColorChipDefaults.chipDefaultHeight,
+    width: Dp = ColorChipDefaults.chipDefaultWidth,
+    color: Int = ColorChipDefaults.chipDefaultColor,
 ) {
     val brush = SolidColor(androidx.compose.ui.graphics.Color(color.toLong()))
     Canvas(
@@ -54,7 +54,8 @@ private fun PreviewBigRed() {
     )
 }
 
-private object ColorChip {
+private object ColorChipDefaults {
     val chipDefaultHeight = 20.dp
     val chipDefaultWidth = 3.dp
+    val chipDefaultColor = Color.BLUE
 }
