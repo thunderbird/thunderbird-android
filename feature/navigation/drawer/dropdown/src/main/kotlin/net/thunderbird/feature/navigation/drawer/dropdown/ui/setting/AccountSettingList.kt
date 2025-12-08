@@ -1,6 +1,7 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui.setting
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.runtime.Composable
@@ -11,6 +12,7 @@ import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.feature.navigation.drawer.dropdown.R
+import app.k9mail.core.ui.compose.theme2.default.defaultThemeSizes
 
 @Composable
 internal fun AccountSettingList(
@@ -28,7 +30,8 @@ internal fun AccountSettingList(
     SettingList(
         modifier = modifier
             .padding(vertical = MainTheme.spacings.default)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .height(defaultThemeSizes.bottomBarHeightWithFab*3),
     ) {
         item(span = { if (hideText) GridItemSpan(1) else GridItemSpan(maxLineSpan) }) {
             SettingListItem(

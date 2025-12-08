@@ -1,6 +1,7 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui.setting
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.runtime.Composable
@@ -9,6 +10,7 @@ import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.common.window.WindowSizeClass
 import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import app.k9mail.core.ui.compose.theme2.default.defaultThemeSizes
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 
@@ -30,7 +32,8 @@ internal fun FolderSettingList(
     SettingList(
         modifier = modifier
             .padding(vertical = MainTheme.spacings.default)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .height(defaultThemeSizes.bottomBarHeightWithFab*3),
     ) {
         if (isUnifiedAccount.not()) {
             item(span = { if (hideText) GridItemSpan(1) else GridItemSpan(maxLineSpan) }) {
