@@ -8,5 +8,14 @@
     <string name="account_settings_general_name_description">Namnet er ikkje assosiert med kontoen din.</string>
     <string name="account_settings_general_color_title">Kontofarge</string>
     <string name="account_settings_general_color_description">Aksentfargen for denne kontoen, som vert brukt for mapper og kontolister.</string>
-    <string name="account_settings_general_avatar_title">Profilbilete</string>
+    <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_description">Vel korleis avataren din blir vist.</string>
+    <string name="account_settings_general_name_error_empty">Namnet kan ikkje vere tomt</string>
+    <string name="account_settings_general_name_error_too_long">Namnet er for langt</string>
+    <string name="account_settings_general_avatar_monogram_title">Avatarmonogram</string>
+    <string name="account_settings_general_avatar_monogram_description">Monogrammet som er brukt som avataren din.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Monogrammet kan ikkje vere tomt</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Monogrammet er for langt</string>
+    <string name="account_settings_general_avatar_icon_title">Avatarikon</string>
+    <string name="account_settings_general_avatar_icon_description">Vel eit av ikona som avataren din.</string>
 </resources>

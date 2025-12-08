@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Главни настройки</string>
+    <string name="account_settings_general_avatar_title">Аватар</string>
+    <string name="account_settings_general_avatar_option_monogram">Монограм</string>
+    <string name="account_settings_general_avatar_option_image">Изображение</string>
+    <string name="account_settings_general_avatar_option_icon">Иконка</string>
 </resources>
