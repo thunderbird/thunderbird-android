@@ -1,19 +1,23 @@
 package net.thunderbird.feature.mail.message.list.internal.domain.usecase
 
+import app.cash.turbine.test
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.containsOnly
 import assertk.assertions.hasSize
 import assertk.assertions.isEmpty
-import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
+import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.DisplaySettings
@@ -22,8 +26,10 @@ import net.thunderbird.core.preference.interaction.KEY_SWIPE_ACTION_RIGHT
 import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
-import net.thunderbird.feature.mail.message.list.internal.fakes.FakeAccount
-import net.thunderbird.feature.mail.message.list.internal.fakes.FakeAccountManager
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.mail.message.list.internal.fakes.FakeLegacyAccount
+import net.thunderbird.feature.mail.message.list.internal.fakes.FakeLegacyAccountManager
 
 @OptIn(ExperimentalUuidApi::class)
 @Suppress("MaxLineLength")
@@ -38,325 +44,299 @@ class BuildSwipeActionsTest {
         )
 
     @Test
-    fun `invoke should return empty map when empty account uuids is provided`() {
+    fun `invoke should return empty map when empty account ids is provided`() = runTest {
         // Arrange
-        val uuids = setOf<String>()
-        val testSubject = createTestSubject(
-            accountsUuids = List(size = 10) { Uuid.random().toHexString() },
-        )
+        val testSubject = createTestSubject(accounts = emptyList())
 
         // Act
-        val actions = testSubject(
-            accountUuids = uuids,
-            isIncomingServerPop3 = { false },
-            hasArchiveFolder = { false },
-        )
-
-        // Assert
-        assertThat(actions).isEmpty()
-    }
-
-    @Test
-    fun `invoke should return map with SwipeActions(ToggleRead, ToggleSelection) when no user preference is stored`() {
-        // Arrange
-        val uuid = Uuid.random().toHexString()
-        val uuids = setOf(uuid)
-        val testSubject = createTestSubject(
-            accountsUuids = uuids.toList(),
-        )
-
-        // Act
-        val actions = testSubject(
-            accountUuids = uuids,
-            isIncomingServerPop3 = { false },
-            hasArchiveFolder = { false },
-        )
-
-        // Assert
-        assertThat(actions).all {
-            hasSize(size = 1)
-            containsOnly(
-                uuid to SwipeActions(
-                    leftAction = SwipeAction.ToggleRead,
-                    rightAction = SwipeAction.ToggleSelection,
-                ),
-            )
+        val subject = testSubject()
+        subject.test {
+            // Assert
+            val actions = awaitItem()
+            assertThat(actions).isEmpty()
         }
     }
 
     @Test
-    fun `invoke should return map with multiple keys when multiple accounts`() {
-        // Arrange
-        val accountsSize = 10
-        val uuids = List(size = accountsSize) { Uuid.random().toHexString() }
-        val testSubject = createTestSubject(
-            accountsUuids = uuids.toList(),
-        )
+    fun `invoke should return map with SwipeActions(ToggleRead, ToggleSelection) when no user preference is stored`() =
+        runTest {
+            // Arrange
+            val id = AccountIdFactory.create()
+            val ids = listOf(id)
+            val testSubject = createTestSubject(accountsIds = ids)
 
-        // Act
-        val actions = testSubject(
-            accountUuids = uuids.toSet(),
-            isIncomingServerPop3 = { false },
-            hasArchiveFolder = { false },
-        )
-
-        // Assert
-        assertThat(actions).all {
-            hasSize(accountsSize)
-            containsOnly(
-                elements = uuids
-                    .associateWith {
-                        SwipeActions(
+            // Act
+            val subject = testSubject()
+            subject.test {
+                // Assert
+                val actions = awaitItem()
+                assertThat(actions).all {
+                    hasSize(size = 1)
+                    containsOnly(
+                        id to SwipeActions(
                             leftAction = SwipeAction.ToggleRead,
                             rightAction = SwipeAction.ToggleSelection,
-                        )
-                    }
-                    .map { it.key to it.value }
-                    .toTypedArray(),
-            )
+                        ),
+                    )
+                }
+            }
         }
-    }
 
     @Test
-    fun `invoke should return map with SwipeActions(None, ToggleSelection) when left action is stored as None but right is not`() {
+    fun `invoke should return map with multiple keys when multiple accounts`() = runTest {
         // Arrange
-        val uuid = Uuid.random().toHexString()
-        val uuids = setOf(uuid)
-        val testSubject = createTestSubject(
-            accountsUuids = uuids.toList(),
-            storageValues = mapOf(
-                KEY_SWIPE_ACTION_LEFT to SwipeAction.None,
-            ),
-        )
+        val accountsSize = 10
+        val ids = List(size = accountsSize) { AccountIdFactory.create() }
+        val testSubject = createTestSubject(accountsIds = ids)
 
         // Act
-        val actions = testSubject(
-            accountUuids = uuids,
-            isIncomingServerPop3 = { false },
-            hasArchiveFolder = { false },
-        )
-
-        // Assert
-        assertThat(actions).all {
-            hasSize(size = 1)
-            containsOnly(
-                uuid to SwipeActions(
-                    leftAction = SwipeAction.None,
-                    rightAction = SwipeAction.ToggleSelection,
-                ),
-            )
+        val subject = testSubject()
+        subject.test {
+            // Assert
+            val actions = awaitItem()
+            assertThat(actions).all {
+                hasSize(accountsSize)
+                containsOnly(
+                    elements = ids
+                        .associateWith {
+                            SwipeActions(
+                                leftAction = SwipeAction.ToggleRead,
+                                rightAction = SwipeAction.ToggleSelection,
+                            )
+                        }
+                        .map { it.key to it.value }
+                        .toTypedArray(),
+                )
+            }
         }
     }
 
     @Test
-    fun `invoke should return map with SwipeActions(ToggleRead, Delete) when left action is not stored but right is stored as Delete`() {
-        // Arrange
-        val uuid = Uuid.random().toHexString()
-        val uuids = setOf(uuid)
-        val testSubject = createTestSubject(
-            accountsUuids = uuids.toList(),
-            storageValues = mapOf(
-                KEY_SWIPE_ACTION_RIGHT to SwipeAction.Delete,
-            ),
-        )
-
-        // Act
-        val actions = testSubject(
-            accountUuids = uuids,
-            isIncomingServerPop3 = { false },
-            hasArchiveFolder = { false },
-        )
-
-        // Assert
-        assertThat(actions).all {
-            hasSize(size = 1)
-            containsOnly(
-                uuid to SwipeActions(
-                    leftAction = SwipeAction.ToggleRead,
-                    rightAction = SwipeAction.Delete,
+    fun `invoke should return map with SwipeActions(None, ToggleSelection) when left action is stored as None but right isn't'`() =
+        runTest {
+            // Arrange
+            val id = AccountIdFactory.create()
+            val ids = listOf(id)
+            val testSubject = createTestSubject(
+                accountsIds = ids,
+                storageValues = mapOf(
+                    KEY_SWIPE_ACTION_LEFT to SwipeAction.None,
                 ),
             )
+
+            // Act
+            val subject = testSubject()
+            subject.test {
+                // Assert
+                val actions = awaitItem()
+                assertThat(actions).all {
+                    hasSize(size = 1)
+                    containsOnly(
+                        id to SwipeActions(
+                            leftAction = SwipeAction.None,
+                            rightAction = SwipeAction.ToggleSelection,
+                        ),
+                    )
+                }
+            }
         }
-    }
 
     @Test
-    fun `invoke should return map with SwipeActions(Archive, Archive) when both stored actions are Archive, account isn't pop3 and has archive folder`() {
-        // Arrange
-        val uuid = Uuid.random().toHexString()
-        val uuids = setOf(uuid)
-        val testSubject = createTestSubject(
-            accountsUuids = uuids.toList(),
-            storageValues = mapOf(
-                KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
-                KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
-            ),
-        )
-
-        // Act
-        val actions = testSubject(
-            accountUuids = uuids,
-            isIncomingServerPop3 = { false },
-            hasArchiveFolder = { true },
-        )
-
-        // Assert
-        assertThat(actions).all {
-            hasSize(size = 1)
-            containsOnly(
-                uuid to SwipeActions(
-                    leftAction = SwipeAction.Archive,
-                    rightAction = SwipeAction.Archive,
+    fun `invoke should return map with SwipeActions(ToggleRead, Delete) when left action isn't stored but right is stored as Delete`() =
+        runTest {
+            // Arrange
+            val id = AccountIdFactory.create()
+            val ids = listOf(id)
+            val testSubject = createTestSubject(
+                accountsIds = ids,
+                storageValues = mapOf(
+                    KEY_SWIPE_ACTION_RIGHT to SwipeAction.Delete,
                 ),
             )
+
+            // Act
+            val subject = testSubject()
+            subject.test {
+                // Assert
+                val actions = awaitItem()
+                assertThat(actions).all {
+                    hasSize(size = 1)
+                    containsOnly(
+                        id to SwipeActions(
+                            leftAction = SwipeAction.ToggleRead,
+                            rightAction = SwipeAction.Delete,
+                        ),
+                    )
+                }
+            }
         }
-    }
 
     @Test
-    fun `invoke should return map with SwipeActions(ArchiveDisabled, ArchiveDisabled) when both stored actions are Archive, account is pop3`() {
-        // Arrange
-        val uuid = Uuid.random().toHexString()
-        val uuids = setOf(uuid)
-        val testSubject = createTestSubject(
-            accountsUuids = uuids.toList(),
-            storageValues = mapOf(
-                KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
-                KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
-            ),
-        )
-
-        // Act
-        val actions = testSubject(
-            accountUuids = uuids,
-            isIncomingServerPop3 = { true },
-            hasArchiveFolder = { true },
-        )
-
-        // Assert
-        assertThat(actions).all {
-            hasSize(size = 1)
-            containsOnly(
-                uuid to SwipeActions(
-                    leftAction = SwipeAction.ArchiveDisabled,
-                    rightAction = SwipeAction.ArchiveDisabled,
+    fun `invoke should return map with SwipeActions(Archive, Archive) when both stored actions are Archive, account isn't pop3 and has archive folder`() =
+        runTest {
+            // Arrange
+            val id = AccountIdFactory.create()
+            val testSubject = createTestSubject(
+                accounts = listOf(FakeLegacyAccount(id = id, archiveFolderId = 123)),
+                storageValues = mapOf(
+                    KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
+                    KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
                 ),
             )
+
+            // Act
+            val subject = testSubject()
+            subject.test {
+                // Assert
+                val actions = awaitItem()
+                assertThat(actions).all {
+                    hasSize(size = 1)
+                    containsOnly(
+                        id to SwipeActions(
+                            leftAction = SwipeAction.Archive,
+                            rightAction = SwipeAction.Archive,
+                        ),
+                    )
+                }
+            }
         }
-    }
 
     @Test
-    fun `invoke should return map with SwipeActions(ArchiveSetupArchiveFolder, ArchiveSetupArchiveFolder) when both stored actions are Archive, account isn't pop3, has not archive folder and shouldShowSetupArchiveFolderDialog is true`() {
-        // Arrange
-        val uuid = Uuid.random().toHexString()
-        val uuids = setOf(uuid)
-        val testSubject = createTestSubject(
-            initialGeneralSettings = defaultGeneralSettings.copy(
-                display = defaultGeneralSettings.display.copy(
-                    miscSettings = defaultGeneralSettings.display.miscSettings.copy(
-                        shouldShowSetupArchiveFolderDialog = true,
+    fun `invoke should return map with SwipeActions(ArchiveDisabled, ArchiveDisabled) when both stored actions are Archive, account is pop3`() =
+        runTest {
+            // Arrange
+            val id = AccountIdFactory.create()
+            val testSubject = createTestSubject(
+                accounts = listOf(FakeLegacyAccount(id = id, incomingServerType = Protocols.POP3)),
+                storageValues = mapOf(
+                    KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
+                    KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
+                ),
+            )
+
+            // Act
+            val subject = testSubject()
+            subject.test {
+                // Assert
+                val actions = awaitItem()
+                assertThat(actions).all {
+                    hasSize(size = 1)
+                    containsOnly(
+                        id to SwipeActions(
+                            leftAction = SwipeAction.ArchiveDisabled,
+                            rightAction = SwipeAction.ArchiveDisabled,
+                        ),
+                    )
+                }
+            }
+        }
+
+    @Test
+    fun `invoke should return map with SwipeActions(ArchiveSetupArchiveFolder, ArchiveSetupArchiveFolder) when actions stored as Archive, account isn't pop3, has not archive folder and shouldShowSetupArchiveFolderDialog is true`() =
+        runTest {
+            // Arrange
+            val id = AccountIdFactory.create()
+            val ids = listOf(id)
+            val testSubject = createTestSubject(
+                initialGeneralSettings = defaultGeneralSettings.copy(
+                    display = defaultGeneralSettings.display.copy(
+                        miscSettings = defaultGeneralSettings.display.miscSettings.copy(
+                            shouldShowSetupArchiveFolderDialog = true,
+                        ),
                     ),
                 ),
-            ),
-            accountsUuids = uuids.toList(),
-            storageValues = mapOf(
-                KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
-                KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
-            ),
-        )
-
-        // Act
-        val actions = testSubject(
-            accountUuids = uuids,
-            isIncomingServerPop3 = { false },
-            hasArchiveFolder = { false },
-        )
-
-        // Assert
-        assertThat(actions).all {
-            hasSize(size = 1)
-            containsOnly(
-                uuid to SwipeActions(
-                    leftAction = SwipeAction.ArchiveSetupArchiveFolder,
-                    rightAction = SwipeAction.ArchiveSetupArchiveFolder,
+                accountsIds = ids,
+                storageValues = mapOf(
+                    KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
+                    KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
                 ),
             )
+
+            // Act
+            val subject = testSubject()
+            subject.test {
+                // Assert
+                val actions = awaitItem()
+                assertThat(actions).all {
+                    hasSize(size = 1)
+                    containsOnly(
+                        id to SwipeActions(
+                            leftAction = SwipeAction.ArchiveSetupArchiveFolder,
+                            rightAction = SwipeAction.ArchiveSetupArchiveFolder,
+                        ),
+                    )
+                }
+            }
         }
-    }
 
     @Test
-    fun `invoke should return map with different SwipeAction Archive when multiple accounts that includes pop3 accounts or accounts without archive folder`() {
-        // Arrange
-        val uuidPop3 = "pop3-account"
-        val uuidWithoutArchiveFolder = "no-archive-folder-account"
-        val uuidWithArchiveFolder = "archive-folder-account"
-        val uuids = setOf(
-            uuidPop3,
-            uuidWithoutArchiveFolder,
-            uuidWithArchiveFolder,
-        )
-        val testSubject = createTestSubject(
-            initialGeneralSettings = defaultGeneralSettings.copy(
-                display = defaultGeneralSettings.display.copy(
-                    miscSettings = defaultGeneralSettings.display.miscSettings.copy(
-                        shouldShowSetupArchiveFolderDialog = true,
+    fun `invoke should return map with different SwipeAction Archive when multiple accounts that includes pop3 accounts or accounts without archive folder`() =
+        runTest {
+            // Arrange
+            val idPop3 = AccountIdFactory.create()
+            val accountPop3 = FakeLegacyAccount(id = idPop3, incomingServerType = Protocols.POP3)
+            val idWithoutArchiveFolder = AccountIdFactory.create()
+            val accountWithoutArchiveFolder = FakeLegacyAccount(id = idWithoutArchiveFolder, archiveFolderId = null)
+            val idWithArchiveFolder = AccountIdFactory.create()
+            val accountWithArchiveFolder = FakeLegacyAccount(id = idWithArchiveFolder, archiveFolderId = 123)
+            val accounts = listOf(accountPop3, accountWithoutArchiveFolder, accountWithArchiveFolder)
+            val testSubject = createTestSubject(
+                initialGeneralSettings = defaultGeneralSettings.copy(
+                    display = defaultGeneralSettings.display.copy(
+                        miscSettings = defaultGeneralSettings.display.miscSettings.copy(
+                            shouldShowSetupArchiveFolderDialog = true,
+                        ),
                     ),
                 ),
-            ),
-            accountsUuids = uuids.toList(),
-            storageValues = mapOf(
-                KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
-                KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
-            ),
-        )
-
-        // Act
-        val actions = testSubject(
-            accountUuids = uuids,
-            isIncomingServerPop3 = { it.uuid == uuidPop3 },
-            hasArchiveFolder = { it.uuid == uuidWithArchiveFolder },
-        )
-
-        // Assert
-        assertThat(actions).all {
-            hasSize(size = 3)
-            containsOnly(
-                uuidPop3 to SwipeActions(
-                    leftAction = SwipeAction.ArchiveDisabled,
-                    rightAction = SwipeAction.ArchiveDisabled,
-                ),
-                uuidWithoutArchiveFolder to SwipeActions(
-                    leftAction = SwipeAction.ArchiveSetupArchiveFolder,
-                    rightAction = SwipeAction.ArchiveSetupArchiveFolder,
-                ),
-                uuidWithArchiveFolder to SwipeActions(
-                    leftAction = SwipeAction.Archive,
-                    rightAction = SwipeAction.Archive,
+                accounts = accounts,
+                storageValues = mapOf(
+                    KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
+                    KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
                 ),
             )
+
+            // Act
+            val subject = testSubject()
+            subject.test {
+                // Assert
+                val actions = awaitItem()
+                expectNoEvents()
+                assertThat(actions).all {
+                    hasSize(size = 3)
+                    containsOnly(
+                        idPop3 to SwipeActions(
+                            leftAction = SwipeAction.ArchiveDisabled,
+                            rightAction = SwipeAction.ArchiveDisabled,
+                        ),
+                        idWithoutArchiveFolder to SwipeActions(
+                            leftAction = SwipeAction.ArchiveSetupArchiveFolder,
+                            rightAction = SwipeAction.ArchiveSetupArchiveFolder,
+                        ),
+                        idWithArchiveFolder to SwipeActions(
+                            leftAction = SwipeAction.Archive,
+                            rightAction = SwipeAction.Archive,
+                        ),
+                    )
+                }
+            }
         }
-    }
 
-    @Test
-    fun `invoke should return empty map when account uuid doesn't exists in AccountManager`() {
-        // Arrange
-        val uuids = List(size = Random.nextInt(from = 1, until = 100)) { Uuid.random().toHexString() }
-        val accountManagerUuids =
-            List(size = Random.nextInt(from = 1, until = 100)) { Uuid.random().toHexString() } - uuids.toSet()
-        val testSubject = createTestSubject(accountsUuids = accountManagerUuids)
-
-        // Act
-        val actions = testSubject(
-            accountUuids = uuids.toSet(),
-            isIncomingServerPop3 = { false },
-            hasArchiveFolder = { false },
-        )
-
-        // Assert
-        assertThat(actions).isEmpty()
-    }
-
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @JvmName("createTestSubjectByIds")
     private fun createTestSubject(
         initialGeneralSettings: GeneralSettings = defaultGeneralSettings,
-        accountsUuids: List<String>,
+        accountsIds: List<AccountId>,
+        storageValues: Map<String, SwipeAction> = mapOf(),
+    ): BuildSwipeActions = createTestSubject(
+        initialGeneralSettings = initialGeneralSettings,
+        accounts = accountsIds.map { id -> FakeLegacyAccount(id = id) },
+        storageValues = storageValues,
+    )
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private fun createTestSubject(
+        initialGeneralSettings: GeneralSettings = defaultGeneralSettings,
+        accounts: List<LegacyAccount>,
         storageValues: Map<String, SwipeAction> = mapOf(),
     ): BuildSwipeActions = BuildSwipeActions(
         generalSettingsManager = FakeGeneralSettingsManager(
@@ -378,7 +358,8 @@ class BuildSwipeActionsTest {
                 }
             },
         ),
-        accountManager = FakeAccountManager(accounts = accountsUuids.map { FakeAccount(uuid = it) }),
+        accountManager = FakeLegacyAccountManager(accounts = accounts),
+        mainDispatcher = UnconfinedTestDispatcher(),
     )
 }
 
@@ -386,8 +367,17 @@ private class FakeGeneralSettingsManager(
     initialGeneralSettings: GeneralSettings,
 ) : GeneralSettingsManager {
     private val generalSettings = MutableStateFlow(initialGeneralSettings)
+
+    @Deprecated(
+        message = "Use PreferenceManager<GeneralSettings>.getConfig() instead",
+        replaceWith = ReplaceWith("getConfig()"),
+    )
     override fun getSettings(): GeneralSettings = generalSettings.value
 
+    @Deprecated(
+        message = "Use PreferenceManager<GeneralSettings>.getConfigFlow() instead",
+        replaceWith = ReplaceWith("getConfigFlow()"),
+    )
     override fun getSettingsFlow(): Flow<GeneralSettings> = generalSettings
 
     override fun save(config: GeneralSettings) {

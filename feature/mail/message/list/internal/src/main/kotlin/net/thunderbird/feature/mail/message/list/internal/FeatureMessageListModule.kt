@@ -1,6 +1,5 @@
 package net.thunderbird.feature.mail.message.list.internal
 
-import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.BuildSwipeActions
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.CreateArchiveFolder
@@ -30,7 +29,7 @@ val featureMessageListModule = module {
             specialFolderUpdaterFactory = get(),
         )
     }
-    factory<DomainContract.UseCase.BuildSwipeActions<BaseAccount>> { parameters ->
+    factory<DomainContract.UseCase.BuildSwipeActions> {
         BuildSwipeActions(
             generalSettingsManager = get(),
             accountManager = get(),

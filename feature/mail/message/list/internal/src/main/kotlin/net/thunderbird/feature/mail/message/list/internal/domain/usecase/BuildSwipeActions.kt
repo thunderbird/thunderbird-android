@@ -1,53 +1,67 @@
 package net.thunderbird.feature.mail.message.list.internal.domain.usecase
 
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.feature.mail.account.api.AccountManager
-import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 
 internal class BuildSwipeActions(
-    private val generalSettingsManager: GeneralSettingsManager,
-    private val accountManager: AccountManager<BaseAccount>,
-) : DomainContract.UseCase.BuildSwipeActions<BaseAccount> {
-    private val defaultSwipeActions get() = generalSettingsManager.getConfig().interaction.swipeActions
+    generalSettingsManager: GeneralSettingsManager,
+    private val accountManager: LegacyAccountManager,
+    private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main,
+    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + mainDispatcher),
+) : DomainContract.UseCase.BuildSwipeActions {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val swipeActions: StateFlow<Map<AccountId, SwipeActions>> = generalSettingsManager.getConfigFlow()
+        .flatMapConcat { config ->
+            val defaultSwipeActions = config.interaction.swipeActions
+            val shouldShowSetupArchiveFolderDialog = config.display.miscSettings.shouldShowSetupArchiveFolderDialog
 
-    override fun invoke(
-        accountUuids: Set<String>,
-        isIncomingServerPop3: (BaseAccount) -> Boolean,
-        hasArchiveFolder: (BaseAccount) -> Boolean,
-    ): Map<String, SwipeActions> {
-        val shouldShowSetupArchiveFolderDialog = generalSettingsManager
-            .getConfig().display.miscSettings
-            .shouldShowSetupArchiveFolderDialog
-        return accountUuids
-            .mapNotNull { uuid -> accountManager.getAccount(uuid) }
-            .associate { account ->
-                account.uuid to SwipeActions(
-                    leftAction = buildSwipeAction(
-                        account = account,
-                        defaultSwipeAction = defaultSwipeActions.leftAction,
-                        isIncomingServerPop3 = isIncomingServerPop3,
-                        hasArchiveFolder = hasArchiveFolder,
-                        shouldShowSetupArchiveFolderDialog = shouldShowSetupArchiveFolderDialog,
-                    ),
-                    rightAction = buildSwipeAction(
-                        account = account,
-                        defaultSwipeAction = defaultSwipeActions.rightAction,
-                        isIncomingServerPop3 = isIncomingServerPop3,
-                        hasArchiveFolder = hasArchiveFolder,
-                        shouldShowSetupArchiveFolderDialog = shouldShowSetupArchiveFolderDialog,
-                    ),
-                )
-            }
-    }
+            accountManager
+                .getAll()
+                .map { accounts ->
+                    accounts
+                        .associate { account ->
+                            account.id to SwipeActions(
+                                leftAction = buildSwipeAction(
+                                    account = account,
+                                    defaultSwipeAction = defaultSwipeActions.leftAction,
+                                    shouldShowSetupArchiveFolderDialog = shouldShowSetupArchiveFolderDialog,
+                                ),
+                                rightAction = buildSwipeAction(
+                                    account = account,
+                                    defaultSwipeAction = defaultSwipeActions.rightAction,
+                                    shouldShowSetupArchiveFolderDialog = shouldShowSetupArchiveFolderDialog,
+                                ),
+                            )
+                        }
+                }
+        }
+        .stateIn(
+            scope = scope,
+            started = SharingStarted.Eagerly,
+            initialValue = emptyMap(),
+        )
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun invoke(): StateFlow<Map<AccountId, SwipeActions>> = swipeActions
 
     private fun buildSwipeAction(
-        account: BaseAccount,
+        account: LegacyAccount,
         defaultSwipeAction: SwipeAction,
-        isIncomingServerPop3: BaseAccount.() -> Boolean,
-        hasArchiveFolder: BaseAccount.() -> Boolean,
         shouldShowSetupArchiveFolderDialog: Boolean,
     ): SwipeAction = when (defaultSwipeAction) {
         SwipeAction.Archive if account.isIncomingServerPop3() -> SwipeAction.ArchiveDisabled
