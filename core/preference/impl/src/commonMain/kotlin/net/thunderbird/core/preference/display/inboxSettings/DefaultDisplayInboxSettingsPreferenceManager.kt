@@ -13,12 +13,13 @@ import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StoragePersister
 
 private const val TAG = "DefaultDisplayInboxSettingsPreferenceManager"
 
 class DefaultDisplayInboxSettingsPreferenceManager(
     private val logger: Logger,
-    private val storage: Storage,
+    private val storagePersister: StoragePersister,
     private val storageEditor: StorageEditor,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
@@ -26,6 +27,8 @@ class DefaultDisplayInboxSettingsPreferenceManager(
 
     private val configState: MutableStateFlow<DisplayInboxSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
+    private val storage: Storage
+        get() = storagePersister.loadValues()
 
     override fun getConfig(): DisplayInboxSettings = configState.value
 

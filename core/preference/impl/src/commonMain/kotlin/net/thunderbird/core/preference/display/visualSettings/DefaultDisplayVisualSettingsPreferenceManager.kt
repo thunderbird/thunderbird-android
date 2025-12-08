@@ -15,9 +15,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangeSubscriber
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.core.preference.storage.putEnum
 
@@ -25,12 +28,17 @@ private const val TAG = "DefaultDisplayVisualSettingsPreferenceManager"
 
 class DefaultDisplayVisualSettingsPreferenceManager(
     private val logger: Logger,
-    private val storage: Storage,
+    private val storagePersister: StoragePersister,
     private val storageEditor: StorageEditor,
+    preferenceChangeBroker: PreferenceChangeBroker,
     private val messageListPreferences: MessageListPreferencesManager,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob()),
-) : DisplayVisualSettingsPreferenceManager {
+) : DisplayVisualSettingsPreferenceManager, PreferenceChangeSubscriber {
+
+    init {
+        preferenceChangeBroker.subscribe(this)
+    }
     private val internalConfigState = MutableStateFlow(value = loadConfig())
     private val configState: StateFlow<DisplayVisualSettings> = combine(
         internalConfigState,
@@ -39,6 +47,8 @@ class DefaultDisplayVisualSettingsPreferenceManager(
         config.copy(messageListSettings = messageListConfig)
     }.stateIn(scope = scope, started = SharingStarted.Eagerly, initialValue = internalConfigState.value)
     private val mutex = Mutex()
+    private val storage: Storage
+        get() = storagePersister.loadValues()
 
     override fun save(config: DisplayVisualSettings) {
         logger.debug(TAG) { "save() called with: config = $config" }
@@ -92,4 +102,8 @@ class DefaultDisplayVisualSettingsPreferenceManager(
     override fun getConfig() = configState.value
 
     override fun getConfigFlow(): Flow<DisplayVisualSettings> = configState
+
+    override fun receive() {
+        internalConfigState.update { loadConfig() }
+    }
 }
