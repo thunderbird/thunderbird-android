@@ -44,7 +44,6 @@ import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import app.k9mail.ui.utils.linearlayoutmanager.LinearLayoutManager
 import com.fsck.k9.K9
-import com.fsck.k9.Preferences
 import com.fsck.k9.activity.FolderInfoHolder
 import com.fsck.k9.activity.Search
 import com.fsck.k9.activity.misc.ContactPicture
@@ -149,10 +148,7 @@ class MessageListFragment :
     @OptIn(ExperimentalTime::class)
     private val clock: Clock by inject()
     private val setupArchiveFolderDialogFragmentFactory: SetupArchiveFolderDialogFragmentFactory by inject()
-    private val preferences: Preferences by inject()
-    private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions<LegacyAccount> by inject {
-        parametersOf(preferences.storage)
-    }
+    private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val featureThemeProvider: FeatureThemeProvider by inject()
     private val logger: Logger by inject()
@@ -392,7 +388,6 @@ class MessageListFragment :
                             "key: $key and bundle: $bundle",
                     )
                     loadMessageList(forceUpdate = true)
-                    messageListSwipeCallback?.invalidateSwipeActions(accounts)
                 }
             }
         } else {
@@ -513,6 +508,7 @@ class MessageListFragment :
         val itemTouchHelper = ItemTouchHelper(
             MessageListSwipeCallback(
                 context = requireContext(),
+                scope = lifecycleScope,
                 resourceProvider = SwipeResourceProvider(requireContext()),
                 swipeActionSupportProvider = swipeActionSupportProvider,
                 buildSwipeActions = buildSwipeActions,

@@ -4,9 +4,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.backend.api.BackendStorageFactory
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
@@ -17,7 +17,7 @@ import net.thunderbird.feature.mail.message.list.domain.SetAccountFolderOutcome
 import com.fsck.k9.mail.FolderType as LegacyFolderType
 
 internal class SetArchiveFolder(
-    private val accountManager: AccountManager<BaseAccount>,
+    private val accountManager: LegacyAccountDtoManager,
     private val backendStorageFactory: BackendStorageFactory<BaseAccount>,
     private val specialFolderUpdaterFactory: SpecialFolderUpdater.Factory<BaseAccount>,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
