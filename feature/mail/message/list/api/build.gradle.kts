@@ -11,7 +11,9 @@ dependencies {
 
     implementation(projects.core.common)
     implementation(projects.core.featureflag)
+    implementation(projects.core.preference.api)
     implementation(projects.core.ui.compose.common)
+    implementation(projects.feature.account.api)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.folder.api)
 }
