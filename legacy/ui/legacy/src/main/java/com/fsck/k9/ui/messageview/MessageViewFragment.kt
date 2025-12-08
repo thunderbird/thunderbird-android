@@ -393,10 +393,10 @@ class MessageViewFragment :
     }
 
     private fun printMessage() {
-        val context = context ?: return
-        val webView = view?.findViewById<WebView>(R.id.message_content) ?: return
-
-        val printManager = context.getSystemService(Context.PRINT_SERVICE) as? PrintManager ?: return
+        val context = context
+        val webView = view?.findViewById<WebView>(R.id.message_content)
+        val printManager = context?.getSystemService(Context.PRINT_SERVICE) as? PrintManager
+        if (context == null || webView == null || printManager == null) return
 
         val subject = mMessageViewInfo?.subject ?: getString(R.string.general_no_subject)
         val jobName = appNameProvider.appName + ": " + subject
