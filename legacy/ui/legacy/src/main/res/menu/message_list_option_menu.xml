@@ -144,6 +144,14 @@
         app:showAsAction="never"
         />
 
+    <!-- MessageView -->
+    <item
+        android:id="@+id/print"
+        android:title="@string/print_message_action"
+        android:visible="false"
+        app:showAsAction="never"
+        />
+
     <item
         android:id="@+id/set_format_html"
         android:visible="false"
