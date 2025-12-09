@@ -2,8 +2,11 @@ package app.k9mail.feature.account.server.settings.ui.outgoing
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -68,7 +71,11 @@ fun OutgoingServerSettingsScreen(
             mode = viewModel.mode,
             state = state.value,
             onEvent = { dispatch(it) },
-            contentPadding = innerPadding,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding)
+                .imePadding(),
         )
     }
 }

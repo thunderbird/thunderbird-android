@@ -17,7 +17,7 @@ class PushInfoActivity : BaseActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
-                add(R.id.fragment_container, PushInfoFragment())
+                add(R.id.content_container, PushInfoFragment())
             }
         }
     }

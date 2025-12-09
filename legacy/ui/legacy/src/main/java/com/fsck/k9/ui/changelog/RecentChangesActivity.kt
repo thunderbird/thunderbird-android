@@ -19,7 +19,7 @@ class RecentChangesActivity : BaseActivity() {
                 arguments = bundleOf(ChangelogFragment.ARG_MODE to ChangeLogMode.RECENT_CHANGES)
             }
             supportFragmentManager.commit {
-                add(R.id.fragment_container, fragment)
+                add(R.id.content_container, fragment)
             }
         }
     }
