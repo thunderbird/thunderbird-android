@@ -1,11 +1,11 @@
 package net.thunderbird.core.ui.compose.designsystem.atom.chip
 
-import android.graphics.Color
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -16,9 +16,9 @@ fun ColorChip(
     modifier: Modifier = Modifier,
     height: Dp = ColorChipDefaults.chipDefaultHeight,
     width: Dp = ColorChipDefaults.chipDefaultWidth,
-    color: Int = ColorChipDefaults.chipDefaultColor,
+    color: Color = ColorChipDefaults.chipDefaultColor,
 ) {
-    val brush = SolidColor(androidx.compose.ui.graphics.Color(color.toLong()))
+    val brush = SolidColor(color)
     Canvas(
         modifier = modifier.size(height = height, width = width),
         onDraw = {
@@ -40,7 +40,7 @@ private fun PreviewDefault() {
 @Composable
 private fun PreviewMagenta() {
     ColorChip(
-        color = Color.MAGENTA,
+        color = Color.Magenta,
     )
 }
 
@@ -50,12 +50,12 @@ private fun PreviewBigRed() {
     ColorChip(
         height = 30.dp,
         width = 6.dp,
-        color = Color.RED,
+        color = Color.Red,
     )
 }
 
 private object ColorChipDefaults {
     val chipDefaultHeight = 20.dp
     val chipDefaultWidth = 3.dp
-    val chipDefaultColor = Color.BLUE
+    val chipDefaultColor = Color.Blue
 }

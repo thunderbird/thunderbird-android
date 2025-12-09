@@ -1,16 +1,16 @@
 package net.thunderbird.core.ui.compose.designsystem.molecule.message
 
-import android.graphics.Color
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.thunderbird.core.ui.compose.designsystem.atom.chip.ColorChip
 
 @Composable
 fun AccountIndicatorIcon(
-    color: Int,
+    color: Color,
     modifier: Modifier = Modifier,
 ) {
     ColorChip(
@@ -27,7 +27,7 @@ fun AccountIndicatorIcon(
 @Composable
 private fun PreviewAccountIndicatorIconDefault() {
     AccountIndicatorIcon(
-        color = Color.RED,
+        color = Color.Red,
     )
 }
 

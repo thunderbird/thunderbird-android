@@ -1,6 +1,5 @@
 package net.thunderbird.ui.catalog.ui.page.organism.items.message
 
-import android.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
@@ -251,7 +251,7 @@ private fun ColumnScope.CatalogNewMessageItem(
         },
         maxPreviewLines = config.maxPreviewLines,
         showAccountIndicator = config.showAccountIndicator,
-        accountIndicatorColor = Color.MAGENTA,
+        accountIndicatorColor = Color.Magenta,
     )
 
     SnackbarHost(snackbarHostState)
@@ -308,7 +308,7 @@ private fun ColumnScope.CatalogUnreadMessageItem(
         },
         maxPreviewLines = config.maxPreviewLines,
         showAccountIndicator = config.showAccountIndicator,
-        accountIndicatorColor = Color.MAGENTA,
+        accountIndicatorColor = Color.Magenta,
     )
 
     SnackbarHost(snackbarHostState)
@@ -365,7 +365,7 @@ private fun ColumnScope.CatalogReadMessageItem(
         },
         maxPreviewLines = config.maxPreviewLines,
         showAccountIndicator = config.showAccountIndicator,
-        accountIndicatorColor = Color.MAGENTA,
+        accountIndicatorColor = Color.Magenta,
     )
 
     SnackbarHost(snackbarHostState)
@@ -422,7 +422,7 @@ private fun ColumnScope.CatalogActiveMessageItem(
         },
         maxPreviewLines = config.maxPreviewLines,
         showAccountIndicator = config.showAccountIndicator,
-        accountIndicatorColor = Color.MAGENTA,
+        accountIndicatorColor = Color.Magenta,
     )
 
     SnackbarHost(snackbarHostState)
@@ -476,7 +476,7 @@ private fun ColumnScope.CatalogJunkMessageItem(
         },
         maxPreviewLines = config.maxPreviewLines,
         showAccountIndicator = config.showAccountIndicator,
-        accountIndicatorColor = Color.MAGENTA,
+        accountIndicatorColor = Color.Magenta,
     )
 
     SnackbarHost(snackbarHostState)

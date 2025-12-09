@@ -1,6 +1,5 @@
 package net.thunderbird.core.ui.compose.designsystem.organism.message
 
-import android.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -10,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
@@ -120,7 +120,7 @@ private fun PreviewDefault(
             preview = params.preview,
             receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
             showAccountIndicator = true,
-            accountIndicatorColor = Color.RED,
+            accountIndicatorColor = Color.Red,
             avatar = {
                 Box(
                     modifier = Modifier
@@ -160,7 +160,7 @@ private fun PreviewCompact(
             preview = params.preview,
             receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
             showAccountIndicator = true,
-            accountIndicatorColor = Color.RED,
+            accountIndicatorColor = Color.Red,
             avatar = { },
             onClick = { },
             onLongClick = { },
@@ -189,7 +189,7 @@ private fun PreviewRelaxed(
             preview = params.preview,
             receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
             showAccountIndicator = true,
-            accountIndicatorColor = Color.RED,
+            accountIndicatorColor = Color.Red,
             avatar = { },
             onClick = { },
             onLongClick = { },

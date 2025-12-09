@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.layout.onPlaced
@@ -97,7 +98,7 @@ internal fun MessageItem(
     action: @Composable () -> Unit,
     receivedAt: LocalDateTime,
     showAccountIndicator: Boolean,
-    accountIndicatorColor: Int?,
+    accountIndicatorColor: Color?,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     onLeadingClick: () -> Unit,

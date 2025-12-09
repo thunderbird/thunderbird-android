@@ -3,6 +3,7 @@ package net.thunderbird.core.ui.compose.designsystem.organism.message
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import kotlinx.datetime.LocalDateTime
@@ -41,7 +42,7 @@ fun ReadMessageItem(
     preview: String,
     receivedAt: LocalDateTime,
     showAccountIndicator: Boolean,
-    accountIndicatorColor: Int?,
+    accountIndicatorColor: Color?,
     avatar: @Composable () -> Unit,
     onClick: () -> Unit,
     onLongClick: () -> Unit,

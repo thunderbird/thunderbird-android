@@ -49,7 +49,7 @@ fun NewMessageItem(
     preview: String,
     receivedAt: LocalDateTime,
     showAccountIndicator: Boolean,
-    accountIndicatorColor: Int?,
+    accountIndicatorColor: Color?,
     avatar: @Composable () -> Unit,
     onClick: () -> Unit,
     onLongClick: () -> Unit,

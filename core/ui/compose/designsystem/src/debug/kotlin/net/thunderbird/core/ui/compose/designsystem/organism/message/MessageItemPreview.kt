@@ -1,6 +1,5 @@
 package net.thunderbird.core.ui.compose.designsystem.organism.message
 
-import android.graphics.Color
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
@@ -121,7 +121,7 @@ private fun PreviewDefault(
             selected = params.selected,
             colors = MessageItemDefaults.newMessageItemColors(),
             showAccountIndicator = true,
-            accountIndicatorColor = Color.RED,
+            accountIndicatorColor = Color.Red,
         )
     }
 }
@@ -161,7 +161,7 @@ private fun PreviewCompact(
             contentPadding = MessageItemDefaults.compactContentPadding,
             colors = MessageItemDefaults.unreadMessageItemColors(),
             showAccountIndicator = true,
-            accountIndicatorColor = Color.RED,
+            accountIndicatorColor = Color.Red,
         )
     }
 }
@@ -202,7 +202,7 @@ private fun PreviewRelaxed(
             contentPadding = MessageItemDefaults.relaxedContentPadding,
             colors = MessageItemDefaults.readMessageItemColors(),
             showAccountIndicator = true,
-            accountIndicatorColor = Color.RED,
+            accountIndicatorColor = Color.Red,
         )
     }
 }

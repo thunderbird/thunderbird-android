@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.android.common.contact.ContactRepository
@@ -78,6 +79,8 @@ internal fun MessageItemContent(
             subject = item.subject ?: "n/a",
             preview = item.previewText,
             receivedAt = receivedAt,
+            showAccountIndicator = appearance.showAccountIndicator,
+            accountIndicatorColor = Color(item.account.profile.color),
             avatar = {
                 if (appearance.showContactPicture) {
                     ContactImageAvatar(
@@ -98,8 +101,6 @@ internal fun MessageItemContent(
             hasAttachments = item.hasAttachments,
             swapSenderWithSubject = !appearance.senderAboveSubject,
             contentPadding = contentPadding,
-            showAccountIndicator = appearance.showAccountIndicator,
-            accountIndicatorColor = item.account.profile.color,
         )
 
         item.isRead -> ReadMessageItem(
@@ -107,6 +108,8 @@ internal fun MessageItemContent(
             subject = item.subject ?: "n/a",
             preview = item.previewText,
             receivedAt = receivedAt,
+            showAccountIndicator = appearance.showAccountIndicator,
+            accountIndicatorColor = Color(item.account.profile.color),
             avatar = {
                 if (appearance.showContactPicture) {
                     ContactImageAvatar(
@@ -127,8 +130,6 @@ internal fun MessageItemContent(
             hasAttachments = item.hasAttachments,
             swapSenderWithSubject = !appearance.senderAboveSubject,
             contentPadding = contentPadding,
-            showAccountIndicator = appearance.showAccountIndicator,
-            accountIndicatorColor = item.account.profile.color,
         )
 
         else -> UnreadMessageItem(
@@ -136,6 +137,8 @@ internal fun MessageItemContent(
             subject = item.subject ?: "n/a",
             preview = item.previewText,
             receivedAt = receivedAt,
+            showAccountIndicator = appearance.showAccountIndicator,
+            accountIndicatorColor = Color(item.account.profile.color),
             avatar = {
                 if (appearance.showContactPicture) {
                     ContactImageAvatar(
@@ -156,8 +159,6 @@ internal fun MessageItemContent(
             hasAttachments = item.hasAttachments,
             swapSenderWithSubject = !appearance.senderAboveSubject,
             contentPadding = contentPadding,
-            showAccountIndicator = appearance.showAccountIndicator,
-            accountIndicatorColor = item.account.profile.color,
         )
     }
 }
