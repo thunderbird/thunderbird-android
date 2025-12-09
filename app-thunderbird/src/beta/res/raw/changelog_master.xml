@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="16.0b1" versioncode="36" date="2025-12-8">
+        <change>Added support for Account Icons (disabled by default)</change>
+        <change>Added support for Account Monograms</change>
+        <change>Add folder expansion in navigation drawer</change>
+        <change>Added default setting and menu option for switching between plaintext and HTML</change>
+        <change>Removed old account general settings</change>
+        <change>Removed side rail drawer</change>
+        <change>Improved edge-to-edge UI support</change>
+        <change>Minor UI improvements to drawer</change>
+        <change>Improved rendering of complex HTML and CSS</change>
+    </release>
     <release version="15.0b1" versioncode="35" date="2025-11-17">
         <change>Add avatar to message list content</change>
         <change>Enable in-app notifications for beta</change>
