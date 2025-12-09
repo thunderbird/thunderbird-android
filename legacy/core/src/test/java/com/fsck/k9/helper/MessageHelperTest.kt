@@ -49,6 +49,7 @@ class MessageHelperTest : RobolectricTest() {
                 address,
                 messageListPreferencesManager.getConfig().isShowCorrespondentNames,
                 messageListPreferencesManager.getConfig().isChangeContactNameColor,
+                messageListPreferencesManager.getConfig().contactNameColor,
                 contactRepository,
             ),
         ).isEqualTo("Tim Testor")
@@ -62,6 +63,7 @@ class MessageHelperTest : RobolectricTest() {
                 address,
                 messageListPreferencesManager.getConfig().isShowCorrespondentNames,
                 messageListPreferencesManager.getConfig().isChangeContactNameColor,
+                messageListPreferencesManager.getConfig().contactNameColor,
                 contactRepository,
             ),
         ).isEqualTo("test@testor.com")
@@ -77,6 +79,7 @@ class MessageHelperTest : RobolectricTest() {
                 addresses,
                 messageListPreferencesManager.getConfig().isShowCorrespondentNames,
                 messageListPreferencesManager.getConfig().isChangeContactNameColor,
+                messageListPreferencesManager.getConfig().contactNameColor,
                 contactRepository,
             ).toString(),
         ).isEqualTo("Tim Testor,Foo Bar")
@@ -92,6 +95,7 @@ class MessageHelperTest : RobolectricTest() {
                 address,
                 messageListPreferencesManager.getConfig().isShowCorrespondentNames,
                 messageListPreferencesManager.getConfig().isChangeContactNameColor,
+                messageListPreferencesManager.getConfig().contactNameColor,
                 contactRepository,
             ),
         ).isEqualTo("Tim Testor")
@@ -136,6 +140,7 @@ class MessageHelperTest : RobolectricTest() {
                 address,
                 messageListPreferencesManager.getConfig().isShowCorrespondentNames,
                 messageListPreferencesManager.getConfig().isChangeContactNameColor,
+                messageListPreferencesManager.getConfig().contactNameColor,
                 contactRepository,
             )
         assertThat(friendly).isEqualTo("test@testor.com")
@@ -149,6 +154,7 @@ class MessageHelperTest : RobolectricTest() {
                 address,
                 messageListPreferencesManager.getConfig().isShowCorrespondentNames,
                 messageListPreferencesManager.getConfig().isChangeContactNameColor,
+                messageListPreferencesManager.getConfig().contactNameColor,
                 contactRepository,
             )
         assertThat(friendly).isEqualTo("username (@username)")
@@ -162,6 +168,7 @@ class MessageHelperTest : RobolectricTest() {
                 address,
                 messageListPreferencesManager.getConfig().isShowCorrespondentNames,
                 messageListPreferencesManager.getConfig().isChangeContactNameColor,
+                messageListPreferencesManager.getConfig().contactNameColor,
                 contactRepository,
             )
         assertThat(friendly).isEqualTo("@username")
@@ -192,6 +199,7 @@ class MessageHelperTest : RobolectricTest() {
             addresses,
             messageListPreferencesManager.getConfig().isShowCorrespondentNames,
             messageListPreferencesManager.getConfig().isChangeContactNameColor,
+            messageListPreferencesManager.getConfig().contactNameColor,
         )
         assertThat(displayName.toString()).isEqualTo("To: Tim Testor,Foo Bar")
     }
@@ -206,6 +214,7 @@ class MessageHelperTest : RobolectricTest() {
             addresses,
             messageListPreferencesManager.getConfig().isShowCorrespondentNames,
             messageListPreferencesManager.getConfig().isChangeContactNameColor,
+            messageListPreferencesManager.getConfig().contactNameColor,
         )
         assertThat(displayName.toString()).isEqualTo("To: test@testor.com,foo@bar.com")
     }
@@ -217,6 +226,7 @@ class MessageHelperTest : RobolectricTest() {
                 null,
                 messageListPreferencesManager.getConfig().isShowCorrespondentNames,
                 messageListPreferencesManager.getConfig().isChangeContactNameColor,
+                messageListPreferencesManager.getConfig().contactNameColor,
             )
         assertThat(displayName.toString()).isEqualTo(resourceProvider.contactUnknownRecipient())
     }
