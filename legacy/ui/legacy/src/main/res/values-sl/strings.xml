@@ -928,4 +928,12 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="debug_invalidate_access_token_cannot_modify">Shranjenega žeton za dostop ni bilo mogoče spremeniti. Poizkusite s krajevno razveljavitvijo.</string>
     <string name="debug_invalidate_access_token_already_modified">Shranjen žeton za dostop je bil že spremenjen.</string>
     <string name="message_view_menu_action_export_eml">Izvozi kot EML</string>
+    <string name="set_format_html_action">Uporabi izvirno obliko</string>
+    <string name="set_format_html_condensed_action">Prikaži oblikovano</string>
+    <string name="set_format_plain_action">Prikaži neoblikovano sporočilo</string>
+    <string name="set_format_plain_condensed_action">Prikaži neoblikovano</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Golo besedilo (text/plain)</string>
+    <string name="navigation_drawer_preferences">Stranski meni</string>
+    <string name="expand_folders">Razširi mape</string>
 </resources>

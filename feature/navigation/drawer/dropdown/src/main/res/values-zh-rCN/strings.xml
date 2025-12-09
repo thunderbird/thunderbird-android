@@ -11,4 +11,5 @@
     <string name="navigation_drawer_dropdown_avount_view_selection_title">账号列表</string>
     <string name="navigation_drawer_dropdown_action_add_account">添加账号</string>
     <string name="navigation_drawer_dropdown_unified_account_title">统一账号</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">同步账号</string>
 </resources>

@@ -925,4 +925,5 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="global_settings_messageview_body_content_type_text_plain">Nur Text (Text/Klartext)</string>
     <string name="account_setup_auto_select_folder">Ordner automatisch auswählen</string>
     <string name="global_settings_messageview_body_content_type_title">Inhaltstyp des Textes</string>
+    <string name="print_message_action">Drucken</string>
 </resources>

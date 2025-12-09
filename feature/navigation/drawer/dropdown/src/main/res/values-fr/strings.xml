@@ -11,4 +11,5 @@
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Liste des comptes</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Compte unifié</string>
     <string name="navigation_drawer_dropdown_action_add_account">Ajouter un compte</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Synchroniser le compte</string>
 </resources>

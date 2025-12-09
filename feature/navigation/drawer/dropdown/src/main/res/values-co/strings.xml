@@ -11,4 +11,5 @@
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Lista di i conti</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Contu di cuncolta</string>
     <string name="navigation_drawer_dropdown_action_add_account">Aghjunghje un contu</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Sincrunizà u contu</string>
 </resources>
