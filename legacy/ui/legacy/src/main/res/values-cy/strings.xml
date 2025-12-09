@@ -308,8 +308,8 @@
     <string name="account_settings_ignore_chat_messages_summary">Peidio â dangos hysbysiadau am negeseuon sy\'n perthyn i sgwrs e-bost</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Marcio fel wedi ei darllen wrth ei hagor</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Marcio neges fel ei bod wedi ei darllen wrth ei hagor i\'w darllen</string>
-    <string name="account_settings_mark_message_as_read_on_delete_label">Nodi wedi\'i darllen wrth dileu</string>
-    <string name="account_settings_mark_message_as_read_on_delete_summary">Nodi neges wedi\'i darllen pan gaiff ei dileu</string>
+    <string name="account_settings_mark_message_as_read_on_delete_label">Nodi wedi\'i darllen ar ôl ei dileu</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">Nodi neges wedi\'i darllen wrth ei dileu</string>
     <string name="account_settings_notification_channels_label">Categorïau hysbysiadau</string>
     <string name="account_settings_open_notification_settings_messages_summary">Ffurfweddu hysbysiadau ar gyfer negeseuon newydd</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Ffurfweddu hysbysiadau statws a gwallau</string>
@@ -395,7 +395,7 @@
     <string name="account_settings_name_label">Eich enw</string>
     <string name="notifications_title">Hysbysiadau</string>
     <string name="account_settings_vibration">Crynu</string>
-    <string name="account_settings_vibrate_enable">Crynu</string>
+    <string name="account_settings_vibrate_enable">Dirgrynu</string>
     <string name="account_settings_vibrate_pattern_label">Patrwm crynu</string>
     <string name="account_settings_vibrate_pattern_default">Rhagosodedig</string>
     <string name="account_settings_vibrate_pattern_1">Patrwm 1</string>
@@ -431,7 +431,7 @@
     <string name="manage_identities_edit_action">Golygu</string>
     <string name="manage_identities_move_up_action">Symud i fyny</string>
     <string name="manage_identities_move_down_action">Symud i lawr</string>
-    <string name="manage_identities_move_top_action">Symud i\'r brig / gwneud yn rhagosodedig</string>
+    <string name="manage_identities_move_top_action">Symud i\'r brig / gwneud y rhagosodedig</string>
     <string name="manage_identities_remove_action">Tynnu</string>
     <string name="edit_identity_description_label">Disgrifiad hunaniaeth</string>
     <string name="edit_identity_description_hint">(Dewisol)</string>
@@ -439,7 +439,7 @@
     <string name="edit_identity_name_hint">(Dewisol)</string>
     <string name="edit_identity_email_label">Cyfeiriad e-bost</string>
     <string name="edit_identity_email_hint">(Angenrheidiol)</string>
-    <string name="edit_identity_reply_to_label">Cyfeiriad Ateb-i</string>
+    <string name="edit_identity_reply_to_label">Cyfeiriad Ateb Iddo</string>
     <string name="edit_identity_reply_to_hint">(Dewisol)</string>
     <string name="edit_identity_signature_label">Llofnod</string>
     <string name="edit_identity_signature_hint">(Dewisol)</string>
@@ -460,8 +460,8 @@
     <string name="sort_flagged_last">Negeseuon heb sêr yn gyntaf</string>
     <string name="sort_unread_first">Negeseuon heb eu darllen yn gyntaf</string>
     <string name="sort_unread_last">Negeseuon wedi eu darllen yn gyntaf</string>
-    <string name="sort_attach_first">Negeseuon gydag atodiadau yn gyntaf</string>
-    <string name="sort_unattached_first">Negeseuon heb atodiadau yn gyntaf</string>
+    <string name="sort_attach_first">Negeseuon gydag atodiadau\'n gyntaf</string>
+    <string name="sort_unattached_first">Negeseuon heb atodiadau\'n gyntaf</string>
     <string name="sort_by">Trefnu yn ôl…</string>
     <string name="sort_by_date">Dyddiad</string>
     <string name="sort_by_arrival">Derbyn</string>
@@ -473,7 +473,7 @@
     <string name="account_delete_dlg_title">Tynnu Cyfrif</string>
     <string name="folder_list_filter_hint">Enw ffolder yn cynnwys</string>
     <string name="account_settings_signature__location_label">Lleoliad llofnod</string>
-    <string name="account_settings_signature__location_before_quoted_text">Cyn neges wedi ei dyfynnu</string>
+    <string name="account_settings_signature__location_before_quoted_text">O flaen neges wedi ei dyfynnu</string>
     <string name="account_settings_signature__location_after_quoted_text">Ar ôl neges wedi ei dyfynnu</string>
     <string name="setting_theme_global">Defnyddio thema\'r ap</string>
     <string name="setting_theme_dark">Tywyll</string>
@@ -493,13 +493,13 @@
     <string name="settings_compose_theme_label">Thema creu negeseuon</string>
     <string name="settings_language_label">Iaith</string>
     <string name="preference_search_no_results">Heb ganfod gosodiadau</string>
-    <string name="settings_message_theme_selection_label">Un thema negeseuon</string>
-    <string name="settings_message_theme_selection_summary_off">Dewis y thema dangos neges tra\'n edrych ar y neges</string>
-    <string name="settings_message_theme_selection_summary_on">Defnyddio\'r un thema i edrych ar negeseuon</string>
+    <string name="settings_message_theme_selection_label">Thema negeseuon sefydlog</string>
+    <string name="settings_message_theme_selection_summary_off">Dewis y thema gweld neges tra\'n edrych ar y neges</string>
+    <string name="settings_message_theme_selection_summary_on">Defnyddio\'r thema sefydlog i edrych ar negeseuon</string>
     <string name="setting_language_system">Rhagosodiad y system</string>
     <string name="background_ops_label">Cydweddu yn y cefndir</string>
     <string name="background_ops_never">Byth</string>
-    <string name="background_ops_always">O hyd</string>
+    <string name="background_ops_always">Bob tro</string>
     <string name="background_ops_auto_sync_only">Pan mae \'Awto-cydweddu\' wedi ei ddewis</string>
     <string name="batch_select_all">Dewis y cyfan</string>
     <string name="account_setup_push_limit_label">Nifer mwyaf o ffolderi i\'w gwirio wrth wthio</string>
@@ -557,12 +557,12 @@
     <string name="dialog_confirm_delete_title">Cadarnhau dileu</string>
     <string name="dialog_confirm_delete_message">Ydych chi eisiau dileu\'r neges hon?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="zero">Wyt ti wir eisiau dileu\'r neges hon?</item>
-        <item quantity="one">Wyt ti wir eisiau dileu\'r neges hon?</item>
-        <item quantity="two">Wyt ti wir eisiau dileu <xliff:g id="message_count">%1$d</xliff:g> neges?</item>
-        <item quantity="few">Wyt ti wir eisiau dileu <xliff:g id="message_count">%1$d</xliff:g> neges?</item>
-        <item quantity="many">Wyt ti wir eisiau dileu <xliff:g id="message_count">%1$d</xliff:g> neges?</item>
-        <item quantity="other">Wyt ti wir eisiau dileu <xliff:g id="message_count">%1$d</xliff:g> neges?</item>
+        <item quantity="zero">Ydych chi wir eisiau dileu\'r negeseuon hyn?</item>
+        <item quantity="one">Ydych chi wir eisiau dileu\'r neges hon?</item>
+        <item quantity="two">Ydych chi wir eisiau dileu <xliff:g id="message_count">%1$d</xliff:g> neges?</item>
+        <item quantity="few">Ydych chi wir eisiau dileu <xliff:g id="message_count">%1$d</xliff:g> neges?</item>
+        <item quantity="many">Ydych chi wir eisiau dileu <xliff:g id="message_count">%1$d</xliff:g> neges?</item>
+        <item quantity="other">Ydych chi wir eisiau dileu <xliff:g id="message_count">%1$d</xliff:g> neges?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Ydw</string>
     <string name="dialog_confirm_delete_cancel_button">Na</string>
@@ -574,12 +574,12 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Na</string>
     <string name="dialog_confirm_spam_title">Cadarnhau symud i\'r ffolder sbam</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="zero">Wyt ti wir eisiau symud y neges hon i\'r ffolder sbam?</item>
-        <item quantity="one">Wyt ti wir eisiau symud y neges hon i\'r ffolder sbam?</item>
-        <item quantity="two">Wyt ti wir eisiau symud <xliff:g id="message_count">%1$d</xliff:g> neges i\'r ffolder sbam?</item>
-        <item quantity="few">Wyt ti wir eisiau symud <xliff:g id="message_count">%1$d</xliff:g> neges i\'r ffolder sbam?</item>
-        <item quantity="many">Wyt ti wir eisiau symud <xliff:g id="message_count">%1$d</xliff:g> neges i\'r ffolder sbam?</item>
-        <item quantity="other">Wyt ti wir eisiau symud <xliff:g id="message_count">%1$d</xliff:g> neges i\'r ffolder sbam?</item>
+        <item quantity="zero">Ydych chi wir eisiau symud y negeseuon hyn i\'r ffolder sbam?</item>
+        <item quantity="one">Ydych chi wir eisiau symud y neges hon i\'r ffolder sbam?</item>
+        <item quantity="two">Ydych chi wir eisiau symud <xliff:g id="message_count">%1$d</xliff:g> neges i\'r ffolder sbam?</item>
+        <item quantity="few">Ydych chi wir eisiau symud <xliff:g id="message_count">%1$d</xliff:g> neges i\'r ffolder sbam?</item>
+        <item quantity="many">Ydych chi wir eisiau symud <xliff:g id="message_count">%1$d</xliff:g> neges i\'r ffolder sbam?</item>
+        <item quantity="other">Ydych chi wir eisiau symud <xliff:g id="message_count">%1$d</xliff:g> neges i\'r ffolder sbam?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Ydw</string>
     <string name="dialog_confirm_spam_cancel_button">Na</string>
@@ -624,7 +624,7 @@
     <string name="account_settings_remote_search_num_label">Terfyn chwilio gweinydd</string>
     <string name="remote_search_sending_query">Yn anfon ymholiad at y gweinydd</string>
     <plurals name="remote_search_downloading">
-        <item quantity="zero">Yn nôl %d canlyniad</item>
+        <item quantity="zero">Yn nôl %d canlyniadau</item>
         <item quantity="one">Yn nôl %d canlyniad</item>
         <item quantity="two">Yn nôl %d ganlyniad</item>
         <item quantity="few">Yn nôl %d ganlyniad</item>
@@ -632,7 +632,7 @@
         <item quantity="other">Yn nôl %d canlyniad</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="zero">Yn nôl %1$d o %2$d canlyniad</item>
+        <item quantity="zero">Yn nôl %1$d o %2$d canlyniadau</item>
         <item quantity="one">Yn nôl %1$d o %2$d canlyniad</item>
         <item quantity="two">Yn nôl %1$d o %2$d ganlyniad</item>
         <item quantity="few">Yn nôl %1$d o %2$d ganlyniad</item>
@@ -653,22 +653,22 @@
     <string name="global_settings_splitview_mode_label">Hollti\'r sgrin</string>
     <string name="global_settings_splitview_always">Bob tro</string>
     <string name="global_settings_splitview_never">Byth</string>
-    <string name="global_settings_splitview_when_in_landscape">Pan mae\'r sgrin ar ei ochr, mewn modd tirwedd</string>
+    <string name="global_settings_splitview_when_in_landscape">Pan mewn modd Tirwedd</string>
     <string name="message_view_empty">Dewiswch neges ar y chwith</string>
     <string name="global_settings_show_contact_picture_label">Dangos lluniau cysylltiadau</string>
     <string name="global_settings_show_contact_picture_summary">Dangos lluniau cysylltiadau yn y rhestr negeseuon</string>
-    <string name="mark_all_as_read">Nodi\'r cwbl fel wedi eu darllen</string>
-    <string name="global_settings_colorize_missing_contact_pictures_label">Dangos lliwiau cysylltiadau</string>
-    <string name="global_settings_colorize_missing_contact_pictures_summary">Defnyddio lliwiau ar gyfer cysylltiadau heb luniau</string>
-    <string name="global_settings_messageview_visible_refile_actions_title">Botymau neges i\'w dangos</string>
-    <string name="global_settings_messageview_visible_refile_actions_summary">Dewis pa opsiynau i\'w dangos wrth edrych ar neges</string>
+    <string name="mark_all_as_read">Marcio\'r cyfan fel wedi\'u darllen</string>
+    <string name="global_settings_colorize_missing_contact_pictures_label">Lliwio lluniau cysylltiadau</string>
+    <string name="global_settings_colorize_missing_contact_pictures_summary">Lliwio cysylltiadau heb luniau</string>
+    <string name="global_settings_messageview_visible_refile_actions_title">Gweithredoedd neges amlwg</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Dewis gweithredoedd wedi\'u dewis yn y ddewislen golwg neges</string>
     <string name="loading_attachment">Yn llwytho\'r atodiad…</string>
     <string name="fetching_attachment_dialog_title_send">Yn anfon neges</string>
     <string name="fetching_attachment_dialog_title_save">Yn cadw\'r drafft</string>
     <string name="fetching_attachment_dialog_message">Yn nôl yr atodiad…</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Wedi amgryptio*</string>
-    <string name="add_from_contacts">Ychwanegu o Gysylltiadau</string>
+    <string name="add_from_contacts">Ychwanegu o\'r Cysylltiadau</string>
     <string name="recipient_cc">Cc</string>
     <string name="recipient_bcc">Bcc</string>
     <string name="recipient_to">At</string>
@@ -681,20 +681,20 @@
     <string name="address_type_other">Arall</string>
     <string name="address_type_mobile">Symudol</string>
     <string name="compose_error_no_draft_folder">Does dim ffolder Drafftiau wedi ei ffurfweddu ar gyfer y cyfrif hwn!</string>
-    <string name="compose_error_no_key_configured">Does dim allwedd wedi ei ffurfweddu ar gyfer y cyfrif hwn! Gwiria dy osodiadau.</string>
-    <string name="error_crypto_provider_incompatible">Mae\'r darparwr crypto yn defnyddio fersiwn anghydnaws. Gwiriwch y gosodiadau!</string>
-    <string name="error_crypto_provider_connect">Methwyd cysylltu â darparwr crypto. Gwiriwch eich gosodiadau neu glicio\'r eicon crypto i gynnig eto!</string>
+    <string name="compose_error_no_key_configured">Does dim allwedd wedi ei ffurfweddu ar gyfer y cyfrif hwn! Gwiriwch eich gosodiadau.</string>
+    <string name="error_crypto_provider_incompatible">Mae\'r darparwr crypto yn defnyddio fersiwn anghydnaws. Gwiriwch eich gosodiadau!</string>
+    <string name="error_crypto_provider_connect">Methwyd cysylltu â darparwr crypto, gwiriwch eich gosodiadau neu glicio\'r eicon crypto i gynnig eto!</string>
     <string name="error_crypto_provider_ui_required">Methwyd dechrau\'r amgryptiad pen-i-ben, gwiriwch eich gosodiadau</string>
-    <string name="error_crypto_inline_attach">Dyw\'r modd PGP/INLINE ddim yn caniatáu atodiadau!</string>
+    <string name="error_crypto_inline_attach">Dyw\'r modd PGP/INLINE ddim yn cynnal atodiadau!</string>
     <string name="enable_inline_pgp">Galluogi PGP/INLINE</string>
     <string name="disable_inline_pgp">Analluogi PGP/INLINE</string>
     <string name="enable_sign_only">Galluogi PGP Llofnodi-yn-Unig</string>
     <string name="disable_sign_only">Analluogi PGP Llofnodi-yn-Unig</string>
     <string name="openpgp_inline_title">Modd PGP/INLINE</string>
-    <string name="openpgp_inline_text">Anfonwyd y neges hon mewn fformat PGP/INLINE.\nDylid ond ei ddefnyddio ar gyfer cydweddiad:</string>
+    <string name="openpgp_inline_text">Anfonwyd y neges hon mewn fformat PGP/INLINE.\nI\'w ddefnyddio dim ond ar gyfer cydweddiad:</string>
     <string name="openpgp_inline_plus_compat">Dyw rhai cleientiaid ond yn caniatáu’r fformat hwn</string>
     <string name="openpgp_inline_minus_transit">Gall allweddi torri yn ystod y daith</string>
-    <string name="openpgp_inline_minus_attach">Dyw atodiadau ddim yn bosib</string>
+    <string name="openpgp_inline_minus_attach">Dyw atodiadau ddim yn cael eu cynnal</string>
     <string name="openpgp_inline_ok">Iawn!</string>
     <string name="openpgp_inline_disable">Analluogi</string>
     <string name="openpgp_inline_keep_enabled">Cadw wedi\'i Alluogi</string>
@@ -702,7 +702,7 @@
     <string name="openpgp_sign_only_disable">Analluogi</string>
     <string name="openpgp_sign_only_keep_enabled">Cadw wedi\'i Analluogi</string>
     <string name="openpgp_dialog_sign_only_title">Modd PGP Llofnodi-yn-Unig</string>
-    <string name="openpgp_dialog_sign_only_text">Yn y modd hwn, caiff eich allwedd PGP ei ddefnyddio i greu llofnod cryptograffeg o neges e-bost heb ei amgryptio.</string>
+    <string name="openpgp_dialog_sign_only_text">Yn y modd hwn, bydd eich allwedd PGP yn cael ei ddefnyddio i greu llofnod cryptograffeg o neges e-bost heb ei amgryptio.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Dyw hyn ddim yn amgryptio\'r neges, ond mae\'n dilysu ei fod wedi ei anfon o\'ch allwedd di.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Gall llofnodion torri wrth eu hanfon at restrau e-bost.</string>
     <string name="openpgp_dialog_sign_only_minus_attach">Gall llofnodion ymddangos fel atodiad \'signature.asc\' mewn rhai rhaglenni.</string>
@@ -710,32 +710,32 @@
     <string name="crypto_msg_title_plaintext">Testun plaen</string>
     <string name="crypto_msg_unencrypted_sign_error">roedd gwall mewn llofnod pen-i-ben</string>
     <string name="crypto_msg_incomplete_signed">rhaid llwytho\'r neges i lawr yn gyfan er mwyn prosesu\'r llofnod</string>
-    <string name="crypto_msg_unsupported_signed">mae\'n cynnwys llofnod diwedd-i-ddiwedd anghydnaws</string>
+    <string name="crypto_msg_unsupported_signed">mae\'n cynnwys llofnod pen-i-ben anghydnaws</string>
     <string name="crypto_msg_unsupported_encrypted">Mae\'r neges wedi ei hamgryptio, ond mewn fformat dieithr.</string>
     <string name="crypto_msg_cancelled">Mae\'r neges wedi ei hamgryptio, ond diddymwyd yr amgryptio.</string>
-    <string name="crypto_msg_title_unencrypted_signed_e2e">Llofnod testun plaen Diwedd-i-Ddiwedd</string>
+    <string name="crypto_msg_title_unencrypted_signed_e2e">Llofnod testun plaen pen i ben</string>
     <string name="crypto_msg_unencrypted_sign_verified">oddi wrth lofnodwr wedi\'i wirio</string>
     <string name="crypto_msg_title_unencrypted_signed">Llofnodwyd testun plaen</string>
-    <string name="crypto_msg_unencrypted_sign_mismatch">ond nid oedd yr allwedd diwedd-i-ddiwedd yn cyd-fynd â\'r anfonwr</string>
-    <string name="crypto_msg_unencrypted_sign_expired">ond mae\'r allwedd diwedd-i-ddiwedd yn hen</string>
-    <string name="crypto_msg_unencrypted_sign_revoked">ond mae\'r allwedd diwedd-i-ddiwedd wedi ei diddymu</string>
-    <string name="crypto_msg_unencrypted_sign_insecure">ond dyw\'r allwedd diwedd-i-ddiwedd ddim yn ymddangos yn ddiogel</string>
-    <string name="crypto_msg_unencrypted_sign_unknown">oddi wrth allwedd diwedd-i-ddiwedd anhysbys</string>
+    <string name="crypto_msg_unencrypted_sign_mismatch">ond nid oedd yr allwedd pen i ben yn cyd-fynd â\'r anfonwr</string>
+    <string name="crypto_msg_unencrypted_sign_expired">ond mae\'r allwedd pen i ben yn hen</string>
+    <string name="crypto_msg_unencrypted_sign_revoked">ond mae\'r allwedd pen i ben wedi ei diddymu</string>
+    <string name="crypto_msg_unencrypted_sign_insecure">ond dyw\'r allwedd pen i ben ddim yn ymddangos yn ddiogel</string>
+    <string name="crypto_msg_unencrypted_sign_unknown">oddi wrth allwedd pen i ben anhysbys</string>
     <string name="crypto_msg_title_encrypted_unknown">Amgryptiwyd</string>
     <string name="crypto_msg_encrypted_error">ond roedd gwall dadgryptio</string>
     <string name="crypto_msg_encrypted_incomplete">rhaid llwytho\'r neges i lawr yn gyfan er mwyn dadgryptio</string>
     <string name="crypto_msg_encrypted_no_provider">ond does dim ap crypto wedi ei ffurfweddu</string>
     <string name="crypto_msg_title_encrypted_unsigned">Amgryptiwyd</string>
-    <string name="crypto_msg_encrypted_unsigned">ond nid diwedd-i-ddiwedd</string>
-    <string name="crypto_msg_title_encrypted_signed_e2e">Amgrpytiad diwedd-i-ddiwedd</string>
+    <string name="crypto_msg_encrypted_unsigned">ond nid pen i ben</string>
+    <string name="crypto_msg_title_encrypted_signed_e2e">Amgrpytiad pen i ben</string>
     <string name="crypto_msg_encrypted_sign_verified">oddi wrth anfonwr wedi\'i wirio</string>
     <string name="crypto_msg_title_encrypted_signed">Amgryptiwyd</string>
-    <string name="crypto_msg_encrypted_sign_unknown">oddi wrth allwedd diwedd-i-ddiwedd anhysbys</string>
-    <string name="crypto_msg_encrypted_sign_mismatch">ond nid oedd yr allwedd diwedd-i-ddiwedd yn cyd-fynd â\'r anfonwr</string>
-    <string name="crypto_msg_encrypted_sign_expired">ond mae\'r allwedd diwedd-i-ddiwedd yn hen</string>
-    <string name="crypto_msg_encrypted_sign_revoked">ond mae\'r allwedd diwedd-i-ddiwedd wedi ei diddymu</string>
-    <string name="crypto_msg_encrypted_sign_insecure">ond dyw\'r allwedd diwedd-i-ddiwedd ddim yn ymddangos yn ddiogel</string>
-    <string name="crypto_msg_encrypted_sign_error">ond mae gwallau yn y data diwedd-i-ddiwedd</string>
+    <string name="crypto_msg_encrypted_sign_unknown">oddi wrth allwedd pen i ben anhysbys</string>
+    <string name="crypto_msg_encrypted_sign_mismatch">ond nid oedd yr allwedd pen i benpen i ben yn cyd-fynd â\'r anfonwr</string>
+    <string name="crypto_msg_encrypted_sign_expired">ond mae\'r allwedd pen i ben yn hen</string>
+    <string name="crypto_msg_encrypted_sign_revoked">ond mae\'r allwedd pen i ben wedi\'i diddymu</string>
+    <string name="crypto_msg_encrypted_sign_insecure">ond dyw\'r allwedd pen i ben ddim yn ymddangos yn ddiogel</string>
+    <string name="crypto_msg_encrypted_sign_error">ond mae gwallau yn y data pen i ben</string>
     <string name="crypto_msg_encrypted_insecure">ond dyw\'r amgryptiad ddim yn ymddangos yn ddiogel</string>
     <string name="locked_attach_unlock">Datgloi</string>
     <string name="locked_attach_unencrypted">Chafodd y rhan hwn ddim ei amgryptio a gall fod yn anniogel.</string>

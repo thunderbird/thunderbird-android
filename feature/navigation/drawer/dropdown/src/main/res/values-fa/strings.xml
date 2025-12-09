@@ -11,4 +11,5 @@
     <string name="navigation_drawer_dropdown_avount_view_selection_title">لیست حساب</string>
     <string name="navigation_drawer_dropdown_unified_account_title">حساب یکپارچه</string>
     <string name="navigation_drawer_dropdown_action_add_account">افزودن حساب</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">همگام سازی حساب</string>
 </resources>

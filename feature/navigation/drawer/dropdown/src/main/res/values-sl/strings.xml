@@ -11,4 +11,5 @@
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Seznam računov</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Enoten račun</string>
     <string name="navigation_drawer_dropdown_action_add_account">Dodaj račun</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Uskladi račun</string>
 </resources>

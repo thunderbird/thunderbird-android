@@ -928,4 +928,5 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
     <string name="global_settings_messageview_body_content_type_text_plain">Vormindamata tekst (text/plain)</string>
     <string name="debug_feature_flags">VEAOTSING: funktsionaalsuste võtmed</string>
+    <string name="print_message_action">Prindi</string>
 </resources>

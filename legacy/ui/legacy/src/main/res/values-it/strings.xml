@@ -928,4 +928,5 @@
     <string name="message_view_menu_action_export_eml">Esporta come EML</string>
     <string name="global_settings_messageview_body_content_type_title">Corpo del messaggio come</string>
     <string name="debug_feature_flags">DEBUG: Flag Caratteristiche</string>
+    <string name="print_message_action">Stampa</string>
 </resources>

@@ -924,4 +924,7 @@
     <string name="account_setup_auto_select_folder">Autoselekter mappe</string>
     <string name="navigation_drawer_preferences">Sidemeny</string>
     <string name="expand_folders">Utvid mapper</string>
+    <string name="debug_feature_flags">DEBUG: Funksjonsflagg</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Rein tekst (text/plain)</string>
+    <string name="global_settings_messageview_body_content_type_title">Innhaldstype for brødtekst</string>
 </resources>

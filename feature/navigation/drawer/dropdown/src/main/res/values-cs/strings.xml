@@ -11,4 +11,5 @@
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Seznam účtů</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Jednotný účet</string>
     <string name="navigation_drawer_dropdown_action_add_account">Přidat účet</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Synchronizovat účet</string>
 </resources>
