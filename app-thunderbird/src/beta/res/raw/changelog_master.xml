@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="16.0b2" versioncode="38" date="2025-12-10">
+        <change>Application crashed at startup</change>
+        <change>Fix various edge-to-edge issues throughout the app</change>
+    </release>
     <release version="16.0b1" versioncode="37" date="2025-12-8">
         <change>Enable Memory Tagging Extension on MTE-capable devices to improve memory safety</change>
         <change>Add setting to control default folder expansion behavior</change>
