@@ -88,7 +88,7 @@ private const val WEEK_DAYS = 7
  *  Defaults to [MessageItemDefaults.defaultContentPadding].
  * @see MessageItemDefaults
  */
-@Suppress("LongParameterList", "LongMethod")
+@Suppress("LongParameterList")
 @Composable
 internal fun MessageItem(
     leading: @Composable () -> Unit,
@@ -148,20 +148,8 @@ internal fun MessageItem(
                     .weight(1f)
                     .onPlaced { contentStart = it.positionInParent().x },
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.defaultMinSize(
-                        minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT,
-                    ),
-                ) {
-                    if (showAccountIndicator && accountIndicatorColor != null) {
-                        AccountIndicatorIcon(accountIndicatorColor)
-                    }
-                    sender()
-                }
-                CompositionLocalProvider(LocalContentColor provides colors.subjectColor) {
-                    subject()
-                }
+                SenderRow(showAccountIndicator, accountIndicatorColor) { sender() }
+                SubjectRow(colors.subjectColor) { subject() }
                 Spacer(modifier = Modifier.height(MainTheme.spacings.half))
                 PreviewText(preview = preview, maxLines = maxPreviewLines)
             }
@@ -173,6 +161,36 @@ internal fun MessageItem(
                 modifier = Modifier.heightIn(min = MainTheme.sizes.large),
             )
         }
+    }
+}
+
+@Composable
+private fun SenderRow(
+    showAccountIndicator: Boolean,
+    accountIndicatorColor: Color?,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.defaultMinSize(
+            minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT,
+        ),
+    ) {
+        if (showAccountIndicator && accountIndicatorColor != null) {
+            AccountIndicatorIcon(accountIndicatorColor)
+        }
+        content()
+    }
+}
+
+@Composable
+private fun SubjectRow(
+    subjectColor: Color,
+    content: @Composable () -> Unit,
+) {
+    CompositionLocalProvider(LocalContentColor provides subjectColor) {
+        content()
     }
 }
 
