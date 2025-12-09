@@ -1,6 +1,10 @@
 package app.k9mail.feature.account.setup.ui.specialfolders
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -44,9 +48,10 @@ fun SpecialFoldersScreen(
                 state = WizardNavigationBarState(
                     showNext = state.value.isManualSetup && state.value.isLoading.not(),
                 ),
+                modifier = Modifier.imePadding(),
             )
         },
-        modifier = modifier,
+        modifier = modifier.windowInsetsPadding(WindowInsets.navigationBars),
     ) { innerPadding ->
         SpecialFoldersContent(
             state = state.value,

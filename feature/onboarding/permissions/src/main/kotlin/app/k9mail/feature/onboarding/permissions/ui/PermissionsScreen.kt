@@ -38,7 +38,7 @@ fun PermissionsScreen(
     }
 
     BackHandler {
-        // no back navigation
+        dispatch(Event.NextClicked)
     }
 
     LaunchedEffect(key1 = Unit) {

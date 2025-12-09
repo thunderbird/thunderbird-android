@@ -3,6 +3,7 @@ package net.thunderbird.feature.navigation.drawer.dropdown
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,6 +46,12 @@ class DropDownDrawer(
 
     init {
         drawer.addDrawerListener(createDrawerListener())
+
+        // Make insets available to the drawer's Compose content
+        ViewCompat.setOnApplyWindowInsetsListener(drawer) { _, insets ->
+            drawerContent.dispatchApplyWindowInsets(insets.toWindowInsets())
+            insets
+        }
 
         drawerContent.setContent {
             themeProvider.WithTheme {

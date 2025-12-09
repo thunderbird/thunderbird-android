@@ -1,11 +1,7 @@
 package app.k9mail.feature.account.server.settings.ui.outgoing
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +20,6 @@ internal fun OutgoingServerSettingsContent(
     mode: InteractionMode,
     state: State,
     onEvent: (Event) -> Unit,
-    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     val resources = LocalResources.current
@@ -32,14 +27,10 @@ internal fun OutgoingServerSettingsContent(
     ResponsiveWidthContainer(
         modifier = Modifier
             .testTagAsResourceId("OutgoingServerSettingsContent")
-            .padding(contentPadding)
-            .fillMaxWidth()
             .then(modifier),
     ) { contentPadding ->
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .imePadding(),
+            modifier = Modifier.fillMaxSize(),
             contentPadding = contentPadding,
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
