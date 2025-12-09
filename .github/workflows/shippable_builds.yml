@@ -206,7 +206,7 @@ jobs:
       new_version_code: ${{ steps.new_version_code.outputs.new_version_code }}
     steps:
       - name: App Token Generate
-        uses: actions/create-github-app-token@7e473efe3cb98aa54f8d4bac15400b15fad77d94 # v2.2.0
+        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
         if: ${{ vars.BOT_CLIENT_ID }}
         id: app-token
         with:
@@ -745,7 +745,7 @@ jobs:
           ls -l uploads/${PKG_FILE_PRETTY}
 
       - name: App Token Generate
-        uses: actions/create-github-app-token@7e473efe3cb98aa54f8d4bac15400b15fad77d94  # v2.2.0
+        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf  # v2.2.1
         if: ${{ contains(matrix.releaseTarget, 'github') && vars.BOT_CLIENT_ID }}
         id: app-token
         with:
