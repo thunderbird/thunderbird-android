@@ -14,5 +14,5 @@ fun Module.developmentModuleAdditions() {
     single<List<AutoDiscovery>>(named("extraAutoDiscoveries")) {
         emptyList()
     }
-    single<FeatureFlagOverrides> { NoOpFeatureFlagOverrides }
+    single<FeatureFlagOverrides> { NoOpFeatureFlagOverrides() }
 }
