@@ -12,7 +12,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
@@ -152,8 +151,6 @@ open class MainActivity :
     @Suppress("ReturnCount")
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        enableEdgeToEdge()
 
         // If the app's main task was not created using the default launch intent (e.g. from a notification, a widget,
         // or a shortcut), using the app icon to "launch" the app will create a new MessageList instance instead of only
