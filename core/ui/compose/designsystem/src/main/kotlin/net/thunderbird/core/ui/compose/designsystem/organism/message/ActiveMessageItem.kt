@@ -3,6 +3,7 @@ package net.thunderbird.core.ui.compose.designsystem.organism.message
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -41,6 +42,8 @@ fun ActiveMessageItem(
     subject: String,
     preview: String,
     receivedAt: LocalDateTime,
+    showAccountIndicator: Boolean,
+    accountIndicatorColor: Color?,
     avatar: @Composable () -> Unit,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
@@ -76,6 +79,8 @@ fun ActiveMessageItem(
         preview = preview,
         action = { FavouriteButtonIcon(favourite = favourite, onFavouriteChange = onFavouriteChange) },
         receivedAt = receivedAt,
+        showAccountIndicator = showAccountIndicator,
+        accountIndicatorColor = accountIndicatorColor,
         onClick = onClick,
         onLongClick = onLongClick,
         onLeadingClick = onLeadingClick,

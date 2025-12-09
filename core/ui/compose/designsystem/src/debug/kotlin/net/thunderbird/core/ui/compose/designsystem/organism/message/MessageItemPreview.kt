@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
@@ -119,6 +120,8 @@ private fun PreviewDefault(
             hasAttachments = params.hasAttachments,
             selected = params.selected,
             colors = MessageItemDefaults.newMessageItemColors(),
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.Red,
         )
     }
 }
@@ -157,6 +160,8 @@ private fun PreviewCompact(
             selected = params.selected,
             contentPadding = MessageItemDefaults.compactContentPadding,
             colors = MessageItemDefaults.unreadMessageItemColors(),
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.Red,
         )
     }
 }
@@ -196,6 +201,48 @@ private fun PreviewRelaxed(
             selected = params.selected,
             contentPadding = MessageItemDefaults.relaxedContentPadding,
             colors = MessageItemDefaults.readMessageItemColors(),
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.Red,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewDefaultWithoutAccountIndicator(
+    @PreviewParameter(MessageItemPrevParamCol::class) params: MessageItemPrevParams,
+) {
+    PreviewWithThemes {
+        MessageItem(
+            leading = {
+                Box(
+                    modifier = Modifier
+                        .size(MainTheme.sizes.iconAvatar)
+                        .padding(MainTheme.spacings.half)
+                        .background(color = MainTheme.colors.primary, shape = CircleShape),
+                )
+            },
+            sender = { TextTitleSmall(text = params.sender) },
+            subject = { TextLabelLarge(text = params.subject) },
+            preview = params.preview,
+            action = {
+                IconButton(
+                    onClick = { },
+                    modifier = Modifier.size(MainTheme.sizes.iconLarge),
+                ) {
+                    Image(imageVector = Icons.Filled.Star, contentDescription = null)
+                }
+            },
+            receivedAt = params.receivedAt,
+            onClick = { },
+            onLongClick = { },
+            onLeadingClick = { },
+            modifier = Modifier.padding(MainTheme.spacings.double),
+            hasAttachments = params.hasAttachments,
+            selected = params.selected,
+            colors = MessageItemDefaults.newMessageItemColors(),
+            showAccountIndicator = false,
+            accountIndicatorColor = null,
         )
     }
 }
