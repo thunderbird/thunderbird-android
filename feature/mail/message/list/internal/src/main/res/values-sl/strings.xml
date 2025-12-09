@@ -22,4 +22,5 @@
     <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Ime mape ne sme biti prazno.</string>
     <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Ime mape \'%1$s\' ni veljavno.</string>
     <string name="setup_archive_folder_dialog_email_can_not_be_archived">E-pošte ni mogoče arhivirati.</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Nastavi mapo za arhiviranje zdaj</string>
 </resources>

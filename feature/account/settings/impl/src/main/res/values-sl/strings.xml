@@ -5,4 +5,17 @@
     <string name="account_settings_general_avatar_option_icon">Ikona</string>
     <string name="account_settings_general_name_title">Ime računa</string>
     <string name="account_settings_general_name_description">Ime, povezano z vašim računom.</string>
+    <string name="account_settings_general_avatar_title">Podoba</string>
+    <string name="account_settings_general_avatar_description">Izberite način prikaza podobe računa.</string>
+    <string name="account_settings_general_avatar_option_monogram">Monogram</string>
+    <string name="account_settings_general_name_error_empty">Ime ne sme biti prazno.</string>
+    <string name="account_settings_general_name_error_too_long">Ime je predolgo.</string>
+    <string name="account_settings_general_color_title">Barvna shema računa</string>
+    <string name="account_settings_general_color_description">Barva poudarkov za ta račun, ki se uporablja pri mapah in seznamih računov.</string>
+    <string name="account_settings_general_avatar_monogram_title">Monogram podobe</string>
+    <string name="account_settings_general_avatar_monogram_description">Monogram, ki ga boste uporabili namesto vaše podobe.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Monogram ne sme biti prazen.</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Monogram je predolg.</string>
+    <string name="account_settings_general_avatar_icon_title">Ikona podobe</string>
+    <string name="account_settings_general_avatar_icon_description">Izberite eno izmed ikon, ki jo boste uporabili kot svojo podobo.</string>
 </resources>

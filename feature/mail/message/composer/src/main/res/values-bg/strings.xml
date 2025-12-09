@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_title">Папката \"Изпратени\" не е намерена</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">За да запазите това съобщение, създайте папка \"Изпратени\" в настройките.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Избор на папка за „Изпратени“</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Отмяна</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Изпращане и изтриване</string>
 </resources>
