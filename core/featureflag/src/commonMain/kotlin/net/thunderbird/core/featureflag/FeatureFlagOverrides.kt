@@ -1,9 +1,6 @@
 package net.thunderbird.core.featureflag
 
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 
 /**
  * Defines a contract for managing local overrides of feature flags.
@@ -63,38 +60,4 @@ interface FeatureFlagOverrides {
      * Removes all feature flag overrides.
      */
     fun clearAll()
-}
-
-fun FeatureFlagOverrides(
-    initialOverrides: Map<FeatureFlagKey, Boolean> = emptyMap(),
-): FeatureFlagOverrides = object : FeatureFlagOverrides {
-    private val _overrides = MutableStateFlow(initialOverrides)
-    override val overrides: StateFlow<Map<FeatureFlagKey, Boolean>> = _overrides.asStateFlow()
-
-    override fun get(key: FeatureFlagKey): Boolean? = overrides.value[key]
-
-    override fun set(key: FeatureFlagKey, value: Boolean) {
-        _overrides.update { it + (key to value) }
-    }
-
-    override fun clear(key: FeatureFlagKey) {
-        _overrides.update { it - key }
-    }
-
-    override fun clearAll() {
-        _overrides.update { emptyMap() }
-    }
-}
-
-object NoOpFeatureFlagOverrides : FeatureFlagOverrides {
-    override val overrides: StateFlow<Map<FeatureFlagKey, Boolean>> =
-        MutableStateFlow(emptyMap<FeatureFlagKey, Boolean>()).asStateFlow()
-
-    override fun get(key: FeatureFlagKey): Boolean? = false
-
-    override fun set(key: FeatureFlagKey, value: Boolean) = Unit
-
-    override fun clear(key: FeatureFlagKey) = Unit
-
-    override fun clearAll() = Unit
 }
