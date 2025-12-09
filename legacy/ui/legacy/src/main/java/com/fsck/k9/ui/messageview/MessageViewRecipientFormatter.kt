@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import com.fsck.k9.K9
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
@@ -87,7 +86,11 @@ internal fun createMessageViewRecipientFormatter(
         contactNameProvider = contactNameProvider,
         showCorrespondentNames = messageListSettings.isShowCorrespondentNames,
         showContactNames = messageListSettings.isShowContactName,
-        contactNameColor = if (messageListSettings.isChangeContactNameColor) K9.contactNameColor else null,
+        contactNameColor = if (messageListSettings.isChangeContactNameColor) {
+            messageListSettings.contactNameColor
+        } else {
+            null
+        },
         meText = resources.getString(R.string.message_view_me_text),
     )
 }

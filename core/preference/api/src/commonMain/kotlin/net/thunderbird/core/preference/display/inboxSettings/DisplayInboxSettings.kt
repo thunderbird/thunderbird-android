@@ -14,4 +14,5 @@ data class DisplayInboxSettings(
     val isMessageListSenderAboveSubject: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_MESSAGE_LIST_SENDER_ABOVE_SUBJECT,
     val isShowComposeButtonOnMessageList: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST,
     val isThreadedViewEnabled: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_THREAD_VIEW_ENABLED,
+
 )

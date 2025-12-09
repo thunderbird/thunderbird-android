@@ -56,6 +56,10 @@ class DefaultMessageListPreferencesManager(
             KEY_MESSAGE_LIST_VIEW_DENSITY,
             MESSAGE_LIST_SETTINGS_DEFAULT_UI_DENSITY,
         ),
+        contactNameColor = storage.getInt(
+            KEY_REGISTERED_NAME_COLOR,
+            DISPLAY_SETTINGS_DEFAULT_CONTACT_NAME_COLOR,
+        ),
     )
 
     private fun write(preferences: DisplayMessageListSettings) {
@@ -66,6 +70,7 @@ class DefaultMessageListPreferencesManager(
         storageEditor.putBoolean(KEY_SHOW_CONTACT_NAME, preferences.isShowContactName)
         storageEditor.putBoolean(KEY_SHOW_CORRESPONDENT_NAMES, preferences.isShowCorrespondentNames)
         storageEditor.putInt(KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES, preferences.previewLines)
+        storageEditor.putInt(KEY_REGISTERED_NAME_COLOR, preferences.contactNameColor)
         storageEditor.putEnum(KEY_MESSAGE_LIST_VIEW_DENSITY, preferences.uiDensity)
     }
 
