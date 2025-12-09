@@ -194,6 +194,7 @@ private class GeneralSettingsRobot(
             updateAvatarImage = { _, _ ->
                 Outcome.success(Avatar.Image(uri = "uri"))
             },
+            logger = TestLogger(),
             initialState = initialState,
         )
     }
