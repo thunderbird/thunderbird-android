@@ -1,10 +1,6 @@
 Thunderbird for Android version 16.0b1, based on K-9 Mail. Changes include:
-- Added support for Account Icons (disabled by default)
-- Added support for Account Monograms
-- Add folder expansion in navigation drawer
-- Added menu option/default to switch between plaintext and HTML
-- Removed old account general settings
-- Removed side rail drawer
-- Improved edge-to-edge UI support
-- Minor UI improvements to drawer
-- Improved rendering of complex HTML and CSS
+- Enable Memory Tagging Extension on MTE-capable devices to improve memory safety
+- Add setting to control default folder expansion behavior
+- Add the ability to switch between text/plain and text/html display
+- Switching folders required an excessive number of clicks
+- Fix various edge-to-edge issues throughout the app
