@@ -25,7 +25,7 @@ internal class GeneralSettingsScreenKtTest : ComposeTest() {
                 onBack = { onBackCounter++ },
                 viewModel = viewModel,
                 provider = FakeSettingViewProvider(),
-                builder = { net.thunderbird.core.ui.setting.emptySettings() },
+                builder = { _, _ -> net.thunderbird.core.ui.setting.emptySettings() },
             )
         }
 
@@ -49,7 +49,7 @@ internal class GeneralSettingsScreenKtTest : ComposeTest() {
                 onBack = { onBackCounter++ },
                 viewModel = viewModel,
                 provider = FakeSettingViewProvider(),
-                builder = { net.thunderbird.core.ui.setting.emptySettings() },
+                builder = { _, _ -> net.thunderbird.core.ui.setting.emptySettings() },
             )
         }
 

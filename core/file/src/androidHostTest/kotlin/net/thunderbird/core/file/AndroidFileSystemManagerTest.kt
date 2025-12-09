@@ -2,9 +2,12 @@ package net.thunderbird.core.file
 
 import android.content.Context
 import android.net.Uri
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.fail
 import com.eygraber.uri.toKmpUri
+import kotlin.test.fail
 import kotlinx.io.Buffer
 import org.junit.Rule
 import org.junit.Test
@@ -27,7 +30,7 @@ class AndroidFileSystemManagerTest {
     val folder = TemporaryFolder()
 
     @Test
-    fun openSinkAndOpenSource_writeAndReadFileContentRoundtrip() {
+    fun `openSink and openSource should write and read file content as roundtrip`() {
         // Arrange
         val tempFile = folder.newFile("tb-file-fs-test-android.txt")
         val uri: Uri = Uri.fromFile(tempFile)
@@ -55,12 +58,14 @@ class AndroidFileSystemManagerTest {
     }
 
     @Test
-    fun openSink_withAppend_shouldAppendToExistingContent() {
+    fun `openSink with Append should append to existing content`() {
         // Arrange
         val tempFile = folder.newFile("tb-file-fs-test-android-append.txt")
         val uri: Uri = Uri.fromFile(tempFile)
         val initial = "Hello"
         val extra = " Android"
+
+        // Act
 
         // Write initial content (truncate by default)
         run {
@@ -94,7 +99,7 @@ class AndroidFileSystemManagerTest {
     }
 
     @Test
-    fun openSink_withTruncate_shouldOverwriteExistingContent() {
+    fun `openSink with Truncate should overwrite existing content`() {
         // Arrange
         val tempFile = folder.newFile("tb-file-fs-test-android-truncate.txt")
         val uri: Uri = Uri.fromFile(tempFile)
@@ -109,6 +114,8 @@ class AndroidFileSystemManagerTest {
             sink.flush()
             sink.close()
         }
+
+        // Act
 
         // Overwrite with second content
         run {
@@ -130,5 +137,44 @@ class AndroidFileSystemManagerTest {
 
         // Assert
         assertThat(result).isEqualTo(second)
+    }
+
+    @Test
+    fun `delete on existing file should not throw when using ContentResolver`() {
+        // Arrange
+        val tempFile = folder.newFile("tb-file-fs-test-android-delete.txt")
+        val uri: Uri = Uri.fromFile(tempFile)
+
+        run {
+            val sink = checkNotNull(testSubject.openSink(uri.toKmpUri()))
+            val buf = Buffer().apply { write("x".encodeToByteArray()) }
+            sink.write(buf, buf.size)
+            sink.flush()
+            sink.close()
+        }
+
+        // Act + Assert
+        try {
+            testSubject.delete(uri.toKmpUri())
+        } catch (e: Exception) {
+            assertFailure { throw e }
+        }
+    }
+
+    @Test
+    fun `delete non existing file should not throw`() {
+        // Arrange
+        val tempFile = folder.newFile("tb-file-fs-test-android-delete-missing.txt")
+        val uri: Uri = Uri.fromFile(tempFile)
+
+        // remove temp file to ensure it's missing using Java
+        check(tempFile.delete())
+
+        // Act + Assert
+        try {
+            testSubject.delete(uri.toKmpUri())
+        } catch (e: Exception) {
+            fail("Deletion of non-existing file threw an exception: ${e.message}")
+        }
     }
 }

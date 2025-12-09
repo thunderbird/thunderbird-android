@@ -7,8 +7,11 @@ import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.preferences.UnifiedInboxConfigurator
+import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.avatar.AvatarImageRepository
 
 /**
  * Removes an account and all associated data.
@@ -20,6 +23,7 @@ class AccountRemover(
     private val localKeyStoreManager: LocalKeyStoreManager,
     private val preferences: Preferences,
     private val unifiedInboxConfigurator: UnifiedInboxConfigurator,
+    private val avatarImageRepository: AvatarImageRepository,
 ) {
 
     fun removeAccount(accountUuid: String) {
@@ -32,6 +36,7 @@ class AccountRemover(
         val accountName = account.toString()
         Log.v("Removing account '%s'…", accountName)
 
+        removeAvatar(account.uuid)
         removeLocalStore(account)
         messagingController.deleteAccount(account)
         removeBackend(account)
@@ -43,6 +48,16 @@ class AccountRemover(
         unifiedInboxConfigurator.configureUnifiedInbox()
 
         Log.v("Finished removing account '%s'.", accountName)
+    }
+
+    private fun removeAvatar(accountUuid: String) {
+        runBlocking {
+            try {
+                avatarImageRepository.delete(AccountIdFactory.of(accountUuid))
+            } catch (e: Exception) {
+                Log.e(e, "Failed to remove avatar for account %s", accountUuid)
+            }
+        }
     }
 
     private fun removeLocalStore(account: LegacyAccountDto) {
