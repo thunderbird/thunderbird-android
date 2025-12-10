@@ -61,6 +61,9 @@ class CodeCoveragePlugin: Plugin<Project> {
                 disable()
             }
 
+            // See https://www.jacoco.org/jacoco/
+            useJacoco("0.8.14")
+
             reports {
                 total {
                     filters {
