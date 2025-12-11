@@ -17,3 +17,7 @@ kotlin {
         }
     }
 }
+
+codeCoverage {
+    lineCoverage.set(71)
+}

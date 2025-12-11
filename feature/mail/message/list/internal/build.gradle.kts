@@ -22,3 +22,8 @@ dependencies {
     implementation(projects.legacy.mailstore)
     implementation(projects.mail.common)
 }
+
+codeCoverage {
+    branchCoverage.set(9)
+    lineCoverage.set(17)
+}

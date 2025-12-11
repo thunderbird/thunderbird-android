@@ -11,3 +11,8 @@ dependencies {
     implementation(projects.core.ui.compose.navigation)
     implementation(projects.core.featureflag)
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}
