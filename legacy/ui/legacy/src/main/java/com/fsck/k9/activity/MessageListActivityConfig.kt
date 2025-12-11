@@ -58,7 +58,7 @@ data class MessageListActivityConfig(
                 isColorizeMissingContactPictures = messageListPreferences.isColorizeMissingContactPictures,
                 isUseBackgroundAsUnreadIndicator = messageListPreferences.isUseBackgroundAsUnreadIndicator,
                 isShowComposeButton = settings.display.inboxSettings.isShowComposeButtonOnMessageList,
-                contactNameColor = K9.contactNameColor,
+                contactNameColor = settings.display.visualSettings.messageListSettings.contactNameColor,
                 messageViewTheme = settings.display.coreSettings.messageViewTheme,
                 messageListPreviewLines = messageListPreferences.previewLines,
                 messageListDensity = messageListPreferences.uiDensity,

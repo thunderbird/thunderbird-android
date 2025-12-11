@@ -33,6 +33,7 @@ internal class MessageListItemMapper(
                 addresses = toAddresses.toTypedArray(),
                 isShowCorrespondentNames = messageListSettings.isShowCorrespondentNames,
                 isChangeContactNameColor = messageListSettings.isChangeContactNameColor,
+                contactNameColor = messageListSettings.contactNameColor,
             ).toString()
         } else {
             messageHelper.getSenderDisplayName(displayAddress).toString()

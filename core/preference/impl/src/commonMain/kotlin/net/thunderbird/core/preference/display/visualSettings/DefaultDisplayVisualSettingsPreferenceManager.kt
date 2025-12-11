@@ -77,6 +77,7 @@ class DefaultDisplayVisualSettingsPreferenceManager(
             KEY_DRAWER_EXPAND_ALL_FOLDER,
             DISPLAY_SETTINGS_DEFAULT_DRAWER_EXPAND_ALL_FOLDER,
         ),
+
     )
 
     private fun writeConfig(config: DisplayVisualSettings) {

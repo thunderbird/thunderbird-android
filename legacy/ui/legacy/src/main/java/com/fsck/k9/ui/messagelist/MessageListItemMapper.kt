@@ -31,6 +31,7 @@ class MessageListItemMapper(
                 addresses = toAddresses.toTypedArray(),
                 isShowCorrespondentNames = messageListSettings.isShowCorrespondentNames,
                 isChangeContactNameColor = messageListSettings.isChangeContactNameColor,
+                contactNameColor = messageListSettings.contactNameColor,
             )
         } else {
             messageHelper.getSenderDisplayName(displayAddress)

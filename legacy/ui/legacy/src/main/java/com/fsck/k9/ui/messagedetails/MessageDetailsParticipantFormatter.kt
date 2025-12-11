@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import com.fsck.k9.K9
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
@@ -71,7 +70,7 @@ internal fun createMessageDetailsParticipantFormatter(
         contactNameColor = if (
             messageListPreferences.isChangeContactNameColor
         ) {
-            K9.contactNameColor
+            messageListPreferences.contactNameColor
         } else {
             null
         },

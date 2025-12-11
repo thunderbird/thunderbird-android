@@ -10,5 +10,6 @@ const val KEY_SHOW_CONTACT_NAME = "showContactName"
 const val KEY_SHOW_CONTACT_PICTURE = "showContactPicture"
 const val KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES = "messageListPreviewLines"
 const val KEY_MESSAGE_LIST_VIEW_DENSITY = "messageListDensity"
+const val KEY_REGISTERED_NAME_COLOR = "registeredNameColor"
 
 interface MessageListPreferencesManager : PreferenceManager<DisplayMessageListSettings>
