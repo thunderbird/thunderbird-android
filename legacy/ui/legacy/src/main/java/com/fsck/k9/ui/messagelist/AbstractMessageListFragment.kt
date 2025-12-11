@@ -122,7 +122,16 @@ private const val MAXIMUM_MESSAGE_SORT_OVERRIDES = 3
 private const val MINIMUM_CLICK_INTERVAL = 200L
 private const val RECENT_CHANGES_SNACKBAR_DURATION = 10 * 1000
 
-@Suppress("LargeClass", "TooManyFunctions")
+@Suppress(
+    "LargeClass",
+    "TooManyFunctions",
+    "CyclomaticComplexMethod",
+    "TooGenericExceptionCaught",
+    "TooGenericExceptionThrown",
+    "SwallowedException",
+    "ReturnCount",
+    "ForbiddenComment",
+)
 abstract class AbstractMessageListFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
