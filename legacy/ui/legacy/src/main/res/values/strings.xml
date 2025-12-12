@@ -354,6 +354,11 @@
     <string name="sent_folder_label">Sent folder</string>
     <string name="trash_folder_label">Trash folder</string>
     <string name="archive_folder_label">Archive folder</string>
+    <string name="archive_granularity_label">Archive options</string>
+    <string name="archive_granularity_summary">When archiving messages, place them in:</string>
+    <string name="archive_granularity_single_folder">A single folder</string>
+    <string name="archive_granularity_yearly_folders">Yearly archived folders</string>
+    <string name="archive_granularity_monthly_folders">Monthly archived folders</string>
     <string name="spam_folder_label">Spam folder</string>
 
     <string name="account_setup_incoming_subscribed_folders_only_label">Show only subscribed folders</string>
