@@ -9,9 +9,13 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import kotlin.reflect.KClass
 import kotlin.test.Test
+import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.state.builder.stateMachine
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Suppress("MaxLineLength")
 class StateMachineTest {
     private sealed interface State {
@@ -43,6 +47,7 @@ class StateMachineTest {
             }
             finalState<State.Success>()
         }
+        advanceTimeBy(1000.milliseconds)
 
         // Assert
         assertThat(onEntryCalled).isTrue()
@@ -174,6 +179,7 @@ class StateMachineTest {
         }
 
         // Act
+        advanceTimeBy(1000.milliseconds)
         stateMachine.process(Event.LoadData)
         stateMachine.process(Event.Failure)
         stateMachine.process(Event.Retry(forceRetry = true))
@@ -247,6 +253,7 @@ class StateMachineTest {
             stateMachine<State, Event>(scope = this) {
                 initialState(State.Init) {
                     onEnter { event, newState ->
+                        println("New state: $newState, event: $event")
                         actualPreviousState = this
                         actualNewState = newState
                         actualEvent = event
@@ -260,6 +267,7 @@ class StateMachineTest {
             }
 
             // Assert
+            advanceTimeBy(1000.milliseconds)
             assertThat(actualPreviousState).isNull()
             assertThat(actualEvent).isNull()
             assertThat(actualNewState)
