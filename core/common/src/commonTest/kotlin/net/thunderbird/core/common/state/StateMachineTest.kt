@@ -253,6 +253,7 @@ class StateMachineTest {
             stateMachine<State, Event>(scope = this) {
                 initialState(State.Init) {
                     onEnter { event, newState ->
+                        println("New state: $newState, event: $event")
                         actualPreviousState = this
                         actualNewState = newState
                         actualEvent = event
@@ -266,7 +267,8 @@ class StateMachineTest {
             }
 
             // Assert
-            advanceTimeBy(1000.milliseconds)assertThat(actualPreviousState).isNull()
+            advanceTimeBy(1000.milliseconds)
+            assertThat(actualPreviousState).isNull()
             assertThat(actualEvent).isNull()
             assertThat(actualNewState)
                 .isNotNull()

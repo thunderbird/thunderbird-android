@@ -23,8 +23,10 @@ import com.fsck.k9.view.K9WebViewClient
 import com.fsck.k9.view.MessageWebView
 import net.openid.appauth.AppAuthConfiguration
 import net.thunderbird.core.common.mail.html.HtmlSettings
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.message.list.internal.ui.state.machine.MessageListStateMachine
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import org.junit.Test
@@ -68,6 +70,7 @@ class DependencyInjectionTest {
                 definition<SyncDebugWorker>(WorkerParameters::class),
                 definition<OpenPgpApiManager>(LifecycleOwner::class),
                 definition<SetupArchiveFolderDialogContract.ViewModel>(SetupArchiveFolderDialogContract.State::class),
+                definition<MessageListStateMachine.Factory>(Logger::class, List::class),
             ),
         )
     }

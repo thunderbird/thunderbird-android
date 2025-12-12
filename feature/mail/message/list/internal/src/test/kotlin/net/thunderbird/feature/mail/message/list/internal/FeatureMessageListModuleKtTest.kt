@@ -4,6 +4,7 @@ import kotlin.test.Test
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.mail.message.list.internal.ui.state.machine.MessageListStateMachine
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.KoinTest
@@ -23,6 +24,7 @@ class FeatureMessageListModuleKtTest : KoinTest {
             ),
             injections = listOf(
                 definition<SetupArchiveFolderDialogContract.ViewModel>(SetupArchiveFolderDialogContract.State::class),
+                definition<MessageListStateMachine.Factory>(Logger::class, List::class),
             ),
         )
     }
