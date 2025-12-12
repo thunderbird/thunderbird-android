@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.feature.mail.message.list.api)
 
     implementation(projects.backend.api)
+    implementation(projects.core.android.account)
     implementation(projects.core.android.common)
     implementation(projects.core.logging.api)
     implementation(projects.core.outcome)
