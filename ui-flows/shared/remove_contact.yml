@@ -2,13 +2,12 @@
 # env:
 #     NAME: Alice
 
-appId: net.thunderbird.android.debug
+appId: net.thunderbird.android.beta
 ---
 
 ## Open contact
 - tapOn:
-    id: "net.thunderbird.android.debug:id/name"
-    text: ${NAME}
+    id: "net.thunderbird.android.beta:id/participants_container"
 
 ## Delete contact
 - tapOn: "More options"
