@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.config.DebugLogConfigurator
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -24,6 +25,7 @@ import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsP
 import net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsPreferenceManager
 import net.thunderbird.core.preference.display.miscSettings.DisplayMiscSettingsPreferenceManager
 import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsPreferenceManager
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
@@ -50,6 +52,7 @@ internal class DefaultGeneralSettingsManager(
     private val displayCoreSettingsPreferenceManager: DisplayCoreSettingsPreferenceManager,
     private val displayInboxSettingsPreferenceManager: DisplayInboxSettingsPreferenceManager,
     private val displayVisualSettingsPreferenceManager: DisplayVisualSettingsPreferenceManager,
+    private val messageListPreferencesManager: MessageListPreferencesManager,
     private val displayMiscSettingsPreferenceManager: DisplayMiscSettingsPreferenceManager,
     private val networkSettingsPreferenceManager: NetworkSettingsPreferenceManager,
     private val debuggingSettingsPreferenceManager: DebuggingSettingsPreferenceManager,
@@ -57,6 +60,7 @@ internal class DefaultGeneralSettingsManager(
     private val debugLogConfigurator: DebugLogConfigurator,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val platformConfigProvider: PlatformConfigProvider,
+    private val logger: Logger,
 ) : GeneralSettingsManager {
     val mutex = Mutex()
     private val generalSettings = privacySettingsPreferenceManager.getConfigFlow()
@@ -91,6 +95,16 @@ internal class DefaultGeneralSettingsManager(
         .combine(displayVisualSettingsPreferenceManager.getConfigFlow()) { generalSettings, visualSettings ->
             generalSettings.copy(
                 display = generalSettings.display.copy(visualSettings = visualSettings),
+            )
+        }
+        .combine(messageListPreferencesManager.getConfigFlow()) { generalSettings, messageListSettings ->
+            logger.debug { "messageListSettings: $messageListSettings" }
+            generalSettings.copy(
+                display = generalSettings.display.copy(
+                    visualSettings = generalSettings.display.visualSettings.copy(
+                        messageListSettings = messageListSettings,
+                    ),
+                ),
             )
         }
         .combine(displayMiscSettingsPreferenceManager.getConfigFlow()) { generalSettings, miscSettings ->
@@ -163,6 +177,7 @@ internal class DefaultGeneralSettingsManager(
                 displayCoreSettingsPreferenceManager.save(config.display.coreSettings)
                 displayInboxSettingsPreferenceManager.save(config.display.inboxSettings)
                 displayVisualSettingsPreferenceManager.save(config.display.visualSettings)
+                messageListPreferencesManager.save(config.display.visualSettings.messageListSettings)
                 displayMiscSettingsPreferenceManager.save(config.display.miscSettings)
                 networkSettingsPreferenceManager.save(config.network)
                 debuggingSettingsPreferenceManager.save(config.debugging)
