@@ -6,14 +6,24 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import app.k9mail.core.ui.compose.theme2.MainTheme
+import app.k9mail.core.ui.compose.theme2.k9mail.K9MailTheme2
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
 import net.thunderbird.core.common.provider.AppNameProvider
@@ -29,6 +39,20 @@ class AboutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val appLogo = view.findViewById<ComposeView>(R.id.app_logo)
+        appLogo.setContent {
+            K9MailTheme2 {
+                val context = LocalContext.current
+                val typedValue = remember { TypedValue() }
+                context.theme.resolveAttribute(app.k9mail.core.ui.legacy.theme2.common.R.attr.appLogo, typedValue, true)
+                Image(
+                    painter = painterResource(id = typedValue.resourceId),
+                    modifier = Modifier.size(size = MainTheme.sizes.huge),
+                    contentDescription = null,
+                )
+            }
+        }
 
         val titleTextView = view.findViewById<MaterialTextView>(R.id.about_title)
         titleTextView.text = getString(R.string.about_title, appNameProvider.appName)

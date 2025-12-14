@@ -14,7 +14,8 @@
         android:orientation="vertical"
         >
 
-        <ImageView
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/app_logo"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
