@@ -67,6 +67,17 @@ class AboutFragment : Fragment() {
             }
         }
 
+        val authorsImage = view.findViewById<ComposeView>(R.id.authors_image)
+        authorsImage.setContent {
+            K9MailTheme2 {
+                Image(
+                    painter = painterResource(id = DesignSystemR.drawable.ic_group),
+                    modifier = Modifier.size(size = MainTheme.sizes.medium),
+                    contentDescription = null,
+                )
+            }
+        }
+
 
         val titleTextView = view.findViewById<MaterialTextView>(R.id.about_title)
         titleTextView.text = getString(R.string.about_title, appNameProvider.appName)
