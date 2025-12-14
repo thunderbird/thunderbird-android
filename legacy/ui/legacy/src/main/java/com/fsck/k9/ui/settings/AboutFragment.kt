@@ -29,6 +29,8 @@ import com.google.android.material.textview.MaterialTextView
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.logging.legacy.Log
 import org.koin.android.ext.android.inject
+import app.k9mail.core.ui.legacy.designsystem.R as DesignSystemR
+import app.k9mail.core.ui.legacy.theme2.common.R as Theme2CommonR
 
 class AboutFragment : Fragment() {
     private val appNameProvider: AppNameProvider by inject()
@@ -45,7 +47,7 @@ class AboutFragment : Fragment() {
             K9MailTheme2 {
                 val context = LocalContext.current
                 val typedValue = remember { TypedValue() }
-                context.theme.resolveAttribute(app.k9mail.core.ui.legacy.theme2.common.R.attr.appLogo, typedValue, true)
+                context.theme.resolveAttribute(Theme2CommonR.attr.appLogo, typedValue, true)
                 Image(
                     painter = painterResource(id = typedValue.resourceId),
                     modifier = Modifier.size(size = MainTheme.sizes.huge),
@@ -53,6 +55,18 @@ class AboutFragment : Fragment() {
                 )
             }
         }
+
+        val versionImage = view.findViewById<ComposeView>(R.id.version_image)
+        versionImage.setContent {
+            K9MailTheme2 {
+                Image(
+                    painter = painterResource(id = DesignSystemR.drawable.ic_info),
+                    modifier = Modifier.size(size = MainTheme.sizes.medium),
+                    contentDescription = null,
+                )
+            }
+        }
+
 
         val titleTextView = view.findViewById<MaterialTextView>(R.id.about_title)
         titleTextView.text = getString(R.string.about_title, appNameProvider.appName)

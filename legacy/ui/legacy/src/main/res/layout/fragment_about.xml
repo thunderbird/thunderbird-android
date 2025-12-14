@@ -51,7 +51,8 @@
             android:paddingBottom="8dp"
             >
 
-            <ImageView
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/version_image"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
