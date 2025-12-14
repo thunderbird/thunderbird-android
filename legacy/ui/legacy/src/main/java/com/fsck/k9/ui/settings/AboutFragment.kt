@@ -18,12 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import app.k9mail.core.ui.compose.theme2.MainTheme
-import app.k9mail.core.ui.compose.theme2.k9mail.K9MailTheme2
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
 import net.thunderbird.core.common.provider.AppNameProvider
@@ -32,6 +31,7 @@ import org.koin.android.ext.android.inject
 import app.k9mail.core.ui.legacy.designsystem.R as DesignSystemR
 import app.k9mail.core.ui.legacy.theme2.common.R as Theme2CommonR
 
+@Suppress("TooManyFunctions")
 class AboutFragment : Fragment() {
     private val appNameProvider: AppNameProvider by inject()
 
@@ -42,75 +42,19 @@ class AboutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val appLogo = view.findViewById<ComposeView>(R.id.app_logo)
-        appLogo.setContent {
-            K9MailTheme2 {
-                val context = LocalContext.current
-                val typedValue = remember { TypedValue() }
-                context.theme.resolveAttribute(Theme2CommonR.attr.appLogo, typedValue, true)
-                Image(
-                    painter = painterResource(id = typedValue.resourceId),
-                    modifier = Modifier.size(size = MainTheme.sizes.huge),
-                    contentDescription = null,
-                )
-            }
-        }
+        setAppLogo(view)
 
-        val versionImage = view.findViewById<ComposeView>(R.id.version_image)
-        versionImage.setContent {
-            K9MailTheme2 {
-                Image(
-                    painter = painterResource(id = DesignSystemR.drawable.ic_info),
-                    modifier = Modifier.size(size = MainTheme.sizes.medium),
-                    contentDescription = null,
-                )
-            }
-        }
+        setVersionImage(view)
 
-        val authorsImage = view.findViewById<ComposeView>(R.id.authors_image)
-        authorsImage.setContent {
-            K9MailTheme2 {
-                Image(
-                    painter = painterResource(id = DesignSystemR.drawable.ic_group),
-                    modifier = Modifier.size(size = MainTheme.sizes.medium),
-                    contentDescription = null,
-                )
-            }
-        }
+        setAuthorsImage(view)
 
-        val sourceCodeImage = view.findViewById<ComposeView>(R.id.source_code_image)
-        sourceCodeImage.setContent {
-            K9MailTheme2 {
-                Image(
-                    painter = painterResource(id = DesignSystemR.drawable.ic_code),
-                    modifier = Modifier.size(size = MainTheme.sizes.medium),
-                    contentDescription = null,
-                )
-            }
-        }
+        setSourceCodeImage(view)
 
-        val licenceImage = view.findViewById<ComposeView>(R.id.licence_image)
-        licenceImage.setContent {
-            K9MailTheme2 {
-                Image(
-                    painter = painterResource(id = DesignSystemR.drawable.ic_description),
-                    modifier = Modifier.size(size = MainTheme.sizes.medium),
-                    contentDescription = null,
-                )
-            }
-        }
+        setLicenceImage(view)
 
-        val linkImage = view.findViewById<ComposeView>(R.id.link_image)
-        linkImage.setContent {
-            K9MailTheme2 {
-                Image(
-                    painter = painterResource(id = DesignSystemR.drawable.ic_link),
-                    modifier = Modifier.size(size = MainTheme.sizes.medium),
-                    contentDescription = null,
-                )
-            }
-        }
+        setLinkImage(view)
 
+        setForumImage(view)
 
         val titleTextView = view.findViewById<MaterialTextView>(R.id.about_title)
         titleTextView.text = getString(R.string.about_title, appNameProvider.appName)
@@ -153,6 +97,86 @@ class AboutFragment : Fragment() {
             adapter = LibrariesAdapter(USED_LIBRARIES)
             isNestedScrollingEnabled = false
             isFocusable = false
+        }
+    }
+
+    private fun setForumImage(view: View) {
+        val forumImage = view.findViewById<ComposeView>(R.id.forum_image)
+        forumImage.setContent {
+            Image(
+                painter = painterResource(id = DesignSystemR.drawable.ic_forum),
+                modifier = Modifier.size(size = 32.dp),
+                contentDescription = null,
+            )
+        }
+    }
+
+    private fun setLinkImage(view: View) {
+        val linkImage = view.findViewById<ComposeView>(R.id.link_image)
+        linkImage.setContent {
+            Image(
+                painter = painterResource(id = DesignSystemR.drawable.ic_link),
+                modifier = Modifier.size(size = 32.dp),
+                contentDescription = null,
+            )
+        }
+    }
+
+    private fun setLicenceImage(view: View) {
+        val licenceImage = view.findViewById<ComposeView>(R.id.licence_image)
+        licenceImage.setContent {
+            Image(
+                painter = painterResource(id = DesignSystemR.drawable.ic_description),
+                modifier = Modifier.size(size = 32.dp),
+                contentDescription = null,
+            )
+        }
+    }
+
+    private fun setSourceCodeImage(view: View) {
+        val sourceCodeImage = view.findViewById<ComposeView>(R.id.source_code_image)
+        sourceCodeImage.setContent {
+            Image(
+                painter = painterResource(id = DesignSystemR.drawable.ic_code),
+                modifier = Modifier.size(size = 32.dp),
+                contentDescription = null,
+            )
+        }
+    }
+
+    private fun setAuthorsImage(view: View) {
+        val authorsImage = view.findViewById<ComposeView>(R.id.authors_image)
+        authorsImage.setContent {
+            Image(
+                painter = painterResource(id = DesignSystemR.drawable.ic_group),
+                modifier = Modifier.size(size = 32.dp),
+                contentDescription = null,
+            )
+        }
+    }
+
+    private fun setVersionImage(view: View) {
+        val versionImage = view.findViewById<ComposeView>(R.id.version_image)
+        versionImage.setContent {
+            Image(
+                painter = painterResource(id = DesignSystemR.drawable.ic_info),
+                modifier = Modifier.size(size = 32.dp),
+                contentDescription = null,
+            )
+        }
+    }
+
+    private fun setAppLogo(view: View) {
+        val appLogo = view.findViewById<ComposeView>(R.id.app_logo)
+        appLogo.setContent {
+            val context = LocalContext.current
+            val typedValue = remember { TypedValue() }
+            context.theme.resolveAttribute(Theme2CommonR.attr.appLogo, typedValue, true)
+            Image(
+                painter = painterResource(id = typedValue.resourceId),
+                modifier = Modifier.size(size = 128.dp),
+                contentDescription = null,
+            )
         }
     }
 
