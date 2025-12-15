@@ -9,6 +9,7 @@ android {
 dependencies {
     api(projects.core.outcome)
 
+    implementation(projects.core.android.account)
     implementation(projects.core.common)
     implementation(projects.core.featureflag)
     implementation(projects.core.preference.api)
