@@ -15,6 +15,7 @@ import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.NotificationQuickDelete
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.core.preference.update
 
@@ -148,6 +149,7 @@ class GeneralSettingsDataStore(
             "message_compose_theme" -> subThemeToString(coreSettings.messageComposeTheme)
             "messageViewTheme" -> subThemeToString(coreSettings.messageViewTheme)
             "messagelist_preview_lines" -> messageListSettings.previewLines.toString()
+            "message_list_date_time_format" -> messageListSettings.dateTimeFormat.toString()
             "splitview_mode" -> coreSettings.splitViewMode.name
             "notification_quick_delete" -> notificationSettings.notificationQuickDeleteBehaviour.name
             "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
@@ -187,6 +189,7 @@ class GeneralSettingsDataStore(
             "message_compose_theme" -> setMessageComposeTheme(value)
             "messageViewTheme" -> setMessageViewTheme(value)
             "messagelist_preview_lines" -> setMessageListPreviewLines(value.toInt())
+            "message_list_date_time_format" -> updateMessageListDateTimeFormat(value)
             "splitview_mode" -> setSplitViewModel(SplitViewMode.valueOf(value.uppercase()))
             "notification_quick_delete" -> {
                 setNotificationQuickDeleteBehaviour(
@@ -847,6 +850,21 @@ class GeneralSettingsDataStore(
                     visualSettings = settings.display.visualSettings.copy(
                         messageListSettings = settings.display.visualSettings.messageListSettings.copy(
                             uiDensity = UiDensity.valueOf(value),
+                        ),
+                    ),
+                ),
+            )
+        }
+    }
+
+    private fun updateMessageListDateTimeFormat(value: String) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        messageListSettings = settings.display.visualSettings.messageListSettings.copy(
+                            dateTimeFormat = MessageListDateTimeFormat.valueOf(value)
                         ),
                     ),
                 ),
