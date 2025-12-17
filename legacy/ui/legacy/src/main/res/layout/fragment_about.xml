@@ -14,7 +14,8 @@
         android:orientation="vertical"
         >
 
-        <ImageView
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/app_logo"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
@@ -50,9 +51,10 @@
             android:paddingBottom="8dp"
             >
 
-            <ImageView
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/version_image"
                 android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_height="18dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
                 app:srcCompat="@drawable/ic_info"
@@ -97,7 +99,8 @@
             android:paddingBottom="8dp"
             >
 
-            <ImageView
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/authors_image"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
@@ -150,7 +153,8 @@
             android:paddingBottom="8dp"
             >
 
-            <ImageView
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/source_code_image"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
@@ -196,7 +200,8 @@
             android:paddingBottom="8dp"
             >
 
-            <ImageView
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/licence_image"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
@@ -253,7 +258,8 @@
             android:paddingBottom="8dp"
             >
 
-            <ImageView
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/link_image"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
@@ -299,7 +305,8 @@
             android:paddingBottom="8dp"
             >
 
-            <ImageView
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/forum_image"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
