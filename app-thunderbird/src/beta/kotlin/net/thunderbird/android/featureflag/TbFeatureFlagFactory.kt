@@ -26,7 +26,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
                 FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = false),
                 FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = false),
-                FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = false),
+                FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
                 FeatureFlag(MessageListFeatureFlags.EnableMessageListNewState, enabled = false),
             ),
         )
