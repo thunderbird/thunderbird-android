@@ -28,7 +28,6 @@ import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.logging.legacy.Log
 
 private const val KEY_AUTHORIZATION = "app.k9mail_auth"
 
@@ -50,7 +49,7 @@ internal class AuthViewModel(
 
     @Synchronized
     private fun getAuthService(): AuthorizationService {
-        return authService ?: AuthorizationService(getApplication<Application>()).also { authService = it }
+        return authService ?: AuthorizationService(getApplication()).also { authService = it }
     }
 
     fun init(activityResultRegistry: ActivityResultRegistry, lifecycle: Lifecycle, account: LegacyAccountDto) {
@@ -63,22 +62,8 @@ internal class AuthViewModel(
         _uiState.update { AuthFlowState.Idle }
     }
 
-    fun isAuthorized(account: LegacyAccountDto): Boolean {
-        val authState = getOrCreateAuthState(account)
-        return authState.isAuthorized
-    }
-
     fun isUsingGoogle(account: LegacyAccountDto): Boolean {
-        return GoogleOAuthHelper.isGoogle(account.incomingServerSettings.host!!)
-    }
-
-    private fun getOrCreateAuthState(account: LegacyAccountDto): AuthState {
-        return try {
-            account.oAuthState?.let { AuthState.jsonDeserialize(it) } ?: AuthState()
-        } catch (e: Exception) {
-            Log.e(e, "Error deserializing AuthState")
-            AuthState()
-        }
+        return GoogleOAuthHelper.isGoogle(account.incomingServerSettings.host)
     }
 
     fun login() {
