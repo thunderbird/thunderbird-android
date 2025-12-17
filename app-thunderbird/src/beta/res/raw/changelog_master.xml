@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="16.0b3" versioncode="39" date="2025-12-17">
+        <change>Application crashed on Pixel 10 Pro when returning to message list</change>
+        <change>Account avatar monograms reverted to initial account name and could not be renamed</change>
+    </release>
     <release version="16.0b2" versioncode="38" date="2025-12-10">
         <change>Application crashed at startup</change>
         <change>Fix various edge-to-edge issues throughout the app</change>

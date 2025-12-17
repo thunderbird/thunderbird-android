@@ -1,0 +1,3 @@
+Thunderbird for Android version 16.0b3, based on K-9 Mail. Changes include:
+- Application crashed on Pixel 10 Pro when returning to message list
+- Account avatar monograms reverted to initial account name and could not be renamed
