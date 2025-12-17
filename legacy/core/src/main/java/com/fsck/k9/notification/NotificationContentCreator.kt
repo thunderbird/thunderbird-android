@@ -83,6 +83,7 @@ internal class NotificationContentCreator(
                     fromAddresses.first(),
                     messageListPreferences.isShowCorrespondentNames,
                     messageListPreferences.isChangeContactNameColor,
+                    messageListPreferences.contactNameColor,
                     localContactRepository,
                 ).toString()
             }
@@ -98,6 +99,7 @@ internal class NotificationContentCreator(
                         .isShowCorrespondentNames,
                     isChangeContactNameColor = messageListPreferences
                         .isChangeContactNameColor,
+                    contactNameColor = messageListPreferences.contactNameColor,
                     contactRepository = localContactRepository,
                 ).toString()
                 return resourceProvider.recipientDisplayName(recipientDisplayName)

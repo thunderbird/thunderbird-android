@@ -114,7 +114,9 @@ class GeneralSettingsDataStore(
 
     override fun getInt(key: String?, defValue: Int): Int {
         return when (key) {
-            "messagelist_contact_name_color" -> K9.contactNameColor
+            "messagelist_contact_name_color" ->
+                generalSettingsManager
+                    .getConfig().display.visualSettings.messageListSettings.contactNameColor
             "message_view_content_font_slider" -> K9.fontSizes.messageViewContentAsPercent
             else -> defValue
         }
@@ -122,7 +124,7 @@ class GeneralSettingsDataStore(
 
     override fun putInt(key: String?, value: Int) {
         when (key) {
-            "messagelist_contact_name_color" -> K9.contactNameColor = value
+            "messagelist_contact_name_color" -> setContactNameColor(value)
             "message_view_content_font_slider" -> K9.fontSizes.messageViewContentAsPercent = value
             else -> return
         }
@@ -788,6 +790,21 @@ class GeneralSettingsDataStore(
                 display = settings.display.copy(
                     visualSettings = settings.display.visualSettings.copy(
                         bodyContentType = BodyContentType.valueOf(value),
+                    ),
+                ),
+            )
+        }
+    }
+
+    private fun setContactNameColor(contactNameColor: Int) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        messageListSettings = settings.display.visualSettings.messageListSettings.copy(
+                            contactNameColor = contactNameColor,
+                        ),
                     ),
                 ),
             )
