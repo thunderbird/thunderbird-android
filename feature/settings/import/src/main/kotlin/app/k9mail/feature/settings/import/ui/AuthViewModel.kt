@@ -28,14 +28,17 @@ import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.logging.Logger
 
 private const val KEY_AUTHORIZATION = "app.k9mail_auth"
+private const val TAG = "AuthViewModel"
 
 @Suppress("TooManyFunctions")
 internal class AuthViewModel(
     application: Application,
     private val accountManager: LegacyAccountDtoManager,
     private val getOAuthRequestIntent: GetOAuthRequestIntent,
+    private val logger: Logger,
 ) : AndroidViewModel(application) {
     private var authService: AuthorizationService? = null
     private val authState = AuthState()
@@ -73,6 +76,7 @@ internal class AuthViewModel(
             try {
                 startLogin(account)
             } catch (e: ActivityNotFoundException) {
+                logger.error(TAG, e) { "No browser found to start OAuth login flow." }
                 _uiState.update { AuthFlowState.BrowserNotFound }
             }
         }
@@ -80,7 +84,7 @@ internal class AuthViewModel(
 
     private suspend fun startLogin(account: LegacyAccountDto) {
         val authRequestIntentResult = withContext(Dispatchers.IO) {
-            getOAuthRequestIntent.execute(account.incomingServerSettings.host!!, account.email)
+            getOAuthRequestIntent.execute(account.incomingServerSettings.host, account.email)
         }
 
         when (authRequestIntentResult) {
