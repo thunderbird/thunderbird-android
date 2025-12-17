@@ -17,7 +17,9 @@ fun rememberCompatAvatar(
     name: String,
 ): Avatar = remember(avatar, name) {
     when (avatar) {
-        is Avatar.Monogram -> avatar
+        is Avatar.Monogram -> Avatar.Monogram(
+            value = extractNameInitials(name),
+        )
         is Avatar.Icon -> avatar
         else -> Avatar.Monogram(
             value = extractNameInitials(name),
