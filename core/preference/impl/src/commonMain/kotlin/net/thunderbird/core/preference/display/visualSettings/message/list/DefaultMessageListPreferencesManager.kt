@@ -67,6 +67,9 @@ class DefaultMessageListPreferencesManager(
         storageEditor.putBoolean(KEY_SHOW_CORRESPONDENT_NAMES, preferences.isShowCorrespondentNames)
         storageEditor.putInt(KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES, preferences.previewLines)
         storageEditor.putEnum(KEY_MESSAGE_LIST_VIEW_DENSITY, preferences.uiDensity)
+        storageEditor.commit().also { commited ->
+            logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
+        }
     }
 
     override fun getConfig(): DisplayMessageListSettings = preferences.value

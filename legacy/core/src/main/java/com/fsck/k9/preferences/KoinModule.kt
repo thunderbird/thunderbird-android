@@ -153,12 +153,14 @@ val preferencesModule = module {
             displayCoreSettingsPreferenceManager = get(),
             displayInboxSettingsPreferenceManager = get(),
             displayVisualSettingsPreferenceManager = get(),
+            messageListPreferencesManager = get(),
             displayMiscSettingsPreferenceManager = get(),
             networkSettingsPreferenceManager = get(),
             debuggingSettingsPreferenceManager = get(),
             interactionSettingsPreferenceManager = get(),
             debugLogConfigurator = get(),
             platformConfigProvider = get(),
+            logger = get(),
         )
     } bind GeneralSettingsManager::class
     single {
