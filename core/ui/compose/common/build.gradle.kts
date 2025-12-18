@@ -15,5 +15,4 @@ android {
 
 dependencies {
     testImplementation(projects.core.ui.compose.testing)
-    testImplementation(projects.core.ui.compose.designsystem)
 }
