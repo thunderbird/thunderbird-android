@@ -1,8 +1,8 @@
 package net.thunderbird.backend.api
 
 import com.fsck.k9.backend.api.BackendStorage
-import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.account.AccountId
 
-interface BackendStorageFactory<in TAccount : BaseAccount> {
-    fun createBackendStorage(account: TAccount): BackendStorage
+interface BackendStorageFactory {
+    fun createBackendStorage(accountId: AccountId): BackendStorage
 }

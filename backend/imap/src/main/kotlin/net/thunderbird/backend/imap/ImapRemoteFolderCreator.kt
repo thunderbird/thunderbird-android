@@ -13,7 +13,7 @@ import net.thunderbird.backend.api.folder.RemoteFolderCreator
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.account.AccountId
 
 class ImapRemoteFolderCreator(
     private val logger: Logger,
@@ -64,10 +64,10 @@ interface ImapRemoteFolderCreatorFactory : RemoteFolderCreator.Factory
 
 class DefaultImapRemoteFolderCreatorFactory(
     private val logger: Logger,
-    private val backendFactory: BackendFactory<BaseAccount>,
+    private val backendFactory: BackendFactory,
 ) : ImapRemoteFolderCreatorFactory {
-    override fun create(account: BaseAccount): RemoteFolderCreator {
-        val backend = backendFactory.createBackend(account) as ImapBackend
+    override fun create(accountId: AccountId): RemoteFolderCreator {
+        val backend = backendFactory.createBackend(accountId) as ImapBackend
         return ImapRemoteFolderCreator(
             logger = logger,
             imapStore = backend.imapStore,

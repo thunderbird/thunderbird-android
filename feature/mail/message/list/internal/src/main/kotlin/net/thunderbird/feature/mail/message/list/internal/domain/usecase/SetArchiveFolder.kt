@@ -2,12 +2,13 @@ package net.thunderbird.feature.mail.message.list.internal.domain.usecase
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import net.thunderbird.backend.api.BackendStorageFactory
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
@@ -17,21 +18,21 @@ import net.thunderbird.feature.mail.message.list.domain.SetAccountFolderOutcome
 import com.fsck.k9.mail.FolderType as LegacyFolderType
 
 internal class SetArchiveFolder(
-    private val accountManager: LegacyAccountDtoManager,
-    private val backendStorageFactory: BackendStorageFactory<BaseAccount>,
-    private val specialFolderUpdaterFactory: SpecialFolderUpdater.Factory<BaseAccount>,
+    private val accountManager: LegacyAccountManager,
+    private val backendStorageFactory: BackendStorageFactory,
+    private val specialFolderUpdaterFactory: SpecialFolderUpdater.Factory,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : DomainContract.UseCase.SetArchiveFolder {
     override suspend fun invoke(
-        accountUuid: String,
+        accountId: AccountId,
         folder: RemoteFolder,
     ): Outcome<SetAccountFolderOutcome.Success, SetAccountFolderOutcome.Error> {
         val account = withContext(ioDispatcher) {
-            accountManager.getAccount(accountUuid)
+            accountManager.getById(accountId).firstOrNull()
         } ?: return Outcome.Failure(SetAccountFolderOutcome.Error.AccountNotFound)
 
-        val backend = backendStorageFactory.createBackendStorage(account)
-        val specialFolderUpdater = specialFolderUpdaterFactory.create(account)
+        val backend = backendStorageFactory.createBackendStorage(accountId)
+        val specialFolderUpdater = specialFolderUpdaterFactory.create(accountId)
         return try {
             withContext(ioDispatcher) {
                 backend

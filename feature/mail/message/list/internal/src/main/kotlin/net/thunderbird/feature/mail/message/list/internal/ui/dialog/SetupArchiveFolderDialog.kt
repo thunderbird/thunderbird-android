@@ -22,6 +22,7 @@ import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.organism.BasicDialog
 import app.k9mail.core.ui.compose.designsystem.organism.BasicDialogDefaults
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.message.list.internal.R
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
@@ -33,10 +34,10 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 internal fun SetupArchiveFolderDialog(
-    accountUuid: String,
+    accountId: AccountId,
     onDismissDialog: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ViewModel = koinViewModel<ViewModel> { parametersOf(accountUuid) },
+    viewModel: ViewModel = koinViewModel<ViewModel> { parametersOf(accountId) },
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {

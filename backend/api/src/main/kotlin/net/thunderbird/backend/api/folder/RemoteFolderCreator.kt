@@ -3,7 +3,7 @@ package net.thunderbird.backend.api.folder
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.folders.FolderServerId
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.account.AccountId
 
 interface RemoteFolderCreator {
     /**
@@ -26,7 +26,7 @@ interface RemoteFolderCreator {
     ): Outcome<RemoteFolderCreationOutcome.Success, RemoteFolderCreationOutcome.Error>
 
     interface Factory {
-        fun create(account: BaseAccount): RemoteFolderCreator
+        fun create(accountId: AccountId): RemoteFolderCreator
     }
 }
 

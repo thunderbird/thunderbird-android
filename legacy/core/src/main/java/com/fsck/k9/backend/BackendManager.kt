@@ -3,15 +3,30 @@ package com.fsck.k9.backend
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.mail.ServerSettings
 import java.util.concurrent.CopyOnWriteArraySet
-import net.thunderbird.core.android.account.LegacyAccountDto
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.runBlocking
+import net.thunderbird.backend.api.BackendFactory
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 
-class BackendManager(private val backendFactories: Map<String, BackendFactory>) {
+class BackendManager(
+    private val backendFactories: Map<String, BackendFactory>,
+    private val accountManager: LegacyAccountManager,
+) {
     private val backendCache = mutableMapOf<String, BackendContainer>()
     private val listeners = CopyOnWriteArraySet<BackendChangedListener>()
 
-    fun getBackend(account: LegacyAccountDto): Backend {
+    // TODO remove this once Java callers have been converted to Kotlin
+    fun getBackend(accountUuid: String): Backend {
+        return getBackend(AccountIdFactory.of(accountUuid))
+    }
+
+    fun getBackend(accountId: AccountId): Backend {
         val newBackend = synchronized(backendCache) {
-            val container = backendCache[account.uuid]
+            val container = backendCache[accountId.asRaw()]
+            val account = getAccountById(accountId)
             if (container != null && isBackendStillValid(container, account)) {
                 return container.backend
             }
@@ -25,28 +40,33 @@ class BackendManager(private val backendFactories: Map<String, BackendFactory>) 
             }
         }
 
-        notifyListeners(account)
+        notifyListeners(accountId)
 
         return newBackend
     }
 
-    private fun isBackendStillValid(container: BackendContainer, account: LegacyAccountDto): Boolean {
+    private fun getAccountById(accountId: AccountId): LegacyAccount = runBlocking {
+        accountManager.getById(accountId).firstOrNull()
+            ?: error("Account not found: $accountId")
+    }
+
+    private fun isBackendStillValid(container: BackendContainer, account: LegacyAccount): Boolean {
         return container.incomingServerSettings == account.incomingServerSettings &&
             container.outgoingServerSettings == account.outgoingServerSettings
     }
 
-    fun removeBackend(account: LegacyAccountDto) {
+    fun removeBackend(accountId: AccountId) {
         synchronized(backendCache) {
-            backendCache.remove(account.uuid)
+            backendCache.remove(accountId.asRaw())
         }
 
-        notifyListeners(account)
+        notifyListeners(accountId)
     }
 
-    private fun createBackend(account: LegacyAccountDto): Backend {
+    private fun createBackend(account: LegacyAccount): Backend {
         val serverType = account.incomingServerSettings.type
         val backendFactory = backendFactories[serverType] ?: error("Unsupported account type")
-        return backendFactory.createBackend(account)
+        return backendFactory.createBackend(account.id)
     }
 
     fun addListener(listener: BackendChangedListener) {
@@ -57,9 +77,9 @@ class BackendManager(private val backendFactories: Map<String, BackendFactory>) 
         listeners.remove(listener)
     }
 
-    private fun notifyListeners(account: LegacyAccountDto) {
+    private fun notifyListeners(accountId: AccountId) {
         for (listener in listeners) {
-            listener.onBackendChanged(account)
+            listener.onBackendChanged(accountId)
         }
     }
 }
@@ -71,5 +91,5 @@ private data class BackendContainer(
 )
 
 fun interface BackendChangedListener {
-    fun onBackendChanged(account: LegacyAccountDto)
+    fun onBackendChanged(accountId: AccountId)
 }

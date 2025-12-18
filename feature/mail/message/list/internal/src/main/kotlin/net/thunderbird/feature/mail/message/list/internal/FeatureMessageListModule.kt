@@ -39,7 +39,7 @@ val featureMessageListModule = module {
     }
     viewModel { parameters ->
         SetupArchiveFolderDialogViewModel(
-            accountUuid = parameters.get(),
+            accountId = parameters.get(),
             logger = get(),
             getAccountFolders = get(),
             createArchiveFolder = get(),

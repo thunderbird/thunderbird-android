@@ -12,9 +12,11 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import org.koin.android.ext.android.inject
 
+@Suppress("TooManyFunctions")
 internal class SetupArchiveFolderDialogFragment : DialogFragment() {
     private val themeProvider: FeatureThemeProvider by inject<FeatureThemeProvider>()
 
@@ -26,13 +28,15 @@ internal class SetupArchiveFolderDialogFragment : DialogFragment() {
         val accountUuid = requireNotNull(requireArguments().getString(ACCOUNT_UUID_ARG)) {
             "The $ACCOUNT_UUID_ARG argument is missing from the arguments bundle."
         }
+        val accountId = AccountIdFactory.of(accountUuid)
+
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 themeProvider.WithTheme {
                     SetupArchiveFolderDialog(
-                        accountUuid = accountUuid,
+                        accountId = accountId,
                         onDismissDialog = {
                             dismiss()
                             setFragmentResult(

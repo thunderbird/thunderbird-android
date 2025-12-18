@@ -87,7 +87,7 @@ class UnreadWidgetDataProvider(
     }
 
     private fun getFolderDisplayName(account: LegacyAccountDto, folderId: Long): String {
-        val folder = runBlocking { folderRepository.getFolder(account, folderId) }
+        val folder = runBlocking { folderRepository.getFolder(account.id, folderId) }
         return if (folder != null) {
             folderNameFormatter.displayName(folder)
         } else {
