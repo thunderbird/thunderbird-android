@@ -50,4 +50,18 @@ class IdTest {
         assertThat(id1).isNotEqualTo(id2)
         assertThat(id1.asRaw()).isNotEqualTo(id2.asRaw())
     }
+
+    @Test
+    fun `toString returns the string representation of the UUID`() {
+        // Arrange
+        val raw = "123e4567-e89b-12d3-a456-426655440000"
+        val uuid = Uuid.parse(raw)
+        val id = Id<IdTestTag>(uuid)
+
+        // Act
+        val toStringResult = id.toString()
+
+        // Assert
+        assertThat(toStringResult).isEqualTo(raw)
+    }
 }

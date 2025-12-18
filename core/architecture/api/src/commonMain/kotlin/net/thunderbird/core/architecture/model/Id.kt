@@ -20,4 +20,8 @@ value class Id<T>(val value: Uuid) {
     fun asRaw(): String {
         return value.toString()
     }
+
+    override fun toString(): String {
+        return value.toString()
+    }
 }
