@@ -1,8 +1,10 @@
 package net.thunderbird.feature.account
 
-import net.thunderbird.core.architecture.model.Identifiable
-
 /**
  * Interface representing an account by its unique identifier [AccountId].
+ *
+ * @property id The unique identifier of the account.
  */
-interface Account : Identifiable<Account>
+interface Account : AccountIdentifiable {
+    override val id: AccountId
+}

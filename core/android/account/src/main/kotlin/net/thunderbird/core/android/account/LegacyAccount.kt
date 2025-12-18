@@ -3,8 +3,8 @@ package net.thunderbird.core.android.account
 import com.fsck.k9.mail.ServerSettings
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.core.common.mail.Protocols
-import net.thunderbird.feature.account.Account
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdentifiable
 import net.thunderbird.feature.account.storage.profile.ProfileDto
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
@@ -110,7 +110,7 @@ data class LegacyAccount(
     val signature: String? = identities[0].signature,
     val shouldMigrateToOAuth: Boolean = false,
     val folderPathDelimiter: FolderPathDelimiter = "/",
-) : Account, BaseAccount {
+) : AccountIdentifiable, BaseAccount {
 
     override val uuid: String = id.asRaw()
 

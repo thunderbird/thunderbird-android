@@ -6,9 +6,9 @@ import com.fsck.k9.mail.ServerSettings
 import java.util.Calendar
 import java.util.Date
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
-import net.thunderbird.feature.account.Account
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.AccountIdentifiable
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.mail.account.api.BaseAccount
@@ -30,7 +30,7 @@ const val DEFAULT_VISIBLE_LIMIT = 25
 open class LegacyAccountDto(
     override val uuid: String,
     val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
-) : Account, BaseAccount {
+) : AccountIdentifiable, BaseAccount {
 
     // [Account]
     override val id: AccountId = AccountIdFactory.of(uuid)

@@ -1,7 +1,7 @@
 package net.thunderbird.feature.account.profile
 
-import net.thunderbird.feature.account.Account
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdentifiable
 import net.thunderbird.feature.account.avatar.Avatar
 
 /**
@@ -17,4 +17,4 @@ data class AccountProfile(
     val name: String,
     val color: Int,
     val avatar: Avatar,
-) : Account
+) : AccountIdentifiable

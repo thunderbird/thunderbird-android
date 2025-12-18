@@ -5,4 +5,4 @@ import net.thunderbird.core.architecture.model.BaseIdFactory
 /**
  * Factory object for creating unique identifiers for [Account] instances.
  */
-object AccountIdFactory : BaseIdFactory<Account>()
+object AccountIdFactory : BaseIdFactory<AccountIdentifiable>()
