@@ -12,7 +12,6 @@ import androidx.navigation.compose.rememberNavController
 import app.k9mail.feature.account.setup.navigation.AccountSetupNavHost
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
 import app.k9mail.feature.onboarding.migration.api.OnboardingMigrationManager
-import app.k9mail.feature.onboarding.permissions.domain.PermissionsDomainContract.UseCase.HasRuntimePermissions
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsScreen
 import app.k9mail.feature.onboarding.welcome.ui.WelcomeScreen
 import app.k9mail.feature.settings.import.ui.SettingsImportAction
@@ -54,18 +53,13 @@ private fun NavController.navigateToPermissions() {
 @Composable
 fun OnboardingNavHost(
     onFinish: (OnboardingRoute) -> Unit,
-    hasRuntimePermissions: HasRuntimePermissions = koinInject(),
     onboardingMigrationManager: OnboardingMigrationManager = koinInject(),
 ) {
     val navController = rememberNavController()
     var accountUuid by rememberSaveable { mutableStateOf<String?>(null) }
 
     fun onImportSuccess() {
-        if (hasRuntimePermissions()) {
-            navController.navigateToPermissions()
-        } else {
-            onFinish(OnboardingRoute.Onboarding(null))
-        }
+        navController.navigateToPermissions()
     }
 
     NavHost(
@@ -101,13 +95,7 @@ fun OnboardingNavHost(
                 onFinish = { route: AccountSetupRoute ->
                     when (route) {
                         is AccountSetupRoute.AccountSetup -> {
-                            val createdAccountUuid = route.accountId
-                            accountUuid = createdAccountUuid
-                            if (hasRuntimePermissions()) {
-                                navController.navigateToPermissions()
-                            } else {
-                                onFinish(OnboardingRoute.Onboarding(createdAccountUuid))
-                            }
+                            navController.navigateToPermissions()
                         }
                     }
                 },

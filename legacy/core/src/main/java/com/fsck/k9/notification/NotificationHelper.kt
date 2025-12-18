@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.PendingIntentCompat
@@ -15,9 +16,11 @@ import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.notification.NotificationPreference
+
+private const val TAG = "NotificationHelper"
 
 class NotificationHelper(
     private val context: Context,
@@ -25,6 +28,7 @@ class NotificationHelper(
     private val notificationChannelManager: NotificationChannelManager,
     private val resourceProvider: NotificationResourceProvider,
     private val generalSettingsManager: GeneralSettingsManager,
+    private val logger: Logger,
 ) {
     fun getContext(): Context {
         return context
@@ -51,14 +55,23 @@ class NotificationHelper(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                 e.message?.contains("does not have permission to") == true
             ) {
-                Log.e(e, "Failed to create a notification for a new message")
+                logger.error(TAG, e) { "Failed to post notification with ID $notificationId" }
                 showNotifyErrorNotification(account)
             } else {
-                throw e
+                logger.error(TAG, e) { "Failed to post notification for account ${account.id.asRaw()}" }
             }
         }
     }
 
+    fun notify(notificationId: Int, notification: Notification) {
+        try {
+            notificationManager.notify(notificationId, notification)
+        } catch (e: SecurityException) {
+            logger.error(TAG, e) { "Failed to post notification with ID $notificationId" }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun showNotifyErrorNotification(account: LegacyAccountDto) {
         val title = resourceProvider.notifyErrorTitle()
         val text = resourceProvider.notifyErrorText()
@@ -87,7 +100,7 @@ class NotificationHelper(
             .build()
 
         val notificationId = NotificationIds.getNewMailSummaryNotificationId(account)
-        notificationManager.notify(notificationId, notification)
+        notify(notificationId, notification)
     }
 
     companion object {

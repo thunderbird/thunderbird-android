@@ -369,7 +369,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
 
     private fun downloadImage(uri: Uri) {
         val request = DownloadManager.Request(uri).apply {
-            if (Build.VERSION.SDK_INT >= 29) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 val filename = uri.lastPathSegment
                 setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
             }

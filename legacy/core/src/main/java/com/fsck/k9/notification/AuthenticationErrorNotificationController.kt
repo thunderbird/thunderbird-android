@@ -34,7 +34,7 @@ internal open class AuthenticationErrorNotificationController(
             .setCategory(NotificationCompat.CATEGORY_ERROR)
             .setErrorAppearance(generalSettingsManager = generalSettingsManager)
 
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        notificationHelper.notify(notificationId, notificationBuilder.build())
     }
 
     fun clearAuthenticationErrorNotification(account: LegacyAccountDto, incoming: Boolean) {

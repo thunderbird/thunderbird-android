@@ -34,7 +34,7 @@ internal open class CertificateErrorNotificationController(
             .setCategory(NotificationCompat.CATEGORY_ERROR)
             .setErrorAppearance(generalSettingsManager = generalSettingsManager)
 
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        notificationHelper.notify(notificationId, notificationBuilder.build())
     }
 
     fun clearCertificateErrorNotifications(account: LegacyAccountDto, incoming: Boolean) {

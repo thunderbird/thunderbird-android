@@ -1,4 +1,5 @@
 package com.fsck.k9.notification
+
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
@@ -11,8 +12,10 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.PendingIntentCompat
 import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import com.fsck.k9.CoreResourceProvider
+import net.thunderbird.core.logging.Logger
 
 private const val PUSH_INFO_ACTION = "app.k9mail.action.PUSH_INFO"
+private const val TAG = "PushNotificationManager"
 
 internal class PushNotificationManager(
     private val context: Context,
@@ -20,6 +23,7 @@ internal class PushNotificationManager(
     private val iconResourceProvider: NotificationIconResourceProvider,
     private val notificationChannelManager: NotificationChannelManager,
     private val notificationManager: NotificationManagerCompat,
+    private val logger: Logger,
 ) {
     val notificationId = NotificationIds.PUSH_NOTIFICATION_ID
 
@@ -49,7 +53,11 @@ internal class PushNotificationManager(
 
     private fun updateNotification() {
         val notification = createNotification()
-        notificationManager.notify(notificationId, notification)
+        try {
+            notificationManager.notify(notificationId, notification)
+        } catch (e: SecurityException) {
+            logger.error(TAG, e) { "Failed to post updated notification for $notificationId" }
+        }
     }
 
     private fun createNotification(): Notification {
