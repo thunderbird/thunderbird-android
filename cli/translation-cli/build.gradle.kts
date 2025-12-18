@@ -18,3 +18,8 @@ dependencies {
     implementation(libs.ktor.serialization.json)
     implementation(libs.logback.classic)
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

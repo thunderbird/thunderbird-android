@@ -21,6 +21,10 @@ dependencies {
     implementation(plugin(libs.plugins.dependency.check))
     implementation(plugin(libs.plugins.detekt))
     implementation(plugin(libs.plugins.spotless))
+    implementation(plugin(libs.plugins.kover))
+
+    // Make custom plugins in :plugins available to precompiled convention plugins by classpath
+    implementation(project(":plugins"))
 
     implementation(libs.diff.utils)
     compileOnly(libs.android.tools.common)
@@ -36,6 +40,6 @@ kotlin {
     }
 }
 
-fun plugin(provider: Provider<PluginDependency>) = with(provider.get()) {
+private fun plugin(provider: Provider<PluginDependency>) = with(provider.get()) {
     "$pluginId:$pluginId.gradle.plugin:$version"
 }

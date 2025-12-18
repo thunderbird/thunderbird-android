@@ -22,3 +22,8 @@ dependencies {
 android {
     namespace = "com.fsck.k9.ui.base"
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

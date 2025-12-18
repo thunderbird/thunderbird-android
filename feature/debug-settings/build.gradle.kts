@@ -19,3 +19,8 @@ dependencies {
     implementation(projects.feature.notification.api)
     implementation(projects.core.android.common)
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

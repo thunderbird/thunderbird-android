@@ -9,3 +9,7 @@ dependencies {
 android {
     namespace = "com.fsck.k9.crypto.openpgp"
 }
+
+codeCoverage {
+    lineCoverage.set(67)
+}

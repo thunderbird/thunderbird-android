@@ -30,3 +30,8 @@ dependencies {
     testImplementation(projects.core.ui.compose.testing)
     testImplementation(projects.mail.protocols.imap)
 }
+
+codeCoverage {
+    branchCoverage.set(37)
+    lineCoverage.set(50)
+}
