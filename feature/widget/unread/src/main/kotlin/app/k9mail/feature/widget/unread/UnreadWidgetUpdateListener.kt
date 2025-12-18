@@ -3,10 +3,13 @@ package app.k9mail.feature.widget.unread
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import com.fsck.k9.mail.Message
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.Logger
+
+private const val TAG = "UnreadWidgetUpdateListener"
 
 class UnreadWidgetUpdateListener(
     private val unreadWidgetUpdater: UnreadWidgetUpdater,
+    private val logger: Logger,
 ) : SimpleMessagingListener() {
 
     @Suppress("TooGenericExceptionCaught")
@@ -14,7 +17,7 @@ class UnreadWidgetUpdateListener(
         try {
             unreadWidgetUpdater.updateAll()
         } catch (e: Exception) {
-            Log.e(e, "Error while updating unread widget(s)")
+            logger.error(TAG, e) { "Error while updating unread widget(s)" }
         }
     }
 

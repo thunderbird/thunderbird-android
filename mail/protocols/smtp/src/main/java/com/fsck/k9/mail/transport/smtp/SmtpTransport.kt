@@ -194,10 +194,6 @@ class SmtpTransport(
                         throw MissingCapabilityException("AUTH EXTERNAL")
                     }
                 }
-
-                else -> {
-                    throw MessagingException("Unhandled authentication method found in server settings (bug).")
-                }
             }
         } catch (e: MessagingException) {
             close()

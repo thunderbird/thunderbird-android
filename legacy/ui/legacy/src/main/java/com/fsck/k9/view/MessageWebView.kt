@@ -3,8 +3,6 @@ package com.fsck.k9.view
 import android.content.Context
 import android.content.pm.PackageManager
 import android.util.AttributeSet
-import android.webkit.WebSettings.LayoutAlgorithm
-import android.webkit.WebSettings.RenderPriority
 import android.webkit.WebView
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mailstore.AttachmentResolver
@@ -32,11 +30,12 @@ class MessageWebView : WebView, KoinComponent {
 
     fun configure(config: WebViewConfig) {
         isVerticalScrollBarEnabled = true
-        setVerticalScrollbarOverlay(true)
         scrollBarStyle = SCROLLBARS_INSIDE_OVERLAY
         isLongClickable = true
 
         configureDarkLightMode(this, config)
+
+        setLayerType(LAYER_TYPE_HARDWARE, null)
 
         with(settings) {
             setSupportZoom(true)
@@ -51,10 +50,6 @@ class MessageWebView : WebView, KoinComponent {
 
             javaScriptEnabled = false
             loadsImagesAutomatically = true
-            setRenderPriority(RenderPriority.HIGH)
-
-            // TODO: Review alternatives. NARROW_COLUMNS is deprecated on KITKAT
-            layoutAlgorithm = LayoutAlgorithm.NARROW_COLUMNS
 
             overScrollMode = OVER_SCROLL_NEVER
 

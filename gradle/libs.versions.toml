@@ -34,6 +34,7 @@ androidxDatastore = "1.1.7"
 androidxFragment = "1.8.8"
 androidxGlance = "1.1.1"
 androidxGlanceMaterial3 = "1.1.1"
+androidxGraphicsPath = "1.1.0-alpha01"
 androidxLifecycle = "2.9.2"
 androidxLocalBroadcastManager = "1.1.0"
 androidxNavigation = "2.9.3"
@@ -177,6 +178,7 @@ androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", versi
 androidx-glance-appwidget-preview = { module = "androidx.glance:glance-appwidget-preview", version.ref = "androidxGlance" }
 androidx-glance-preview = { module = "androidx.glance:glance-preview", version.ref = "androidxGlance" }
 androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "androidxGlanceMaterial3" }
+androidx-graphics-path = { module = "androidx.graphics:graphics-path", version.ref = "androidxGraphicsPath" }
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "androidxLifecycle" }
 androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }

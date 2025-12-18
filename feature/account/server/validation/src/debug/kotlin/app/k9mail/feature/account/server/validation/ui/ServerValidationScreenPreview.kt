@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.server.validation.ui
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.common.ui.fake.FakeAccountStateRepository
@@ -16,13 +17,15 @@ internal fun IncomingServerValidationScreenPreview() {
         ServerValidationScreen(
             onNext = { },
             onBack = { },
-            viewModel = IncomingServerValidationViewModel(
-                accountStateRepository = FakeAccountStateRepository(),
-                validateServerSettings = { ServerSettingsValidationResult.Success },
-                authorizationStateRepository = { true },
-                certificateErrorRepository = InMemoryServerCertificateErrorRepository(),
-                oAuthViewModel = FakeAccountOAuthViewModel(),
-            ),
+            viewModel = viewModel {
+                IncomingServerValidationViewModel(
+                    accountStateRepository = FakeAccountStateRepository(),
+                    validateServerSettings = { ServerSettingsValidationResult.Success },
+                    authorizationStateRepository = { true },
+                    certificateErrorRepository = InMemoryServerCertificateErrorRepository(),
+                    oAuthViewModel = FakeAccountOAuthViewModel(),
+                )
+            },
             brandNameProvider = FakeBrandNameProvider,
         )
     }
@@ -35,13 +38,15 @@ internal fun OutgoingServerValidationScreenPreview() {
         ServerValidationScreen(
             onNext = { },
             onBack = { },
-            viewModel = OutgoingServerValidationViewModel(
-                accountStateRepository = FakeAccountStateRepository(),
-                validateServerSettings = { ServerSettingsValidationResult.Success },
-                authorizationStateRepository = { true },
-                certificateErrorRepository = InMemoryServerCertificateErrorRepository(),
-                oAuthViewModel = FakeAccountOAuthViewModel(),
-            ),
+            viewModel = viewModel {
+                OutgoingServerValidationViewModel(
+                    accountStateRepository = FakeAccountStateRepository(),
+                    validateServerSettings = { ServerSettingsValidationResult.Success },
+                    authorizationStateRepository = { true },
+                    certificateErrorRepository = InMemoryServerCertificateErrorRepository(),
+                    oAuthViewModel = FakeAccountOAuthViewModel(),
+                )
+            },
             brandNameProvider = FakeBrandNameProvider,
         )
     }

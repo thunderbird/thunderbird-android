@@ -28,10 +28,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.Logger
 
 private typealias AccountUuid = String
 private typealias AccountNumber = Int
+private const val TAG = "SettingsImportViewModel"
 
 internal class SettingsImportViewModel(
     private val contentResolver: ContentResolver,
@@ -40,6 +41,7 @@ internal class SettingsImportViewModel(
     private val migrationManager: MigrationManager,
     private val importAppFetcher: ImportAppFetcher,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val logger: Logger,
     viewModelScope: CoroutineScope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob()),
 ) : ViewModel(viewModelScope) {
     private val uiModelLiveData = MutableLiveData<SettingsImportUiModel>()
@@ -153,7 +155,11 @@ internal class SettingsImportViewModel(
                 null
             }
 
-            val savedAccountList = savedInstanceState.getParcelableArrayList<SavedAccountState>(STATE_ACCOUNT_LIST)!!
+            val savedAccountList = BundleCompat.getParcelableArrayList(
+                savedInstanceState,
+                STATE_ACCOUNT_LIST,
+                SavedAccountState::class.java,
+            ) ?: error("Saved account list is missing")
 
             savedAccountList.forEach { saved ->
                 accountsMap[saved.accountIndex] = saved.accountUuid
@@ -387,7 +393,7 @@ internal class SettingsImportViewModel(
                     initializeSettingsList(items)
                 }
             } catch (e: Exception) {
-                Log.e(e, "Error reading settings file")
+                logger.error(TAG, e) { "Error reading settings file" }
 
                 updateUiModel {
                     showReadFailureText()
@@ -423,7 +429,7 @@ internal class SettingsImportViewModel(
                     updateCloseButtonAndImportStatusText()
                 }
             } catch (e: Exception) {
-                Log.e(e, "Error importing settings")
+                logger.error(TAG, e) { "Error importing settings" }
 
                 updateUiModel {
                     showImportErrorText()

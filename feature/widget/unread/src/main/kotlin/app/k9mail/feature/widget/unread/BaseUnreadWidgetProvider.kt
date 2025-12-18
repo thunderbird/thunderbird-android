@@ -12,9 +12,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.Logger
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+
+private const val TAG = "BaseUnreadWidgetProvider"
 
 /**
  * Unread widget provider that displays the number of unread messages on the user's home screen.
@@ -48,6 +50,7 @@ import org.koin.core.component.inject
  */
 abstract class BaseUnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
     private val repository: UnreadWidgetRepository by inject()
+    private val logger: Logger by inject()
     private val widgetScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
@@ -81,10 +84,8 @@ abstract class BaseUnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
         val remoteViews = RemoteViews(context.packageName, R.layout.unread_widget_layout)
 
         val appWidgetId = data.configuration.appWidgetId
-        var clickIntent: Intent? = null
 
-        try {
-            clickIntent = data.clickIntent
+        val clickIntent = try {
             val unreadCount = data.unreadCount
 
             if (unreadCount <= 0) {
@@ -98,17 +99,15 @@ abstract class BaseUnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
             }
 
             remoteViews.setTextViewText(R.id.title, data.title)
-        } catch (e: Exception) {
-            Log.e(e, "Error getting widget configuration")
-        }
 
-        if (clickIntent == null) {
-            // If the widget configuration couldn't be loaded we open the configuration
-            // activity when the user clicks the widget.
-            clickIntent = Intent(context, UnreadWidgetConfigurationActivity::class.java)
-            clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            data.clickIntent
+        } catch (e: Exception) {
+            logger.error(TAG, e) { "Error getting widget configuration for widget ID $appWidgetId" }
+            null
+        } ?: Intent(context, UnreadWidgetConfigurationActivity::class.java).apply {
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
-        clickIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
         val pendingIntent = PendingIntentCompat.getActivity(
             context,

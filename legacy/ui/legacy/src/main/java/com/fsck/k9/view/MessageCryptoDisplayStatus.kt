@@ -222,21 +222,6 @@ enum class MessageCryptoDisplayStatus(
         }
     }
 
-    val isUnencryptedSigned: Boolean
-        get() = when (this) {
-            UNENCRYPTED_SIGN_ERROR,
-            UNENCRYPTED_SIGN_UNKNOWN,
-            UNENCRYPTED_SIGN_VERIFIED,
-            UNENCRYPTED_SIGN_UNVERIFIED,
-            UNENCRYPTED_SIGN_MISMATCH,
-            UNENCRYPTED_SIGN_EXPIRED,
-            UNENCRYPTED_SIGN_REVOKED,
-            UNENCRYPTED_SIGN_INSECURE,
-            -> true
-
-            else -> false
-        }
-
     val isUnknownKey: Boolean
         get() = when (this) {
             ENCRYPTED_SIGN_UNKNOWN, UNENCRYPTED_SIGN_UNKNOWN -> true
@@ -259,7 +244,6 @@ enum class MessageCryptoDisplayStatus(
                 CryptoError.OPENPGP_SIGNED_API_ERROR -> UNENCRYPTED_SIGN_ERROR
                 CryptoError.OPENPGP_ENCRYPTED_API_ERROR -> ENCRYPTED_ERROR
                 CryptoError.OPENPGP_ENCRYPTED_NO_PROVIDER -> ENCRYPTED_NO_PROVIDER
-                else -> error("Unhandled case!")
             }
         }
 
@@ -320,7 +304,6 @@ enum class MessageCryptoDisplayStatus(
                 USER_ID_UNCONFIRMED -> ENCRYPTED_SIGN_UNVERIFIED
                 USER_ID_MISSING -> ENCRYPTED_SIGN_MISMATCH
                 UNKNOWN -> ENCRYPTED_SIGN_UNVERIFIED
-                else -> error("unhandled encrypted result case!")
             }
         }
 
@@ -349,7 +332,6 @@ enum class MessageCryptoDisplayStatus(
                 USER_ID_UNCONFIRMED -> UNENCRYPTED_SIGN_UNVERIFIED
                 USER_ID_MISSING -> UNENCRYPTED_SIGN_MISMATCH
                 UNKNOWN -> UNENCRYPTED_SIGN_UNVERIFIED
-                else -> error("unhandled encrypted result case!")
             }
         }
     }

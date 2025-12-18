@@ -13,6 +13,7 @@ dependencies {
     implementation(libs.preferencex)
 
     testImplementation(libs.robolectric)
+    testImplementation(projects.core.logging.testing)
 }
 
 android {

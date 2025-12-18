@@ -12,6 +12,7 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import kotlin.test.Test
+import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
@@ -24,7 +25,10 @@ private const val MY_PACKAGE_NAME = "net.thunderbird.android"
 class ImportAppFetcherTest {
     private val appContext = ApplicationProvider.getApplicationContext<Context>()
     private val context = createPackageContext()
-    private val importAppFetcher = ImportAppFetcher(context)
+    private val importAppFetcher = ImportAppFetcher(
+        context,
+        logger = TestLogger(),
+    )
 
     @Test
     fun `isAtLeastOneAppInstalled() without any other apps installed`() {
@@ -102,6 +106,7 @@ class ImportAppFetcherTest {
                 this.applicationInfo = ApplicationInfo().apply {
                     this.name = name
                 }
+                @Suppress("DEPRECATION")
                 this.versionCode = versionCode
             },
         )

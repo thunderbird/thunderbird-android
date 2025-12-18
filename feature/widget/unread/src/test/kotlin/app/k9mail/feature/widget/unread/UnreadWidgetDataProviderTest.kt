@@ -13,6 +13,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
@@ -46,6 +47,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         folderRepository,
         folderNameFormatter,
         coreResourceProvider,
+        logger = TestLogger(),
     )
 
     @Before
