@@ -4,25 +4,30 @@
 #     NAME: Alice
 #     FIRST_NAME: Alice
 
-appId: net.thunderbird.android.debug
+appId: net.thunderbird.android.beta
 ---
 
 ## Add contact
 - tapOn:
-    id: "net.thunderbird.android.debug:id/menu_add_contact"
-    index: ${INDEX}
-- tapOn: ${FIRST_NAME}
+    id: "net.thunderbird.android.beta:id/menu_add_contact"
+#    index: ${INDEX}
+#- tapOn: ${FIRST_NAME}
 
+## Create new contact
+- tapOn:
+    id: "com.android.contacts:id/cliv_name_textview"
+
+## Add 'from Contacts' to Name
 - runFlow:
     when:
       visible:
         id: "com.android.contacts:id/editor_menu_save_button"
     commands:
       - inputText: " from Contacts"
-      ### Save
+## Save
       - tapOn:
           id: "com.android.contacts:id/editor_menu_save_button"
 
 ### Exit
-- tapOn:
-    id: "com.android.systemui:id/back"
+#- tapOn:
+#    id: "com.android.systemui:id/back"
