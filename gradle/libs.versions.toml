@@ -77,7 +77,7 @@ jutf7 = "1.0.0"
 jzlib = "1.0.7"
 koinBom = "4.1.1"
 konsist = "0.17.3"
-kotlinBom = "2.2.21"
+kotlinBom = "2.3.0"
 # Needs to match the version used by Gradle, just check with `./gradlew --version`
 kotlinGradleBom = "2.2.0"
 kotlinKsp = "2.3.3"
