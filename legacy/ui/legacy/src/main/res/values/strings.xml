@@ -145,7 +145,7 @@
     <string name="notification_actions_settings_summary">Choose which actions appear in email notifications</string>
     <string name="notification_actions_settings_description">Drag to reorder actions. Actions above the bar will be shown (up to 3).</string>
     <string name="notification_actions_cutoff_label">Shown actions</string>
-    <string name="notification_summary_delete_title">Show Delete on multi-message notifications</string>
+    <string name="notification_summary_delete_title">Show Delete on summary notifications</string>
     <string name="notification_summary_delete_summary">Adds a Delete action to notifications that summarize multiple new messages</string>
     <string name="notification_action_delete">Delete</string>
     <string name="notification_action_delete_all">Delete All</string>
