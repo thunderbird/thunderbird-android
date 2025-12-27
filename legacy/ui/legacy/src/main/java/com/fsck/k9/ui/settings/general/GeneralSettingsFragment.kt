@@ -17,8 +17,8 @@ import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.observe
-import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.notificationactions.NotificationActionsSettingsActivity
+import com.fsck.k9.ui.settings.remove
 import com.google.android.material.snackbar.Snackbar
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import java.text.SimpleDateFormat
