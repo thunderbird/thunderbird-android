@@ -8,7 +8,6 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
-import com.fsck.k9.K9
 import java.util.Calendar
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -209,7 +208,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `always show delete action without confirmation`() {
-        setDeleteAction(K9.NotificationQuickDelete.ALWAYS)
+        setSummaryDeleteActionEnabled(true)
         setConfirmDeleteFromNotification(false)
         val notificationData = createNotificationDataWithMultipleMessages()
 
@@ -225,7 +224,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `always show delete action with confirmation`() {
-        setDeleteAction(K9.NotificationQuickDelete.ALWAYS)
+        setSummaryDeleteActionEnabled(true)
         setConfirmDeleteFromNotification(true)
         val notificationData = createNotificationDataWithMultipleMessages()
 
@@ -240,24 +239,8 @@ class SummaryNotificationDataCreatorTest {
     }
 
     @Test
-    fun `show delete action for single notification without confirmation`() {
-        setDeleteAction(K9.NotificationQuickDelete.FOR_SINGLE_MSG)
-        setConfirmDeleteFromNotification(false)
-        val notificationData = createNotificationDataWithMultipleMessages()
-
-        val result = notificationDataCreator.createSummaryNotificationData(
-            notificationData,
-            silent = true,
-        )
-
-        val summaryNotificationData = result as SummaryInboxNotificationData
-        assertThat(summaryNotificationData.actions).doesNotContain(SummaryNotificationAction.Delete)
-        assertThat(summaryNotificationData.wearActions).doesNotContain(SummaryWearNotificationAction.Delete)
-    }
-
-    @Test
-    fun `never show delete action`() {
-        setDeleteAction(K9.NotificationQuickDelete.NEVER)
+    fun `hide delete action when disabled`() {
+        setSummaryDeleteActionEnabled(false)
         val notificationData = createNotificationDataWithMultipleMessages()
 
         val result = notificationDataCreator.createSummaryNotificationData(
@@ -304,8 +287,12 @@ class SummaryNotificationDataCreatorTest {
         )
     }
 
-    private fun setDeleteAction(mode: K9.NotificationQuickDelete) {
-        K9.notificationQuickDeleteBehaviour = mode
+    private fun setSummaryDeleteActionEnabled(enabled: Boolean) {
+        generalSettings = generalSettings.copy(
+            notification = generalSettings.notification.copy(
+                isSummaryDeleteActionEnabled = enabled,
+            ),
+        )
     }
 
     private fun setConfirmDeleteFromNotification(confirm: Boolean) {

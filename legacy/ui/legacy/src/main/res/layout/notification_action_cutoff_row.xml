@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fsck.k9.view.DraggableFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/windowBackground"
+    android:foreground="?attr/selectableItemBackground"
+    android:stateListAnimator="@animator/draggable_state_list_anim"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="?attr/listPreferredItemHeightSmall"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
+        >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingEnd="16dp"
+            >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:alpha="0.6"
+                android:background="?attr/colorPrimary"
+                />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/drag_handle"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:padding="16dp"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_drag_handle"
+            />
+
+    </LinearLayout>
+
+</com.fsck.k9.view.DraggableFrameLayout>

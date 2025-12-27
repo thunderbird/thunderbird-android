@@ -1,6 +1,5 @@
 package com.fsck.k9.notification
 
-import com.fsck.k9.K9
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
@@ -57,7 +56,7 @@ internal class SingleMessageNotificationDataCreator(
             order = order,
             cutoff = cutoff,
             hasArchiveFolder = account.hasArchiveFolder(),
-            isDeleteEnabled = isDeleteActionEnabled(),
+            isDeleteEnabled = true,
             hasSpamFolder = account.hasSpamFolder(),
             isSpamEnabled = !interactionSettings.isConfirmSpam,
         )
@@ -80,10 +79,6 @@ internal class SingleMessageNotificationDataCreator(
                 add(WearNotificationAction.Spam)
             }
         }
-    }
-
-    private fun isDeleteActionEnabled(): Boolean {
-        return K9.notificationQuickDeleteBehaviour != K9.NotificationQuickDelete.NEVER
     }
 
     private fun resolveActions(
@@ -157,7 +152,7 @@ internal class SingleMessageNotificationDataCreator(
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.
     private fun isDeleteActionAvailableForWear(): Boolean {
-        return isDeleteActionEnabled() && !interactionSettings.isConfirmDeleteFromNotification
+        return !interactionSettings.isConfirmDeleteFromNotification
     }
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.

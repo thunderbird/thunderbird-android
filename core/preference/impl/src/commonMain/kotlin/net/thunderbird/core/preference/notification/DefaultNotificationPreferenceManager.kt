@@ -53,6 +53,10 @@ class DefaultNotificationPreferenceManager(
                 key = KEY_MESSAGE_ACTIONS_CUTOFF,
                 defValue = NOTIFICATION_PREFERENCE_DEFAULT_MESSAGE_ACTIONS_CUTOFF,
             ),
+            isSummaryDeleteActionEnabled = storage.getBoolean(
+                key = KEY_IS_SUMMARY_DELETE_ACTION_ENABLED,
+                defValue = NOTIFICATION_PREFERENCE_DEFAULT_IS_SUMMARY_DELETE_ACTION_ENABLED,
+            ),
         ),
     )
 
@@ -75,6 +79,7 @@ class DefaultNotificationPreferenceManager(
                 )
                 storageEditor.putString(KEY_MESSAGE_ACTIONS_ORDER, config.messageActionsOrder)
                 storageEditor.putInt(KEY_MESSAGE_ACTIONS_CUTOFF, config.messageActionsCutoff)
+                storageEditor.putBoolean(KEY_IS_SUMMARY_DELETE_ACTION_ENABLED, config.isSummaryDeleteActionEnabled)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
