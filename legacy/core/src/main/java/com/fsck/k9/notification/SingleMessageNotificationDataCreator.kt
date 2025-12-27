@@ -2,10 +2,12 @@ package com.fsck.k9.notification
 
 import com.fsck.k9.K9
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 
 internal class SingleMessageNotificationDataCreator(
     private val interactionPreferences: InteractionSettingsPreferenceManager,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
 
     private val interactionSettings get() = interactionPreferences.getConfig()
@@ -22,7 +24,7 @@ internal class SingleMessageNotificationDataCreator(
             isSilent = true,
             timestamp = timestamp,
             content = content,
-            actions = createSingleNotificationActions(),
+            actions = createSingleNotificationActions(account),
             wearActions = createSingleNotificationWearActions(account),
             addLockScreenNotification = addLockScreenNotification,
         )
@@ -39,22 +41,26 @@ internal class SingleMessageNotificationDataCreator(
                 isSilent = silent,
                 timestamp = timestamp,
                 content = data.activeNotifications.first().content,
-                actions = createSingleNotificationActions(),
+                actions = createSingleNotificationActions(data.account),
                 wearActions = createSingleNotificationWearActions(data.account),
                 addLockScreenNotification = false,
             ),
         )
     }
 
-    private fun createSingleNotificationActions(): List<NotificationAction> {
-        return buildList {
-            add(NotificationAction.Reply)
-            add(NotificationAction.MarkAsRead)
+    private fun createSingleNotificationActions(account: LegacyAccountDto): List<NotificationAction> {
+        val notificationPrefs = generalSettingsManager.getConfig().notification
+        val order = parseActionsOrder(notificationPrefs.messageActionsOrder)
+        val cutoff = notificationPrefs.messageActionsCutoff.coerceIn(0, 3)
 
-            if (isDeleteActionEnabled()) {
-                add(NotificationAction.Delete)
-            }
-        }
+        return resolveActions(
+            order = order,
+            cutoff = cutoff,
+            hasArchiveFolder = account.hasArchiveFolder(),
+            isDeleteEnabled = isDeleteActionEnabled(),
+            hasSpamFolder = account.hasSpamFolder(),
+            isSpamEnabled = !interactionSettings.isConfirmSpam,
+        )
     }
 
     private fun createSingleNotificationWearActions(account: LegacyAccountDto): List<WearNotificationAction> {
@@ -78,6 +84,75 @@ internal class SingleMessageNotificationDataCreator(
 
     private fun isDeleteActionEnabled(): Boolean {
         return K9.notificationQuickDeleteBehaviour != K9.NotificationQuickDelete.NEVER
+    }
+
+    private fun resolveActions(
+        order: List<NotificationAction>,
+        cutoff: Int,
+        hasArchiveFolder: Boolean,
+        isDeleteEnabled: Boolean,
+        hasSpamFolder: Boolean,
+        isSpamEnabled: Boolean,
+    ): List<NotificationAction> {
+        fun isAvailable(action: NotificationAction): Boolean {
+            return when (action) {
+                NotificationAction.Reply -> true
+                NotificationAction.MarkAsRead -> true
+                NotificationAction.Delete -> isDeleteEnabled
+                NotificationAction.Archive -> hasArchiveFolder
+                NotificationAction.Spam -> hasSpamFolder && isSpamEnabled
+            }
+        }
+
+        val desired = order.take(cutoff).filter(::isAvailable)
+        if (desired.size == 3) return desired
+
+        val filled = buildList {
+            addAll(desired)
+            for (action in order.drop(cutoff)) {
+                if (size == 3) break
+                if (action !in this && isAvailable(action)) {
+                    add(action)
+                }
+            }
+        }
+
+        return filled
+    }
+
+    private fun parseActionsOrder(raw: String): List<NotificationAction> {
+        val tokens = raw
+            .split(',')
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+
+        val seen = LinkedHashSet<NotificationAction>()
+        for (token in tokens) {
+            tokenToAction(token)?.let { seen.add(it) }
+        }
+
+        for (action in listOf(
+            NotificationAction.Reply,
+            NotificationAction.MarkAsRead,
+            NotificationAction.Delete,
+            NotificationAction.Archive,
+            NotificationAction.Spam,
+        )) {
+            seen.add(action)
+        }
+
+        return seen.toList()
+    }
+
+    private fun tokenToAction(token: String): NotificationAction? {
+        return when (token) {
+            "reply" -> NotificationAction.Reply
+            "mark_as_read" -> NotificationAction.MarkAsRead
+            "delete" -> NotificationAction.Delete
+            "archive" -> NotificationAction.Archive
+            "spam" -> NotificationAction.Spam
+            else -> null
+        }
     }
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.

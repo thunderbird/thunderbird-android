@@ -13,15 +13,26 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
+import net.thunderbird.core.preference.notification.NotificationPreference
 import org.junit.Test
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.mock
 
 class SingleMessageNotificationDataCreatorTest {
     private val account = createAccount()
     private val fakeInteractionPreferences = FakeInteractionSettingsPreferenceManager()
+    private val generalSettings = GeneralSettings(
+        platformConfigProvider = FakePlatformConfigProvider(),
+        notification = NotificationPreference(),
+    )
     private val notificationDataCreator = SingleMessageNotificationDataCreator(
         interactionPreferences = fakeInteractionPreferences,
+        generalSettingsManager = mock {
+            on { getConfig() } doAnswer { generalSettings }
+        },
     )
 
     @Test

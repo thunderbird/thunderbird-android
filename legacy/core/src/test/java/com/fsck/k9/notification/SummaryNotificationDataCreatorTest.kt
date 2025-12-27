@@ -51,6 +51,9 @@ class SummaryNotificationDataCreatorTest {
             interactionPreferences = mock {
                 on { getConfig() } doAnswer { generalSettings.interaction }
             },
+            generalSettingsManager = mock {
+                on { getConfig() } doAnswer { generalSettings }
+            },
         ),
         generalSettingsManager = mock {
             on { getConfig() } doAnswer { generalSettings }
@@ -97,6 +100,9 @@ class SummaryNotificationDataCreatorTest {
                 interactionPreferences = mock {
                     on { getConfig() } doReturn generalSettings.interaction
                 },
+                generalSettingsManager = mock {
+                    on { getConfig() } doReturn generalSettings
+                },
             ),
             generalSettingsManager = mock {
                 on { getConfig() } doReturn generalSettings.copy(
@@ -137,6 +143,9 @@ class SummaryNotificationDataCreatorTest {
             singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
                 interactionPreferences = mock {
                     on { getConfig() } doReturn generalSettings.interaction
+                },
+                generalSettingsManager = mock {
+                    on { getConfig() } doReturn generalSettings
                 },
             ),
             generalSettingsManager = mock {

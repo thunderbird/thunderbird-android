@@ -493,6 +493,12 @@
             android:title="@string/global_settings_lock_screen_notification_visibility_title"
             />
 
+        <Preference
+            android:key="notification_actions_settings"
+            android:title="@string/notification_actions_settings_title"
+            android:summary="@string/notification_actions_settings_summary"
+            />
+
     </PreferenceScreen>
 
     <PreferenceScreen

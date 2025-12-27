@@ -20,5 +20,8 @@
     <item type="id" name="settings_list_url_item" />
     <item type="id" name="settings_list_intent_item" />
 
+    <item type="id" name="notification_action_item" />
+    <item type="id" name="notification_cutoff_item" />
+
     <item type="id" name="message_list_swipe_tag" />
 </resources>

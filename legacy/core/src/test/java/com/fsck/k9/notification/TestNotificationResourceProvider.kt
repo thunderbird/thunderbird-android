@@ -5,6 +5,8 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override val iconMarkAsRead: Int = 2
     override val iconDelete: Int = 3
     override val iconReply: Int = 4
+    override val iconArchive: Int = 14
+    override val iconMarkAsSpam: Int = 15
     override val iconNewMail: Int = 5
     override val iconSendingMail: Int = 6
     override val iconCheckingMail: Int = 7

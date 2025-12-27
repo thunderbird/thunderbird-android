@@ -45,6 +45,14 @@ class DefaultNotificationPreferenceManager(
                 key = KEY_NOTIFICATION_DURING_QUIET_TIME_ENABLED,
                 defValue = NOTIFICATION_PREFERENCE_DEFAULT_IS_NOTIFICATION_DURING_QUIET_TIME_ENABLED,
             ),
+            messageActionsOrder = storage.getStringOrDefault(
+                key = KEY_MESSAGE_ACTIONS_ORDER,
+                defValue = NOTIFICATION_PREFERENCE_DEFAULT_MESSAGE_ACTIONS_ORDER,
+            ),
+            messageActionsCutoff = storage.getInt(
+                key = KEY_MESSAGE_ACTIONS_CUTOFF,
+                defValue = NOTIFICATION_PREFERENCE_DEFAULT_MESSAGE_ACTIONS_CUTOFF,
+            ),
         ),
     )
 
@@ -65,6 +73,8 @@ class DefaultNotificationPreferenceManager(
                     KEY_NOTIFICATION_DURING_QUIET_TIME_ENABLED,
                     config.isNotificationDuringQuietTimeEnabled,
                 )
+                storageEditor.putString(KEY_MESSAGE_ACTIONS_ORDER, config.messageActionsOrder)
+                storageEditor.putInt(KEY_MESSAGE_ACTIONS_CUTOFF, config.messageActionsCutoff)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }

@@ -65,6 +65,8 @@ internal enum class NotificationAction {
     Reply,
     MarkAsRead,
     Delete,
+    Archive,
+    Spam,
 }
 
 internal enum class WearNotificationAction {
