@@ -3,6 +3,7 @@ package com.fsck.k9.notification
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
+import net.thunderbird.core.preference.notification.NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN
 
 internal class SingleMessageNotificationDataCreator(
     private val interactionPreferences: InteractionSettingsPreferenceManager,
@@ -50,7 +51,7 @@ internal class SingleMessageNotificationDataCreator(
     private fun createSingleNotificationActions(account: LegacyAccountDto): List<NotificationAction> {
         val notificationPrefs = generalSettingsManager.getConfig().notification
         val order = parseActionsOrder(notificationPrefs.messageActionsOrder)
-        val cutoff = notificationPrefs.messageActionsCutoff.coerceIn(0, 3)
+        val cutoff = notificationPrefs.messageActionsCutoff.coerceIn(0, NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN)
 
         return resolveActions(
             order = order,
@@ -100,12 +101,12 @@ internal class SingleMessageNotificationDataCreator(
         }
 
         val desired = order.take(cutoff).filter(::isAvailable)
-        if (desired.size == 3) return desired
+        if (desired.size == NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN) return desired
 
         val filled = buildList {
             addAll(desired)
             for (action in order.drop(cutoff)) {
-                if (size == 3) break
+                if (size == NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN) break
                 if (action !in this && isAvailable(action)) {
                     add(action)
                 }
