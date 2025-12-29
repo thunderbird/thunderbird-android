@@ -15,7 +15,7 @@
         android:gravity="center_vertical"
         android:minHeight="?attr/listPreferredItemHeightSmall"
         android:orientation="horizontal"
-        android:paddingStart="16dp"
+        android:paddingStart="8dp"
         android:paddingEnd="0dp"
         >
 
@@ -35,16 +35,6 @@
                 />
 
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/drag_handle"
-            android:layout_width="56dp"
-            android:layout_height="match_parent"
-            android:contentDescription="@null"
-            android:padding="16dp"
-            android:scaleType="center"
-            app:srcCompat="@drawable/ic_drag_handle"
-            />
 
     </LinearLayout>
 
