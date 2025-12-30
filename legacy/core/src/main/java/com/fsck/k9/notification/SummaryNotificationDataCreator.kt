@@ -1,6 +1,5 @@
 package com.fsck.k9.notification
 
-import com.fsck.k9.K9
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettingsManager
 
@@ -51,7 +50,7 @@ internal class SummaryNotificationDataCreator(
         return buildList {
             add(SummaryNotificationAction.MarkAsRead)
 
-            if (isDeleteActionEnabled()) {
+            if (isSummaryDeleteActionEnabled()) {
                 add(SummaryNotificationAction.Delete)
             }
         }
@@ -71,13 +70,13 @@ internal class SummaryNotificationDataCreator(
         }
     }
 
-    private fun isDeleteActionEnabled(): Boolean {
-        return K9.notificationQuickDeleteBehaviour == K9.NotificationQuickDelete.ALWAYS
+    private fun isSummaryDeleteActionEnabled(): Boolean {
+        return generalSettingsManager.getConfig().notification.isSummaryDeleteActionEnabled
     }
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.
     private fun isDeleteActionAvailableForWear(): Boolean {
-        return isDeleteActionEnabled() && !interactionSettings.isConfirmDeleteFromNotification
+        return isSummaryDeleteActionEnabled() && !interactionSettings.isConfirmDeleteFromNotification
     }
 
     private val NotificationData.latestTimestamp: Long

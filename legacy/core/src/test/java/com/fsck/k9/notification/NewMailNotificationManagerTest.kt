@@ -53,6 +53,16 @@ class NewMailNotificationManagerTest {
     private val notificationContentCreator = mock<NotificationContentCreator>()
     private val localStoreProvider = createLocalStoreProvider()
     private val clock = TestClock(Instant.fromEpochMilliseconds(TIMESTAMP))
+    private val generalSettings = GeneralSettings(
+        display = DisplaySettings(),
+        network = NetworkSettings(),
+        notification = NotificationPreference(
+            quietTimeStarts = "23:00",
+            quietTimeEnds = "00:00",
+        ),
+        privacy = PrivacySettings(),
+        platformConfigProvider = FakePlatformConfigProvider(),
+    )
     private val manager = NewMailNotificationManager(
         notificationContentCreator,
         createNotificationRepository(),
@@ -61,24 +71,21 @@ class NewMailNotificationManagerTest {
             interactionPreferences = mock {
                 on { getConfig() } doReturn InteractionSettings()
             },
+            generalSettingsManager = mock {
+                on { getConfig() } doReturn generalSettings
+            },
         ),
         SummaryNotificationDataCreator(
             singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
                 interactionPreferences = mock {
                     on { getConfig() } doReturn InteractionSettings()
                 },
+                generalSettingsManager = mock {
+                    on { getConfig() } doReturn generalSettings
+                },
             ),
             generalSettingsManager = mock {
-                on { getConfig() } doReturn GeneralSettings(
-                    display = DisplaySettings(),
-                    network = NetworkSettings(),
-                    notification = NotificationPreference(
-                        quietTimeStarts = "23:00",
-                        quietTimeEnds = "00:00",
-                    ),
-                    privacy = PrivacySettings(),
-                    platformConfigProvider = FakePlatformConfigProvider(),
-                )
+                on { getConfig() } doReturn generalSettings
             },
         ),
         clock,
