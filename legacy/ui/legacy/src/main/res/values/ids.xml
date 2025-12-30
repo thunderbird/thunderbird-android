@@ -22,6 +22,8 @@
 
     <item type="id" name="notification_action_item" />
     <item type="id" name="notification_cutoff_item" />
+    <item type="id" name="accessibility_action_move_up" />
+    <item type="id" name="accessibility_action_move_down" />
 
     <item type="id" name="message_list_swipe_tag" />
 </resources>

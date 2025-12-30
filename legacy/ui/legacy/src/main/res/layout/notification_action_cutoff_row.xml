@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/windowBackground"
+    android:contentDescription="@string/notification_actions_cutoff_description"
     android:foreground="?attr/selectableItemBackground"
     android:stateListAnimator="@animator/draggable_state_list_anim"
     >

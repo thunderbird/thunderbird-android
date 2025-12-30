@@ -42,7 +42,7 @@
             android:id="@+id/drag_handle"
             android:layout_width="56dp"
             android:layout_height="match_parent"
-            android:contentDescription="@null"
+            android:contentDescription="@string/notification_actions_drag_handle_description"
             android:padding="16dp"
             android:scaleType="center"
             app:srcCompat="@drawable/ic_drag_handle"
@@ -51,4 +51,3 @@
     </LinearLayout>
 
 </com.fsck.k9.view.DraggableFrameLayout>
-

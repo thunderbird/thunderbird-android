@@ -145,6 +145,10 @@
     <string name="notification_actions_settings_summary">Choose which actions appear in email notifications</string>
     <string name="notification_actions_settings_description">Drag to reorder actions. Actions above the bar will be shown (up to 3).</string>
     <string name="notification_actions_cutoff_label">Shown actions</string>
+    <string name="notification_actions_cutoff_description">Shown actions cutoff</string>
+    <string name="notification_actions_drag_handle_description">Reorder action</string>
+    <string name="accessibility_move_up">Move up</string>
+    <string name="accessibility_move_down">Move down</string>
     <string name="notification_summary_delete_title">Show Delete on summary notifications</string>
     <string name="notification_summary_delete_summary">Adds a Delete action to notifications that summarize multiple new messages</string>
     <string name="notification_action_delete">Delete</string>
