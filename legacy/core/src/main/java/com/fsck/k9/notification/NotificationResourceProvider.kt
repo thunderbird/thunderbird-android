@@ -7,6 +7,7 @@ interface NotificationResourceProvider {
     val iconReply: Int
     val iconArchive: Int
     val iconMarkAsSpam: Int
+    val iconStar: Int
     val iconNewMail: Int
     val iconSendingMail: Int
     val iconCheckingMail: Int
@@ -54,6 +55,7 @@ interface NotificationResourceProvider {
     fun actionDelete(): String
     fun actionDeleteAll(): String
     fun actionReply(): String
+    fun actionStar(): String
     fun actionArchive(): String
     fun actionArchiveAll(): String
     fun actionMarkAsSpam(): String

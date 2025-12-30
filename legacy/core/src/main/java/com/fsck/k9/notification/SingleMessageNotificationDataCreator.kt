@@ -1,6 +1,7 @@
 package com.fsck.k9.notification
 
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.common.notification.NotificationActionTokens
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN
@@ -97,6 +98,7 @@ internal class SingleMessageNotificationDataCreator(
                 NotificationAction.Delete -> isDeleteEnabled
                 NotificationAction.Archive -> hasArchiveFolder
                 NotificationAction.Spam -> hasSpamFolder && isSpamEnabled
+                NotificationAction.Star -> true
             }
         }
 
@@ -131,6 +133,7 @@ internal class SingleMessageNotificationDataCreator(
             NotificationAction.Reply,
             NotificationAction.MarkAsRead,
             NotificationAction.Delete,
+            NotificationAction.Star,
             NotificationAction.Archive,
             NotificationAction.Spam,
         )) {
@@ -142,11 +145,12 @@ internal class SingleMessageNotificationDataCreator(
 
     private fun tokenToAction(token: String): NotificationAction? {
         return when (token) {
-            "reply" -> NotificationAction.Reply
-            "mark_as_read" -> NotificationAction.MarkAsRead
-            "delete" -> NotificationAction.Delete
-            "archive" -> NotificationAction.Archive
-            "spam" -> NotificationAction.Spam
+            NotificationActionTokens.REPLY -> NotificationAction.Reply
+            NotificationActionTokens.MARK_AS_READ -> NotificationAction.MarkAsRead
+            NotificationActionTokens.DELETE -> NotificationAction.Delete
+            NotificationActionTokens.STAR -> NotificationAction.Star
+            NotificationActionTokens.ARCHIVE -> NotificationAction.Archive
+            NotificationActionTokens.SPAM -> NotificationAction.Spam
             else -> null
         }
     }

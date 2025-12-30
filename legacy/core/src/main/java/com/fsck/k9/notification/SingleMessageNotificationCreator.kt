@@ -65,6 +65,7 @@ internal class SingleMessageNotificationCreator(
                 NotificationAction.Delete -> addDeleteAction(notificationData)
                 NotificationAction.Archive -> addArchiveAction(notificationData)
                 NotificationAction.Spam -> addMarkAsSpamAction(notificationData)
+                NotificationAction.Star -> addStarAction(notificationData)
             }
         }
     }
@@ -113,6 +114,15 @@ internal class SingleMessageNotificationCreator(
         val title = resourceProvider.actionMarkAsSpam()
         val messageReference = notificationData.content.messageReference
         val action = actionCreator.createMarkMessageAsSpamPendingIntent(messageReference)
+
+        addAction(icon, title, action)
+    }
+
+    private fun NotificationBuilder.addStarAction(notificationData: SingleNotificationData) {
+        val icon = resourceProvider.iconStar
+        val title = resourceProvider.actionStar()
+        val messageReference = notificationData.content.messageReference
+        val action = actionCreator.createMarkMessageAsStarPendingIntent(messageReference)
 
         addAction(icon, title, action)
     }

@@ -67,6 +67,7 @@ internal enum class NotificationAction {
     Delete,
     Archive,
     Spam,
+    Star,
 }
 
 internal enum class WearNotificationAction {

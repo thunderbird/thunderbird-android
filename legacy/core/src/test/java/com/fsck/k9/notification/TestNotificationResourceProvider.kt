@@ -7,6 +7,7 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override val iconReply: Int = 4
     override val iconArchive: Int = 14
     override val iconMarkAsSpam: Int = 15
+    override val iconStar: Int = 16
     override val iconNewMail: Int = 5
     override val iconSendingMail: Int = 6
     override val iconCheckingMail: Int = 7
@@ -82,6 +83,8 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override fun actionDeleteAll(): String = "Delete All"
 
     override fun actionReply(): String = "Reply"
+
+    override fun actionStar(): String = "Star"
 
     override fun actionArchive(): String = "Archive"
 
