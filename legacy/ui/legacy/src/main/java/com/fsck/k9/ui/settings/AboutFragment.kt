@@ -83,6 +83,8 @@ class AboutFragment : Fragment() {
 
         setLicense(view)
 
+        setAboutProjectTitle(view)
+
         val versionLayout = view.findViewById<View>(R.id.versionLayout)
         versionLayout.setOnClickListener { displayChangeLog() }
 
@@ -327,6 +329,23 @@ class AboutFragment : Fragment() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
+                    color = MainTheme.colors.secondary,
+                )
+            }
+        }
+    }
+
+    private fun setAboutProjectTitle(view: View) {
+        val aboutProjectTitle = view.findViewById<ComposeView>(R.id.aboutProjectTitle)
+        aboutProjectTitle.setContent {
+            val context = LocalContext.current
+            themeProvider.WithTheme {
+                TextTitleSmall(
+                    text = context.getString(R.string.about_project_title),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(top = 16.dp, bottom = 8.dp, start = 16.dp, end = 16.dp),
                     color = MainTheme.colors.secondary,
                 )
             }
