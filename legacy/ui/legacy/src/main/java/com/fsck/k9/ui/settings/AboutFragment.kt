@@ -12,10 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -24,14 +28,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import com.fsck.k9.ui.R
-import com.google.android.material.textview.MaterialTextView
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.immutableListOf
+import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
@@ -121,13 +125,10 @@ class AboutFragment : Fragment() {
             openUrl(getString(R.string.user_forum_url))
         }
 
-        val manager = LinearLayoutManager(view.context)
-        val librariesRecyclerView = view.findViewById<RecyclerView>(R.id.libraries)
-        librariesRecyclerView.apply {
-            layoutManager = manager
-            adapter = LibrariesAdapter(USED_LIBRARIES)
-            isNestedScrollingEnabled = false
-            isFocusable = false
+        view.findViewById<ComposeView>(R.id.libraries).setContent {
+            themeProvider.WithTheme {
+                LibraryList(libraries = USED_LIBRARIES)
+            }
         }
     }
 
@@ -457,7 +458,7 @@ class AboutFragment : Fragment() {
     }
 
     companion object {
-        private val USED_LIBRARIES = arrayOf(
+        private val USED_LIBRARIES = persistentListOf<Library>(
             Library(
                 "Android Jetpack libraries",
                 "https://developer.android.com/jetpack",
@@ -551,7 +552,7 @@ class AboutFragment : Fragment() {
                 "https://github.com/splitwise/TokenAutoComplete/",
                 "Apache License, Version 2.0",
             ),
-            Library("ZXing", "https://github.com/zxing/zxing", "Apache License, Version 2.0"),
+            Library("ZXing", "https://github.com/zxing/zxing", "Apache License, Version 2.0")
         )
     }
 }
@@ -567,29 +568,49 @@ private fun Context.openUrl(url: String) {
     }
 }
 
-private data class Library(val name: String, val url: String, val license: String)
-
-private class LibrariesAdapter(private val dataset: Array<Library>) :
-    RecyclerView.Adapter<LibrariesAdapter.ViewHolder>() {
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val name: MaterialTextView = view.findViewById(R.id.name)
-        val license: MaterialTextView = view.findViewById(R.id.license)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.about_library, parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, index: Int) {
-        val library = dataset[index]
-        holder.name.text = library.name
-        holder.license.text = library.license
-        holder.itemView.setOnClickListener {
-            holder.itemView.context.openUrl(library.url)
+@Composable
+private fun LibraryList(
+    libraries: ImmutableList<Library>,
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        libraries.forEach { library ->
+            LibraryItem(library = library)
         }
     }
-
-    override fun getItemCount() = dataset.size
 }
+
+@Composable
+fun LibraryItem(
+    library: Library,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+    Column(
+        modifier = modifier
+            .selectable(
+                selected = false,
+                onClick = { context.openUrl(library.url) },
+            )
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .fillMaxWidth()
+            .wrapContentHeight(),
+    ) {
+        TextTitleMedium(
+            text = library.name,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            color = MainTheme.colors.secondary,
+        )
+        TextBodyMedium(
+            text = library.license,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            color = MainTheme.colors.secondary,
+        )
+    }
+}
+
+@Stable
+data class Library(val name: String, val url: String, val license: String)
