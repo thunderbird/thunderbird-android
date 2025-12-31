@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_title">Pasta Enviados não encontrada</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Para salvar este email após enviar, configure uma pasta Enviados nas Configurações de Conta.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Designar Pasta de Enviados</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Cancelar</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Enviar e Excluir</string>
 </resources>

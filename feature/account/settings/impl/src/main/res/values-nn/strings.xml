@@ -17,5 +17,10 @@
     <string name="account_settings_general_avatar_monogram_error_empty">Monogrammet kan ikkje vere tomt</string>
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogrammet er for langt</string>
     <string name="account_settings_general_avatar_icon_title">Avatarikon</string>
-    <string name="account_settings_general_avatar_icon_description">Vel eit av ikona som avataren din.</string>
+    <string name="account_settings_general_avatar_icon_description">Vel eit av ikona som avatar.</string>
+    <string name="account_settings_general_avatar_image_title">Avatarbilete</string>
+    <string name="account_settings_general_avatar_image_description">Vel eit bilete til å representere kontoen.</string>
+    <string name="account_settings_general_avatar_image_select">Vel bilete</string>
+    <string name="account_settings_avatar_error_unsupported_format">Berre bilete av type JPEG er støtta.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Berre JPEG</string>
 </resources>

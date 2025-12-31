@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogram je predolg.</string>
     <string name="account_settings_general_avatar_icon_title">Ikona podobe</string>
     <string name="account_settings_general_avatar_icon_description">Izberite eno izmed ikon, ki jo boste uporabili kot svojo podobo.</string>
+    <string name="account_settings_general_avatar_image_title">Slika podobe</string>
+    <string name="account_settings_general_avatar_image_description">Izberite sliko, ki bo predstavljala vaš račun.</string>
+    <string name="account_settings_general_avatar_image_select">Izberi sliko</string>
+    <string name="account_settings_avatar_error_unsupported_format">Podprte to samo slike JPEG.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Samo JPEG.</string>
 </resources>
