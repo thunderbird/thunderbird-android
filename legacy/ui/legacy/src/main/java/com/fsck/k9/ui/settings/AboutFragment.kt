@@ -71,7 +71,13 @@ class AboutFragment : Fragment() {
 
         setVersionLabel(view)
 
-       setVersionText(view)
+        setVersionText(view)
+
+        setAuthorsText(view)
+
+        setAuthorOne(view)
+
+        setAuthorTwo(view)
 
         val versionLayout = view.findViewById<View>(R.id.versionLayout)
         versionLayout.setOnClickListener { displayChangeLog() }
@@ -234,6 +240,54 @@ class AboutFragment : Fragment() {
             themeProvider.WithTheme {
                 TextBodyMedium(
                     text = getVersionNumber() ?: "?",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    color = MainTheme.colors.secondary,
+                )
+            }
+        }
+    }
+
+    private fun setAuthorsText(view: View) {
+        val authorsLabel = view.findViewById<ComposeView>(R.id.authorsLabel)
+        authorsLabel.setContent {
+            val context = LocalContext.current
+            themeProvider.WithTheme {
+                TextTitleMedium(
+                    text = context.getString(R.string.authors),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    color = MainTheme.colors.secondary,
+                )
+            }
+        }
+    }
+
+    private fun setAuthorOne(view: View) {
+        val authorOne = view.findViewById<ComposeView>(R.id.authorOne)
+        authorOne.setContent {
+            val context = LocalContext.current
+            themeProvider.WithTheme {
+                TextBodyMedium(
+                    text = context.getString(R.string.about_app_authors_k9),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    color = MainTheme.colors.secondary,
+                )
+            }
+        }
+    }
+
+    private fun setAuthorTwo(view: View) {
+        val authorTwo = view.findViewById<ComposeView>(R.id.authorTwo)
+        authorTwo.setContent {
+            val context = LocalContext.current
+            themeProvider.WithTheme {
+                TextBodyMedium(
+                    text = context.getString(R.string.about_app_authors_thunderbird),
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
