@@ -255,18 +255,16 @@
                 android:paddingEnd="0dp"
                 >
 
-                <com.google.android.material.textview.MaterialTextView
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/websiteLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/about_website_title"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
                     />
 
-                <com.google.android.material.textview.MaterialTextView
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/website"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/app_webpage_url"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     />
             </LinearLayout>
         </LinearLayout>
