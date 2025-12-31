@@ -79,6 +79,10 @@ class AboutFragment : Fragment() {
 
         setAuthorTwo(view)
 
+        setLicenseText(view)
+
+        setLicense(view)
+
         val versionLayout = view.findViewById<View>(R.id.versionLayout)
         versionLayout.setOnClickListener { displayChangeLog() }
 
@@ -288,6 +292,38 @@ class AboutFragment : Fragment() {
             themeProvider.WithTheme {
                 TextBodyMedium(
                     text = context.getString(R.string.about_app_authors_thunderbird),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    color = MainTheme.colors.secondary,
+                )
+            }
+        }
+    }
+
+    private fun setLicenseText(view: View) {
+        val licenseLabel = view.findViewById<ComposeView>(R.id.licenseLabel)
+        licenseLabel.setContent {
+            val context = LocalContext.current
+            themeProvider.WithTheme {
+                TextTitleMedium(
+                    text = context.getString(R.string.license),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    color = MainTheme.colors.secondary,
+                )
+            }
+        }
+    }
+
+    private fun setLicense(view: View) {
+        val license = view.findViewById<ComposeView>(R.id.license)
+        license.setContent {
+            val context = LocalContext.current
+            themeProvider.WithTheme {
+                TextBodyMedium(
+                    text = context.getString(R.string.app_license),
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
