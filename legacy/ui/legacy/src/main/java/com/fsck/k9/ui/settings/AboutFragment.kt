@@ -85,6 +85,10 @@ class AboutFragment : Fragment() {
 
         setAboutProjectTitle(view)
 
+        setWebsiteText(view)
+
+        setWebsite(view)
+
         val versionLayout = view.findViewById<View>(R.id.versionLayout)
         versionLayout.setOnClickListener { displayChangeLog() }
 
@@ -346,6 +350,38 @@ class AboutFragment : Fragment() {
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .padding(top = 16.dp, bottom = 8.dp, start = 16.dp, end = 16.dp),
+                    color = MainTheme.colors.secondary,
+                )
+            }
+        }
+    }
+
+    private fun setWebsiteText(view: View) {
+        val websiteLabel = view.findViewById<ComposeView>(R.id.websiteLabel)
+        websiteLabel.setContent {
+            val context = LocalContext.current
+            themeProvider.WithTheme {
+                TextTitleMedium(
+                    text = context.getString(R.string.about_website_title),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    color = MainTheme.colors.secondary,
+                )
+            }
+        }
+    }
+
+    private fun setWebsite(view: View) {
+        val website = view.findViewById<ComposeView>(R.id.website)
+        website.setContent {
+            val context = LocalContext.current
+            themeProvider.WithTheme {
+                TextBodyMedium(
+                    text = context.getString(R.string.app_webpage_url),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
                     color = MainTheme.colors.secondary,
                 )
             }
