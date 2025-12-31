@@ -25,17 +25,10 @@
             tools:src="@drawable/ic_inbox"
             />
 
-        <com.google.android.material.textview.MaterialTextView
+        <androidx.compose.ui.platform.ComposeView
             android:id="@+id/about_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="8dp"
-            android:text="@string/about_title"
-            android:textAppearance="?attr/textAppearanceTitleSmall"
-            android:textColor="?attr/colorSecondary"
-            />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/versionLayout"

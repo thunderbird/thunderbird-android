@@ -12,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -23,10 +25,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import org.koin.android.ext.android.inject
 import app.k9mail.core.ui.legacy.designsystem.R as DesignSystemR
 import app.k9mail.core.ui.legacy.theme2.common.R as Theme2CommonR
@@ -34,6 +39,7 @@ import app.k9mail.core.ui.legacy.theme2.common.R as Theme2CommonR
 @Suppress("TooManyFunctions")
 class AboutFragment : Fragment() {
     private val appNameProvider: AppNameProvider by inject()
+    private val themeProvider: FeatureThemeProvider by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_about, container, false)
@@ -56,8 +62,7 @@ class AboutFragment : Fragment() {
 
         setForumImage(view)
 
-        val titleTextView = view.findViewById<MaterialTextView>(R.id.about_title)
-        titleTextView.text = getString(R.string.about_title, appNameProvider.appName)
+        setAboutTitle(view)
 
         val versionTextView = view.findViewById<MaterialTextView>(R.id.version)
         versionTextView.text = getVersionNumber() ?: "?"
@@ -177,6 +182,27 @@ class AboutFragment : Fragment() {
                 modifier = Modifier.size(size = 128.dp),
                 contentDescription = null,
             )
+        }
+    }
+
+    private fun setAboutTitle(view: View) {
+        val aboutTitle = view.findViewById<ComposeView>(R.id.about_title)
+        aboutTitle.setContent {
+            themeProvider.WithTheme {
+                val context = LocalContext.current
+                TextTitleSmall(
+                    text = context.getString(R.string.about_title,appNameProvider.appName),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = 16.dp,
+                            end = 16.dp,
+                            top = 16.dp,
+                            bottom = 8.dp,
+                        ),
+                    color = MainTheme.colors.secondary
+                )
+            }
         }
     }
 
