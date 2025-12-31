@@ -15,16 +15,21 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import com.fsck.k9.ui.R
@@ -64,8 +69,9 @@ class AboutFragment : Fragment() {
 
         setAboutTitle(view)
 
-        val versionTextView = view.findViewById<MaterialTextView>(R.id.version)
-        versionTextView.text = getVersionNumber() ?: "?"
+        setVersionLabel(view)
+
+       setVersionText(view)
 
         val versionLayout = view.findViewById<View>(R.id.versionLayout)
         versionLayout.setOnClickListener { displayChangeLog() }
@@ -201,6 +207,37 @@ class AboutFragment : Fragment() {
                             bottom = 8.dp,
                         ),
                     color = MainTheme.colors.secondary
+                )
+            }
+        }
+    }
+
+    private fun setVersionLabel(view: View) {
+        val versionLabel = view.findViewById<ComposeView>(R.id.versionLabel)
+        versionLabel.setContent {
+            themeProvider.WithTheme {
+                val context = LocalContext.current
+                TextTitleMedium(
+                    text = context.getString(R.string.version),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    color = MainTheme.colors.secondary,
+                )
+            }
+        }
+    }
+
+    private fun setVersionText(view: View) {
+        val versionLabel = view.findViewById<ComposeView>(R.id.version)
+        versionLabel.setContent {
+            themeProvider.WithTheme {
+                TextBodyMedium(
+                    text = getVersionNumber() ?: "?",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    color = MainTheme.colors.secondary,
                 )
             }
         }

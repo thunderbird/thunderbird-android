@@ -61,19 +61,16 @@
                 android:paddingEnd="0dp"
                 >
 
-                <com.google.android.material.textview.MaterialTextView
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/versionLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/version"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
                     />
 
-                <com.google.android.material.textview.MaterialTextView
+                <androidx.compose.ui.platform.ComposeView
                     android:id="@+id/version"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    tools:text="1.2.3"
                     />
             </LinearLayout>
         </LinearLayout>
