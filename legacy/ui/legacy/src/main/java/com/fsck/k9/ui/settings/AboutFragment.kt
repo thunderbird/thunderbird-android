@@ -39,6 +39,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
@@ -53,7 +54,6 @@ import org.koin.android.ext.android.inject
 import app.k9mail.core.ui.legacy.designsystem.R as DesignSystemR
 import app.k9mail.core.ui.legacy.theme2.common.R as Theme2CommonR
 
-@Suppress("TooManyFunctions")
 class AboutFragment : Fragment() {
     private val appNameProvider: AppNameProvider by inject()
     private val themeProvider: FeatureThemeProvider by inject()
@@ -159,52 +159,57 @@ fun AboutScreen(
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState),
+    Surface(
+        modifier = Modifier
+            .fillMaxSize(),
     ) {
-        AppLogo()
-        SectionTitle(title = context.getString(R.string.about_title, appName))
-        SectionContent(
-            sectionLabel = context.getString(R.string.version),
-            sectionText = versionNumber,
-            sectionImageId = DesignSystemR.drawable.ic_info,
-            onClick = displayChangeLog,
-        )
-        SectionContent(
-            sectionLabel = context.getString(R.string.authors),
-            sectionText = context.getString(R.string.about_app_authors_k9),
-            secondarySectionText = context.getString(R.string.about_app_authors_thunderbird),
-            sectionImageId = DesignSystemR.drawable.ic_group,
-            onClick = displayAuthors,
-        )
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState),
+        ) {
+            AppLogo()
+            SectionTitle(title = context.getString(R.string.about_title, appName))
+            SectionContent(
+                sectionLabel = context.getString(R.string.version),
+                sectionText = versionNumber,
+                sectionImageId = DesignSystemR.drawable.ic_info,
+                onClick = displayChangeLog,
+            )
+            SectionContent(
+                sectionLabel = context.getString(R.string.authors),
+                sectionText = context.getString(R.string.about_app_authors_k9),
+                secondarySectionText = context.getString(R.string.about_app_authors_thunderbird),
+                sectionImageId = DesignSystemR.drawable.ic_group,
+                onClick = displayAuthors,
+            )
 
-        SectionContent(
-            sectionLabel = context.getString(R.string.license),
-            sectionText = context.getString(R.string.app_license),
-            sectionImageId = DesignSystemR.drawable.ic_code,
-            onClick = displayLicense,
-        )
+            SectionContent(
+                sectionLabel = context.getString(R.string.license),
+                sectionText = context.getString(R.string.app_license),
+                sectionImageId = DesignSystemR.drawable.ic_code,
+                onClick = displayLicense,
+            )
 
-        SectionTitle(title = context.getString(R.string.about_project_title))
+            SectionTitle(title = context.getString(R.string.about_project_title))
 
-        SectionContent(
-            sectionLabel = context.getString(R.string.about_website_title),
-            sectionText = context.getString(R.string.app_webpage_url),
-            sectionImageId = DesignSystemR.drawable.ic_link,
-            onClick = displayWebSite,
-        )
+            SectionContent(
+                sectionLabel = context.getString(R.string.about_website_title),
+                sectionText = context.getString(R.string.app_webpage_url),
+                sectionImageId = DesignSystemR.drawable.ic_link,
+                onClick = displayWebSite,
+            )
 
-        SectionContent(
-            sectionLabel = context.getString(R.string.user_forum_title),
-            sectionText = context.getString(R.string.user_forum_url),
-            sectionImageId = DesignSystemR.drawable.ic_forum,
-            onClick = displayForum,
-        )
+            SectionContent(
+                sectionLabel = context.getString(R.string.user_forum_title),
+                sectionText = context.getString(R.string.user_forum_url),
+                sectionImageId = DesignSystemR.drawable.ic_forum,
+                onClick = displayForum,
+            )
 
-        SectionTitle(title = context.getString(R.string.about_libraries))
-        LibraryList(libraries = USED_LIBRARIES)
+            SectionTitle(title = context.getString(R.string.about_libraries))
+            LibraryList(libraries = USED_LIBRARIES)
+        }
     }
 }
 
@@ -254,10 +259,10 @@ fun SectionContent(
 ) {
     Row(
         modifier = modifier
+            .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
-            .wrapContentHeight()
-            .clickable(onClick = onClick),
+            .wrapContentHeight(),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
     ) {
