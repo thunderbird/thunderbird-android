@@ -300,32 +300,24 @@
                 android:paddingEnd="0dp"
                 >
 
-                <com.google.android.material.textview.MaterialTextView
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/user_forum_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/user_forum_title"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
                     />
 
-                <com.google.android.material.textview.MaterialTextView
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/user_forum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/user_forum_url"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     />
             </LinearLayout>
         </LinearLayout>
 
-        <com.google.android.material.textview.MaterialTextView
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/librariesTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="8dp"
-            android:text="@string/about_libraries"
-            android:textAppearance="?attr/textAppearanceTitleSmall"
-            android:textColor="?attr/colorSecondary"
             />
 
         <androidx.recyclerview.widget.RecyclerView

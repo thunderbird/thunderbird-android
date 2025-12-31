@@ -16,13 +16,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -73,21 +71,27 @@ class AboutFragment : Fragment() {
 
         setVersionText(view)
 
-        setAuthorsText(view)
+        setAuthorsLabel(view)
 
         setAuthorOne(view)
 
         setAuthorTwo(view)
 
-        setLicenseText(view)
+        setLicenseLabel(view)
 
-        setLicense(view)
+        setLicenseText(view)
 
         setAboutProjectTitle(view)
 
+        setWebsiteLabel(view)
+
         setWebsiteText(view)
 
-        setWebsite(view)
+        setForumLabel(view)
+
+        setForumText(view)
+
+        setLibrariesTitle(view)
 
         val versionLayout = view.findViewById<View>(R.id.versionLayout)
         versionLayout.setOnClickListener { displayChangeLog() }
@@ -213,7 +217,7 @@ class AboutFragment : Fragment() {
             themeProvider.WithTheme {
                 val context = LocalContext.current
                 TextTitleSmall(
-                    text = context.getString(R.string.about_title,appNameProvider.appName),
+                    text = context.getString(R.string.about_title, appNameProvider.appName),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -222,7 +226,7 @@ class AboutFragment : Fragment() {
                             top = 16.dp,
                             bottom = 8.dp,
                         ),
-                    color = MainTheme.colors.secondary
+                    color = MainTheme.colors.secondary,
                 )
             }
         }
@@ -259,7 +263,7 @@ class AboutFragment : Fragment() {
         }
     }
 
-    private fun setAuthorsText(view: View) {
+    private fun setAuthorsLabel(view: View) {
         val authorsLabel = view.findViewById<ComposeView>(R.id.authorsLabel)
         authorsLabel.setContent {
             val context = LocalContext.current
@@ -307,7 +311,7 @@ class AboutFragment : Fragment() {
         }
     }
 
-    private fun setLicenseText(view: View) {
+    private fun setLicenseLabel(view: View) {
         val licenseLabel = view.findViewById<ComposeView>(R.id.licenseLabel)
         licenseLabel.setContent {
             val context = LocalContext.current
@@ -323,7 +327,7 @@ class AboutFragment : Fragment() {
         }
     }
 
-    private fun setLicense(view: View) {
+    private fun setLicenseText(view: View) {
         val license = view.findViewById<ComposeView>(R.id.license)
         license.setContent {
             val context = LocalContext.current
@@ -356,7 +360,7 @@ class AboutFragment : Fragment() {
         }
     }
 
-    private fun setWebsiteText(view: View) {
+    private fun setWebsiteLabel(view: View) {
         val websiteLabel = view.findViewById<ComposeView>(R.id.websiteLabel)
         websiteLabel.setContent {
             val context = LocalContext.current
@@ -372,7 +376,7 @@ class AboutFragment : Fragment() {
         }
     }
 
-    private fun setWebsite(view: View) {
+    private fun setWebsiteText(view: View) {
         val website = view.findViewById<ComposeView>(R.id.website)
         website.setContent {
             val context = LocalContext.current
@@ -382,6 +386,55 @@ class AboutFragment : Fragment() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
+                    color = MainTheme.colors.secondary,
+                )
+            }
+        }
+    }
+
+    private fun setForumLabel(view: View) {
+        val forumLabel = view.findViewById<ComposeView>(R.id.user_forum_label)
+        forumLabel.setContent {
+            val context = LocalContext.current
+            themeProvider.WithTheme {
+                TextTitleMedium(
+                    text = context.getString(R.string.user_forum_title),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    color = MainTheme.colors.secondary,
+                )
+            }
+        }
+    }
+
+    private fun setForumText(view: View) {
+        val forum = view.findViewById<ComposeView>(R.id.user_forum)
+        forum.setContent {
+            val context = LocalContext.current
+            themeProvider.WithTheme {
+                TextBodyMedium(
+                    text = context.getString(R.string.user_forum_url),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    color = MainTheme.colors.secondary,
+                )
+            }
+        }
+    }
+
+    private fun setLibrariesTitle(view: View) {
+        val librariesTitle = view.findViewById<ComposeView>(R.id.librariesTitle)
+        librariesTitle.setContent {
+            val context = LocalContext.current
+            themeProvider.WithTheme {
+                TextTitleSmall(
+                    text = context.getString(R.string.about_libraries),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(top = 16.dp, bottom = 8.dp, start = 16.dp, end = 16.dp),
                     color = MainTheme.colors.secondary,
                 )
             }
