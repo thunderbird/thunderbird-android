@@ -106,25 +106,22 @@
                 android:paddingEnd="0dp"
                 >
 
-                <com.google.android.material.textview.MaterialTextView
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/authorsLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/authors"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
                     />
 
-                <com.google.android.material.textview.MaterialTextView
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/authorOne"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/about_app_authors_k9"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     />
 
-                <com.google.android.material.textview.MaterialTextView
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/authorTwo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/about_app_authors_thunderbird"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
                     />
             </LinearLayout>
         </LinearLayout>
