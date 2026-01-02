@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="funding_googleplay_contribution_title">Apoia Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_title">Apoia a Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Un sincero agradecemento de parte de todos nos!</string>
+</resources>

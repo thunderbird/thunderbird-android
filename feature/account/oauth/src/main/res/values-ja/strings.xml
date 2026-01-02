@@ -7,7 +7,7 @@
     <string name="account_oauth_error_not_supported">現在、このプロバイダーは OAuth 2.0 に対応していません。</string>
     <string name="account_oauth_error_canceled">認証がキャンセルされました</string>
     <string name="account_oauth_loading_message">OAuth でログイン中</string>
-    <string name="account_oauth_sign_in_description">ログインのため、あなたのメールプロバイダーにリダイレクトします。アプリにメールアカウントへのアクセス権を付与してください。</string>
+    <string name="account_oauth_sign_in_description">メールプロバイダーのログイン画面ににリダイレクトします。アプリにメールアカウントへのアクセス権を付与してください。</string>
     <string name="account_oauth_sign_in_button">ログイン</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">サポート記事</string>
     <string name="account_oauth_google_sign_in_support_text">Google でログインに問題がある場合は、{placeHolder}を確認してください。</string>

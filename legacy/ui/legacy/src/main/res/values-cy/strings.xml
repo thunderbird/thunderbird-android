@@ -946,4 +946,5 @@
     <string name="debug_invalidate_access_token_cannot_modify">Methwyd addasu\'r tocyn mynediad sydd wedi\'i storio. Rhowch gynnig ar annilysu lleol.</string>
     <string name="debug_invalidate_access_token_already_modified">Mae tocyn mynediad wedi\'i storio eisoes wedi\'i addasu.</string>
     <string name="debug_feature_flags">DADFYGIO: Baneri Nodwedd</string>
+    <string name="print_message_action">Argraffu</string>
 </resources>

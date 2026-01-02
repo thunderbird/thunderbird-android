@@ -9,4 +9,5 @@
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Lista de contas</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Conta unificada</string>
     <string name="navigation_drawer_dropdown_action_add_account">Adicionar conta</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Sincronizar conta</string>
 </resources>

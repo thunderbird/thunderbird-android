@@ -927,4 +927,5 @@
     <string name="debug_feature_flags">DEBUG: Funksjonsflagg</string>
     <string name="global_settings_messageview_body_content_type_text_plain">Rein tekst (text/plain)</string>
     <string name="global_settings_messageview_body_content_type_title">Innhaldstype for brødtekst</string>
+    <string name="print_message_action">Skriv ut</string>
 </resources>

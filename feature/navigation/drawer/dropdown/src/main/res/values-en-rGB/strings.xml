@@ -9,4 +9,5 @@
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000">1k+</string>
     <string name="navigation_drawer_dropdown_action_add_account">Add account</string>
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Sync all accounts</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Sync account</string>
 </resources>
