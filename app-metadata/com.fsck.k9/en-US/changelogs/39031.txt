@@ -1,0 +1,3 @@
+- Default sync interval changed to 15 minutes
+- 'Colorize contact pictures' default changed unexpectedly from true to false
+- Displaying IMAP password in did not prompt for authentication
