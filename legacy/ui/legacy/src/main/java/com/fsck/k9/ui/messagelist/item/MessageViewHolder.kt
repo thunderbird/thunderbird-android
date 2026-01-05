@@ -30,6 +30,7 @@ import com.fsck.k9.ui.messagelist.MessageListItem
 import com.google.android.material.textview.MaterialTextView
 import java.util.Locale
 import kotlin.math.max
+import net.thunderbird.core.preference.DateFormatMode
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 
 @Suppress("TooManyFunctions")
@@ -81,7 +82,7 @@ class MessageViewHolder(
         with(messageListItem) {
             val foregroundColor = selectForegroundColor(isSelected, isRead, isActive)
             val maybeBoldTypeface = if (isRead) Typeface.NORMAL else Typeface.BOLD
-            val displayDate = relativeDateTimeFormatter.formatDate(messageDate)
+            val displayDate = relativeDateTimeFormatter.formatDate(messageDate, appearance.dateFormatMode)
             val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
             val subject = buildSubject(
                 subject = subject,

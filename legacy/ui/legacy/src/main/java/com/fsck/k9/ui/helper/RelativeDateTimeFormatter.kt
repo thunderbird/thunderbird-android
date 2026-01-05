@@ -15,6 +15,7 @@ import java.util.Calendar.YEAR
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import net.thunderbird.core.preference.DateFormatMode
 
 /**
  * Formatter to describe timestamps as a time relative to now.
@@ -26,16 +27,24 @@ constructor(
     private val clock: Clock,
 ) {
 
-    fun formatDate(timestamp: Long): String {
+    fun formatDate(timestamp: Long, dateFormatMode: DateFormatMode): String {
         @OptIn(ExperimentalTime::class)
         val now = clock.now().toCalendar()
         val date = timestamp.toCalendar()
-        val format = when {
-            date.isToday() -> FORMAT_SHOW_TIME
-            date.isWithinPastSevenDaysOf(now) -> FORMAT_SHOW_WEEKDAY or FORMAT_ABBREV_WEEKDAY
-            date.isSameYearAs(now) -> FORMAT_SHOW_DATE or FORMAT_ABBREV_MONTH
-            else -> FORMAT_SHOW_DATE or FORMAT_SHOW_YEAR or FORMAT_NUMERIC_DATE
+        val format = when (dateFormatMode) {
+            DateFormatMode.ADAPTIVE -> {
+                when {
+                    date.isToday() -> FORMAT_SHOW_TIME
+                    date.isWithinPastSevenDaysOf(now) -> FORMAT_SHOW_WEEKDAY or FORMAT_ABBREV_WEEKDAY
+                    date.isSameYearAs(now) -> FORMAT_SHOW_DATE or FORMAT_ABBREV_MONTH
+                    else -> FORMAT_SHOW_DATE or FORMAT_SHOW_YEAR or FORMAT_NUMERIC_DATE
+                }
+            }
+            DateFormatMode.ALWAYS_FULL -> {
+                FORMAT_SHOW_TIME or FORMAT_SHOW_DATE or FORMAT_SHOW_YEAR or FORMAT_NUMERIC_DATE
+            }
         }
+
         return DateUtils.formatDateRange(context, timestamp, timestamp, format)
     }
 }

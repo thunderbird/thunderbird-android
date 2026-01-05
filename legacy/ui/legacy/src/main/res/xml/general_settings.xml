@@ -55,6 +55,14 @@
                 app:useSimpleSummaryProvider="true"
                 android:title="@string/settings_message_theme_label"
                 />
+            <ListPreference
+                android:key="dateFormatMode"
+                android:title="@string/general_settings_date_format_title"
+                app:useSimpleSummaryProvider="true"
+                android:entries="@array/general_settings_date_format_entries"
+                android:entryValues="@array/general_settings_date_format_values"
+                android:defaultValue="adaptive"
+                />
 
             <ListPreference
                 android:dialogTitle="@string/settings_compose_theme_label"

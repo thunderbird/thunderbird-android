@@ -34,6 +34,7 @@ import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.preference.DateFormatMode
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.core.testing.TestClock
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
@@ -414,6 +415,7 @@ class MessageListAdapterTest : RobolectricTest() {
         backGroundAsReadIndicator: Boolean = false,
         showAccountIndicator: Boolean = false,
         density: UiDensity = UiDensity.Default,
+        dateFormatMode: DateFormatMode= DateFormatMode.ADAPTIVE,
     ): MessageListAdapter {
         val appearance = MessageListAppearance(
             fontSizes,
@@ -425,6 +427,7 @@ class MessageListAdapterTest : RobolectricTest() {
             backGroundAsReadIndicator,
             showAccountIndicator,
             density,
+            dateFormatMode,
         )
 
         @OptIn(ExperimentalTime::class)

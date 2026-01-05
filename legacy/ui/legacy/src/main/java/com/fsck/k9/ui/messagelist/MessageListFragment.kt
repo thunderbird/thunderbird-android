@@ -96,6 +96,8 @@ import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettings
+import net.thunderbird.core.preference.DateFormatMode
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettings
 import net.thunderbird.core.preference.interaction.InteractionSettings
@@ -809,6 +811,7 @@ class MessageListFragment :
             backGroundAsReadIndicator = messageListSettings.isUseBackgroundAsUnreadIndicator,
             showAccountIndicator = isShowAccountIndicator,
             density = messageListSettings.uiDensity,
+            dateFormatMode = generalSettingsManager.getConfig().display.coreSettings.dateFormatMode
         )
 
     private fun getFolderInfoHolder(account: LegacyAccount, folderId: Long): FolderInfoHolder {

@@ -1,5 +1,6 @@
 package net.thunderbird.core.preference.display.coreSettings
 
+import net.thunderbird.core.preference.DateFormatMode
 import net.thunderbird.core.preference.PreferenceManager
 
 const val KEY_FIXED_MESSAGE_VIEW_THEME = "fixedMessageViewTheme"
@@ -8,5 +9,6 @@ const val KEY_MESSAGE_COMPOSE_THEME = "messageComposeTheme"
 const val KEY_APP_LANGUAGE = "language"
 const val KEY_SPLIT_VIEW_MODE = "splitViewMode"
 const val KEY_THEME = "theme"
+const val KEY_DATE_FORMAT_MODE = "dateFormatMode"
 
 interface DisplayCoreSettingsPreferenceManager : PreferenceManager<DisplayCoreSettings>

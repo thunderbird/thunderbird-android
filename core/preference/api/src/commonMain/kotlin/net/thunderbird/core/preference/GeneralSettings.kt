@@ -63,3 +63,8 @@ enum class SplitViewMode {
     NEVER,
     WHEN_IN_LANDSCAPE,
 }
+
+enum class DateFormatMode {
+    ADAPTIVE,
+    ALWAYS_FULL,
+}

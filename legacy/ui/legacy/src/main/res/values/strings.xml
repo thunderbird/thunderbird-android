@@ -272,6 +272,19 @@
     <string name="general_settings_post_mark_as_unread_action_stay">Stay on current message</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Return to message list</string>
 
+    <string name="general_settings_date_format_title">Date/Time Format</string>
+    <string name="general_settings_date_format_summary">Choose how message dates are displayed in the list</string>
+
+    <string-array name="general_settings_date_format_entries">
+        <item>Adaptive (Default)</item>
+        <item>Always Full Date &amp; Time</item>
+    </string-array>
+
+    <string-array name="general_settings_date_format_values">
+        <item>adaptive</item>
+        <item>always_full</item>
+    </string-array>
+
     <string name="global_settings_confirm_actions_title">Confirm actions</string>
     <string name="global_settings_confirm_actions_summary">Show a dialog whenever you perform selected actions</string>
     <string name="global_settings_confirm_action_delete">Delete</string>

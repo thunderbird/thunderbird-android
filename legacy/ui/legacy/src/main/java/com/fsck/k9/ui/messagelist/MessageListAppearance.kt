@@ -1,6 +1,7 @@
 package com.fsck.k9.ui.messagelist
 
 import com.fsck.k9.FontSizes
+import net.thunderbird.core.preference.DateFormatMode
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 
 data class MessageListAppearance(
@@ -16,4 +17,5 @@ data class MessageListAppearance(
      */
     val showAccountIndicator: Boolean,
     val density: UiDensity,
+    val dateFormatMode: DateFormatMode,
 )

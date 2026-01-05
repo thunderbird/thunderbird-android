@@ -14,6 +14,7 @@ import com.fsck.k9.ui.messagelist.MessageListItem
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.mail.EmailAddress
+import net.thunderbird.core.preference.DateFormatMode
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
@@ -102,6 +103,7 @@ private val fakeMessageListAppearance = MessageListAppearance(
     backGroundAsReadIndicator = false,
     showAccountIndicator = true,
     density = UiDensity.Default,
+    dateFormatMode = DateFormatMode.ADAPTIVE,
 )
 
 private val fakeContactRepository = object : ContactRepository {
