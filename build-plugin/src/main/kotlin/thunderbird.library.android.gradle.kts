@@ -11,6 +11,8 @@ android {
     buildFeatures {
         buildConfig = false
     }
+
+    disableC2CompilerForRobolectric()
 }
 
 kotlin {
