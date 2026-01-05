@@ -1,0 +1,4 @@
+Thunderbird for Android version 15.0, based on K-9 Mail. Changes include:
+- Default sync interval changed to 15 minutes
+- 'Colorize contact pictures' default changed unexpectedly from true to false
+- Displaying IMAP password in did not prompt for authentication

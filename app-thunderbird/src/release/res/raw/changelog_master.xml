@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="15.0" versioncode="18" date="2026-01-05">
+        <change>Default sync interval has been changed from 60 minutes to 15 minutes</change>
+        <change>Use application icon in push notification messages</change>
+        <change>&#39;Colorize contact pictures&#39; default changed unexpectedly from true to false</change>
+        <change>Displaying IMAP password in plain text did not prompt for authentication</change>
+        <change>Sync debug logger did not write any logs</change>
+    </release>
     <release version="14.0" versioncode="17" date="2025-11-17">
         <change>&#39;Auto-fit messages&#39; display setting did not persist</change>
         <change>Edge-to-edge regressed moving/copying message with 3-button navigation</change>
