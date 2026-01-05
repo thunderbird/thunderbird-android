@@ -186,10 +186,10 @@ com.github.bumptech.glide:annotations:4.16.0
 com.github.bumptech.glide:disklrucache:4.16.0
 com.github.bumptech.glide:gifdecoder:4.16.0
 com.github.bumptech.glide:glide:4.16.0
-com.github.skydoves:landscapist-android:2.6.1
-com.github.skydoves:landscapist-coil3-android:2.6.1
-com.github.skydoves:landscapist-coil3:2.6.1
-com.github.skydoves:landscapist:2.6.1
+com.github.skydoves:landscapist-android:2.8.2
+com.github.skydoves:landscapist-coil3-android:2.8.2
+com.github.skydoves:landscapist-coil3:2.8.2
+com.github.skydoves:landscapist:2.8.2
 com.google.android.datatransport:transport-api:3.0.0
 com.google.android.datatransport:transport-backend-cct:3.1.8
 com.google.android.datatransport:transport-runtime:3.1.8
