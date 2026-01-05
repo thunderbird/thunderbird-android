@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   update-dependency-guard:
-    if: github.actor == 'dependabot[bot]'
+    if: github.actor == 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == 'thunderbird/thunderbird-android'
     runs-on: ubuntu-latest
     environment: botmobile
     timeout-minutes: 90
