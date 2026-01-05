@@ -30,7 +30,6 @@ import com.fsck.k9.ui.messagelist.MessageListItem
 import com.google.android.material.textview.MaterialTextView
 import java.util.Locale
 import kotlin.math.max
-import net.thunderbird.core.preference.DateFormatMode
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 
 @Suppress("TooManyFunctions")

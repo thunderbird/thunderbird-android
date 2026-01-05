@@ -1,6 +1,5 @@
 package net.thunderbird.core.preference.display.coreSettings
 
-import net.thunderbird.core.preference.DateFormatMode
 import net.thunderbird.core.preference.PreferenceManager
 
 const val KEY_FIXED_MESSAGE_VIEW_THEME = "fixedMessageViewTheme"

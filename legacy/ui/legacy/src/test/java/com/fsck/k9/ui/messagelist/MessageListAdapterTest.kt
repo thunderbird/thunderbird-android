@@ -415,7 +415,7 @@ class MessageListAdapterTest : RobolectricTest() {
         backGroundAsReadIndicator: Boolean = false,
         showAccountIndicator: Boolean = false,
         density: UiDensity = UiDensity.Default,
-        dateFormatMode: DateFormatMode= DateFormatMode.ADAPTIVE,
+        dateFormatMode: DateFormatMode = DateFormatMode.ADAPTIVE,
     ): MessageListAdapter {
         val appearance = MessageListAppearance(
             fontSizes,
