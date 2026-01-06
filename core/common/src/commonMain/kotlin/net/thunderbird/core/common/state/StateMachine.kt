@@ -81,9 +81,7 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
     init {
         scope.launch {
             // delay onEnter initialization so the viewModels are ready to receive the state
-            println("Executed init. $stateRegistrar")
             delay(500.milliseconds)
-            println("Executed? $stateRegistrar")
             stateRegistrar[initialState::class]?.listeners?.onEnter?.invoke(null, null, currentStateSnapshot)
         }
     }
