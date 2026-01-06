@@ -64,7 +64,7 @@ enum class SplitViewMode {
     WHEN_IN_LANDSCAPE,
 }
 
-enum class DateFormatMode {
-    ADAPTIVE,
-    ALWAYS_FULL,
+enum class MessageListDateTimeFormat {
+    AUTO,
+    FULL,
 }

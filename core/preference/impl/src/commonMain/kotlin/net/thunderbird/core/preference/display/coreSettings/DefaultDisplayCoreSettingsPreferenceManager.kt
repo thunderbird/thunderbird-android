@@ -64,9 +64,9 @@ class DefaultDisplayCoreSettingsPreferenceManager(
             KEY_SPLIT_VIEW_MODE,
             DISPLAY_SETTINGS_DEFAULT_SPLIT_VIEW_MODE,
         ),
-        dateFormatMode = storage.getEnumOrDefault(
-            KEY_DATE_FORMAT_MODE,
-            DISPLAY_SETTINGS_DEFAULT_DATE_FORMAT_MODE,
+        messageListDateTimeFormat = storage.getEnumOrDefault(
+            KEY_MESSAGE_LIST_DATE_TIME_FORMAT_MODE,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_LIST_DATE_TIME_FORMAT_MODE,
         ),
     )
 
@@ -86,7 +86,7 @@ class DefaultDisplayCoreSettingsPreferenceManager(
                 )
                 storageEditor.putString(KEY_APP_LANGUAGE, config.appLanguage)
                 storageEditor.putEnum(KEY_SPLIT_VIEW_MODE, config.splitViewMode)
-                storageEditor.putEnum(KEY_DATE_FORMAT_MODE, config.dateFormatMode)
+                storageEditor.putEnum(KEY_MESSAGE_LIST_DATE_TIME_FORMAT_MODE, config.messageListDateTimeFormat)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }

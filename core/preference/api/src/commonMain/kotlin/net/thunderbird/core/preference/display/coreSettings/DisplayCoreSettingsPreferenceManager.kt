@@ -8,6 +8,6 @@ const val KEY_MESSAGE_COMPOSE_THEME = "messageComposeTheme"
 const val KEY_APP_LANGUAGE = "language"
 const val KEY_SPLIT_VIEW_MODE = "splitViewMode"
 const val KEY_THEME = "theme"
-const val KEY_DATE_FORMAT_MODE = "dateFormatMode"
+const val KEY_MESSAGE_LIST_DATE_TIME_FORMAT_MODE = "messageListDateTimeFormatMode"
 
 interface DisplayCoreSettingsPreferenceManager : PreferenceManager<DisplayCoreSettings>

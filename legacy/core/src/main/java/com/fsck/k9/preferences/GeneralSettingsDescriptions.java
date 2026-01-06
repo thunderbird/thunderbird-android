@@ -45,7 +45,7 @@ import net.thunderbird.core.preference.interaction.PostRemoveNavigation;
 import net.thunderbird.core.preference.network.NetworkSettingsKt;
 import net.thunderbird.core.preference.storage.Storage;
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity;
-import net.thunderbird.core.preference.DateFormatMode;
+import net.thunderbird.core.preference.MessageListDateTimeFormat;
 
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 import static net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_MESSAGE_LIST_SENDER_ABOVE_SUBJECT;
@@ -341,8 +341,8 @@ class GeneralSettingsDescriptions {
         s.put("messageViewBodyContentType", Settings.versions(
             new V(109, new EnumSetting<>(BodyContentType.class, BodyContentType.TEXT_HTML))
         ));
-        s.put("dateFormatMode", Settings.versions(
-            new V(110, new EnumSetting<>(DateFormatMode.class, DateFormatMode.ADAPTIVE))
+        s.put("messageListDateTimeFormatMode", Settings.versions(
+            new V(110, new EnumSetting<>(MessageListDateTimeFormat.class, MessageListDateTimeFormat.AUTO))
         ));
 
         // TODO: Add a way to properly support feature-specific settings.

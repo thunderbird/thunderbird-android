@@ -11,8 +11,8 @@ import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.BodyContentType
-import net.thunderbird.core.preference.DateFormatMode
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.MessageListDateTimeFormat
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
@@ -169,7 +169,7 @@ class GeneralSettingsDataStore(
             "message_list_density" -> messageListSettings.uiDensity.toString()
             "post_remove_navigation" -> interactionSettings.messageViewPostRemoveNavigation
             "post_mark_as_unread_navigation" -> K9.messageViewPostMarkAsUnreadNavigation.name
-            "dateFormatMode" -> coreSettings.dateFormatMode.name.lowercase()
+            "messageListDateTimeFormatMode" -> coreSettings.messageListDateTimeFormat.name.lowercase()
             else -> defValue
         }
     }
@@ -217,7 +217,9 @@ class GeneralSettingsDataStore(
             "post_mark_as_unread_navigation" -> {
                 K9.messageViewPostMarkAsUnreadNavigation = PostMarkAsUnreadNavigation.valueOf(value)
             }
-            "dateFormatMode" -> setDateFormatModel(DateFormatMode.valueOf(value.uppercase()))
+            "messageListDateTimeFormatMode" -> setMessageListDateTimeFormatModel(
+                MessageListDateTimeFormat.valueOf(value.uppercase()),
+            )
             else -> return
         }
 
@@ -365,13 +367,13 @@ class GeneralSettingsDataStore(
         }
     }
 
-    private fun setDateFormatModel(mode: DateFormatMode) {
+    private fun setMessageListDateTimeFormatModel(mode: MessageListDateTimeFormat) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
             settings.copy(
                 display = settings.display.copy(
                     coreSettings = settings.display.coreSettings.copy(
-                        dateFormatMode = mode,
+                        messageListDateTimeFormat = mode,
                     ),
                 ),
             )

@@ -81,7 +81,7 @@ class MessageViewHolder(
         with(messageListItem) {
             val foregroundColor = selectForegroundColor(isSelected, isRead, isActive)
             val maybeBoldTypeface = if (isRead) Typeface.NORMAL else Typeface.BOLD
-            val displayDate = relativeDateTimeFormatter.formatDate(messageDate, appearance.dateFormatMode)
+            val displayDate = relativeDateTimeFormatter.formatDate(messageDate, appearance.messageListDateTimeFormat)
             val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
             val subject = buildSubject(
                 subject = subject,

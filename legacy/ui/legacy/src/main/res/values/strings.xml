@@ -276,13 +276,13 @@
     <string name="general_settings_date_format_summary">Choose how message dates are displayed in the list</string>
 
     <string-array name="general_settings_date_format_entries">
-        <item>Adaptive (Default)</item>
-        <item>Always Full Date &amp; Time</item>
+        <item>Auto</item>
+        <item>Full</item>
     </string-array>
 
     <string-array name="general_settings_date_format_values">
-        <item>adaptive</item>
-        <item>always_full</item>
+        <item>auto</item>
+        <item>full</item>
     </string-array>
 
     <string name="global_settings_confirm_actions_title">Confirm actions</string>

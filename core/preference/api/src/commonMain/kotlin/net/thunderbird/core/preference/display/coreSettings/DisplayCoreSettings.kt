@@ -1,7 +1,7 @@
 package net.thunderbird.core.preference.display.coreSettings
 
 import net.thunderbird.core.preference.AppTheme
-import net.thunderbird.core.preference.DateFormatMode
+import net.thunderbird.core.preference.MessageListDateTimeFormat
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
 
@@ -11,7 +11,8 @@ val DISPLAY_SETTINGS_DEFAULT_APP_THEME = AppTheme.FOLLOW_SYSTEM
 val DISPLAY_SETTINGS_DEFAULT_MESSAGE_COMPOSE_THEME = SubTheme.USE_GLOBAL
 val DISPLAY_SETTINGS_DEFAULT_SPLIT_VIEW_MODE = SplitViewMode.NEVER
 val DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_THEME = SubTheme.USE_GLOBAL
-val DISPLAY_SETTINGS_DEFAULT_DATE_FORMAT_MODE = DateFormatMode.ADAPTIVE
+val DISPLAY_SETTINGS_DEFAULT_MESSAGE_LIST_DATE_TIME_FORMAT_MODE =
+    MessageListDateTimeFormat.AUTO
 data class DisplayCoreSettings(
     val fixedMessageViewTheme: Boolean = DISPLAY_SETTINGS_DEFAULT_FIXED_MESSAGE_VIEW_THEME,
     val appTheme: AppTheme = DISPLAY_SETTINGS_DEFAULT_APP_THEME,
@@ -19,5 +20,6 @@ data class DisplayCoreSettings(
     val messageComposeTheme: SubTheme = DISPLAY_SETTINGS_DEFAULT_MESSAGE_COMPOSE_THEME,
     val appLanguage: String = DISPLAY_SETTINGS_DEFAULT_APP_LANGUAGE,
     val splitViewMode: SplitViewMode = DISPLAY_SETTINGS_DEFAULT_SPLIT_VIEW_MODE,
-    val dateFormatMode: DateFormatMode = DISPLAY_SETTINGS_DEFAULT_DATE_FORMAT_MODE,
+    val messageListDateTimeFormat: MessageListDateTimeFormat =
+        DISPLAY_SETTINGS_DEFAULT_MESSAGE_LIST_DATE_TIME_FORMAT_MODE,
 )
