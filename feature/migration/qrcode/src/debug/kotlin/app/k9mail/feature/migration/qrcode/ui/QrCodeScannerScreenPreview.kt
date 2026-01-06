@@ -2,6 +2,7 @@ package app.k9mail.feature.migration.qrcode.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.State
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.UiPermissionState
@@ -13,9 +14,11 @@ fun QrCodeScannerScreenPreview_permission_unknown() {
         QrCodeScannerScreen(
             finishWithResult = {},
             finish = {},
-            viewModel = NoOpQrCodeScannerViewModel(
-                initialState = State(cameraPermissionState = UiPermissionState.Unknown),
-            ),
+            viewModel = viewModel {
+                NoOpQrCodeScannerViewModel(
+                    initialState = State(cameraPermissionState = UiPermissionState.Unknown),
+                )
+            },
         )
     }
 }
@@ -27,9 +30,11 @@ fun QrCodeScannerScreenPreview_permission_granted() {
         QrCodeScannerScreen(
             finishWithResult = {},
             finish = {},
-            viewModel = NoOpQrCodeScannerViewModel(
-                initialState = State(cameraPermissionState = UiPermissionState.Granted),
-            ),
+            viewModel = viewModel {
+                NoOpQrCodeScannerViewModel(
+                    initialState = State(cameraPermissionState = UiPermissionState.Granted),
+                )
+            },
         )
     }
 }
@@ -41,9 +46,11 @@ fun QrCodeScannerScreenPreview_permission_denied() {
         QrCodeScannerScreen(
             finishWithResult = {},
             finish = {},
-            viewModel = NoOpQrCodeScannerViewModel(
-                initialState = State(cameraPermissionState = UiPermissionState.Denied),
-            ),
+            viewModel = viewModel {
+                NoOpQrCodeScannerViewModel(
+                    initialState = State(cameraPermissionState = UiPermissionState.Denied),
+                )
+            },
         )
     }
 }

@@ -11,6 +11,7 @@ dependencies {
     api(projects.feature.telemetry.api)
     api(libs.okhttp)
 
+    implementation(libs.androidx.graphics.path)
     implementation(libs.mozilla.components.glean)
     implementation(libs.mozilla.components.fetch.okhttp)
 }

@@ -2,6 +2,7 @@ package app.k9mail.feature.widget.unread
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 
 internal class UnreadWidgetRepository(
     private val context: Context,
@@ -11,10 +12,10 @@ internal class UnreadWidgetRepository(
 
     fun saveWidgetConfiguration(configuration: UnreadWidgetConfiguration) {
         val appWidgetId = configuration.appWidgetId
-        val editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
-        editor.putString(PREF_PREFIX_KEY + appWidgetId, configuration.accountUuid)
-        editor.putString(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_ID_SUFFIX_KEY, configuration.folderId?.toString())
-        editor.apply()
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit {
+            putString(PREF_PREFIX_KEY + appWidgetId, configuration.accountUuid)
+            putString(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_ID_SUFFIX_KEY, configuration.folderId?.toString())
+        }
     }
 
     fun getWidgetData(appWidgetId: Int): UnreadWidgetData? {
@@ -42,10 +43,10 @@ internal class UnreadWidgetRepository(
     }
 
     fun deleteWidgetConfiguration(appWidgetId: Int) {
-        val editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
-        editor.remove(PREF_PREFIX_KEY + appWidgetId)
-        editor.remove(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_ID_SUFFIX_KEY)
-        editor.apply()
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit {
+            remove(PREF_PREFIX_KEY + appWidgetId)
+            remove(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_ID_SUFFIX_KEY)
+        }
     }
 
     companion object {

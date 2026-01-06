@@ -11,10 +11,13 @@ import com.fsck.k9.activity.MainActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
 
+private const val TAG = "UnreadWidgetDataProvider"
+
+@Suppress("LongParameterList")
 class UnreadWidgetDataProvider(
     private val context: Context,
     private val preferences: Preferences,
@@ -23,6 +26,7 @@ class UnreadWidgetDataProvider(
     private val folderRepository: FolderRepository,
     private val folderNameFormatter: FolderNameFormatter,
     private val coreResourceProvider: CoreResourceProvider,
+    private val logger: Logger,
 ) {
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
         if (SearchAccount.UNIFIED_FOLDERS == accountUuid) {
@@ -87,7 +91,7 @@ class UnreadWidgetDataProvider(
         return if (folder != null) {
             folderNameFormatter.displayName(folder)
         } else {
-            Log.e("Error loading folder for account %s, folder ID: %d", account, folderId)
+            logger.error(TAG) { "Error loading folder for account ${account.id.asRaw()}, folder ID: $folderId" }
             ""
         }
     }
