@@ -25,6 +25,7 @@ val coreNotificationModule = module {
             notificationChannelManager = get(),
             resourceProvider = get(),
             generalSettingsManager = get(),
+            logger = get(),
         )
     }
     single {
@@ -129,6 +130,7 @@ val coreNotificationModule = module {
             notificationChannelManager = get(),
             notificationManager = get(),
             iconResourceProvider = get(),
+            logger = get(),
         )
     }
     single {
