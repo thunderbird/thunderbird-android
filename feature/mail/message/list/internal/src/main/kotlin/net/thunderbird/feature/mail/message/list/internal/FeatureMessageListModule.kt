@@ -1,5 +1,7 @@
 package net.thunderbird.feature.mail.message.list.internal
 
+import net.thunderbird.core.common.inject.factoryListOf
+import net.thunderbird.core.common.inject.getList
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.BuildSwipeActions
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.CreateArchiveFolder
@@ -8,7 +10,9 @@ import net.thunderbird.feature.mail.message.list.internal.domain.usecase.SetArch
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListViewModel
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogFragment
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogViewModel
+import net.thunderbird.feature.mail.message.list.internal.ui.state.machine.MessageListStateMachine
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
+import net.thunderbird.feature.mail.message.list.ui.MessageListStateSideEffectHandlerFactory
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import org.koin.core.module.dsl.viewModel
@@ -49,8 +53,13 @@ val featureMessageListModule = module {
         ) as SetupArchiveFolderDialogContract.ViewModel
     }
     factory<SetupArchiveFolderDialogFragmentFactory> { SetupArchiveFolderDialogFragment.Factory }
-
-    viewModel<MessageListContract.ViewModel> { parameters ->
-        MessageListViewModel()
+    factoryListOf<MessageListStateSideEffectHandlerFactory>()
+    factory { MessageListStateMachine.Factory() }
+    viewModel<MessageListContract.ViewModel> {
+        MessageListViewModel(
+            logger = get(),
+            messageListStateMachineFactory = get(),
+            stateSideEffectHandlersFactories = getList(),
+        )
     }
 }
