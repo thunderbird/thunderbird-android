@@ -62,7 +62,7 @@ import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
-import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
+import com.fsck.k9.ui.messagelist.AbstractMessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.ui.messagelist.debug.AuthDebugActions
 import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -127,7 +127,7 @@ private const val RECENT_CHANGES_SNACKBAR_DURATION = 10 * 1000
 private const val TAG = "MessageListFragment"
 
 @Suppress("LargeClass", "TooManyFunctions")
-class MessageListFragment :
+class AbstractMessageListFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
     MessageListItemActionListener,
@@ -373,7 +373,7 @@ class MessageListFragment :
             contactRepository = contactRepository,
             avatarMonogramCreator = avatarMonogramCreator,
         ).apply {
-            activeMessage = this@MessageListFragment.activeMessage
+            activeMessage = this@AbstractMessageListFragment.activeMessage
         }
     }
 
@@ -901,7 +901,7 @@ class MessageListFragment :
             )
             lifecycleScope.launch(Dispatchers.IO) {
                 accountManager.saveAccount(updatedAccount)
-                this@MessageListFragment.account = updatedAccount
+                this@AbstractMessageListFragment.account = updatedAccount
             }
         } else {
             K9.sortType = this.sortType
@@ -2591,12 +2591,12 @@ class MessageListFragment :
         fun startSupportActionMode(callback: ActionMode.Callback): ActionMode?
         fun goBack()
 
-        companion object {
+        companion object Companion {
             const val MAX_PROGRESS = 10000
         }
     }
 
-    companion object {
+    companion object Companion {
 
         private const val ARG_SEARCH = "searchObject"
         private const val ARG_THREADED_LIST = "showingThreadedList"
@@ -2611,10 +2611,10 @@ class MessageListFragment :
             search: LocalMessageSearch,
             isThreadDisplay: Boolean,
             threadedList: Boolean,
-        ): MessageListFragment {
+        ): AbstractMessageListFragment {
             val searchBytes = LocalMessageSearchSerializer.serialize(search)
 
-            return MessageListFragment().apply {
+            return AbstractMessageListFragment().apply {
                 arguments = bundleOf(
                     ARG_SEARCH to searchBytes,
                     ARG_IS_THREAD_DISPLAY to isThreadDisplay,
