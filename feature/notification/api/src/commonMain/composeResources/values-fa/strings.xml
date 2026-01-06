@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">همگام‌سازی (پیشرانی)</string>
     <string name="notification_channel_push_description">هنگام انتظار برای پیام‌های تازه نشان داده می‌شود</string>
@@ -14,7 +14,7 @@
     <string name="notification_certificate_error_public">خطای گواهی</string>
     <string name="notification_certificate_error_title">خطای گواهی برای %1$s</string>
     <string name="notification_certificate_error_text">تنظیمات کارساز خود را بررسی کنید</string>
-    <string name="notification_bg_sync_ticker">بررسی کردن نامه: %1$s:%2$s</string>
+    <string name="notification_bg_sync_ticker">بررسی کردن نامه: %1$s: %2$s</string>
     <string name="notification_bg_sync_title">بررسی کردن نامه</string>
     <string name="notification_bg_send_ticker">فرستادن نامه: %1$s</string>
     <string name="notification_bg_send_title">فرستادن نامه</string>
@@ -36,4 +36,20 @@
     <string name="notification_action_archive">بایگانی</string>
     <string name="notification_action_archive_all">بایگانی همه</string>
     <string name="notification_action_spam">هرزنامه</string>
+    <string name="notification_action_retry">تلاش دوباره</string>
+    <string name="notification_action_update_server_settings">به‌روز رسانی تنظیمات کارساز</string>
+    <string name="notification_action_assign_sent_folder">اختصاص پوشه</string>
+    <string name="banner_inline_notification_learn_more">دانستن بیش‌تر</string>
+    <string name="sent_folder_not_found_title">پوشهٔ فرستاده در دسترس نیست.</string>
+    <string name="banner_inline_notification_check_error_notifications">بررسی آگاهی‌های خطا</string>
+    <string name="banner_inline_notification_some_messages_need_attention">برخی پیام‌ها نیازمند توجّهتانند.</string>
+    <string name="banner_inline_notification_open_notifications">گشودن آگاهی‌ها</string>
+    <string name="banner_inline_notification_view_support_article">دیدن جستار پشتیبانی</string>
+    <string name="notification_authentication_incoming_server_error_text">هویت‌سنجی %1$s شکست خورد. به‌روز رسانی تنظیمات کارساز ورودیتان.</string>
+    <string name="notification_authentication_outgoing_server_error_text">هویت‌سنجی %1$s شکست خورد. به‌روز رسانی تنظیمات کارساز خروجیتان.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d پیام جدید</item>
+        <item quantity="other">%1$d پیام جدید</item>
+    </plurals>
 </resources>

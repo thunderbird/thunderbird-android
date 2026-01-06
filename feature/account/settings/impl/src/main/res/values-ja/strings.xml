@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">モノグラムが長すぎます</string>
     <string name="account_settings_general_avatar_icon_title">アバターのアイコン</string>
     <string name="account_settings_general_avatar_icon_description">あなたのアバターに使用したいアイコンを選択してください。</string>
+    <string name="account_settings_general_avatar_image_title">アバター画像</string>
+    <string name="account_settings_general_avatar_image_description">アカウントに表示する画像を選択してください。</string>
+    <string name="account_settings_general_avatar_image_select">画像を選択</string>
+    <string name="account_settings_avatar_error_unsupported_format">JPEG 画像のみ対応しています。</string>
+    <string name="account_settings_avatar_hint_jpeg_only">JPEG のみ</string>
 </resources>

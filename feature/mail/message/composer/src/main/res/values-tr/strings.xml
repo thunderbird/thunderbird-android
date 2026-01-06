@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="sent_folder_not_found_dialog_title">Gönderilen klasör bulunamadı</string>
-    <string name="sent_folder_not_found_dialog_supporting_text">Bu e-postayı gönderdikten sonra kaydetmek için, Hesap Ayarları\'nda bir Gönderilmiş klasör ayarlayın.</string>
-    <string name="sent_folder_not_found_dialog_assign_folder_action">Gönderilenler Klasörünü Belirle</string>
-    <string name="sent_folder_not_found_dialog_cancel_action">İptal et</string>
-    <string name="sent_folder_not_found_dialog_send_and_delete_action">Gönder ve Sil</string>
+    <string name="sent_folder_not_found_dialog_title">Gönderilmiş klasörü bulunamadı</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Bu e-postayı gönderdikten sonra kaydetmek için Hesap Ayarları\'ndan bir Gönderilmiş klasörü ayarlayın.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Gönderilmiş klasörü ata</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Vazgeç</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Gönder ve sil</string>
 </resources>

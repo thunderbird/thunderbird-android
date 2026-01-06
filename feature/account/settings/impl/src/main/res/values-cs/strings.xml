@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogram je příliš dlouhý</string>
     <string name="account_settings_general_avatar_icon_title">Ikona jako avatar</string>
     <string name="account_settings_general_avatar_icon_description">Vyberte si jednu z ikon, kterou chcete použít jako váš avatar.</string>
+    <string name="account_settings_general_avatar_image_title">Obrázek avataru</string>
+    <string name="account_settings_general_avatar_image_description">Vyberte si obrázek, který bude představovat váš účet.</string>
+    <string name="account_settings_general_avatar_image_select">Vybrat obrázek</string>
+    <string name="account_settings_avatar_error_unsupported_format">Jsou podporovány pouze obrázky JPEG.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Pouze JPEG</string>
 </resources>

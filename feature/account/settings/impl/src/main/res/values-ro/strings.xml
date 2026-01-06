@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">Monograma este prea lungă</string>
     <string name="account_settings_general_avatar_icon_title">Pictogramă avatar</string>
     <string name="account_settings_general_avatar_icon_description">Alege una dintre pictograme pentru a o folosi ca avatar.</string>
+    <string name="account_settings_general_avatar_image_title">Imagine avatar</string>
+    <string name="account_settings_general_avatar_image_description">Alegeți o imagine care să reprezinte contul dvs.</string>
+    <string name="account_settings_general_avatar_image_select">Selectați imaginea</string>
+    <string name="account_settings_avatar_error_unsupported_format">Sunt acceptate numai imagini JPEG.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Numai JPEG</string>
 </resources>

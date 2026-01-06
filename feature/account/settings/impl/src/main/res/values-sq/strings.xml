@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogrami është shumë i gjatë</string>
     <string name="account_settings_general_avatar_icon_title">Ikonë Avatari</string>
     <string name="account_settings_general_avatar_icon_description">Zgjidhni një nga ikonat për ta përdorur si avatarin tuaj.</string>
+    <string name="account_settings_general_avatar_image_title">Figurë Avatari</string>
+    <string name="account_settings_general_avatar_image_description">Zgjidhni një figurë që të përfaqësojë llogarinë tuaj.</string>
+    <string name="account_settings_general_avatar_image_select">Përzgjidhni Figurë</string>
+    <string name="account_settings_avatar_error_unsupported_format">Mbulohen vetëm figura JPEG.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Vetëm JPEG</string>
 </resources>
