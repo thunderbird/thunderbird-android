@@ -2,11 +2,8 @@ package net.thunderbird.feature.mail.message.list.ui.state
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
-import net.thunderbird.core.common.action.SwipeActions
-import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 
 /**
@@ -15,23 +12,67 @@ import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferen
  * This sealed interface defines the different possible states, such as when messages are being loaded,
  * have been loaded, are being searched, or when the user is selecting messages for an action.
  *
- * @property folder The current folder being displayed. `null` if no folder is selected (e.g. Unified Inbox).
- * @property messages An immutable list of [MessageItemUi] objects to be displayed.
  * @property preferences User-configurable preferences for the message list display.
- * @property swipeActions The swipe actions configured for the message list.
- * @property selectedSortTypes The currently selected sorting order for the messages.
- * @property activeMessage The message that is currently being viewed in a split-screen or tablet layout.
- * @property isActive `true` if the message list is the currently active screen; `false` otherwise.
+ * @property messages An immutable list of [MessageItemUi] objects to be displayed.
  */
 @Immutable
 sealed interface MessageListState {
-    val folder: Folder?
-    val messages: ImmutableList<MessageItemUi>
+    val metadata: MessageListMetadata
     val preferences: MessageListPreferences?
-    val swipeActions: ImmutableMap<AccountId, SwipeActions>
-    val selectedSortTypes: ImmutableMap<AccountId?, SortType>
-    val activeMessage: MessageItemUi?
-    val isActive: Boolean
+    val messages: ImmutableList<MessageItemUi>
+
+    /**
+     * Creates a copy of the current state with updated [metadata], preserving all other
+     * properties.
+     *
+     * This is a convenience function to immutably update the state with new [metadata]
+     * without needing to manually copy all other properties. It ensures that the specific
+     * type of the state (e.g., [LoadedMessages], [SearchingMessages]) is preserved.
+     *
+     * This is useful for modifying shared properties without needing to handle each state
+     * subtype individually.
+     *
+     * @param transform A lambda function that receives the current [MessageListMetadata]
+     * and returns a new, transformed instance.
+     * @return A new [MessageListState] instance of the same type as the original, but with
+     * the updated metadata.
+     */
+    fun withMetadata(
+        transform: MessageListMetadata.() -> MessageListMetadata,
+    ): MessageListState = when (this) {
+        is LoadedMessages -> copy(metadata = metadata.transform())
+        is LoadingMessages -> copy(metadata = metadata.transform())
+        is SearchingMessages -> copy(metadata = metadata.transform())
+        is SelectingMessages -> copy(metadata = metadata.transform())
+        is WarmingUp -> copy(metadata = metadata.transform())
+    }
+
+    /**
+     * Creates a copy of the current state with updated [preferences], preserving all other
+     * properties.
+     *
+     * This is a convenience function to immutably update the state with new [preferences]
+     * without needing to manually copy all other properties. It ensures that the specific
+     * type of the state (e.g., [LoadedMessages], [SearchingMessages]) is preserved.
+     *
+     * This is particularly useful when preferences change (e.g., user toggles conversation mode)
+     * and the UI needs to be recomposed with the new settings while maintaining the rest of the
+     * current state like the list of messages, selected folder, etc.
+     *
+     * @param transform A lambda function that receives the current [MessageListPreferences]
+     * and returns a new, transformed instance.
+     * @return A new [MessageListState] instance of the same type as the original, but with
+     * the updated preferences.
+     */
+    fun withPreferences(
+        transform: MessageListPreferences.() -> MessageListPreferences,
+    ): MessageListState = when (this) {
+        is LoadedMessages -> copy(preferences = preferences.transform())
+        is LoadingMessages -> copy(preferences = preferences.transform())
+        is SearchingMessages -> copy(preferences = preferences.transform())
+        is SelectingMessages -> copy(preferences = preferences.transform())
+        is WarmingUp -> copy(preferences = preferences?.transform())
+    }
 
     /**
      * Represents the initial state of the message list screen before any messages are loaded.
@@ -41,16 +82,18 @@ sealed interface MessageListState {
      * the UI to display a consistent initial view.
      */
     data class WarmingUp(
-        override val folder: Folder? = null,
-        override val messages: ImmutableList<MessageItemUi> = persistentListOf(),
-        override val swipeActions: ImmutableMap<AccountId, SwipeActions> = persistentMapOf(),
-        override val selectedSortTypes: ImmutableMap<AccountId?, SortType> = persistentMapOf(),
-        override val activeMessage: MessageItemUi? = null,
+        override val metadata: MessageListMetadata = MessageListMetadata(
+            folder = null,
+            swipeActions = persistentMapOf(),
+            selectedSortTypes = persistentMapOf(),
+            activeMessage = null,
+            isActive = false,
+        ),
         override val preferences: MessageListPreferences? = null,
-        override val isActive: Boolean = false,
+        override val messages: ImmutableList<MessageItemUi> = persistentListOf(),
     ) : MessageListState {
         val isReady: Boolean
-            get() = swipeActions.isNotEmpty() && preferences != null && selectedSortTypes.isNotEmpty()
+            get() = metadata.swipeActions.isNotEmpty() && preferences != null && metadata.selectedSortTypes.isNotEmpty()
     }
 
     /**
@@ -59,13 +102,9 @@ sealed interface MessageListState {
      * This is the primary "idle" or "ready" state for the message list.
      */
     data class LoadedMessages(
-        override val folder: Folder?,
-        override val messages: ImmutableList<MessageItemUi>,
+        override val metadata: MessageListMetadata,
         override val preferences: MessageListPreferences,
-        override val swipeActions: ImmutableMap<AccountId, SwipeActions>,
-        override val selectedSortTypes: ImmutableMap<AccountId?, SortType> = persistentMapOf(),
-        override val activeMessage: MessageItemUi? = null,
-        override val isActive: Boolean = true,
+        override val messages: ImmutableList<MessageItemUi>,
     ) : MessageListState
 
     /**
@@ -81,13 +120,9 @@ sealed interface MessageListState {
         val progress: Float,
         val isPullToRefresh: Boolean = false,
         val isRemoteLoading: Boolean = false,
-        override val folder: Folder?,
-        override val messages: ImmutableList<MessageItemUi> = persistentListOf(),
+        override val metadata: MessageListMetadata,
         override val preferences: MessageListPreferences,
-        override val swipeActions: ImmutableMap<AccountId, SwipeActions>,
-        override val selectedSortTypes: ImmutableMap<AccountId?, SortType> = persistentMapOf(),
-        override val activeMessage: MessageItemUi? = null,
-        override val isActive: Boolean = true,
+        override val messages: ImmutableList<MessageItemUi> = persistentListOf(),
     ) : MessageListState
 
     /**
@@ -102,13 +137,9 @@ sealed interface MessageListState {
     data class SearchingMessages(
         val searchQuery: String,
         val isServerSearch: Boolean,
-        override val folder: Folder?,
-        override val messages: ImmutableList<MessageItemUi>,
+        override val metadata: MessageListMetadata,
         override val preferences: MessageListPreferences,
-        override val swipeActions: ImmutableMap<AccountId, SwipeActions>,
-        override val selectedSortTypes: ImmutableMap<AccountId?, SortType> = persistentMapOf(),
-        override val activeMessage: MessageItemUi? = null,
-        override val isActive: Boolean = true,
+        override val messages: ImmutableList<MessageItemUi>,
     ) : MessageListState
 
     /**
@@ -119,13 +150,9 @@ sealed interface MessageListState {
      * enabling a multi-select mode in the UI.
      */
     data class SelectingMessages(
-        override val folder: Folder?,
-        override val messages: ImmutableList<MessageItemUi>,
+        override val metadata: MessageListMetadata,
         override val preferences: MessageListPreferences,
-        override val swipeActions: ImmutableMap<AccountId, SwipeActions>,
-        override val selectedSortTypes: ImmutableMap<AccountId?, SortType> = persistentMapOf(),
-        override val activeMessage: MessageItemUi? = null,
-        override val isActive: Boolean = true,
+        override val messages: ImmutableList<MessageItemUi>,
     ) : MessageListState {
         val selectedCount: Int = messages.count { it.selected }
     }
