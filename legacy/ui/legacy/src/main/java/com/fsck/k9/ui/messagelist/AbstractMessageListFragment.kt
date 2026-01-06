@@ -202,7 +202,8 @@ abstract class AbstractMessageListFragment :
 
     private lateinit var adapter: MessageListAdapter
 
-    private lateinit var accountUuids: Array<String>
+    protected lateinit var accountUuids: Array<String>
+        private set
     private var accounts: List<LegacyAccount> = emptyList()
 
     private var account: LegacyAccount? = null
@@ -334,7 +335,7 @@ abstract class AbstractMessageListFragment :
         rememberedSelected = savedInstanceState.getLongArray(STATE_SELECTED_MESSAGES)?.toSet()
     }
 
-    private fun decodeArguments(): Error? {
+    protected fun decodeArguments(): Error? {
         val arguments = requireArguments()
         showingThreadedList = arguments.getBoolean(ARG_THREADED_LIST, false)
         isThreadDisplay = arguments.getBoolean(ARG_IS_THREAD_DISPLAY, false)
@@ -1188,7 +1189,7 @@ abstract class AbstractMessageListFragment :
                 when (outcome.error) {
                     is AuthDebugActions.Error.AccountNotFound,
                     is AuthDebugActions.Error.NoOAuthState,
-                        -> {
+                    -> {
                         Toast.makeText(
                             requireContext(),
                             R.string.debug_invalidate_access_token_unavailable,
@@ -1241,7 +1242,7 @@ abstract class AbstractMessageListFragment :
                     is AuthDebugActions.Error.NoOAuthState,
                     is AuthDebugActions.Error.CannotModifyAccessToken,
                     is AuthDebugActions.Error.AlreadyModified,
-                        -> {
+                    -> {
                         Toast.makeText(
                             requireContext(),
                             R.string.debug_invalidate_access_token_unavailable,
@@ -1283,7 +1284,7 @@ abstract class AbstractMessageListFragment :
 
                     is AuthDebugActions.Error.CannotModifyAccessToken,
                     is AuthDebugActions.Error.AlreadyModified,
-                        -> {
+                    -> {
                         // Not relevant to this action, but keep exhaustive when; show generic unavailable
                         Toast.makeText(
                             requireContext(),
@@ -2591,7 +2592,7 @@ abstract class AbstractMessageListFragment :
     }
 
     @Suppress("detekt.UnnecessaryAnnotationUseSiteTarget") // https://github.com/detekt/detekt/issues/8212
-    private enum class Error(@param:StringRes val errorText: Int) {
+    protected enum class Error(@param:StringRes val errorText: Int) {
         FolderNotFound(R.string.message_list_error_folder_not_found),
     }
 
