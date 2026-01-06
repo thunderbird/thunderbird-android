@@ -147,7 +147,8 @@ abstract class AbstractMessageListFragment :
 
     abstract val logTag: String
 
-    val viewModel: MessageListViewModel by viewModel()
+    val legacyViewModel: MessageListViewModel by viewModel()
+    private val viewModel: MessageListViewModel get() = legacyViewModel
     private val recentChangesViewModel: RecentChangesViewModel by viewModel()
 
     private val generalSettingsManager: GeneralSettingsManager by inject()
@@ -1187,7 +1188,7 @@ abstract class AbstractMessageListFragment :
                 when (outcome.error) {
                     is AuthDebugActions.Error.AccountNotFound,
                     is AuthDebugActions.Error.NoOAuthState,
-                    -> {
+                        -> {
                         Toast.makeText(
                             requireContext(),
                             R.string.debug_invalidate_access_token_unavailable,
@@ -1240,7 +1241,7 @@ abstract class AbstractMessageListFragment :
                     is AuthDebugActions.Error.NoOAuthState,
                     is AuthDebugActions.Error.CannotModifyAccessToken,
                     is AuthDebugActions.Error.AlreadyModified,
-                    -> {
+                        -> {
                         Toast.makeText(
                             requireContext(),
                             R.string.debug_invalidate_access_token_unavailable,
@@ -1282,7 +1283,7 @@ abstract class AbstractMessageListFragment :
 
                     is AuthDebugActions.Error.CannotModifyAccessToken,
                     is AuthDebugActions.Error.AlreadyModified,
-                    -> {
+                        -> {
                         // Not relevant to this action, but keep exhaustive when; show generic unavailable
                         Toast.makeText(
                             requireContext(),
