@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.annotation.Discouraged
 import androidx.annotation.StringRes
 import androidx.appcompat.view.ActionMode
 import androidx.compose.animation.animateContentSize
@@ -19,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.ComposeView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
@@ -94,7 +94,6 @@ import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettings
@@ -102,6 +101,7 @@ import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
+import net.thunderbird.feature.mail.message.list.MessageListFeatureFlags
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import net.thunderbird.feature.notification.api.content.InAppNotification
@@ -124,14 +124,28 @@ private const val MAXIMUM_MESSAGE_SORT_OVERRIDES = 3
 private const val MINIMUM_CLICK_INTERVAL = 200L
 private const val RECENT_CHANGES_SNACKBAR_DURATION = 10 * 1000
 
-private const val TAG = "MessageListFragment"
-
-@Suppress("LargeClass", "TooManyFunctions")
-class AbstractMessageListFragment :
+@Suppress(
+    "LargeClass",
+    "TooManyFunctions",
+    "CyclomaticComplexMethod",
+    "TooGenericExceptionCaught",
+    "TooGenericExceptionThrown",
+    "SwallowedException",
+    "ReturnCount",
+    "ForbiddenComment",
+)
+@Discouraged(
+    message = "This class is in maintenance mode. DO NOT introduce any new features in this class. " +
+        "Only bugfixes are allowed. New features must be introduced in the new MessageListFragment, " +
+        "following the MVI principle.",
+)
+abstract class AbstractMessageListFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
     MessageListItemActionListener,
     ErrorNotificationsDialogFragmentActionListener {
+
+    abstract val logTag: String
 
     val viewModel: MessageListViewModel by viewModel()
     private val recentChangesViewModel: RecentChangesViewModel by viewModel()
@@ -383,10 +397,10 @@ class AbstractMessageListFragment :
                 setFragmentResultListener(
                     SetupArchiveFolderDialogFragmentFactory.RESULT_CODE_DISMISS_REQUEST_KEY,
                 ) { key, bundle ->
-                    Log.d(
+                    logger.debug(logTag) {
                         "SetupArchiveFolderDialogFragment fragment listener triggered with " +
-                            "key: $key and bundle: $bundle",
-                    )
+                            "key: $key and bundle: $bundle"
+                    }
                     loadMessageList(forceUpdate = true)
                 }
             }
@@ -1618,7 +1632,7 @@ class AbstractMessageListFragment :
         for ((folderId, messagesInFolder) in folderMap) {
             val account = accountManager.getAccount(messagesInFolder.first().accountUuid)
             if (account == null) {
-                logger.debug(TAG) {
+                logger.debug(logTag) {
                     "Account for message ${messagesInFolder.first()} not found, skipping copy/move operation"
                 }
                 continue
@@ -1743,12 +1757,12 @@ class AbstractMessageListFragment :
         // If we represent a remote search, then kill that before going back.
         if (isRemoteSearch && remoteSearchFuture != null) {
             try {
-                Log.i("Remote search in progress, attempting to abort...")
+                logger.info(logTag) { "Remote search in progress, attempting to abort..." }
 
                 // Canceling the future stops any message fetches in progress.
                 val cancelSuccess = remoteSearchFuture!!.cancel(true) // mayInterruptIfRunning = true
                 if (!cancelSuccess) {
-                    Log.e("Could not cancel remote search future.")
+                    logger.error(logTag) { "Could not cancel remote search future." }
                 }
 
                 // Closing the folder will kill off the connection if we're mid-search.
@@ -1763,7 +1777,7 @@ class AbstractMessageListFragment :
                 )
             } catch (e: Exception) {
                 // Since the user is going back, log and squash any exceptions.
-                Log.e(e, "Could not abort remote search before going back")
+                logger.error(logTag, e) { "Could not abort remote search before going back" }
             }
         }
 
@@ -2596,31 +2610,42 @@ class AbstractMessageListFragment :
         }
     }
 
-    companion object Companion {
-
-        private const val ARG_SEARCH = "searchObject"
-        private const val ARG_THREADED_LIST = "showingThreadedList"
-        private const val ARG_IS_THREAD_DISPLAY = "isThreadedDisplay"
-
-        private const val STATE_SELECTED_MESSAGES = "selectedMessages"
-        private const val STATE_ACTIVE_MESSAGES = "activeMessages"
-        private const val STATE_ACTIVE_MESSAGE = "activeMessage"
-        private const val STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed"
-
+    /**
+     * A factory for creating instances of [AbstractMessageListFragment].
+     *
+     * This interface is a temporary solution to toggle between different fragment implementations
+     * based on a feature flag. It allows for the creation of either a modern [MessageListFragment] or a
+     * [LegacyMessageListFragment] depending on the state of [MessageListFeatureFlags.EnableMessageListNewState].
+     */
+    interface Factory {
+        /**
+         * Creates a new instance of a class that inherits from [AbstractMessageListFragment].
+         *
+         * The specific implementation returned ([MessageListFragment] or [LegacyMessageListFragment]) is determined
+         * by the [MessageListFeatureFlags.EnableMessageListNewState] feature flag.
+         *
+         * @param search The search query that defines which messages to display.
+         * @param isThreadDisplay `true` if the fragment is used to display a single thread, `false` otherwise.
+         * @param threadedList `true` to display the message list in a threaded conversation view, `false` otherwise.
+         *
+         * @return An instance of [MessageListFragment] if the new state feature flag is enabled;
+         *  otherwise, an instance of [LegacyMessageListFragment].
+         */
         fun newInstance(
             search: LocalMessageSearch,
             isThreadDisplay: Boolean,
             threadedList: Boolean,
-        ): AbstractMessageListFragment {
-            val searchBytes = LocalMessageSearchSerializer.serialize(search)
+        ): AbstractMessageListFragment
+    }
 
-            return AbstractMessageListFragment().apply {
-                arguments = bundleOf(
-                    ARG_SEARCH to searchBytes,
-                    ARG_IS_THREAD_DISPLAY to isThreadDisplay,
-                    ARG_THREADED_LIST to threadedList,
-                )
-            }
-        }
+    companion object {
+        protected const val ARG_SEARCH = "searchObject"
+        protected const val ARG_THREADED_LIST = "showingThreadedList"
+        protected const val ARG_IS_THREAD_DISPLAY = "isThreadedDisplay"
+
+        protected const val STATE_SELECTED_MESSAGES = "selectedMessages"
+        protected const val STATE_ACTIVE_MESSAGES = "activeMessages"
+        protected const val STATE_ACTIVE_MESSAGE = "activeMessage"
+        protected const val STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed"
     }
 }

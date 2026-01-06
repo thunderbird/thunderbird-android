@@ -42,9 +42,9 @@ import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
-import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.messagelist.AbstractMessageListFragment
 import com.fsck.k9.ui.messagelist.AbstractMessageListFragment.MessageListFragmentListener
+import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
@@ -53,7 +53,6 @@ import com.fsck.k9.ui.settings.SettingsActivity
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
-import kotlin.getValue
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
@@ -121,6 +120,7 @@ open class MainActivity :
     private var openFolderTransaction: FragmentTransaction? = null
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
+    private val messageListFragmentFactory: AbstractMessageListFragment.Factory by inject()
     private var messageListFragment: AbstractMessageListFragment? = null
     private var messageViewContainerFragment: MessageViewContainerFragment? = null
     private var account: LegacyAccountDto? = null
@@ -266,7 +266,9 @@ open class MainActivity :
 
     private fun findFragments() {
         val fragmentManager = supportFragmentManager
-        messageListFragment = fragmentManager.findFragmentById(R.id.message_list_container) as? AbstractMessageListFragment
+        messageListFragment = fragmentManager.findFragmentById(
+            R.id.message_list_container,
+        ) as? AbstractMessageListFragment
         messageViewContainerFragment =
             fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER) as? MessageViewContainerFragment
 
@@ -283,10 +285,10 @@ open class MainActivity :
         val hasMessageListFragment = messageListFragment != null
         if (!hasMessageListFragment) {
             val fragmentTransaction = fragmentManager.beginTransaction()
-            val messageListFragment = AbstractMessageListFragment.newInstance(
-                search!!,
-                false,
-                generalSettingsManager.getConfig()
+            val messageListFragment = messageListFragmentFactory.newInstance(
+                search = search!!,
+                isThreadDisplay = false,
+                threadedList = generalSettingsManager.getConfig()
                     .display
                     .inboxSettings
                     .isThreadedViewEnabled &&
@@ -741,10 +743,10 @@ open class MainActivity :
         }
 
         val openFolderTransaction = fragmentManager.beginTransaction()
-        val messageListFragment = AbstractMessageListFragment.newInstance(
-            search,
-            false,
-            generalSettingsManager.getConfig().display.inboxSettings.isThreadedViewEnabled,
+        val messageListFragment = messageListFragmentFactory.newInstance(
+            search = search,
+            isThreadDisplay = false,
+            threadedList = generalSettingsManager.getConfig().display.inboxSettings.isThreadedViewEnabled,
         )
         openFolderTransaction.replace(R.id.message_list_container, messageListFragment)
 
@@ -1229,7 +1231,11 @@ open class MainActivity :
 
         initializeFromLocalSearch(tmpSearch)
 
-        val fragment = AbstractMessageListFragment.newInstance(tmpSearch, true, false)
+        val fragment = messageListFragmentFactory.newInstance(
+            search = tmpSearch,
+            isThreadDisplay = true,
+            threadedList = false,
+        )
         addMessageListFragment(fragment)
     }
 
