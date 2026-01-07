@@ -59,7 +59,6 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.core.preference.FolderListPreferenceMigration
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.interaction.PostRemoveNavigation
@@ -102,7 +101,6 @@ open class MainActivity :
     OnSwitchCompleteListener {
 
     private val preferences: Preferences by inject()
-    private val folderListPreferenceMigration: FolderListPreferenceMigration by inject()
     private val accountManager: LegacyAccountDtoManager by inject()
     private val defaultFolderProvider: DefaultFolderProvider by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
@@ -164,7 +162,6 @@ open class MainActivity :
             return
         }
 
-        folderListPreferenceMigration.apply()
         val accounts = accountManager.getAccounts()
         deleteIncompleteAccounts(accounts)
         val hasAccountSetup = accounts.any { it.isFinishedSetup }
