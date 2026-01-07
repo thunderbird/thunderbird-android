@@ -32,6 +32,7 @@ internal fun MessageItemContentPreview() {
             isSelected = false,
             contactRepository = fakeContactRepository,
             avatarMonogramCreator = fakeAvatarMonogramCreator,
+            formatDate = { "12:34" },
             onClick = {},
             onLongClick = {},
             onAvatarClick = {},

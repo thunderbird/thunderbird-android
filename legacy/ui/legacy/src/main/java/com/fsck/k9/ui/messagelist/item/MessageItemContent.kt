@@ -24,12 +24,14 @@ import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
 import app.k9mail.core.ui.compose.designsystem.atom.image.RemoteImage
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.core.ui.compose.designsystem.organism.message.ActiveMessageItem
 import net.thunderbird.core.ui.compose.designsystem.organism.message.MessageItemDefaults
@@ -46,16 +48,14 @@ internal fun MessageItemContent(
     isSelected: Boolean,
     contactRepository: ContactRepository,
     avatarMonogramCreator: AvatarMonogramCreator,
+    formatDate: () -> String,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     onAvatarClick: () -> Unit,
     onFavouriteClick: (Boolean) -> Unit,
     appearance: MessageListAppearance,
 ) {
-    val receivedAt = remember(item.messageDate) {
-        Instant.fromEpochMilliseconds(item.messageDate)
-            .toLocalDateTime(TimeZone.currentSystemDefault())
-    }
+    val receivedAt: String = formatDate()
 
     val uri by remember(item.displayAddress?.address) {
         mutableStateOf(
