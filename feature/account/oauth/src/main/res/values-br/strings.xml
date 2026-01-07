@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_google_sign_in_support_text">M\'ho peus kudennoù o kennaskañ gant Google, lennit hor {placeHolder}.</string>
     <string name="account_oauth_sign_in_description">Adheñchañ a raimp ac\'hanoc\'h etrezek ho pourchaser posteloù evit kennaskañ. Dav vo deoc\'h aotren an arload da haeziñ ho kont posteloù.</string>
-    <string name="account_oauth_sign_in_button">Kennsakañ</string>
+    <string name="account_oauth_sign_in_button">Kevreañ</string>
     <string name="account_oauth_sign_in_with_google_button">Kennaskañ gant Google</string>
     <string name="account_oauth_loading_message">Kennaskañ gant OAuth</string>
     <string name="account_oauth_loading_error">Fazi en ur gennaskañ ouzh OAuth</string>

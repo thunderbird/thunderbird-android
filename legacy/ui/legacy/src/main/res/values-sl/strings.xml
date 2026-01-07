@@ -936,4 +936,6 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="global_settings_messageview_body_content_type_text_plain">Golo besedilo (text/plain)</string>
     <string name="navigation_drawer_preferences">Stranski meni</string>
     <string name="expand_folders">Razširi mape</string>
+    <string name="print_message_action">Natisni</string>
+    <string name="account_setup_auto_select_folder">Samodejno izberi mapo</string>
 </resources>

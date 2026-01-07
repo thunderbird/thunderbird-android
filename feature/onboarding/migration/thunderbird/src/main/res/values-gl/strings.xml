@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Xa empregas Thunderbird en equipo de escritorio?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Importa con facilidade ás túas contas de correo escaneando un código QR.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Na versión de escritorio de Thunderbird vai a:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">«Axustes» na barra de ferramentas Espazos (abaixo á esquerda)</string>
+</resources>

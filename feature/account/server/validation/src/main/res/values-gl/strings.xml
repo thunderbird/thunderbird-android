@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_authentication">Erro de autenticación</string>
+    <string name="account_server_validation_error_network">Erro de rede</string>
+    <string name="account_server_validation_error_server">Erro do servidor</string>
+    <string name="account_server_validation_error_unknown">Erro descoñecido</string>
+    <string name="account_server_validation_error_client_certificate_expired">Xa non é válido o certificado de cliente</string>
+</resources>

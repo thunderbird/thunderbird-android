@@ -17,4 +17,8 @@
     <string name="account_setup_options_section_sync_options">Synkroniserings indstillinger</string>
     <string name="account_setup_options_show_notifications_label">Vis notifikationer</string>
     <string name="account_setup_options_section_display_options">Visningsindstillinger</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Hver time</item>
+        <item quantity="other">Hver %d. time</item>
+    </plurals>
 </resources>

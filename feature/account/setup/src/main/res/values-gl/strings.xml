@@ -41,4 +41,16 @@
     <string name="account_setup_options_email_signature_label">Firma de correo electrónico</string>
     <string name="account_setup_options_section_sync_options">Opcións de sincronización</string>
     <string name="account_setup_options_email_check_frequency_never">Nunca</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Cada minuto</item>
+        <item quantity="other">Cada %d minutos</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Cada hora</item>
+        <item quantity="other">Cada %d horas</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 mensaxe</item>
+        <item quantity="other">%d mensaxes</item>
+    </plurals>
 </resources>
