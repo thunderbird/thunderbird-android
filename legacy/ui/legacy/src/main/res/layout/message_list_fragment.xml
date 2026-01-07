@@ -6,7 +6,7 @@
     android:id="@+id/message_list_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".messagelist.MessageListFragment"
+    tools:context=".messagelist.AbstractMessageListFragment"
     >
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button"
