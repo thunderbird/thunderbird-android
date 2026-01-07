@@ -4,6 +4,7 @@ import com.fsck.k9.K9
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.MessageListDateTimeFormat
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
@@ -25,6 +26,7 @@ data class MessageListActivityConfig(
     val messageListPreviewLines: Int,
     val messageListDensity: UiDensity,
     val splitViewMode: SplitViewMode,
+    val messageListDateTimeFormat: MessageListDateTimeFormat,
     val fontSizeMessageListSubject: Int,
     val fontSizeMessageListSender: Int,
     val fontSizeMessageListDate: Int,
@@ -75,6 +77,7 @@ data class MessageListActivityConfig(
                 swipeRightAction = interactionSettings.swipeActions.rightAction,
                 swipeLeftAction = interactionSettings.swipeActions.leftAction,
                 generalSettingsManager = generalSettingsManager,
+                messageListDateTimeFormat = settings.display.coreSettings.messageListDateTimeFormat,
             )
         }
     }

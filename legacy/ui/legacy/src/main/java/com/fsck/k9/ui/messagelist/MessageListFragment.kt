@@ -809,6 +809,8 @@ class MessageListFragment :
             backGroundAsReadIndicator = messageListSettings.isUseBackgroundAsUnreadIndicator,
             showAccountIndicator = isShowAccountIndicator,
             density = messageListSettings.uiDensity,
+            messageListDateTimeFormat =
+            generalSettingsManager.getConfig().display.coreSettings.messageListDateTimeFormat,
         )
 
     private fun getFolderInfoHolder(account: LegacyAccount, folderId: Long): FolderInfoHolder {
