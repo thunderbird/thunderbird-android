@@ -249,6 +249,7 @@ class MessageListAdapter internal constructor(
     private fun createComposableMessageViewHolder(parent: ViewGroup): MessageListViewHolder =
         ComposableMessageViewHolder.create(
             context = parent.context,
+            relativeDateTimeFormatter = relativeDateTimeFormatter,
             themeProvider = themeProvider,
             contactRepository = contactRepository,
             avatarMonogramCreator = avatarMonogramCreator,

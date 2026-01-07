@@ -47,7 +47,7 @@ fun NewMessageItem(
     sender: String,
     subject: String,
     preview: String,
-    receivedAt: LocalDateTime,
+    receivedAt: String,
     showAccountIndicator: Boolean,
     accountIndicatorColor: Color?,
     avatar: @Composable () -> Unit,
