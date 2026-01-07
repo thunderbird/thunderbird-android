@@ -632,22 +632,26 @@ private fun createMessageListPreferences(
     showCorrespondentNames: Boolean = false,
     showMessageAvatar: Boolean = false,
     showFavouriteButton: Boolean = false,
+    senderAboveSubject: Boolean = false,
     excerptLines: Int = 1,
     dateTimeFormat: MessageListDateTimeFormat = MessageListDateTimeFormat.Auto,
     useVolumeKeyNavigation: Boolean = false,
     serverSearchLimit: Int = 0,
     actionRequiringUserConfirmation: ImmutableSet<ActionRequiringUserConfirmation> = persistentSetOf(),
+    colorizeBackgroundWhenRead: Boolean = false,
 ) = MessageListPreferences(
     density = density,
     groupConversations = groupConversations,
     showCorrespondentNames = showCorrespondentNames,
     showMessageAvatar = showMessageAvatar,
     showFavouriteButton = showFavouriteButton,
+    senderAboveSubject = senderAboveSubject,
     excerptLines = excerptLines,
     dateTimeFormat = dateTimeFormat,
     useVolumeKeyNavigation = useVolumeKeyNavigation,
     serverSearchLimit = serverSearchLimit,
     actionRequiringUserConfirmation = actionRequiringUserConfirmation,
+    colorizeBackgroundWhenRead = colorizeBackgroundWhenRead,
 )
 
 private fun createMessageUiItemList(
