@@ -9,6 +9,13 @@ import net.thunderbird.feature.account.AccountId
  */
 sealed interface MessageListEffect {
     /**
+     * Effect to trigger a refresh of the message list. This can be used to manually
+     * reload the list of messages from the data source, for instance, after a pull-to-refresh
+     * gesture or a programmatic trigger.
+     */
+    data object RefreshMessageList : MessageListEffect
+
+    /**
      * Effect to navigate back from the current screen.
      */
     data object NavigateBack : MessageListEffect

@@ -253,6 +253,7 @@ class StateMachineTest {
             stateMachine<State, Event>(scope = this) {
                 initialState(State.Init) {
                     onEnter { event, newState ->
+                        println("New state: $newState, event: $event")
                         actualPreviousState = this
                         actualNewState = newState
                         actualEvent = event
