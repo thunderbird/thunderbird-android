@@ -3,6 +3,7 @@ package com.fsck.k9.ui.messagelist.item
 import android.content.Context
 import androidx.compose.ui.platform.ComposeView
 import app.k9mail.core.android.common.contact.ContactRepository
+import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
@@ -14,6 +15,7 @@ import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 @Suppress("LongParameterList")
 class ComposableMessageViewHolder(
     private val composeView: ComposeView,
+    private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
     private val themeProvider: FeatureThemeProvider,
     private val onClick: (MessageListItem) -> Unit,
     private val onLongClick: (MessageListItem) -> Unit,
@@ -37,6 +39,11 @@ class ComposableMessageViewHolder(
                     isSelected = isSelected,
                     contactRepository = contactRepository,
                     avatarMonogramCreator = avatarMonogramCreator,
+                    formatDate = {
+                        relativeDateTimeFormatter.formatDate(
+                            item.messageDate, appearance.dateTimeFormat,
+                        )
+                    },
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onAvatarClick = { onAvatarClick(item) },
@@ -51,6 +58,7 @@ class ComposableMessageViewHolder(
         @Suppress("LongParameterList")
         fun create(
             context: Context,
+            relativeDateTimeFormatter: RelativeDateTimeFormatter,
             themeProvider: FeatureThemeProvider,
             contactRepository: ContactRepository,
             avatarMonogramCreator: AvatarMonogramCreator,
@@ -64,6 +72,7 @@ class ComposableMessageViewHolder(
 
             val holder = ComposableMessageViewHolder(
                 composeView = composeView,
+                relativeDateTimeFormatter = relativeDateTimeFormatter,
                 themeProvider = themeProvider,
                 contactRepository = contactRepository,
                 avatarMonogramCreator = avatarMonogramCreator,
