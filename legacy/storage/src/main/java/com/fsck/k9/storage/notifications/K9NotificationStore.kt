@@ -43,7 +43,7 @@ class K9NotificationStore(private val lockableDatabase: LockableDatabase) : Noti
         database.execSQL(
             "INSERT INTO notifications(message_id, notification_id, timestamp) " +
                 "SELECT id, ?, ? FROM messages WHERE folder_id = ? AND uid = ?",
-            arrayOf<Any>(notificationId, timestamp, messageReference.folderId, messageReference.uid),
+            arrayOf(notificationId, timestamp, messageReference.folderId, messageReference.uid),
         )
     }
 
@@ -51,7 +51,7 @@ class K9NotificationStore(private val lockableDatabase: LockableDatabase) : Noti
         database.execSQL(
             "UPDATE notifications SET notification_id = ? WHERE message_id IN " +
                 "(SELECT id FROM messages WHERE folder_id = ? AND uid = ?)",
-            arrayOf<Any>(notificationId, messageReference.folderId, messageReference.uid),
+            arrayOf(notificationId, messageReference.folderId, messageReference.uid),
         )
     }
 
@@ -59,14 +59,14 @@ class K9NotificationStore(private val lockableDatabase: LockableDatabase) : Noti
         database.execSQL(
             "UPDATE notifications SET notification_id = NULL WHERE message_id IN " +
                 "(SELECT id FROM messages WHERE folder_id = ? AND uid = ?)",
-            arrayOf<Any>(messageReference.folderId, messageReference.uid),
+            arrayOf(messageReference.folderId, messageReference.uid),
         )
     }
 
     private fun removeNotification(database: SQLiteDatabase, messageReference: MessageReference) {
         database.execSQL(
             "DELETE FROM notifications WHERE message_id IN (SELECT id FROM messages WHERE folder_id = ? AND uid = ?)",
-            arrayOf<Any>(messageReference.folderId, messageReference.uid),
+            arrayOf(messageReference.folderId, messageReference.uid),
         )
     }
 }
