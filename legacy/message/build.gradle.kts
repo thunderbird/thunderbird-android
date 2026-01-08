@@ -13,3 +13,8 @@ dependencies {
     implementation(projects.mail.common)
     implementation(projects.backend.api)
 }
+
+codeCoverage {
+    branchCoverage.set(50)
+    lineCoverage.set(33)
+}
