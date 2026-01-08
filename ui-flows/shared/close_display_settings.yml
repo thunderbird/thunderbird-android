@@ -1,4 +1,4 @@
-appId: net.thunderbird.android.debug
+appId: net.thunderbird.android.beta
 ---
 
 - tapOn: "Navigate up"
@@ -6,4 +6,4 @@ appId: net.thunderbird.android.debug
 - tapOn: "Navigate up"
 - swipe:
     direction: LEFT
-    duration: 200
+#    duration: 50

@@ -1,0 +1,6 @@
+appId: net.thunderbird.android.beta
+#maestro test ui-flows/validate/init_with_configured_account.yml
+---
+## Get started with Thunderbird using an account that is already configured
+- runFlow:
+    file: ../shared/onboard_with_configured_account.yml
