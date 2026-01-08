@@ -8,8 +8,10 @@ import com.fsck.k9.ui.helper.SizeFormatter
 import com.fsck.k9.ui.messagelist.AbstractMessageListFragment
 import com.fsck.k9.ui.messagelist.LegacyMessageListFragment
 import com.fsck.k9.ui.messageview.LinkTextHandler
+import com.fsck.k9.ui.settings.AboutViewModel
 import com.fsck.k9.ui.share.ShareIntentBuilder
 import net.thunderbird.core.common.inject.getList
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -23,6 +25,7 @@ val uiModule = module {
         )
     }
     single<MessagingControllerMailChecker> { get<MessagingController>() }
+    viewModel { AboutViewModel(appVersionProvider = get()) }
     factory(named("MessageView")) { get<DisplayHtmlUiFactory>().createForMessageView() }
     factory { (context: Context) -> SizeFormatter(context.resources) }
     factory { ShareIntentBuilder(resourceProvider = get(), textPartFinder = get(), quoteDateFormatter = get()) }
