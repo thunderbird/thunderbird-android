@@ -1,7 +1,6 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.machine
 
 import androidx.compose.ui.graphics.Color
-import app.cash.burst.Burst
 import app.cash.turbine.test
 import assertk.all
 import assertk.assertThat
@@ -41,9 +40,8 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi.State
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import net.thunderbird.feature.mail.message.list.ui.state.SortType
 
-@Suppress("JUnitMalformedDeclaration")
+@Suppress("MaxLineLength")
 @OptIn(ExperimentalCoroutinesApi::class)
-@Burst
 class MessageListStateMachineTest {
     private fun TestScope.createStateMachine(dispatch: (MessageListEvent) -> Unit = {}) = MessageListStateMachine(
         scope = this,
@@ -62,26 +60,55 @@ class MessageListStateMachineTest {
         verify(mode = VerifyMode.exactly(1)) { dispatch(MessageListEvent.LoadConfigurations) }
     }
 
-    @Suppress("unused", "EnumEntryName")
-    enum class StayOnWarmingUpStateWhenEvent(val event: MessageListEvent) {
-        `when state is WarmingUp and event is LoadConfigurations`(event = MessageListEvent.LoadConfigurations),
-        `when state is WarmingUp and event is UpdatePreferences`(
-            event = MessageListEvent.UpdatePreferences(
-                createMessageListPreferences(),
-            ),
-        ),
-        `when state is WarmingUp and event is SortTypesLoaded`(event = MessageListEvent.SortTypesLoaded(emptyMap())),
-    }
-
     @Test
-    fun `process() should stay on WarmingUp state`(param: StayOnWarmingUpStateWhenEvent) =
+    fun `process() should stay on WarmingUp state when state is WarmingUp and event is LoadConfigurations`() =
         runTest {
             // Arrange
             val stateMachine = createStateMachine()
             advanceUntilIdle()
 
             // Act
-            stateMachine.process(event = param.event)
+            stateMachine.process(event = MessageListEvent.LoadConfigurations)
+
+            // Assert
+            stateMachine.currentState.test {
+                val state = awaitItem()
+                expectNoEvents()
+                assertThat(state).isInstanceOf<MessageListState.WarmingUp>()
+            }
+        }
+
+    @Test
+    fun `process() should stay on WarmingUp state when state is WarmingUp and event is UpdatePreferences`() =
+        runTest {
+            // Arrange
+            val stateMachine = createStateMachine()
+            advanceUntilIdle()
+
+            // Act
+            stateMachine.process(
+                event = MessageListEvent.UpdatePreferences(
+                    preferences = createMessageListPreferences(),
+                ),
+            )
+
+            // Assert
+            stateMachine.currentState.test {
+                val state = awaitItem()
+                expectNoEvents()
+                assertThat(state).isInstanceOf<MessageListState.WarmingUp>()
+            }
+        }
+
+    @Test
+    fun `process() should stay on WarmingUp state when state is WarmingUp and event is SortTypesLoaded`() =
+        runTest {
+            // Arrange
+            val stateMachine = createStateMachine()
+            advanceUntilIdle()
+
+            // Act
+            stateMachine.process(event = MessageListEvent.SortTypesLoaded(emptyMap()))
 
             // Assert
             stateMachine.currentState.test {
