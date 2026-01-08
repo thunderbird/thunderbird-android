@@ -5,8 +5,10 @@ import net.thunderbird.feature.mail.message.list.internal.domain.usecase.BuildSw
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.CreateArchiveFolder
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.GetAccountFolders
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.SetArchiveFolder
+import net.thunderbird.feature.mail.message.list.internal.ui.MessageListViewModel
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogFragment
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogViewModel
+import net.thunderbird.feature.mail.message.list.ui.MessageListContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import org.koin.core.module.dsl.viewModel
@@ -47,4 +49,8 @@ val featureMessageListModule = module {
         ) as SetupArchiveFolderDialogContract.ViewModel
     }
     factory<SetupArchiveFolderDialogFragmentFactory> { SetupArchiveFolderDialogFragment.Factory }
+
+    viewModel<MessageListContract.ViewModel> { parameters ->
+        MessageListViewModel()
+    }
 }

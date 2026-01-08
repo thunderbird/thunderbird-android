@@ -273,7 +273,7 @@ open class MainActivity :
             fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER) as? MessageViewContainerFragment
 
         messageListFragment?.let { messageListFragment ->
-            messageViewContainerFragment?.setViewModel(messageListFragment.viewModel)
+            messageViewContainerFragment?.setViewModel(messageListFragment.legacyViewModel)
             initializeFromLocalSearch(messageListFragment.localSearch)
         }
     }
@@ -1110,7 +1110,7 @@ open class MainActivity :
             messageViewContainerFragment = fragment
 
             messageListFragment?.let { messageListFragment ->
-                fragment.setViewModel(messageListFragment.viewModel)
+                fragment.setViewModel(messageListFragment.legacyViewModel)
             }
 
             if (displayMode == DisplayMode.SPLIT_VIEW) {

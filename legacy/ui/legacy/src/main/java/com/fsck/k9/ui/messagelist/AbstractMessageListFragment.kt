@@ -147,7 +147,8 @@ abstract class AbstractMessageListFragment :
 
     abstract val logTag: String
 
-    val viewModel: MessageListViewModel by viewModel()
+    val legacyViewModel: MessageListViewModel by viewModel()
+    private val viewModel: MessageListViewModel get() = legacyViewModel
     private val recentChangesViewModel: RecentChangesViewModel by viewModel()
 
     private val generalSettingsManager: GeneralSettingsManager by inject()
@@ -201,7 +202,8 @@ abstract class AbstractMessageListFragment :
 
     private lateinit var adapter: MessageListAdapter
 
-    private lateinit var accountUuids: Array<String>
+    protected lateinit var accountUuids: Array<String>
+        private set
     private var accounts: List<LegacyAccount> = emptyList()
 
     private var account: LegacyAccount? = null
@@ -333,7 +335,7 @@ abstract class AbstractMessageListFragment :
         rememberedSelected = savedInstanceState.getLongArray(STATE_SELECTED_MESSAGES)?.toSet()
     }
 
-    private fun decodeArguments(): Error? {
+    protected fun decodeArguments(): Error? {
         val arguments = requireArguments()
         showingThreadedList = arguments.getBoolean(ARG_THREADED_LIST, false)
         isThreadDisplay = arguments.getBoolean(ARG_IS_THREAD_DISPLAY, false)
@@ -2590,7 +2592,7 @@ abstract class AbstractMessageListFragment :
     }
 
     @Suppress("detekt.UnnecessaryAnnotationUseSiteTarget") // https://github.com/detekt/detekt/issues/8212
-    private enum class Error(@param:StringRes val errorText: Int) {
+    protected enum class Error(@param:StringRes val errorText: Int) {
         FolderNotFound(R.string.message_list_error_folder_not_found),
     }
 
