@@ -22,4 +22,6 @@ dependencies {
     implementation(projects.feature.mail.folder.api)
     implementation(projects.legacy.mailstore)
     implementation(projects.mail.common)
+
+    testImplementation(projects.core.logging.testing)
 }

@@ -15,11 +15,13 @@ import net.thunderbird.core.preference.display.visualSettings.message.list.UiDen
  * @property showCorrespondentNames Whether to display the names of correspondents.
  * @property showMessageAvatar Whether to display the contact's avatar.
  * @property showFavouriteButton Whether to display a button to mark a message as a favourite (starred).
+ * @property senderAboveSubject Whether to display sender information above the subject.
  * @property excerptLines The number of lines to show for a message excerpt.
  * @property dateTimeFormat The format for displaying the date and time of messages.
  * @property useVolumeKeyNavigation Whether to enable navigating between messages using the volume keys.
  * @property serverSearchLimit The maximum number of results to fetch when performing a server search.
  * @property actionRequiringUserConfirmation A set of actions that require a confirmation dialog before execution.
+ * @property colorizeBackgroundWhenRead Whether to colorize the background of read messages.
  */
 data class MessageListPreferences(
     val density: UiDensity,
@@ -27,11 +29,13 @@ data class MessageListPreferences(
     val showCorrespondentNames: Boolean,
     val showMessageAvatar: Boolean,
     val showFavouriteButton: Boolean,
+    val senderAboveSubject: Boolean,
     val excerptLines: Int,
     val dateTimeFormat: MessageListDateTimeFormat,
     val useVolumeKeyNavigation: Boolean,
     val serverSearchLimit: Int,
     val actionRequiringUserConfirmation: ImmutableSet<ActionRequiringUserConfirmation> = persistentSetOf(),
+    val colorizeBackgroundWhenRead: Boolean = false,
 )
 
 /**
