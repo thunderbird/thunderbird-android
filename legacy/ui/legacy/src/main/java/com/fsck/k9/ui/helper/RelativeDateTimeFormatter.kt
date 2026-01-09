@@ -32,7 +32,7 @@ constructor(
         val now = clock.now().toCalendar()
         val date = timestamp.toCalendar()
         val format = if (dateTimeFormat == MessageListDateTimeFormat.Full) {
-            FORMAT_SHOW_DATE or FORMAT_SHOW_YEAR or FORMAT_NUMERIC_DATE
+            FORMAT_SHOW_DATE or FORMAT_SHOW_YEAR or FORMAT_NUMERIC_DATE or FORMAT_SHOW_TIME
         } else {
             when {
                 date.isToday() -> FORMAT_SHOW_TIME
