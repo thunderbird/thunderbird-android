@@ -37,7 +37,7 @@ class DefaultImapBackendFactory(
     private val clientInfoAppVersion: String,
 ) : ImapBackendFactory {
     override fun createBackend(accountId: AccountId): Backend {
-        val account = accountManager.getAccount(accountId.asRaw()) ?: error("Account not found: $accountId")
+        val account = accountManager.getAccount(accountId.toString()) ?: error("Account not found: $accountId")
         // TODO: should we pass the account name or userId here?
         val accountName = account.profile.name
         val backendStorage = backendStorageFactory.createBackendStorage(accountId)

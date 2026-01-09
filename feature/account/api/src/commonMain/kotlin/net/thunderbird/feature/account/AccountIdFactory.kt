@@ -1,8 +1,10 @@
 package net.thunderbird.feature.account
 
-import net.thunderbird.core.architecture.model.BaseIdFactory
+import kotlin.uuid.ExperimentalUuidApi
+import net.thunderbird.core.architecture.model.BaseUuidIdentifierFactory
 
 /**
  * Factory object for creating unique identifiers for [Account] instances.
  */
-object AccountIdFactory : BaseIdFactory<AccountIdentifiable>()
+@OptIn(ExperimentalUuidApi::class)
+object AccountIdFactory : BaseUuidIdentifierFactory<AccountId>(::AccountId)

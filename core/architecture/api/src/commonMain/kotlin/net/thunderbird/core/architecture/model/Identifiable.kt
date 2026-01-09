@@ -1,8 +1,10 @@
 package net.thunderbird.core.architecture.model
 
 /**
- * Interface representing an entity with a unique identifier.
+ * A generic interface for entities that can be identified by a unique identifier.
+ *
+ * @param T The type of the unique identifier, must be a subtype of [BaseIdentifier].
  */
-interface Identifiable<T> {
-    val id: Id<T>
+interface Identifiable<T : BaseIdentifier<*>> {
+    val id: T
 }

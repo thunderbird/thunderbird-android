@@ -7,13 +7,14 @@ import kotlin.test.Test
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-private class TestTag
+@OptIn(ExperimentalUuidApi::class)
+private class TestId(value: Uuid) : BaseUuidIdentifier(value)
 
 @OptIn(ExperimentalUuidApi::class)
-private object TestIdFactory : BaseIdFactory<TestTag>()
+private object TestIdFactory : BaseUuidIdentifierFactory<TestId>(::TestId)
 
 @OptIn(ExperimentalUuidApi::class)
-class BaseIdFactoryTest {
+class BaseUuidIdentifierFactoryTest {
 
     @Test
     fun `given raw UUID when of is called then returns Id wrapping parsed UUID`() {
@@ -25,7 +26,7 @@ class BaseIdFactoryTest {
 
         // Assert
         assertThat(id.value).isEqualTo(Uuid.parse(raw))
-        assertThat(id.asRaw()).isEqualTo(raw)
+        assertThat(id.toString()).isEqualTo(raw)
     }
 
     @Test
@@ -36,20 +37,19 @@ class BaseIdFactoryTest {
 
         // Assert
         assertThat(id1).isNotEqualTo(id2)
-        assertThat(id1.asRaw()).isNotEqualTo(id2.asRaw())
+        assertThat(id1.toString()).isNotEqualTo(id2.toString())
     }
 
     @Test
     fun `given Id created when of is called with its raw then same Id is returned`() {
         // Arrange
         val original = TestIdFactory.create()
-        val raw = original.asRaw()
+        val raw = original.toString()
 
         // Act
         val parsed = TestIdFactory.of(raw)
 
         // Assert
-        assertThat(parsed).isEqualTo(Id<TestTag>(Uuid.parse(raw)))
         assertThat(parsed).isEqualTo(original)
     }
 }

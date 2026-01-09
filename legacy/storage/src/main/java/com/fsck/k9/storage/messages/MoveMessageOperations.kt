@@ -92,7 +92,7 @@ internal class MoveMessageOperations(
                 put("forwarded", cursor.getIntOrNull("forwarded"))
                 put("message_part_id", cursor.getLongOrNull("message_part_id"))
                 put("encryption_type", cursor.getStringOrNull("encryption_type"))
-                put("account_id", accountId.asRaw())
+                put("account_id", accountId.toString())
             }
         }
 

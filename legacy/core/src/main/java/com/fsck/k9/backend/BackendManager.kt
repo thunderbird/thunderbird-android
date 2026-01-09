@@ -25,7 +25,7 @@ class BackendManager(
 
     fun getBackend(accountId: AccountId): Backend {
         val newBackend = synchronized(backendCache) {
-            val container = backendCache[accountId.asRaw()]
+            val container = backendCache[accountId.toString()]
             val account = getAccountById(accountId)
             if (container != null && isBackendStillValid(container, account)) {
                 return container.backend
@@ -57,7 +57,7 @@ class BackendManager(
 
     fun removeBackend(accountId: AccountId) {
         synchronized(backendCache) {
-            backendCache.remove(accountId.asRaw())
+            backendCache.remove(accountId.toString())
         }
 
         notifyListeners(accountId)

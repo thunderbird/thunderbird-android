@@ -25,7 +25,7 @@ internal open class FakeLegacyAccountManager(
     override fun saveAccount(account: LegacyAccount) = Unit
     override fun getAll(): Flow<List<LegacyAccount>> = flowOf(getAccounts())
 
-    override fun getById(id: AccountId): Flow<LegacyAccount?> = flowOf(getAccount(id.asRaw()))
+    override fun getById(id: AccountId): Flow<LegacyAccount?> = flowOf(getAccount(id.toString()))
 
     override suspend fun update(account: LegacyAccount) = saveAccount(account)
 }

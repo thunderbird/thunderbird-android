@@ -143,7 +143,7 @@ class PushController internal constructor(
     private fun onBackendChanged(accountId: AccountId) {
         coroutineScope.launch(coroutineDispatcher) {
             val accountPushController = synchronized(lock) {
-                pushers.remove(accountId.asRaw())
+                pushers.remove(accountId.toString())
             }
 
             accountPushController?.stop()

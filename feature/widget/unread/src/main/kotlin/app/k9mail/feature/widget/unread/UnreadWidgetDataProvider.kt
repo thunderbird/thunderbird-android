@@ -91,7 +91,7 @@ class UnreadWidgetDataProvider(
         return if (folder != null) {
             folderNameFormatter.displayName(folder)
         } else {
-            logger.error(TAG) { "Error loading folder for account ${account.id.asRaw()}, folder ID: $folderId" }
+            logger.error(TAG) { "Error loading folder for account ${account.id}, folder ID: $folderId" }
             ""
         }
     }

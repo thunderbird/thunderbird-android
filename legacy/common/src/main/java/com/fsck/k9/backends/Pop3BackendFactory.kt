@@ -21,7 +21,7 @@ class DefaultPop3BackendFactory(
 ) : Pop3BackendFactory {
 
     override fun createBackend(accountId: AccountId): Backend {
-        val account = accountManager.getAccount(accountId.asRaw())
+        val account = accountManager.getAccount(accountId.toString())
             ?: error("Account not found: $accountId")
         // TODO: should we pass the account name or userId here?
         val accountName = account.profile.name

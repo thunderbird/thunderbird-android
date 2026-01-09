@@ -60,7 +60,7 @@ class MoveMessageOperationsTest : RobolectricTest() {
                 uid = destinationMessage.uid,
                 deleted = 0,
                 empty = 0,
-                accountId = accountId.asRaw(),
+                accountId = accountId.toString(),
             ),
         )
 
@@ -128,7 +128,7 @@ class MoveMessageOperationsTest : RobolectricTest() {
                 uid = destinationMessage.uid,
                 deleted = 0,
                 empty = 0,
-                accountId = accountId.asRaw(),
+                accountId = accountId.toString(),
             ),
         )
 
@@ -181,7 +181,7 @@ class MoveMessageOperationsTest : RobolectricTest() {
                 uid = destinationMessage.uid,
                 deleted = 0,
                 empty = 0,
-                accountId = accountId.asRaw(),
+                accountId = accountId.toString(),
             ),
         )
 

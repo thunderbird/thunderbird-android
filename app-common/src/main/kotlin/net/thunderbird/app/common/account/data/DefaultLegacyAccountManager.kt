@@ -23,7 +23,7 @@ internal class DefaultLegacyAccountManager(
     }
 
     override fun getById(id: AccountId): Flow<LegacyAccount?> {
-        return accountManager.getAccountFlow(id.asRaw()).map { account ->
+        return accountManager.getAccountFlow(id.toString()).map { account ->
             account?.let {
                 accountDataMapper.toDomain(it)
             }

@@ -118,7 +118,7 @@ class CopyMessageOperationsTest : RobolectricTest() {
                 uid = destinationMessage.uid,
                 folderId = 2,
                 messagePartId = destinationMessage.messagePartId,
-                accountId = accountId.asRaw(),
+                accountId = accountId.toString(),
             ),
         )
 
@@ -234,7 +234,7 @@ class CopyMessageOperationsTest : RobolectricTest() {
                 uid = destinationMessage.uid,
                 folderId = 2,
                 messagePartId = destinationMessage.messagePartId,
-                accountId = accountId.asRaw(),
+                accountId = accountId.toString(),
             ),
         )
 

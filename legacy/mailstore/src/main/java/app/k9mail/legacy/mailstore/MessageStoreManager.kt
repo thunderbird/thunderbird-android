@@ -18,7 +18,7 @@ class MessageStoreManager(
     }
 
     fun getMessageStore(accountId: AccountId): ListenableMessageStore {
-        val account = accountManager.getAccount(accountId.asRaw()) ?: error("Account not found: $accountId")
+        val account = accountManager.getAccount(accountId.toString()) ?: error("Account not found: $accountId")
         return getMessageStore(account)
     }
 
