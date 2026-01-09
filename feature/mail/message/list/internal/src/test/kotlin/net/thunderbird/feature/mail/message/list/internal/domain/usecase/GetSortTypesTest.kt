@@ -9,12 +9,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.account.SortType as DomainSortType
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.internal.fakes.FakeLegacyAccount
 import net.thunderbird.feature.mail.message.list.internal.fakes.FakeLegacyAccountManager
 import net.thunderbird.feature.mail.message.list.ui.state.SortType
+import net.thunderbird.core.android.account.SortType as DomainSortType
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetSortTypesTest {
