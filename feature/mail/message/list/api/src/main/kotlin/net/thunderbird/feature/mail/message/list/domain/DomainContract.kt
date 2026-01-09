@@ -7,6 +7,7 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.FolderServerId
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
+import net.thunderbird.feature.mail.message.list.ui.state.SortType
 
 interface DomainContract {
     interface UseCase {
@@ -30,6 +31,14 @@ interface DomainContract {
 
         fun interface BuildSwipeActions {
             operator fun invoke(): StateFlow<Map<AccountId, SwipeActions>>
+        }
+
+        fun interface GetSortTypes {
+            suspend operator fun invoke(accountIds: Set<AccountId>): Map<AccountId?, SortType>
+        }
+
+        fun interface GetDefaultSortType {
+            suspend operator fun invoke(): SortType
         }
     }
 }
