@@ -14,6 +14,7 @@ import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchive
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogViewModel
 import net.thunderbird.feature.mail.message.list.internal.ui.state.machine.MessageListStateMachine
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadPreferencesSideEffect
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSortTypeStateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSwipeActionsStateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
 import net.thunderbird.feature.mail.message.list.ui.MessageListStateSideEffectHandlerFactory
@@ -82,13 +83,20 @@ val featureMessageListModule = module {
                 buildSwipeActions = get(),
             )
         },
+        { parameters ->
+            LoadSortTypeStateSideEffectHandler.Factory(
+                accounts = parameters.get(),
+                logger = get(),
+                getSortTypes = get(),
+            )
+        },
     )
     factory { MessageListStateMachine.Factory() }
-    viewModel<MessageListContract.ViewModel> {
+    viewModel<MessageListContract.ViewModel> { parameters ->
         MessageListViewModel(
             logger = get(),
             messageListStateMachineFactory = get(),
-            stateSideEffectHandlersFactories = getList(),
+            stateSideEffectHandlersFactories = getList { parameters },
         )
     }
 }
