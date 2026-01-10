@@ -194,6 +194,11 @@
             />
 
         <activity
+            android:name="com.fsck.k9.ui.settings.notificationactions.NotificationActionsSettingsActivity"
+            android:label="@string/notification_actions_settings_title"
+            />
+
+        <activity
             android:name="com.fsck.k9.ui.settings.account.AccountSettingsActivity"
             android:label="@string/account_settings_title_fmt"
             />
