@@ -312,7 +312,7 @@ open class MainActivity :
      *
      * **Note:**
      * This method has to be called after [.findFragments] because the result depends on
-     * the availability of a [MessageViewFragment] instance.
+     * the availability of a [com.fsck.k9.ui.messageview.MessageViewFragment] instance.
      */
     private fun initializeDisplayMode(savedInstanceState: Bundle?) {
         if (useSplitView()) {
@@ -1009,45 +1009,6 @@ open class MainActivity :
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.message_list_option_menu, menu)
-
-        val searchItem = menu.findItem(R.id.search)
-        initializeSearchMenuItem(searchItem)
-
-        return true
-    }
-
-    private fun initializeSearchMenuItem(searchItem: MenuItem) {
-        // Reuse existing SearchView if available
-        searchView?.let { searchView ->
-            searchItem.actionView = searchView
-            return
-        }
-
-        val searchView = searchItem.actionView as SearchView
-        searchView.maxWidth = Int.MAX_VALUE
-        searchView.queryHint = resources.getString(R.string.search_action)
-        searchView.setOnQueryTextListener(
-            object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String): Boolean {
-                    messageListFragment?.onSearchRequested(query)
-                    collapseSearchView()
-                    return true
-                }
-
-                override fun onQueryTextChange(s: String): Boolean {
-                    return false
-                }
-            },
-        )
-
-        searchView.setQuery(initialSearchViewQuery, false)
-        searchView.isIconified = initialSearchViewIconified
-
-        this.searchView = searchView
     }
 
     private fun isSearchViewCollapsed(): Boolean = searchView?.isIconified == true

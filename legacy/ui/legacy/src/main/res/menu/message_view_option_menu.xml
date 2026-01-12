@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/delete_action"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/toggle_unread"
+        android:icon="@drawable/ic_mark_email_unread"
+        android:title="@string/mark_as_unread_action"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/archive"
+        android:icon="@drawable/ic_archive"
+        android:title="@string/archive_action"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/spam"
+        android:icon="@drawable/ic_report"
+        android:title="@string/spam_action"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/move"
+        android:icon="@drawable/ic_drive_file_move"
+        android:title="@string/move_action"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/copy"
+        android:icon="@drawable/ic_content_copy"
+        android:title="@string/copy_action"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/move_to_drafts"
+        android:title="@string/move_to_drafts_action"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/refile"
+        android:title="@string/refile_action"
+        app:showAsAction="never"
+        >
+        <menu>
+            <item
+                android:id="@+id/refile_archive"
+                android:title="@string/archive_action"
+                />
+
+            <item
+                android:id="@+id/refile_spam"
+                android:title="@string/spam_action"
+                />
+
+            <item
+                android:id="@+id/refile_move"
+                android:title="@string/move_action"
+                />
+
+            <item
+                android:id="@+id/refile_copy"
+                android:title="@string/copy_action"
+                />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/unsubscribe"
+        android:title="@string/unsubscribe_action"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/show_headers"
+        android:title="@string/show_headers_action"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/export_eml"
+        android:title="@string/message_view_menu_action_export_eml"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/print"
+        android:title="@string/print_message_action"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/set_format_html"
+        android:title="@string/set_format_html_action"
+        android:titleCondensed="@string/set_format_html_condensed_action"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/set_format_plain"
+        android:title="@string/set_format_plain_action"
+        android:titleCondensed="@string/set_format_plain_condensed_action"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/toggle_message_view_theme"
+        android:title="@string/message_view_theme_action_dark"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/view_compose"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/compose_action"
+        app:showAsAction="ifRoom"
+        />
+
+</menu>
