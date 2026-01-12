@@ -925,6 +925,7 @@ abstract class BaseMessageListFragment :
             backGroundAsReadIndicator = messageListSettings.isUseBackgroundAsUnreadIndicator,
             showAccountIndicator = isShowAccountIndicator,
             density = messageListSettings.uiDensity,
+            dateTimeFormat = messageListSettings.dateTimeFormat,
         )
     }
 
