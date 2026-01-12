@@ -3,9 +3,15 @@ package com.fsck.k9.ui.messageview
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -57,8 +63,6 @@ class MessageViewContainerFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setHasOptionsMenu(true)
 
         messageReference = if (savedInstanceState == null) {
             MessageReference.parse(arguments?.getString(ARG_REFERENCE))
@@ -119,6 +123,55 @@ class MessageViewContainerFragment : Fragment() {
         )
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    // Handled by the activity for now
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        R.id.archive -> {
+                            onArchive()
+                            true
+                        }
+                        R.id.delete -> {
+                            onDelete()
+                            true
+                        }
+                        R.id.reply -> {
+                            onReply()
+                            true
+                        }
+                        R.id.reply_all -> {
+                            onReplyAll()
+                            true
+                        }
+                        R.id.forward -> {
+                            onForward()
+                            true
+                        }
+                        R.id.move -> {
+                            onMove()
+                            true
+                        }
+                        R.id.copy -> {
+                            onCopy()
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED,
+        )
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
