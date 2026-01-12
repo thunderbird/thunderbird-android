@@ -101,7 +101,8 @@ import org.jetbrains.annotations.Nullable;
 
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
 import static com.fsck.k9.controller.Preconditions.requireNotNull;
-import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
+import net.thunderbird.core.common.exception.ThrowableExtensions;
+
 import static net.thunderbird.core.common.mail.Flag.X_REMOTE_COPY_STARTED;
 import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_VISIBLE_LIMIT;
 
@@ -680,7 +681,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         backend.sync(folderServerId, syncConfig, syncListener);
 
         if (commandException != null && !syncListener.syncFailed) {
-            String rootMessage = getRootCauseMessage(commandException);
+            String rootMessage = ThrowableExtensions.getRootCauseMessage(commandException);
             syncDebugLogger.error("MessagingException",null, () -> rootMessage);
             Log.e("Root cause failure in %s:%s was '%s'", account, folderServerId, rootMessage);
             updateFolderStatus(account, folderId, rootMessage);
@@ -1721,7 +1722,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
     private void notifySynchronizeMailboxFailed(LegacyAccountDto account, LocalFolder localFolder, Exception exception) {
         long folderId = localFolder.getDatabaseId();
-        String errorMessage = getRootCauseMessage(exception);
+        String errorMessage = ThrowableExtensions.getRootCauseMessage(exception);
         for (MessagingListener listener : getListeners()) {
             listener.synchronizeMailboxFailed(account, folderId, errorMessage);
         }
