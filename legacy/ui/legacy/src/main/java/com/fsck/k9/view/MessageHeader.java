@@ -236,7 +236,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
 
         if (message.getSentDate() != null) {
-            dateView.setText(relativeDateTimeFormatter.formatDate(message.getSentDate().getTime(), generalSettingsManager.getConfig().getDisplay().getCoreSettings().getMessageListDateTimeFormat()));
+            dateView.setText(relativeDateTimeFormatter.formatDate(message.getSentDate().getTime(), MessageListDateTimeFormat.AUTO);
         } else {
             dateView.setText("");
         }
