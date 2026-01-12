@@ -99,20 +99,15 @@ interface StateWithoutTransactionsBuilder<TCurrentState : TState, TState : Any, 
 }
 
 /**
- * A builder for defining a specific state within a [StateMachine].
+ * Base class for state machine state builders.
  *
- * This builder provides a DSL for configuring a state, including:
- * - Defining transitions to other states via the [transition] function.
- * - Setting entry and exit actions with [onEnter] and [onExit].
- * - Marking a state as final with [isFinalState].
- *
- * It inherits from [StateWithoutTransactionsBuilder] to provide the base configuration methods.
+ * This builder is used to configure transitions and actions for a specific state in the state machine.
  *
  * @param TCurrentState The specific type of the state being configured.
  * @param TState The base type for all states in the state machine.
  * @param TEvent The base type for all events that can trigger transitions.
  */
-abstract class StateBuilder<TCurrentState : TState, TState : Any, TEvent : Any> :
+abstract class BaseStateBuilder<TCurrentState : TState, TState : Any, TEvent : Any> :
     StateWithoutTransactionsBuilder<TCurrentState, TState, TEvent> {
 
     /**
@@ -169,7 +164,7 @@ abstract class StateBuilder<TCurrentState : TState, TState : Any, TEvent : Any> 
 @StateMachineBuilderDsl
 internal class InternalStateBuilder<TCurrentState : TState, TState : Any, TEvent : Any>(
     override val stateClass: KClass<out TCurrentState>,
-) : StateBuilder<TCurrentState, TState, TEvent>() {
+) : BaseStateBuilder<TCurrentState, TState, TEvent>() {
     override var isFinalState = false
     private val transitions = mutableMapOf<TransactionKey<out TState, out TEvent>, Transition<TState, TEvent>>()
     private var onEnter: (TState?.(TEvent?, TCurrentState) -> Unit)? = null
