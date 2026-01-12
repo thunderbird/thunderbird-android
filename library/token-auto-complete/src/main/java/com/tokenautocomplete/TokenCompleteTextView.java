@@ -1068,17 +1068,66 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
 
         state.allowCollapse = allowCollapse;
         state.performBestGuess = performBestGuess;
+        state.tokenizer = tokenizer;
+
+        // Save full text + ordered token span ranges so restore can reattach token spans without changing the text.
+        CharSequence content = getContentText();
+        state.contentText = content == null ? "" : content.toString();
+
+        Spanned spanned = (hiddenContent != null) ? hiddenContent : getText();
+        @SuppressWarnings("unchecked")
+        TokenImageSpan[] spans = (spanned == null)
+            ? (TokenImageSpan[]) new TokenCompleteTextView.TokenImageSpan[0]
+            : spanned.getSpans(0, spanned.length(), TokenImageSpan.class);
+
+        if (spanned != null) {
+            Arrays.sort(spans, (a, b) -> Integer.compare(spanned.getSpanStart(a), spanned.getSpanStart(b)));
+        }
+
+        state.tokenStarts = new int[spans.length];
+        state.tokenEnds = new int[spans.length];
+
+        ArrayList<Object> orderedObjects = new ArrayList<>(spans.length);
+        for (int i = 0; i < spans.length; i++) {
+            TokenImageSpan s = spans[i];
+            state.tokenStarts[i] = spanned.getSpanStart(s);
+            state.tokenEnds[i] = spanned.getSpanEnd(s);
+            orderedObjects.add(s.getToken());
+        }
+
         Class parameterizedClass = reifyParameterizedTypeClass();
         //Our core array is Parcelable, so use that interface
         if (Parcelable.class.isAssignableFrom(parameterizedClass)) {
             state.parcelableClassName = parameterizedClass.getName();
-            state.baseObjects = getObjects();
+            state.baseObjects = orderedObjects;
         } else {
             //Fallback on Serializable
             state.parcelableClassName = SavedState.SERIALIZABLE_PLACEHOLDER;
-            state.baseObjects = getSerializableObjects();
+
+            ArrayList<Serializable> serializables = new ArrayList<>(orderedObjects.size());
+            int[] starts = new int[orderedObjects.size()];
+            int[] ends = new int[orderedObjects.size()];
+            int n = 0;
+
+            for (int i = 0; i < orderedObjects.size(); i++) {
+                Object obj = orderedObjects.get(i);
+                if (obj instanceof Serializable) {
+                    serializables.add((Serializable) obj);
+                    starts[n] = state.tokenStarts[i];
+                    ends[n] = state.tokenEnds[i];
+                    n++;
+                }
+            }
+
+            state.baseObjects = serializables;
+            // Keep tokenStarts/tokenEnds aligned with filtered baseObjects
+            state.tokenStarts = Arrays.copyOf(starts, n);
+            state.tokenEnds = Arrays.copyOf(ends, n);
+
+            if (n != orderedObjects.size()) {
+                Log.e(TAG, "Some tokens not Serializable/Parcelable; state restore may be incorrect");
+            }
         }
-        state.tokenizer = tokenizer;
 
         //So, when the screen is locked or some other system event pauses execution,
         //onSaveInstanceState gets called, but it won't restore state later because the
@@ -1089,6 +1138,38 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         addListeners();
 
         return state;
+    }
+
+    private void restoreTokenSpansFromState(
+        @NonNull Editable editable,
+        @NonNull List<T> objects,
+        @Nullable int[] starts,
+        @Nullable int[] ends
+    ) {
+        // Defensive: clear any existing token spans before restoring saved ranges.
+        TokenImageSpan[] existing = editable.getSpans(0, editable.length(), TokenImageSpan.class);
+        for (TokenImageSpan s : existing) {
+            editable.removeSpan(s);
+        }
+
+        if (objects.isEmpty()) return;
+
+        int count = objects.size();
+        if (starts == null || ends == null || starts.length != count || ends.length != count) {
+            return;
+        }
+
+        for (int i = 0; i < count; i++) {
+            int start = starts[i];
+            int end = ends[i];
+
+            if (start < 0 || end > editable.length() || start >= end) continue;
+
+            TokenImageSpan span = buildSpanForObject(objects.get(i));
+            if (span != null) {
+                editable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -1105,7 +1186,9 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         allowCollapse = ss.allowCollapse;
         performBestGuess = ss.performBestGuess;
         tokenizer = ss.tokenizer;
-        addListeners();
+
+        // Ensure we don't register duplicate watchers during restore.
+        removeListeners();
 
         List<T> objects;
         if (SavedState.SERIALIZABLE_PLACEHOLDER.equals(ss.parcelableClassName)) {
@@ -1114,9 +1197,24 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             objects = (List<T>)ss.baseObjects;
         }
 
-        //TODO: change this to keep object spans in the correct locations based on ranges.
-        for (T obj: objects) {
-            addObjectSync(obj);
+        savingState = true;
+        internalEditInProgress = true;
+        try {
+            // Start from a clean expanded state. Collapse (and hiddenContent) will be rebuilt after restore if needed.
+            hiddenContent = null;
+
+            // Restore text once, then re-attach token spans by saved ranges.
+            setText(ss.contentText != null ? ss.contentText : "");
+
+            Editable editable = getText();
+            if (editable != null && objects != null) {
+                restoreTokenSpansFromState(editable, objects, ss.tokenStarts, ss.tokenEnds);
+                setSelection(editable.length());
+            }
+        } finally {
+            internalEditInProgress = false;
+            savingState = false;
+            addListeners();
         }
 
         // Collapse the view if necessary
@@ -1143,6 +1241,9 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         List<?> baseObjects;
         String tokenizerClassName;
         Tokenizer tokenizer;
+        @Nullable String contentText;
+        @Nullable int[] tokenStarts;
+        @Nullable int[] tokenEnds;
 
         @SuppressWarnings("unchecked")
         SavedState(Parcel in) {
@@ -1169,6 +1270,12 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
                 //This should really never happen, class had to be available to get here
                 throw new RuntimeException(ex);
             }
+            // Backward-compatible: older parcels don't contain the fields below.
+            if (in.dataAvail() > 0) {
+                contentText = in.readString();
+                tokenStarts = in.createIntArray();
+                tokenEnds = in.createIntArray();
+            }
         }
 
         SavedState(Parcelable superState) {
@@ -1189,6 +1296,9 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             }
             out.writeString(tokenizer.getClass().getCanonicalName());
             out.writeParcelable(tokenizer, 0);
+            out.writeString(contentText);
+            out.writeIntArray(tokenStarts);
+            out.writeIntArray(tokenEnds);
         }
 
         @Override
