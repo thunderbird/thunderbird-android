@@ -238,7 +238,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             dateView.setText(
                 relativeDateTimeFormatter.formatDate(
                     message.getSentDate().getTime(),
-                    MessageListDateTimeFormat.Full // TODO Make this dynamic
+                    MessageListDateTimeFormat.Contextual
                 )
             );
         } else {
