@@ -186,10 +186,10 @@ com.github.bumptech.glide:annotations:4.16.0
 com.github.bumptech.glide:disklrucache:4.16.0
 com.github.bumptech.glide:gifdecoder:4.16.0
 com.github.bumptech.glide:glide:4.16.0
-com.github.skydoves:landscapist-android:2.6.1
-com.github.skydoves:landscapist-coil3-android:2.6.1
-com.github.skydoves:landscapist-coil3:2.6.1
-com.github.skydoves:landscapist:2.6.1
+com.github.skydoves:landscapist-android:2.8.2
+com.github.skydoves:landscapist-coil3-android:2.8.2
+com.github.skydoves:landscapist-coil3:2.8.2
+com.github.skydoves:landscapist:2.8.2
 com.google.android.datatransport:transport-api:3.0.0
 com.google.android.datatransport:transport-backend-cct:3.1.8
 com.google.android.datatransport:transport-runtime:3.1.8
@@ -288,10 +288,10 @@ org.jetbrains.compose.ui:ui-util:1.9.3
 org.jetbrains.compose.ui:ui:1.9.3
 org.jetbrains.kotlin:kotlin-bom:2.2.21
 org.jetbrains.kotlin:kotlin-parcelize-runtime:2.2.21
-org.jetbrains.kotlin:kotlin-stdlib-common:2.2.21
+org.jetbrains.kotlin:kotlin-stdlib-common:2.3.0
 org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.2.21
 org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.21
-org.jetbrains.kotlin:kotlin-stdlib:2.2.21
+org.jetbrains.kotlin:kotlin-stdlib:2.3.0
 org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.4.0
 org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0
 org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2
