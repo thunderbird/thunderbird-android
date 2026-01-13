@@ -783,9 +783,7 @@ open class MainActivity :
                 if (search!!.id != SearchAccount.UNIFIED_FOLDERS) {
                     openUnifiedFolders()
                 } else {
-                    callback.isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
-                    callback.isEnabled = true
+                    dispatchOnBackPressed(callback)
                 }
             } else {
                 val defaultFolderId = defaultFolderProvider.getDefaultFolder(account!!)
@@ -793,16 +791,21 @@ open class MainActivity :
                 if (currentFolder == null || defaultFolderId != currentFolder) {
                     openFolderImmediately(defaultFolderId)
                 } else {
-                    callback.isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
-                    callback.isEnabled = true
+                    dispatchOnBackPressed(callback)
                 }
             }
         } else {
-            callback.isEnabled = false
-            onBackPressedDispatcher.onBackPressed()
-            callback.isEnabled = true
+            dispatchOnBackPressed(callback)
         }
+    }
+
+    /**
+     * Dispatch back press to the system
+     */
+    private fun dispatchOnBackPressed(callback: OnBackPressedCallback) {
+        callback.isEnabled = false
+        onBackPressedDispatcher.onBackPressed()
+        callback.isEnabled = true
     }
 
     /**
