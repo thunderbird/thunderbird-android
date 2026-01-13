@@ -281,6 +281,14 @@ abstract class AbstractMessageListFragment :
             maybeHideFloatingActionButton()
         }
 
+    fun isSearchViewCollapsed(): Boolean {
+        return searchView?.isIconified != false
+    }
+
+    fun expandSearchView() {
+        searchView?.isIconified = false
+    }
+
     val isShowAccountIndicator: Boolean
         get() = isUnifiedFolders || !isSingleAccountMode
 
@@ -335,6 +343,8 @@ abstract class AbstractMessageListFragment :
             ?.map { MessageReference.parse(it)!! }
         restoreSelectedMessages(savedInstanceState)
         isRemoteSearch = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED)
+        initialSearchViewQuery = savedInstanceState.getString(STATE_SEARCH_VIEW_QUERY)
+        initialSearchViewIconified = savedInstanceState.getBoolean(STATE_SEARCH_VIEW_ICONIFIED, true)
         val messageReferenceString = savedInstanceState.getString(STATE_ACTIVE_MESSAGE)
         activeMessage = MessageReference.parse(messageReferenceString)
     }
@@ -834,6 +844,10 @@ abstract class AbstractMessageListFragment :
 
         outState.putLongArray(STATE_SELECTED_MESSAGES, adapter.selected.toLongArray())
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, isRemoteSearch)
+        searchView?.let { searchView ->
+            outState.putString(STATE_SEARCH_VIEW_QUERY, searchView.query.toString())
+            outState.putBoolean(STATE_SEARCH_VIEW_ICONIFIED, searchView.isIconified)
+        }
         outState.putStringArray(
             STATE_ACTIVE_MESSAGES,
             activeMessages?.map(MessageReference::toIdentityString)?.toTypedArray(),
@@ -1158,7 +1172,7 @@ abstract class AbstractMessageListFragment :
         menu.findItem(R.id.debug_feature_flags).isVisible = isDebug
     }
 
-    private fun collapseSearchView() {
+    fun collapseSearchView() {
         searchView?.let { searchView ->
             searchView.setQuery(null, false)
             searchView.isIconified = true
@@ -2698,5 +2712,7 @@ abstract class AbstractMessageListFragment :
         protected const val STATE_ACTIVE_MESSAGES = "activeMessages"
         protected const val STATE_ACTIVE_MESSAGE = "activeMessage"
         protected const val STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed"
+        protected const val STATE_SEARCH_VIEW_QUERY = "searchViewQuery"
+        protected const val STATE_SEARCH_VIEW_ICONIFIED = "searchViewIconified"
     }
 }

@@ -7,14 +7,13 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.KeyEvent
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.view.ActionMode
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isGone
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
@@ -112,9 +111,6 @@ open class MainActivity :
     private val legacyAccountDataMapper: LegacyAccountDataMapper by inject()
 
     private lateinit var actionBar: ActionBar
-    private var searchView: SearchView? = null
-    private var initialSearchViewQuery: String? = null
-    private var initialSearchViewIconified: Boolean = true
 
     private var navigationDrawer: NavigationDrawer? = null
     private var openFolderTransaction: FragmentTransaction? = null
@@ -206,6 +202,13 @@ open class MainActivity :
         initializeFragments()
         displayViews()
         initializeFunding()
+
+        val backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                this@MainActivity.handleOnBackPressed(this)
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
 
     private fun initializeFunding() {
@@ -604,10 +607,6 @@ open class MainActivity :
         outState.putSerializable(STATE_DISPLAY_MODE, displayMode)
         outState.putBoolean(STATE_MESSAGE_VIEW_ONLY, messageViewOnly)
         outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, messageListWasDisplayed)
-        searchView?.let { searchView ->
-            outState.putBoolean(STATE_SEARCH_VIEW_ICONIFIED, searchView.isIconified)
-            outState.putString(STATE_SEARCH_VIEW_QUERY, searchView.query?.toString())
-        }
     }
 
     public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -615,8 +614,6 @@ open class MainActivity :
 
         messageViewOnly = savedInstanceState.getBoolean(STATE_MESSAGE_VIEW_ONLY)
         messageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED)
-        initialSearchViewIconified = savedInstanceState.getBoolean(STATE_SEARCH_VIEW_ICONIFIED, true)
-        initialSearchViewQuery = savedInstanceState.getString(STATE_SEARCH_VIEW_QUERY)
     }
 
     private fun initializeActionBar() {
@@ -770,7 +767,7 @@ open class MainActivity :
     }
 
     @Suppress("NestedBlockDepth")
-    override fun onBackPressed() {
+    private fun handleOnBackPressed(callback: OnBackPressedCallback) {
         if (isDrawerEnabled && navigationDrawer!!.isOpen) {
             navigationDrawer!!.close()
         } else if (displayMode == DisplayMode.MESSAGE_VIEW) {
@@ -781,26 +778,30 @@ open class MainActivity :
             }
         } else if (!isSearchViewCollapsed()) {
             collapseSearchView()
-        } else {
-            if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
-                if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
-                    if (search!!.id != SearchAccount.UNIFIED_FOLDERS) {
-                        openUnifiedFolders()
-                    } else {
-                        super.onBackPressed()
-                    }
+        } else if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
+            if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
+                if (search!!.id != SearchAccount.UNIFIED_FOLDERS) {
+                    openUnifiedFolders()
                 } else {
-                    val defaultFolderId = defaultFolderProvider.getDefaultFolder(account!!)
-                    val currentFolder = if (singleFolderMode) search!!.folderIds[0] else null
-                    if (currentFolder == null || defaultFolderId != currentFolder) {
-                        openFolderImmediately(defaultFolderId)
-                    } else {
-                        super.onBackPressed()
-                    }
+                    callback.isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                    callback.isEnabled = true
                 }
             } else {
-                super.onBackPressed()
+                val defaultFolderId = defaultFolderProvider.getDefaultFolder(account!!)
+                val currentFolder = if (singleFolderMode) search!!.folderIds[0] else null
+                if (currentFolder == null || defaultFolderId != currentFolder) {
+                    openFolderImmediately(defaultFolderId)
+                } else {
+                    callback.isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                    callback.isEnabled = true
+                }
             }
+        } else {
+            callback.isEnabled = false
+            onBackPressedDispatcher.onBackPressed()
+            callback.isEnabled = true
         }
     }
 
@@ -1011,17 +1012,12 @@ open class MainActivity :
         return super.onOptionsItemSelected(item)
     }
 
-    private fun isSearchViewCollapsed(): Boolean = searchView?.isIconified == true
-
-    private fun collapseSearchView() {
-        searchView?.let { searchView ->
-            searchView.setQuery(null, false)
-            searchView.isIconified = true
-        }
+    private fun isSearchViewCollapsed(): Boolean {
+        return messageListFragment?.isSearchViewCollapsed() ?: true
     }
 
-    private fun expandSearchView() {
-        searchView?.isIconified = false
+    private fun collapseSearchView() {
+        messageListFragment?.collapseSearchView()
     }
 
     private fun setActionBarTitle(title: String, subtitle: String? = null) {
@@ -1146,11 +1142,11 @@ open class MainActivity :
     }
 
     override fun onSearchRequested(): Boolean {
-        if (displayMode == DisplayMode.MESSAGE_VIEW || searchView == null) {
+        if (displayMode == DisplayMode.MESSAGE_VIEW) {
             return false
         }
 
-        expandSearchView()
+        messageListFragment?.expandSearchView()
         return true
     }
 
@@ -1233,12 +1229,7 @@ open class MainActivity :
     }
 
     override fun goBack() {
-        val fragmentManager = supportFragmentManager
-        when {
-            displayMode == DisplayMode.MESSAGE_VIEW -> showMessageList()
-            fragmentManager.backStackEntryCount > 0 -> fragmentManager.popBackStack()
-            else -> finish()
-        }
+        onBackPressedDispatcher.onBackPressed()
     }
 
     override fun closeMessageView() {
@@ -1497,8 +1488,6 @@ open class MainActivity :
         private const val STATE_DISPLAY_MODE = "displayMode"
         private const val STATE_MESSAGE_VIEW_ONLY = "messageViewOnly"
         private const val STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed"
-        private const val STATE_SEARCH_VIEW_ICONIFIED = "searchViewIconified"
-        private const val STATE_SEARCH_VIEW_QUERY = "searchViewQuery"
 
         private const val FIRST_FRAGMENT_TRANSACTION = "first"
         private const val FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER = "MessageViewContainerFragment"
