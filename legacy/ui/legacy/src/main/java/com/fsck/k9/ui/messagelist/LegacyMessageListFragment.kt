@@ -10,10 +10,10 @@ private const val TAG = "LegacyMessageListFragment"
     message = "DO NOT introduce any new features in this class. " +
         "This will be replaced by the new MessageListFragment and deleted in the future.",
 )
-class LegacyMessageListFragment : AbstractMessageListFragment() {
+class LegacyMessageListFragment : BaseMessageListFragment() {
     override val logTag: String = TAG
 
-    companion object Factory : AbstractMessageListFragment.Factory {
+    companion object Factory : BaseMessageListFragment.Factory {
         override fun newInstance(
             search: LocalMessageSearch,
             isThreadDisplay: Boolean,

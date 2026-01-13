@@ -12,7 +12,7 @@ private const val TAG = "MessageListFragment"
 
 // TODO(10322): Move this fragment to :feature:mail:message:list once all migration to the new
 //              MessageListFragment to MVI is done.
-class MessageListFragment : AbstractMessageListFragment() {
+class MessageListFragment : BaseMessageListFragment() {
     override val logTag: String = TAG
 
     // TODO(9497): Remove suppression once we start use the new view model.
@@ -22,7 +22,7 @@ class MessageListFragment : AbstractMessageListFragment() {
         parameterSetOf(accountUuids.map { AccountIdFactory.of(it) }.toSet())
     }
 
-    companion object Factory : AbstractMessageListFragment.Factory {
+    companion object Factory : BaseMessageListFragment.Factory {
         override fun newInstance(
             search: LocalMessageSearch,
             isThreadDisplay: Boolean,

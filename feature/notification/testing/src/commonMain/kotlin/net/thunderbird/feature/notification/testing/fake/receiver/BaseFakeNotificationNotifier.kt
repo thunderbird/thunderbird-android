@@ -6,7 +6,7 @@ import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 import net.thunderbird.feature.notification.testing.fake.FakeNotificationRegistry
 
-abstract class AbstractFakeNotificationNotifier<T : Notification> internal constructor(
+abstract class BaseFakeNotificationNotifier<T : Notification> internal constructor(
     private val registry: NotificationRegistry = FakeNotificationRegistry(),
 ) : NotificationNotifier<T> {
     override suspend fun show(

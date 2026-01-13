@@ -41,8 +41,8 @@ import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
-import com.fsck.k9.ui.messagelist.AbstractMessageListFragment
-import com.fsck.k9.ui.messagelist.AbstractMessageListFragment.MessageListFragmentListener
+import com.fsck.k9.ui.messagelist.BaseMessageListFragment
+import com.fsck.k9.ui.messagelist.BaseMessageListFragment.MessageListFragmentListener
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
@@ -84,7 +84,7 @@ private const val TAG = "MainActivity"
  * "View Message" notification.
  *
  * `MainActivity` manages the overall layout, including the navigation drawer and the main content area,
- * which currently displays either a [AbstractMessageListFragment] or a [MessageViewContainerFragment]. It orchestrates
+ * which currently displays either a [BaseMessageListFragment] or a [MessageViewContainerFragment]. It orchestrates
  * the interactions between these fragments and handles the back stack. The responsibilities for managing the
  * action bar, search functionality, and single-pane/split-view layout logic are currently handled here but
  * are intended to be refactored into more dedicated components over time.
@@ -116,8 +116,8 @@ open class MainActivity :
     private var openFolderTransaction: FragmentTransaction? = null
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
-    private val messageListFragmentFactory: AbstractMessageListFragment.Factory by inject()
-    private var messageListFragment: AbstractMessageListFragment? = null
+    private val messageListFragmentFactory: BaseMessageListFragment.Factory by inject()
+    private var messageListFragment: BaseMessageListFragment? = null
     private var messageViewContainerFragment: MessageViewContainerFragment? = null
     private var account: LegacyAccountDto? = null
     private var search: LocalMessageSearch? = null
@@ -271,7 +271,7 @@ open class MainActivity :
         val fragmentManager = supportFragmentManager
         messageListFragment = fragmentManager.findFragmentById(
             R.id.message_list_container,
-        ) as? AbstractMessageListFragment
+        ) as? BaseMessageListFragment
         messageViewContainerFragment =
             fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER) as? MessageViewContainerFragment
 
@@ -1121,7 +1121,7 @@ open class MainActivity :
         }
     }
 
-    private fun addMessageListFragment(fragment: AbstractMessageListFragment) {
+    private fun addMessageListFragment(fragment: BaseMessageListFragment) {
         messageListFragment?.isActive = false
 
         supportFragmentManager.commit {
@@ -1420,7 +1420,7 @@ open class MainActivity :
         }
     }
 
-    private fun AbstractMessageListFragment.setFullyActive() {
+    private fun BaseMessageListFragment.setFullyActive() {
         isActive = true
         onFullyActive()
     }

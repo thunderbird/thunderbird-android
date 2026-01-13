@@ -67,7 +67,7 @@ import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
-import com.fsck.k9.ui.messagelist.AbstractMessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
+import com.fsck.k9.ui.messagelist.BaseMessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.ui.messagelist.debug.AuthDebugActions
 import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -144,7 +144,7 @@ private const val RECENT_CHANGES_SNACKBAR_DURATION = 10 * 1000
         "Only bugfixes are allowed. New features must be introduced in the new MessageListFragment, " +
         "following the MVI principle.",
 )
-abstract class AbstractMessageListFragment :
+abstract class BaseMessageListFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
     MessageListItemActionListener,
@@ -407,7 +407,7 @@ abstract class AbstractMessageListFragment :
             contactRepository = contactRepository,
             avatarMonogramCreator = avatarMonogramCreator,
         ).apply {
-            activeMessage = this@AbstractMessageListFragment.activeMessage
+            activeMessage = this@BaseMessageListFragment.activeMessage
         }
     }
 
@@ -964,7 +964,7 @@ abstract class AbstractMessageListFragment :
             )
             lifecycleScope.launch(Dispatchers.IO) {
                 accountManager.saveAccount(updatedAccount)
-                this@AbstractMessageListFragment.account = updatedAccount
+                this@BaseMessageListFragment.account = updatedAccount
             }
         } else {
             K9.sortType = this.sortType
@@ -2678,7 +2678,7 @@ abstract class AbstractMessageListFragment :
     }
 
     /**
-     * A factory for creating instances of [AbstractMessageListFragment].
+     * A factory for creating instances of [BaseMessageListFragment].
      *
      * This interface is a temporary solution to toggle between different fragment implementations
      * based on a feature flag. It allows for the creation of either a modern [MessageListFragment] or a
@@ -2686,7 +2686,7 @@ abstract class AbstractMessageListFragment :
      */
     interface Factory {
         /**
-         * Creates a new instance of a class that inherits from [AbstractMessageListFragment].
+         * Creates a new instance of a class that inherits from [BaseMessageListFragment].
          *
          * The specific implementation returned ([MessageListFragment] or [LegacyMessageListFragment]) is determined
          * by the [MessageListFeatureFlags.EnableMessageListNewState] feature flag.
@@ -2702,7 +2702,7 @@ abstract class AbstractMessageListFragment :
             search: LocalMessageSearch,
             isThreadDisplay: Boolean,
             threadedList: Boolean,
-        ): AbstractMessageListFragment
+        ): BaseMessageListFragment
     }
 
     companion object {

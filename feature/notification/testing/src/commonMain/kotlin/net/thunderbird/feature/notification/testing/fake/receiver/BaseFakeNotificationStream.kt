@@ -9,7 +9,7 @@ import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
 import net.thunderbird.feature.notification.api.receiver.NotificationStream
 
-abstract class AbstractFakeNotificationStream<TNotification : Notification>(
+abstract class BaseFakeNotificationStream<TNotification : Notification>(
     initialNotifications: Set<TNotification>,
 ) : NotificationStream<TNotification> {
     private val _notifications = MutableStateFlow(initialNotifications)
@@ -27,4 +27,4 @@ abstract class AbstractFakeNotificationStream<TNotification : Notification>(
 
 class FakeInAppNotificationStream(
     initialNotifications: Set<InAppNotification> = emptySet(),
-) : AbstractFakeNotificationStream<InAppNotification>(initialNotifications), InAppNotificationStream
+) : BaseFakeNotificationStream<InAppNotification>(initialNotifications), InAppNotificationStream
