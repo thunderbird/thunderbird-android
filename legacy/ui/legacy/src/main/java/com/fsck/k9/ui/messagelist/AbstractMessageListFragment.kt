@@ -1111,6 +1111,8 @@ abstract class AbstractMessageListFragment :
 
     private fun prepareSearchMenu(menu: Menu) {
         val searchItem = menu.findItem(R.id.search)
+        searchItem.isVisible = !isManualSearch
+
         if (!searchItem.isVisible) return
 
         searchView?.let { searchView ->
