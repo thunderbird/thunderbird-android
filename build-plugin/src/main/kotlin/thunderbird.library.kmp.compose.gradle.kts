@@ -31,11 +31,11 @@ kotlin {
             implementation(libs.bundles.shared.kmp.common)
             implementation(libs.bundles.shared.kmp.compose)
 
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+            implementation(libs.jetbrains.compose.runtime)
+            implementation(libs.jetbrains.compose.foundation)
+            implementation(libs.jetbrains.compose.ui)
+            implementation(libs.jetbrains.compose.components.resources)
+            implementation(libs.jetbrains.compose.components.ui.preview)
         }
 
         commonTest.dependencies {
@@ -45,7 +45,6 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.bundles.shared.kmp.android)
             implementation(libs.bundles.shared.kmp.compose.android)
-            implementation(compose.preview)
         }
     }
 }
