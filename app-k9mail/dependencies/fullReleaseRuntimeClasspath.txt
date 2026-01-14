@@ -1,6 +1,6 @@
-androidx.activity:activity-compose:1.10.1
-androidx.activity:activity-ktx:1.10.1
-androidx.activity:activity:1.10.1
+androidx.activity:activity-compose:1.12.2
+androidx.activity:activity-ktx:1.12.2
+androidx.activity:activity:1.12.2
 androidx.annotation:annotation-experimental:1.4.1
 androidx.annotation:annotation-jvm:1.9.1
 androidx.annotation:annotation:1.9.1
@@ -134,6 +134,10 @@ androidx.navigation:navigation-fragment:2.9.3
 androidx.navigation:navigation-runtime-android:2.9.3
 androidx.navigation:navigation-runtime:2.9.3
 androidx.navigation:navigation-ui:2.9.3
+androidx.navigationevent:navigationevent-android:1.0.1
+androidx.navigationevent:navigationevent-compose-android:1.0.1
+androidx.navigationevent:navigationevent-compose:1.0.1
+androidx.navigationevent:navigationevent:1.0.1
 androidx.preference:preference:1.2.1
 androidx.print:print:1.0.0
 androidx.profileinstaller:profileinstaller:1.4.1

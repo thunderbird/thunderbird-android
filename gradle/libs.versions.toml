@@ -18,7 +18,7 @@ androidMaterial = "1.12.0"
 # Also, make sure AGP version is compatible with both AS and IntelliJ IDEA.
 androidGradlePlugin = "8.12.3"
 androidTools = "31.12.3"
-androidxActivity = "1.10.1"
+androidxActivity = "1.12.2"
 androidxAnnotation = "1.9.1"
 androidxAppCompat = "1.7.1"
 androidxAutofill = "1.3.0"
@@ -251,7 +251,6 @@ konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlinBom" }
 kotlin-gradle-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlinGradleBom" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
