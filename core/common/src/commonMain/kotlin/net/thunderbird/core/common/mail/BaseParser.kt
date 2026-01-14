@@ -4,7 +4,16 @@ import net.thunderbird.core.common.mail.EmailAddressParserError.UnexpectedCharac
 import net.thunderbird.core.common.mail.EmailAddressParserError.UnexpectedEndOfInput
 
 @Suppress("UnnecessaryAbstractClass")
-internal abstract class AbstractParser(val input: String, startIndex: Int = 0, val endIndex: Int = input.length) {
+/**
+ * Base class for string parsers.
+ *
+ * Provides basic navigation and reading operations on an input string.
+ *
+ * @property input The string to be parsed.
+ * @property startIndex The index to start parsing from (inclusive).
+ * @property endIndex The index to stop parsing at (exclusive).
+ */
+internal abstract class BaseParser(val input: String, startIndex: Int = 0, val endIndex: Int = input.length) {
     protected var currentIndex = startIndex
 
     val position: Int
@@ -62,7 +71,7 @@ internal abstract class AbstractParser(val input: String, startIndex: Int = 0, v
         return input.substring(startIndex, currentIndex)
     }
 
-    protected inline fun <P : AbstractParser, T> withParser(parser: P, block: P.() -> T): T {
+    protected inline fun <P : BaseParser, T> withParser(parser: P, block: P.() -> T): T {
         try {
             return block(parser)
         } finally {

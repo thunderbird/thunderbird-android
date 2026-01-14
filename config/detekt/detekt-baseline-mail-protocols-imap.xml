@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>CastToNullableType:RealImapFolder.kt$RealImapFolder$as</ID>
     <ID>CyclomaticComplexMethod:RealImapFolder.kt$RealImapFolder$@Throws(MessagingException::class) override fun appendMessages(messages: List&lt;Message&gt;): Map&lt;String, String&gt;?</ID>
@@ -13,7 +13,6 @@
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format("%sFLAGS.SILENT (%s)", if (value) "+" else "-", combinedFlags)</ID>
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format(";\r\n %s=%s", paramName, encodedValue)</ID>
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format("BODY.PEEK[%s]", partId)</ID>
-    <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format("CREATE %s", escapedFolderName)</ID>
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format("STATUS %s (UIDVALIDITY)", escapedFolderName)</ID>
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format("UID FETCH %s (%s)", commaSeparatedUids, spaceSeparatedFetchFields)</ID>
     <ID>ImplicitDefaultLocale:RealImapFolder.kt$RealImapFolder$String.format("UID FETCH %s (UID %s)", message.uid, fetch)</ID>
@@ -21,7 +20,6 @@
     <ID>LargeClass:RealImapConnection.kt$RealImapConnection : ImapConnection</ID>
     <ID>LargeClass:RealImapConnectionTest.kt$RealImapConnectionTest</ID>
     <ID>LargeClass:RealImapFolder.kt$RealImapFolder : ImapFolder</ID>
-    <ID>LargeClass:RealImapFolderTest.kt$RealImapFolderTest</ID>
     <ID>LongMethod:RealImapFolder.kt$RealImapFolder$@Throws(MessagingException::class) override fun appendMessages(messages: List&lt;Message&gt;): Map&lt;String, String&gt;?</ID>
     <ID>LongMethod:RealImapFolder.kt$RealImapFolder$@Throws(MessagingException::class) override fun fetch( messages: List&lt;ImapMessage&gt;, fetchProfile: FetchProfile, listener: FetchListener?, maxDownloadSize: Int, )</ID>
     <ID>LongMethod:RealImapFolder.kt$RealImapFolder$@Throws(MessagingException::class) private fun handleFetchResponse(message: ImapMessage, fetchList: ImapList): Any?</ID>
@@ -47,7 +45,6 @@
     <ID>ReturnCount:RealImapStore.kt$RealImapStore$private fun removePrefixFromFolderName(folderName: String): String?</ID>
     <ID>ReturnCount:UidValidityResponse.kt$UidValidityResponse.Companion$@JvmStatic fun parse(response: ImapResponse): UidValidityResponse?</ID>
     <ID>SwallowedException:RealImapFolder.kt$RealImapFolder$e: NegativeImapResponseException</ID>
-    <ID>SwallowedException:RealImapStore.kt$RealImapStore$e: CharacterCodingException</ID>
     <ID>SwallowedException:RealImapStore.kt$RealImapStore$ioe: IOException</ID>
     <ID>ThrowingExceptionsWithoutMessageOrCause:RealImapConnection.kt$RealImapConnection$Exception()</ID>
     <ID>ThrowsCount:RealImapConnection.kt$RealImapConnection$private fun authenticate(): List&lt;ImapResponse&gt;</ID>

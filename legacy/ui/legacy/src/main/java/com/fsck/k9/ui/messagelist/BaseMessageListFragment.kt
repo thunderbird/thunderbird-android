@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +16,14 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.Discouraged
 import androidx.annotation.StringRes
 import androidx.appcompat.view.ActionMode
+import androidx.appcompat.widget.SearchView
 import androidx.compose.animation.animateContentSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.ComposeView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
@@ -30,6 +34,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -62,7 +67,7 @@ import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
-import com.fsck.k9.ui.messagelist.AbstractMessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
+import com.fsck.k9.ui.messagelist.BaseMessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.ui.messagelist.debug.AuthDebugActions
 import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -139,7 +144,7 @@ private const val RECENT_CHANGES_SNACKBAR_DURATION = 10 * 1000
         "Only bugfixes are allowed. New features must be introduced in the new MessageListFragment, " +
         "following the MVI principle.",
 )
-abstract class AbstractMessageListFragment :
+abstract class BaseMessageListFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
     MessageListItemActionListener,
@@ -201,6 +206,10 @@ abstract class AbstractMessageListFragment :
     private var floatingActionButton: FloatingActionButton? = null
 
     private lateinit var adapter: MessageListAdapter
+
+    private var searchView: SearchView? = null
+    private var initialSearchViewQuery: String? = null
+    private var initialSearchViewIconified = true
 
     protected lateinit var accountUuids: Array<String>
         private set
@@ -272,6 +281,14 @@ abstract class AbstractMessageListFragment :
             maybeHideFloatingActionButton()
         }
 
+    fun isSearchViewCollapsed(): Boolean {
+        return searchView?.isIconified != false
+    }
+
+    fun expandSearchView() {
+        searchView?.isIconified = false
+    }
+
     val isShowAccountIndicator: Boolean
         get() = isUnifiedFolders || !isSingleAccountMode
 
@@ -280,14 +297,13 @@ abstract class AbstractMessageListFragment :
 
         fragmentListener = try {
             context as MessageListFragmentListener
-        } catch (e: ClassCastException) {
+        } catch (_: ClassCastException) {
             error("${context.javaClass} must implement MessageListFragmentListener")
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
 
         restoreInstanceState(savedInstanceState)
         val error = decodeArguments()
@@ -327,6 +343,8 @@ abstract class AbstractMessageListFragment :
             ?.map { MessageReference.parse(it)!! }
         restoreSelectedMessages(savedInstanceState)
         isRemoteSearch = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED)
+        initialSearchViewQuery = savedInstanceState.getString(STATE_SEARCH_VIEW_QUERY)
+        initialSearchViewIconified = savedInstanceState.getBoolean(STATE_SEARCH_VIEW_ICONIFIED, true)
         val messageReferenceString = savedInstanceState.getString(STATE_ACTIVE_MESSAGE)
         activeMessage = MessageReference.parse(messageReferenceString)
     }
@@ -389,7 +407,7 @@ abstract class AbstractMessageListFragment :
             contactRepository = contactRepository,
             avatarMonogramCreator = avatarMonogramCreator,
         ).apply {
-            activeMessage = this@AbstractMessageListFragment.activeMessage
+            activeMessage = this@BaseMessageListFragment.activeMessage
         }
     }
 
@@ -412,6 +430,31 @@ abstract class AbstractMessageListFragment :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    if (!isActive) return
+                    menuInflater.inflate(R.menu.message_list_option_menu, menu)
+                }
+
+                override fun onPrepareMenu(menu: Menu) {
+                    if (!isActive) return
+                    prepareSearchMenu(menu)
+                    prepareMenu(menu)
+                    prepareDebugMenu(menu)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    if (!isActive) return false
+                    return selectMenuItem(menuItem)
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED,
+        )
+
         if (error == null) {
             initializeMessageListLayout(view)
         } else {
@@ -801,6 +844,10 @@ abstract class AbstractMessageListFragment :
 
         outState.putLongArray(STATE_SELECTED_MESSAGES, adapter.selected.toLongArray())
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, isRemoteSearch)
+        searchView?.let { searchView ->
+            outState.putString(STATE_SEARCH_VIEW_QUERY, searchView.query.toString())
+            outState.putBoolean(STATE_SEARCH_VIEW_ICONIFIED, searchView.isIconified)
+        }
         outState.putStringArray(
             STATE_ACTIVE_MESSAGES,
             activeMessages?.map(MessageReference::toIdentityString)?.toTypedArray(),
@@ -917,7 +964,7 @@ abstract class AbstractMessageListFragment :
             )
             lifecycleScope.launch(Dispatchers.IO) {
                 accountManager.saveAccount(updatedAccount)
-                this@AbstractMessageListFragment.account = updatedAccount
+                this@BaseMessageListFragment.account = updatedAccount
             }
         } else {
             K9.sortType = this.sortType
@@ -1062,12 +1109,38 @@ abstract class AbstractMessageListFragment :
         return "dialog-$dialogId"
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        if (isActive && error == null) {
-            prepareMenu(menu)
-        } else {
-            hideMenu(menu)
+    private fun prepareSearchMenu(menu: Menu) {
+        val searchItem = menu.findItem(R.id.search)
+        searchItem.isVisible = !isManualSearch
+
+        if (!searchItem.isVisible) return
+
+        searchView?.let { searchView ->
+            searchItem.actionView = searchView
+            return
         }
+
+        val searchView = searchItem.actionView as SearchView
+        searchView.maxWidth = Int.MAX_VALUE
+        searchView.queryHint = resources.getString(R.string.search_action)
+        searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    onSearchRequested(query)
+                    collapseSearchView()
+                    return true
+                }
+
+                override fun onQueryTextChange(s: String): Boolean {
+                    return false
+                }
+            },
+        )
+
+        searchView.setQuery(initialSearchViewQuery, false)
+        searchView.isIconified = initialSearchViewIconified
+
+        this.searchView = searchView
     }
 
     private fun prepareMenu(menu: Menu) {
@@ -1086,37 +1159,29 @@ abstract class AbstractMessageListFragment :
             menu.findItem(R.id.expunge).isVisible = false
         }
 
-        menu.findItem(R.id.search).isVisible = !isManualSearch
         menu.findItem(R.id.search_remote).isVisible = !isRemoteSearch && isRemoteSearchAllowed
         menu.findItem(R.id.search_everywhere).isVisible = isManualSearch && !localSearch.searchAllAccounts()
-        // Show debug actions only in DEBUG builds and when account uses OAuth.
+    }
+
+    private fun prepareDebugMenu(menu: Menu) {
         val isOAuthAccount = account?.incomingServerSettings?.authenticationType == AuthType.XOAUTH2
-        val showDebug = BuildConfig.DEBUG && isOAuthAccount
-        menu.findItem(R.id.debug_invalidate_access_token_local).isVisible = showDebug
-        menu.findItem(R.id.debug_invalidate_access_token_server).isVisible = showDebug
-        menu.findItem(R.id.debug_force_auth_failure).isVisible = showDebug
-        menu.findItem(R.id.debug_feature_flags).isVisible = BuildConfig.DEBUG
+        val isDebug = BuildConfig.DEBUG
+        val showOAuthDebug = isDebug && isOAuthAccount
+
+        menu.findItem(R.id.debug_invalidate_access_token_local).isVisible = showOAuthDebug
+        menu.findItem(R.id.debug_invalidate_access_token_server).isVisible = showOAuthDebug
+        menu.findItem(R.id.debug_force_auth_failure).isVisible = showOAuthDebug
+        menu.findItem(R.id.debug_feature_flags).isVisible = isDebug
     }
 
-    private fun hideMenu(menu: Menu) {
-        menu.findItem(R.id.compose).isVisible = false
-        menu.findItem(R.id.search).isVisible = false
-        menu.findItem(R.id.search_remote).isVisible = false
-        menu.findItem(R.id.set_sort).isVisible = false
-        menu.findItem(R.id.select_all).isVisible = false
-        menu.findItem(R.id.mark_all_as_read).isVisible = false
-        menu.findItem(R.id.send_messages).isVisible = false
-        menu.findItem(R.id.empty_spam).isVisible = false
-        menu.findItem(R.id.empty_trash).isVisible = false
-        menu.findItem(R.id.expunge).isVisible = false
-        menu.findItem(R.id.search_everywhere).isVisible = false
-        menu.findItem(R.id.debug_invalidate_access_token_local).isVisible = false
-        menu.findItem(R.id.debug_invalidate_access_token_server).isVisible = false
-        menu.findItem(R.id.debug_force_auth_failure).isVisible = false
-        menu.findItem(R.id.debug_feature_flags).isVisible = false
+    fun collapseSearchView() {
+        searchView?.let { searchView ->
+            searchView.setQuery(null, false)
+            searchView.isIconified = true
+        }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    private fun selectMenuItem(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.search_remote -> onRemoteSearch()
             R.id.compose -> onCompose()
@@ -2613,7 +2678,7 @@ abstract class AbstractMessageListFragment :
     }
 
     /**
-     * A factory for creating instances of [AbstractMessageListFragment].
+     * A factory for creating instances of [BaseMessageListFragment].
      *
      * This interface is a temporary solution to toggle between different fragment implementations
      * based on a feature flag. It allows for the creation of either a modern [MessageListFragment] or a
@@ -2621,7 +2686,7 @@ abstract class AbstractMessageListFragment :
      */
     interface Factory {
         /**
-         * Creates a new instance of a class that inherits from [AbstractMessageListFragment].
+         * Creates a new instance of a class that inherits from [BaseMessageListFragment].
          *
          * The specific implementation returned ([MessageListFragment] or [LegacyMessageListFragment]) is determined
          * by the [MessageListFeatureFlags.EnableMessageListNewState] feature flag.
@@ -2637,7 +2702,7 @@ abstract class AbstractMessageListFragment :
             search: LocalMessageSearch,
             isThreadDisplay: Boolean,
             threadedList: Boolean,
-        ): AbstractMessageListFragment
+        ): BaseMessageListFragment
     }
 
     companion object {
@@ -2649,5 +2714,7 @@ abstract class AbstractMessageListFragment :
         protected const val STATE_ACTIVE_MESSAGES = "activeMessages"
         protected const val STATE_ACTIVE_MESSAGE = "activeMessage"
         protected const val STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed"
+        protected const val STATE_SEARCH_VIEW_QUERY = "searchViewQuery"
+        protected const val STATE_SEARCH_VIEW_ICONIFIED = "searchViewIconified"
     }
 }

@@ -6,7 +6,6 @@ import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy
 import com.fsck.k9.backend.api.SyncListener
-import com.fsck.k9.helper.ExceptionHelper
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.DefaultBodyFactory
@@ -22,6 +21,7 @@ import java.util.Collections
 import java.util.Date
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.max
+import net.thunderbird.core.common.exception.rootCauseMessage
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.legacy.Log
 
@@ -227,7 +227,7 @@ internal class ImapSync(
             Log.e(e, "synchronizeMailbox")
             // If we don't set the last checked, it can try too often during
             // failure conditions
-            val rootMessage = ExceptionHelper.getRootCauseMessage(e)
+            val rootMessage = e.rootCauseMessage.orEmpty()
             if (backendFolder != null) {
                 try {
                     backendFolder.setStatus(rootMessage)

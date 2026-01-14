@@ -7,8 +7,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.core.net.toUri
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
@@ -76,7 +80,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         preferenceManager.preferenceDataStore = dataStore
         setPreferencesFromResource(R.xml.account_settings, rootKey)
         title = preferenceScreen.title
-        setHasOptionsMenu(true)
 
         initializeGeneralSettings()
         initializeIncomingServer()
@@ -100,6 +103,31 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         requireActivity().title = title
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.account_settings_option, menu)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        R.id.delete_account -> {
+                            onDeleteAccount()
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED,
+        )
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -116,24 +144,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             } else {
                 maybeUpdateNotificationPreferences(account)
             }
-        }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.account_settings_option, menu)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.delete_account -> {
-                onDeleteAccount()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
         }
     }
 

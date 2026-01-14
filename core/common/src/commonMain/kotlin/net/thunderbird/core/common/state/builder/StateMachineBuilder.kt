@@ -17,7 +17,7 @@ import net.thunderbird.core.common.state.TransactionKey
  * @param TState The base sealed class/interface for all states in the machine.
  * @param TEvent The base sealed class/interface for all events that can trigger transitions.
  *
- * @see StateBuilder
+ * @see BaseStateBuilder
  * @see stateMachine
  */
 @StateMachineBuilderDsl
@@ -36,12 +36,12 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
      * @param TCurrentState The specific type of the initial state.
      * @param state The instance of the initial state object. This object's class is used
      *              to identify the state.
-     * @param init A lambda with a [StateBuilder] receiver to configure the transitions
+     * @param init A lambda with a [BaseStateBuilder] receiver to configure the transitions
      *             and actions (like `onEnter` or `onExit`) for this state.
      */
     fun <TCurrentState : TState> initialState(
         state: TCurrentState,
-        init: StateBuilder<TCurrentState, TState, TEvent>.() -> Unit,
+        init: BaseStateBuilder<TCurrentState, TState, TEvent>.() -> Unit,
     ) = state(state::class, init).also {
         initialState = state
     }
@@ -92,14 +92,14 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
      *
      * @param TCurrentState The specific type of the state being defined, which must be a subtype of [TState].
      * @param stateClass The [KClass] of the state to be defined.
-     * @param init A lambda with a [StateBuilder] receiver to configure the transitions and actions
+     * @param init A lambda with a [BaseStateBuilder] receiver to configure the transitions and actions
      *             for this state.
      * @throws IllegalStateException if the state class is already registered or if it was already
      *                               defined as the initial state.
      */
     fun <TCurrentState : TState> state(
         stateClass: KClass<out TCurrentState>,
-        init: StateBuilder<TCurrentState, TState, TEvent>.() -> Unit,
+        init: BaseStateBuilder<TCurrentState, TState, TEvent>.() -> Unit,
     ) {
         check(stateClass !in stateRegistrar) { "${stateClass.simpleName} is already registered as a state." }
         initialState?.let {
@@ -120,11 +120,11 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
      * state again using this function.
      *
      * @param TCurrentState The type of the state to be defined.
-     * @param init A lambda with a [StateBuilder] receiver to configure the transitions and actions for this state.
+     * @param init A lambda with a [BaseStateBuilder] receiver to configure the transitions and actions for this state.
      * @throws IllegalStateException if the state is already registered or if it's already defined as the initial state.
      */
     inline fun <reified TCurrentState : TState> state(
-        noinline init: StateBuilder<TCurrentState, TState, TEvent>.() -> Unit,
+        noinline init: BaseStateBuilder<TCurrentState, TState, TEvent>.() -> Unit,
     ) = state(stateClass = TCurrentState::class, init)
 
     /**

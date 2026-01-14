@@ -1,19 +1,13 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>CastToNullableType:SettingsExporter.kt$SettingsExporter$as</ID>
-    <ID>CyclomaticComplexMethod:HttpUriParser.kt$HttpUriParser$private fun tryMatchIpv6Address(text: CharSequence, startPos: Int): Int</ID>
     <ID>ForbiddenComment:K9BackendFolderTest.kt$K9BackendFolderTest$// FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()</ID>
-    <ID>ForbiddenComment:K9BackendStorageTest.kt$K9BackendStorageTest$// FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()</ID>
-    <ID>FunctionOnlyReturningConstant:DisplayHtml.kt$DisplayHtml$private fun cssStyleSignature(): String</ID>
     <ID>LongMethod:MessageListRepositoryTest.kt$MessageListRepositoryTest$@Test fun `getThread() should use flag values from the cache`()</ID>
     <ID>LongMethod:TextBodyBuilderTest.kt$TextBodyBuilderTest.Companion$@JvmStatic @Parameterized.Parameters(name = "{index}: {0}") fun data(): Collection&lt;TestData&gt;</ID>
     <ID>LoopWithTooManyJumpStatements:HttpUriParser.kt$HttpUriParser$while</ID>
     <ID>LoopWithTooManyJumpStatements:SettingsExporter.kt$SettingsExporter$for</ID>
-    <ID>MagicNumber:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$10</ID>
-    <ID>MagicNumber:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$24</ID>
-    <ID>MagicNumber:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$5</ID>
     <ID>MagicNumber:CollectionExtensions.kt$0.75F</ID>
     <ID>MagicNumber:CollectionExtensions.kt$3</ID>
     <ID>MagicNumber:EmailTextToHtml.kt$EmailTextToHtml$3</ID>
@@ -37,16 +31,9 @@
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0xFF00FF</ID>
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0xFFFF00</ID>
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0xFFFFFF</ID>
-    <ID>MagicNumber:ServerSettingsSerializer.kt$ServerSettingsAdapter$3</ID>
-    <ID>MagicNumber:ServerSettingsSerializer.kt$ServerSettingsAdapter$4</ID>
-    <ID>MagicNumber:ServerSettingsSerializer.kt$ServerSettingsAdapter$5</ID>
-    <ID>MagicNumber:ServerSettingsSerializer.kt$ServerSettingsAdapter$6</ID>
-    <ID>MagicNumber:ServerSettingsSerializer.kt$ServerSettingsAdapter$7</ID>
     <ID>MagicNumber:SettingsExporter.kt$SettingsExporter$3</ID>
-    <ID>MagicNumber:TimberLogger.kt$TimberLogger$26</ID>
     <ID>MayBeConst:SummaryNotificationDataCreatorTest.kt$private val TIMESTAMP = 0L</ID>
     <ID>MemberNameEqualsClassName:HtmlModification.kt$HtmlModification.Replace$abstract fun replace(textToHtml: TextToHtml)</ID>
-    <ID>NestedBlockDepth:HttpUriParser.kt$HttpUriParser$private fun tryMatchIpv6Address(text: CharSequence, startPos: Int): Int</ID>
     <ID>NestedBlockDepth:SettingsExporter.kt$SettingsExporter$private fun writeIdentity( serializer: XmlSerializer, accountUuid: String, identity: String, prefs: Map&lt;String, Any&gt;, )</ID>
     <ID>NestedBlockDepth:SingleMessageNotificationCreator.kt$SingleMessageNotificationCreator$private fun NotificationBuilder.setWearActions(notificationData: SingleNotificationData)</ID>
     <ID>ReturnCount:AutocryptDraftStateHeaderParser.kt$AutocryptDraftStateHeaderParser$fun parseAutocryptDraftStateHeader(headerValue: String): AutocryptDraftStateHeader?</ID>
@@ -58,7 +45,6 @@
     <ID>ReturnCount:HttpUriParser.kt$HttpUriParser$private fun tryMatchAuthority(text: CharSequence, startPos: Int): Int</ID>
     <ID>ReturnCount:HttpUriParser.kt$HttpUriParser$private fun tryMatchDomainName(text: CharSequence, startPos: Int): Int</ID>
     <ID>ReturnCount:HttpUriParser.kt$HttpUriParser$private fun tryMatchIpv4Address(text: CharSequence, startPos: Int, portAllowed: Boolean): Int</ID>
-    <ID>ReturnCount:HttpUriParser.kt$HttpUriParser$private fun tryMatchIpv6Address(text: CharSequence, startPos: Int): Int</ID>
     <ID>ReturnCount:ListUnsubscribeHelper.kt$ListUnsubscribeHelper$fun getPreferredListUnsubscribeUri(message: Message): UnsubscribeUri?</ID>
     <ID>ReturnCount:ListUnsubscribeHelper.kt$ListUnsubscribeHelper$private fun extractUri(headerValue: String?): Uri?</ID>
     <ID>ReturnCount:MailSyncWorker.kt$MailSyncWorker$override fun doWork(): Result</ID>
@@ -70,7 +56,6 @@
     <ID>SwallowedException:MessageRepository.kt$MessageRepository$e: Exception</ID>
     <ID>SwallowedException:QuoteDateFormatter.kt$QuoteDateFormatter$e: Exception</ID>
     <ID>SwallowedException:SettingsExporter.kt$SettingsExporter$e: InvalidSettingValueException</ID>
-    <ID>ThrowingExceptionsWithoutMessageOrCause:TimberLogger.kt$TimberLogger$Throwable()</ID>
     <ID>TooGenericExceptionCaught:BootCompleteReceiver.kt$BootCompleteManager$e: Exception</ID>
     <ID>TooGenericExceptionCaught:K9.kt$K9$e: Exception</ID>
     <ID>TooGenericExceptionCaught:MessageRepository.kt$MessageRepository$e: Exception</ID>
@@ -87,12 +72,10 @@
     <ID>TooManyFunctions:NotificationController.kt$NotificationController</ID>
     <ID>TooManyFunctions:NotificationResourceProvider.kt$NotificationResourceProvider</ID>
     <ID>TooManyFunctions:NotifierMessageStore.kt$NotifierMessageStore : MessageStore</ID>
-    <ID>TooManyFunctions:Preferences.kt$Preferences : AccountManager</ID>
     <ID>TooManyFunctions:PushController.kt$PushController</ID>
     <ID>TooManyFunctions:SettingsExporter.kt$SettingsExporter</ID>
     <ID>TooManyFunctions:SingleMessageNotificationCreator.kt$SingleMessageNotificationCreator</ID>
     <ID>TooManyFunctions:SummaryNotificationCreator.kt$SummaryNotificationCreator</ID>
-    <ID>TooManyFunctions:TimberLogger.kt$TimberLogger : Logger</ID>
     <ID>UnusedParameter:Contacts.kt$Contacts$addresses: Array&lt;Address?&gt;?</ID>
     <ID>UnusedPrivateProperty:HttpUriParser.kt$HttpUriParser$i</ID>
     <ID>UseCheckOrError:OutboxStateRepository.kt$OutboxStateRepository$throw IllegalStateException("No outbox_state entry for message with id $messageId")</ID>

@@ -15,6 +15,7 @@ import android.print.PrintManager
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -24,9 +25,12 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import app.k9mail.core.android.common.activity.CreateDocumentResultContract
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
@@ -149,7 +153,7 @@ class MessageViewFragment :
 
         fragmentListener = try {
             activity as MessageViewFragmentListener
-        } catch (e: ClassCastException) {
+        } catch (_: ClassCastException) {
             throw ClassCastException("This fragment must be attached to a MessageViewFragmentListener")
         }
     }
@@ -162,8 +166,6 @@ class MessageViewFragment :
         if (savedInstanceState == null) {
             setMenuVisibility(false)
         }
-
-        setHasOptionsMenu(true)
 
         messageReference = MessageReference.parse(arguments?.getString(ARG_REFERENCE))
             ?: error("Invalid argument '$ARG_REFERENCE'")
@@ -220,6 +222,28 @@ class MessageViewFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    if (!isActive) return
+                    menuInflater.inflate(R.menu.message_view_option_menu, menu)
+                }
+
+                override fun onPrepareMenu(menu: Menu) {
+                    if (!isActive) return
+                    prepareMenu(menu)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    if (!isActive) return false
+                    return selectMenuItem(menuItem)
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED,
+        )
+
         loadMessage(messageReference)
     }
 
@@ -270,9 +294,8 @@ class MessageViewFragment :
         }
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        if (!isActive) return
-
+    @Suppress("LongMethod")
+    private fun prepareMenu(menu: Menu) {
         menu.findItem(R.id.delete).apply {
             isVisible = K9.isMessageViewDeleteActionVisible
             isEnabled = !isDeleteMenuItemDisabled
@@ -337,7 +360,7 @@ class MessageViewFragment :
         menu.findItem(R.id.export_eml).isVisible =
             featureFlagProvider.provide(MessageViewFeatureFlags.ActionExportEml).isEnabled()
         menu.findItem(R.id.print)?.isVisible = true
-        menu.findItem(R.id.compose).isVisible = true
+        menu.findItem(R.id.view_compose).isVisible = true
 
         val toggleTheme = menu.findItem(R.id.toggle_message_view_theme)
         if (generalSettingsManager.getConfig().display.coreSettings.fixedMessageViewTheme) {
@@ -353,7 +376,8 @@ class MessageViewFragment :
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    @Suppress("CyclomaticComplexMethod", "ReturnCount")
+    private fun selectMenuItem(item: MenuItem): Boolean {
         if (message == null) return false
 
         when (item.itemId) {
@@ -768,7 +792,7 @@ class MessageViewFragment :
                     mimeType = "message/rfc822",
                 ),
             )
-        } catch (e: ActivityNotFoundException) {
+        } catch (_: ActivityNotFoundException) {
             Toast.makeText(requireContext(), R.string.error_activity_not_found, Toast.LENGTH_LONG).show()
         }
     }
@@ -1090,7 +1114,7 @@ class MessageViewFragment :
                     mimeType = attachment.mimeType,
                 ),
             )
-        } catch (e: ActivityNotFoundException) {
+        } catch (_: ActivityNotFoundException) {
             Toast.makeText(requireContext(), R.string.error_activity_not_found, Toast.LENGTH_LONG).show()
         }
     }

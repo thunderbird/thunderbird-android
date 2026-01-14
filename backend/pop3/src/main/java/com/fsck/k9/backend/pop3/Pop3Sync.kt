@@ -4,7 +4,6 @@ import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
-import com.fsck.k9.helper.ExceptionHelper
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.MessageDownloadState
@@ -18,6 +17,7 @@ import java.util.Date
 import java.util.HashMap
 import java.util.concurrent.atomic.AtomicInteger
 import net.thunderbird.core.common.exception.MessagingException
+import net.thunderbird.core.common.exception.rootCauseMessage
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.legacy.Log
 
@@ -208,7 +208,7 @@ internal class Pop3Sync(
             Log.e(e, "synchronizeMailbox")
             // If we don't set the last checked, it can try too often during
             // failure conditions
-            val rootMessage = ExceptionHelper.getRootCauseMessage(e)
+            val rootMessage = e.rootCauseMessage.orEmpty()
             if (backendFolder != null) {
                 try {
                     backendFolder.setStatus(rootMessage)
