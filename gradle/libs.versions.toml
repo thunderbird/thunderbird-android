@@ -69,7 +69,6 @@ jcipAnnotations = "1.0"
 jetbrainsAnnotations = "26.0.2-1"
 jetbrainsCompose = "1.10.0"
 jetbrainsComposeLifecycle = "2.9.6"
-jetbrainsComposeNavigation = "2.9.1"
 jetbrainsComposeNavigation3 = "1.0.0-alpha06"
 jetbrainsComposeNavigationEvent = "1.0.0"
 jdom = "2.0.6.1"
@@ -312,8 +311,9 @@ shared-kmp-compose = [
   "jetbrains-compose-lifecycle-viewmodel",
   "jetbrains-compose-lifecycle-viewmodel-compose",
   "jetbrains-compose-lifecycle-viewmodel-savedstate",
-  # Disabled, as it's still in beta
-#  "jetbrains-compose-navigation",
+  # Disabled, as it's not used yet
+#  "jetbrains-compose-navigation3",
+#  "jetbrains-compose-navigation-event",
 ]
 shared-kmp-compose-android = [
   "koin-androidx-compose",
