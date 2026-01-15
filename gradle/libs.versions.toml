@@ -67,9 +67,10 @@ icu4j = "78.2"
 javaDiffUtils = "4.16"
 jcipAnnotations = "1.0"
 jetbrainsAnnotations = "26.0.2-1"
-jetbrainsCompose = "1.9.3"
+jetbrainsCompose = "1.10.0"
 jetbrainsComposeLifecycle = "2.9.6"
-jetbrainsComposeNavigation = "2.9.1"
+jetbrainsComposeNavigation3 = "1.0.0-alpha06"
+jetbrainsComposeNavigationEvent = "1.0.0"
 jdom = "2.0.6.1"
 jmapClient = "0.3.1"
 jsoup = "1.19.1"
@@ -222,11 +223,17 @@ glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 icu4j-charset = { module = "com.ibm.icu:icu4j-charset", version.ref = "icu4j" }
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
+jetbrains-compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "jetbrainsCompose" }
+jetbrains-compose-components-ui-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "jetbrainsCompose" }
+jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "jetbrainsCompose" }
 jetbrains-compose-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jetbrainsComposeLifecycle" }
 jetbrains-compose-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "jetbrainsComposeLifecycle" }
 jetbrains-compose-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrainsComposeLifecycle" }
 jetbrains-compose-lifecycle-viewmodel-savedstate = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "jetbrainsComposeLifecycle" }
-jetbrains-compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jetbrainsComposeNavigation" }
+jetbrains-compose-navigation3 = { module = "org.jetbrains.androidx.navigation3:navigation-compose3", version.ref = "jetbrainsComposeNavigation3" }
+jetbrains-compose-navigation-event = { module = "org.jetbrains.androidx.navigationevent:navigationevent-compose", version.ref = "jetbrainsComposeNavigationEvent" }
+jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrainsCompose" }
+jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "jetbrainsCompose" }
 jcip-annotations = { module = "net.jcip:jcip-annotations", version.ref = "jcipAnnotations" }
 jdom2 = { module = "org.jdom:jdom2", version.ref = "jdom" }
 jmap-client = { module = "rs.ltt.jmap:jmap-client", version.ref = "jmapClient" }
@@ -304,8 +311,9 @@ shared-kmp-compose = [
   "jetbrains-compose-lifecycle-viewmodel",
   "jetbrains-compose-lifecycle-viewmodel-compose",
   "jetbrains-compose-lifecycle-viewmodel-savedstate",
-  # Disabled, as it's still in beta
-#  "jetbrains-compose-navigation",
+  # Disabled, as it's not used yet
+#  "jetbrains-compose-navigation3",
+#  "jetbrains-compose-navigation-event",
 ]
 shared-kmp-compose-android = [
   "koin-androidx-compose",

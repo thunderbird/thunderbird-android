@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -205,22 +206,22 @@ fun AboutScreen(
             AppLogo(logoResId = appLogoResId)
             SectionTitle(title = aboutTitle)
             SectionContent(
-                sectionLabel = context.getString(R.string.version),
+                sectionLabel = stringResource(R.string.version),
                 sectionText = versionNumber,
                 sectionImageId = DesignSystemR.drawable.ic_info,
                 onClick = displayChangeLog,
             )
             SectionContent(
-                sectionLabel = context.getString(R.string.authors),
-                sectionText = context.getString(R.string.about_app_authors_k9),
-                secondarySectionText = context.getString(R.string.about_app_authors_thunderbird),
+                sectionLabel = stringResource(R.string.authors),
+                sectionText = stringResource(R.string.about_app_authors_k9),
+                secondarySectionText = stringResource(R.string.about_app_authors_thunderbird),
                 sectionImageId = DesignSystemR.drawable.ic_group,
                 onClick = displayAuthors,
             )
 
             SectionContent(
-                sectionLabel = context.getString(R.string.license),
-                sectionText = context.getString(R.string.app_license),
+                sectionLabel = stringResource(R.string.license),
+                sectionText = stringResource(R.string.app_license),
                 sectionImageId = DesignSystemR.drawable.ic_code,
                 onClick = displayLicense,
             )
@@ -228,15 +229,15 @@ fun AboutScreen(
             SectionTitle(title = projectTitle)
 
             SectionContent(
-                sectionLabel = context.getString(R.string.about_website_title),
-                sectionText = context.getString(R.string.app_webpage_url),
+                sectionLabel = stringResource(R.string.about_website_title),
+                sectionText = stringResource(R.string.app_webpage_url),
                 sectionImageId = DesignSystemR.drawable.ic_link,
                 onClick = displayWebSite,
             )
 
             SectionContent(
-                sectionLabel = context.getString(R.string.user_forum_title),
-                sectionText = context.getString(R.string.user_forum_url),
+                sectionLabel = stringResource(R.string.user_forum_title),
+                sectionText = stringResource(R.string.user_forum_url),
                 sectionImageId = DesignSystemR.drawable.ic_forum,
                 onClick = displayForum,
             )
