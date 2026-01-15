@@ -1,6 +1,12 @@
 package com.fsck.k9.ui.messagelist
 
+import android.annotation.SuppressLint
+import android.os.Bundle
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
@@ -10,16 +16,29 @@ import org.koin.core.parameter.parameterSetOf
 
 private const val TAG = "MessageListFragment"
 
-// TODO(10322): Move this fragment to :feature:mail:message:list once all migration to the new
+// TODO(#10322): Move this fragment to :feature:mail:message:list once all migration to the new
 //              MessageListFragment to MVI is done.
+@SuppressLint("DiscouragedApi")
 class MessageListFragment : BaseMessageListFragment() {
     override val logTag: String = TAG
 
-    // TODO(9497): Remove suppression once we start use the new view model.
-    @Suppress("UnusedPrivateProperty")
     private val viewModel: MessageListContract.ViewModel by inject {
         decodeArguments()
         parameterSetOf(accountUuids.map { AccountIdFactory.of(it) }.toSet())
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.effect.collect { effect ->
+                    when (effect) {
+                        else -> Unit
+                    }
+                }
+            }
+        }
     }
 
     companion object Factory : BaseMessageListFragment.Factory {
