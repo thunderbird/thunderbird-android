@@ -434,7 +434,7 @@ class MessageListAdapterTest : RobolectricTest() {
             layoutInflater = LayoutInflater.from(context),
             contactsPictureLoader = contactsPictureLoader,
             listItemListener = listItemListener,
-            appearance = appearance,
+            appearance = { appearance },
             relativeDateTimeFormatter = RelativeDateTimeFormatter(context, TestClock()),
             themeProvider = FakeThemeProvider(),
             featureFlagProvider = FakeFeatureFlagProvider(),
