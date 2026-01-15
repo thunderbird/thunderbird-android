@@ -27,7 +27,7 @@ dependencies {
 
     // This defines the used Kotlin version for all Plugin dependencies
     // and ensures that transitive dependencies are aligned on one version.
-    implementation(platform(libs.kotlin.gradle.bom))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:${libs.versions.kotlinGradleBom.get()}"))
 }
 
 kotlin {
