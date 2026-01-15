@@ -7,6 +7,7 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.K9
 import com.fsck.k9.K9.LockScreenNotificationVisibility
+import com.fsck.k9.mail.Address
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.notification.NotificationLight
@@ -129,7 +130,8 @@ class BaseNotificationDataCreatorTest {
 
         assertThat(result.lockScreenNotificationData).isInstanceOf<LockScreenNotificationData.SenderNames>()
         val senderNamesData = result.lockScreenNotificationData as LockScreenNotificationData.SenderNames
-        assertThat(senderNamesData.senderNames).isEqualTo("Sender One, Sender Two, Sender Three")
+        assertThat(senderNamesData.senderNames)
+            .isEqualTo("Sender One <irrelevant>, Sender Two <irrelevant>, Sender Three <irrelevant>")
     }
 
     @Test
@@ -201,7 +203,7 @@ class BaseNotificationDataCreatorTest {
                 timestamp = 0L,
                 content = NotificationContent(
                     messageReference = mock(),
-                    sender = sender,
+                    sender = Address("irrelevant", sender),
                     preview = "irrelevant",
                     summary = "irrelevant",
                     subject = "irrelevant",

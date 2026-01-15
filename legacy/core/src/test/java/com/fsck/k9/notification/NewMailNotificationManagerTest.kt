@@ -13,6 +13,7 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
+import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LocalStoreProvider
@@ -116,7 +117,7 @@ class NewMailNotificationManagerTest {
         assertThat(result.singleNotificationData.first().content).isEqualTo(
             NotificationContent(
                 messageReference = createMessageReference("msg-1"),
-                sender = "sender",
+                sender = Address("irrelevant", "sender"),
                 subject = "subject",
                 preview = "preview",
                 summary = "summary",
@@ -153,7 +154,7 @@ class NewMailNotificationManagerTest {
         assertThat(result.singleNotificationData.first().content).isEqualTo(
             NotificationContent(
                 messageReference = createMessageReference("msg-2"),
-                sender = "Zoe",
+                sender = Address("irrelevant", "Zoe"),
                 subject = "Meeting",
                 preview = "We need to talk",
                 summary = "Zoe Meeting",
@@ -320,7 +321,7 @@ class NewMailNotificationManagerTest {
             assertThat(singleNotificationData.content).isEqualTo(
                 NotificationContent(
                     messageReference = createMessageReference("msg-restore"),
-                    sender = "Alice",
+                    sender = Address("irrelevant", "Alice"),
                     subject = "Another one",
                     preview = "Are you tired of me yet?",
                     summary = "Alice Another one",
@@ -362,7 +363,7 @@ class NewMailNotificationManagerTest {
             assertThat(singleNotificationData.content).isEqualTo(
                 NotificationContent(
                     messageReference = createMessageReference("uid-1"),
-                    sender = "Sender",
+                    sender = Address("irrelevant", "Sender"),
                     subject = "Subject",
                     preview = "Preview",
                     summary = "Summary",
@@ -375,7 +376,7 @@ class NewMailNotificationManagerTest {
             assertThat(summaryNotificationData.singleNotificationData.content).isEqualTo(
                 NotificationContent(
                     messageReference = createMessageReference("uid-1"),
-                    sender = "Sender",
+                    sender = Address("irrelevant", "Sender"),
                     subject = "Subject",
                     preview = "Preview",
                     summary = "Summary",
@@ -445,7 +446,7 @@ class NewMailNotificationManagerTest {
             on { createFromMessage(account, message) } doReturn
                 NotificationContent(
                     messageReference = createMessageReference(messageUid),
-                    sender,
+                    sender = Address("irrelevant", sender),
                     subject,
                     preview,
                     summary,
@@ -473,7 +474,7 @@ class NewMailNotificationManagerTest {
             on { createFromMessage(account, message) } doReturn
                 NotificationContent(
                     messageReference = createMessageReference(messageUid),
-                    sender,
+                    Address("irrelevant", sender),
                     subject,
                     preview,
                     summary,

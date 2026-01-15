@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import java.util.concurrent.Executors
 import kotlin.time.ExperimentalTime
+import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
 val coreNotificationModule = module {
@@ -111,6 +112,7 @@ val coreNotificationModule = module {
             actionCreator = get(),
             resourceProvider = get(),
             lockScreenNotificationCreator = get(),
+            application = androidApplication(),
         )
     }
     factory {
