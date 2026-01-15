@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import android.database.sqlite.SQLiteDatabase
 import app.k9mail.legacy.mailstore.MessageMapper
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import assertk.assertThat
@@ -13,17 +14,25 @@ import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.storage.RobolectricTest
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
 class RetrieveMessageListOperationsTest : RobolectricTest() {
-    private val sqliteDatabase = createDatabase()
-    private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val retrieveMessageListOperations = RetrieveMessageListOperations(lockableDatabase)
+    private lateinit var sqliteDatabase: SQLiteDatabase
+    private lateinit var retrieveMessageListOperations: RetrieveMessageListOperations
 
     @Before
     fun setUp() {
         Log.logger = TestLogger()
+        sqliteDatabase = createDatabase()
+        val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
+        retrieveMessageListOperations = RetrieveMessageListOperations(lockableDatabase)
+    }
+
+    @After
+    fun tearDown() {
+        sqliteDatabase.close()
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import android.database.sqlite.SQLiteDatabase
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
@@ -9,6 +10,8 @@ import assertk.assertions.startsWith
 import com.fsck.k9.K9
 import com.fsck.k9.storage.RobolectricTest
 import net.thunderbird.feature.account.AccountIdFactory
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 
 private const val SOURCE_FOLDER_ID = 3L
@@ -18,13 +21,24 @@ private const val MESSAGE_ID_HEADER = "<00000000-0000-4000-0000-000000000000@dom
 class MoveMessageOperationsTest : RobolectricTest() {
 
     private val accountId = AccountIdFactory.create()
-    private val sqliteDatabase = createDatabase()
-    private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val moveMessageOperations = MoveMessageOperations(
-        lockableDatabase,
-        ThreadMessageOperations(),
-        accountId,
-    )
+    private lateinit var sqliteDatabase: SQLiteDatabase
+    private lateinit var moveMessageOperations: MoveMessageOperations
+
+    @Before
+    fun setUp() {
+        sqliteDatabase = createDatabase()
+        val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
+        moveMessageOperations = MoveMessageOperations(
+            lockableDatabase,
+            ThreadMessageOperations(),
+            accountId,
+        )
+    }
+
+    @After
+    fun tearDown() {
+        sqliteDatabase.close()
+    }
 
     @Test
     fun `move message not part of a thread`() {

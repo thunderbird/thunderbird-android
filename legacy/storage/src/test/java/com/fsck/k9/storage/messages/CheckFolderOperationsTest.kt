@@ -1,15 +1,29 @@
 package com.fsck.k9.storage.messages
 
+import android.database.sqlite.SQLiteDatabase
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import com.fsck.k9.storage.RobolectricTest
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 
 class CheckFolderOperationsTest : RobolectricTest() {
-    private val sqliteDatabase = createDatabase()
-    private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val checkFolderOperations = CheckFolderOperations(lockableDatabase)
+    private lateinit var sqliteDatabase: SQLiteDatabase
+    private lateinit var checkFolderOperations: CheckFolderOperations
+
+    @Before
+    fun setUp() {
+        sqliteDatabase = createDatabase()
+        val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
+        checkFolderOperations = CheckFolderOperations(lockableDatabase)
+    }
+
+    @After
+    fun tearDown() {
+        sqliteDatabase.close()
+    }
 
     @Test
     fun `single folder not included in Unified Inbox`() {
