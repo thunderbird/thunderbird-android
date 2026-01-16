@@ -39,7 +39,6 @@ class MessageViewHolder(
     private val theme: Resources.Theme,
     private val res: Resources,
     private val contactsPictureLoader: ContactPictureLoader,
-    private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
     private val colors: MessageViewHolderColors,
 ) : MessageListViewHolder(view) {
 
@@ -82,7 +81,6 @@ class MessageViewHolder(
         with(messageListItem) {
             val foregroundColor = selectForegroundColor(isSelected, isRead, isActive)
             val maybeBoldTypeface = if (isRead) Typeface.NORMAL else Typeface.BOLD
-            val displayDate = relativeDateTimeFormatter.formatDate(messageDate, appearance.dateTimeFormat)
             val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
             val subject = buildSubject(
                 subject = subject,
@@ -142,7 +140,7 @@ class MessageViewHolder(
 
             dateView.typeface = Typeface.create(dateView.typeface, maybeBoldTypeface)
             dateView.setTextColor(foregroundColor)
-            dateView.text = displayDate
+            dateView.text = messageListItem.displayMessageDateTime
             attachmentView.isVisible = hasAttachments
             attachmentView.setColorFilter(foregroundColor)
 
@@ -302,7 +300,6 @@ class MessageViewHolder(
                 theme = theme,
                 res = res,
                 contactsPictureLoader = contactsPictureLoader,
-                relativeDateTimeFormatter = relativeDateTimeFormatter,
                 colors = colors,
             )
             val appearance = appearance()

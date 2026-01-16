@@ -12,6 +12,7 @@ data class MessageListItem(
     val internalDate: Long,
     val displayName: CharSequence,
     val displayAddress: Address?,
+    val displayMessageDateTime: String,
     val previewText: String,
     val isMessageEncrypted: Boolean,
     val isRead: Boolean,

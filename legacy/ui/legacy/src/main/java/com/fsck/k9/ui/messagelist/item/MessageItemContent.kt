@@ -48,14 +48,13 @@ internal fun MessageItemContent(
     isSelected: Boolean,
     contactRepository: ContactRepository,
     avatarMonogramCreator: AvatarMonogramCreator,
-    formatDate: () -> String,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     onAvatarClick: () -> Unit,
     onFavouriteClick: (Boolean) -> Unit,
     appearance: MessageListAppearance,
 ) {
-    val receivedAt: String = formatDate()
+    val receivedAt = item.displayMessageDateTime
 
     val uri by remember(item.displayAddress?.address) {
         mutableStateOf(
