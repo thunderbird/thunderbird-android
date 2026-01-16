@@ -71,6 +71,10 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
     private boolean allowCollapse = true;
     private boolean internalEditInProgress = false;
 
+    @Nullable private TokenImageSpan pressedTokenSpan;
+    // When focus is gained due to tapping a token, don't auto-show the IME (avoids keyboard flicker).
+    private boolean suppressImeOnNextFocus;
+
     private int tokenLimit = -1;
 
     private transient String lastCompletionText = null;
@@ -543,29 +547,104 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         return false;
     }
 
-    @Override
-    public boolean onTouchEvent(@NonNull MotionEvent event) {
-        int action = event.getActionMasked();
-        Editable text = getText();
+    protected final void suppressImeOnNextFocus() {
+        suppressImeOnNextFocus = true;
+    }
 
-        boolean handled = super.onTouchEvent(event);
+    protected final boolean shouldShowImeOnFocus() {
+        final boolean suppressed = suppressImeOnNextFocus;
+        suppressImeOnNextFocus = false;
+        return !suppressed;
+    }
 
-        if (isFocused() && text != null && lastLayout != null && action == MotionEvent.ACTION_UP) {
+    @Nullable
+    private TokenImageSpan findTokenSpanUnderTouch(@NonNull Editable text, @NonNull Layout layout, float x, float y) {
+        if (x < 0f || y < 0f || y > layout.getHeight()) return null;
 
-            int offset = getOffsetForPosition(event.getX(), event.getY());
+        final int line = layout.getLineForVertical((int) y);
 
-            if (offset != -1) {
-                TokenImageSpan[] links = text.getSpans(offset, offset, TokenImageSpan.class);
+        // Don't treat taps in the line's empty gutter as token taps.
+        final float leftEdge  = Math.min(layout.getLineLeft(line),  layout.getLineRight(line));
+        final float rightEdge = Math.max(layout.getLineLeft(line),  layout.getLineRight(line));
+        if (x < leftEdge || x > rightEdge) return null;
 
-                if (links.length > 0) {
-                    links[0].onClick();
-                    handled = true;
-                }
+        final int offset = layout.getOffsetForHorizontal(line, x);
+        final int qs = Math.max(0, offset - 1);
+        final int qe = Math.min(text.length(), offset + 1);
+
+        TokenImageSpan best = null;
+        int bestStart = Integer.MIN_VALUE;
+
+        for (TokenImageSpan s : text.getSpans(qs, qe, TokenImageSpan.class)) {
+            final int start = text.getSpanStart(s);
+            if (start > bestStart && isTouchInsideSpan(text, layout, s, x, y)) {
+                // Near boundaries multiple spans can be returned; prefer the span with the greatest start index.
+                bestStart = start;
+                best = s;
             }
         }
+        return best;
+    }
 
-        return handled;
+    private boolean isTouchInsideSpan(@NonNull Editable text, @NonNull Layout layout,
+        @NonNull TokenImageSpan span, float x, float y) {
+        final int start = text.getSpanStart(span);
+        final int end   = text.getSpanEnd(span);
+        if (start < 0 || end <= start) return false;
 
+        final int startLine = layout.getLineForOffset(start);
+        final int endLine   = layout.getLineForOffset(end);
+
+        for (int line = startLine; line <= endLine; line++) {
+            final int top = layout.getLineTop(line);
+            final int bottom = layout.getLineBottom(line);
+            if (y < top || y > bottom) continue;
+
+            final float left  = (line == startLine) ? layout.getPrimaryHorizontal(start) : layout.getLineLeft(line);
+            final float right = (line == endLine)   ? layout.getPrimaryHorizontal(end)   : layout.getLineRight(line);
+
+            if (x >= Math.min(left, right) && x <= Math.max(left, right)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onTouchEvent(@NonNull MotionEvent e) {
+        final Editable text = getText();
+        final Layout layout = getLayout();
+        if (text == null || layout == null) return super.onTouchEvent(e);
+
+        final float x = e.getX() - getTotalPaddingLeft() + getScrollX();
+        final float y = e.getY() - getTotalPaddingTop() + getScrollY();
+
+        switch (e.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                pressedTokenSpan = findTokenSpanUnderTouch(text, layout, x, y);
+                if (pressedTokenSpan == null) return super.onTouchEvent(e);
+                if (!isFocused()) {
+                    suppressImeOnNextFocus();
+                    requestFocusFromTouch();
+                }
+                return true;
+
+            case MotionEvent.ACTION_MOVE:
+                if (pressedTokenSpan == null) return super.onTouchEvent(e);
+                if (!isTouchInsideSpan(text, layout, pressedTokenSpan, x, y)) pressedTokenSpan = null;
+                return true;
+
+            case MotionEvent.ACTION_UP:
+                if (pressedTokenSpan == null) return super.onTouchEvent(e);
+                if (isTouchInsideSpan(text, layout, pressedTokenSpan, x, y)) pressedTokenSpan.onClick();
+                pressedTokenSpan = null;
+                return true;
+
+            case MotionEvent.ACTION_CANCEL:
+                if (pressedTokenSpan != null) { pressedTokenSpan = null; return true; }
+                return super.onTouchEvent(e);
+
+            default:
+                return super.onTouchEvent(e);
+        }
     }
 
     @Override
@@ -637,11 +716,14 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
                         TokenImageSpan.class, getText(), 0);
                 hiddenContent = null;
 
-                post(new Runnable() {
-                    @Override
-                    public void run() {
-                        setSelection(getText().length());
-                    }
+                // Avoid cursor jump (0 -> end) during expand
+                final boolean wasCursorVisible = isCursorVisible();
+                setCursorVisible(false);
+
+                post(() -> {
+                    Editable t = getText();
+                    if (t != null) setSelection(t.length());
+                    setCursorVisible(wasCursorVisible);
                 });
 
                 TokenSpanWatcher[] watchers = getText().getSpans(0, getText().length(), TokenSpanWatcher.class);
