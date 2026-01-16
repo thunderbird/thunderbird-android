@@ -1,32 +1,29 @@
 package com.fsck.k9.backends
 
 import com.fsck.k9.mail.oauth.AuthStateStorage
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 
 class AccountAuthStateStorage(
     private val accountManager: LegacyAccountManager,
-    private val accountId: AccountId,
+    private var accountId: AccountId,
 ) : AuthStateStorage {
-    override fun getAuthorizationState(): String? = runBlocking {
-        getAccountById(accountId).oAuthState
+    override fun getAuthorizationState(): String? {
+        return getAccountById(accountId).oAuthState
     }
 
-    override fun updateAuthorizationState(authorizationState: String?) = runBlocking {
+    override fun updateAuthorizationState(authorizationState: String?) {
         val account = getAccountById(accountId)
 
-        accountManager.update(
-            account.copy(
-                oAuthState = authorizationState,
-            ),
+        val updatedAccount = account.copy(
+            oAuthState = authorizationState,
         )
+        accountManager.updateSync(updatedAccount)
     }
 
-    private suspend fun getAccountById(accountId: AccountId): LegacyAccount {
-        return accountManager.getById(accountId).firstOrNull()
+    private fun getAccountById(accountId: AccountId): LegacyAccount {
+        return accountManager.getByIdSync(accountId)
             ?: error("Account not found: $accountId")
     }
 }

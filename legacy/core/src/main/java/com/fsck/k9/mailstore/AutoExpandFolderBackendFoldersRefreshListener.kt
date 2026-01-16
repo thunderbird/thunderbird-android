@@ -1,8 +1,6 @@
 package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.mailstore.FolderRepository
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
@@ -36,10 +34,10 @@ class AutoExpandFolderBackendFoldersRefreshListener(
 
         updated.importedAutoExpandFolder?.let { folderName ->
             if (folderName.isEmpty()) {
-                updated.copy(autoExpandFolderId = null)
+                updated = updated.copy(autoExpandFolderId = null)
             } else {
                 val folderId = folderRepository.getFolderId(accountId, folderName)
-                updated.copy(autoExpandFolderId = folderId)
+                updated = updated.copy(autoExpandFolderId = folderId)
             }
             return updated
         }
@@ -62,15 +60,11 @@ class AutoExpandFolderBackendFoldersRefreshListener(
     }
 
     private fun getAccountById(id: AccountId): LegacyAccount {
-        return runBlocking {
-            accountManager.getById(id).firstOrNull()
-                ?: error("Account not found with ID: $id")
-        }
+        return accountManager.getByIdSync(id)
+            ?: error("Account not found with ID: $id")
     }
 
     private fun updateAccount(account: LegacyAccount) {
-        runBlocking {
-            accountManager.update(account)
-        }
+        accountManager.updateSync(account)
     }
 }

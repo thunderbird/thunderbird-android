@@ -3,8 +3,6 @@ package com.fsck.k9.backend
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.mail.ServerSettings
 import java.util.concurrent.CopyOnWriteArraySet
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.runBlocking
 import net.thunderbird.backend.api.BackendFactory
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
@@ -45,8 +43,8 @@ class BackendManager(
         return newBackend
     }
 
-    private fun getAccountById(accountId: AccountId): LegacyAccount = runBlocking {
-        accountManager.getById(accountId).firstOrNull()
+    private fun getAccountById(accountId: AccountId): LegacyAccount {
+        return accountManager.getByIdSync(accountId)
             ?: error("Account not found: $accountId")
     }
 

@@ -22,9 +22,9 @@ class K9BackendStorageFactory(
         val specialFolderUpdater = specialFolderUpdaterFactory.create(accountId)
         val specialFolderListener = SpecialFolderBackendFoldersRefreshListener(specialFolderUpdater)
         val autoExpandFolderListener = AutoExpandFolderBackendFoldersRefreshListener(
-            accountManager,
-            accountId,
-            folderRepository,
+            accountManager = accountManager,
+            accountId = accountId,
+            folderRepository = folderRepository,
         )
         val listeners = listOf(specialFolderListener, autoExpandFolderListener)
         return K9BackendStorage(

@@ -4,7 +4,6 @@ import app.k9mail.legacy.mailstore.FolderRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
@@ -183,12 +182,12 @@ class DefaultSpecialFolderUpdater private constructor(
         importedTrashFolder = null,
     )
 
-    private suspend fun getAccountById(accountId: AccountId): LegacyAccount {
-        return accountManager.getById(accountId).firstOrNull() ?: error("Account not found: $accountId")
+    private fun getAccountById(accountId: AccountId): LegacyAccount {
+        return accountManager.getByIdSync(accountId) ?: error("Account not found: $accountId")
     }
 
-    private suspend fun updateAccount(account: LegacyAccount) {
-        accountManager.update(account)
+    private fun updateAccount(account: LegacyAccount) {
+        accountManager.updateSync(account)
     }
 
     private fun LegacyAccount.isPop3() = incomingServerSettings.type == Protocols.POP3

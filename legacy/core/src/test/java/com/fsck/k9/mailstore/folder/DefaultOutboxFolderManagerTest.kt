@@ -381,6 +381,15 @@ private class FakeLegacyAccountManager(
         }
     }
 
+    override fun getByIdSync(id: AccountId): LegacyAccount? {
+        // no-op for tests
+        return null
+    }
+
+    override fun updateSync(account: LegacyAccount) {
+        // no-op for tests
+    }
+
     override fun getAccounts(): List<LegacyAccount> = accountsState.value
 
     override fun getAccountsFlow(): Flow<List<LegacyAccount>> = accountsState

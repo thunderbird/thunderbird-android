@@ -2,8 +2,6 @@ package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.mailstore.FolderSettings
 import com.fsck.k9.Preferences
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 
@@ -33,10 +31,9 @@ class FolderSettingsProvider(
         }
     }
 
-    private fun getAccountById(accountId: AccountId) = runBlocking {
-        accountManager.getById(accountId).firstOrNull()
+    private fun getAccountById(accountId: AccountId) =
+        accountManager.getByIdSync(accountId)
             ?: error("Account not found: $accountId")
-    }
 
     private fun removeImportedFolderSettings(prefix: String) {
         val editor = preferences.createStorageEditor()
