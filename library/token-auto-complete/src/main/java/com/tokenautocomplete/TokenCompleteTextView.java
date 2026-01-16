@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -555,6 +556,20 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         final boolean suppressed = suppressImeOnNextFocus;
         suppressImeOnNextFocus = false;
         return !suppressed;
+    }
+
+    @VisibleForTesting
+    @Nullable
+    TokenImageSpan hitTestTokenForTest(float textX, float textY) {
+        Editable text = getText();
+        Layout layout = getLayout();
+        if (text == null || layout == null) return null;
+        return findTokenSpanUnderTouch(text, layout, textX, textY);
+    }
+
+    @VisibleForTesting
+    void setHiddenContentForTest(@Nullable SpannableStringBuilder content) {
+        hiddenContent = content;
     }
 
     @Nullable
