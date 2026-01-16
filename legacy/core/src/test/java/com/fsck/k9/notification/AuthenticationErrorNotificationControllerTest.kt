@@ -72,7 +72,7 @@ class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
 
         controller.showAuthenticationErrorNotification(account, INCOMING)
 
-        verify(notificationManager).notify(notificationId, notification)
+        verify(notificationHelper).notify(notificationId, notification)
         assertAuthenticationErrorNotificationContents()
     }
 
@@ -91,7 +91,7 @@ class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
 
         controller.showAuthenticationErrorNotification(account, OUTGOING)
 
-        verify(notificationManager).notify(notificationId, notification)
+        verify(notificationHelper).notify(notificationId, notification)
         assertAuthenticationErrorNotificationContents()
     }
 

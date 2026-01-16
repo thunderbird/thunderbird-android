@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Sioncronaich (Put)</string>
     <string name="notification_channel_push_description">Ga shealltainn fhad ’s a thathar a’ feitheamh ri teachdaireachdan ùra</string>
@@ -34,4 +34,10 @@
     <string name="notification_action_archive">Tasglannaich</string>
     <string name="notification_action_archive_all">Tasglannaich na h-uile</string>
     <string name="notification_action_spam">Spama</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d teachdaireachd ùr</item>
+        <item quantity="two">%1$d theachdaireachd ùr</item>
+        <item quantity="few">%1$d teachdaireachdan ùra</item>
+        <item quantity="other">%1$d teachdaireachd ùr</item>
+    </plurals>
 </resources>

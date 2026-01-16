@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Sincronizar (Push)</string>
     <string name="notification_channel_push_description">Exibido enquanto aguarda por novas mensagens</string>
@@ -34,4 +34,21 @@
     <string name="notification_action_archive">Arquivar</string>
     <string name="notification_action_archive_all">Arquivar todas</string>
     <string name="notification_action_spam">Spam</string>
+    <string name="notification_authentication_outgoing_server_error_text">Autenticação falhou por %1$s. Atualize as suas configurações de servidor de saída.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <string name="notification_action_retry">Tentar novamente</string>
+    <string name="notification_action_update_server_settings">Atualizar Configurações de Servidor</string>
+    <string name="notification_action_assign_sent_folder">Atribuir pasta</string>
+    <string name="banner_inline_notification_check_error_notifications">Verificar Notificações de Erro</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Algumas mensagens requerem sua atenção.</string>
+    <string name="banner_inline_notification_open_notifications">Abrir notificações</string>
+    <string name="banner_inline_notification_learn_more">Saiba mais</string>
+    <string name="banner_inline_notification_view_support_article">Ver artigo de ajuda</string>
+    <string name="sent_folder_not_found_title">Pasta Enviados indisponível.</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d nova mensagem</item>
+        <item quantity="many">%1$d novas mensagens</item>
+        <item quantity="other">%1$d nova mensagem</item>
+    </plurals>
+    <string name="notification_authentication_incoming_server_error_text">A autenticação falhou para %1$s. Atualize as configurações do seu servidor de entrada.</string>
 </resources>

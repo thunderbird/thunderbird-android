@@ -3,6 +3,7 @@ package app.k9mail.feature.account.server.validation.ui
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.oauth.ui.fake.FakeAccountOAuthViewModel
 
@@ -14,7 +15,7 @@ internal fun IncomingServerValidationContentPreview() {
             onEvent = { },
             state = ServerValidationContract.State(),
             isIncomingValidation = true,
-            oAuthViewModel = FakeAccountOAuthViewModel(),
+            oAuthViewModel = viewModel { FakeAccountOAuthViewModel() },
             contentPadding = PaddingValues(),
         )
     }
@@ -28,7 +29,7 @@ internal fun OutgoingServerValidationContentPreview() {
             onEvent = { },
             state = ServerValidationContract.State(),
             isIncomingValidation = false,
-            oAuthViewModel = FakeAccountOAuthViewModel(),
+            oAuthViewModel = viewModel { FakeAccountOAuthViewModel() },
             contentPadding = PaddingValues(),
         )
     }

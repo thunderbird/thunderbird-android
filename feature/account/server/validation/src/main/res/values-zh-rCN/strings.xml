@@ -13,9 +13,7 @@
     <string name="account_server_validation_error_server">服务器错误</string>
     <string name="account_server_validation_error_missing_server_capability">缺少服务器功能</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">无法访问客户端证书</string>
-    <string name="account_server_validation_error_missing_server_capability_details">服务器缺少此功能：
-\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">服务器缺少此功能：\n%s</string>
     <string name="account_server_validation_error_client_certificate_expired">客户端证书不再有效</string>
-    <string name="account_server_validation_error_details">详情：
-\n%s</string>
+    <string name="account_server_validation_error_details">详情：\n%s</string>
 </resources>

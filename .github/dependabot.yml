@@ -3,6 +3,7 @@ updates:
   # Dependabot does not support GitHub composite actions by default (.github/actions)
   # so we need to add the folder by hand to the directories entry.
   - package-ecosystem: "github-actions"
+    open-pull-requests-limit: 10
     directories:
       - "/"
       - "/.github/actions/*"
@@ -15,6 +16,7 @@ updates:
       prefix: chore
       include: scope
   - package-ecosystem: "gradle"
+    open-pull-requests-limit: 20
     directory: "/"
     schedule:
       interval: "weekly"

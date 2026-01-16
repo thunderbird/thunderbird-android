@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_title">Non existe o cartafol de Enviados</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Para gardar este correo tras envialo, asigna un cartafol «Enviados» en Axustes de conta.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Asignar cartafol de Enviados</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Cancelar</string>
 </resources>

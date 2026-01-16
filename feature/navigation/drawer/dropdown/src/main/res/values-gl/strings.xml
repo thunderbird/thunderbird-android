@@ -3,4 +3,6 @@
     <string name="navigation_drawer_dropdown_action_settings">Configuración</string>
     <string name="navigation_drawer_dropdown_action_manage_folders">Xestionar cartafoles</string>
     <string name="navigation_drawer_dropdown_unified_inbox_title">Entrada unificada</string>
+    <string name="navigation_drawer_dropdown_avount_view_selection_title">Contas dispoñibles</string>
+    <string name="navigation_drawer_dropdown_unified_account_title">Conta unificada</string>
 </resources>

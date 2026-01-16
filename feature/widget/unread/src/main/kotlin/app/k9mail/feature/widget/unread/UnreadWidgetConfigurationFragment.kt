@@ -7,9 +7,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.os.bundleOf
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import com.fsck.k9.Preferences
@@ -49,7 +52,6 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
     private var selectedFolderDisplayName: String? = null
 
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
-        setHasOptionsMenu(true)
         setPreferencesFromResource(R.xml.unread_widget_configuration, rootKey)
 
         appWidgetId = arguments?.getInt(ARGUMENT_APP_WIDGET_ID) ?: error("Missing argument '$ARGUMENT_APP_WIDGET_ID'")
@@ -81,6 +83,36 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         if (savedInstanceState != null) {
             restoreInstanceState(savedInstanceState)
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        configureMenuHost()
+    }
+
+    private fun configureMenuHost() {
+        val menuHost = requireActivity()
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.unread_widget_option, menu)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        R.id.done -> {
+                            if (validateWidget()) {
+                                updateWidgetAndExit()
+                            }
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED,
+        )
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -143,23 +175,6 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         selectedFolderId = folderId
         selectedFolderDisplayName = folderDisplayName
         unreadFolder.summary = folderDisplayName
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.unread_widget_option, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.done -> {
-                if (validateWidget()) {
-                    updateWidgetAndExit()
-                }
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun validateWidget(): Boolean {

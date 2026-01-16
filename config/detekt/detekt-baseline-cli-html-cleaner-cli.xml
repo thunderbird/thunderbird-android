@@ -1,7 +1,0 @@
-<?xml version="1.0" ?>
-<SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues>
-    <ID>MatchingDeclarationName:Main.kt$HtmlCleaner : CliktCommand</ID>
-  </CurrentIssues>
-</SmellBaseline>

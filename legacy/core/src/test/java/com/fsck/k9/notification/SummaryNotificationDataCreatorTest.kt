@@ -8,6 +8,8 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
+import com.fsck.k9.K9
+import com.fsck.k9.mail.Address
 import java.util.Calendar
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -311,7 +313,7 @@ class SummaryNotificationDataCreatorTest {
 
     private fun createNotificationContent() = NotificationContent(
         messageReference = MessageReference("irrelevant", 1, "irrelevant"),
-        sender = "irrelevant",
+        sender = Address("irrelevant", "irrelevant"),
         subject = "irrelevant",
         preview = "irrelevant",
         summary = "irrelevant",

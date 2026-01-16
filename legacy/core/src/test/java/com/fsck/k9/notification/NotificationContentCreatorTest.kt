@@ -40,7 +40,7 @@ class NotificationContentCreatorTest : RobolectricTest() {
         val content = contentCreator.createFromMessage(account, message)
 
         assertThat(content.messageReference).isEqualTo(messageReference)
-        assertThat(content.sender).isEqualTo(SENDER_NAME)
+        assertThat(content.sender.personal).isEqualTo(SENDER_NAME)
         assertThat(content.subject).isEqualTo(SUBJECT)
         assertThat(content.preview.toString()).isEqualTo("$SUBJECT\n$PREVIEW")
         assertThat(content.summary.toString()).isEqualTo("$SENDER_NAME $SUBJECT")
@@ -106,8 +106,8 @@ class NotificationContentCreatorTest : RobolectricTest() {
 
         val content = contentCreator.createFromMessage(account, message)
 
-        assertThat(content.sender).isEqualTo("No sender")
-        assertThat(content.summary.toString()).isEqualTo(SUBJECT)
+        assertThat(content.sender.personal).isEqualTo("No sender")
+        assertThat(content.summary.toString()).isEqualTo("No sender $SUBJECT")
     }
 
     @Test
@@ -118,7 +118,7 @@ class NotificationContentCreatorTest : RobolectricTest() {
 
         val content = contentCreator.createFromMessage(account, message)
 
-        assertThat(content.sender).isEqualTo("To:Bob")
+        assertThat(content.sender.personal).isEqualTo("To:Bob")
         assertThat(content.summary.toString()).isEqualTo("To:Bob $SUBJECT")
     }
 
@@ -133,10 +133,10 @@ class NotificationContentCreatorTest : RobolectricTest() {
 
         val content = contentCreator.createFromMessage(account, message)
 
-        assertThat(content.sender).isEqualTo("No sender")
+        assertThat(content.sender.personal).isEqualTo("No sender")
         assertThat(content.subject).isEqualTo("(No subject)")
         assertThat(content.preview.toString()).isEqualTo("(No subject)")
-        assertThat(content.summary.toString()).isEqualTo("(No subject)")
+        assertThat(content.summary.toString()).isEqualTo("No sender (No subject)")
     }
 
     private fun createNotificationContentCreator(): NotificationContentCreator {

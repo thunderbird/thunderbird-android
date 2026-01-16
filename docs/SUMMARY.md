@@ -47,6 +47,7 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
     - [Find your app version](user-guide/troubleshooting/find-your-app-version.md)
 - [Developer](developer/README.md)
   - [Database Migration Checklist](developer/db-migration-checklist.md)
+  - [Preference Migration Guide](developer/preference-migration-guide.md)
 - [Release]()
   - [Release Process](release/RELEASE.md)
   - [Release Automation](release/AUTOMATION.md)

@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="special_mailbox_name_outbox">Outbox</string>
     <string name="special_mailbox_name_drafts">Drafts</string>
     <string name="special_mailbox_name_sent">Sent</string>
-    <string name="special_mailbox_name_trash">Trash</string>
+    <string name="special_mailbox_name_trash">Deleted</string>
     <string name="special_mailbox_name_inbox">Inbox</string>
 </resources>

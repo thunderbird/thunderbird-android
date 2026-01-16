@@ -9,21 +9,21 @@ import java.util.Locale
 @Suppress("DEPRECATION")
 var Configuration.currentLocale: Locale
     get() {
-        return if (Build.VERSION.SDK_INT >= 24) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             locales[0]
         } else {
             locale
         }
     }
     set(value) {
-        if (Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             setLocales(createLocaleList(value, locales))
         } else {
             setLocale(value)
         }
     }
 
-@RequiresApi(24)
+@RequiresApi(Build.VERSION_CODES.N)
 private fun createLocaleList(topLocale: Locale, otherLocales: LocaleList): LocaleList {
     if (!otherLocales.isEmpty && otherLocales[0] == topLocale) {
         return otherLocales

@@ -69,7 +69,7 @@ install-location:'auto'
 launchable-activity: name='com.fsck.k9.activity.MainActivity'  label='' icon=''
 locales: '--_--' 'ar' 'be' 'bg' 'br' 'ca' 'co' 'cs' 'cy' 'da' 'de' 'el' 'en' 'en-GB' 'eo' 'es' 'et' 'eu' 'fa' 'fi' 'fr' 'fy' 'ga' 'gd' 'gl' 'hr' 'hu' 'in' 'is' 'it' 'iw' 'ja' 'ko' 'lt' 'lv' 'nb' 'nl' 'nn' 'pl' 'pt' 'pt-BR' 'pt-PT' 'ro' 'ru' 'sk' 'sl' 'sq' 'sr' 'sv' 'ta' 'ta-IN' 'tr' 'uk' 'vi' 'zh' 'zh-CN' 'zh-TW'
 main
-minSdkVersion:'21'
+minSdkVersion:'23'
 native-code: 'arm64-v8a' 'armeabi-v7a' 'x86' 'x86_64'
 other-activities
 other-receivers

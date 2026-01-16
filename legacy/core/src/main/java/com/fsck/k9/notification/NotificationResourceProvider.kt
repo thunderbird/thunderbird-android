@@ -1,5 +1,8 @@
 package com.fsck.k9.notification
 
+import android.graphics.Bitmap
+import com.fsck.k9.mail.Address
+
 interface NotificationResourceProvider {
     val iconWarning: Int
     val iconMarkAsRead: Int
@@ -27,6 +30,8 @@ interface NotificationResourceProvider {
 
     fun authenticationErrorTitle(): String
     fun authenticationErrorBody(accountName: String): String
+
+    suspend fun avatar(address: Address): Bitmap?
 
     fun notifyErrorTitle(): String
     fun notifyErrorText(): String

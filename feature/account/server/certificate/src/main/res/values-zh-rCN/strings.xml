@@ -2,8 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_warning_title">警告</string>
     <string name="account_server_certificate_unknown_error_subtitle">证书错误</string>
-    <string name="account_server_certificate_unknown_error_description_format">此应用检测到潜在的安全威胁，没有继续连接到 <xliff:g id="serverName">%s</xliff:g>。
-\n如果您继续，攻击者可能会试图窃取您的密码或电子邮件等信息。</string>
+    <string name="account_server_certificate_unknown_error_description_format">此应用检测到潜在的安全威胁，没有继续连接到 <xliff:g id="serverName">%s</xliff:g>。\n如果您继续，攻击者可能会试图窃取您的密码或电子邮件等信息。</string>
     <string name="account_server_certificate_button_continue">接受风险并继续</string>
     <string name="account_server_certificate_button_back">返回（推荐）</string>
     <string name="account_server_certificate_button_advanced">高级</string>

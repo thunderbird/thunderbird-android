@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>CyclomaticComplexMethod:FlowedMessageUtils.kt$FlowedMessageUtils$@JvmStatic fun deflow(text: String, delSp: Boolean): String</ID>
     <ID>CyclomaticComplexMethod:MimeParameterDecoder.kt$MimeParameterDecoder$private fun convertToParameterSection(parameterName: String, parameterValue: ParameterValue): ParameterSection?</ID>
@@ -66,7 +66,6 @@
     <ID>ThrowsCount:LocalKeyStore.kt$LocalKeyStore$private fun writeCertificateFile()</ID>
     <ID>ThrowsCount:MimeHeaderChecker.kt$UnstructuredHeaderChecker$fun checkHeaderValue()</ID>
     <ID>TooGenericExceptionCaught:LocalKeyStore.kt$LocalKeyStore$e: Exception</ID>
-    <ID>TooManyFunctions:Logger.kt$Logger</ID>
     <ID>TooManyFunctions:MessageIdParser.kt$MessageIdParser</ID>
     <ID>TooManyFunctions:MimeExtensions.kt$com.fsck.k9.mail.internet.MimeExtensions.kt</ID>
     <ID>TooManyFunctions:MimeHeader.kt$MimeHeader</ID>
@@ -74,8 +73,6 @@
     <ID>TooManyFunctions:MimeHeaderParser.kt$MimeHeaderParser</ID>
     <ID>TooManyFunctions:MimeParameterDecoder.kt$MimeParameterDecoder</ID>
     <ID>TooManyFunctions:MimeParameterEncoder.kt$MimeParameterEncoder</ID>
-    <ID>TooManyFunctions:NoOpLogger.kt$NoOpLogger : Logger</ID>
-    <ID>TooManyFunctions:Timber.kt$Timber</ID>
     <ID>UseRequire:MimeParameterEncoder.kt$MimeParameterEncoder$throw IllegalArgumentException("Unsupported character: $c")</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -24,6 +24,8 @@ android {
         includeInApk = false
         includeInBundle = false
     }
+
+    disableC2CompilerForRobolectric()
 }
 
 kotlin {

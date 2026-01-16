@@ -7,14 +7,13 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.KeyEvent
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.view.ActionMode
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isGone
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
@@ -42,9 +41,9 @@ import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
+import com.fsck.k9.ui.messagelist.BaseMessageListFragment
+import com.fsck.k9.ui.messagelist.BaseMessageListFragment.MessageListFragmentListener
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
-import com.fsck.k9.ui.messagelist.MessageListFragment
-import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
@@ -53,7 +52,6 @@ import com.fsck.k9.ui.settings.SettingsActivity
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
-import kotlin.getValue
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
@@ -86,7 +84,7 @@ private const val TAG = "MainActivity"
  * "View Message" notification.
  *
  * `MainActivity` manages the overall layout, including the navigation drawer and the main content area,
- * which currently displays either a [MessageListFragment] or a [MessageViewContainerFragment]. It orchestrates
+ * which currently displays either a [BaseMessageListFragment] or a [MessageViewContainerFragment]. It orchestrates
  * the interactions between these fragments and handles the back stack. The responsibilities for managing the
  * action bar, search functionality, and single-pane/split-view layout logic are currently handled here but
  * are intended to be refactored into more dedicated components over time.
@@ -113,15 +111,13 @@ open class MainActivity :
     private val legacyAccountDataMapper: LegacyAccountDataMapper by inject()
 
     private lateinit var actionBar: ActionBar
-    private var searchView: SearchView? = null
-    private var initialSearchViewQuery: String? = null
-    private var initialSearchViewIconified: Boolean = true
 
     private var navigationDrawer: NavigationDrawer? = null
     private var openFolderTransaction: FragmentTransaction? = null
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
-    private var messageListFragment: MessageListFragment? = null
+    private val messageListFragmentFactory: BaseMessageListFragment.Factory by inject()
+    private var messageListFragment: BaseMessageListFragment? = null
     private var messageViewContainerFragment: MessageViewContainerFragment? = null
     private var account: LegacyAccountDto? = null
     private var search: LocalMessageSearch? = null
@@ -206,6 +202,13 @@ open class MainActivity :
         initializeFragments()
         displayViews()
         initializeFunding()
+
+        val backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                this@MainActivity.handleOnBackPressed(this)
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
 
     private fun initializeFunding() {
@@ -266,12 +269,14 @@ open class MainActivity :
 
     private fun findFragments() {
         val fragmentManager = supportFragmentManager
-        messageListFragment = fragmentManager.findFragmentById(R.id.message_list_container) as? MessageListFragment
+        messageListFragment = fragmentManager.findFragmentById(
+            R.id.message_list_container,
+        ) as? BaseMessageListFragment
         messageViewContainerFragment =
             fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER) as? MessageViewContainerFragment
 
         messageListFragment?.let { messageListFragment ->
-            messageViewContainerFragment?.setViewModel(messageListFragment.viewModel)
+            messageViewContainerFragment?.setViewModel(messageListFragment.legacyViewModel)
             initializeFromLocalSearch(messageListFragment.localSearch)
         }
     }
@@ -283,10 +288,10 @@ open class MainActivity :
         val hasMessageListFragment = messageListFragment != null
         if (!hasMessageListFragment) {
             val fragmentTransaction = fragmentManager.beginTransaction()
-            val messageListFragment = MessageListFragment.newInstance(
-                search!!,
-                false,
-                generalSettingsManager.getConfig()
+            val messageListFragment = messageListFragmentFactory.newInstance(
+                search = search!!,
+                isThreadDisplay = false,
+                threadedList = generalSettingsManager.getConfig()
                     .display
                     .inboxSettings
                     .isThreadedViewEnabled &&
@@ -310,7 +315,7 @@ open class MainActivity :
      *
      * **Note:**
      * This method has to be called after [.findFragments] because the result depends on
-     * the availability of a [MessageViewFragment] instance.
+     * the availability of a [com.fsck.k9.ui.messageview.MessageViewFragment] instance.
      */
     private fun initializeDisplayMode(savedInstanceState: Bundle?) {
         if (useSplitView()) {
@@ -602,10 +607,6 @@ open class MainActivity :
         outState.putSerializable(STATE_DISPLAY_MODE, displayMode)
         outState.putBoolean(STATE_MESSAGE_VIEW_ONLY, messageViewOnly)
         outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, messageListWasDisplayed)
-        searchView?.let { searchView ->
-            outState.putBoolean(STATE_SEARCH_VIEW_ICONIFIED, searchView.isIconified)
-            outState.putString(STATE_SEARCH_VIEW_QUERY, searchView.query?.toString())
-        }
     }
 
     public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -613,8 +614,6 @@ open class MainActivity :
 
         messageViewOnly = savedInstanceState.getBoolean(STATE_MESSAGE_VIEW_ONLY)
         messageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED)
-        initialSearchViewIconified = savedInstanceState.getBoolean(STATE_SEARCH_VIEW_ICONIFIED, true)
-        initialSearchViewQuery = savedInstanceState.getString(STATE_SEARCH_VIEW_QUERY)
     }
 
     private fun initializeActionBar() {
@@ -741,10 +740,10 @@ open class MainActivity :
         }
 
         val openFolderTransaction = fragmentManager.beginTransaction()
-        val messageListFragment = MessageListFragment.newInstance(
-            search,
-            false,
-            generalSettingsManager.getConfig().display.inboxSettings.isThreadedViewEnabled,
+        val messageListFragment = messageListFragmentFactory.newInstance(
+            search = search,
+            isThreadDisplay = false,
+            threadedList = generalSettingsManager.getConfig().display.inboxSettings.isThreadedViewEnabled,
         )
         openFolderTransaction.replace(R.id.message_list_container, messageListFragment)
 
@@ -768,7 +767,7 @@ open class MainActivity :
     }
 
     @Suppress("NestedBlockDepth")
-    override fun onBackPressed() {
+    private fun handleOnBackPressed(callback: OnBackPressedCallback) {
         if (isDrawerEnabled && navigationDrawer!!.isOpen) {
             navigationDrawer!!.close()
         } else if (displayMode == DisplayMode.MESSAGE_VIEW) {
@@ -779,27 +778,34 @@ open class MainActivity :
             }
         } else if (!isSearchViewCollapsed()) {
             collapseSearchView()
-        } else {
-            if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
-                if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
-                    if (search!!.id != SearchAccount.UNIFIED_FOLDERS) {
-                        openUnifiedFolders()
-                    } else {
-                        super.onBackPressed()
-                    }
+        } else if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
+            if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
+                if (search!!.id != SearchAccount.UNIFIED_FOLDERS) {
+                    openUnifiedFolders()
                 } else {
-                    val defaultFolderId = defaultFolderProvider.getDefaultFolder(account!!)
-                    val currentFolder = if (singleFolderMode) search!!.folderIds[0] else null
-                    if (currentFolder == null || defaultFolderId != currentFolder) {
-                        openFolderImmediately(defaultFolderId)
-                    } else {
-                        super.onBackPressed()
-                    }
+                    dispatchOnBackPressed(callback)
                 }
             } else {
-                super.onBackPressed()
+                val defaultFolderId = defaultFolderProvider.getDefaultFolder(account!!)
+                val currentFolder = if (singleFolderMode) search!!.folderIds[0] else null
+                if (currentFolder == null || defaultFolderId != currentFolder) {
+                    openFolderImmediately(defaultFolderId)
+                } else {
+                    dispatchOnBackPressed(callback)
+                }
             }
+        } else {
+            dispatchOnBackPressed(callback)
         }
+    }
+
+    /**
+     * Dispatch back press to the system
+     */
+    private fun dispatchOnBackPressed(callback: OnBackPressedCallback) {
+        callback.isEnabled = false
+        onBackPressedDispatcher.onBackPressed()
+        callback.isEnabled = true
     }
 
     /**
@@ -1009,56 +1015,12 @@ open class MainActivity :
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.message_list_option_menu, menu)
-
-        val searchItem = menu.findItem(R.id.search)
-        initializeSearchMenuItem(searchItem)
-
-        return true
+    private fun isSearchViewCollapsed(): Boolean {
+        return messageListFragment?.isSearchViewCollapsed() ?: true
     }
-
-    private fun initializeSearchMenuItem(searchItem: MenuItem) {
-        // Reuse existing SearchView if available
-        searchView?.let { searchView ->
-            searchItem.actionView = searchView
-            return
-        }
-
-        val searchView = searchItem.actionView as SearchView
-        searchView.maxWidth = Int.MAX_VALUE
-        searchView.queryHint = resources.getString(R.string.search_action)
-        searchView.setOnQueryTextListener(
-            object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String): Boolean {
-                    messageListFragment?.onSearchRequested(query)
-                    collapseSearchView()
-                    return true
-                }
-
-                override fun onQueryTextChange(s: String): Boolean {
-                    return false
-                }
-            },
-        )
-
-        searchView.setQuery(initialSearchViewQuery, false)
-        searchView.isIconified = initialSearchViewIconified
-
-        this.searchView = searchView
-    }
-
-    private fun isSearchViewCollapsed(): Boolean = searchView?.isIconified == true
 
     private fun collapseSearchView() {
-        searchView?.let { searchView ->
-            searchView.setQuery(null, false)
-            searchView.isIconified = true
-        }
-    }
-
-    private fun expandSearchView() {
-        searchView?.isIconified = false
+        messageListFragment?.collapseSearchView()
     }
 
     private fun setActionBarTitle(title: String, subtitle: String? = null) {
@@ -1108,7 +1070,7 @@ open class MainActivity :
             messageViewContainerFragment = fragment
 
             messageListFragment?.let { messageListFragment ->
-                fragment.setViewModel(messageListFragment.viewModel)
+                fragment.setViewModel(messageListFragment.legacyViewModel)
             }
 
             if (displayMode == DisplayMode.SPLIT_VIEW) {
@@ -1159,7 +1121,7 @@ open class MainActivity :
         }
     }
 
-    private fun addMessageListFragment(fragment: MessageListFragment) {
+    private fun addMessageListFragment(fragment: BaseMessageListFragment) {
         messageListFragment?.isActive = false
 
         supportFragmentManager.commit {
@@ -1183,11 +1145,11 @@ open class MainActivity :
     }
 
     override fun onSearchRequested(): Boolean {
-        if (displayMode == DisplayMode.MESSAGE_VIEW || searchView == null) {
+        if (displayMode == DisplayMode.MESSAGE_VIEW) {
             return false
         }
 
-        expandSearchView()
+        messageListFragment?.expandSearchView()
         return true
     }
 
@@ -1229,7 +1191,11 @@ open class MainActivity :
 
         initializeFromLocalSearch(tmpSearch)
 
-        val fragment = MessageListFragment.newInstance(tmpSearch, true, false)
+        val fragment = messageListFragmentFactory.newInstance(
+            search = tmpSearch,
+            isThreadDisplay = true,
+            threadedList = false,
+        )
         addMessageListFragment(fragment)
     }
 
@@ -1266,12 +1232,7 @@ open class MainActivity :
     }
 
     override fun goBack() {
-        val fragmentManager = supportFragmentManager
-        when {
-            displayMode == DisplayMode.MESSAGE_VIEW -> showMessageList()
-            fragmentManager.backStackEntryCount > 0 -> fragmentManager.popBackStack()
-            else -> finish()
-        }
+        onBackPressedDispatcher.onBackPressed()
     }
 
     override fun closeMessageView() {
@@ -1459,7 +1420,7 @@ open class MainActivity :
         }
     }
 
-    private fun MessageListFragment.setFullyActive() {
+    private fun BaseMessageListFragment.setFullyActive() {
         isActive = true
         onFullyActive()
     }
@@ -1530,8 +1491,6 @@ open class MainActivity :
         private const val STATE_DISPLAY_MODE = "displayMode"
         private const val STATE_MESSAGE_VIEW_ONLY = "messageViewOnly"
         private const val STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed"
-        private const val STATE_SEARCH_VIEW_ICONIFIED = "searchViewIconified"
-        private const val STATE_SEARCH_VIEW_QUERY = "searchViewQuery"
 
         private const val FIRST_FRAGMENT_TRANSACTION = "first"
         private const val FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER = "MessageViewContainerFragment"

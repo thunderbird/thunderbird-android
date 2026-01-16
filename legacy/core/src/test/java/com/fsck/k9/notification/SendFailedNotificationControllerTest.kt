@@ -39,11 +39,16 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
     private val notificationManager = mock<NotificationManagerCompat>()
     private val builder = createFakeNotificationBuilder(notification)
     private val lockScreenNotificationBuilder = createFakeNotificationBuilder(lockScreenNotification)
+    private val notificationHelper = createFakeNotificationHelper(
+        notificationManager,
+        builder,
+        lockScreenNotificationBuilder,
+    )
     private val account = createFakeAccount()
     private val contentIntent = mock<PendingIntent>()
     private val notificationId = NotificationIds.getSendFailedNotificationId(account)
     private val controller = SendFailedNotificationController(
-        notificationHelper = createFakeNotificationHelper(notificationManager, builder, lockScreenNotificationBuilder),
+        notificationHelper = notificationHelper,
         actionBuilder = createActionBuilder(contentIntent),
         resourceProvider = resourceProvider,
         generalSettingsManager = mock {
@@ -81,7 +86,7 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
 
         controller.showSendFailedNotification(account, exception)
 
-        verify(notificationManager).notify(notificationId, notification)
+        verify(notificationHelper).notify(notificationId, notification)
         verify(builder).setSmallIcon(resourceProvider.iconWarning)
         verify(builder).setTicker("Failed to send some messages")
         verify(builder).setContentTitle("Failed to send some messages")

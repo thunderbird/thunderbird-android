@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_welcome_text">Unha aplicación de correo electrónico para Android, de código aberto, centrada na privacidade e sen publicidade.</string>
+    <string name="onboarding_welcome_start_button">Comezar</string>
+    <string name="onboarding_welcome_developed_by">Desenvolvido por un equipo dedicado de MZLA Technologies e unha comunidade global de voluntarios. Parte da familia Mozilla.</string>
+    <string name="onboarding_welcome_import_button">Importar axustes</string>
+</resources>

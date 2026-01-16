@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_protocol_type_label">Protocolo</string>
+    <string name="account_server_settings_server_label">Servidor</string>
+    <string name="account_server_settings_port_label">Porto</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_authentication_none">Ningún</string>
+    <string name="account_server_settings_security_label">Seguridade</string>
+    <string name="account_server_settings_authentication_label">Autenticación</string>
+</resources>

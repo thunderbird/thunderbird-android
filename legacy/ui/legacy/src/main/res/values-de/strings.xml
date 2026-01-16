@@ -517,7 +517,7 @@
     <string name="account_setup_push_limit_500">500 Ordner</string>
     <string name="account_setup_push_limit_1000">1000 Ordner</string>
     <string name="animations_title">Animationen</string>
-    <string name="animations_summary">Aufwendige visuelle Effekte benutzen</string>
+    <string name="animations_summary">Aufwändige visuelle Effekte verwenden</string>
     <string name="show_unified_inbox_title">Gemeinsamen Posteingang anzeigen</string>
     <string name="show_starred_count_title">Anzahl der wichtigen Nachrichten anzeigen</string>
     <string name="integrated_inbox_title">Gemeinsamer Posteingang</string>
@@ -926,4 +926,5 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="account_setup_auto_select_folder">Ordner automatisch auswählen</string>
     <string name="global_settings_messageview_body_content_type_title">Inhaltstyp des Textes</string>
     <string name="print_message_action">Drucken</string>
+    <string name="debug_feature_flags">DEBUG: Feature-Flags</string>
 </resources>

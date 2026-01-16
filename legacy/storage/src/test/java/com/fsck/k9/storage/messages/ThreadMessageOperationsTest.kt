@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import android.database.sqlite.SQLiteDatabase
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEmpty
@@ -8,16 +9,24 @@ import assertk.assertions.isNull
 import com.fsck.k9.storage.RobolectricTest
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
 class ThreadMessageOperationsTest : RobolectricTest() {
-    private val sqliteDatabase = createDatabase()
-    private val threadMessageOperations = ThreadMessageOperations()
+    private lateinit var sqliteDatabase: SQLiteDatabase
+    private lateinit var threadMessageOperations: ThreadMessageOperations
 
     @Before
     fun setUp() {
         Log.logger = TestLogger()
+        sqliteDatabase = createDatabase()
+        threadMessageOperations = ThreadMessageOperations()
+    }
+
+    @After
+    fun tearDown() {
+        sqliteDatabase.close()
     }
 
     @Test

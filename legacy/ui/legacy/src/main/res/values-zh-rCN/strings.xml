@@ -629,7 +629,7 @@
     <string name="action_remote_search">在服务器上搜索邮件</string>
     <string name="remote_search_unavailable_no_network">服务器搜索需要网络连接。</string>
     <string name="global_settings_background_as_unread_indicator_label">阅读时改变颜色</string>
-    <string name="global_settings_background_as_unread_indicator_summary">不同的背景将显示邮件已阅读</string>
+    <string name="global_settings_background_as_unread_indicator_summary">邮件已被阅读时将显示不同的背景</string>
     <string name="global_settings_threaded_view_label">线程视图</string>
     <string name="global_settings_threaded_view_summary">按对话分组邮件</string>
     <string name="upgrade_databases_title">更新数据库</string>

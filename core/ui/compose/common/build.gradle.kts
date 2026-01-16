@@ -14,6 +14,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.common)
+    implementation(projects.core.logging.api)
+    testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)
-    testImplementation(projects.core.ui.compose.designsystem)
 }

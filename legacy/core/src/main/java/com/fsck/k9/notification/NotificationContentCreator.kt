@@ -4,6 +4,7 @@ import android.text.SpannableStringBuilder
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import com.fsck.k9.helper.MessageHelper
+import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.LocalMessage
 import net.thunderbird.core.android.account.LegacyAccountDto
@@ -19,10 +20,10 @@ internal class NotificationContentCreator(
 
         return NotificationContent(
             messageReference = message.makeMessageReference(),
-            sender = getMessageSenderForDisplay(sender),
+            sender = sender,
             subject = getMessageSubject(message),
             preview = getMessagePreview(message),
-            summary = buildMessageSummary(sender, getMessageSubject(message)),
+            summary = buildMessageSummary(sender.personal, getMessageSubject(message)),
         )
     }
 
@@ -70,7 +71,7 @@ internal class NotificationContentCreator(
     }
 
     @Suppress("ReturnCount")
-    private fun getMessageSender(account: LegacyAccountDto, message: Message): String? {
+    private fun getMessageSender(account: LegacyAccountDto, message: Message): Address {
         val messageListPreferences = messageListPreferencesManager.getConfig()
         val localContactRepository = if (messageListPreferences.isShowContactName) contactRepository else null
         var isSelf = false
@@ -79,13 +80,15 @@ internal class NotificationContentCreator(
         if (!fromAddresses.isNullOrEmpty()) {
             isSelf = account.isAnIdentity(fromAddresses)
             if (!isSelf) {
-                return MessageHelper.toFriendly(
-                    fromAddresses.first(),
+                val firstFrom = fromAddresses.first()
+                val personal = MessageHelper.toFriendly(
+                    firstFrom,
                     messageListPreferences.isShowCorrespondentNames,
                     messageListPreferences.isChangeContactNameColor,
                     messageListPreferences.contactNameColor,
                     localContactRepository,
                 ).toString()
+                return Address(firstFrom.address, personal)
             }
         }
 
@@ -93,6 +96,7 @@ internal class NotificationContentCreator(
             // show To: if the message was sent from me
             val recipients = message.getRecipients(Message.RecipientType.TO)
             if (!recipients.isNullOrEmpty()) {
+                val firstRecipient = recipients.first()
                 val recipientDisplayName = MessageHelper.toFriendly(
                     address = recipients.first(),
                     isShowCorrespondentNames = messageListPreferences
@@ -102,14 +106,11 @@ internal class NotificationContentCreator(
                     contactNameColor = messageListPreferences.contactNameColor,
                     contactRepository = localContactRepository,
                 ).toString()
-                return resourceProvider.recipientDisplayName(recipientDisplayName)
+                val personal = resourceProvider.recipientDisplayName(recipientDisplayName)
+                return Address(firstRecipient.address, personal)
             }
         }
 
-        return null
-    }
-
-    private fun getMessageSenderForDisplay(sender: String?): String {
-        return sender ?: resourceProvider.noSender()
+        return Address("no.sender@example.com", resourceProvider.noSender())
     }
 }

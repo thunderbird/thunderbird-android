@@ -7,6 +7,9 @@ import assertk.assertions.doesNotContain
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
+import com.fsck.k9.K9
+import com.fsck.k9.K9.NotificationQuickDelete
+import com.fsck.k9.mail.Address
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -243,7 +246,7 @@ class SingleMessageNotificationDataCreatorTest {
 
     private fun createNotificationContent() = NotificationContent(
         messageReference = MessageReference("irrelevant", 1, "irrelevant"),
-        sender = "irrelevant",
+        sender = Address("irrelevant", "irrelevant"),
         subject = "irrelevant",
         preview = "irrelevant",
         summary = "irrelevant",

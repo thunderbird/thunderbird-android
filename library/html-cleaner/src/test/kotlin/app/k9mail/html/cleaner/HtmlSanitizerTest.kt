@@ -508,6 +508,28 @@ class HtmlSanitizerTest {
         assertThat(result.toCompactString()).isEqualTo(html)
     }
 
+    @Test
+    fun `should move style tags out of anchors`() {
+        val html =
+            """
+            <html>
+              <head></head>
+              <body>
+                <a href="https://example.com/">
+                  <style>.x{color:#00f}</style>
+                  <span>Link text</span>
+                </a>
+              </body>
+            </html>
+            """.compactHtml()
+
+        val result = htmlSanitizer.sanitize(html)
+
+        assertThat(result.select("a style").size).isEqualTo(0)
+        assertThat(result.select("body > style").size).isEqualTo(1)
+        assertThat(result.select("a").text()).isEqualTo("Link text")
+    }
+
     private fun assertTagsNotStripped(element: String) {
         val html = """<$element>some text</$element>"""
 

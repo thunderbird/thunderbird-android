@@ -44,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Toast;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -553,6 +554,17 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             currentMessageBuilder.reattachCallback(this);
         }
         setupSentFolderNotFoundDialogResults();
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                this.setEnabled(false);
+                prepareToFinish(false);
+                if (!isFinishing()) {
+                    setEnabled(true);
+                }
+            }
+        });
     }
 
     private void setupSentFolderNotFoundDialogResults() {
@@ -1188,11 +1200,6 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         return true;
     }
 
-    @SuppressLint("MissingSuperCall")
-    @Override
-    public void onBackPressed() {
-        prepareToFinish(false);
-    }
 
     private void prepareToFinish(boolean shouldNavigateUp) {
         navigateUp = shouldNavigateUp;
@@ -1208,10 +1215,10 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             if (draftMessageId == null) {
                 onDiscard();
             } else {
-                if (navigateUp && this.action != action.EDIT_DRAFT) {
+                if (navigateUp && this.action != Action.EDIT_DRAFT) {
                     openDefaultFolder();
                 } else {
-                    super.onBackPressed();
+                    finish();
                 }
             }
         }
