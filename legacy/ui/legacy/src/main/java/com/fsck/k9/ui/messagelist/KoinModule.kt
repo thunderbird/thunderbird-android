@@ -18,6 +18,7 @@ val messageListUiModule = module {
             messageHelper = get(),
             messageListPreferencesManager = get(),
             outboxFolderManager = get(),
+            relativeDateTimeFormatter = get(),
         )
     }
     factory {
