@@ -6,6 +6,7 @@ import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.ui.helper.DisplayAddressHelper
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 
@@ -14,6 +15,7 @@ class MessageListItemMapper(
     private val account: LegacyAccount,
     private val messageListPreferencesManager: MessageListPreferencesManager,
     private val outboxFolderManager: OutboxFolderManager,
+    private val formatDate: (Long) -> String,
 ) : MessageMapper<MessageListItem> {
 
     override fun map(message: MessageDetailsAccessor): MessageListItem {
@@ -36,6 +38,7 @@ class MessageListItemMapper(
         } else {
             messageHelper.getSenderDisplayName(displayAddress)
         }
+        val displayMessageDateTime = formatDate(message.messageDate)
 
         return MessageListItem(
             account,
@@ -45,6 +48,7 @@ class MessageListItemMapper(
             message.internalDate,
             displayName,
             displayAddress,
+            displayMessageDateTime,
             previewText,
             isMessageEncrypted,
             message.isRead,

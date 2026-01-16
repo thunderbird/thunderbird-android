@@ -15,7 +15,6 @@ import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 @Suppress("LongParameterList")
 class ComposableMessageViewHolder(
     private val composeView: ComposeView,
-    private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
     private val themeProvider: FeatureThemeProvider,
     private val onClick: (MessageListItem) -> Unit,
     private val onLongClick: (MessageListItem) -> Unit,
@@ -39,11 +38,6 @@ class ComposableMessageViewHolder(
                     isSelected = isSelected,
                     contactRepository = contactRepository,
                     avatarMonogramCreator = avatarMonogramCreator,
-                    formatDate = {
-                        relativeDateTimeFormatter.formatDate(
-                            item.messageDate, appearance.dateTimeFormat,
-                        )
-                    },
                     onClick = { onClick(item) },
                     onLongClick = { onLongClick(item) },
                     onAvatarClick = { onAvatarClick(item) },
@@ -72,7 +66,6 @@ class ComposableMessageViewHolder(
 
             val holder = ComposableMessageViewHolder(
                 composeView = composeView,
-                relativeDateTimeFormatter = relativeDateTimeFormatter,
                 themeProvider = themeProvider,
                 contactRepository = contactRepository,
                 avatarMonogramCreator = avatarMonogramCreator,
