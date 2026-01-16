@@ -1,8 +1,11 @@
 package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.mailstore.FolderRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountManager
@@ -24,24 +27,28 @@ class DefaultSpecialFolderUpdater private constructor(
     private val folderRepository: FolderRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
     private val accountId: AccountId,
+    private val coroutineScope: CoroutineScope,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : SpecialFolderUpdater {
     override fun updateSpecialFolders() {
-        var account: LegacyAccount = getAccountById(accountId)
-        val folders = folderRepository.getRemoteFolders(accountId)
+        coroutineScope.launch(ioDispatcher) {
+            var account: LegacyAccount = getAccountById(accountId)
+            val folders = folderRepository.getRemoteFolders(accountId)
 
-        account = updateInbox(account, folders)
+            account = updateInbox(account, folders)
 
-        if (!account.isPop3()) {
-            updateSpecialFolder(account, FolderType.ARCHIVE, folders)
-            updateSpecialFolder(account, FolderType.DRAFTS, folders)
-            updateSpecialFolder(account, FolderType.SENT, folders)
-            updateSpecialFolder(account, FolderType.SPAM, folders)
-            updateSpecialFolder(account, FolderType.TRASH, folders)
+            if (!account.isPop3()) {
+                updateSpecialFolder(account, FolderType.ARCHIVE, folders)
+                updateSpecialFolder(account, FolderType.DRAFTS, folders)
+                updateSpecialFolder(account, FolderType.SENT, folders)
+                updateSpecialFolder(account, FolderType.SPAM, folders)
+                updateSpecialFolder(account, FolderType.TRASH, folders)
+            }
+
+            account = removeImportedSpecialFoldersData(account)
+
+            updateAccount(account)
         }
-
-        account = removeImportedSpecialFoldersData(account)
-
-        updateAccount(account)
     }
 
     private fun updateInbox(account: LegacyAccount, folders: List<RemoteFolder>): LegacyAccount {
@@ -117,52 +124,54 @@ class DefaultSpecialFolderUpdater private constructor(
     }
 
     override fun setSpecialFolder(type: FolderType, folderId: Long?, selection: SpecialFolderSelection) {
-        var account = getAccountById(accountId)
-        if (getSpecialFolderId(account, type) == folderId) return
+        coroutineScope.launch(ioDispatcher) {
+            var account = getAccountById(accountId)
+            if (getSpecialFolderId(account, type) == folderId) return@launch
 
-        account = when (type) {
-            FolderType.ARCHIVE -> {
-                account.copy(
-                    archiveFolderId = folderId,
-                    archiveFolderSelection = selection,
-                )
+            account = when (type) {
+                FolderType.ARCHIVE -> {
+                    account.copy(
+                        archiveFolderId = folderId,
+                        archiveFolderSelection = selection,
+                    )
+                }
+
+                FolderType.DRAFTS -> {
+                    account.copy(
+                        draftsFolderId = folderId,
+                        draftsFolderSelection = selection,
+                    )
+                }
+
+                FolderType.SENT -> {
+                    account.copy(
+                        sentFolderId = folderId,
+                        sentFolderSelection = selection,
+                    )
+                }
+
+                FolderType.SPAM -> {
+                    account.copy(
+                        spamFolderId = folderId,
+                        spamFolderSelection = selection,
+                    )
+                }
+
+                FolderType.TRASH -> {
+                    account.copy(
+                        trashFolderId = folderId,
+                        trashFolderSelection = selection,
+                    )
+                }
+
+                else -> throw AssertionError("Unsupported: $type")
             }
 
-            FolderType.DRAFTS -> {
-                account.copy(
-                    draftsFolderId = folderId,
-                    draftsFolderSelection = selection,
-                )
+            updateAccount(account)
+
+            if (folderId != null) {
+                folderRepository.setVisible(accountId, folderId, true)
             }
-
-            FolderType.SENT -> {
-                account.copy(
-                    sentFolderId = folderId,
-                    sentFolderSelection = selection,
-                )
-            }
-
-            FolderType.SPAM -> {
-                account.copy(
-                    spamFolderId = folderId,
-                    spamFolderSelection = selection,
-                )
-            }
-
-            FolderType.TRASH -> {
-                account.copy(
-                    trashFolderId = folderId,
-                    trashFolderSelection = selection,
-                )
-            }
-
-            else -> throw AssertionError("Unsupported: $type")
-        }
-
-        updateAccount(account)
-
-        if (folderId != null) {
-            folderRepository.setVisible(accountId, folderId, true)
         }
     }
 
@@ -174,11 +183,11 @@ class DefaultSpecialFolderUpdater private constructor(
         importedTrashFolder = null,
     )
 
-    private fun getAccountById(accountId: AccountId): LegacyAccount = runBlocking {
-        accountManager.getById(accountId).firstOrNull() ?: error("Account not found: $accountId")
+    private suspend fun getAccountById(accountId: AccountId): LegacyAccount {
+        return accountManager.getById(accountId).firstOrNull() ?: error("Account not found: $accountId")
     }
 
-    private fun updateAccount(account: LegacyAccount) = runBlocking {
+    private suspend fun updateAccount(account: LegacyAccount) {
         accountManager.update(account)
     }
 
@@ -188,12 +197,16 @@ class DefaultSpecialFolderUpdater private constructor(
         private val accountManager: LegacyAccountManager,
         private val folderRepository: FolderRepository,
         private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
+        private val coroutineScope: CoroutineScope,
+        private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     ) : SpecialFolderUpdater.Factory {
         override fun create(accountId: AccountId): SpecialFolderUpdater = DefaultSpecialFolderUpdater(
             accountManager = accountManager,
             folderRepository = folderRepository,
             specialFolderSelectionStrategy = specialFolderSelectionStrategy,
             accountId = accountId,
+            coroutineScope = coroutineScope,
+            ioDispatcher = ioDispatcher,
         )
     }
 }

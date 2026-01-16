@@ -117,7 +117,9 @@ class CreateArchiveFolderTest {
                     .prop("throwable") { it.throwable }
                     .hasMessage(exception.message)
 
-                verify(exactly(0)) { remoteFolderCreatorFactory.create(accountId = any()) }
+                verifySuspend(exactly(0)) {
+                    remoteFolderCreatorFactory.create(accountId = any())
+                }
 
                 awaitComplete()
             }
@@ -167,7 +169,9 @@ class CreateArchiveFolderTest {
                         ),
                     )
                 }
-                verify(exactly(0)) { remoteFolderCreatorFactory.create(accountId = any()) }
+                verifySuspend(exactly(0)) {
+                    remoteFolderCreatorFactory.create(accountId = any())
+                }
                 awaitComplete()
             }
         }
@@ -436,7 +440,7 @@ private open class FakeRemoteFolderCreatorFactory(
     open var instance: RemoteFolderCreator = spy<RemoteFolderCreator>(FakeRemoteFolderCreator())
         protected set
 
-    override fun create(accountId: AccountId): RemoteFolderCreator = instance
+    override suspend fun create(accountId: AccountId): RemoteFolderCreator = instance
 
     private open inner class FakeRemoteFolderCreator : RemoteFolderCreator {
         override suspend fun create(

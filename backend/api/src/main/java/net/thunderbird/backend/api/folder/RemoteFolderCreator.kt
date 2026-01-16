@@ -26,7 +26,7 @@ interface RemoteFolderCreator {
     ): Outcome<RemoteFolderCreationOutcome.Success, RemoteFolderCreationOutcome.Error>
 
     interface Factory {
-        fun create(accountId: AccountId): RemoteFolderCreator
+        suspend fun create(accountId: AccountId): RemoteFolderCreator
     }
 }
 

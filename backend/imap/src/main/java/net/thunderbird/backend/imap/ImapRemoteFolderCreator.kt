@@ -66,7 +66,7 @@ class DefaultImapRemoteFolderCreatorFactory(
     private val logger: Logger,
     private val backendFactory: BackendFactory,
 ) : ImapRemoteFolderCreatorFactory {
-    override fun create(accountId: AccountId): RemoteFolderCreator {
+    override suspend fun create(accountId: AccountId): RemoteFolderCreator {
         val backend = backendFactory.createBackend(accountId) as ImapBackend
         return ImapRemoteFolderCreator(
             logger = logger,

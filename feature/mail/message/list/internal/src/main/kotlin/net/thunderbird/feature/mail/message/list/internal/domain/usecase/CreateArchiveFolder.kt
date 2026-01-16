@@ -72,7 +72,7 @@ internal class CreateArchiveFolder(
                 emit(Outcome.success(CreateArchiveFolderOutcome.Success.LocalFolderCreated))
                 val serverId = FolderServerId(folderInfo.serverId)
                 emit(Outcome.success(CreateArchiveFolderOutcome.Success.SyncStarted(serverId = serverId)))
-                val remoteFolderCreator = remoteFolderCreatorFactory.create(accountId)
+                val remoteFolderCreator = withContext(ioDispatcher) { remoteFolderCreatorFactory.create(accountId) }
                 val outcome = remoteFolderCreator
                     .create(folderServerId = serverId, mustCreate = false, folderType = LegacyFolderType.ARCHIVE)
                 when (outcome) {

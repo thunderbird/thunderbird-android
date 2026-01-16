@@ -10,7 +10,7 @@ class FakeImapRemoteFolderCreatorFactory : ImapRemoteFolderCreatorFactory {
 
     var lastAccountId: AccountId? = null
 
-    override fun create(accountId: AccountId): RemoteFolderCreator {
+    override suspend fun create(accountId: AccountId): RemoteFolderCreator {
         lastAccountId = accountId
 
         return object : RemoteFolderCreator {
