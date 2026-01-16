@@ -12,8 +12,8 @@ internal class LinkTextHandler(
 ) : Handler() {
 
     override fun handleMessage(message: Message) {
-        val bundle = message.data
-        val linkText = bundle.getString("title") ?: return
+        val linkText = message.data.getString("title")?.trim().orEmpty()
+        if (linkText.isEmpty()) return
 
         val label = context.getString(R.string.webview_contextmenu_link_text_clipboard_label)
         clipboardManager.setText(label, linkText)
