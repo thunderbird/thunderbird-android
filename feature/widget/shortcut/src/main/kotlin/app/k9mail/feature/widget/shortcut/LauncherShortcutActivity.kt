@@ -10,7 +10,7 @@ import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import com.fsck.k9.activity.AccountList
-import com.fsck.k9.activity.MainActivity
+import com.fsck.k9.activity.MessageListActivity
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.search.legacy.SearchAccount
 import app.k9mail.core.ui.legacy.theme2.common.R as CommonR
@@ -29,9 +29,9 @@ class LauncherShortcutActivity : AccountList() {
 
     override fun onAccountSelected(account: BaseAccount) {
         val shortcutIntent = if (account is SearchAccount) {
-            MainActivity.shortcutIntent(this, account.id)
+            MessageListActivity.shortcutIntent(this, account.id)
         } else {
-            MainActivity.shortcutIntentForAccount(this, account.uuid)
+            MessageListActivity.shortcutIntentForAccount(this, account.uuid)
         }
 
         val displayName = account.name ?: account.email
