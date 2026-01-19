@@ -55,6 +55,7 @@ class ArchiveFolderResolverTest {
         val result = testSubject.resolveArchiveFolder(account, message)
 
         assertThat(result).isEqualTo(YEARLY_FOLDER_ID)
+        assertThat(archiveFolderCreator.createdFolders[0].name).isEqualTo("Archive/2025")
     }
 
     @Test
@@ -191,7 +192,7 @@ class ArchiveFolderResolverTest {
     }
 
     @Test
-    fun `return null when yearly subfolder creation fails`() {
+    fun `fall back to base folder when yearly subfolder creation fails`() {
         account.archiveGranularity = ArchiveGranularity.PER_YEAR_ARCHIVE_FOLDERS
         val message = createMessage(year = 2025, month = 11)
 
@@ -206,11 +207,11 @@ class ArchiveFolderResolverTest {
 
         val result = testSubject.resolveArchiveFolder(account, message)
 
-        assertThat(result).isNull()
+        assertThat(result).isEqualTo(BASE_ARCHIVE_FOLDER_ID)
     }
 
     @Test
-    fun `return null when yearly folder creation succeeds but monthly creation fails`() {
+    fun `fall back to base folder when yearly succeeds but monthly creation fails`() {
         account.archiveGranularity = ArchiveGranularity.PER_MONTH_ARCHIVE_FOLDERS
         val message = createMessage(year = 2025, month = 11)
 
@@ -232,7 +233,47 @@ class ArchiveFolderResolverTest {
 
         val result = testSubject.resolveArchiveFolder(account, message)
 
-        assertThat(result).isNull()
+        assertThat(result).isEqualTo(BASE_ARCHIVE_FOLDER_ID)
+    }
+
+    @Test
+    fun `use current date when both internal and sent dates are null`() {
+        account.archiveGranularity = ArchiveGranularity.PER_YEAR_ARCHIVE_FOLDERS
+        val message = mock<LocalMessage>().apply {
+            whenever(internalDate).thenReturn(null)
+            whenever(sentDate).thenReturn(null)
+        }
+
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
+        val folderIdResolver = FakeFolderIdResolver(
+            folderServerIds = mapOf(BASE_ARCHIVE_FOLDER_ID to "Archive"),
+            folderIds = mapOf("Archive/$currentYear" to YEARLY_FOLDER_ID),
+        )
+        val testSubject = createResolver(folderIdResolver)
+
+        val result = testSubject.resolveArchiveFolder(account, message)
+
+        assertThat(result).isEqualTo(YEARLY_FOLDER_ID)
+    }
+
+    @Test
+    fun `use account folder delimiter for subfolder paths`() {
+        val accountWithDotDelimiter = LegacyAccountDto(UUID.randomUUID().toString()).apply {
+            archiveFolderId = BASE_ARCHIVE_FOLDER_ID
+            archiveGranularity = ArchiveGranularity.PER_YEAR_ARCHIVE_FOLDERS
+            folderPathDelimiter = "."
+        }
+        val message = createMessage(year = 2025, month = 11)
+
+        val folderIdResolver = FakeFolderIdResolver(
+            folderServerIds = mapOf(BASE_ARCHIVE_FOLDER_ID to "Archive"),
+            folderIds = mapOf("Archive.2025" to YEARLY_FOLDER_ID),
+        )
+        val testSubject = createResolver(folderIdResolver)
+
+        val result = testSubject.resolveArchiveFolder(accountWithDotDelimiter, message)
+
+        assertThat(result).isEqualTo(YEARLY_FOLDER_ID)
     }
 
     private fun createResolver(
