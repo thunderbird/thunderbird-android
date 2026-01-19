@@ -363,7 +363,7 @@ open class MessageListActivity :
     private fun decodeExtras(intent: Intent): Boolean {
         if (intent.action === Intent.ACTION_SEARCH &&
             !intent.component?.className.equals(
-                Search::class.java.name,
+                MessageSearchActivity::class.java.name,
             )
         ) {
             finish()
@@ -1139,7 +1139,7 @@ open class MessageListActivity :
             // TODO Handle the case where we're searching from within a search result.
             null
         }
-        val searchIntent = Intent(this, Search::class.java).apply {
+        val searchIntent = Intent(this, MessageSearchActivity::class.java).apply {
             action = Intent.ACTION_SEARCH
             putExtra(SearchManager.QUERY, query)
             putExtra(SearchManager.APP_DATA, appData)

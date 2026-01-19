@@ -157,7 +157,7 @@
         </activity>
 
         <activity
-            android:name="com.fsck.k9.activity.Search"
+            android:name="com.fsck.k9.activity.MessageSearchActivity"
             android:label="@string/search_action"
             android:exported="false"
             />
