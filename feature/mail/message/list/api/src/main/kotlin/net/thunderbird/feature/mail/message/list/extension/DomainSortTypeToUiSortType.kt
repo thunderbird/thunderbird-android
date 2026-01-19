@@ -1,0 +1,59 @@
+package net.thunderbird.feature.mail.message.list.extension
+
+import kotlin.to
+import net.thunderbird.feature.mail.message.list.ui.state.SortType
+import net.thunderbird.core.android.account.SortType as DomainSortType
+
+/**
+ * Maps a [DomainSortType] from the domain layer to a [SortType] in the UI layer.
+ *
+ * This extension function takes the domain-level sort criteria and a boolean indicating
+ * the sort direction to produce the corresponding specific UI sort type.
+ *
+ * @param isAscending `true` for ascending order, `false` for descending order.
+ * @return The corresponding [SortType] for the UI layer.
+ */
+@Suppress("ComplexMethod")
+fun DomainSortType.toSortType(isAscending: Boolean): SortType = when (this) {
+    DomainSortType.SORT_DATE if isAscending -> SortType.DateAsc
+    DomainSortType.SORT_DATE -> SortType.DateDesc
+    DomainSortType.SORT_ARRIVAL if isAscending -> SortType.ArrivalAsc
+    DomainSortType.SORT_ARRIVAL -> SortType.ArrivalDesc
+    DomainSortType.SORT_SUBJECT if isAscending -> SortType.SubjectAsc
+    DomainSortType.SORT_SUBJECT -> SortType.SubjectDesc
+    DomainSortType.SORT_SENDER if isAscending -> SortType.SenderAsc
+    DomainSortType.SORT_SENDER -> SortType.SenderDesc
+    DomainSortType.SORT_UNREAD if isAscending -> SortType.UnreadAsc
+    DomainSortType.SORT_UNREAD -> SortType.UnreadDesc
+    DomainSortType.SORT_FLAGGED if isAscending -> SortType.FlaggedAsc
+    DomainSortType.SORT_FLAGGED -> SortType.FlaggedDesc
+    DomainSortType.SORT_ATTACHMENT if isAscending -> SortType.AttachmentAsc
+    DomainSortType.SORT_ATTACHMENT -> SortType.AttachmentDesc
+}
+
+/**
+ * Maps a [SortType] from the UI layer to a [DomainSortType] in the domain layer.
+ *
+ * This extension function takes a specific UI-level sort type and decomposes it into its
+ * domain-level sort criteria and a boolean indicating the sort direction.
+ *
+ * @return A [Pair] where the first element is the [DomainSortType] and the second
+ *         is a [Boolean] indicating the sort order (`true` for ascending, `false` for descending).
+ */
+@Suppress("ComplexMethod")
+fun SortType.toDomainSortType(): Pair<DomainSortType, Boolean> = when (this) {
+    SortType.DateAsc -> DomainSortType.SORT_DATE to true
+    SortType.DateDesc -> DomainSortType.SORT_DATE to false
+    SortType.ArrivalAsc -> DomainSortType.SORT_ARRIVAL to true
+    SortType.ArrivalDesc -> DomainSortType.SORT_ARRIVAL to false
+    SortType.SenderAsc -> DomainSortType.SORT_SENDER to true
+    SortType.SenderDesc -> DomainSortType.SORT_SENDER to false
+    SortType.UnreadAsc -> DomainSortType.SORT_UNREAD to true
+    SortType.UnreadDesc -> DomainSortType.SORT_UNREAD to false
+    SortType.FlaggedAsc -> DomainSortType.SORT_FLAGGED to true
+    SortType.FlaggedDesc -> DomainSortType.SORT_FLAGGED to false
+    SortType.AttachmentAsc -> DomainSortType.SORT_ATTACHMENT to true
+    SortType.AttachmentDesc -> DomainSortType.SORT_ATTACHMENT to false
+    SortType.SubjectAsc -> DomainSortType.SORT_SUBJECT to true
+    SortType.SubjectDesc -> DomainSortType.SORT_SUBJECT to false
+}
