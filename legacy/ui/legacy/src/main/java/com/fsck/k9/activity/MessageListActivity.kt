@@ -33,7 +33,6 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation
 import com.fsck.k9.Preferences
-import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.search.isUnifiedFolders
@@ -101,7 +100,6 @@ open class MessageListActivity :
     private val preferences: Preferences by inject()
     private val accountManager: LegacyAccountDtoManager by inject()
     private val defaultFolderProvider: DefaultFolderProvider by inject()
-    private val accountRemover: BackgroundAccountRemover by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
     private val messagingController: MessagingController by inject()
     private val contactRepository: ContactRepository by inject()
@@ -147,30 +145,6 @@ open class MessageListActivity :
     @Suppress("ReturnCount")
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // If the app's main task was not created using the default launch intent (e.g. from a notification, a widget,
-        // or a shortcut), using the app icon to "launch" the app will create a new MessageList instance instead of only
-        // bringing the app's task to the foreground. We catch this situation here and simply finish the activity. This
-        // will bring the task to the foreground, showing the last active screen.
-        if (intent.action == Intent.ACTION_MAIN && intent.hasCategory(Intent.CATEGORY_LAUNCHER) && !isTaskRoot) {
-            Log.v("Not displaying MessageList. Only bringing the app task to the foreground.")
-            finish()
-            return
-        }
-
-        val accounts = accountManager.getAccounts()
-        deleteIncompleteAccounts(accounts)
-        val hasAccountSetup = accounts.any { it.isFinishedSetup }
-        if (!hasAccountSetup) {
-            FeatureLauncherActivity.launch(this, FeatureLauncherTarget.Onboarding)
-            finish()
-            return
-        }
-
-        if (UpgradeDatabases.actionUpgradeDatabases(this, intent)) {
-            finish()
-            return
-        }
 
         if (useSplitView()) {
             setLayout(R.layout.split_message_list)
@@ -228,12 +202,6 @@ open class MessageListActivity :
             return
         }
 
-        if (intent.action == Intent.ACTION_MAIN && intent.hasCategory(Intent.CATEGORY_LAUNCHER)) {
-            // There's nothing to do if the default launcher Intent was used.
-            // This only brings the existing screen to the foreground.
-            return
-        }
-
         setIntent(intent)
 
         // Start with a fresh fragment back stack
@@ -259,12 +227,6 @@ open class MessageListActivity :
         initializeDisplayMode(null)
         initializeFragments()
         displayViews()
-    }
-
-    private fun deleteIncompleteAccounts(accounts: List<LegacyAccountDto>) {
-        accounts.filter { !it.isFinishedSetup }.forEach {
-            accountRemover.removeAccountAsync(it.uuid)
-        }
     }
 
     private fun findFragments() {
