@@ -17,6 +17,7 @@ import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.legacy.serializer.ServerSettingsDtoSerializer
 import net.thunderbird.feature.mail.folder.api.FOLDER_DEFAULT_PATH_DELIMITER
+import net.thunderbird.feature.mail.folder.api.ArchiveGranularity
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
@@ -114,6 +115,12 @@ class LegacyAccountStorageHandler(
                 SpecialFolderSelection.AUTOMATIC,
             )
             setArchiveFolderId(archiveFolderId, archiveFolderSelection)
+
+            archiveGranularity = getEnumStringPref(
+                storage,
+                keyGen.create(ARCHIVE_GRANULARITY_KEY),
+                ArchiveGranularity.DEFAULT,
+            )
 
             val spamFolderId = storage.getStringOrNull(keyGen.create("spamFolderId"))?.toLongOrNull()
             val spamFolderSelection = getEnumStringPref<SpecialFolderSelection>(
@@ -354,6 +361,7 @@ class LegacyAccountStorageHandler(
             editor.putString(keyGen.create("archiveFolderId"), archiveFolderId?.toString())
             editor.putString(keyGen.create("spamFolderId"), spamFolderId?.toString())
             editor.putString(keyGen.create("archiveFolderSelection"), archiveFolderSelection.name)
+            editor.putString(keyGen.create(ARCHIVE_GRANULARITY_KEY), archiveGranularity.name)
             editor.putString(keyGen.create("draftsFolderSelection"), draftsFolderSelection.name)
             editor.putString(keyGen.create("sentFolderSelection"), sentFolderSelection.name)
             editor.putString(keyGen.create("spamFolderSelection"), spamFolderSelection.name)
@@ -470,6 +478,7 @@ class LegacyAccountStorageHandler(
         editor.remove(keyGen.create("archiveFolderName"))
         editor.remove(keyGen.create("spamFolderName"))
         editor.remove(keyGen.create("archiveFolderSelection"))
+        editor.remove(keyGen.create(ARCHIVE_GRANULARITY_KEY))
         editor.remove(keyGen.create("draftsFolderSelection"))
         editor.remove(keyGen.create("sentFolderSelection"))
         editor.remove(keyGen.create("spamFolderSelection"))
@@ -607,5 +616,6 @@ class LegacyAccountStorageHandler(
         const val IDENTITY_DESCRIPTION_KEY = "description"
 
         const val FOLDER_PATH_DELIMITER_KEY = "folderPathDelimiter"
+        const val ARCHIVE_GRANULARITY_KEY = "archiveGranularity"
     }
 }
