@@ -1,9 +1,6 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.activity
 
-
-public class Search extends MessageListActivity {
-    @Override
-    protected boolean isDrawerEnabled() {
-        return false;
-    }
+class Search : MessageListActivity() {
+    override val isDrawerEnabled: Boolean
+        get() = false
 }
