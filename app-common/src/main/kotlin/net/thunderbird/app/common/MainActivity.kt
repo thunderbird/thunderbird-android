@@ -5,9 +5,9 @@ import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.MessageListActivity
-import com.fsck.k9.activity.UpgradeDatabases
 import com.fsck.k9.ui.base.BaseActivity
 import kotlin.getValue
+import net.thunderbird.core.android.common.startup.DatabaseUpgradeInterceptor
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import org.koin.android.ext.android.inject
@@ -16,11 +16,12 @@ class MainActivity : BaseActivity() {
 
     private val accountManager: LegacyAccountManager by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
+    private val databaseUpgradeInterceptor: DatabaseUpgradeInterceptor by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (UpgradeDatabases.actionUpgradeDatabases(this, intent)) {
+        if (databaseUpgradeInterceptor.checkAndHandleUpgrade(this, intent)) {
             finish()
             return
         }

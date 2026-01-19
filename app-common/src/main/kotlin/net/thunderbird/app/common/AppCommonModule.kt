@@ -8,6 +8,7 @@ import net.thunderbird.app.common.account.appCommonAccountModule
 import net.thunderbird.app.common.appConfig.AndroidPlatformConfigProvider
 import net.thunderbird.app.common.core.appCommonCoreModule
 import net.thunderbird.app.common.feature.appCommonFeatureModule
+import net.thunderbird.app.common.startup.appCommonStartupModule
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.feature.mail.message.list.extension.toSortType
 import org.koin.core.module.Module
@@ -23,6 +24,7 @@ val appCommonModule: Module = module {
         appCommonAccountModule,
         appCommonCoreModule,
         appCommonFeatureModule,
+        appCommonStartupModule,
     )
 
     single<PlatformConfigProvider> { AndroidPlatformConfigProvider() }

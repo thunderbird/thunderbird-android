@@ -28,10 +28,10 @@ import com.google.android.material.textview.MaterialTextView;
  * <p>
  * The current upgrade process works as follows:
  * <ol>
- * <li>Activities that access an account's database call
- *     {@link #actionUpgradeDatabases(Context, Intent)} in their {@link Activity#onCreate(Bundle)}
- *     method.</li>
- * <li>{@link #actionUpgradeDatabases(Context, Intent)} will call {@link K9#areDatabasesUpToDate()}
+ * <li>Activities that can be started via an external intent (entry-point activities) use
+ *     {@link net.thunderbird.core.android.common.startup.DatabaseUpgradeInterceptor#checkAndHandleUpgrade(Context, Intent)}
+ *     in their {@code onCreate()} and {@code onNewIntent()} methods.</li>
+ * <li>{@code checkAndHandleUpgrade()} will call {@link K9#areDatabasesUpToDate()}
  *     to check if we already know whether the databases have been upgraded.</li>
  * <li>{@link K9#areDatabasesUpToDate()} will compare the last known database version stored in a
  *     {@link SharedPreferences} file to {@link LocalStore#getDbVersion()}. This
@@ -46,8 +46,8 @@ import com.google.android.material.textview.MaterialTextView;
  *     {@link LocalBroadcastManager} to this activity which will update the UI accordingly.</li>
  * <li>Once the upgrade is complete {@link DatabaseUpgradeService} will notify this activity,
  *     release the wake lock, and stop itself.</li>
- * <li>This activity will start the original activity using the intent supplied when calling
- *     {@link #actionUpgradeDatabases(Context, Intent)}.</li>
+ * <li>This activity will start the original activity using the intent supplied when starting
+ *     this activity.</li>
  * </ol>
  * </p><p>
  * Currently we make no attempts to stop the background code (e.g. {@link MessagingController}) from
@@ -59,39 +59,8 @@ import com.google.android.material.textview.MaterialTextView;
  * </p>
  */
 public class UpgradeDatabases extends BaseActivity {
-    private static final String ACTION_UPGRADE_DATABASES = "upgrade_databases";
-    private static final String EXTRA_START_INTENT = "start_intent";
-
-
-    /**
-     * Start the {@link UpgradeDatabases} activity if necessary.
-     *
-     * @param context
-     *         The {@link Context} used to start the activity.
-     * @param startIntent
-     *         After the database upgrade is complete an activity is started using this intent.
-     *         Usually this is the intent that was used to start the calling activity.
-     *         Never {@code null}.
-     *
-     * @return {@code true}, if the {@code UpgradeDatabases} activity was started. In this case the
-     *         calling activity is expected to finish itself.<br>
-     *         {@code false}, if the account databases don't need upgrading.
-     */
-    public static boolean actionUpgradeDatabases(Context context, Intent startIntent) {
-        if (K9.areDatabasesUpToDate()) {
-            return false;
-        }
-
-        Intent intent = new Intent(context, UpgradeDatabases.class);
-        intent.setAction(ACTION_UPGRADE_DATABASES);
-        intent.putExtra(EXTRA_START_INTENT, startIntent);
-
-        // Make sure this activity is only running once
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        context.startActivity(intent);
-        return true;
-    }
+    public static final String ACTION_UPGRADE_DATABASES = "upgrade_databases";
+    public static final String EXTRA_START_INTENT = "start_intent";
 
 
     private Intent mStartIntent;

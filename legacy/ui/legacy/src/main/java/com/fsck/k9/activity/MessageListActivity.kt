@@ -54,6 +54,7 @@ import com.google.android.material.textview.MaterialTextView
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.common.startup.DatabaseUpgradeInterceptor
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -107,6 +108,7 @@ open class MessageListActivity :
     private val fundingManager: FundingManager by inject()
     private val logger: Logger by inject()
     private val legacyAccountDataMapper: LegacyAccountDataMapper by inject()
+    private val databaseUpgradeInterceptor: DatabaseUpgradeInterceptor by inject()
 
     private lateinit var actionBar: ActionBar
 
@@ -145,6 +147,11 @@ open class MessageListActivity :
     @Suppress("ReturnCount")
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (databaseUpgradeInterceptor.checkAndHandleUpgrade(this, intent)) {
+            finish()
+            return
+        }
 
         if (useSplitView()) {
             setLayout(R.layout.split_message_list)
@@ -197,6 +204,11 @@ open class MessageListActivity :
     @Suppress("ReturnCount")
     public override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+
+        if (databaseUpgradeInterceptor.checkAndHandleUpgrade(this, intent)) {
+            finish()
+            return
+        }
 
         if (isFinishing) {
             return
