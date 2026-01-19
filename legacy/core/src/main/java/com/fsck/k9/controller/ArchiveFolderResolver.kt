@@ -2,12 +2,14 @@ package com.fsck.k9.controller
 
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mailstore.LocalMessage
-import java.util.Calendar
-import java.util.Date
 import java.util.Locale
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.mail.folder.api.ArchiveGranularity
-import net.thunderbird.feature.mail.folder.api.FOLDER_DEFAULT_PATH_DELIMITER
 import com.fsck.k9.mail.FolderType as LegacyFolderType
 
 internal class ArchiveFolderResolver(
@@ -15,7 +17,6 @@ internal class ArchiveFolderResolver(
     private val folderCreator: ArchiveFolderCreator,
 ) {
 
-    @Suppress("ReturnCount")
     fun resolveArchiveFolder(
         account: LegacyAccountDto,
         message: LocalMessage,
@@ -28,24 +29,22 @@ internal class ArchiveFolderResolver(
             }
 
             ArchiveGranularity.PER_YEAR_ARCHIVE_FOLDERS -> {
-                val year = getYear(getMessageDate(message))
-                findOrCreateSubfolder(account, baseFolderId, year.toString())
+                val year = message.messageDate.year
+                findOrCreateSubfolder(account, baseFolderId, year.toString()) ?: baseFolderId
             }
 
             ArchiveGranularity.PER_MONTH_ARCHIVE_FOLDERS -> {
-                val date = getMessageDate(message)
-                val year = getYear(date)
-                val month = String.format(Locale.ROOT, "%02d", getMonth(date))
+                val date = message.messageDate
+                val year = date.year
+                val month = String.format(Locale.ROOT, "%02d", date.monthNumber)
 
-                val yearFolderId = findOrCreateSubfolder(account, baseFolderId, year.toString())
-                    ?: return baseFolderId
-
-                findOrCreateSubfolder(account, yearFolderId, month)
+                findOrCreateSubfolder(account, baseFolderId, year.toString())?.let { yearFolderId ->
+                    findOrCreateSubfolder(account, yearFolderId, month)
+                } ?: baseFolderId
             }
         }
     }
 
-    @Suppress("ReturnCount")
     private fun findOrCreateSubfolder(
         account: LegacyAccountDto,
         parentFolderId: Long,
@@ -53,32 +52,29 @@ internal class ArchiveFolderResolver(
     ): Long? {
         val parentServerId = folderIdResolver.getFolderServerId(account, parentFolderId) ?: return null
 
-        val delimiter = FOLDER_DEFAULT_PATH_DELIMITER
+        val delimiter = account.folderPathDelimiter
         val subfolderServerId = "$parentServerId$delimiter$subfolderName"
 
-        folderIdResolver.getFolderId(account, subfolderServerId)?.let { return it }
-
-        val folderInfo = FolderInfo(
-            serverId = subfolderServerId,
-            name = subfolderServerId,
-            type = LegacyFolderType.ARCHIVE,
-        )
-        return folderCreator.createFolder(account, folderInfo)
+        val existingId = folderIdResolver.getFolderId(account, subfolderServerId)
+        return if (existingId != null) {
+            existingId
+        } else {
+            val folderInfo = FolderInfo(
+                serverId = subfolderServerId,
+                name = subfolderServerId,
+                type = LegacyFolderType.ARCHIVE,
+            )
+            folderCreator.createFolder(account, folderInfo)
+        }
     }
 
-    private fun getMessageDate(message: LocalMessage): Date {
-        return message.internalDate ?: message.sentDate ?: Date()
-    }
-
-    private fun getYear(date: Date): Int {
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        return calendar.get(Calendar.YEAR)
-    }
-
-    private fun getMonth(date: Date): Int {
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        return calendar.get(Calendar.MONTH) + 1
-    }
+    @OptIn(ExperimentalTime::class)
+    private val LocalMessage.messageDate: LocalDate
+        get() {
+            val epochMillis = (internalDate ?: sentDate)?.time
+            val timeZone = TimeZone.currentSystemDefault()
+            val instant = epochMillis?.let { kotlin.time.Instant.fromEpochMilliseconds(it) }
+                ?: Clock.System.now()
+            return instant.toLocalDateTime(timeZone).date
+        }
 }
