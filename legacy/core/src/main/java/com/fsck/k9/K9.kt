@@ -64,7 +64,6 @@ object K9 : KoinComponent {
      * @return `true`, if we know that all databases are using the current database schema. `false`, otherwise.
      */
     @Synchronized
-    @JvmStatic
     fun areDatabasesUpToDate(): Boolean {
         return databasesUpToDate
     }

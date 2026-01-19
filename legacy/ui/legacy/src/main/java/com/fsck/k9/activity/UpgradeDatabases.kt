@@ -27,13 +27,13 @@ import com.google.android.material.textview.MaterialTextView
  * to check if we already know whether the databases have been upgraded.
  *  3. [K9.areDatabasesUpToDate] will compare the last known database version stored in a
  * [SharedPreferences] file to [LocalStore.getDbVersion]. This
- * is done as an optimization because it's faster than opening all of the accounts' databases
+ * is done as an optimization because it's faster than opening all the accounts' databases
  * one by one.
  *  4. If there was an error reading the cached database version or if it shows the databases need
  * upgrading this activity (`UpgradeDatabases`) is started.
  *  5. This activity will display a spinning progress indicator and start
  * [DatabaseUpgradeService].
- *  6. [DatabaseUpgradeService] will acquire a partial wake lock (with a 10 minute timeout),
+ *  6. [DatabaseUpgradeService] will acquire a partial wake lock (with a 10-minute timeout),
  * start a background thread to perform the database upgrades, and report the progress using
  * [LocalBroadcastManager] to this activity which will update the UI accordingly.
  *  7. Once the upgrade is complete [DatabaseUpgradeService] will notify this activity,
@@ -42,7 +42,7 @@ import com.google.android.material.textview.MaterialTextView
  * this activity.
  *
  * Notes:
- * Currently we make no attempts to stop the background code (e.g. [MessagingController]) from
+ * Currently we make no attempts to stop the background code (e.g. [com.fsck.k9.controller.MessagingController]) from
  * opening the accounts' databases. If this happens the upgrade is performed in one of the
  * background threads and not by [DatabaseUpgradeService]. But this is not a problem. Due to
  * the locking in [com.fsck.k9.mailstore.LocalStoreProvider.getInstance] the upgrade service will block
@@ -64,7 +64,7 @@ class UpgradeDatabases : BaseActivity() {
 
         decodeExtras()
 
-        // If the databases have already been upgraded there's no point in displaying this activity.
+        // If the databases have already been upgraded, there's no point in displaying this activity.
         if (areDatabasesUpToDate()) {
             launchOriginalActivity()
             return
@@ -77,27 +77,20 @@ class UpgradeDatabases : BaseActivity() {
         setupBroadcastReceiver()
     }
 
-    /**
-     * Initialize the activity's layout
-     */
     private fun initializeLayout() {
         setLayout(R.layout.upgrade_databases)
         setTitle(R.string.upgrade_databases_title)
 
-        mUpgradeText = findViewById<MaterialTextView>(R.id.databaseUpgradeText)
+        mUpgradeText = findViewById(R.id.databaseUpgradeText)
     }
 
-    /**
-     * Decode extras in the intent used to start this activity.
-     */
     private fun decodeExtras() {
         val intent = getIntent()
-        mStartIntent = IntentCompat.getParcelableExtra<Intent?>(intent, EXTRA_START_INTENT, Intent::class.java)
+        mStartIntent = IntentCompat.getParcelableExtra(intent, EXTRA_START_INTENT, Intent::class.java)
     }
 
     /**
-     * Setup the broadcast receiver used to receive progress updates from
-     * [DatabaseUpgradeService].
+     * Setup the broadcast receiver used to receive progress updates from [DatabaseUpgradeService].
      */
     private fun setupBroadcastReceiver() {
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(this)
@@ -145,28 +138,22 @@ class UpgradeDatabases : BaseActivity() {
      */
     internal inner class UpgradeDatabaseBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
-            val action = intent.getAction()
+            val action = intent.action
 
             if (DatabaseUpgradeService.ACTION_UPGRADE_PROGRESS == action) {
-                /*
-                 * Information on the current upgrade progress
-                 */
-
+                // Information on the current upgrade progress
                 val accountUuid = intent.getStringExtra(
-                    DatabaseUpgradeService.EXTRA_ACCOUNT_UUID
+                    DatabaseUpgradeService.EXTRA_ACCOUNT_UUID,
                 )
 
                 val account = mPreferences!!.getAccount(accountUuid!!)
 
                 if (account != null) {
                     val upgradeStatus = getString(R.string.upgrade_database_format, account.displayName)
-                    mUpgradeText!!.setText(upgradeStatus)
+                    mUpgradeText!!.text = upgradeStatus
                 }
             } else if (DatabaseUpgradeService.ACTION_UPGRADE_COMPLETE == action) {
-                /*
-                 * Upgrade complete
-                 */
-
+                // Upgrade complete, launch the original activity.
                 launchOriginalActivity()
             }
         }
