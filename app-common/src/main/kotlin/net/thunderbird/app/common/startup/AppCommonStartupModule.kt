@@ -6,4 +6,5 @@ import org.koin.dsl.module
 
 val appCommonStartupModule: Module = module {
     single<DatabaseUpgradeInterceptor> { DefaultDatabaseUpgradeInterceptor() }
+    single<StartupRouter> { DefaultStartupRouter(get(), get()) }
 }
