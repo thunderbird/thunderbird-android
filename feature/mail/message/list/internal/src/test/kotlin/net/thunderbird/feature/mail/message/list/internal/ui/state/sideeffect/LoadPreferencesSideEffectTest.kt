@@ -14,6 +14,7 @@ import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.logging.testing.TestLogger
@@ -160,7 +161,7 @@ class LoadPreferencesSideEffectTest {
     private inner class FakeGetMessageListPreferences(
         initialValue: MessageListPreferences = createMessageListPreferences(),
     ) : GetMessageListPreferences {
-        private val preferences = kotlinx.coroutines.flow.MutableSharedFlow<MessageListPreferences>(replay = 1)
+        private val preferences = MutableSharedFlow<MessageListPreferences>(replay = 1)
 
         init {
             preferences.tryEmit(initialValue)
