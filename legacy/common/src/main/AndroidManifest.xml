@@ -163,7 +163,7 @@
             />
 
         <activity
-            android:name="com.fsck.k9.activity.UpgradeDatabases"
+            android:name="com.fsck.k9.activity.UpgradeDatabaseActivity"
             android:label="@string/upgrade_databases_title"
             />
 

@@ -49,7 +49,7 @@ import com.google.android.material.textview.MaterialTextView
  * and from the outside (especially for this activity) it will appear as if
  * [DatabaseUpgradeService] is performing the upgrade.
  */
-class UpgradeDatabases : BaseActivity() {
+class UpgradeDatabaseActivity : BaseActivity() {
     private var mStartIntent: Intent? = null
 
     private var mUpgradeText: MaterialTextView? = null
