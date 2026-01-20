@@ -172,7 +172,7 @@ abstract class BaseMessageListFragment :
     private val clock: Clock by inject()
     private val setupArchiveFolderDialogFragmentFactory: SetupArchiveFolderDialogFragmentFactory by inject()
     private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions by inject()
-    protected val swipeActions: StateFlow<Map<AccountId, SwipeActions>> = buildSwipeActions()
+    protected open val swipeActions: StateFlow<Map<AccountId, SwipeActions>> = buildSwipeActions()
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val featureThemeProvider: FeatureThemeProvider by inject()
     private val logger: Logger by inject()
