@@ -14,6 +14,9 @@ import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.ViewModel
 import net.thunderbird.core.common.provider.BrandNameProvider
+import androidx.compose.foundation.layout.displayCutout
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.union
 
 @Composable
 internal fun ServerValidationMainScreen(
@@ -27,6 +30,9 @@ internal fun ServerValidationMainScreen(
         topBar = {
             AppTitleTopHeader(
                 title = brandNameProvider.brandName,
+                modifier = Modifier.windowInsetsPadding(
+                    WindowInsets.statusBars.union(WindowInsets.displayCutout)
+                )
             )
         },
         bottomBar = {
