@@ -28,7 +28,6 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.mail.message.list.domain.DomainContract
 
 @SuppressLint("InflateParams")
 @Suppress("LongParameterList")
@@ -37,12 +36,11 @@ class MessageListSwipeCallback(
     scope: CoroutineScope,
     private val resourceProvider: SwipeResourceProvider,
     private val swipeActionSupportProvider: SwipeActionSupportProvider,
-    private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions,
+    private val swipeActions: StateFlow<Map<AccountId, SwipeActions>>,
     private val adapter: MessageListAdapter,
     private val listener: MessageListSwipeListener,
     accounts: List<LegacyAccount>,
 ) : ItemTouchHelper.Callback() {
-    private val swipeActions: StateFlow<Map<AccountId, SwipeActions>> = buildSwipeActions()
     private val swipePadding = context.resources.getDimension(R.dimen.messageListSwipeIconPadding).toInt()
     private val swipeThreshold = context.resources.getDimension(R.dimen.messageListSwipeThreshold)
     private val backgroundColorPaint = Paint()

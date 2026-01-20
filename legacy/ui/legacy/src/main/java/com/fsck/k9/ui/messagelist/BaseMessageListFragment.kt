@@ -79,6 +79,7 @@ import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
@@ -93,6 +94,7 @@ import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.common.action.SwipeAction
+import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.featureflag.FeatureFlagKey
@@ -104,6 +106,7 @@ import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettings
 import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.MessageListFeatureFlags
@@ -169,6 +172,7 @@ abstract class BaseMessageListFragment :
     private val clock: Clock by inject()
     private val setupArchiveFolderDialogFragmentFactory: SetupArchiveFolderDialogFragmentFactory by inject()
     private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions by inject()
+    protected val swipeActions: StateFlow<Map<AccountId, SwipeActions>> = buildSwipeActions()
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val featureThemeProvider: FeatureThemeProvider by inject()
     private val logger: Logger by inject()
@@ -570,7 +574,7 @@ abstract class BaseMessageListFragment :
                 scope = lifecycleScope,
                 resourceProvider = SwipeResourceProvider(requireContext()),
                 swipeActionSupportProvider = swipeActionSupportProvider,
-                buildSwipeActions = buildSwipeActions,
+                swipeActions = swipeActions,
                 adapter = adapter,
                 listener = swipeListener,
                 accounts = accounts,
