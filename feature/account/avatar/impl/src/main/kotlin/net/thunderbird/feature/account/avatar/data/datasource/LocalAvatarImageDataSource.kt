@@ -34,7 +34,7 @@ internal class LocalAvatarImageDataSource(
     }
 
     private suspend fun getAvatarImageUri(id: AccountId): Uri = getAvatarDirUri().buildUpon()
-        .appendPath("${id.asRaw()}.$AVATAR_IMAGE_FILE_EXTENSION")
+        .appendPath("$id.$AVATAR_IMAGE_FILE_EXTENSION")
         .build()
 
     private suspend fun getAvatarDirUri(): Uri {

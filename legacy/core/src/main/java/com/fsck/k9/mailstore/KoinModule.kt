@@ -8,6 +8,7 @@ import com.fsck.k9.message.extractors.AttachmentCounter
 import com.fsck.k9.message.extractors.MessageFulltextCreator
 import com.fsck.k9.message.extractors.MessagePreviewCreator
 import kotlin.time.ExperimentalTime
+import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.core.common.cache.TimeLimitedCache
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import org.koin.dsl.module
@@ -15,6 +16,7 @@ import org.koin.dsl.module
 val mailStoreModule = module {
     single {
         FolderRepository(
+            accountManager = get(),
             messageStoreManager = get(),
             outboxFolderManager = get(),
         )
@@ -22,9 +24,10 @@ val mailStoreModule = module {
     single { MessageViewInfoExtractorFactory(get(), get(), get()) }
     single<StorageFilesProviderFactory> { AndroidStorageFilesProviderFactory(context = get()) }
     single { SpecialFolderSelectionStrategy() }
-    single<LegacyAccountDtoBackendStorageFactory> {
+    single<BackendStorageFactory> {
         K9BackendStorageFactory(
             preferences = get(),
+            accountManager = get(),
             folderRepository = get(),
             messageStoreManager = get(),
             specialFolderUpdaterFactory = get(),

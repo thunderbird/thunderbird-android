@@ -418,7 +418,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     }
 
     private void configureBackendManager() {
-        when(backendManager.getBackend(account)).thenReturn(backend);
+        when(backendManager.getBackend(account.getUuid())).thenReturn(backend);
     }
 
     private void configureAccount() {

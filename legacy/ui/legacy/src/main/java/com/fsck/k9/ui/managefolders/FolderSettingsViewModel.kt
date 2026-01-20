@@ -55,7 +55,7 @@ class FolderSettingsViewModel(
 
             val folderSettingsData = FolderSettingsData(
                 folder = folderDetails.folder,
-                dataStore = FolderSettingsDataStore(folderRepository, account, folderDetails),
+                dataStore = FolderSettingsDataStore(folderRepository, account.id, folderDetails),
             )
             emit(folderSettingsData)
         }
@@ -69,7 +69,7 @@ class FolderSettingsViewModel(
 
     private suspend fun FolderRepository.loadFolderDetails(account: LegacyAccountDto, folderId: Long): FolderDetails? {
         return withContext(Dispatchers.IO) {
-            getFolderDetails(account, folderId)
+            getFolderDetails(account.id, folderId)
         }
     }
 

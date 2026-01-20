@@ -5,4 +5,4 @@ import net.thunderbird.core.architecture.model.Identifiable
 /**
  * Interface representing an account by its unique identifier [AccountId].
  */
-interface Account : Identifiable<Account>
+interface Account : Identifiable<AccountId>

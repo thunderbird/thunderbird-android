@@ -12,6 +12,7 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.Preferences
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.mail.folder.api.Folder
@@ -62,7 +63,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun unifiedFoldersSearch() {
+    fun unifiedFoldersSearch() = runTest {
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 1,
             accountUuid = SearchAccount.UNIFIED_FOLDERS,
@@ -78,7 +79,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun regularSearch() {
+    fun regularSearch() = runTest {
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 3,
             accountUuid = ACCOUNT_UUID,
@@ -94,7 +95,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun folder() {
+    fun folder() = runTest {
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 4,
             accountUuid = ACCOUNT_UUID,
@@ -110,7 +111,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun nonExistentAccount_shouldReturnNull() {
+    fun nonExistentAccount_shouldReturnNull() = runTest {
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 3,
             accountUuid = "invalid",
@@ -159,7 +160,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
 
     private fun createFolderRepository(): FolderRepository {
         return mock {
-            onBlocking { getFolder(account, FOLDER_ID) } doReturn FOLDER
+            onBlocking { getFolder(account.id, FOLDER_ID) } doReturn FOLDER
         }
     }
 

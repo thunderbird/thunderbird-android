@@ -43,10 +43,10 @@ class LegacyAvatarDtoStorageHandlerTest {
         testSubject.save(account, storage, editor)
 
         // Assert
-        assertThat(editor.values["${accountId.asRaw()}.avatarType"]).isEqualTo(AVATAR_TYPE.name)
-        assertThat(editor.values["${accountId.asRaw()}.avatarMonogram"]).isEqualTo(AVATAR_MONOGRAM)
-        assertThat(editor.values["${accountId.asRaw()}.avatarImageUri"]).isEqualTo(AVATAR_IMAGE_URI)
-        assertThat(editor.values["${accountId.asRaw()}.avatarIconName"]).isEqualTo(null)
+        assertThat(editor.values["$accountId.avatarType"]).isEqualTo(AVATAR_TYPE.name)
+        assertThat(editor.values["$accountId.avatarMonogram"]).isEqualTo(AVATAR_MONOGRAM)
+        assertThat(editor.values["$accountId.avatarImageUri"]).isEqualTo(AVATAR_IMAGE_URI)
+        assertThat(editor.values["$accountId.avatarIconName"]).isEqualTo(null)
     }
 
     @Test
@@ -60,15 +60,15 @@ class LegacyAvatarDtoStorageHandlerTest {
         testSubject.delete(account, storage, editor)
 
         // Assert
-        assertThat(editor.removedKeys).contains("${accountId.asRaw()}.avatarType")
-        assertThat(editor.removedKeys).contains("${accountId.asRaw()}.avatarMonogram")
-        assertThat(editor.removedKeys).contains("${accountId.asRaw()}.avatarImageUri")
-        assertThat(editor.removedKeys).contains("${accountId.asRaw()}.avatarIconName")
+        assertThat(editor.removedKeys).contains("$accountId.avatarType")
+        assertThat(editor.removedKeys).contains("$accountId.avatarMonogram")
+        assertThat(editor.removedKeys).contains("$accountId.avatarImageUri")
+        assertThat(editor.removedKeys).contains("$accountId.avatarIconName")
     }
 
     // Arrange methods
     private fun createAccount(accountId: AccountId): LegacyAccountDto {
-        return LegacyAccountDto(accountId.asRaw()).apply {
+        return LegacyAccountDto(accountId.toString()).apply {
             name = "Test Account"
             chipColor = 0x0099CC // Default color
             avatar = AvatarDto(
@@ -83,10 +83,10 @@ class LegacyAvatarDtoStorageHandlerTest {
     private fun createStorage(accountId: AccountId): FakeStorage {
         return FakeStorage(
             mapOf(
-                "${accountId.asRaw()}.avatarType" to AVATAR_TYPE.name,
-                "${accountId.asRaw()}.avatarMonogram" to AVATAR_MONOGRAM,
-                "${accountId.asRaw()}.avatarImageUri" to AVATAR_IMAGE_URI,
-                "${accountId.asRaw()}.avatarIconName" to AVATAR_ICON_NAME,
+                "$accountId.avatarType" to AVATAR_TYPE.name,
+                "$accountId.avatarMonogram" to AVATAR_MONOGRAM,
+                "$accountId.avatarImageUri" to AVATAR_IMAGE_URI,
+                "$accountId.avatarIconName" to AVATAR_ICON_NAME,
             ),
         )
     }

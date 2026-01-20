@@ -294,7 +294,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     Backend getBackend(LegacyAccountDto account) {
-        return backendManager.getBackend(account);
+        return backendManager.getBackend(account.getUuid());
     }
 
     LocalStore getLocalStoreOrThrow(LegacyAccountDto account) {

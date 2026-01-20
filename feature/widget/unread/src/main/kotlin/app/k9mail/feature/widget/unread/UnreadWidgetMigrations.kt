@@ -34,7 +34,7 @@ internal class UnreadWidgetMigrations(
 
                 val folderServerId = preferences.getString("unread_widget.$widgetId.folder_name", null)
                 if (folderServerId != null) {
-                    val folderId = folderRepository.getFolderId(account, folderServerId)
+                    val folderId = folderRepository.getFolderId(account.id, folderServerId)
                     putString("unread_widget.$widgetId.folder_id", folderId?.toString())
                 }
 

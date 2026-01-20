@@ -18,7 +18,7 @@ internal class UnreadWidgetRepository(
         }
     }
 
-    fun getWidgetData(appWidgetId: Int): UnreadWidgetData? {
+    suspend fun getWidgetData(appWidgetId: Int): UnreadWidgetData? {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
         val version = prefs.getInt(PREF_VERSION_KEY, 1)

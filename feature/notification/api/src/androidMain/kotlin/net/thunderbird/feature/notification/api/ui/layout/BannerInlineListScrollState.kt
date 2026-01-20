@@ -71,7 +71,7 @@ internal class BannerInlineListScrollState(
         val adjustedOffset = accumulatedContentOffset - prevHeight
         contentOffset = adjustedOffset
         bannerInlineListHeightOffset = adjustedOffset.coerceIn(
-            minimumValue = -bannerInlineListHeight.toFloat(),
+            minimumValue = -bannerInlineListHeight,
             maximumValue = 0f,
         )
     }
