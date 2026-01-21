@@ -48,8 +48,6 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.designsystem.molecule.message.AccountIndicatorIcon
 
-private const val WEEK_DAYS = 7
-
 /**
  * Displays a single message item.
  *

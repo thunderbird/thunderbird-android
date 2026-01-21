@@ -24,7 +24,6 @@ import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import com.google.android.material.textview.MaterialTextView
@@ -283,7 +282,6 @@ class MessageViewHolder(
             theme: Resources.Theme,
             res: Resources,
             contactsPictureLoader: ContactPictureLoader,
-            relativeDateTimeFormatter: RelativeDateTimeFormatter,
             colors: MessageViewHolderColors,
             onClickListener: View.OnClickListener,
             onLongClickListener: View.OnLongClickListener,
