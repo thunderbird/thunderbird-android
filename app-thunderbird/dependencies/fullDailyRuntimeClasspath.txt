@@ -91,9 +91,8 @@ androidx.datastore:datastore-preferences-external-protobuf:1.2.0
 androidx.datastore:datastore-preferences-proto:1.2.0
 androidx.datastore:datastore-preferences:1.2.0
 androidx.datastore:datastore:1.2.0
-androidx.documentfile:documentfile:1.0.0
 androidx.drawerlayout:drawerlayout:1.1.1
-androidx.dynamicanimation:dynamicanimation:1.0.0
+androidx.dynamicanimation:dynamicanimation:1.1.0
 androidx.emoji2:emoji2-views-helper:1.4.0
 androidx.emoji2:emoji2:1.4.0
 androidx.exifinterface:exifinterface:1.4.1
@@ -106,8 +105,9 @@ androidx.glance:glance-appwidget:1.1.1
 androidx.glance:glance-material3:1.1.1
 androidx.glance:glance:1.1.1
 androidx.graphics:graphics-path:1.0.1
+androidx.graphics:graphics-shapes-android:1.0.1
+androidx.graphics:graphics-shapes:1.0.1
 androidx.interpolator:interpolator:1.0.0
-androidx.legacy:legacy-support-core-utils:1.0.0
 androidx.lifecycle:lifecycle-common-java8:2.10.0
 androidx.lifecycle:lifecycle-common-jvm:2.10.0
 androidx.lifecycle:lifecycle-common:2.10.0
@@ -145,7 +145,6 @@ androidx.navigationevent:navigationevent-compose-android:1.0.1
 androidx.navigationevent:navigationevent-compose:1.0.1
 androidx.navigationevent:navigationevent:1.0.1
 androidx.preference:preference:1.2.1
-androidx.print:print:1.0.0
 androidx.profileinstaller:profileinstaller:1.4.1
 androidx.recyclerview:recyclerview:1.4.0
 androidx.resourceinspection:resourceinspection-annotation:1.0.1
@@ -208,7 +207,7 @@ com.google.android.gms:play-services-basement:18.4.0
 com.google.android.gms:play-services-location:19.0.0
 com.google.android.gms:play-services-places-placereport:17.0.0
 com.google.android.gms:play-services-tasks:18.2.0
-com.google.android.material:material:1.12.0
+com.google.android.material:material:1.13.0
 com.google.auto.value:auto-value-annotations:1.6.3
 com.google.errorprone:error_prone_annotations:2.15.0
 com.google.firebase:firebase-encoders-json:18.0.0
