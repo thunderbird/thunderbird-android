@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
-    <release version="16.0b4" versioncode="40" date="2026-01-20">
-        <change>OAuth SMTP authentication failed with some Microsoft servers</change>
-    </release>
     <release version="16.0b3" versioncode="39" date="2025-12-17">
         <change>Application crashed on Pixel 10 Pro when returning to message list</change>
         <change>Account avatar monograms reverted to initial account name and could not be renamed</change>
