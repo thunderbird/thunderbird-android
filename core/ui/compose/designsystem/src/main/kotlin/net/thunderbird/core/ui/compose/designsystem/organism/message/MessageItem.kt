@@ -44,20 +44,9 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.theme2.LocalContentColor
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.format
-import kotlinx.datetime.format.Padding
-import kotlinx.datetime.format.char
-import kotlinx.datetime.toLocalDateTime
-import net.thunderbird.core.ui.compose.common.date.LocalDateTimeConfiguration
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.designsystem.molecule.message.AccountIndicatorIcon
-
-private const val WEEK_DAYS = 7
 
 /**
  * Displays a single message item.

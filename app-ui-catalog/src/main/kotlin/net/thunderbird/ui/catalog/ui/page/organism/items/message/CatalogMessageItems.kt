@@ -36,11 +36,7 @@ import app.k9mail.core.ui.compose.designsystem.organism.snackbar.rememberSnackba
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlin.math.roundToInt
 import kotlin.random.Random
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.launch
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.core.ui.compose.designsystem.organism.message.ActiveMessageItem
 import net.thunderbird.core.ui.compose.designsystem.organism.message.JunkMessageItem
 import net.thunderbird.core.ui.compose.designsystem.organism.message.NewMessageItem
@@ -73,7 +69,7 @@ fun LazyGridScope.messageItems() {
                     randomizeAttachment = false,
                     maxPreviewLines = 2,
                     showAccountIndicator = true,
-                    dateTime = "Today"
+                    dateTime = "Today",
                 ),
             )
         }
@@ -180,7 +176,7 @@ private fun MessageItemConfiguration(
             isSingleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = MainTheme.spacings.double)
+                .padding(horizontal = MainTheme.spacings.double),
         )
         TextFieldOutlined(
             value = config.preview,

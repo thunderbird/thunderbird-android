@@ -6,7 +6,6 @@ import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.ui.helper.DisplayAddressHelper
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 
