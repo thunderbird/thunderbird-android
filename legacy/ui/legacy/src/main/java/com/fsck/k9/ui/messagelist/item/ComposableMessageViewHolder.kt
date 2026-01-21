@@ -3,7 +3,6 @@ package com.fsck.k9.ui.messagelist.item
 import android.content.Context
 import androidx.compose.ui.platform.ComposeView
 import app.k9mail.core.android.common.contact.ContactRepository
-import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
@@ -52,7 +51,6 @@ class ComposableMessageViewHolder(
         @Suppress("LongParameterList")
         fun create(
             context: Context,
-            relativeDateTimeFormatter: RelativeDateTimeFormatter,
             themeProvider: FeatureThemeProvider,
             contactRepository: ContactRepository,
             avatarMonogramCreator: AvatarMonogramCreator,
