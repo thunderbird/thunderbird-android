@@ -6,7 +6,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import kotlinx.datetime.LocalDateTime
 import net.thunderbird.core.ui.compose.designsystem.atom.button.FavouriteButtonIcon
 import net.thunderbird.core.ui.compose.designsystem.molecule.message.MessageItemSenderBodyMedium
 

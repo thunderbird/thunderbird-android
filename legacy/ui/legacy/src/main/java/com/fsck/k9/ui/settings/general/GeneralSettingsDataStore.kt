@@ -864,7 +864,7 @@ class GeneralSettingsDataStore(
                 display = settings.display.copy(
                     visualSettings = settings.display.visualSettings.copy(
                         messageListSettings = settings.display.visualSettings.messageListSettings.copy(
-                            dateTimeFormat = MessageListDateTimeFormat.valueOf(value)
+                            dateTimeFormat = MessageListDateTimeFormat.valueOf(value),
                         ),
                     ),
                 ),
