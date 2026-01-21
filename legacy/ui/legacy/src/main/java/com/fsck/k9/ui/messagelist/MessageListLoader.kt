@@ -62,9 +62,9 @@ class MessageListLoader(
             formatDate = { formatTime ->
                 relativeDateTimeFormatter.formatDate(
                     formatTime,
-                    messageListPreferencesManager.getConfig().dateTimeFormat
+                    messageListPreferencesManager.getConfig().dateTimeFormat,
                 )
-            }
+            },
         )
 
         return when {
