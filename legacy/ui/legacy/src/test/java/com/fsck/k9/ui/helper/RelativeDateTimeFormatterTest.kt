@@ -149,6 +149,16 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
         assertThat(displayDate).isEqualTo("12/31/2019")
     }
 
+    @Test
+    fun endOfLastYearFull_shouldReturnDateAndTime() {
+        setClockTo("2020-05-17T15:42")
+        val date = LocalDateTime.parse("2019-12-31T23:59").toEpochMillis()
+
+        val displayDate = dateTimeFormatter.formatDate(date, fullDateTimeFormat)
+
+        assertThat(displayDate).isEqualTo("12/31/2019, 11:59 PM")
+    }
+
     private fun setClockTo(time: String) {
         val dateTime = LocalDateTime.parse(time)
         val timeInMillis = dateTime.toEpochMillis()

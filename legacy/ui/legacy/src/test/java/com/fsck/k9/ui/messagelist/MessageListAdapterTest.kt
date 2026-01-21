@@ -417,6 +417,7 @@ class MessageListAdapterTest : RobolectricTest() {
         backGroundAsReadIndicator: Boolean = false,
         showAccountIndicator: Boolean = false,
         density: UiDensity = UiDensity.Default,
+        dateTimeFormat: MessageListDateTimeFormat = DATE_TIME_FORMAT,
     ): MessageListAdapter {
         val appearance = MessageListAppearance(
             fontSizes,
@@ -428,7 +429,7 @@ class MessageListAdapterTest : RobolectricTest() {
             backGroundAsReadIndicator,
             showAccountIndicator,
             density,
-            dateTimeFormat = DATE_TIME_FORMAT,
+            dateTimeFormat = dateTimeFormat,
         )
 
         @OptIn(ExperimentalTime::class)
