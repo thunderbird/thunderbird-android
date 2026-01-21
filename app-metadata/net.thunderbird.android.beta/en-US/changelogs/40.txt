@@ -1,1 +1,0 @@
-Thunderbird for Android version 16.0b4, based on K-9 Mail. Changes include:
