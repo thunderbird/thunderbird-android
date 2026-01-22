@@ -13,16 +13,15 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
  * such as updating user preferences. By defining these transitions on the parent
  * [MessageListState], we avoid duplicating the logic in every single sub-state.
  */
-@Suppress("CyclomaticComplexMethod")
 internal fun StateMachineBuilder<MessageListState, MessageListEvent>.globalState() {
     state<MessageListState> {
         transition<MessageListEvent.UpdatePreferences> { state, event ->
             state.withPreferences { event.preferences }
         }
 
-        transition<MessageListEvent.ChangeSortType> { state, (accountId, sortType) ->
-            val newSelectedSortTypes = state.metadata.selectedSortTypes + (accountId to sortType)
-            state.withMetadata { copy(selectedSortTypes = newSelectedSortTypes.toPersistentMap()) }
+        transition<MessageListEvent.ChangeSortCriteria> { state, (accountId, sortCriteria) ->
+            val newSortCriteriaPerAccount = state.metadata.sortCriteriaPerAccount + (accountId to sortCriteria)
+            state.withMetadata { copy(sortCriteriaPerAccount = newSortCriteriaPerAccount.toPersistentMap()) }
         }
 
         transition<MessageListEvent.SwipeActionsLoaded> { state, (swipeActions) ->

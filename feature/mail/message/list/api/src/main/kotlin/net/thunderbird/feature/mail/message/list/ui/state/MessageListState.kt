@@ -85,7 +85,7 @@ sealed interface MessageListState {
         override val metadata: MessageListMetadata = MessageListMetadata(
             folder = null,
             swipeActions = persistentMapOf(),
-            selectedSortTypes = persistentMapOf(),
+            sortCriteriaPerAccount = persistentMapOf(),
             activeMessage = null,
             isActive = false,
         ),
@@ -93,7 +93,9 @@ sealed interface MessageListState {
         override val messages: ImmutableList<MessageItemUi> = persistentListOf(),
     ) : MessageListState {
         val isReady: Boolean
-            get() = metadata.swipeActions.isNotEmpty() && preferences != null && metadata.selectedSortTypes.isNotEmpty()
+            get() = metadata.swipeActions.isNotEmpty() &&
+                preferences != null &&
+                metadata.sortCriteriaPerAccount.isNotEmpty()
     }
 
     /**
