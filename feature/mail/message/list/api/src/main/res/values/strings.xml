@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sort_by">Sort by…</string>
+    <string name="sort_by_date_asc">Date (oldest first)</string>
+    <string name="sort_by_date_desc">Date (newest first)</string>
+    <string name="sort_by_arrival_asc">Arrival (oldest first)</string>
+    <string name="sort_by_arrival_desc">Arrival (newest first)</string>
+    <string name="sort_by_subject">Subject</string>
+    <string name="sort_by_sender">Sender</string>
+    <string name="sort_by_flag">Star</string>
+    <string name="sort_by_unread">Read/unread</string>
+    <string name="sort_by_attach">Attachments</string>
+</resources>

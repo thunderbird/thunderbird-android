@@ -9,7 +9,9 @@ import net.thunderbird.app.common.appConfig.AndroidPlatformConfigProvider
 import net.thunderbird.app.common.core.appCommonCoreModule
 import net.thunderbird.app.common.feature.appCommonFeatureModule
 import net.thunderbird.app.common.startup.appCommonStartupModule
+import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
+import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
 import net.thunderbird.feature.mail.message.list.extension.toSortType
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -29,9 +31,14 @@ val appCommonModule: Module = module {
 
     single<PlatformConfigProvider> { AndroidPlatformConfigProvider() }
 
-    single<MessageListDomainContract.UseCase.GetDefaultSortType> {
-        MessageListDomainContract.UseCase.GetDefaultSortType {
-            K9.sortType.toSortType(isAscending = K9.isSortAscending(K9.sortType))
+    single<MessageListDomainContract.UseCase.GetDefaultSortCriteria> {
+        MessageListDomainContract.UseCase.GetDefaultSortCriteria {
+            val primary = K9.sortType.toSortType(isAscending = K9.isSortAscending(K9.sortType))
+            val secondary = K9.sortType
+                .takeIf { it != SortType.SORT_DATE }
+                ?.let(K9::isSortAscending)
+                ?.let(SortType.SORT_DATE::toSortType)
+            SortCriteria(primary = primary, secondary = secondary)
         }
     }
 }
