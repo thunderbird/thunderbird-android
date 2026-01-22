@@ -1198,7 +1198,7 @@ abstract class BaseMessageListFragment :
 
     private fun prepareMenu(menu: Menu) {
         menu.findItem(R.id.compose).isVisible = !isShowFloatingActionButton
-        menu.findItem(R.id.set_sort).isVisible = true
+        prepareSortMenu(menu)
         menu.findItem(R.id.select_all).isVisible = true
         menu.findItem(R.id.mark_all_as_read).isVisible = isMarkAllAsReadSupported
         menu.findItem(R.id.empty_spam).isVisible = isShowingSpamFolder
@@ -1214,6 +1214,11 @@ abstract class BaseMessageListFragment :
 
         menu.findItem(R.id.search_remote).isVisible = !isRemoteSearch && isRemoteSearchAllowed
         menu.findItem(R.id.search_everywhere).isVisible = isManualSearch && !localSearch.searchAllAccounts()
+    }
+
+    protected open fun prepareSortMenu(menu: Menu) {
+        menu.findItem(R.id.set_sort).isVisible = true
+        menu.removeItem(R.id.select_sort_criteria)
     }
 
     private fun prepareDebugMenu(menu: Menu) {
@@ -1307,7 +1312,7 @@ abstract class BaseMessageListFragment :
                 when (outcome.error) {
                     is AuthDebugActions.Error.AccountNotFound,
                     is AuthDebugActions.Error.NoOAuthState,
-                    -> {
+                        -> {
                         Toast.makeText(
                             requireContext(),
                             R.string.debug_invalidate_access_token_unavailable,
@@ -1360,7 +1365,7 @@ abstract class BaseMessageListFragment :
                     is AuthDebugActions.Error.NoOAuthState,
                     is AuthDebugActions.Error.CannotModifyAccessToken,
                     is AuthDebugActions.Error.AlreadyModified,
-                    -> {
+                        -> {
                         Toast.makeText(
                             requireContext(),
                             R.string.debug_invalidate_access_token_unavailable,
@@ -1402,7 +1407,7 @@ abstract class BaseMessageListFragment :
 
                     is AuthDebugActions.Error.CannotModifyAccessToken,
                     is AuthDebugActions.Error.AlreadyModified,
-                    -> {
+                        -> {
                         // Not relevant to this action, but keep exhaustive when; show generic unavailable
                         Toast.makeText(
                             requireContext(),
