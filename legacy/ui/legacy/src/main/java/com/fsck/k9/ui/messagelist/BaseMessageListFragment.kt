@@ -68,7 +68,6 @@ import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
-import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.BaseMessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.ui.messagelist.debug.AuthDebugActions
 import com.fsck.k9.ui.messagelist.item.MessageViewHolder
@@ -77,7 +76,6 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import java.util.concurrent.Future
-import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.Dispatchers
@@ -108,6 +106,7 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettings
 import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.AccountId
@@ -172,8 +171,6 @@ abstract class BaseMessageListFragment :
     private val connectivityManager: ConnectivityManager by inject()
     private val localStoreProvider: LocalStoreProvider by inject()
 
-    @OptIn(ExperimentalTime::class)
-    private val clock: Clock by inject()
     private val setupArchiveFolderDialogFragmentFactory: SetupArchiveFolderDialogFragmentFactory by inject()
     private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions by inject()
     protected open val swipeActions: StateFlow<Map<AccountId, SwipeActions>> = buildSwipeActions()
@@ -273,6 +270,8 @@ abstract class BaseMessageListFragment :
     private var messageListSwipeCallback: MessageListSwipeCallback? = null
     private val interactionSettings: InteractionSettings
         get() = generalSettingsManager.getConfig().interaction
+    private val messageListSettings: DisplayMessageListSettings
+        get() = generalSettingsManager.getConfig().display.visualSettings.messageListSettings
 
     /**
      * Set this to `true` when the fragment should be considered active. When active, the fragment adds its actions to
@@ -319,6 +318,12 @@ abstract class BaseMessageListFragment :
             this.error = error
             return
         }
+
+        viewModel.getMessageListLiveData().observe(this) { messageListInfo: MessageListInfo ->
+            setMessageList(messageListInfo)
+        }
+
+        adapter = createMessageListAdapter()
 
         generalSettingsManager.getSettingsFlow()
             /**
@@ -414,8 +419,7 @@ abstract class BaseMessageListFragment :
             layoutInflater = layoutInflater,
             contactsPictureLoader = ContactPicture.getContactPictureLoader(),
             listItemListener = this,
-            appearance = ::messageListAppearance,
-            relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), clock),
+            appearance = messageListAppearance,
             themeProvider = featureThemeProvider,
             featureFlagProvider = featureFlagProvider,
             contactRepository = contactRepository,
@@ -518,6 +522,7 @@ abstract class BaseMessageListFragment :
     private fun initializeMessageListLayout(view: View) {
         initializeSwipeRefreshLayout(view)
         initializeFloatingActionButton(view)
+        initializeRecyclerView(view)
         initializeRecentChangesSnackbar()
 
         // This needs to be done before loading the message list below
