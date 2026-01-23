@@ -147,7 +147,7 @@ class LoadPreferencesSideEffectTest {
         useVolumeKeyNavigation: Boolean = false,
         serverSearchLimit: Int = 0,
         actionRequiringUserConfirmation: ImmutableSet<ActionRequiringUserConfirmation> = persistentSetOf(),
-        colorizeBackgroundWhenRead: Boolean = false
+        colorizeBackgroundWhenRead: Boolean = false,
     ) = MessageListPreferences(
         density = density,
         groupConversations = groupConversations,
