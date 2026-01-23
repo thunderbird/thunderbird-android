@@ -99,7 +99,7 @@ val coreNotificationModule = module {
         )
     }
     factory { BaseNotificationDataCreator() }
-    factory { SingleMessageNotificationDataCreator(get()) }
+    factory { SingleMessageNotificationDataCreator(interactionPreferences = get(), notificationPreference = get()) }
     factory {
         SummaryNotificationDataCreator(
             singleMessageNotificationDataCreator = get(),

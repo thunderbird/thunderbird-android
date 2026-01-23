@@ -63,3 +63,12 @@ enum class SplitViewMode {
     NEVER,
     WHEN_IN_LANDSCAPE,
 }
+
+/**
+ * Controls behaviour of delete button in notifications.
+ */
+enum class NotificationQuickDelete {
+    ALWAYS,
+    FOR_SINGLE_MSG,
+    NEVER,
+}

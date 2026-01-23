@@ -12,6 +12,7 @@ import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.BodyContentType
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.NotificationQuickDelete
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
@@ -117,6 +118,7 @@ class GeneralSettingsDataStore(
             "messagelist_contact_name_color" ->
                 generalSettingsManager
                     .getConfig().display.visualSettings.messageListSettings.contactNameColor
+
             "message_view_content_font_slider" -> K9.fontSizes.messageViewContentAsPercent
             else -> defValue
         }
@@ -147,7 +149,7 @@ class GeneralSettingsDataStore(
             "messageViewTheme" -> subThemeToString(coreSettings.messageViewTheme)
             "messagelist_preview_lines" -> messageListSettings.previewLines.toString()
             "splitview_mode" -> coreSettings.splitViewMode.name
-            "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
+            "notification_quick_delete" -> notificationSettings.notificationQuickDeleteBehaviour.name
             "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
             "background_ops" -> networkSettings.backgroundOps.name
             "quiet_time_starts" -> notificationSettings.quietTimeStarts
@@ -187,7 +189,9 @@ class GeneralSettingsDataStore(
             "messagelist_preview_lines" -> setMessageListPreviewLines(value.toInt())
             "splitview_mode" -> setSplitViewModel(SplitViewMode.valueOf(value.uppercase()))
             "notification_quick_delete" -> {
-                K9.notificationQuickDeleteBehaviour = K9.NotificationQuickDelete.valueOf(value)
+                setNotificationQuickDeleteBehaviour(
+                    behaviour = NotificationQuickDelete.valueOf(value),
+                )
             }
 
             "lock_screen_notification_visibility" -> {
@@ -360,6 +364,13 @@ class GeneralSettingsDataStore(
                     ),
                 ),
             )
+        }
+    }
+
+    private fun setNotificationQuickDeleteBehaviour(behaviour: NotificationQuickDelete) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(notification = settings.notification.copy(notificationQuickDeleteBehaviour = behaviour))
         }
     }
 

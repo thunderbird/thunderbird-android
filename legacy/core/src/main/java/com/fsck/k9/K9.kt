@@ -115,9 +115,6 @@ object K9 : KoinComponent {
     val fontSizes = FontSizes()
 
     @JvmStatic
-    var notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
-
-    @JvmStatic
     var lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT
 
     var messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
@@ -206,8 +203,6 @@ object K9 : KoinComponent {
         val sortAscendingSetting = storage.getBoolean("sortAscending", AccountDefaultsProvider.DEFAULT_SORT_ASCENDING)
         sortAscending[sortType] = sortAscendingSetting
 
-        notificationQuickDeleteBehaviour = storage.getEnum("notificationQuickDelete", NotificationQuickDelete.ALWAYS)
-
         lockScreenNotificationVisibility = storage.getEnum(
             "lockScreenNotificationVisibility",
             LockScreenNotificationVisibility.MESSAGE_COUNT,
@@ -242,8 +237,6 @@ object K9 : KoinComponent {
 
         editor.putEnum("sortTypeEnum", sortType)
         editor.putBoolean("sortAscending", sortAscending[sortType] ?: false)
-
-        editor.putString("notificationQuickDelete", notificationQuickDeleteBehaviour.toString())
         editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
 
         editor.putBoolean("messageViewArchiveActionVisible", isMessageViewArchiveActionVisible)
@@ -302,15 +295,6 @@ object K9 : KoinComponent {
     const val MAX_SEND_ATTEMPTS = 5
 
     const val MANUAL_WAKE_LOCK_TIMEOUT = 120000
-
-    /**
-     * Controls behaviour of delete button in notifications.
-     */
-    enum class NotificationQuickDelete {
-        ALWAYS,
-        FOR_SINGLE_MSG,
-        NEVER,
-    }
 
     enum class LockScreenNotificationVisibility {
         EVERYTHING,
