@@ -12,11 +12,18 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContrib
 internal interface DomainContract {
 
     interface UseCase {
+
+        /**
+         * Get available contributions.
+         */
         fun interface GetAvailableContributions {
             suspend operator fun invoke(): Outcome<AvailableContributions, BillingError>
         }
     }
 
+    /**
+     * Provider for contribution IDs.
+     */
     interface ContributionIdProvider {
         val oneTimeContributionIds: ImmutableList<String>
         val recurringContributionIds: ImmutableList<String>
@@ -61,7 +68,10 @@ internal interface DomainContract {
         fun clear()
     }
 
-    sealed interface BillingError {
+    /**
+     * Error types related to contribution operations.
+     */
+    sealed interface ContributionError {
         val message: String
 
         data class UserCancelled(
