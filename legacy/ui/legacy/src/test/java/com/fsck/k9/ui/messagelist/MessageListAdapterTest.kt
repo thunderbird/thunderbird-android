@@ -25,7 +25,6 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.google.android.material.textview.MaterialTextView
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.Identity
@@ -440,7 +439,6 @@ class MessageListAdapterTest : RobolectricTest() {
             contactsPictureLoader = contactsPictureLoader,
             listItemListener = listItemListener,
             appearance = { appearance },
-            relativeDateTimeFormatter = RelativeDateTimeFormatter(context, TestClock()),
             themeProvider = FakeThemeProvider(),
             featureFlagProvider = FakeFeatureFlagProvider(),
             avatarMonogramCreator = mock(),
