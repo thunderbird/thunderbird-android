@@ -6,14 +6,14 @@ import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.funding.googleplay.domain.DomainContract.BillingError
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 import com.android.billingclient.api.BillingClient as GoogleBillingClient
 import com.android.billingclient.api.BillingResult as GoogleBillingResult
 
-internal interface DataContract {
+internal interface FundingDataContract {
 
     interface Mapper {
         interface Product {
@@ -27,7 +27,7 @@ internal interface DataContract {
             suspend fun <T> mapToOutcome(
                 billingResult: GoogleBillingResult,
                 transformSuccess: suspend () -> T,
-            ): Outcome<T, BillingError>
+            ): Outcome<T, ContributionError>
         }
     }
 
@@ -69,14 +69,14 @@ internal interface DataContract {
         /**
          * Flow that emits the last purchased contribution.
          */
-        val purchasedContribution: StateFlow<Outcome<Contribution?, BillingError>>
+        val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>>
 
         /**
          * Connect to the billing service.
          *
          * @param onConnected Callback to be invoked when the billing service is connected.
          */
-        suspend fun <T> connect(onConnected: suspend () -> Outcome<T, BillingError>): Outcome<T, BillingError>
+        suspend fun <T> connect(onConnected: suspend () -> Outcome<T, ContributionError>): Outcome<T, ContributionError>
 
         /**
          * Disconnect from the billing service.
@@ -88,29 +88,29 @@ internal interface DataContract {
          */
         suspend fun loadOneTimeContributions(
             productIds: List<String>,
-        ): Outcome<List<OneTimeContribution>, BillingError>
+        ): Outcome<List<OneTimeContribution>, ContributionError>
 
         /**
          * Load recurring contributions.
          */
         suspend fun loadRecurringContributions(
             productIds: List<String>,
-        ): Outcome<List<RecurringContribution>, BillingError>
+        ): Outcome<List<RecurringContribution>, ContributionError>
 
         /**
          * Load purchased one-time contributions.
          */
-        suspend fun loadPurchasedOneTimeContributions(): Outcome<List<OneTimeContribution>, BillingError>
+        suspend fun loadPurchasedOneTimeContributions(): Outcome<List<OneTimeContribution>, ContributionError>
 
         /**
          *  Load purchased recurring contributions.
          */
-        suspend fun loadPurchasedRecurringContributions(): Outcome<List<RecurringContribution>, BillingError>
+        suspend fun loadPurchasedRecurringContributions(): Outcome<List<RecurringContribution>, ContributionError>
 
         /**
          * Load the most recent one-time contribution.
          */
-        suspend fun loadPurchasedOneTimeContributionHistory(): Outcome<OneTimeContribution?, BillingError>
+        suspend fun loadPurchasedOneTimeContributionHistory(): Outcome<OneTimeContribution?, ContributionError>
 
         /**
          * Purchase a contribution.
@@ -118,6 +118,6 @@ internal interface DataContract {
         suspend fun purchaseContribution(
             activity: Activity,
             contribution: Contribution,
-        ): Outcome<Unit, BillingError>
+        ): Outcome<Unit, ContributionError>
     }
 }

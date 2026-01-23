@@ -3,14 +3,14 @@ package net.thunderbird.feature.funding.googleplay.ui.contribution
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
-import net.thunderbird.feature.funding.googleplay.domain.DomainContract.BillingError
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 
 @Composable
 @Preview(showBackground = true)
 fun ContributionErrorPurchaseFailedPreview() {
     PreviewWithTheme {
         ContributionError(
-            error = BillingError.PurchaseFailed("Purchase failed"),
+            error = ContributionError.PurchaseFailed("Purchase failed"),
             onDismissClick = {},
         )
     }
@@ -21,7 +21,7 @@ fun ContributionErrorPurchaseFailedPreview() {
 fun ContributionErrorServiceDisconnectedPreview() {
     PreviewWithTheme {
         ContributionError(
-            error = BillingError.ServiceDisconnected("Service disconnected"),
+            error = ContributionError.ServiceDisconnected("Service disconnected"),
             onDismissClick = {},
         )
     }
@@ -32,7 +32,7 @@ fun ContributionErrorServiceDisconnectedPreview() {
 fun ContributionErrorUnknownErrorPreview() {
     PreviewWithTheme {
         ContributionError(
-            error = BillingError.DeveloperError("Unknown error"),
+            error = ContributionError.DeveloperError("Unknown error"),
             onDismissClick = {},
         )
     }
@@ -43,7 +43,7 @@ fun ContributionErrorUnknownErrorPreview() {
 fun ContributionErrorDeveloperErrorPreview() {
     PreviewWithTheme {
         ContributionError(
-            error = BillingError.UserCancelled("User cancelled"),
+            error = ContributionError.UserCancelled("User cancelled"),
             onDismissClick = {},
         )
     }

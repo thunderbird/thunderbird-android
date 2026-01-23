@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
-import net.thunderbird.feature.funding.googleplay.domain.DomainContract
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionListState
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.State
 
@@ -66,7 +66,7 @@ fun ContributionContentListErrorPreview() {
         ContributionContent(
             state = State(
                 listState = ContributionListState(
-                    error = DomainContract.BillingError.DeveloperError("Developer error"),
+                    error = FundingDomainContract.ContributionError.DeveloperError("Developer error"),
                     isLoading = false,
                 ),
             ),
@@ -82,7 +82,7 @@ fun ContributionContentPurchaseErrorPreview() {
     PreviewWithTheme {
         ContributionContent(
             state = State(
-                purchaseError = DomainContract.BillingError.DeveloperError("Developer error"),
+                purchaseError = FundingDomainContract.ContributionError.DeveloperError("Developer error"),
             ),
             onEvent = {},
             contentPadding = PaddingValues(),

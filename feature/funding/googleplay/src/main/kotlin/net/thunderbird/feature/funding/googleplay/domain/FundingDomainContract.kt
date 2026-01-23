@@ -9,7 +9,7 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
-internal interface DomainContract {
+internal interface FundingDomainContract {
 
     interface UseCase {
 
@@ -17,7 +17,7 @@ internal interface DomainContract {
          * Get available contributions.
          */
         fun interface GetAvailableContributions {
-            suspend operator fun invoke(): Outcome<AvailableContributions, BillingError>
+            suspend operator fun invoke(): Outcome<AvailableContributions, ContributionError>
         }
     }
 
@@ -33,22 +33,22 @@ internal interface DomainContract {
         /**
          * Flow that emits the last purchased contribution.
          */
-        val purchasedContribution: StateFlow<Outcome<Contribution?, BillingError>>
+        val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>>
 
         /**
          * Load contributions.
          */
-        suspend fun loadOneTimeContributions(): Outcome<List<OneTimeContribution>, BillingError>
+        suspend fun loadOneTimeContributions(): Outcome<List<OneTimeContribution>, ContributionError>
 
         /**
          * Load recurring contributions.
          */
-        suspend fun loadRecurringContributions(): Outcome<List<RecurringContribution>, BillingError>
+        suspend fun loadRecurringContributions(): Outcome<List<RecurringContribution>, ContributionError>
 
         /**
          * Load purchased contributions.
          */
-        suspend fun loadPurchasedContributions(): Outcome<List<Contribution>, BillingError>
+        suspend fun loadPurchasedContributions(): Outcome<List<Contribution>, ContributionError>
 
         /**
          * Purchase a contribution.
@@ -60,7 +60,7 @@ internal interface DomainContract {
         suspend fun purchaseContribution(
             activity: Activity,
             contribution: Contribution,
-        ): Outcome<Unit, BillingError>
+        ): Outcome<Unit, ContributionError>
 
         /**
          * Release all resources.
@@ -76,22 +76,22 @@ internal interface DomainContract {
 
         data class UserCancelled(
             override val message: String,
-        ) : BillingError
+        ) : ContributionError
 
         data class PurchaseFailed(
             override val message: String,
-        ) : BillingError
+        ) : ContributionError
 
         data class ServiceDisconnected(
             override val message: String,
-        ) : BillingError
+        ) : ContributionError
 
         data class DeveloperError(
             override val message: String,
-        ) : BillingError
+        ) : ContributionError
 
         data class UnknownError(
             override val message: String,
-        ) : BillingError
+        ) : ContributionError
     }
 }

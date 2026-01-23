@@ -12,8 +12,8 @@ import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.consumePurchase
 import net.thunderbird.core.common.cache.Cache
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.feature.funding.googleplay.data.DataContract
-import net.thunderbird.feature.funding.googleplay.data.DataContract.Remote
+import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
+import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
@@ -23,7 +23,7 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContrib
 @Suppress("TooManyFunctions")
 internal class GoogleBillingPurchaseHandler(
     private val productCache: Cache<String, ProductDetails>,
-    private val productMapper: DataContract.Mapper.Product,
+    private val productMapper: FundingDataContract.Mapper.Product,
     private val logger: Logger,
 ) : Remote.GoogleBillingPurchaseHandler {
 

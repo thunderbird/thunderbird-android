@@ -8,7 +8,7 @@ import net.thunderbird.feature.funding.api.FundingManager
 import net.thunderbird.feature.funding.api.FundingNavigation
 import net.thunderbird.feature.funding.googleplay.GooglePlayFundingManager
 import net.thunderbird.feature.funding.googleplay.GooglePlayFundingNavigation
-import net.thunderbird.feature.funding.googleplay.data.DataContract
+import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.data.GoogleBillingClient
 import net.thunderbird.feature.funding.googleplay.data.mapper.BillingResultMapper
 import net.thunderbird.feature.funding.googleplay.data.mapper.ProductDetailsMapper
@@ -16,7 +16,7 @@ import net.thunderbird.feature.funding.googleplay.data.remote.GoogleBillingClien
 import net.thunderbird.feature.funding.googleplay.data.remote.GoogleBillingPurchaseHandler
 import net.thunderbird.feature.funding.googleplay.domain.BillingManager
 import net.thunderbird.feature.funding.googleplay.domain.ContributionIdProvider
-import net.thunderbird.feature.funding.googleplay.domain.DomainContract
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.domain.usecase.GetAvailableContributions
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionViewModel
 import net.thunderbird.feature.funding.googleplay.ui.reminder.ActivityLifecycleObserver
@@ -63,15 +63,15 @@ val featureFundingModule = module {
 
     single<FundingNavigation> { GooglePlayFundingNavigation() }
 
-    single<DataContract.Mapper.Product> {
+    single<FundingDataContract.Mapper.Product> {
         ProductDetailsMapper()
     }
 
-    single<DataContract.Mapper.BillingResult> {
+    single<FundingDataContract.Mapper.BillingResult> {
         BillingResultMapper()
     }
 
-    single<DataContract.Remote.GoogleBillingClientProvider> {
+    single<FundingDataContract.Remote.GoogleBillingClientProvider> {
         GoogleBillingClientProvider(
             context = get(),
         )
@@ -81,7 +81,7 @@ val featureFundingModule = module {
         InMemoryCache()
     }
 
-    single<DataContract.Remote.GoogleBillingPurchaseHandler> {
+    single<FundingDataContract.Remote.GoogleBillingPurchaseHandler> {
         GoogleBillingPurchaseHandler(
             productCache = get(),
             productMapper = get(),
@@ -89,7 +89,7 @@ val featureFundingModule = module {
         )
     }
 
-    single<DataContract.BillingClient> {
+    single<FundingDataContract.BillingClient> {
         GoogleBillingClient(
             clientProvider = get(),
             productMapper = get(),
@@ -100,18 +100,18 @@ val featureFundingModule = module {
         )
     }
 
-    single<DomainContract.ContributionIdProvider> {
+    single<FundingDomainContract.ContributionIdProvider> {
         ContributionIdProvider()
     }
 
-    single<DomainContract.BillingManager> {
+    single<FundingDomainContract.BillingManager> {
         BillingManager(
             billingClient = get(),
             contributionIdProvider = get(),
         )
     }
 
-    single<DomainContract.UseCase.GetAvailableContributions> {
+    single<FundingDomainContract.UseCase.GetAvailableContributions> {
         GetAvailableContributions(
             billingManager = get(),
         )

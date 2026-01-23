@@ -6,7 +6,7 @@ import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingErrorState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import net.thunderbird.feature.funding.googleplay.domain.DomainContract.BillingError
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
@@ -23,7 +23,7 @@ internal class ContributionContract {
         val showContributionList: Boolean = true,
         val showRecurringContributions: Boolean = false,
 
-        val purchaseError: BillingError? = null,
+        val purchaseError: ContributionError? = null,
     )
 
     @Stable
@@ -33,9 +33,9 @@ internal class ContributionContract {
         val selectedContribution: Contribution? = null,
         val isRecurringContributionSelected: Boolean = true,
 
-        override val error: BillingError? = null,
+        override val error: ContributionError? = null,
         override val isLoading: Boolean = true,
-    ) : LoadingErrorState<BillingError>
+    ) : LoadingErrorState<ContributionError>
 
     sealed interface Event {
         data object OnOneTimeContributionSelected : Event

@@ -4,13 +4,13 @@ import android.app.Activity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.funding.googleplay.domain.DomainContract
-import net.thunderbird.feature.funding.googleplay.domain.DomainContract.BillingError
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 
-internal class FakeBillingManager : DomainContract.BillingManager {
+internal class FakeBillingManager : FundingDomainContract.BillingManager {
 
-    override val purchasedContribution: StateFlow<Outcome<Contribution?, BillingError>> = MutableStateFlow(
+    override val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>> = MutableStateFlow(
         Outcome.success(null),
     )
 
@@ -18,7 +18,7 @@ internal class FakeBillingManager : DomainContract.BillingManager {
 
     override suspend fun loadRecurringContributions() = Outcome.success(FakeData.recurringContributions)
 
-    override suspend fun loadPurchasedContributions(): Outcome<List<Contribution>, BillingError> {
+    override suspend fun loadPurchasedContributions(): Outcome<List<Contribution>, ContributionError> {
         return Outcome.success(
             listOf(
                 FakeData.oneTimeContributions.first(),

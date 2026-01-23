@@ -36,7 +36,7 @@ import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.feature.funding.googleplay.R
-import net.thunderbird.feature.funding.googleplay.domain.DomainContract.BillingError
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
@@ -241,7 +241,7 @@ private fun ListEmptyView(
 
 @Composable
 private fun ListErrorView(
-    error: BillingError,
+    error: ContributionError,
     onRetryClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

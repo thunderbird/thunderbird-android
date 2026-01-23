@@ -5,8 +5,8 @@ import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import net.thunderbird.core.outcome.handle
-import net.thunderbird.feature.funding.googleplay.domain.DomainContract
-import net.thunderbird.feature.funding.googleplay.domain.DomainContract.UseCase
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.UseCase
 import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
@@ -18,7 +18,7 @@ import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionCo
 @Suppress("TooManyFunctions")
 internal class ContributionViewModel(
     private val getAvailableContributions: UseCase.GetAvailableContributions,
-    private val billingManager: DomainContract.BillingManager,
+    private val billingManager: FundingDomainContract.BillingManager,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState),
     ViewModel {

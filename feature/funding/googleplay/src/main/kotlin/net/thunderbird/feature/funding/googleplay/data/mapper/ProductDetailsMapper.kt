@@ -2,7 +2,7 @@ package net.thunderbird.feature.funding.googleplay.data.mapper
 
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.ProductDetails
-import net.thunderbird.feature.funding.googleplay.data.DataContract.Mapper
+import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Mapper
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution

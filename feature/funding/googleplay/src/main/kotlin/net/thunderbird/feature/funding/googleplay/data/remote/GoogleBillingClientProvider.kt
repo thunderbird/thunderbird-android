@@ -4,7 +4,7 @@ import android.content.Context
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.PendingPurchasesParams
 import com.android.billingclient.api.PurchasesUpdatedListener
-import net.thunderbird.feature.funding.googleplay.data.DataContract
+import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 
 /**
  * Google Billing client provider.
@@ -13,7 +13,7 @@ import net.thunderbird.feature.funding.googleplay.data.DataContract
  */
 class GoogleBillingClientProvider(
     private val context: Context,
-) : DataContract.Remote.GoogleBillingClientProvider {
+) : FundingDataContract.Remote.GoogleBillingClientProvider {
 
     private var clientInstance: BillingClient? = null
 

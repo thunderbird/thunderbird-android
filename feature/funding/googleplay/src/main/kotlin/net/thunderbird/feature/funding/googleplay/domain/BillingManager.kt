@@ -5,21 +5,21 @@ import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.outcome.flatMapSuccess
 import net.thunderbird.core.outcome.mapSuccess
-import net.thunderbird.feature.funding.googleplay.data.DataContract
-import net.thunderbird.feature.funding.googleplay.domain.DomainContract.BillingError
+import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
 internal class BillingManager(
-    private val billingClient: DataContract.BillingClient,
-    private val contributionIdProvider: DomainContract.ContributionIdProvider,
-) : DomainContract.BillingManager {
+    private val billingClient: FundingDataContract.BillingClient,
+    private val contributionIdProvider: FundingDomainContract.ContributionIdProvider,
+) : FundingDomainContract.BillingManager {
 
-    override val purchasedContribution: StateFlow<Outcome<Contribution?, BillingError>> =
+    override val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>> =
         billingClient.purchasedContribution
 
-    override suspend fun loadOneTimeContributions(): Outcome<List<OneTimeContribution>, BillingError> {
+    override suspend fun loadOneTimeContributions(): Outcome<List<OneTimeContribution>, ContributionError> {
         return billingClient.connect {
             billingClient.loadOneTimeContributions(
                 productIds = contributionIdProvider.oneTimeContributionIds,
@@ -29,7 +29,7 @@ internal class BillingManager(
         }
     }
 
-    override suspend fun loadRecurringContributions(): Outcome<List<RecurringContribution>, BillingError> {
+    override suspend fun loadRecurringContributions(): Outcome<List<RecurringContribution>, ContributionError> {
         return billingClient.connect {
             billingClient.loadRecurringContributions(
                 productIds = contributionIdProvider.recurringContributionIds,
@@ -39,7 +39,7 @@ internal class BillingManager(
         }
     }
 
-    override suspend fun loadPurchasedContributions(): Outcome<List<Contribution>, BillingError> {
+    override suspend fun loadPurchasedContributions(): Outcome<List<Contribution>, ContributionError> {
         return billingClient.connect {
             billingClient.loadPurchasedRecurringContributions().flatMapSuccess { recurringContributions ->
                 if (recurringContributions.isEmpty()) {
@@ -60,7 +60,7 @@ internal class BillingManager(
     override suspend fun purchaseContribution(
         activity: Activity,
         contribution: Contribution,
-    ): Outcome<Unit, BillingError> {
+    ): Outcome<Unit, ContributionError> {
         return billingClient.connect {
             billingClient.purchaseContribution(activity, contribution)
         }

@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.funding.googleplay.domain.DomainContract.BillingError
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 
 internal class BillingResultMapperTest {
 
@@ -43,7 +43,7 @@ internal class BillingResultMapperTest {
             }
 
             results.forEach { result ->
-                assertOutcomeFailure(result, BillingError.ServiceDisconnected::class)
+                assertOutcomeFailure(result, ContributionError.ServiceDisconnected::class)
             }
         }
 
@@ -60,7 +60,7 @@ internal class BillingResultMapperTest {
         }
 
         results.forEach { result ->
-            assertOutcomeFailure(result, BillingError.PurchaseFailed::class)
+            assertOutcomeFailure(result, ContributionError.PurchaseFailed::class)
         }
     }
 
@@ -70,7 +70,7 @@ internal class BillingResultMapperTest {
 
         val result = testSubject.mapToOutcome(billingResult) {}
 
-        assertOutcomeFailure(result, BillingError.UserCancelled::class)
+        assertOutcomeFailure(result, ContributionError.UserCancelled::class)
     }
 
     @Test
@@ -79,7 +79,7 @@ internal class BillingResultMapperTest {
 
         val result = testSubject.mapToOutcome(billingResult) {}
 
-        assertOutcomeFailure(result, BillingError.DeveloperError::class)
+        assertOutcomeFailure(result, ContributionError.DeveloperError::class)
     }
 
     @Test
@@ -94,16 +94,19 @@ internal class BillingResultMapperTest {
         }
 
         results.forEach { result ->
-            assertOutcomeFailure(result, BillingError.UnknownError::class)
+            assertOutcomeFailure(result, ContributionError.UnknownError::class)
         }
     }
 
-    private fun <E : BillingError> assertOutcomeFailure(result: Outcome<Unit, BillingError>, kClass: KClass<E>) {
+    private fun <E : ContributionError> assertOutcomeFailure(
+        result: Outcome<Unit, ContributionError>,
+        kClass: KClass<E>,
+    ) {
         assertThat(result).isInstanceOf(Outcome.Failure::class)
         val error = (result as Outcome.Failure).error
         assertThat(error).all {
             isInstanceOf(kClass)
-            prop(BillingError::message).isEqualTo(DEBUG_MESSAGE)
+            prop(ContributionError::message).isEqualTo(DEBUG_MESSAGE)
         }
     }
 

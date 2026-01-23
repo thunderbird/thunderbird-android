@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import kotlinx.collections.immutable.persistentListOf
-import net.thunderbird.feature.funding.googleplay.domain.DomainContract
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionListState
 
 @Composable
@@ -138,7 +138,7 @@ internal fun ContributionListErrorPreview() {
                 selectedContribution = null,
                 isRecurringContributionSelected = false,
                 isLoading = false,
-                error = DomainContract.BillingError.UnknownError(
+                error = FundingDomainContract.ContributionError.UnknownError(
                     "An error occurred",
                 ),
             ),

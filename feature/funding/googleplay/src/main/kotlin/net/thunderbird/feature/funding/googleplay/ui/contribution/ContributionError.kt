@@ -20,7 +20,7 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.feature.funding.googleplay.R
-import net.thunderbird.feature.funding.googleplay.domain.DomainContract.BillingError
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 
 @Composable
 internal fun ContributionError(
@@ -29,10 +29,10 @@ internal fun ContributionError(
     modifier: Modifier = Modifier,
 ) {
     when (error) {
-        is BillingError.DeveloperError,
-        is BillingError.PurchaseFailed,
-        is BillingError.ServiceDisconnected,
-        is BillingError.UnknownError,
+        is ContributionError.DeveloperError,
+        is ContributionError.PurchaseFailed,
+        is ContributionError.ServiceDisconnected,
+        is ContributionError.UnknownError,
         -> ContributionErrorView(
             title = mapErrorToTitle(error),
             description = error.message,
@@ -40,7 +40,7 @@ internal fun ContributionError(
             modifier = modifier,
         )
 
-        is BillingError.UserCancelled -> Unit // could be ignored
+        is ContributionError.UserCancelled -> Unit // could be ignored
         null -> Unit
     }
 }
@@ -105,22 +105,22 @@ private fun ContributionErrorView(
 }
 
 @Composable
-internal fun mapErrorToTitle(error: BillingError): String {
+internal fun mapErrorToTitle(error: ContributionError): String {
     return when (error) {
-        is BillingError.PurchaseFailed -> {
+        is ContributionError.PurchaseFailed -> {
             stringResource(R.string.funding_googleplay_contribution_error_purchase_failed)
         }
 
-        is BillingError.ServiceDisconnected -> {
+        is ContributionError.ServiceDisconnected -> {
             stringResource(R.string.funding_googleplay_contribution_error_service_disconnected)
         }
 
-        is BillingError.DeveloperError,
-        is BillingError.UnknownError,
+        is ContributionError.DeveloperError,
+        is ContributionError.UnknownError,
         -> {
             stringResource(R.string.funding_googleplay_contribution_error_unknown)
         }
 
-        is BillingError.UserCancelled -> error("User cancelled not supported")
+        is ContributionError.UserCancelled -> error("User cancelled not supported")
     }
 }
