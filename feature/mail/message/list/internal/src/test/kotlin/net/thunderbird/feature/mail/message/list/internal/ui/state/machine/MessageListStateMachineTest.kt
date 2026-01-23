@@ -23,11 +23,11 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.message.list.preferences.ActionRequiringUserConfirmation
-import net.thunderbird.feature.mail.message.list.preferences.MessageListDateTimeFormat
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
@@ -634,7 +634,7 @@ private fun createMessageListPreferences(
     showFavouriteButton: Boolean = false,
     senderAboveSubject: Boolean = false,
     excerptLines: Int = 1,
-    dateTimeFormat: MessageListDateTimeFormat = MessageListDateTimeFormat.Auto,
+    dateTimeFormat: MessageListDateTimeFormat = MessageListDateTimeFormat.Contextual,
     useVolumeKeyNavigation: Boolean = false,
     serverSearchLimit: Int = 0,
     actionRequiringUserConfirmation: ImmutableSet<ActionRequiringUserConfirmation> = persistentSetOf(),
