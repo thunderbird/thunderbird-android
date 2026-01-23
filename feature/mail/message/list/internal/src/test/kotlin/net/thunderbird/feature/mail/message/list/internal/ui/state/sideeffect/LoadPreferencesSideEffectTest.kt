@@ -116,9 +116,14 @@ class LoadPreferencesSideEffectTest {
                 fakeGetMessageListPreferences.emit(
                     preferences = createMessageListPreferences(
                         density = UiDensity.entries.random(),
+                        groupConversations = Random.nextBoolean(),
+                        showCorrespondentNames = Random.nextBoolean(),
                         showMessageAvatar = Random.nextBoolean(),
                         showFavouriteButton = Random.nextBoolean(),
                         senderAboveSubject = Random.nextBoolean(),
+                        excerptLines = Random.nextInt(6),
+                        dateTimeFormat = MessageListDateTimeFormat.entries.random(),
+                        useVolumeKeyNavigation = Random.nextBoolean(),
                         colorizeBackgroundWhenRead = Random.nextBoolean(),
                     ),
                 )
@@ -142,7 +147,7 @@ class LoadPreferencesSideEffectTest {
         useVolumeKeyNavigation: Boolean = false,
         serverSearchLimit: Int = 0,
         actionRequiringUserConfirmation: ImmutableSet<ActionRequiringUserConfirmation> = persistentSetOf(),
-        colorizeBackgroundWhenRead: Boolean = false,
+        colorizeBackgroundWhenRead: Boolean = false
     ) = MessageListPreferences(
         density = density,
         groupConversations = groupConversations,
