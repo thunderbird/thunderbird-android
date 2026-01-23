@@ -8,6 +8,7 @@ import dev.mokkery.mock
 import dev.mokkery.spy
 import dev.mokkery.verify
 import dev.mokkery.verify.VerifyMode
+import kotlin.random.Random
 import kotlin.test.Test
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
@@ -141,7 +142,7 @@ class LoadPreferencesSideEffectTest {
         useVolumeKeyNavigation: Boolean = false,
         serverSearchLimit: Int = 0,
         actionRequiringUserConfirmation: ImmutableSet<ActionRequiringUserConfirmation> = persistentSetOf(),
-        colorizeBackgroundWhenRead: Boolean = false,
+        colorizeBackgroundWhenRead: Boolean = false
     ) = MessageListPreferences(
         density = density,
         groupConversations = groupConversations,
