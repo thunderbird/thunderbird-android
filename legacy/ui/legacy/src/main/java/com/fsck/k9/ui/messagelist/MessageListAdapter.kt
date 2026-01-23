@@ -43,7 +43,7 @@ class MessageListAdapter internal constructor(
     private val layoutInflater: LayoutInflater,
     private val contactsPictureLoader: ContactPictureLoader,
     private val listItemListener: MessageListItemActionListener,
-    private val appearance: MessageListAppearance,
+    private val appearance: () -> MessageListAppearance,
     private val themeProvider: FeatureThemeProvider,
     private val featureFlagProvider: FeatureFlagProvider,
     private val contactRepository: ContactRepository,

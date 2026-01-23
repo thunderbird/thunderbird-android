@@ -319,12 +319,6 @@ abstract class BaseMessageListFragment :
             return
         }
 
-        viewModel.getMessageListLiveData().observe(this) { messageListInfo: MessageListInfo ->
-            setMessageList(messageListInfo)
-        }
-
-        adapter = createMessageListAdapter()
-
         generalSettingsManager.getSettingsFlow()
             /**
              * Skips the first emitted item from the settings flow,
@@ -419,7 +413,7 @@ abstract class BaseMessageListFragment :
             layoutInflater = layoutInflater,
             contactsPictureLoader = ContactPicture.getContactPictureLoader(),
             listItemListener = this,
-            appearance = messageListAppearance,
+            appearance = ::messageListAppearance,
             themeProvider = featureThemeProvider,
             featureFlagProvider = featureFlagProvider,
             contactRepository = contactRepository,
@@ -522,7 +516,6 @@ abstract class BaseMessageListFragment :
     private fun initializeMessageListLayout(view: View) {
         initializeSwipeRefreshLayout(view)
         initializeFloatingActionButton(view)
-        initializeRecyclerView(view)
         initializeRecentChangesSnackbar()
 
         // This needs to be done before loading the message list below
