@@ -29,7 +29,7 @@ internal interface FundingDomainContract {
         val recurringContributionIds: ImmutableList<String>
     }
 
-    interface BillingManager {
+    interface ContributionManager {
         /**
          * Flow that emits the last purchased contribution.
          */
