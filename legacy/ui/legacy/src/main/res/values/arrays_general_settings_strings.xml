@@ -135,6 +135,7 @@
         <item>@string/global_settings_splitview_always</item>
         <item>@string/global_settings_splitview_never</item>
         <item>@string/global_settings_splitview_when_in_landscape</item>
+        <item>@string/global_settings_splitview_when_unfolded</item>
     </string-array>
 
     <string-array name="confirm_action_entries">

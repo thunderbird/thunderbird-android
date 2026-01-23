@@ -62,4 +62,5 @@ enum class SplitViewMode {
     ALWAYS,
     NEVER,
     WHEN_IN_LANDSCAPE,
+    WHEN_UNFOLDED,
 }
