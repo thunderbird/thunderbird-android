@@ -18,7 +18,7 @@ import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionCo
 @Suppress("TooManyFunctions")
 internal class ContributionViewModel(
     private val getAvailableContributions: UseCase.GetAvailableContributions,
-    private val billingManager: FundingDomainContract.BillingManager,
+    private val contributionManager: FundingDomainContract.ContributionManager,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState),
     ViewModel {
@@ -29,7 +29,7 @@ internal class ContributionViewModel(
         }
 
         viewModelScope.launch {
-            billingManager.purchasedContribution.collect { result ->
+            contributionManager.purchasedContribution.collect { result ->
                 result.handle(
                     onSuccess = { purchasedContribution ->
                         updateState { state ->
@@ -184,7 +184,7 @@ internal class ContributionViewModel(
             Effect.PurchaseContribution(
                 startPurchaseFlow = { activity ->
                     viewModelScope.launch {
-                        billingManager.purchaseContribution(activity, selectedContribution).handle(
+                        contributionManager.purchaseContribution(activity, selectedContribution).handle(
                             onSuccess = {
                                 // we need to wait for the callback to be called
                             },
@@ -233,6 +233,6 @@ internal class ContributionViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        billingManager.clear()
+        contributionManager.clear()
     }
 }

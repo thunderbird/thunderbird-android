@@ -1,13 +1,13 @@
 package net.thunderbird.feature.funding.googleplay.domain.usecase
 
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.BillingManager
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionManager
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.UseCase
 import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
 
 internal class GetAvailableContributions(
-    private val billingManager: BillingManager,
+    private val billingManager: ContributionManager,
 ) : UseCase.GetAvailableContributions {
     override suspend fun invoke(): Outcome<AvailableContributions, ContributionError> {
         val oneTimeContributionsResult = billingManager.loadOneTimeContributions()

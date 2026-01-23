@@ -120,7 +120,7 @@ private class ContributionRobot(
                 ),
             )
         },
-        billingManager = FakeBillingManager(),
+        contributionManager = FakeContributionManager(),
         initialState = initialState,
     )
     private lateinit var turbines: MviTurbines<State, Effect>

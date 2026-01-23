@@ -14,8 +14,8 @@ import net.thunderbird.feature.funding.googleplay.data.mapper.BillingResultMappe
 import net.thunderbird.feature.funding.googleplay.data.mapper.ProductDetailsMapper
 import net.thunderbird.feature.funding.googleplay.data.remote.GoogleBillingClientProvider
 import net.thunderbird.feature.funding.googleplay.data.remote.GoogleBillingPurchaseHandler
-import net.thunderbird.feature.funding.googleplay.domain.BillingManager
 import net.thunderbird.feature.funding.googleplay.domain.ContributionIdProvider
+import net.thunderbird.feature.funding.googleplay.domain.ContributionManager
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.domain.usecase.GetAvailableContributions
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionViewModel
@@ -104,8 +104,8 @@ val featureFundingModule = module {
         ContributionIdProvider()
     }
 
-    single<FundingDomainContract.BillingManager> {
-        BillingManager(
+    single<FundingDomainContract.ContributionManager> {
+        ContributionManager(
             billingClient = get(),
             contributionIdProvider = get(),
         )
@@ -119,8 +119,8 @@ val featureFundingModule = module {
 
     viewModel {
         ContributionViewModel(
-            billingManager = get(),
             getAvailableContributions = get(),
+            contributionManager = get(),
         )
     }
 }

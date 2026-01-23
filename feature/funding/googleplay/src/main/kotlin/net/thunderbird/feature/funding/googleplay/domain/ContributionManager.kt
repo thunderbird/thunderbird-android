@@ -11,10 +11,10 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
-internal class BillingManager(
+internal class ContributionManager(
     private val billingClient: FundingDataContract.BillingClient,
     private val contributionIdProvider: FundingDomainContract.ContributionIdProvider,
-) : FundingDomainContract.BillingManager {
+) : FundingDomainContract.ContributionManager {
 
     override val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>> =
         billingClient.purchasedContribution
