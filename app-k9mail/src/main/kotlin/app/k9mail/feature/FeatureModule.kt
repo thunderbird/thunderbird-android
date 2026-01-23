@@ -1,13 +1,13 @@
 package app.k9mail.feature
 
-import app.k9mail.feature.funding.api.FundingSettings
-import app.k9mail.feature.funding.featureFundingModule
 import app.k9mail.feature.migration.launcher.featureMigrationModule
 import app.k9mail.feature.onboarding.migration.onboardingMigrationModule
 import app.k9mail.feature.telemetry.telemetryModule
 import com.fsck.k9.BuildConfig
 import net.thunderbird.android.feature.mail.message.reader.api.css.DefaultCssClassNameProvider
 import net.thunderbird.feature.account.settings.featureAccountSettingsModule
+import net.thunderbird.feature.funding.api.FundingSettings
+import net.thunderbird.feature.funding.featureFundingModule
 import net.thunderbird.feature.mail.message.list.internal.featureMessageListModule
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import org.koin.dsl.module

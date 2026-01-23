@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.feature.funding.link"
+    namespace = "net.thunderbird.feature.funding.link"
     resourcePrefix = "funding_link_"
 }
 
