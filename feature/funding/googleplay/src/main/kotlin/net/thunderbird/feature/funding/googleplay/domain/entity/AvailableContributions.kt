@@ -1,6 +1,7 @@
 package net.thunderbird.feature.funding.googleplay.domain.entity
 
 data class AvailableContributions(
+internal data class AvailableContributions(
     val oneTimeContributions: List<OneTimeContribution>,
     val recurringContributions: List<RecurringContribution>,
     val purchasedContribution: Contribution? = null,

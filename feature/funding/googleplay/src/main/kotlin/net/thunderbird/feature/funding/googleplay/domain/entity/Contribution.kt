@@ -1,5 +1,6 @@
 package net.thunderbird.feature.funding.googleplay.domain.entity
 
+internal interface Contribution {
 interface Contribution {
     val id: String
     val title: String

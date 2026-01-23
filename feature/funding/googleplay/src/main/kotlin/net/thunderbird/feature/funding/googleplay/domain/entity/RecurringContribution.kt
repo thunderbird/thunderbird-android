@@ -1,6 +1,7 @@
 package net.thunderbird.feature.funding.googleplay.domain.entity
 
 data class RecurringContribution(
+internal data class RecurringContribution(
     override val id: String,
     override val title: String,
     override val description: String,

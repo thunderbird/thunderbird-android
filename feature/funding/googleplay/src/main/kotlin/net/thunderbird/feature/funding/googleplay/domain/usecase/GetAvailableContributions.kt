@@ -6,7 +6,7 @@ import net.thunderbird.feature.funding.googleplay.domain.DomainContract.BillingM
 import net.thunderbird.feature.funding.googleplay.domain.DomainContract.UseCase
 import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
 
-class GetAvailableContributions(
+internal class GetAvailableContributions(
     private val billingManager: BillingManager,
 ) : UseCase.GetAvailableContributions {
     override suspend fun invoke(): Outcome<AvailableContributions, BillingError> {

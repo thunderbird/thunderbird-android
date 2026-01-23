@@ -9,7 +9,7 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
-interface DomainContract {
+internal interface DomainContract {
 
     interface UseCase {
         fun interface GetAvailableContributions {

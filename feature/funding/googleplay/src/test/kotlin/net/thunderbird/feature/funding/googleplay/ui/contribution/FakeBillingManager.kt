@@ -8,7 +8,7 @@ import net.thunderbird.feature.funding.googleplay.domain.DomainContract
 import net.thunderbird.feature.funding.googleplay.domain.DomainContract.BillingError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 
-class FakeBillingManager : DomainContract.BillingManager {
+internal class FakeBillingManager : DomainContract.BillingManager {
 
     override val purchasedContribution: StateFlow<Outcome<Contribution?, BillingError>> = MutableStateFlow(
         Outcome.success(null),

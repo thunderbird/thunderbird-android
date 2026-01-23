@@ -25,6 +25,7 @@ import net.thunderbird.feature.funding.googleplay.domain.DomainContract.BillingE
 @Composable
 fun ContributionError(
     error: BillingError?,
+internal fun ContributionError(
     onDismissClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

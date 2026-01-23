@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-val GoldenHearthSunburst: ImageVector
+internal val GoldenHearthSunburst: ImageVector
     get() {
         if (goldenInstance != null) {
             return goldenInstance!!
@@ -25,7 +25,7 @@ val GoldenHearthSunburst: ImageVector
         return goldenInstance!!
     }
 
-val HearthSunburst: ImageVector
+internal val HearthSunburst: ImageVector
     get() {
         if (instance != null) {
             return instance!!

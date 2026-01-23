@@ -13,7 +13,7 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.DomainContract.BillingError
 
-class BillingResultMapperTest {
+internal class BillingResultMapperTest {
 
     private val testSubject = BillingResultMapper()
 

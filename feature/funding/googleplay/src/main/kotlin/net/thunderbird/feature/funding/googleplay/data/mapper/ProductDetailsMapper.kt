@@ -7,7 +7,7 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
-class ProductDetailsMapper : Mapper.Product {
+internal class ProductDetailsMapper : Mapper.Product {
 
     override fun mapToContribution(product: ProductDetails): Contribution {
         return when (product.productType) {

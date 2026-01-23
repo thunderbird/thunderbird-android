@@ -6,7 +6,7 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.DataContract.Mapper
 import net.thunderbird.feature.funding.googleplay.domain.DomainContract.BillingError
 
-class BillingResultMapper : Mapper.BillingResult {
+internal class BillingResultMapper : Mapper.BillingResult {
 
     override suspend fun <T> mapToOutcome(
         billingResult: BillingResult,
