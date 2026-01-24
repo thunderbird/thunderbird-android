@@ -13,7 +13,7 @@
     <string name="account_settings_general_name_error_empty">Namnet kan ikkje vere tomt</string>
     <string name="account_settings_general_name_error_too_long">Namnet er for langt</string>
     <string name="account_settings_general_avatar_monogram_title">Avatarmonogram</string>
-    <string name="account_settings_general_avatar_monogram_description">Monogrammet som er brukt som avataren din.</string>
+    <string name="account_settings_general_avatar_monogram_description">Monogrammet som vert brukt som avataren din.</string>
     <string name="account_settings_general_avatar_monogram_error_empty">Monogrammet kan ikkje vere tomt</string>
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogrammet er for langt</string>
     <string name="account_settings_general_avatar_icon_title">Avatarikon</string>

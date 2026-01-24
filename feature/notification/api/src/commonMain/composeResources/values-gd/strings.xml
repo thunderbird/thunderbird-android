@@ -40,4 +40,6 @@
         <item quantity="few">%1$d teachdaireachdan ùra</item>
         <item quantity="other">%1$d teachdaireachd ùr</item>
     </plurals>
+    <string name="notification_authentication_incoming_server_error_text">Dh’fhàillig dearbhadh %1$s. Cuir ceart roghainnean an fhrithealaiche a-steach agad.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Dh’fhàillig dearbhadh %1$s. Cuir ceart roghainnean an fhrithealaiche a-mach.</string>
 </resources>
