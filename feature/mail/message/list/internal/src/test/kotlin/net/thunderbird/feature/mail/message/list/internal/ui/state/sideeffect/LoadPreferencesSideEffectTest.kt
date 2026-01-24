@@ -8,7 +8,6 @@ import dev.mokkery.mock
 import dev.mokkery.spy
 import dev.mokkery.verify
 import dev.mokkery.verify.VerifyMode
-import kotlin.random.Random
 import kotlin.test.Test
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
@@ -112,14 +111,14 @@ class LoadPreferencesSideEffectTest {
 
             // Act
             testSubject.handle(oldState, newState)
-            repeat(times = 10) {
+            repeat(times = 10) { index ->
                 fakeGetMessageListPreferences.emit(
                     preferences = createMessageListPreferences(
-                        density = UiDensity.entries.random(),
-                        showMessageAvatar = Random.nextBoolean(),
-                        showFavouriteButton = Random.nextBoolean(),
-                        senderAboveSubject = Random.nextBoolean(),
-                        colorizeBackgroundWhenRead = Random.nextBoolean(),
+                        density = UiDensity.entries[index % UiDensity.entries.size],
+                        showMessageAvatar = index % 2 == 0,
+                        showFavouriteButton = index % 3 == 0,
+                        senderAboveSubject = index % 4 == 0,
+                        colorizeBackgroundWhenRead = index % 5 == 0,
                     ),
                 )
             }
