@@ -25,7 +25,7 @@ import org.mockito.kotlin.mock
 class SingleMessageNotificationDataCreatorTest {
     private val account = createAccount()
     private val fakeInteractionPreferences = FakeInteractionSettingsPreferenceManager()
-    private val generalSettings = GeneralSettings(
+    private var generalSettings = GeneralSettings(
         platformConfigProvider = FakePlatformConfigProvider(),
         notification = NotificationPreference(),
     )
@@ -130,8 +130,7 @@ class SingleMessageNotificationDataCreatorTest {
     }
 
     @Test
-    @Test
-    fun `hide delete action when below cutoff`() {
+    fun `fill actions below cutoff up to max shown`() {
         setMessageActions(cutoff = 2)
         val content = createNotificationContent()
 
@@ -143,7 +142,7 @@ class SingleMessageNotificationDataCreatorTest {
             addLockScreenNotification = false,
         )
 
-        assertThat(result.actions).doesNotContain(NotificationAction.Delete)
+        assertThat(result.actions).contains(NotificationAction.Delete)
     }
 
     @Test
