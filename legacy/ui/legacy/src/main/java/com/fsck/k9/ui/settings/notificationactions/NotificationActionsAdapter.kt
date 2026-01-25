@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -192,6 +193,7 @@ internal class NotificationActionsAdapter(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT,
             )
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnDetachedFromWindow)
         }
 
         init {
@@ -255,6 +257,7 @@ internal class NotificationActionsAdapter(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT,
             )
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnDetachedFromWindow)
         }
 
         init {
@@ -319,7 +322,7 @@ private fun NotificationActionRow(
             .fillMaxWidth()
             .heightIn(min = minHeight)
             .alpha(if (isDimmed) 0.6f else 1.0f)
-            .padding(start = 8.dp, end = 0.dp),
+            .padding(start = MainTheme.spacings.default, end = MainTheme.spacings.zero),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
@@ -327,32 +330,32 @@ private fun NotificationActionRow(
             contentDescription = null,
             modifier = Modifier
                 .size(40.dp)
-                .padding(8.dp),
+                .padding(MainTheme.spacings.default),
         )
         TextBodyLarge(
             text = stringResource(action.labelRes),
             modifier = Modifier
                 .weight(1f)
-                .padding(start = 24.dp, end = 16.dp),
+                .padding(start = MainTheme.spacings.triple, end = MainTheme.spacings.double),
         )
-    Box(
-        modifier = Modifier
-            .width(56.dp)
-            .fillMaxHeight()
-            .pointerInteropFilter { event ->
+        Box(
+            modifier = Modifier
+                .width(56.dp)
+                .fillMaxHeight()
+                .pointerInteropFilter { event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
                     onStartDrag()
                     true
                 } else {
                         false
                     }
-            }
-            .padding(16.dp),
-    ) {
-        Image(
-            painter = painterResource(Icons.Outlined.DragHandle),
-            contentDescription = stringResource(R.string.notification_actions_drag_handle_description),
-            modifier = Modifier.align(Alignment.Center),
+                }
+                .padding(MainTheme.spacings.double),
+        ) {
+            Image(
+                painter = painterResource(Icons.Outlined.DragHandle),
+                contentDescription = stringResource(R.string.notification_actions_drag_handle_description),
+                modifier = Modifier.align(Alignment.Center),
             )
         }
     }
@@ -368,7 +371,7 @@ private fun NotificationCutoffRow(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = minHeight)
-            .padding(start = 16.dp, end = 0.dp)
+            .padding(start = MainTheme.spacings.double, end = MainTheme.spacings.zero)
             .pointerInteropFilter { event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
                     onStartDrag()
@@ -382,12 +385,12 @@ private fun NotificationCutoffRow(
         Box(
             modifier = Modifier
                 .weight(1f)
-                .padding(end = 16.dp),
+                .padding(end = MainTheme.spacings.double),
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(2.dp)
+                    .height(MainTheme.spacings.quarter)
                     .align(Alignment.Center)
                     .alpha(0.6f)
                     .background(MainTheme.colors.primary),

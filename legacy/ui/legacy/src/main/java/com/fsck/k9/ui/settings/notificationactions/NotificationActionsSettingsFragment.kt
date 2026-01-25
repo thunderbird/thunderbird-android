@@ -12,13 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import com.fsck.k9.ui.R
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.notification.NOTIFICATION_PREFERENCE_DEFAULT_MESSAGE_ACTIONS_CUTOFF
@@ -26,7 +27,6 @@ import net.thunderbird.core.preference.notification.NOTIFICATION_PREFERENCE_MAX_
 import net.thunderbird.core.preference.update
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import org.koin.android.ext.android.inject
-import kotlin.math.roundToInt
 
 /**
  * Lets users reorder notification actions and position the cutoff line.
@@ -56,6 +56,9 @@ class NotificationActionsSettingsFragment : androidx.fragment.app.Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 themeProvider.WithTheme {
+                    val listPaddingPx = with(LocalDensity.current) {
+                        MainTheme.spacings.default.roundToPx()
+                    }
                     NotificationActionsSettingsScreen(
                         description = stringResource(R.string.notification_actions_settings_description),
                         adapter = adapter,
@@ -64,8 +67,7 @@ class NotificationActionsSettingsFragment : androidx.fragment.app.Fragment() {
                             recyclerView.layoutManager = LinearLayoutManager(requireContext())
                             recyclerView.adapter = adapter
                             recyclerView.clipToPadding = false
-                            val listPadding = dpToPx(8)
-                            recyclerView.setPadding(0, listPadding, 0, listPadding)
+                            recyclerView.setPadding(0, listPaddingPx, 0, listPaddingPx)
                             adapter.attachTo(recyclerView)
                         },
                     )
@@ -145,8 +147,6 @@ class NotificationActionsSettingsFragment : androidx.fragment.app.Fragment() {
         return seen.toList()
     }
 
-    private fun dpToPx(value: Int): Int = (value * resources.displayMetrics.density).roundToInt()
-
 }
 
 @Composable
@@ -163,10 +163,10 @@ private fun NotificationActionsSettingsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        start = 16.dp,
-                        end = 16.dp,
-                        top = 16.dp,
-                        bottom = 8.dp,
+                        start = MainTheme.spacings.double,
+                        end = MainTheme.spacings.double,
+                        top = MainTheme.spacings.double,
+                        bottom = MainTheme.spacings.default,
                     ),
             )
             AndroidView(
