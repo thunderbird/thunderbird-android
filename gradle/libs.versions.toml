@@ -113,6 +113,7 @@ turbine = "1.2.1"
 uri = "0.0.21"
 xmlpull = "1.0"
 zxing = "3.5.4"
+runtime = "1.10.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -291,6 +292,7 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
 xmlpull = { module = "com.github.cketti:xmlpull-extracted-from-android", version.ref = "xmlpull" }
 zxing = { module = "com.google.zxing:core", version.ref = "zxing" }
+androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 
 [bundles]
 shared-kmp-common = [
