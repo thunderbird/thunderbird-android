@@ -11,5 +11,10 @@ kotlin {
         commonMain.dependencies {
             api(projects.core.architecture.api)
         }
+
+        androidMain.dependencies {
+            // ensure Android target can consume the module if it's platform-specific
+            api(projects.core.architecture.api)
+        }
     }
 }

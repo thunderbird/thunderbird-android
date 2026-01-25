@@ -22,16 +22,18 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.mail.message.list.domain.CreateArchiveFolderOutcome
-import net.thunderbird.feature.mail.message.list.internal.fakes.FakeAccount
-import net.thunderbird.feature.mail.message.list.internal.fakes.FakeAccountManager
 import net.thunderbird.feature.mail.message.list.internal.fakes.FakeBackendFolderUpdater
 import net.thunderbird.feature.mail.message.list.internal.fakes.FakeBackendStorageFactory
+import net.thunderbird.feature.mail.message.list.internal.fakes.FakeLegacyAccount
+import net.thunderbird.feature.mail.message.list.internal.fakes.FakeLegacyAccountManager
 import net.thunderbird.feature.mail.message.list.internal.fakes.FakeSpecialFolderUpdaterFactory
 import com.fsck.k9.mail.FolderType as LegacyFolderType
 
@@ -43,12 +45,12 @@ class CreateArchiveFolderTest {
         // Arrange
         val accountUuid = Uuid.random().toHexString()
         val accounts = createAccountList(accountUuid = accountUuid)
-        val accountManager = spy(FakeAccountManager(accounts))
+        val accountManager = spy(FakeLegacyAccountManager(accounts))
         val testSubject = createTestSubject(accountManager = accountManager)
         val folderName = ""
 
         // Act
-        testSubject(accountUuid, folderName).test {
+        testSubject(AccountIdFactory.of(accountUuid), folderName).test {
             // Assert
             val outcome = awaitItem()
             assertThat(outcome)
@@ -58,7 +60,7 @@ class CreateArchiveFolderTest {
                 .prop("folderName") { it.folderName }
                 .isEqualTo(folderName)
 
-            verify(exactly(0)) { accountManager.getAccount(accountUuid = any()) }
+            verify(exactly(0)) { accountManager.getById(id = any()) }
 
             awaitComplete()
         }
@@ -68,14 +70,14 @@ class CreateArchiveFolderTest {
     fun `invoke should emit AccountNotFound and complete flow when no account uuid matches with account list`() =
         runTest {
             // Arrange
-            val accountUuid = "any-non-expected-account-uuid"
+            val accountUuid = Uuid.random().toHexString()
             val accounts = createAccountList()
-            val accountManager = spy(FakeAccountManager(accounts))
+            val accountManager = spy(FakeLegacyAccountManager(accounts))
             val testSubject = createTestSubject(accountManager = accountManager)
             val folderName = "TheFolder"
 
             // Act
-            testSubject(accountUuid, folderName).test {
+            testSubject(AccountIdFactory.of(accountUuid), folderName).test {
                 // Assert
                 val outcome = awaitItem()
                 assertThat(outcome)
@@ -83,7 +85,7 @@ class CreateArchiveFolderTest {
                     .prop("error") { it.error }
                     .isEqualTo(CreateArchiveFolderOutcome.Error.AccountNotFound)
 
-                verify(exactly(1)) { accountManager.getAccount(accountUuid) }
+                verify(exactly(1)) { accountManager.getById(AccountIdFactory.of(accountUuid)) }
                 awaitComplete()
             }
         }
@@ -105,7 +107,7 @@ class CreateArchiveFolderTest {
             val folderName = "TheFolder"
 
             // Act
-            testSubject(accountUuid, folderName).test {
+            testSubject(AccountIdFactory.of(accountUuid), folderName).test {
                 // Assert
                 val outcome = awaitItem()
                 assertThat(outcome)
@@ -115,7 +117,9 @@ class CreateArchiveFolderTest {
                     .prop("throwable") { it.throwable }
                     .hasMessage(exception.message)
 
-                verify(exactly(0)) { remoteFolderCreatorFactory.create(account = any()) }
+                verifySuspend(exactly(0)) {
+                    remoteFolderCreatorFactory.create(accountId = any())
+                }
 
                 awaitComplete()
             }
@@ -140,7 +144,7 @@ class CreateArchiveFolderTest {
             val folderName = "TheFolder"
 
             // Act
-            testSubject(accountUuid, folderName).test {
+            testSubject(AccountIdFactory.of(accountUuid), folderName).test {
                 // Assert
                 val outcome = awaitItem()
                 assertThat(outcome)
@@ -165,7 +169,9 @@ class CreateArchiveFolderTest {
                         ),
                     )
                 }
-                verify(exactly(0)) { remoteFolderCreatorFactory.create(account = any()) }
+                verifySuspend(exactly(0)) {
+                    remoteFolderCreatorFactory.create(accountId = any())
+                }
                 awaitComplete()
             }
         }
@@ -186,7 +192,7 @@ class CreateArchiveFolderTest {
         val folderName = "TheFolder"
 
         // Act
-        testSubject(accountUuid, folderName).test {
+        testSubject(AccountIdFactory.of(accountUuid), folderName).test {
             // Assert
             val outcome = awaitItem()
             assertThat(outcome)
@@ -230,7 +236,7 @@ class CreateArchiveFolderTest {
         val folderName = "TheFolder"
 
         // Act
-        testSubject(accountUuid, folderName).test {
+        testSubject(AccountIdFactory.of(accountUuid), folderName).test {
             // Assert
             skipItems(count = 1) // Skip LocalFolderCreated event.
             val outcome = awaitItem()
@@ -278,7 +284,7 @@ class CreateArchiveFolderTest {
         val folderName = "TheFolder"
 
         // Act
-        testSubject(accountUuid, folderName).test {
+        testSubject(AccountIdFactory.of(accountUuid), folderName).test {
             // Assert
             skipItems(count = 2) // Skip LocalFolderCreated and SyncStarted event.
             val outcome = awaitItem()
@@ -320,7 +326,7 @@ class CreateArchiveFolderTest {
         // Arrange
         val accountUuid = Uuid.random().toHexString()
         val accounts = createAccountList(accountUuid)
-        val accountManager = spy(FakeAccountManager(accounts))
+        val accountManager = spy(FakeLegacyAccountManager(accounts))
         val backendStorageFactory = FakeBackendStorageFactory(
             FakeBackendFolderUpdater(),
         )
@@ -337,7 +343,7 @@ class CreateArchiveFolderTest {
         val folderName = "TheFolder"
 
         // Act
-        testSubject(accountUuid, folderName).test {
+        testSubject(AccountIdFactory.of(accountUuid), folderName).test {
             // Assert
             skipItems(count = 2) // Skip LocalFolderCreated and SyncStarted event.
             var outcome = awaitItem()
@@ -352,7 +358,7 @@ class CreateArchiveFolderTest {
                 .prop("data") { it.data }
                 .isEqualTo(CreateArchiveFolderOutcome.Success.Created)
 
-            verify(exactly(1)) { accountManager.getAccount(accountUuid) }
+            verify(exactly(1)) { accountManager.getById(AccountIdFactory.of(accountUuid)) }
             verify(exactly(1)) {
                 // verify doesn't support verifying the extension function `createFolder`,
                 // thus we verify the call of `createFolders(list)` instead.
@@ -399,8 +405,8 @@ class CreateArchiveFolderTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun createTestSubject(
-        accounts: List<BaseAccount> = emptyList(),
-        accountManager: FakeAccountManager = FakeAccountManager(accounts),
+        accounts: List<LegacyAccount> = emptyList(),
+        accountManager: FakeLegacyAccountManager = FakeLegacyAccountManager(accounts),
         backendStorageFactory: FakeBackendStorageFactory = FakeBackendStorageFactory(),
         remoteFolderCreatorOutcome: Outcome<
             RemoteFolderCreationOutcome.Success,
@@ -423,7 +429,8 @@ class CreateArchiveFolderTest {
         accountUuid: String = Uuid.random().toHexString(),
         size: Int = 10,
     ) = List(size = size) {
-        FakeAccount(uuid = if (it == 0) accountUuid else Uuid.random().toHexString())
+        val id = if (it == 0) AccountIdFactory.of(accountUuid) else AccountIdFactory.create()
+        FakeLegacyAccount(id = id)
     }
 }
 
@@ -433,7 +440,7 @@ private open class FakeRemoteFolderCreatorFactory(
     open var instance: RemoteFolderCreator = spy<RemoteFolderCreator>(FakeRemoteFolderCreator())
         protected set
 
-    override fun create(account: BaseAccount): RemoteFolderCreator = instance
+    override suspend fun create(accountId: AccountId): RemoteFolderCreator = instance
 
     private open inner class FakeRemoteFolderCreator : RemoteFolderCreator {
         override suspend fun create(

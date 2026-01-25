@@ -34,6 +34,14 @@ internal class FakeLegacyAccountManager(
         }
     }
 
+    override fun getByIdSync(id: AccountId): LegacyAccount? {
+        TODO("Not yet implemented")
+    }
+
+    override fun updateSync(account: LegacyAccount) {
+        TODO("Not yet implemented")
+    }
+
     override fun getAccounts(): List<LegacyAccount> {
         TODO("Not yet implemented")
     }

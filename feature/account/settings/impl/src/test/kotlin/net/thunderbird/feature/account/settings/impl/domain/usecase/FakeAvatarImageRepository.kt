@@ -16,7 +16,7 @@ class FakeAvatarImageRepository(
         imageUri: Uri,
     ): Uri {
         currentAvatarUri = imageUri
-        return Url.parse("https://fake.storage/${id.asRaw()}.jpg")
+        return Url.parse("https://fake.storage/$id.jpg")
     }
 
     override suspend fun delete(id: AccountId) {

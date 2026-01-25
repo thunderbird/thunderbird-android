@@ -12,7 +12,7 @@ attach their own capability models keyed by `AccountId`.
 ## Core concepts
 
 - `Account`: Marker interface for an account, identified solely by `AccountId`.
-- `AccountId`: Typealias of `Id<Account>` (UUID‑backed inline value class). Prefer this over raw strings.
+- `AccountId`: A concrete identifier for an account (extends `BaseUuidIdentifier`). Prefer this over raw strings.
 - `AccountIdFactory`: Utility for creating/parsing `AccountId` values.
 - `UnifiedAccountId`: Reserved `AccountId` (UUID nil) used to represent the virtual “Unified” scope across accounts.
   - `AccountId.isUnified`: Shorthand check for unified account id.
@@ -46,5 +46,5 @@ if (id.isUnified) {
 
 ## Related modules and types
 
-- `Id<T>`: Generic UUID‑backed identifier (core/architecture/api)
+- `BaseIdentifier<T>`: Generic base for identifiers (`core/architecture/api`)
 

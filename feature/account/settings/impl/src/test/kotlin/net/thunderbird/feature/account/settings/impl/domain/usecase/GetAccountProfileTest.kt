@@ -50,7 +50,7 @@ internal class GetAccountProfileTest {
             assertThat(awaitItem()).isEqualTo(
                 Outcome.failure(
                     AccountSettingError.NotFound(
-                        message = "AccountProfile not found for accountId: ${accountId.asRaw()}",
+                        message = "AccountProfile not found for accountId: $accountId",
                     ),
                 ),
             )

@@ -422,7 +422,7 @@ internal class SaveMessageOperations(
                 putNull("preview")
             }
 
-            put("account_id", accountId.asRaw())
+            put("account_id", accountId.toString())
         }
 
         return if (replaceMessageId != null) {

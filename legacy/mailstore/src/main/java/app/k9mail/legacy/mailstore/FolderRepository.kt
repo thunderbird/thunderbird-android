@@ -11,9 +11,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.exception.MessagingException
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.mail.folder.api.FolderType
@@ -22,13 +25,15 @@ import net.thunderbird.feature.mail.folder.api.RemoteFolder
 
 @Suppress("TooManyFunctions")
 class FolderRepository(
+    private val accountManager: LegacyAccountManager,
     private val messageStoreManager: MessageStoreManager,
     private val outboxFolderManager: OutboxFolderManager,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
-    suspend fun getFolder(account: LegacyAccountDto, folderId: Long): Folder? {
-        val messageStore = messageStoreManager.getMessageStore(account)
-        val outboxFolderId = outboxFolderManager.getOutboxFolderId(account.id)
+    suspend fun getFolder(accountId: AccountId, folderId: Long): Folder? {
+        val account = getAccountById(accountId)
+        val messageStore = messageStoreManager.getMessageStore(accountId)
+        val outboxFolderId = outboxFolderManager.getOutboxFolderId(accountId)
         return messageStore.getFolder(folderId) { folder ->
             Folder(
                 id = folder.id,
@@ -39,9 +44,10 @@ class FolderRepository(
         }
     }
 
-    suspend fun getFolderDetails(account: LegacyAccountDto, folderId: Long): FolderDetails? {
-        val messageStore = messageStoreManager.getMessageStore(account)
-        val outboxFolderId = outboxFolderManager.getOutboxFolderId(account.id)
+    suspend fun getFolderDetails(accountId: AccountId, folderId: Long): FolderDetails? {
+        val account = getAccountById(accountId)
+        val messageStore = messageStoreManager.getMessageStore(accountId)
+        val outboxFolderId = outboxFolderManager.getOutboxFolderId(accountId)
         return messageStore.getFolder(folderId) { folder ->
             FolderDetails(
                 folder = Folder(
@@ -61,8 +67,8 @@ class FolderRepository(
     }
 
     @Throws(MessagingException::class)
-    fun getRemoteFolders(accountUuid: String): List<RemoteFolder> {
-        val messageStore = messageStoreManager.getMessageStore(accountUuid)
+    fun getRemoteFolders(accountId: AccountId): List<RemoteFolder> {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         return messageStore.getFolders(excludeLocalOnly = true) { folder ->
             RemoteFolder(
                 id = folder.id,
@@ -73,12 +79,8 @@ class FolderRepository(
         }
     }
 
-    @Throws(MessagingException::class)
-    fun getRemoteFolders(account: LegacyAccountDto): List<RemoteFolder> =
-        getRemoteFolders(account.uuid)
-
-    fun getRemoteFolderDetails(account: LegacyAccountDto): List<RemoteFolderDetails> {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    fun getRemoteFolderDetails(accountId: AccountId): List<RemoteFolderDetails> {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         return messageStore.getFolders(excludeLocalOnly = true) { folder ->
             RemoteFolderDetails(
                 folder = RemoteFolder(
@@ -97,13 +99,13 @@ class FolderRepository(
         }
     }
 
-    fun getPushFoldersFlow(account: LegacyAccountDto): Flow<List<RemoteFolder>> {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    fun getPushFoldersFlow(accountId: AccountId): Flow<List<RemoteFolder>> {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         return callbackFlow {
-            send(getPushFolders(account))
+            send(getPushFolders(accountId))
 
             val listener = FolderSettingsChangedListener {
-                trySendBlocking(getPushFolders(account))
+                trySendBlocking(getPushFolders(accountId))
             }
             messageStore.addFolderSettingsChangedListener(listener)
 
@@ -115,73 +117,73 @@ class FolderRepository(
             .flowOn(ioDispatcher)
     }
 
-    private fun getPushFolders(account: LegacyAccountDto): List<RemoteFolder> {
-        return getRemoteFolderDetails(account)
+    private fun getPushFolders(accountId: AccountId): List<RemoteFolder> {
+        return getRemoteFolderDetails(accountId)
             .asSequence()
             .filter { folderDetails -> folderDetails.isPushEnabled }
             .map { folderDetails -> folderDetails.folder }
             .toList()
     }
 
-    fun getFolderServerId(account: LegacyAccountDto, folderId: Long): String? {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    fun getFolderServerId(accountId: AccountId, folderId: Long): String? {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         return messageStore.getFolder(folderId) { folder ->
             folder.serverId
         }
     }
 
-    fun getFolderId(account: LegacyAccountDto, folderServerId: String): Long? {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    fun getFolderId(accountId: AccountId, folderServerId: String): Long? {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         return messageStore.getFolderId(folderServerId)
     }
 
-    fun isFolderPresent(account: LegacyAccountDto, folderId: Long): Boolean {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    fun isFolderPresent(accountId: AccountId, folderId: Long): Boolean {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         return messageStore.getFolder(folderId) { true } ?: false
     }
 
-    fun updateFolderDetails(account: LegacyAccountDto, folderDetails: FolderDetails) {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    fun updateFolderDetails(accountId: AccountId, folderDetails: FolderDetails) {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         messageStore.updateFolderSettings(folderDetails)
     }
 
-    fun setIncludeInUnifiedInbox(account: LegacyAccountDto, folderId: Long, includeInUnifiedInbox: Boolean) {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    fun setIncludeInUnifiedInbox(accountId: AccountId, folderId: Long, includeInUnifiedInbox: Boolean) {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         messageStore.setIncludeInUnifiedInbox(folderId, includeInUnifiedInbox)
     }
 
-    fun setVisible(account: LegacyAccountDto, folderId: Long, visible: Boolean) {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    fun setVisible(accountId: AccountId, folderId: Long, visible: Boolean) {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         messageStore.setVisible(folderId, visible)
     }
 
-    fun setSyncEnabled(account: LegacyAccountDto, folderId: Long, enable: Boolean) {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    fun setSyncEnabled(accountId: AccountId, folderId: Long, enable: Boolean) {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         messageStore.setSyncEnabled(folderId, enable)
     }
 
-    fun setNotificationsEnabled(account: LegacyAccountDto, folderId: Long, enable: Boolean) {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    fun setNotificationsEnabled(accountId: AccountId, folderId: Long, enable: Boolean) {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         messageStore.setNotificationsEnabled(folderId, enable)
     }
 
-    fun setPushDisabled(account: LegacyAccountDto) {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    fun setPushDisabled(accountId: AccountId) {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         messageStore.setPushDisabled()
     }
 
-    fun hasPushEnabledFolder(account: LegacyAccountDto): Boolean {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    fun hasPushEnabledFolder(accountId: AccountId): Boolean {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         return messageStore.hasPushEnabledFolder()
     }
 
-    fun hasPushEnabledFolderFlow(account: LegacyAccountDto): Flow<Boolean> {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    fun hasPushEnabledFolderFlow(accountId: AccountId): Flow<Boolean> {
+        val messageStore = messageStoreManager.getMessageStore(accountId)
         return callbackFlow {
-            send(hasPushEnabledFolder(account))
+            send(hasPushEnabledFolder(accountId))
 
             val listener = FolderSettingsChangedListener {
-                trySendBlocking(hasPushEnabledFolder(account))
+                trySendBlocking(hasPushEnabledFolder(accountId))
             }
             messageStore.addFolderSettingsChangedListener(listener)
 
@@ -193,12 +195,16 @@ class FolderRepository(
             .flowOn(ioDispatcher)
     }
 
-    private fun FolderDetailsAccessor.getFolderType(account: LegacyAccountDto, outboxFolderId: Long): FolderType =
+    private fun FolderDetailsAccessor.getFolderType(account: LegacyAccount, outboxFolderId: Long): FolderType =
         if (id == outboxFolderId) {
             FolderType.OUTBOX
         } else {
             folderTypeOf(account, id)
         }
+
+    private suspend fun getAccountById(accountId: AccountId): LegacyAccount =
+        accountManager.getById(accountId).firstOrNull()
+            ?: error("Account not found: $accountId")
 }
 
 data class RemoteFolderDetails(

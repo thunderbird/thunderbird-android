@@ -14,17 +14,18 @@ import kotlin.random.Random
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.mail.message.list.domain.SetAccountFolderOutcome
 import net.thunderbird.feature.mail.message.list.internal.fakes.FakeBackendFolderUpdater
 import net.thunderbird.feature.mail.message.list.internal.fakes.FakeBackendStorageFactory
-import net.thunderbird.feature.mail.message.list.internal.fakes.FakeLegacyAccountDto
-import net.thunderbird.feature.mail.message.list.internal.fakes.FakeLegacyAccountDtoManager
+import net.thunderbird.feature.mail.message.list.internal.fakes.FakeLegacyAccount
+import net.thunderbird.feature.mail.message.list.internal.fakes.FakeLegacyAccountManager
 import net.thunderbird.feature.mail.message.list.internal.fakes.FakeSpecialFolderUpdaterFactory
 import org.junit.Test
 import com.fsck.k9.mail.FolderType as LegacyFolderType
@@ -36,17 +37,17 @@ class SetArchiveFolderTest {
     fun `invoke should successfully create folder and update account when given valid input`() = runTest {
         // Arrange
         val accountUuid = Uuid.random().toHexString()
-        val accounts = listOf(FakeLegacyAccountDto(uuid = accountUuid))
+        val accounts = listOf(FakeLegacyAccount(id = AccountIdFactory.of(accountUuid)))
 
         val fakeBackendStorageFactory = FakeBackendStorageFactory()
-        val fakeAccountManager = spy(FakeLegacyAccountDtoManager(accounts))
+        val fakeAccountManager = spy(FakeLegacyAccountManager(accounts))
         val fakeSpecialFolderUpdaterFactory = FakeSpecialFolderUpdaterFactory()
         val testSubject =
             createTestSubject(fakeAccountManager, fakeBackendStorageFactory, fakeSpecialFolderUpdaterFactory)
         val folder = createRemoteFolder()
 
         // Act
-        val outcome = testSubject(accountUuid, folder)
+        val outcome = testSubject(AccountIdFactory.of(accountUuid), folder)
 
         // Assert
         assertThat(outcome)
@@ -75,7 +76,7 @@ class SetArchiveFolderTest {
         verify(exactly(1)) {
             fakeAccountManager.saveAccount(
                 account = matching {
-                    it.uuid == accountUuid
+                    it.id == AccountIdFactory.of(accountUuid)
                 },
             )
         }
@@ -84,13 +85,13 @@ class SetArchiveFolderTest {
     @Test
     fun `invoke should return AccountNotFound when account is not found`() = runTest {
         // Arrange
-        val accounts = listOf<LegacyAccountDto>()
+        val accounts = listOf<LegacyAccount>()
         val testSubject = createTestSubject(accounts)
         val accountUuid = Uuid.random().toHexString()
         val folder = createRemoteFolder()
 
         // Act
-        val outcome = testSubject(accountUuid, folder)
+        val outcome = testSubject(AccountIdFactory.of(accountUuid), folder)
 
         // Assert
         assertThat(outcome)
@@ -103,20 +104,20 @@ class SetArchiveFolderTest {
     fun `invoke should return UnhandledError when changeFolder throws MessagingException`() = runTest {
         // Arrange
         val accountUuid = Uuid.random().toHexString()
-        val accounts = listOf(FakeLegacyAccountDto(uuid = accountUuid))
+        val accounts = listOf(FakeLegacyAccount(id = AccountIdFactory.of(accountUuid)))
 
         val exception = MessagingException("this is an error")
         val fakeBackendStorageFactory = FakeBackendStorageFactory(
             backendFolderUpdater = FakeBackendFolderUpdater(exception = exception),
         )
-        val fakeAccountManager = spy(FakeLegacyAccountDtoManager(accounts))
+        val fakeAccountManager = spy(FakeLegacyAccountManager(accounts))
         val fakeSpecialFolderUpdaterFactory = FakeSpecialFolderUpdaterFactory()
         val testSubject =
             createTestSubject(fakeAccountManager, fakeBackendStorageFactory, fakeSpecialFolderUpdaterFactory)
         val folder = createRemoteFolder()
 
         // Act
-        val outcome = testSubject(accountUuid, folder)
+        val outcome = testSubject(AccountIdFactory.of(accountUuid), folder)
 
         // Assert
         assertThat(outcome)
@@ -152,17 +153,17 @@ class SetArchiveFolderTest {
     }
 
     private fun createTestSubject(
-        accounts: List<LegacyAccountDto>,
+        accounts: List<LegacyAccount>,
         backendStorageFactory: FakeBackendStorageFactory = FakeBackendStorageFactory(),
         specialFolderUpdaterFactory: FakeSpecialFolderUpdaterFactory = FakeSpecialFolderUpdaterFactory(),
     ): SetArchiveFolder = createTestSubject(
-        accountManager = FakeLegacyAccountDtoManager(accounts),
+        accountManager = FakeLegacyAccountManager(accounts),
         backendStorageFactory = backendStorageFactory,
         specialFolderUpdaterFactory = specialFolderUpdaterFactory,
     )
 
     private fun createTestSubject(
-        accountManager: FakeLegacyAccountDtoManager,
+        accountManager: FakeLegacyAccountManager,
         backendStorageFactory: FakeBackendStorageFactory = FakeBackendStorageFactory(),
         specialFolderUpdaterFactory: FakeSpecialFolderUpdaterFactory = FakeSpecialFolderUpdaterFactory(),
     ): SetArchiveFolder {

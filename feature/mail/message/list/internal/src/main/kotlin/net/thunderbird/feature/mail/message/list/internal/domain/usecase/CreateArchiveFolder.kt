@@ -7,15 +7,17 @@ import com.fsck.k9.mail.folders.FolderServerId
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.mail.account.api.AccountManager
-import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
@@ -24,14 +26,14 @@ import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import com.fsck.k9.mail.FolderType as LegacyFolderType
 
 internal class CreateArchiveFolder(
-    private val accountManager: AccountManager<BaseAccount>,
-    private val backendStorageFactory: BackendStorageFactory<BaseAccount>,
+    private val accountManager: LegacyAccountManager,
+    private val backendStorageFactory: BackendStorageFactory,
     private val remoteFolderCreatorFactory: RemoteFolderCreator.Factory,
-    private val specialFolderUpdaterFactory: SpecialFolderUpdater.Factory<BaseAccount>,
+    private val specialFolderUpdaterFactory: SpecialFolderUpdater.Factory,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : DomainContract.UseCase.CreateArchiveFolder {
     override fun invoke(
-        accountUuid: String,
+        accountId: AccountId,
         folderName: String,
     ): Flow<Outcome<CreateArchiveFolderOutcome.Success, CreateArchiveFolderOutcome.Error>> = flow {
         if (folderName.isBlank()) {
@@ -40,13 +42,13 @@ internal class CreateArchiveFolder(
         }
 
         val account = withContext(ioDispatcher) {
-            accountManager.getAccount(accountUuid)
+            accountManager.getById(accountId).firstOrNull()
         } ?: run {
             emit(Outcome.failure(CreateArchiveFolderOutcome.Error.AccountNotFound))
             return@flow
         }
 
-        val backendStorage = backendStorageFactory.createBackendStorage(account)
+        val backendStorage = backendStorageFactory.createBackendStorage(accountId)
         val folderInfo = FolderInfo(
             serverId = folderName,
             name = folderName,
@@ -70,7 +72,7 @@ internal class CreateArchiveFolder(
                 emit(Outcome.success(CreateArchiveFolderOutcome.Success.LocalFolderCreated))
                 val serverId = FolderServerId(folderInfo.serverId)
                 emit(Outcome.success(CreateArchiveFolderOutcome.Success.SyncStarted(serverId = serverId)))
-                val remoteFolderCreator = remoteFolderCreatorFactory.create(account)
+                val remoteFolderCreator = withContext(ioDispatcher) { remoteFolderCreatorFactory.create(accountId) }
                 val outcome = remoteFolderCreator
                     .create(folderServerId = serverId, mustCreate = false, folderType = LegacyFolderType.ARCHIVE)
                 when (outcome) {
@@ -86,6 +88,7 @@ internal class CreateArchiveFolder(
 
                     is Outcome.Success<RemoteFolderCreationOutcome.Success> -> handleRemoteFolderCreationSuccess(
                         localFolderId = folderId,
+                        accountId = accountId,
                         account = account,
                         emit = ::emit,
                     )
@@ -98,10 +101,11 @@ internal class CreateArchiveFolder(
 
     private suspend fun handleRemoteFolderCreationSuccess(
         localFolderId: Long,
-        account: BaseAccount,
+        accountId: AccountId,
+        account: LegacyAccount,
         emit: suspend (Outcome<CreateArchiveFolderOutcome.Success, CreateArchiveFolderOutcome.Error>) -> Unit,
     ) {
-        val specialFolderUpdater = specialFolderUpdaterFactory.create(account)
+        val specialFolderUpdater = specialFolderUpdaterFactory.create(accountId)
         emit(Outcome.success(CreateArchiveFolderOutcome.Success.UpdatingSpecialFolders))
         withContext(ioDispatcher) {
             specialFolderUpdater.setSpecialFolder(

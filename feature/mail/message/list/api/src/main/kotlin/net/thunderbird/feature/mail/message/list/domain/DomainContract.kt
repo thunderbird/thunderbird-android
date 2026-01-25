@@ -8,23 +8,24 @@ import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.FolderServerId
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
+import net.thunderbird.feature.mail.message.list.ui.state.SortType
 
 interface DomainContract {
     interface UseCase {
         fun interface GetAccountFolders {
-            suspend operator fun invoke(accountUuid: String): Outcome<List<RemoteFolder>, AccountFolderError>
+            suspend operator fun invoke(accountId: AccountId): Outcome<List<RemoteFolder>, AccountFolderError>
         }
 
         fun interface CreateArchiveFolder {
             operator fun invoke(
-                accountUuid: String,
+                accountId: AccountId,
                 folderName: String,
             ): Flow<Outcome<CreateArchiveFolderOutcome.Success, CreateArchiveFolderOutcome.Error>>
         }
 
         fun interface SetArchiveFolder {
             suspend operator fun invoke(
-                accountUuid: String,
+                accountId: AccountId,
                 folder: RemoteFolder,
             ): Outcome<SetAccountFolderOutcome.Success, SetAccountFolderOutcome.Error>
         }
@@ -35,6 +36,14 @@ interface DomainContract {
 
         fun interface GetMessageListPreferences {
             operator fun invoke(): Flow<MessageListPreferences>
+        }
+
+        fun interface GetSortTypes {
+            suspend operator fun invoke(accountIds: Set<AccountId>): Map<AccountId?, SortType>
+        }
+
+        fun interface GetDefaultSortType {
+            suspend operator fun invoke(): SortType
         }
     }
 }

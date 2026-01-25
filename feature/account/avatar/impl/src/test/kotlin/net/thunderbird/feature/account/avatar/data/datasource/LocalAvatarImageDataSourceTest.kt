@@ -40,7 +40,7 @@ class LocalAvatarImageDataSourceTest {
         val expectedDir = directoryProvider.getFilesDir().buildUpon()
             .appendPath(AvatarDataContract.DataSource.LocalAvatarImage.DIRECTORY_NAME)
             .build()
-        val expectedDest = expectedDir.buildUpon().appendPath("${accountId.asRaw()}.jpg").build()
+        val expectedDest = expectedDir.buildUpon().appendPath("$accountId.jpg").build()
 
         // Act
         val returned = testSubject.update(accountId, source)
@@ -60,7 +60,7 @@ class LocalAvatarImageDataSourceTest {
         val expectedDir = directoryProvider.getFilesDir().buildUpon()
             .appendPath(AvatarDataContract.DataSource.LocalAvatarImage.DIRECTORY_NAME)
             .build()
-        val expectedDest = expectedDir.buildUpon().appendPath("${accountId.asRaw()}.jpg").build()
+        val expectedDest = expectedDir.buildUpon().appendPath("$accountId.jpg").build()
 
         // Act
         testSubject.delete(accountId)

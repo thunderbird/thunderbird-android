@@ -198,7 +198,7 @@ ORDER BY message_parts.seq
             put("folder_id", destinationFolderId)
             put("uid", K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString())
             put("message_part_id", rootMessagePartId)
-            put("account_id", accountId.asRaw())
+            put("account_id", accountId.toString())
         }
     }
 

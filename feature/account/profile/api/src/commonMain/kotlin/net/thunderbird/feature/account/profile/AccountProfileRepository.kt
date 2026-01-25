@@ -18,10 +18,10 @@ interface AccountProfileRepository {
     /**
      * Gets an account profile by its ID as a flow.
      *
-     * @param accountId The ID of the account.
+     * @param id The ID of the account.
      * @return A flow emitting the account profile or null if not found.
      */
-    fun getById(accountId: AccountId): Flow<AccountProfile?>
+    fun getById(id: AccountId): Flow<AccountProfile?>
 
     /**
      * Updates the given account profile.

@@ -75,7 +75,7 @@ class AccountRemover(
 
     private fun removeBackend(account: LegacyAccountDto) {
         try {
-            backendManager.removeBackend(account)
+            backendManager.removeBackend(account.id)
         } catch (e: Exception) {
             Log.e(e, "Failed to reset remote store for account %s", account)
         }

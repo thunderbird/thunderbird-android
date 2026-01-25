@@ -9,7 +9,8 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MainActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
@@ -28,7 +29,9 @@ class UnreadWidgetDataProvider(
     private val coreResourceProvider: CoreResourceProvider,
     private val logger: Logger,
 ) {
-    fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
+    suspend fun loadUnreadWidgetData(
+        configuration: UnreadWidgetConfiguration,
+    ): UnreadWidgetData? = with(configuration) {
         if (SearchAccount.UNIFIED_FOLDERS == accountUuid) {
             loadUnifiedFoldersData(configuration)
         } else if (folderId != null) {
@@ -38,10 +41,12 @@ class UnreadWidgetDataProvider(
         }
     }
 
-    private fun loadUnifiedFoldersData(configuration: UnreadWidgetConfiguration): UnreadWidgetData {
+    private suspend fun loadUnifiedFoldersData(configuration: UnreadWidgetConfiguration): UnreadWidgetData {
         val searchAccount = getUnifiedFoldersSearch(configuration.accountUuid)
         val title = searchAccount.name
-        val unreadCount = messageCountsProvider.getMessageCounts(searchAccount).unread
+        val unreadCount = withContext(Dispatchers.IO) {
+            messageCountsProvider.getMessageCounts(searchAccount).unread
+        }
         val clickIntent = MainActivity.intentDisplaySearch(context, searchAccount.relatedSearch, false, true, true)
 
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
@@ -55,10 +60,12 @@ class UnreadWidgetDataProvider(
         else -> throw AssertionError("SearchAccount expected")
     }
 
-    private fun loadAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
+    private suspend fun loadAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
         val account = preferences.getAccount(configuration.accountUuid) ?: return null
         val title = account.displayName
-        val unreadCount = messageCountsProvider.getMessageCounts(account).unread
+        val unreadCount = withContext(Dispatchers.IO) {
+            messageCountsProvider.getMessageCounts(account).unread
+        }
         val clickIntent = getClickIntentForAccount(account)
 
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
@@ -70,7 +77,7 @@ class UnreadWidgetDataProvider(
     }
 
     @Suppress("ReturnCount")
-    private fun loadFolderData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
+    private suspend fun loadFolderData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
         val accountUuid = configuration.accountUuid
         val account = preferences.getAccount(accountUuid) ?: return null
         val folderId = configuration.folderId ?: return null
@@ -79,19 +86,21 @@ class UnreadWidgetDataProvider(
         val folderDisplayName = getFolderDisplayName(account, folderId)
         val title = context.getString(R.string.unread_widget_title, accountName, folderDisplayName)
 
-        val unreadCount = messageCountsProvider.getUnreadMessageCount(account, folderId)
+        val unreadCount = withContext(Dispatchers.IO) {
+            messageCountsProvider.getUnreadMessageCount(account, folderId)
+        }
 
         val clickIntent = getClickIntentForFolder(account, folderId)
 
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
     }
 
-    private fun getFolderDisplayName(account: LegacyAccountDto, folderId: Long): String {
-        val folder = runBlocking { folderRepository.getFolder(account, folderId) }
+    private suspend fun getFolderDisplayName(account: LegacyAccountDto, folderId: Long): String {
+        val folder = folderRepository.getFolder(account.id, folderId)
         return if (folder != null) {
             folderNameFormatter.displayName(folder)
         } else {
-            logger.error(TAG) { "Error loading folder for account ${account.id.asRaw()}, folder ID: $folderId" }
+            logger.error(TAG) { "Error loading folder for account ${account.id}, folder ID: $folderId" }
             ""
         }
     }

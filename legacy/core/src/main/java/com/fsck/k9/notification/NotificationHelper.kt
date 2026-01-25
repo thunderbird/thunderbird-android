@@ -58,7 +58,7 @@ class NotificationHelper(
                 logger.error(TAG, e) { "Failed to post notification with ID $notificationId" }
                 showNotifyErrorNotification(account)
             } else {
-                logger.error(TAG, e) { "Failed to post notification for account ${account.id.asRaw()}" }
+                logger.error(TAG, e) { "Failed to post notification for account ${account.id}" }
             }
         }
     }

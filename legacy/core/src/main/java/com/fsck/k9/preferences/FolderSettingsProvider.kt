@@ -6,7 +6,7 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 
 class FolderSettingsProvider(private val folderRepository: FolderRepository) {
     fun getFolderSettings(account: LegacyAccountDto): List<FolderSettings> {
-        return folderRepository.getRemoteFolderDetails(account)
+        return folderRepository.getRemoteFolderDetails(account.id)
             .filterNot { it.containsOnlyDefaultValues() }
             .map { it.toFolderSettings() }
     }
