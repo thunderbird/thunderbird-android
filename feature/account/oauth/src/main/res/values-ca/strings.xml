@@ -8,7 +8,7 @@
     <string name="account_oauth_error_canceled">Autorització cancel·lada</string>
     <string name="account_oauth_loading_message">Iniciar sessió utilitzant OAuth</string>
     <string name="account_oauth_sign_in_description">Us redigirem al seu proveïdor de correu per a iniciar la sessió. Heu de concedir accés a l\'aplicació per a poder accedir a les dades.</string>
-    <string name="account_oauth_sign_in_button">Iniciar sessió</string>
+    <string name="account_oauth_sign_in_button">Inicia la sessió</string>
     <string name="account_oauth_google_sign_in_support_text">Si experimentes problemes iniciant sessió amb Google, consulta el nostre {placeHolder}.</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">article de suport</string>
 </resources>

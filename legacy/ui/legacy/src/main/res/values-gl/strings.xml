@@ -885,4 +885,5 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <string name="debug_invalidate_access_token_done">Vale de acceso invalidado. A vindeira petición actualizarao.</string>
     <string name="open_camera">Abir a cámara</string>
     <string name="attach_file">Achegar arquivo</string>
+    <string name="camera_permission_denied">Non se poden tirar fotos, pois non se concedeu permiso á cámara</string>
 </resources>
