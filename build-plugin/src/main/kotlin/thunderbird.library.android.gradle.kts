@@ -7,10 +7,47 @@ plugins {
 }
 
 android {
-    configureSharedConfig(project)
+    compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
+
+    defaultConfig {
+        minSdk = ThunderbirdProjectConfig.Android.sdkMin
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    compileOptions {
+        sourceCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
+        targetCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
+    }
 
     buildFeatures {
         buildConfig = false
+    }
+
+    lint {
+        warningsAsErrors = false
+        abortOnError = true
+        checkDependencies = true
+        lintConfig = project.file("${project.rootProject.projectDir}/config/lint/lint.xml")
+        checkReleaseBuilds = System.getenv("CI_CHECK_RELEASE_BUILDS")?.toBoolean() ?: true
+    }
+
+    packaging {
+        resources {
+            excludes += listOf(
+                "/META-INF/{AL2.0,LGPL2.1}",
+                "/META-INF/DEPENDENCIES",
+                "/META-INF/LICENSE",
+                "/META-INF/LICENSE.txt",
+                "/META-INF/NOTICE",
+                "/META-INF/NOTICE.txt",
+                "/META-INF/README",
+                "/META-INF/README.md",
+                "/META-INF/CHANGES",
+                "/LICENSE.txt",
+            )
+        }
     }
 
     /**
