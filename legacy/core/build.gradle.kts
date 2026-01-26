@@ -50,8 +50,8 @@ dependencies {
     implementation(projects.feature.mail.message.list.api)
     implementation(projects.feature.mail.message.reader.api)
 
-    testApi(projects.core.testing)
-    testApi(projects.core.android.testing)
+    testImplementation(projects.core.testing)
+    testImplementation(projects.core.android.testing)
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.feature.telemetry.noop)
     testImplementation(projects.mail.testing)
