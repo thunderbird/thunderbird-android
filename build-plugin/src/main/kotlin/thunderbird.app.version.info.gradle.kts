@@ -4,7 +4,6 @@ import javax.xml.xpath.XPathFactory
 
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
 }
 
 androidComponents {
