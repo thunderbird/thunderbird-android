@@ -2,7 +2,7 @@ plugins {
     id(ThunderbirdPlugins.App.androidCompose)
     alias(libs.plugins.dependency.guard)
     id("thunderbird.app.version.info")
-    id("thunderbird.quality.badging")
+    alias(libs.plugins.tb.app.badging)
 }
 
 val testCoverageEnabled = hasProperty("testCoverageEnabled")
