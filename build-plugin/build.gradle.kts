@@ -25,7 +25,6 @@ dependencies {
     // Make custom plugins in ":plugin" available to precompiled convention plugins by classpath
     implementation(project(":plugin"))
 
-    implementation(libs.diff.utils)
     compileOnly(libs.android.tools.common)
 
     // This defines the used Kotlin version for all Plugin dependencies

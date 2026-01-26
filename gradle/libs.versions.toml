@@ -137,6 +137,7 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 dev-mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
 
 # Build plugins
+tb-app-badging = { id = "net.thunderbird.gradle.plugin.app.badging" }
 tb-quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
 
 [libraries]
