@@ -8,12 +8,12 @@ import android.os.Bundle
 import androidx.core.content.IntentCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.fsck.k9.K9.areDatabasesUpToDate
-import com.fsck.k9.Preferences
-import com.fsck.k9.Preferences.Companion.getPreferences
 import com.fsck.k9.service.DatabaseUpgradeService
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.google.android.material.textview.MaterialTextView
+import net.thunderbird.core.android.account.LegacyAccountManager
+import org.koin.android.ext.android.inject
 
 /**
  * This activity triggers a database upgrade if necessary and displays the current upgrade progress.
@@ -52,12 +52,12 @@ import com.google.android.material.textview.MaterialTextView
 class UpgradeDatabaseActivity : BaseActivity() {
     private var mStartIntent: Intent? = null
 
-    private var mUpgradeText: MaterialTextView? = null
+    private lateinit var mUpgradeText: MaterialTextView
+    private lateinit var mLocalBroadcastManager: LocalBroadcastManager
+    private lateinit var mBroadcastReceiver: UpgradeDatabaseBroadcastReceiver
+    private lateinit var mIntentFilter: IntentFilter
 
-    private var mLocalBroadcastManager: LocalBroadcastManager? = null
-    private var mBroadcastReceiver: UpgradeDatabaseBroadcastReceiver? = null
-    private var mIntentFilter: IntentFilter? = null
-    private var mPreferences: Preferences? = null
+    private val accountManager: LegacyAccountManager by inject()
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,8 +69,6 @@ class UpgradeDatabaseActivity : BaseActivity() {
             launchOriginalActivity()
             return
         }
-
-        mPreferences = getPreferences()
 
         initializeLayout()
 
@@ -96,8 +94,9 @@ class UpgradeDatabaseActivity : BaseActivity() {
         mLocalBroadcastManager = LocalBroadcastManager.getInstance(this)
         mBroadcastReceiver = UpgradeDatabaseBroadcastReceiver()
 
-        mIntentFilter = IntentFilter(DatabaseUpgradeService.ACTION_UPGRADE_PROGRESS)
-        mIntentFilter!!.addAction(DatabaseUpgradeService.ACTION_UPGRADE_COMPLETE)
+        mIntentFilter = IntentFilter(DatabaseUpgradeService.ACTION_UPGRADE_PROGRESS).apply {
+            addAction(DatabaseUpgradeService.ACTION_UPGRADE_COMPLETE)
+        }
     }
 
     public override fun onResume() {
@@ -111,7 +110,7 @@ class UpgradeDatabaseActivity : BaseActivity() {
 
         // Register the broadcast receiver to listen for progress reports from
         // DatabaseUpgradeService.
-        mLocalBroadcastManager!!.registerReceiver(mBroadcastReceiver!!, mIntentFilter!!)
+        mLocalBroadcastManager.registerReceiver(mBroadcastReceiver, mIntentFilter)
 
         // Now that the broadcast receiver was registered start DatabaseUpgradeService.
         DatabaseUpgradeService.startService(this)
@@ -120,7 +119,7 @@ class UpgradeDatabaseActivity : BaseActivity() {
     public override fun onPause() {
         // The activity is being paused, so there's no point in listening to the progress of the
         // database upgrade service.
-        mLocalBroadcastManager!!.unregisterReceiver(mBroadcastReceiver!!)
+        mLocalBroadcastManager.unregisterReceiver(mBroadcastReceiver)
 
         super.onPause()
     }
@@ -144,13 +143,13 @@ class UpgradeDatabaseActivity : BaseActivity() {
                 // Information on the current upgrade progress
                 val accountUuid = intent.getStringExtra(
                     DatabaseUpgradeService.EXTRA_ACCOUNT_UUID,
-                )
+                ) ?: error("Missing Intent extra '${DatabaseUpgradeService.EXTRA_ACCOUNT_UUID}'")
 
-                val account = mPreferences!!.getAccount(accountUuid!!)
+                val account = accountManager.getAccount(accountUuid)
 
                 if (account != null) {
-                    val upgradeStatus = getString(R.string.upgrade_database_format, account.displayName)
-                    mUpgradeText!!.text = upgradeStatus
+                    val upgradeStatus = getString(R.string.upgrade_database_format, account.profile.name)
+                    mUpgradeText.text = upgradeStatus
                 }
             } else if (DatabaseUpgradeService.ACTION_UPGRADE_COMPLETE == action) {
                 // Upgrade complete, launch the original activity.
