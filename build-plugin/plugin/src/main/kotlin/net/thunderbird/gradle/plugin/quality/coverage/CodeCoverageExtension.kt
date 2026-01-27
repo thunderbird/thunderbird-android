@@ -21,7 +21,6 @@ interface CodeCoverageExtension {
      * Minimum required line coverage in percent (0-100).
      */
     val lineCoverage: Property<Int>
-
 }
 
 internal fun CodeCoverageExtension.initialize() {

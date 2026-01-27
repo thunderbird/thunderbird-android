@@ -4,7 +4,6 @@ import kotlinx.kover.gradle.plugin.KoverGradlePlugin
 import kotlinx.kover.gradle.plugin.dsl.AggregationType
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
-import kotlinx.kover.gradle.plugin.dsl.KoverReportFiltersConfig
 import kotlinx.kover.gradle.plugin.dsl.KoverVerificationRulesConfig
 import net.thunderbird.gradle.plugin.quality.coverage.filter.androidFilter
 import net.thunderbird.gradle.plugin.quality.coverage.filter.commonFilter
@@ -36,7 +35,7 @@ import org.gradle.kotlin.dsl.create
  *    branchCoverage.set(70) // Set branch coverage threshold
  * }
  */
-class CodeCoveragePlugin: Plugin<Project> {
+class CodeCoveragePlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         val extension = target.extensions.create<CodeCoverageExtension>("codeCoverage")
@@ -51,11 +50,23 @@ class CodeCoveragePlugin: Plugin<Project> {
         extension.initialize()
         extension.finalizeValueOnRead()
 
-        target.pluginManager.apply(KoverGradlePlugin::class)
-        target.configureKover(extension)
+        with(target) {
+            with(pluginManager) {
+                apply(KoverGradlePlugin::class)
+            }
+
+            // Defer configuration until after all build scripts had a chance
+            // to configure the `codeCoverage { ... }` extension.
+            afterEvaluate {
+                configureKover(
+                    coverageExtension = extension,
+                    isRoot = this == rootProject,
+                )
+            }
+        }
     }
 
-    private fun Project.configureKover(coverageExtension: CodeCoverageExtension) {
+    private fun Project.configureKover(coverageExtension: CodeCoverageExtension, isRoot: Boolean) {
         extensions.configure<KoverProjectExtension>("kover") {
             if (coverageExtension.disabled.get()) {
                 disable()
@@ -63,6 +74,24 @@ class CodeCoveragePlugin: Plugin<Project> {
 
             // See https://www.jacoco.org/jacoco/
             useJacoco("0.8.14")
+
+            if (isRoot) {
+                merge {
+                    allProjects()
+                }
+            }
+
+            currentProject {
+                sources {
+                    excludedSourceSets.addAll(
+                        "androidMainResourceCollectors",
+                        "commonMainResourceAccessors",
+                        "commonMainResourceCollectors",
+                        "commonResClass",
+                        "jvmMainResourceCollectors",
+                    )
+                }
+            }
 
             reports {
                 total {

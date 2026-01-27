@@ -51,3 +51,8 @@ tasks.named<Wrapper>("wrapper") {
     gradleVersion = libs.versions.gradle.get()
     distributionType = Wrapper.DistributionType.ALL
 }
+
+codeCoverage {
+    branchCoverage.set(26)
+    lineCoverage.set(31)
+}
