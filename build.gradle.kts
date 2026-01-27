@@ -53,6 +53,6 @@ tasks.named<Wrapper>("wrapper") {
 }
 
 codeCoverage {
-    branchCoverage.set(26)
-    lineCoverage.set(31)
+    branchCoverage = 26
+    lineCoverage = 31
 }

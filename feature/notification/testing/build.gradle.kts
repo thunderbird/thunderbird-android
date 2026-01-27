@@ -15,5 +15,6 @@ kotlin {
 }
 
 codeCoverage {
-    lineCoverage.set(0)
+    branchCoverage = 0
+    lineCoverage = 0
 }

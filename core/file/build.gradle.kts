@@ -19,3 +19,8 @@ kotlin {
         }
     }
 }
+
+codeCoverage {
+    branchCoverage = 39
+    lineCoverage = 61
+}

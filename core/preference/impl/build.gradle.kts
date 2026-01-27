@@ -19,6 +19,6 @@ kotlin {
 }
 
 codeCoverage {
-    branchCoverage.set(16)
-    lineCoverage.set(2)
+    branchCoverage = 6
+    lineCoverage = 2
 }

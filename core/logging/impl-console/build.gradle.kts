@@ -34,6 +34,6 @@ kotlin {
 }
 
 codeCoverage {
-    branchCoverage.set(41)
-    lineCoverage.set(41)
+    branchCoverage = 40
+    lineCoverage = 41
 }

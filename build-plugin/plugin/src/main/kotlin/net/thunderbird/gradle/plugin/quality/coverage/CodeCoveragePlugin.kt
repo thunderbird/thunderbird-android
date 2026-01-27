@@ -34,8 +34,8 @@ import org.gradle.process.JavaForkOptions
  *
  * codeCoverage {
  *    disabled.set(false) // Enable or disable coverage
- *    lineCoverage.set(80) // Set line coverage threshold
- *    branchCoverage.set(70) // Set branch coverage threshold
+ *    lineCoverage = 80 // Set line coverage threshold
+ *    branchCoverage = 70 // Set branch coverage threshold
  * }
  */
 class CodeCoveragePlugin : Plugin<Project> {

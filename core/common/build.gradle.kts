@@ -28,3 +28,7 @@ kotlin {
         )
     }
 }
+
+codeCoverage {
+    lineCoverage = 72
+}

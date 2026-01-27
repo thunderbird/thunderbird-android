@@ -85,6 +85,6 @@ android {
 }
 
 codeCoverage {
-    branchCoverage.set(41)
-    lineCoverage.set(46)
+    branchCoverage = 41
+    lineCoverage = 46
 }
