@@ -137,7 +137,7 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 dev-mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
 
 # Build plugins
-quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
+tb-quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
 
 [libraries]
 android-billing = { module = "com.android.billingclient:billing", version.ref = "androidBilling" }
@@ -315,8 +315,8 @@ shared-kmp-compose = [
   "jetbrains-compose-lifecycle-viewmodel-compose",
   "jetbrains-compose-lifecycle-viewmodel-savedstate",
   # Disabled, as it's not used yet
-#  "jetbrains-compose-navigation3",
-#  "jetbrains-compose-navigation-event",
+  #  "jetbrains-compose-navigation3",
+  #  "jetbrains-compose-navigation-event",
 ]
 shared-kmp-compose-android = [
   "koin-androidx-compose",
