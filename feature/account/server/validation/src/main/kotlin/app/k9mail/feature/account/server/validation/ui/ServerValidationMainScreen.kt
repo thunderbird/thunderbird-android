@@ -1,8 +1,11 @@
 package app.k9mail.feature.account.server.validation.ui
 
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,9 +17,6 @@ import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.ViewModel
 import net.thunderbird.core.common.provider.BrandNameProvider
-import androidx.compose.foundation.layout.displayCutout
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.union
 
 @Composable
 internal fun ServerValidationMainScreen(
@@ -31,8 +31,8 @@ internal fun ServerValidationMainScreen(
             AppTitleTopHeader(
                 title = brandNameProvider.brandName,
                 modifier = Modifier.windowInsetsPadding(
-                    WindowInsets.statusBars.union(WindowInsets.displayCutout)
-                )
+                    WindowInsets.statusBars.union(WindowInsets.displayCutout),
+                ),
             )
         },
         bottomBar = {

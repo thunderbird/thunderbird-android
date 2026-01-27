@@ -2,8 +2,11 @@ package app.k9mail.feature.account.setup.ui.createaccount
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,9 +21,6 @@ import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.E
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.Event
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.ViewModel
 import net.thunderbird.core.common.provider.BrandNameProvider
-import androidx.compose.foundation.layout.displayCutout
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.union
 
 @Composable
 internal fun CreateAccountScreen(
@@ -50,8 +50,8 @@ internal fun CreateAccountScreen(
             AppTitleTopHeader(
                 title = brandNameProvider.brandName,
                 modifier = Modifier.windowInsetsPadding(
-                    WindowInsets.statusBars.union(WindowInsets.displayCutout)
-                )
+                    WindowInsets.statusBars.union(WindowInsets.displayCutout),
+                ),
             )
         },
         bottomBar = {
