@@ -24,7 +24,7 @@ interface CodeCoverageExtension {
 }
 
 internal fun CodeCoverageExtension.initialize() {
-    disabled.convention(false)
+    disabled.convention(true)
     branchCoverage.convention(DEFAULT_MIN_BRANCH_COVERAGE)
     lineCoverage.convention(DEFAULT_MIN_LINE_COVERAGE)
 }

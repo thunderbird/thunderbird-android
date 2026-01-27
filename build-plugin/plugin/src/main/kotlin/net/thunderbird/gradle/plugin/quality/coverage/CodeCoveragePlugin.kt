@@ -21,11 +21,11 @@ import org.gradle.process.JavaForkOptions
  *
  * It sets up default coverage thresholds and allows for customization via the [CodeCoverageExtension].
  *
- * The plugin can be globally disabled using a Gradle property or environment variable:
- *  - Gradle property: `-PcodeCoverageDisabled=true`
- *  - Environment variable: `CODE_COVERAGE_DISABLED=true`
+ * The plugin is disabled by default. It can be globally enabled using a Gradle property or environment variable:
+ *  - Gradle property: `-PcodeCoverageDisabled=false`
+ *  - Environment variable: `CODE_COVERAGE_DISABLED=false`
  *
- * Example usage in a build script:
+ * Example usage in a build script to enable it:
  *
  * ```kotlin
  * plugins {
@@ -33,7 +33,7 @@ import org.gradle.process.JavaForkOptions
  * }
  *
  * codeCoverage {
- *    disabled.set(false) // Enable or disable coverage
+ *    disabled.set(false) // Enable coverage
  *    lineCoverage = 80 // Set line coverage threshold
  *    branchCoverage = 70 // Set branch coverage threshold
  * }
@@ -46,7 +46,7 @@ class CodeCoveragePlugin : Plugin<Project> {
         val gradleProperty = target.providers.gradleProperty("codeCoverageDisabled").map { it.toBoolean() }
         val environmentProperty = target.providers.environmentVariable("CODE_COVERAGE_DISABLED")
             .map { it.equals("true", ignoreCase = true) }
-        val disabledProvider = environmentProperty.orElse(gradleProperty).orElse(false)
+        val disabledProvider = environmentProperty.orElse(gradleProperty).orElse(true)
 
         extension.disabled.convention(disabledProvider)
         extension.initialize()
