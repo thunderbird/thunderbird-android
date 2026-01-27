@@ -12,3 +12,8 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.feature.onboarding.migration.api)
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

@@ -18,3 +18,8 @@ dependencies {
     api(libs.mockito.core)
     api(libs.mockito.kotlin)
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

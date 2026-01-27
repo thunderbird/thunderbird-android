@@ -13,17 +13,12 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.jetbrains.compose) apply false
 
-    id("thunderbird.quality.spotless.root")
     id("thunderbird.dependency.check")
+    id("thunderbird.quality.spotless.root")
+    id("net.thunderbird.gradle.plugin.quality.coverage")
 }
 
-val propertyTestCoverage: String? by extra
-
 allprojects {
-    extra.apply {
-        set("testCoverageEnabled", propertyTestCoverage != null)
-    }
-
     tasks.withType<Test> {
         testLogging {
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL

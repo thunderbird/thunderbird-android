@@ -11,3 +11,8 @@ dependencies {
     implementation(libs.junit)
     implementation(libs.assertk)
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

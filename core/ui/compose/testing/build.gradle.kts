@@ -15,3 +15,7 @@ dependencies {
 
     implementation(libs.bundles.shared.jvm.test.compose)
 }
+
+codeCoverage {
+    lineCoverage.set(0)
+}

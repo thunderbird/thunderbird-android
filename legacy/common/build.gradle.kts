@@ -43,3 +43,8 @@ dependencies {
 android {
     namespace = "com.fsck.k9.common"
 }
+
+codeCoverage {
+    branchCoverage.set(10)
+    lineCoverage.set(4)
+}

@@ -10,3 +10,8 @@ dependencies {
 android {
     namespace = "app.k9mail.feature.widget.message.list"
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

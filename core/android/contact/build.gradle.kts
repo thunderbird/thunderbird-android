@@ -9,3 +9,8 @@ android {
 dependencies {
     implementation(projects.mail.common)
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

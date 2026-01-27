@@ -11,3 +11,8 @@ dependencies {
 android {
     namespace = "app.k9mail.feature.migration.provider"
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

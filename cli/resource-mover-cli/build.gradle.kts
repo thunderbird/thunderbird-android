@@ -11,3 +11,8 @@ application {
 dependencies {
     implementation(libs.clikt)
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

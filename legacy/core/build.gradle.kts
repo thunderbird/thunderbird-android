@@ -83,3 +83,8 @@ android {
         }
     }
 }
+
+codeCoverage {
+    branchCoverage.set(41)
+    lineCoverage.set(46)
+}

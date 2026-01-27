@@ -25,3 +25,8 @@ dependencies {
 
     testImplementation(projects.core.logging.testing)
 }
+
+codeCoverage {
+    branchCoverage.set(9)
+    lineCoverage.set(17)
+}

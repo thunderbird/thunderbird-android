@@ -5,10 +5,7 @@ plugins {
     id("thunderbird.quality.badging")
 }
 
-val testCoverageEnabled: Boolean by extra
-if (testCoverageEnabled) {
-    apply(plugin = "jacoco")
-}
+val testCoverageEnabled = hasProperty("testCoverageEnabled")
 
 android {
     namespace = "com.fsck.k9"
@@ -100,6 +97,7 @@ android {
 
         debug {
             applicationIdSuffix = ".debug"
+
             enableUnitTestCoverage = testCoverageEnabled
             enableAndroidTestCoverage = testCoverageEnabled
 
@@ -178,4 +176,9 @@ dependencies {
 dependencyGuard {
     configuration("fossReleaseRuntimeClasspath")
     configuration("fullReleaseRuntimeClasspath")
+}
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(25)
 }

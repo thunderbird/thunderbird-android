@@ -25,3 +25,8 @@ dependencies {
     testImplementation(projects.feature.account.fake)
     testImplementation(projects.mail.protocols.imap)
 }
+
+codeCoverage {
+    branchCoverage.set(38)
+    lineCoverage.set(43)
+}

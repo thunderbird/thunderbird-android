@@ -12,3 +12,8 @@ dependencies {
 
     testImplementation(projects.mail.testing)
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}
