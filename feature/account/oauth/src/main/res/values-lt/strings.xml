@@ -3,10 +3,12 @@
     <string name="account_oauth_sign_in_description">Kad prisijungtumėte, jus nukreipsime pas jūsų el. pašto paslaugos teikėją. Šiai programai turėsite suteikti prieigą prie savo el. pašto paskyros.</string>
     <string name="account_oauth_sign_in_button">Prisijungti</string>
     <string name="account_oauth_sign_in_with_google_button">Prisijungti per „Google“</string>
-    <string name="account_oauth_loading_message">Prisijungti naudojant „OAuth“</string>
+    <string name="account_oauth_loading_message">Prisijungiama naudojant „OAuth“</string>
     <string name="account_oauth_loading_error">Prisijungti naudojant „OAuth“ nepavyko</string>
     <string name="account_oauth_error_canceled">Tapatybės patvirtinimas nutrauktas</string>
     <string name="account_oauth_error_failed">Tapatybės patikrinimas nepavyko dėl klaidos: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_not_supported">„OAuth 2.0“ šiuo metu su šiuo tiekėju nepalaikoma.</string>
     <string name="account_oauth_error_browser_not_available">Programai nepavyko aptikti naršyklės, kurią galėtų panaudoti prieigai prie jūsų paskyros gauti.</string>
+    <string name="account_oauth_google_sign_in_support_text">Jei susiduriate su problemomis prisijungiant naudojant \"Google\", prašom paskaityti {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">palaikymo straipsnis</string>
 </resources>

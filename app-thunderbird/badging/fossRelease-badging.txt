@@ -66,7 +66,7 @@ application: label='Thunderbird' icon='res/mipmap-anydpi-v26/ic_launcher.xml'
 densities: '120' '160' '240' '320' '480' '640' '65534'
 feature-group: label=''
 install-location:'auto'
-launchable-activity: name='com.fsck.k9.activity.MessageList'  label='' icon=''
+launchable-activity: name='com.fsck.k9.activity.MainActivity'  label='' icon=''
 locales: '--_--' 'ar' 'be' 'bg' 'br' 'ca' 'co' 'cs' 'cy' 'da' 'de' 'el' 'en' 'en-GB' 'eo' 'es' 'et' 'eu' 'fa' 'fi' 'fr' 'fy' 'ga' 'gd' 'gl' 'hr' 'hu' 'in' 'is' 'it' 'iw' 'ja' 'ko' 'lt' 'lv' 'nb' 'nl' 'nn' 'pl' 'pt' 'pt-BR' 'pt-PT' 'ro' 'ru' 'sk' 'sl' 'sq' 'sr' 'sv' 'ta' 'ta-IN' 'tr' 'uk' 'vi' 'zh' 'zh-CN' 'zh-TW'
 main
 minSdkVersion:'21'

@@ -18,7 +18,7 @@
     <string name="account_server_settings_authentication_label">Tapatumo nustatymas</string>
     <string name="account_server_settings_username_label">Naudotojo vardas</string>
     <string name="account_server_settings_connection_security_none">Jokio</string>
-    <string name="account_server_settings_authentication_none">Jokio</string>
+    <string name="account_server_settings_authentication_none">Joks</string>
     <string name="account_server_settings_authentication_password_cleartext">Paprastas slaptažodis</string>
     <string name="account_server_settings_authentication_password_encrypted">Šifruotas slaptažodis</string>
     <string name="account_server_settings_authentication_client_certificate">Kliento liudijimas</string>
@@ -31,4 +31,7 @@
     <string name="account_server_settings_outgoing_top_bar_title">Siunčiamų laiškų serverio parametrai</string>
     <string name="account_server_settings_validation_error_server_required">Serverio vardą nurodyti būtina.</string>
     <string name="account_server_settings_validation_error_port_required">Prievadą nurodyti būtina.</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Siųsti kliento informaciją</string>
+    <string name="account_server_settings_password_authentication_failed">Prisijungti nepavyko!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Nepavyko prašyti biometrinių duomenų.</string>
 </resources>

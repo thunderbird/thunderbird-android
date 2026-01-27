@@ -15,8 +15,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonSegmentedSingleChoice
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.button.RadioButton
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem

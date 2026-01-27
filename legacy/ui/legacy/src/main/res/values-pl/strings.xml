@@ -274,7 +274,6 @@
     <string name="archive_folder_label">Folder archiwum</string>
     <string name="spam_folder_label">Folder spamu</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Pokaż tylko subskrybowane foldery</string>
-    <string name="account_setup_auto_expand_folder">Zawsze rozwijaj folder</string>
     <string name="account_setup_options_mail_check_frequency_never">Nigdy</string>
     <string name="account_setup_options_mail_check_frequency_15min">Co 15 minut</string>
     <string name="account_setup_options_mail_check_frequency_30min">Co 30 minut</string>
@@ -364,8 +363,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Wszystkie wersje robocze będą szyfrowane</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Szyfruj wersje robocze tylko wtedy, gdy szyfrowanie jest włączone</string>
     <string name="account_settings_mail_check_frequency_label">Częstotliwość sprawdzania konta</string>
-    <string name="account_settings_color_label">Kolor konta</string>
-    <string name="account_settings_color_summary">Wybierz kolor, który będzie użyty przy wyświetlaniu folderów i listy kont</string>
     <string name="account_settings_mail_display_count_label">Liczba wiadomości</string>
     <string name="account_settings_autodownload_message_size_label">Rozmiar pobieranych wiadomości</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -406,7 +403,6 @@
     <string name="account_settings_incoming_summary">Ustawienia serwera poczty przychodzącej</string>
     <string name="account_settings_outgoing_label">Serwer poczty wychodzącej</string>
     <string name="account_settings_outgoing_summary">Ustawienia serwera poczty wychodzącej (SMTP)</string>
-    <string name="account_settings_description_label">Nazwa konta</string>
     <string name="account_settings_name_label">Imię i nazwisko</string>
     <string name="notifications_title">Powiadomienia</string>
     <string name="account_settings_vibration">Wibracja</string>
@@ -926,4 +922,15 @@
     <string name="debug_invalidate_access_token_cannot_modify">Nie można zmodyfikować zapisanego tokena dostępu. Spróbuj unieważnić lokalnie.</string>
     <string name="debug_invalidate_access_token_already_modified">Zapisany token dostępu został już zmodyfikowany.</string>
     <string name="message_view_menu_action_export_eml">Eksportuj jako EML</string>
+    <string name="expand_folders">Rozwiń foldery</string>
+    <string name="account_setup_auto_select_folder">Automatyczny wybór folderu</string>
+    <string name="navigation_drawer_preferences">Menu boczne</string>
+    <string name="set_format_html_action">Użyj oryginalnego formatowania</string>
+    <string name="set_format_html_condensed_action">Pokaż z formatowaniem</string>
+    <string name="set_format_plain_action">Pokaż wiadomość bez formatowania</string>
+    <string name="set_format_plain_condensed_action">Pokaż bez formatowania</string>
+    <string name="global_settings_messageview_body_content_type_title">Typ treści tekstu</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (tekst/HTML)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Zwykły tekst (tekst/zwykły)</string>
+    <string name="debug_feature_flags">DEBUGOWANIE: flagi funkcji</string>
 </resources>

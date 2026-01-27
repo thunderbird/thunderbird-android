@@ -344,7 +344,6 @@
     <string name="drafts_folder_label">Dréachtaí fillteán</string>
     <string name="sent_folder_label">Fillteán seolta</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Ná taispeáin ach fillteáin shuibscríofa</string>
-    <string name="account_setup_auto_expand_folder">Fillteán fairsingithe go huathoibríoch</string>
     <string name="account_setup_options_mail_check_frequency_never">Riamh</string>
     <string name="account_setup_options_mail_check_frequency_6hour">Gach 6 uair an chloig</string>
     <string name="account_setup_options_mail_check_frequency_12hour">Gach 12 uair an chloig</string>
@@ -426,8 +425,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Stórálfar gach dréacht criptithe</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Ná criptigh dréachtaí ach amháin má tá criptiú cumasaithe</string>
     <string name="account_settings_mail_check_frequency_label">Minicíocht na vótaíochta fillteáin</string>
-    <string name="account_settings_color_label">Dath an chuntais</string>
-    <string name="account_settings_color_summary">Dath accent an chuntais seo a úsáidtear i bhfillteán agus i liosta na gcuntas</string>
     <string name="account_settings_mail_display_count_label">Méid an fhillteáin logánta</string>
     <string name="account_settings_autodownload_message_size_label">Faigh teachtaireachtaí suas go dtí</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -464,7 +461,6 @@
     <string name="folder_settings_clear_local_folder_action">Glan teachtaireachtaí logánta</string>
     <string name="account_settings_incoming_label">Freastalaí isteach</string>
     <string name="account_settings_outgoing_summary">Cumraigh an freastalaí ríomhphoist amach (SMTP)</string>
-    <string name="account_settings_description_label">Ainm an chuntais</string>
     <string name="account_settings_name_label">D\'ainm</string>
     <string name="notifications_title">Fógraí</string>
     <string name="account_settings_vibrate_pattern_default">Réamhshocrú</string>
@@ -871,4 +867,15 @@
     <string name="debug_invalidate_access_token_unavailable">Níl aon chomhartha OAuth ar fáil don chuntas seo.</string>
     <string name="debug_invalidate_access_token_local">Tástáil: Comhartha rochtana neamhbhailí (áitiúil)</string>
     <string name="message_view_menu_action_export_eml">Easpórtáil mar EML</string>
+    <string name="account_setup_auto_select_folder">Fillteán a roghnú go huathoibríoch</string>
+    <string name="navigation_drawer_preferences">Roghchlár Taobh</string>
+    <string name="expand_folders">Leathnaigh Fillteáin</string>
+    <string name="set_format_html_action">Úsáid an fhormáidiú bunaidh</string>
+    <string name="set_format_html_condensed_action">Taispeáin formáidithe</string>
+    <string name="set_format_plain_action">Taispeáin teachtaireacht neamhfhormáidithe</string>
+    <string name="set_format_plain_condensed_action">Taispeáin neamhfhormáidithe</string>
+    <string name="global_settings_messageview_body_content_type_title">Cineál Ábhair Choirp</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (téacs/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Téacs simplí (téacs/simplí)</string>
+    <string name="debug_feature_flags">Dífhabhtú: Bratacha Gnéithe</string>
 </resources>

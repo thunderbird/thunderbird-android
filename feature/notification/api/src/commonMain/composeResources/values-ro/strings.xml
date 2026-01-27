@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Sincronizare (Push)</string>
     <string name="notification_channel_push_description">Afișat când se așteaptă mesaje noi</string>
@@ -12,7 +12,7 @@
     <string name="notification_certificate_error_public">Eroare de certificat</string>
     <string name="notification_certificate_error_title">Eroare de certificat pentru %1$s</string>
     <string name="notification_certificate_error_text">Verifică setările serverului</string>
-    <string name="notification_bg_sync_ticker">Se verifică emailul: %1$s:%2$s</string>
+    <string name="notification_bg_sync_ticker">Se verifică corespondența: %1$s: %2$s</string>
     <string name="notification_bg_sync_title">Se verifică emailul</string>
     <string name="notification_bg_send_ticker">Se trimite emailul: %1$s</string>
     <string name="notification_bg_send_title">Se trimite emailul</string>
@@ -34,4 +34,21 @@
     <string name="notification_action_archive">Arhivă</string>
     <string name="notification_action_archive_all">Arhivează tot</string>
     <string name="notification_action_spam">Spam</string>
+    <string name="notification_authentication_incoming_server_error_text">Autentificarea a eșuat pentru %1$s. Actualizați parametrii serverului de intrare.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Autentificarea a eșuat pentru %1$s. Actualizați parametrii serverului de ieșire.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d mesaj nou</item>
+        <item quantity="few">%1$d mesaje noi</item>
+        <item quantity="other">%1$d de mesaje noi</item>
+    </plurals>
+    <string name="notification_action_retry">Reîncercați</string>
+    <string name="notification_action_update_server_settings">Actualizați parametrii serverului</string>
+    <string name="notification_action_assign_sent_folder">Atribuie un dosar</string>
+    <string name="banner_inline_notification_check_error_notifications">Verificați notificările de eroare</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Unele mesaje necesită atenția dvs.</string>
+    <string name="banner_inline_notification_open_notifications">Deschideți notificările</string>
+    <string name="banner_inline_notification_learn_more">Aflați mai multe</string>
+    <string name="banner_inline_notification_view_support_article">Vedeți articolul de ajutor</string>
+    <string name="sent_folder_not_found_title">Dosarul „Trimiteri” nu este disponibil.</string>
 </resources>

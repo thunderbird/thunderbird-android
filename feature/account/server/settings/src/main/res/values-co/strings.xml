@@ -32,4 +32,6 @@
     <string name="account_server_settings_validation_error_imap_prefix_blank">U prefissu IMAP ùn pò micca esse viotu.</string>
     <string name="account_server_settings_password_authentication_subtitle">Spalancate per affissà a vostra parolla d’intesa</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Per affissà quì a vostra parolla d’intesa, attivate l’ammarchjunata di u screnu nant’à st’apparechju.</string>
+    <string name="account_server_settings_password_authentication_failed">Fiascu d’autenticazione !</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Impussibule di lancià l’invitu biometricu.</string>
 </resources>

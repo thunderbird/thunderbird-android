@@ -24,11 +24,6 @@ fun MainTheme(
         darkTheme = darkTheme,
     )
 
-    SystemBar(
-        darkTheme = darkTheme,
-        colorScheme = themeColorScheme,
-    )
-
     CompositionLocalProvider(
         LocalThemeColorScheme provides themeColorScheme,
         LocalThemeElevations provides themeConfig.elevations,

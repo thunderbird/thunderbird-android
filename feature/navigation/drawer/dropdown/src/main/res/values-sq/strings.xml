@@ -11,4 +11,5 @@
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Listë llogarish</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Llogari e Njësuar</string>
     <string name="navigation_drawer_dropdown_action_add_account">Shtoni llogari</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Njëkohëso llogarinë</string>
 </resources>

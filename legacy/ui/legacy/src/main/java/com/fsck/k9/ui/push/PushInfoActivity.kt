@@ -5,9 +5,9 @@ import android.view.MenuItem
 import androidx.fragment.app.commit
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.base.K9Activity
+import com.fsck.k9.ui.base.BaseActivity
 
-class PushInfoActivity : K9Activity() {
+class PushInfoActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTitle(R.string.push_info_title)
@@ -17,7 +17,7 @@ class PushInfoActivity : K9Activity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
-                add(R.id.fragment_container, PushInfoFragment())
+                add(R.id.content_container, PushInfoFragment())
             }
         }
     }

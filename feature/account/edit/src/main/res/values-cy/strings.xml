@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_edit_save_server_settings_loading_message">Yn cadw gosodiadau gweinydd…</string>
-    <string name="account_edit_save_server_settings_error_message">Wedi methu cadw gosodiadau gweinydd</string>
+    <string name="account_edit_save_server_settings_error_message">Methu cadw gosodiadau gweinydd</string>
     <string name="account_edit_save_server_settings_success_message">Gosodiadau gweinydd wedi\'u cadw</string>
 </resources>

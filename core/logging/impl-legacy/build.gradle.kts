@@ -2,11 +2,11 @@ plugins {
     id(ThunderbirdPlugins.Library.kmp)
 }
 
-android {
-    namespace = "net.thunderbird.core.logging.legacy"
-}
-
 kotlin {
+    androidLibrary {
+        namespace = "net.thunderbird.core.logging.legacy"
+        withHostTest {}
+    }
     sourceSets {
         androidMain.dependencies {
             implementation(libs.timber)

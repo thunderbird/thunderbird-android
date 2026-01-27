@@ -18,14 +18,16 @@ internal fun SideRailAccountListItem(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier.width(MainTheme.sizes.large)
+        modifier = modifier
+            .width(MainTheme.sizes.large)
             .padding(vertical = MainTheme.spacings.half),
         contentAlignment = Alignment.Center,
     ) {
         AccountAvatar(
             account = account,
-            onClick = onClick,
             selected = selected,
+            onClick = onClick,
+            showBadge = true,
         )
     }
 }

@@ -2,8 +2,8 @@ package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.di.DI
 import app.k9mail.legacy.mailstore.MessageListRepository
-import com.fsck.k9.mail.Flag
 import kotlin.collections.set
+import net.thunderbird.core.common.mail.Flag
 
 typealias MessageId = Long
 typealias ThreadId = Long

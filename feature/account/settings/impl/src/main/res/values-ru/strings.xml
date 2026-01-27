@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_settings_general_title">Основные настройки</string>
-    <string name="account_settings_general_profile_indicator_title">Индикатор профиля</string>
-    <string name="account_settings_general_profile_indicator_monogram">Монограмма</string>
-    <string name="account_settings_general_profile_indicator_image">Изображение</string>
-    <string name="account_settings_general_profile_indicator_icon">Значок</string>
+    <string name="account_settings_general_avatar_option_monogram">Монограмма</string>
+    <string name="account_settings_general_avatar_option_image">Изображение</string>
+    <string name="account_settings_general_avatar_option_icon">Значок</string>
     <string name="account_settings_general_name_title">Имя учётной записи</string>
     <string name="account_settings_general_name_description">Имя, связанное с вашей учётной записью.</string>
     <string name="account_settings_general_color_title">Цвет учётной записи</string>
     <string name="account_settings_general_color_description">Цветовой акцент этой учётной записи, используемый в папках и списках учётных записей.</string>
+    <string name="account_settings_general_avatar_description">Выбор варианта отображения аватара вашей учётной записи</string>
+    <string name="account_settings_general_name_error_empty">Имя не может быть пустым</string>
+    <string name="account_settings_general_name_error_too_long">Имя слишком длинное</string>
+    <string name="account_settings_general_avatar_monogram_description">Монограмма, используемая в качестве аватара.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Монограмма не может быть пустой</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Монограмма слишком длинная</string>
+    <string name="account_settings_general_avatar_title">Аватар</string>
+    <string name="account_settings_general_avatar_monogram_title">Монограмма аватара</string>
+    <string name="account_settings_general_avatar_icon_title">Значок аватара</string>
+    <string name="account_settings_general_avatar_icon_description">Выберите один из значков, который будет использоваться в качестве аватара.</string>
 </resources>

@@ -30,6 +30,25 @@ inline fun <reified T> Module.singleListOf(vararg items: Definition<T>, qualifie
 }
 
 /**
+ * Defines a factory for a list of elements of type [T].
+ *
+ * This function creates a factory definition for a list of elements. Each time this list is
+ * requested, a new list is created, and each element in the list is resolved anew from the
+ * provided [items] definitions.
+ *
+ * @param T The type of elements in the list.
+ * @param items Vararg of [Definition]s that will be resolved and added to the list.
+ * @param qualifier Optional [Qualifier] to distinguish this list from others of the same type.
+ *                  If null, a default qualifier based on the type [T] will be used.
+ */
+@KoinDslMarker
+inline fun <reified T> Module.factoryListOf(vararg items: Definition<T>, qualifier: Qualifier? = null) {
+    factory(qualifier ?: defaultListQualifier<T>()) {
+        items.map { definition -> definition(this, parametersOf()) }
+    }
+}
+
+/**
  * Resolves a [List] of instances of type [T].
  * This is a helper function for Koin's multibinding feature.
  *

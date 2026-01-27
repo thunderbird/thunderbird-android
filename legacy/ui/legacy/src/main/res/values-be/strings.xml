@@ -274,7 +274,6 @@
     <string name="archive_folder_label">Каталог архіва</string>
     <string name="spam_folder_label">Каталог спаму</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Паказваць толькі падпісаныя каталогі</string>
-    <string name="account_setup_auto_expand_folder">Аўтапераход у каталог</string>
     <string name="account_setup_options_mail_check_frequency_never">Ніколі</string>
     <string name="account_setup_options_mail_check_frequency_15min">Кожныя 15 хвілін</string>
     <string name="account_setup_options_mail_check_frequency_30min">Кожныя 30 хвілін</string>
@@ -364,8 +363,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Усе чарнавікі будуць захоўвацца зашыфраванымі</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Шыфраваць чарнавікі, калі шыфраванне ўключана</string>
     <string name="account_settings_mail_check_frequency_label">Частата апытання</string>
-    <string name="account_settings_color_label">Колер акаўнта</string>
-    <string name="account_settings_color_summary">Колер гэтага акаўнта для каталогаў і спіса акаўнтаў</string>
     <string name="account_settings_mail_display_count_label">Памер лакальнага каталога</string>
     <string name="account_settings_autodownload_message_size_label">Памер атрымання</string>
     <string name="account_settings_autodownload_message_size_1">1 Кб</string>
@@ -406,7 +403,6 @@
     <string name="account_settings_incoming_summary">Наладжванне сервера ўваходнай пошты</string>
     <string name="account_settings_outgoing_label">Сервер выходных лістоў</string>
     <string name="account_settings_outgoing_summary">Наладжванне сервера выходнай пошты (SMTP)</string>
-    <string name="account_settings_description_label">Назва акаўнта</string>
     <string name="account_settings_name_label">Ваша імя</string>
     <string name="notifications_title">Апавяшчэнні</string>
     <string name="account_settings_vibration">Вібрацыя</string>

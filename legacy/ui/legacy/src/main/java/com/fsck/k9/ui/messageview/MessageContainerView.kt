@@ -412,6 +412,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
 
     fun displayMessageViewContainer(
         messageViewInfo: MessageViewInfo,
+        renderPlainFormat: Boolean,
         onRenderingFinishedListener: OnRenderingFinishedListener,
         loadPictures: Boolean,
         hideUnsignedTextDivider: Boolean,
@@ -422,8 +423,13 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         resetView()
         renderAttachments(messageViewInfo)
 
-        val messageText = messageViewInfo.text
-        if (messageText != null && !isShowingPictures) {
+        val messageText = if (!renderPlainFormat) {
+            messageViewInfo.text
+        } else {
+            displayHtml.wrapMessageContent(messageViewInfo.textPlainFormatted)
+        }
+
+        if (messageText != null && !isShowingPictures && !renderPlainFormat) {
             if (Utility.hasExternalImages(messageText)) {
                 if (loadPictures) {
                     setLoadPictures(true)

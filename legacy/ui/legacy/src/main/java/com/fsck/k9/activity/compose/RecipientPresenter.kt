@@ -19,7 +19,6 @@ import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser
 import com.fsck.k9.helper.MailTo
 import com.fsck.k9.helper.ReplyToParser
 import com.fsck.k9.mail.Address
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.message.AutocryptStatusInteractor
@@ -33,6 +32,7 @@ import com.fsck.k9.view.RecipientSelectView.Recipient
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.contact.ContactIntentHelper
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.legacy.Log
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback

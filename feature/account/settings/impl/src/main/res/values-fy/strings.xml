@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_settings_general_title">Algemiene ynstellingen</string>
-    <string name="account_settings_general_profile_indicator_title">Profylyndikator</string>
-    <string name="account_settings_general_profile_indicator_monogram">Monogram</string>
-    <string name="account_settings_general_profile_indicator_image">Ofbylding</string>
-    <string name="account_settings_general_profile_indicator_icon">Piktogram</string>
+    <string name="account_settings_general_avatar_option_monogram">Monogram</string>
+    <string name="account_settings_general_avatar_option_image">Ofbylding</string>
+    <string name="account_settings_general_avatar_option_icon">Piktogram</string>
     <string name="account_settings_general_name_title">Accountnamme</string>
     <string name="account_settings_general_name_description">De mei jo account assosjearre namme.</string>
     <string name="account_settings_general_color_title">Accountkleur</string>
     <string name="account_settings_general_color_description">De aksintkleur fan dizze account brûkt yn mappen en accountlisten.</string>
+    <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_description">Kies hoe’t jo accountavatar toand wurdt.</string>
+    <string name="account_settings_general_name_error_empty">Namme mei net leech wêze</string>
+    <string name="account_settings_general_name_error_too_long">Namme is te lang</string>
+    <string name="account_settings_general_avatar_monogram_title">Avatar-monogram</string>
+    <string name="account_settings_general_avatar_monogram_description">It monogram brûkt as jo avatar.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Monogram mei net leech wêze</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Monogram is te lang</string>
+    <string name="account_settings_general_avatar_icon_title">Avatarpiktogram</string>
+    <string name="account_settings_general_avatar_icon_description">Kies ien fan de piktogrammen om as jo avatar te brûken.</string>
 </resources>

@@ -1,0 +1,21 @@
+Mae K-9 Mail yn gleient e-bost cod agored sy'n gweithio gyda bron pob darparwr e-bost.
+
+<b>Nodweddion</b>
+
+* Yn cefnogi cyfrifon lluosog
+* Blwch Derbyn Cyfun
+* Yn ofalus o breifatrwydd (dim olrhain o gwbl, dim ond cysylltu â'ch darparwr e-bost)
+* Cydweddu cefndir awtomatig neu hysbysiadau gwthio
+* Chwilio lleol ac ochr y gweinydd
+* Amgryptio e-bost OpenPGP (PGP/MIME)
+
+Gosodwch yr ap <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a> i amgryptio/dadgryptio'ch e-byst gan ddefnyddio OpenPGP.
+
+<b>Cymorth</b>
+
+Os ydych chi'n cael trafferth gyda K-9 Mail, gofynnwch am help yn ein <a href="https://forum.k9mail.app">fforwm cymorth</a>.
+
+<b>Eisiau helpu?</b>
+
+Mae K-9 Mail yn broject a ddatblygwyd gan y gymuned. Os oes gennych ddiddordeb mewn helpu i wella'r ap, ymunwch â ni! Gallwch ddod o hyd i'n olrhain bygiau, cod ffynhonnell, a wici yn <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+Rydym bob amser yn hapus i groesawu datblygwyr, dylunwyr, dogfennwyr, cyfieithwyr, trigwyr bygiau a ffrindiau newydd.

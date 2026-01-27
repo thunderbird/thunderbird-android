@@ -1,4 +1,4 @@
-K-9 Mail is an Open Source email client that works with basically every email provider.
+K-9 Mail is an open source email client that works with basically every email provider.
 
 <b>Features</b>
 
@@ -19,6 +19,6 @@ If you're having trouble with K-9 Mail, ask for help in our <a href="https://for
 
 <b>Want to help?</b>
 
-K-9 Mail is a community-developed project. If you're interested in helping to improve the app, please join us!
+K-9 Mail is a community developed project. If you're interested in helping to improve the app, please join us!
 You can find our bug tracker, source code, and wiki at <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
 We're always happy to welcome new developers, designers, documenters, translators, bug triagers and friends.

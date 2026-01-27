@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.webkit.WebSettings.LayoutAlgorithm
 import android.webkit.WebSettings.RenderPriority
 import android.webkit.WebView
+import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mailstore.AttachmentResolver
 import net.thunderbird.core.android.common.view.showInDarkMode
 import net.thunderbird.core.android.common.view.showInLightMode
@@ -62,6 +63,7 @@ class MessageWebView : WebView, KoinComponent {
 
         // Disable network images by default. This is overridden by preferences.
         blockNetworkData(true)
+        setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
     }
 
     private fun configureDarkLightMode(

@@ -62,7 +62,7 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.Flag;
+import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageDownloadState;
 import com.fsck.k9.mail.Part;
@@ -102,7 +102,7 @@ import org.jetbrains.annotations.Nullable;
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
 import static com.fsck.k9.controller.Preconditions.requireNotNull;
 import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
-import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
+import static net.thunderbird.core.common.mail.Flag.X_REMOTE_COPY_STARTED;
 import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_VISIBLE_LIMIT;
 
 

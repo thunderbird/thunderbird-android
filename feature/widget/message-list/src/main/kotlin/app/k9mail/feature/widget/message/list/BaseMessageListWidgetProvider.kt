@@ -8,9 +8,9 @@ import android.content.Intent
 import android.widget.RemoteViews
 import androidx.core.app.PendingIntentCompat
 import com.fsck.k9.CoreResourceProvider
+import com.fsck.k9.activity.MainActivity
+import com.fsck.k9.activity.MainActivity.Companion.intentDisplaySearch
 import com.fsck.k9.activity.MessageCompose
-import com.fsck.k9.activity.MessageList
-import com.fsck.k9.activity.MessageList.Companion.intentDisplaySearch
 import net.thunderbird.feature.search.legacy.SearchAccount.Companion.createUnifiedFoldersSearch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -54,7 +54,7 @@ abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponen
     }
 
     private fun viewActionTemplatePendingIntent(context: Context): PendingIntent {
-        val intent = MessageList.actionDisplayMessageTemplateIntent(
+        val intent = MainActivity.actionDisplayMessageTemplateIntent(
             context,
             openInUnifiedInbox = true,
             messageViewOnly = true,

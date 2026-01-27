@@ -273,7 +273,6 @@
     <string name="archive_folder_label">Тека «Архів»</string>
     <string name="spam_folder_label">Тека «Спам»</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Показувати лише теки, на які ви підписані</string>
-    <string name="account_setup_auto_expand_folder">Автоматично відкривати теку</string>
     <string name="account_setup_options_mail_check_frequency_never">Ніколи</string>
     <string name="account_setup_options_mail_check_frequency_15min">Що 15 хвилин</string>
     <string name="account_setup_options_mail_check_frequency_30min">Що 30 хвилин</string>
@@ -363,8 +362,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Усі чернетки зберігатимуться зашифрованими</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Шифрувати чернетки лише якщо шифрування ввімкнено</string>
     <string name="account_settings_mail_check_frequency_label">Частота опитування тек</string>
-    <string name="account_settings_color_label">Колір облікового запису</string>
-    <string name="account_settings_color_summary">Виберіть колір облікового запису для тек та списку облікових записів</string>
     <string name="account_settings_mail_display_count_label">Розмір локальної теки</string>
     <string name="account_settings_autodownload_message_size_label">Отримувати повідомлення розміром до</string>
     <string name="account_settings_autodownload_message_size_1">1 КБ</string>
@@ -405,7 +402,6 @@
     <string name="account_settings_incoming_summary">Налаштувати сервер вхідної пошти</string>
     <string name="account_settings_outgoing_label">Сервер вихідної пошти</string>
     <string name="account_settings_outgoing_summary">Налаштувати сервер вихідної пошти (SMTP)</string>
-    <string name="account_settings_description_label">Ім’я облікового запису</string>
     <string name="account_settings_name_label">Ваше ім\'я</string>
     <string name="notifications_title">Сповіщення</string>
     <string name="account_settings_vibration">Вібрація</string>
@@ -932,4 +928,15 @@
     <string name="debug_invalidate_access_token_cannot_modify">Не вдалося змінити збережений токен доступу. Спробуйте локальну ануляцію.</string>
     <string name="debug_invalidate_access_token_already_modified">Збережений токен доступу вже змінено.</string>
     <string name="message_view_menu_action_export_eml">Експортувати як EML</string>
+    <string name="account_setup_auto_select_folder">Автоматичний вибір папки</string>
+    <string name="navigation_drawer_preferences">Бічне меню</string>
+    <string name="expand_folders">Розгорнути папки</string>
+    <string name="set_format_html_action">Використати оригінальне форматування</string>
+    <string name="set_format_html_condensed_action">Показати відформатовані</string>
+    <string name="set_format_plain_action">Показати неформатоване повідомлення</string>
+    <string name="set_format_plain_condensed_action">Показати неформатовані</string>
+    <string name="global_settings_messageview_body_content_type_title">Тип вмісту тіла</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (текст/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Звичайний текст (текст/звичайний)</string>
+    <string name="debug_feature_flags">НАЛАГОДЖЕННЯ: Прапорці функцій</string>
 </resources>

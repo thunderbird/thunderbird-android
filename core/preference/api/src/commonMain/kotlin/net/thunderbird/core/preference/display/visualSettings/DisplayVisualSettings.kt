@@ -1,5 +1,7 @@
 package net.thunderbird.core.preference.display.visualSettings
 
+import net.thunderbird.core.preference.BodyContentType
+
 const val DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_NAME = false
 const val DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE = true
 const val DISPLAY_SETTINGS_DEFAULT_IS_CHANGE_CONTACT_NAME_COLOR = true
@@ -9,7 +11,9 @@ const val DISPLAY_SETTINGS_DEFAULT_IS_USE_MESSAGE_VIEW_FIXED_WIDTH_FONT = false
 const val DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH = true
 const val DISPLAY_SETTINGS_DEFAULT_IS_SHOW_ANIMATION = true
 const val DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CORRESPONDENT_NAMES = true
+val DISPLAY_SETTINGS_DEFAULT_BODY_CONTENT_TYPE = BodyContentType.TEXT_HTML
 const val DISPLAY_SETTINGS_DEFAULT_MESSAGE_LIST_PREVIEW_LINES = 2
+const val DISPLAY_SETTINGS_DEFAULT_DRAWER_EXPAND_ALL_FOLDER = false
 
 data class DisplayVisualSettings(
     val isShowAnimations: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_SHOW_ANIMATION,
@@ -21,5 +25,7 @@ data class DisplayVisualSettings(
     val isUseBackgroundAsUnreadIndicator: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_USE_BACKGROUND_AS_INDICATOR,
     val isUseMessageViewFixedWidthFont: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_USE_MESSAGE_VIEW_FIXED_WIDTH_FONT,
     val isAutoFitWidth: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH,
+    val bodyContentType: BodyContentType = DISPLAY_SETTINGS_DEFAULT_BODY_CONTENT_TYPE,
     val messageListPreviewLines: Int = DISPLAY_SETTINGS_DEFAULT_MESSAGE_LIST_PREVIEW_LINES,
+    val drawerExpandAllFolder: Boolean = DISPLAY_SETTINGS_DEFAULT_DRAWER_EXPAND_ALL_FOLDER,
 )

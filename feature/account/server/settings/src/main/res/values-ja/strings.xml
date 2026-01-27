@@ -32,4 +32,6 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">ここでパスワードを表示するには、端末に画面ロックを設定してください。</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">無効な IP アドレスまたはホスト名です</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">クライアントの情報を送信する</string>
+    <string name="account_server_settings_password_authentication_failed">認証できませんでした！</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">生体認証プロンプトを開始できませんでした。</string>
 </resources>

@@ -1,5 +1,6 @@
 package net.thunderbird.feature.debug.settings.inject
 
+import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSectionViewModel
 import net.thunderbird.feature.debug.settings.navigation.DefaultSecretDebugSettingsNavigation
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsNavigation
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionViewModel
@@ -15,6 +16,12 @@ val featureDebugSettingsModule = module {
             notificationSender = get(),
             inAppNotificationStream = get(),
             notificationIconResourceProvider = get(),
+        )
+    }
+    viewModel {
+        DebugFeatureFlagSectionViewModel(
+            featureFlagFactory = get(),
+            featureFlagOverrides = get(),
         )
     }
 }

@@ -17,7 +17,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import app.k9mail.core.ui.compose.designsystem.R
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import androidx.compose.material3.Icon as Material3Icon
 import androidx.compose.material3.IconButton as Material3IconButton
 import androidx.compose.material3.OutlinedTextField as Material3OutlinedTextField

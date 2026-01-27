@@ -2,7 +2,6 @@ package com.fsck.k9.backend.imap
 
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageRetrievalListener
@@ -13,6 +12,7 @@ import com.fsck.k9.mail.store.imap.ImapMessage
 import com.fsck.k9.mail.store.imap.OpenMode
 import com.fsck.k9.mail.store.imap.createImapMessage
 import java.util.Date
+import net.thunderbird.core.common.mail.Flag
 
 open class TestImapFolder(override val serverId: String) : ImapFolder {
     override var mode: OpenMode? = null

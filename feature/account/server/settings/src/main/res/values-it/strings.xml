@@ -32,4 +32,6 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">Per visualizzare la password qui, attiva il blocco schermo su questo dispositivo</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP o hostname invalido</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Invia informazioni sul client</string>
+    <string name="account_server_settings_password_authentication_failed">Autenticazione fallita!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Impossibile avviare il prompt biometrico.</string>
 </resources>

@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import net.thunderbird.core.ui.setting.Setting
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.dialog.ui.components.dialog.value.ColorDialogView
-import net.thunderbird.core.ui.setting.dialog.ui.components.dialog.value.SelectSingleOptionDialogView
+import net.thunderbird.core.ui.setting.dialog.ui.components.dialog.value.SelectDialogView
 import net.thunderbird.core.ui.setting.dialog.ui.components.dialog.value.TextDialogView
 
 @Composable
@@ -41,8 +41,8 @@ internal fun SettingDialog(
             )
         }
 
-        is SettingValue.SelectSingleOption -> {
-            SelectSingleOptionDialogView(
+        is SettingValue.Select -> {
+            SelectDialogView(
                 setting = setting,
                 onConfirmClick = onConfirmClick,
                 onDismissClick = onDismissClick,
@@ -52,6 +52,9 @@ internal fun SettingDialog(
         }
 
         // No dialog needed
-        is SettingValue.CompactSelectSingleOption<*>, is SettingValue.Switch -> Unit
+        is SettingValue.IconList,
+        is SettingValue.SegmentedButton<*>,
+        is SettingValue.Switch,
+        -> Unit
     }
 }

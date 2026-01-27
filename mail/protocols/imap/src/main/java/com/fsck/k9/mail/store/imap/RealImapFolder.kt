@@ -3,7 +3,6 @@ package com.fsck.k9.mail.store.imap
 import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mail.Message
@@ -25,6 +24,7 @@ import java.util.Locale
 import kotlin.math.max
 import kotlin.math.min
 import net.thunderbird.core.common.exception.MessagingException
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.protocols.imap.folder.attributeName
 

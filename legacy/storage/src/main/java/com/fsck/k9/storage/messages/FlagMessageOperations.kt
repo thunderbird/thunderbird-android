@@ -2,8 +2,8 @@ package com.fsck.k9.storage.messages
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mailstore.LockableDatabase
+import net.thunderbird.core.common.mail.Flag
 
 internal val SPECIAL_FLAGS = setOf(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED)
 

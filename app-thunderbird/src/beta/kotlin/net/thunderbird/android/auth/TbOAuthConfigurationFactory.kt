@@ -67,6 +67,7 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
         ) to OAuthConfiguration(
             clientId = "e6f8716e-299d-4ed9-bbf3-453f192f44e5",
             scopes = listOf(
+                "profile",
                 "openid",
                 "email",
                 "https://outlook.office.com/IMAP.AccessAsUser.All",

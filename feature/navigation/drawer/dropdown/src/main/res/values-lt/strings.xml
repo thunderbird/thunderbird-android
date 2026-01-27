@@ -2,7 +2,13 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_dropdown_action_settings">Nustatymai</string>
     <string name="navigation_drawer_dropdown_action_manage_folders">Tvarkyti aplankus</string>
-    <string name="navigation_drawer_dropdown_unified_inbox_title">Suvestiniai gautieji</string>
+    <string name="navigation_drawer_dropdown_unified_inbox_title">Gautieji</string>
     <string name="navigation_drawer_dropdown_action_show_accounts">Rodyti paskyras</string>
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Sinchronizuoti visas paskyras</string>
+    <string name="navigation_drawer_dropdown_avount_view_selection_title">Paskyrų sąrašas</string>
+    <string name="navigation_drawer_dropdown_unified_account_title">Suvestinė paskyra</string>
+    <string name="navigation_drawer_dropdown_action_add_account">Pridėti paskyrą</string>
+    <string name="navigation_drawer_dropdown_action_hide_accounts">Slėpti paskyras</string>
+    <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">99+</string>
+    <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000">1k+</string>
 </resources>

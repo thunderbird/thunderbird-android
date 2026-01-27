@@ -3,8 +3,6 @@ package net.thunderbird.feature.mail.message.list.domain.usecase
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.core.preference.storage.Storage
-import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
@@ -12,16 +10,8 @@ import net.thunderbird.feature.mail.message.list.domain.DomainContract
 class BuildSwipeActions(
     private val generalSettingsManager: GeneralSettingsManager,
     private val accountManager: AccountManager<BaseAccount>,
-    storage: Storage,
 ) : DomainContract.UseCase.BuildSwipeActions<BaseAccount> {
-    private val defaultLeftSwipeAction = storage.getEnumOrDefault(
-        key = SwipeActions.KEY_SWIPE_ACTION_LEFT,
-        default = SwipeAction.ToggleRead,
-    )
-    private val defaultRightSwipeAction = storage.getEnumOrDefault(
-        key = SwipeActions.KEY_SWIPE_ACTION_RIGHT,
-        default = SwipeAction.ToggleRead,
-    )
+    private val defaultSwipeActions get() = generalSettingsManager.getConfig().interaction.swipeActions
 
     override fun invoke(
         accountUuids: Set<String>,
@@ -37,14 +27,14 @@ class BuildSwipeActions(
                 account.uuid to SwipeActions(
                     leftAction = buildSwipeAction(
                         account = account,
-                        defaultSwipeAction = defaultLeftSwipeAction,
+                        defaultSwipeAction = defaultSwipeActions.leftAction,
                         isIncomingServerPop3 = isIncomingServerPop3,
                         hasArchiveFolder = hasArchiveFolder,
                         shouldShowSetupArchiveFolderDialog = shouldShowSetupArchiveFolderDialog,
                     ),
                     rightAction = buildSwipeAction(
                         account = account,
-                        defaultSwipeAction = defaultRightSwipeAction,
+                        defaultSwipeAction = defaultSwipeActions.rightAction,
                         isIncomingServerPop3 = isIncomingServerPop3,
                         hasArchiveFolder = hasArchiveFolder,
                         shouldShowSetupArchiveFolderDialog = shouldShowSetupArchiveFolderDialog,

@@ -270,7 +270,6 @@
     <string name="archive_folder_label">Arkivmapp</string>
     <string name="spam_folder_label">Skräppostmapp</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Visa endast prenumererade mappar</string>
-    <string name="account_setup_auto_expand_folder">Expandera automatiskt mapp</string>
     <string name="account_setup_options_mail_check_frequency_never">Aldrig</string>
     <string name="account_setup_options_mail_check_frequency_15min">Var 15:e minut</string>
     <string name="account_setup_options_mail_check_frequency_30min">Var 30:e minut</string>
@@ -360,8 +359,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alla utkast kommer att lagras krypterade</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Kryptera utkast endast om kryptering är aktiverad</string>
     <string name="account_settings_mail_check_frequency_label">Frekvens för mappkontroll</string>
-    <string name="account_settings_color_label">Kontofärg</string>
-    <string name="account_settings_color_summary">Färg för detta konto i mapp- och kontolista</string>
     <string name="account_settings_mail_display_count_label">Mappstorlek lokalt</string>
     <string name="account_settings_autodownload_message_size_label">Hämta meddelanden upp till</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -402,7 +399,6 @@
     <string name="account_settings_incoming_summary">Konfigurera servern för inkommande e-post</string>
     <string name="account_settings_outgoing_label">Utgående server</string>
     <string name="account_settings_outgoing_summary">Konfigurera servern för utgående e-post (SMTP)</string>
-    <string name="account_settings_description_label">Kontonamn</string>
     <string name="account_settings_name_label">Ditt namn</string>
     <string name="notifications_title">Aviseringar</string>
     <string name="account_settings_vibration">Vibration</string>
@@ -921,4 +917,15 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="debug_invalidate_access_token_cannot_modify">Kunde inte ändra den lagrade åtkomsttoken. Försök med lokal ogiltigförklaring.</string>
     <string name="debug_invalidate_access_token_already_modified">Lagrad åtkomsttoken har redan ändrats.</string>
     <string name="message_view_menu_action_export_eml">Exportera som EML</string>
+    <string name="account_setup_auto_select_folder">Välj mapp automatiskt</string>
+    <string name="navigation_drawer_preferences">Sidomeny</string>
+    <string name="expand_folders">Expandera mappar</string>
+    <string name="set_format_html_action">Använd originalformatering</string>
+    <string name="set_format_html_condensed_action">Visa formaterad</string>
+    <string name="set_format_plain_action">Visa oformaterat meddelande</string>
+    <string name="set_format_plain_condensed_action">Visa oformaterad</string>
+    <string name="global_settings_messageview_body_content_type_title">Innehållstyp för brödtext</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Oformaterad text (text/oformaterad)</string>
+    <string name="debug_feature_flags">FELSÖKNING: Funktionsflaggor</string>
 </resources>

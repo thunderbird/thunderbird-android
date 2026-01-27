@@ -269,7 +269,6 @@
     <string name="archive_folder_label">Mapa za arhivirano pošto</string>
     <string name="spam_folder_label">Mapa neželene pošte</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Pokaži samo naročene mape</string>
-    <string name="account_setup_auto_expand_folder">Samodejno razširi mape</string>
     <string name="account_setup_options_mail_check_frequency_never">Ročno preverjanje</string>
     <string name="account_setup_options_mail_check_frequency_15min">Vsakih 15 minut</string>
     <string name="account_setup_options_mail_check_frequency_30min">Vsakih 30 minut</string>
@@ -359,8 +358,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Vsi osnutki bodo shranjeni šifrirano</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Šifriraj osnutke samo, če je omogočeno šifriranje</string>
     <string name="account_settings_mail_check_frequency_label">Pogostost izpraševanja map</string>
-    <string name="account_settings_color_label">Barvna shema računa</string>
-    <string name="account_settings_color_summary">Barva, ki je uporabljena na seznamu map in seznamu računov</string>
     <string name="account_settings_mail_display_count_label">Velikost mape sporočil</string>
     <string name="account_settings_autodownload_message_size_label">V celoti prejmi sporočila do velikosti</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -401,7 +398,6 @@
     <string name="account_settings_incoming_summary">Nastavitev strežnika dohodne pošte</string>
     <string name="account_settings_outgoing_label">Odhodni strežnik</string>
     <string name="account_settings_outgoing_summary">Nastavitev strežnika odhodne pošte (SMTP)</string>
-    <string name="account_settings_description_label">Ime računa</string>
     <string name="account_settings_name_label">Ime in Priimek</string>
     <string name="notifications_title">Obvestila</string>
     <string name="account_settings_vibration">Tresenje</string>

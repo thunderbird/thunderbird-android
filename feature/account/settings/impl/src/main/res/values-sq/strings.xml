@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_settings_general_title">Rregullime të Përgjithshme</string>
-    <string name="account_settings_general_profile_indicator_title">Tregues Profili</string>
-    <string name="account_settings_general_profile_indicator_monogram">Monogram</string>
-    <string name="account_settings_general_profile_indicator_image">Figurë</string>
-    <string name="account_settings_general_profile_indicator_icon">Ikonë</string>
+    <string name="account_settings_general_avatar_option_monogram">Monogram</string>
+    <string name="account_settings_general_avatar_option_image">Figurë</string>
+    <string name="account_settings_general_avatar_option_icon">Ikonë</string>
     <string name="account_settings_general_name_title">Emër llogarie</string>
     <string name="account_settings_general_name_description">Emri përshoqëruar llogarisë tuaj.</string>
     <string name="account_settings_general_color_title">Ngjyrë llogarie</string>
     <string name="account_settings_general_color_description">Ngjyra e theksimit të kësaj llogarie, e përdorur në lista dosjesh dhe llogarish.</string>
+    <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_description">Zgjidhni si shfaqet avatari i llogarisë tuaj.</string>
+    <string name="account_settings_general_name_error_empty">Emri s’mund të jetë i zbrazët</string>
+    <string name="account_settings_general_name_error_too_long">Emri është shumë i gjatë</string>
+    <string name="account_settings_general_avatar_monogram_title">Avatar Monogram</string>
+    <string name="account_settings_general_avatar_monogram_description">Monogrami i përdorur si avatari juaj.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Monogrami s’mund të jetë i zbrazët</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Monogrami është shumë i gjatë</string>
+    <string name="account_settings_general_avatar_icon_title">Ikonë Avatari</string>
+    <string name="account_settings_general_avatar_icon_description">Zgjidhni një nga ikonat për ta përdorur si avatarin tuaj.</string>
 </resources>

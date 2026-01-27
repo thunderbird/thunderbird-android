@@ -17,7 +17,7 @@ import com.fsck.k9.ui.identity.IdentityFormatter;
 
 import java.util.List;
 
-public class ChooseIdentity extends K9ListActivity {
+public class ChooseIdentity extends BaseListActivity {
     private final IdentityFormatter identityFormatter = DI.get(IdentityFormatter.class);
 
     LegacyAccountDto mAccount;

@@ -4,13 +4,13 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.SubtitleTopAppBar
 import app.k9mail.core.ui.compose.designsystem.organism.SubtitleTopAppBarWithBackButton
 import app.k9mail.core.ui.compose.designsystem.organism.SubtitleTopAppBarWithMenuButton
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithBackButton
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithMenuButton
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.ui.catalog.ui.page.common.list.ItemOutlinedView
 import net.thunderbird.ui.catalog.ui.page.common.list.fullSpanItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem

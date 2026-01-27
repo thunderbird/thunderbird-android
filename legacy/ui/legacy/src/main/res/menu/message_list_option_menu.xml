@@ -144,6 +144,20 @@
         app:showAsAction="never"
         />
 
+    <item
+        android:id="@+id/set_format_html"
+        android:visible="false"
+        android:title="@string/set_format_html_action"
+        android:titleCondensed="@string/set_format_html_condensed_action"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/set_format_plain"
+        android:visible="false"
+        android:title="@string/set_format_plain_action"
+        android:titleCondensed="@string/set_format_plain_condensed_action"
+        app:showAsAction="never" />
+
     <!-- always -->
     <item
         android:id="@+id/compose"
@@ -266,6 +280,12 @@
     <item
         android:id="@+id/debug_force_auth_failure"
         android:title="@string/debug_force_auth_failure"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/debug_feature_flags"
+        android:title="@string/debug_feature_flags"
         android:visible="false"
         app:showAsAction="never" />
 

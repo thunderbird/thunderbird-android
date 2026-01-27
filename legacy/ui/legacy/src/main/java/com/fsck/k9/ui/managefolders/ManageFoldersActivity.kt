@@ -8,11 +8,11 @@ import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.base.K9Activity
+import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.base.extensions.findNavController
 import net.thunderbird.core.android.account.LegacyAccountDto
 
-class ManageFoldersActivity : K9Activity() {
+class ManageFoldersActivity : BaseActivity() {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {

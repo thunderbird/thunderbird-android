@@ -20,6 +20,7 @@ internal class GetDrawerConfigTest {
             showUnifiedFolders = true,
             showStarredCount = true,
             showAccountSelector = true,
+            expandAllFolder = false,
         )
 
         val testSubject = GetDrawerConfig(configLoader = configLoader)

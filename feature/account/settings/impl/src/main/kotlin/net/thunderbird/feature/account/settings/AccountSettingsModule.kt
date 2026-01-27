@@ -1,26 +1,25 @@
 package net.thunderbird.feature.account.settings
 
+import kotlinx.collections.immutable.ImmutableList
+import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
 import net.thunderbird.feature.account.settings.impl.DefaultAccountSettingsNavigation
-import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ResourceProvider
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 import net.thunderbird.feature.account.settings.impl.domain.usecase.GetAccountName
-import net.thunderbird.feature.account.settings.impl.domain.usecase.GetGeneralSettings
+import net.thunderbird.feature.account.settings.impl.domain.usecase.GetAccountProfile
 import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateGeneralSettings
-import net.thunderbird.feature.account.settings.impl.ui.general.GeneralResourceProvider
+import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAccountName
+import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAvatarMonogram
+import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsBuilder
+import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract
+import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsValidator
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsViewModel
-import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val featureAccountSettingsModule = module {
     single<AccountSettingsNavigation> { DefaultAccountSettingsNavigation() }
-
-    factory<ResourceProvider.GeneralResourceProvider> {
-        GeneralResourceProvider(
-            context = androidContext(),
-        )
-    }
 
     factory<UseCase.GetAccountName> {
         GetAccountName(
@@ -28,12 +27,9 @@ val featureAccountSettingsModule = module {
         )
     }
 
-    factory<UseCase.GetGeneralSettings> {
-        GetGeneralSettings(
+    factory<UseCase.GetAccountProfile> {
+        GetAccountProfile(
             repository = get(),
-            resourceProvider = get(),
-            monogramCreator = get(),
-            featureFlagProvider = get(),
         )
     }
 
@@ -43,11 +39,29 @@ val featureAccountSettingsModule = module {
         )
     }
 
+    factory<GeneralSettingsContract.Validator> {
+        GeneralSettingsValidator(
+            accountNameValidator = ValidateAccountName(),
+            avatarMonogramValidator = ValidateAvatarMonogram(),
+        )
+    }
+
+    factory<GeneralSettingsContract.SettingsBuilder> {
+        GeneralSettingsBuilder(
+            resources = get<StringsResourceManager>(),
+            accountColors = get<ImmutableList<Int>>(named("AccountColors")),
+            monogramCreator = get(),
+            validator = get(),
+            featureFlagProvider = get(),
+            iconCatalog = get(),
+        )
+    }
+
     viewModel { params ->
         GeneralSettingsViewModel(
             accountId = params.get(),
             getAccountName = get(),
-            getGeneralSettings = get(),
+            getAccountProfile = get(),
             updateGeneralSettings = get(),
         )
     }

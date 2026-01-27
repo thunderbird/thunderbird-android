@@ -13,10 +13,12 @@ import com.fsck.k9.notification.NotificationResourceProvider
 import com.fsck.k9.notification.NotificationStrategy
 import com.fsck.k9.notification.TestNotificationIconResourceProvider
 import com.fsck.k9.storage.storageModule
+import kotlinx.coroutines.flow.emptyFlow
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.preferences.TestStoragePersister
-import net.thunderbird.core.featureflag.FeatureFlag
+import net.thunderbird.core.common.appConfig.PlatformConfigProvider
+import net.thunderbird.core.common.inject.factoryListOf
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
 import net.thunderbird.core.logging.LogLevel
@@ -31,12 +33,17 @@ import net.thunderbird.core.logging.testing.TestLogLevelManager
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
+import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
+import net.thunderbird.feature.mail.message.reader.api.css.CssStyleProvider
+import net.thunderbird.feature.mail.message.reader.api.css.CssVariableNameProvider
 import net.thunderbird.legacy.core.FakeAccountDefaultsProvider
 import net.thunderbird.legacy.core.mailstore.folder.FakeOutboxFolderManager
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 class TestApp : Application() {
     override fun onCreate() {
@@ -88,12 +95,27 @@ val testModule = module {
     single { mock<WorkManager>() }
     single<FeatureFlagProvider> {
         InMemoryFeatureFlagProvider(
-            featureFlagFactory = {
-                emptyList<FeatureFlag>()
+            featureFlagFactory = mock {
+                on { getCatalog() } doReturn emptyFlow()
             },
+            featureFlagOverrides = mock(),
         )
     }
     single<OutboxFolderManager> { FakeOutboxFolderManager() }
     single<LegacyAccountManager> { mock() }
     single<NotificationIconResourceProvider> { TestNotificationIconResourceProvider() }
+    single<PlatformConfigProvider> { FakePlatformConfigProvider() }
+    single<CssVariableNameProvider> { mock() }
+    single<CssClassNameProvider> {
+        mock {
+            whenever(it.plainTextMessagePreClassName).doReturn("k9mail")
+        }
+    }
+    factoryListOf<CssStyleProvider>()
+    single<NotificationResourceProvider> { mock() }
+}
+
+class FakePlatformConfigProvider : PlatformConfigProvider {
+    override val isDebug: Boolean
+        get() = true
 }

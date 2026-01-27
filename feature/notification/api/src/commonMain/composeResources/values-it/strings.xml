@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Sincronizzazione (Push)</string>
     <string name="notification_channel_push_description">Visualizzata in attesa di nuovi messaggi</string>
@@ -23,7 +23,7 @@
     <string name="push_notification_state_wait_background_sync">Inattivo fino a quando la sincronizzazione in background non sarà consentita</string>
     <string name="push_notification_state_wait_network">Inattivo fino a quando la rete non sarà disponibile</string>
     <string name="push_notification_state_alarm_permission_missing">Autorizzazione mancante per pianificare gli allarmi</string>
-    <string name="push_notification_info">Tocca per saperne di più</string>
+    <string name="push_notification_info">Tocca per saperne di più.</string>
     <string name="push_notification_grant_alarm_permission">Tocca per concedere l\'autorizzazione.</string>
     <string name="push_info_disable_push_action">Disabilita Push</string>
     <string name="notification_action_reply">Rispondi</string>
@@ -34,4 +34,21 @@
     <string name="notification_action_archive">Archivia</string>
     <string name="notification_action_archive_all">Archivia tutto</string>
     <string name="notification_action_spam">Spam</string>
+    <string name="notification_authentication_incoming_server_error_text">Autenticazione fallita per %1$s. Aggiorna le impostazioni del tuo server posta in arrivo.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Autenticazione fallita per %1$s. Aggiorna le impostazioni del tuo server posta in uscita.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d nuovo messaggio</item>
+        <item quantity="many">%1$d nuovi messaggi</item>
+        <item quantity="other">%1$d nuovi messaggi</item>
+    </plurals>
+    <string name="notification_action_retry">Riprova</string>
+    <string name="notification_action_update_server_settings">Aggiorna le Impostazioni Server</string>
+    <string name="notification_action_assign_sent_folder">Assegna cartella</string>
+    <string name="banner_inline_notification_check_error_notifications">Controlla le notifiche di errore</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Alcuni messaggi richiedono la tua attenzione.</string>
+    <string name="banner_inline_notification_open_notifications">Apri le notifiche</string>
+    <string name="banner_inline_notification_learn_more">Impara di più</string>
+    <string name="banner_inline_notification_view_support_article">Guarda articolo di supporto</string>
+    <string name="sent_folder_not_found_title">Cartella Inviati non disponibile.</string>
 </resources>

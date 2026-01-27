@@ -12,13 +12,13 @@ import androidx.core.widget.doAfterTextChanged
 import com.fsck.k9.EmailAddressValidator
 import com.fsck.k9.Preferences
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.base.K9Activity
+import com.fsck.k9.ui.base.BaseActivity
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.radiobutton.MaterialRadioButton
 import net.thunderbird.core.android.account.LegacyAccountDto
 import org.koin.android.ext.android.inject
 
-class AccountSetupComposition : K9Activity() {
+class AccountSetupComposition : BaseActivity() {
     private val emailAddressValidator: EmailAddressValidator by inject()
 
     private lateinit var account: LegacyAccountDto

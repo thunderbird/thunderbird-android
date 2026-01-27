@@ -1,7 +1,7 @@
 package com.fsck.k9.backend.api
 
-import com.fsck.k9.mail.Flag
 import java.util.Date
+import net.thunderbird.core.common.mail.Flag
 
 data class SyncConfig(
     val expungePolicy: ExpungePolicy,

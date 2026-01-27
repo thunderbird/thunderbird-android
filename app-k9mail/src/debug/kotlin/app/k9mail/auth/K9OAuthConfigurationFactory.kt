@@ -67,6 +67,7 @@ class K9OAuthConfigurationFactory : OAuthConfigurationFactory {
         ) to OAuthConfiguration(
             clientId = "e647013a-ada4-4114-b419-e43d250f99c5",
             scopes = listOf(
+                "profile",
                 "openid",
                 "email",
                 "https://outlook.office.com/IMAP.AccessAsUser.All",

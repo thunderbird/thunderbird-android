@@ -6,31 +6,31 @@ import com.fsck.k9.ui.resolveColorAttribute
 import com.google.android.material.R as MaterialR
 
 data class MessageViewHolderColors(
-    @ColorInt
+    @get:ColorInt
     val active: Int,
-    @ColorInt
+    @get:ColorInt
     val activeBackground: Int,
-    @ColorInt
+    @get:ColorInt
     val selected: Int,
-    @ColorInt
+    @get:ColorInt
     val selectedBackground: Int,
-    @ColorInt
+    @get:ColorInt
     val regular: Int,
-    @ColorInt
+    @get:ColorInt
     val regularBackground: Int,
-    @ColorInt
+    @get:ColorInt
     val read: Int,
-    @ColorInt
+    @get:ColorInt
     val readBackground: Int,
-    @ColorInt
+    @get:ColorInt
     val unread: Int,
-    @ColorInt
+    @get:ColorInt
     val unreadBackground: Int,
-    @ColorInt
+    @get:ColorInt
     val previewText: Int,
-    @ColorInt
+    @get:ColorInt
     val previewActiveText: Int,
-    @ColorInt
+    @get:ColorInt
     val previewSelectedText: Int,
 ) {
     companion object Companion {

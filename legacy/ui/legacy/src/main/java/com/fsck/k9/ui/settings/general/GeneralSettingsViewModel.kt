@@ -92,7 +92,10 @@ class GeneralSettingsViewModel(
 
     fun onOpenSecretDebugScreen(context: Context) {
         if (BuildConfig.DEBUG) {
-            FeatureLauncherActivity.launch(context = context, target = FeatureLauncherTarget.SecretDebugSettings)
+            FeatureLauncherActivity.launch(
+                context = context,
+                target = FeatureLauncherTarget.SecretDebugSettingsNotification,
+            )
         }
     }
 

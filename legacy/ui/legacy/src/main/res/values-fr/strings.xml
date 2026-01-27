@@ -271,7 +271,6 @@
     <string name="archive_folder_label">Dossier des archives</string>
     <string name="spam_folder_label">Dossier des pourriels (indésirables)</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Afficher seulement les dossiers auxquels je suis abonné</string>
-    <string name="account_setup_auto_expand_folder">Ouvrir automatiquement le dossier</string>
     <string name="account_setup_options_mail_check_frequency_never">Jamais</string>
     <string name="account_setup_options_mail_check_frequency_15min">Toutes les 15 minutes</string>
     <string name="account_setup_options_mail_check_frequency_30min">Toutes les 30 minutes</string>
@@ -361,8 +360,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Les brouillons seront enregistrés chiffrés</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Ne chiffrer les brouillons que si le chiffrement est activé</string>
     <string name="account_settings_mail_check_frequency_label">Fréquence de synchronisation des dossiers</string>
-    <string name="account_settings_color_label">Couleur du compte</string>
-    <string name="account_settings_color_summary">La note de couleur du compte utilisée dans la liste des dossiers et des comptes</string>
     <string name="account_settings_mail_display_count_label">Taille du dossier local</string>
     <string name="account_settings_autodownload_message_size_label">Récupérer les courriels jusqu’à</string>
     <string name="account_settings_autodownload_message_size_1">1 Kio</string>
@@ -403,7 +400,6 @@
     <string name="account_settings_incoming_summary">Configurer le serveur de courriel entrant</string>
     <string name="account_settings_outgoing_label">Serveur sortant</string>
     <string name="account_settings_outgoing_summary">Configurer le serveur de courriel sortant (SMTP)</string>
-    <string name="account_settings_description_label">Nom du compte</string>
     <string name="account_settings_name_label">Votre nom</string>
     <string name="notifications_title">Notifications</string>
     <string name="account_settings_vibration">Vibration</string>
@@ -908,17 +904,28 @@
     <string name="swipe_action_change_swipe_gestures">Changer\nles gestes de balayage</string>
     <string name="archiving_not_available_for_this_account">L’archivage n’est pas proposé pour ce compte.</string>
     <string name="debug_open_secret_debug_screen">Ouvrir l’écran de débogage de Secret</string>
-    <string name="debug_invalidate_access_token">Test : invalider le jeton d’accès</string>
+    <string name="debug_invalidate_access_token">Essai : invalider le jeton d’accès</string>
     <string name="debug_invalidate_access_token_done">Le jeton d’accès a été invalidé. La prochaine requête l’actualisera.</string>
     <string name="debug_invalidate_access_token_unavailable">Aucun jeton OAuth n’est proposé pour ce compte.</string>
-    <string name="debug_invalidate_access_token_local">Test : invalider le jeton d’accès (local)</string>
+    <string name="debug_invalidate_access_token_local">Essai : invalider le jeton d’accès (local)</string>
     <string name="debug_invalidate_access_token_local_done">L’nvalidation locale a été demandée. La prochaine requête récupérera un nouveau jeton.</string>
-    <string name="debug_invalidate_access_token_server">Test : invalider le jeton d’accès (serveur)</string>
+    <string name="debug_invalidate_access_token_server">Essai : invalider le jeton d’accès (serveur)</string>
     <string name="debug_invalidate_access_token_server_done">Le jeton d’accès enregistré est corrompu. La prochaine requête échouera, puis l’actualisera.</string>
-    <string name="debug_force_auth_failure">Test : forcer un échec d’authentification maintenant</string>
+    <string name="debug_force_auth_failure">Essai : forcer un échec d’authentification maintenant</string>
     <string name="debug_force_auth_failure_done">L’état OAuth a été effacé. La prochaine requête échouera.</string>
     <string name="debug_force_auth_failure_unavailable">Aucune configuration OAuth n’est proposée pour ce compte.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Impossible de modifier le jeton d’accès enregistré. Essayez l’invalidation locale.</string>
     <string name="debug_invalidate_access_token_already_modified">Le jeton d’accès enregistré est déjà modifié.</string>
     <string name="message_view_menu_action_export_eml">Exporter en tant que EML</string>
+    <string name="set_format_html_action">Utiliser la mise en forme originale</string>
+    <string name="set_format_plain_action">Afficher le courriel non mis en forme</string>
+    <string name="set_format_plain_condensed_action">Afficher non mis en forme</string>
+    <string name="set_format_html_condensed_action">Afficher mis en forme</string>
+    <string name="global_settings_messageview_body_content_type_title">Type de contenu du corps</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (texte/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Texte brut (texte/brute)</string>
+    <string name="account_setup_auto_select_folder">Choix automatique du dossier</string>
+    <string name="navigation_drawer_preferences">Menu latéral</string>
+    <string name="expand_folders">Développer les dossiers</string>
+    <string name="debug_feature_flags">DÉBOGAGE : Drapeaux de fonction</string>
 </resources>

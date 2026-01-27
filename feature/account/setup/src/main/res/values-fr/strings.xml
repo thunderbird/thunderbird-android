@@ -46,7 +46,7 @@
     <string name="account_setup_special_folders_form_description_automatic">L’option « Automatique » suivra automatiquement les changements effectués par le serveur. La valeur actuelle du serveur est affichée entre parenthèses.</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">Le mot de passe est requis.</string>
     <plurals name="account_setup_options_email_check_frequency_minutes">
-        <item quantity="one">Toutes les minutes</item>
+        <item quantity="one">Toutes les %d minutes</item>
         <item quantity="many">Toutes les %d de minutes</item>
         <item quantity="other">Toutes les %d minutes</item>
     </plurals>

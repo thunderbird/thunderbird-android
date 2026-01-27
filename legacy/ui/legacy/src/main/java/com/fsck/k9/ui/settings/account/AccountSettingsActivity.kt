@@ -10,14 +10,14 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceFragmentCompat.OnPreferenceStartScreenCallback
 import androidx.preference.PreferenceScreen
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.base.K9Activity
+import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.base.extensions.fragmentTransaction
 import com.fsck.k9.ui.base.extensions.fragmentTransactionWithBackStack
 import com.fsck.k9.ui.base.livedata.observeNotNull
 import net.thunderbird.core.logging.legacy.Log
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
+class AccountSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback {
     private val accountViewModel: AccountSettingsViewModel by viewModel()
     private lateinit var accountUuid: String
     private var startScreenKey: String? = null

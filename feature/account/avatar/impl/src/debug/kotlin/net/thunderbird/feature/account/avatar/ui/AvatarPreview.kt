@@ -2,29 +2,55 @@ package net.thunderbird.feature.account.avatar.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
+import net.thunderbird.feature.account.avatar.Avatar
 
 @Composable
-@Preview(showBackground = true)
+@PreviewLightDark
 internal fun AvatarPreview() {
-    PreviewWithThemes {
+    PreviewWithTheme {
         Avatar(
-            color = Color(0xFFe57373),
-            name = "example",
-            selected = false,
+            avatar = Avatar.Monogram("AB"),
+            color = Color.Red,
+            size = AvatarSize.MEDIUM,
         )
     }
 }
 
 @Composable
-@Preview(showBackground = true)
+@PreviewLightDark
 internal fun AvatarSelectedPreview() {
-    PreviewWithThemes {
+    PreviewWithTheme {
         Avatar(
-            color = Color(0xFFe57373),
-            name = "example",
+            avatar = Avatar.Monogram("AB"),
+            color = Color.Red,
+            size = AvatarSize.MEDIUM,
             selected = true,
+        )
+    }
+}
+
+@Composable
+@PreviewLightDark
+internal fun AvatarIconPreview() {
+    PreviewWithTheme {
+        Avatar(
+            avatar = Avatar.Icon("person"),
+            color = Color.Red,
+            size = AvatarSize.MEDIUM,
+        )
+    }
+}
+
+@Composable
+@PreviewLightDark
+internal fun AvatarIconLargePreview() {
+    PreviewWithTheme {
+        Avatar(
+            avatar = Avatar.Icon("person"),
+            color = Color.Red,
+            size = AvatarSize.LARGE,
         )
     }
 }

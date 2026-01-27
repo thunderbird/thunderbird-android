@@ -10,7 +10,7 @@
     --content-max-width: 750px;
     --menu-bar-height: 64px;
     --mono-font: "Source Code Pro", Consolas, "Ubuntu Mono", Menlo, "DejaVu Sans Mono", monospace, monospace;
-    --code-font-size: 0.875em;
+    --code-font-size: 0.875em; /* please adjust the ace font size accordingly in editor.js */
     --searchbar-margin-block-start: 5px;
 }
 
@@ -61,13 +61,21 @@
     --color-scheme: dark;
 
     /* Same as `--icons` */
-    --copy-button-filter: invert(80%) sepia(6%) saturate(300%) hue-rotate(180deg) brightness(95%) contrast(85%);
+    --copy-button-filter: invert(45%) sepia(6%) saturate(621%) hue-rotate(198deg) brightness(99%) contrast(85%);
     /* Same as `--sidebar-active` */
-    --copy-button-filter-hover: invert(67%) sepia(19%) saturate(1404%) hue-rotate(176deg) brightness(103%) contrast(103%);
+    --copy-button-filter-hover: invert(68%) sepia(55%) saturate(531%) hue-rotate(341deg) brightness(104%) contrast(101%);
 
-    --footnote-highlight: #3b82f6;
+    --footnote-highlight: #2668a6;
 
-    --overlay-bg: rgba(9, 14, 26, 0.5);
+    --overlay-bg: rgba(33, 40, 48, 0.4);
+
+    --blockquote-note-color: #74b9ff;
+    --blockquote-tip-color: #09ca09;
+    --blockquote-important-color: #d3abff;
+    --blockquote-warning-color: #f0b72f;
+    --blockquote-caution-color: #f21424;
+
+    --sidebar-header-border-color: #c18639;
 }
 
 .light, html:not(.js) {
@@ -115,13 +123,23 @@
     --color-scheme: light;
 
     /* Same as `--icons` */
-    --copy-button-filter: invert(35%);
+    --copy-button-filter: invert(45.49%);
     /* Same as `--sidebar-active` */
-    --copy-button-filter-hover: invert(28%) sepia(93%) saturate(2967%) hue-rotate(193deg) brightness(103%) contrast(104%);
+    --copy-button-filter-hover: invert(14%) sepia(93%) saturate(4250%) hue-rotate(243deg) brightness(99%) contrast(130%);
 
-    --footnote-highlight: #0a84ff;
+    --footnote-highlight: #7e7eff;
 
-    --overlay-bg: rgba(10, 132, 255, 0.08);
+    --overlay-bg: rgba(200, 200, 205, 0.4);
+
+    --blockquote-note-color: #0969da;
+    --blockquote-tip-color: #008000;
+    --blockquote-important-color: #8250df;
+    --blockquote-warning-color: #9a6700;
+    --blockquote-caution-color: #b52731;
+
+    --sidebar-header-border-color: #6e6edb;
+}
+
 }
 
 @media (prefers-color-scheme: dark) {
@@ -172,5 +190,17 @@
         --copy-button-filter: invert(26%) sepia(8%) saturate(575%) hue-rotate(169deg) brightness(87%) contrast(82%);
         /* Same as `--sidebar-active` */
         --copy-button-filter-hover: invert(36%) sepia(70%) saturate(503%) hue-rotate(167deg) brightness(98%) contrast(89%);
+
+        --footnote-highlight: #4079ae;
+
+        --overlay-bg: rgba(33, 40, 48, 0.4);
+
+        --blockquote-note-color: #4493f8;
+        --blockquote-tip-color: #08ae08;
+        --blockquote-important-color: #ab7df8;
+        --blockquote-warning-color: #d29922;
+        --blockquote-caution-color: #d91b29;
+
+        --sidebar-header-border-color: #3473ad;
     }
 }

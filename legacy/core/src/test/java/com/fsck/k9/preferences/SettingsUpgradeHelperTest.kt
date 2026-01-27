@@ -7,6 +7,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.fail
+import com.fsck.k9.notification.FakePlatformConfigProvider
 import com.fsck.k9.preferences.Settings.BooleanSetting
 import com.fsck.k9.preferences.Settings.StringSetting
 import kotlin.test.Test
@@ -45,7 +46,7 @@ class SettingsUpgradeHelperTest {
             upgraders,
             settingsDescriptions,
             settings,
-            mock { on { getConfig() } doReturn GeneralSettings() },
+            mock { on { getConfig() } doReturn GeneralSettings(platformConfigProvider = FakePlatformConfigProvider()) },
         )
 
         assertThat(result).isEqualTo(
@@ -78,7 +79,7 @@ class SettingsUpgradeHelperTest {
             upgraders,
             settingsDescriptions,
             settings,
-            mock { on { getConfig() } doReturn GeneralSettings() },
+            mock { on { getConfig() } doReturn GeneralSettings(platformConfigProvider = FakePlatformConfigProvider()) },
         )
 
         assertThat(result).isEqualTo(
@@ -115,7 +116,7 @@ class SettingsUpgradeHelperTest {
             upgraders,
             settingsDescriptions,
             settings,
-            mock { on { getConfig() } doReturn GeneralSettings() },
+            mock { on { getConfig() } doReturn GeneralSettings(platformConfigProvider = FakePlatformConfigProvider()) },
         )
 
         assertThat(result).isEqualTo(
@@ -148,7 +149,7 @@ class SettingsUpgradeHelperTest {
             upgraders,
             settingsDescriptions,
             settings,
-            mock { on { getConfig() } doReturn GeneralSettings() },
+            mock { on { getConfig() } doReturn GeneralSettings(platformConfigProvider = FakePlatformConfigProvider()) },
         )
 
         assertThat(result).isEqualTo(
@@ -178,7 +179,12 @@ class SettingsUpgradeHelperTest {
                 upgraders,
                 settingsDescriptions,
                 settings,
-                mock { on { getConfig() } doReturn GeneralSettings() },
+                mock {
+                    on { getConfig() } doReturn
+                        GeneralSettings(
+                            platformConfigProvider = FakePlatformConfigProvider(),
+                        )
+                },
             )
         }.isInstanceOf<AssertionError>()
             .hasMessage("First version of a setting must be non-null!")
@@ -209,7 +215,7 @@ class SettingsUpgradeHelperTest {
             upgraders,
             settingsDescriptions,
             settings,
-            mock { on { getConfig() } doReturn GeneralSettings() },
+            mock { on { getConfig() } doReturn GeneralSettings(platformConfigProvider = FakePlatformConfigProvider()) },
         )
 
         assertThat(result).isEqualTo(
@@ -252,7 +258,7 @@ class SettingsUpgradeHelperTest {
             upgraders,
             settingsDescriptions,
             settings,
-            mock { on { getConfig() } doReturn GeneralSettings() },
+            mock { on { getConfig() } doReturn GeneralSettings(platformConfigProvider = FakePlatformConfigProvider()) },
         )
 
         assertThat(result).isEqualTo(

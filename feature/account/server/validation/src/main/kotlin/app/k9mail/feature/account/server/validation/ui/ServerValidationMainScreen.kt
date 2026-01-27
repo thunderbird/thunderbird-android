@@ -1,5 +1,9 @@
 package app.k9mail.feature.account.server.validation.ui
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.common.mvi.observeWithoutEffect
@@ -32,9 +36,10 @@ internal fun ServerValidationMainScreen(
                 state = WizardNavigationBarState(
                     showNext = false,
                 ),
+                modifier = Modifier.imePadding(),
             )
         },
-        modifier = modifier,
+        modifier = modifier.windowInsetsPadding(WindowInsets.navigationBars),
     ) { innerPadding ->
         ServerValidationContent(
             onEvent = { dispatch(it) },

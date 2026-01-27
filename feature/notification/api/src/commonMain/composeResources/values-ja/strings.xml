@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">同期 (プッシュ)</string>
     <string name="notification_channel_push_description">新着メッセージの待機中に表示します</string>
@@ -19,7 +19,7 @@
     <string name="notification_bg_send_ticker">メール送信中: %1$s</string>
     <string name="notification_bg_send_title">メール送信中</string>
     <string name="send_failure_subject">メール送信に失敗しました</string>
-    <string name="notification_additional_messages">+ %1$d 続く %2$s</string>
+    <string name="notification_additional_messages">%2$s に %1$d 通以上</string>
     <string name="push_notification_state_initializing">初期化中…</string>
     <string name="push_notification_state_listening">新着メール待機中</string>
     <string name="push_notification_state_wait_background_sync">バックグラウンド同期が許可されるまでスリープ中</string>
@@ -36,4 +36,19 @@
     <string name="notification_action_archive">アーカイブ</string>
     <string name="notification_action_archive_all">すべてアーカイブ</string>
     <string name="notification_action_spam">迷惑メール</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="other">新着メッセージ %1$d 通</item>
+    </plurals>
+    <string name="notification_action_retry">再試行</string>
+    <string name="notification_action_update_server_settings">サーバー設定を更新</string>
+    <string name="notification_action_assign_sent_folder">フォルダーを指定</string>
+    <string name="banner_inline_notification_check_error_notifications">エラー通知を確認してください</string>
+    <string name="banner_inline_notification_some_messages_need_attention">注意が必要なメッセージがあります。</string>
+    <string name="banner_inline_notification_open_notifications">通知を開く</string>
+    <string name="banner_inline_notification_learn_more">詳細情報</string>
+    <string name="banner_inline_notification_view_support_article">サポート記事を確認</string>
+    <string name="sent_folder_not_found_title">送信済みフォルダーが利用できません。</string>
+    <string name="notification_authentication_incoming_server_error_text">%1$s の認証に失敗しました。受信サーバーの設定を更新してください。</string>
+    <string name="notification_authentication_outgoing_server_error_text">%1$s の認証に失敗しました。送信サーバーの設定を更新してください。</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
 </resources>

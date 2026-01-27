@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Yn defnyddio Thunderbird ar y bwrdd gwaith yn barod?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Yn Thunderbird y bwrdd gwaith, ewch i:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Mewnforiwch eich gosodiadau cyfrif yn hawdd drwy sganio\'r cod QR.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Dewiswch \'Allforio i\'r Symudol\'</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Dysgu sut i ddiweddaru Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Mewnforio gosodiadau</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Yn newydd i Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Ychwanegu cyfrif e-bost nawr</string>
+    <string name="onboarding_migration_thunderbird_import_title">Yn symud o ap neu ddyfais arall?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Mewnforiwch eich gosodiadau cyfrif nawr</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Heb ganfod ap i agor y ddolen.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\'Gosodiadau\' yn y Bar Offer Bylchau (gwaelod chwith)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Mae Mewnforio\'n gofyn am y fersiwn diweddaraf o Thunderbird Bwrdd Gwaith 128. <xliff:g id="link_text">%s</xliff:g></string>
+</resources>

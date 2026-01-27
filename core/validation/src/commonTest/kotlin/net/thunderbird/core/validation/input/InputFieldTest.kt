@@ -244,6 +244,16 @@ class InputFieldTest(
                 updatedValue = 456L,
             ),
             InputFieldTestData(
+                name = "IntegerInputField",
+                createInitialInput = { value, error, isValid -> IntegerInputField(value, error, isValid) },
+                initialState = IntegerInputField(),
+                initialValue = 234,
+                initialValueEmpty = null,
+                initialError = null,
+                initialIsValid = false,
+                updatedValue = 567,
+            ),
+            InputFieldTestData(
                 name = "BooleanInputField",
                 createInitialInput = { value, error, isValid -> BooleanInputField(value, error, isValid) },
                 initialState = BooleanInputField(),

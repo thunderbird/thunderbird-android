@@ -243,7 +243,6 @@
     <string name="archive_folder_label">보관 폴더</string>
     <string name="spam_folder_label">스팸 폴더</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">설정한 폴더만 보기</string>
-    <string name="account_setup_auto_expand_folder">폴더 자동 펼치기</string>
     <string name="account_setup_options_mail_check_frequency_never">하지 않음</string>
     <string name="account_setup_options_mail_check_frequency_15min">15분마다</string>
     <string name="account_setup_options_mail_check_frequency_30min">30분마다</string>
@@ -317,8 +316,6 @@
     <string name="account_settings_crypto_app">OpenPGP 사용</string>
     <string name="account_settings_crypto_app_select_title">OpenPGP 앱 선택</string>
     <string name="account_settings_mail_check_frequency_label">폴더 수신 빈도</string>
-    <string name="account_settings_color_label">계정 색깔</string>
-    <string name="account_settings_color_summary">계정 목록과 폴더 내에서 사용될 계정 색깔을 선택하십시오</string>
     <string name="account_settings_mail_display_count_label">로컬 폴더 용량</string>
     <string name="account_settings_autodownload_message_size_label">가져올 메시지 최대 용량</string>
     <string name="account_settings_autodownload_message_size_any">얼마든지 (무제한)</string>
@@ -344,7 +341,6 @@
     <string name="account_settings_incoming_summary">메일 수신 서버 수정</string>
     <string name="account_settings_outgoing_label">발신 서버</string>
     <string name="account_settings_outgoing_summary">메일 발신 서버 (SMTP) 수정</string>
-    <string name="account_settings_description_label">계정 이름</string>
     <string name="account_settings_name_label">당신의 이름</string>
     <string name="notifications_title">알림</string>
     <string name="account_settings_vibrate_enable">진동</string>

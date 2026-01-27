@@ -21,10 +21,4 @@
         <item>@color/material_deep_purple_600</item>
         <item>@color/material_blue_gray_700</item>
     </integer-array>
-
-    <integer-array name="default_account_colors">
-        <item>@color/material_blue_700</item>
-        <item>@color/material_pink_500</item>
-        <item>@color/material_amber_600</item>
-    </integer-array>
 </resources>

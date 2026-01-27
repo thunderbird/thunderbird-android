@@ -17,6 +17,8 @@ val defaultThemeSizes = ThemeSizes(
     iconLarge = 32.dp,
     iconAvatar = 48.dp,
 
+    badge = 12.dp,
+
     topBarHeight = 64.dp,
     bottomBarHeight = 80.dp,
     bottomBarHeightWithFab = 72.dp,

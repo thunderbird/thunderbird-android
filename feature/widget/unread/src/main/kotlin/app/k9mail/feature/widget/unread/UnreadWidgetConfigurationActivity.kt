@@ -2,14 +2,14 @@ package app.k9mail.feature.widget.unread
 
 import android.appwidget.AppWidgetManager
 import android.os.Bundle
-import com.fsck.k9.ui.base.K9Activity
+import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.base.extensions.fragmentTransaction
 import net.thunderbird.core.logging.legacy.Log
 
 /**
  * Activity to select an account for the unread widget.
  */
-class UnreadWidgetConfigurationActivity : K9Activity() {
+class UnreadWidgetConfigurationActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

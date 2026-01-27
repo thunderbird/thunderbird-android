@@ -118,6 +118,7 @@ val preferencesModule = module {
             storage = get<Preferences>().storage,
             storageEditor = get<Preferences>().createStorageEditor(),
             logLevelManager = get(),
+            platformConfigProvider = get(),
         )
     }
     single<PlatformInitializer> {
@@ -146,6 +147,7 @@ val preferencesModule = module {
             debuggingSettingsPreferenceManager = get(),
             interactionSettingsPreferenceManager = get(),
             debugLogConfigurator = get(),
+            platformConfigProvider = get(),
         )
     } bind GeneralSettingsManager::class
     single {
@@ -153,6 +155,7 @@ val preferencesModule = module {
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
             displayInboxSettingsPreferenceManager = get(),
+            displayVisualSettingsPreferenceManager = get(),
         )
     } bind DrawerConfigManager::class
 

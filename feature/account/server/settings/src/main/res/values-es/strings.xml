@@ -32,6 +32,6 @@
     <string name="account_server_settings_security_label">Seguridad</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP o nombre de host no válidos</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Enviar información del cliente</string>
-    <string name="account_server_settings_password_authentication_failed">La autenticación ha fallado</string>
+    <string name="account_server_settings_password_authentication_failed">¡La autenticación ha fallado!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">No se pudo enseñar el diálogo de biometría.</string>
 </resources>

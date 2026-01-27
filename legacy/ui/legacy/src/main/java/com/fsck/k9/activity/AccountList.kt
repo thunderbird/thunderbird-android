@@ -28,7 +28,7 @@ import org.koin.android.ext.android.inject
  * Classes extending this abstract class have to provide an [.onAccountSelected]
  * method to perform an action when an account is selected.
  */
-abstract class AccountList : K9ListActivity(), OnItemClickListener {
+abstract class AccountList : BaseListActivity(), OnItemClickListener {
 
     private val coreResourceProvider: CoreResourceProvider by inject()
 

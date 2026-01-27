@@ -1,2 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_authentication">Gwall dilysu</string>
+    <string name="account_server_validation_error_network">Gwall rhwydwaith</string>
+    <string name="account_server_validation_error_server">Gwall gweinydd</string>
+    <string name="account_server_validation_error_client_certificate_expired">Nid yw tystysgrif y cleient yn ddilys bellach</string>
+    <string name="account_server_validation_error_missing_server_capability">Galluoedd gweinydd coll</string>
+    <string name="account_server_validation_error_details">Manylion: \n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Does gan y gweinydd ddim y gallu yma:\n%s</string>
+    <string name="account_server_validation_incoming_loading_message">Yn gwirio gosodiadau\'r gweinydd derbyn…</string>
+    <string name="account_server_validation_incoming_loading_error">Methodd gwirio gosodiadau \'r gweinydd derbyn</string>
+    <string name="account_server_validation_incoming_success">Dilyswyd gosodiadau\'r gweinydd derbyn</string>
+    <string name="account_server_validation_outgoing_loading_message">Yn gwirio gosodiadau\'r gweinydd anfon…</string>
+    <string name="account_server_validation_outgoing_loading_error">Methodd gwirio gosodiadau\'r gweinydd anfon</string>
+    <string name="account_server_validation_outgoing_success">Dilyswyd gosodiadau\'r gweinydd anfon</string>
+    <string name="account_server_validation_error_unknown">Gwall anhysbys</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Doedd dim modd cael mynediad at dystysgrif y cleient</string>
+    <string name="account_server_validation_sign_in">Mewngofnodwch</string>
+</resources>

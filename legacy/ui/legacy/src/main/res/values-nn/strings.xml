@@ -202,7 +202,6 @@
     <string name="account_settings_message_read_receipt_summary">Be alltid om lesekvittering</string>
     <string name="account_settings_general_title">Generelle innstilingar</string>
     <string name="account_settings_folders">Mapper</string>
-    <string name="account_settings_color_label">Kontofarge</string>
     <string name="account_settings_autodownload_message_size_label">Hent meldingar opp til</string>
     <string name="account_settings_autodownload_message_size_any">uendeleg (inga grense)</string>
     <string name="account_settings_message_age_label">Synkroniser meldingar frå</string>
@@ -220,7 +219,6 @@
     <string name="account_settings_message_age_1_year">det siste året</string>
     <string name="folder_settings_title">Mappeinnstillingar</string>
     <string name="folder_settings_clear_local_folder_action">Fjern lokale meldingar</string>
-    <string name="account_settings_description_label">Kontonamn</string>
     <string name="account_settings_name_label">Namnet ditt</string>
     <string name="notifications_title">Varsel</string>
     <string name="account_settings_notification_light_account_color">Kontofarge</string>
@@ -623,7 +621,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_off">Krypter malar kun om kryptering er aktivert</string>
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
     <string name="account_settings_mail_check_frequency_label">Spørjefrekvens for mappe</string>
-    <string name="account_setup_auto_expand_folder">Auto-utvid mapper</string>
     <string name="account_settings_notify_self_label">Inkluder utgåande e-post</string>
     <string name="account_notify_contacts_mail_only_label">Berre kontaktar</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Marker som lesen etter opning</string>
@@ -645,7 +642,6 @@
     <string name="account_settings_outgoing_label">Utgåande tenar</string>
     <string name="folder_settings_notifications_label">Notifikasjonar</string>
     <string name="folder_settings_push_label">Aktiver dytting</string>
-    <string name="account_settings_color_summary">Aksentfargen for denne kontoen er brukt i mappe- og kontolista</string>
     <string name="account_settings_autodownload_message_size_512">512 KiB</string>
     <string name="folder_settings_sync_label">Aktiver synkronisering</string>
     <string name="account_settings_incoming_summary">Konfigurer innkomande e-posttenar</string>
@@ -920,4 +916,12 @@
     <string name="debug_force_auth_failure_unavailable">Ingen OAuth-konfigurasjon tilgjengeleg for denne kontoen.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Kunne ikkje endre lagra tilgjengepollett. Prøv lokal invalidering.</string>
     <string name="debug_invalidate_access_token_already_modified">Lagra tilgjengepollett er allereie endra.</string>
+    <string name="set_format_html_action">Bruk original formattering</string>
+    <string name="set_format_html_condensed_action">Vis formatert</string>
+    <string name="set_format_plain_action">Vis uformatert melding</string>
+    <string name="set_format_plain_condensed_action">Vis uformatert</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (tekst/html)</string>
+    <string name="account_setup_auto_select_folder">Autoselekter mappe</string>
+    <string name="navigation_drawer_preferences">Sidemeny</string>
+    <string name="expand_folders">Utvid mapper</string>
 </resources>

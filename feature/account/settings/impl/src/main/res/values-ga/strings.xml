@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_settings_general_title">Socruithe Ginearálta</string>
-    <string name="account_settings_general_profile_indicator_title">Táscaire Próifíle</string>
-    <string name="account_settings_general_profile_indicator_monogram">Monagram</string>
-    <string name="account_settings_general_profile_indicator_image">Íomhá</string>
-    <string name="account_settings_general_profile_indicator_icon">Deilbhín</string>
+    <string name="account_settings_general_avatar_option_monogram">Monagram</string>
+    <string name="account_settings_general_avatar_option_image">Íomhá</string>
+    <string name="account_settings_general_avatar_option_icon">Deilbhín</string>
     <string name="account_settings_general_name_title">Ainm an chuntais</string>
     <string name="account_settings_general_name_description">An t-ainm a bhaineann le do chuntas.</string>
     <string name="account_settings_general_color_title">Dath an chuntais</string>
     <string name="account_settings_general_color_description">Dath béime an chuntais seo a úsáidtear i bhfillteáin agus i liostaí cuntas.</string>
+    <string name="account_settings_general_avatar_title">Abhatár</string>
+    <string name="account_settings_general_avatar_description">Roghnaigh conas a thaispeántar d’abhatár cuntais.</string>
+    <string name="account_settings_general_name_error_empty">Ní féidir an t-ainm a fhágáil folamh</string>
+    <string name="account_settings_general_name_error_too_long">Tá an t-ainm rófhada</string>
+    <string name="account_settings_general_avatar_monogram_title">Monagram Abhatár</string>
+    <string name="account_settings_general_avatar_monogram_description">An monagram a úsáidtear mar d\'abhatár.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Ní féidir monagram a fhágáil folamh</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Tá an monagram rófhada</string>
+    <string name="account_settings_general_avatar_icon_title">Deilbhín Abhatár</string>
+    <string name="account_settings_general_avatar_icon_description">Roghnaigh ceann de na deilbhíní le húsáid mar d\'abhatár.</string>
 </resources>

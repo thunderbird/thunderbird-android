@@ -34,7 +34,6 @@ val featureMessageListModule = module {
         BuildSwipeActions(
             generalSettingsManager = get(),
             accountManager = get(),
-            storage = parameters.get(),
         )
     }
     viewModel { parameters ->

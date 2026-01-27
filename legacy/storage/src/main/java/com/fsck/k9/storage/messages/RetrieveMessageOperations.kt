@@ -3,13 +3,13 @@ package com.fsck.k9.storage.messages
 import androidx.core.database.getLongOrNull
 import com.fsck.k9.K9
 import com.fsck.k9.helper.mapToSet
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mail.internet.MimeHeader
 import com.fsck.k9.mail.message.MessageHeaderParser
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MessageNotFoundException
 import java.util.Date
+import net.thunderbird.core.common.mail.Flag
 
 internal class RetrieveMessageOperations(private val lockableDatabase: LockableDatabase) {
 

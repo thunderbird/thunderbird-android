@@ -18,7 +18,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 18
-        versionName = "15.0"
+        versionName = "16.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
     }
@@ -221,6 +221,7 @@ dependencies {
 
     implementation(projects.feature.account.settings.impl)
     implementation(projects.feature.mail.message.list)
+    implementation(projects.feature.mail.message.reader.api)
 
     implementation(projects.feature.widget.messageList)
     implementation(projects.feature.widget.messageListGlance)

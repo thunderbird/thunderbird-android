@@ -33,7 +33,7 @@
     <string name="notification_action_delete_all">Alle verwijderen</string>
     <string name="notification_action_archive">Archiveren</string>
     <string name="notification_action_archive_all">Alle archiveren</string>
-    <string name="notification_action_spam">Spam</string>
+    <string name="notification_action_spam">Ongewenst</string>
     <string name="notification_authentication_incoming_server_error_text">Authenticatie voor %1$s is mislukt. Werk uw instellingen voor de inkomende server bij.</string>
     <string name="notification_authentication_outgoing_server_error_text">Authenticatie voor %1$s is mislukt. Werk uw instellingen voor de uitgaande server bij.</string>
     <string name="notification_bg_sync_text">%1$s: %2$s</string>

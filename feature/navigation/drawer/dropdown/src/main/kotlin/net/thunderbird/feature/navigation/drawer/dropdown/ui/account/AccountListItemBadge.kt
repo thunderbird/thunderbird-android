@@ -6,11 +6,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
+import androidx.compose.ui.platform.LocalResources
 import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItemBadge
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.Star
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.labelForCount
 
 @Composable
@@ -39,7 +38,7 @@ private fun AccountCountAndStarredBadge(
         modifier = modifier,
         horizontalAlignment = Alignment.End,
     ) {
-        val resources = LocalContext.current.resources
+        val resources = LocalResources.current
 
         if (unreadCount > 0) {
             NavigationDrawerItemBadge(

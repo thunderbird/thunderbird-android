@@ -39,6 +39,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
+import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import kotlinx.collections.immutable.ImmutableList
@@ -58,52 +59,56 @@ internal fun TbOnboardingMigrationScreen(
 ) {
     val scrollState = rememberScrollState()
 
-    ResponsiveWidthContainer(
-        modifier = Modifier
-            .fillMaxSize()
-            .then(modifier),
-    ) { contentPadding ->
-        Column(
+    Scaffold(
+        modifier = modifier,
+    ) { innerPadding ->
+        ResponsiveWidthContainer(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState)
-                .padding(contentPadding),
-        ) {
-            AppTitleTopHeader(
-                title = brandNameProvider.brandName,
-            )
-
-            Spacer(
+                .padding(innerPadding),
+        ) { contentPadding ->
+            Column(
                 modifier = Modifier
-                    .height(MainTheme.spacings.double)
-                    .weight(1f),
-            )
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .padding(contentPadding),
+            ) {
+                AppTitleTopHeader(
+                    title = brandNameProvider.brandName,
+                )
 
-            AlreadyUsingThunderbirdCard(onQrCodeScan)
+                Spacer(
+                    modifier = Modifier
+                        .height(MainTheme.spacings.double)
+                        .weight(1f),
+                )
 
-            Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
+                AlreadyUsingThunderbirdCard(onQrCodeScan)
 
-            TextGroup(title = stringResource(R.string.onboarding_migration_thunderbird_new_account_title)) {
-                ButtonOutlined(
-                    text = stringResource(R.string.onboarding_migration_thunderbird_new_account_button_text),
-                    onClick = onAddAccount,
-                    modifier = Modifier.testTagAsResourceId("onboarding_migration_new_account_button"),
+                Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
+
+                TextGroup(title = stringResource(R.string.onboarding_migration_thunderbird_new_account_title)) {
+                    ButtonOutlined(
+                        text = stringResource(R.string.onboarding_migration_thunderbird_new_account_button_text),
+                        onClick = onAddAccount,
+                        modifier = Modifier.testTagAsResourceId("onboarding_migration_new_account_button"),
+                    )
+                }
+
+                TextGroup(title = stringResource(R.string.onboarding_migration_thunderbird_import_title)) {
+                    ButtonOutlined(
+                        text = stringResource(R.string.onboarding_migration_thunderbird_import_button_text),
+                        onClick = onImport,
+                        modifier = Modifier.testTagAsResourceId("ImportButton"),
+                    )
+                }
+
+                Spacer(
+                    modifier = Modifier
+                        .height(MainTheme.spacings.double)
+                        .weight(1f),
                 )
             }
-
-            TextGroup(title = stringResource(R.string.onboarding_migration_thunderbird_import_title)) {
-                ButtonOutlined(
-                    text = stringResource(R.string.onboarding_migration_thunderbird_import_button_text),
-                    onClick = onImport,
-                    modifier = Modifier.testTagAsResourceId("ImportButton"),
-                )
-            }
-
-            Spacer(
-                modifier = Modifier
-                    .height(MainTheme.spacings.double)
-                    .weight(1f),
-            )
         }
     }
 }

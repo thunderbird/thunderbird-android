@@ -10,7 +10,6 @@ import assertk.assertions.isNull
 import assertk.assertions.startsWith
 import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.Multipart
@@ -21,6 +20,7 @@ import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 import com.fsck.k9.storage.RobolectricTest
 import java.io.ByteArrayOutputStream
 import java.util.Stack
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountIdFactory

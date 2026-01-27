@@ -2,8 +2,8 @@ package app.k9mail.feature.account.setup.ui.autodiscovery.view
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.vector.ImageVector
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.feature.account.setup.R
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 
 @Suppress("detekt.UnnecessaryAnnotationUseSiteTarget") // https://github.com/detekt/detekt/issues/8212
 enum class AutoDiscoveryResultHeaderState(

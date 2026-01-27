@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
@@ -16,6 +17,7 @@ internal fun AccountAutoDiscoveryContentPreview() {
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
             brandName = "BrandName",
+            contentPadding = PaddingValues(),
         )
     }
 }
@@ -31,6 +33,7 @@ internal fun AccountAutoDiscoveryContentEmailPreview() {
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
             brandName = "BrandName",
+            contentPadding = PaddingValues(),
         )
     }
 }
@@ -48,6 +51,7 @@ internal fun AccountAutoDiscoveryContentPasswordPreview() {
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
             brandName = "BrandName",
+            contentPadding = PaddingValues(),
         )
     }
 }
@@ -65,6 +69,7 @@ internal fun AccountAutoDiscoveryContentPasswordUntrustedSettingsPreview() {
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
             brandName = "BrandName",
+            contentPadding = PaddingValues(),
         )
     }
 }
@@ -81,6 +86,7 @@ internal fun AccountAutoDiscoveryContentPasswordNoSettingsPreview() {
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
             brandName = "BrandName",
+            contentPadding = PaddingValues(),
         )
     }
 }
@@ -98,6 +104,7 @@ internal fun AccountAutoDiscoveryContentOAuthPreview() {
             onEvent = {},
             oAuthViewModel = FakeAccountOAuthViewModel(),
             brandName = "BrandName",
+            contentPadding = PaddingValues(),
         )
     }
 }

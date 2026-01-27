@@ -60,15 +60,9 @@
     <style name="Theme2.Main.DayNight.Common" parent="Theme2.Main.Light.Base" />
 
     <!-- Main themes -->
-    <style name="Theme2.Main.Light" parent="Theme2.Main.Light.Common">
-        <item name="android:statusBarColor">?attr/colorSurfaceInverse</item>
-        <item name="android:navigationBarColor">?attr/colorSurfaceInverse</item>
-    </style>
+    <style name="Theme2.Main.Light" parent="Theme2.Main.Light.Common" />
 
-    <style name="Theme2.Main.Dark" parent="Theme2.Main.Dark.Common">
-        <item name="android:statusBarColor">?attr/colorSurfaceContainer</item>
-        <item name="android:navigationBarColor">?attr/colorSurfaceContainer</item>
-    </style>
+    <style name="Theme2.Main.Dark" parent="Theme2.Main.Dark.Common" />
 
     <style name="Theme2.Main.DayNight" parent="Theme2.Main.Light" />
 

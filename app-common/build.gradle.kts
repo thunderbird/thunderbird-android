@@ -1,5 +1,5 @@
 plugins {
-    id(ThunderbirdPlugins.Library.android)
+    id(ThunderbirdPlugins.Library.androidCompose)
 }
 
 android {
@@ -49,12 +49,16 @@ dependencies {
 
     implementation(projects.feature.mail.message.export.api)
     implementation(projects.feature.mail.message.export.implEml)
+    implementation(projects.feature.mail.message.reader.api)
+    implementation(projects.feature.mail.message.reader.impl)
 
     implementation(projects.mail.protocols.imap)
     implementation(projects.backend.imap)
 
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.lifecycle.process)
+    implementation(libs.kotlinx.collections.immutable)
 
     testImplementation(projects.feature.account.fake)
+    testImplementation(projects.core.testing)
 }

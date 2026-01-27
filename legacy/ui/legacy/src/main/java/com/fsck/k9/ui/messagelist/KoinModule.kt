@@ -2,12 +2,11 @@ package com.fsck.k9.ui.messagelist
 
 import com.fsck.k9.ui.messagelist.debug.AuthDebugActions
 import net.thunderbird.feature.navigation.drawer.dropdown.navigationDropDownDrawerModule
-import net.thunderbird.feature.navigation.drawer.siderail.navigationSideRailDrawerModule
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val messageListUiModule = module {
-    includes(navigationDropDownDrawerModule, navigationSideRailDrawerModule)
+    includes(navigationDropDownDrawerModule)
 
     viewModel { MessageListViewModel(messageListLiveDataFactory = get(), logger = get()) }
     factory { DefaultFolderProvider(outboxFolderManager = get()) }

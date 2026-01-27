@@ -2,11 +2,10 @@ plugins {
     id(ThunderbirdPlugins.Library.kmp)
 }
 
-android {
-    namespace = "net.thunderbird.feature.account.storage"
-}
-
 kotlin {
+    androidLibrary {
+        namespace = "net.thunderbird.feature.account.storage"
+    }
     sourceSets {
         commonMain.dependencies {
             api(projects.feature.account.api)

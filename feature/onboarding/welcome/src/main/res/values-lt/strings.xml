@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_welcome_start_button">Pradėti</string>
+    <string name="onboarding_welcome_start_button">Pradėkime</string>
     <string name="onboarding_welcome_import_button">Importuoti nustatymus</string>
     <string name="onboarding_welcome_text">Atvirojo kodo, orientuota į privatumą ir neapkrauta reklamomis el. pašto programa „Android“ sistemoms.</string>
 </resources>

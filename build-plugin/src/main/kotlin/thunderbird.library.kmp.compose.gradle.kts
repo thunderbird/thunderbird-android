@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    id("com.android.kotlin.multiplatform.library")
     id("org.jetbrains.compose")
     id("org.jetbrains.kotlin.multiplatform")
     id("org.jetbrains.kotlin.plugin.compose")
@@ -9,7 +9,10 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
+    androidLibrary {
+        compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
+        minSdk = ThunderbirdProjectConfig.Android.sdkMin
+
         compilerOptions {
             jvmTarget.set(ThunderbirdProjectConfig.Compiler.jvmTarget)
         }
@@ -47,17 +50,4 @@ kotlin {
     }
 }
 
-android {
-    compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
-
-    defaultConfig {
-        minSdk = ThunderbirdProjectConfig.Android.sdkMin
-    }
-
-    compileOptions {
-        sourceCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
-        targetCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
-    }
-
-    configureSharedComposeConfig(libs)
-}
+configureKotlinJavaCompatibility()

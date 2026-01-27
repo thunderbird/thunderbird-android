@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="message_list_glance_widget_compose_action">作成</string>
+    <string name="message_list_glance_widget_inbox_title">統合受信トレイ</string>
+    <string name="message_list_glance_widget_label">メッセージ一覧</string>
 </resources>

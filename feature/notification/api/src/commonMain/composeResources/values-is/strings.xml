@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Samstilla (Ýta)</string>
     <string name="notification_channel_push_description">Birtist á meðan beðið er eftir nýjum skilaboðum</string>
@@ -34,4 +34,20 @@
     <string name="notification_action_archive">Geymsla</string>
     <string name="notification_action_archive_all">Setja allt í geymslu</string>
     <string name="notification_action_spam">Ruslpóstur</string>
+    <string name="notification_authentication_incoming_server_error_text">Auðkenning mistókst fyrir %1$s. Uppfærðu stillingarnar á innsendiþjóninum þínum.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Auðkenning mistókst fyrir %1$s. Uppfærðu stillingarnar á útsendiþjóninum þínum.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d ný skilaboð</item>
+        <item quantity="other">%1$d ný skilaboð</item>
+    </plurals>
+    <string name="notification_action_retry">Reyna aftur</string>
+    <string name="notification_action_update_server_settings">Uppfæra stillingar þjóns</string>
+    <string name="notification_action_assign_sent_folder">Úthluta möppu</string>
+    <string name="banner_inline_notification_check_error_notifications">Athuga villutilkynningar</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Einhver skilaboð krefjast athygli þinnar.</string>
+    <string name="banner_inline_notification_open_notifications">Opna tilkynningar</string>
+    <string name="banner_inline_notification_learn_more">Kanna nánar</string>
+    <string name="banner_inline_notification_view_support_article">Skoða aðstoðargrein</string>
+    <string name="sent_folder_not_found_title">Sent-mappa er ekki aðgengileg.</string>
 </resources>

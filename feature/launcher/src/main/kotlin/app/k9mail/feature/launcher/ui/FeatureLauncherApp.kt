@@ -3,7 +3,6 @@ package app.k9mail.feature.launcher.ui
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
@@ -23,7 +22,6 @@ fun FeatureLauncherApp(
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .safeDrawingPadding()
                 .then(modifier),
         ) {
             val activity = LocalActivity.current as ComponentActivity

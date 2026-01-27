@@ -266,8 +266,6 @@
     <string name="account_settings_quote_prefix_label">Քաղուածքի տեքստի նախածանցը</string>
     <string name="account_settings_crypto_summary_on">Կապնվել %s-ին</string>
     <string name="account_settings_mail_check_frequency_label">Պանակները թարմացնելու յաճախականութիւն</string>
-    <string name="account_settings_color_label">Հաշուի գոյնը</string>
-    <string name="account_settings_color_summary">Այս հաշուի գոյնը՝ օգտագործուելու է պանակում եւ հաշիւների ցանկի մէջ</string>
     <string name="account_settings_mail_display_count_label">Պանակի չափսը սարքի մէջ</string>
     <string name="account_settings_autodownload_message_size_label">Ներբեռնել նամակները մինչեւ</string>
     <string name="account_settings_autodownload_message_size_any">ցանկացած չափսի (առանց սահմանափակում)</string>
@@ -289,7 +287,6 @@
     <string name="folder_settings_title">Պանակի կարգաւորումներ</string>
     <string name="folder_settings_clear_local_folder_action">Մաքրել լոկալ հաղորդագրութիւնները</string>
     <string name="account_settings_outgoing_label">Դուրս տանող բանավար</string>
-    <string name="account_settings_description_label">Հաշվի անունը</string>
     <string name="account_settings_name_label">Ձեր անունը</string>
     <string name="account_settings_notification_light_account_color">Հաշուի գոյնը</string>
     <string name="edit_identity_save">Պահել</string>

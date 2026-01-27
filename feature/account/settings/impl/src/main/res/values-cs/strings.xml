@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_settings_general_title">Obecná nastavení</string>
-    <string name="account_settings_general_profile_indicator_title">Indikátor profilu</string>
-    <string name="account_settings_general_profile_indicator_monogram">Monogram</string>
-    <string name="account_settings_general_profile_indicator_image">Obrázek</string>
-    <string name="account_settings_general_profile_indicator_icon">Ikona</string>
+    <string name="account_settings_general_avatar_option_monogram">Monogram</string>
+    <string name="account_settings_general_avatar_option_image">Obrázek</string>
+    <string name="account_settings_general_avatar_option_icon">Ikona</string>
     <string name="account_settings_general_name_title">Název účtu</string>
     <string name="account_settings_general_name_description">Název spojený s vaším účtem.</string>
     <string name="account_settings_general_color_title">Barva účtu</string>
     <string name="account_settings_general_color_description">Barva tohot účtu použitá ve složkách a seznamech účtů.</string>
+    <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_description">Vyberte, jak bude zobrazen avatar vašeho účtu.</string>
+    <string name="account_settings_general_name_error_empty">Název nemůže být prázdný</string>
+    <string name="account_settings_general_name_error_too_long">Název je příliš dlouhý</string>
+    <string name="account_settings_general_avatar_monogram_title">Monogram jako avatar</string>
+    <string name="account_settings_general_avatar_monogram_description">Monogram použitý jako váš avatar.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Monogram nemůže být prázdný</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Monogram je příliš dlouhý</string>
+    <string name="account_settings_general_avatar_icon_title">Ikona jako avatar</string>
+    <string name="account_settings_general_avatar_icon_description">Vyberte si jednu z ikon, kterou chcete použít jako váš avatar.</string>
 </resources>

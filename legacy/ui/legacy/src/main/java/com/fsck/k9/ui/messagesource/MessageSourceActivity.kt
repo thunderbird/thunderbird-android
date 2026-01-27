@@ -7,12 +7,12 @@ import android.view.MenuItem
 import androidx.fragment.app.commit
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.base.K9Activity
+import com.fsck.k9.ui.base.BaseActivity
 
 /**
  * Temporary Activity used until the fragment can be displayed in the main activity.
  */
-class MessageSourceActivity : K9Activity() {
+class MessageSourceActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.message_view_headers_activity)

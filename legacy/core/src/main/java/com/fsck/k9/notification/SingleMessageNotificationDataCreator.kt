@@ -2,8 +2,13 @@ package com.fsck.k9.notification
 
 import com.fsck.k9.K9
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 
-internal class SingleMessageNotificationDataCreator {
+internal class SingleMessageNotificationDataCreator(
+    private val interactionPreferences: InteractionSettingsPreferenceManager,
+) {
+
+    private val interactionSettings get() = interactionPreferences.getConfig()
 
     fun createSingleNotificationData(
         account: LegacyAccountDto,
@@ -77,11 +82,11 @@ internal class SingleMessageNotificationDataCreator {
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.
     private fun isDeleteActionAvailableForWear(): Boolean {
-        return isDeleteActionEnabled() && !K9.isConfirmDeleteFromNotification
+        return isDeleteActionEnabled() && !interactionSettings.isConfirmDeleteFromNotification
     }
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.
     private fun isSpamActionAvailableForWear(account: LegacyAccountDto): Boolean {
-        return account.hasSpamFolder() && !K9.isConfirmSpam
+        return account.hasSpamFolder() && !interactionSettings.isConfirmSpam
     }
 }

@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="message_list_glance_widget_compose_action">Sukurti</string>
+    <string name="message_list_glance_widget_inbox_title">Suvestiniai gautieji</string>
+    <string name="message_list_glance_widget_label">Laiškų sąrašas</string>
 </resources>

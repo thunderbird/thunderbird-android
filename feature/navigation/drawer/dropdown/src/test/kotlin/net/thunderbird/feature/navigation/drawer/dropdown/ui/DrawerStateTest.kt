@@ -20,6 +20,7 @@ internal class DrawerStateTest {
                     showUnifiedFolders = false,
                     showStarredCount = false,
                     showAccountSelector = true,
+                    expandAllFolder = false,
                 ),
                 accounts = persistentListOf(),
                 selectedAccountId = null,

@@ -5,14 +5,14 @@
     <string name="settings_import_button">Mewnforio</string>
     <string name="settings_import_success_generic">Mewnforiwyd gosodiadau yn llwyddiannus</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Rho gyfrineiriau</string>
+    <string name="settings_import_password_required">Rhowch gyfrineiriau</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <string name="settings_import_authorization_required">Mewngofnodwch</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="settings_import_authorization_and_password_required">Mewngofnodwch a rhoi cyfrineiriau</string>
     <string name="settings_import_failure">Methwyd â mewnforio gosodiadau</string>
-    <string name="settings_import_read_failure">Methwyd â darllen ffeil gosodiadau</string>
-    <string name="settings_import_partial_failure">Methwyd â mewnforio rhai gosodiadau</string>
+    <string name="settings_import_read_failure">Methwyd darllen ffeil gosodiadau</string>
+    <string name="settings_import_partial_failure">Methwyd mewnforio rhai gosodiadau</string>
     <string name="settings_import_status_success">Mewnforiwyd yn llwyddiannus</string>
     <string name="settings_import_status_password_required">Angen cyfrinair</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
@@ -22,7 +22,7 @@
     <string name="settings_import_later_button">Yn hwyrach</string>
     <string name="settings_importing">Yn mewnforio gosodiadau…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="zero">I fedru defnyddio\'r cyfrif \"<xliff:g id="account">%s</xliff:g>\" mae\'n rhaid rhoi cyfrinair y gweinydd.</item>
+        <item quantity="zero">I fedru defnyddio\'r cyfrif \"<xliff:g id="account">%s</xliff:g>\" mae\'n rhaid rhoi cyfrineiriau\'r gweinydd.</item>
         <item quantity="one">I fedru defnyddio\'r cyfrif \"<xliff:g id="account">%s</xliff:g>\" mae\'n rhaid rhoi cyfrinair y gweinydd.</item>
         <item quantity="two">I fedru defnyddio\'r cyfrif \"<xliff:g id="account">%s</xliff:g>\" mae\'n rhaid rhoi cyfrineiriau\'r gweinydd.</item>
         <item quantity="few">I fedru defnyddio\'r cyfrif \"<xliff:g id="account">%s</xliff:g>\" mae\'n rhaid rhoi cyfrineiriau\'r gweinydd.</item>
@@ -31,18 +31,18 @@
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Cyfrinair gweinydd derbyn</string>
     <string name="settings_import_outgoing_server_password_hint">Cyfrinair gweinydd anfon</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Defnyddio\'r un cyfrinair i\'r gweinydd anfon</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Defnyddio\'r un cyfrinair ar gyfer y gweinydd anfon</string>
     <string name="settings_import_server_name_format">Enw gweinydd: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">I ddefnyddio\'r cyfrif e-bost hwn, rhaid mewngofnodi a rhoi caniatâd i\'r ap gael mynediad at dy negeseuon e-bost.</string>
+    <string name="settings_import_oauth_description">I ddefnyddio\'r cyfrif e-bost hwn, rhaid mewngofnodi a rhoi caniatâd i\'r ap gael mynediad at eich e-byst.</string>
     <string name="settings_import_oauth_sign_in">Mewngofnodi</string>
     <string name="settings_import_oauth_sign_in_with_google">Mewngofnodi gyda Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Diddymwyd awdurdodi</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">Methodd awdurdodi gyda\'r gwall hwn: <xliff:g id="error">%s</xliff:g></string>
-    <string name="settings_import_oauth_error_oauth_not_supported">Ni chefnogir OAuth 2.0 ar hyn o bryd gyda\'r darparydd hwn.</string>
-    <string name="settings_import_oauth_error_browser_not_found">Methodd yr ap hwn ddod o hyd i borwr i\'w ddefnyddio i roi mynediad at dy gyfrif.</string>
+    <string name="settings_import_oauth_error_oauth_not_supported">Dyw OAuth 2.0 ddim yn cael ei gefnogi ar hyn o bryd gan y darparydd hwn.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Methodd yr ap ddod o hyd i borwr i\'w ddefnyddio i roi mynediad at eich cyfrif.</string>
     <string name="settings_import_general_settings_item">Gosodiadau cyffredinol</string>
     <string name="settings_import_scan_qr_code_button">Sganiwch y cod QR</string>
     <string name="settings_import_pick_app_button">Mewnforio o\'r ap</string>
     <string name="settings_import_pick_app_dialog_title">Mewnforio o\'r ap</string>
-    <string name="settings_import_app_version_not_supported">Nid yw\'r fersiwn yma o\'r ap yn cael ei gefnogi.</string>
+    <string name="settings_import_app_version_not_supported">Dyw\'r fersiwn yma o\'r ap ddim yn cael ei gefnogi.</string>
 </resources>

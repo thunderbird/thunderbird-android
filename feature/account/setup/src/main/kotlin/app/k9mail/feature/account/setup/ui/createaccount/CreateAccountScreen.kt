@@ -1,6 +1,10 @@
 package app.k9mail.feature.account.setup.ui.createaccount
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -54,9 +58,10 @@ internal fun CreateAccountScreen(
                     showNext = false,
                     isBackEnabled = state.value.error != null,
                 ),
+                modifier = Modifier.imePadding(),
             )
         },
-        modifier = modifier,
+        modifier = modifier.windowInsetsPadding(WindowInsets.navigationBars),
     ) { innerPadding ->
         CreateAccountContent(
             state = state.value,

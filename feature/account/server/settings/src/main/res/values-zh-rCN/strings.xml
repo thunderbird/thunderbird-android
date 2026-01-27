@@ -6,7 +6,7 @@
     <string name="account_server_settings_validation_error_password_required">密码是必需的。</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">无</string>
-    <string name="account_server_settings_authentication_password_encrypted">加密的密码</string>
+    <string name="account_server_settings_authentication_password_encrypted">加密密码</string>
     <string name="account_server_settings_incoming_imap_namespace_label">自动检测 IMAP 命名空间</string>
     <string name="account_server_settings_incoming_top_bar_title">收件服务器设置</string>
     <string name="account_server_settings_authentication_password_cleartext">普通密码</string>

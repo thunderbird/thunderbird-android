@@ -227,7 +227,6 @@
     <string name="archive_folder_label">Teuliad dielloù</string>
     <string name="spam_folder_label">Teuliad lastez</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Diskouez an teuliadoù koumanantet hepken</string>
-    <string name="account_setup_auto_expand_folder">Kreskaat an teuliad ent emgefreek</string>
     <string name="account_setup_options_mail_check_frequency_never">Morse</string>
     <string name="account_setup_options_mail_check_frequency_15min">Bep 15 munutenn</string>
     <string name="account_setup_options_mail_check_frequency_30min">Bep 30 munutenn</string>
@@ -310,8 +309,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">An holl vrouilhedoù a vo kadavet enrineget</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Enrinegañ ar brouilhedoù m\'eo gweredekaet an enrinegañ nemetken</string>
     <string name="account_settings_mail_check_frequency_label">Aliested kerc’hat ar posteloù</string>
-    <string name="account_settings_color_label">Liv ar gont</string>
-    <string name="account_settings_color_summary">Liv ar gont arveret er roll teuliadoù ha kontoù</string>
     <string name="account_settings_mail_display_count_label">Ment an teuliad lec’hel</string>
     <string name="account_settings_autodownload_message_size_label">Kerc’hat ar c’hemennadennoù bihannoc’h eget:</string>
     <string name="account_settings_autodownload_message_size_any">ne vern ar ment (bevenn ebet)</string>
@@ -338,7 +335,6 @@
     <string name="account_settings_incoming_summary">Kefluniañ an dafariad postel degemer</string>
     <string name="account_settings_outgoing_label">Dafariad ermaeziañ</string>
     <string name="account_settings_outgoing_summary">Kefluniañ an dafariad postel ermaeziañ (SMTP)</string>
-    <string name="account_settings_description_label">Anv ar gont</string>
     <string name="account_settings_name_label">Anv</string>
     <string name="notifications_title">Rebuzadurioù</string>
     <string name="account_settings_vibrate_enable">Froumal</string>

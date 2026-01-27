@@ -101,6 +101,8 @@ include(
     ":feature:mail:message:list",
     ":feature:mail:message:export:api",
     ":feature:mail:message:export:impl-eml",
+    ":feature:mail:message:reader:api",
+    ":feature:mail:message:reader:impl",
 )
 
 include(
@@ -114,7 +116,6 @@ include(
 include(
     ":feature:navigation:drawer:api",
     ":feature:navigation:drawer:dropdown",
-    ":feature:navigation:drawer:siderail",
 )
 
 include(
@@ -238,9 +239,9 @@ include(
 )
 
 include(
-    ":ui-utils:LinearLayoutManager",
-    ":ui-utils:ItemTouchHelper",
-    ":ui-utils:ToolbarBottomSheet",
+    ":ui-utils:item-touch-helper",
+    ":ui-utils:linear-layout-manager",
+    ":ui-utils:toolbar-bottom-sheet",
 )
 
 include(":plugins:openpgp-api-lib:openpgp-api")
@@ -254,7 +255,7 @@ include(
 
 include(
     ":library:html-cleaner",
-    ":library:TokenAutoComplete",
+    ":library:token-auto-complete",
 )
 
 include(

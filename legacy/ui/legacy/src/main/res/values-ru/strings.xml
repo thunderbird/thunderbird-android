@@ -275,7 +275,6 @@
     <string name="archive_folder_label">Папка архива</string>
     <string name="spam_folder_label">Папка спам</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Только подписанные папки</string>
-    <string name="account_setup_auto_expand_folder">Автопереход в папку</string>
     <string name="account_setup_options_mail_check_frequency_never">Вручную</string>
     <string name="account_setup_options_mail_check_frequency_15min">15 минут</string>
     <string name="account_setup_options_mail_check_frequency_30min">30 минут</string>
@@ -365,8 +364,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Все черновики будут храниться в зашифрованном виде</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Зашифровать черновики, если включено шифрование</string>
     <string name="account_settings_mail_check_frequency_label">Промежуток проверки</string>
-    <string name="account_settings_color_label">Цвет для учётной записи</string>
-    <string name="account_settings_color_summary">Акцентный цвет текущей учётной записи, используемый среди учётных записей и папок</string>
     <string name="account_settings_mail_display_count_label">Отображать сообщений</string>
     <string name="account_settings_autodownload_message_size_label">Загружать фрагмент</string>
     <string name="account_settings_autodownload_message_size_1">1 КиБ</string>
@@ -407,7 +404,6 @@
     <string name="account_settings_incoming_summary">Настройки сервера входящей почты</string>
     <string name="account_settings_outgoing_label">Сервер исходящих</string>
     <string name="account_settings_outgoing_summary">Настройки сервера исходящей почты</string>
-    <string name="account_settings_description_label">Название учётной записи</string>
     <string name="account_settings_name_label">Ваше имя</string>
     <string name="notifications_title">Уведомления</string>
     <string name="account_settings_vibration">Вибрация</string>
@@ -935,4 +931,15 @@
     <string name="debug_invalidate_access_token_cannot_modify">Невозможно изменить сохранённый токен доступа. Попробуйте локальное аннулирование.</string>
     <string name="debug_invalidate_access_token_already_modified">Сохранённый токен доступа уже изменён.</string>
     <string name="message_view_menu_action_export_eml">Экспорт как EML</string>
+    <string name="set_format_html_action">Использовать исходное форматирование</string>
+    <string name="set_format_html_condensed_action">Показать форматированное</string>
+    <string name="set_format_plain_action">Показать неформатированное сообщение</string>
+    <string name="set_format_plain_condensed_action">Показать неформатированное</string>
+    <string name="global_settings_messageview_body_content_type_title">Тип содержимого</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Обычный текст (text/plain)</string>
+    <string name="account_setup_auto_select_folder">Автовыбор папки</string>
+    <string name="navigation_drawer_preferences">Боковое меню</string>
+    <string name="expand_folders">Развернуть папки</string>
+    <string name="debug_feature_flags">ОТЛАДКА: флаги функций</string>
 </resources>

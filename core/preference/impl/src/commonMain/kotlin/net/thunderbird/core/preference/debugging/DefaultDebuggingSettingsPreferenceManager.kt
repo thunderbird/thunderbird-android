@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.LogLevelManager
 import net.thunderbird.core.logging.Logger
@@ -25,6 +26,7 @@ class DefaultDebuggingSettingsPreferenceManager(
     private val logLevelManager: LogLevelManager,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
+    private val platformConfigProvider: PlatformConfigProvider,
 ) : DebuggingSettingsPreferenceManager {
     private val configState: MutableStateFlow<DebuggingSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
@@ -41,7 +43,7 @@ class DefaultDebuggingSettingsPreferenceManager(
     private fun loadConfig(): DebuggingSettings = DebuggingSettings(
         isDebugLoggingEnabled = storage.getBoolean(
             KEY_ENABLE_DEBUG_LOGGING,
-            DEBUGGING_SETTINGS_DEFAULT_IS_DEBUGGING_LOGGING_ENABLED,
+            platformConfigProvider.isDebug,
         ),
         isSyncLoggingEnabled = storage.getBoolean(
             KEY_ENABLE_SYNC_DEBUG_LOGGING,

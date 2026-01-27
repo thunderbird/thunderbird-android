@@ -3,7 +3,7 @@ package com.fsck.k9.mail.store.imap;
 
 import java.util.Set;
 
-import com.fsck.k9.mail.Flag;
+import net.thunderbird.core.common.mail.Flag;
 
 
 class UidSearchCommandBuilder {

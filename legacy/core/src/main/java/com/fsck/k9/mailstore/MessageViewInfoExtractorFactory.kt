@@ -3,7 +3,7 @@ package com.fsck.k9.mailstore
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor
 import com.fsck.k9.message.html.HtmlProcessorFactory
-import com.fsck.k9.message.html.HtmlSettings
+import net.thunderbird.core.common.mail.html.HtmlSettings
 
 class MessageViewInfoExtractorFactory(
     private val attachmentInfoExtractor: AttachmentInfoExtractor,

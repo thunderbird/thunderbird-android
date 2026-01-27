@@ -12,8 +12,6 @@ import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.DefaultGeneralSettingsManager
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.SortType
-import net.thunderbird.core.common.action.SwipeAction
-import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
 import net.thunderbird.core.preference.storage.Storage
@@ -117,24 +115,6 @@ object K9 : KoinComponent {
     val fontSizes = FontSizes()
 
     @JvmStatic
-    var isConfirmDelete = false
-
-    @JvmStatic
-    var isConfirmDiscardMessage = true
-
-    @JvmStatic
-    var isConfirmDeleteStarred = false
-
-    @JvmStatic
-    var isConfirmSpam = false
-
-    @JvmStatic
-    var isConfirmDeleteFromNotification = true
-
-    @JvmStatic
-    var isConfirmMarkAllRead = true
-
-    @JvmStatic
     var notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
 
     @JvmStatic
@@ -178,12 +158,6 @@ object K9 : KoinComponent {
 
     @JvmStatic
     var pgpSignOnlyDialogCounter: Int = 0
-
-    @JvmStatic
-    var swipeRightAction: SwipeAction = SwipeAction.ToggleSelection
-
-    @JvmStatic
-    var swipeLeftAction: SwipeAction = SwipeAction.ToggleRead
 
     // TODO: This is a feature-specific setting that doesn't need to be available to apps that don't include the
     //  feature. Extract `Storage` and `StorageEditor` to a separate module so feature modules can retrieve and store
@@ -236,13 +210,6 @@ object K9 : KoinComponent {
         messageViewPostMarkAsUnreadNavigation =
             storage.getEnum("messageViewPostMarkAsUnreadAction", PostMarkAsUnreadNavigation.ReturnToMessageList)
 
-        isConfirmDelete = storage.getBoolean("confirmDelete", false)
-        isConfirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true)
-        isConfirmDeleteStarred = storage.getBoolean("confirmDeleteStarred", false)
-        isConfirmSpam = storage.getBoolean("confirmSpam", false)
-        isConfirmDeleteFromNotification = storage.getBoolean("confirmDeleteFromNotification", true)
-        isConfirmMarkAllRead = storage.getBoolean("confirmMarkAllRead", true)
-
         sortType = storage.getEnum("sortTypeEnum", AccountDefaultsProvider.DEFAULT_SORT_TYPE)
 
         val sortAscendingSetting = storage.getBoolean("sortAscending", AccountDefaultsProvider.DEFAULT_SORT_ASCENDING)
@@ -268,15 +235,6 @@ object K9 : KoinComponent {
         pgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0)
         pgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0)
 
-        swipeRightAction = storage.getEnum(
-            key = SwipeActions.KEY_SWIPE_ACTION_RIGHT,
-            defaultValue = SwipeAction.ToggleSelection,
-        )
-        swipeLeftAction = storage.getEnum(
-            key = SwipeActions.KEY_SWIPE_ACTION_LEFT,
-            defaultValue = SwipeAction.ToggleRead,
-        )
-
         if (telemetryManager.isTelemetryFeatureIncluded()) {
             isTelemetryEnabled = storage.getBoolean("enableTelemetry", true)
         }
@@ -293,13 +251,6 @@ object K9 : KoinComponent {
         editor.putInt("registeredNameColor", contactNameColor)
         editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
 
-        editor.putBoolean("confirmDelete", isConfirmDelete)
-        editor.putBoolean("confirmDiscardMessage", isConfirmDiscardMessage)
-        editor.putBoolean("confirmDeleteStarred", isConfirmDeleteStarred)
-        editor.putBoolean("confirmSpam", isConfirmSpam)
-        editor.putBoolean("confirmDeleteFromNotification", isConfirmDeleteFromNotification)
-        editor.putBoolean("confirmMarkAllRead", isConfirmMarkAllRead)
-
         editor.putEnum("sortTypeEnum", sortType)
         editor.putBoolean("sortAscending", sortAscending[sortType] ?: false)
 
@@ -314,9 +265,6 @@ object K9 : KoinComponent {
 
         editor.putInt("pgpInlineDialogCounter", pgpInlineDialogCounter)
         editor.putInt("pgpSignOnlyDialogCounter", pgpSignOnlyDialogCounter)
-
-        editor.putEnum(key = SwipeActions.KEY_SWIPE_ACTION_RIGHT, value = swipeRightAction)
-        editor.putEnum(key = SwipeActions.KEY_SWIPE_ACTION_LEFT, value = swipeLeftAction)
 
         if (telemetryManager.isTelemetryFeatureIncluded()) {
             editor.putBoolean("enableTelemetry", isTelemetryEnabled)

@@ -246,7 +246,6 @@
     <string name="archive_folder_label">Папка Архиви</string>
     <string name="spam_folder_label">Папка Спам</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Показвай само абонираните папките</string>
-    <string name="account_setup_auto_expand_folder">Автоматично разгъване на папка</string>
     <string name="account_setup_options_mail_check_frequency_never">Никога</string>
     <string name="account_setup_options_mail_check_frequency_15min">На всеки 15 минути</string>
     <string name="account_setup_options_mail_check_frequency_30min">На всеки 30 минути</string>
@@ -331,8 +330,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Всички чернови ще се съхраняват криптирани</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Шифрова чернови само ако шифроването е активирано</string>
     <string name="account_settings_mail_check_frequency_label">Честота на проверка на папката</string>
-    <string name="account_settings_color_label">Цвят на профила</string>
-    <string name="account_settings_color_summary">Акцентиращ цвят, който ще се използва в профила за показване на папки и списък</string>
     <string name="account_settings_mail_display_count_label">Размер на локалната папка</string>
     <string name="account_settings_autodownload_message_size_label">Получавай съобщения до</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -364,7 +361,6 @@
     <string name="account_settings_incoming_summary">Конфигуриране на сървър за входяща поща</string>
     <string name="account_settings_outgoing_label">Сървър изходяща поща</string>
     <string name="account_settings_outgoing_summary">Конфигуриране на сървър изходяща поща (SMTP)</string>
-    <string name="account_settings_description_label">Име на профила</string>
     <string name="account_settings_name_label">Вашето име</string>
     <string name="notifications_title">Известявания</string>
     <string name="account_settings_vibrate_enable">Вибрирай</string>
@@ -469,9 +465,9 @@
     <string name="animations_title">Анимация</string>
     <string name="animations_summary">Изпoлзване на ярки визуални ефекти</string>
     <string name="show_unified_inbox_title">Показване на обединената входяща папка</string>
-    <string name="integrated_inbox_title">Обща входяща кутия</string>
+    <string name="integrated_inbox_title">Обединена входяща кутия</string>
     <string name="integrated_inbox_detail">Всички съобщения в общата входяща кутия</string>
-    <string name="folder_settings_include_in_integrated_inbox_label">Обедени</string>
+    <string name="folder_settings_include_in_integrated_inbox_label">Обединяване</string>
     <string name="account_settings_no_folder_selected">Никой</string>
     <string name="account_settings_automatic_special_folder">Автоматично (%s)</string>
     <string name="font_size_settings_title">Размер на шрифта</string>
@@ -907,4 +903,19 @@
     <string name="push_info_notification_explanation_text">Когато използвате Push, <xliff:g id="app_name">%1$s</xliff:g> поддържа връзка с пощенския сървър. Android изисква показване на текущо уведомление, докато приложението е активно във фонов режим. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="swipe_action_change_swipe_gestures">Промяна\nЖестове с плъзгане</string>
     <string name="message_view_menu_action_export_eml">Изнасяне като EML</string>
+    <string name="expand_folders">Разгъване на папките</string>
+    <string name="account_setup_auto_select_folder">Автоматичен избор на папка</string>
+    <string name="navigation_drawer_preferences">Странично меню</string>
+    <string name="debug_invalidate_access_token">Тест: прекратяване действието на код за сигурност</string>
+    <string name="debug_invalidate_access_token_done">Действието на кода за сигурност е прекратено. Следващата заявка ще го поднови.</string>
+    <string name="debug_invalidate_access_token_unavailable">Няма код за сигурност на OAuth за този профил.</string>
+    <string name="debug_invalidate_access_token_local">Тест: прекратяване действието на код за сигурност (местен)</string>
+    <string name="debug_invalidate_access_token_local_done">Местна заявка за прекратяване действието на код за сигурност. Със следващата заявка ще бъде получен нов код за сигурност.</string>
+    <string name="debug_invalidate_access_token_server">Тест: прекратяване действието на код за сигурност (сървър)</string>
+    <string name="debug_invalidate_access_token_server_done">Запазеният код за сигурност е повреден. Следващата заявка ще върне грешка, а след това ще поднови кода за сигурност.</string>
+    <string name="debug_force_auth_failure">Тест: принудителна грешка при удостоверяване</string>
+    <string name="debug_force_auth_failure_done">Състоянието на OAuth е нулирано. Следващата заявка ще върне грешка.</string>
+    <string name="debug_force_auth_failure_unavailable">Профилът няма настройка на OAuth.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Запазеният код за сигурност не може да бъде променен. Пробвайте местно прекратяване на действието.</string>
+    <string name="debug_invalidate_access_token_already_modified">Запазеният код за сигурност вече е променен.</string>
 </resources>

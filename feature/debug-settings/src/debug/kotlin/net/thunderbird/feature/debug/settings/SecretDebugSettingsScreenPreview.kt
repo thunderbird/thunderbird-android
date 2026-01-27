@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.core.common.resources.StringsResourceManager
+import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionViewModel
 import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
@@ -67,7 +68,9 @@ private fun SecretDebugSettingsScreenPreview() {
     } WithContent {
         PreviewWithThemesLightDark {
             SecretDebugSettingsScreen(
+                starterTab = SecretDebugSettingsRoute().tab,
                 onNavigateBack = { },
+                onFinish = { },
                 modifier = Modifier.fillMaxSize(),
             )
         }

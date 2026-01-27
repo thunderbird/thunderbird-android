@@ -20,6 +20,7 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.feature.account.storage.mapper.AvatarDataMapper
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
@@ -33,6 +34,7 @@ internal class GetDisplayAccounts(
     private val messageListRepository: MessageListRepository,
     private val notificationStream: InAppNotificationStream,
     private val featureFlagProvider: FeatureFlagProvider,
+    private val avatarMapper: AvatarDataMapper,
     private val coroutineContext: CoroutineContext = Dispatchers.IO,
 ) : UseCase.GetDisplayAccounts {
 
@@ -55,6 +57,7 @@ internal class GetDisplayAccounts(
                             name = account.displayName,
                             email = account.email,
                             color = account.chipColor,
+                            avatar = avatarMapper.toDomain(account.avatar),
                             unreadMessageCount = messageCounts.unread,
                             starredMessageCount = messageCounts.starred,
                             hasError = accountsMap[account] == true,

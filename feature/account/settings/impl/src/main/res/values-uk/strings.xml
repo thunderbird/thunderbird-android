@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_settings_general_title">Загальні Налаштування</string>
-    <string name="account_settings_general_profile_indicator_title">Індикатор профілю</string>
-    <string name="account_settings_general_profile_indicator_monogram">Монограма</string>
-    <string name="account_settings_general_profile_indicator_image">Зображення</string>
-    <string name="account_settings_general_profile_indicator_icon">Значок</string>
+    <string name="account_settings_general_avatar_option_monogram">Монограма</string>
+    <string name="account_settings_general_avatar_option_image">Зображення</string>
+    <string name="account_settings_general_avatar_option_icon">Значок</string>
     <string name="account_settings_general_name_title">Ім\'я облікового запису</string>
     <string name="account_settings_general_name_description">Ім\'я, пов\'язане з вашим обліковим записом.</string>
     <string name="account_settings_general_color_title">Колір облікового запису</string>
     <string name="account_settings_general_color_description">Акцентний колір цього облікового запису, що використовується в папках та списках облікових записів.</string>
+    <string name="account_settings_general_avatar_title">Аватар</string>
+    <string name="account_settings_general_avatar_description">Виберіть, як відображатиметься аватар вашого облікового запису.</string>
+    <string name="account_settings_general_name_error_empty">Ім\'я не може бути порожнім</string>
+    <string name="account_settings_general_name_error_too_long">Ім\'я занадто довге</string>
+    <string name="account_settings_general_avatar_monogram_title">Монограма аватара</string>
+    <string name="account_settings_general_avatar_monogram_description">Монограма, яка використовується як ваш аватар.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Монограма не може бути порожньою</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Монограма занадто довга</string>
+    <string name="account_settings_general_avatar_icon_title">Значок аватара</string>
+    <string name="account_settings_general_avatar_icon_description">Виберіть одну з іконок, щоб використовувати її як аватар.</string>
 </resources>

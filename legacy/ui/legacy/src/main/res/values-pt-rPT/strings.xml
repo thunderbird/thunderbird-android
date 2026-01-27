@@ -272,7 +272,6 @@
     <string name="archive_folder_label">Pasta de arquivos</string>
     <string name="spam_folder_label">Pasta de spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Mostrar apenas pastas subscritas</string>
-    <string name="account_setup_auto_expand_folder">Expandir automaticamente a pasta</string>
     <string name="account_setup_options_mail_check_frequency_never">Nunca</string>
     <string name="account_setup_options_mail_check_frequency_15min">A cada 15 minutos</string>
     <string name="account_setup_options_mail_check_frequency_30min">A cada 30 minutos</string>
@@ -362,8 +361,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Todos os rascunhos serão armazenados encriptados</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Encriptar rascunhos apenas se a encriptação estiver ativada</string>
     <string name="account_settings_mail_check_frequency_label">Frequência de verificação de pastas</string>
-    <string name="account_settings_color_label">Cor da conta</string>
-    <string name="account_settings_color_summary">A cor predominante desta conta usada na lista de pastas e contas</string>
     <string name="account_settings_mail_display_count_label">Tamanho da pasta local</string>
     <string name="account_settings_autodownload_message_size_label">Obter mensagens até</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -404,7 +401,6 @@
     <string name="account_settings_incoming_summary">Configure o servidor de email de entrada</string>
     <string name="account_settings_outgoing_label">Servidor de saída</string>
     <string name="account_settings_outgoing_summary">Configure o servidor de email de saída (SMTP)</string>
-    <string name="account_settings_description_label">Nome da conta</string>
     <string name="account_settings_name_label">O seu nome</string>
     <string name="notifications_title">Notificações</string>
     <string name="account_settings_vibration">Vibração</string>

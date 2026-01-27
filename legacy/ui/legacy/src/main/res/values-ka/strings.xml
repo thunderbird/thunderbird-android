@@ -255,7 +255,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">ყველა მონახაზი შენახული იქნება დაშიფრულად</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">მონახაზების დაშიფვრა მხოლოდ თუ შიფრაცია ჩართულია</string>
     <string name="account_settings_mail_check_frequency_label">საკეცის გამოკითხვის სიხშირე</string>
-    <string name="account_settings_color_label">ანგარიშის ფერი</string>
     <string name="account_settings_autodownload_message_size_1">1 ᲙᲑ</string>
     <string name="account_settings_autodownload_message_size_2">2 ᲙᲑ</string>
     <string name="account_settings_autodownload_message_size_4">4 ᲙᲑ</string>
@@ -289,7 +288,6 @@
     <string name="account_settings_incoming_summary">შემავალი საფოსტო სერვერის გამართვა</string>
     <string name="account_settings_outgoing_label">გამავალი სერვერი</string>
     <string name="account_settings_outgoing_summary">გამართეთ გამავალი საფოსტო (SMTP) სერვერი </string>
-    <string name="account_settings_description_label">ანგარიშის სახელი</string>
     <string name="account_settings_name_label">თქვენი სახელი</string>
     <string name="account_settings_vibrate_enable">ვიბრაცია</string>
     <string name="account_settings_notification_light_account_color">ანგარიშის ფერი</string>

@@ -234,7 +234,6 @@
     <string name="archive_folder_label">Arkiv-mappe</string>
     <string name="spam_folder_label">Søppelpost-mappe</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Kun vis mapper du abonnerer på</string>
-    <string name="account_setup_auto_expand_folder">Auto-utvid mappe</string>
     <string name="account_setup_options_mail_check_frequency_never">Aldri</string>
     <string name="account_setup_options_mail_check_frequency_15min">Hvert kvarter</string>
     <string name="account_setup_options_mail_check_frequency_30min">Hver halvtime</string>
@@ -318,8 +317,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle kladder vil bli lagret kryptert</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Krypter kladder, bare om kryptering er slått på</string>
     <string name="account_settings_mail_check_frequency_label">Oppdateringsfrekvens for mappe</string>
-    <string name="account_settings_color_label">Kontofarge</string>
-    <string name="account_settings_color_summary">Aksentfargen for denne konto brukt i mappe- og kontoliste</string>
     <string name="account_settings_mail_display_count_label">Lokal mappestørrelse</string>
     <string name="account_settings_autodownload_message_size_label">Hent meldinger opp til</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -360,7 +357,6 @@
     <string name="account_settings_incoming_summary">Sett opp innkommende e-posttjener</string>
     <string name="account_settings_outgoing_label">Utgående tjener</string>
     <string name="account_settings_outgoing_summary">Sett opp utgående e-posttjener (SMTP)</string>
-    <string name="account_settings_description_label">Kontonavn</string>
     <string name="account_settings_name_label">Ditt navn</string>
     <string name="notifications_title">Varslinger</string>
     <string name="account_settings_vibrate_enable">Vibrer</string>
@@ -918,4 +914,15 @@
     <string name="debug_invalidate_access_token_cannot_modify">Kunne ikke modifisere det lagrede tilgangstokenet. Prøv lokal ugyldiggjøring.</string>
     <string name="debug_invalidate_access_token_already_modified">Det lagrede tilgangstokenet er allerede modifisert.</string>
     <string name="message_view_menu_action_export_eml">Eksporter som EML</string>
+    <string name="set_format_html_action">Bruk originalformattering</string>
+    <string name="set_format_html_condensed_action">Vis formatert</string>
+    <string name="set_format_plain_action">Vis den uformaterte meldingen</string>
+    <string name="set_format_plain_condensed_action">Vis uformatert</string>
+    <string name="global_settings_messageview_body_content_type_title">Brødtekstens innholdstype</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Uformatert tekst (text/plain)</string>
+    <string name="account_setup_auto_select_folder">Velg mappe automatisk</string>
+    <string name="navigation_drawer_preferences">Sidemeny</string>
+    <string name="expand_folders">Utvid mapper</string>
+    <string name="debug_feature_flags">FEILSØKING: Funksjonsflagg</string>
 </resources>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Sinchronizuoti (Push)</string>
     <string name="notification_channel_push_description">Rodoma laukiant naujų laiškų</string>
@@ -11,7 +11,7 @@
 \n
 \nBakstelėkite pranešimų nustatymams atverti.</string>
     <string name="notification_authentication_error_title">Autentifikavimas nepavyko</string>
-    <string name="notification_certificate_error_public">Sertifikato klaida.</string>
+    <string name="notification_certificate_error_public">Sertifikato klaida</string>
     <string name="notification_certificate_error_title">Sertifikato klaida %1$s</string>
     <string name="notification_certificate_error_text">Patikrinkite serverio nustatymus</string>
     <string name="notification_bg_sync_ticker">Tikrinamas paštas: %1$s:%2$s</string>
@@ -34,4 +34,24 @@
     <string name="notification_action_archive">Archyvuoti</string>
     <string name="notification_action_archive_all">Archyvuoti viską</string>
     <string name="notification_action_spam">Brukalas</string>
+    <string name="notification_authentication_incoming_server_error_text">Prisijungti prie %1$s nepavyko. Atnaujikite savo gaunamųjų serverio nustatymus.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Prisijungti prie %1$s nepavyko. Atnaujinkite savo siunčiamųjų serverio nustatymus.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d naujas pranešimas</item>
+        <item quantity="few">%1$d nauji pranešimai</item>
+        <item quantity="many">%1$d naujų pranešimų</item>
+        <item quantity="other">%1$d naujų pranešimų</item>
+    </plurals>
+    <string name="push_notification_state_alarm_permission_missing">Trūksta leidimo nustatyti pranešimus</string>
+    <string name="push_notification_grant_alarm_permission">Paspauskite norėdami suteikti leidimą.</string>
+    <string name="notification_action_retry">Pakartoti</string>
+    <string name="notification_action_update_server_settings">Atnaujinti serverio nustatymus</string>
+    <string name="notification_action_assign_sent_folder">Priskirti aplanką</string>
+    <string name="banner_inline_notification_check_error_notifications">Peržiūrėti klaidų pranešimus</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Kai kuriem pranešimam reikia jūsų peržiūros.</string>
+    <string name="banner_inline_notification_open_notifications">Atverti pranešimus</string>
+    <string name="banner_inline_notification_learn_more">Sužinoti daugiau</string>
+    <string name="sent_folder_not_found_title">Išsiųstųjų aplankas neprieinamas.</string>
+    <string name="banner_inline_notification_view_support_article">Peržiūrėti palaikymo straipsnį</string>
 </resources>

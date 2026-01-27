@@ -33,7 +33,7 @@
     <string name="notification_action_delete_all">Alle fuortsmite</string>
     <string name="notification_action_archive">Argivearje</string>
     <string name="notification_action_archive_all">Alle argivearje</string>
-    <string name="notification_action_spam">Spam</string>
+    <string name="notification_action_spam">Net-winske</string>
     <string name="notification_authentication_incoming_server_error_text">Autentikaasje foar %1$s is mislearre. Wurkje jo ynstellingen foar de ynkommende server by.</string>
     <string name="notification_authentication_outgoing_server_error_text">Autentikaasje foar %1$s is mislearre. Wurkje jo ynstellingen foar de útgeande server by.</string>
     <string name="notification_bg_sync_text">%1$s: %2$s</string>

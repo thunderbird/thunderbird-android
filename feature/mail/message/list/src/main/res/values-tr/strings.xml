@@ -1,3 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">Bu mesajı bir daha gösterme</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">E-posta arşivlenemez</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Arşiv klasörünü şimdi yapılandır</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Şimdilik atla</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Arşiv klasörünü ayarla</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">Hesap klasörlerini alırken bir sorun oluştu!</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Hata ayrıntıları: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Yeni klasör oluştur</string>
+    <string name="setup_archive_folder_dialog_done">Tamamlandı</string>
+    <string name="setup_archive_folder_dialog_cancel">İptal et</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Yeni klasör oluştur ve ayarla]]></string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">\'%1$s\' UUID ile ilişkili bir hesap bulunamadı</string>
+    <string name="setup_archive_folder_unhandled_error">İşlenmemiş hata: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Senkronize ediliyor…</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">Yerel klasör oluşturuldu. Senkronizasyon başlatılıyor…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Uzak klasör oluşturuldu.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">E-posta sağlayıcısında klasör oluşturuluyor…</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">Özel klasör kurallarını güncelliyor…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">(%1$s) hesabı bulunamadı</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">\'%1$s\' yerel klasörü oluşturulamadı.</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">\'%1$s\' klasörü uzak sunucuyla senkronize edilemedi. Mesaj: %2$s</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Klasör adı boş bırakılamaz</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Geçersiz klasör adı \'%1$s\'</string>
 </resources>

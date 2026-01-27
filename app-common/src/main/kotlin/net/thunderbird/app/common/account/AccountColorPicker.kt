@@ -1,27 +1,26 @@
 package net.thunderbird.app.common.account
 
-import android.content.res.Resources
-import app.k9mail.core.ui.legacy.theme2.common.R
-import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.flow.first
+import net.thunderbird.feature.account.profile.AccountProfileRepository
 
 internal class AccountColorPicker(
-    private val accountManager: LegacyAccountDtoManager,
-    private val resources: Resources,
+    private val repository: AccountProfileRepository,
+    private val accountColors: ImmutableList<Int>,
 ) {
-    fun pickColor(): Int {
-        val accounts = accountManager.getAccounts()
-        val usedAccountColors = accounts.map { it.chipColor }.toSet()
-        val accountColors = resources.getIntArray(R.array.account_colors).toList()
+    suspend fun pickColor(): Int {
+        val profiles = repository.getAll().first()
+        val usedCounts = profiles.groupingBy { it.color }.eachCount()
 
-        val availableColors = accountColors - usedAccountColors
-        if (availableColors.isEmpty()) {
-            return accountColors.random()
+        val minCount = accountColors.minOf { usedCounts[it] ?: 0 }
+        val candidates = accountColors.filter {
+            (usedCounts[it] ?: 0) == minCount
         }
 
-        val defaultAccountColors = resources.getIntArray(R.array.default_account_colors)
-        return availableColors.shuffled().minByOrNull { color ->
-            val index = defaultAccountColors.indexOf(color)
-            if (index != -1) index else defaultAccountColors.size
-        } ?: error("availableColors must not be empty")
+        return if (candidates.isNotEmpty()) {
+            candidates.shuffled().first()
+        } else {
+            accountColors.shuffled().first()
+        }
     }
 }

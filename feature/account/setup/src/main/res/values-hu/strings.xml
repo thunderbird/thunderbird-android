@@ -3,14 +3,14 @@
     <string name="account_setup_options_account_name_error_blank">A fióknév nem lehet üres.</string>
     <string name="account_setup_options_account_check_frequency_label">Ellenőrzési gyakoriság</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Automatikus konfigurálás</string>
-    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Ez a konfiguráció nem megbízható.</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Ez a konfiguráció nem megbízható</string>
     <string name="account_setup_options_email_signature_label">E-mail-aláírás</string>
     <string name="account_setup_options_email_display_count_label">Megjelenítendő üzenetek száma</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Kézi beállítás</string>
     <string name="account_setup_options_email_signature_error_blank">Az e-mail-aláírásnév nem lehet üres.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">A konfiguráció jóváhagyása szükséges.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Az e-mail-kiszolgáló konfigurációját olyan kapcsolaton keresztül érkezett, amely nem tekinthető biztonságosnak. Ez azt jelenti, hogy előfordulhat, hogy valaki megváltoztatta. Ellenőrizze még egyszer a megadott konfigurációt, hogy megbizonyosodjon arról, hogy olyan, amilyennek lennie kell.</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Az e-mail kiszolgáló konfigurációját olyan kapcsolaton keresztül érkezett, amely nem oly biztonságos, mint szeretnénk. Ez azt jelenti, hogy csekély rá az esély, de előfordulhat, hogy valaki megváltoztatta. Tudná ellenőrizni a megadott konfigurációt, hogy az előírtaknak megfelelő-e?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Konfiguráció szerkesztése</string>
     <string name="account_setup_error_unknown">Ismeretlen hiba</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
@@ -18,7 +18,7 @@
     <string name="account_setup_options_account_name_label">Fióknév</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguráció megtalálva</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Az e-mail-cím megadása kötelező.</string>
-    <string name="account_setup_auto_discovery_loading_error">Nem sikerült betölteni az e-mail-konfigurációt.</string>
+    <string name="account_setup_auto_discovery_loading_error">E-mail konfiguráció betöltése sikertelen</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Megbízom a konfigurációban</string>
     <string name="account_setup_error_network">Hálózati hiba. Ellenőrizze a kapcsolat állapotát, és próbálja meg újra.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Az e-mail-cím nem tekinthető érvényes e-mail-címnek.</string>

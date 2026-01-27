@@ -1,0 +1,6 @@
+Thunderbird for Android version 16.0b1, based on K-9 Mail. Changes include:
+- Enable Memory Tagging Extension on MTE-capable devices to improve memory safety
+- Add setting to control default folder expansion behavior
+- Add the ability to switch between text/plain and text/html display
+- Switching folders required an excessive number of clicks
+- Fix various edge-to-edge issues throughout the app

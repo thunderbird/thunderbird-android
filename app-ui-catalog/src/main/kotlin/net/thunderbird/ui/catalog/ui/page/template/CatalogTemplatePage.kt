@@ -8,6 +8,7 @@ enum class CatalogTemplatePage(
     override val isFullScreen: Boolean = false,
 ) : CatalogPage {
     LAYOUT("Layouts"),
+    HORIZONTAL_PAGER("Horizontal Pagers"),
     ;
 
     override fun toString(): String {

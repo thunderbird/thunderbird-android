@@ -206,7 +206,7 @@ jobs:
       new_version_code: ${{ steps.new_version_code.outputs.new_version_code }}
     steps:
       - name: App Token Generate
-        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2.1.4
+        uses: actions/create-github-app-token@7e473efe3cb98aa54f8d4bac15400b15fad77d94 # v2.2.0
         if: ${{ vars.BOT_CLIENT_ID }}
         id: app-token
         with:
@@ -215,7 +215,7 @@ jobs:
 
       - name: Checkout repository
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token || github.token }}
@@ -281,8 +281,8 @@ jobs:
             fi
           elif [[ "$RELEASE_TYPE" = "daily" ]]; then
             NEW_VERSION_CODE=$(date_version_code "$RELEASE_DATE")
-            # Max version code for "2025-11-30 23:59" is "23342359"
-            MAX_VERSION_CODE="23342359"
+            # Max version code for "2026-11-30 23:59" is "33342359"
+            MAX_VERSION_CODE="33342359"
           fi
           if [[ "$NEW_VERSION_CODE" -gt "$MAX_VERSION_CODE" ]]; then
             echo "New version code ${NEW_VERSION_CODE} is greater than ${MAX_VERSION_CODE}"
@@ -455,7 +455,7 @@ jobs:
           cat $GITHUB_OUTPUT
 
       - name: Checkout repository
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           ref: ${{ steps.sha.outputs.app_sha }}
 
@@ -679,7 +679,7 @@ jobs:
           cat $GITHUB_OUTPUT
 
       - name: Checkout repository
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           ref: ${{ steps.shanotes.outputs.app_sha }}
 
@@ -745,7 +745,7 @@ jobs:
           ls -l uploads/${PKG_FILE_PRETTY}
 
       - name: App Token Generate
-        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42  # v2.1.4
+        uses: actions/create-github-app-token@7e473efe3cb98aa54f8d4bac15400b15fad77d94  # v2.2.0
         if: ${{ contains(matrix.releaseTarget, 'github') && vars.BOT_CLIENT_ID }}
         id: app-token
         with:
@@ -755,7 +755,7 @@ jobs:
       - name: Publish to GitHub Releases
         id: publish_gh
         if: ${{ contains(matrix.releaseTarget, 'github') }}
-        uses: softprops/action-gh-release@5be0e66d93ac7ed76da52eca8bb058f665c3a5fe  # v2.4.2
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b  # v2.5.0
         with:
           token: ${{ steps.app-token.outputs.token || github.token }}
           target_commitish: ${{ steps.shanotes.outputs.app_sha }}

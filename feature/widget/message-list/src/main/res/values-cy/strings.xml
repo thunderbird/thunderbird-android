@@ -3,6 +3,6 @@
     <string name="message_list_widget_compose_action">Ysgrifennu</string>
     <string name="message_list_widget_list_item_loading">Yn llwytho…</string>
     <string name="message_list_widget_initializing">Yn llwytho…</string>
-    <string name="message_list_widget_inbox_title">Mewnflwch Unedig</string>
+    <string name="message_list_widget_inbox_title">Blwch Derbyn Cyfun</string>
     <string name="message_list_widget_label">Rhestr Negeseuon</string>
 </resources>

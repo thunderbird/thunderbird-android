@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    id("com.android.kotlin.multiplatform.library")
     id("org.jetbrains.kotlin.multiplatform")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("thunderbird.quality.detekt.typed")
@@ -7,7 +7,9 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
+    androidLibrary {
+        compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
+        minSdk = ThunderbirdProjectConfig.Android.sdkMin
         compilerOptions {
             jvmTarget.set(ThunderbirdProjectConfig.Compiler.jvmTarget)
         }
@@ -36,15 +38,4 @@ kotlin {
     }
 }
 
-android {
-    compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
-
-    defaultConfig {
-        minSdk = ThunderbirdProjectConfig.Android.sdkMin
-    }
-
-    compileOptions {
-        sourceCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
-        targetCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
-    }
-}
+configureKotlinJavaCompatibility()

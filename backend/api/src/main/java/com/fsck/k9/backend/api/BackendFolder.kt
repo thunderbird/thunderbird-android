@@ -1,9 +1,9 @@
 package com.fsck.k9.backend.api
 
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
 import java.util.Date
+import net.thunderbird.core.common.mail.Flag
 
 // FIXME: add documentation
 interface BackendFolder {

@@ -1,10 +1,10 @@
 package net.thunderbird.core.ui.setting.dialog.ui.fake
 
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.setting.SettingValue
-import net.thunderbird.core.ui.setting.SettingValue.CompactSelectSingleOption.CompactOption
-import net.thunderbird.core.ui.setting.SettingValue.SelectSingleOption.Option
+import net.thunderbird.core.ui.setting.SettingValue.SegmentedButton.SegmentedButtonOption
+import net.thunderbird.core.ui.setting.SettingValue.Select.SelectOption
 
 internal object FakeSettingData {
 
@@ -29,36 +29,36 @@ internal object FakeSettingData {
         ),
     )
 
-    private val compactOptions = persistentListOf(
-        CompactOption(id = "1", title = { "Option 1" }, value = "1"),
-        CompactOption(id = "2", title = { "Option 2" }, value = "2"),
-        CompactOption(id = "3", title = { "Option 3" }, value = "3"),
+    private val segmentedButtonOptions = persistentListOf(
+        SegmentedButtonOption(id = "1", title = { "Option 1" }, value = "1"),
+        SegmentedButtonOption(id = "2", title = { "Option 2" }, value = "2"),
+        SegmentedButtonOption(id = "3", title = { "Option 3" }, value = "3"),
     )
 
-    val compactSelectSingleOption = SettingValue.CompactSelectSingleOption(
+    val segmentedButton = SettingValue.SegmentedButton(
         id = "compact_select_single_option",
         title = { "Title" },
         description = { "Description" },
-        value = compactOptions[1],
-        options = compactOptions,
+        value = segmentedButtonOptions[1],
+        options = segmentedButtonOptions,
     )
 
-    private val options = persistentListOf(
-        Option("1") { "Option 1" },
-        Option("2") { "Option 2" },
-        Option("3") { "Option 3" },
-        Option("4") { "Option 4" },
-        Option("5") { "Option 5" },
-        Option("6") { "Option 6" },
+    private val selectOptions = persistentListOf(
+        SelectOption("1") { "Option 1" },
+        SelectOption("2") { "Option 2" },
+        SelectOption("3") { "Option 3" },
+        SelectOption("4") { "Option 4" },
+        SelectOption("5") { "Option 5" },
+        SelectOption("6") { "Option 6" },
     )
 
-    val selectSingleOption = SettingValue.SelectSingleOption(
+    val select = SettingValue.Select(
         id = "select_single_option",
         title = { "Title" },
         icon = { Icons.Outlined.Info },
         description = { "Description" },
-        value = options[1],
-        options = options,
+        value = selectOptions[1],
+        options = selectOptions,
     )
 
     val switch = SettingValue.Switch(
@@ -71,8 +71,8 @@ internal object FakeSettingData {
     val settings = persistentListOf(
         text,
         color,
-        compactSelectSingleOption,
-        selectSingleOption,
+        segmentedButton,
+        select,
         switch,
     )
 }

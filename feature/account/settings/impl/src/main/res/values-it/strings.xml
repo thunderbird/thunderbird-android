@@ -1,3 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Impostazioni generali</string>
+    <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_description">Scegli come viene mostrato l\'avatar del tuo account.</string>
+    <string name="account_settings_general_avatar_option_monogram">Monogramma</string>
+    <string name="account_settings_general_avatar_option_image">Immagine</string>
+    <string name="account_settings_general_avatar_option_icon">Icona</string>
+    <string name="account_settings_general_name_title">Nome account</string>
+    <string name="account_settings_general_name_description">Il nome associato con il tuo account.</string>
+    <string name="account_settings_general_name_error_empty">Il nome non può essere vuoto</string>
+    <string name="account_settings_general_name_error_too_long">Il nome è troppo lungo</string>
+    <string name="account_settings_general_color_title">Colore account</string>
+    <string name="account_settings_general_color_description">Colore principale di questo account utilizzato nelle cartelle e negli elenchi degli account.</string>
+    <string name="account_settings_general_avatar_monogram_title">Monogramma Avatar</string>
+    <string name="account_settings_general_avatar_monogram_description">Il monogramma usato come tuo avatar.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Il monogramma non può essere vuoto</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Il monogramma è troppo lungo</string>
+    <string name="account_settings_general_avatar_icon_title">Icona Avatar</string>
+    <string name="account_settings_general_avatar_icon_description">Seleziona una delle icone da usare come tuo avatar.</string>
 </resources>

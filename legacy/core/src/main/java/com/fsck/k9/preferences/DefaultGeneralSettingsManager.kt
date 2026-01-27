@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.logging.config.DebugLogConfigurator
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -55,11 +56,12 @@ internal class DefaultGeneralSettingsManager(
     private val interactionSettingsPreferenceManager: InteractionSettingsPreferenceManager,
     private val debugLogConfigurator: DebugLogConfigurator,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val platformConfigProvider: PlatformConfigProvider,
 ) : GeneralSettingsManager {
     val mutex = Mutex()
     private val generalSettings = privacySettingsPreferenceManager.getConfigFlow()
         .map { privacy ->
-            GeneralSettings(privacy = privacy)
+            GeneralSettings(privacy = privacy, platformConfigProvider = platformConfigProvider)
         }
         .combine(privacySettingsPreferenceManager.getConfigFlow()) { generalSettings, privacySettings ->
             generalSettings.copy(
@@ -115,7 +117,7 @@ internal class DefaultGeneralSettingsManager(
         .stateIn(
             scope = coroutineScope,
             started = SharingStarted.WhileSubscribed(),
-            initialValue = GeneralSettings(),
+            initialValue = GeneralSettings(platformConfigProvider = platformConfigProvider),
         )
 
     @Deprecated("This only exists for collaboration with the K9 class")

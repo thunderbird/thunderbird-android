@@ -1,0 +1,10 @@
+Thunderbird for Android version 16.0b1, based on K-9 Mail. Changes include:
+- Add avatar to message list content
+- Add avatar to message list content
+- Add folder expansion in navigation drawer
+- Added menu option/default to switch between plaintext and HTML
+- Removed old account general settings
+- Removed side rail drawer
+- Improved edge-to-edge UI support
+- Minor UI improvements to drawer
+- Improved rendering of complex HTML and CSS

@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation(projects.feature.mail.account.api)
+    implementation(projects.core.ui.legacy.theme2.common)
 
     implementation(projects.legacy.ui.legacy)
     implementation(projects.legacy.core)

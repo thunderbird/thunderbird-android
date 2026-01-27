@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="message_list_glance_widget_compose_action">Új email</string>
+    <string name="message_list_glance_widget_inbox_title">Egyesített Bejövő</string>
+    <string name="message_list_glance_widget_label">Üzenetlista</string>
 </resources>

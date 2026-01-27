@@ -1,0 +1,33 @@
+Helpwch ni i wneud y fersiwn nesaf o Thunderbird mor anhygoel â phosibl trwy lwytho Thunderbird Beta a chael mynediad cynnar i'r nodweddion a'r atebion i wallau diweddaraf cyn iddyn nhw gael eu rhyddhau'n swyddogol. Mae eich profi a'ch adborth yn bwysig, felly rhowch wybod am wallau, rhannau anghelfydd, a rhannwch eich awgrymiadau gyda ni!
+
+Mae'r traciwn wallau, cod ffynhonnell, a wici i'w cael yn <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+
+Rydym bob amser yn hapus i groesawu datblygwyr, dylunwyr, dogfennwyr, cyfieithwyr, cywirwyr gwallau a ffrindiau newydd. Ewch i'n gwefan yn <a href="https://thunderbird.net/participate">https://thunderbird.net/participate</a> i ddechrau arni.
+
+Mae Thunderbird yn ap e-bost pwerus, sy'n canolbwyntio ar breifatrwydd. Gallwch reoli cyfrifon e-bost lluosog yn rhwydd o un ap, gyda'r dewis o Flwch Derbyn Cyfun effeithiol. Wedi'i adeiladu ar dechnoleg cod agored a'i gefnogi gan dîm ymroddedig o ddatblygwyr ochr yn ochr â chymuned fyd-eang o wirfoddolwyr, dyw Thunderbird byth yn trin eich data preifat fel cynnyrch. Dim ond cyfraniadau ariannol ein defnyddwyr sy'n ei ariannu, felly does dim rhaid i chi weld hysbysebion wedi'u cymysgu â'ch negeseuon e-bost eto. 
+
+<b>Beth allwch chi ei wneud</b>
+<ul>
+ <li>Cael gwared ar apiau lluosog a gwe-bost. Defnyddiwch un ap, gyda Blwch Derbyn Cyfun o ddewis, i rymuso'ch diwrnod yn llawn.</li>
+ <li>Mwynhewch gleient e-bost sy'n diogelu'ch preifatrwydd nad yw byth yn casglu na gwerthu eich data personol. Rydym yn eich cysylltu'n uniongyrchol â'ch darparwr e-bost. Dyna ni!</li>
+ <li>Ewch â'ch preifatrwydd i'r lefel nesaf trwy ddefnyddio amgryptio e-bost OpenPGP (PGP/MIME) gyda'r ap "OpenKeychain", i amgryptio a dadgryptio'ch negeseuon.</li>
+ <li>Dewiswch gydweddu eich e-bost ar unwaith, ar gyfnodau penodol, neu ar alw. Sut bynnag yr hoffech wirio eich e-bost, chi sydd i benderfynu!</li>
+ <li>Dewch o hyd i'ch negeseuon pwysig gan ddefnyddio chwilio lleol a chwilio ochr y gweinydd.</li>
+</ul>
+ <b>Cydnawsedd</b>
+ <ul>
+ <li>Mae Thunderbird yn gweithio gyda phrotocolau IMAP a POP3, gan gefnogi ystod eang o ddarparwyr e-bost, gan gynnwys Gmail, Outlook, Yahoo Mail, iCloud, a mwy.</li>
+</ul>
+ <b>Pam defnyddio Thunderbird</b>
+<ul>
+ <li>Yr enw dibynadwy mewn e-bost ers dros 20 mlynedd - nawr ar Android.</li>
+ <li>Mae Thunderbird wedi'i ariannu'n llawn gan gyfraniadau gwirfoddol gan ein defnyddwyr. Nid ydym yn cloddio eich data personol. Nid chi yw'r cynnyrch byth.</li>
+ <li>Wedi'i greu gan dîm sy'n gweithredu'r un mor effeithlon â chi. Rydym am i chi dreulio'r lleiafswm o amser yn defnyddio'r ap gan gael y mwyaf yn ôl.</li>
+ <li>Gyda chyfranwyr o bob cwr o'r byd, mae Thunderbird ar gyfer Android wedi'i gyfieithu i fwy nag 20 o ieithoedd.</li>
+ <li>Yn cael ei gefnogi gan MZLA Technologies Corporation, is-gwmni sy'n eiddo llwyr i'r Mozilla Foundation.</li>
+</ul>
+ <b>Cod Agored a Chymuned</b>
+ <ul><li>Mae Thunderbird yn rhad ac am ddim ac yn god agored, sy'n golygu bod ei god ar gael i'w weld, ei addasu, ei ddefnyddio a'i rannu'n rhydd. Mae ei drwydded hefyd yn sicrhau y bydd yn rhad ac am ddim am byth. Gallwch feddwl am Thunderbird fel rhodd gan filoedd o gyfranwyr i chi.</li>
+ <li>Rydym yn datblygu yn yr awyr agored gyda diweddariadau rheolaidd a thryloyw ar ein blog a'n rhestrau postio.</li>
+ <li>Mae ein cymorth i ddefnyddwyr yn cael ei bweru gan ein cymuned fyd-eang. Dewch o hyd i'r atebion sydd eu hangen arnoch, neu camwch i rôl cyfrannwr - boed hynny'n ateb cwestiynau, cyfieithu'r ap, neu ddweud wrth eich ffrindiau a'ch teulu am Thunderbird.</li>
+</ul>

@@ -1,19 +1,21 @@
+import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
     id(ThunderbirdPlugins.Library.kmp)
 }
 
-android {
-    namespace = "net.thunderbird.core.logging.console"
-}
-
 kotlin {
+    androidLibrary {
+        namespace = "net.thunderbird.core.logging.console"
+        withHostTest {}
+    }
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     applyDefaultHierarchyTemplate {
         common {
             group("commonJvm") {
-                withAndroidTarget()
+                // workaround for https://issuetracker.google.com/issues/442950553
+                withCompilations { it is KotlinMultiplatformAndroidCompilation }
                 withJvm()
             }
         }

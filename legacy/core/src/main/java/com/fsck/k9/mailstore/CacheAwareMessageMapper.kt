@@ -2,7 +2,7 @@ package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.mailstore.MessageDetailsAccessor
 import app.k9mail.legacy.mailstore.MessageMapper
-import com.fsck.k9.mail.Flag
+import net.thunderbird.core.common.mail.Flag
 
 internal class CacheAwareMessageMapper<T>(
     private val cache: MessageListCache,

@@ -16,7 +16,7 @@ Daily builds are used for initial testing of new features and changes. Feature f
 
 ### Beta
 
-After features are stabilized in Daily, they are merged into the Beta branch for broader testing. Uplifts are limited to bug/security fixes only. The Beta branch serves as a preview of what will be included in the next stable release, allowing for user feedback and final adjustments before general availability.
+After features are stabilized in Daily, they are merged into the Beta branch for broader testing. Uplifts are limited to high-impact bug fixes only. The Beta branch serves as a preview of what will be included in the next stable release, allowing for user feedback and final adjustments before general availability.
 
 - **Branch:** `beta`
 - **Purpose:** Pre-release testing
@@ -27,7 +27,7 @@ After features are stabilized in Daily, they are merged into the Beta branch for
 
 ### Release
 
-This branch represents the stable version of Thunderbird. It is tested and suitable for general use. Uplifts to Release are limited to stability/security fixes only.
+This branch represents the stable version of Thunderbird. It is tested and suitable for general use. Uplifts are limited to high-impact bug fixes only.
 
 - **Branch:** `release`
 - **Purpose:** Stable releases
@@ -76,37 +76,28 @@ If the urgency of a fix requires it to uplifted to the Beta or Release channel b
 
 ### Uplift Criteria
 
-Beta uplifts should:
+Uplifts to Beta and Release should:
 
-- Be limited to bug/security fixes only. Features ride the train.
-- Not change any localizable strings.
+- Be limited to stability, security, or high-impact fixes only. Features must ride the train.
+- For Beta uplifts: Have landed in main, tested, and stabilized on the daily channel.
+- For Release uplifts: Have landed in beta, tested, and stabilized on the beta channel.
 - Have tests, or a strong statement of what can be done in the absence of tests.
-- Have landed in main and stabilized on the daily channel.
+- Not change any localizable strings.
 - Have a comment in the GitHub issue assessing the reasons the patch is needed and risks involved in taking the patch.
 
-Release uplifts should additionally:
-
-- Be limited to stability/security fixes only. Features ride the train.
-- Have landed in beta and stabilized on the beta channel.
-
-Examples: Fixes for security vulnerabilies, dataloss, or a crash that affects a large number of users.
+Uplifts can include:
+- Major crash fixes.
+- High volume startup crash fixes.
+- Security fixes.
+- Dataloss fixes.
+- Fixes for high-impact regressions with broad impact.
+- Fixes for high-impact bugs in a major feature.
 
 ### Uplift Process
 
 1. The requestor creates a pull request against the target uplift branch.
 2. The requestor adds a comment to the pull request with the Approval Request template filled out.
 3. The release driver reviews the uplift request, merging if approved, or closing with a comment if rejected.
-
-Template for uplift requests:
-
-```sh
-[Approval Request]
-Original Issue/Pull request:
-Regression caused by (issue #):
-User impact if declined:
-Testing completed (on daily, etc.):
-Risk to taking this patch (and alternatives if risky):
-```
 
 ## Versioning System
 

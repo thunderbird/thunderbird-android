@@ -63,4 +63,6 @@
         <item quantity="other">%d laiškų</item>
     </plurals>
     <string name="account_setup_create_account_error">Kuriant paskyrą, įvyko klaida</string>
+    <string name="account_setup_options_your_name_label">Jūsų vardas</string>
+    <string name="account_setup_options_your_name_error_required">Jūsų vardas būtinas.</string>
 </resources>

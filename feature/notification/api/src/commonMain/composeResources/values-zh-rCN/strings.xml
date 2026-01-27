@@ -45,7 +45,7 @@
     <string name="notification_action_assign_sent_folder">分配文件夹</string>
     <string name="banner_inline_notification_check_error_notifications">查看错误通知</string>
     <string name="banner_inline_notification_open_notifications">打开通知</string>
-    <string name="banner_inline_notification_learn_more">了解更多</string>
+    <string name="banner_inline_notification_learn_more">了解详情</string>
     <string name="banner_inline_notification_view_support_article">查看支持文章</string>
     <string name="sent_folder_not_found_title">已发送邮件文件夹不可用。</string>
     <string name="banner_inline_notification_some_messages_need_attention">某些消息需要您关注。</string>

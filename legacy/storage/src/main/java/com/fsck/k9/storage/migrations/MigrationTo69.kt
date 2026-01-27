@@ -2,8 +2,8 @@ package com.fsck.k9.storage.migrations
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import com.fsck.k9.mail.Flag
 import com.squareup.moshi.Moshi
+import net.thunderbird.core.common.mail.Flag
 
 internal class MigrationTo69(private val db: SQLiteDatabase) {
     fun createPendingDelete() {

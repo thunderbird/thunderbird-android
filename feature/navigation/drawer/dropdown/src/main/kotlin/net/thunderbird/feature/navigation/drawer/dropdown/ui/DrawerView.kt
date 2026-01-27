@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import app.k9mail.core.ui.compose.common.mvi.observe
-import app.k9mail.core.ui.compose.designsystem.molecule.PullToRefreshBox
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
@@ -57,20 +56,15 @@ internal fun DrawerView(
         dispatch(Event.SelectFolder(drawerState.selectedFolderId))
     }
 
-    PullToRefreshBox(
-        isRefreshing = state.value.isLoading,
-        onRefresh = { dispatch(Event.OnSyncAccount) },
-    ) {
-        if (isDropdownDrawerEnabled) {
-            DrawerContent(
-                state = state.value,
-                onEvent = { dispatch(it) },
-            )
-        } else {
-            SideRailDrawerContent(
-                state = state.value,
-                onEvent = { dispatch(it) },
-            )
-        }
+    if (isDropdownDrawerEnabled) {
+        DrawerContent(
+            state = state.value,
+            onEvent = { dispatch(it) },
+        )
+    } else {
+        SideRailDrawerContent(
+            state = state.value,
+            onEvent = { dispatch(it) },
+        )
     }
 }
