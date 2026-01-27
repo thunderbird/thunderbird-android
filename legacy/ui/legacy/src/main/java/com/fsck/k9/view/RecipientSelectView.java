@@ -223,7 +223,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
 
         super.onFocusChanged(hasFocus, direction, previous);
-        if (hasFocus) {
+        if (hasFocus && shouldShowImeOnFocus()) {
             displayKeyboard();
         }
     }
