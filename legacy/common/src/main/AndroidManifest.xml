@@ -100,7 +100,7 @@
             />
 
         <activity
-            android:name="com.fsck.k9.activity.MessageListActivity"
+            android:name="com.fsck.k9.activity.MessageHomeActivity"
             android:launchMode="singleTop"
             android:exported="true"
             >

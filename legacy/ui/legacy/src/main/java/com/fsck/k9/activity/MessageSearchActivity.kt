@@ -1,6 +1,6 @@
 package com.fsck.k9.activity
 
-class MessageSearchActivity : MessageListActivity() {
+class MessageSearchActivity : MessageHomeActivity() {
     override val isDrawerEnabled: Boolean
         get() = false
 }

@@ -337,7 +337,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
              * There are no accounts set up. This should not have happened. Prompt the
              * user to set up an account as an acceptable bailout.
              */
-            MessageListActivity.launch(this);
+            MessageHomeActivity.launch(this);
             changesMadeSinceLastSave = false;
             finish();
             return;
@@ -1232,7 +1232,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         LocalMessageSearch search = new LocalMessageSearch();
         search.addAccountUuid(account.getUuid());
         search.addAllowedFolder(folderId);
-        MessageListActivity.actionDisplaySearch(this, search, false, true);
+        MessageHomeActivity.actionDisplaySearch(this, search, false, true);
         finish();
     }
 

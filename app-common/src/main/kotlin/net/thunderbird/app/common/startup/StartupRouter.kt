@@ -4,7 +4,7 @@ import android.app.Activity
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
 import com.fsck.k9.account.BackgroundAccountRemover
-import com.fsck.k9.activity.MessageListActivity
+import com.fsck.k9.activity.MessageHomeActivity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 
@@ -24,7 +24,7 @@ class DefaultStartupRouter(
         if (!hasAccountSetup) {
             FeatureLauncherActivity.launch(activity, FeatureLauncherTarget.Onboarding)
         } else {
-            MessageListActivity.launch(activity)
+            MessageHomeActivity.launch(activity)
         }
     }
 

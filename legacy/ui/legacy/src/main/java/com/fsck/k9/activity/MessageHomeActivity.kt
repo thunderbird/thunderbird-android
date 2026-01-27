@@ -90,7 +90,7 @@ private const val TAG = "MainActivity"
  * are intended to be refactored into more dedicated components over time.
  */
 @Suppress("TooManyFunctions", "LargeClass")
-open class MessageListActivity :
+open class MessageHomeActivity :
     BaseActivity(),
     MessageListFragmentListener,
     MessageViewFragmentListener,
@@ -158,11 +158,11 @@ open class MessageListActivity :
         } else {
             setLayout(R.layout.message_list)
             viewSwitcher = findViewById<ViewSwitcher>(R.id.container).apply {
-                firstInAnimation = AnimationUtils.loadAnimation(this@MessageListActivity, R.anim.slide_in_left)
-                firstOutAnimation = AnimationUtils.loadAnimation(this@MessageListActivity, R.anim.slide_out_right)
-                secondInAnimation = AnimationUtils.loadAnimation(this@MessageListActivity, R.anim.slide_in_right)
-                secondOutAnimation = AnimationUtils.loadAnimation(this@MessageListActivity, R.anim.slide_out_left)
-                setOnSwitchCompleteListener(this@MessageListActivity)
+                firstInAnimation = AnimationUtils.loadAnimation(this@MessageHomeActivity, R.anim.slide_in_left)
+                firstOutAnimation = AnimationUtils.loadAnimation(this@MessageHomeActivity, R.anim.slide_out_right)
+                secondInAnimation = AnimationUtils.loadAnimation(this@MessageHomeActivity, R.anim.slide_in_right)
+                secondOutAnimation = AnimationUtils.loadAnimation(this@MessageHomeActivity, R.anim.slide_out_left)
+                setOnSwitchCompleteListener(this@MessageHomeActivity)
             }
         }
 
@@ -186,7 +186,7 @@ open class MessageListActivity :
 
         val backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                this@MessageListActivity.handleOnBackPressed(this)
+                this@MessageHomeActivity.handleOnBackPressed(this)
             }
         }
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
@@ -1493,7 +1493,7 @@ open class MessageListActivity :
             newTask: Boolean,
             clearTop: Boolean,
         ): Intent {
-            return Intent(context, MessageListActivity::class.java).apply {
+            return Intent(context, MessageHomeActivity::class.java).apply {
                 if (search != null) {
                     putExtra(EXTRA_SEARCH, LocalMessageSearchSerializer.serialize(search))
                 }
@@ -1510,7 +1510,7 @@ open class MessageListActivity :
             context: Context,
             account: LegacyAccountDto,
         ): Intent {
-            return Intent(context, MessageListActivity::class.java).apply {
+            return Intent(context, MessageHomeActivity::class.java).apply {
                 val search = SearchAccount.createUnifiedFoldersSearch(
                     title = coreResourceProvider.searchUnifiedFoldersTitle(),
                     detail = coreResourceProvider.searchUnifiedFoldersDetail(),
@@ -1538,7 +1538,7 @@ open class MessageListActivity :
 
         @JvmStatic
         fun shortcutIntent(context: Context?, specialFolder: String?): Intent {
-            return Intent(context, MessageListActivity::class.java).apply {
+            return Intent(context, MessageHomeActivity::class.java).apply {
                 action = ACTION_SHORTCUT
                 putExtra(EXTRA_SPECIAL_FOLDER, specialFolder)
 
@@ -1550,7 +1550,7 @@ open class MessageListActivity :
 
         @JvmStatic
         fun shortcutIntentForAccount(context: Context, accountUuid: String): Intent {
-            return Intent(context, MessageListActivity::class.java).apply {
+            return Intent(context, MessageHomeActivity::class.java).apply {
                 action = ACTION_SHORTCUT
                 putExtra(EXTRA_ACCOUNT, accountUuid)
 
@@ -1576,7 +1576,7 @@ open class MessageListActivity :
             openInUnifiedInbox: Boolean,
             messageViewOnly: Boolean,
         ): Intent {
-            return Intent(context, MessageListActivity::class.java).apply {
+            return Intent(context, MessageHomeActivity::class.java).apply {
                 if (openInUnifiedInbox) {
                     val search = SearchAccount.createUnifiedFoldersSearch(
                         title = coreResourceProvider.searchUnifiedFoldersTitle(),
@@ -1600,7 +1600,7 @@ open class MessageListActivity :
 
         @JvmStatic
         fun launch(context: Context) {
-            val intent = Intent(context, MessageListActivity::class.java).apply {
+            val intent = Intent(context, MessageHomeActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -1632,7 +1632,7 @@ open class MessageListActivity :
 
         @JvmStatic
         fun recreateMessageList(context: Context) {
-            val intent = Intent(context, MessageListActivity::class.java).apply {
+            val intent = Intent(context, MessageHomeActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
