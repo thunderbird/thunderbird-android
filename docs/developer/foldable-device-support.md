@@ -155,7 +155,7 @@ implementation(libs.androidx.window)
 
 ### Unit Tests
 
-**File**: `legacy/ui/legacy/src/test/java/com/fsck/k9/ui/foldable/FoldableStateObserverTest.kt`
+**File**: `core/ui/compose/common/src/test/kotlin/app/k9mail/core/ui/compose/common/window/FoldableStateObserverTest.kt`
 
 Tests:
 - FoldableState mapping from WindowLayoutInfo
