@@ -192,6 +192,13 @@ open class MessageHomeActivity :
         displayViews()
         initializeFunding()
         initializeFoldableObserver()
+
+        val backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                this@MessageHomeActivity.handleOnBackPressed(this)
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
 
     private fun initializeFoldableObserver() {
@@ -236,13 +243,6 @@ open class MessageHomeActivity :
     private fun recreateWithSinglePane() {
         // Recreate activity to properly initialize single pane layout
         recreate()
-
-        val backPressedCallback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                this@MessageHomeActivity.handleOnBackPressed(this)
-            }
-        }
-        onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
 
     private fun initializeFunding() {
