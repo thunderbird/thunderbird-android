@@ -7,6 +7,7 @@ import net.thunderbird.feature.mail.message.list.R
  * Represents the different ways a list of messages can be sorted.
  * Each enum constant defines a specific sorting criterion and its direction (ascending or descending).
  */
+@Suppress("detekt.UnnecessaryAnnotationUseSiteTarget") // https://github.com/detekt/detekt/issues/8212
 enum class SortType(@param:StringRes val labelResId: Int) {
     DateAsc(labelResId = R.string.sort_by_date_asc),
     DateDesc(labelResId = R.string.sort_by_date_desc),

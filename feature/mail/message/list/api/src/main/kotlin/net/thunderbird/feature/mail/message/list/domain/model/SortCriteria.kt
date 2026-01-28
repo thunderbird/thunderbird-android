@@ -26,12 +26,16 @@ data class SortCriteria(
     val secondary: SortType? = null,
 ) {
     init {
+        // using require here would imply to either not have a proper error message or a wrong one.
+        @Suppress("UseRequire")
         if (primary in SecondaryNotRequiredForSortTypes && secondary != null) {
             throw IllegalArgumentException("Secondary sorting criterion must be null for $primary")
         }
+        @Suppress("UseRequire")
         if (primary !in SecondaryNotRequiredForSortTypes && secondary == null) {
             throw IllegalArgumentException("Secondary sorting criterion is missing for $primary")
         }
+        @Suppress("UseRequire")
         if (primary !in SecondaryNotRequiredForSortTypes && secondary != null && secondary !in DateSortTypeOnly) {
             throw IllegalArgumentException("Secondary sorting criterion $secondary is not supported for $primary")
         }

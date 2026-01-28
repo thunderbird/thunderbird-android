@@ -217,34 +217,7 @@ class MessageListFragment : BaseMessageListFragment() {
                         )
                     },
                 )
-                AnimatedVisibility(
-                    visible = currentSortCriteria.secondary != null,
-                    enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
-                    exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start),
-                ) {
-                    if (currentSortCriteria.secondary != null) {
-                        Row(
-                            modifier = Modifier.wrapContentWidth(
-                                align = Alignment.Start,
-                                unbounded = true,
-                            ),
-                        ) {
-                            DividerVertical()
-                            SortTypeList(
-                                sortTypes = secondarySortTypes,
-                                isSelected = { sortType -> currentSortCriteria.secondary == sortType },
-                                onSortTypeClick = { sortType ->
-                                    dispatch(
-                                        MessageListEvent.ChangeSortCriteria(
-                                            accountId = null,
-                                            sortCriteria = currentSortCriteria.copy(secondary = sortType),
-                                        ),
-                                    )
-                                },
-                            )
-                        }
-                    }
-                }
+                SecondarySortOptions(currentSortCriteria, secondarySortTypes, dispatch)
             }
         }
     }
@@ -274,6 +247,44 @@ class MessageListFragment : BaseMessageListFragment() {
                     ARG_SEARCH to searchBytes,
                     ARG_IS_THREAD_DISPLAY to isThreadDisplay,
                     ARG_THREADED_LIST to threadedList,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SecondarySortOptions(
+    currentSortCriteria: SortCriteria,
+    secondarySortTypes: ImmutableSet<SortType>,
+    dispatch: (MessageListEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    AnimatedVisibility(
+        visible = currentSortCriteria.secondary != null,
+        enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
+        exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start),
+        modifier = modifier,
+    ) {
+        if (currentSortCriteria.secondary != null) {
+            Row(
+                modifier = Modifier.wrapContentWidth(
+                    align = Alignment.Start,
+                    unbounded = true,
+                ),
+            ) {
+                DividerVertical()
+                SortTypeList(
+                    sortTypes = secondarySortTypes,
+                    isSelected = { sortType -> currentSortCriteria.secondary == sortType },
+                    onSortTypeClick = { sortType ->
+                        dispatch(
+                            MessageListEvent.ChangeSortCriteria(
+                                accountId = null,
+                                sortCriteria = currentSortCriteria.copy(secondary = sortType),
+                            ),
+                        )
+                    },
                 )
             }
         }

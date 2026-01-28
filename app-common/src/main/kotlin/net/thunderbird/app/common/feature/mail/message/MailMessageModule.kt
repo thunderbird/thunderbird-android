@@ -1,6 +1,7 @@
 package net.thunderbird.app.common.feature.mail.message
 
 import com.fsck.k9.K9
+import net.thunderbird.app.common.feature.mail.message.list.LegacyUpdateSortCriteria
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.feature.mail.message.export.DefaultMessageFileNameSuggester
 import net.thunderbird.feature.mail.message.export.MessageExporter
@@ -29,5 +30,9 @@ internal val mailMessageModule = module {
                 ?.let(SortType.SORT_DATE::toSortType)
             SortCriteria(primary = primary, secondary = secondary)
         }
+    }
+
+    single<MessageListDomainContract.UseCase.UpdateSortCriteria> {
+        LegacyUpdateSortCriteria(logger = get(), accountManager = get())
     }
 }
