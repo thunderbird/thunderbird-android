@@ -1,8 +1,11 @@
 package app.k9mail.feature.account.server.validation.ui
 
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,6 +30,9 @@ internal fun ServerValidationMainScreen(
         topBar = {
             AppTitleTopHeader(
                 title = brandNameProvider.brandName,
+                modifier = Modifier.windowInsetsPadding(
+                    WindowInsets.statusBars.union(WindowInsets.displayCutout),
+                ),
             )
         },
         bottomBar = {
