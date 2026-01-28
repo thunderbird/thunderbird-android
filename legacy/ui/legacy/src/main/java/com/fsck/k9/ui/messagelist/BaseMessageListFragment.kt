@@ -318,7 +318,7 @@ abstract class BaseMessageListFragment :
             this.error = error
             return
         }
-        
+
         generalSettingsManager.getSettingsFlow()
             /**
              * Skips the first emitted item from the settings flow,
