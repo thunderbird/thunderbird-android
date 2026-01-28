@@ -318,13 +318,7 @@ abstract class BaseMessageListFragment :
             this.error = error
             return
         }
-
-        viewModel.getMessageListLiveData().observe(this) { messageListInfo: MessageListInfo ->
-            setMessageList(messageListInfo)
-        }
-
-        adapter = createMessageListAdapter()
-
+        
         generalSettingsManager.getSettingsFlow()
             /**
              * Skips the first emitted item from the settings flow,
@@ -522,7 +516,6 @@ abstract class BaseMessageListFragment :
     private fun initializeMessageListLayout(view: View) {
         initializeSwipeRefreshLayout(view)
         initializeFloatingActionButton(view)
-        initializeRecyclerView(view)
         initializeRecentChangesSnackbar()
 
         // This needs to be done before loading the message list below
