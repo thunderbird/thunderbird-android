@@ -68,9 +68,12 @@ import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
 import net.thunderbird.feature.mail.message.list.domain.model.SortType
+import net.thunderbird.feature.mail.message.list.extension.toDomainSortType
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
+import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
+import net.thunderbird.feature.mail.message.list.ui.state.MessageListMetadata
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.serialization.LocalMessageSearchSerializer
 import org.koin.android.ext.android.inject
@@ -93,6 +96,10 @@ class MessageListFragment : BaseMessageListFragment() {
 
     private val featureThemeProvider: FeatureThemeProvider by inject()
 
+    internal val MessageListMetadata.currentSortCriteria: SortCriteria
+        get() =
+            sortCriteriaPerAccount.getValue(folder?.account?.id)
+
     override val swipeActions: StateFlow<Map<AccountId, SwipeActions>> by lazy {
         viewModel
             .state
@@ -107,6 +114,24 @@ class MessageListFragment : BaseMessageListFragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.effect.collect { effect ->
                     when (effect) {
+                        // TODO(#10251): Required as the current implementation of sortType and sortAscending
+                        //  returns null before we load the sort type. That should be removed when
+                        //  the message list item's load is switched to the new state.
+                        is MessageListEffect.RefreshMessageList -> {
+                            val (primarySortType, secondarySortType) = effect.currentState.metadata.currentSortCriteria
+                            val (sortType, sortAscending) = primarySortType.toDomainSortType()
+                            updateCurrentSortCriteria(
+                                sortType = sortType,
+                                sortAscending = sortAscending,
+                                sortDateAscending = when (primarySortType) {
+                                    SortType.DateAsc -> true
+                                    SortType.DateDesc -> false
+                                    else -> secondarySortType == SortType.DateAsc
+                                },
+                            )
+                            loadMessageList()
+                        }
+
                         else -> Unit
                     }
                 }
@@ -139,6 +164,12 @@ class MessageListFragment : BaseMessageListFragment() {
                 }
             }
         }
+    }
+
+    override fun initializeSortSettings() {
+        // The sort type settings is now loaded by the GetSortCriteriaPerAccount.
+        // Therefore, we override this method with an empty implementation, removing the
+        // legacy implementation.
     }
 
     private fun showComposeDropdown(anchor: View, lifecycleOwner: LifecycleOwner, stateOwner: SavedStateRegistryOwner) {

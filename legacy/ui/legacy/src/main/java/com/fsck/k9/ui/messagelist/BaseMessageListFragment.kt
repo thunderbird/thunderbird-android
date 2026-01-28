@@ -723,20 +723,30 @@ abstract class BaseMessageListFragment :
         startActivity(intent)
     }
 
-    private fun initializeSortSettings() {
+    protected open fun initializeSortSettings() {
         if (isSingleAccountMode) {
             val account = checkNotNull(this.account)
-            sortType = account.sortType
-            sortAscending = account.sortAscending[sortType] ?: sortType.isDefaultAscending
-            sortDateAscending = account.sortAscending[SortType.SORT_DATE] ?: SortType.SORT_DATE.isDefaultAscending
+            updateCurrentSortCriteria(
+                sortType = account.sortType,
+                sortAscending = account.sortAscending[sortType] ?: sortType.isDefaultAscending,
+                sortDateAscending = account.sortAscending[SortType.SORT_DATE] ?: SortType.SORT_DATE.isDefaultAscending,
+            )
         } else {
-            sortType = K9.sortType
-            sortAscending = K9.isSortAscending(sortType)
-            sortDateAscending = K9.isSortAscending(SortType.SORT_DATE)
+            updateCurrentSortCriteria(
+                sortType = K9.sortType,
+                sortAscending = K9.isSortAscending(sortType),
+                sortDateAscending = K9.isSortAscending(SortType.SORT_DATE),
+            )
         }
     }
 
-    private fun loadMessageList(forceUpdate: Boolean = false) {
+    protected fun updateCurrentSortCriteria(sortType: SortType, sortAscending: Boolean, sortDateAscending: Boolean) {
+        this.sortType = sortType
+        this.sortAscending = sortAscending
+        this.sortDateAscending = sortDateAscending
+    }
+
+    protected fun loadMessageList(forceUpdate: Boolean = false) {
         val config = MessageListConfig(
             localSearch,
             showingThreadedList,

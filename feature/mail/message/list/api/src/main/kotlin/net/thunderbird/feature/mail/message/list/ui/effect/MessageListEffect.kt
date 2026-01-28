@@ -1,6 +1,7 @@
 package net.thunderbird.feature.mail.message.list.ui.effect
 
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 
 /**
  * Represents one-time side effects that can be triggered from the message list screen.
@@ -8,6 +9,13 @@ import net.thunderbird.feature.account.AccountId
  * or showing transient messages.
  */
 sealed interface MessageListEffect {
+    /**
+     * Effect to trigger a refresh of the message list. This can be used to manually
+     * reload the list of messages from the data source, for instance, after a pull-to-refresh
+     * gesture or a programmatic trigger.
+     */
+    data class RefreshMessageList(val currentState: MessageListState) : MessageListEffect
+
     /**
      * Effect to navigate back from the current screen.
      */
