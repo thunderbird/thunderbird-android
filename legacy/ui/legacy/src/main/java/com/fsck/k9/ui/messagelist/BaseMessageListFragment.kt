@@ -419,7 +419,7 @@ abstract class BaseMessageListFragment :
             layoutInflater = layoutInflater,
             contactsPictureLoader = ContactPicture.getContactPictureLoader(),
             listItemListener = this,
-            appearance = messageListAppearance,
+            appearance = ::messageListAppearance,
             themeProvider = featureThemeProvider,
             featureFlagProvider = featureFlagProvider,
             contactRepository = contactRepository,
