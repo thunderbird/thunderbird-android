@@ -906,6 +906,17 @@
     <string name="debug_sync_export_logs_title">Exportar registres de sincronització</string>
     <string name="archiving_not_available_for_this_account">Arxivar no està disponible per aquest compte.</string>
     <string name="swipe_action_archive_folder_not_set">Establir carpeta d\'arxiu</string>
-    <string name="swipe_action_change_swipe_gestures">Gestos en lliscar</string>
+    <string name="swipe_action_change_swipe_gestures">Canvia \nels gestos en lliscar</string>
     <string name="debug_open_secret_debug_screen">Obrir la pantalla secreta per desenvolupadors</string>
+    <string name="print_message_action">Imprimeix</string>
+    <string name="account_setup_auto_select_folder">Selecciona la carpeta automàticament</string>
+    <string name="navigation_drawer_preferences">Menú lateral</string>
+    <string name="expand_folders">Expandeix les carpetes</string>
+    <string name="set_format_html_condensed_action">Mostra amb format</string>
+    <string name="set_format_plain_condensed_action">Mostra sense format</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="message_view_menu_action_export_eml">Exporta com a EML</string>
+    <string name="set_format_html_action">Utilitzar el format original</string>
+    <string name="set_format_plain_action">Mostra el missatge sense format</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Text pla (text/plain)</string>
 </resources>

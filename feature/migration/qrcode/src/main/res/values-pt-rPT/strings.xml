@@ -5,4 +5,5 @@
     <string name="migration_qrcode_permission_denied_message">Abra as configurações do Android, toque em permissões e conceda acesso à câmara.</string>
     <string name="migration_qrcode_scanning_progress">Capturado %1$s de %2$s</string>
     <string name="migration_qrcode_done_button_text">Pronto</string>
+    <string name="migration_qrcode_scanning_instructions">Alinhar o código QR fornecido pelo Thunderbird Desktop</string>
 </resources>
