@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Sincronitza-ho (Empeny)</string>
-    <string name="notification_channel_push_description">Mostrat mentre s\'esperen missatges nous</string>
+    <string name="notification_channel_push_description">Mostrat mentre s'esperen missatges nous</string>
     <string name="notification_channel_messages_title">Missatges</string>
     <string name="notification_channel_messages_description">Notificacions relacionades amb missatges</string>
     <string name="notification_channel_miscellaneous_title">Miscel·lània</string>
@@ -20,7 +20,7 @@
     <string name="notification_bg_send_title">S\'està enviant correu</string>
     <string name="send_failure_subject">La tramesa d\'alguns missatges ha fallat</string>
     <string name="notification_additional_messages">+ %1$d més sobre %2$s</string>
-    <string name="push_notification_state_initializing">S\'està iniciant…</string>
+    <string name="push_notification_state_initializing">S'està iniciant…</string>
     <string name="push_notification_state_listening">S\'està esperant nous correus electrònics</string>
     <string name="push_notification_state_wait_background_sync">Inactiu fins que es permeti la sincronització</string>
     <string name="push_notification_state_wait_network">Inactiu fins que la xarxa estigui disponible</string>
@@ -36,4 +36,12 @@
     <string name="notification_action_archive">Arxiva</string>
     <string name="notification_action_archive_all">Arxiva-ho tot</string>
     <string name="notification_action_spam">Correu brossa</string>
+    <string name="notification_action_retry">Torna-ho a provar</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <string name="notification_action_assign_sent_folder">Assigna una carpeta</string>
+    <string name="banner_inline_notification_open_notifications">Obre les notificacions</string>
+    <string name="banner_inline_notification_learn_more">Més informació</string>
+    <string name="notification_action_update_server_settings">Actualitza els paràmetres del servidor</string>
+    <string name="banner_inline_notification_check_error_notifications">Comprova les notificacions d'errors</string>
+    <string name="banner_inline_notification_view_support_article">Mostra l'article de suport</string>
 </resources>
