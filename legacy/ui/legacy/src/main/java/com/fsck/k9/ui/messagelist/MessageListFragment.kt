@@ -7,14 +7,17 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.serialization.LocalMessageSearchSerializer
@@ -54,6 +57,21 @@ class MessageListFragment : BaseMessageListFragment() {
             }
         }
     }
+
+    override suspend fun fetchMessageListAppearance(): Flow<MessageListAppearance> = viewModel
+        .state
+        .mapNotNull { state -> state.preferences?.toMessageListAppearance() }
+
+    private fun MessageListPreferences.toMessageListAppearance(): MessageListAppearance = MessageListAppearance(
+        previewLines = excerptLines,
+        stars = showFavouriteButton,
+        senderAboveSubject = senderAboveSubject,
+        showContactPicture = showMessageAvatar,
+        showingThreadedList = groupConversations,
+        backGroundAsReadIndicator = colorizeBackgroundWhenRead,
+        showAccountIndicator = isShowAccountIndicator,
+        density = density,
+    )
 
     companion object Factory : BaseMessageListFragment.Factory {
         override fun newInstance(

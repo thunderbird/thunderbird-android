@@ -44,7 +44,7 @@ class MessageListAdapter internal constructor(
     private val layoutInflater: LayoutInflater,
     private val contactsPictureLoader: ContactPictureLoader,
     private val listItemListener: MessageListItemActionListener,
-    private val appearance: MessageListAppearance,
+    private val appearance: () -> MessageListAppearance,
     private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
     private val themeProvider: FeatureThemeProvider,
     private val featureFlagProvider: FeatureFlagProvider,
@@ -350,7 +350,7 @@ class MessageListAdapter internal constructor(
     private fun calculateSelectionCount(): Int {
         return when {
             selected.isEmpty() -> 0
-            !appearance.showingThreadedList -> selected.size
+            !appearance().showingThreadedList -> selected.size
             else ->
                 viewItems
                     .asSequence()
