@@ -50,6 +50,10 @@
       <option name="NAME_COUNT_TO_USE_STAR_IMPORT" value="99" />
       <option name="NAME_COUNT_TO_USE_STAR_IMPORT_FOR_MEMBERS" value="99" />
       <option name="ALLOW_TRAILING_COMMA" value="true" />
+      <option name="ALLOW_TRAILING_COMMA_COLLECTION_LITERAL_EXPRESSION" value="true" />
+      <option name="ALLOW_TRAILING_COMMA_TYPE_ARGUMENT_LIST" value="true" />
+      <option name="ALLOW_TRAILING_COMMA_INDICES" value="true" />
+      <option name="ALLOW_TRAILING_COMMA_VALUE_ARGUMENT_LIST" value="true" />
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
     </JetCodeStyleSettings>
     <codeStyleSettings language="JAVA">
