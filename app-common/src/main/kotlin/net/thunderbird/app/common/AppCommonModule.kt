@@ -8,6 +8,7 @@ import net.thunderbird.app.common.account.appCommonAccountModule
 import net.thunderbird.app.common.appConfig.AndroidPlatformConfigProvider
 import net.thunderbird.app.common.core.appCommonCoreModule
 import net.thunderbird.app.common.feature.appCommonFeatureModule
+import net.thunderbird.app.common.feature.mail.message.list.LegacyUpdateSortCriteria
 import net.thunderbird.app.common.startup.appCommonStartupModule
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
@@ -40,5 +41,8 @@ val appCommonModule: Module = module {
                 ?.let(SortType.SORT_DATE::toSortType)
             SortCriteria(primary = primary, secondary = secondary)
         }
+    }
+    single<MessageListDomainContract.UseCase.UpdateSortCriteria> {
+        LegacyUpdateSortCriteria(logger = get(), accountManager = get())
     }
 }

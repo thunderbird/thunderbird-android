@@ -1313,7 +1313,7 @@ abstract class BaseMessageListFragment :
                 when (outcome.error) {
                     is AuthDebugActions.Error.AccountNotFound,
                     is AuthDebugActions.Error.NoOAuthState,
-                        -> {
+                    -> {
                         Toast.makeText(
                             requireContext(),
                             R.string.debug_invalidate_access_token_unavailable,
@@ -1366,7 +1366,7 @@ abstract class BaseMessageListFragment :
                     is AuthDebugActions.Error.NoOAuthState,
                     is AuthDebugActions.Error.CannotModifyAccessToken,
                     is AuthDebugActions.Error.AlreadyModified,
-                        -> {
+                    -> {
                         Toast.makeText(
                             requireContext(),
                             R.string.debug_invalidate_access_token_unavailable,
@@ -1408,7 +1408,7 @@ abstract class BaseMessageListFragment :
 
                     is AuthDebugActions.Error.CannotModifyAccessToken,
                     is AuthDebugActions.Error.AlreadyModified,
-                        -> {
+                    -> {
                         // Not relevant to this action, but keep exhaustive when; show generic unavailable
                         Toast.makeText(
                             requireContext(),

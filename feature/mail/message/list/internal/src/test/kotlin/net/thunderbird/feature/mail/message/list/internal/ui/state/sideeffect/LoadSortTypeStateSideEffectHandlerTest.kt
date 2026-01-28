@@ -53,7 +53,8 @@ class LoadSortTypeStateSideEffectHandlerTest {
         val accounts = setOf(AccountIdFactory.create())
         val dispatch = spy<suspend (MessageListEvent) -> Unit>(obj = {})
         val sortCriteriaPerAccount = mapOf(accounts.firstOrNull() to SortCriteria(primary = SortType.DateDesc))
-        val fakeGetSortCriteriaPerAccount = spy<DomainContract.UseCase.GetSortCriteriaPerAccount>(FakeGetSortCriteriaPerAccount(sortCriteriaPerAccount))
+        val fakeGetSortCriteriaPerAccount =
+            spy<DomainContract.UseCase.GetSortCriteriaPerAccount>(FakeGetSortCriteriaPerAccount(sortCriteriaPerAccount))
         val handler = createTestSubject(
             accounts = accounts,
             getSortCriteriaPerAccount = fakeGetSortCriteriaPerAccount,

@@ -5,6 +5,7 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import org.junit.Test
 
+@Suppress("MaxLineLength")
 class SortCriteriaTest {
 
     // region [Valid constructions]

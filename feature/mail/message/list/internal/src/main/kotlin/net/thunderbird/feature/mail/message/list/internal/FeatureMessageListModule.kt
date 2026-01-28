@@ -13,6 +13,7 @@ import net.thunderbird.feature.mail.message.list.internal.ui.MessageListViewMode
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogFragment
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogViewModel
 import net.thunderbird.feature.mail.message.list.internal.ui.state.machine.MessageListStateMachine
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ChangeSortCriteriaSideEffect
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadPreferencesSideEffect
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSortCriteriaStateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSwipeActionsStateSideEffectHandler
@@ -88,6 +89,12 @@ val featureMessageListModule = module {
                 accounts = parameters.get(),
                 logger = get(),
                 getSortCriteriaPerAccount = get(),
+            )
+        },
+        {
+            ChangeSortCriteriaSideEffect.Factory(
+                logger = get(),
+                updateSortCriteria = get(),
             )
         },
     )
