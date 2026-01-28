@@ -71,6 +71,7 @@ class MessageListFragment : BaseMessageListFragment() {
         backGroundAsReadIndicator = colorizeBackgroundWhenRead,
         showAccountIndicator = isShowAccountIndicator,
         density = density,
+        dateTimeFormat = dateTimeFormat,
     )
 
     companion object Factory : BaseMessageListFragment.Factory {
