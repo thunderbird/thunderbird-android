@@ -18,8 +18,8 @@ dependencies {
 }
 
 codeCoverage {
-    branchCoverage.set(0)
-    lineCoverage.set(0)
+    branchCoverage = 0
+    lineCoverage = 0
 }
 
 tasks.withType<Tar> {

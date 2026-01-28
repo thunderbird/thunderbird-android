@@ -27,5 +27,5 @@ kotlin {
 }
 
 codeCoverage {
-    branchCoverage.set(30)
+    branchCoverage = 30
 }

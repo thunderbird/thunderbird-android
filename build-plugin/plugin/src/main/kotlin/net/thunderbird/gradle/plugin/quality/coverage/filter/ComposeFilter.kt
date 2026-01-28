@@ -4,6 +4,14 @@ import kotlinx.kover.gradle.plugin.dsl.KoverReportFiltersConfig
 
 internal fun KoverReportFiltersConfig.composeFilter() {
     excludes {
+        // Exclude Compose Multiplatform generated resource packages and runtime resource wrappers
+        // so that auto-generated resource accessors don't affect coverage numbers.
+        classes(
+            // Compose Resources
+            "*.Res",
+            "*.ActualResourceCollectorsKt"
+        )
+
         annotatedBy(
             "androidx.compose.ui.tooling.preview.Preview",
             "androidx.compose.ui.tooling.preview.PreviewLightDark",

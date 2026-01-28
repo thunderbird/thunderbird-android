@@ -27,6 +27,6 @@ dependencies {
 }
 
 codeCoverage {
-    branchCoverage.set(38)
-    lineCoverage.set(43)
+    branchCoverage = 38
+    lineCoverage = 43
 }

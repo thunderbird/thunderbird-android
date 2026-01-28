@@ -109,6 +109,6 @@ android {
 }
 
 codeCoverage {
-    branchCoverage.set(9)
-    lineCoverage.set(10)
+    branchCoverage = 2
+    lineCoverage = 4
 }

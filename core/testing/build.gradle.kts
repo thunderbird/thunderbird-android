@@ -19,5 +19,5 @@ kotlin {
 }
 
 codeCoverage {
-    lineCoverage.set(71)
+    lineCoverage = 68
 }

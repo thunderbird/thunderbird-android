@@ -11,5 +11,5 @@ android {
 }
 
 codeCoverage {
-    lineCoverage.set(67)
+    lineCoverage = 67
 }

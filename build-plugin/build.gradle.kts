@@ -23,8 +23,8 @@ dependencies {
     implementation(plugin(libs.plugins.spotless))
     implementation(plugin(libs.plugins.kover))
 
-    // Make custom plugins in :plugins available to precompiled convention plugins by classpath
-    implementation(project(":plugins"))
+    // Make custom plugins in ":plugin" available to precompiled convention plugins by classpath
+    implementation(project(":plugin"))
 
     implementation(libs.diff.utils)
     compileOnly(libs.android.tools.common)

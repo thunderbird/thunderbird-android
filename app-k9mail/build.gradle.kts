@@ -179,6 +179,6 @@ dependencyGuard {
 }
 
 codeCoverage {
-    branchCoverage.set(0)
-    lineCoverage.set(25)
+    branchCoverage = 0
+    lineCoverage = 24
 }

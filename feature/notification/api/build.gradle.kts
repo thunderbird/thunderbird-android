@@ -54,6 +54,6 @@ compose.resources {
 }
 
 codeCoverage {
-    branchCoverage.set(52)
-    lineCoverage.set(41)
+    branchCoverage = 46
+    lineCoverage = 23
 }

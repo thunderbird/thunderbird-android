@@ -12,5 +12,5 @@ dependencies {
 }
 
 codeCoverage {
-    lineCoverage.set(0)
+    lineCoverage = 0
 }

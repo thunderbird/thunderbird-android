@@ -13,3 +13,8 @@ dependencies {
     testImplementation(libs.jzlib)
     testImplementation(libs.commons.io)
 }
+
+codeCoverage {
+    branchCoverage = 52
+    lineCoverage = 74
+}
