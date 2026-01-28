@@ -88,25 +88,12 @@ android {
     }
 
     buildTypes {
-        debug {
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-SNAPSHOT"
-
-            enableUnitTestCoverage = testCoverageEnabled
-            enableAndroidTestCoverage = testCoverageEnabled
-
-            isMinifyEnabled = false
-            isShrinkResources = false
-            isDebuggable = true
-
-            buildConfigField("String", "GLEAN_RELEASE_CHANNEL", "null")
-        }
-
+        val isCI = project.findProperty("ci") == "true"
         release {
             signingConfig = signingConfigs.getByType(SigningType.TB_RELEASE)
 
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = !isCI
+            isShrinkResources = !isCI
             isDebuggable = false
 
             proguardFiles(
@@ -123,8 +110,8 @@ android {
             applicationIdSuffix = ".beta"
             versionNameSuffix = "b0"
 
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = !isCI
+            isShrinkResources = !isCI
             isDebuggable = false
 
             matchingFallbacks += listOf("release")
@@ -143,8 +130,8 @@ android {
             applicationIdSuffix = ".daily"
             versionNameSuffix = "a1"
 
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = !isCI
+            isShrinkResources = !isCI
             isDebuggable = false
 
             matchingFallbacks += listOf("release")
@@ -156,6 +143,20 @@ android {
 
             // See https://bugzilla.mozilla.org/show_bug.cgi?id=1918151
             buildConfigField("String", "GLEAN_RELEASE_CHANNEL", "\"nightly\"")
+        }
+
+        debug {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-SNAPSHOT"
+
+            enableUnitTestCoverage = testCoverageEnabled
+            enableAndroidTestCoverage = testCoverageEnabled
+
+            isMinifyEnabled = false
+            isShrinkResources = false
+            isDebuggable = true
+
+            buildConfigField("String", "GLEAN_RELEASE_CHANNEL", "null")
         }
     }
 

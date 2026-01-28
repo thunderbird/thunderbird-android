@@ -85,10 +85,13 @@ android {
     }
 
     buildTypes {
+        val isCI = project.findProperty("ci") == "true"
         release {
             signingConfig = signingConfigs.getByType(SigningType.K9_RELEASE)
 
-            isMinifyEnabled = true
+            isMinifyEnabled = !isCI
+            isShrinkResources = !isCI
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android.txt"),
                 "proguard-rules.pro",
