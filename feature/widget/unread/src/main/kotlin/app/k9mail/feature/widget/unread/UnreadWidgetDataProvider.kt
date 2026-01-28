@@ -7,7 +7,7 @@ import app.k9mail.legacy.message.controller.MessageCountsProvider
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.Preferences
-import com.fsck.k9.activity.MainActivity
+import com.fsck.k9.activity.MessageHomeActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -47,7 +47,13 @@ class UnreadWidgetDataProvider(
         val unreadCount = withContext(Dispatchers.IO) {
             messageCountsProvider.getMessageCounts(searchAccount).unread
         }
-        val clickIntent = MainActivity.intentDisplaySearch(context, searchAccount.relatedSearch, false, true, true)
+        val clickIntent = MessageHomeActivity.intentDisplaySearch(
+            context,
+            searchAccount.relatedSearch,
+            false,
+            true,
+            true,
+        )
 
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
     }
@@ -110,7 +116,7 @@ class UnreadWidgetDataProvider(
         search.addAllowedFolder(folderId)
         search.addAccountUuid(account.uuid)
 
-        val clickIntent = MainActivity.intentDisplaySearch(context, search, false, true, true)
+        val clickIntent = MessageHomeActivity.intentDisplaySearch(context, search, false, true, true)
         clickIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         return clickIntent
     }

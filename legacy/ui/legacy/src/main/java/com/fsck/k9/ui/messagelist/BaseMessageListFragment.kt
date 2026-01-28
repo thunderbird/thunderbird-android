@@ -50,7 +50,7 @@ import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import app.k9mail.ui.utils.linearlayoutmanager.LinearLayoutManager
 import com.fsck.k9.K9
 import com.fsck.k9.activity.FolderInfoHolder
-import com.fsck.k9.activity.Search
+import com.fsck.k9.activity.MessageSearchActivity
 import com.fsck.k9.activity.misc.ContactPicture
 import com.fsck.k9.controller.MessagingControllerWrapper
 import com.fsck.k9.fragment.ConfirmationDialogFragment
@@ -1220,7 +1220,7 @@ abstract class BaseMessageListFragment :
     private fun onSearchEverywhere() {
         val searchQuery = requireActivity().intent.getStringExtra(SearchManager.QUERY)
 
-        val searchIntent = Intent(requireContext(), Search::class.java).apply {
+        val searchIntent = Intent(requireContext(), MessageSearchActivity::class.java).apply {
             action = Intent.ACTION_SEARCH
             putExtra(SearchManager.QUERY, searchQuery)
 
