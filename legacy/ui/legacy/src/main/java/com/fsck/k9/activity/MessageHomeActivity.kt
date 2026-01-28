@@ -21,9 +21,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
+import androidx.lifecycle.lifecycleScope
 import app.k9mail.core.android.common.compat.BundleCompat
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
+import app.k9mail.core.ui.compose.common.window.FoldableState
+import app.k9mail.core.ui.compose.common.window.FoldableStateObserver
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.funding.api.FundingManager
 import app.k9mail.feature.launcher.FeatureLauncherActivity
@@ -51,6 +54,8 @@ import com.fsck.k9.ui.settings.SettingsActivity
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
+import kotlin.getValue
+import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
@@ -73,6 +78,7 @@ import net.thunderbird.feature.search.legacy.serialization.LocalMessageSearchSer
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
 
 private const val TAG = "MainActivity"
 
@@ -109,6 +115,8 @@ open class MessageHomeActivity :
     private val logger: Logger by inject()
     private val legacyAccountDataMapper: LegacyAccountDataMapper by inject()
     private val databaseUpgradeInterceptor: DatabaseUpgradeInterceptor by inject()
+
+    private val foldableStateObserver: FoldableStateObserver by inject { parametersOf(this) }
 
     private lateinit var actionBar: ActionBar
 
@@ -183,6 +191,7 @@ open class MessageHomeActivity :
         initializeFragments()
         displayViews()
         initializeFunding()
+        initializeFoldableObserver()
 
         val backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -190,6 +199,50 @@ open class MessageHomeActivity :
             }
         }
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
+
+    private fun initializeFoldableObserver() {
+        // Register lifecycle observer
+        lifecycle.addObserver(foldableStateObserver)
+
+        // Observe foldable state changes only when using WHEN_UNFOLDED mode
+        lifecycleScope.launch {
+            foldableStateObserver.foldableState
+                .collect { foldableState ->
+                    if (generalSettingsManager.getConfig().display.coreSettings.splitViewMode ==
+                        SplitViewMode.WHEN_UNFOLDED
+                    ) {
+                        handleFoldableStateChange(foldableState)
+                    }
+                }
+        }
+    }
+
+    private fun handleFoldableStateChange(foldableState: FoldableState) {
+        logger.debug(TAG) { "Handling foldable state change: $foldableState" }
+
+        val shouldUseSplitView = foldableState == FoldableState.UNFOLDED
+        val isCurrentlySplitView = displayMode == DisplayMode.SPLIT_VIEW
+
+        if (shouldUseSplitView && !isCurrentlySplitView) {
+            // Switch to split view
+            logger.debug(TAG) { "Switching to split view due to unfold" }
+            recreateWithSplitView()
+        } else if (!shouldUseSplitView && isCurrentlySplitView) {
+            // Switch to single pane view
+            logger.debug(TAG) { "Switching to single pane view due to fold" }
+            recreateWithSinglePane()
+        }
+    }
+
+    private fun recreateWithSplitView() {
+        // Recreate activity to properly initialize split view layout
+        recreate()
+    }
+
+    private fun recreateWithSinglePane() {
+        // Recreate activity to properly initialize single pane layout
+        recreate()
     }
 
     private fun initializeFunding() {
@@ -320,9 +373,12 @@ open class MessageHomeActivity :
     private fun useSplitView(): Boolean {
         val splitViewMode = generalSettingsManager.getConfig().display.coreSettings.splitViewMode
         val orientation = resources.configuration.orientation
-        return splitViewMode === SplitViewMode.ALWAYS ||
-            splitViewMode === SplitViewMode.WHEN_IN_LANDSCAPE &&
-            orientation == Configuration.ORIENTATION_LANDSCAPE
+        return when (splitViewMode) {
+            SplitViewMode.ALWAYS -> true
+            SplitViewMode.NEVER -> false
+            SplitViewMode.WHEN_IN_LANDSCAPE -> orientation == Configuration.ORIENTATION_LANDSCAPE
+            SplitViewMode.WHEN_UNFOLDED -> foldableStateObserver.currentState == FoldableState.UNFOLDED
+        }
     }
 
     private fun initializeLayout() {

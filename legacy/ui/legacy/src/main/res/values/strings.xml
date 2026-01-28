@@ -833,6 +833,7 @@
     <string name="global_settings_splitview_always">Always</string>
     <string name="global_settings_splitview_never">Never</string>
     <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>
+    <string name="global_settings_splitview_when_unfolded">When device is unfolded</string>
 
     <string name="message_view_empty">Please select a message on the left</string>
 
