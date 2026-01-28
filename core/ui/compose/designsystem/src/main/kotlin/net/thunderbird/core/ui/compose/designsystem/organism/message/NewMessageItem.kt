@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import kotlinx.datetime.LocalDateTime
 import net.thunderbird.core.ui.compose.designsystem.atom.button.FavouriteButtonIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcons
@@ -47,7 +46,7 @@ fun NewMessageItem(
     sender: String,
     subject: String,
     preview: String,
-    receivedAt: LocalDateTime,
+    receivedAt: String,
     showAccountIndicator: Boolean,
     accountIndicatorColor: Color?,
     avatar: @Composable () -> Unit,
