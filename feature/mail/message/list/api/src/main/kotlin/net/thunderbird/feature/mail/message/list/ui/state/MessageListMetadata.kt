@@ -26,7 +26,6 @@ data class MessageListMetadata(
     val sortCriteriaPerAccount: ImmutableMap<AccountId?, SortCriteria>,
     val activeMessage: MessageItemUi?,
     val isActive: Boolean,
-    val availablePrimarySortTypes: ImmutableSet<SortType> =
-        SortType.entries.distinctBy { it.labelResId }.toPersistentSet(),
+    val availablePrimarySortTypes: ImmutableSet<SortType> = SortType.entries.toPersistentSet(),
     val availableSecondarySortTypes: ImmutableSet<SortType> = SortCriteria.DateSortTypeOnly.toPersistentSet(),
 )
