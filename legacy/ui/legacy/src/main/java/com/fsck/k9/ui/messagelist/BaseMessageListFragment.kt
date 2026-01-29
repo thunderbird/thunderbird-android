@@ -222,7 +222,8 @@ abstract class BaseMessageListFragment :
 
     private var account: LegacyAccount? = null
 
-    private var currentFolder: FolderInfoHolder? = null
+    protected var currentFolder: FolderInfoHolder? = null
+        private set
     private var remoteSearchFuture: Future<*>? = null
     private var extraSearchResults: List<String>? = null
     private var threadTitle: String? = null

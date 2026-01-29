@@ -85,8 +85,9 @@ val featureMessageListModule = module {
             )
         },
         { parameters ->
+            val args = parameters.get<MessageListContract.ViewModel.Args>()
             LoadSortCriteriaStateSideEffectHandler.Factory(
-                accounts = parameters.get(),
+                accounts = args.accountIds,
                 logger = get(),
                 getSortCriteriaPerAccount = get(),
             )

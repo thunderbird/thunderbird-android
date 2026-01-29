@@ -8,6 +8,8 @@ import app.k9mail.legacy.message.controller.MessageReference
 import java.util.LinkedList
 import net.thunderbird.core.logging.Logger
 
+private const val TAG = "LegacyMessageListViewModel"
+
 class MessageListViewModel(
     private val messageListLiveDataFactory: MessageListLiveDataFactory,
     private val logger: Logger,
@@ -22,7 +24,7 @@ class MessageListViewModel(
     }
 
     fun loadMessageList(config: MessageListConfig, forceUpdate: Boolean = false) {
-        logger.debug { "loadMessageList() called with: config = $config, forceUpdate = $forceUpdate" }
+        logger.debug(TAG) { "loadMessageList() called with: config = $config, forceUpdate = $forceUpdate" }
         if (!forceUpdate && currentMessageListLiveData?.config == config) return
 
         removeCurrentMessageListLiveData()
