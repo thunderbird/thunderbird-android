@@ -8,7 +8,6 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
-import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
 import java.util.Calendar
 import kotlin.time.Clock
@@ -16,6 +15,7 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.NotificationQuickDelete
 import net.thunderbird.core.preference.display.DisplaySettings
 import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
@@ -52,6 +52,7 @@ class SummaryNotificationDataCreatorTest {
             interactionPreferences = mock {
                 on { getConfig() } doAnswer { generalSettings.interaction }
             },
+            notificationPreference = mock { on { getConfig() } doReturn generalSettings.notification },
         ),
         generalSettingsManager = mock {
             on { getConfig() } doAnswer { generalSettings }
@@ -98,6 +99,9 @@ class SummaryNotificationDataCreatorTest {
                 interactionPreferences = mock {
                     on { getConfig() } doReturn generalSettings.interaction
                 },
+                notificationPreference = mock {
+                    on { getConfig() } doReturn generalSettings.notification
+                },
             ),
             generalSettingsManager = mock {
                 on { getConfig() } doReturn generalSettings.copy(
@@ -138,6 +142,9 @@ class SummaryNotificationDataCreatorTest {
             singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
                 interactionPreferences = mock {
                     on { getConfig() } doReturn generalSettings.interaction
+                },
+                notificationPreference = mock {
+                    on { getConfig() } doReturn generalSettings.notification
                 },
             ),
             generalSettingsManager = mock {
@@ -201,7 +208,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `always show delete action without confirmation`() {
-        setDeleteAction(K9.NotificationQuickDelete.ALWAYS)
+        setDeleteAction(NotificationQuickDelete.ALWAYS)
         setConfirmDeleteFromNotification(false)
         val notificationData = createNotificationDataWithMultipleMessages()
 
@@ -217,7 +224,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `always show delete action with confirmation`() {
-        setDeleteAction(K9.NotificationQuickDelete.ALWAYS)
+        setDeleteAction(NotificationQuickDelete.ALWAYS)
         setConfirmDeleteFromNotification(true)
         val notificationData = createNotificationDataWithMultipleMessages()
 
@@ -233,7 +240,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `show delete action for single notification without confirmation`() {
-        setDeleteAction(K9.NotificationQuickDelete.FOR_SINGLE_MSG)
+        setDeleteAction(NotificationQuickDelete.FOR_SINGLE_MSG)
         setConfirmDeleteFromNotification(false)
         val notificationData = createNotificationDataWithMultipleMessages()
 
@@ -249,7 +256,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `never show delete action`() {
-        setDeleteAction(K9.NotificationQuickDelete.NEVER)
+        setDeleteAction(NotificationQuickDelete.NEVER)
         val notificationData = createNotificationDataWithMultipleMessages()
 
         val result = notificationDataCreator.createSummaryNotificationData(
@@ -296,8 +303,10 @@ class SummaryNotificationDataCreatorTest {
         )
     }
 
-    private fun setDeleteAction(mode: K9.NotificationQuickDelete) {
-        K9.notificationQuickDeleteBehaviour = mode
+    private fun setDeleteAction(mode: NotificationQuickDelete) {
+        generalSettings = generalSettings.copy(
+            notification = generalSettings.notification.copy(notificationQuickDeleteBehaviour = mode),
+        )
     }
 
     private fun setConfirmDeleteFromNotification(confirm: Boolean) {

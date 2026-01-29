@@ -14,6 +14,8 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.core.preference.storage.getEnumOrDefault
+import net.thunderbird.core.preference.storage.putEnum
 
 private const val TAG = "DefaultNotificationPreferenceManager"
 
@@ -45,6 +47,10 @@ class DefaultNotificationPreferenceManager(
                 key = KEY_NOTIFICATION_DURING_QUIET_TIME_ENABLED,
                 defValue = NOTIFICATION_PREFERENCE_DEFAULT_IS_NOTIFICATION_DURING_QUIET_TIME_ENABLED,
             ),
+            notificationQuickDeleteBehaviour = storage.getEnumOrDefault(
+                key = KEY_NOTIFICATION_QUICK_DELETE_BEHAVIOUR,
+                default = NOTIFICATION_PREFERENCE_DEFAULT_QUICK_DELETE_BEHAVIOUR,
+            ),
         ),
     )
 
@@ -64,6 +70,10 @@ class DefaultNotificationPreferenceManager(
                 storageEditor.putBoolean(
                     KEY_NOTIFICATION_DURING_QUIET_TIME_ENABLED,
                     config.isNotificationDuringQuietTimeEnabled,
+                )
+                storageEditor.putEnum(
+                    KEY_NOTIFICATION_QUICK_DELETE_BEHAVIOUR,
+                    config.notificationQuickDeleteBehaviour,
                 )
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
