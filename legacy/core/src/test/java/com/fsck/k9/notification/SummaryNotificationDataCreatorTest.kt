@@ -52,6 +52,9 @@ class SummaryNotificationDataCreatorTest {
             interactionPreferences = mock {
                 on { getConfig() } doAnswer { generalSettings.interaction }
             },
+            generalSettingsManager = mock {
+                on { getConfig() } doAnswer { generalSettings }
+            },
         ),
         generalSettingsManager = mock {
             on { getConfig() } doAnswer { generalSettings }
@@ -98,6 +101,9 @@ class SummaryNotificationDataCreatorTest {
                 interactionPreferences = mock {
                     on { getConfig() } doReturn generalSettings.interaction
                 },
+                generalSettingsManager = mock {
+                    on { getConfig() } doReturn generalSettings
+                },
             ),
             generalSettingsManager = mock {
                 on { getConfig() } doReturn generalSettings.copy(
@@ -138,6 +144,9 @@ class SummaryNotificationDataCreatorTest {
             singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
                 interactionPreferences = mock {
                     on { getConfig() } doReturn generalSettings.interaction
+                },
+                generalSettingsManager = mock {
+                    on { getConfig() } doReturn generalSettings
                 },
             ),
             generalSettingsManager = mock {
@@ -201,7 +210,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `always show delete action without confirmation`() {
-        setDeleteAction(K9.NotificationQuickDelete.ALWAYS)
+        setSummaryDeleteActionEnabled(true)
         setConfirmDeleteFromNotification(false)
         val notificationData = createNotificationDataWithMultipleMessages()
 
@@ -217,7 +226,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `always show delete action with confirmation`() {
-        setDeleteAction(K9.NotificationQuickDelete.ALWAYS)
+        setSummaryDeleteActionEnabled(true)
         setConfirmDeleteFromNotification(true)
         val notificationData = createNotificationDataWithMultipleMessages()
 
@@ -232,24 +241,8 @@ class SummaryNotificationDataCreatorTest {
     }
 
     @Test
-    fun `show delete action for single notification without confirmation`() {
-        setDeleteAction(K9.NotificationQuickDelete.FOR_SINGLE_MSG)
-        setConfirmDeleteFromNotification(false)
-        val notificationData = createNotificationDataWithMultipleMessages()
-
-        val result = notificationDataCreator.createSummaryNotificationData(
-            notificationData,
-            silent = true,
-        )
-
-        val summaryNotificationData = result as SummaryInboxNotificationData
-        assertThat(summaryNotificationData.actions).doesNotContain(SummaryNotificationAction.Delete)
-        assertThat(summaryNotificationData.wearActions).doesNotContain(SummaryWearNotificationAction.Delete)
-    }
-
-    @Test
-    fun `never show delete action`() {
-        setDeleteAction(K9.NotificationQuickDelete.NEVER)
+    fun `hide delete action when disabled`() {
+        setSummaryDeleteActionEnabled(false)
         val notificationData = createNotificationDataWithMultipleMessages()
 
         val result = notificationDataCreator.createSummaryNotificationData(
@@ -296,8 +289,12 @@ class SummaryNotificationDataCreatorTest {
         )
     }
 
-    private fun setDeleteAction(mode: K9.NotificationQuickDelete) {
-        K9.notificationQuickDeleteBehaviour = mode
+    private fun setSummaryDeleteActionEnabled(enabled: Boolean) {
+        generalSettings = generalSettings.copy(
+            notification = generalSettings.notification.copy(
+                isSummaryDeleteActionEnabled = enabled,
+            ),
+        )
     }
 
     private fun setConfirmDeleteFromNotification(confirm: Boolean) {

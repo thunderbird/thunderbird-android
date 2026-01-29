@@ -211,6 +211,13 @@ internal class K9NotificationActionCreator(
         return PendingIntentCompat.getService(context, 0, intent, FLAG_UPDATE_CURRENT, false)!!
     }
 
+    override fun createMarkMessageAsStarPendingIntent(messageReference: MessageReference): PendingIntent {
+        val intent = NotificationActionService.createMarkMessageAsStarIntent(context, messageReference).apply {
+            data = Uri.parse("data:,star/${messageReference.toIdentityString()}")
+        }
+        return PendingIntentCompat.getService(context, 0, intent, FLAG_UPDATE_CURRENT, false)!!
+    }
+
     private fun createMessageListIntent(account: LegacyAccountDto): Intent {
         val folderId = defaultFolderProvider.getDefaultFolder(account)
         val search = LocalMessageSearch().apply {

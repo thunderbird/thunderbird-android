@@ -58,6 +58,7 @@ class NotificationActionService : Service() {
             ACTION_DELETE -> deleteMessages(intent)
             ACTION_ARCHIVE -> archiveMessages(intent)
             ACTION_SPAM -> markMessageAsSpam(intent, account)
+            ACTION_STAR -> markMessagesAsStarred(intent, account)
             ACTION_DISMISS -> Log.i("Notification dismissed")
         }
 
@@ -122,6 +123,19 @@ class NotificationActionService : Service() {
         }
     }
 
+    private fun markMessagesAsStarred(intent: Intent, account: LegacyAccountDto) {
+        Log.i("NotificationActionService starring messages")
+
+        val messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES)
+        val messageReferences = MessageReferenceHelper.toMessageReferenceList(messageReferenceStrings)
+
+        for (messageReference in messageReferences) {
+            val folderId = messageReference.folderId
+            val uid = messageReference.uid
+            messagingController.setFlag(account, folderId, uid, Flag.FLAGGED, true)
+        }
+    }
+
     private fun cancelNotifications(intent: Intent, account: LegacyAccountDto) {
         if (intent.hasExtra(EXTRA_MESSAGE_REFERENCE)) {
             val messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
@@ -149,6 +163,7 @@ class NotificationActionService : Service() {
         private const val ACTION_DELETE = "ACTION_DELETE"
         private const val ACTION_ARCHIVE = "ACTION_ARCHIVE"
         private const val ACTION_SPAM = "ACTION_SPAM"
+        private const val ACTION_STAR = "ACTION_STAR"
         private const val ACTION_DISMISS = "ACTION_DISMISS"
         private const val EXTRA_ACCOUNT_UUID = "accountUuid"
         private const val EXTRA_MESSAGE_REFERENCE = "messageReference"
@@ -243,6 +258,14 @@ class NotificationActionService : Service() {
                 action = ACTION_SPAM
                 putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountUuid)
                 putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString())
+            }
+        }
+
+        fun createMarkMessageAsStarIntent(context: Context, messageReference: MessageReference): Intent {
+            return Intent(context, NotificationActionService::class.java).apply {
+                action = ACTION_STAR
+                putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountUuid)
+                putExtra(EXTRA_MESSAGE_REFERENCES, createSingleItemArrayList(messageReference))
             }
         }
 

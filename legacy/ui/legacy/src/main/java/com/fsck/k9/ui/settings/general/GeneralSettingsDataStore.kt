@@ -58,6 +58,7 @@ class GeneralSettingsDataStore(
             "drawerExpandAllFolder" -> visualSettings.drawerExpandAllFolder
             "quiet_time_enabled" -> notificationSettings.isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !notificationSettings.isNotificationDuringQuietTimeEnabled
+            "notification_summary_delete" -> notificationSettings.isSummaryDeleteActionEnabled
             "privacy_hide_useragent" -> privacySettings.isHideUserAgent
             "privacy_hide_timezone" -> privacySettings.isHideTimeZone
             "debug_logging" -> debuggingSettings.isDebugLoggingEnabled
@@ -99,6 +100,7 @@ class GeneralSettingsDataStore(
             "messageview_autofit_width" -> setIsAutoFitWidth(isAutoFitWidth = value)
             "quiet_time_enabled" -> setIsQuietTimeEnabled(isQuietTimeEnabled = value)
             "disable_notifications_during_quiet_time" -> setIsNotificationDuringQuietTimeEnabled(!value)
+            "notification_summary_delete" -> setIsSummaryDeleteActionEnabled(value)
             "privacy_hide_useragent" -> setIsHideUserAgent(isHideUserAgent = value)
             "privacy_hide_timezone" -> setIsHideTimeZone(isHideTimeZone = value)
             "debug_logging" -> setIsDebugLoggingEnabled(isDebugLoggingEnabled = value)
@@ -147,7 +149,6 @@ class GeneralSettingsDataStore(
             "messageViewTheme" -> subThemeToString(coreSettings.messageViewTheme)
             "messagelist_preview_lines" -> messageListSettings.previewLines.toString()
             "splitview_mode" -> coreSettings.splitViewMode.name
-            "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
             "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
             "background_ops" -> networkSettings.backgroundOps.name
             "quiet_time_starts" -> notificationSettings.quietTimeStarts
@@ -186,10 +187,6 @@ class GeneralSettingsDataStore(
             "messageViewTheme" -> setMessageViewTheme(value)
             "messagelist_preview_lines" -> setMessageListPreviewLines(value.toInt())
             "splitview_mode" -> setSplitViewModel(SplitViewMode.valueOf(value.uppercase()))
-            "notification_quick_delete" -> {
-                K9.notificationQuickDeleteBehaviour = K9.NotificationQuickDelete.valueOf(value)
-            }
-
             "lock_screen_notification_visibility" -> {
                 K9.lockScreenNotificationVisibility = K9.LockScreenNotificationVisibility.valueOf(value)
             }
@@ -641,6 +638,17 @@ class GeneralSettingsDataStore(
             settings.copy(
                 notification = settings.notification.copy(
                     isNotificationDuringQuietTimeEnabled = isNotificationDuringQuietTimeEnabled,
+                ),
+            )
+        }
+    }
+
+    private fun setIsSummaryDeleteActionEnabled(isSummaryDeleteActionEnabled: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                notification = settings.notification.copy(
+                    isSummaryDeleteActionEnabled = isSummaryDeleteActionEnabled,
                 ),
             )
         }
