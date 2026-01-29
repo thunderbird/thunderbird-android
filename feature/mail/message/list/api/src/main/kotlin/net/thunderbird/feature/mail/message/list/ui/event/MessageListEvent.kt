@@ -2,9 +2,9 @@ package net.thunderbird.feature.mail.message.list.ui.event
 
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
-import net.thunderbird.feature.mail.message.list.ui.state.SortType
 
 /**
  * Represents the events that can be triggered from the message list screen.
@@ -37,12 +37,12 @@ sealed interface MessageListEvent {
     data class UpdatePreferences(val preferences: MessageListPreferences) : SystemEvent
 
     /**
-     * A system event indicating that the sort types for various accounts have been loaded.
+     * A system event indicating that the sort criteria for various accounts have been loaded.
      *
-     * @param sortTypes A map where the key is the [AccountId] and the value is the corresponding [SortType].
-     *                  A `null` key represents the global or default sort type.
+     * @param sortCriteriaPerAccount A map where the key is the [AccountId] and the value is the
+     *  corresponding [SortCriteria]. A `null` key represents the sort criteria for the Unified Inbox.
      */
-    data class SortTypesLoaded(val sortTypes: Map<AccountId?, SortType>) : SystemEvent
+    data class SortCriteriaLoaded(val sortCriteriaPerAccount: Map<AccountId?, SortCriteria>) : SystemEvent
 
     /**
      * Signals that all initial configurations, such as preferences, swipe actions, and sort types,
@@ -91,7 +91,7 @@ sealed interface MessageListEvent {
      *
      * @param accountId The [AccountId] of the account for which the sort order is being changed. When `null`,
      *  the sort type is for the Unified Inbox.
-     * @param sortType The new [SortType] to apply to the message list.
+     * @param sortCriteria The new [SortCriteria] to apply.
      */
-    data class ChangeSortType(val accountId: AccountId?, val sortType: SortType) : UserEvent
+    data class ChangeSortCriteria(val accountId: AccountId?, val sortCriteria: SortCriteria) : UserEvent
 }

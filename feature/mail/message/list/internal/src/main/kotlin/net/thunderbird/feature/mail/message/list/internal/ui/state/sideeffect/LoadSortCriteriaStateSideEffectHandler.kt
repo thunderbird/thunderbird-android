@@ -9,37 +9,37 @@ import net.thunderbird.feature.mail.message.list.ui.MessageListStateSideEffectHa
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 
-private const val TAG = "LoadSortTypeSideEffectHandler"
+private const val TAG = "LoadSortCriteriaStateSideEffectHandler"
 
-class LoadSortTypeStateSideEffectHandler(
+class LoadSortCriteriaStateSideEffectHandler(
     private val accounts: Set<AccountId>,
     dispatch: suspend (MessageListEvent) -> Unit,
     private val logger: Logger,
-    private val getSortTypes: DomainContract.UseCase.GetSortTypes,
+    private val getSortCriteriaPerAccount: DomainContract.UseCase.GetSortCriteriaPerAccount,
 ) : StateSideEffectHandler<MessageListState, MessageListEvent>(logger, dispatch) {
     override fun accept(event: MessageListEvent, newState: MessageListState): Boolean =
         event == MessageListEvent.LoadConfigurations
 
     override suspend fun handle(oldState: MessageListState, newState: MessageListState) {
         logger.verbose(TAG) { "$TAG.handle() called with: oldState = $oldState, newState = $newState" }
-        val sortTypes = getSortTypes(accountIds = accounts)
-        logger.verbose(TAG) { "saved sortTypes = $sortTypes" }
-        dispatch(MessageListEvent.SortTypesLoaded(sortTypes))
+        val sortCriteriaPerAccount = getSortCriteriaPerAccount(accountIds = accounts)
+        logger.verbose(TAG) { "saved sort criteria = $sortCriteriaPerAccount" }
+        dispatch(MessageListEvent.SortCriteriaLoaded(sortCriteriaPerAccount))
     }
 
     class Factory(
         private val accounts: Set<AccountId>,
         private val logger: Logger,
-        private val getSortTypes: DomainContract.UseCase.GetSortTypes,
+        private val getSortCriteriaPerAccount: DomainContract.UseCase.GetSortCriteriaPerAccount,
     ) : MessageListStateSideEffectHandlerFactory {
         override fun create(
             scope: CoroutineScope,
             dispatch: suspend (MessageListEvent) -> Unit,
-        ): StateSideEffectHandler<MessageListState, MessageListEvent> = LoadSortTypeStateSideEffectHandler(
+        ): StateSideEffectHandler<MessageListState, MessageListEvent> = LoadSortCriteriaStateSideEffectHandler(
             accounts = accounts,
             dispatch = dispatch,
             logger = logger,
-            getSortTypes = getSortTypes,
+            getSortCriteriaPerAccount = getSortCriteriaPerAccount,
         )
     }
 }
