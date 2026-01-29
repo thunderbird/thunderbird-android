@@ -1,4 +1,6 @@
-appId: net.thunderbird.android.debug
+appId: net.thunderbird.android.beta
+#maestro test ui-flows/validate/init_with_demo_account.yml
 ---
+## Get started with Thunderbird by creating a demo account
 - runFlow:
     file: ../shared/onboard_with_demo_account.yml
