@@ -57,6 +57,12 @@
                 />
         </menu>
     </item>
+    <item
+        android:id="@+id/select_sort_criteria"
+        android:icon="@drawable/btn_clock_material"
+        android:title="@string/sort_by"
+        app:showAsAction="ifRoom"
+        />
 
     <item
         android:id="@+id/compose"
