@@ -1,8 +1,8 @@
 plugins {
     id(ThunderbirdPlugins.App.androidCompose)
     alias(libs.plugins.dependency.guard)
-    id("thunderbird.app.version.info")
-    id("thunderbird.quality.badging")
+    alias(libs.plugins.tb.app.badging)
+    alias(libs.plugins.tb.app.versioning)
 }
 
 val testCoverageEnabled = hasProperty("testCoverageEnabled")
@@ -88,29 +88,16 @@ android {
     }
 
     buildTypes {
-        debug {
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-SNAPSHOT"
-
-            enableUnitTestCoverage = testCoverageEnabled
-            enableAndroidTestCoverage = testCoverageEnabled
-
-            isMinifyEnabled = false
-            isShrinkResources = false
-            isDebuggable = true
-
-            buildConfigField("String", "GLEAN_RELEASE_CHANNEL", "null")
-        }
-
+        val isCI = project.findProperty("ci") == "true"
         release {
             signingConfig = signingConfigs.getByType(SigningType.TB_RELEASE)
 
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = !isCI
+            isShrinkResources = !isCI
             isDebuggable = false
 
             proguardFiles(
-                getDefaultProguardFile("proguard-android.txt"),
+                getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
 
@@ -123,14 +110,14 @@ android {
             applicationIdSuffix = ".beta"
             versionNameSuffix = "b1"
 
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = !isCI
+            isShrinkResources = !isCI
             isDebuggable = false
 
             matchingFallbacks += listOf("release")
 
             proguardFiles(
-                getDefaultProguardFile("proguard-android.txt"),
+                getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
 
@@ -143,19 +130,33 @@ android {
             applicationIdSuffix = ".daily"
             versionNameSuffix = "a1"
 
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = !isCI
+            isShrinkResources = !isCI
             isDebuggable = false
 
             matchingFallbacks += listOf("release")
 
             proguardFiles(
-                getDefaultProguardFile("proguard-android.txt"),
+                getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
 
             // See https://bugzilla.mozilla.org/show_bug.cgi?id=1918151
             buildConfigField("String", "GLEAN_RELEASE_CHANNEL", "\"nightly\"")
+        }
+
+        debug {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-SNAPSHOT"
+
+            enableUnitTestCoverage = testCoverageEnabled
+            enableAndroidTestCoverage = testCoverageEnabled
+
+            isMinifyEnabled = false
+            isShrinkResources = false
+            isDebuggable = true
+
+            buildConfigField("String", "GLEAN_RELEASE_CHANNEL", "null")
         }
     }
 
