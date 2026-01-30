@@ -21,6 +21,8 @@ import net.thunderbird.core.preference.display.miscSettings.DefaultDisplayMiscSe
 import net.thunderbird.core.preference.display.miscSettings.DisplayMiscSettingsPreferenceManager
 import net.thunderbird.core.preference.display.visualSettings.DefaultDisplayVisualSettingsPreferenceManager
 import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsPreferenceManager
+import net.thunderbird.core.preference.display.visualSettings.message.list.DefaultMessageListPreferencesManager
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.core.preference.interaction.DefaultInteractionSettingsPreferenceManager
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 import net.thunderbird.core.preference.network.DefaultNetworkSettingsPreferenceManager
@@ -50,49 +52,51 @@ val preferencesModule = module {
     single<PrivacySettingsPreferenceManager> {
         DefaultPrivacySettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
     single<NotificationPreferenceManager> {
         DefaultNotificationPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
     single<DisplayCoreSettingsPreferenceManager> {
         DefaultDisplayCoreSettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
     single<DisplayInboxSettingsPreferenceManager> {
         DefaultDisplayInboxSettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
     single<DisplayVisualSettingsPreferenceManager> {
         DefaultDisplayVisualSettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            messageListPreferences = get(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DisplayMiscSettingsPreferenceManager> {
         DefaultDisplayMiscSettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
     single<InteractionSettingsPreferenceManager> {
         DefaultInteractionSettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
@@ -105,17 +109,24 @@ val preferencesModule = module {
             miscSettingsPreferenceManager = get(),
         )
     }
+    single<MessageListPreferencesManager> {
+        DefaultMessageListPreferencesManager(
+            logger = get(),
+            storage = get(),
+            storageEditor = get(),
+        )
+    }
     single<NetworkSettingsPreferenceManager> {
         DefaultNetworkSettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
     single<DebuggingSettingsPreferenceManager> {
         DefaultDebuggingSettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
             logLevelManager = get(),
             platformConfigProvider = get(),
@@ -142,12 +153,14 @@ val preferencesModule = module {
             displayCoreSettingsPreferenceManager = get(),
             displayInboxSettingsPreferenceManager = get(),
             displayVisualSettingsPreferenceManager = get(),
+            messageListPreferencesManager = get(),
             displayMiscSettingsPreferenceManager = get(),
             networkSettingsPreferenceManager = get(),
             debuggingSettingsPreferenceManager = get(),
             interactionSettingsPreferenceManager = get(),
             debugLogConfigurator = get(),
             platformConfigProvider = get(),
+            logger = get(),
         )
     } bind GeneralSettingsManager::class
     single {

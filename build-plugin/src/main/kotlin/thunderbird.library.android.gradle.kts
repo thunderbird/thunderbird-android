@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("thunderbird.quality.detekt.typed")
+    id("net.thunderbird.gradle.plugin.quality.coverage")
     id("thunderbird.quality.spotless")
 }
 
@@ -11,6 +12,8 @@ android {
     buildFeatures {
         buildConfig = false
     }
+
+    disableC2CompilerForRobolectric()
 }
 
 kotlin {

@@ -2,4 +2,25 @@
 <resources>
     <string name="account_settings_general_title">تنظیمات عمومی</string>
     <string name="account_settings_general_avatar_title">چهرک</string>
+    <string name="account_settings_avatar_hint_jpeg_only">فقط JPEG</string>
+    <string name="account_settings_general_avatar_description">گزارش چگونگی نمایش چهرکتان.</string>
+    <string name="account_settings_general_avatar_option_image">تصویر</string>
+    <string name="account_settings_general_avatar_option_icon">نقشک</string>
+    <string name="account_settings_general_avatar_image_title">تصویر چهرک</string>
+    <string name="account_settings_general_avatar_image_description">گزینش تصویری برای بازنمایی حسابتان.</string>
+    <string name="account_settings_general_avatar_image_select">گزینش تصویر</string>
+    <string name="account_settings_general_name_title">نام حساب</string>
+    <string name="account_settings_general_name_description">نام مربوط با حسابتان.</string>
+    <string name="account_settings_general_name_error_empty">نام نمی‌تواند خالی باشد</string>
+    <string name="account_settings_general_name_error_too_long">نام بیش از حد طولانی است</string>
+    <string name="account_settings_general_color_title">رنگ حساب</string>
+    <string name="account_settings_general_color_description">رنگ لهجهٔ این حساب در سیاهه‌های حساب و شاخه استفاده می‌شود.</string>
+    <string name="account_settings_general_avatar_icon_title">نقشک چهرک</string>
+    <string name="account_settings_general_avatar_icon_description">گزینش یکی از این نقشک‌ها به عنوان چهرکتان.</string>
+    <string name="account_settings_avatar_error_unsupported_format">فقط تصویرهای JPEG پشتیبانی می‌شوند.</string>
+    <string name="account_settings_general_avatar_option_monogram">مونوگرام</string>
+    <string name="account_settings_general_avatar_monogram_title">تصویر کاربری مونوگرام</string>
+    <string name="account_settings_general_avatar_monogram_description">مونوگرام به عنوان تصویر کاربری شما استفاده شده است.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">مونوگرام نمی‌تواند خالی باشد</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">مونوگرام خیلی طولانی است</string>
 </resources>

@@ -20,19 +20,13 @@ import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 import net.thunderbird.feature.account.settings.R
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateAccountNameError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateMonogramError
+import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Event
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.State
+import net.thunderbird.feature.account.settings.impl.ui.general.components.AvatarImageSelection
 import net.thunderbird.feature.account.settings.impl.ui.general.components.GeneralSettingsProfileView
 
 /**
  * Builds the General Settings from [State].
- *
- * Invariants and UI rules:
- * - AVATAR_OPTIONS is a quick selector for the avatar type and MUST always contain exactly 3 options:
- *   Monogram, Image, and Icon. This is the only place where the "3 items" limit applies.
- * - Detailed avatar settings (e.g., AVATAR_MONOGRAM for text input, AVATAR_ICON for icon selection)
- *   are rendered as additional items when relevant and are NOT subject to this cap.
- * - When the current avatar is Avatar.Icon with an unknown name, a stable default from AvatarIconCatalog
- *   is used as the selected value.
  */
 internal class GeneralSettingsBuilder(
     private val resources: StringsResourceManager,
@@ -43,13 +37,16 @@ internal class GeneralSettingsBuilder(
     private val iconCatalog: AvatarIconCatalog<AvatarIcon<ImageVector>>,
 ) : GeneralSettingsContract.SettingsBuilder {
 
-    override fun build(state: State): Settings {
+    override fun build(
+        state: State,
+        onEvent: (Event) -> Unit,
+    ): Settings {
         val settings = mutableListOf<Setting>()
 
         settings += profile(
             name = state.name.value,
             color = Color(state.color.value ?: 0),
-            avatar = state.avatar,
+            avatar = state.avatar ?: Avatar.Icon(name = iconCatalog.defaultIcon.id),
         )
 
         if (featureFlagProvider.provide(AccountSettingsFeatureFlags.EnableAvatarCustomization).isEnabled()) {
@@ -59,13 +56,17 @@ internal class GeneralSettingsBuilder(
             )
 
             when (val avatar = state.avatar) {
-                is Avatar.Monogram -> settings += monogram(monogram = avatar.value)
-                is Avatar.Icon -> settings += iconPicker(
+                is Avatar.Monogram -> settings += avatarMonogram(monogram = avatar.value)
+                is Avatar.Image -> settings += avatarImage(
+                    onSelectImageClick = { onEvent(Event.OnSelectAvatarImageClick) },
+                )
+
+                is Avatar.Icon -> settings += avatarIcon(
                     icon = avatar,
                     color = Color(state.color.value ?: 0),
                 )
 
-                else -> Unit
+                null -> Unit
             }
         }
 
@@ -78,7 +79,7 @@ internal class GeneralSettingsBuilder(
     private fun profile(
         name: String,
         color: Color,
-        avatar: Avatar?,
+        avatar: Avatar,
     ): Setting = SettingDecoration.Custom(
         id = GeneralSettingId.PROFILE,
     ) { modifier ->
@@ -143,7 +144,7 @@ internal class GeneralSettingsBuilder(
         colors = accountColors,
     )
 
-    private fun monogram(
+    private fun avatarMonogram(
         monogram: String,
     ): Setting = SettingValue.Text(
         id = GeneralSettingId.AVATAR_MONOGRAM,
@@ -170,7 +171,17 @@ internal class GeneralSettingsBuilder(
         },
     )
 
-    private fun iconPicker(
+    private fun avatarImage(
+        onSelectImageClick: () -> Unit,
+    ): Setting = SettingDecoration.Custom(
+        id = GeneralSettingId.AVATAR_IMAGE,
+    ) { modifier ->
+        AvatarImageSelection(
+            onSelectImageClick = onSelectImageClick,
+        )
+    }
+
+    private fun avatarIcon(
         icon: Avatar.Icon,
         color: Color,
     ): Setting {

@@ -47,11 +47,11 @@
     <string name="funding_googleplay_contribution_tfa_recurring_l_title">Aylık Önemli Katkı</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xl_title">Aylık Olağanüstü Katkı</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">Aylık Fevkalade Katkı</string>
-    <string name="funding_googleplay_contribution_tfa_recurring_xs_description">Desteğiniz bizi ileriye götürüyor! Her katkı bir değişim yaratır — teşekkür ederiz!</string>
-    <string name="funding_googleplay_contribution_tfa_recurring_s_description">Katkınız, büyümemize ve anlamlı adımlar atmamıza yardımcı oluyor — teşekkür ederiz!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_description">Desteğiniz bizi ileri taşıyor! Her bağış bir değişim yaratıyor. Teşekkür ederiz!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_description">Bağışınız büyümemize ve anlamlı adımlar atmamıza yardımcı oluyor. Teşekkür ederiz!</string>
     <string name="funding_googleplay_contribution_tfa_recurring_m_description">Katkınız çok değerli! Görevimizi ilerletmek ve etki yaratmak için kilit öneme sahipsiniz.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_l_description">Yaptığımız işleri yapabilmemizin en büyük nedenlerinden biri sizsiniz! Cömertliğiniz, yeni kilometre taşlarına ulaşmamıza yardımcı oluyor.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Desteğiniz bize ilham veriyor! Katkınız, sınırları zorlamamıza ve hedeflerimize ulaşmamıza yardımcı oluyor.</string>
-    <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Büyük hayaller kurmamıza yardımcı oluyorsunuz! Desteğiniz, olağanüstü şeyler başarmamızı sağlıyor.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Büyük hayaller kurmamıza yardımcı oluyorsunuz! Desteğiniz olağanüstü şeyler başarmamızı sağlıyor.</string>
     <string name="funding_googleplay_contribution_reminder_message">Gizliliğe saygılı, özelleştirilebilir en iyi e-posta deneyimini sağlama hedefimize katılın.</string>
 </resources>

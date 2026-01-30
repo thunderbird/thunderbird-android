@@ -36,7 +36,7 @@ import net.thunderbird.core.common.mail.EmailAddressParserError.TotalLengthExcee
 internal class EmailAddressParser(
     input: String,
     private val config: EmailAddressParserConfig,
-) : AbstractParser(input) {
+) : BaseParser(input) {
 
     fun parse(): EmailAddress {
         val emailAddress = readEmailAddress()

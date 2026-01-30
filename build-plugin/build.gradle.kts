@@ -21,13 +21,17 @@ dependencies {
     implementation(plugin(libs.plugins.dependency.check))
     implementation(plugin(libs.plugins.detekt))
     implementation(plugin(libs.plugins.spotless))
+    implementation(plugin(libs.plugins.kover))
+
+    // Make custom plugins in ":plugin" available to precompiled convention plugins by classpath
+    implementation(project(":plugin"))
 
     implementation(libs.diff.utils)
     compileOnly(libs.android.tools.common)
 
     // This defines the used Kotlin version for all Plugin dependencies
     // and ensures that transitive dependencies are aligned on one version.
-    implementation(platform(libs.kotlin.gradle.bom))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:${libs.versions.kotlinGradleBom.get()}"))
 }
 
 kotlin {
@@ -36,6 +40,6 @@ kotlin {
     }
 }
 
-fun plugin(provider: Provider<PluginDependency>) = with(provider.get()) {
+private fun plugin(provider: Provider<PluginDependency>) = with(provider.get()) {
     "$pluginId:$pluginId.gradle.plugin:$version"
 }

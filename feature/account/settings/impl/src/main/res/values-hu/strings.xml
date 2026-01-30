@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_settings_general_title">Általános beállítások</string>
-    <string name="account_settings_general_avatar_title">Avatar</string>
-    <string name="account_settings_general_avatar_description">Válassza ki hogyan jelenjen meg az avatárja.</string>
+    <string name="account_settings_general_avatar_title">Profilkép</string>
+    <string name="account_settings_general_avatar_description">Válassza ki hogyan jelenjen meg a profilképe.</string>
     <string name="account_settings_general_avatar_option_monogram">Monogram</string>
     <string name="account_settings_general_avatar_option_image">Kép</string>
     <string name="account_settings_general_avatar_option_icon">Ikon</string>
-    <string name="account_settings_general_name_title">Fiók Neve</string>
+    <string name="account_settings_general_name_title">Fiók neve</string>
     <string name="account_settings_general_name_description">A fiókjához tartozó név.</string>
     <string name="account_settings_general_name_error_empty">A név nem lehet üres</string>
     <string name="account_settings_general_name_error_too_long">A név túl hosszú</string>
     <string name="account_settings_general_color_title">Fiók színe</string>
+    <string name="account_settings_general_avatar_image_title">Profilkép</string>
+    <string name="account_settings_general_avatar_image_description">Válasszon egy képet a fiókjához.</string>
+    <string name="account_settings_general_avatar_image_select">Kép kiválasztása</string>
+    <string name="account_settings_general_color_description">A fiók mappákban és fióklistákban használt kiemelő színe.</string>
+    <string name="account_settings_general_avatar_monogram_title">Profil monogramja</string>
+    <string name="account_settings_general_avatar_monogram_description">A profilhoz használandó monogram.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">A monogram nem lehet üres</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">A monogram túl hosszú</string>
+    <string name="account_settings_general_avatar_icon_title">Profilképikon</string>
+    <string name="account_settings_general_avatar_icon_description">Válassza ki a profilképként használandó ikont.</string>
+    <string name="account_settings_avatar_error_unsupported_format">Csak a JPEG-képek támogatottak.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Csak JPEG</string>
 </resources>

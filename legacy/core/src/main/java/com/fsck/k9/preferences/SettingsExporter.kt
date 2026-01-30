@@ -309,7 +309,7 @@ class SettingsExporter(
             writeEmptyValue: Boolean = false,
         ) {
             val folderServerId = folderId?.let {
-                folderRepository.getFolderServerId(account, folderId)
+                folderRepository.getFolderServerId(account.id, folderId)
             } ?: importedFolderServerId
 
             if (folderServerId != null) {

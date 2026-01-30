@@ -10,6 +10,8 @@ import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mailstore.LocalStoreProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
+import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.StorageEditor
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -24,6 +26,8 @@ val mainModule = module {
             accountDefaultsProvider = get(),
         )
     }
+    single<Storage> { get<Preferences>().storage }
+    single<StorageEditor> { get<Preferences>().createStorageEditor() }
     single { get<Context>().resources }
     single { get<Context>().contentResolver }
     single { LocalStoreProvider() }

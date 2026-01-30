@@ -7,6 +7,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
@@ -23,7 +25,6 @@ import com.takisoft.preferencex.PreferenceFragmentCompat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import kotlinx.coroutines.flow.FlowCollector
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
 import org.koin.android.ext.android.inject
@@ -61,23 +62,21 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
                 )
                 jobManager.scheduleDebugLogLimit(contentUri.toString()).observe(
                     this,
-                    FlowCollector { workInfo: WorkInfo? ->
-                        if (workInfo != null) {
-                            if (workInfo.state == WorkInfo.State.SUCCEEDED) {
-                                viewModel.showExportSnackbar(true)
-                            } else if (workInfo.state == WorkInfo.State.FAILED) {
-                                viewModel.showExportSnackbar(false)
-                            }
+                ) { workInfo: WorkInfo? ->
+                    if (workInfo != null) {
+                        if (workInfo.state == WorkInfo.State.SUCCEEDED) {
+                            viewModel.showExportSnackbar(true)
+                        } else if (workInfo.state == WorkInfo.State.FAILED) {
+                            viewModel.showExportSnackbar(false)
                         }
-                    },
-                )
+                    }
+                }
             }
         }
 
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.preferenceDataStore = dataStore
         this.rootKey = rootKey
-        setHasOptionsMenu(true)
         setPreferencesFromResource(R.xml.general_settings, rootKey)
         val listener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (!(newValue as Boolean)) {
@@ -104,7 +103,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
                 remove()
                 onPreferenceClickListener = null
             } else {
-                onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
+                onPreferenceClickListener = Preference.OnPreferenceClickListener {
                     viewModel.onOpenSecretDebugScreen(requireContext())
 
                     true
@@ -127,25 +126,43 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.title = preferenceScreen.title
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (rootKey == PREFERENCE_SCREEN_DEBUGGING) {
-            inflater.inflate(R.menu.debug_settings_option, menu)
-            currentUiState?.let { uiState ->
-                menu.findItem(R.id.exportLogs).isEnabled = uiState.isExportLogsMenuEnabled
-            }
-        }
-    }
+        val menuHost = requireActivity()
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    if (rootKey == PREFERENCE_SCREEN_DEBUGGING) {
+                        menuInflater.inflate(R.menu.debug_settings_option, menu)
+                    }
+                }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.exportLogs) {
-            exportLogsResultContract.launch(GeneralSettingsViewModel.DEFAULT_FILENAME)
-        } else if (item.itemId == R.id.exportSyncLogs) {
-            exportSyncDebugLogsResultContract.launch(formatFileExportUriString())
-        }
+                override fun onPrepareMenu(menu: Menu) {
+                    if (rootKey == PREFERENCE_SCREEN_DEBUGGING) {
+                        currentUiState?.let { uiState ->
+                            menu.findItem(R.id.exportLogs).isEnabled = uiState.isExportLogsMenuEnabled
+                        }
+                    }
+                }
 
-        return super.onOptionsItemSelected(item)
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        R.id.exportLogs -> {
+                            exportLogsResultContract.launch(GeneralSettingsViewModel.DEFAULT_FILENAME)
+                            true
+                        }
+
+                        R.id.exportSyncLogs -> {
+                            exportSyncDebugLogsResultContract.launch(formatFileExportUriString())
+                            true
+                        }
+
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED,
+        )
     }
 
     private fun initializeDataCollection() {

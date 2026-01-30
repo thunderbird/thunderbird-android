@@ -28,4 +28,20 @@ interface FileSystemManager {
      * @return A source for reading from the URI, or null if the URI couldn't be opened
      */
     fun openSource(uri: Uri): RawSource?
+
+    /**
+     * Deletes the file at the given [uri].
+     *
+     * @param uri The [Uri] of the file to delete.
+     * @throws kotlinx.io.IOException if the deletion fails.
+     */
+    fun delete(uri: Uri)
+
+    /**
+     * Create the directory at [uri], including any missing parent directories.
+     * If the directory already exists, this should succeed.
+     *
+     * @throws kotlinx.io.IOException if the creation fails or the scheme is unsupported.
+     */
+    fun createDirectories(uri: Uri)
 }

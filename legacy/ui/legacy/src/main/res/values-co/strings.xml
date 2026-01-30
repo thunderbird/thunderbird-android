@@ -864,4 +864,5 @@
     <string name="navigation_drawer_preferences">Listinu laterale</string>
     <string name="expand_folders">Spiegà i cartulari</string>
     <string name="debug_feature_flags">SPANNATURA : Bandere di funzione</string>
+    <string name="print_message_action">Stampà</string>
 </resources>

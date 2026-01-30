@@ -192,6 +192,7 @@
         <item>ALWAYS</item>
         <item>NEVER</item>
         <item>WHEN_IN_LANDSCAPE</item>
+        <item>WHEN_UNFOLDED</item>
     </string-array>
 
     <string-array name="confirm_action_values" translatable="false">

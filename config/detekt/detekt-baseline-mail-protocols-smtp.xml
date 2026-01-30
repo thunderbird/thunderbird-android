@@ -1,11 +1,9 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>CyclomaticComplexMethod:SmtpTransport.kt$SmtpTransport$@VisibleForTesting @Throws(MessagingException::class) internal fun open()</ID>
     <ID>ForbiddenComment:SmtpTransportTest.kt$SmtpTransportTest$// FIXME: Make sure connection was closed</ID>
-    <ID>ImplicitDefaultLocale:SmtpTransport.kt$SmtpTransport$String.format("MAIL FROM:&lt;%s&gt; BODY=8BITMIME", fromAddress)</ID>
-    <ID>ImplicitDefaultLocale:SmtpTransport.kt$SmtpTransport$String.format("MAIL FROM:&lt;%s&gt;", fromAddress)</ID>
     <ID>ImplicitDefaultLocale:SmtpTransport.kt$SmtpTransport$String.format("RCPT TO:&lt;%s&gt;", address)</ID>
     <ID>LargeClass:SmtpTransportTest.kt$SmtpTransportTest</ID>
     <ID>LongMethod:SmtpResponseParser.kt$SmtpResponseParser$fun readHelloResponse(): SmtpHelloResponse</ID>

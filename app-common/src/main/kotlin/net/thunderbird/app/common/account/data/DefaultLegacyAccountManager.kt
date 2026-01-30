@@ -8,6 +8,7 @@ import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.legacy.mapper.LegacyAccountDataMapper
 
+@Suppress("TooManyFunctions")
 internal class DefaultLegacyAccountManager(
     private val accountManager: LegacyAccountDtoManager,
     private val accountDataMapper: LegacyAccountDataMapper,
@@ -23,7 +24,7 @@ internal class DefaultLegacyAccountManager(
     }
 
     override fun getById(id: AccountId): Flow<LegacyAccount?> {
-        return accountManager.getAccountFlow(id.asRaw()).map { account ->
+        return accountManager.getAccountFlow(id.toString()).map { account ->
             account?.let {
                 accountDataMapper.toDomain(it)
             }
@@ -64,5 +65,13 @@ internal class DefaultLegacyAccountManager(
 
     override fun saveAccount(account: LegacyAccount) {
         accountManager.saveAccount(accountDataMapper.toDto(account))
+    }
+
+    override fun getByIdSync(id: AccountId): LegacyAccount? {
+        return getAccount(id.toString())
+    }
+
+    override fun updateSync(account: LegacyAccount) {
+        saveAccount(account)
     }
 }

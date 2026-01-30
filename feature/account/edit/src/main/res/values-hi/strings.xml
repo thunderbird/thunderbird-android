@@ -2,4 +2,5 @@
 <resources>
     <string name="account_edit_save_server_settings_loading_message">सर्वर सेटिंग सहेजी जा रही है…</string>
     <string name="account_edit_save_server_settings_error_message">सर्वर सेटिंग सहेजने में विफल</string>
+    <string name="account_edit_save_server_settings_success_message">सर्वर सेटिंग्स सेव की गई</string>
 </resources>

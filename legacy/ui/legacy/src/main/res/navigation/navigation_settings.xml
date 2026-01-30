@@ -44,7 +44,6 @@
         android:id="@+id/aboutScreen"
         android:name="com.fsck.k9.ui.settings.AboutFragment"
         android:label="@string/about_action"
-        tools:layout="@layout/fragment_about"
         >
 
         <action

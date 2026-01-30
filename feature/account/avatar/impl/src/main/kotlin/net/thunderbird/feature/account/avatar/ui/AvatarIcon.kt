@@ -12,6 +12,14 @@ import net.thunderbird.feature.account.avatar.AvatarIcon
 import net.thunderbird.feature.account.avatar.AvatarIconCatalog
 import org.koin.compose.koinInject
 
+/**
+ * Displays an avatar icon from the icon catalog.
+ *
+ * @param iconName The name of the icon to display.
+ * @param size The size of the avatar.
+ * @param modifier The modifier to be applied to the icon.
+ * @param iconCatalog The catalog used to retrieve avatar icons.
+ */
 @Composable
 internal fun AvatarIcon(
     iconName: String,
@@ -27,7 +35,7 @@ internal fun AvatarIcon(
     Icon(
         imageVector = avatarIcon.icon,
         contentDescription = null,
-        tint = MainTheme.colors.onPrimary,
+        tint = MainTheme.colors.onSecondary,
         modifier = modifier.size(iconSize),
     )
 }

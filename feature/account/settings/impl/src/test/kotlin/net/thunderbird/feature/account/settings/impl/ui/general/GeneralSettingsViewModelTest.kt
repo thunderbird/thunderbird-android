@@ -7,6 +7,7 @@ import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.eygraber.uri.Uri
 import kotlin.test.Test
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
@@ -122,6 +123,32 @@ class GeneralSettingsViewModelTest {
             verifyLastCommand(UpdateGeneralSettingCommand.UpdateAvatar(newAvatar))
         }
     }
+
+    @Test
+    fun `should emit OpenAvatarImagePicker when select avatar image clicked`() = runMviTest {
+        val accountId = AccountIdFactory.create()
+        val initialState = State(
+            subtitle = "Subtitle",
+        )
+
+        generalSettingsRobot(accountId, initialState) {
+            selectAvatarImage()
+            verifyOpenAvatarImagePicker()
+        }
+    }
+
+    @Test
+    fun `should update avatar after image picked successfully`() = runMviTest {
+        val accountId = AccountIdFactory.create()
+        val initialState = State(
+            subtitle = "Subtitle",
+        )
+
+        generalSettingsRobot(accountId, initialState) {
+            pickAvatarImage(Uri.parse("file:///picked/image.jpg"))
+            verifyLastCommand(UpdateGeneralSettingCommand.UpdateAvatar(Avatar.Image(uri = "uri")))
+        }
+    }
 }
 
 private suspend fun MviContext.generalSettingsRobot(
@@ -164,6 +191,10 @@ private class GeneralSettingsRobot(
                 lastCommand = command
                 Outcome.success(Unit)
             },
+            updateAvatarImage = { _, _ ->
+                Outcome.success(Avatar.Image(uri = "uri"))
+            },
+            logger = TestLogger(),
             initialState = initialState,
         )
     }
@@ -214,6 +245,18 @@ private class GeneralSettingsRobot(
 
     fun changeAvatar(value: Avatar) {
         viewModel.event(GeneralSettingsContract.Event.OnAvatarChange(value))
+    }
+
+    fun selectAvatarImage() {
+        viewModel.event(GeneralSettingsContract.Event.OnSelectAvatarImageClick)
+    }
+
+    fun pickAvatarImage(uri: Uri) {
+        viewModel.event(GeneralSettingsContract.Event.OnAvatarImagePicked(uri))
+    }
+
+    suspend fun verifyOpenAvatarImagePicker() {
+        assertThat(turbines.awaitEffectItem()).isEqualTo(Effect.OpenAvatarImagePicker)
     }
 
     suspend fun verifyLastCommand(expected: UpdateGeneralSettingCommand) {

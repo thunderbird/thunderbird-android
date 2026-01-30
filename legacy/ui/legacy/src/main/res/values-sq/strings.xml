@@ -921,4 +921,5 @@
     <string name="navigation_drawer_preferences">Menu Anësore</string>
     <string name="expand_folders">Zgjeroji Dosjet</string>
     <string name="global_settings_messageview_body_content_type_title">Lloj Lënde Mesazhi</string>
+    <string name="print_message_action">Shtypni</string>
 </resources>

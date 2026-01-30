@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Sincronizar (Preme)</string>
     <string name="notification_channel_push_description">Amosado mentres agardas por novas mensaxes</string>
@@ -36,4 +36,6 @@
     <string name="notification_action_archive">Archivo</string>
     <string name="notification_action_archive_all">Arquivar todo</string>
     <string name="notification_action_spam">Spam</string>
+    <string name="notification_authentication_incoming_server_error_text">Non foi posible iniciar sesión en %1$s. Actualiza os axustes do teu servidor de entrada.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Erro de autenticación para %1$s. Actualiza os axustes do teu servidor de saída.</string>
 </resources>

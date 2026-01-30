@@ -18,7 +18,7 @@ Thunderbird for Android can be downloaded from a couple of sources:
 - Thunderbird Beta on [Google Play](https://play.google.com/store/apps/details?id=net.thunderbird.android.beta&referrer=utm_campaign%3Dandroid_metadata%26utm_medium%3Dweb%26utm_source%3Dgithub.com%26utm_content%3Dlink) or [F-Droid](https://f-droid.org/packages/net.thunderbird.android.beta)
 - [Github Releases](https://github.com/thunderbird/thunderbird-android/releases)
 - [FFUpdater](https://f-droid.org/packages/de.marmaro.krt.ffupdater/) allows installing the latest versions from ftp.mozilla.org
-- [Obtainium](https://obtainium.imranr.dev/) requires app-specific configuration from the [Complex Obtainium Apps list](https://apps.obtainium.imranr.dev/)
+- [Obtainium](https://obtainium.imranr.dev/): Use "Filter release title by regular expression" under "Additional options" with `Thunderbird`. More info in [Complex Obtainium Apps list](https://apps.obtainium.imranr.dev/).
 
 By using Thunderbird for Android Beta, you have early access to current development and are able to try new features earlier.
 
@@ -87,6 +87,7 @@ If you prefer the robot dog and would like to keep K-9 Mail around, you can find
 
 - [K-9 Mail on Google Play](https://play.google.com/store/apps/details?id=com.fsck.k9&utm_source=thunderbird-android-github&utm_campaign=download-section)
 - [K-9 Mail on F-Droid](https://f-droid.org/packages/com.fsck.k9/)
+- [K-9 Mail on Obtainium](https://obtainium.imranr.dev/) (use `K-9 Mail` as filter, see [notes](#download) above)
 
 ## Forking
 

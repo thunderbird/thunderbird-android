@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -70,6 +71,10 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
     private boolean shouldFocusNext = false;
     private boolean allowCollapse = true;
     private boolean internalEditInProgress = false;
+
+    @Nullable private TokenImageSpan pressedTokenSpan;
+    // When focus is gained due to tapping a token, don't auto-show the IME (avoids keyboard flicker).
+    private boolean suppressImeOnNextFocus;
 
     private int tokenLimit = -1;
 
@@ -543,29 +548,118 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         return false;
     }
 
-    @Override
-    public boolean onTouchEvent(@NonNull MotionEvent event) {
-        int action = event.getActionMasked();
+    protected final void suppressImeOnNextFocus() {
+        suppressImeOnNextFocus = true;
+    }
+
+    protected final boolean shouldShowImeOnFocus() {
+        final boolean suppressed = suppressImeOnNextFocus;
+        suppressImeOnNextFocus = false;
+        return !suppressed;
+    }
+
+    @VisibleForTesting
+    @Nullable
+    TokenImageSpan hitTestTokenForTest(float textX, float textY) {
         Editable text = getText();
+        Layout layout = getLayout();
+        if (text == null || layout == null) return null;
+        return findTokenSpanUnderTouch(text, layout, textX, textY);
+    }
 
-        boolean handled = super.onTouchEvent(event);
+    @VisibleForTesting
+    void setHiddenContentForTest(@Nullable SpannableStringBuilder content) {
+        hiddenContent = content;
+    }
 
-        if (isFocused() && text != null && lastLayout != null && action == MotionEvent.ACTION_UP) {
+    @Nullable
+    private TokenImageSpan findTokenSpanUnderTouch(@NonNull Editable text, @NonNull Layout layout, float x, float y) {
+        if (x < 0f || y < 0f || y > layout.getHeight()) return null;
 
-            int offset = getOffsetForPosition(event.getX(), event.getY());
+        final int line = layout.getLineForVertical((int) y);
 
-            if (offset != -1) {
-                TokenImageSpan[] links = text.getSpans(offset, offset, TokenImageSpan.class);
+        // Don't treat taps in the line's empty gutter as token taps.
+        final float leftEdge  = Math.min(layout.getLineLeft(line),  layout.getLineRight(line));
+        final float rightEdge = Math.max(layout.getLineLeft(line),  layout.getLineRight(line));
+        if (x < leftEdge || x > rightEdge) return null;
 
-                if (links.length > 0) {
-                    links[0].onClick();
-                    handled = true;
-                }
+        final int offset = layout.getOffsetForHorizontal(line, x);
+        final int qs = Math.max(0, offset - 1);
+        final int qe = Math.min(text.length(), offset + 1);
+
+        TokenImageSpan best = null;
+        int bestStart = Integer.MIN_VALUE;
+
+        for (TokenImageSpan s : text.getSpans(qs, qe, TokenImageSpan.class)) {
+            final int start = text.getSpanStart(s);
+            if (start > bestStart && isTouchInsideSpan(text, layout, s, x, y)) {
+                // Near boundaries multiple spans can be returned; prefer the span with the greatest start index.
+                bestStart = start;
+                best = s;
             }
         }
+        return best;
+    }
 
-        return handled;
+    private boolean isTouchInsideSpan(@NonNull Editable text, @NonNull Layout layout,
+        @NonNull TokenImageSpan span, float x, float y) {
+        final int start = text.getSpanStart(span);
+        final int end   = text.getSpanEnd(span);
+        if (start < 0 || end <= start) return false;
 
+        final int startLine = layout.getLineForOffset(start);
+        final int endLine   = layout.getLineForOffset(end);
+
+        for (int line = startLine; line <= endLine; line++) {
+            final int top = layout.getLineTop(line);
+            final int bottom = layout.getLineBottom(line);
+            if (y < top || y > bottom) continue;
+
+            final float left  = (line == startLine) ? layout.getPrimaryHorizontal(start) : layout.getLineLeft(line);
+            final float right = (line == endLine)   ? layout.getPrimaryHorizontal(end)   : layout.getLineRight(line);
+
+            if (x >= Math.min(left, right) && x <= Math.max(left, right)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onTouchEvent(@NonNull MotionEvent e) {
+        final Editable text = getText();
+        final Layout layout = getLayout();
+        if (text == null || layout == null) return super.onTouchEvent(e);
+
+        final float x = e.getX() - getTotalPaddingLeft() + getScrollX();
+        final float y = e.getY() - getTotalPaddingTop() + getScrollY();
+
+        switch (e.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                pressedTokenSpan = findTokenSpanUnderTouch(text, layout, x, y);
+                if (pressedTokenSpan == null) return super.onTouchEvent(e);
+                if (!isFocused()) {
+                    suppressImeOnNextFocus();
+                    requestFocusFromTouch();
+                }
+                return true;
+
+            case MotionEvent.ACTION_MOVE:
+                if (pressedTokenSpan == null) return super.onTouchEvent(e);
+                if (!isTouchInsideSpan(text, layout, pressedTokenSpan, x, y)) pressedTokenSpan = null;
+                return true;
+
+            case MotionEvent.ACTION_UP:
+                if (pressedTokenSpan == null) return super.onTouchEvent(e);
+                if (isTouchInsideSpan(text, layout, pressedTokenSpan, x, y)) pressedTokenSpan.onClick();
+                pressedTokenSpan = null;
+                return true;
+
+            case MotionEvent.ACTION_CANCEL:
+                if (pressedTokenSpan != null) { pressedTokenSpan = null; return true; }
+                return super.onTouchEvent(e);
+
+            default:
+                return super.onTouchEvent(e);
+        }
     }
 
     @Override
@@ -637,11 +731,14 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
                         TokenImageSpan.class, getText(), 0);
                 hiddenContent = null;
 
-                post(new Runnable() {
-                    @Override
-                    public void run() {
-                        setSelection(getText().length());
-                    }
+                // Avoid cursor jump (0 -> end) during expand
+                final boolean wasCursorVisible = isCursorVisible();
+                setCursorVisible(false);
+
+                post(() -> {
+                    Editable t = getText();
+                    if (t != null) setSelection(t.length());
+                    setCursorVisible(wasCursorVisible);
                 });
 
                 TokenSpanWatcher[] watchers = getText().getSpans(0, getText().length(), TokenSpanWatcher.class);
@@ -1068,17 +1165,66 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
 
         state.allowCollapse = allowCollapse;
         state.performBestGuess = performBestGuess;
+        state.tokenizer = tokenizer;
+
+        // Save full text + ordered token span ranges so restore can reattach token spans without changing the text.
+        CharSequence content = getContentText();
+        state.contentText = content == null ? "" : content.toString();
+
+        Spanned spanned = (hiddenContent != null) ? hiddenContent : getText();
+        @SuppressWarnings("unchecked")
+        TokenImageSpan[] spans = (spanned == null)
+            ? (TokenImageSpan[]) new TokenCompleteTextView.TokenImageSpan[0]
+            : spanned.getSpans(0, spanned.length(), TokenImageSpan.class);
+
+        if (spanned != null) {
+            Arrays.sort(spans, (a, b) -> Integer.compare(spanned.getSpanStart(a), spanned.getSpanStart(b)));
+        }
+
+        state.tokenStarts = new int[spans.length];
+        state.tokenEnds = new int[spans.length];
+
+        ArrayList<Object> orderedObjects = new ArrayList<>(spans.length);
+        for (int i = 0; i < spans.length; i++) {
+            TokenImageSpan s = spans[i];
+            state.tokenStarts[i] = spanned.getSpanStart(s);
+            state.tokenEnds[i] = spanned.getSpanEnd(s);
+            orderedObjects.add(s.getToken());
+        }
+
         Class parameterizedClass = reifyParameterizedTypeClass();
         //Our core array is Parcelable, so use that interface
         if (Parcelable.class.isAssignableFrom(parameterizedClass)) {
             state.parcelableClassName = parameterizedClass.getName();
-            state.baseObjects = getObjects();
+            state.baseObjects = orderedObjects;
         } else {
             //Fallback on Serializable
             state.parcelableClassName = SavedState.SERIALIZABLE_PLACEHOLDER;
-            state.baseObjects = getSerializableObjects();
+
+            ArrayList<Serializable> serializables = new ArrayList<>(orderedObjects.size());
+            int[] starts = new int[orderedObjects.size()];
+            int[] ends = new int[orderedObjects.size()];
+            int n = 0;
+
+            for (int i = 0; i < orderedObjects.size(); i++) {
+                Object obj = orderedObjects.get(i);
+                if (obj instanceof Serializable) {
+                    serializables.add((Serializable) obj);
+                    starts[n] = state.tokenStarts[i];
+                    ends[n] = state.tokenEnds[i];
+                    n++;
+                }
+            }
+
+            state.baseObjects = serializables;
+            // Keep tokenStarts/tokenEnds aligned with filtered baseObjects
+            state.tokenStarts = Arrays.copyOf(starts, n);
+            state.tokenEnds = Arrays.copyOf(ends, n);
+
+            if (n != orderedObjects.size()) {
+                Log.e(TAG, "Some tokens not Serializable/Parcelable; state restore may be incorrect");
+            }
         }
-        state.tokenizer = tokenizer;
 
         //So, when the screen is locked or some other system event pauses execution,
         //onSaveInstanceState gets called, but it won't restore state later because the
@@ -1089,6 +1235,38 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         addListeners();
 
         return state;
+    }
+
+    private void restoreTokenSpansFromState(
+        @NonNull Editable editable,
+        @NonNull List<T> objects,
+        @Nullable int[] starts,
+        @Nullable int[] ends
+    ) {
+        // Defensive: clear any existing token spans before restoring saved ranges.
+        TokenImageSpan[] existing = editable.getSpans(0, editable.length(), TokenImageSpan.class);
+        for (TokenImageSpan s : existing) {
+            editable.removeSpan(s);
+        }
+
+        if (objects.isEmpty()) return;
+
+        int count = objects.size();
+        if (starts == null || ends == null || starts.length != count || ends.length != count) {
+            return;
+        }
+
+        for (int i = 0; i < count; i++) {
+            int start = starts[i];
+            int end = ends[i];
+
+            if (start < 0 || end > editable.length() || start >= end) continue;
+
+            TokenImageSpan span = buildSpanForObject(objects.get(i));
+            if (span != null) {
+                editable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -1105,7 +1283,9 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         allowCollapse = ss.allowCollapse;
         performBestGuess = ss.performBestGuess;
         tokenizer = ss.tokenizer;
-        addListeners();
+
+        // Ensure we don't register duplicate watchers during restore.
+        removeListeners();
 
         List<T> objects;
         if (SavedState.SERIALIZABLE_PLACEHOLDER.equals(ss.parcelableClassName)) {
@@ -1114,9 +1294,24 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             objects = (List<T>)ss.baseObjects;
         }
 
-        //TODO: change this to keep object spans in the correct locations based on ranges.
-        for (T obj: objects) {
-            addObjectSync(obj);
+        savingState = true;
+        internalEditInProgress = true;
+        try {
+            // Start from a clean expanded state. Collapse (and hiddenContent) will be rebuilt after restore if needed.
+            hiddenContent = null;
+
+            // Restore text once, then re-attach token spans by saved ranges.
+            setText(ss.contentText != null ? ss.contentText : "");
+
+            Editable editable = getText();
+            if (editable != null && objects != null) {
+                restoreTokenSpansFromState(editable, objects, ss.tokenStarts, ss.tokenEnds);
+                setSelection(editable.length());
+            }
+        } finally {
+            internalEditInProgress = false;
+            savingState = false;
+            addListeners();
         }
 
         // Collapse the view if necessary
@@ -1143,6 +1338,9 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         List<?> baseObjects;
         String tokenizerClassName;
         Tokenizer tokenizer;
+        @Nullable String contentText;
+        @Nullable int[] tokenStarts;
+        @Nullable int[] tokenEnds;
 
         @SuppressWarnings("unchecked")
         SavedState(Parcel in) {
@@ -1169,6 +1367,12 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
                 //This should really never happen, class had to be available to get here
                 throw new RuntimeException(ex);
             }
+            // Backward-compatible: older parcels don't contain the fields below.
+            if (in.dataAvail() > 0) {
+                contentText = in.readString();
+                tokenStarts = in.createIntArray();
+                tokenEnds = in.createIntArray();
+            }
         }
 
         SavedState(Parcelable superState) {
@@ -1189,6 +1393,9 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             }
             out.writeString(tokenizer.getClass().getCanonicalName());
             out.writeParcelable(tokenizer, 0);
+            out.writeString(contentText);
+            out.writeIntArray(tokenStarts);
+            out.writeIntArray(tokenEnds);
         }
 
         @Override

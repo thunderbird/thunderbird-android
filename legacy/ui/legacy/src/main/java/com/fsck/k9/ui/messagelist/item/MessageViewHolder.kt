@@ -20,7 +20,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.FontSizes
-import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.Address
@@ -31,11 +30,12 @@ import com.fsck.k9.ui.messagelist.MessageListItem
 import com.google.android.material.textview.MaterialTextView
 import java.util.Locale
 import kotlin.math.max
+import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 
 @Suppress("TooManyFunctions")
 class MessageViewHolder(
     view: View,
-    private val appearance: MessageListAppearance,
+    private val appearance: () -> MessageListAppearance,
     private val theme: Resources.Theme,
     private val res: Resources,
     private val contactsPictureLoader: ContactPictureLoader,
@@ -60,6 +60,7 @@ class MessageViewHolder(
 
     @Suppress("LongMethod", "CyclomaticComplexMethod")
     fun bind(messageListItem: MessageListItem, isActive: Boolean, isSelected: Boolean) {
+        val appearance = appearance()
         if (appearance.showContactPicture) {
             contactPictureClickArea.isSelected = isSelected
             if (isSelected) {
@@ -215,6 +216,7 @@ class MessageViewHolder(
     }
 
     private fun addBeforePreviewSpan(text: Spannable, length: Int, messageRead: Boolean) {
+        val appearance = appearance()
         val fontSize = if (appearance.senderAboveSubject) {
             appearance.fontSizes.messageListSubject
         } else {
@@ -243,7 +245,7 @@ class MessageViewHolder(
     }
 
     private fun selectBackgroundColor(selected: Boolean, read: Boolean, active: Boolean): Int {
-        val backGroundAsReadIndicator = appearance.backGroundAsReadIndicator
+        val backGroundAsReadIndicator = appearance().backGroundAsReadIndicator
         return when {
             selected -> colors.selectedBackground
             active -> colors.activeBackground
@@ -279,7 +281,7 @@ class MessageViewHolder(
         fun create(
             layoutInflater: LayoutInflater,
             parent: ViewGroup?,
-            appearance: MessageListAppearance,
+            appearance: () -> MessageListAppearance,
             theme: Resources.Theme,
             res: Resources,
             contactsPictureLoader: ContactPictureLoader,
@@ -303,6 +305,7 @@ class MessageViewHolder(
                 relativeDateTimeFormatter = relativeDateTimeFormatter,
                 colors = colors,
             )
+            val appearance = appearance()
 
             applyFontSizes(holder, appearance.fontSizes, appearance.senderAboveSubject)
             applyDensityValue(holder, appearance.density, res)

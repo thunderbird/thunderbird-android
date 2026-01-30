@@ -15,7 +15,7 @@
     <string name="account_setup_create_account_created">Conta creada correctamente</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Esta dirección de correo electrónico non está permitida.</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Esta configuración non é de confianza</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Recibimos a configuración do teu servidor de correo electrónico a través dunha conexión que non é tan segura como nos gustaría. Isto significa que existe unha pequena posibilidade de que alguén a alterou. Por favor, poderías volver comprobar a configuración proporcionada para asegurarche de que é como debería ser?</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Recibimos a configuración do teu servidor de correo electrónico a través dunha conexión que non é tan segura como nos gustaría. Isto significa que existe unha pequena posibilidade de que alguén a alterara. Por favor, poderías volver comprobar a configuración proporcionada para asegurarche de que é como debería ser?</string>
     <string name="account_setup_special_folders_form_description_automatic">A entrada «Automático» seguirá automaticamente os cambios realizados polo servidor. O valor actual do servidor móstrase entre paréntese.</string>
     <string name="account_setup_special_folders_folder_none">Ningún</string>
     <string name="account_setup_options_account_name_error_blank">O nome da conta non pode estar en branco.</string>
@@ -41,4 +41,16 @@
     <string name="account_setup_options_email_signature_label">Firma de correo electrónico</string>
     <string name="account_setup_options_section_sync_options">Opcións de sincronización</string>
     <string name="account_setup_options_email_check_frequency_never">Nunca</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Cada minuto</item>
+        <item quantity="other">Cada %d minutos</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Cada hora</item>
+        <item quantity="other">Cada %d horas</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 mensaxe</item>
+        <item quantity="other">%d mensaxes</item>
+    </plurals>
 </resources>

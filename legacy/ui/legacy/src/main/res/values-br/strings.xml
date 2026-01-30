@@ -923,4 +923,9 @@ Gallout a rit mirout ar gemennadenn-mañ hag implij anezhi evel un enrolladenn e
     <string name="swipe_action_change_swipe_gestures">Kemmañ\nRisklañ jestroù</string>
     <string name="archiving_not_available_for_this_account">N\'eo ket hegez an diellaouiñ evit ar c\'hont-mañ.</string>
     <string name="message_view_menu_action_export_eml">Ezporzhiañ e stumm EML</string>
+    <string name="print_message_action">Moullañ</string>
+    <string name="set_format_html_action">Ober gant ar pajennaozañ orin</string>
+    <string name="set_format_html_condensed_action">Diskwel ar pajennaozañ</string>
+    <string name="set_format_plain_action">Diskwel ar postel hep pajennaozañ</string>
+    <string name="set_format_plain_condensed_action">Diskwel hep pajennaozañ</string>
 </resources>

@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("thunderbird.quality.detekt.typed")
+    id("net.thunderbird.gradle.plugin.quality.coverage")
     id("thunderbird.quality.spotless")
 }
 
@@ -24,6 +25,8 @@ android {
         includeInApk = false
         includeInBundle = false
     }
+
+    disableC2CompilerForRobolectric()
 }
 
 kotlin {

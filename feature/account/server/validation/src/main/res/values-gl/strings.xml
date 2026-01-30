@@ -1,2 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_authentication">Erro de autenticación</string>
+    <string name="account_server_validation_error_network">Erro de rede</string>
+    <string name="account_server_validation_error_server">Erro do servidor</string>
+    <string name="account_server_validation_error_unknown">Erro descoñecido</string>
+    <string name="account_server_validation_error_client_certificate_expired">Xa non é válido o certificado de cliente</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Certificado de cliente non accesible</string>
+    <string name="account_server_validation_error_missing_server_capability">Falla capacidade no servidor</string>
+    <string name="account_server_validation_error_details">Detalles: \n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">O servidor carece desta capacidade: \n%s</string>
+    <string name="account_server_validation_incoming_loading_message">Comprobando axustes do servidor de entrada…</string>
+    <string name="account_server_validation_incoming_loading_error">Fallou a comprobación de axustes do servidor de entrada</string>
+    <string name="account_server_validation_incoming_success">Axustes do servidor de entrada verificados</string>
+    <string name="account_server_validation_outgoing_loading_message">Comprobando axustes do servidor de saída…</string>
+    <string name="account_server_validation_outgoing_loading_error">Fallou a comprobación de axustes do servidor de saída</string>
+    <string name="account_server_validation_outgoing_success">Axustes do servidor de saída verificados</string>
+    <string name="account_server_validation_sign_in">Por favor, inicia sesión</string>
+</resources>

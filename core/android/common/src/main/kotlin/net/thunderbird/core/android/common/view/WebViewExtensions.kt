@@ -13,10 +13,5 @@ private fun WebView.setupThemeMode(darkTheme: Boolean) {
             this.settings,
             darkTheme,
         )
-    } else if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
-        WebSettingsCompat.setForceDark(
-            this.settings,
-            if (darkTheme) WebSettingsCompat.FORCE_DARK_ON else WebSettingsCompat.FORCE_DARK_OFF,
-        )
     }
 }

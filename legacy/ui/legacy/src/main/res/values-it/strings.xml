@@ -891,7 +891,7 @@
     <string name="settings_list_action_support">Supporta <xliff:g id="app_name">%s</xliff:g></string>
     <string name="volume_navigation_title_short">Naviga con i tasti del volume</string>
     <string name="expand_content_description">Espandi</string>
-    <string name="empty_spam_action">Spam vuota</string>
+    <string name="empty_spam_action">Svuota Spam</string>
     <string name="dialog_confirm_empty_spam_title">Conferma spam vuota</string>
     <string name="dialog_confirm_empty_spam_message">Vuoi svuotare la cartella spam?</string>
     <string name="camera_permission_denied">Autorizzazione fotocamera negata! Impossibile scattare foto</string>
@@ -928,4 +928,5 @@
     <string name="message_view_menu_action_export_eml">Esporta come EML</string>
     <string name="global_settings_messageview_body_content_type_title">Corpo del messaggio come</string>
     <string name="debug_feature_flags">DEBUG: Flag Caratteristiche</string>
+    <string name="print_message_action">Stampa</string>
 </resources>

@@ -1,4 +1,3 @@
 package com.fsck.k9.mail.folders
 
-@JvmInline
-value class FolderServerId(val serverId: String)
+typealias FolderServerId = net.thunderbird.feature.mail.folder.api.FolderServerId

@@ -11,3 +11,8 @@ dependencies {
 android {
     namespace = "app.k9mail.ui.utils.linearlayoutmanager"
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

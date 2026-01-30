@@ -4,13 +4,12 @@ import android.content.res.Resources
 import android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import com.fsck.k9.K9
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 
 /**
  * Get the display name for a participant to be shown in the message details screen.
@@ -62,15 +61,16 @@ internal class RealMessageDetailsParticipantFormatter(
 internal fun createMessageDetailsParticipantFormatter(
     contactNameProvider: ContactNameProvider,
     resources: Resources,
-    generalSettingsManager: GeneralSettingsManager,
+    messageListPreferencesManager: MessageListPreferencesManager,
 ): MessageDetailsParticipantFormatter {
+    val messageListPreferences = messageListPreferencesManager.getConfig()
     return RealMessageDetailsParticipantFormatter(
         contactNameProvider = contactNameProvider,
-        showContactNames = generalSettingsManager.getConfig().display.visualSettings.isShowContactName,
+        showContactNames = messageListPreferences.isShowContactName,
         contactNameColor = if (
-            generalSettingsManager.getConfig().display.visualSettings.isChangeContactNameColor
+            messageListPreferences.isChangeContactNameColor
         ) {
-            K9.contactNameColor
+            messageListPreferences.contactNameColor
         } else {
             null
         },

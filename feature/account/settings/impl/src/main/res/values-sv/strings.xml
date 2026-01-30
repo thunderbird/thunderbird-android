@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogrammet är för långt</string>
     <string name="account_settings_general_avatar_icon_title">Avatarikon</string>
     <string name="account_settings_general_avatar_icon_description">Välj en av ikonerna att använda som din avatar.</string>
+    <string name="account_settings_general_avatar_image_title">Avatarbild</string>
+    <string name="account_settings_general_avatar_image_description">Välj en bild som representerar ditt konto.</string>
+    <string name="account_settings_general_avatar_image_select">Välj bild</string>
+    <string name="account_settings_avatar_error_unsupported_format">Endast JPEG-bilder stöds.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Endast JPEG</string>
 </resources>

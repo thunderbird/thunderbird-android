@@ -1,12 +1,10 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>CyclomaticComplexMethod:SettingsImportFragment.kt$SettingsImportFragment$private fun ViewHolder.updateUi(model: SettingsImportUiModel)</ID>
     <ID>MagicNumber:SettingsImportListItems.kt$ImportListItem$3</ID>
     <ID>MagicNumber:SettingsImportListItems.kt$ImportListItem$4</ID>
-    <ID>SwallowedException:AuthViewModel.kt$AuthViewModel$e: ActivityNotFoundException</ID>
-    <ID>TooGenericExceptionCaught:AuthViewModel.kt$AuthViewModel$e: Exception</ID>
     <ID>TooGenericExceptionCaught:SettingsImportViewModel.kt$SettingsImportViewModel$e: Exception</ID>
     <ID>TooManyFunctions:SettingsImportFragment.kt$SettingsImportFragment : Fragment</ID>
     <ID>TooManyFunctions:SettingsImportUiModel.kt$SettingsImportUiModel</ID>

@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.server.certificate.ui
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
@@ -62,12 +63,14 @@ internal fun ServerCertificateErrorScreenPreview() {
             ServerCertificateErrorScreen(
                 onCertificateAccepted = {},
                 onBack = {},
-                viewModel = ServerCertificateErrorViewModel(
-                    addServerCertificateException = { _, _, _ -> },
-                    certificateErrorRepository = InMemoryServerCertificateErrorRepository(serverCertificateError),
-                    formatServerCertificateError = FormatServerCertificateError(),
-                    initialState = ServerCertificateErrorContract.State(isShowServerCertificate = false),
-                ),
+                viewModel = viewModel {
+                    ServerCertificateErrorViewModel(
+                        addServerCertificateException = { _, _, _ -> },
+                        certificateErrorRepository = InMemoryServerCertificateErrorRepository(serverCertificateError),
+                        formatServerCertificateError = FormatServerCertificateError(),
+                        initialState = ServerCertificateErrorContract.State(isShowServerCertificate = false),
+                    )
+                },
             )
         }
     }

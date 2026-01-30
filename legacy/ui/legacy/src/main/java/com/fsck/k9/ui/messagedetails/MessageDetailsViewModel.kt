@@ -77,7 +77,7 @@ internal class MessageDetailsViewModel(
                 val account = accountManager.getAccount(messageReference.accountUuid) ?: error("Account not found")
                 val messageDetails = messageRepository.getMessageDetails(messageReference)
 
-                val folder = folderRepository.getFolder(account, folderId = messageReference.folderId)
+                val folder = folderRepository.getFolder(account.id, folderId = messageReference.folderId)
 
                 val senderList = messageDetails.sender?.let { listOf(it) } ?: emptyList()
                 val messageDetailsUi = MessageDetailsUi(

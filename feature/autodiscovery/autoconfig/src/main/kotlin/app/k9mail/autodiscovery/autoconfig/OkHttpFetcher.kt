@@ -34,7 +34,7 @@ internal class OkHttpFetcher(
                 override fun onResponse(call: Call, response: Response) {
                     if (response.isSuccessful) {
                         val result = HttpFetchResult.SuccessResponse(
-                            inputStream = response.body!!.byteStream(),
+                            inputStream = response.body.byteStream(),
                             isTrusted = response.isTrusted(),
                         )
                         cancellableContinuation.resume(result)

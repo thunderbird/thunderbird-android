@@ -7,8 +7,6 @@
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Sync all accounts</string>
     <string name="navigation_drawer_dropdown_action_sync_account">Sync account</string>
     <string name="navigation_drawer_dropdown_action_add_account">Add account</string>
-    <string name="navigation_drawer_dropdown_action_show_accounts">Show accounts</string>
-    <string name="navigation_drawer_dropdown_action_hide_accounts">Hide accounts</string>
     <string name="navigation_drawer_dropdown_unified_inbox_title">Inbox</string>
     <!-- This is displayed as the unread count of a folder in the folder drawer when the number of unread messages exceeds 99. Space is extremely limited. Keep this as short as possible. -->
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">99+</string>

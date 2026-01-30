@@ -5,10 +5,7 @@ plugins {
     id("thunderbird.quality.badging")
 }
 
-val testCoverageEnabled: Boolean by extra
-if (testCoverageEnabled) {
-    apply(plugin = "jacoco")
-}
+val testCoverageEnabled = hasProperty("testCoverageEnabled")
 
 android {
     namespace = "net.thunderbird.android"
@@ -18,7 +15,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 41
-        versionName = "16.0"
+        versionName = "17.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
     }
@@ -95,6 +92,9 @@ android {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-SNAPSHOT"
 
+            enableUnitTestCoverage = testCoverageEnabled
+            enableAndroidTestCoverage = testCoverageEnabled
+
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = true
@@ -121,7 +121,7 @@ android {
             signingConfig = signingConfigs.getByType(SigningType.TB_BETA)
 
             applicationIdSuffix = ".beta"
-            versionNameSuffix = "b4"
+            versionNameSuffix = "b1"
 
             isMinifyEnabled = true
             isShrinkResources = true
@@ -221,7 +221,8 @@ dependencies {
     implementation(projects.core.featureflag)
 
     implementation(projects.feature.account.settings.impl)
-    implementation(projects.feature.mail.message.list)
+    implementation(projects.feature.mail.message.list.api)
+    implementation(projects.feature.mail.message.list.internal)
     implementation(projects.feature.mail.message.reader.api)
 
     implementation(projects.feature.widget.messageList)
@@ -281,4 +282,9 @@ tasks.register("printConfigurations") {
             }
         }
     }
+}
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 25
 }

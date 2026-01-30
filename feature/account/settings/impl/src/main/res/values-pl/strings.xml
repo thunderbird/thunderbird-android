@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogram jest zbyt długi</string>
     <string name="account_settings_general_avatar_icon_title">Ikona awatara</string>
     <string name="account_settings_general_avatar_icon_description">Wybierz jedną z ikon, która będzie Twoim awatarem.</string>
+    <string name="account_settings_general_avatar_image_description">Wybierz obraz reprezentujący konto.</string>
+    <string name="account_settings_general_avatar_image_select">Wybierz obraz</string>
+    <string name="account_settings_general_avatar_image_title">Obraz awatara</string>
+    <string name="account_settings_avatar_error_unsupported_format">Obsługiwane są tylko obrazy JPEG.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Tylko JPEG</string>
 </resources>

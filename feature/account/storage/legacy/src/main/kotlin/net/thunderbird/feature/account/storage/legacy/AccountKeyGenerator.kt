@@ -17,6 +17,6 @@ class AccountKeyGenerator(
      */
     fun create(key: String): String {
         require(key.isNotEmpty()) { "Key must not be empty" }
-        return "${id.asRaw()}.$key"
+        return "$id.$key"
     }
 }

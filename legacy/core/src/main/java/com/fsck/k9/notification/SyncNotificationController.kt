@@ -39,7 +39,7 @@ internal class SyncNotificationController(
             .setContentIntent(showMessageListPendingIntent)
             .setPublicVersion(createSendingLockScreenNotification(account))
 
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        notificationHelper.notify(notificationId, notificationBuilder.build())
     }
 
     fun clearSendingNotification(account: LegacyAccountDto) {
@@ -72,7 +72,8 @@ internal class SyncNotificationController(
             .setContentIntent(showMessageListPendingIntent)
             .setPublicVersion(createFetchingMailLockScreenNotification(account))
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
-        notificationManager.notify(notificationId, notificationBuilder.build())
+
+        notificationHelper.notify(notificationId, notificationBuilder.build())
     }
 
     fun showEmptyFetchingMailNotification(account: LegacyAccountDto) {
@@ -91,7 +92,7 @@ internal class SyncNotificationController(
             .setPublicVersion(createFetchingMailLockScreenNotification(account))
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
 
-        notificationManager.notify(notificationId, notificationBuilder.build())
+        notificationHelper.notify(notificationId, notificationBuilder.build())
     }
 
     fun clearFetchingMailNotification(account: LegacyAccountDto) {

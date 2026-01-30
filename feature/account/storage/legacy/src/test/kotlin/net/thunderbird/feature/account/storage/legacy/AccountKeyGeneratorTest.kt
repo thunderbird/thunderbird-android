@@ -22,7 +22,7 @@ class AccountKeyGeneratorTest {
         val result = testSubject.create(key)
 
         // Assert
-        assertThat(result).isEqualTo("${accountId.asRaw()}.$key")
+        assertThat(result).isEqualTo("$accountId.$key")
     }
 
     @Test
@@ -53,8 +53,8 @@ class AccountKeyGeneratorTest {
         val result2 = testSubject2.create(key)
 
         // Assert
-        assertThat(result1).isEqualTo("${accountId1.asRaw()}.$key")
-        assertThat(result2).isEqualTo("${accountId2.asRaw()}.$key")
+        assertThat(result1).isEqualTo("$accountId1.$key")
+        assertThat(result2).isEqualTo("$accountId2.$key")
         assertThat(result1).isNotEqualTo(result2)
     }
 }

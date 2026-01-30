@@ -15,7 +15,6 @@ import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
-import com.fsck.k9.ui.messagelist.MessageListFeatureFlags.UseComposeForMessageListItems
 import com.fsck.k9.ui.messagelist.item.BannerInlineListInAppNotificationViewHolder
 import com.fsck.k9.ui.messagelist.item.ComposableMessageViewHolder
 import com.fsck.k9.ui.messagelist.item.FooterViewHolder
@@ -27,6 +26,7 @@ import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.mail.message.list.MessageListFeatureFlags.UseComposeForMessageListItems
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 
@@ -44,7 +44,7 @@ class MessageListAdapter internal constructor(
     private val layoutInflater: LayoutInflater,
     private val contactsPictureLoader: ContactPictureLoader,
     private val listItemListener: MessageListItemActionListener,
-    private val appearance: MessageListAppearance,
+    private val appearance: () -> MessageListAppearance,
     private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
     private val themeProvider: FeatureThemeProvider,
     private val featureFlagProvider: FeatureFlagProvider,
@@ -350,7 +350,7 @@ class MessageListAdapter internal constructor(
     private fun calculateSelectionCount(): Int {
         return when {
             selected.isEmpty() -> 0
-            !appearance.showingThreadedList -> selected.size
+            !appearance().showingThreadedList -> selected.size
             else ->
                 viewItems
                     .asSequence()

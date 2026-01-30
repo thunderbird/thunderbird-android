@@ -20,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.SpanStyle
@@ -209,7 +208,6 @@ private fun FeatureFlagItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            val context = LocalContext.current
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
@@ -229,11 +227,11 @@ private fun FeatureFlagItem(
                     TextLabelSmall(
                         text = buildAnnotatedString {
                             append(
-                                context.getString(R.string.debug_settings_feature_flag_overridden),
+                                stringResource(R.string.debug_settings_feature_flag_overridden),
                             )
                             withStyle(SpanStyle(color = MainTheme.colors.info)) {
                                 append(
-                                    context.getString(
+                                    stringResource(
                                         R.string.debug_settings_feature_flag_default_value,
                                         flag.enabled,
                                     ),

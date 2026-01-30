@@ -13,3 +13,8 @@ dependencies {
     implementation(projects.core.ui.theme.api)
     implementation(projects.feature.notification.api)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

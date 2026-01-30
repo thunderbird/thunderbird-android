@@ -70,6 +70,7 @@ include(
     ":feature:account:edit",
     ":feature:account:fake",
     ":feature:account:oauth",
+    ":feature:account:profile:api",
     ":feature:account:settings:api",
     ":feature:account:settings:impl",
     ":feature:account:server:certificate",
@@ -98,7 +99,8 @@ include(
     ":feature:mail:account:api",
     ":feature:mail:folder:api",
     ":feature:mail:message:composer",
-    ":feature:mail:message:list",
+    ":feature:mail:message:list:api",
+    ":feature:mail:message:list:internal",
     ":feature:mail:message:export:api",
     ":feature:mail:message:export:impl-eml",
     ":feature:mail:message:reader:api",
@@ -188,6 +190,7 @@ include(
 
 include(
     ":core:ui:setting:api",
+    ":core:ui:setting:component",
     ":core:ui:setting:impl-dialog",
 )
 

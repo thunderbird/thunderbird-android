@@ -13,31 +13,32 @@ Small, cross‑module primitives for strongly‑typed identifiers.
   - Centralize generation/parsing via factories to ensure consistency.
   - Keep the core generic; domain modules extend via typealiases and small factories.
 - Building blocks:
-  - `Id<T>`: a tiny value type wrapping a UUID (kotlin.uuid.Uuid).
-  - `IdFactory<T>`: contract for creating/parsing typed IDs.
-  - `BaseIdFactory<T>`: abstract UUID‑based implementation of `IdFactory<T>` for standardized creation and parsing.
+  - `BaseIdentifier<T>`: base class for strongly-typed identifiers.
+  - `BaseUuidIdentifier`: specialized base for UUID-based identifiers.
+  - `IdentifierFactory<T>`: contract for creating/parsing typed IDs.
+  - `BaseUuidIdentifierFactory<T>`: abstract UUID-based implementation of `IdentifierFactory<T>`.
 
-Implement custom factories if you need non‑UUID schemes; otherwise prefer BaseIdFactory.
+Implement custom factories if you need non-UUID schemes; otherwise prefer `BaseUuidIdentifierFactory`.
 
 ### Usage
 
-Create a typed ID and parse from storage:
+Create a typed ID and factory:
 
 ```kotlin
-// Domain type
-data class Project(val id: ProjectId)
-
-// Typed alias
-typealias ProjectId = Id<Project>
+// Typed ID
+class ProjectId(value: Uuid) : BaseUuidIdentifier(value)
 
 // Factory
-object ProjectIdFactory : BaseIdFactory<Project>()
+object ProjectIdFactory : BaseUuidIdentifierFactory<ProjectId>(::ProjectId)
+
+// Domain type
+data class Project(val id: ProjectId)
 
 // Create new ID
 val id: ProjectId = ProjectIdFactory.create()
 
 // Persist/restore
-val raw: String = id.asRaw()
+val raw: String = id.toString()
 val parsed: ProjectId = ProjectIdFactory.of(raw)
 ```
 

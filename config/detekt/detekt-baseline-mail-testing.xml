@@ -1,9 +1,8 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>MagicNumber:MessageBuilderDsl.kt$PartBuilder$1024</ID>
     <ID>MagicNumber:MessageBuilderDsl.kt$PartBuilder$20</ID>
-    <ID>TooManyFunctions:SystemOutLogger.kt$SystemOutLogger : Logger</ID>
   </CurrentIssues>
 </SmellBaseline>

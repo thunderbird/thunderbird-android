@@ -1,16 +1,30 @@
 package com.fsck.k9.storage.messages
 
+import android.database.sqlite.SQLiteDatabase
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import com.fsck.k9.storage.RobolectricTest
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 
 class KeyValueStoreOperationsTest : RobolectricTest() {
-    private val sqliteDatabase = createDatabase()
-    private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val keyValueStoreOperations = KeyValueStoreOperations(lockableDatabase)
+    private lateinit var sqliteDatabase: SQLiteDatabase
+    private lateinit var keyValueStoreOperations: KeyValueStoreOperations
+
+    @Before
+    fun setUp() {
+        sqliteDatabase = createDatabase()
+        val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
+        keyValueStoreOperations = KeyValueStoreOperations(lockableDatabase)
+    }
+
+    @After
+    fun tearDown() {
+        sqliteDatabase.close()
+    }
 
     @Test
     fun `get extra string`() {

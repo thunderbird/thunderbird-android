@@ -9,7 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.legacy.ui.folder.DisplayFolder
@@ -39,7 +42,6 @@ class ManageFoldersFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
 
         val arguments = arguments ?: error("Missing arguments")
         val accountUuid = arguments.getString(EXTRA_ACCOUNT) ?: error("Missing argument '$EXTRA_ACCOUNT'")
@@ -51,6 +53,33 @@ class ManageFoldersFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.folder_list_option, menu)
+                    configureFolderSearchView(menu)
+                }
+
+                override fun onPrepareMenu(menu: Menu) {
+                    val folderMenuItem = menu.findItem(R.id.filter_folders)
+                    folderMenuItem.isVisible = !folderMenuItem.isActionViewExpanded
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        R.id.list_folders -> {
+                            refreshFolderList()
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED,
+        )
+
         initializeFolderList()
 
         viewModel.getFolders(account).observeNotNull(this) { folders ->
@@ -94,16 +123,6 @@ class ManageFoldersFragment : Fragment() {
         findNavController().navigate(R.id.action_manageFoldersScreen_to_folderSettingsScreen, folderSettingsArguments)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.folder_list_option, menu)
-        configureFolderSearchView(menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        val folderMenuItem = menu.findItem(R.id.filter_folders)
-        folderMenuItem.isVisible = !folderMenuItem.isActionViewExpanded
-    }
-
     private fun configureFolderSearchView(menu: Menu) {
         val folderMenuItem = menu.findItem(R.id.filter_folders)
         val folderSearchView = folderMenuItem.actionView as SearchView
@@ -131,15 +150,6 @@ class ManageFoldersFragment : Fragment() {
                 return true
             }
         })
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.list_folders -> refreshFolderList()
-            else -> return super.onOptionsItemSelected(item)
-        }
-
-        return true
     }
 
     private fun refreshFolderList() {

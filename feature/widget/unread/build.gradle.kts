@@ -13,6 +13,7 @@ dependencies {
     implementation(libs.preferencex)
 
     testImplementation(libs.robolectric)
+    testImplementation(projects.core.logging.testing)
 }
 
 android {
@@ -23,4 +24,9 @@ android {
             isIncludeAndroidResources = true
         }
     }
+}
+
+codeCoverage {
+    branchCoverage = 10
+    lineCoverage = 16
 }

@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.setup.ui.specialfolders
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.setup.ui.fake.FakeBrandNameProvider
@@ -13,7 +14,7 @@ internal fun SpecialFoldersScreenPreview() {
         SpecialFoldersScreen(
             onNext = {},
             onBack = {},
-            viewModel = FakeSpecialFoldersViewModel(),
+            viewModel = viewModel { FakeSpecialFoldersViewModel() },
             brandNameProvider = FakeBrandNameProvider,
         )
     }

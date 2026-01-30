@@ -18,14 +18,14 @@ val messageDetailsUiModule = module {
             folderNameFormatter = get(),
         )
     }
-    factory { ContactSettingsProvider(generalSettingsManager = get()) }
+    factory { ContactSettingsProvider(messageListPreferencesManager = get()) }
     factory { AddToContactsLauncher() }
     factory { ShowContactLauncher() }
     factory {
         createMessageDetailsParticipantFormatter(
             contactNameProvider = get(),
             resources = get(),
-            generalSettingsManager = get(),
+            messageListPreferencesManager = get(),
         )
     }
 }

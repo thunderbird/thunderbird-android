@@ -44,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Toast;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -144,6 +145,7 @@ import net.thunderbird.feature.notification.api.sender.compat.NotificationSender
 import net.thunderbird.feature.search.legacy.LocalMessageSearch;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpIntentStarter;
+import net.thunderbird.core.android.common.startup.DatabaseUpgradeInterceptor;
 import net.thunderbird.core.logging.legacy.Log;
 import static com.fsck.k9.activity.compose.AttachmentPresenter.REQUEST_CODE_ATTACHMENT_URI;
 import static app.k9mail.core.android.common.camera.CameraCaptureHandler.CAMERA_PERMISSION_REQUEST_CODE;
@@ -162,6 +164,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
+
+    private final DatabaseUpgradeInterceptor databaseUpgradeInterceptor = DI.get(DatabaseUpgradeInterceptor.class);
     private static final int DIALOG_CHOOSE_IDENTITY = 3;
     private static final int DIALOG_CONFIRM_DISCARD = 4;
 
@@ -297,7 +301,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (UpgradeDatabases.actionUpgradeDatabases(this, getIntent())) {
+        if (databaseUpgradeInterceptor.checkAndHandleUpgrade(this, getIntent())) {
             finish();
             return;
         }
@@ -333,7 +337,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
              * There are no accounts set up. This should not have happened. Prompt the
              * user to set up an account as an acceptable bailout.
              */
-            MainActivity.launch(this);
+            MessageHomeActivity.launch(this);
             changesMadeSinceLastSave = false;
             finish();
             return;
@@ -553,6 +557,17 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             currentMessageBuilder.reattachCallback(this);
         }
         setupSentFolderNotFoundDialogResults();
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                this.setEnabled(false);
+                prepareToFinish(false);
+                if (!isFinishing()) {
+                    setEnabled(true);
+                }
+            }
+        });
     }
 
     private void setupSentFolderNotFoundDialogResults() {
@@ -1188,11 +1203,6 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         return true;
     }
 
-    @SuppressLint("MissingSuperCall")
-    @Override
-    public void onBackPressed() {
-        prepareToFinish(false);
-    }
 
     private void prepareToFinish(boolean shouldNavigateUp) {
         navigateUp = shouldNavigateUp;
@@ -1208,10 +1218,10 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             if (draftMessageId == null) {
                 onDiscard();
             } else {
-                if (navigateUp && this.action != action.EDIT_DRAFT) {
+                if (navigateUp && this.action != Action.EDIT_DRAFT) {
                     openDefaultFolder();
                 } else {
-                    super.onBackPressed();
+                    finish();
                 }
             }
         }
@@ -1222,7 +1232,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         LocalMessageSearch search = new LocalMessageSearch();
         search.addAccountUuid(account.getUuid());
         search.addAllowedFolder(folderId);
-        MainActivity.actionDisplaySearch(this, search, false, true);
+        MessageHomeActivity.actionDisplaySearch(this, search, false, true);
         finish();
     }
 

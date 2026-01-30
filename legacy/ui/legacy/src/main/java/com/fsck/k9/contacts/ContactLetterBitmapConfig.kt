@@ -5,16 +5,15 @@ import android.view.ContextThemeWrapper
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.getIntArray
 import com.fsck.k9.ui.resolveColorAttribute
-import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 
 class ContactLetterBitmapConfig(
     context: Context,
     themeManager: ThemeManager,
-    generalSettingsManager: GeneralSettingsManager,
+    messageListPreferencesManager: MessageListPreferencesManager,
 ) {
-    val hasDefaultBackgroundColor: Boolean = !generalSettingsManager.getConfig()
-        .display.visualSettings.isColorizeMissingContactPictures
+    val hasDefaultBackgroundColor: Boolean = !messageListPreferencesManager.getConfig().isColorizeMissingContactPictures
     val defaultBackgroundColor: Int
     val backgroundColors: IntArray
 

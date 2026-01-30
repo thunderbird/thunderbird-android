@@ -1,17 +1,31 @@
 package com.fsck.k9.storage.messages
 
+import android.database.sqlite.SQLiteDatabase
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue
 import com.fsck.k9.storage.RobolectricTest
 import net.thunderbird.core.common.mail.Flag
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 
 class FlagMessageOperationsTest : RobolectricTest() {
-    private val sqliteDatabase = createDatabase()
-    private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val flagMessageOperations = FlagMessageOperations(lockableDatabase)
+    private lateinit var sqliteDatabase: SQLiteDatabase
+    private lateinit var flagMessageOperations: FlagMessageOperations
+
+    @Before
+    fun setUp() {
+        sqliteDatabase = createDatabase()
+        val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
+        flagMessageOperations = FlagMessageOperations(lockableDatabase)
+    }
+
+    @After
+    fun tearDown() {
+        sqliteDatabase.close()
+    }
 
     @Test(expected = IllegalArgumentException::class)
     fun `empty messageIds list`() {

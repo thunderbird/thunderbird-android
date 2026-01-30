@@ -22,8 +22,8 @@ internal fun GeneralSettingsContent(
     builder: SettingsBuilder,
     modifier: Modifier = Modifier,
 ) {
-    val settings = remember(state, builder) {
-        builder.build(state = state)
+    val settings = remember(state, builder, onEvent) {
+        builder.build(state = state, onEvent = onEvent)
     }
 
     provider.SettingView(

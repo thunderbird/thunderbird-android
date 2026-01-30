@@ -5,10 +5,7 @@ plugins {
     id("thunderbird.quality.badging")
 }
 
-val testCoverageEnabled: Boolean by extra
-if (testCoverageEnabled) {
-    apply(plugin = "jacoco")
-}
+val testCoverageEnabled = hasProperty("testCoverageEnabled")
 
 android {
     namespace = "com.fsck.k9"
@@ -18,7 +15,7 @@ android {
         testApplicationId = "com.fsck.k9.tests"
 
         versionCode = 39021
-        versionName = "16.0"
+        versionName = "17.0"
         versionNameSuffix = "b1"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"K-9 Mail\"")
@@ -100,6 +97,7 @@ android {
 
         debug {
             applicationIdSuffix = ".debug"
+
             enableUnitTestCoverage = testCoverageEnabled
             enableAndroidTestCoverage = testCoverageEnabled
 
@@ -141,7 +139,8 @@ dependencies {
     implementation(projects.core.ui.compose.theme2.k9mail)
     implementation(projects.core.ui.legacy.theme2.k9mail)
     implementation(projects.feature.launcher)
-    implementation(projects.feature.mail.message.list)
+    implementation(projects.feature.mail.message.list.api)
+    implementation(projects.feature.mail.message.list.internal)
     implementation(projects.feature.mail.message.reader.api)
 
     implementation(projects.legacy.core)
@@ -177,4 +176,9 @@ dependencies {
 dependencyGuard {
     configuration("fossReleaseRuntimeClasspath")
     configuration("fullReleaseRuntimeClasspath")
+}
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 24
 }

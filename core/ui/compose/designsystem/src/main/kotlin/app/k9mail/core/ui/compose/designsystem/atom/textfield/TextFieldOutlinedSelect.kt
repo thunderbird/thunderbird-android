@@ -4,6 +4,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,8 +23,6 @@ import androidx.compose.material3.ExposedDropdownMenuBox as Material3ExposedDrop
 import androidx.compose.material3.OutlinedTextField as Material3OutlinedTextField
 import androidx.compose.material3.Text as Material3Text
 
-// TODO replace Material3 DropdownMenu with Material3 ExposedDropdownMenu once it's size issue is fixed
-// see: https://issuetracker.google.com/issues/205589613
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("LongParameterList", "LongMethod")
 @Composable
@@ -60,7 +59,7 @@ fun <T> TextFieldOutlinedSelect(
             onValueChange = { },
             modifier = Modifier
                 .fillMaxWidth()
-                .menuAnchor()
+                .menuAnchor(MenuAnchorType.PrimaryNotEditable)
                 .then(modifier),
             enabled = isEnabled,
             readOnly = true,

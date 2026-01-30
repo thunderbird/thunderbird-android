@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevicesWithBackground
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
@@ -15,12 +16,14 @@ internal fun AccountAutoDiscoveryScreenPreview() {
         AccountAutoDiscoveryScreen(
             onNext = {},
             onBack = {},
-            viewModel = AccountAutoDiscoveryViewModel(
-                validator = AccountAutoDiscoveryValidator(),
-                getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
-                accountStateRepository = FakeAccountStateRepository(),
-                oAuthViewModel = FakeAccountOAuthViewModel(),
-            ),
+            viewModel = viewModel {
+                AccountAutoDiscoveryViewModel(
+                    validator = AccountAutoDiscoveryValidator(),
+                    getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
+                    accountStateRepository = FakeAccountStateRepository(),
+                    oAuthViewModel = FakeAccountOAuthViewModel(),
+                )
+            },
             brandNameProvider = FakeBrandNameProvider,
         )
     }

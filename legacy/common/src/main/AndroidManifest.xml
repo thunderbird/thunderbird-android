@@ -100,21 +100,10 @@
             />
 
         <activity
-            android:name="com.fsck.k9.activity.MainActivity"
+            android:name="com.fsck.k9.activity.MessageHomeActivity"
             android:launchMode="singleTop"
             android:exported="true"
             >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.APP_EMAIL" />
-
-                <!-- TODO: Remove once minSdkVersion has been changed to 24+ -->
-                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
-                <category android:name="android.intent.category.PENWINDOW_LAUNCHER" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data
@@ -168,13 +157,13 @@
         </activity>
 
         <activity
-            android:name="com.fsck.k9.activity.Search"
+            android:name="com.fsck.k9.activity.MessageSearchActivity"
             android:label="@string/search_action"
             android:exported="false"
             />
 
         <activity
-            android:name="com.fsck.k9.activity.UpgradeDatabases"
+            android:name="com.fsck.k9.activity.UpgradeDatabaseActivity"
             android:label="@string/upgrade_databases_title"
             />
 

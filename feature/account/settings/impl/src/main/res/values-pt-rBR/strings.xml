@@ -1,3 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Configurações Gerais</string>
+    <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_description">Escolha como o avatar da sua conta é exibido.</string>
+    <string name="account_settings_general_avatar_option_monogram">Monograma</string>
+    <string name="account_settings_general_avatar_option_image">Imagem</string>
+    <string name="account_settings_general_avatar_option_icon">Ícone</string>
+    <string name="account_settings_general_avatar_image_title">Imagem de Avatar</string>
+    <string name="account_settings_general_avatar_image_description">Escolha uma imagem para representar sua conta.</string>
+    <string name="account_settings_general_avatar_image_select">Selecione uma Imagem</string>
+    <string name="account_settings_general_name_title">Nome da conta</string>
+    <string name="account_settings_general_name_description">O nome associado à sua conta.</string>
+    <string name="account_settings_general_name_error_empty">Nome não pode ser vazio</string>
+    <string name="account_settings_general_name_error_too_long">Nome é muito longo</string>
+    <string name="account_settings_general_color_title">Cor da conta</string>
+    <string name="account_settings_general_color_description">A cor de destaque dessa conta usada em pastas e listas de contas.</string>
+    <string name="account_settings_general_avatar_monogram_title">Avatar de Monograma</string>
+    <string name="account_settings_general_avatar_monogram_description">O monograma usado como seu avatar.</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Monograma não pode ser vazio</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Monograma é muito longo</string>
+    <string name="account_settings_general_avatar_icon_title">Ícone de Avatar</string>
+    <string name="account_settings_general_avatar_icon_description">Escolha um dos ícones para usar como seu avatar.</string>
+    <string name="account_settings_avatar_error_unsupported_format">Apenas imagens JPEG são suportadas.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Apenas JPEG</string>
 </resources>

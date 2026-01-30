@@ -64,7 +64,6 @@ object K9 : KoinComponent {
      * @return `true`, if we know that all databases are using the current database schema. `false`, otherwise.
      */
     @Synchronized
-    @JvmStatic
     fun areDatabasesUpToDate(): Boolean {
         return databasesUpToDate
     }
@@ -115,16 +114,7 @@ object K9 : KoinComponent {
     val fontSizes = FontSizes()
 
     @JvmStatic
-    var notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
-
-    @JvmStatic
     var lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT
-
-    @JvmStatic
-    var messageListDensity: UiDensity = UiDensity.Default
-
-    @JvmStatic
-    var contactNameColor = 0xFF1093F5.toInt()
 
     var messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
         PostMarkAsUnreadNavigation.ReturnToMessageList
@@ -204,9 +194,6 @@ object K9 : KoinComponent {
     @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
-
-        messageListDensity = storage.getEnum("messageListDensity", UiDensity.Default)
-        contactNameColor = storage.getInt("registeredNameColor", 0xFF1093F5.toInt())
         messageViewPostMarkAsUnreadNavigation =
             storage.getEnum("messageViewPostMarkAsUnreadAction", PostMarkAsUnreadNavigation.ReturnToMessageList)
 
@@ -214,8 +201,6 @@ object K9 : KoinComponent {
 
         val sortAscendingSetting = storage.getBoolean("sortAscending", AccountDefaultsProvider.DEFAULT_SORT_ASCENDING)
         sortAscending[sortType] = sortAscendingSetting
-
-        notificationQuickDeleteBehaviour = storage.getEnum("notificationQuickDelete", NotificationQuickDelete.ALWAYS)
 
         lockScreenNotificationVisibility = storage.getEnum(
             "lockScreenNotificationVisibility",
@@ -246,15 +231,11 @@ object K9 : KoinComponent {
 
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
-        editor.putEnum("messageListDensity", messageListDensity)
         editor.putBoolean("showAccountSelector", isShowAccountSelector)
-        editor.putInt("registeredNameColor", contactNameColor)
         editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
 
         editor.putEnum("sortTypeEnum", sortType)
         editor.putBoolean("sortAscending", sortAscending[sortType] ?: false)
-
-        editor.putString("notificationQuickDelete", notificationQuickDeleteBehaviour.toString())
         editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
 
         editor.putBoolean("messageViewArchiveActionVisible", isMessageViewArchiveActionVisible)
@@ -313,15 +294,6 @@ object K9 : KoinComponent {
     const val MAX_SEND_ATTEMPTS = 5
 
     const val MANUAL_WAKE_LOCK_TIMEOUT = 120000
-
-    /**
-     * Controls behaviour of delete button in notifications.
-     */
-    enum class NotificationQuickDelete {
-        ALWAYS,
-        FOR_SINGLE_MSG,
-        NEVER,
-    }
 
     enum class LockScreenNotificationVisibility {
         EVERYTHING,

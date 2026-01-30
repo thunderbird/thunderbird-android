@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogramm on liiga pikk</string>
     <string name="account_settings_general_avatar_icon_title">Ikoon tunnuspildina</string>
     <string name="account_settings_general_avatar_icon_description">Vali mõni ikoon kasutamiseks oma tunnuspildina (avatarina).</string>
+    <string name="account_settings_general_avatar_image_title">Tunnuspilt</string>
+    <string name="account_settings_general_avatar_image_description">Vali pilt, mis märgistab sisu kasutajakontot.</string>
+    <string name="account_settings_general_avatar_image_select">Vali pilt</string>
+    <string name="account_settings_avatar_error_unsupported_format">Vaid JPEG-pildid on toetatud.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Vaid JPEG</string>
 </resources>

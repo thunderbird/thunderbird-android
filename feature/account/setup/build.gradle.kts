@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.mail.protocols.imap)
     implementation(projects.mail.protocols.pop3)
     implementation(projects.mail.protocols.smtp)
+    implementation(projects.feature.mail.folder.api)
 
     implementation(projects.feature.autodiscovery.service)
     implementation(projects.feature.autodiscovery.demo)
@@ -38,4 +39,9 @@ dependencies {
 
     testImplementation(platform(libs.forkhandles.bom))
     testImplementation(libs.forkhandles.fabrikate4k)
+}
+
+codeCoverage {
+    branchCoverage = 3
+    lineCoverage = 4
 }

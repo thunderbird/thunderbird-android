@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">Il monogramma è troppo lungo</string>
     <string name="account_settings_general_avatar_icon_title">Icona Avatar</string>
     <string name="account_settings_general_avatar_icon_description">Seleziona una delle icone da usare come tuo avatar.</string>
+    <string name="account_settings_general_avatar_image_title">Immagine Avatar</string>
+    <string name="account_settings_general_avatar_image_description">Scegli un\'immagine per rappresentare il tuo account.</string>
+    <string name="account_settings_general_avatar_image_select">Seleziona Immagine</string>
+    <string name="account_settings_avatar_error_unsupported_format">Sono supportate solo immagini JPEG.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">solo JPEG</string>
 </resources>

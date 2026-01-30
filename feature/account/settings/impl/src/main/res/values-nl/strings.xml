@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogram is te lang</string>
     <string name="account_settings_general_avatar_icon_title">Avatarpictogram</string>
     <string name="account_settings_general_avatar_icon_description">Kies een van de pictogrammen om als uw avatar te gebruiken.</string>
+    <string name="account_settings_general_avatar_image_title">Avatarafbeelding</string>
+    <string name="account_settings_general_avatar_image_description">Kies een afbeelding voor uw account.</string>
+    <string name="account_settings_general_avatar_image_select">Afbeelding selecteren</string>
+    <string name="account_settings_avatar_error_unsupported_format">Alleen JPEG-afbeeldingen worden ondersteund.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Alleen JPEG</string>
 </resources>

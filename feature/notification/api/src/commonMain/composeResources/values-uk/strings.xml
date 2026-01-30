@@ -34,8 +34,8 @@
     <string name="notification_action_archive">Архівувати</string>
     <string name="notification_action_archive_all">Архівувати всі</string>
     <string name="notification_action_spam">Спам</string>
-    <string name="notification_authentication_incoming_server_error_text">Не вдалося автентифікацію для %1$s. Оновіть налаштування сервера вхідної пошти.</string>
-    <string name="notification_authentication_outgoing_server_error_text">Не вдалося автентифікацію для %1$s. Оновіть налаштування сервера вихідної пошти.</string>
+    <string name="notification_authentication_incoming_server_error_text">Помилка автентифікації для %1$s. Оновіть налаштування сервера вхідної пошти.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Помилка автентифікації для %1$s. Оновіть налаштування сервера вихідної пошти.</string>
     <string name="notification_bg_sync_text">%1$s: %2$s</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one">%1$d нове повідомлення</item>

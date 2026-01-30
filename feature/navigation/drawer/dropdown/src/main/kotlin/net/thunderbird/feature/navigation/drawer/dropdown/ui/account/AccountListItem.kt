@@ -19,7 +19,6 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.feature.account.avatar.ui.Avatar
 import net.thunderbird.feature.account.avatar.ui.AvatarSize
-import net.thunderbird.feature.account.avatar.ui.rememberCompatAvatar
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountAvatar
@@ -35,9 +34,7 @@ internal fun AccountListItem(
     modifier: Modifier = Modifier,
 ) {
     val color = getDisplayAccountColor(account)
-    val name = getDisplayAccountName(account)
     val avatar = getDisplayAccountAvatar(account)
-    val compatAvatar = rememberCompatAvatar(avatar, name)
 
     NavigationDrawerItem(
         label = { AccountLabel(account = account) },
@@ -48,7 +45,7 @@ internal fun AccountListItem(
             .height(MainTheme.sizes.large),
         icon = {
             Avatar(
-                avatar = compatAvatar,
+                avatar = avatar,
                 color = color,
                 size = AvatarSize.MEDIUM,
             )

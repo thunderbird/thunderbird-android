@@ -15,3 +15,8 @@ dependencies {
     testImplementation(projects.core.testing)
     testImplementation(libs.robolectric)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

@@ -48,6 +48,8 @@ fun UnreadMessageItem(
     subject: String,
     preview: String,
     receivedAt: LocalDateTime,
+    showAccountIndicator: Boolean,
+    accountIndicatorColor: Color?,
     avatar: @Composable () -> Unit,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
@@ -105,5 +107,7 @@ fun UnreadMessageItem(
         selected = selected,
         maxPreviewLines = maxPreviewLines,
         contentPadding = contentPadding,
+        showAccountIndicator = showAccountIndicator,
+        accountIndicatorColor = accountIndicatorColor,
     )
 }

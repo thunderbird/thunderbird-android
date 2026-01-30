@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="settings_import_title">匯入設定</string>
-    <string name="settings_import_pick_document_button">選擇檔案</string>
+    <string name="settings_import_pick_document_button">選取檔案</string>
     <string name="settings_import_button">匯入</string>
     <string name="settings_import_success_generic">設定匯入成功</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->

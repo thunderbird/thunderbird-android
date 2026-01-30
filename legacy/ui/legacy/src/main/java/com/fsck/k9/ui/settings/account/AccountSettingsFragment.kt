@@ -7,8 +7,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.core.net.toUri
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
@@ -76,7 +80,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         preferenceManager.preferenceDataStore = dataStore
         setPreferencesFromResource(R.xml.account_settings, rootKey)
         title = preferenceScreen.title
-        setHasOptionsMenu(true)
 
         initializeGeneralSettings()
         initializeIncomingServer()
@@ -100,6 +103,31 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         requireActivity().title = title
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.account_settings_option, menu)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        R.id.delete_account -> {
+                            onDeleteAccount()
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED,
+        )
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -116,24 +144,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             } else {
                 maybeUpdateNotificationPreferences(account)
             }
-        }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.account_settings_option, menu)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.delete_account -> {
-                onDeleteAccount()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -392,7 +402,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private fun loadFolders(account: LegacyAccountDto) {
         viewModel.getFolders(account).observe(this@AccountSettingsFragment) { remoteFolderInfo ->
             if (remoteFolderInfo != null) {
-                setFolders(PREFERENCE_AUTO_EXPAND_FOLDER, remoteFolderInfo.folders)
+                setFolders(PREFERENCE_AUTO_SELECT_FOLDER, remoteFolderInfo.folders)
                 setFolders(PREFERENCE_ARCHIVE_FOLDER, remoteFolderInfo, FolderType.ARCHIVE)
                 setFolders(PREFERENCE_DRAFTS_FOLDER, remoteFolderInfo, FolderType.DRAFTS)
                 setFolders(PREFERENCE_SENT_FOLDER, remoteFolderInfo, FolderType.SENT)
@@ -480,7 +490,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_OPENPGP_KEY = "openpgp_key"
         private const val PREFERENCE_AUTOCRYPT_TRANSFER = "autocrypt_transfer"
         internal const val PREFERENCE_FOLDERS = "folders"
-        private const val PREFERENCE_AUTO_EXPAND_FOLDER = "account_setup_auto_expand_folder"
+        private const val PREFERENCE_AUTO_SELECT_FOLDER = "auto_select_folder"
         private const val PREFERENCE_SUBSCRIBED_FOLDERS_ONLY = "subscribed_folders_only"
         private const val PREFERENCE_ARCHIVE_FOLDER = "archive_folder"
         private const val PREFERENCE_DRAFTS_FOLDER = "drafts_folder"

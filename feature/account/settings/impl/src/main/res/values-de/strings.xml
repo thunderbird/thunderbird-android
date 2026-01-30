@@ -8,14 +8,19 @@
     <string name="account_settings_general_avatar_option_monogram">Monogramm</string>
     <string name="account_settings_general_name_description">Der mit deinem Konto verknüpfte Name.</string>
     <string name="account_settings_general_color_description">Farbe, in der das Konto in den Konten- und Ordnerlisten dargestellt wird.</string>
-    <string name="account_settings_general_avatar_title">Avatar</string>
-    <string name="account_settings_general_avatar_description">Wähle aus, wie dein Konto-Avatar angezeigt werden soll.</string>
+    <string name="account_settings_general_avatar_title">Profilbild</string>
+    <string name="account_settings_general_avatar_description">Wähle aus, wie dein Kontoprofilbild angezeigt werden soll.</string>
     <string name="account_settings_general_name_error_empty">Name darf nicht leer sein</string>
     <string name="account_settings_general_name_error_too_long">Name ist zu lang</string>
-    <string name="account_settings_general_avatar_monogram_title">Avatar-Monogramm</string>
-    <string name="account_settings_general_avatar_monogram_description">Das Monogramm, das als dein Avatar verwendet wird.</string>
+    <string name="account_settings_general_avatar_monogram_title">Monogramm des Profils</string>
+    <string name="account_settings_general_avatar_monogram_description">Das Monogramm, das als dein Profilbild verwendet wird.</string>
     <string name="account_settings_general_avatar_monogram_error_empty">Monogramm darf nicht leer sein</string>
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogramm ist zu lang</string>
-    <string name="account_settings_general_avatar_icon_title">Avatar-Symbol</string>
-    <string name="account_settings_general_avatar_icon_description">Wähle eines der Symbole als deinen Avatar aus.</string>
+    <string name="account_settings_general_avatar_icon_title">Symbol des Profils</string>
+    <string name="account_settings_general_avatar_icon_description">Wähle eines der Symbole als dein Profilbild aus.</string>
+    <string name="account_settings_general_avatar_image_title">Profilbild</string>
+    <string name="account_settings_general_avatar_image_description">Wähle ein Bild aus, das dein Konto repräsentiert.</string>
+    <string name="account_settings_general_avatar_image_select">Bild auswählen</string>
+    <string name="account_settings_avatar_error_unsupported_format">Es werden nur JPEG-Bilder unterstützt.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Nur JPEG</string>
 </resources>

@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_title">La carpeta Enviats no existeix</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Per desar aquest correu després d\'enviar-lo, estableix una carpeta d\'Enviats a la Configuració del compte.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Assignar carpeta d\'Enviats</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Cancel·la</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Envia i suprimeix</string>
 </resources>

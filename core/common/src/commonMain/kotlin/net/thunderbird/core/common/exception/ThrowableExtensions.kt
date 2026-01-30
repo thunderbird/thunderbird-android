@@ -2,7 +2,7 @@
 
 package net.thunderbird.core.common.exception
 
-val Throwable.rootCauseMassage: String?
+val Throwable.rootCauseMessage: String?
     get() {
         var rootCause = this
         var nextCause: Throwable? = null

@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import net.thunderbird.core.ui.setting.SettingValue
-import net.thunderbird.core.ui.setting.dialog.ui.components.list.SettingItemLayout
+import net.thunderbird.core.ui.setting.component.list.item.SettingItemLayout
 
 @Composable
 internal fun TextItem(

@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_oauth_sign_in_description">সাইন ইন করতে আমরা আপনাকে আপনার ইমেল প্রোভাইডারের কাছে পাঠিয়ে দেব।আপনাকে অ্যাপটিকে আপনার ইমেল অ্যাকাউন্ট ব্যবহারের অনুমতি দিতে হবে।</string>
+</resources>

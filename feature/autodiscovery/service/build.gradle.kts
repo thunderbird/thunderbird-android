@@ -11,3 +11,8 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kxml2)
 }
+
+codeCoverage {
+    branchCoverage = 64
+    lineCoverage = 60
+}

@@ -12,7 +12,7 @@ class FakeAccountProfileRepository(
 
     override fun getAll(): Flow<List<AccountProfile>> = profiles
 
-    override fun getById(accountId: AccountId): Flow<AccountProfile?> {
+    override fun getById(id: AccountId): Flow<AccountProfile?> {
         TODO("Not yet implemented")
     }
 

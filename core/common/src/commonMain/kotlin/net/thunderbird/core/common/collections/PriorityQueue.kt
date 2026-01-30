@@ -31,7 +31,7 @@ package net.thunderbird.core.common.collections
 class PriorityQueue<T>(
     private val comparator: Comparator<in T>,
     elements: List<T> = emptyList(),
-) : AbstractQueue<T>() {
+) : BaseQueue<T>() {
     private val heap = elements.toMutableList()
 
     init {

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -28,6 +29,7 @@ import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.layout.onPlaced
@@ -53,6 +55,7 @@ import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.core.ui.compose.common.date.LocalDateTimeConfiguration
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.core.ui.compose.designsystem.molecule.message.AccountIndicatorIcon
 
 private const val WEEK_DAYS = 7
 
@@ -68,6 +71,8 @@ private const val WEEK_DAYS = 7
  * @param preview The message preview text.
  * @param action A composable function to display actions related to the message (e.g., star).
  * @param receivedAt The date and time the message was received.
+ * @param showAccountIndicator Whether or not account indicator for universal inbox is shown.
+ * @param accountIndicatorColor The color of the account indicator, if shown.
  * @param onClick A callback function to be invoked when the message item is clicked.
  * @param onLongClick A lambda function to be invoked when the message item is long-clicked.
  * @param onLeadingClick A callback function to be invoked when the leading content is clicked.
@@ -92,6 +97,8 @@ internal fun MessageItem(
     preview: CharSequence,
     action: @Composable () -> Unit,
     receivedAt: LocalDateTime,
+    showAccountIndicator: Boolean,
+    accountIndicatorColor: Color?,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     onLeadingClick: () -> Unit,
@@ -141,10 +148,8 @@ internal fun MessageItem(
                     .weight(1f)
                     .onPlaced { contentStart = it.positionInParent().x },
             ) {
-                sender()
-                CompositionLocalProvider(LocalContentColor provides colors.subjectColor) {
-                    subject()
-                }
+                SenderRow(showAccountIndicator, accountIndicatorColor) { sender() }
+                SubjectRow(colors.subjectColor) { subject() }
                 Spacer(modifier = Modifier.height(MainTheme.spacings.half))
                 PreviewText(preview = preview, maxLines = maxPreviewLines)
             }
@@ -156,6 +161,36 @@ internal fun MessageItem(
                 modifier = Modifier.heightIn(min = MainTheme.sizes.large),
             )
         }
+    }
+}
+
+@Composable
+private fun SenderRow(
+    showAccountIndicator: Boolean,
+    accountIndicatorColor: Color?,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.defaultMinSize(
+            minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT,
+        ),
+    ) {
+        if (showAccountIndicator && accountIndicatorColor != null) {
+            AccountIndicatorIcon(accountIndicatorColor)
+        }
+        content()
+    }
+}
+
+@Composable
+private fun SubjectRow(
+    subjectColor: Color,
+    content: @Composable () -> Unit,
+) {
+    CompositionLocalProvider(LocalContentColor provides subjectColor) {
+        content()
     }
 }
 

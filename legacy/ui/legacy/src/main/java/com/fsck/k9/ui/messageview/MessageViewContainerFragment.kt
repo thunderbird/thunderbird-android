@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuHost
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -28,6 +29,7 @@ class MessageViewContainerFragment : Fragment() {
         set(value) {
             field = value
             setMenuVisibility(value)
+            (requireActivity() as MenuHost).invalidateMenu()
         }
 
     private var showAccountIndicator: Boolean = true
@@ -58,8 +60,6 @@ class MessageViewContainerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setHasOptionsMenu(true)
-
         messageReference = if (savedInstanceState == null) {
             MessageReference.parse(arguments?.getString(ARG_REFERENCE))
                 ?: error("Missing argument $ARG_REFERENCE")
@@ -78,7 +78,7 @@ class MessageViewContainerFragment : Fragment() {
 
         fragmentListener = try {
             context as MessageViewContainerListener
-        } catch (e: ClassCastException) {
+        } catch (_: ClassCastException) {
             throw ClassCastException("This fragment must be attached to a MessageViewContainerListener")
         }
     }
@@ -349,8 +349,8 @@ private fun RecyclerView.reduceHorizontalDragSensitivity(
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 when (direction) {
-                    ItemTouchHelper.LEFT -> viewPager.currentItem = viewPager.currentItem + 1
-                    ItemTouchHelper.RIGHT -> viewPager.currentItem = viewPager.currentItem - 1
+                    ItemTouchHelper.LEFT -> viewPager.currentItem += 1
+                    ItemTouchHelper.RIGHT -> viewPager.currentItem -= 1
                 }
             }
 

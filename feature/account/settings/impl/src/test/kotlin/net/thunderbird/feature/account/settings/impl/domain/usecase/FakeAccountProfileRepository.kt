@@ -19,7 +19,7 @@ internal class FakeAccountProfileRepository(
         TODO("Not yet implemented")
     }
 
-    override fun getById(accountId: AccountId): Flow<AccountProfile?> {
+    override fun getById(id: AccountId): Flow<AccountProfile?> {
         return accountProfile
     }
 

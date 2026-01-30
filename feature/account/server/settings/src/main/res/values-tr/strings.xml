@@ -32,4 +32,5 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">Parolanızı burada görmek için cihazınızda ekran kilidini etkinleştirin.</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Geçersiz IP veya ana makine adı</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">İstemci bilgilerini gönder</string>
+    <string name="account_server_settings_password_authentication_failed">Kimlik doğrulama başarısız!</string>
 </resources>

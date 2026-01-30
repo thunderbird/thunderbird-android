@@ -10,9 +10,5 @@ interface PermissionsDomainContract {
         fun interface CheckPermission {
             operator fun invoke(permission: Permission): PermissionState
         }
-
-        fun interface HasRuntimePermissions {
-            operator fun invoke(): Boolean
-        }
     }
 }
