@@ -44,7 +44,7 @@ git pull
 git config merge.ours.driver true
 git config merge.merge_gradle.driver "python3 scripts/ci/merges/merge_gradle.py %A %B"
 set +e
-git merge "origin/${from_branch}"
+git merge -Xtheirs "origin/${from_branch}" 2>&1 | grep --color=always -E '\bCONFLICT\b|$'
 ret=$?
 set +x
 
