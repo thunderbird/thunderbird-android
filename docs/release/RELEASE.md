@@ -180,22 +180,22 @@ The following steps are taken when merging main into beta:
 - The main branch is locked and cannot be changed during the merge
 - You will let them know when the merge is complete and main is re-opened
 3. Review merge results and ensure correctness
-4. Ensure feature flags are following the rules
-5. Push the merge
+4. Push the merge
+5. Update milestones (must be done before version increment in main)
+- Open a new milestone for the new version
+- Close the oldest milestone
+- There should always be 3 milestones open (main, beta, release)
 6. Submit a pull request that increments the version in main
-7. Open a new milestone for the new version on github
-8. Once the version increment is merged into main, unlock the branch
-9. Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion and that main is re-opened
+7. Once the version increment is merged into main, unlock the branch
+8. Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion and that main is re-opened
 
 The following steps are taken when merging beta into release:
 1. Send a message to the #tb-mobile-dev:mozilla.org matrix channel to let them know:
 - You will be performing the merge from beta into release
 - You will let them know when the merge is complete
 2. Review merge results and ensure correctness
-3. Ensure feature flags are following the rules
-4. Push the merge
-5. Close the milestone for the version that was previously in release
-6. Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion
+3. Push the merge
+4. Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion
 
 Merges are performed with the `do_merge.sh` script.
 
