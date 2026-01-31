@@ -1,6 +1,6 @@
 # use env to provide properties:
 # env:
-#    EMAIL_ADDRESS: "demo@example.com"
+#    EMAIL_ADDRESS: "johntest5890@gmail.com"
 #    ACCOUNT_NAME: "Demo Account"
 #    DISPLAY_NAME: "Demo User"
 
@@ -12,36 +12,33 @@ appId: net.thunderbird.android.beta
 - tapOn:
     id: "account_setup_email_address_input"
 - waitForAnimationToEnd:
-    timeout: 500
+    timeout: 800
 - inputText: ${EMAIL_ADDRESS}
 - tapOn:
     id: "account_setup_next_button"
 
-## Configuration not found - tap next
+## Configuration was found - sign in with google
 - tapOn:
-    id: "account_setup_next_button"
+    text: "Sign in with Google"
+
+## Grant access to your Google Account
+- runFlow:
+    file: ../shared/grant_google_account_access.yml
 
 ## Wait for auto-discovery to complete
 - waitForAnimationToEnd:
-    timeout: 500
-
-## Enter the password --> the test will fail because the Server is '.servername.com' instead of 'servername.com'
-- tapOn:
-    text: "Password"
-- waitForAnimationToEnd:
-    timeout: 500
-- inputText: "password"
-- tapOn:
-    id: "account_setup_next_button"
-
-## Wait for server validation
-- waitForAnimationToEnd:
-    timeout: 3000
+    timeout: 1500
 
 ## Display options
-- tapOn:
+- longPressOn:
     id: "account_setup_display_options_account_name_input"
-- eraseText
+- runFlow:
+    label: Select All
+    when:
+      visible: 'Select All'
+    commands:
+      - tapOn: 'Select All'
+      - eraseText: 1
 - inputText: ${ACCOUNT_NAME}
 - tapOn:
     id: "account_setup_display_options_display_name_input"
@@ -54,6 +51,5 @@ appId: net.thunderbird.android.beta
     timeout: 500
 - tapOn:
     id: "account_setup_next_button"
-
 - waitForAnimationToEnd:
     timeout: 500
