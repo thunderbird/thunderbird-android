@@ -41,6 +41,7 @@ import net.thunderbird.core.preference.NotificationQuickDelete;
 import net.thunderbird.core.preference.SplitViewMode;
 import net.thunderbird.core.preference.SubTheme;
 import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsKt;
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat;
 import net.thunderbird.core.preference.interaction.PostRemoveNavigation;
 import net.thunderbird.core.preference.network.NetworkSettingsKt;
 import net.thunderbird.core.preference.storage.Storage;
@@ -339,6 +340,9 @@ class GeneralSettingsDescriptions {
         ));
         s.put("messageViewBodyContentType", Settings.versions(
             new V(109, new EnumSetting<>(BodyContentType.class, BodyContentType.TEXT_HTML))
+        ));
+        s.put("messageListDateTimeFormat", Settings.versions(
+            new V(110, new EnumSetting<>(MessageListDateTimeFormat.class, MessageListDateTimeFormat.Contextual))
         ));
 
         // TODO: Add a way to properly support feature-specific settings.

@@ -44,20 +44,9 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.theme2.LocalContentColor
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.format
-import kotlinx.datetime.format.Padding
-import kotlinx.datetime.format.char
-import kotlinx.datetime.toLocalDateTime
-import net.thunderbird.core.ui.compose.common.date.LocalDateTimeConfiguration
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.designsystem.molecule.message.AccountIndicatorIcon
-
-private const val WEEK_DAYS = 7
 
 /**
  * Displays a single message item.
@@ -96,7 +85,7 @@ internal fun MessageItem(
     subject: @Composable () -> Unit,
     preview: CharSequence,
     action: @Composable () -> Unit,
-    receivedAt: LocalDateTime,
+    receivedAt: String,
     showAccountIndicator: Boolean,
     accountIndicatorColor: Color?,
     onClick: () -> Unit,
@@ -254,7 +243,7 @@ private fun SelectedIcon(
 
 @Composable
 private fun TrailingElements(
-    receivedAt: LocalDateTime,
+    receivedAt: String,
     action: @Composable (() -> Unit),
     hasAttachments: Boolean,
     modifier: Modifier = Modifier,
@@ -277,41 +266,8 @@ private fun TrailingElements(
 
 @Composable
 private fun MessageItemDate(
-    receivedAt: LocalDateTime,
+    receivedAt: String,
     modifier: Modifier = Modifier,
 ) {
-    val dateTimeConfiguration = LocalDateTimeConfiguration.current
-    val formatter = LocalDateTime.Format {
-        @OptIn(ExperimentalTime::class)
-        val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-        when {
-            now.date == receivedAt.date -> {
-                hour()
-                char(':')
-                minute()
-            }
-
-            now.year != receivedAt.year -> {
-                year()
-                char('/')
-                monthNumber()
-                char('/')
-                day()
-            }
-
-            now.month == receivedAt.month && now.day - receivedAt.date.day < WEEK_DAYS -> {
-                dayOfWeek(dateTimeConfiguration.dayOfWeekNames)
-            }
-
-            else -> {
-                monthName(dateTimeConfiguration.monthNames)
-                char(' ')
-                day(padding = Padding.ZERO)
-            }
-        }
-    }
-    val formatted = remember(receivedAt) {
-        receivedAt.format(formatter)
-    }
-    TextLabelSmall(text = formatted, modifier = modifier)
+    TextLabelSmall(text = receivedAt, modifier = modifier)
 }

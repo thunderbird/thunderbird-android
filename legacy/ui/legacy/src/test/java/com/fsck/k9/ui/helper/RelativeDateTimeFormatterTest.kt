@@ -11,6 +11,7 @@ import java.util.TimeZone
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import net.thunderbird.core.android.testing.RobolectricTest
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.testing.TestClock
 import org.junit.Before
 import org.junit.Test
@@ -28,6 +29,9 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
     private val clock = TestClock()
     private val dateTimeFormatter = RelativeDateTimeFormatter(context, clock)
 
+    private val contextualDateTimeFormat = MessageListDateTimeFormat.Contextual
+    private val fullDateTimeFormat = MessageListDateTimeFormat.Full
+
     private val zoneId = "Europe/Berlin"
 
     @Before
@@ -40,7 +44,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
         setClockTo("2020-05-17T23:58")
         val date = "2020-05-18T00:03".toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatDate(date)
+        val displayDate = dateTimeFormatter.formatDate(date, contextualDateTimeFormat)
 
         assertThat(displayDate).isEqualTo("May 18")
     }
@@ -50,9 +54,19 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
         setClockTo("2020-05-17T15:42")
         val date = "2020-05-17T15:41".toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatDate(date)
+        val displayDate = dateTimeFormatter.formatDate(date, contextualDateTimeFormat)
 
         assertThat(displayDate).isEqualTo("3:41 PM")
+    }
+
+    @Test
+    fun oneMinuteAgoFullDate_shouldReturnFullDate() {
+        setClockTo("2020-05-17T15:42")
+        val date = "2020-05-17T15:41".toEpochMillis()
+
+        val displayDate = dateTimeFormatter.formatDate(date, fullDateTimeFormat)
+
+        assertThat(displayDate).isEqualTo("5/17/2020, 3:41 PM")
     }
 
     @Test
@@ -60,9 +74,19 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
         setClockTo("2020-05-17T15:42")
         val date = "2020-05-17T09:42".toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatDate(date)
+        val displayDate = dateTimeFormatter.formatDate(date, contextualDateTimeFormat)
 
         assertThat(displayDate).isEqualTo("9:42 AM")
+    }
+
+    @Test
+    fun sixHoursAgoFull_shouldReturnFullDateTime() {
+        setClockTo("2020-05-17T15:42")
+        val date = "2020-05-17T09:42".toEpochMillis()
+
+        val displayDate = dateTimeFormatter.formatDate(date, fullDateTimeFormat)
+
+        assertThat(displayDate).isEqualTo("5/17/2020, 9:42 AM")
     }
 
     @Test
@@ -70,7 +94,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
         setClockTo("2020-05-17T15:42")
         val date = "2020-05-16T15:42".toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatDate(date)
+        val displayDate = dateTimeFormatter.formatDate(date, contextualDateTimeFormat)
 
         assertThat(displayDate).isEqualTo("Sat")
     }
@@ -80,7 +104,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
         setClockTo("2020-05-17T15:42")
         val date = "2020-05-11T09:42".toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatDate(date)
+        val displayDate = dateTimeFormatter.formatDate(date, contextualDateTimeFormat)
 
         assertThat(displayDate).isEqualTo("Mon")
     }
@@ -90,7 +114,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
         setClockTo("2020-05-17T15:42")
         val date = "2020-05-10T17:42".toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatDate(date)
+        val displayDate = dateTimeFormatter.formatDate(date, contextualDateTimeFormat)
 
         assertThat(displayDate).isEqualTo("May 10")
     }
@@ -100,7 +124,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
         setClockTo("2020-05-17T15:42")
         val date = "2020-05-10T13:42".toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatDate(date)
+        val displayDate = dateTimeFormatter.formatDate(date, contextualDateTimeFormat)
 
         assertThat(displayDate).isEqualTo("May 10")
     }
@@ -110,7 +134,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
         setClockTo("2020-05-17T15:42")
         val date = LocalDate.parse("2020-01-01").atStartOfDay().toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatDate(date)
+        val displayDate = dateTimeFormatter.formatDate(date, contextualDateTimeFormat)
 
         assertThat(displayDate).isEqualTo("Jan 1")
     }
@@ -120,9 +144,19 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
         setClockTo("2020-05-17T15:42")
         val date = LocalDateTime.parse("2019-12-31T23:59").toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatDate(date)
+        val displayDate = dateTimeFormatter.formatDate(date, contextualDateTimeFormat)
 
         assertThat(displayDate).isEqualTo("12/31/2019")
+    }
+
+    @Test
+    fun endOfLastYearFull_shouldReturnDateAndTime() {
+        setClockTo("2020-05-17T15:42")
+        val date = LocalDateTime.parse("2019-12-31T23:59").toEpochMillis()
+
+        val displayDate = dateTimeFormatter.formatDate(date, fullDateTimeFormat)
+
+        assertThat(displayDate).isEqualTo("12/31/2019, 11:59 PM")
     }
 
     private fun setClockTo(time: String) {

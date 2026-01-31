@@ -314,6 +314,13 @@
     <!-- Value for the message list density setting. Uses more whitespace than the default to separate list items. -->
     <string name="general_settings_ui_density_relaxed">Relaxed</string>
 
+    <!-- Message List Date/Time format title -->
+    <string name="general_settings_message_list_date_time_format_title">Date/Time Format</string>
+    <!-- Message List Date/Time format default setting option: contextual -->
+    <string name="general_settings_message_list_date_time_format_contextual">Contextual</string>
+    <!-- Message List Date/Time format setting option: full -->
+    <string name="general_settings_message_list_date_time_format_full">Full</string>
+
     <string name="global_settings_privacy_hide_useragent">Hide mail client</string>
     <string name="global_settings_privacy_hide_useragent_detail">Remove User-Agent from mail headers</string>
     <string name="global_settings_privacy_hide_timezone">Hide timezone</string>

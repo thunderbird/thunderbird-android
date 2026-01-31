@@ -18,10 +18,6 @@ import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 private class ActiveMessageItemPrevParamCol : CollectionPreviewParameterProvider<MessageItemPrevParams>(
     collection = listOf(
@@ -118,7 +114,7 @@ private fun PreviewDefault(
             sender = params.sender,
             subject = params.subject,
             preview = params.preview,
-            receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
+            receivedAt = "12:34",
             showAccountIndicator = true,
             accountIndicatorColor = Color.Red,
             avatar = {
@@ -158,7 +154,7 @@ private fun PreviewCompact(
             sender = params.sender,
             subject = params.subject,
             preview = params.preview,
-            receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
+            receivedAt = "12:34",
             showAccountIndicator = true,
             accountIndicatorColor = Color.Red,
             avatar = { },
@@ -187,7 +183,7 @@ private fun PreviewRelaxed(
             sender = params.sender,
             subject = params.subject,
             preview = params.preview,
-            receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
+            receivedAt = "12:34",
             showAccountIndicator = true,
             accountIndicatorColor = Color.Red,
             avatar = { },
@@ -216,7 +212,7 @@ private fun PreviewDefaultWithoutAccountIndicator(
             sender = params.sender,
             subject = params.subject,
             preview = params.preview,
-            receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
+            receivedAt = "12:34",
             avatar = {
                 Box(
                     modifier = Modifier

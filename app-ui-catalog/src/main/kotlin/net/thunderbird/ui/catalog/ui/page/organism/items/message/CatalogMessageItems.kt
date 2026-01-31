@@ -36,11 +36,7 @@ import app.k9mail.core.ui.compose.designsystem.organism.snackbar.rememberSnackba
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlin.math.roundToInt
 import kotlin.random.Random
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.launch
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.core.ui.compose.designsystem.organism.message.ActiveMessageItem
 import net.thunderbird.core.ui.compose.designsystem.organism.message.JunkMessageItem
 import net.thunderbird.core.ui.compose.designsystem.organism.message.NewMessageItem
@@ -73,6 +69,7 @@ fun LazyGridScope.messageItems() {
                     randomizeAttachment = false,
                     maxPreviewLines = 2,
                     showAccountIndicator = true,
+                    dateTime = "Today",
                 ),
             )
         }
@@ -81,6 +78,7 @@ fun LazyGridScope.messageItems() {
                 config = config,
                 onSenderChange = { config = config.copy(sender = it) },
                 onSubjectChange = { config = config.copy(subject = it) },
+                onDateTimeChange = { config = config.copy(dateTime = it) },
                 onPreviewChange = { config = config.copy(preview = it) },
                 onHideSectionChange = { config = config.copy(hideSection = it) },
                 onHideAvatarChange = { config = config.copy(hideAvatar = it) },
@@ -105,6 +103,7 @@ private data class MessageItemConfiguration(
     val randomizeAttachment: Boolean,
     val maxPreviewLines: Int,
     val showAccountIndicator: Boolean,
+    val dateTime: String,
 )
 
 @Suppress("LongMethod")
@@ -114,6 +113,7 @@ private fun MessageItemConfiguration(
     modifier: Modifier = Modifier,
     onSenderChange: (String) -> Unit = {},
     onSubjectChange: (String) -> Unit = {},
+    onDateTimeChange: (String) -> Unit = {},
     onPreviewChange: (String) -> Unit = {},
     onHideSectionChange: (Boolean) -> Unit = {},
     onHideAvatarChange: (Boolean) -> Unit = {},
@@ -170,6 +170,15 @@ private fun MessageItemConfiguration(
                 .padding(horizontal = MainTheme.spacings.double),
         )
         TextFieldOutlined(
+            value = config.dateTime,
+            label = "Date/Time",
+            onValueChange = onDateTimeChange,
+            isSingleLine = true,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = MainTheme.spacings.double),
+        )
+        TextFieldOutlined(
             value = config.preview,
             label = "Preview",
             onValueChange = onPreviewChange,
@@ -217,8 +226,7 @@ private fun ColumnScope.CatalogNewMessageItem(
         sender = config.sender,
         subject = config.subject,
         preview = config.preview,
-        receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now()
-            .toLocalDateTime(TimeZone.currentSystemDefault()),
+        receivedAt = config.dateTime,
         favourite = favourite,
         avatar = {
             if (!config.hideAvatar) {
@@ -274,8 +282,7 @@ private fun ColumnScope.CatalogUnreadMessageItem(
         sender = config.sender,
         subject = config.subject,
         preview = config.preview,
-        receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now()
-            .toLocalDateTime(TimeZone.currentSystemDefault()),
+        receivedAt = config.dateTime,
         favourite = favourite,
         avatar = {
             if (!config.hideAvatar) {
@@ -331,8 +338,7 @@ private fun ColumnScope.CatalogReadMessageItem(
         sender = config.sender,
         subject = config.subject,
         preview = config.preview,
-        receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now()
-            .toLocalDateTime(TimeZone.currentSystemDefault()),
+        receivedAt = config.dateTime,
         favourite = favourite,
         avatar = {
             if (!config.hideAvatar) {
@@ -388,8 +394,7 @@ private fun ColumnScope.CatalogActiveMessageItem(
         sender = config.sender,
         subject = config.subject,
         preview = config.preview,
-        receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now()
-            .toLocalDateTime(TimeZone.currentSystemDefault()),
+        receivedAt = config.dateTime,
         favourite = favourite,
         avatar = {
             if (!config.hideAvatar) {
@@ -444,8 +449,7 @@ private fun ColumnScope.CatalogJunkMessageItem(
         sender = config.sender,
         subject = config.subject,
         preview = config.preview,
-        receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now()
-            .toLocalDateTime(TimeZone.currentSystemDefault()),
+        receivedAt = config.dateTime,
         avatar = {
             if (!config.hideAvatar) {
                 Avatar(

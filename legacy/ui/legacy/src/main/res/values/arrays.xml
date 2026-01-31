@@ -44,4 +44,8 @@
         <item>Relaxed</item>
     </string-array>
 
+    <string-array name="message_list_date_time_format_values">
+        <item>Contextual</item>
+        <item>Full</item>
+    </string-array>
 </resources>
