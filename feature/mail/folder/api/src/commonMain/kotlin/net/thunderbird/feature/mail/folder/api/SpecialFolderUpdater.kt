@@ -9,6 +9,11 @@ interface SpecialFolderUpdater {
      */
     fun updateSpecialFolders()
 
+    /**
+     * Updates all account's special folders synchronously. If POP3, only Inbox is updated.
+     */
+    fun updateSpecialFoldersSync()
+
     fun setSpecialFolder(type: FolderType, folderId: Long?, selection: SpecialFolderSelection)
 
     interface Factory {

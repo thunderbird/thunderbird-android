@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountManager
@@ -21,7 +22,7 @@ import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
  */
 // TODO: Find a better way to deal with local-only special folders
 @Suppress("TooManyFunctions")
-class DefaultSpecialFolderUpdater private constructor(
+class DefaultSpecialFolderUpdater(
     private val accountManager: LegacyAccountManager,
     private val folderRepository: FolderRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
@@ -29,25 +30,36 @@ class DefaultSpecialFolderUpdater private constructor(
     private val coroutineScope: CoroutineScope,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : SpecialFolderUpdater {
+
     override fun updateSpecialFolders() {
         coroutineScope.launch(ioDispatcher) {
-            var account: LegacyAccount = getAccountById(accountId)
-            val folders = folderRepository.getRemoteFolders(accountId)
-
-            account = updateInbox(account, folders)
-
-            if (!account.isPop3()) {
-                updateSpecialFolder(account, FolderType.ARCHIVE, folders)
-                updateSpecialFolder(account, FolderType.DRAFTS, folders)
-                updateSpecialFolder(account, FolderType.SENT, folders)
-                updateSpecialFolder(account, FolderType.SPAM, folders)
-                updateSpecialFolder(account, FolderType.TRASH, folders)
-            }
-
-            account = removeImportedSpecialFoldersData(account)
-
-            updateAccount(account)
+            updateSpecialFoldersSynchronous()
         }
+    }
+
+    override fun updateSpecialFoldersSync() {
+        runBlocking(ioDispatcher) {
+            updateSpecialFoldersSynchronous()
+        }
+    }
+
+    private fun updateSpecialFoldersSynchronous() {
+        var account: LegacyAccount = getAccountById(accountId)
+        val folders = folderRepository.getRemoteFolders(accountId)
+
+        account = updateInbox(account, folders)
+
+        if (!account.isPop3()) {
+            account = updateSpecialFolderSynchronous(account, FolderType.ARCHIVE, folders)
+            account = updateSpecialFolderSynchronous(account, FolderType.DRAFTS, folders)
+            account = updateSpecialFolderSynchronous(account, FolderType.SENT, folders)
+            account = updateSpecialFolderSynchronous(account, FolderType.SPAM, folders)
+            account = updateSpecialFolderSynchronous(account, FolderType.TRASH, folders)
+        }
+
+        account = removeImportedSpecialFoldersData(account)
+
+        updateAccount(account)
     }
 
     private fun updateInbox(account: LegacyAccount, folders: List<RemoteFolder>): LegacyAccount {
@@ -71,32 +83,38 @@ class DefaultSpecialFolderUpdater private constructor(
         return updated
     }
 
-    private fun updateSpecialFolder(account: LegacyAccount, type: FolderType, folders: List<RemoteFolder>) {
+    private fun updateSpecialFolderSynchronous(
+        account: LegacyAccount,
+        type: FolderType,
+        folders: List<RemoteFolder>,
+    ): LegacyAccount {
         val importedServerId = getImportedSpecialFolderServerId(account, type)
         if (importedServerId != null) {
             val folderId = folders.firstOrNull { it.serverId == importedServerId }?.id
             if (folderId != null) {
-                setSpecialFolder(type, folderId, getSpecialFolderSelection(account, type))
-                return
+                return setSpecialFolderSynchronous(account, type, folderId, getSpecialFolderSelection(account, type))
             }
         }
 
-        when (getSpecialFolderSelection(account, type)) {
+        return when (getSpecialFolderSelection(account, type)) {
             SpecialFolderSelection.AUTOMATIC -> {
                 val specialFolder = specialFolderSelectionStrategy.selectSpecialFolder(folders, type)
-                setSpecialFolder(type, specialFolder?.id, SpecialFolderSelection.AUTOMATIC)
+                setSpecialFolderSynchronous(account, type, specialFolder?.id, SpecialFolderSelection.AUTOMATIC)
             }
 
             SpecialFolderSelection.MANUAL -> {
                 if (folders.none { it.id == getSpecialFolderId(account, type) }) {
-                    setSpecialFolder(type, null, SpecialFolderSelection.MANUAL)
+                    val specialFolder = specialFolderSelectionStrategy.selectSpecialFolder(folders, type)
+                    setSpecialFolderSynchronous(account, type, specialFolder?.id, SpecialFolderSelection.AUTOMATIC)
+                } else {
+                    account
                 }
             }
         }
     }
 
     private fun getSpecialFolderSelection(account: LegacyAccount, type: FolderType) = when (type) {
-        FolderType.ARCHIVE -> account.copy().archiveFolderSelection
+        FolderType.ARCHIVE -> account.archiveFolderSelection
         FolderType.DRAFTS -> account.draftsFolderSelection
         FolderType.SENT -> account.sentFolderSelection
         FolderType.SPAM -> account.spamFolderSelection
@@ -124,54 +142,66 @@ class DefaultSpecialFolderUpdater private constructor(
 
     override fun setSpecialFolder(type: FolderType, folderId: Long?, selection: SpecialFolderSelection) {
         coroutineScope.launch(ioDispatcher) {
-            var account = getAccountById(accountId)
-            if (getSpecialFolderId(account, type) == folderId) return@launch
-
-            account = when (type) {
-                FolderType.ARCHIVE -> {
-                    account.copy(
-                        archiveFolderId = folderId,
-                        archiveFolderSelection = selection,
-                    )
-                }
-
-                FolderType.DRAFTS -> {
-                    account.copy(
-                        draftsFolderId = folderId,
-                        draftsFolderSelection = selection,
-                    )
-                }
-
-                FolderType.SENT -> {
-                    account.copy(
-                        sentFolderId = folderId,
-                        sentFolderSelection = selection,
-                    )
-                }
-
-                FolderType.SPAM -> {
-                    account.copy(
-                        spamFolderId = folderId,
-                        spamFolderSelection = selection,
-                    )
-                }
-
-                FolderType.TRASH -> {
-                    account.copy(
-                        trashFolderId = folderId,
-                        trashFolderSelection = selection,
-                    )
-                }
-
-                else -> throw AssertionError("Unsupported: $type")
-            }
-
-            updateAccount(account)
-
-            if (folderId != null) {
-                folderRepository.setVisible(accountId, folderId, true)
+            val account = getAccountById(accountId)
+            val updatedAccount = setSpecialFolderSynchronous(account, type, folderId, selection)
+            if (updatedAccount != account) {
+                updateAccount(updatedAccount)
             }
         }
+    }
+
+    private fun setSpecialFolderSynchronous(
+        account: LegacyAccount,
+        type: FolderType,
+        folderId: Long?,
+        selection: SpecialFolderSelection,
+    ): LegacyAccount {
+        if (getSpecialFolderId(account, type) == folderId) return account
+
+        val updatedAccount = when (type) {
+            FolderType.ARCHIVE -> {
+                account.copy(
+                    archiveFolderId = folderId,
+                    archiveFolderSelection = selection,
+                )
+            }
+
+            FolderType.DRAFTS -> {
+                account.copy(
+                    draftsFolderId = folderId,
+                    draftsFolderSelection = selection,
+                )
+            }
+
+            FolderType.SENT -> {
+                account.copy(
+                    sentFolderId = folderId,
+                    sentFolderSelection = selection,
+                )
+            }
+
+            FolderType.SPAM -> {
+                account.copy(
+                    spamFolderId = folderId,
+                    spamFolderSelection = selection,
+                )
+            }
+
+            FolderType.TRASH -> {
+                account.copy(
+                    trashFolderId = folderId,
+                    trashFolderSelection = selection,
+                )
+            }
+
+            else -> throw AssertionError("Unsupported: $type")
+        }
+
+        if (folderId != null) {
+            folderRepository.setVisible(accountId, folderId, true)
+        }
+
+        return updatedAccount
     }
 
     private fun removeImportedSpecialFoldersData(account: LegacyAccount) = account.copy(
