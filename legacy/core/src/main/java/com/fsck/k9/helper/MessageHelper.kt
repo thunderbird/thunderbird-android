@@ -3,7 +3,6 @@ package com.fsck.k9.helper
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
-import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import app.k9mail.core.android.common.contact.ContactRepository
 import com.fsck.k9.CoreResourceProvider
@@ -153,8 +152,9 @@ class MessageHelper(
                     }
                 }
             }
-            return if (!TextUtils.isEmpty(address.personal) && !isSpoofAddress(address.personal)) {
-                address.personal
+            val personal = address.personal
+            return if (!personal.isNullOrEmpty() && !isSpoofAddress(personal)) {
+                personal
             } else {
                 address.address
             }

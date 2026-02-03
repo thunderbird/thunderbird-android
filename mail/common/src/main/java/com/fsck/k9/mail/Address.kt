@@ -1,331 +1,288 @@
+package com.fsck.k9.mail
 
-package com.fsck.k9.mail;
+import com.fsck.k9.mail.helper.Rfc822Tokenizer
+import com.fsck.k9.mail.helper.TextUtils.isEmpty
+import java.io.Serializable
+import java.util.regex.Pattern
+import net.thunderbird.core.logging.legacy.Log
+import org.apache.james.mime4j.MimeException
+import org.apache.james.mime4j.codec.DecodeMonitor
+import org.apache.james.mime4j.codec.EncoderUtil
+import org.apache.james.mime4j.field.address.DefaultAddressParser
+import org.jetbrains.annotations.VisibleForTesting
 
+class Address @JvmOverloads constructor(
+    address: String,
+    personal: String? = null,
+    parse: Boolean = true,
+) : Serializable {
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
+    @Suppress("MemberNameEqualsClassName")
+    var address: String = address
+        private set
 
-import net.thunderbird.core.logging.legacy.Log;
-import com.fsck.k9.mail.helper.Rfc822Token;
-import com.fsck.k9.mail.helper.Rfc822Tokenizer;
-import com.fsck.k9.mail.helper.TextUtils;
-import org.apache.james.mime4j.MimeException;
-import org.apache.james.mime4j.codec.DecodeMonitor;
-import org.apache.james.mime4j.codec.EncoderUtil;
-import org.apache.james.mime4j.dom.address.Mailbox;
-import org.apache.james.mime4j.dom.address.MailboxList;
-import org.apache.james.mime4j.field.address.DefaultAddressParser;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.VisibleForTesting;
+    var personal: String? = personal
+        private set
 
-public class Address implements Serializable {
-    private static final Pattern ATOM = Pattern.compile("^(?:[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]|\\s)+$");
+    constructor(address: Address) : this(address.address, address.personal)
 
-    /**
-     * Immutable empty {@link Address} array
-     */
-    private static final Address[] EMPTY_ADDRESS_ARRAY = new Address[0];
-
-    @NotNull
-    private String mAddress;
-
-    private String mPersonal;
-
-    public Address(Address address) {
-        mAddress = address.mAddress;
-        mPersonal = address.mPersonal;
-    }
-
-    public Address(String address, String personal) {
-        this(address, personal, true);
-    }
-
-    public Address(String address) {
-        this(address, null, true);
-    }
-
-    private Address(String address, String personal, boolean parse) {
-        if (address == null) {
-            throw new IllegalArgumentException("address");
-        }
+    init {
         if (parse) {
-            Rfc822Token[] tokens =  Rfc822Tokenizer.tokenize(address);
-            if (tokens.length > 0) {
-                Rfc822Token token = tokens[0];
-                if (token.getAddress() == null) {
-                    throw new IllegalArgumentException("token.getAddress()");
+            val tokens = Rfc822Tokenizer.tokenize(address)
+            if (tokens.isNotEmpty()) {
+                val token = tokens[0]
+                this.address = requireNotNull(token.address) {
+                    "token.getAddress()"
                 }
-                mAddress = token.getAddress();
-                String name = token.getName();
-                if (!TextUtils.isEmpty(name)) {
+                val name = token.name
+                this.personal = if (name.isNullOrEmpty()) {
                     /*
                      * Don't use the "personal" argument if "address" is of the form:
                      * James Bond <james.bond@mi6.uk>
                      *
                      * See issue 2920
                      */
-                    mPersonal = name;
+                    personal?.trim()
                 } else {
-                    mPersonal = (personal == null) ? null : personal.trim();
+                    name
                 }
             } else {
-                Log.e("Invalid address: %s", address);
+                Log.e("Invalid address: %s", address)
             }
+        }
+    }
+
+    val hostname: String?
+        get() {
+            val hostIdx = address.lastIndexOf("@")
+            return if (hostIdx == -1) null else address.substring(hostIdx + 1)
+        }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as Address
+        if (address != other.address) return false
+        if (personal != other.personal) return false
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = address.hashCode()
+        result = 31 * result + (personal?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String =
+        if (personal.isNullOrBlank()) {
+            address
         } else {
-            mAddress = address;
-            mPersonal = personal;
-        }
-    }
-
-    public String getAddress() {
-        return mAddress;
-    }
-
-    public String getHostname() {
-        if (mAddress == null) {
-            return null;
+            quoteAtoms(personal) + " <$address>"
         }
 
-        int hostIdx = mAddress.lastIndexOf("@");
-
-        if (hostIdx == -1) {
-            return null;
+    fun toEncodedString(): String =
+        if (personal.isNullOrBlank()) {
+            address
+        } else {
+            EncoderUtil.encodeAddressDisplayName(personal) + " <$address>"
         }
-
-        return mAddress.substring(hostIdx + 1);
-    }
-
-    public String getPersonal() {
-        return mPersonal;
-    }
 
     /**
-     * Parse a comma separated list of email addresses in human readable format and return an
-     * array of Address objects, RFC-822 encoded.
+     * Returns true if either the localpart or the domain of this
+     * address contains any non-ASCII characters, and false if all
+     * characters used are within ASCII.
      *
-     * @param addressList
-     * @return An array of 0 or more Addresses.
+     * Note that this returns false for an address such as "Naïve
+     * Assumption &lt;naive.assumption@example.com&gt;", because both
+     * localpart and domain are all-ASCII. There's an ï there, but
+     * it's not in either localpart or domain.
      */
-    public static Address[] parseUnencoded(String addressList) {
-        List<Address> addresses = new ArrayList<>();
-        if (!TextUtils.isEmpty(addressList)) {
-            Rfc822Token[] tokens = Rfc822Tokenizer.tokenize(addressList);
-            for (Rfc822Token token : tokens) {
-                String address = token.getAddress();
-                if (!TextUtils.isEmpty(address)) {
-                    String name = TextUtils.isEmpty(token.getName()) ? null : token.getName();
-                    addresses.add(new Address(token.getAddress(), name, false));
+    fun needsUnicode(): Boolean {
+        var i = address.length - 1
+        while (i >= 0 && address[i].code < ASCII_LIMIT) i--
+        return i >= 0
+    }
+
+    companion object {
+        private const val serialVersionUID = 1L
+
+        /**
+         * Any character with code ≥ 128 is non-ASCII
+         */
+        private const val ASCII_LIMIT = 128
+
+        private val ATOM: Pattern = Pattern.compile("^(?:[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]|\\s)+$")
+
+        /**
+         * Immutable empty [Address] array
+         */
+        private val EMPTY_ADDRESS_ARRAY = emptyArray<Address>()
+
+        /**
+         * Parse a comma separated list of email addresses in human readable format and return an
+         * array of Address objects, RFC-822 encoded.
+         *
+         * @param addressList
+         * @return An array of 0 or more Addresses.
+         */
+        @JvmStatic
+        fun parseUnencoded(addressList: String?): Array<Address> {
+            if (isEmpty(addressList)) return EMPTY_ADDRESS_ARRAY
+
+            val tokens = Rfc822Tokenizer.tokenize(addressList)
+            return tokens
+                .filterNot { it.address.isNullOrBlank() }
+                .map { Address(requireNotNull(it.address), it.name, false) }
+                .toTypedArray()
+        }
+
+        /**
+         * Parse a comma separated list of addresses in RFC-822 format and return an
+         * array of Address objects.
+         *
+         * @param addressList
+         * @return An array of 0 or more Addresses.
+         */
+        @JvmStatic
+        fun parse(addressList: String?): Array<Address> {
+            if (isEmpty(addressList)) return EMPTY_ADDRESS_ARRAY
+
+            return try {
+                DefaultAddressParser.DEFAULT
+                    .parseAddressList(addressList, DecodeMonitor.SILENT)
+                    .flatten()
+                    .map { mailbox ->
+                        Address(
+                            address = "${mailbox.localPart}@${mailbox.domain}",
+                            personal = mailbox.name,
+                            parse = false,
+                        )
+                    }
+                    .toTypedArray()
+            } catch (pe: MimeException) {
+                Log.e(pe, "MimeException in Address.parse()")
+                // broken addresses are never added to the resulting array
+                EMPTY_ADDRESS_ARRAY
+            }
+        }
+
+        @JvmStatic
+        fun toString(addresses: Array<Address>): String =
+            if (addresses.isEmpty()) {
+                ""
+            } else {
+                addresses.joinToString(", ")
+            }
+
+        /**
+         * Unpacks an address list previously packed with packAddressList()
+         * @param addressList Packed address list.
+         * @return Unpacked list.
+         */
+        @JvmStatic
+        fun unpack(addressList: String?): Array<Address> {
+            if (addressList == null) return EMPTY_ADDRESS_ARRAY
+
+            val addresses = mutableListOf<Address>()
+
+            val length = addressList.length
+            var pairStartIndex = 0
+
+            while (pairStartIndex < length) {
+                var pairEndIndex = addressList.indexOf(",\u0001", pairStartIndex)
+                if (pairEndIndex == -1) {
+                    pairEndIndex = length
+                }
+                val addressEndIndex = addressList.indexOf(";\u0001", pairStartIndex)
+
+                var address: String?
+                var personal: String? = null
+
+                if (addressEndIndex == -1 || addressEndIndex > pairEndIndex) {
+                    address = addressList.substring(pairStartIndex, pairEndIndex)
+                } else {
+                    address = addressList.substring(pairStartIndex, addressEndIndex)
+                    personal = addressList.substring(addressEndIndex + 2, pairEndIndex)
+                }
+                addresses.add(Address(address, personal, false))
+                pairStartIndex = pairEndIndex + 2
+            }
+            return addresses.toTypedArray()
+        }
+
+        /**
+         * Packs an address list into a String that is very quick to read
+         * and parse. Packed lists can be unpacked with unpackAddressList()
+         * The packed list is a ",\u0001" separated list of:
+         * address;\u0001personal
+         * @param addresses Array of addresses to pack.
+         * @return Packed addresses.
+         */
+        fun pack(addresses: Array<Address>?): String {
+            if (addresses == null) return ""
+
+            val sb = StringBuilder()
+            var i = 0
+            val count = addresses.size
+            while (i < count) {
+                val address = addresses[i]
+                sb.append(address.address)
+                var personal = address.personal
+                if (personal != null) {
+                    sb.append(";\u0001")
+                    // Escape quotes in the address part on the way in
+                    personal = personal.replace("\"".toRegex(), "\\\"")
+                    sb.append(personal)
+                }
+                if (i < count - 1) {
+                    sb.append(",\u0001")
+                }
+                i++
+            }
+            return sb.toString()
+        }
+
+        /**
+         * Quote a string, if necessary, based upon the definition of an "atom," as defined by RFC2822
+         * (http://tools.ietf.org/html/rfc2822#section-3.2.4). Strings that consist purely of atoms are
+         * left unquoted; anything else is returned as a quoted string.
+         * @param text String to quote.
+         * @return Possibly quoted string.
+         */
+        @JvmStatic
+        fun quoteAtoms(text: String?): String? =
+            text?.let {
+                if (ATOM.matcher(it).matches()) {
+                    text
+                } else {
+                    quoteString(it)
                 }
             }
-        }
-        return addresses.toArray(EMPTY_ADDRESS_ARRAY);
-    }
 
-    /**
-     * Parse a comma separated list of addresses in RFC-822 format and return an
-     * array of Address objects.
-     *
-     * @param addressList
-     * @return An array of 0 or more Addresses.
-     */
-    public static Address[] parse(String addressList) {
-        if (TextUtils.isEmpty(addressList)) {
-            return EMPTY_ADDRESS_ARRAY;
-        }
-        List<Address> addresses = new ArrayList<>();
-        try {
-            MailboxList parsedList =  DefaultAddressParser.DEFAULT.parseAddressList(addressList, DecodeMonitor.SILENT).flatten();
-
-            for (int i = 0, count = parsedList.size(); i < count; i++) {
-                Mailbox mailbox = parsedList.get(i);
-                addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName(), false));
+        /**
+         * Ensures that the given string starts and ends with the double quote character.
+         * The string is not modified in any way except to add the double quote character to start
+         * and end if it's not already there.
+         * sample -> "sample"
+         * "sample" -> "sample"
+         * ""sample"" -> ""sample""
+         * "sample"" -> "sample"
+         * sa"mp"le -> "sa"mp"le"
+         * "sa"mp"le" -> "sa"mp"le"
+         * (empty string) -> ""
+         * " -> """
+         * @param s
+         * @return
+         */
+        @JvmStatic
+        @VisibleForTesting
+        fun quoteString(s: String?): String? =
+            s?.let {
+                if (s.matches("^\".*\"$".toRegex())) {
+                    s
+                } else {
+                    "\"" + s + "\""
+                }
             }
-        } catch (MimeException pe) {
-            Log.e(pe, "MimeException in Address.parse()");
-            // broken addresses are never added to the resulting array
-        }
-        return addresses.toArray(EMPTY_ADDRESS_ARRAY);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Address address = (Address) o;
-
-        if (mAddress != null ? !mAddress.equals(address.mAddress) : address.mAddress != null) {
-            return false;
-        }
-
-        return mPersonal != null ? mPersonal.equals(address.mPersonal) : address.mPersonal == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        if (mAddress != null) {
-            hash += mAddress.hashCode();
-        }
-        if (mPersonal != null) {
-            hash += 3 * mPersonal.hashCode();
-        }
-        return hash;
-    }
-
-    @Override
-    public String toString() {
-        if (!TextUtils.isEmpty(mPersonal)) {
-            return quoteAtoms(mPersonal) + " <" + mAddress + ">";
-        } else {
-            return mAddress;
-        }
-    }
-
-    public static String toString(Address[] addresses) {
-        if (addresses == null) {
-            return null;
-        }
-        return TextUtils.join(", ", addresses);
-    }
-
-    public String toEncodedString() {
-        if (!TextUtils.isEmpty(mPersonal)) {
-            return EncoderUtil.encodeAddressDisplayName(mPersonal) + " <" + mAddress + ">";
-        } else {
-            return mAddress;
-        }
-    }
-
-    /**
-     * Unpacks an address list previously packed with packAddressList()
-     * @param addressList Packed address list.
-     * @return Unpacked list.
-     */
-    public static Address[] unpack(String addressList) {
-        if (addressList == null) {
-            return new Address[] { };
-        }
-        List<Address> addresses = new ArrayList<>();
-        int length = addressList.length();
-        int pairStartIndex = 0;
-        int pairEndIndex = 0;
-        int addressEndIndex = 0;
-        while (pairStartIndex < length) {
-            pairEndIndex = addressList.indexOf(",\u0001", pairStartIndex);
-            if (pairEndIndex == -1) {
-                pairEndIndex = length;
-            }
-            addressEndIndex = addressList.indexOf(";\u0001", pairStartIndex);
-            String address = null;
-            String personal = null;
-            if (addressEndIndex == -1 || addressEndIndex > pairEndIndex) {
-                address = addressList.substring(pairStartIndex, pairEndIndex);
-            } else {
-                address = addressList.substring(pairStartIndex, addressEndIndex);
-                personal = addressList.substring(addressEndIndex + 2, pairEndIndex);
-            }
-            addresses.add(new Address(address, personal, false));
-            pairStartIndex = pairEndIndex + 2;
-        }
-        return addresses.toArray(new Address[addresses.size()]);
-    }
-
-    /**
-     * Packs an address list into a String that is very quick to read
-     * and parse. Packed lists can be unpacked with unpackAddressList()
-     * The packed list is a ",\u0001" separated list of:
-     * address;\u0001personal
-     * @param addresses Array of addresses to pack.
-     * @return Packed addresses.
-     */
-    public static String pack(Address[] addresses) {
-        if (addresses == null) {
-            return null;
-        }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0, count = addresses.length; i < count; i++) {
-            Address address = addresses[i];
-            sb.append(address.getAddress());
-            String personal = address.getPersonal();
-            if (personal != null) {
-                sb.append(";\u0001");
-                // Escape quotes in the address part on the way in
-                personal = personal.replaceAll("\"", "\\\"");
-                sb.append(personal);
-            }
-            if (i < count - 1) {
-                sb.append(",\u0001");
-            }
-        }
-        return sb.toString();
-    }
-
-    /**
-     * Quote a string, if necessary, based upon the definition of an "atom," as defined by RFC2822
-     * (http://tools.ietf.org/html/rfc2822#section-3.2.4). Strings that consist purely of atoms are
-     * left unquoted; anything else is returned as a quoted string.
-     * @param text String to quote.
-     * @return Possibly quoted string.
-     */
-    public static String quoteAtoms(final String text) {
-        if (ATOM.matcher(text).matches()) {
-            return text;
-        } else {
-            return quoteString(text);
-        }
-    }
-
-    /**
-     * Ensures that the given string starts and ends with the double quote character.
-     * The string is not modified in any way except to add the double quote character to start
-     * and end if it's not already there.
-     * sample -> "sample"
-     * "sample" -> "sample"
-     * ""sample"" -> ""sample""
-     * "sample"" -> "sample"
-     * sa"mp"le -> "sa"mp"le"
-     * "sa"mp"le" -> "sa"mp"le"
-     * (empty string) -> ""
-     * " -> """
-     * @param s
-     * @return
-     */
-    @VisibleForTesting
-    static String quoteString(String s) {
-        if (s == null) {
-            return null;
-        }
-        if (!s.matches("^\".*\"$")) {
-            return "\"" + s + "\"";
-        } else {
-            return s;
-        }
-    }
-
-    /**
-     *  Returns true if either the localpart or the domain of this
-     *  address contains any non-ASCII characters, and false if all
-     *  characters used are within ASCII.
-     *
-     *  Note that this returns false for an address such as "Naïve
-     *  Assumption &lt;naive.assumption@example.com&gt;", because both
-     *  localpart and domain are all-ASCII. There's an ï there, but
-     *  it's not in either localpart or domain.
-     */
-    public boolean needsUnicode() {
-        if (mAddress == null)
-            return false;
-        int i = mAddress.length()-1;
-        while (i >= 0 && mAddress.charAt(i) < 128)
-            i--;
-        return i >= 0;
     }
 }

@@ -16,7 +16,7 @@ object HostNameUtils {
      *
      * @return Unobscured host name if `hostName` is valid.
      */
-    fun isLegalHostNameOrIP(hostName: String): String? {
+    fun isLegalHostNameOrIP(hostName: String?): String? {
         /*
          RFC 1123:
          Whenever a user inputs the identity of an Internet host, it SHOULD
@@ -26,7 +26,7 @@ object HostNameUtils {
          looking it up in the Domain Name System.
          */
 
-        return isLegalIPAddress(hostName) ?: isLegalHostName(hostName)
+        return hostName?.let { isLegalIPAddress(it) ?: isLegalHostName(it) }
     }
 
     /**
@@ -34,8 +34,8 @@ object HostNameUtils {
      *
      * @return Unobscured canonicalized IPv4 or IPv6 address if it is valid, otherwise `null`.
      */
-    fun isLegalIPAddress(hostName: String): String? {
-        return isLegalIPv4Address(hostName) ?: isLegalIPv6Address(hostName)
+    fun isLegalIPAddress(hostName: String?): String? {
+        return hostName?.let { isLegalIPv4Address(it) ?: isLegalIPv6Address(it) }
     }
 
     /**
