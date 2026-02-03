@@ -5,6 +5,16 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="16.0" versioncode="39032" date="2026-02-02">
+        <change>Default folder expansion behavior can be controlled by setting</change>
+        <change>Preferred content type can be switched between text/plain and text/html</change>
+        <change>Switching folders required an excessive number of clicks</change>
+        <change>Fix various edge-to-edge issues</change>
+        <change>Application crashed at startup</change>
+        <change>Application crashed on Pixel 10 Pro when returning to message list</change>
+        <change>OAuth SMTP authentication failed with some Microsoft servers</change>
+        <change>Deleted/read messages in unified inbox may not update until manual refresh</change>
+    </release>
     <release version="15.0" versioncode="39031" date="2026-01-05">
         <change>Default sync interval has been changed from 60 minutes to 15 minutes</change>
         <change>Use application icon in push notification messages</change>
