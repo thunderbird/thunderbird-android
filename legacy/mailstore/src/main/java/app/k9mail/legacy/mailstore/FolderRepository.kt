@@ -9,6 +9,10 @@ import net.thunderbird.feature.mail.folder.api.RemoteFolder
 
 /**
  * Provides access to local and remote folder information and management.
+ *
+ * TODO: Refactor FolderRepository into focused contracts.
+ *       Problem: This interface mixes unrelated responsibilities (read models, remote listing, push tracking,
+ *       and per-flag mutations), which makes it hard to test and evolve.
  */
 @Suppress("TooManyFunctions")
 interface FolderRepository {
