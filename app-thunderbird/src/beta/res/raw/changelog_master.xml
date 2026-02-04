@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="17.0b1" versioncode="42" date="2026-02-04">
+        <change>Account avatar customization</change>
+        <change>Foldable device support with split-screen</change>
+        <change>Email messages can be printed</change>
+        <change>Unified folder account indicator identifies message ownership</change>
+        <change>Display account avatar in message notifications</change>
+        <change>Improved email rendering enabled enabled for beta</change>
+        <change>Deleted/read messages in unified inbox may not update until manual refresh</change>
+        <change>Edge-to-edge regressions affected account setup screens</change>
+        <change>Tap behavior was unreliable in recipient fields</change>
+        <change>Incorrect icon was displayed for &#39;Find folder&#39;</change>
+        <change>Device orientiation change duplicated recipient field text</change>
+        <change>Copied link text incorrectly included CSS</change>
+        <change>Unselecting &#39;Colorize contact pictures&#39; setting did not persist</change>
+        <change>Some general settings were not preserved after export and import</change>
+    </release>
     <release version="16.0b4" versioncode="41" date="2026-01-20">
         <change>OAuth SMTP authentication failed with some Microsoft servers</change>
     </release>

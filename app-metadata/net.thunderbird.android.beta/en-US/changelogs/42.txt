@@ -1,0 +1,14 @@
+Thunderbird version 17.0b1
+
+New:
+- Account avatar customization
+- Foldable device support
+- Email messages can be printed
+- Unified folder account indicator
+- Display account avatar in message notifications
+- Improved email rendering enabled for beta
+
+Fixed:
+- Deleted/read messages in unified inbox may not update until refresh
+- Tap behavior was unreliable in recipient fields
+- Device orientiation change duplicated recipient field text
