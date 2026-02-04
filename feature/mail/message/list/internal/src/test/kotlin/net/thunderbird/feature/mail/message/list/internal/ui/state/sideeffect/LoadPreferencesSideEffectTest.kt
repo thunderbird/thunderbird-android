@@ -17,10 +17,10 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.feature.mail.message.list.domain.DomainContract.UseCase.GetMessageListPreferences
 import net.thunderbird.feature.mail.message.list.preferences.ActionRequiringUserConfirmation
-import net.thunderbird.feature.mail.message.list.preferences.MessageListDateTimeFormat
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
@@ -137,7 +137,7 @@ class LoadPreferencesSideEffectTest {
         showFavouriteButton: Boolean = false,
         senderAboveSubject: Boolean = false,
         excerptLines: Int = 1,
-        dateTimeFormat: MessageListDateTimeFormat = MessageListDateTimeFormat.Auto,
+        dateTimeFormat: MessageListDateTimeFormat = MessageListDateTimeFormat.Contextual,
         useVolumeKeyNavigation: Boolean = false,
         serverSearchLimit: Int = 0,
         actionRequiringUserConfirmation: ImmutableSet<ActionRequiringUserConfirmation> = persistentSetOf(),

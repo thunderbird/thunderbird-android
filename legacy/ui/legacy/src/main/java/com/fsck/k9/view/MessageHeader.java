@@ -41,6 +41,7 @@ import com.fsck.k9.ui.messageview.RecipientNamesView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textview.MaterialTextView;
 import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat;
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager;
 
 
@@ -234,7 +235,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
 
         if (message.getSentDate() != null) {
-            dateView.setText(relativeDateTimeFormatter.formatDate(message.getSentDate().getTime()));
+            dateView.setText(
+                relativeDateTimeFormatter.formatDate(
+                    message.getSentDate().getTime(),
+                    MessageListDateTimeFormat.Contextual
+                )
+            );
         } else {
             dateView.setText("");
         }

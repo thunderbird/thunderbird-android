@@ -18,12 +18,6 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import kotlin.time.Clock
-import kotlin.time.Duration.Companion.days
-import kotlin.time.Duration.Companion.minutes
-import kotlin.time.ExperimentalTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.core.ui.compose.designsystem.atom.button.FavouriteButtonIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 
@@ -35,9 +29,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             preview = LoremIpsum(words = 3).values.joinToString(),
             hasAttachments = false,
             selected = false,
-            receivedAt = @OptIn(ExperimentalTime::class) Clock.System
-                .now()
-                .toLocalDateTime(TimeZone.currentSystemDefault()),
+            receivedAt = "12:34",
         ),
         MessageItemPrevParams(
             sender = "Sender Name",
@@ -45,10 +37,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             preview = LoremIpsum(words = 3).values.joinToString(),
             hasAttachments = false,
             selected = false,
-            receivedAt = @OptIn(ExperimentalTime::class) Clock.System
-                .now()
-                .minus(1.minutes)
-                .toLocalDateTime(TimeZone.currentSystemDefault()),
+            receivedAt = "12:34",
         ),
         MessageItemPrevParams(
             sender = "Sender Name",
@@ -56,10 +45,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             preview = LoremIpsum(words = 5).values.joinToString(),
             hasAttachments = true,
             selected = false,
-            receivedAt = @OptIn(ExperimentalTime::class) Clock.System
-                .now()
-                .minus(1.days)
-                .toLocalDateTime(TimeZone.currentSystemDefault()),
+            receivedAt = "12:34",
         ),
         MessageItemPrevParams(
             sender = "Sender Name",
@@ -67,10 +53,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             preview = LoremIpsum(words = 10).values.joinToString(),
             hasAttachments = false,
             selected = true,
-            receivedAt = @OptIn(ExperimentalTime::class) Clock.System
-                .now()
-                .minus(31.days)
-                .toLocalDateTime(TimeZone.currentSystemDefault()),
+            receivedAt = "12:34",
         ),
         MessageItemPrevParams(
             sender = "Sender Name",
@@ -78,10 +61,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             preview = LoremIpsum(words = 20).values.joinToString(),
             hasAttachments = true,
             selected = true,
-            receivedAt = @OptIn(ExperimentalTime::class) Clock.System
-                .now()
-                .minus(365.days)
-                .toLocalDateTime(TimeZone.currentSystemDefault()),
+            receivedAt = "12:34",
         ),
     ),
 )
