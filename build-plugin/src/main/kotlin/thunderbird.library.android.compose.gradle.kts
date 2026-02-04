@@ -9,14 +9,9 @@ plugins {
     id("thunderbird.quality.spotless")
 }
 
-android {
-    buildFeatures {
-        compose = true
-    }
-}
-
 androidComponents {
     beforeVariants(selector().withBuildType("release")) { variantBuilder ->
+        @Suppress("UnstableApiUsage")
         variantBuilder.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = false
         variantBuilder.enableAndroidTest = false
     }
