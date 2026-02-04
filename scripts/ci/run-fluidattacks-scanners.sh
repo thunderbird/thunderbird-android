@@ -11,6 +11,9 @@ command -v docker &> /dev/null || fail "Docker is not installed"
 # Default values
 debug=false
 
+IMAGE_SAST="fluidattacks/sast:latest"
+IMAGE_SCA="fluidattacks/sca:latest"
+
 # Parse command-line arguments
 for arg in "$@"; do
   case $arg in
@@ -25,7 +28,12 @@ for arg in "$@"; do
 done
 
 if [ "$debug" = true ]; then
-  docker run --rm -v "$(pwd)":/repo -it fluidattacks/cli:latest /bin/bash
+  docker run --rm -v "$(pwd)":/repo -it "$IMAGE_SAST" /bin/bash
+  docker run --rm -v "$(pwd)":/repo -it "$IMAGE_SCA" /bin/bash
   exit
 fi
-docker run --rm -v "$(pwd)":/repo fluidattacks/cli:latest skims scan /repo/config/fluidattacks/config.yaml
+
+docker run --rm -v "$(pwd)":/repo "$IMAGE_SAST" \
+  sast scan /repo/config/fluidattacks/config-sast.yaml
+docker run --rm -v "$(pwd)":/repo "$IMAGE_SCA" \
+  sca scan /repo/config/fluidattacks/config-sca.yaml
