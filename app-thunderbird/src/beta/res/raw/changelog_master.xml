@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="17.0b2" versioncode="43" date="2026-02-04">
+        <change>Crash occurred in 17.0b1 split view mode while in landscape</change>
+    </release>
     <release version="17.0b1" versioncode="42" date="2026-02-04">
         <change>Account avatar customization</change>
         <change>Foldable device support with split-screen</change>
