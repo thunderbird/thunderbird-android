@@ -132,6 +132,8 @@ sealed interface SettingValue<T> : Setting {
      * @param id The unique identifier for the setting.
      * @param title A lambda that returns the title of the setting.
      * @param description A lambda that returns the description of the setting. Default is null.
+     * @param displayValueAsSecondaryText When `true`, the currently selected [value]
+     * will be displayed as secondary text in the UI (e.g., subtitle style).
      * @param icon A lambda that returns the icon of the setting as an [ImageVector]. Default is null.
      * @param value The currently selected option.
      * @param options The list of available options to choose from.
