@@ -21,6 +21,9 @@ dependencies {
     implementation(projects.feature.account.avatar.impl)
 
     implementation(projects.core.featureflag)
+    implementation(projects.core.android.account)
+    implementation(projects.feature.mail.account.api)
+    implementation(libs.androidx.compose.material3)
     implementation(projects.core.file)
     implementation(projects.core.outcome)
     implementation(projects.core.validation)
