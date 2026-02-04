@@ -27,9 +27,14 @@ internal fun SelectItem(
             Column(
                 Modifier.weight(1f),
             ) {
-                TextTitleMedium(text = setting.value.title())
-                setting.description()?.let {
-                    TextBodyMedium(text = it)
+                if (setting.displayValueAsSecondaryText) {
+                    TextTitleMedium(text = setting.title())
+                    TextBodyMedium(text = setting.value.title())
+                } else {
+                    TextTitleMedium(text = setting.value.title())
+                    setting.description()?.let {
+                        TextBodyMedium(text = it)
+                    }
                 }
             }
         }
