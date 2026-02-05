@@ -723,20 +723,30 @@ abstract class BaseMessageListFragment :
         startActivity(intent)
     }
 
-    private fun initializeSortSettings() {
+    protected open fun initializeSortSettings() {
         if (isSingleAccountMode) {
             val account = checkNotNull(this.account)
-            sortType = account.sortType
-            sortAscending = account.sortAscending[sortType] ?: sortType.isDefaultAscending
-            sortDateAscending = account.sortAscending[SortType.SORT_DATE] ?: SortType.SORT_DATE.isDefaultAscending
+            updateCurrentSortCriteria(
+                sortType = account.sortType,
+                sortAscending = account.sortAscending[sortType] ?: sortType.isDefaultAscending,
+                sortDateAscending = account.sortAscending[SortType.SORT_DATE] ?: SortType.SORT_DATE.isDefaultAscending,
+            )
         } else {
-            sortType = K9.sortType
-            sortAscending = K9.isSortAscending(sortType)
-            sortDateAscending = K9.isSortAscending(SortType.SORT_DATE)
+            updateCurrentSortCriteria(
+                sortType = K9.sortType,
+                sortAscending = K9.isSortAscending(sortType),
+                sortDateAscending = K9.isSortAscending(SortType.SORT_DATE),
+            )
         }
     }
 
-    private fun loadMessageList(forceUpdate: Boolean = false) {
+    protected fun updateCurrentSortCriteria(sortType: SortType, sortAscending: Boolean, sortDateAscending: Boolean) {
+        this.sortType = sortType
+        this.sortAscending = sortAscending
+        this.sortDateAscending = sortDateAscending
+    }
+
+    protected fun loadMessageList(forceUpdate: Boolean = false) {
         val config = MessageListConfig(
             localSearch,
             showingThreadedList,
@@ -1198,7 +1208,7 @@ abstract class BaseMessageListFragment :
 
     private fun prepareMenu(menu: Menu) {
         menu.findItem(R.id.compose).isVisible = !isShowFloatingActionButton
-        menu.findItem(R.id.set_sort).isVisible = true
+        prepareSortMenu(menu)
         menu.findItem(R.id.select_all).isVisible = true
         menu.findItem(R.id.mark_all_as_read).isVisible = isMarkAllAsReadSupported
         menu.findItem(R.id.empty_spam).isVisible = isShowingSpamFolder
@@ -1214,6 +1224,11 @@ abstract class BaseMessageListFragment :
 
         menu.findItem(R.id.search_remote).isVisible = !isRemoteSearch && isRemoteSearchAllowed
         menu.findItem(R.id.search_everywhere).isVisible = isManualSearch && !localSearch.searchAllAccounts()
+    }
+
+    protected open fun prepareSortMenu(menu: Menu) {
+        menu.findItem(R.id.set_sort).isVisible = true
+        menu.removeItem(R.id.select_sort_criteria)
     }
 
     private fun prepareDebugMenu(menu: Menu) {

@@ -7,8 +7,8 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.FolderServerId
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
+import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
-import net.thunderbird.feature.mail.message.list.ui.state.SortType
 
 interface DomainContract {
     interface UseCase {
@@ -38,12 +38,19 @@ interface DomainContract {
             operator fun invoke(): Flow<MessageListPreferences>
         }
 
-        fun interface GetSortTypes {
-            suspend operator fun invoke(accountIds: Set<AccountId>): Map<AccountId?, SortType>
+        fun interface GetSortCriteriaPerAccount {
+            suspend operator fun invoke(accountIds: Set<AccountId>): Map<AccountId?, SortCriteria>
         }
 
-        fun interface GetDefaultSortType {
-            suspend operator fun invoke(): SortType
+        fun interface GetDefaultSortCriteria {
+            suspend operator fun invoke(): SortCriteria
+        }
+
+        fun interface UpdateSortCriteria {
+            suspend operator fun invoke(
+                accountId: AccountId?,
+                sortCriteria: SortCriteria,
+            ): Outcome<UpdateSortCriteriaOutcome.Success, UpdateSortCriteriaOutcome.Error>
         }
     }
 }
@@ -78,5 +85,12 @@ sealed interface CreateArchiveFolderOutcome {
                 val exception: Exception?,
             ) : SyncError
         }
+    }
+}
+
+sealed interface UpdateSortCriteriaOutcome {
+    data object Success : UpdateSortCriteriaOutcome
+    sealed interface Error {
+        data class AccountNotFound(val accountId: AccountId) : Error
     }
 }
