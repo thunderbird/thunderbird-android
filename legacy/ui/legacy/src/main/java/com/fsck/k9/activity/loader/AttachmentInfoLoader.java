@@ -26,7 +26,7 @@ public class AttachmentInfoLoader  extends AsyncTaskLoader<Attachment> {
 
     public AttachmentInfoLoader(Context context, Attachment attachment) {
         super(context);
-        if (attachment.state != LoadingState.URI_ONLY) {
+        if (attachment.getState() != LoadingState.URI_ONLY) {
             throw new IllegalArgumentException("Attachment provided to metadata loader must be in URI_ONLY state");
         }
 
@@ -48,7 +48,7 @@ public class AttachmentInfoLoader  extends AsyncTaskLoader<Attachment> {
     public Attachment loadInBackground() {
         try {
             Uri uri = sourceAttachment.uri;
-            String contentType = sourceAttachment.contentType;
+            String contentType = sourceAttachment.getContentType();
 
             long size = -1;
             String name = null;

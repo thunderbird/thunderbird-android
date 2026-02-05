@@ -2007,20 +2007,20 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             }
 
             MaterialTextView nameView = view.findViewById(R.id.attachment_name);
-            boolean hasMetadata = (attachment.state != Attachment.LoadingState.URI_ONLY);
+            boolean hasMetadata = (attachment.getState() != Attachment.LoadingState.URI_ONLY);
             if (hasMetadata) {
-                nameView.setText(attachment.name);
+                nameView.setText(attachment.getName());
             } else {
                 nameView.setText(R.string.loading_attachment);
             }
 
-            if (attachment.size != null && attachment.size >= 0) {
+            if (attachment.getSize() != null && attachment.getSize() >= 0) {
                 MaterialTextView sizeView = view.findViewById(R.id.attachment_size);
-                sizeView.setText(sizeFormatter.formatSize(attachment.size));
+                sizeView.setText(sizeFormatter.formatSize(attachment.getSize()));
             }
 
             View progressBar = view.findViewById(R.id.progressBar);
-            boolean isLoadingComplete = (attachment.state == Attachment.LoadingState.COMPLETE);
+            boolean isLoadingComplete = (attachment.getState() == Attachment.LoadingState.COMPLETE);
             if (isLoadingComplete) {
                 if (attachment.isSupportedImage()) {
                     ImageView attachmentTypeView = view.findViewById(R.id.attachment_type);
@@ -2029,7 +2029,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                     ImageView preview = view.findViewById(R.id.attachment_preview);
                     preview.setVisibility(View.VISIBLE);
                     Glide.with(MessageCompose.this)
-                            .load(new File(attachment.filename))
+                            .load(new File(attachment.getFileName()))
                             .centerCrop()
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(preview);
