@@ -1437,6 +1437,8 @@ abstract class BaseMessageListFragment :
     }
 
     fun updateFooterText(text: String?) {
+        if (!::adapter.isInitialized) return
+
         val currentItems = adapter
             .viewItems
             .filter { it !is MessageListViewItem.Footer }
