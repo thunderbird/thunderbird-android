@@ -11,20 +11,22 @@ import android.widget.PopupWindow
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -44,14 +46,16 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import app.k9mail.core.ui.compose.common.mvi.observeWithoutEffect
-import app.k9mail.core.ui.compose.designsystem.atom.DividerVertical
+import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import com.fsck.k9.ui.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
 import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -226,30 +230,34 @@ class MessageListFragment : BaseMessageListFragment() {
             tonalElevation = MainTheme.elevations.level2,
             shape = MainTheme.shapes.medium,
         ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
-                modifier = Modifier.height(IntrinsicSize.Min),
-            ) {
-                SortTypeList(
-                    sortTypes = primarySortTypes,
-                    isSelected = { sortType -> currentSortCriteria.primary == sortType },
-                    onSortTypeClick = { sortType ->
-                        dispatch(
-                            MessageListEvent.ChangeSortCriteria(
-                                accountId = null,
-                                sortCriteria = currentSortCriteria.copy(
-                                    primary = sortType,
-                                    secondary = when {
-                                        sortType in SortCriteria.SecondaryNotRequiredForSortTypes -> null
-                                        else -> SortType.DateDesc
-                                    },
-                                ),
+            SortTypeList(
+                currentSortCriteria = currentSortCriteria,
+                primarySortTypes = primarySortTypes,
+                secondarySortTypes = secondarySortTypes,
+                isSelected = { sortType -> currentSortCriteria.primary == sortType },
+                onSortTypeClick = { sortType ->
+                    dispatch(
+                        MessageListEvent.ChangeSortCriteria(
+                            accountId = null,
+                            sortCriteria = currentSortCriteria.copy(
+                                primary = sortType,
+                                secondary = when {
+                                    sortType in SortCriteria.SecondaryNotRequiredForSortTypes -> null
+                                    else -> SortType.DateDesc
+                                },
                             ),
-                        )
-                    },
-                )
-                SecondarySortOptions(currentSortCriteria, secondarySortTypes, dispatch)
-            }
+                        ),
+                    )
+                },
+                onSecondarySortTypeClick = { sortType ->
+                    dispatch(
+                        MessageListEvent.ChangeSortCriteria(
+                            accountId = null,
+                            sortCriteria = currentSortCriteria.copy(secondary = sortType),
+                        ),
+                    )
+                },
+            )
         }
     }
 
@@ -286,37 +294,32 @@ class MessageListFragment : BaseMessageListFragment() {
 
 @Composable
 private fun SecondarySortOptions(
-    currentSortCriteria: SortCriteria,
+    visible: Boolean,
     secondarySortTypes: ImmutableSet<SortType>,
-    dispatch: (MessageListEvent) -> Unit,
+    isSelected: (SortType) -> Boolean,
+    onSortTypeClick: (SortType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedVisibility(
-        visible = currentSortCriteria.secondary != null,
-        enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
-        exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start),
-        modifier = modifier,
-    ) {
-        if (currentSortCriteria.secondary != null) {
-            Row(
-                modifier = Modifier.wrapContentWidth(
-                    align = Alignment.Start,
-                    unbounded = true,
-                ),
-            ) {
-                DividerVertical()
-                SortTypeList(
-                    sortTypes = secondarySortTypes,
-                    isSelected = { sortType -> currentSortCriteria.secondary == sortType },
-                    onSortTypeClick = { sortType ->
-                        dispatch(
-                            MessageListEvent.ChangeSortCriteria(
-                                accountId = null,
-                                sortCriteria = currentSortCriteria.copy(secondary = sortType),
-                            ),
-                        )
-                    },
-                )
+    if (visible) {
+        Column(modifier = modifier) {
+            SortTypeDivider(
+                label = stringResource(R.string.sort_by_then_by),
+                modifier = Modifier.padding(start = MainTheme.spacings.default),
+            )
+            Column {
+                secondarySortTypes.forEach { sortType ->
+                    SortTypeMenuItem(
+                        sortType = sortType,
+                        selected = isSelected(sortType),
+                        onClick = { onSortTypeClick(sortType) },
+                        contentPadding = PaddingValues(
+                            top = MainTheme.spacings.default,
+                            bottom = MainTheme.spacings.default,
+                            start = MainTheme.spacings.triple,
+                            end = MainTheme.spacings.double,
+                        ),
+                    )
+                }
             }
         }
     }
@@ -324,19 +327,53 @@ private fun SecondarySortOptions(
 
 @Composable
 private fun SortTypeList(
-    sortTypes: ImmutableSet<SortType>,
+    currentSortCriteria: SortCriteria,
+    primarySortTypes: ImmutableSet<SortType>,
     isSelected: (SortType) -> Boolean,
     onSortTypeClick: (SortType) -> Unit,
     modifier: Modifier = Modifier,
+    secondarySortTypes: ImmutableSet<SortType> = persistentSetOf(),
+    onSecondarySortTypeClick: (SortType) -> Unit = {},
 ) {
-    Column(modifier = modifier.width(IntrinsicSize.Max)) {
-        sortTypes.forEach { sortType ->
+    Column(
+        modifier = modifier
+            .width(IntrinsicSize.Min)
+            .widthIn(min = 200.dp)
+            .verticalScroll(state = rememberScrollState()),
+    ) {
+        SortTypeDivider(label = stringResource(R.string.sort_by))
+        primarySortTypes.forEach { sortType ->
             SortTypeMenuItem(
                 sortType = sortType,
                 selected = isSelected(sortType),
                 onClick = { onSortTypeClick(sortType) },
             )
+            val visible = currentSortCriteria.isSecondarySortRequired && isSelected(sortType)
+            AnimatedVisibility(
+                visible = visible,
+                enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
+                exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Top),
+            ) {
+                SecondarySortOptions(
+                    visible = visible,
+                    secondarySortTypes = secondarySortTypes,
+                    isSelected = { sortType -> currentSortCriteria.secondary == sortType },
+                    onSortTypeClick = onSecondarySortTypeClick,
+                )
+            }
         }
+    }
+}
+
+@Composable
+fun SortTypeDivider(label: String, modifier: Modifier = Modifier) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+        modifier = modifier.padding(horizontal = MainTheme.spacings.default),
+    ) {
+        TextLabelMedium(label)
+        DividerHorizontal()
     }
 }
 
@@ -346,6 +383,10 @@ private fun SortTypeMenuItem(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(
+        vertical = MainTheme.spacings.default,
+        horizontal = MainTheme.spacings.double,
+    ),
 ) {
     ClickableSurface(
         onClick = onClick,
@@ -355,7 +396,7 @@ private fun SortTypeMenuItem(
         Row(
             horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(vertical = MainTheme.spacings.default, horizontal = MainTheme.spacings.double),
+            modifier = Modifier.padding(contentPadding),
         ) {
             TextBodyLarge(
                 text = stringResource(sortType.labelResId),

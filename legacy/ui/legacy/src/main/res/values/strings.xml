@@ -610,6 +610,7 @@
     <string name="sort_unattached_first">Messages without attachments first</string>
 
     <string name="sort_by">Sort by…</string>
+    <string name="sort_by_then_by">Then by…</string>
     <string name="sort_by_date">Date</string>
     <string name="sort_by_arrival">Arrival</string>
     <string name="sort_by_subject">Subject</string>

@@ -41,6 +41,8 @@ data class SortCriteria(
         }
     }
 
+    val isSecondarySortRequired: Boolean = primary !in SecondaryNotRequiredForSortTypes
+
     companion object {
         val DateSortTypeOnly = setOf(SortType.DateAsc, SortType.DateDesc)
 
