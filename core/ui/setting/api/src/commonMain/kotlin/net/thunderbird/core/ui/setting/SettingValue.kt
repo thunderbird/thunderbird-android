@@ -143,6 +143,7 @@ sealed interface SettingValue<T> : Setting {
         val title: () -> String,
         val description: () -> String? = { null },
         val icon: () -> ImageVector? = { null },
+        val displayValueAsSecondaryText: Boolean = false,
         override val value: SelectOption,
         val options: ImmutableList<SelectOption>,
     ) : SettingValue<SelectOption> {

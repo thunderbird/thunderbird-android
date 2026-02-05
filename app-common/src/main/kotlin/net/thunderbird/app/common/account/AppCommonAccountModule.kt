@@ -6,9 +6,11 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.app.common.account.data.DefaultAccountProfileLocalDataSource
 import net.thunderbird.app.common.account.data.DefaultLegacyAccountManager
+import net.thunderbird.app.common.account.data.DefaultLegacyAccountRepository
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.android.account.LegacyAccountRepository
 import net.thunderbird.feature.account.avatar.AvatarIcon
 import net.thunderbird.feature.account.avatar.AvatarIconCatalog
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
@@ -71,6 +73,12 @@ internal val appCommonAccountModule = module {
 
     factory<AvatarMonogramCreator> {
         DefaultAvatarMonogramCreator()
+    }
+
+    factory<LegacyAccountRepository> {
+        DefaultLegacyAccountRepository(
+            accountManager = get(),
+        )
     }
 
     factory<AccountSetupExternalContract.AccountCreator> {
