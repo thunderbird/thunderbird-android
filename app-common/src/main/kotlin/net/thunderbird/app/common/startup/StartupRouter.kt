@@ -3,10 +3,10 @@ package net.thunderbird.app.common.startup
 import android.app.Activity
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
-import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.MessageHomeActivity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.account.settings.api.BackgroundAccountRemover
 
 interface StartupRouter {
     fun routeToNextScreen(activity: Activity)

@@ -28,6 +28,7 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Report
 import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material.icons.outlined.Settings
@@ -138,6 +139,7 @@ object Icons {
         val KeyboardArrowUp: ImageVector = Icons.Outlined.KeyboardArrowUp
 
         val Menu: ImageVector = Icons.Outlined.Menu
+        val MoreVert: ImageVector = Icons.Outlined.MoreVert
 
         val OpenInNew: ImageVector = OutlinedOpenInNewIcon
         val Outbox: ImageVector = Icons.Filled.Outbox
