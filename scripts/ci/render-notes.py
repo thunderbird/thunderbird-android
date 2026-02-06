@@ -87,9 +87,11 @@ def render_notes(
                     tag = note["tag"].lower().capitalize()
                     if tag not in render_data["releases"][vers]["notes"]:
                         render_data["releases"][vers]["notes"][tag] = []
-                    render_data["releases"][vers]["notes"][tag].append(
-                        note["note"].strip()
-                    )
+                    note_entry = {
+                        "text": note["note"].strip(),
+                        "issues": note.get("issues", []),
+                    }
+                    render_data["releases"][vers]["notes"][tag].append(note_entry)
                     render_data["releases"][vers]["long_notes"].append(note["note"].strip())
                 if "short_note" in note:
                     tag = note["tag"].lower().capitalize()
