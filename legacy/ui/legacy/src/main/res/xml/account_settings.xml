@@ -253,6 +253,16 @@
             android:title="@string/archive_folder_label"
             />
 
+        <ListPreference
+            android:key="archive_granularity"
+            android:title="@string/archive_granularity_label"
+            android:summary="@string/archive_granularity_summary"
+            android:entries="@array/archive_granularity_entries"
+            android:entryValues="@array/archive_granularity_values"
+            android:dependency="archive_folder"
+            app:useSimpleSummaryProvider="true"
+            />
+
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="drafts_folder"
             app:useSimpleSummaryProvider="true"
