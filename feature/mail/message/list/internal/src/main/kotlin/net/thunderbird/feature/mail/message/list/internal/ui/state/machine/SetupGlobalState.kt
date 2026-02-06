@@ -3,6 +3,7 @@ package net.thunderbird.feature.mail.message.list.internal.ui.state.machine
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.collections.immutable.toPersistentMap
 import net.thunderbird.core.common.state.builder.StateMachineBuilder
+import net.thunderbird.feature.mail.message.list.ui.event.FolderEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 
@@ -26,6 +27,10 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.globalState
 
         transition<MessageListEvent.SwipeActionsLoaded> { state, (swipeActions) ->
             state.withMetadata { copy(swipeActions = swipeActions.toImmutableMap()) }
+        }
+
+        transition<FolderEvent.FolderLoaded> { state, (folder) ->
+            state.withMetadata { copy(folder = folder) }
         }
     }
 }

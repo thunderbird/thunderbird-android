@@ -222,7 +222,8 @@ abstract class BaseMessageListFragment :
 
     private var account: LegacyAccount? = null
 
-    private var currentFolder: FolderInfoHolder? = null
+    protected var currentFolder: FolderInfoHolder? = null
+        private set
     private var remoteSearchFuture: Future<*>? = null
     private var extraSearchResults: List<String>? = null
     private var threadTitle: String? = null
@@ -287,6 +288,8 @@ abstract class BaseMessageListFragment :
         }
 
     private lateinit var messageListAppearance: MessageListAppearance
+    private var pendingMessageListInfo: MessageListInfo? = null
+    private var pendingAdapterDependentFunctionExecution = mutableListOf<() -> Unit>()
 
     fun isSearchViewCollapsed(): Boolean {
         return searchView?.isIconified != false
@@ -440,8 +443,6 @@ abstract class BaseMessageListFragment :
             inflater.inflate(R.layout.message_list_error, container, false)
         }
     }
-
-    private var pendingMessageListInfo: MessageListInfo? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lifecycleScope.launch {
@@ -656,6 +657,11 @@ abstract class BaseMessageListFragment :
 
         this.recyclerView = recyclerView
         this.itemTouchHelper = itemTouchHelper
+        if (pendingAdapterDependentFunctionExecution.isNotEmpty()) {
+            logger.debug(logTag) { "Executing pending adapter dependent functions" }
+            pendingAdapterDependentFunctionExecution.forEach { it() }
+            pendingAdapterDependentFunctionExecution.clear()
+        }
     }
 
     private fun requireCoordinatorLayout(): CoordinatorLayout {
@@ -764,7 +770,17 @@ abstract class BaseMessageListFragment :
         viewModel.loadMessageList(config, forceUpdate)
     }
 
-    fun folderLoading(folderId: Long, loading: Boolean) {
+    private fun executeOnlyAfterAdapterIsReady(function: () -> Unit) {
+        if (::adapter.isInitialized.not()) {
+            pendingAdapterDependentFunctionExecution.add {
+                function()
+            }
+        } else {
+            function()
+        }
+    }
+
+    fun folderLoading(folderId: Long, loading: Boolean) = executeOnlyAfterAdapterIsReady {
         currentFolder?.let {
             if (it.databaseId == folderId) {
                 it.loading = loading
@@ -890,6 +906,7 @@ abstract class BaseMessageListFragment :
         itemTouchHelper = null
         swipeRefreshLayout = null
         floatingActionButton = null
+        pendingAdapterDependentFunctionExecution.clear()
 
         if (isNewMessagesView && !requireActivity().isChangingConfigurations) {
             account?.id?.let { messagingController.clearNewMessages(it) }

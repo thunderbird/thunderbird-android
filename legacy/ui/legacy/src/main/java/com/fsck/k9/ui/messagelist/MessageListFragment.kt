@@ -81,7 +81,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageListMetadata
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.serialization.LocalMessageSearchSerializer
 import org.koin.android.ext.android.inject
-import org.koin.core.parameter.parameterSetOf
+import org.koin.core.parameter.parametersOf
 import app.k9mail.core.ui.legacy.designsystem.R as DesignSystemR
 import com.google.android.material.R as MaterialR
 
@@ -95,7 +95,13 @@ class MessageListFragment : BaseMessageListFragment() {
 
     private val viewModel: MessageListContract.ViewModel by inject {
         decodeArguments()
-        parameterSetOf(accountUuids.map { AccountIdFactory.of(it) }.toSet())
+        val accounts = accountUuids.map { AccountIdFactory.of(it) }.toSet()
+
+        var args = MessageListContract.ViewModel.Args(
+            accountIds = accounts,
+            folderId = if (accounts.size == 1) currentFolder?.databaseId else null,
+        )
+        parametersOf(args)
     }
 
     private val featureThemeProvider: FeatureThemeProvider by inject()
@@ -109,6 +115,12 @@ class MessageListFragment : BaseMessageListFragment() {
             .state
             .map { it.metadata.swipeActions }
             .stateIn(lifecycleScope, SharingStarted.Lazily, emptyMap())
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // hack to force the view model to be created earlier.
+        viewModel
+        super.onCreate(savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
