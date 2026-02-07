@@ -60,6 +60,10 @@ class DefaultMessageListPreferencesManager(
             KEY_REGISTERED_NAME_COLOR,
             DISPLAY_SETTINGS_DEFAULT_CONTACT_NAME_COLOR,
         ),
+        dateTimeFormat = storage.getEnumOrDefault(
+            KEY_MESSAGE_LIST_DATE_TIME_FORMAT,
+            MESSAGE_LIST_SETTINGS_DEFAULT_DATE_TIME_FORMAT,
+        ),
     )
 
     private fun write(preferences: DisplayMessageListSettings) {
@@ -72,6 +76,7 @@ class DefaultMessageListPreferencesManager(
         storageEditor.putInt(KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES, preferences.previewLines)
         storageEditor.putInt(KEY_REGISTERED_NAME_COLOR, preferences.contactNameColor)
         storageEditor.putEnum(KEY_MESSAGE_LIST_VIEW_DENSITY, preferences.uiDensity)
+        storageEditor.putEnum(KEY_MESSAGE_LIST_DATE_TIME_FORMAT, preferences.dateTimeFormat)
         storageEditor.commit().also { commited ->
             logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
         }

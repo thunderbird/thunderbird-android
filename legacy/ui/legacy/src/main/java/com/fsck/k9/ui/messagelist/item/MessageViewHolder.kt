@@ -24,7 +24,6 @@ import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import com.google.android.material.textview.MaterialTextView
@@ -35,11 +34,10 @@ import net.thunderbird.core.preference.display.visualSettings.message.list.UiDen
 @Suppress("TooManyFunctions")
 class MessageViewHolder(
     view: View,
-    private val appearance: MessageListAppearance,
+    private val appearance: () -> MessageListAppearance,
     private val theme: Resources.Theme,
     private val res: Resources,
     private val contactsPictureLoader: ContactPictureLoader,
-    private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
     private val colors: MessageViewHolderColors,
 ) : MessageListViewHolder(view) {
 
@@ -60,6 +58,7 @@ class MessageViewHolder(
 
     @Suppress("LongMethod", "CyclomaticComplexMethod")
     fun bind(messageListItem: MessageListItem, isActive: Boolean, isSelected: Boolean) {
+        val appearance = appearance()
         if (appearance.showContactPicture) {
             contactPictureClickArea.isSelected = isSelected
             if (isSelected) {
@@ -81,7 +80,6 @@ class MessageViewHolder(
         with(messageListItem) {
             val foregroundColor = selectForegroundColor(isSelected, isRead, isActive)
             val maybeBoldTypeface = if (isRead) Typeface.NORMAL else Typeface.BOLD
-            val displayDate = relativeDateTimeFormatter.formatDate(messageDate)
             val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
             val subject = buildSubject(
                 subject = subject,
@@ -141,7 +139,7 @@ class MessageViewHolder(
 
             dateView.typeface = Typeface.create(dateView.typeface, maybeBoldTypeface)
             dateView.setTextColor(foregroundColor)
-            dateView.text = displayDate
+            dateView.text = messageListItem.displayMessageDateTime
             attachmentView.isVisible = hasAttachments
             attachmentView.setColorFilter(foregroundColor)
 
@@ -215,6 +213,7 @@ class MessageViewHolder(
     }
 
     private fun addBeforePreviewSpan(text: Spannable, length: Int, messageRead: Boolean) {
+        val appearance = appearance()
         val fontSize = if (appearance.senderAboveSubject) {
             appearance.fontSizes.messageListSubject
         } else {
@@ -243,7 +242,7 @@ class MessageViewHolder(
     }
 
     private fun selectBackgroundColor(selected: Boolean, read: Boolean, active: Boolean): Int {
-        val backGroundAsReadIndicator = appearance.backGroundAsReadIndicator
+        val backGroundAsReadIndicator = appearance().backGroundAsReadIndicator
         return when {
             selected -> colors.selectedBackground
             active -> colors.activeBackground
@@ -279,11 +278,10 @@ class MessageViewHolder(
         fun create(
             layoutInflater: LayoutInflater,
             parent: ViewGroup?,
-            appearance: MessageListAppearance,
+            appearance: () -> MessageListAppearance,
             theme: Resources.Theme,
             res: Resources,
             contactsPictureLoader: ContactPictureLoader,
-            relativeDateTimeFormatter: RelativeDateTimeFormatter,
             colors: MessageViewHolderColors,
             onClickListener: View.OnClickListener,
             onLongClickListener: View.OnLongClickListener,
@@ -300,9 +298,9 @@ class MessageViewHolder(
                 theme = theme,
                 res = res,
                 contactsPictureLoader = contactsPictureLoader,
-                relativeDateTimeFormatter = relativeDateTimeFormatter,
                 colors = colors,
             )
+            val appearance = appearance()
 
             applyFontSizes(holder, appearance.fontSizes, appearance.senderAboveSubject)
             applyDensityValue(holder, appearance.density, res)

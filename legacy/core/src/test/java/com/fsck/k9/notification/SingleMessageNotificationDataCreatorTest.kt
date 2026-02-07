@@ -7,17 +7,16 @@ import assertk.assertions.doesNotContain
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
-import com.fsck.k9.K9
-import com.fsck.k9.K9.NotificationQuickDelete
 import com.fsck.k9.mail.Address
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.NotificationQuickDelete
 import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NotificationPreference
+import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import org.junit.Test
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.mock
@@ -25,15 +24,10 @@ import org.mockito.kotlin.mock
 class SingleMessageNotificationDataCreatorTest {
     private val account = createAccount()
     private val fakeInteractionPreferences = FakeInteractionSettingsPreferenceManager()
-    private var generalSettings = GeneralSettings(
-        platformConfigProvider = FakePlatformConfigProvider(),
-        notification = NotificationPreference(),
-    )
+    private val fakeNotificationPreferences = FakeNotificationPreferenceManager()
     private val notificationDataCreator = SingleMessageNotificationDataCreator(
         interactionPreferences = fakeInteractionPreferences,
-        generalSettingsManager = mock {
-            on { getConfig() } doAnswer { generalSettings }
-        },
+        notificationPreference = fakeNotificationPreferences,
     )
 
     @Test
@@ -229,12 +223,14 @@ class SingleMessageNotificationDataCreatorTest {
     }
 
     private fun setMessageActions(cutoff: Int) {
-        generalSettings = generalSettings.copy(
-            notification = generalSettings.notification.copy(
-                messageActionsOrder = "reply,mark_as_read,delete,archive,spam",
-                messageActionsCutoff = cutoff,
-            ),
+        fakeNotificationPreferences.setMessageActions(
+            order = "reply,mark_as_read,delete,archive,spam",
+            cutoff = cutoff,
         )
+    }
+
+    private fun setDeleteAction(mode: NotificationQuickDelete) {
+        fakeNotificationPreferences.setNotificationQuickDeleteBehaviour(mode)
     }
 
     private fun createAccount(): LegacyAccountDto {
@@ -280,6 +276,23 @@ class SingleMessageNotificationDataCreatorTest {
 
         fun setConfirmSpam(confirm: Boolean) {
             prefs.update { it.copy(isConfirmSpam = confirm) }
+        }
+    }
+    private class FakeNotificationPreferenceManager : NotificationPreferenceManager {
+        private val prefs = MutableStateFlow(NotificationPreference())
+
+        override fun save(config: NotificationPreference) = Unit
+
+        override fun getConfig(): NotificationPreference = prefs.value
+
+        override fun getConfigFlow(): Flow<NotificationPreference> = prefs
+
+        fun setNotificationQuickDeleteBehaviour(behaviour: NotificationQuickDelete) {
+            prefs.update { it.copy(notificationQuickDeleteBehaviour = behaviour) }
+        }
+
+        fun setMessageActions(order: String, cutoff: Int) {
+            prefs.update { it.copy(messageActionsOrder = order, messageActionsCutoff = cutoff) }
         }
     }
 }

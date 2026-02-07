@@ -1,3 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Configuració general</string>
+    <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_option_monogram">Monograma</string>
+    <string name="account_settings_general_avatar_option_image">Imatge</string>
+    <string name="account_settings_general_avatar_option_icon">Icona</string>
+    <string name="account_settings_general_name_title">Nom del compte</string>
+    <string name="account_settings_general_color_title">Color del compte</string>
+    <string name="account_settings_general_avatar_monogram_title">Monograma d\'avatar</string>
+    <string name="account_settings_general_avatar_icon_title">Icona d\'avatar</string>
+    <string name="account_settings_general_avatar_image_title">Imatge d\'avatar</string>
+    <string name="account_settings_general_avatar_image_select">Selecciona la imatge</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Només JPEG</string>
 </resources>

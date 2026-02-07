@@ -8,7 +8,6 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
-import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
 import java.util.Calendar
 import kotlin.time.Clock
@@ -16,6 +15,7 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.NotificationQuickDelete
 import net.thunderbird.core.preference.display.DisplaySettings
 import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
@@ -52,9 +52,7 @@ class SummaryNotificationDataCreatorTest {
             interactionPreferences = mock {
                 on { getConfig() } doAnswer { generalSettings.interaction }
             },
-            generalSettingsManager = mock {
-                on { getConfig() } doAnswer { generalSettings }
-            },
+            notificationPreference = mock { on { getConfig() } doReturn generalSettings.notification },
         ),
         generalSettingsManager = mock {
             on { getConfig() } doAnswer { generalSettings }
@@ -101,8 +99,8 @@ class SummaryNotificationDataCreatorTest {
                 interactionPreferences = mock {
                     on { getConfig() } doReturn generalSettings.interaction
                 },
-                generalSettingsManager = mock {
-                    on { getConfig() } doReturn generalSettings
+                notificationPreference = mock {
+                    on { getConfig() } doReturn generalSettings.notification
                 },
             ),
             generalSettingsManager = mock {
@@ -145,8 +143,8 @@ class SummaryNotificationDataCreatorTest {
                 interactionPreferences = mock {
                     on { getConfig() } doReturn generalSettings.interaction
                 },
-                generalSettingsManager = mock {
-                    on { getConfig() } doReturn generalSettings
+                notificationPreference = mock {
+                    on { getConfig() } doReturn generalSettings.notification
                 },
             ),
             generalSettingsManager = mock {
@@ -210,7 +208,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `always show delete action without confirmation`() {
-        setSummaryDeleteActionEnabled(true)
+        setDeleteAction(NotificationQuickDelete.ALWAYS)
         setConfirmDeleteFromNotification(false)
         val notificationData = createNotificationDataWithMultipleMessages()
 
@@ -226,7 +224,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `always show delete action with confirmation`() {
-        setSummaryDeleteActionEnabled(true)
+        setDeleteAction(NotificationQuickDelete.ALWAYS)
         setConfirmDeleteFromNotification(true)
         val notificationData = createNotificationDataWithMultipleMessages()
 
@@ -241,8 +239,24 @@ class SummaryNotificationDataCreatorTest {
     }
 
     @Test
-    fun `hide delete action when disabled`() {
-        setSummaryDeleteActionEnabled(false)
+    fun `show delete action for single notification without confirmation`() {
+        setDeleteAction(NotificationQuickDelete.FOR_SINGLE_MSG)
+        setConfirmDeleteFromNotification(false)
+        val notificationData = createNotificationDataWithMultipleMessages()
+
+        val result = notificationDataCreator.createSummaryNotificationData(
+            notificationData,
+            silent = true,
+        )
+
+        val summaryNotificationData = result as SummaryInboxNotificationData
+        assertThat(summaryNotificationData.actions).doesNotContain(SummaryNotificationAction.Delete)
+        assertThat(summaryNotificationData.wearActions).doesNotContain(SummaryWearNotificationAction.Delete)
+    }
+
+    @Test
+    fun `never show delete action`() {
+        setDeleteAction(NotificationQuickDelete.NEVER)
         val notificationData = createNotificationDataWithMultipleMessages()
 
         val result = notificationDataCreator.createSummaryNotificationData(
@@ -289,11 +303,9 @@ class SummaryNotificationDataCreatorTest {
         )
     }
 
-    private fun setSummaryDeleteActionEnabled(enabled: Boolean) {
+    private fun setDeleteAction(mode: NotificationQuickDelete) {
         generalSettings = generalSettings.copy(
-            notification = generalSettings.notification.copy(
-                isSummaryDeleteActionEnabled = enabled,
-            ),
+            notification = generalSettings.notification.copy(notificationQuickDeleteBehaviour = mode),
         )
     }
 

@@ -252,6 +252,15 @@
                 android:title="@string/global_settings_preview_lines_label"
                 />
 
+            <ListPreference
+                android:dialogTitle="@string/general_settings_message_list_date_time_format_title"
+                android:entries="@array/message_list_date_time_format_entries"
+                android:entryValues="@array/message_list_date_time_format_values"
+                android:key="message_list_date_time_format"
+                app:useSimpleSummaryProvider="true"
+                android:title="@string/general_settings_message_list_date_time_format_title"
+                />
+
             <CheckBoxPreference
                 android:key="messagelist_stars"
                 android:summary="@string/global_settings_flag_summary"

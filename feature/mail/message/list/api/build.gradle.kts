@@ -19,3 +19,8 @@ dependencies {
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.folder.api)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

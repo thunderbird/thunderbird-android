@@ -435,7 +435,7 @@
     <string name="edit_identity_title">Modifică identitate</string>
     <string name="edit_identity_save">Salvează</string>
     <string name="new_identity_action">Identitate nouă</string>
-    <string name="account_settings_always_bcc_label">BCC toate mesajele către</string>
+    <string name="account_settings_always_bcc_label">Trimite o copie ascunsă (BCC) a tuturor mesajelor către</string>
     <string name="manage_identities_edit_action">Modifică</string>
     <string name="manage_identities_move_up_action">Mută sus</string>
     <string name="manage_identities_move_down_action">Mută jos</string>

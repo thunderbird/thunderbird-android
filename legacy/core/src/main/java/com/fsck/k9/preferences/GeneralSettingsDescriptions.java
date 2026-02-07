@@ -12,7 +12,6 @@ import android.content.Context;
 import app.k9mail.feature.telemetry.api.TelemetryManager;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
-import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation;
 import com.fsck.k9.core.R;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
@@ -38,9 +37,11 @@ import net.thunderbird.core.preference.AppTheme;
 import net.thunderbird.core.preference.BackgroundOps;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.preference.BodyContentType;
+import net.thunderbird.core.preference.NotificationQuickDelete;
 import net.thunderbird.core.preference.SplitViewMode;
 import net.thunderbird.core.preference.SubTheme;
 import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsKt;
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat;
 import net.thunderbird.core.preference.interaction.PostRemoveNavigation;
 import net.thunderbird.core.preference.network.NetworkSettingsKt;
 import net.thunderbird.core.preference.storage.Storage;
@@ -339,6 +340,9 @@ class GeneralSettingsDescriptions {
         ));
         s.put("messageViewBodyContentType", Settings.versions(
             new V(109, new EnumSetting<>(BodyContentType.class, BodyContentType.TEXT_HTML))
+        ));
+        s.put("messageListDateTimeFormat", Settings.versions(
+            new V(110, new EnumSetting<>(MessageListDateTimeFormat.class, MessageListDateTimeFormat.Contextual))
         ));
 
         // TODO: Add a way to properly support feature-specific settings.

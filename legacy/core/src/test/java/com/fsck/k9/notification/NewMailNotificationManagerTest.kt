@@ -72,18 +72,14 @@ class NewMailNotificationManagerTest {
             interactionPreferences = mock {
                 on { getConfig() } doReturn InteractionSettings()
             },
-            generalSettingsManager = mock {
-                on { getConfig() } doReturn generalSettings
-            },
+            notificationPreference = mock { on { getConfig() } doReturn generalSettings.notification },
         ),
         SummaryNotificationDataCreator(
             singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
                 interactionPreferences = mock {
                     on { getConfig() } doReturn InteractionSettings()
                 },
-                generalSettingsManager = mock {
-                    on { getConfig() } doReturn generalSettings
-                },
+                notificationPreference = mock { on { getConfig() } doReturn generalSettings.notification },
             ),
             generalSettingsManager = mock {
                 on { getConfig() } doReturn generalSettings

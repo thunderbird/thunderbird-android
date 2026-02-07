@@ -1,6 +1,7 @@
 package net.thunderbird.core.preference.notification
 
 import net.thunderbird.core.common.notification.NotificationActionTokens
+import net.thunderbird.core.preference.NotificationQuickDelete
 
 const val NOTIFICATION_PREFERENCE_DEFAULT_IS_QUIET_TIME_ENABLED = false
 const val NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_STARTS = "21:00"
@@ -10,6 +11,7 @@ const val NOTIFICATION_PREFERENCE_DEFAULT_MESSAGE_ACTIONS_ORDER = NotificationAc
 const val NOTIFICATION_PREFERENCE_DEFAULT_MESSAGE_ACTIONS_CUTOFF = 3
 const val NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN = 3
 const val NOTIFICATION_PREFERENCE_DEFAULT_IS_SUMMARY_DELETE_ACTION_ENABLED = true
+val NOTIFICATION_PREFERENCE_DEFAULT_QUICK_DELETE_BEHAVIOUR = NotificationQuickDelete.ALWAYS
 
 data class NotificationPreference(
     val isQuietTimeEnabled: Boolean = NOTIFICATION_PREFERENCE_DEFAULT_IS_QUIET_TIME_ENABLED,
@@ -20,4 +22,6 @@ data class NotificationPreference(
     val messageActionsOrder: String = NOTIFICATION_PREFERENCE_DEFAULT_MESSAGE_ACTIONS_ORDER,
     val messageActionsCutoff: Int = NOTIFICATION_PREFERENCE_DEFAULT_MESSAGE_ACTIONS_CUTOFF,
     val isSummaryDeleteActionEnabled: Boolean = NOTIFICATION_PREFERENCE_DEFAULT_IS_SUMMARY_DELETE_ACTION_ENABLED,
+    val notificationQuickDeleteBehaviour: NotificationQuickDelete =
+        NOTIFICATION_PREFERENCE_DEFAULT_QUICK_DELETE_BEHAVIOUR,
 )

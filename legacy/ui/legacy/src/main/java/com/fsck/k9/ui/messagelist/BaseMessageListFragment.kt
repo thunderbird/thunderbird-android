@@ -3,6 +3,7 @@ package com.fsck.k9.ui.messagelist
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.LayoutInflater
@@ -37,6 +38,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.k9mail.core.android.common.contact.ContactRepository
@@ -50,7 +52,7 @@ import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import app.k9mail.ui.utils.linearlayoutmanager.LinearLayoutManager
 import com.fsck.k9.K9
 import com.fsck.k9.activity.FolderInfoHolder
-import com.fsck.k9.activity.Search
+import com.fsck.k9.activity.MessageSearchActivity
 import com.fsck.k9.activity.misc.ContactPicture
 import com.fsck.k9.controller.MessagingControllerWrapper
 import com.fsck.k9.fragment.ConfirmationDialogFragment
@@ -66,7 +68,6 @@ import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
-import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.BaseMessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.ui.messagelist.debug.AuthDebugActions
 import com.fsck.k9.ui.messagelist.item.MessageViewHolder
@@ -75,11 +76,12 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import java.util.concurrent.Future
-import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
@@ -102,6 +104,7 @@ import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettings
 import net.thunderbird.core.preference.interaction.InteractionSettings
@@ -168,8 +171,6 @@ abstract class BaseMessageListFragment :
     private val connectivityManager: ConnectivityManager by inject()
     private val localStoreProvider: LocalStoreProvider by inject()
 
-    @OptIn(ExperimentalTime::class)
-    private val clock: Clock by inject()
     private val setupArchiveFolderDialogFragmentFactory: SetupArchiveFolderDialogFragmentFactory by inject()
     private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions by inject()
     protected open val swipeActions: StateFlow<Map<AccountId, SwipeActions>> = buildSwipeActions()
@@ -285,6 +286,8 @@ abstract class BaseMessageListFragment :
             maybeHideFloatingActionButton()
         }
 
+    private lateinit var messageListAppearance: MessageListAppearance
+
     fun isSearchViewCollapsed(): Boolean {
         return searchView?.isIconified != false
     }
@@ -316,12 +319,6 @@ abstract class BaseMessageListFragment :
             return
         }
 
-        viewModel.getMessageListLiveData().observe(this) { messageListInfo: MessageListInfo ->
-            setMessageList(messageListInfo)
-        }
-
-        adapter = createMessageListAdapter()
-
         generalSettingsManager.getSettingsFlow()
             /**
              * Skips the first emitted item from the settings flow,
@@ -351,6 +348,18 @@ abstract class BaseMessageListFragment :
         initialSearchViewIconified = savedInstanceState.getBoolean(STATE_SEARCH_VIEW_ICONIFIED, true)
         val messageReferenceString = savedInstanceState.getString(STATE_ACTIVE_MESSAGE)
         activeMessage = MessageReference.parse(messageReferenceString)
+
+        messageListAppearance = requireNotNull(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                savedInstanceState.getParcelable(STATE_MESSAGE_LIST_APPEARANCE, MessageListAppearance::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                savedInstanceState.getParcelable(STATE_MESSAGE_LIST_APPEARANCE)
+            },
+        ) {
+            "Could not restore MessageListAppearance. Missing parcelable extra '$STATE_MESSAGE_LIST_APPEARANCE'. " +
+                "Extras: $savedInstanceState"
+        }
     }
 
     private fun restoreSelectedMessages(savedInstanceState: Bundle) {
@@ -404,8 +413,7 @@ abstract class BaseMessageListFragment :
             layoutInflater = layoutInflater,
             contactsPictureLoader = ContactPicture.getContactPictureLoader(),
             listItemListener = this,
-            appearance = messageListAppearance,
-            relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), clock),
+            appearance = ::messageListAppearance,
             themeProvider = featureThemeProvider,
             featureFlagProvider = featureFlagProvider,
             contactRepository = contactRepository,
@@ -433,7 +441,30 @@ abstract class BaseMessageListFragment :
         }
     }
 
+    private var pendingMessageListInfo: MessageListInfo? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
+                fetchMessageListAppearance()
+                    .distinctUntilChanged()
+                    .collectLatest { appearance ->
+                        messageListAppearance = appearance
+                        if (recyclerView == null) {
+                            initializeRecyclerView(requireView())
+                        }
+                    }
+            }
+        }
+
+        viewModel.getMessageListLiveData().observe(viewLifecycleOwner) { messageListInfo: MessageListInfo ->
+            if (::adapter.isInitialized) {
+                setMessageList(messageListInfo)
+            } else {
+                pendingMessageListInfo = messageListInfo
+            }
+        }
+
         val menuHost: MenuHost = requireActivity()
 
         menuHost.addMenuProvider(
@@ -466,6 +497,17 @@ abstract class BaseMessageListFragment :
         }
     }
 
+    protected open suspend fun fetchMessageListAppearance(): Flow<MessageListAppearance> {
+        return generalSettingsManager
+            .getConfigFlow()
+            .map { config ->
+                if (showingThreadedList != config.display.inboxSettings.isThreadedViewEnabled) {
+                    showingThreadedList = config.display.inboxSettings.isThreadedViewEnabled
+                }
+                createMessageListAppearance(config)
+            }
+    }
+
     private fun initializeErrorLayout(view: View) {
         val errorMessageView = view.findViewById<MaterialTextView>(R.id.message_list_error_message)
         errorMessageView.text = getString(error!!.errorText)
@@ -474,7 +516,6 @@ abstract class BaseMessageListFragment :
     private fun initializeMessageListLayout(view: View) {
         initializeSwipeRefreshLayout(view)
         initializeFloatingActionButton(view)
-        initializeRecyclerView(view)
         initializeRecentChangesSnackbar()
 
         // This needs to be done before loading the message list below
@@ -559,6 +600,12 @@ abstract class BaseMessageListFragment :
     }
 
     private fun initializeRecyclerView(view: View) {
+        adapter = createMessageListAdapter()
+        pendingMessageListInfo?.let { messageListInfo ->
+            setMessageList(messageListInfo)
+            pendingMessageListInfo = null
+        }
+
         val recyclerView = view.findViewById<RecyclerView>(R.id.message_list)
 
         if (!isShowFloatingActionButton) {
@@ -676,20 +723,30 @@ abstract class BaseMessageListFragment :
         startActivity(intent)
     }
 
-    private fun initializeSortSettings() {
+    protected open fun initializeSortSettings() {
         if (isSingleAccountMode) {
             val account = checkNotNull(this.account)
-            sortType = account.sortType
-            sortAscending = account.sortAscending[sortType] ?: sortType.isDefaultAscending
-            sortDateAscending = account.sortAscending[SortType.SORT_DATE] ?: SortType.SORT_DATE.isDefaultAscending
+            updateCurrentSortCriteria(
+                sortType = account.sortType,
+                sortAscending = account.sortAscending[sortType] ?: sortType.isDefaultAscending,
+                sortDateAscending = account.sortAscending[SortType.SORT_DATE] ?: SortType.SORT_DATE.isDefaultAscending,
+            )
         } else {
-            sortType = K9.sortType
-            sortAscending = K9.isSortAscending(sortType)
-            sortDateAscending = K9.isSortAscending(SortType.SORT_DATE)
+            updateCurrentSortCriteria(
+                sortType = K9.sortType,
+                sortAscending = K9.isSortAscending(sortType),
+                sortDateAscending = K9.isSortAscending(SortType.SORT_DATE),
+            )
         }
     }
 
-    private fun loadMessageList(forceUpdate: Boolean = false) {
+    protected fun updateCurrentSortCriteria(sortType: SortType, sortAscending: Boolean, sortDateAscending: Boolean) {
+        this.sortType = sortType
+        this.sortAscending = sortAscending
+        this.sortDateAscending = sortDateAscending
+    }
+
+    protected fun loadMessageList(forceUpdate: Boolean = false) {
         val config = MessageListConfig(
             localSearch,
             showingThreadedList,
@@ -859,24 +916,26 @@ abstract class BaseMessageListFragment :
         if (activeMessage != null) {
             outState.putString(STATE_ACTIVE_MESSAGE, activeMessage!!.toIdentityString())
         }
+        outState.putParcelable(STATE_MESSAGE_LIST_APPEARANCE, messageListAppearance)
     }
 
-    private val messageListAppearance: MessageListAppearance
-        get() = MessageListAppearance(
+    protected fun createMessageListAppearance(config: GeneralSettings): MessageListAppearance {
+        val displaySettings = config.display
+        val inboxSettings = displaySettings.inboxSettings
+        val messageListSettings = displaySettings.visualSettings.messageListSettings
+        return MessageListAppearance(
             fontSizes = K9.fontSizes,
             previewLines = messageListSettings.previewLines,
-            stars = !isOutbox && generalSettingsManager.getConfig().display.inboxSettings.isShowMessageListStars,
-            senderAboveSubject = generalSettingsManager
-                .getConfig()
-                .display
-                .inboxSettings
-                .isMessageListSenderAboveSubject,
+            stars = !isOutbox && displaySettings.inboxSettings.isShowMessageListStars,
+            senderAboveSubject = inboxSettings.isMessageListSenderAboveSubject,
             showContactPicture = messageListSettings.isShowContactPicture,
             showingThreadedList = showingThreadedList,
             backGroundAsReadIndicator = messageListSettings.isUseBackgroundAsUnreadIndicator,
             showAccountIndicator = isShowAccountIndicator,
             density = messageListSettings.uiDensity,
+            dateTimeFormat = messageListSettings.dateTimeFormat,
         )
+    }
 
     private fun getFolderInfoHolder(account: LegacyAccount, folderId: Long): FolderInfoHolder {
         val localStore = localStoreProvider.getInstanceByLegacyAccount(account)
@@ -1149,7 +1208,7 @@ abstract class BaseMessageListFragment :
 
     private fun prepareMenu(menu: Menu) {
         menu.findItem(R.id.compose).isVisible = !isShowFloatingActionButton
-        menu.findItem(R.id.set_sort).isVisible = true
+        prepareSortMenu(menu)
         menu.findItem(R.id.select_all).isVisible = true
         menu.findItem(R.id.mark_all_as_read).isVisible = isMarkAllAsReadSupported
         menu.findItem(R.id.empty_spam).isVisible = isShowingSpamFolder
@@ -1165,6 +1224,11 @@ abstract class BaseMessageListFragment :
 
         menu.findItem(R.id.search_remote).isVisible = !isRemoteSearch && isRemoteSearchAllowed
         menu.findItem(R.id.search_everywhere).isVisible = isManualSearch && !localSearch.searchAllAccounts()
+    }
+
+    protected open fun prepareSortMenu(menu: Menu) {
+        menu.findItem(R.id.set_sort).isVisible = true
+        menu.removeItem(R.id.select_sort_criteria)
     }
 
     private fun prepareDebugMenu(menu: Menu) {
@@ -1220,7 +1284,7 @@ abstract class BaseMessageListFragment :
     private fun onSearchEverywhere() {
         val searchQuery = requireActivity().intent.getStringExtra(SearchManager.QUERY)
 
-        val searchIntent = Intent(requireContext(), Search::class.java).apply {
+        val searchIntent = Intent(requireContext(), MessageSearchActivity::class.java).apply {
             action = Intent.ACTION_SEARCH
             putExtra(SearchManager.QUERY, searchQuery)
 
@@ -2720,5 +2784,6 @@ abstract class BaseMessageListFragment :
         protected const val STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed"
         protected const val STATE_SEARCH_VIEW_QUERY = "searchViewQuery"
         protected const val STATE_SEARCH_VIEW_ICONIFIED = "searchViewIconified"
+        protected const val STATE_MESSAGE_LIST_APPEARANCE = "messageListAppearance"
     }
 }

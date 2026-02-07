@@ -31,3 +31,8 @@ dependencies {
     testImplementation(libs.androidx.lifecycle.runtime.testing)
     testImplementation(libs.androidx.fragment.testing)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 5
+}

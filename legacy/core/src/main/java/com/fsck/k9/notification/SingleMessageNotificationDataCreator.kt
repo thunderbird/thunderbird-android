@@ -2,16 +2,18 @@ package com.fsck.k9.notification
 
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.notification.NotificationActionTokens
-import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.NotificationQuickDelete
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN
+import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 
 internal class SingleMessageNotificationDataCreator(
     private val interactionPreferences: InteractionSettingsPreferenceManager,
-    private val generalSettingsManager: GeneralSettingsManager,
+    private val notificationPreference: NotificationPreferenceManager,
 ) {
 
     private val interactionSettings get() = interactionPreferences.getConfig()
+    private val notificationSettings get() = notificationPreference.getConfig()
 
     fun createSingleNotificationData(
         account: LegacyAccountDto,
@@ -50,15 +52,14 @@ internal class SingleMessageNotificationDataCreator(
     }
 
     private fun createSingleNotificationActions(account: LegacyAccountDto): List<NotificationAction> {
-        val notificationPrefs = generalSettingsManager.getConfig().notification
-        val order = parseActionsOrder(notificationPrefs.messageActionsOrder)
-        val cutoff = notificationPrefs.messageActionsCutoff.coerceIn(0, NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN)
+        val order = parseActionsOrder(notificationSettings.messageActionsOrder)
+        val cutoff = notificationSettings.messageActionsCutoff.coerceIn(0, NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN)
 
         return resolveActions(
             order = order,
             cutoff = cutoff,
             hasArchiveFolder = account.hasArchiveFolder(),
-            isDeleteEnabled = true,
+            isDeleteEnabled = isDeleteActionEnabled(),
             hasSpamFolder = account.hasSpamFolder(),
             isSpamEnabled = !interactionSettings.isConfirmSpam,
         )
@@ -153,6 +154,10 @@ internal class SingleMessageNotificationDataCreator(
             NotificationActionTokens.SPAM -> NotificationAction.Spam
             else -> null
         }
+    }
+
+    private fun isDeleteActionEnabled(): Boolean {
+        return notificationSettings.notificationQuickDeleteBehaviour != NotificationQuickDelete.NEVER
     }
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.

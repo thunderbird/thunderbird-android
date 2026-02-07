@@ -38,3 +38,8 @@ dependencies {
     debugImplementation(projects.feature.account.fake)
     testImplementation(projects.feature.account.fake)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 9
+}

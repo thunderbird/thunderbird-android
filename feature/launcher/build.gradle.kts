@@ -25,3 +25,8 @@ dependencies {
 
     implementation(projects.feature.debugSettings)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

@@ -40,3 +40,8 @@ dependencies {
     testImplementation(platform(libs.forkhandles.bom))
     testImplementation(libs.forkhandles.fabrikate4k)
 }
+
+codeCoverage {
+    branchCoverage = 3
+    lineCoverage = 4
+}

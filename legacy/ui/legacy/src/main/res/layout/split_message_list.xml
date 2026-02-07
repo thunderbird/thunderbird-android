@@ -6,14 +6,31 @@
     android:id="@+id/navigation_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fsck.k9.activity.MainActivity"
+    tools:context="com.fsck.k9.activity.MessageHomeActivity"
     >
+    <!--
+     As the navigation of Message List (MessageHomeActivity) is based on the ViewSwitcher,
+     which just toggle the visibility of existing views rather than creating/destroying the
+     Fragments, the Fragment's lifecycle methods, such as onViewCreated, are not properly called.
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+     Modern layouts (ConstraintLayout, CoordinatorLayout) optimize measurement during visibility
+     toggles and WindowInsets updates, sometimes causing a transient layout pass with incorrect bounds.
+     The RecyclerView incorrectly treats this pass as a successful update and marks its state as "clean".
+     Consequently, it fails to trigger onBindViewHolder when the view is fully restored, leaving the
+     UI stuck displaying the previous stale state instead of the new data.
+
+     RelativeLayout is used to enforce strict vertical dependencies. By using layout_below, it
+     ensures the Toolbar is measured before the container. This prevents the race condition and forces
+     the RecyclerView to recognize its actual bounds, ensuring the adapter binds correctly without
+     performance-heavy requestLayout() calls.
+
+     Until we move this screen to use a modern navigation system, or rewrite it using Jetpack Compose,
+     we need to use this workaround.
+    -->
+    <RelativeLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         >
 
         <com.google.android.material.appbar.AppBarLayout
@@ -21,6 +38,7 @@
             style="@style/Widget.App.AppBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             >
 
             <include
@@ -28,7 +46,6 @@
                 layout="@layout/message_list_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -37,7 +54,7 @@
             android:id="@+id/content_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_below="@id/app_bar_layout"
             >
 
             <ProgressBar
@@ -86,7 +103,7 @@
 
         </FrameLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </RelativeLayout>
 
     <include layout="@layout/navigation_drawer_content" />
 

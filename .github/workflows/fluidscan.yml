@@ -18,23 +18,32 @@ jobs:
 
     steps:
       - name: "Checkout code"
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           persist-credentials: false
 
-      - name: "Run Fluidattacks scanner"
+      - name: "Run Fluidattacks scanners"
         run: |
-          bash scripts/ci/run-fluidattacks-scanner.sh
+          bash scripts/ci/run-fluidattacks-scanners.sh
 
       - name: "Upload scan results"
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: SARIF scan results
-          path: fluidscan-results.sarif
+          path: |
+            fluidscan-sast-results.sarif
+            fluidscan-sca-results.sarif
           retention-days: 5
 
       # Upload the results to GitHub's code scanning dashboard.
-      - name: "Upload to code-scanning"
-        uses: github/codeql-action/upload-sarif@cdefb33c0f6224e58673d9004f47f7cb3e328b89 # v4.31.10
+      - name: "Upload SAST results to code-scanning"
+        uses: github/codeql-action/upload-sarif@6bc82e05fd0ea64601dd4b465378bbcf57de0314 # v4.32.1
         with:
-          sarif_file: fluidscan-results.sarif
+          sarif_file: fluidscan-sast-results.sarif
+          category: fluidattacks-sast
+
+      - name: "Upload SCA results to code-scanning"
+        uses: github/codeql-action/upload-sarif@6bc82e05fd0ea64601dd4b465378bbcf57de0314 # v4.32.1
+        with:
+          sarif_file: fluidscan-sca-results.sarif
+          category: fluidattacks-sca

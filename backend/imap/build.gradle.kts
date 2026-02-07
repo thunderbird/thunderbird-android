@@ -23,3 +23,8 @@ dependencies {
     testImplementation(projects.backend.testing)
     testImplementation(libs.mime4j.dom)
 }
+
+codeCoverage {
+    branchCoverage = 45
+    lineCoverage = 42
+}

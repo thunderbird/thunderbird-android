@@ -11,3 +11,8 @@ dependencies {
 android {
     namespace = "app.k9mail.ui.utils.itemtouchhelper"
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

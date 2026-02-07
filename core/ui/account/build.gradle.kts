@@ -11,3 +11,8 @@ dependencies {
 
     implementation(libs.glide)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

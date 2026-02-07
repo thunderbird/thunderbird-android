@@ -47,6 +47,7 @@ androidxTestExt = "1.3.0"
 androidxTestRules = "1.7.0"
 androidxTestRunner = "1.7.0"
 androidxWebkit = "1.15.0"
+androidxWindow = "1.3.0"
 androidxWork = "2.11.0"
 apacheHttpclient5 = "5.6"
 appAuth = "0.11.1"
@@ -60,7 +61,7 @@ dependencyGuardPlugin = "0.5.0"
 detektPlugin = "1.23.8"
 detektPluginCompose = "0.4.27"
 fastAdapter = "5.7.0"
-forkhandlesBom = "2.25.0.0"
+forkhandlesBom = "2.25.1.0"
 glide = "4.16.0"
 gradle = "9.2.1"
 icu4j = "78.2"
@@ -82,32 +83,33 @@ konsist = "0.17.3"
 kotlinBom = "2.2.21"
 # Needs to match the version used by Gradle, just check with `./gradlew --version`
 kotlinGradleBom = "2.2.20"
-kotlinKsp = "2.3.4"
+kotlinKsp = "2.3.5"
 kotlinxCoroutines = "1.10.2"
 kotlinxCollectionsImmutable = "0.4.0"
 kotlinxDateTime = "0.7.1"
 kotlinxIoCore = "0.8.2"
 kotlinxSerialization = "1.9.0"
+kover = "0.9.5"
 ktlint = "1.5.0"
 ktor = "3.3.3"
 kxml2 = "1.0"
 landscapist = "2.6.1"
 leakcanary = "2.14"
-logbackClassic = "1.5.25"
+logbackClassic = "1.5.27"
 mime4j = "0.8.13"
 minidns = "1.1.1"
 mockito = "5.21.0"
-mockitoKotlin = "6.2.2"
+mockitoKotlin = "6.2.3"
 mokkery = "3.0.0"
 moshi = "1.15.2"
 mozillaAndroidComponents = "145.0.1"
 okhttp = "5.3.2"
 okio = "3.16.4"
 preferencesFix = "1.1.0"
-robolectric = "4.16"
+robolectric = "4.16.1"
 safeContentResolver = "1.0.0"
 searchPreference = "2.7.3"
-spotlessPlugin = "8.1.0"
+spotlessPlugin = "8.2.1"
 timber = "5.0.1"
 turbine = "1.2.1"
 uri = "0.0.21"
@@ -130,9 +132,13 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinBom" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlinBom" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinBom" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinBom" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 dev-mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
+
+# Build plugins
+tb-quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
 
 [libraries]
 android-billing = { module = "com.android.billingclient:billing", version.ref = "androidBilling" }
@@ -203,6 +209,7 @@ androidx-test-ext-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxTestRules" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTestRunner" }
 androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "androidxWebkit" }
+androidx-window = { module = "androidx.window:window", version.ref = "androidxWindow" }
 androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "androidxWork" }
 androidx-work-testing = { module = "androidx.work:work-testing", version.ref = "androidxWork" }
 apache-httpclient5 = { module = "org.apache.httpcomponents.client5:httpclient5", version.ref = "apacheHttpclient5" }
@@ -310,8 +317,8 @@ shared-kmp-compose = [
   "jetbrains-compose-lifecycle-viewmodel-compose",
   "jetbrains-compose-lifecycle-viewmodel-savedstate",
   # Disabled, as it's not used yet
-#  "jetbrains-compose-navigation3",
-#  "jetbrains-compose-navigation-event",
+  #  "jetbrains-compose-navigation3",
+  #  "jetbrains-compose-navigation-event",
 ]
 shared-kmp-compose-android = [
   "koin-androidx-compose",

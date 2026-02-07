@@ -19,3 +19,8 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)
 }
+
+codeCoverage {
+    branchCoverage = 6
+    lineCoverage = 4
+}

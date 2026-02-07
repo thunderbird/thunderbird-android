@@ -15,6 +15,8 @@ internal class FakeSpecialFolderUpdaterFactory : SpecialFolderUpdater.Factory {
 private open class FakeSpecialFolderUpdater : SpecialFolderUpdater {
     override fun updateSpecialFolders() = Unit
 
+    override fun updateSpecialFoldersSync() = Unit
+
     override fun setSpecialFolder(
         type: FolderType,
         folderId: Long?,

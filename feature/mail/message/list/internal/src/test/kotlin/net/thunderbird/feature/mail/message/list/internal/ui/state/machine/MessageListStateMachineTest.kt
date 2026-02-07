@@ -23,11 +23,13 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
+import net.thunderbird.feature.mail.message.list.domain.model.SortType
 import net.thunderbird.feature.mail.message.list.preferences.ActionRequiringUserConfirmation
-import net.thunderbird.feature.mail.message.list.preferences.MessageListDateTimeFormat
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
@@ -39,7 +41,6 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi.State
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListMetadata
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
-import net.thunderbird.feature.mail.message.list.ui.state.SortType
 
 @Suppress("MaxLineLength")
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -109,7 +110,7 @@ class MessageListStateMachineTest {
             advanceUntilIdle()
 
             // Act
-            stateMachine.process(event = MessageListEvent.SortTypesLoaded(emptyMap()))
+            stateMachine.process(event = MessageListEvent.SortCriteriaLoaded(emptyMap()))
 
             // Assert
             stateMachine.currentState.test {
@@ -142,7 +143,7 @@ class MessageListStateMachineTest {
         // Arrange
         val stateMachine = createStateMachine()
         val preferences = createMessageListPreferences()
-        val sortTypes = mapOf<AccountId?, SortType>(null to SortType.DateDesc)
+        val sortCriteriaPerAccount = mapOf<AccountId?, SortCriteria>(null to SortCriteria(SortType.DateDesc))
         val swipeActions = mapOf<AccountId, SwipeActions>(
             AccountIdFactory.create() to SwipeActions(SwipeAction.None, SwipeAction.None),
         )
@@ -158,7 +159,7 @@ class MessageListStateMachineTest {
             stateMachine.process(MessageListEvent.UpdatePreferences(preferences))
             assertThat(awaitItem()).isInstanceOf<MessageListState.WarmingUp>()
 
-            stateMachine.process(MessageListEvent.SortTypesLoaded(sortTypes))
+            stateMachine.process(MessageListEvent.SortCriteriaLoaded(sortCriteriaPerAccount))
             assertThat(awaitItem()).isInstanceOf<MessageListState.WarmingUp>()
 
             stateMachine.process(MessageListEvent.SwipeActionsLoaded(swipeActions))
@@ -171,7 +172,7 @@ class MessageListStateMachineTest {
                     prop(MessageListState.LoadingMessages::progress).isEqualTo(0f)
                     transform { it.metadata }.all {
                         prop(MessageListMetadata::swipeActions).isEqualTo(swipeActions)
-                        prop(MessageListMetadata::selectedSortTypes).isEqualTo(sortTypes)
+                        prop(MessageListMetadata::sortCriteriaPerAccount).isEqualTo(sortCriteriaPerAccount)
                         prop(MessageListMetadata::folder).isNull()
                     }
                 }
@@ -262,13 +263,14 @@ class MessageListStateMachineTest {
             val preferences: MessageListPreferences = createMessageListPreferences(
                 density = UiDensity.Compact,
             )
-            val sortTypes: Map<AccountId?, SortType> = mapOf(accountId to SortType.DateDesc)
+            val sortCriteriaPerAccount: Map<AccountId?, SortCriteria> =
+                mapOf(accountId to SortCriteria(SortType.DateDesc))
             val swipeActions: Map<AccountId, SwipeActions> = mapOf(
                 accountId to SwipeActions(SwipeAction.None, SwipeAction.None),
             )
             val stateMachine = createStateMachineOnLoadingState(
                 preferences = preferences,
-                sortTypes = sortTypes,
+                sortCriteriaPerAccount = sortCriteriaPerAccount,
                 swipeActions = swipeActions,
             )
             advanceUntilIdle()
@@ -296,7 +298,7 @@ class MessageListStateMachineTest {
                             prop(MessageListMetadata::folder).isNull()
                             prop(MessageListMetadata::activeMessage).isNull()
                             prop(MessageListMetadata::swipeActions).isEqualTo(swipeActions)
-                            prop(MessageListMetadata::selectedSortTypes).isEqualTo(sortTypes)
+                            prop(MessageListMetadata::sortCriteriaPerAccount).isEqualTo(sortCriteriaPerAccount)
                         }
                     }
             }
@@ -548,7 +550,7 @@ class MessageListStateMachineTest {
 
     private suspend fun TestScope.createStateMachineOnLoadingState(
         preferences: MessageListPreferences = createMessageListPreferences(),
-        sortTypes: Map<AccountId?, SortType> = mapOf(null to SortType.DateDesc),
+        sortCriteriaPerAccount: Map<AccountId?, SortCriteria> = mapOf(null to SortCriteria(SortType.DateDesc)),
         swipeActions: Map<AccountId, SwipeActions> = mapOf(
             AccountIdFactory.create() to SwipeActions(SwipeAction.None, SwipeAction.None),
         ),
@@ -556,7 +558,7 @@ class MessageListStateMachineTest {
         val stateMachine = createStateMachine()
         advanceUntilIdle()
         stateMachine.process(event = MessageListEvent.UpdatePreferences(preferences))
-        stateMachine.process(event = MessageListEvent.SortTypesLoaded(sortTypes))
+        stateMachine.process(event = MessageListEvent.SortCriteriaLoaded(sortCriteriaPerAccount))
         stateMachine.process(event = MessageListEvent.SwipeActionsLoaded(swipeActions))
         stateMachine.process(event = MessageListEvent.AllConfigsReady)
         advanceUntilIdle()
@@ -566,7 +568,7 @@ class MessageListStateMachineTest {
     private suspend fun TestScope.createStateMachineOnLoadedState(
         messages: List<MessageItemUi>,
         preferences: MessageListPreferences = createMessageListPreferences(),
-        sortTypes: Map<AccountId?, SortType> = mapOf(null to SortType.DateDesc),
+        sortCriteriaPerAccount: Map<AccountId?, SortCriteria> = mapOf(null to SortCriteria(SortType.DateDesc)),
         swipeActions: Map<AccountId, SwipeActions> = mapOf(
             AccountIdFactory.create() to SwipeActions(SwipeAction.None, SwipeAction.None),
         ),
@@ -574,7 +576,7 @@ class MessageListStateMachineTest {
         val stateMachine = createStateMachine()
         advanceUntilIdle()
         stateMachine.process(event = MessageListEvent.UpdatePreferences(preferences))
-        stateMachine.process(event = MessageListEvent.SortTypesLoaded(sortTypes))
+        stateMachine.process(event = MessageListEvent.SortCriteriaLoaded(sortCriteriaPerAccount))
         stateMachine.process(event = MessageListEvent.SwipeActionsLoaded(swipeActions))
         stateMachine.process(event = MessageListEvent.AllConfigsReady)
         stateMachine.process(event = MessageListEvent.UpdateLoadingProgress(progress = 1f))
@@ -586,7 +588,7 @@ class MessageListStateMachineTest {
     private suspend fun TestScope.createStateMachineOnSearchingMessages(
         messages: List<MessageItemUi>,
         preferences: MessageListPreferences = createMessageListPreferences(),
-        sortTypes: Map<AccountId?, SortType> = mapOf(null to SortType.DateDesc),
+        sortCriteriaPerAccount: Map<AccountId?, SortCriteria> = mapOf(null to SortCriteria(SortType.DateDesc)),
         swipeActions: Map<AccountId, SwipeActions> = mapOf(
             AccountIdFactory.create() to SwipeActions(SwipeAction.None, SwipeAction.None),
         ),
@@ -594,7 +596,7 @@ class MessageListStateMachineTest {
         val stateMachine = createStateMachine()
         advanceUntilIdle()
         stateMachine.process(MessageListEvent.UpdatePreferences(preferences))
-        stateMachine.process(MessageListEvent.SortTypesLoaded(sortTypes))
+        stateMachine.process(MessageListEvent.SortCriteriaLoaded(sortCriteriaPerAccount))
         stateMachine.process(MessageListEvent.SwipeActionsLoaded(swipeActions))
         stateMachine.process(event = MessageListEvent.AllConfigsReady)
         stateMachine.process(event = MessageListEvent.UpdateLoadingProgress(progress = 1f))
@@ -607,7 +609,7 @@ class MessageListStateMachineTest {
     private suspend fun TestScope.createStateMachineOnSelectingMessages(
         messages: List<MessageItemUi>,
         preferences: MessageListPreferences = createMessageListPreferences(),
-        sortTypes: Map<AccountId?, SortType> = mapOf(null to SortType.DateDesc),
+        sortCriteriaPerAccount: Map<AccountId?, SortCriteria> = mapOf(null to SortCriteria(SortType.DateDesc)),
         swipeActions: Map<AccountId, SwipeActions> = mapOf(
             AccountIdFactory.create() to SwipeActions(SwipeAction.None, SwipeAction.None),
         ),
@@ -615,7 +617,7 @@ class MessageListStateMachineTest {
         val stateMachine = createStateMachine()
         advanceUntilIdle()
         stateMachine.process(event = MessageListEvent.UpdatePreferences(preferences))
-        stateMachine.process(event = MessageListEvent.SortTypesLoaded(sortTypes))
+        stateMachine.process(event = MessageListEvent.SortCriteriaLoaded(sortCriteriaPerAccount))
         stateMachine.process(event = MessageListEvent.SwipeActionsLoaded(swipeActions))
         stateMachine.process(event = MessageListEvent.AllConfigsReady)
         stateMachine.process(event = MessageListEvent.UpdateLoadingProgress(progress = 1f))
@@ -634,7 +636,7 @@ private fun createMessageListPreferences(
     showFavouriteButton: Boolean = false,
     senderAboveSubject: Boolean = false,
     excerptLines: Int = 1,
-    dateTimeFormat: MessageListDateTimeFormat = MessageListDateTimeFormat.Auto,
+    dateTimeFormat: MessageListDateTimeFormat = MessageListDateTimeFormat.Contextual,
     useVolumeKeyNavigation: Boolean = false,
     serverSearchLimit: Int = 0,
     actionRequiringUserConfirmation: ImmutableSet<ActionRequiringUserConfirmation> = persistentSetOf(),

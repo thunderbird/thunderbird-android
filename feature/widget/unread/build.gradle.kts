@@ -25,3 +25,8 @@ android {
         }
     }
 }
+
+codeCoverage {
+    branchCoverage = 10
+    lineCoverage = 16
+}

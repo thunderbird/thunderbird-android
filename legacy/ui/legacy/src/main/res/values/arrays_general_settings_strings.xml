@@ -135,6 +135,7 @@
         <item>@string/global_settings_splitview_always</item>
         <item>@string/global_settings_splitview_never</item>
         <item>@string/global_settings_splitview_when_in_landscape</item>
+        <item>@string/global_settings_splitview_when_unfolded</item>
     </string-array>
 
     <string-array name="confirm_action_entries">
@@ -169,6 +170,11 @@
         <item>@string/general_settings_ui_density_compact</item>
         <item>@string/general_settings_ui_density_default</item>
         <item>@string/general_settings_ui_density_relaxed</item>
+    </string-array>
+
+    <string-array name="message_list_date_time_format_entries">
+        <item>@string/general_settings_message_list_date_time_format_contextual</item>
+        <item>@string/general_settings_message_list_date_time_format_full</item>
     </string-array>
 
     <string-array name="post_remove_navigation_entries">

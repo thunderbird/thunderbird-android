@@ -72,7 +72,7 @@ def render_notes(
         render_data["releases"][vers]["versioncode"] = int(versioncode)
         render_data["releases"][vers]["application"] = application
         render_data["releases"][vers]["date"] = release["release_date"]
-        render_data["releases"][vers]["short_notes"] = []
+        render_data["releases"][vers]["short_notes"] = {}
         render_data["releases"][vers]["notes"] = {}
         render_data["releases"][vers]["long_notes"] = []
         for note in yaml_content["notes"]:
@@ -87,12 +87,17 @@ def render_notes(
                     tag = note["tag"].lower().capitalize()
                     if tag not in render_data["releases"][vers]["notes"]:
                         render_data["releases"][vers]["notes"][tag] = []
-                    render_data["releases"][vers]["notes"][tag].append(
-                        note["note"].strip()
-                    )
+                    note_entry = {
+                        "text": note["note"].strip(),
+                        "issues": note.get("issues", []),
+                    }
+                    render_data["releases"][vers]["notes"][tag].append(note_entry)
                     render_data["releases"][vers]["long_notes"].append(note["note"].strip())
                 if "short_note" in note:
-                    render_data["releases"][vers]["short_notes"].append(
+                    tag = note["tag"].lower().capitalize()
+                    if tag not in render_data["releases"][vers]["short_notes"]:
+                        render_data["releases"][vers]["short_notes"][tag] = []
+                    render_data["releases"][vers]["short_notes"][tag].append(
                         note["short_note"].strip()
                     )
 

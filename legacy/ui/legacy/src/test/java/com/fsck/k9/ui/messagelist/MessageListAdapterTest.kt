@@ -25,7 +25,6 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.google.android.material.textview.MaterialTextView
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.Identity
@@ -34,8 +33,8 @@ import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
-import net.thunderbird.core.testing.TestClock
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
@@ -49,6 +48,8 @@ private const val SOME_ACCOUNT_UUID = "6b84207b-25de-4dab-97c3-953bbf03fec6"
 private const val FIRST_LINE_DEFAULT_FONT_SIZE = 16f
 private const val SECOND_LINE_DEFAULT_FONT_SIZE = 14f
 private const val DATE_DEFAULT_FONT_SIZE = 14f
+
+private val DATE_TIME_FORMAT = MessageListDateTimeFormat.Contextual
 
 class MessageListAdapterTest : RobolectricTest() {
     val activity = Robolectric.buildActivity(AppCompatActivity::class.java).create().get()
@@ -414,6 +415,7 @@ class MessageListAdapterTest : RobolectricTest() {
         backGroundAsReadIndicator: Boolean = false,
         showAccountIndicator: Boolean = false,
         density: UiDensity = UiDensity.Default,
+        dateTimeFormat: MessageListDateTimeFormat = DATE_TIME_FORMAT,
     ): MessageListAdapter {
         val appearance = MessageListAppearance(
             fontSizes,
@@ -425,6 +427,7 @@ class MessageListAdapterTest : RobolectricTest() {
             backGroundAsReadIndicator,
             showAccountIndicator,
             density,
+            dateTimeFormat = dateTimeFormat,
         )
 
         @OptIn(ExperimentalTime::class)
@@ -434,8 +437,7 @@ class MessageListAdapterTest : RobolectricTest() {
             layoutInflater = LayoutInflater.from(context),
             contactsPictureLoader = contactsPictureLoader,
             listItemListener = listItemListener,
-            appearance = appearance,
-            relativeDateTimeFormatter = RelativeDateTimeFormatter(context, TestClock()),
+            appearance = { appearance },
             themeProvider = FakeThemeProvider(),
             featureFlagProvider = FakeFeatureFlagProvider(),
             avatarMonogramCreator = mock(),
@@ -451,6 +453,7 @@ class MessageListAdapterTest : RobolectricTest() {
         internalDate: Long = 0L,
         displayName: CharSequence = "irrelevant",
         displayAddress: Address? = Address.parse("irrelevant@domain.example").first(),
+        displayDateTime: String = "12:34",
         previewText: String = "irrelevant",
         isMessageEncrypted: Boolean = false,
         isRead: Boolean = false,
@@ -472,6 +475,7 @@ class MessageListAdapterTest : RobolectricTest() {
             internalDate,
             displayName,
             displayAddress,
+            displayDateTime,
             previewText,
             isMessageEncrypted,
             isRead,

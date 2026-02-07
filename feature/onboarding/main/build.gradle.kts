@@ -17,3 +17,8 @@ dependencies {
     implementation(projects.feature.onboarding.permissions)
     implementation(projects.feature.onboarding.migration.api)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

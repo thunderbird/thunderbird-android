@@ -10,4 +10,6 @@ const val KEY_MESSAGE_ACTIONS_ORDER = "messageActionsOrder"
 const val KEY_MESSAGE_ACTIONS_CUTOFF = "messageActionsCutoff"
 const val KEY_IS_SUMMARY_DELETE_ACTION_ENABLED = "isSummaryDeleteActionEnabled"
 
+const val KEY_NOTIFICATION_QUICK_DELETE_BEHAVIOUR = "notificationQuickDelete"
+
 interface NotificationPreferenceManager : PreferenceManager<NotificationPreference>

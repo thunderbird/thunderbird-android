@@ -21,9 +21,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
+import androidx.lifecycle.lifecycleScope
 import app.k9mail.core.android.common.compat.BundleCompat
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
+import app.k9mail.core.ui.compose.common.window.FoldableState
+import app.k9mail.core.ui.compose.common.window.FoldableStateObserver
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.funding.api.FundingManager
 import app.k9mail.feature.launcher.FeatureLauncherActivity
@@ -33,7 +36,6 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation
 import com.fsck.k9.Preferences
-import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.search.isUnifiedFolders
@@ -52,9 +54,12 @@ import com.fsck.k9.ui.settings.SettingsActivity
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
+import kotlin.getValue
+import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.common.startup.DatabaseUpgradeInterceptor
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -73,6 +78,7 @@ import net.thunderbird.feature.search.legacy.serialization.LocalMessageSearchSer
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
 
 private const val TAG = "MainActivity"
 
@@ -90,7 +96,7 @@ private const val TAG = "MainActivity"
  * are intended to be refactored into more dedicated components over time.
  */
 @Suppress("TooManyFunctions", "LargeClass")
-open class MainActivity :
+open class MessageHomeActivity :
     BaseActivity(),
     MessageListFragmentListener,
     MessageViewFragmentListener,
@@ -101,7 +107,6 @@ open class MainActivity :
     private val preferences: Preferences by inject()
     private val accountManager: LegacyAccountDtoManager by inject()
     private val defaultFolderProvider: DefaultFolderProvider by inject()
-    private val accountRemover: BackgroundAccountRemover by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
     private val messagingController: MessagingController by inject()
     private val contactRepository: ContactRepository by inject()
@@ -109,6 +114,9 @@ open class MainActivity :
     private val fundingManager: FundingManager by inject()
     private val logger: Logger by inject()
     private val legacyAccountDataMapper: LegacyAccountDataMapper by inject()
+    private val databaseUpgradeInterceptor: DatabaseUpgradeInterceptor by inject()
+
+    private val foldableStateObserver: FoldableStateObserver by inject { parametersOf(this) }
 
     private lateinit var actionBar: ActionBar
 
@@ -148,26 +156,7 @@ open class MainActivity :
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // If the app's main task was not created using the default launch intent (e.g. from a notification, a widget,
-        // or a shortcut), using the app icon to "launch" the app will create a new MessageList instance instead of only
-        // bringing the app's task to the foreground. We catch this situation here and simply finish the activity. This
-        // will bring the task to the foreground, showing the last active screen.
-        if (intent.action == Intent.ACTION_MAIN && intent.hasCategory(Intent.CATEGORY_LAUNCHER) && !isTaskRoot) {
-            Log.v("Not displaying MessageList. Only bringing the app task to the foreground.")
-            finish()
-            return
-        }
-
-        val accounts = accountManager.getAccounts()
-        deleteIncompleteAccounts(accounts)
-        val hasAccountSetup = accounts.any { it.isFinishedSetup }
-        if (!hasAccountSetup) {
-            FeatureLauncherActivity.launch(this, FeatureLauncherTarget.Onboarding)
-            finish()
-            return
-        }
-
-        if (UpgradeDatabases.actionUpgradeDatabases(this, intent)) {
+        if (databaseUpgradeInterceptor.checkAndHandleUpgrade(this, intent)) {
             finish()
             return
         }
@@ -177,11 +166,11 @@ open class MainActivity :
         } else {
             setLayout(R.layout.message_list)
             viewSwitcher = findViewById<ViewSwitcher>(R.id.container).apply {
-                firstInAnimation = AnimationUtils.loadAnimation(this@MainActivity, R.anim.slide_in_left)
-                firstOutAnimation = AnimationUtils.loadAnimation(this@MainActivity, R.anim.slide_out_right)
-                secondInAnimation = AnimationUtils.loadAnimation(this@MainActivity, R.anim.slide_in_right)
-                secondOutAnimation = AnimationUtils.loadAnimation(this@MainActivity, R.anim.slide_out_left)
-                setOnSwitchCompleteListener(this@MainActivity)
+                firstInAnimation = AnimationUtils.loadAnimation(this@MessageHomeActivity, R.anim.slide_in_left)
+                firstOutAnimation = AnimationUtils.loadAnimation(this@MessageHomeActivity, R.anim.slide_out_right)
+                secondInAnimation = AnimationUtils.loadAnimation(this@MessageHomeActivity, R.anim.slide_in_right)
+                secondOutAnimation = AnimationUtils.loadAnimation(this@MessageHomeActivity, R.anim.slide_out_left)
+                setOnSwitchCompleteListener(this@MessageHomeActivity)
             }
         }
 
@@ -202,13 +191,58 @@ open class MainActivity :
         initializeFragments()
         displayViews()
         initializeFunding()
+        initializeFoldableObserver()
 
         val backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                this@MainActivity.handleOnBackPressed(this)
+                this@MessageHomeActivity.handleOnBackPressed(this)
             }
         }
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
+
+    private fun initializeFoldableObserver() {
+        // Register lifecycle observer
+        lifecycle.addObserver(foldableStateObserver)
+
+        // Observe foldable state changes only when using WHEN_UNFOLDED mode
+        lifecycleScope.launch {
+            foldableStateObserver.foldableState
+                .collect { foldableState ->
+                    if (generalSettingsManager.getConfig().display.coreSettings.splitViewMode ==
+                        SplitViewMode.WHEN_UNFOLDED
+                    ) {
+                        handleFoldableStateChange(foldableState)
+                    }
+                }
+        }
+    }
+
+    private fun handleFoldableStateChange(foldableState: FoldableState) {
+        logger.debug(TAG) { "Handling foldable state change: $foldableState" }
+
+        val shouldUseSplitView = foldableState == FoldableState.UNFOLDED
+        val isCurrentlySplitView = displayMode == DisplayMode.SPLIT_VIEW
+
+        if (shouldUseSplitView && !isCurrentlySplitView) {
+            // Switch to split view
+            logger.debug(TAG) { "Switching to split view due to unfold" }
+            recreateWithSplitView()
+        } else if (!shouldUseSplitView && isCurrentlySplitView) {
+            // Switch to single pane view
+            logger.debug(TAG) { "Switching to single pane view due to fold" }
+            recreateWithSinglePane()
+        }
+    }
+
+    private fun recreateWithSplitView() {
+        // Recreate activity to properly initialize split view layout
+        recreate()
+    }
+
+    private fun recreateWithSinglePane() {
+        // Recreate activity to properly initialize single pane layout
+        recreate()
     }
 
     private fun initializeFunding() {
@@ -224,13 +258,12 @@ open class MainActivity :
     public override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        if (isFinishing) {
+        if (databaseUpgradeInterceptor.checkAndHandleUpgrade(this, intent)) {
+            finish()
             return
         }
 
-        if (intent.action == Intent.ACTION_MAIN && intent.hasCategory(Intent.CATEGORY_LAUNCHER)) {
-            // There's nothing to do if the default launcher Intent was used.
-            // This only brings the existing screen to the foreground.
+        if (isFinishing) {
             return
         }
 
@@ -259,12 +292,6 @@ open class MainActivity :
         initializeDisplayMode(null)
         initializeFragments()
         displayViews()
-    }
-
-    private fun deleteIncompleteAccounts(accounts: List<LegacyAccountDto>) {
-        accounts.filter { !it.isFinishedSetup }.forEach {
-            accountRemover.removeAccountAsync(it.uuid)
-        }
     }
 
     private fun findFragments() {
@@ -346,9 +373,12 @@ open class MainActivity :
     private fun useSplitView(): Boolean {
         val splitViewMode = generalSettingsManager.getConfig().display.coreSettings.splitViewMode
         val orientation = resources.configuration.orientation
-        return splitViewMode === SplitViewMode.ALWAYS ||
-            splitViewMode === SplitViewMode.WHEN_IN_LANDSCAPE &&
-            orientation == Configuration.ORIENTATION_LANDSCAPE
+        return when (splitViewMode) {
+            SplitViewMode.ALWAYS -> true
+            SplitViewMode.NEVER -> false
+            SplitViewMode.WHEN_IN_LANDSCAPE -> orientation == Configuration.ORIENTATION_LANDSCAPE
+            SplitViewMode.WHEN_UNFOLDED -> foldableStateObserver.currentState == FoldableState.UNFOLDED
+        }
     }
 
     private fun initializeLayout() {
@@ -389,7 +419,7 @@ open class MainActivity :
     private fun decodeExtras(intent: Intent): Boolean {
         if (intent.action === Intent.ACTION_SEARCH &&
             !intent.component?.className.equals(
-                Search::class.java.name,
+                MessageSearchActivity::class.java.name,
             )
         ) {
             finish()
@@ -1165,7 +1195,7 @@ open class MainActivity :
             // TODO Handle the case where we're searching from within a search result.
             null
         }
-        val searchIntent = Intent(this, Search::class.java).apply {
+        val searchIntent = Intent(this, MessageSearchActivity::class.java).apply {
             action = Intent.ACTION_SEARCH
             putExtra(SearchManager.QUERY, query)
             putExtra(SearchManager.APP_DATA, appData)
@@ -1519,7 +1549,7 @@ open class MainActivity :
             newTask: Boolean,
             clearTop: Boolean,
         ): Intent {
-            return Intent(context, MainActivity::class.java).apply {
+            return Intent(context, MessageHomeActivity::class.java).apply {
                 if (search != null) {
                     putExtra(EXTRA_SEARCH, LocalMessageSearchSerializer.serialize(search))
                 }
@@ -1536,7 +1566,7 @@ open class MainActivity :
             context: Context,
             account: LegacyAccountDto,
         ): Intent {
-            return Intent(context, MainActivity::class.java).apply {
+            return Intent(context, MessageHomeActivity::class.java).apply {
                 val search = SearchAccount.createUnifiedFoldersSearch(
                     title = coreResourceProvider.searchUnifiedFoldersTitle(),
                     detail = coreResourceProvider.searchUnifiedFoldersDetail(),
@@ -1564,7 +1594,7 @@ open class MainActivity :
 
         @JvmStatic
         fun shortcutIntent(context: Context?, specialFolder: String?): Intent {
-            return Intent(context, MainActivity::class.java).apply {
+            return Intent(context, MessageHomeActivity::class.java).apply {
                 action = ACTION_SHORTCUT
                 putExtra(EXTRA_SPECIAL_FOLDER, specialFolder)
 
@@ -1576,7 +1606,7 @@ open class MainActivity :
 
         @JvmStatic
         fun shortcutIntentForAccount(context: Context, accountUuid: String): Intent {
-            return Intent(context, MainActivity::class.java).apply {
+            return Intent(context, MessageHomeActivity::class.java).apply {
                 action = ACTION_SHORTCUT
                 putExtra(EXTRA_ACCOUNT, accountUuid)
 
@@ -1602,7 +1632,7 @@ open class MainActivity :
             openInUnifiedInbox: Boolean,
             messageViewOnly: Boolean,
         ): Intent {
-            return Intent(context, MainActivity::class.java).apply {
+            return Intent(context, MessageHomeActivity::class.java).apply {
                 if (openInUnifiedInbox) {
                     val search = SearchAccount.createUnifiedFoldersSearch(
                         title = coreResourceProvider.searchUnifiedFoldersTitle(),
@@ -1626,7 +1656,7 @@ open class MainActivity :
 
         @JvmStatic
         fun launch(context: Context) {
-            val intent = Intent(context, MainActivity::class.java).apply {
+            val intent = Intent(context, MessageHomeActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -1658,7 +1688,7 @@ open class MainActivity :
 
         @JvmStatic
         fun recreateMessageList(context: Context) {
-            val intent = Intent(context, MainActivity::class.java).apply {
+            val intent = Intent(context, MessageHomeActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }

@@ -8,20 +8,19 @@ import dev.mokkery.mock
 import dev.mokkery.spy
 import dev.mokkery.verify
 import dev.mokkery.verify.VerifyMode
-import kotlin.random.Random
 import kotlin.test.Test
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.feature.mail.message.list.domain.DomainContract.UseCase.GetMessageListPreferences
 import net.thunderbird.feature.mail.message.list.preferences.ActionRequiringUserConfirmation
-import net.thunderbird.feature.mail.message.list.preferences.MessageListDateTimeFormat
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
@@ -112,14 +111,14 @@ class LoadPreferencesSideEffectTest {
 
             // Act
             testSubject.handle(oldState, newState)
-            repeat(times = 10) {
+            repeat(times = 10) { index ->
                 fakeGetMessageListPreferences.emit(
                     preferences = createMessageListPreferences(
-                        density = UiDensity.entries.random(),
-                        showMessageAvatar = Random.nextBoolean(),
-                        showFavouriteButton = Random.nextBoolean(),
-                        senderAboveSubject = Random.nextBoolean(),
-                        colorizeBackgroundWhenRead = Random.nextBoolean(),
+                        density = UiDensity.entries[index % UiDensity.entries.size],
+                        showMessageAvatar = index % 2 == 0,
+                        showFavouriteButton = index % 3 == 0,
+                        senderAboveSubject = index % 4 == 0,
+                        colorizeBackgroundWhenRead = index % 5 == 0,
                     ),
                 )
             }
@@ -138,7 +137,7 @@ class LoadPreferencesSideEffectTest {
         showFavouriteButton: Boolean = false,
         senderAboveSubject: Boolean = false,
         excerptLines: Int = 1,
-        dateTimeFormat: MessageListDateTimeFormat = MessageListDateTimeFormat.Auto,
+        dateTimeFormat: MessageListDateTimeFormat = MessageListDateTimeFormat.Contextual,
         useVolumeKeyNavigation: Boolean = false,
         serverSearchLimit: Int = 0,
         actionRequiringUserConfirmation: ImmutableSet<ActionRequiringUserConfirmation> = persistentSetOf(),
@@ -161,7 +160,11 @@ class LoadPreferencesSideEffectTest {
     private inner class FakeGetMessageListPreferences(
         initialValue: MessageListPreferences = createMessageListPreferences(),
     ) : GetMessageListPreferences {
-        private val preferences = MutableStateFlow(initialValue)
+        private val preferences = MutableSharedFlow<MessageListPreferences>(replay = 1)
+
+        init {
+            preferences.tryEmit(initialValue)
+        }
 
         override fun invoke(): Flow<MessageListPreferences> = preferences
 
