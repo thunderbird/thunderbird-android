@@ -52,13 +52,15 @@ internal enum class MessageNotificationAction(
             return entries.firstOrNull { it.token == token }
         }
 
-        fun defaultOrder(): List<MessageNotificationAction> = listOf(
-            Reply,
-            MarkAsRead,
-            Delete,
-            Star,
-            Archive,
-            Spam,
-        )
+        fun defaultOrder(): List<MessageNotificationAction> {
+          val seen = LinkedHashSet<MessageNotificationAction>()
+          for (token in NotificationActionTokens.DEFAULT_ORDER.split(',')) {
+              val trimmed = token.trim()
+              if (trimmed.isNotEmpty()) {
+                  fromToken(trimmed)?.let { seen.add(it) }
+              }
+          }
+          return seen.toList()
+      }
     }
 }

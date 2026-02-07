@@ -11,5 +11,5 @@ object NotificationActionTokens {
     const val ARCHIVE = "archive"
     const val SPAM = "spam"
 
-    const val DEFAULT_ORDER = "reply,mark_as_read,delete,star,archive,spam"
+    const val DEFAULT_ORDER = "$REPLY,$MARK_AS_READ,$DELETE,$STAR,$ARCHIVE,$SPAM"
 }

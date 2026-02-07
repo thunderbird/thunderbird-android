@@ -13,13 +13,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -151,7 +148,7 @@ internal class NotificationActionsAdapter(
                 val actionHolder = holder as ActionViewHolder
                 actionHolder.bind(
                     item = item,
-                    minHeight = resolveListItemMinHeight(holder.itemView.context),
+                    minHeight = android.R.attr.listPreferredItemHeightSmall.dp,
                     onStartDrag = { itemTouchHelper.startDrag(actionHolder) },
                     onMove = ::moveItem,
                 )
@@ -159,7 +156,7 @@ internal class NotificationActionsAdapter(
             is NotificationListItem.Cutoff -> {
                 val cutoffHolder = holder as CutoffViewHolder
                 cutoffHolder.bind(
-                    minHeight = resolveListItemMinHeight(holder.itemView.context),
+                    minHeight = android.R.attr.listPreferredItemHeightSmall.dp,
                     onStartDrag = { itemTouchHelper.startDrag(cutoffHolder) },
                     onMove = ::moveItem,
                 )
@@ -322,15 +319,21 @@ private fun NotificationActionRow(
             .fillMaxWidth()
             .heightIn(min = minHeight)
             .alpha(if (isDimmed) 0.6f else 1.0f)
-            .padding(start = MainTheme.spacings.default, end = MainTheme.spacings.zero),
+            .padding(start = MainTheme.spacings.default, end = MainTheme.spacings.zero)
+            .pointerInteropFilter { event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    onStartDrag()
+                    true
+                } else {
+                    false
+                }
+            },
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
             painter = painterResource(action.iconRes),
             contentDescription = null,
-            modifier = Modifier
-                .size(40.dp)
-                .padding(MainTheme.spacings.default),
+            modifier = Modifier.padding(MainTheme.spacings.default),
         )
         TextBodyLarge(
             text = stringResource(action.labelRes),
@@ -338,26 +341,11 @@ private fun NotificationActionRow(
                 .weight(1f)
                 .padding(start = MainTheme.spacings.triple, end = MainTheme.spacings.double),
         )
-        Box(
-            modifier = Modifier
-                .width(56.dp)
-                .fillMaxHeight()
-                .pointerInteropFilter { event ->
-                if (event.action == MotionEvent.ACTION_DOWN) {
-                    onStartDrag()
-                    true
-                } else {
-                        false
-                    }
-                }
-                .padding(MainTheme.spacings.double),
-        ) {
-            Image(
-                painter = painterResource(Icons.Outlined.DragHandle),
-                contentDescription = stringResource(R.string.notification_actions_drag_handle_description),
-                modifier = Modifier.align(Alignment.Center),
-            )
-        }
+        Image(
+            painter = painterResource(Icons.Outlined.DragHandle),
+            contentDescription = stringResource(R.string.notification_actions_drag_handle_description),
+            modifier = Modifier.padding(MainTheme.spacings.double),
+        )
     }
 }
 
@@ -431,18 +419,3 @@ private fun resolveDrawable(context: Context, attrRes: Int) =
         }
         null
     }
-
-private fun resolveListItemMinHeight(context: Context): Dp {
-    val outValue = TypedValue()
-    val resolved = context.theme.resolveAttribute(android.R.attr.listPreferredItemHeightSmall, outValue, true)
-    val px = if (resolved) {
-        if (outValue.resourceId != 0) {
-            context.resources.getDimension(outValue.resourceId)
-        } else {
-            TypedValue.complexToDimension(outValue.data, context.resources.displayMetrics)
-        }
-    } else {
-        48f * context.resources.displayMetrics.density
-    }
-    return (px / context.resources.displayMetrics.density).dp
-}
