@@ -30,7 +30,7 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
 
     public AttachmentContentLoader(Context context, Attachment attachment) {
         super(context);
-        if (attachment.state != LoadingState.METADATA) {
+        if (attachment.getState() != LoadingState.METADATA) {
             throw new IllegalArgumentException("Attachment provided to content loader must be in METADATA state");
         }
 
@@ -60,15 +60,15 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
 
             InputStream in;
 
-            if (sourceAttachment.internalAttachment) {
+            if (sourceAttachment.isInternalAttachment()) {
                 ContentResolver unsafeContentResolver = context.getContentResolver();
-                in = unsafeContentResolver.openInputStream(sourceAttachment.uri);
+                in = unsafeContentResolver.openInputStream(sourceAttachment.getUri());
             } else {
                 SafeContentResolver safeContentResolver = SafeContentResolver.newInstance(context);
-                in = safeContentResolver.openInputStream(sourceAttachment.uri);
+                in = safeContentResolver.openInputStream(sourceAttachment.getUri());
             }
             if (in == null) {
-                Log.w("Error opening attachment for reading: %s", sourceAttachment.uri);
+                Log.w("Error opening attachment for reading: %s", sourceAttachment.getUri());
 
                 cachedResultAttachment = sourceAttachment.deriveWithLoadCancelled();
                 return cachedResultAttachment;

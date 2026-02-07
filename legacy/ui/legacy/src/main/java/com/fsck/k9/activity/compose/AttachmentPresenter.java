@@ -80,12 +80,12 @@ public class AttachmentPresenter {
         ArrayList<Attachment> attachmentList = savedInstanceState.getParcelableArrayList(STATE_KEY_ATTACHMENTS);
         // noinspection ConstantConditions, we know this is set in onSaveInstanceState
         for (Attachment attachment : attachmentList) {
-            attachments.put(attachment.uri, attachment);
+            attachments.put(attachment.getUri(), attachment);
             attachmentMvpView.addAttachmentView(attachment);
 
-            if (attachment.state == LoadingState.URI_ONLY) {
+            if (attachment.getState() == LoadingState.URI_ONLY) {
                 initAttachmentInfoLoader(attachment);
-            } else if (attachment.state == LoadingState.METADATA) {
+            } else if (attachment.getState() == LoadingState.METADATA) {
                 initAttachmentContentLoader(attachment);
             }
         }
@@ -107,7 +107,7 @@ public class AttachmentPresenter {
 
     private boolean hasLoadingAttachments() {
         for (Attachment attachment : attachments.values()) {
-            Loader loader = loaderManager.getLoader(attachment.loaderId);
+            Loader loader = loaderManager.getLoader(attachment.getLoaderId());
             if (loader != null && loader.isStarted()) {
                 return true;
             }
@@ -183,11 +183,12 @@ public class AttachmentPresenter {
         attachment = attachment.deriveWithMetadataLoaded(
                 attachmentViewInfo.mimeType, attachmentViewInfo.displayName, attachmentViewInfo.size);
 
-        inlineAttachments.put(attachment.uri, new InlineAttachment(attachmentViewInfo.part.getContentId(), attachment));
+        inlineAttachments.put(
+            attachment.getUri(), new InlineAttachment(attachmentViewInfo.part.getContentId(), attachment));
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(LOADER_ARG_ATTACHMENT, attachment.uri);
-        loaderManager.initLoader(attachment.loaderId, bundle, mInlineAttachmentContentLoaderCallback);
+        bundle.putParcelable(LOADER_ARG_ATTACHMENT, attachment.getUri());
+        loaderManager.initLoader(attachment.getLoaderId(), bundle, mInlineAttachmentContentLoaderCallback);
     }
 
     private void addInternalAttachment(Uri uri, String contentType, boolean allowMessageType) {
@@ -243,13 +244,13 @@ public class AttachmentPresenter {
     }
 
     private void addAttachmentAndStartLoader(Attachment attachment) {
-        attachments.put(attachment.uri, attachment);
+        attachments.put(attachment.getUri(), attachment);
         listener.onAttachmentAdded();
         attachmentMvpView.addAttachmentView(attachment);
 
-        if (attachment.state == LoadingState.URI_ONLY) {
+        if (attachment.getState() == LoadingState.URI_ONLY) {
             initAttachmentInfoLoader(attachment);
-        } else if (attachment.state == LoadingState.METADATA) {
+        } else if (attachment.getState() == LoadingState.METADATA) {
             initAttachmentContentLoader(attachment);
         } else {
             throw new IllegalStateException("Attachment can only be added in URI_ONLY or METADATA state!");
@@ -257,23 +258,23 @@ public class AttachmentPresenter {
     }
 
     private void initAttachmentInfoLoader(Attachment attachment) {
-        if (attachment.state != LoadingState.URI_ONLY) {
+        if (attachment.getState() != LoadingState.URI_ONLY) {
             throw new IllegalStateException("initAttachmentInfoLoader can only be called for URI_ONLY state!");
         }
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(LOADER_ARG_ATTACHMENT, attachment.uri);
-        loaderManager.initLoader(attachment.loaderId, bundle, mAttachmentInfoLoaderCallback);
+        bundle.putParcelable(LOADER_ARG_ATTACHMENT, attachment.getUri());
+        loaderManager.initLoader(attachment.getLoaderId(), bundle, mAttachmentInfoLoaderCallback);
     }
 
     private void initAttachmentContentLoader(Attachment attachment) {
-        if (attachment.state != LoadingState.METADATA) {
+        if (attachment.getState() != LoadingState.METADATA) {
             throw new IllegalStateException("initAttachmentContentLoader can only be called for METADATA state!");
         }
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(LOADER_ARG_ATTACHMENT, attachment.uri);
-        loaderManager.initLoader(attachment.loaderId, bundle, mAttachmentContentLoaderCallback);
+        bundle.putParcelable(LOADER_ARG_ATTACHMENT, attachment.getUri());
+        loaderManager.initLoader(attachment.getLoaderId(), bundle, mAttachmentContentLoaderCallback);
     }
 
     private int getNextFreeLoaderId() {
@@ -296,16 +297,16 @@ public class AttachmentPresenter {
                     int loaderId = loader.getId();
                     loaderManager.destroyLoader(loaderId);
 
-                    if (!attachments.containsKey(attachment.uri)) {
+                    if (!attachments.containsKey(attachment.getUri())) {
                         return;
                     }
 
-                    if (attachment.state == LoadingState.METADATA) {
+                    if (attachment.getState() == LoadingState.METADATA) {
                         attachmentMvpView.updateAttachmentView(attachment);
-                        attachments.put(attachment.uri, attachment);
+                        attachments.put(attachment.getUri(), attachment);
                         initAttachmentContentLoader(attachment);
                     } else {
-                        attachments.remove(attachment.uri);
+                        attachments.remove(attachment.getUri());
                         attachmentMvpView.removeAttachmentView(attachment);
                     }
                 }
@@ -329,15 +330,15 @@ public class AttachmentPresenter {
                     int loaderId = loader.getId();
                     loaderManager.destroyLoader(loaderId);
 
-                    if (!attachments.containsKey(attachment.uri)) {
+                    if (!attachments.containsKey(attachment.getUri())) {
                         return;
                     }
 
-                    if (attachment.state == Attachment.LoadingState.COMPLETE) {
+                    if (attachment.getState() == Attachment.LoadingState.COMPLETE) {
                         attachmentMvpView.updateAttachmentView(attachment);
-                        attachments.put(attachment.uri, attachment);
+                        attachments.put(attachment.getUri(), attachment);
                     } else {
-                        attachments.remove(attachment.uri);
+                        attachments.remove(attachment.getUri());
                         attachmentMvpView.removeAttachmentView(attachment);
                     }
 
@@ -363,11 +364,11 @@ public class AttachmentPresenter {
                     int loaderId = loader.getId();
                     loaderManager.destroyLoader(loaderId);
 
-                    if (attachment.state == Attachment.LoadingState.COMPLETE) {
-                        inlineAttachments.put(attachment.uri, new InlineAttachment(
-                                inlineAttachments.get(attachment.uri).getContentId(), attachment));
+                    if (attachment.getState() == Attachment.LoadingState.COMPLETE) {
+                        inlineAttachments.put(attachment.getUri(), new InlineAttachment(
+                                inlineAttachments.get(attachment.getUri()).getContentId(), attachment));
                     } else {
-                        inlineAttachments.remove(attachment.uri);
+                        inlineAttachments.remove(attachment.getUri());
                     }
 
                     postPerformStalledAction();
@@ -432,7 +433,7 @@ public class AttachmentPresenter {
     public void onClickRemoveAttachment(Uri uri) {
         Attachment attachment = attachments.get(uri);
 
-        loaderManager.destroyLoader(attachment.loaderId);
+        loaderManager.destroyLoader(attachment.getLoaderId());
 
         attachmentMvpView.removeAttachmentView(attachment);
         attachments.remove(uri);
