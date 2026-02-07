@@ -9,27 +9,20 @@ appId: net.thunderbird.android.beta
 
 ## Already using Thunderbird screen
 - waitForAnimationToEnd:
-    timeout: 500
+    timeout: 800
 - tapOn:
     id: "onboarding_migration_new_account_button"
 
 - runFlow:
-    file: create_demo_account.yml
+    file: sign_in_with_configured_account.yml
     env:
-        EMAIL_ADDRESS: "demotest@example.com"
+        EMAIL_ADDRESS: "johntest5890@gmail.com"
         ACCOUNT_NAME: "Demo Account"
         DISPLAY_NAME: "Demo User"
 
 # Permissions
 - waitForAnimationToEnd:
-    timeout: 500
-- runFlow:
-    when:
-      visible:
-        id: "onboarding_permissions_skip_button"
-    commands:
-      - tapOn:
-          id: "onboarding_permissions_skip_button"
+    timeout: 800
 - runFlow:
     when:
       visible:
