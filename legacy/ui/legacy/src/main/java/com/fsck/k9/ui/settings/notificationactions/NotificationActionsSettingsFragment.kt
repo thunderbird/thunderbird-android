@@ -85,12 +85,10 @@ class NotificationActionsSettingsFragment : androidx.fragment.app.Fragment() {
 
     private fun persist() {
         val sanitizedCutoff = cutoff.coerceIn(0, NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN)
-        val orderString = actionOrder.joinToString(separator = ",") { it.token }
-
         generalSettingsManager.update { settings ->
             settings.copy(
                 notification = settings.notification.copy(
-                    messageActionsOrder = orderString,
+                    messageActionsOrder = actionOrder.map { it.token },
                     messageActionsCutoff = sanitizedCutoff,
                 ),
             )
@@ -129,12 +127,7 @@ class NotificationActionsSettingsFragment : androidx.fragment.app.Fragment() {
         persist()
     }
 
-    private fun parseOrder(raw: String): List<MessageNotificationAction> {
-        val tokens = raw
-            .split(',')
-            .map { it.trim() }
-            .filter { it.isNotEmpty() }
-
+    private fun parseOrder(tokens: List<String>): List<MessageNotificationAction> {
         val seen = LinkedHashSet<MessageNotificationAction>()
         for (token in tokens) {
             MessageNotificationAction.fromToken(token)?.let { seen.add(it) }

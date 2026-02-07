@@ -53,14 +53,14 @@ internal enum class MessageNotificationAction(
         }
 
         fun defaultOrder(): List<MessageNotificationAction> {
-          val seen = LinkedHashSet<MessageNotificationAction>()
-          for (token in NotificationActionTokens.DEFAULT_ORDER.split(',')) {
-              val trimmed = token.trim()
-              if (trimmed.isNotEmpty()) {
-                  fromToken(trimmed)?.let { seen.add(it) }
-              }
-          }
-          return seen.toList()
-      }
+            val seen = LinkedHashSet<MessageNotificationAction>()
+            for (token in NotificationActionTokens.DEFAULT_ORDER) {
+                fromToken(token)?.let { seen.add(it) }
+            }
+            for (action in entries) {
+                seen.add(action)
+            }
+            return seen.toList()
+        }
     }
 }

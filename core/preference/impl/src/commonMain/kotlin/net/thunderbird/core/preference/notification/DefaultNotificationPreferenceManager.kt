@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import net.thunderbird.core.common.notification.NotificationActionTokens
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
@@ -47,9 +48,13 @@ class DefaultNotificationPreferenceManager(
                 key = KEY_NOTIFICATION_DURING_QUIET_TIME_ENABLED,
                 defValue = NOTIFICATION_PREFERENCE_DEFAULT_IS_NOTIFICATION_DURING_QUIET_TIME_ENABLED,
             ),
-            messageActionsOrder = storage.getStringOrDefault(
-                key = KEY_MESSAGE_ACTIONS_ORDER,
-                defValue = NOTIFICATION_PREFERENCE_DEFAULT_MESSAGE_ACTIONS_ORDER,
+            messageActionsOrder = NotificationActionTokens.parseOrder(
+                storage.getStringOrDefault(
+                    key = KEY_MESSAGE_ACTIONS_ORDER,
+                    defValue = NotificationActionTokens.serializeOrder(
+                        NOTIFICATION_PREFERENCE_DEFAULT_MESSAGE_ACTIONS_ORDER,
+                    ),
+                ),
             ),
             messageActionsCutoff = storage.getInt(
                 key = KEY_MESSAGE_ACTIONS_CUTOFF,
@@ -83,7 +88,10 @@ class DefaultNotificationPreferenceManager(
                     KEY_NOTIFICATION_DURING_QUIET_TIME_ENABLED,
                     config.isNotificationDuringQuietTimeEnabled,
                 )
-                storageEditor.putString(KEY_MESSAGE_ACTIONS_ORDER, config.messageActionsOrder)
+                storageEditor.putString(
+                    KEY_MESSAGE_ACTIONS_ORDER,
+                    NotificationActionTokens.serializeOrder(config.messageActionsOrder),
+                )
                 storageEditor.putInt(KEY_MESSAGE_ACTIONS_CUTOFF, config.messageActionsCutoff)
                 storageEditor.putBoolean(KEY_IS_SUMMARY_DELETE_ACTION_ENABLED, config.isSummaryDeleteActionEnabled)
                 storageEditor.putEnum(

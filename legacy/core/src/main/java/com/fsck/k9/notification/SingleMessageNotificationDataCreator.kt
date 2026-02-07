@@ -119,12 +119,7 @@ internal class SingleMessageNotificationDataCreator(
         return filled
     }
 
-    private fun parseActionsOrder(raw: String): List<NotificationAction> {
-        val tokens = raw
-            .split(',')
-            .map { it.trim() }
-            .filter { it.isNotEmpty() }
-
+    private fun parseActionsOrder(tokens: List<String>): List<NotificationAction> {
         val seen = LinkedHashSet<NotificationAction>()
         for (token in tokens) {
             tokenToAction(token)?.let { seen.add(it) }

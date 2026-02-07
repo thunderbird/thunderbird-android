@@ -11,5 +11,14 @@ object NotificationActionTokens {
     const val ARCHIVE = "archive"
     const val SPAM = "spam"
 
-    const val DEFAULT_ORDER = "$REPLY,$MARK_AS_READ,$DELETE,$STAR,$ARCHIVE,$SPAM"
+    val DEFAULT_ORDER: List<String> = listOf(REPLY, MARK_AS_READ, DELETE, STAR, ARCHIVE, SPAM)
+
+    fun parseOrder(raw: String): List<String> {
+        return raw
+            .split(',')
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+    }
+
+    fun serializeOrder(tokens: List<String>): String = tokens.joinToString(separator = ",")
 }

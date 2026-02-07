@@ -148,7 +148,6 @@ internal class NotificationActionsAdapter(
                 val actionHolder = holder as ActionViewHolder
                 actionHolder.bind(
                     item = item,
-                    minHeight = android.R.attr.listPreferredItemHeightSmall.dp,
                     onStartDrag = { itemTouchHelper.startDrag(actionHolder) },
                     onMove = ::moveItem,
                 )
@@ -156,7 +155,6 @@ internal class NotificationActionsAdapter(
             is NotificationListItem.Cutoff -> {
                 val cutoffHolder = holder as CutoffViewHolder
                 cutoffHolder.bind(
-                    minHeight = android.R.attr.listPreferredItemHeightSmall.dp,
                     onStartDrag = { itemTouchHelper.startDrag(cutoffHolder) },
                     onMove = ::moveItem,
                 )
@@ -199,7 +197,6 @@ internal class NotificationActionsAdapter(
 
         fun bind(
             item: NotificationListItem.Action,
-            minHeight: Dp,
             onStartDrag: () -> Unit,
             onMove: (Int, Int) -> Boolean,
         ) {
@@ -209,7 +206,6 @@ internal class NotificationActionsAdapter(
                     NotificationActionRow(
                         action = item.action,
                         isDimmed = item.isDimmed,
-                        minHeight = minHeight,
                         onStartDrag = onStartDrag,
                     )
                 }
@@ -262,7 +258,6 @@ internal class NotificationActionsAdapter(
         }
 
         fun bind(
-            minHeight: Dp,
             onStartDrag: () -> Unit,
             onMove: (Int, Int) -> Boolean,
         ) {
@@ -270,7 +265,6 @@ internal class NotificationActionsAdapter(
             composeView.setContent {
                 themeProvider.WithTheme {
                     NotificationCutoffRow(
-                        minHeight = minHeight,
                         onStartDrag = onStartDrag,
                     )
                 }
@@ -310,10 +304,10 @@ internal class NotificationActionsAdapter(
 private fun NotificationActionRow(
     action: MessageNotificationAction,
     isDimmed: Boolean,
-    minHeight: Dp,
     onStartDrag: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val minHeight = MainTheme.sizes.iconAvatar
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -351,10 +345,10 @@ private fun NotificationActionRow(
 
 @Composable
 private fun NotificationCutoffRow(
-    minHeight: Dp,
     onStartDrag: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val minHeight = MainTheme.sizes.iconAvatar
     Row(
         modifier = modifier
             .fillMaxWidth()

@@ -224,7 +224,7 @@ class SingleMessageNotificationDataCreatorTest {
 
     private fun setMessageActions(cutoff: Int) {
         fakeNotificationPreferences.setMessageActions(
-            order = "reply,mark_as_read,delete,archive,spam",
+            order = listOf("reply", "mark_as_read", "delete", "archive", "spam"),
             cutoff = cutoff,
         )
     }
@@ -291,7 +291,7 @@ class SingleMessageNotificationDataCreatorTest {
             prefs.update { it.copy(notificationQuickDeleteBehaviour = behaviour) }
         }
 
-        fun setMessageActions(order: String, cutoff: Int) {
+        fun setMessageActions(order: List<String>, cutoff: Int) {
             prefs.update { it.copy(messageActionsOrder = order, messageActionsCutoff = cutoff) }
         }
     }
