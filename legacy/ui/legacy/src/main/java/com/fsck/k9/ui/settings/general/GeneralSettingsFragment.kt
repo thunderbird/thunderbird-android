@@ -19,6 +19,7 @@ import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.observe
+import com.fsck.k9.ui.settings.notificationactions.NotificationActionsSettingsActivity
 import com.fsck.k9.ui.settings.remove
 import com.google.android.material.snackbar.Snackbar
 import com.takisoft.preferencex.PreferenceFragmentCompat
@@ -78,6 +79,13 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         preferenceManager.preferenceDataStore = dataStore
         this.rootKey = rootKey
         setPreferencesFromResource(R.xml.general_settings, rootKey)
+
+        findPreference<Preference>("notification_actions_settings")?.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                context?.let { NotificationActionsSettingsActivity.start(it) }
+                true
+            }
+
         val listener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (!(newValue as Boolean)) {
                 jobManager.cancelDebugLogLimit()
