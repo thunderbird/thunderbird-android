@@ -484,12 +484,6 @@
             app:pref_summaryHasTime="%s"
             />
 
-        <CheckBoxPreference
-            android:key="notification_summary_delete"
-            android:title="@string/notification_summary_delete_title"
-            android:summary="@string/notification_summary_delete_summary"
-            />
-
         <ListPreference
             android:dialogTitle="@string/global_settings_lock_screen_notification_visibility_title"
             android:entries="@array/lock_screen_notification_visibility_entries"
