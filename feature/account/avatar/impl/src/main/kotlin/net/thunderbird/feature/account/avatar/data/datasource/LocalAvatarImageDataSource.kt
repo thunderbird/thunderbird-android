@@ -39,7 +39,7 @@ internal class LocalAvatarImageDataSource(
     }
 
     override suspend fun delete(id: AccountId) {
-        // Try to delete both extensions to ensure we clean up completely
+        // Try to delete both extensions to ensure clean up completely
         SUPPORTED_EXTENSIONS.forEach { extension ->
             val avatarImageUri = getAvatarImageUri(id, extension)
             fileManager.delete(avatarImageUri)
