@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="16.1" versioncode="20" date="2026-02-09">
+        <change>Fixed: Messages containing complex CSS could be unreadable</change>
+        <change>Fixed: Deleted/read messages in unified inbox may not update until manual refresh</change>
+    </release>
     <release version="16.0" versioncode="19" date="2026-02-02">
         <change>Default folder expansion behavior can be controlled by setting</change>
         <change>Preferred content type can be switched between text/plain and text/html</change>

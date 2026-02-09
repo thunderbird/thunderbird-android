@@ -1,0 +1,5 @@
+Thunderbird version 16.1
+
+Fixed:
+- Messages containing complex CSS could be unreadable
+- Deleted/read messages in unified inbox may not update until refresh
