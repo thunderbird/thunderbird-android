@@ -27,6 +27,7 @@ val featureMessageReaderModule = module {
                 cssVariableNameProvider = get(),
             )
         } else {
+            // TODO(#10498): Remove when UseNewMessageReaderCssStyles is no longer required
             LegacyGlobalCssStyleProvider.Factory()
         }
     }
