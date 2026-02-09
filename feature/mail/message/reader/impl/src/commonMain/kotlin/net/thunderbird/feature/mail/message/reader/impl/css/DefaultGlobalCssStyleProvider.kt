@@ -54,6 +54,7 @@ internal class DefaultGlobalCssStyleProvider private constructor(
     }
 }
 
+// TODO(#10498): Remove when UseNewMessageReaderCssStyles is no longer required
 internal class LegacyGlobalCssStyleProvider(useDarkMode: Boolean) : GlobalCssStyleProvider {
     @Language("HTML")
     override val style: String = if (useDarkMode) {
