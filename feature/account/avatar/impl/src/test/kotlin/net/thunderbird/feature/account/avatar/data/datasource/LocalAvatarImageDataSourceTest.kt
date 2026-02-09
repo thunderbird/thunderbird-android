@@ -51,7 +51,7 @@ class LocalAvatarImageDataSourceTest {
         assertThat(fileManager.lastCopySource).isEqualTo(source)
         assertThat(fileManager.lastCopyDestination).isEqualTo(expectedDest)
 
-        // Verify we tried to delete old avatars (both extensions)
+        // Verify
         val expectedPngDel = expectedDir.buildUpon().appendPath("$accountId.png").build()
         val expectedJpgDel = expectedDir.buildUpon().appendPath("$accountId.jpg").build()
         assertThat(fileManager.deletedPaths).contains(expectedPngDel)
@@ -117,8 +117,5 @@ class LocalAvatarImageDataSourceTest {
         override suspend fun createDirectories(uri: Uri): Outcome<Unit, FileOperationError> {
             return Outcome.Success(Unit)
         }
-
-        // Note: If you need to implement other methods (like exists, move),
-        // return Outcome.Success(Unit) or Outcome.Success(true) as appropriate.
     }
 }
