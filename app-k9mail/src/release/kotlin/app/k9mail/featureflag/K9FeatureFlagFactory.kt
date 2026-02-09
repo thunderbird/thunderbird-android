@@ -26,7 +26,9 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
                 FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = false),
                 FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = true),
-                FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = false),
+                // TODO(#10498): Clean up all the legacy code that is wrapped with UseNewMessageReaderCssStyles
+                //  once it no longer required
+                FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
                 FeatureFlag(MessageListFeatureFlags.EnableMessageListNewState, enabled = false),
             ),
         )
