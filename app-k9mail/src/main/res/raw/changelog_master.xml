@@ -5,6 +5,10 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="16.1" versioncode="39033" date="2026-02-09">
+        <change>Fixed: Messages containing complex CSS could be unreadable</change>
+        <change>Fixed: Deleted/read messages in unified inbox may not update until manual refresh</change>
+    </release>
     <release version="16.0" versioncode="39032" date="2026-02-02">
         <change>Default folder expansion behavior can be controlled by setting</change>
         <change>Preferred content type can be switched between text/plain and text/html</change>
