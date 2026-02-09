@@ -17,6 +17,7 @@ class HtmlProcessorFactory(
             if (featureFlagProvider.provide(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles).isEnabled()) {
                 setOf(cssClassNameProvider.rootClassName, cssClassNameProvider.mainContentClassName)
             } else {
+                // TODO(#10498): Remove when UseNewMessageReaderCssStyles is no longer required
                 emptySet()
             }
         return HtmlProcessor(customClasses, displayHtml)
