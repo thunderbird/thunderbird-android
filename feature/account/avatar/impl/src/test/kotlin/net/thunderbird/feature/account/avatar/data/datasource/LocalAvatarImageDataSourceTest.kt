@@ -1,14 +1,17 @@
 package net.thunderbird.feature.account.avatar.data.datasource
 
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.isEqualTo
-import assertk.assertions.isNotNull
-import assertk.assertions.isNull
+import com.eygraber.uri.Uri
 import com.eygraber.uri.toKmpUri
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.file.DirectoryProvider
+import net.thunderbird.core.file.FileManager
+import net.thunderbird.core.file.FileOperationError
+import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.data.AvatarDataContract
 import org.junit.Rule
@@ -21,25 +24,23 @@ class LocalAvatarImageDataSourceTest {
     val folder = TemporaryFolder()
 
     private lateinit var directoryProvider: DirectoryProvider
-    private lateinit var fileManager: CapturingFileManager
+    private lateinit var fileManager: SpyFileManager
     private lateinit var testSubject: LocalAvatarImageDataSource
 
     @BeforeTest
     fun setUp() {
         val appDir = folder.newFolder("app")
         directoryProvider = FakeDirectoryProvider(appDir.absolutePath.toKmpUri())
-        fileManager = CapturingFileManager()
+        fileManager = SpyFileManager()
         testSubject = LocalAvatarImageDataSource(fileManager, directoryProvider)
     }
 
     @Test
-    fun `update should copy image to expected path and return destination uri`() = runTest {
+    fun `update with JPG should copy image to JPG path and clean up old files`() = runTest {
         // Arrange
         val accountId = AccountIdFactory.create()
         val source = "file:///external/picked/image.jpg".toKmpUri()
-        val expectedDir = directoryProvider.getFilesDir().buildUpon()
-            .appendPath(AvatarDataContract.DataSource.LocalAvatarImage.DIRECTORY_NAME)
-            .build()
+        val expectedDir = getAvatarDir()
         val expectedDest = expectedDir.buildUpon().appendPath("$accountId.jpg").build()
 
         // Act
@@ -47,31 +48,77 @@ class LocalAvatarImageDataSourceTest {
 
         // Assert
         assertThat(returned).isEqualTo(expectedDest)
-        assertThat(fileManager.lastCreatedDir).isEqualTo(expectedDir)
         assertThat(fileManager.lastCopySource).isEqualTo(source)
         assertThat(fileManager.lastCopyDestination).isEqualTo(expectedDest)
-        assertThat(fileManager.lastDeleted).isNull()
+
+        // Verify we tried to delete old avatars (both extensions)
+        val expectedPngDel = expectedDir.buildUpon().appendPath("$accountId.png").build()
+        val expectedJpgDel = expectedDir.buildUpon().appendPath("$accountId.jpg").build()
+        assertThat(fileManager.deletedPaths).contains(expectedPngDel)
+        assertThat(fileManager.deletedPaths).contains(expectedJpgDel)
     }
 
     @Test
-    fun `delete should remove expected avatar path`() = runTest {
+    fun `update with PNG should copy image to PNG path`() = runTest {
         // Arrange
         val accountId = AccountIdFactory.create()
-        val expectedDir = directoryProvider.getFilesDir().buildUpon()
-            .appendPath(AvatarDataContract.DataSource.LocalAvatarImage.DIRECTORY_NAME)
-            .build()
-        val expectedDest = expectedDir.buildUpon().appendPath("$accountId.jpg").build()
+        val source = "file:///external/picked/photo.png".toKmpUri()
+        val expectedDir = getAvatarDir()
+        val expectedDest = expectedDir.buildUpon().appendPath("$accountId.png").build()
+
+        // Act
+        val returned = testSubject.update(accountId, source)
+
+        // Assert
+        assertThat(returned).isEqualTo(expectedDest)
+        assertThat(fileManager.lastCopySource).isEqualTo(source)
+        assertThat(fileManager.lastCopyDestination).isEqualTo(expectedDest)
+    }
+
+    @Test
+    fun `delete should remove both JPG and PNG paths`() = runTest {
+        // Arrange
+        val accountId = AccountIdFactory.create()
+        val expectedDir = getAvatarDir()
+        val jpgPath = expectedDir.buildUpon().appendPath("$accountId.jpg").build()
+        val pngPath = expectedDir.buildUpon().appendPath("$accountId.png").build()
 
         // Act
         testSubject.delete(accountId)
 
         // Assert
-        assertThat(fileManager.lastDeleted).isEqualTo(expectedDest)
-        // No copy on delete
-        assertThat(fileManager.lastCopySource).isNull()
-        assertThat(fileManager.lastCopyDestination).isNull()
-        // Directory creation occurs when computing path even in delete(), due to getAvatarDirUri()
-        assertThat(fileManager.lastCreatedDir).isNotNull()
-        assertThat(fileManager.lastCreatedDir).isEqualTo(expectedDir)
+        assertThat(fileManager.deletedPaths).contains(jpgPath)
+        assertThat(fileManager.deletedPaths).contains(pngPath)
+    }
+
+    private suspend fun getAvatarDir(): Uri {
+        return directoryProvider.getFilesDir().buildUpon()
+            .appendPath(AvatarDataContract.DataSource.LocalAvatarImage.DIRECTORY_NAME)
+            .build()
+    }
+
+    // Fixed SpyFileManager to match interface return types
+    class SpyFileManager : FileManager {
+        var lastCopySource: Uri? = null
+        var lastCopyDestination: Uri? = null
+        val deletedPaths = mutableListOf<Uri>()
+
+        override suspend fun copy(sourceUri: Uri, destinationUri: Uri): Outcome<Unit, FileOperationError> {
+            lastCopySource = sourceUri
+            lastCopyDestination = destinationUri
+            return Outcome.Success(Unit)
+        }
+
+        override suspend fun delete(uri: Uri): Outcome<Unit, FileOperationError> {
+            deletedPaths.add(uri)
+            return Outcome.Success(Unit)
+        }
+
+        override suspend fun createDirectories(uri: Uri): Outcome<Unit, FileOperationError> {
+            return Outcome.Success(Unit)
+        }
+
+        // Note: If you need to implement other methods (like exists, move),
+        // return Outcome.Success(Unit) or Outcome.Success(true) as appropriate.
     }
 }
