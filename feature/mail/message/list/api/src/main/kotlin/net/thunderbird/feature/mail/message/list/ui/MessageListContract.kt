@@ -4,6 +4,7 @@ import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.compose.common.mvi.BaseStateMachineViewModel
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
@@ -34,7 +35,12 @@ interface MessageListContract {
     ) : BaseStateMachineViewModel<MessageListState, MessageListEvent, MessageListEffect>(
         logger,
         sideEffectHandlersFactories,
-    )
+    ) {
+        data class Args(
+            val accountIds: Set<AccountId>,
+            val folderId: Long?,
+        )
+    }
 }
 
 interface MessageListStateSideEffectHandlerFactory : StateSideEffectHandler.Factory<MessageListState, MessageListEvent>

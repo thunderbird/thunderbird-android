@@ -14,6 +14,7 @@ import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchive
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogViewModel
 import net.thunderbird.feature.mail.message.list.internal.ui.state.machine.MessageListStateMachine
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ChangeSortCriteriaSideEffect
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadFolderInformationSideEffect
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadPreferencesSideEffect
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSortCriteriaStateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSwipeActionsStateSideEffectHandler
@@ -85,8 +86,9 @@ val featureMessageListModule = module {
             )
         },
         { parameters ->
+            val args = parameters.get<MessageListContract.ViewModel.Args>()
             LoadSortCriteriaStateSideEffectHandler.Factory(
-                accounts = parameters.get(),
+                accounts = args.accountIds,
                 logger = get(),
                 getSortCriteriaPerAccount = get(),
             )
@@ -95,6 +97,15 @@ val featureMessageListModule = module {
             ChangeSortCriteriaSideEffect.Factory(
                 logger = get(),
                 updateSortCriteria = get(),
+            )
+        },
+        { parameters ->
+            val args = parameters.get<MessageListContract.ViewModel.Args>()
+            LoadFolderInformationSideEffect.Factory(
+                accountIds = args.accountIds,
+                folderId = args.folderId,
+                logger = get(),
+                folderRepository = get(),
             )
         },
     )
