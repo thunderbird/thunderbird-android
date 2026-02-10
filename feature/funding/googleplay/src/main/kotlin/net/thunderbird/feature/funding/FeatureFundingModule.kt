@@ -64,13 +64,13 @@ val featureFundingModule = module {
     single<FundingDomainContract.ContributionManager> {
         ContributionManager(
             billingClient = get(),
-            contributionIdProvider = get(),
         )
     }
 
     single<FundingDomainContract.UseCase.GetAvailableContributions> {
         GetAvailableContributions(
-            billingManager = get(),
+            repository = get(),
+            contributionIdProvider = get(),
         )
     }
 

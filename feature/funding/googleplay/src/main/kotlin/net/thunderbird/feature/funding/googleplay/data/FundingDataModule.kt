@@ -6,9 +6,11 @@ import net.thunderbird.core.common.cache.InMemoryCache
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.data.mapper.BillingResultMapper
 import net.thunderbird.feature.funding.googleplay.data.mapper.ProductDetailsMapper
+import net.thunderbird.feature.funding.googleplay.data.remote.RemoteContributionDataSource
 import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingClient
 import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingClientProvider
 import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingPurchaseHandler
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import org.koin.dsl.module
 
 internal val fundingDataModule = module {
@@ -46,6 +48,18 @@ internal val fundingDataModule = module {
             productCache = get(),
             purchaseHandler = get(),
             logger = get(),
+        )
+    }
+
+    single<Remote.ContributionDataSource> {
+        RemoteContributionDataSource(
+            billingClient = get(),
+        )
+    }
+
+    single<FundingDomainContract.ContributionRepository> {
+        ContributionRepository(
+            remoteContributionDataSource = get(),
         )
     }
 }

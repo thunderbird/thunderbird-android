@@ -61,35 +61,38 @@ internal class ContributionViewModel(
     }
 
     private suspend fun loadAvailableContributions() {
-        getAvailableContributions().handle(
-            onSuccess = { data ->
-                updateState { state ->
-                    val selectedContribution = selectContribution(data)
+        getAvailableContributions().collect { outcome ->
+            outcome.handle(
+                onSuccess = { data ->
+                    updateState { state ->
+                        val selectedContribution = selectContribution(data)
 
-                    state.copy(
-                        listState = state.listState.copy(
-                            oneTimeContributions = data.oneTimeContributions.toImmutableList(),
-                            recurringContributions = data.recurringContributions.toImmutableList(),
-                            selectedContribution = selectedContribution,
-                            isRecurringContributionSelected = selectedContribution is RecurringContribution,
-                            isLoading = false,
-                        ),
-                        purchasedContribution = data.purchasedContribution,
-                        showContributionList = data.purchasedContribution == null,
-                    )
-                }
-            },
-            onFailure = {
-                updateState { state ->
-                    state.copy(
-                        listState = state.listState.copy(
-                            isLoading = false,
-                            error = it,
-                        ),
-                    )
-                }
-            },
-        )
+                        state.copy(
+                            listState = state.listState.copy(
+                                oneTimeContributions = data.oneTimeContributions.toImmutableList(),
+                                recurringContributions = data.recurringContributions.toImmutableList(),
+                                selectedContribution = selectedContribution,
+                                isRecurringContributionSelected = selectedContribution is RecurringContribution,
+                                isLoading = false,
+                            ),
+                            purchasedContribution = data.purchasedContribution,
+                            showContributionList = data.purchasedContribution == null,
+                            purchaseError = null,
+                        )
+                    }
+                },
+                onFailure = {
+                    updateState { state ->
+                        state.copy(
+                            listState = state.listState.copy(
+                                isLoading = false,
+                                error = it,
+                            ),
+                        )
+                    }
+                },
+            )
+        }
     }
 
     private fun selectContribution(data: AvailableContributions): Contribution? {
@@ -163,7 +166,7 @@ internal class ContributionViewModel(
     private fun onContributionItemClicked(item: Contribution) {
         updateState {
             it.copy(
-                it.listState.copy(
+                listState = it.listState.copy(
                     selectedContribution = item,
                 ),
             )
