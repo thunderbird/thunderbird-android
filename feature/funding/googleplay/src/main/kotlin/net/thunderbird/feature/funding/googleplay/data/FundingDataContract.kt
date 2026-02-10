@@ -13,6 +13,7 @@ import net.thunderbird.core.configstore.ConfigMigration
 import net.thunderbird.core.configstore.ConfigStore
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.local.configstore.ContributionConfig
+import net.thunderbird.feature.funding.googleplay.data.local.configstore.ContributionPurchase
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
@@ -28,6 +29,12 @@ internal interface FundingDataContract {
         interface ContributionConfigDefinition : ConfigDefinition<ContributionConfig>
         interface ContributionConfigMigration : ConfigMigration
         interface ContributionConfigStore : ConfigStore<ContributionConfig>
+
+        interface ContributionPurchaseDataSource {
+            fun get(): Flow<Outcome<ContributionPurchase?, ContributionError>>
+
+            suspend fun update(purchase: ContributionPurchase): Outcome<Unit, ContributionError>
+        }
     }
 
     interface Mapper {
