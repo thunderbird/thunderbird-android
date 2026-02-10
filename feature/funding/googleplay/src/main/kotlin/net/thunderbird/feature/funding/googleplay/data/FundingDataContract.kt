@@ -7,7 +7,12 @@ import com.android.billingclient.api.PurchasesUpdatedListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.core.common.cache.Cache
+import net.thunderbird.core.configstore.ConfigDefinition
+import net.thunderbird.core.configstore.ConfigMapper
+import net.thunderbird.core.configstore.ConfigMigration
+import net.thunderbird.core.configstore.ConfigStore
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.funding.googleplay.data.local.configstore.ContributionConfig
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
@@ -17,6 +22,13 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContrib
 import com.android.billingclient.api.BillingClient as GoogleBillingClient
 
 internal interface FundingDataContract {
+
+    interface Local {
+        interface ContributionConfigMapper : ConfigMapper<ContributionConfig>
+        interface ContributionConfigDefinition : ConfigDefinition<ContributionConfig>
+        interface ContributionConfigMigration : ConfigMigration
+        interface ContributionConfigStore : ConfigStore<ContributionConfig>
+    }
 
     interface Mapper {
         interface Product {
