@@ -1,4 +1,4 @@
-package net.thunderbird.feature.funding.googleplay.data.remote
+package net.thunderbird.feature.funding.googleplay.data.remote.bilingclient
 
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClient.BillingResponseCode

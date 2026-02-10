@@ -32,7 +32,7 @@ internal interface FundingDataContract {
     }
 
     interface Remote {
-        interface GoogleBillingClientProvider {
+        interface BillingClientProvider {
             val current: GoogleBillingClient
 
             /**
@@ -46,78 +46,80 @@ internal interface FundingDataContract {
             fun clear()
         }
 
-        interface GoogleBillingPurchaseHandler {
+        interface BillingPurchaseHandler {
             suspend fun handlePurchases(
-                clientProvider: GoogleBillingClientProvider,
+                clientProvider: BillingClientProvider,
                 purchases: List<Purchase>,
             ): List<Contribution>
 
             suspend fun handleOneTimePurchases(
-                clientProvider: GoogleBillingClientProvider,
+                clientProvider: BillingClientProvider,
                 purchases: List<Purchase>,
             ): List<OneTimeContribution>
 
             suspend fun handleRecurringPurchases(
-                clientProvider: GoogleBillingClientProvider,
+                clientProvider: BillingClientProvider,
                 purchases: List<Purchase>,
             ): List<RecurringContribution>
         }
-    }
 
-    interface BillingClient {
+        interface BillingClient {
 
-        /**
-         * Flow that emits the last purchased contribution.
-         */
-        val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>>
+            /**
+             * Flow that emits the last purchased contribution.
+             */
+            val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>>
 
-        /**
-         * Connect to the billing service.
-         *
-         * @param onConnected Callback to be invoked when the billing service is connected.
-         */
-        suspend fun <T> connect(onConnected: suspend () -> Outcome<T, ContributionError>): Outcome<T, ContributionError>
+            /**
+             * Connect to the billing service.
+             *
+             * @param onConnected Callback to be invoked when the billing service is connected.
+             */
+            suspend fun <T> connect(
+                onConnected: suspend () -> Outcome<T, ContributionError>,
+            ): Outcome<T, ContributionError>
 
-        /**
-         * Disconnect from the billing service.
-         */
-        fun disconnect()
+            /**
+             * Disconnect from the billing service.
+             */
+            fun disconnect()
 
-        /**
-         * Load one-time contributions.
-         */
-        suspend fun loadOneTimeContributions(
-            productIds: List<String>,
-        ): Outcome<List<OneTimeContribution>, ContributionError>
+            /**
+             * Load one-time contributions.
+             */
+            suspend fun loadOneTimeContributions(
+                productIds: List<String>,
+            ): Outcome<List<OneTimeContribution>, ContributionError>
 
-        /**
-         * Load recurring contributions.
-         */
-        suspend fun loadRecurringContributions(
-            productIds: List<String>,
-        ): Outcome<List<RecurringContribution>, ContributionError>
+            /**
+             * Load recurring contributions.
+             */
+            suspend fun loadRecurringContributions(
+                productIds: List<String>,
+            ): Outcome<List<RecurringContribution>, ContributionError>
 
-        /**
-         * Load purchased one-time contributions.
-         */
-        suspend fun loadPurchasedOneTimeContributions(): Outcome<List<OneTimeContribution>, ContributionError>
+            /**
+             * Load purchased one-time contributions.
+             */
+            suspend fun loadPurchasedOneTimeContributions(): Outcome<List<OneTimeContribution>, ContributionError>
 
-        /**
-         *  Load purchased recurring contributions.
-         */
-        suspend fun loadPurchasedRecurringContributions(): Outcome<List<RecurringContribution>, ContributionError>
+            /**
+             *  Load purchased recurring contributions.
+             */
+            suspend fun loadPurchasedRecurringContributions(): Outcome<List<RecurringContribution>, ContributionError>
 
-        /**
-         * Load the most recent one-time contribution.
-         */
-        suspend fun loadPurchasedOneTimeContributionHistory(): Outcome<OneTimeContribution?, ContributionError>
+            /**
+             * Load the most recent one-time contribution.
+             */
+            suspend fun loadPurchasedOneTimeContributionHistory(): Outcome<OneTimeContribution?, ContributionError>
 
-        /**
-         * Purchase a contribution.
-         */
-        suspend fun purchaseContribution(
-            activity: Activity,
-            contribution: Contribution,
-        ): Outcome<Unit, ContributionError>
+            /**
+             * Purchase a contribution.
+             */
+            suspend fun purchaseContribution(
+                activity: Activity,
+                contribution: Contribution,
+            ): Outcome<Unit, ContributionError>
+        }
     }
 }
