@@ -1,4 +1,4 @@
-package net.thunderbird.feature.funding.googleplay.data.remote
+package net.thunderbird.feature.funding.googleplay.data.remote.bilingclient
 
 import android.content.Context
 import com.android.billingclient.api.BillingClient
@@ -11,9 +11,9 @@ import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
  *
  * It is responsible for creating and managing the billing client instance
  */
-class GoogleBillingClientProvider(
+class BillingClientProvider(
     private val context: Context,
-) : FundingDataContract.Remote.GoogleBillingClientProvider {
+) : FundingDataContract.Remote.BillingClientProvider {
 
     private var clientInstance: BillingClient? = null
 

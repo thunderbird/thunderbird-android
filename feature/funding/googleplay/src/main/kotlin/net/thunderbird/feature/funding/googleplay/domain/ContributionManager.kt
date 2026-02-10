@@ -12,7 +12,7 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribut
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
 internal class ContributionManager(
-    private val billingClient: FundingDataContract.BillingClient,
+    private val billingClient: FundingDataContract.Remote.BillingClient,
     private val contributionIdProvider: FundingDomainContract.ContributionIdProvider,
 ) : FundingDomainContract.ContributionManager {
 
