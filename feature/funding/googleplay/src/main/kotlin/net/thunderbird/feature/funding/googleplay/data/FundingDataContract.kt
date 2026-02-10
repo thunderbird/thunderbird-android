@@ -4,6 +4,7 @@ import android.app.Activity
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
@@ -32,6 +33,18 @@ internal interface FundingDataContract {
     }
 
     interface Remote {
+        interface ContributionDataSource {
+            fun getAllOneTime(
+                productIds: List<String>,
+            ): Flow<Outcome<List<OneTimeContribution>, ContributionError>>
+
+            fun getAllRecurring(
+                productIds: List<String>,
+            ): Flow<Outcome<List<RecurringContribution>, ContributionError>>
+
+            fun getAllPurchased(): Flow<Outcome<List<Contribution>, ContributionError>>
+        }
+
         interface BillingClientProvider {
             val current: GoogleBillingClient
 

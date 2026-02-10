@@ -10,6 +10,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
@@ -112,11 +113,13 @@ private class ContributionRobot(
     // FIX use case
     private val viewModel: ContributionContract.ViewModel = ContributionViewModel(
         getAvailableContributions = {
-            Outcome.success(
-                AvailableContributions(
-                    oneTimeContributions = FakeData.oneTimeContributions,
-                    recurringContributions = FakeData.recurringContributions,
-                    purchasedContribution = FakeData.oneTimeContributions.first(),
+            flowOf(
+                Outcome.success(
+                    AvailableContributions(
+                        oneTimeContributions = FakeData.oneTimeContributions,
+                        recurringContributions = FakeData.recurringContributions,
+                        purchasedContribution = FakeData.oneTimeContributions.first(),
+                    ),
                 ),
             )
         },
