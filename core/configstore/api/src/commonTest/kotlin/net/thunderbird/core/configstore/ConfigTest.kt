@@ -2,6 +2,7 @@ package net.thunderbird.core.configstore
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNotSameInstanceAs
 import assertk.assertions.isNull
 import kotlin.test.Test
 
@@ -96,5 +97,20 @@ class ConfigTest {
         assertThat(map.size).isEqualTo(2)
         assertThat(map[key1]).isEqualTo("value1")
         assertThat(map[key2]).isEqualTo(2)
+    }
+
+    @Test
+    fun `copy should return a new instance with the same entries`() {
+        // Arrange
+        val config = Config()
+        val key = ConfigKey.StringKey("key")
+        config[key] = "value"
+
+        // Act
+        val copy = config.copy()
+
+        // Assert
+        assertThat(copy).isNotSameInstanceAs(config)
+        assertThat(copy[key]).isEqualTo("value")
     }
 }
