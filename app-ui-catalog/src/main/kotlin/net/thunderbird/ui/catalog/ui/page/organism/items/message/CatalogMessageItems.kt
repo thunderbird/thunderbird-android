@@ -523,15 +523,17 @@ private fun Avatar(
             )
             .border(width = 1.dp, color = MainTheme.colors.primary, shape = CircleShape),
     ) {
-        val monogram = remember(sender) {
-            val parts = sender.split(" ")
-            buildString {
-                append(parts.first().first())
-                if (parts.size > 1) {
-                    append(parts.last().first())
+        if (sender.isNotEmpty()) {
+            val monogram = remember(sender) {
+                val parts = sender.split(" ")
+                buildString {
+                    append(parts.first().first())
+                    if (parts.size > 1 && parts.last().isNotEmpty()) {
+                        append(parts.last().first())
+                    }
                 }
             }
+            TextTitleSmall(text = monogram, modifier = Modifier.align(Alignment.Center))
         }
-        TextTitleSmall(text = monogram, modifier = Modifier.align(Alignment.Center))
     }
 }
