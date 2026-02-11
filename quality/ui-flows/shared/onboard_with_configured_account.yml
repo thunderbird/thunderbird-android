@@ -1,7 +1,5 @@
 appId: ${MAESTRO_APP_ID}
 ---
-- launchApp:
-    clearState: true
 
 ## Welcome screen
 - tapOn:

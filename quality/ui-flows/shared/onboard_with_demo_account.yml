@@ -1,7 +1,5 @@
 appId: ${MAESTRO_APP_ID}
 ---
-- launchApp:
-    clearState: true
 
 ## Welcome screen
 - tapOn:
@@ -12,6 +10,7 @@ appId: ${MAESTRO_APP_ID}
     timeout: 500
 - tapOn:
     id: "onboarding_migration_new_account_button"
+    optional: true
 
 - runFlow:
     file: create_demo_account.yml
