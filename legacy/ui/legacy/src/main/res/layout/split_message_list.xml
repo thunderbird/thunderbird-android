@@ -64,6 +64,7 @@
                 android:layout_height="wrap_content"
                 android:elevation="8dp"
                 android:max="10000"
+                android:layout_marginTop="-6dp"
                 android:visibility="invisible"
                 />
 
