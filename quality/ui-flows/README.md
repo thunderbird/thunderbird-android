@@ -2,7 +2,7 @@
 
 Ui flows are using [Maestro](https://maestro.dev/), that allows to write UI E2E tests for Android.
 
-The flows are located in the `ui-flows` folder with this structure:
+The flows are located in the `quality/maestro-flows` folder with this structure:
 
 - `custom` - flows that should not be committed to git
 - `shared` - flows usable by other flows
@@ -22,12 +22,12 @@ To be able to run the flows, you need to [install the CLI tools](https://docs.ma
 
 Ensure a device or emulator is running and execute:
 
-- `maestro test ui-flows/validate/init_with_demo_account.yml`
-- `maestro test ui-flows/validate/compose_simple_message.yml`
+- `maestro test quality/maestro-flows/validate/init_with_demo_account.yml`
+- `maestro test quality/maestro-flows/validate/compose_simple_message.yml`
 
 The following commands are limited to the exact emulator configuration mentioned above:
 
-- `maestro test ui-flows/validate/emulator_message_details_show_contact_names.yml`
+- `maestro test quality/maestro-flows/validate/emulator_message_details_show_contact_names.yml`
 
 ## Write
 

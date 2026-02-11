@@ -1,5 +1,5 @@
 appId: net.thunderbird.android.beta
-#maestro test ui-flows/shared/change_display_settings_show_contact_names.yml
+#maestro test quality/maestro-flows/shared/change_display_settings_show_contact_names.yml
 ---
 
 ## Open settings

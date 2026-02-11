@@ -1,5 +1,5 @@
 appId: net.thunderbird.android.beta
-#maestro test ui-flows/validate/emulator_message_details_show_contact_names.yml
+#maestro test quality/maestro-flows/validate/emulator_message_details_show_contact_names.yml
 ---
 ## Open an email, save the sender to contacts and then delete that contact
 - runFlow:
