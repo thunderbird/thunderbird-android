@@ -1,4 +1,4 @@
-appId: net.thunderbird.android.beta
+appId: ${MAESTRO_APP_ID}
 ---
 
 - tapOn:

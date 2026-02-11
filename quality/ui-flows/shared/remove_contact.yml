@@ -2,7 +2,7 @@
 # env:
 #     NAME: Alice
 
-appId: net.thunderbird.android.beta
+appId: ${MAESTRO_APP_ID}
 ---
 
 ## Open contact

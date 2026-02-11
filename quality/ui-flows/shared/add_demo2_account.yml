@@ -1,4 +1,4 @@
-appId: net.thunderbird.android.debug
+appId: ${MAESTRO_APP_ID}
 ---
 
 # Open drawer

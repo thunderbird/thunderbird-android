@@ -1,6 +1,6 @@
-appId: net.thunderbird.android.beta
-#maestro test quality/maestro-flows/validate/configured_account_flow.yml
+appId: ${MAESTRO_APP_ID}
 ---
+
 ## Get started with Thunderbird using an account that is already configured
 - runFlow:
     file: ../validate/init_with_configured_account.yml

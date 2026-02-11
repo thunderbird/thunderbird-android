@@ -4,7 +4,7 @@
 #    ACCOUNT_NAME: "Demo Account"
 #    DISPLAY_NAME: "Demo User"
 
-appId: net.thunderbird.android.beta
+appId: ${MAESTRO_APP_ID}
 ---
 ## Auto-discovery screen
 - waitForAnimationToEnd:

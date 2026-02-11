@@ -1,6 +1,6 @@
-appId: net.thunderbird.android.beta
-#maestro test ui-flows/validate/compose_simple_message.yml
+appId: ${MAESTRO_APP_ID}
 ---
+
 ## Compose an email and send it
 - runFlow:
     file: ../shared/onboard_with_configured_account.yml

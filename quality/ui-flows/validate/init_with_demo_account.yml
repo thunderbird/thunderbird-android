@@ -1,6 +1,6 @@
-appId: net.thunderbird.android.beta
-#maestro test quality/maestro-flows/validate/init_with_demo_account.yml
+appId: ${MAESTRO_APP_ID}
 ---
+
 ## Get started with Thunderbird by creating a demo account
 - runFlow:
     file: ../shared/onboard_with_demo_account.yml
