@@ -1,6 +1,8 @@
 package net.thunderbird.feature.account.avatar.data.datasource
 
 import com.eygraber.uri.Uri
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.file.DirectoryProvider
 import net.thunderbird.core.file.FileManager
 import net.thunderbird.feature.account.AccountId
@@ -15,9 +17,11 @@ import net.thunderbird.feature.account.avatar.data.AvatarDataContract.DataSource
  * @param fileManager The [FileManager] for file operations.
  * @param directoryProvider The [DirectoryProvider] to get app directories.
  */
+@OptIn(ExperimentalTime::class)
 internal class LocalAvatarImageDataSource(
     private val fileManager: FileManager,
     private val directoryProvider: DirectoryProvider,
+    private val clock: Clock,
 ) : LocalAvatarImage {
 
     override suspend fun update(id: AccountId, imageUri: Uri): Uri {
@@ -25,7 +29,10 @@ internal class LocalAvatarImageDataSource(
 
         fileManager.copy(imageUri, avatarImageUri)
 
-        return avatarImageUri
+        return avatarImageUri.buildUpon()
+            .clearQuery()
+            .appendQueryParameter("v", clock.now().toEpochMilliseconds().toString())
+            .build()
     }
 
     override suspend fun delete(id: AccountId) {
