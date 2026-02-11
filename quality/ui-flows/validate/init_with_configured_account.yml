@@ -1,8 +1,0 @@
-appId: ${MAESTRO_APP_ID}
----
-- launchApp:
-    clearState: true
-
-## Get started with Thunderbird using an account that is already configured
-- runFlow:
-    file: ../shared/onboard_with_configured_account.yml

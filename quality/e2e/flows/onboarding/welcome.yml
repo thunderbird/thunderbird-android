@@ -1,0 +1,7 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Welcome screen - Verify and start onboarding
+- assertVisible:
+    id: "onboarding_welcome_start_button"
+- tapOn:
+    id: "onboarding_welcome_start_button"

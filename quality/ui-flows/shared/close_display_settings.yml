@@ -1,9 +1,0 @@
-appId: ${MAESTRO_APP_ID}
----
-
-- tapOn: "Navigate up"
-- tapOn: "Navigate up"
-- tapOn: "Navigate up"
-- swipe:
-    direction: LEFT
-#    duration: 50

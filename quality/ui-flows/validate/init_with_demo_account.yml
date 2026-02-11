@@ -1,8 +1,0 @@
-appId: ${MAESTRO_APP_ID}
----
-- launchApp:
-    clearState: true
-
-## Get started with Thunderbird by creating a demo account
-- runFlow:
-    file: ../shared/onboard_with_demo_account.yml
