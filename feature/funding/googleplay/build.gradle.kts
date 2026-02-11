@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.feature.funding.googleplay"
+    namespace = "net.thunderbird.feature.funding.googleplay"
     resourcePrefix = "funding_googleplay_"
 
     testOptions {

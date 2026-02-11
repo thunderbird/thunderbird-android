@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.feature.funding.api"
+    namespace = "net.thunderbird.feature.funding.api"
     resourcePrefix = "funding_api_"
 }
 
