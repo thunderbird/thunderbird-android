@@ -622,7 +622,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     }
 
     private void triggerIfNeededSentFolderNotFoundInAppNotification() {
-        if (account != null && account.getSentFolderId() == null) {
+        if (account != null && account.isUploadSentMessages() && !account.hasSentFolder()) {
             final SentFolderNotFoundNotification notification = NotificationFactoryCoroutineCompat.create(
                 continuation -> SentFolderNotFoundNotification(account.getUuid(), continuation)
             );
@@ -875,7 +875,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             return;
         }
 
-        if (!ignoreSentFolderNotAssigned && !account.hasSentFolder()) {
+        if (account.isUploadSentMessages()
+            && !ignoreSentFolderNotAssigned && !account.hasSentFolder()) {
             sentFolderNotFoundDialogFragmentFactory.show(account.getUuid(), getSupportFragmentManager());
             return;
         }
