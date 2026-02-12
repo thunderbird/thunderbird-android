@@ -127,7 +127,6 @@ dependency-check = { id = "com.github.ben-manes.versions", version.ref = "depend
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuardPlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektPlugin" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinBom" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinBom" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlinBom" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinBom" }
@@ -138,6 +137,8 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 dev-mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
 
 # Build plugins
+tb-app-badging = { id = "net.thunderbird.gradle.plugin.app.badging" }
+tb-app-versioning = { id = "net.thunderbird.gradle.plugin.app.versioning" }
 tb-quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
 
 [libraries]

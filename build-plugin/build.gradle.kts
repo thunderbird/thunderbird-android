@@ -5,7 +5,6 @@ plugins {
 dependencies {
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 
-    implementation(plugin(libs.plugins.kotlin.android))
     implementation(plugin(libs.plugins.kotlin.jvm))
     implementation(plugin(libs.plugins.kotlin.multiplatform))
     implementation(plugin(libs.plugins.kotlin.parcelize))
@@ -26,7 +25,6 @@ dependencies {
     // Make custom plugins in ":plugin" available to precompiled convention plugins by classpath
     implementation(project(":plugin"))
 
-    implementation(libs.diff.utils)
     compileOnly(libs.android.tools.common)
 
     // This defines the used Kotlin version for all Plugin dependencies

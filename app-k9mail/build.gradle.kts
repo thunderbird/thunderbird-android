@@ -1,8 +1,8 @@
 plugins {
     id(ThunderbirdPlugins.App.androidCompose)
     alias(libs.plugins.dependency.guard)
-    id("thunderbird.app.version.info")
-    id("thunderbird.quality.badging")
+    alias(libs.plugins.tb.app.badging)
+    alias(libs.plugins.tb.app.versioning)
 }
 
 val testCoverageEnabled = hasProperty("testCoverageEnabled")
@@ -85,10 +85,13 @@ android {
     }
 
     buildTypes {
+        val isCI = project.findProperty("ci") == "true"
         release {
             signingConfig = signingConfigs.getByType(SigningType.K9_RELEASE)
 
-            isMinifyEnabled = true
+            isMinifyEnabled = !isCI
+            isShrinkResources = !isCI
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android.txt"),
                 "proguard-rules.pro",
