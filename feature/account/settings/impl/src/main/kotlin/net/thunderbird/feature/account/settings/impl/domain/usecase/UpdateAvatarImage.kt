@@ -22,10 +22,11 @@ internal class UpdateAvatarImage(
     ): Outcome<Avatar.Image, AccountSettingError> {
         val mimeType = mimeTypeResolver.getMimeType(imageUri)
 
-        if (mimeType == null || mimeType != MimeType.JPEG) {
+        // Check for both JPEG and PNG
+        if (mimeType == null || (mimeType != MimeType.JPEG && mimeType != MimeType.PNG)) {
             return Outcome.Failure(
                 AccountSettingError.UnsupportedFormat(
-                    message = "Only JPEG images are supported. Found: ${mimeType ?: "unknown"}",
+                    message = "Only JPEG and PNG images are supported. Found: ${mimeType ?: "unknown"}",
                 ),
             )
         }
