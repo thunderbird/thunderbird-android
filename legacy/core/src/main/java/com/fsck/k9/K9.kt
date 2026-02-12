@@ -119,9 +119,6 @@ object K9 : KoinComponent {
     var messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
         PostMarkAsUnreadNavigation.ReturnToMessageList
 
-    @JvmStatic
-    var isShowAccountSelector = true
-
     @get:Synchronized
     @set:Synchronized
     @JvmStatic
@@ -193,7 +190,6 @@ object K9 : KoinComponent {
     @JvmStatic
     @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
-        isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
         messageViewPostMarkAsUnreadNavigation =
             storage.getEnum("messageViewPostMarkAsUnreadAction", PostMarkAsUnreadNavigation.ReturnToMessageList)
 
@@ -231,7 +227,6 @@ object K9 : KoinComponent {
 
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
-        editor.putBoolean("showAccountSelector", isShowAccountSelector)
         editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
 
         editor.putEnum("sortTypeEnum", sortType)

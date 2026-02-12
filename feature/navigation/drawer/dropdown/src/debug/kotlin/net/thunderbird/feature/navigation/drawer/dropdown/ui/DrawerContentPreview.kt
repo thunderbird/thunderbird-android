@@ -125,9 +125,9 @@ internal fun DrawerContentSingleAccountPreview() {
                 config = DrawerConfig(
                     showUnifiedFolders = false,
                     showStarredCount = false,
-                    showAccountSelector = false,
                     expandAllFolder = false,
                 ),
+                showAccountSelector = false,
             ),
             onEvent = {},
         )
@@ -151,9 +151,9 @@ internal fun DrawerContentSingleAccountWithAccountSelectionPreview() {
                 config = DrawerConfig(
                     showUnifiedFolders = false,
                     showStarredCount = false,
-                    showAccountSelector = true,
                     expandAllFolder = false,
                 ),
+                showAccountSelector = true,
             ),
             onEvent = {},
         )
@@ -176,9 +176,9 @@ internal fun DrawerContentMultipleAccountsAccountPreview() {
                 config = DrawerConfig(
                     showUnifiedFolders = false,
                     showStarredCount = false,
-                    showAccountSelector = false,
                     expandAllFolder = false,
                 ),
+                showAccountSelector = false,
             ),
             onEvent = {},
         )
@@ -200,9 +200,9 @@ internal fun DrawerContentMultipleAccountsWithAccountSelectionPreview() {
                 config = DrawerConfig(
                     showUnifiedFolders = false,
                     showStarredCount = false,
-                    showAccountSelector = true,
                     expandAllFolder = false,
                 ),
+                showAccountSelector = true,
             ),
             onEvent = {},
         )
@@ -224,9 +224,9 @@ internal fun DrawerContentMultipleAccountsWithDifferentAccountSelectionPreview()
                 config = DrawerConfig(
                     showUnifiedFolders = false,
                     showStarredCount = false,
-                    showAccountSelector = true,
                     expandAllFolder = false,
                 ),
+                showAccountSelector = true,
             ),
             onEvent = {},
         )
@@ -253,9 +253,9 @@ internal fun DrawerContentSmallScreenPreview() {
                     config = DrawerConfig(
                         showUnifiedFolders = false,
                         showStarredCount = false,
-                        showAccountSelector = true,
                         expandAllFolder = false,
                     ),
+                    showAccountSelector = true,
                 ),
                 onEvent = {},
             )
@@ -283,9 +283,9 @@ internal fun DrawerContentVerySmallScreenPreview() {
                     config = DrawerConfig(
                         showUnifiedFolders = false,
                         showStarredCount = false,
-                        showAccountSelector = true,
                         expandAllFolder = false,
                     ),
+                    showAccountSelector = true,
                 ),
                 onEvent = {},
             )
