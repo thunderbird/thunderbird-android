@@ -17,6 +17,7 @@ import androidx.appcompat.view.ActionMode
 import androidx.core.view.isGone
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
@@ -42,9 +43,9 @@ import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
-import com.fsck.k9.ui.messagelist.BaseMessageListFragment
-import com.fsck.k9.ui.messagelist.BaseMessageListFragment.MessageListFragmentListener
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
+import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract
+import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListFragmentListener
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment
 import com.fsck.k9.ui.messageview.MessageViewContainerFragment.MessageViewContainerListener
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
@@ -53,7 +54,6 @@ import com.fsck.k9.ui.settings.SettingsActivity
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
-import kotlin.getValue
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
@@ -90,7 +90,7 @@ private const val TAG = "MainActivity"
  * "View Message" notification.
  *
  * `MainActivity` manages the overall layout, including the navigation drawer and the main content area,
- * which currently displays either a [BaseMessageListFragment] or a [MessageViewContainerFragment]. It orchestrates
+ * which currently displays either a [MessageListFragmentBridgeContract] or a [MessageViewContainerFragment]. It orchestrates
  * the interactions between these fragments and handles the back stack. The responsibilities for managing the
  * action bar, search functionality, and single-pane/split-view layout logic are currently handled here but
  * are intended to be refactored into more dedicated components over time.
@@ -124,8 +124,8 @@ open class MessageHomeActivity :
     private var openFolderTransaction: FragmentTransaction? = null
     private var progressBar: ProgressBar? = null
     private var messageViewPlaceHolder: PlaceholderFragment? = null
-    private val messageListFragmentFactory: BaseMessageListFragment.Factory by inject()
-    private var messageListFragment: BaseMessageListFragment? = null
+    private val messageListFragmentFactory: MessageListFragmentBridgeContract.Factory by inject()
+    private var messageListFragment: MessageListFragmentBridgeContract? = null
     private var messageViewContainerFragment: MessageViewContainerFragment? = null
     private var account: LegacyAccountDto? = null
     private var search: LocalMessageSearch? = null
@@ -298,7 +298,7 @@ open class MessageHomeActivity :
         val fragmentManager = supportFragmentManager
         messageListFragment = fragmentManager.findFragmentById(
             R.id.message_list_container,
-        ) as? BaseMessageListFragment
+        ) as? MessageListFragmentBridgeContract
         messageViewContainerFragment =
             fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER) as? MessageViewContainerFragment
 
@@ -324,7 +324,7 @@ open class MessageHomeActivity :
                     .isThreadedViewEnabled &&
                     !noThreading,
             )
-            fragmentTransaction.add(R.id.message_list_container, messageListFragment)
+            fragmentTransaction.add(R.id.message_list_container, messageListFragment as Fragment)
             fragmentTransaction.commitNow()
 
             this.messageListFragment = messageListFragment
@@ -775,7 +775,7 @@ open class MessageHomeActivity :
             isThreadDisplay = false,
             threadedList = generalSettingsManager.getConfig().display.inboxSettings.isThreadedViewEnabled,
         )
-        openFolderTransaction.replace(R.id.message_list_container, messageListFragment)
+        openFolderTransaction.replace(R.id.message_list_container, messageListFragment as Fragment)
 
         this.messageListFragment = messageListFragment
         this.openFolderTransaction = openFolderTransaction
@@ -1151,11 +1151,11 @@ open class MessageHomeActivity :
         }
     }
 
-    private fun addMessageListFragment(fragment: BaseMessageListFragment) {
+    private fun addMessageListFragment(fragment: MessageListFragmentBridgeContract) {
         messageListFragment?.isActive = false
 
         supportFragmentManager.commit {
-            replace(R.id.message_list_container, fragment)
+            replace(R.id.message_list_container, fragment as Fragment)
 
             setReorderingAllowed(true)
 
@@ -1256,7 +1256,7 @@ open class MessageHomeActivity :
 
     private fun removeMessageListFragment() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.remove(messageListFragment!!)
+        fragmentTransaction.remove(messageListFragment!! as Fragment)
         messageListFragment = null
         fragmentTransaction.commit()
     }
@@ -1450,7 +1450,7 @@ open class MessageHomeActivity :
         }
     }
 
-    private fun BaseMessageListFragment.setFullyActive() {
+    private fun MessageListFragmentBridgeContract.setFullyActive() {
         isActive = true
         onFullyActive()
     }

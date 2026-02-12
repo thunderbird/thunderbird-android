@@ -8,8 +8,8 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.ui.helper.DisplayHtmlUiFactory
 import com.fsck.k9.ui.helper.SizeFormatter
 import com.fsck.k9.ui.messagelist.BaseMessageListFragment
-import com.fsck.k9.ui.messagelist.LegacyMessageListFragment
 import com.fsck.k9.ui.messagelist.MessageListFragment
+import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract
 import com.fsck.k9.ui.messageview.LinkTextHandler
 import com.fsck.k9.ui.settings.AboutViewModel
 import com.fsck.k9.ui.share.ShareIntentBuilder
@@ -38,12 +38,12 @@ val uiModule = module {
     factory { (activity: Activity) ->
         FoldableStateObserver(activity = activity, logger = get())
     }
-    factory<BaseMessageListFragment.Factory> {
+    factory<MessageListFragmentBridgeContract.Factory> {
         val featureFlagProvider = get<FeatureFlagProvider>()
         if (featureFlagProvider.provide(MessageListFeatureFlags.EnableMessageListNewState).isEnabled()) {
             MessageListFragment.Factory
         } else {
-            LegacyMessageListFragment.Factory
+            BaseMessageListFragment.Factory
         }
     }
 }
