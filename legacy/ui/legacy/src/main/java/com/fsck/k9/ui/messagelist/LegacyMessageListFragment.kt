@@ -146,7 +146,7 @@ private const val TAG = "BaseMessageListFragment"
         "Only bugfixes are allowed. New features must be introduced in the new MessageListFragment, " +
         "following the MVI principle.",
 )
-class BaseMessageListFragment :
+class LegacyMessageListFragment :
     Fragment(),
     MessageListFragmentBridgeContract,
     ConfirmationDialogFragmentListener,
@@ -405,7 +405,7 @@ class BaseMessageListFragment :
             contactRepository = contactRepository,
             avatarMonogramCreator = avatarMonogramCreator,
         ).apply {
-            activeMessage = this@BaseMessageListFragment.activeMessage
+            activeMessage = this@LegacyMessageListFragment.activeMessage
         }
     }
 
@@ -963,7 +963,7 @@ class BaseMessageListFragment :
             )
             lifecycleScope.launch(Dispatchers.IO) {
                 accountManager.saveAccount(updatedAccount)
-                this@BaseMessageListFragment.account = updatedAccount
+                this@LegacyMessageListFragment.account = updatedAccount
             }
         } else {
             K9.sortType = this.sortType
@@ -1162,7 +1162,7 @@ class BaseMessageListFragment :
         menu.findItem(R.id.search_everywhere).isVisible = isManualSearch && !localSearch.searchAllAccounts()
     }
 
-    protected open fun prepareSortMenu(menu: Menu) {
+    private fun prepareSortMenu(menu: Menu) {
         menu.findItem(R.id.set_sort).isVisible = true
     }
 
@@ -2669,10 +2669,10 @@ class BaseMessageListFragment :
             search: LocalMessageSearch,
             isThreadDisplay: Boolean,
             threadedList: Boolean,
-        ): BaseMessageListFragment {
+        ): LegacyMessageListFragment {
             val searchBytes = LocalMessageSearchSerializer.serialize(search)
 
-            return BaseMessageListFragment().apply {
+            return LegacyMessageListFragment().apply {
                 arguments = bundleOf(
                     ARG_SEARCH to searchBytes,
                     ARG_IS_THREAD_DISPLAY to isThreadDisplay,

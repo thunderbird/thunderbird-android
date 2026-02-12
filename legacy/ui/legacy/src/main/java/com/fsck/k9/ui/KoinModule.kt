@@ -7,7 +7,7 @@ import app.k9mail.legacy.message.controller.MessagingControllerMailChecker
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.ui.helper.DisplayHtmlUiFactory
 import com.fsck.k9.ui.helper.SizeFormatter
-import com.fsck.k9.ui.messagelist.BaseMessageListFragment
+import com.fsck.k9.ui.messagelist.LegacyMessageListFragment
 import com.fsck.k9.ui.messagelist.MessageListFragment
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract
 import com.fsck.k9.ui.messageview.LinkTextHandler
@@ -43,7 +43,7 @@ val uiModule = module {
         if (featureFlagProvider.provide(MessageListFeatureFlags.EnableMessageListNewState).isEnabled()) {
             MessageListFragment.Factory
         } else {
-            BaseMessageListFragment.Factory
+            LegacyMessageListFragment.Factory
         }
     }
 }

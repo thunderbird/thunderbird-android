@@ -90,10 +90,10 @@ private const val TAG = "MainActivity"
  * "View Message" notification.
  *
  * `MainActivity` manages the overall layout, including the navigation drawer and the main content area,
- * which currently displays either a [MessageListFragmentBridgeContract] or a [MessageViewContainerFragment]. It orchestrates
- * the interactions between these fragments and handles the back stack. The responsibilities for managing the
- * action bar, search functionality, and single-pane/split-view layout logic are currently handled here but
- * are intended to be refactored into more dedicated components over time.
+ * which currently displays either a [MessageListFragmentBridgeContract] or a [MessageViewContainerFragment].
+ * It orchestrates the interactions between these fragments and handles the back stack. The responsibilities for
+ * managing the action bar, search functionality, and single-pane/split-view layout logic are currently handled
+ * here but are intended to be refactored into more dedicated components over time.
  */
 @Suppress("TooManyFunctions", "LargeClass")
 open class MessageHomeActivity :

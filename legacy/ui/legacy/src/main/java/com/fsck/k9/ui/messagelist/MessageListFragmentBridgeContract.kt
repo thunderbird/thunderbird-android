@@ -70,7 +70,7 @@ interface MessageListFragmentBridgeContract {
     }
 
     /**
-     * A factory for creating instances of [BaseMessageListFragment].
+     * A factory for creating instances of [MessageListFragmentBridgeContract].
      *
      * This interface is a temporary solution to toggle between different fragment implementations
      * based on a feature flag. It allows for the creation of either a modern [MessageListFragment] or a
@@ -78,7 +78,7 @@ interface MessageListFragmentBridgeContract {
      */
     interface Factory {
         /**
-         * Creates a new instance of a class that inherits from [BaseMessageListFragment].
+         * Creates a new instance of a class that inherits from [MessageListFragmentBridgeContract].
          *
          * The specific implementation returned ([MessageListFragment] or [LegacyMessageListFragment]) is determined
          * by the [MessageListFeatureFlags.EnableMessageListNewState] feature flag.
