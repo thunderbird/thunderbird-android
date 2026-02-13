@@ -4,7 +4,7 @@ import kotlin.reflect.KClass
 import kotlinx.coroutines.CoroutineScope
 import net.thunderbird.core.common.state.DefaultStateMachine
 import net.thunderbird.core.common.state.DefaultStateMachine.StateRegistry
-import net.thunderbird.core.common.state.DefaultStateMachine.Transition
+import net.thunderbird.core.common.state.StateMachine.Transition
 import net.thunderbird.core.common.state.StateMachine
 import net.thunderbird.core.common.state.TransactionKey
 
