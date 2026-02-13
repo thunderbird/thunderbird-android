@@ -11,7 +11,7 @@ Paste this into your PR to self-check:
 - [ ] Focused scope (< ~800 LOC); clear description and rationale
 - [ ] UI changes: screenshots/videos; accessibility (TalkBack, contrast, touch targets)
 - [ ] Tests added/updated; CI green (see [Testing Guide](testing-guide.md))
-- [ ] Architecture: business logic outside UI; module API/impl respected; DI via constructor/Koin
+- [ ] Architecture: business logic outside UI; module API/internal separation respected; DI via constructor/Koin
 - [ ] Performance: no main-thread blocking; Compose recompositions reasonable; hot paths allocation-lean
 - [ ] Security/privacy: inputs validated; no PII in logs; TLS; secure storage; permission changes documented
 - [ ] i18n: No new localizable strings unless justified; translations policy followed
@@ -33,8 +33,9 @@ Paste this into your PR to self-check:
    - Name tests descriptively; cover edge cases and error conditions.
    - See the [Testing Guide](testing-guide.md) for frameworks and best practises.
 3. **Architecture & module boundaries**
-   - Follow modular rules: API vs implementation separation; no leaking implementation across module boundaries.
-   - Only depend on `:feature:foo:api` externally; `:feature:foo:impl` is internal.
+   - Follow modular rules: API vs internal separation; no leaking implementation across module boundaries.
+   - Only depend on `:feature:foo:api` externally; `:feature:foo:internal` (and legacy `:feature:foo:impl`) are internal.
+     See [ADR-0009](../architecture/adr/0009-api-internal-split.md) for full module structure and dependency rules.
    - Respect MVI/Compose patterns in the UI layer; keep business logic out of UI implementation.
    - Prefer constructor injection with Koin; keep constructors simple and dependencies explicit.
 4. **Code quality & style**
@@ -72,8 +73,9 @@ Paste this into your PR to self-check:
 1. **Correctness & requirements**
    - Does the change solve the stated problem? Any edge cases missed? Are invariants upheld?
 2. **Architecture & boundaries**
-   - Adheres to module API/impl separation and project architecture (UI: Compose/MVI, Domain, Data).
+   - Adheres to module API/internal separation per [ADR-0009](../architecture/adr/0009-api-internal-split.md) and project architecture (UI: Compose/MVI, Domain, Data).
    - No cross‑module leaks; dependencies flow in the right direction.
+   - Note: The codebase still contains `:impl` modules during ADR-0009 migration; treat them with the same separation rules as `:internal`.
 3. **Readability & maintainability**
    - Code is easy to follow; good names; small functions; comments where necessary; public APIs documented.
 4. **Test quality**
