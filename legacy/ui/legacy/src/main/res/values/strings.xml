@@ -635,6 +635,7 @@
     <string name="global_preferences">Global</string>
     <string name="debug_preferences">Debugging</string>
     <string name="privacy_preferences">Privacy</string>
+    <string name="security_preferences">Security</string>
     <string name="network_preferences">Network</string>
     <string name="interaction_preferences">Interaction</string>
     <string name="accountlist_preferences">Account list</string>
