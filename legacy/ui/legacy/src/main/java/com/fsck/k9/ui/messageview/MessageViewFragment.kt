@@ -510,6 +510,29 @@ class MessageViewFragment :
                 else -> error("Missing handler for reply menu item $itemId")
             }
         }
+
+        override fun onViewAllAttachmentsClick() {
+            showAttachmentListBottomSheet()
+        }
+    }
+
+    private fun showAttachmentListBottomSheet() {
+        val messageViewInfo = mMessageViewInfo ?: return
+
+        val nonInlineAttachments = messageViewInfo.attachments
+            ?.filter { !it.inlineAttachment }
+            .orEmpty()
+
+        val extraNonInlineAttachments = messageViewInfo.extraAttachments
+            ?.filter { !it.inlineAttachment }
+            .orEmpty()
+
+        val allAttachments = nonInlineAttachments + extraNonInlineAttachments
+        if (allAttachments.isEmpty()) return
+
+        val bottomSheet = AttachmentListBottomSheet.newInstance()
+        bottomSheet.setData(allAttachments, this)
+        bottomSheet.show(parentFragmentManager, AttachmentListBottomSheet.TAG)
     }
 
     private fun onDownloadButtonClicked() {

@@ -64,6 +64,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private RecipientNamesView recipientNamesView;
     private MaterialTextView dateView;
     private ImageView menuPrimaryActionView;
+    private View attachmentSummaryContainer;
+    private MaterialTextView attachmentSummaryText;
+    private MaterialTextView viewAllAttachmentsButton;
 
     private RelativeDateTimeFormatter relativeDateTimeFormatter;
 
@@ -115,6 +118,11 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         TooltipCompat.setTooltipText(menuOverflowView, menuOverflowDescription);
 
         findViewById(R.id.participants_container).setOnClickListener(this);
+
+        attachmentSummaryContainer = findViewById(R.id.attachment_summary_container);
+        attachmentSummaryText = findViewById(R.id.attachment_summary_text);
+        viewAllAttachmentsButton = findViewById(R.id.view_all_attachments);
+        viewAllAttachmentsButton.setOnClickListener(this);
     }
 
     @Override
@@ -128,6 +136,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             showOverflowMenu(view);
         } else if (id == R.id.participants_container) {
             messageHeaderClickListener.onParticipantsContainerClick();
+        } else if (id == R.id.view_all_attachments) {
+            messageHeaderClickListener.onViewAllAttachmentsClick();
         }
     }
 
@@ -354,5 +364,15 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     public void setMessageHeaderClickListener(MessageHeaderClickListener messageHeaderClickListener) {
         this.messageHeaderClickListener = messageHeaderClickListener;
+    }
+
+    public void setAttachmentSummary(@NonNull String summaryText, @NonNull String viewButtonText) {
+        attachmentSummaryText.setText(summaryText);
+        viewAllAttachmentsButton.setText(viewButtonText);
+        attachmentSummaryContainer.setVisibility(View.VISIBLE);
+    }
+
+    public void hideAttachmentSummary() {
+        attachmentSummaryContainer.setVisibility(View.GONE);
     }
 }
