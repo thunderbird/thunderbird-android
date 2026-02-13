@@ -11,6 +11,7 @@ enum class CatalogMoleculePage(
     STATE("States"),
     PULL_TO_REFRESH("Pull to refresh", isFullScreen = true),
     TAB_ROW("Tab Rows"),
+    SWIPEABLE_ROW("Swipeable Rows"),
     ;
 
     override fun toString(): String {
