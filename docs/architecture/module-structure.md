@@ -127,7 +127,7 @@ feature:account:internal
 #### Implementation Best Practices
 
 - **Encapsulation**: Keep implementation details hidden from consumers
-- **Internal visibility**: Use the `internal` modifier for classes and functions that should not be part of the public API
+- **Strict Visibility Control**: Within an `internal` module, everything should be marked with the `internal` visibility modifier by default. Only code explicitly required for dependency injection (e.g., Koin modules) or composition (if absolutely necessary) should remain `public`. This prevents accidental usage of implementation details even in modules that depend on the `internal` module (like `:app-common`).
 - **Testability**: Design internal code to be easily testable
 - **Dependency injection**: Use constructor injection for dependencies
 - **Error handling**: Implement robust error handling according to API contracts
