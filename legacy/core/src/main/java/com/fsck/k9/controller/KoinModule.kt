@@ -14,6 +14,7 @@ import com.fsck.k9.notification.NotificationStrategy
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
+import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
 import net.thunderbird.feature.notification.api.NotificationManager
 import org.koin.core.qualifier.named
 import org.koin.dsl.binds
@@ -57,6 +58,4 @@ val controllerModule = module {
             outboxFolderManager = get(),
         )
     }
-
-    single { LocalDeleteOperationDecider() }
 }

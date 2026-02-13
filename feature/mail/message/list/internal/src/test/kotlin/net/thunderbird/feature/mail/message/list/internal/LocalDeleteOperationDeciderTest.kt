@@ -1,4 +1,4 @@
-package com.fsck.k9.controller
+package net.thunderbird.feature.mail.message.list.internal
 
 import assertk.assertThat
 import assertk.assertions.isFalse
@@ -8,7 +8,7 @@ import kotlin.test.Test
 import net.thunderbird.core.android.account.LegacyAccountDto
 
 class LocalDeleteOperationDeciderTest {
-    private val localDeleteOperationDecider = LocalDeleteOperationDecider()
+    private val localDeleteOperationDecider = DefaultLocalDeleteOperationDecider()
     private val account = LegacyAccountDto(UUID.randomUUID().toString()).apply {
         spamFolderId = SPAM_FOLDER_ID
         trashFolderId = TRASH_FOLDER_ID
