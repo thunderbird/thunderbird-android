@@ -196,7 +196,6 @@ class GeneralSettingsDataStore(
                     behaviour = NotificationQuickDelete.valueOf(value),
                 )
             }
-
             "lock_screen_notification_visibility" -> {
                 K9.lockScreenNotificationVisibility = K9.LockScreenNotificationVisibility.valueOf(value)
             }
