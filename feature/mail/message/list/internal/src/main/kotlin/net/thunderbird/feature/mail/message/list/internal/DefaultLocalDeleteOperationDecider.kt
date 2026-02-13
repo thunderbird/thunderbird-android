@@ -1,15 +1,13 @@
-package com.fsck.k9.controller
+package net.thunderbird.feature.mail.message.list.internal
 
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
 
-/**
- * Decides whether deleting a message in the app moves it to the trash folder or deletes it immediately.
- *
- * Note: This only applies to local messages. What remote operation is performed when deleting a message is controlled
- * by [LegacyAccountDto.deletePolicy].
- */
-internal class LocalDeleteOperationDecider {
-    fun isDeleteImmediately(account: LegacyAccountDto, folderId: Long): Boolean {
+class DefaultLocalDeleteOperationDecider : LocalDeleteOperationDecider {
+    override fun isDeleteImmediately(
+        account: LegacyAccountDto,
+        folderId: Long,
+    ): Boolean {
         // If there's no trash folder configured, all messages are deleted immediately.
         if (!account.hasTrashFolder()) {
             return true
