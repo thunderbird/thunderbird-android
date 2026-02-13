@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="applock_button_unlock">Unlock</string>
+
+    <!-- Biometric Prompt -->
+    <string name="applock_prompt_title">Unlock app</string>
+    <string name="applock_prompt_subtitle">Authenticate to access your email</string>
+
+    <!-- Error Messages -->
+    <string name="applock_error_title">Unlock Failed</string>
+    <string name="applock_error_not_available">Device authentication is not available on this device. App lock stays active, so this app cannot be opened here.</string>
+    <string name="applock_error_not_enrolled">No biometric credentials or screen lock set up. Please set up a screen lock in device settings.</string>
+    <string name="applock_error_failed">Authentication failed. Please try again.</string>
+    <string name="applock_error_canceled">Authentication was canceled.</string>
+    <plurals name="applock_error_lockout">
+        <item quantity="one">Too many failed attempts. Please try again in %d second.</item>
+        <item quantity="other">Too many failed attempts. Please try again in %d seconds.</item>
+    </plurals>
+    <string name="applock_error_lockout_unknown">Too many failed attempts. Please try again later.</string>
+    <string name="applock_error_lockout_permanent">Too many failed attempts. Please unlock your device using your PIN, pattern, or password.</string>
+    <string name="applock_error_unable_to_start">Unable to start authentication: %s</string>
+    <string name="applock_error_temporarily_unavailable">Device authentication is temporarily unavailable. Please try again.</string>
+    <string name="applock_error_unknown_unavailable">Unable to determine device authentication status. Please try again later.</string>
+    <string name="applock_requirements_title">App Lock Unavailable</string>
+    <string name="applock_requirements_hint">Set up a screen lock (PIN, pattern, or password) in device settings to continue.</string>
+    <string name="applock_button_open_settings">Open Settings</string>
+    <string name="applock_button_try_again">Try again</string>
+    <string name="applock_button_close_app">Close App</string>
+
+    <!-- Settings -->
+    <string name="applock_settings_screen_title">Security</string>
+    <string name="applock_settings_title">App lock</string>
+    <string name="applock_settings_summary">Require device authentication to open the app. This does not encrypt data stored on the device. If authentication becomes unavailable, access remains blocked until it is restored.</string>
+    <string name="applock_settings_biometric_not_available">Device authentication is not available. Activate device lock to enable app lock.</string>
+    <string name="applock_settings_timeout_title">Lock timeout</string>
+    <string name="applock_settings_timeout_immediately">Immediately</string>
+    <string name="applock_settings_timeout_1_minute">1 minute</string>
+    <plurals name="applock_settings_timeout_n_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+</resources>

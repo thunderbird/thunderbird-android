@@ -27,15 +27,18 @@ import java.util.Calendar
 import java.util.Locale
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.feature.applock.api.AppLockSettingsNavigation
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@Suppress("TooManyFunctions")
 class GeneralSettingsFragment : PreferenceFragmentCompat() {
     private val viewModel: GeneralSettingsViewModel by viewModel()
     private val dataStore: GeneralSettingsDataStore by inject()
     private val telemetryManager: TelemetryManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val jobManager: K9JobManager by inject()
+    private val appLockSettingsNavigation: AppLockSettingsNavigation by inject()
 
     private var rootKey: String? = null
     private var currentUiState: GeneralSettingsUiState? = null
@@ -112,6 +115,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         }
 
         initializeDataCollection()
+        initializeSecurityPreferences()
 
         viewModel.uiState.observe(this) { uiState ->
             updateUiState(uiState)
@@ -171,6 +175,14 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+    private fun initializeSecurityPreferences() {
+        findPreference<Preference>(PREFERENCE_SECURITY)?.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                startActivity(appLockSettingsNavigation.createIntent(requireContext()))
+                true
+            }
+    }
+
     private fun updateUiState(uiState: GeneralSettingsUiState) {
         val oldUiState = currentUiState
         currentUiState = uiState
@@ -220,6 +232,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
     companion object {
         private const val PREFERENCE_SCREEN_DEBUGGING = "debug_preferences"
         private const val PREFERENCE_DATA_COLLECTION = "data_collection"
+        private const val PREFERENCE_SECURITY = "security_preferences"
         const val DEFAULT_SYNC_FILENAME = "thunderbird-sync-logs"
 
         fun create(rootKey: String? = null) = GeneralSettingsFragment().withArguments(ARG_PREFERENCE_ROOT to rootKey)

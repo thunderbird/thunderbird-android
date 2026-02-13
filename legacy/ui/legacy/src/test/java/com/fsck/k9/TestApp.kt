@@ -23,6 +23,7 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogLevelManager
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.feature.applock.api.AppLockCoordinator
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import net.thunderbird.feature.mail.message.reader.api.css.CssStyleProvider
 import net.thunderbird.feature.mail.message.reader.api.css.CssVariableNameProvider
@@ -89,6 +90,7 @@ val testModule = module {
     single<ContactPictureLoader> { mock() }
     single<LegacyAccountManager> { mock() }
     single<PlatformConfigProvider> { FakePlatformConfigProvider() }
+    single<AppLockCoordinator> { mock() }
     single<CssVariableNameProvider> { mock() }
     single<CssClassNameProvider> { mock() }
     factoryListOf<CssStyleProvider>()
