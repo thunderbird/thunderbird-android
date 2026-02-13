@@ -165,7 +165,6 @@ val preferencesModule = module {
     } bind GeneralSettingsManager::class
     single {
         DefaultDrawerConfigManager(
-            preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
             displayInboxSettingsPreferenceManager = get(),
             displayVisualSettingsPreferenceManager = get(),
