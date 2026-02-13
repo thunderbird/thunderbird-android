@@ -63,6 +63,7 @@ include(
 
 include(
     ":feature:applock:api",
+    ":feature:applock:impl",
 )
 
 include(
