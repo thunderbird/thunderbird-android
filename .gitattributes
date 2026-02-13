@@ -6,4 +6,10 @@
 
 app-k9mail/build.gradle.kts merge=merge_gradle
 app-thunderbird/build.gradle.kts merge=merge_gradle
-app-k9mail/src/main/res/raw/changelog_master.xml merge=ours
+
+app-k9mail/src/main/res/raw/changelog_master.xml merge=merge_changelog
+app-thunderbird/src/release/res/raw/changelog_master.xml
+
+app-metadata/com.fsck.k9/*/changelogs/** merge=merge_changelog
+app-metadata/net.thunderbird.android.beta/*/changelogs/** merge=merge_changelog
+app-metadata/net.thunderbird.android/*/changelogs/** merge=merge_changelog
