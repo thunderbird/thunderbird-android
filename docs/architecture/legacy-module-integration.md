@@ -27,7 +27,7 @@ The key components in this integration strategy are:
 
 Newer application modules (such as features or core components) depend on well-defined **Interfaces**
 (e.g., those found in `feature:*:api` modules). Typically, a feature will provide its own modern **Implementation**
-(e.g., `:feature:mail:impl`) for its API.
+(e.g., `:feature:mail:internal`) for its API.
 
 However, to manage dependencies on code still within `legacy:*`, `mail:*`, and `backend:*` modules and prevent it
 from spreading, we use `app-common` as **bridge** or **adapter** to provide an alternative implementation for these. In
@@ -38,16 +38,16 @@ this role, `app-common` is responsible for:
 3. **Containing glue code**: All logic required to connect the modern interfaces with the legacy systems is encapsulated within `app-common`.
 
 This approach ensures that:
-*   Newer modules are decoupled from legacy implementations: They only interact with the defined interfaces, regardless of whether the implementation is the modern feature `impl` or the `app-common` bridge.
+*   Newer modules are decoupled from legacy implementations: They only interact with the defined interfaces, regardless of whether the implementation is the modern feature `internal` or the `app-common` bridge.
 *   Legacy code is isolated.
-*   A clear path for refactoring is maintained: Initially, the application might be configured to use the `app-common` bridge. As new, native implementations in feature modules (e.g., `:feature:mail:impl`) mature, the dependency injection can be switched to use them, often without changes to the modules consuming the interface.
+*   A clear path for refactoring is maintained: Initially, the application might be configured to use the `app-common` bridge. As new, native implementations in feature modules (e.g., `:feature:mail:internal`) mature, the dependency injection can be switched to use them, often without changes to the modules consuming the interface.
 
 ### Bridge Pattern Flow
 
 The typical flow is:
 
 1. **Interfaces**: Interfaces are defined, usually within the `api` module of a feature (e.g., `:feature:mail:api`) or a core module. These interfaces represent the contract for a piece of functionality.
-2. **New Module Dependency**: Newer modules (e.g., `:feature:somefeature:impl` or other parts of `:app-common`) depend on these defined interfaces, to avoid dependency on concrete legacy classes.
+2. **New Module Dependency**: Newer modules (e.g., `:feature:somefeature:internal` or other parts of `:app-common`) depend on these defined interfaces, to avoid dependency on concrete legacy classes.
 3. **Implementation**: The `:app-common` module provides concrete implementations for these interfaces.
 4. **Delegation to Legacy**: Internally, these implementations within `:app-common` delegate the actual work to the code residing in the legacy modules (e.g., `legacy:*`, `mail:*`, `backend:*`).
 5. **Dependency Injection**: The application's dependency injection framework is configured to provide instances of these `:app-common` bridge implementations when a newer module requests an implementation of the interface.
@@ -61,7 +61,7 @@ graph TB
     subgraph FEATURE[Feature Modules]
         direction TB
         INTERFACES["`**Interfaces**<br> (e.g., :feature:mail:api)`"]
-        IMPLEMENTATIONS["`**Implementations**<br> (e.g., :feature:mail:impl)`"]
+        IMPLEMENTATIONS["`**Implementations**<br> (e.g., :feature:mail:internal)`"]
         OTHER_MODULES["`**Other Modules**<br>(depend on Interfaces)`"]
     end
 
@@ -348,7 +348,7 @@ The long-term strategy involves gradually migrating functionality out of the leg
 1. **Identify Functionality**: Pinpoint specific functionalities within legacy modules that need to be modernized.
 2. **Define Interfaces**: Ensure clear interfaces are defined (typically in feature `api` modules) for this functionality.
 3. **Entity Modeling**: Create proper domain entity models that represent the business objects as immutable data classes.
-4. **Implement in New Modules**: Re-implement the functionality within new, dedicated feature `impl` modules or core modules.
+4. **Implement in New Modules**: Re-implement the functionality within new, dedicated feature `internal` modules or core modules.
 5. **Update Bridge (Optional)**: If `:app-common` was bridging to this specific legacy code, its bridge implementation can be updated or removed.
 6. **Switch DI Configuration**: Update the dependency injection to provide the new modern implementation instead of the legacy bridge.
 7. **Retire Legacy Code**: Once no longer referenced, the corresponding legacy code can be safely removed.
@@ -362,7 +362,7 @@ Using the account profile example, the migration process would look like:
    - `AccountProfileRepository` interface is defined in `feature:account:api`
    - `AccountProfileLocalDataSource` interface is defined in `feature:account:core`
 3. **Entity Modeling**: Create `AccountProfile` as an immutable data class in `feature:account:api`.
-4. **Implement**: Create a new implementation of `AccountProfileLocalDataSource` in a modern module, e.g., `feature:account:impl`.
+4. **Implement**: Create a new implementation of `AccountProfileLocalDataSource` in a modern module, e.g., `feature:account:internal`.
 5. **Update Bridge**: Update or remove `DefaultAccountProfileLocalDataSource` in `app-common`.
 6. **Switch DI**: Update `appCommonAccountModule` to provide the new implementation instead of `DefaultAccountProfileLocalDataSource`.
 7. **Retire**: Once all references to legacy account code are removed, the legacy code and lower-level bridges (`LegacyAccountWrapperManager`, `DefaultLegacyAccountWrapperManager`) can be safely deleted.

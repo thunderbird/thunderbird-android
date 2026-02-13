@@ -169,8 +169,8 @@ Remember that app-common should primarily contain integration code, shared appli
 The `feature:*` modules are independent and encapsulate distinct user-facing feature domains. They are designed to be
 reusable and can be integrated into any application module as needed.
 
-Feature implementation modules (e.g., `:feature:account:impl`) should ideally not depend directly on other feature
-implementation modules. Instead, they should depend on the public `:api` module of other features (e.g.,
+Feature internal modules (e.g., `:feature:account:internal`) must not depend directly on other feature
+internal modules. Instead, they should depend on the public `:api` module of other features (e.g.,
 `:feature:someOtherFeature:api`) to access their functionality through defined contracts, see
 [module structure](module-structure.md#-api-module) for more details.
 
@@ -179,7 +179,7 @@ functionality within a feature domain:
 
 - `:feature:account:api`: Public interfaces for account management
 - `:feature:account:settings:api`: Public interfaces for account settings
-- `:feature:account:settings:impl`: Concrete implementations of account settings
+- `:feature:account:settings:internal`: Internal implementation details of account settings
 
 #### 🧰 Core Modules
 
@@ -224,7 +224,7 @@ showing the dependencies and integration points between modules:
 
 Rules for module dependencies:
 - **One-Way Dependencies**: Modules should not depend on each other in a circular manner
-- **API-Implementation Separation**: Modules should depend on `api` modules, not `implementation` modules, see [module structure](module-structure.md#module-structure)
+- **API-Internal Separation**: Other modules must only declare dependencies on `:feature:*:api` or `:core:*:api` of other areas. Depending on `:feature:*:internal` or `:core:*:internal` from a different area is prohibited. See [module structure](module-structure.md#module-structure).
 - **Feature Integration**: Features should be integrated through the `app-common` module, which acts as the central integration hub
 - **Dependency Direction**: Dependencies should flow from app modules to common, then to features, and finally to core and libraries
 
@@ -244,10 +244,10 @@ graph TB
     subgraph FEATURE[Feature Modules]
         direction TB
         FEATURE_ACCOUNT_API["`**:feature:account:api**`"]
-        FEATURE_ACCOUNT_IMPL["`**:feature:account:impl**`"]
+        FEATURE_ACCOUNT_INTERNAL["`**:feature:account:internal**`"]
         FEATURE_SETTINGS_API["`**:feature:settings:api**`"]
-        FEATURE_K9["`**:feature:k9OnlyFeature:impl**`"]
-        FEATURE_TB["`**:feature:tfaOnlyFeature:impl**`"]
+        FEATURE_K9["`**:feature:k9OnlyFeature:internal**`"]
+        FEATURE_TB["`**:feature:tfaOnlyFeature:internal**`"]
     end
 
     subgraph CORE[Core Modules]
@@ -265,11 +265,11 @@ graph TB
     APP_K9 --> |depends on| COMMON_APP
     APP_TB --> |depends on| COMMON_APP
     COMMON_APP --> |uses| FEATURE_ACCOUNT_API
-    COMMON_APP --> |injects/uses impl of| FEATURE_ACCOUNT_IMPL
-    FEATURE_ACCOUNT_IMPL --> FEATURE_ACCOUNT_API
+    COMMON_APP --> |injects/uses internal of| FEATURE_ACCOUNT_INTERNAL
+    FEATURE_ACCOUNT_INTERNAL --> FEATURE_ACCOUNT_API
     COMMON_APP --> |uses| FEATURE_SETTINGS_API
-    APP_K9 --> |injects/uses impl of| FEATURE_K9
-    APP_TB --> |injects/uses impl of| FEATURE_TB
+    APP_K9 --> |injects/uses internal of| FEATURE_K9
+    APP_TB --> |injects/uses internal of| FEATURE_TB
     FEATURE_ACCOUNT_API --> |uses| CORE_UI_API
     FEATURE_SETTINGS_API --> |uses| CORE_COMMON_API
     FEATURE_TB --> |uses| LIB_AUTH
@@ -296,7 +296,7 @@ graph TB
     class COMMON common
     class COMMON_APP common_module
     class FEATURE feature
-    class FEATURE_ACCOUNT_API,FEATURE_ACCOUNT_IMPL,FEATURE_SETTINGS_API,FEATURE_MAIL feature_module
+    class FEATURE_ACCOUNT_API,FEATURE_ACCOUNT_INTERNAL,FEATURE_SETTINGS_API,FEATURE_MAIL feature_module
     class CORE core
     class CORE_UI_API,CORE_COMMON_API core_module
     class LIBRARY library
