@@ -62,6 +62,10 @@ include(
 )
 
 include(
+    ":feature:applock:api",
+)
+
+include(
     ":feature:account:api",
     ":feature:account:avatar:api",
     ":feature:account:avatar:impl",
