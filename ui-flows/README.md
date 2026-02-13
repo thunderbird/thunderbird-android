@@ -22,7 +22,7 @@ To be able to run the flows, you need to [install the CLI tools](https://docs.ma
 
 Ensure a device or emulator is running and execute:
 
-- `maestro test ui-flows/validate/ini_withh_demo_account.yml`
+- `maestro test ui-flows/validate/init_with_demo_account.yml`
 - `maestro test ui-flows/validate/compose_simple_message.yml`
 
 The following commands are limited to the exact emulator configuration mentioned above:

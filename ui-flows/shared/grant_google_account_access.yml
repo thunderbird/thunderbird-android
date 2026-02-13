@@ -1,0 +1,11 @@
+appId: com.android.chrome
+---
+
+## Grant access to your Google Account
+- scrollUntilVisible:
+    element:
+      id: "submit_approve_access"
+    direction: DOWN
+
+- tapOn:
+    id: "submit_approve_access"
