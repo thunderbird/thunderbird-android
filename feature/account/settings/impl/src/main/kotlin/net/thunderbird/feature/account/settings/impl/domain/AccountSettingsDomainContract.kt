@@ -2,6 +2,7 @@ package net.thunderbird.feature.account.settings.impl.domain
 
 import com.eygraber.uri.Uri
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.validation.ValidationError
 import net.thunderbird.feature.account.AccountId
@@ -19,10 +20,21 @@ internal interface AccountSettingsDomainContract {
             operator fun invoke(accountId: AccountId): Flow<Outcome<AccountProfile, AccountSettingError>>
         }
 
+        fun interface GetLegacyAccount {
+            suspend operator fun invoke(accountId: AccountId): Outcome<LegacyAccount, AccountSettingError>
+        }
+
         fun interface UpdateGeneralSettings {
             suspend operator fun invoke(
                 accountId: AccountId,
                 command: UpdateGeneralSettingCommand,
+            ): Outcome<Unit, AccountSettingError>
+        }
+
+        fun interface UpdateReadMailSettings {
+            suspend operator fun invoke(
+                accountId: AccountId,
+                command: UpdateReadMessageSettingsCommand,
             ): Outcome<Unit, AccountSettingError>
         }
 
@@ -46,6 +58,11 @@ internal interface AccountSettingsDomainContract {
         data class UpdateName(val value: String) : UpdateGeneralSettingCommand
         data class UpdateColor(val value: Int) : UpdateGeneralSettingCommand
         data class UpdateAvatar(val value: Avatar) : UpdateGeneralSettingCommand
+    }
+
+    sealed interface UpdateReadMessageSettingsCommand {
+        data class UpdateShowPictures(val value: String) : UpdateReadMessageSettingsCommand
+        data class UpdateIsMarkMessageAsReadOnView(val value: Boolean) : UpdateReadMessageSettingsCommand
     }
 
     sealed interface AccountSettingError {

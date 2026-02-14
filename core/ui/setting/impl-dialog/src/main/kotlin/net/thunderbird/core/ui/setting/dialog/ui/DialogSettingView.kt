@@ -1,5 +1,6 @@
 package net.thunderbird.core.ui.setting.dialog.ui
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +25,7 @@ internal fun DialogSettingView(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     subtitle: String? = null,
+    actions: @Composable RowScope.() -> Unit = {},
 ) {
     var showDialog by rememberSaveable { mutableStateOf(false) }
     var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
@@ -34,6 +36,7 @@ internal fun DialogSettingView(
                 title = title,
                 subtitle = subtitle,
                 onBack = onBack,
+                actions = actions,
             )
         },
         modifier = modifier,

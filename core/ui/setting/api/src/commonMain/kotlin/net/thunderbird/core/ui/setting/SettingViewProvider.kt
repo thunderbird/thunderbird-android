@@ -1,5 +1,6 @@
 package net.thunderbird.core.ui.setting
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -17,6 +18,7 @@ interface SettingViewProvider {
      * @param onSettingValueChange The callback to be invoked when a setting value is changed.
      * @param onBack The callback to be invoked when the back button is clicked.
      * @param modifier The modifier to be applied to the view.
+     * @param actions Composable actions displayed in the top app bar.
      */
     @Composable
     fun SettingView(
@@ -26,5 +28,6 @@ interface SettingViewProvider {
         onBack: () -> Unit,
         modifier: Modifier = Modifier,
         subtitle: String? = null,
+        actions: @Composable RowScope.() -> Unit = {},
     )
 }

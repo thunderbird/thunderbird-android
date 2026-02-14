@@ -40,6 +40,7 @@ dependencies {
 
     implementation(projects.feature.account.avatar.api)
     implementation(projects.feature.account.avatar.impl)
+    implementation(projects.feature.account.settings.api)
     implementation(projects.feature.account.setup)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.message.composer)
