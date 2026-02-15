@@ -84,6 +84,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
         isMessageViewDeleteActionVisible = storage.getBoolean(
             KEY_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
+        ),
+        isMessageViewMoveActionVisible = storage.getBoolean(
+            KEY_MESSAGE_VIEW_MOVE_ACTION_VISIBLE,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_MOVE_ACTION_VISIBLE,
         )
     )
 
@@ -107,6 +111,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
                 storageEditor.putBoolean(
                     KEY_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
                     config.isMessageViewDeleteActionVisible,
+                )
+                storageEditor.putBoolean(
+                    KEY_MESSAGE_VIEW_MOVE_ACTION_VISIBLE,
+                    config.isMessageViewMoveActionVisible,
                 )
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
