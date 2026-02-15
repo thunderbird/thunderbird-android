@@ -27,6 +27,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat.Type.systemBars
+import androidx.core.view.updatePadding
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -221,6 +224,16 @@ class MessageViewFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val initialBottomPadding = view.paddingBottom
+        ViewCompat.setOnApplyWindowInsetsListener(view) { insetView, windowInsets ->
+            val insets = windowInsets.getInsets(systemBars())
+
+            insetView.updatePadding(bottom = initialBottomPadding + insets.bottom)
+
+            windowInsets
+        }
+        ViewCompat.requestApplyInsets(view)
 
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(

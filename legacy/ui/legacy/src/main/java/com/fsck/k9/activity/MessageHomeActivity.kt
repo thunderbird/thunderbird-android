@@ -152,6 +152,14 @@ open class MessageHomeActivity :
     private val isShowAccountIndicator: Boolean
         get() = messageListFragment?.isShowAccountIndicator ?: true
 
+    override fun getContentContainerBottomInset(systemBarsBottom: Int, imeBottom: Int): Int {
+        return imeBottom
+    }
+
+    override fun shouldConsumeRootInsets(): Boolean {
+        return false
+    }
+
     @Suppress("ReturnCount")
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

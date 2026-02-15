@@ -55,6 +55,17 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <View
+        android:id="@+id/message_list_navigation_bar_scrim"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorSurface"
+        android:importantForAccessibility="no"
+        android:clickable="false"
+        android:focusable="false"
+        />
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

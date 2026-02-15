@@ -23,11 +23,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.ComposeView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.graphics.Insets
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsCompat.Type.mandatorySystemGestures
+import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
+import androidx.core.view.WindowInsetsCompat.Type.tappableElement
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
@@ -134,6 +138,12 @@ import org.koin.core.parameter.parametersOf
 private const val MAXIMUM_MESSAGE_SORT_OVERRIDES = 3
 private const val MINIMUM_CLICK_INTERVAL = 200L
 private const val RECENT_CHANGES_SNACKBAR_DURATION = 10 * 1000
+
+private enum class NavigationMode {
+    GESTURE,
+    BUTTON,
+    UNKNOWN,
+}
 
 @Suppress(
     "LargeClass",
@@ -550,26 +560,6 @@ abstract class BaseMessageListFragment :
         } else {
             disableFloatingActionButton(view)
         }
-
-        initializeFloatingActionButtonInsets(view)
-    }
-
-    private fun initializeFloatingActionButtonInsets(view: View) {
-        val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floating_action_button)
-
-        ViewCompat.setOnApplyWindowInsetsListener(floatingActionButton) { v, windowInsets ->
-            val insets = windowInsets.getInsets(systemBars())
-
-            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                val fabMargin = view.resources.getDimensionPixelSize(R.dimen.floatingActionButtonMargin)
-
-                bottomMargin = fabMargin
-                rightMargin = fabMargin + insets.right
-                leftMargin = fabMargin + insets.left
-            }
-
-            windowInsets
-        }
     }
 
     private fun enableFloatingActionButton(view: View) {
@@ -600,6 +590,21 @@ abstract class BaseMessageListFragment :
         floatingActionButton.isGone = true
     }
 
+    private fun resolveNavigationMode(windowInsets: WindowInsetsCompat): NavigationMode {
+        val navigationBarInsets = windowInsets.getInsets(navigationBars())
+        val tappableInsets = windowInsets.getInsets(tappableElement())
+        val mandatoryGestureInsets = windowInsets.getInsets(mandatorySystemGestures())
+        val navigationBottom = navigationBarInsets.bottom
+        val tappableBottom = tappableInsets.bottom
+        val mandatoryGestureBottom = mandatoryGestureInsets.bottom
+
+        return when {
+            tappableBottom > 0 -> NavigationMode.BUTTON
+            navigationBottom > 0 || mandatoryGestureBottom > 0 -> NavigationMode.GESTURE
+            else -> NavigationMode.UNKNOWN
+        }
+    }
+
     private fun initializeRecyclerView(view: View) {
         adapter = createMessageListAdapter()
         pendingMessageListInfo?.let { messageListInfo ->
@@ -608,13 +613,106 @@ abstract class BaseMessageListFragment :
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.message_list)
+        val navigationBarScrim = view.findViewById<View>(R.id.message_list_navigation_bar_scrim)
 
         if (!isShowFloatingActionButton) {
             recyclerView.setPadding(0)
         }
 
+        val initialLeftPadding = recyclerView.paddingLeft
+        val initialRightPadding = recyclerView.paddingRight
+        val initialBottomPadding = recyclerView.paddingBottom
+        val scrimAnimationDuration = 180L
+        var navigationMode = NavigationMode.UNKNOWN
+        var isScrimVisible = true
+
+        fun setScrimVisibility(visible: Boolean, animate: Boolean, force: Boolean = false) {
+            if (!force && isScrimVisible == visible) return
+
+            isScrimVisible = visible
+            navigationBarScrim.animate().cancel()
+
+            val targetAlpha = if (visible) 1f else 0f
+            val targetTranslationY = if (visible) 0f else navigationBarScrim.height.toFloat()
+
+            if (animate && navigationBarScrim.height > 0) {
+                navigationBarScrim.animate()
+                    .alpha(targetAlpha)
+                    .translationY(targetTranslationY)
+                    .setDuration(scrimAnimationDuration)
+                    .start()
+            } else {
+                navigationBarScrim.alpha = targetAlpha
+                navigationBarScrim.translationY = targetTranslationY
+            }
+        }
+
+        fun updateNavigationBarScrimLayout(
+            systemBarInsets: Insets,
+            navigationBarInsets: Insets,
+        ) {
+            navigationBarScrim.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                height = navigationBarInsets.bottom
+                leftMargin = systemBarInsets.left
+                rightMargin = systemBarInsets.right
+            }
+        }
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.itemAnimator = MessageListItemAnimator()
+
+        ViewCompat.setOnApplyWindowInsetsListener(recyclerView) { insetView, windowInsets ->
+            val systemBarInsets = windowInsets.getInsets(systemBars())
+            val navigationBarInsets = windowInsets.getInsets(navigationBars())
+
+            insetView.updatePadding(
+                left = initialLeftPadding + systemBarInsets.left,
+                right = initialRightPadding + systemBarInsets.right,
+                bottom = initialBottomPadding + systemBarInsets.bottom,
+            )
+
+            navigationMode = resolveNavigationMode(windowInsets).let { mode ->
+                if (mode == NavigationMode.UNKNOWN) NavigationMode.BUTTON else mode
+            }
+            val isThreeButtonNavigation = navigationMode == NavigationMode.BUTTON
+            val fabElevation = floatingActionButton?.elevation ?: 0f
+            navigationBarScrim.elevation = if (isThreeButtonNavigation) fabElevation + 1f else 0f
+
+            updateNavigationBarScrimLayout(systemBarInsets, navigationBarInsets)
+
+            when (navigationMode) {
+                NavigationMode.BUTTON,
+                NavigationMode.UNKNOWN -> {
+                    // 3-button mode keeps an opaque bottom area at all times.
+                    setScrimVisibility(visible = true, animate = false, force = true)
+                }
+
+                NavigationMode.GESTURE -> {
+                    if (!insetView.canScrollVertically(-1)) {
+                        setScrimVisibility(visible = true, animate = false, force = true)
+                    }
+                }
+            }
+
+            windowInsets
+        }
+
+        recyclerView.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (navigationMode == NavigationMode.BUTTON) {
+                        setScrimVisibility(visible = true, animate = false)
+                        return
+                    }
+
+                    when {
+                        !recyclerView.canScrollVertically(-1) -> setScrimVisibility(visible = true, animate = true)
+                        dy > 0 -> setScrimVisibility(visible = false, animate = true)
+                        dy < 0 -> setScrimVisibility(visible = true, animate = true)
+                    }
+                }
+            },
+        )
 
         val itemTouchHelper = ItemTouchHelper(
             MessageListSwipeCallback(
@@ -631,6 +729,7 @@ abstract class BaseMessageListFragment :
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
         recyclerView.adapter = adapter
+        ViewCompat.requestApplyInsets(recyclerView)
 
         if (featureFlagProvider.provide(FeatureFlagKey.DisplayInAppNotifications) == FeatureFlagResult.Enabled) {
             view.findViewById<ComposeView>(R.id.banner_global_compose_view).apply {
