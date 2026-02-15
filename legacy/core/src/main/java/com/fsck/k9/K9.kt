@@ -126,9 +126,6 @@ object K9 : KoinComponent {
     private val sortAscending = mutableMapOf<SortType, Boolean>()
 
     @JvmStatic
-    var isMessageViewArchiveActionVisible = false
-
-    @JvmStatic
     var isMessageViewDeleteActionVisible = true
 
     @JvmStatic
@@ -207,7 +204,6 @@ object K9 : KoinComponent {
             .onDisabledOrUnavailable {
                 fontSizes.load(storage)
             }
-        isMessageViewArchiveActionVisible = storage.getBoolean("messageViewArchiveActionVisible", false)
         isMessageViewDeleteActionVisible = storage.getBoolean("messageViewDeleteActionVisible", true)
         isMessageViewMoveActionVisible = storage.getBoolean("messageViewMoveActionVisible", false)
         isMessageViewCopyActionVisible = storage.getBoolean("messageViewCopyActionVisible", false)
@@ -232,8 +228,6 @@ object K9 : KoinComponent {
         editor.putEnum("sortTypeEnum", sortType)
         editor.putBoolean("sortAscending", sortAscending[sortType] ?: false)
         editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
-
-        editor.putBoolean("messageViewArchiveActionVisible", isMessageViewArchiveActionVisible)
         editor.putBoolean("messageViewDeleteActionVisible", isMessageViewDeleteActionVisible)
         editor.putBoolean("messageViewMoveActionVisible", isMessageViewMoveActionVisible)
         editor.putBoolean("messageViewCopyActionVisible", isMessageViewCopyActionVisible)

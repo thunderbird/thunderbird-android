@@ -77,7 +77,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
             KEY_DRAWER_EXPAND_ALL_FOLDER,
             DISPLAY_SETTINGS_DEFAULT_DRAWER_EXPAND_ALL_FOLDER,
         ),
-
+        isMessageViewArchiveActionVisible = storage.getBoolean(
+            KEY_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_ARCHIVE_ACTIONS_VISIBLE,
+        ),
     )
 
     private fun writeConfig(config: DisplayVisualSettings) {
@@ -93,6 +96,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
                 storageEditor.putEnum(KEY_MESSAGE_VIEW_BODY_CONTENT_TYPE, config.bodyContentType)
                 storageEditor.putBoolean(KEY_DRAWER_EXPAND_ALL_FOLDER, config.drawerExpandAllFolder)
                 messageListPreferences.save(config.messageListSettings)
+                storageEditor.putBoolean(
+                    KEY_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
+                    config.isMessageViewArchiveActionVisible,
+                )
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
