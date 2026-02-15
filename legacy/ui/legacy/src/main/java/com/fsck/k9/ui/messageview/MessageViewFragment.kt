@@ -327,7 +327,9 @@ class MessageViewFragment :
             val canMessageBeMovedToSpam = canMessageBeMovedToSpam()
 
             menu.findItem(R.id.move).isVisible = K9.isMessageViewMoveActionVisible
-            menu.findItem(R.id.archive).isVisible = canMessageBeArchived && K9.isMessageViewArchiveActionVisible
+            menu.findItem(R.id.archive).isVisible =
+                canMessageBeArchived &&
+                generalSettingsManager.getConfig().display.visualSettings.isMessageViewArchiveActionVisible
             menu.findItem(R.id.spam).isVisible = canMessageBeMovedToSpam && K9.isMessageViewSpamActionVisible
 
             menu.findItem(R.id.refile_move).isVisible = true
