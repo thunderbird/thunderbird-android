@@ -8,7 +8,8 @@ const val DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH = true
 const val DISPLAY_SETTINGS_DEFAULT_IS_SHOW_ANIMATION = true
 val DISPLAY_SETTINGS_DEFAULT_BODY_CONTENT_TYPE = BodyContentType.TEXT_HTML
 const val DISPLAY_SETTINGS_DEFAULT_DRAWER_EXPAND_ALL_FOLDER = false
-const val DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_ARCHIVE_ACTIONS_VISIBLE = false
+const val DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE = false
+const val DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_DELETE_ACTION_VISIBLE = true
 
 data class DisplayVisualSettings(
     val isShowAnimations: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_SHOW_ANIMATION,
@@ -17,5 +18,6 @@ data class DisplayVisualSettings(
     val bodyContentType: BodyContentType = DISPLAY_SETTINGS_DEFAULT_BODY_CONTENT_TYPE,
     val drawerExpandAllFolder: Boolean = DISPLAY_SETTINGS_DEFAULT_DRAWER_EXPAND_ALL_FOLDER,
     val messageListSettings: DisplayMessageListSettings = DisplayMessageListSettings(),
-    val isMessageViewArchiveActionVisible: Boolean = DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_ARCHIVE_ACTIONS_VISIBLE,
+    val isMessageViewArchiveActionVisible: Boolean = DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
+    val isMessageViewDeleteActionVisible: Boolean = DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
 )
