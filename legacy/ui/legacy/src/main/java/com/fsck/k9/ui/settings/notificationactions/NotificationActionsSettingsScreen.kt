@@ -165,7 +165,7 @@ private fun NotificationActionRow(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = minHeight)
-            .alpha(if (isDimmed) 0.6f else 1.0f)
+            .alpha(if (isDragged) 1.0f else if (isDimmed) 0.6f else 1.0f)
             .graphicsLayer {
                 translationY = if (isDragged) draggedOffsetY else 0f
                 scaleX = dragScale
