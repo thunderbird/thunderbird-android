@@ -77,7 +77,26 @@ class DefaultDisplayVisualSettingsPreferenceManager(
             KEY_DRAWER_EXPAND_ALL_FOLDER,
             DISPLAY_SETTINGS_DEFAULT_DRAWER_EXPAND_ALL_FOLDER,
         ),
-
+        isMessageViewArchiveActionVisible = storage.getBoolean(
+            KEY_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
+        ),
+        isMessageViewDeleteActionVisible = storage.getBoolean(
+            KEY_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
+        ),
+        isMessageViewMoveActionVisible = storage.getBoolean(
+            KEY_MESSAGE_VIEW_MOVE_ACTION_VISIBLE,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_MOVE_ACTION_VISIBLE,
+        ),
+        isMessageViewCopyActionVisible = storage.getBoolean(
+            KEY_MESSAGE_VIEW_COPY_ACTION_VISIBLE,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_COPY_ACTION_VISIBLE,
+        ),
+        isMessageViewSpamActionVisible = storage.getBoolean(
+            KEY_MESSAGE_VIEW_SPAM_ACTION_VISIBLE,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_SPAM_ACTION_VISIBLE,
+        ),
     )
 
     private fun writeConfig(config: DisplayVisualSettings) {
@@ -93,6 +112,26 @@ class DefaultDisplayVisualSettingsPreferenceManager(
                 storageEditor.putEnum(KEY_MESSAGE_VIEW_BODY_CONTENT_TYPE, config.bodyContentType)
                 storageEditor.putBoolean(KEY_DRAWER_EXPAND_ALL_FOLDER, config.drawerExpandAllFolder)
                 messageListPreferences.save(config.messageListSettings)
+                storageEditor.putBoolean(
+                    KEY_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
+                    config.isMessageViewArchiveActionVisible,
+                )
+                storageEditor.putBoolean(
+                    KEY_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
+                    config.isMessageViewDeleteActionVisible,
+                )
+                storageEditor.putBoolean(
+                    KEY_MESSAGE_VIEW_MOVE_ACTION_VISIBLE,
+                    config.isMessageViewMoveActionVisible,
+                )
+                storageEditor.putBoolean(
+                    KEY_MESSAGE_VIEW_COPY_ACTION_VISIBLE,
+                    config.isMessageViewCopyActionVisible,
+                )
+                storageEditor.putBoolean(
+                    KEY_MESSAGE_VIEW_SPAM_ACTION_VISIBLE,
+                    config.isMessageViewSpamActionVisible,
+                )
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
