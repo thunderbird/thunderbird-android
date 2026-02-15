@@ -246,7 +246,7 @@ class GeneralSettingsDataStore(
 
             "messageview_visible_refile_actions" -> {
                 mutableSetOf<String>().apply {
-                    if (K9.isMessageViewDeleteActionVisible) add("delete")
+                    if (visualSettings.isMessageViewDeleteActionVisible) add("delete")
                     if (visualSettings.isMessageViewArchiveActionVisible) add("archive")
                     if (K9.isMessageViewMoveActionVisible) add("move")
                     if (K9.isMessageViewCopyActionVisible) add("copy")
@@ -279,12 +279,12 @@ class GeneralSettingsDataStore(
 
             "messageview_visible_refile_actions" -> {
                 skipSaveSettings = true
-                K9.isMessageViewDeleteActionVisible = "delete" in checkedValues
                 generalSettingsManager.update { settings ->
                     settings.copy(
                         display = settings.display.copy(
                             visualSettings = settings.display.visualSettings.copy(
                                 isMessageViewArchiveActionVisible = "archive" in checkedValues,
+                                isMessageViewDeleteActionVisible = "delete" in checkedValues
                             ),
                         ),
                     )

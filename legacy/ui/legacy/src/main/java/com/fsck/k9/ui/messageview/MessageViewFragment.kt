@@ -297,7 +297,8 @@ class MessageViewFragment :
     @Suppress("LongMethod")
     private fun prepareMenu(menu: Menu) {
         menu.findItem(R.id.delete).apply {
-            isVisible = K9.isMessageViewDeleteActionVisible
+            isVisible = generalSettingsManager.getConfig()
+                .display.visualSettings.isMessageViewDeleteActionVisible
             isEnabled = !isDeleteMenuItemDisabled
         }
 

@@ -79,8 +79,12 @@ class DefaultDisplayVisualSettingsPreferenceManager(
         ),
         isMessageViewArchiveActionVisible = storage.getBoolean(
             KEY_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
-            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_ARCHIVE_ACTIONS_VISIBLE,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
         ),
+        isMessageViewDeleteActionVisible = storage.getBoolean(
+            KEY_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
+        )
     )
 
     private fun writeConfig(config: DisplayVisualSettings) {
@@ -99,6 +103,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
                 storageEditor.putBoolean(
                     KEY_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
                     config.isMessageViewArchiveActionVisible,
+                )
+                storageEditor.putBoolean(
+                    KEY_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
+                    config.isMessageViewDeleteActionVisible,
                 )
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
