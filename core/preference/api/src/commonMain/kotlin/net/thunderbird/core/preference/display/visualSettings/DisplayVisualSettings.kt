@@ -10,6 +10,7 @@ val DISPLAY_SETTINGS_DEFAULT_BODY_CONTENT_TYPE = BodyContentType.TEXT_HTML
 const val DISPLAY_SETTINGS_DEFAULT_DRAWER_EXPAND_ALL_FOLDER = false
 const val DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE = false
 const val DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_DELETE_ACTION_VISIBLE = true
+const val DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_MOVE_ACTION_VISIBLE = false
 
 data class DisplayVisualSettings(
     val isShowAnimations: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_SHOW_ANIMATION,
@@ -20,4 +21,5 @@ data class DisplayVisualSettings(
     val messageListSettings: DisplayMessageListSettings = DisplayMessageListSettings(),
     val isMessageViewArchiveActionVisible: Boolean = DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
     val isMessageViewDeleteActionVisible: Boolean = DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
+    val isMessageViewMoveActionVisible: Boolean = DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_MOVE_ACTION_VISIBLE,
 )

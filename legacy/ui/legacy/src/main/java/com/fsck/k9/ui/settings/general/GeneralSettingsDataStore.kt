@@ -248,7 +248,7 @@ class GeneralSettingsDataStore(
                 mutableSetOf<String>().apply {
                     if (visualSettings.isMessageViewDeleteActionVisible) add("delete")
                     if (visualSettings.isMessageViewArchiveActionVisible) add("archive")
-                    if (K9.isMessageViewMoveActionVisible) add("move")
+                    if (visualSettings.isMessageViewMoveActionVisible) add("move")
                     if (K9.isMessageViewCopyActionVisible) add("copy")
                     if (K9.isMessageViewSpamActionVisible) add("spam")
                 }
@@ -284,13 +284,13 @@ class GeneralSettingsDataStore(
                         display = settings.display.copy(
                             visualSettings = settings.display.visualSettings.copy(
                                 isMessageViewArchiveActionVisible = "archive" in checkedValues,
-                                isMessageViewDeleteActionVisible = "delete" in checkedValues
+                                isMessageViewDeleteActionVisible = "delete" in checkedValues,
+                                isMessageViewMoveActionVisible = "move" in checkedValues,
                             ),
                         ),
                     )
                 }
 
-                K9.isMessageViewMoveActionVisible = "move" in checkedValues
                 K9.isMessageViewCopyActionVisible = "copy" in checkedValues
                 K9.isMessageViewSpamActionVisible = "spam" in checkedValues
             }
