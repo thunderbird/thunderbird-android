@@ -36,7 +36,6 @@ import app.k9mail.core.android.common.activity.CreateDocumentResultContract
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.legacy.message.controller.MessageReference
 import com.eygraber.uri.toKmpUri
-import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageLoaderHelper
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks
@@ -332,7 +331,9 @@ class MessageViewFragment :
             menu.findItem(R.id.archive).isVisible =
                 canMessageBeArchived &&
                 generalSettingsManager.getConfig().display.visualSettings.isMessageViewArchiveActionVisible
-            menu.findItem(R.id.spam).isVisible = canMessageBeMovedToSpam && K9.isMessageViewSpamActionVisible
+            menu.findItem(R.id.spam).isVisible = canMessageBeMovedToSpam &&
+                generalSettingsManager
+                    .getConfig().display.visualSettings.isMessageViewSpamActionVisible
 
             menu.findItem(R.id.refile_move).isVisible = true
             menu.findItem(R.id.refile_archive).isVisible = canMessageBeArchived
@@ -406,6 +407,7 @@ class MessageViewFragment :
                 printMessage()
                 return true
             }
+
             R.id.export_eml -> if (
                 featureFlagProvider.provide(MessageViewFeatureFlags.ActionExportEml).isEnabled()
             ) {
@@ -413,6 +415,7 @@ class MessageViewFragment :
             } else {
                 return true
             }
+
             R.id.set_format_plain -> onDisplayPlainText()
             R.id.set_format_html -> onDisplayHTML()
             else -> return false

@@ -11,5 +11,6 @@ const val KEY_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE = "messageViewArchiveActionVis
 const val KEY_MESSAGE_VIEW_DELETE_ACTION_VISIBLE = "messageViewDeleteActionVisible"
 const val KEY_MESSAGE_VIEW_MOVE_ACTION_VISIBLE = "messageViewMoveActionVisible"
 const val KEY_MESSAGE_VIEW_COPY_ACTION_VISIBLE = "messageViewCopyActionVisible"
+const val KEY_MESSAGE_VIEW_SPAM_ACTION_VISIBLE = "messageViewSpamActionVisible"
 
 interface DisplayVisualSettingsPreferenceManager : PreferenceManager<DisplayVisualSettings>

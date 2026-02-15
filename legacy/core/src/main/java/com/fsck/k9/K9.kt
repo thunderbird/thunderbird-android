@@ -125,10 +125,6 @@ object K9 : KoinComponent {
     var sortType: SortType = AccountDefaultsProvider.DEFAULT_SORT_TYPE
     private val sortAscending = mutableMapOf<SortType, Boolean>()
 
-
-    @JvmStatic
-    var isMessageViewSpamActionVisible = false
-
     @JvmStatic
     var pgpInlineDialogCounter: Int = 0
 
@@ -196,7 +192,6 @@ object K9 : KoinComponent {
             .onDisabledOrUnavailable {
                 fontSizes.load(storage)
             }
-        isMessageViewSpamActionVisible = storage.getBoolean("messageViewSpamActionVisible", false)
 
         pgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0)
         pgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0)
@@ -217,7 +212,6 @@ object K9 : KoinComponent {
         editor.putEnum("sortTypeEnum", sortType)
         editor.putBoolean("sortAscending", sortAscending[sortType] ?: false)
         editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
-        editor.putBoolean("messageViewSpamActionVisible", isMessageViewSpamActionVisible)
 
         editor.putInt("pgpInlineDialogCounter", pgpInlineDialogCounter)
         editor.putInt("pgpSignOnlyDialogCounter", pgpSignOnlyDialogCounter)
