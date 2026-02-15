@@ -351,7 +351,8 @@ class MessageViewFragment :
         menu.findItem(R.id.set_format_html).isVisible = isRenderPlainFormat()
 
         if (isCopyCapable) {
-            menu.findItem(R.id.copy).isVisible = K9.isMessageViewCopyActionVisible
+            menu.findItem(R.id.copy).isVisible = generalSettingsManager.getConfig()
+                .display.visualSettings.isMessageViewCopyActionVisible
             menu.findItem(R.id.refile_copy).isVisible = true
         } else {
             menu.findItem(R.id.copy).isVisible = false

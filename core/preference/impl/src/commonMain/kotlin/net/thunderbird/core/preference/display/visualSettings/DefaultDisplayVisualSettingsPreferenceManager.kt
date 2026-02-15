@@ -88,7 +88,11 @@ class DefaultDisplayVisualSettingsPreferenceManager(
         isMessageViewMoveActionVisible = storage.getBoolean(
             KEY_MESSAGE_VIEW_MOVE_ACTION_VISIBLE,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_MOVE_ACTION_VISIBLE,
-        )
+        ),
+        isMessageViewCopyActionVisible = storage.getBoolean(
+            KEY_MESSAGE_VIEW_COPY_ACTION_VISIBLE,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_COPY_ACTION_VISIBLE,
+        ),
     )
 
     private fun writeConfig(config: DisplayVisualSettings) {
@@ -115,6 +119,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
                 storageEditor.putBoolean(
                     KEY_MESSAGE_VIEW_MOVE_ACTION_VISIBLE,
                     config.isMessageViewMoveActionVisible,
+                )
+                storageEditor.putBoolean(
+                    KEY_MESSAGE_VIEW_COPY_ACTION_VISIBLE,
+                    config.isMessageViewCopyActionVisible,
                 )
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
