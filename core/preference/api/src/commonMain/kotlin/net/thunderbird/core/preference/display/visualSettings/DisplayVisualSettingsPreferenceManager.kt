@@ -10,5 +10,6 @@ const val KEY_DRAWER_EXPAND_ALL_FOLDER = "drawerExpandAllFolder"
 const val KEY_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE = "messageViewArchiveActionVisible"
 const val KEY_MESSAGE_VIEW_DELETE_ACTION_VISIBLE = "messageViewDeleteActionVisible"
 const val KEY_MESSAGE_VIEW_MOVE_ACTION_VISIBLE = "messageViewMoveActionVisible"
+const val KEY_MESSAGE_VIEW_COPY_ACTION_VISIBLE = "messageViewCopyActionVisible"
 
 interface DisplayVisualSettingsPreferenceManager : PreferenceManager<DisplayVisualSettings>

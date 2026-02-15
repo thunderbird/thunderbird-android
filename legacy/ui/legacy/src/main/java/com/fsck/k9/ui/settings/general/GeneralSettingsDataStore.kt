@@ -249,7 +249,7 @@ class GeneralSettingsDataStore(
                     if (visualSettings.isMessageViewDeleteActionVisible) add("delete")
                     if (visualSettings.isMessageViewArchiveActionVisible) add("archive")
                     if (visualSettings.isMessageViewMoveActionVisible) add("move")
-                    if (K9.isMessageViewCopyActionVisible) add("copy")
+                    if (visualSettings.isMessageViewCopyActionVisible) add("copy")
                     if (K9.isMessageViewSpamActionVisible) add("spam")
                 }
             }
@@ -286,12 +286,11 @@ class GeneralSettingsDataStore(
                                 isMessageViewArchiveActionVisible = "archive" in checkedValues,
                                 isMessageViewDeleteActionVisible = "delete" in checkedValues,
                                 isMessageViewMoveActionVisible = "move" in checkedValues,
+                                isMessageViewCopyActionVisible = "copy" in checkedValues,
                             ),
                         ),
                     )
                 }
-
-                K9.isMessageViewCopyActionVisible = "copy" in checkedValues
                 K9.isMessageViewSpamActionVisible = "spam" in checkedValues
             }
 
