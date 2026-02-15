@@ -93,6 +93,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
             KEY_MESSAGE_VIEW_COPY_ACTION_VISIBLE,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_COPY_ACTION_VISIBLE,
         ),
+        isMessageViewSpamActionVisible = storage.getBoolean(
+            KEY_MESSAGE_VIEW_SPAM_ACTION_VISIBLE,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_SPAM_ACTION_VISIBLE,
+        ),
     )
 
     private fun writeConfig(config: DisplayVisualSettings) {
@@ -123,6 +127,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
                 storageEditor.putBoolean(
                     KEY_MESSAGE_VIEW_COPY_ACTION_VISIBLE,
                     config.isMessageViewCopyActionVisible,
+                )
+                storageEditor.putBoolean(
+                    KEY_MESSAGE_VIEW_SPAM_ACTION_VISIBLE,
+                    config.isMessageViewSpamActionVisible,
                 )
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
