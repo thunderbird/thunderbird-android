@@ -34,13 +34,13 @@ class VersioningPlugin : Plugin<Project> {
                 val printVersionInfoTaskName = "printVersionInfo$variantName"
 
                 tasks.register<PrintVersionInfoTask>(printVersionInfoTaskName) {
-                    val versionInfo = getVersionInfo(variant).get()
+                    val versionInfoProvider = getVersionInfo(variant)
 
                     applicationId = variant.applicationId
                     applicationLabel = getApplicationLabel(variant)
-                    versionCode = versionInfo.versionCode
-                    versionName = versionInfo.versionName
-                    versionNameSuffix = versionInfo.versionNameSuffix
+                    versionCode = versionInfoProvider.map { it.versionCode }
+                    versionName = versionInfoProvider.map { it.versionName }
+                    versionNameSuffix = versionInfoProvider.map { it.versionNameSuffix }
 
                     // Set outputFile only if provided via -PoutputFile=...
                     project.findProperty("outputFile")?.toString()?.let { path ->
