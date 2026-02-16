@@ -2,10 +2,13 @@ package com.fsck.k9.ui.settings.notificationactions
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import net.thunderbird.core.preference.notification.NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN
+
+private const val SWAP_HYSTERESIS_PX = 8f
 
 internal data class ReorderVisibleItem(
     val key: String,
@@ -15,10 +18,12 @@ internal data class ReorderVisibleItem(
 )
 
 internal class NotificationActionsReorderController(
-    initialItems: List<NotificationListItem>,
-    private val onItemsChanged: (List<NotificationListItem>) -> Unit,
+    initialActions: List<MessageNotificationAction>,
+    initialCutoff: Int,
+    private val onStateChanged: (List<MessageNotificationAction>, Int) -> Unit,
 ) {
     private val renderedItemsState = mutableStateListOf<NotificationListItem>()
+    private var cutoffIndexState by mutableIntStateOf(0)
 
     var draggedKey by mutableStateOf<String?>(null)
         private set
@@ -32,15 +37,29 @@ internal class NotificationActionsReorderController(
         get() = renderedItemsState
 
     val cutoffIndex: Int
-        get() = renderedItemsState.indexOfFirst { it is NotificationListItem.Cutoff }
+        get() = cutoffIndexState
 
     init {
-        setItems(initialItems)
+        setState(initialActions = initialActions, initialCutoff = initialCutoff)
     }
 
-    fun setItems(initialItems: List<NotificationListItem>) {
+    fun setState(
+        initialActions: List<MessageNotificationAction>,
+        initialCutoff: Int,
+    ) {
+        val currentActions = renderedItemsState
+            .filterIsInstance<NotificationListItem.Action>()
+            .map { it.action }
+        val currentCutoff = cutoffIndexState
+
+        val normalizedIncomingCutoff = initialCutoff.coerceIn(0, initialActions.size)
+        if (currentActions == initialActions && currentCutoff == normalizedIncomingCutoff) {
+            return
+        }
+
         renderedItemsState.clear()
-        renderedItemsState.addAll(normalizeInitialItems(initialItems))
+        renderedItemsState.addAll(buildRenderedItems(actions = initialActions, cutoff = initialCutoff))
+        updateCutoffIndexFromRendered()
         draggedKey = null
         draggedOffsetY = 0f
         dragDidMove = false
@@ -57,30 +76,29 @@ internal class NotificationActionsReorderController(
         draggedOffsetY += deltaY
 
         val draggedItem = visibleItems.firstOrNull { it.key == key } ?: return
-        val fromIndex = draggedItem.index
+        val fromIndex = renderedItemsState.indexOfFirst { it.key == key }
+        if (fromIndex == -1) return
 
         if (deltaY > 0f) {
-            val nextItem = visibleItems
-                .filter { it.index > fromIndex }
-                .minByOrNull { it.index } ?: return
+            val nextItemKey = renderedItemsState.getOrNull(fromIndex + 1)?.key ?: return
+            val nextItem = visibleItems.firstOrNull { it.key == nextItemKey } ?: return
 
             val draggedBottom = draggedItem.offset + draggedItem.size + draggedOffsetY
             val nextThreshold = nextItem.offset + (nextItem.size / 2f)
-            if (draggedBottom >= nextThreshold) {
-                if (moveRenderedItem(from = fromIndex, to = nextItem.index)) {
+            if (draggedBottom >= nextThreshold + SWAP_HYSTERESIS_PX) {
+                if (moveRenderedItem(from = fromIndex, to = fromIndex + 1)) {
                     dragDidMove = true
                     draggedOffsetY -= nextItem.size.toFloat()
                 }
             }
         } else if (deltaY < 0f) {
-            val previousItem = visibleItems
-                .filter { it.index < fromIndex }
-                .maxByOrNull { it.index } ?: return
+            val previousItemKey = renderedItemsState.getOrNull(fromIndex - 1)?.key ?: return
+            val previousItem = visibleItems.firstOrNull { it.key == previousItemKey } ?: return
 
             val draggedTop = draggedItem.offset + draggedOffsetY
             val previousThreshold = previousItem.offset + (previousItem.size / 2f)
-            if (draggedTop <= previousThreshold) {
-                if (moveRenderedItem(from = fromIndex, to = previousItem.index)) {
+            if (draggedTop <= previousThreshold - SWAP_HYSTERESIS_PX) {
+                if (moveRenderedItem(from = fromIndex, to = fromIndex - 1)) {
                     dragDidMove = true
                     draggedOffsetY += previousItem.size.toFloat()
                 }
@@ -89,14 +107,16 @@ internal class NotificationActionsReorderController(
     }
 
     fun endDrag() {
+        val shouldNotify = dragDidMove
+
         draggedOffsetY = 0f
         draggedKey = null
+        dragDidMove = false
 
-        if (dragDidMove) {
-            dragDidMove = false
-            enforceInvariants()
-            onItemsChanged(renderedItemsState.toList())
-        }
+        if (!shouldNotify) return
+
+        clampDividerToMaxPosition()
+        notifyStateChanged()
     }
 
     fun moveByStep(itemKey: String, delta: Int): Boolean {
@@ -106,8 +126,8 @@ internal class NotificationActionsReorderController(
         val to = from + delta
         if (!moveRenderedItem(from = from, to = to)) return false
 
-        enforceInvariants()
-        onItemsChanged(renderedItemsState.toList())
+        clampDividerToMaxPosition()
+        notifyStateChanged()
         return true
     }
 
@@ -122,39 +142,47 @@ internal class NotificationActionsReorderController(
     private fun moveRenderedItem(from: Int, to: Int): Boolean {
         if (from !in renderedItemsState.indices || to !in renderedItemsState.indices || from == to) return false
 
+        // Don't allow the divider to be dragged to more than the max position
+        if (from == cutoffIndexState && to > NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN) return false
+
         renderedItemsState.add(to, renderedItemsState.removeAt(from))
+        updateCutoffIndexFromRendered()
         return true
     }
 
-    private fun enforceInvariants() {
-        // At most 3 actions can stay above the divider. If needed, move the divider up.
-        val cutoff = renderedItemsState.indexOfFirst { it is NotificationListItem.Cutoff }
-        if (cutoff == -1) return
+    private fun clampDividerToMaxPosition() {
+        val maxCutoffIndex = NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN
+            .coerceAtMost(renderedItemsState.lastIndex)
 
-        val maxCutoff = NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN.coerceAtMost(renderedItemsState.lastIndex)
-        if (cutoff > maxCutoff) {
-            val divider = renderedItemsState.removeAt(cutoff)
-            renderedItemsState.add(maxCutoff, divider)
-        }
+        if (cutoffIndexState <= maxCutoffIndex) return
+
+        moveRenderedItem(cutoffIndexState, maxCutoffIndex)
     }
 
-    private fun normalizeInitialItems(items: List<NotificationListItem>): List<NotificationListItem> {
-        val actions = items.filterIsInstance<NotificationListItem.Action>()
-        val cutoff = items.indexOfFirst { it is NotificationListItem.Cutoff }
-
-        val clampedCutoff = when {
-            cutoff < 0 -> NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN.coerceAtMost(actions.size)
-            else -> cutoff.coerceAtMost(actions.size)
-        }
-
+    private fun buildRenderedItems(
+        actions: List<MessageNotificationAction>,
+        cutoff: Int,
+    ): List<NotificationListItem> {
+        val clampedCutoff = cutoff.coerceIn(0, actions.size)
         return buildList {
             actions.forEachIndexed { index, action ->
                 if (index == clampedCutoff) add(NotificationListItem.Cutoff)
-                add(action)
+                add(NotificationListItem.Action(action = action))
             }
-            if (none { it is NotificationListItem.Cutoff }) {
+            if (clampedCutoff == actions.size) {
                 add(NotificationListItem.Cutoff)
             }
         }
+    }
+
+    private fun updateCutoffIndexFromRendered() {
+        cutoffIndexState = renderedItemsState.indexOfFirst { it is NotificationListItem.Cutoff }.coerceAtLeast(0)
+    }
+
+    private fun notifyStateChanged() {
+        val actions = renderedItemsState
+            .filterIsInstance<NotificationListItem.Action>()
+            .map { it.action }
+        onStateChanged(actions, cutoffIndexState)
     }
 }

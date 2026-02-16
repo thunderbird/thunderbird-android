@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import com.fsck.k9.ui.R
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.notification.NOTIFICATION_PREFERENCE_DEFAULT_MESSAGE_ACTIONS_CUTOFF
-import net.thunderbird.core.preference.notification.NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN
 import net.thunderbird.core.preference.update
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import org.koin.android.ext.android.inject
@@ -37,8 +36,9 @@ class NotificationActionsSettingsFragment : Fragment() {
                 themeProvider.WithTheme {
                     NotificationActionsSettingsScreen(
                         description = stringResource(R.string.notification_actions_settings_description),
-                        initialItems = buildItems(),
-                        onItemsChanged = ::onItemsChanged,
+                        initialActions = actionOrder,
+                        initialCutoff = cutoff,
+                        onStateChanged = ::onStateChanged,
                     )
                 }
             }
@@ -49,40 +49,26 @@ class NotificationActionsSettingsFragment : Fragment() {
         val notificationPrefs = generalSettingsManager.getConfig().notification
 
         actionOrder = parseOrder(notificationPrefs.messageActionsOrder).toMutableList()
-        cutoff = notificationPrefs.messageActionsCutoff.coerceIn(0, NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN)
+        cutoff = notificationPrefs.messageActionsCutoff
     }
 
     private fun persist() {
-        val sanitizedCutoff = cutoff.coerceIn(0, NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN)
         generalSettingsManager.update { settings ->
             settings.copy(
                 notification = settings.notification.copy(
                     messageActionsOrder = actionOrder.map { it.token },
-                    messageActionsCutoff = sanitizedCutoff,
+                    messageActionsCutoff = cutoff,
                 ),
             )
         }
     }
 
-    private fun buildItems(): List<NotificationListItem> {
-        val clampedCutoff =
-            cutoff.coerceIn(0, NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN).coerceAtMost(actionOrder.size)
-        return buildList {
-            actionOrder.forEachIndexed { index, action ->
-                if (index == clampedCutoff) add(NotificationListItem.Cutoff)
-                add(NotificationListItem.Action(action = action))
-            }
-            if (clampedCutoff == actionOrder.size) add(NotificationListItem.Cutoff)
-        }
-    }
-
-    private fun onItemsChanged(items: List<NotificationListItem>) {
-        actionOrder = items
-            .filterIsInstance<NotificationListItem.Action>()
-            .map { it.action }
-            .toMutableList()
-        cutoff = items.indexOfFirst { it is NotificationListItem.Cutoff }
-            .coerceIn(0, NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN)
+    private fun onStateChanged(
+        actions: List<MessageNotificationAction>,
+        cutoff: Int,
+    ) {
+        actionOrder = actions.toMutableList()
+        this.cutoff = cutoff
         persist()
     }
 

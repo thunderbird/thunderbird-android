@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -47,24 +48,29 @@ private const val ARROW_DISABLED_ALPHA = 0.38f
 @Composable
 internal fun NotificationActionsSettingsScreen(
     description: String,
-    initialItems: List<NotificationListItem>,
-    onItemsChanged: (List<NotificationListItem>) -> Unit,
+    initialActions: List<MessageNotificationAction>,
+    initialCutoff: Int,
+    onStateChanged: (List<MessageNotificationAction>, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState()
     val reorderController = remember {
         NotificationActionsReorderController(
-            initialItems = initialItems,
-            onItemsChanged = onItemsChanged,
+            initialActions = initialActions,
+            initialCutoff = initialCutoff,
+            onStateChanged = onStateChanged,
         )
     }
 
-    LaunchedEffect(initialItems) {
-        reorderController.setItems(initialItems)
+    LaunchedEffect(initialActions, initialCutoff) {
+        reorderController.setState(
+            initialActions = initialActions,
+            initialCutoff = initialCutoff,
+        )
     }
 
-    fun onDrag(deltaY: Float) {
-        val visibleItems = listState.layoutInfo.visibleItemsInfo.mapNotNull { info ->
+    fun visibleItems(): List<ReorderVisibleItem> {
+        return listState.layoutInfo.visibleItemsInfo.mapNotNull { info ->
             val key = info.key as? String ?: return@mapNotNull null
             ReorderVisibleItem(
                 key = key,
@@ -73,6 +79,10 @@ internal fun NotificationActionsSettingsScreen(
                 size = info.size,
             )
         }
+    }
+
+    fun onDrag(deltaY: Float) {
+        val visibleItems = visibleItems()
         reorderController.dragBy(deltaY = deltaY, visibleItems = visibleItems)
     }
 
@@ -161,33 +171,23 @@ private fun NotificationActionRow(
     val density = LocalDensity.current
     val dragElevationPx = with(density) { if (isDragged) 12.dp.toPx() else 0f }
 
-    Row(
+    NotificationReorderRow(
+        contentDescription = contentLabel,
+        onMoveUp = onMoveUp,
+        onMoveDown = onMoveDown,
+        moveUpLabel = moveUpLabel,
+        moveDownLabel = moveDownLabel,
+        isDragged = isDragged,
+        draggedOffsetY = draggedOffsetY,
+        dragScale = dragScale,
+        dragElevationPx = dragElevationPx,
+        alpha = if (isDragged) 1.0f else if (isDimmed) 0.6f else 1.0f,
+        startPadding = MainTheme.spacings.default,
+        onDragStart = onDragStart,
+        onDrag = onDrag,
+        onDragEnd = onDragEnd,
         modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = minHeight)
-            .alpha(if (isDragged) 1.0f else if (isDimmed) 0.6f else 1.0f)
-            .graphicsLayer {
-                translationY = if (isDragged) draggedOffsetY else 0f
-                scaleX = dragScale
-                scaleY = dragScale
-                shadowElevation = dragElevationPx
-            }
-            .zIndex(if (isDragged) 1f else 0f)
-            .background(MainTheme.colors.surface)
-            .padding(start = MainTheme.spacings.default, end = MainTheme.spacings.zero)
-            .immediateDragGesture(
-                onDragStart = onDragStart,
-                onDrag = onDrag,
-                onDragEnd = onDragEnd,
-            )
-            .semantics {
-                contentDescription = contentLabel
-                customActions = listOf(
-                    CustomAccessibilityAction(moveUpLabel) { onMoveUp() },
-                    CustomAccessibilityAction(moveDownLabel) { onMoveDown() },
-                )
-            },
-        verticalAlignment = Alignment.CenterVertically,
+            .heightIn(min = minHeight),
     ) {
         Image(
             painter = painterResource(action.iconRes),
@@ -243,32 +243,23 @@ private fun NotificationCutoffRow(
     val density = LocalDensity.current
     val dragElevationPx = with(density) { if (isDragged) 12.dp.toPx() else 0f }
 
-    Row(
+    NotificationReorderRow(
+        contentDescription = cutoffContentLabel,
+        onMoveUp = onMoveUp,
+        onMoveDown = onMoveDown,
+        moveUpLabel = moveUpLabel,
+        moveDownLabel = moveDownLabel,
+        isDragged = isDragged,
+        draggedOffsetY = draggedOffsetY,
+        dragScale = dragScale,
+        dragElevationPx = dragElevationPx,
+        alpha = 1f,
+        startPadding = MainTheme.spacings.double,
+        onDragStart = onDragStart,
+        onDrag = onDrag,
+        onDragEnd = onDragEnd,
         modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = minHeight)
-            .graphicsLayer {
-                translationY = if (isDragged) draggedOffsetY else 0f
-                scaleX = dragScale
-                scaleY = dragScale
-                shadowElevation = dragElevationPx
-            }
-            .zIndex(if (isDragged) 1f else 0f)
-            .background(MainTheme.colors.surface)
-            .padding(start = MainTheme.spacings.double, end = MainTheme.spacings.zero)
-            .immediateDragGesture(
-                onDragStart = onDragStart,
-                onDrag = onDrag,
-                onDragEnd = onDragEnd,
-            )
-            .semantics {
-                contentDescription = cutoffContentLabel
-                customActions = listOf(
-                    CustomAccessibilityAction(moveUpLabel) { onMoveUp() },
-                    CustomAccessibilityAction(moveDownLabel) { onMoveDown() },
-                )
-            },
-        verticalAlignment = Alignment.CenterVertically,
+            .heightIn(min = minHeight),
     ) {
         Box(
             modifier = Modifier
@@ -285,6 +276,55 @@ private fun NotificationCutoffRow(
             )
         }
     }
+}
+
+@Composable
+private fun NotificationReorderRow(
+    contentDescription: String,
+    onMoveUp: () -> Boolean,
+    onMoveDown: () -> Boolean,
+    moveUpLabel: String,
+    moveDownLabel: String,
+    isDragged: Boolean,
+    draggedOffsetY: Float,
+    dragScale: Float,
+    dragElevationPx: Float,
+    alpha: Float,
+    startPadding: androidx.compose.ui.unit.Dp,
+    onDragStart: () -> Unit,
+    onDrag: (Float) -> Unit,
+    onDragEnd: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable RowScope.() -> Unit,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .alpha(alpha)
+            .graphicsLayer {
+                translationY = if (isDragged) draggedOffsetY else 0f
+                scaleX = dragScale
+                scaleY = dragScale
+                shadowElevation = dragElevationPx
+            }
+            .zIndex(if (isDragged) 1f else 0f)
+            .background(MainTheme.colors.surface)
+            .padding(start = startPadding, end = MainTheme.spacings.zero)
+            .immediateDragGesture(
+                onDragStart = onDragStart,
+                onDrag = onDrag,
+                onDragEnd = onDragEnd,
+            )
+            .semantics {
+                this.contentDescription = contentDescription
+                customActions = listOf(
+                    CustomAccessibilityAction(moveUpLabel) { onMoveUp() },
+                    CustomAccessibilityAction(moveDownLabel) { onMoveDown() },
+                )
+            },
+        verticalAlignment = Alignment.CenterVertically,
+        content = content,
+    )
 }
 
 @Composable
