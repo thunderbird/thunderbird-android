@@ -15,12 +15,14 @@ class DefaultCssClassNameProvider(
         if (featureFlagProvider.provide(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles).isEnabled()) {
             "${defaultNamespaceClassName}__plain-text-message-pre"
         } else {
+            // TODO(#10498): Remove when UseNewMessageReaderCssStyles is no longer required
             EmailTextToHtml.K9MAIL_CSS_CLASS
         }
     override val signatureClassName: String =
         if (featureFlagProvider.provide(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles).isEnabled()) {
             "${defaultNamespaceClassName}__signature"
         } else {
+            // TODO(#10498): Remove when UseNewMessageReaderCssStyles is no longer required
             "k9mail-signature"
         }
 }

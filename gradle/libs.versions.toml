@@ -71,7 +71,7 @@ jetbrainsAnnotations = "26.0.2-1"
 jetbrainsCompose = "1.10.0"
 jetbrainsComposeLifecycle = "2.9.6"
 jetbrainsComposeNavigation3 = "1.0.0-alpha06"
-jetbrainsComposeNavigationEvent = "1.0.0"
+jetbrainsComposeNavigationEvent = "1.0.1"
 jdom = "2.0.6.1"
 jmapClient = "0.3.1"
 jsoup = "1.19.1"
@@ -89,13 +89,13 @@ kotlinxCollectionsImmutable = "0.4.0"
 kotlinxDateTime = "0.7.1"
 kotlinxIoCore = "0.8.2"
 kotlinxSerialization = "1.9.0"
-kover = "0.9.5"
+kover = "0.9.6"
 ktlint = "1.5.0"
 ktor = "3.3.3"
 kxml2 = "1.0"
 landscapist = "2.6.1"
 leakcanary = "2.14"
-logbackClassic = "1.5.27"
+logbackClassic = "1.5.29"
 mime4j = "0.8.13"
 minidns = "1.1.1"
 mockito = "5.21.0"
@@ -127,7 +127,6 @@ dependency-check = { id = "com.github.ben-manes.versions", version.ref = "depend
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuardPlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektPlugin" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinBom" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinBom" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlinBom" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinBom" }
@@ -138,6 +137,8 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 dev-mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
 
 # Build plugins
+tb-app-badging = { id = "net.thunderbird.gradle.plugin.app.badging" }
+tb-app-versioning = { id = "net.thunderbird.gradle.plugin.app.versioning" }
 tb-quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
 
 [libraries]

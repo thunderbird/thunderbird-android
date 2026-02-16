@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.feature.funding.noop"
+    namespace = "net.thunderbird.feature.funding.noop"
     resourcePrefix = "funding_noop_"
 }
 

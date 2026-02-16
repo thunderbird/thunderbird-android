@@ -1,48 +1,34 @@
 package com.fsck.k9.preferences
 
-import com.fsck.k9.K9
-import com.fsck.k9.Preferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsPreferenceManager
 import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsPreferenceManager
 import net.thunderbird.core.preference.update
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 
 internal class DefaultDrawerConfigManager(
-    private val preferences: Preferences,
     coroutineScope: CoroutineScope,
     private val displayInboxSettingsPreferenceManager: DisplayInboxSettingsPreferenceManager,
     private val displayVisualSettingsPreferenceManager: DisplayVisualSettingsPreferenceManager,
 ) : DrawerConfigManager {
-    private val showAccountSelector = MutableStateFlow(K9.isShowAccountSelector)
-    private val drawerConfig: StateFlow<DrawerConfig> = showAccountSelector
-        .combine(
-            displayInboxSettingsPreferenceManager.getConfigFlow(),
-        ) { showAccSelector, displayInboxSettings ->
-            Pair(showAccSelector, displayInboxSettings)
-        }
-        .combine(
-            displayVisualSettingsPreferenceManager.getConfigFlow(),
-        ) { (showAccSelector, displayInboxSettings), displayVisualSettings ->
+    private val drawerConfig: StateFlow<DrawerConfig> = flow {
+        emit(
             DrawerConfig(
-                showAccountSelector = showAccSelector,
-                showStarredCount = displayInboxSettings.isShowStarredCount,
-                showUnifiedFolders = displayInboxSettings.isShowUnifiedInbox,
-                expandAllFolder = displayVisualSettings.drawerExpandAllFolder,
-            )
-        }
+                showStarredCount = displayInboxSettingsPreferenceManager.getConfig().isShowStarredCount,
+                showUnifiedFolders = displayInboxSettingsPreferenceManager.getConfig().isShowUnifiedInbox,
+                expandAllFolder = displayVisualSettingsPreferenceManager.getConfig().drawerExpandAllFolder,
+            ),
+        )
+    }
         .stateIn(
             scope = coroutineScope,
             started = SharingStarted.WhileSubscribed(),
             initialValue = DrawerConfig(
-                showAccountSelector = false,
                 showStarredCount = false,
                 showUnifiedFolders = false,
                 expandAllFolder = false,
@@ -56,12 +42,9 @@ internal class DefaultDrawerConfigManager(
                 isShowUnifiedInbox = config.showUnifiedFolders,
             )
         }
-
-        val editor = preferences.createStorageEditor()
-        K9.save(editor)
-        editor.putBoolean("showAccountSelector", config.showAccountSelector)
-        editor.commit()
-        showAccountSelector.update { config.showAccountSelector }
+        displayVisualSettingsPreferenceManager.update {
+            it.copy(drawerExpandAllFolder = config.expandAllFolder)
+        }
     }
 
     @Synchronized

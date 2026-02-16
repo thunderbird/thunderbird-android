@@ -14,7 +14,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -22,7 +21,6 @@ import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
@@ -34,12 +32,6 @@ import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Even
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.MAIL_DISPLAY_ACCOUNT
 import org.junit.Rule
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.kotlin.any
-import org.mockito.kotlin.argumentCaptor
-import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class DrawerViewModelTest {
@@ -382,64 +374,6 @@ internal class DrawerViewModelTest {
             }
         }
 
-    @Suppress("MaxLineLength")
-    @Test
-    fun `when initial state has drawerConfigWithAccountSelectorDisabled saveDrawerConfig should receive drawerConfigWithAccountSelectorEnabled  when OnAccountSelectorClick event is received`() =
-        runTest {
-            val drawerConfigWithAccountSelectorEnabled = createDrawerConfig(showAccountSelector = true)
-            val drawerConfigWithAccountSelectorDisabled = createDrawerConfig(showAccountSelector = false)
-
-            val saveDrawerConfig: UseCase.SaveDrawerConfig = mock()
-            whenever(
-                saveDrawerConfig.invoke(any<DrawerConfig>()),
-            ).thenReturn(flowOf(Unit))
-
-            val testSubject = createTestSubject(
-                initialState = State(config = drawerConfigWithAccountSelectorDisabled, showAccountSelection = false),
-                saveDrawerConfig = saveDrawerConfig,
-                drawerConfigFlow = flowOf(drawerConfigWithAccountSelectorDisabled),
-            )
-
-            val captor = argumentCaptor<DrawerConfig>()
-
-            testSubject.event(Event.OnAccountSelectorClick)
-            advanceUntilIdle()
-            verify(saveDrawerConfig, times(1)).invoke(captor.capture())
-            assertThat(captor.firstValue).isEqualTo(drawerConfigWithAccountSelectorEnabled)
-
-            // Verify that showAccountSelection is toggled after the delay
-            assertThat(testSubject.state.value.showAccountSelection).isEqualTo(true)
-        }
-
-    @Suppress("MaxLineLength")
-    @Test
-    fun `when initial state has drawerConfigWithAccountSelectorEnabled saveDrawerConfig should receive drawerConfigWithAccountSelectorDisabled  when OnAccountSelectorClick event is received`() =
-        runTest {
-            val drawerConfigWithAccountSelectorEnabled = createDrawerConfig(showAccountSelector = true)
-            val drawerConfigWithAccountSelectorDisabled = createDrawerConfig(showAccountSelector = false)
-
-            val saveDrawerConfig: UseCase.SaveDrawerConfig = mock()
-            whenever(
-                saveDrawerConfig.invoke(any<DrawerConfig>()),
-            ).thenReturn(flowOf(Unit))
-
-            val testSubject = createTestSubject(
-                initialState = State(config = drawerConfigWithAccountSelectorEnabled, showAccountSelection = false),
-                saveDrawerConfig = saveDrawerConfig,
-                drawerConfigFlow = flowOf(drawerConfigWithAccountSelectorEnabled),
-            )
-
-            val captor = argumentCaptor<DrawerConfig>()
-
-            testSubject.event(Event.OnAccountSelectorClick)
-            advanceUntilIdle()
-            verify(saveDrawerConfig, times(1)).invoke(captor.capture())
-            assertThat(captor.firstValue).isEqualTo(drawerConfigWithAccountSelectorDisabled)
-
-            // Verify that showAccountSelection is toggled after the delay
-            assertThat(testSubject.state.value.showAccountSelection).isEqualTo(true)
-        }
-
     @Test
     fun `should emit OpenManageFolders effect when OnManageFoldersClick event is received`() = runMviTest {
         val testSubject = createTestSubject()
@@ -478,7 +412,6 @@ internal class DrawerViewModelTest {
         ),
         syncAccountFlow: Flow<Result<Unit>> = flow { emit(Result.success(Unit)) },
         syncAllAccounts: Flow<Result<Unit>> = flow { emit(Result.success(Unit)) },
-        saveDrawerConfig: UseCase.SaveDrawerConfig = mock(),
     ): DrawerViewModel {
         return DrawerViewModel(
             initialState = initialState,
@@ -492,20 +425,17 @@ internal class DrawerViewModelTest {
             },
             syncAccount = { syncAccountFlow },
             syncAllAccounts = { syncAllAccounts },
-            saveDrawerConfig = saveDrawerConfig,
         )
     }
 
     private fun createDrawerConfig(
         showUnifiedInbox: Boolean = false,
         showStarredCount: Boolean = false,
-        showAccountSelector: Boolean = true,
         expandAllFolder: Boolean = false,
     ): DrawerConfig {
         return DrawerConfig(
             showUnifiedFolders = showUnifiedInbox,
             showStarredCount = showStarredCount,
-            showAccountSelector = showAccountSelector,
             expandAllFolder = expandAllFolder,
         )
     }

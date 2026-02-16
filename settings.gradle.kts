@@ -161,6 +161,7 @@ include(
     ":core:common",
     ":core:configstore:api",
     ":core:configstore:impl-backend",
+    ":core:configstore:testing",
     ":core:featureflag",
     ":core:logging:api",
     ":core:logging:config",
