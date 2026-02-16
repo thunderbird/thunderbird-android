@@ -31,4 +31,17 @@
 
     <string name="account_settings_avatar_error_unsupported_format">Only JPEG images are supported.</string>
     <string name="account_settings_avatar_hint_jpeg_only">JPEG only</string>
+
+    <string name="account_settings_show_pictures_label">Always show images</string>
+    <string name="account_settings_reading_mail">Reading mail</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>
+    <string name="account_settings_show_pictures_never">No</string>
+    <string name="account_settings_show_pictures_only_from_contacts">From contacts</string>
+    <string name="account_settings_show_pictures_always">From anyone</string>
+    <string name="account_settings_remove_account_action">Remove account</string>
+    <string name="account_settings_okay_action">OK</string>
+    <string name="account_settings_cancel_action">Cancel</string>
+    <string name="account_settings_account_delete_dlg_title">Remove Account</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%1$s</xliff:g>\" will be removed from <xliff:g id="app_name">%2$s</xliff:g>.</string>
 </resources>
