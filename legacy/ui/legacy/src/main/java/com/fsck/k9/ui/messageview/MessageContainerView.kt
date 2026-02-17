@@ -487,9 +487,6 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
     }
 
     private fun renderAttachments(messageViewInfo: MessageViewInfo) {
-        // Populate the attachments map for inline image context menu handling (cid: URIs).
-        // Attachment views are no longer rendered here; they are displayed in the header area
-        // and the attachment list bottom sheet instead.
         if (messageViewInfo.attachments != null) {
             for (attachment in messageViewInfo.attachments) {
                 attachments[attachment.internalUri] = attachment

@@ -23,6 +23,10 @@ import android.view.inputmethod.InputMethodManager
 import android.webkit.WebView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
@@ -55,6 +59,7 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
+import com.fsck.k9.ui.helper.SizeFormatter
 import com.fsck.k9.ui.messagedetails.MessageDetailsFragment
 import com.fsck.k9.ui.messagesource.MessageSourceActivity
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
@@ -62,6 +67,10 @@ import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.share.ShareIntentBuilder
 import java.util.Locale
 import kotlin.time.Instant
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -73,6 +82,7 @@ import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettings
+import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.core.ui.theme.api.Theme
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
@@ -88,6 +98,7 @@ class MessageViewFragment :
     AttachmentViewCallback {
 
     private val themeManager: ThemeManager by inject()
+    private val themeProvider: FeatureThemeProvider by inject()
     private val messageLoaderHelperFactory: MessageLoaderHelperFactory by inject()
     private val accountManager: LegacyAccountDtoManager by inject()
     private val messagingController: MessagingController by inject()
@@ -142,7 +153,8 @@ class MessageViewFragment :
     private var pendingEmlExport: Boolean = false
 
     private var isActive: Boolean = false
-        private set
+
+    private val attachmentListBottomSheetState = MutableStateFlow(persistentListOf<AttachmentViewInfo>())
 
     private val interactionSettings: InteractionSettings
         get() = generalSettingsManager.getConfig().interaction
@@ -203,6 +215,39 @@ class MessageViewFragment :
 
     private fun initializeMessageTopView(messageTopView: MessageTopView) {
         messageTopView.setShowAccountIndicator(showAccountIndicator)
+
+        val sizeFormatter = SizeFormatter(resources)
+        val composeView = messageTopView.findViewById<ComposeView>(R.id.attachment_bottom_sheet_compose_view)
+        composeView.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                val attachments by attachmentListBottomSheetState.collectAsState()
+
+                if (attachments.isNotEmpty()) {
+                    themeProvider.WithTheme {
+                        AttachmentListModalBottomSheet(
+                            attachments = attachments,
+                            sizeFormatter = sizeFormatter,
+                            onDismissRequest = {
+                                attachmentListBottomSheetState.update { persistentListOf() }
+                            },
+                            onAttachmentClick = { attachment ->
+                                attachmentListBottomSheetState.update { persistentListOf() }
+                                onViewAttachment(attachment)
+                            },
+                            onSaveClick = { attachment ->
+                                onSaveAttachment(attachment)
+                            },
+                            onSaveAllClick = {
+                                attachments.forEach { attachment ->
+                                    onSaveAttachment(attachment)
+                                }
+                            },
+                        )
+                    }
+                }
+            }
+        }
 
         messageTopView.setAttachmentCallback(this)
         messageTopView.setMessageCryptoPresenter(messageCryptoPresenter)
@@ -545,9 +590,7 @@ class MessageViewFragment :
         val allAttachments = nonInlineAttachments + extraNonInlineAttachments
         if (allAttachments.isEmpty()) return
 
-        val bottomSheet = AttachmentListBottomSheet.newInstance()
-        bottomSheet.setData(allAttachments, this)
-        bottomSheet.show(parentFragmentManager, AttachmentListBottomSheet.TAG)
+        attachmentListBottomSheetState.update { allAttachments.toPersistentList() }
     }
 
     private fun onDownloadButtonClicked() {
