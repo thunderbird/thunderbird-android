@@ -69,21 +69,18 @@ internal fun NotificationActionsSettingsScreen(
         )
     }
 
-    fun visibleItems(): List<ReorderVisibleItem> {
-        return listState.layoutInfo.visibleItemsInfo.mapNotNull { info ->
-            val key = info.key as? String ?: return@mapNotNull null
-            ReorderVisibleItem(
-                key = key,
-                index = info.index,
-                offset = info.offset,
-                size = info.size,
-            )
-        }
-    }
-
-    fun onDrag(deltaY: Float) {
-        val visibleItems = visibleItems()
-        reorderController.dragBy(deltaY = deltaY, visibleItems = visibleItems)
+    val onDrag: (Float) -> Unit = { deltaY ->
+        reorderController.dragBy(
+            deltaY = deltaY,
+            visibleItems = listState.layoutInfo.visibleItemsInfo.mapNotNull { info ->
+                val key = info.key as? String ?: return@mapNotNull null
+                ReorderVisibleItem(
+                    key = key,
+                    offset = info.offset,
+                    size = info.size,
+                )
+            },
+        )
     }
 
     Surface(modifier = modifier.fillMaxSize()) {
@@ -116,7 +113,7 @@ internal fun NotificationActionsSettingsScreen(
                             action = item.action,
                             isDimmed = index > reorderController.cutoffIndex,
                             onDragStart = { reorderController.startDrag(item.key) },
-                            onDrag = ::onDrag,
+                            onDrag = onDrag,
                             onDragEnd = reorderController::endDrag,
                             onMoveUp = { reorderController.moveByStep(item.key, -1) },
                             onMoveDown = { reorderController.moveByStep(item.key, 1) },
@@ -129,7 +126,7 @@ internal fun NotificationActionsSettingsScreen(
 
                         is NotificationListItem.Cutoff -> NotificationCutoffRow(
                             onDragStart = { reorderController.startDrag(item.key) },
-                            onDrag = ::onDrag,
+                            onDrag = onDrag,
                             onDragEnd = reorderController::endDrag,
                             onMoveUp = { reorderController.moveByStep(item.key, -1) },
                             onMoveDown = { reorderController.moveByStep(item.key, 1) },
@@ -164,13 +161,6 @@ private fun NotificationActionRow(
     val moveDownLabel = stringResource(R.string.accessibility_move_down)
     val contentLabel = stringResource(action.labelRes)
 
-    val dragScale by animateFloatAsState(
-        targetValue = if (isDragged) 1.02f else 1.0f,
-        label = "notificationActionDragScale",
-    )
-    val density = LocalDensity.current
-    val dragElevationPx = with(density) { if (isDragged) 12.dp.toPx() else 0f }
-
     NotificationReorderRow(
         contentDescription = contentLabel,
         onMoveUp = onMoveUp,
@@ -179,8 +169,6 @@ private fun NotificationActionRow(
         moveDownLabel = moveDownLabel,
         isDragged = isDragged,
         draggedOffsetY = draggedOffsetY,
-        dragScale = dragScale,
-        dragElevationPx = dragElevationPx,
         alpha = if (isDragged) 1.0f else if (isDimmed) 0.6f else 1.0f,
         startPadding = MainTheme.spacings.default,
         onDragStart = onDragStart,
@@ -236,13 +224,6 @@ private fun NotificationCutoffRow(
     val moveDownLabel = stringResource(R.string.accessibility_move_down)
     val cutoffContentLabel = stringResource(R.string.notification_actions_cutoff_description)
 
-    val dragScale by animateFloatAsState(
-        targetValue = if (isDragged) 1.02f else 1.0f,
-        label = "notificationCutoffDragScale",
-    )
-    val density = LocalDensity.current
-    val dragElevationPx = with(density) { if (isDragged) 12.dp.toPx() else 0f }
-
     NotificationReorderRow(
         contentDescription = cutoffContentLabel,
         onMoveUp = onMoveUp,
@@ -251,8 +232,6 @@ private fun NotificationCutoffRow(
         moveDownLabel = moveDownLabel,
         isDragged = isDragged,
         draggedOffsetY = draggedOffsetY,
-        dragScale = dragScale,
-        dragElevationPx = dragElevationPx,
         alpha = 1f,
         startPadding = MainTheme.spacings.double,
         onDragStart = onDragStart,
@@ -287,8 +266,6 @@ private fun NotificationReorderRow(
     moveDownLabel: String,
     isDragged: Boolean,
     draggedOffsetY: Float,
-    dragScale: Float,
-    dragElevationPx: Float,
     alpha: Float,
     startPadding: androidx.compose.ui.unit.Dp,
     onDragStart: () -> Unit,
@@ -297,6 +274,13 @@ private fun NotificationReorderRow(
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit,
 ) {
+    val dragScale by animateFloatAsState(
+        targetValue = if (isDragged) 1.02f else 1.0f,
+        label = "notificationRowDragScale",
+    )
+    val density = LocalDensity.current
+    val dragElevationPx = with(density) { if (isDragged) 12.dp.toPx() else 0f }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
