@@ -1,0 +1,5 @@
+Thunderbird version 17.0b3
+
+Fixed:
+- Application could crash when rendering message list
+- Avatar image updates did not propagate immediately

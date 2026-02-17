@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="17.0b3" versioncode="44" date="2026-02-17">
+        <change>Fixed: Application could crash when rendering message list</change>
+        <change>Fixed: Avatar image updates did not propagate immediately</change>
+    </release>
     <release version="17.0b2" versioncode="43" date="2026-02-04">
         <change>Crash occurred in 17.0b1 split view mode while in landscape</change>
     </release>
