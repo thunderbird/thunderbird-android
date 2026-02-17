@@ -64,18 +64,53 @@ internal class NotificationActionsReorderController(
         val key = draggedKey ?: return
         draggedOffsetY += deltaY
 
-        val draggedItem = visibleItems.firstOrNull { it.key == key } ?: return
         val fromIndex = renderedItemsState.indexOfFirst { it.key == key }
-        if (fromIndex == -1) return
+        val draggedItem = visibleItems.firstOrNull { it.key == key }
+        if (fromIndex == -1 || draggedItem == null) return
 
-        val swapDecision = findSwapDecision(
-            deltaY = deltaY,
-            fromIndex = fromIndex,
-            draggedItem = draggedItem,
-            visibleItems = visibleItems,
-        ) ?: return
+        val swapDecision = when {
+            deltaY > 0f -> {
+                val nextItem = renderedItemsState
+                    .getOrNull(fromIndex + 1)
+                    ?.key
+                    ?.let { nextKey -> visibleItems.firstOrNull { it.key == nextKey } }
 
-        if (moveRenderedItem(from = fromIndex, to = swapDecision.toIndex)) {
+                nextItem
+                    ?.takeIf {
+                        val draggedBottom = draggedItem.offset + draggedItem.size + draggedOffsetY
+                        val nextThreshold = it.offset + (it.size / 2f)
+                        draggedBottom >= nextThreshold + SWAP_HYSTERESIS_PX
+                    }
+                    ?.let {
+                        SwapDecision(
+                            toIndex = fromIndex + 1,
+                            offsetCompensation = -it.size.toFloat(),
+                        )
+                    }
+            }
+
+            deltaY < 0f -> {
+                val upwardSwap = calculateUpwardSwap(
+                    fromIndex = fromIndex,
+                    visibleItems = visibleItems,
+                )
+                upwardSwap
+                    ?.takeIf {
+                        val draggedTop = draggedItem.offset + draggedOffsetY
+                        draggedTop <= it.threshold - SWAP_HYSTERESIS_PX
+                    }
+                    ?.let {
+                        SwapDecision(
+                            toIndex = fromIndex - 1,
+                            offsetCompensation = it.offsetCompensation,
+                        )
+                    }
+            }
+
+            else -> null
+        }
+
+        if (swapDecision != null && moveRenderedItem(from = fromIndex, to = swapDecision.toIndex)) {
             dragDidMove = true
             draggedOffsetY += swapDecision.offsetCompensation
         }
@@ -86,65 +121,6 @@ internal class NotificationActionsReorderController(
         val offsetCompensation: Float,
     )
 
-    private fun findSwapDecision(
-        deltaY: Float,
-        fromIndex: Int,
-        draggedItem: ReorderVisibleItem,
-        visibleItems: List<ReorderVisibleItem>,
-    ): SwapDecision? {
-        return when {
-            deltaY > 0f -> findDownwardSwapDecision(
-                fromIndex = fromIndex,
-                draggedItem = draggedItem,
-                visibleItems = visibleItems,
-            )
-
-            deltaY < 0f -> findUpwardSwapDecision(
-                fromIndex = fromIndex,
-                draggedItem = draggedItem,
-                visibleItems = visibleItems,
-            )
-
-            else -> null
-        }
-    }
-
-    private fun findDownwardSwapDecision(
-        fromIndex: Int,
-        draggedItem: ReorderVisibleItem,
-        visibleItems: List<ReorderVisibleItem>,
-    ): SwapDecision? {
-        val nextItemKey = renderedItemsState.getOrNull(fromIndex + 1)?.key ?: return null
-        val nextItem = visibleItems.firstOrNull { it.key == nextItemKey } ?: return null
-
-        val draggedBottom = draggedItem.offset + draggedItem.size + draggedOffsetY
-        val nextThreshold = nextItem.offset + (nextItem.size / 2f)
-        if (draggedBottom < nextThreshold + SWAP_HYSTERESIS_PX) return null
-
-        return SwapDecision(
-            toIndex = fromIndex + 1,
-            offsetCompensation = -nextItem.size.toFloat(),
-        )
-    }
-
-    private fun findUpwardSwapDecision(
-        fromIndex: Int,
-        draggedItem: ReorderVisibleItem,
-        visibleItems: List<ReorderVisibleItem>,
-    ): SwapDecision? {
-        val upwardSwap = calculateUpwardSwap(
-            fromIndex = fromIndex,
-            visibleItems = visibleItems,
-        ) ?: return null
-        val draggedTop = draggedItem.offset + draggedOffsetY
-        if (draggedTop > upwardSwap.threshold - SWAP_HYSTERESIS_PX) return null
-
-        return SwapDecision(
-            toIndex = fromIndex - 1,
-            offsetCompensation = upwardSwap.offsetCompensation,
-        )
-    }
-
     private data class UpwardSwapConfig(
         val threshold: Float,
         val offsetCompensation: Float,
@@ -154,26 +130,28 @@ internal class NotificationActionsReorderController(
         fromIndex: Int,
         visibleItems: List<ReorderVisibleItem>,
     ): UpwardSwapConfig? {
-        val previousItemKey = renderedItemsState.getOrNull(fromIndex - 1)?.key ?: return null
-        val previousItem = visibleItems.firstOrNull { it.key == previousItemKey } ?: return null
+        val previousItemKey = renderedItemsState.getOrNull(fromIndex - 1)?.key
+        val previousItem = previousItemKey?.let { previousKey -> visibleItems.firstOrNull { it.key == previousKey } }
+        val maxPos = NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN
+            .coerceAtMost(renderedItemsState.lastIndex)
 
-        val maxPos = maxAllowedCutoffIndex()
-        val crossingUpThroughFullCutoff = previousItemKey == NotificationListItem.Cutoff.key &&
-            cutoffIndexState >= maxPos
-
-        if (!crossingUpThroughFullCutoff) {
-            return UpwardSwapConfig(
+        return if (previousItemKey == null || previousItem == null) {
+            null
+        } else if (previousItemKey == NotificationListItem.Cutoff.key && cutoffIndexState >= maxPos) {
+            val lastAboveKey = renderedItemsState.getOrNull(fromIndex - 2)?.key
+            val lastAboveItem = lastAboveKey?.let { aboveKey -> visibleItems.firstOrNull { it.key == aboveKey } }
+            lastAboveItem?.let {
+                UpwardSwapConfig(
+                    threshold = it.offset + (it.size / 2f),
+                    offsetCompensation = (previousItem.size + it.size).toFloat(),
+                )
+            }
+        } else {
+            UpwardSwapConfig(
                 threshold = previousItem.offset + (previousItem.size / 2f),
                 offsetCompensation = previousItem.size.toFloat(),
             )
         }
-
-        val lastAboveKey = renderedItemsState.getOrNull(fromIndex - 2)?.key ?: return null
-        val lastAboveItem = visibleItems.firstOrNull { it.key == lastAboveKey } ?: return null
-        return UpwardSwapConfig(
-            threshold = lastAboveItem.offset + (lastAboveItem.size / 2f),
-            offsetCompensation = (previousItem.size + lastAboveItem.size).toFloat(),
-        )
     }
 
     fun endDrag() {
@@ -190,13 +168,12 @@ internal class NotificationActionsReorderController(
 
     fun moveByStep(itemKey: String, delta: Int): Boolean {
         val from = renderedItemsState.indexOfFirst { it.key == itemKey }
-        if (from == -1) return false
-
         val to = from + delta
-        if (!moveRenderedItem(from = from, to = to)) return false
-
-        notifyStateChanged()
-        return true
+        val didMove = from != -1 && moveRenderedItem(from = from, to = to)
+        if (didMove) {
+            notifyStateChanged()
+        }
+        return didMove
     }
 
     fun canMove(itemKey: String, delta: Int): Boolean {
@@ -204,22 +181,22 @@ internal class NotificationActionsReorderController(
         if (from == -1) return false
 
         val to = from + delta
-        return isMoveAllowed(from = from, to = to)
-    }
-
-    private fun isMoveAllowed(from: Int, to: Int): Boolean {
-        if (from !in renderedItemsState.indices || to !in renderedItemsState.indices || from == to) return false
-
-        val maxPos = maxAllowedCutoffIndex()
+        val maxPos = NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN
+            .coerceAtMost(renderedItemsState.lastIndex)
 
         // Don't allow the divider to be dragged to more than the max position
-        return !(from == cutoffIndexState && to > maxPos)
+        return from in renderedItemsState.indices &&
+            to in renderedItemsState.indices &&
+            from != to &&
+            !(from == cutoffIndexState && to > maxPos)
     }
 
     private fun moveRenderedItem(from: Int, to: Int): Boolean {
-        if (!isMoveAllowed(from = from, to = to)) return false
-
-        val maxPos = maxAllowedCutoffIndex()
+        val maxPos = NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN
+            .coerceAtMost(renderedItemsState.lastIndex)
+        val invalidIndices = from !in renderedItemsState.indices || to !in renderedItemsState.indices || from == to
+        val dividerPastMax = from == cutoffIndexState && to > maxPos
+        if (invalidIndices || dividerPastMax) return false
 
         val previousCutoff = cutoffIndexState
         val crossedCutoffUpward = previousCutoff in to..<from
@@ -244,11 +221,6 @@ internal class NotificationActionsReorderController(
         }
 
         return true
-    }
-
-    private fun maxAllowedCutoffIndex(): Int {
-        return NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN
-            .coerceAtMost(renderedItemsState.lastIndex)
     }
 
     private fun buildRenderedItems(

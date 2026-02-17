@@ -53,7 +53,10 @@ internal class SingleMessageNotificationDataCreator(
 
     private fun createSingleNotificationActions(account: LegacyAccountDto): List<NotificationAction> {
         val order = parseActionsOrder(notificationSettings.messageActionsOrder)
-        val cutoff = notificationSettings.messageActionsCutoff.coerceIn(0, NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN)
+        val cutoff = notificationSettings.messageActionsCutoff.coerceIn(
+            0,
+            NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN,
+        )
 
         return resolveActions(
             order = order,
@@ -92,25 +95,29 @@ internal class SingleMessageNotificationDataCreator(
         hasSpamFolder: Boolean,
         isSpamEnabled: Boolean,
     ): List<NotificationAction> {
-        fun isAvailable(action: NotificationAction): Boolean {
-            return when (action) {
-                NotificationAction.Reply -> true
-                NotificationAction.MarkAsRead -> true
-                NotificationAction.Delete -> isDeleteEnabled
-                NotificationAction.Archive -> hasArchiveFolder
-                NotificationAction.Spam -> hasSpamFolder && isSpamEnabled
-                NotificationAction.Star -> true
-            }
+        val desired = order.take(cutoff).filter { action ->
+            action.isAvailable(
+                hasArchiveFolder = hasArchiveFolder,
+                isDeleteEnabled = isDeleteEnabled,
+                hasSpamFolder = hasSpamFolder,
+                isSpamEnabled = isSpamEnabled,
+            )
         }
-
-        val desired = order.take(cutoff).filter(::isAvailable)
         if (desired.size == NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN) return desired
 
         val filled = buildList {
             addAll(desired)
             for (action in order.drop(cutoff)) {
                 if (size == NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN) break
-                if (action !in this && isAvailable(action)) {
+                if (
+                    action !in this &&
+                    action.isAvailable(
+                        hasArchiveFolder = hasArchiveFolder,
+                        isDeleteEnabled = isDeleteEnabled,
+                        hasSpamFolder = hasSpamFolder,
+                        isSpamEnabled = isSpamEnabled,
+                    )
+                ) {
                     add(action)
                 }
             }
@@ -163,5 +170,21 @@ internal class SingleMessageNotificationDataCreator(
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.
     private fun isSpamActionAvailableForWear(account: LegacyAccountDto): Boolean {
         return account.hasSpamFolder() && !interactionSettings.isConfirmSpam
+    }
+}
+
+private fun NotificationAction.isAvailable(
+    hasArchiveFolder: Boolean,
+    isDeleteEnabled: Boolean,
+    hasSpamFolder: Boolean,
+    isSpamEnabled: Boolean,
+): Boolean {
+    return when (this) {
+        NotificationAction.Reply -> true
+        NotificationAction.MarkAsRead -> true
+        NotificationAction.Delete -> isDeleteEnabled
+        NotificationAction.Archive -> hasArchiveFolder
+        NotificationAction.Spam -> hasSpamFolder && isSpamEnabled
+        NotificationAction.Star -> true
     }
 }

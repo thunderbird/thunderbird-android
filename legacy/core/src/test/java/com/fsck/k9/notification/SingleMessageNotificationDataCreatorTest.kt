@@ -18,8 +18,6 @@ import net.thunderbird.core.preference.interaction.InteractionSettingsPreference
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import org.junit.Test
-import org.mockito.kotlin.doAnswer
-import org.mockito.kotlin.mock
 
 class SingleMessageNotificationDataCreatorTest {
     private val account = createAccount()
@@ -227,10 +225,6 @@ class SingleMessageNotificationDataCreatorTest {
             order = listOf("reply", "mark_as_read", "delete", "archive", "spam"),
             cutoff = cutoff,
         )
-    }
-
-    private fun setDeleteAction(mode: NotificationQuickDelete) {
-        fakeNotificationPreferences.setNotificationQuickDeleteBehaviour(mode)
     }
 
     private fun createAccount(): LegacyAccountDto {

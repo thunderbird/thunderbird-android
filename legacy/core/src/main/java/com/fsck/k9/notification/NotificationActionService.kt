@@ -1,7 +1,6 @@
 package com.fsck.k9.notification
 
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import app.k9mail.legacy.message.controller.MessageReference
@@ -155,124 +154,6 @@ class NotificationActionService : Service() {
             }
         } else {
             messagingController.cancelNotificationsForAccount(account)
-        }
-    }
-
-    companion object {
-        private const val ACTION_MARK_AS_READ = "ACTION_MARK_AS_READ"
-        private const val ACTION_DELETE = "ACTION_DELETE"
-        private const val ACTION_ARCHIVE = "ACTION_ARCHIVE"
-        private const val ACTION_SPAM = "ACTION_SPAM"
-        private const val ACTION_STAR = "ACTION_STAR"
-        private const val ACTION_DISMISS = "ACTION_DISMISS"
-        private const val EXTRA_ACCOUNT_UUID = "accountUuid"
-        private const val EXTRA_MESSAGE_REFERENCE = "messageReference"
-        private const val EXTRA_MESSAGE_REFERENCES = "messageReferences"
-
-        fun createMarkMessageAsReadIntent(context: Context, messageReference: MessageReference): Intent {
-            return Intent(context, NotificationActionService::class.java).apply {
-                action = ACTION_MARK_AS_READ
-                putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountUuid)
-                putExtra(EXTRA_MESSAGE_REFERENCES, createSingleItemArrayList(messageReference))
-            }
-        }
-
-        fun createMarkAllAsReadIntent(
-            context: Context,
-            accountUuid: String,
-            messageReferences: List<MessageReference>,
-        ): Intent {
-            return Intent(context, NotificationActionService::class.java).apply {
-                action = ACTION_MARK_AS_READ
-                putExtra(EXTRA_ACCOUNT_UUID, accountUuid)
-                putExtra(
-                    EXTRA_MESSAGE_REFERENCES,
-                    MessageReferenceHelper.toMessageReferenceStringList(messageReferences),
-                )
-            }
-        }
-
-        fun createDismissMessageIntent(context: Context, messageReference: MessageReference): Intent {
-            return Intent(context, NotificationActionService::class.java).apply {
-                action = ACTION_DISMISS
-                putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountUuid)
-                putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString())
-            }
-        }
-
-        fun createDismissAllMessagesIntent(context: Context, account: LegacyAccountDto): Intent {
-            return Intent(context, NotificationActionService::class.java).apply {
-                action = ACTION_DISMISS
-                putExtra(EXTRA_ACCOUNT_UUID, account.uuid)
-            }
-        }
-
-        fun createDeleteMessageIntent(context: Context, messageReference: MessageReference): Intent {
-            return Intent(context, NotificationActionService::class.java).apply {
-                action = ACTION_DELETE
-                putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountUuid)
-                putExtra(EXTRA_MESSAGE_REFERENCES, createSingleItemArrayList(messageReference))
-            }
-        }
-
-        fun createDeleteAllMessagesIntent(
-            context: Context,
-            accountUuid: String,
-            messageReferences: List<MessageReference>,
-        ): Intent {
-            return Intent(context, NotificationActionService::class.java).apply {
-                action = ACTION_DELETE
-                putExtra(EXTRA_ACCOUNT_UUID, accountUuid)
-                putExtra(
-                    EXTRA_MESSAGE_REFERENCES,
-                    MessageReferenceHelper.toMessageReferenceStringList(messageReferences),
-                )
-            }
-        }
-
-        fun createArchiveMessageIntent(context: Context, messageReference: MessageReference): Intent {
-            return Intent(context, NotificationActionService::class.java).apply {
-                action = ACTION_ARCHIVE
-                putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountUuid)
-                putExtra(EXTRA_MESSAGE_REFERENCES, createSingleItemArrayList(messageReference))
-            }
-        }
-
-        fun createArchiveAllIntent(
-            context: Context,
-            account: LegacyAccountDto,
-            messageReferences: List<MessageReference>,
-        ): Intent {
-            return Intent(context, NotificationActionService::class.java).apply {
-                action = ACTION_ARCHIVE
-                putExtra(EXTRA_ACCOUNT_UUID, account.uuid)
-                putExtra(
-                    EXTRA_MESSAGE_REFERENCES,
-                    MessageReferenceHelper.toMessageReferenceStringList(messageReferences),
-                )
-            }
-        }
-
-        fun createMarkMessageAsSpamIntent(context: Context, messageReference: MessageReference): Intent {
-            return Intent(context, NotificationActionService::class.java).apply {
-                action = ACTION_SPAM
-                putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountUuid)
-                putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString())
-            }
-        }
-
-        fun createMarkMessageAsStarIntent(context: Context, messageReference: MessageReference): Intent {
-            return Intent(context, NotificationActionService::class.java).apply {
-                action = ACTION_STAR
-                putExtra(EXTRA_ACCOUNT_UUID, messageReference.accountUuid)
-                putExtra(EXTRA_MESSAGE_REFERENCES, createSingleItemArrayList(messageReference))
-            }
-        }
-
-        private fun createSingleItemArrayList(messageReference: MessageReference): ArrayList<String> {
-            return ArrayList<String>(1).apply {
-                add(messageReference.toIdentityString())
-            }
         }
     }
 }

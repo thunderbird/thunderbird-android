@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.Fragment
 import com.fsck.k9.ui.R
+import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.notification.NOTIFICATION_PREFERENCE_DEFAULT_MESSAGE_ACTIONS_CUTOFF
 import net.thunderbird.core.preference.update
@@ -36,7 +37,7 @@ class NotificationActionsSettingsFragment : Fragment() {
                 themeProvider.WithTheme {
                     NotificationActionsSettingsScreen(
                         description = stringResource(R.string.notification_actions_settings_description),
-                        initialActions = actionOrder,
+                        initialActions = actionOrder.toImmutableList(),
                         initialCutoff = cutoff,
                         onStateChanged = ::onStateChanged,
                     )
