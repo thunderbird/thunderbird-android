@@ -499,6 +499,12 @@
             android:summary="@string/notification_actions_settings_summary"
             />
 
+        <CheckBoxPreference
+            android:key="notification_summary_delete"
+            android:title="@string/notification_summary_delete_title"
+            android:summary="@string/notification_summary_delete_summary"
+            />
+
     </PreferenceScreen>
 
     <PreferenceScreen

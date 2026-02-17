@@ -20,8 +20,5 @@
     <item type="id" name="settings_list_url_item" />
     <item type="id" name="settings_list_intent_item" />
 
-    <item type="id" name="accessibility_action_move_up" />
-    <item type="id" name="accessibility_action_move_down" />
-
     <item type="id" name="message_list_swipe_tag" />
 </resources>
