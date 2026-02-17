@@ -64,15 +64,8 @@ internal class BillingClient(
     override suspend fun <T> connect(
         onConnected: suspend () -> Outcome<T, ContributionError>,
     ): Outcome<T, ContributionError> {
-        val connectionResult = clientProvider.current.startConnection()
-        val result = resultMapper.mapToOutcome(connectionResult) {}
-
-        return when (result) {
-            is Outcome.Success -> {
-                onConnected()
-            }
-
-            is Outcome.Failure -> result
+        return safeConnect(clientProvider.current, resultMapper, scope = coroutineScope) {
+            onConnected()
         }
     }
 
