@@ -72,7 +72,9 @@ fun FeatureLauncherNavHost(
         accountSettingsNavigation.registerRoutes(
             navGraphBuilder = this,
             onBack = onBack,
-            onFinish = { onBack() },
+            onFinish = {
+                onBack()
+            },
         )
 
         fundingNavigation.registerRoutes(

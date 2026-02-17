@@ -23,7 +23,7 @@ internal fun SelectDialogView(
     modifier: Modifier = Modifier,
 ) {
     val options by remember { mutableStateOf(setting.options) }
-    var selectedOption by remember { mutableStateOf(setting.value) }
+    var selectedOption by remember { mutableStateOf(options.find { it.id == setting.value.id } ?: setting.value) }
 
     SettingDialogLayout(
         title = setting.title(),

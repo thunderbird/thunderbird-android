@@ -7,6 +7,7 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
 import net.thunderbird.feature.account.settings.api.AccountSettingsRoute
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsScreen
+import net.thunderbird.feature.account.settings.impl.ui.readingMail.ReadingMailSettingsScreen
 
 internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
 
@@ -23,6 +24,20 @@ internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
                 val accountId = AccountIdFactory.of(generalSettingsRoute.accountId)
 
                 GeneralSettingsScreen(
+                    accountId = accountId,
+                    onBack = onBack,
+                )
+            }
+        }
+
+        with(navGraphBuilder) {
+            deepLinkComposable<AccountSettingsRoute.ReadingMailSettings>(
+                basePath = AccountSettingsRoute.ReadingMailSettings.Companion.BASE_PATH,
+            ) { backStackEntry ->
+                val readingMailSettingsRoute = backStackEntry.toRoute<AccountSettingsRoute.ReadingMailSettings>()
+                val accountId = AccountIdFactory.of(readingMailSettingsRoute.accountId)
+
+                ReadingMailSettingsScreen(
                     accountId = accountId,
                     onBack = onBack,
                 )
