@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Surface
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
@@ -41,7 +43,7 @@ import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIconDefaults
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.theme2.LocalContentColor
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
@@ -130,21 +132,24 @@ internal fun MessageItem(
                 .padding(contentPadding)
                 .height(intrinsicSize = IntrinsicSize.Min),
         ) {
-            LeadingElements(selected, onLeadingClick, leading)
-            Spacer(modifier = Modifier.width(MainTheme.spacings.default))
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .onPlaced { contentStart = it.positionInParent().x },
-            ) {
-                SenderRow(showAccountIndicator, accountIndicatorColor) { sender() }
-                SubjectRow(colors.subjectColor) { subject() }
-                Spacer(modifier = Modifier.height(MainTheme.spacings.half))
-                PreviewText(preview = preview, maxLines = maxPreviewLines)
+            // Unread/New Indicator and Sender Avatar
+            Column(verticalArrangement = Arrangement.Center) {
+                LeadingElements(selected, onLeadingClick, leading)
             }
-            Spacer(modifier = Modifier.width(MainTheme.spacings.double))
+            Spacer(modifier = Modifier.width(MainTheme.spacings.default))
+            // Message Content and Contents
+            Column(modifier = Modifier.weight(1f).onPlaced { contentStart = it.positionInParent().x }) {
+                HeaderRow(
+                    showAccountIndicator = showAccountIndicator,
+                    accountIndicatorColor = accountIndicatorColor,
+                    receivedAt = receivedAt,
+                    senderOrSubject = sender,
+                )
+                MessageContent(colors = colors, preview = preview, maxPreviewLines = maxPreviewLines, subject = subject)
+            }
+            Spacer(modifier = Modifier.width(MainTheme.spacings.default))
+            // Message controls and interaction items
             TrailingElements(
-                receivedAt = receivedAt,
                 action = action,
                 hasAttachments = hasAttachments,
                 modifier = Modifier.heightIn(min = MainTheme.sizes.large),
@@ -154,7 +159,57 @@ internal fun MessageItem(
 }
 
 @Composable
-private fun SenderRow(
+private fun HeaderRow(
+    showAccountIndicator: Boolean,
+    accountIndicatorColor: Color?,
+    receivedAt: String,
+    modifier: Modifier = Modifier,
+    senderOrSubject: @Composable () -> Unit,
+) {
+    FlowRow(
+        verticalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.Start,
+        maxLines = 2,
+        modifier = modifier.defaultMinSize(
+            minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT,
+        ),
+    ) {
+        SenderText(
+            showAccountIndicator = showAccountIndicator,
+            accountIndicatorColor = accountIndicatorColor,
+            modifier = Modifier.align(Alignment.CenterVertically),
+        ) {
+            senderOrSubject()
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        MessageItemDate(
+            receivedAt = receivedAt,
+            modifier = Modifier.align(Alignment.CenterVertically),
+        )
+    }
+}
+
+@Composable
+private fun MessageContent(
+    preview: CharSequence,
+    maxPreviewLines: Int,
+    modifier: Modifier = Modifier,
+    colors: MessageItemColors = MessageItemDefaults.readMessageItemColors(),
+    subject: @Composable () -> Unit,
+) {
+    Row(modifier = modifier) {
+        Column {
+            SubjectText(colors.subjectColor) {
+                subject()
+            }
+            Spacer(modifier = Modifier.height(MainTheme.spacings.half))
+            PreviewText(preview = preview, maxLines = maxPreviewLines)
+        }
+    }
+}
+
+@Composable
+private fun SenderText(
     showAccountIndicator: Boolean,
     accountIndicatorColor: Color?,
     modifier: Modifier = Modifier,
@@ -162,9 +217,11 @@ private fun SenderRow(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.defaultMinSize(
-            minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT,
-        ),
+        modifier = modifier
+            .wrapContentWidth()
+            .defaultMinSize(
+                minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT,
+            ),
     ) {
         if (showAccountIndicator && accountIndicatorColor != null) {
             AccountIndicatorIcon(accountIndicatorColor)
@@ -174,7 +231,7 @@ private fun SenderRow(
 }
 
 @Composable
-private fun SubjectRow(
+private fun SubjectText(
     subjectColor: Color,
     content: @Composable () -> Unit,
 ) {
@@ -243,7 +300,6 @@ private fun SelectedIcon(
 
 @Composable
 private fun TrailingElements(
-    receivedAt: String,
     action: @Composable (() -> Unit),
     hasAttachments: Boolean,
     modifier: Modifier = Modifier,
@@ -253,7 +309,6 @@ private fun TrailingElements(
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
         modifier = modifier,
     ) {
-        MessageItemDate(receivedAt = receivedAt)
         action()
         if (hasAttachments) {
             Icon(
@@ -269,5 +324,8 @@ private fun MessageItemDate(
     receivedAt: String,
     modifier: Modifier = Modifier,
 ) {
-    TextLabelSmall(text = receivedAt, modifier = modifier)
+    TextTitleSmall(
+        text = receivedAt,
+        modifier = modifier,
+    )
 }
