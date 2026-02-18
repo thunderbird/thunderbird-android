@@ -1,6 +1,5 @@
 package net.thunderbird.feature.funding.googleplay.data.remote
 
-import android.app.Activity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.core.outcome.Outcome
@@ -25,6 +24,8 @@ internal class FakeBillingClient : FundingDataContract.Remote.BillingClient {
         Outcome.success(emptyList())
     var purchaseHistoryOutcome: Outcome<OneTimeContribution?, ContributionError> =
         Outcome.success(null)
+    var purchaseOutcome: Outcome<Unit, ContributionError> = Outcome.success(Unit)
+    var clearCount = 0
 
     // State
     private val _purchasedContribution = MutableStateFlow<Outcome<Contribution?, ContributionError>>(
@@ -44,6 +45,7 @@ internal class FakeBillingClient : FundingDataContract.Remote.BillingClient {
     }
 
     override fun disconnect() {
+        clearCount++
         _purchasedContribution.value = Outcome.success(null)
     }
 
@@ -65,7 +67,6 @@ internal class FakeBillingClient : FundingDataContract.Remote.BillingClient {
         purchaseHistoryOutcome
 
     override suspend fun purchaseContribution(
-        activity: Activity,
         contribution: Contribution,
-    ): Outcome<Unit, ContributionError> = Outcome.success(Unit)
+    ): Outcome<Unit, ContributionError> = purchaseOutcome
 }

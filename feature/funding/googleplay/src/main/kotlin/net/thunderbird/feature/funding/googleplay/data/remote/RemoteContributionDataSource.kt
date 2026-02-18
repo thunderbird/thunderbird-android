@@ -1,6 +1,7 @@
 package net.thunderbird.feature.funding.googleplay.data.remote
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.outcome.flatMapSuccess
@@ -50,5 +51,20 @@ internal class RemoteContributionDataSource(
         }
 
         emit(result)
+    }
+
+    override val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>> =
+        billingClient.purchasedContribution
+
+    override suspend fun purchaseContribution(
+        contribution: Contribution,
+    ): Outcome<Unit, ContributionError> {
+        return billingClient.connect {
+            billingClient.purchaseContribution(contribution)
+        }
+    }
+
+    override fun clear() {
+        billingClient.disconnect()
     }
 }

@@ -1,6 +1,5 @@
 package net.thunderbird.feature.funding.googleplay.ui.contribution
 
-import android.app.Activity
 import androidx.compose.runtime.Stable
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingErrorState
 import kotlinx.collections.immutable.ImmutableList
@@ -60,7 +59,7 @@ internal class ContributionContract {
 
     sealed interface Effect {
         data class PurchaseContribution(
-            val startPurchaseFlow: (Activity) -> Unit,
+            val startPurchaseFlow: () -> Unit,
         ) : Effect
 
         data class ManageSubscription(

@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.core.common.cache.Cache
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
@@ -45,6 +46,7 @@ internal class BillingClient(
     private val resultMapper: FundingDataContract.Mapper.BillingResult,
     private val productCache: Cache<String, ProductDetails>,
     private val purchaseHandler: Remote.BillingPurchaseHandler,
+    private val activityProvider: ActivityProvider,
     private val logger: Logger,
     backgroundDispatcher: CoroutineContext = Dispatchers.IO,
 ) : Remote.BillingClient, PurchasesUpdatedListener {
@@ -199,12 +201,29 @@ internal class BillingClient(
         return clientProvider.current.queryPurchasesAsync(queryPurchaseParams)
     }
 
-    override suspend fun purchaseContribution(
-        activity: Activity,
-        contribution: Contribution,
-    ): Outcome<Unit, ContributionError> {
+    override suspend fun purchaseContribution(contribution: Contribution): Outcome<Unit, ContributionError> {
         val productDetails = productCache[contribution.id]
-            ?: return Outcome.failure(ContributionError.PurchaseFailed("ProductDetails not found: ${contribution.id}"))
+        val activity = activityProvider.getCurrent()
+
+        return when {
+            productDetails == null -> Outcome.failure(
+                ContributionError.PurchaseFailed("ProductDetails not found: ${contribution.id}"),
+            )
+
+            activity == null -> Outcome.failure(
+                ContributionError.PurchaseFailed("Activity not available for purchase"),
+            )
+
+            else -> {
+                processPurchase(productDetails, activity)
+            }
+        }
+    }
+
+    private suspend fun processPurchase(
+        productDetails: ProductDetails,
+        activity: Activity,
+    ): Outcome<Unit, ContributionError> {
         val offerToken = productDetails.subscriptionOfferDetails?.firstOrNull()?.offerToken
 
         val productDetailsParamsList = listOf(

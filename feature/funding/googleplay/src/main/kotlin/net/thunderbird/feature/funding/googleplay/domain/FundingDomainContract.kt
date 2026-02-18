@@ -1,6 +1,5 @@
 package net.thunderbird.feature.funding.googleplay.domain
 
-import android.app.Activity
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -46,19 +45,17 @@ internal interface FundingDomainContract {
          * Get recurring contributions.
          *
          * @param productIds The list of product IDs to fetch.
-         * @return Flow of list of recurring contributions.
+         * @return Outcome flow containing a list of recurring contributions or an error if the operation fails.
          */
         fun getAllRecurring(productIds: List<String>): Flow<Outcome<List<RecurringContribution>, ContributionError>>
 
         /**
          * Get purchased contributions.
          *
-         * @return Flow of list of purchased contributions.
+         * @return Outcome flow containing a list of recurring contributions or an error if the operation fails.
          */
         fun getAllPurchased(): Flow<Outcome<List<Contribution>, ContributionError>>
-    }
 
-    interface ContributionManager {
         /**
          * Flow that emits the last purchased contribution.
          */
@@ -67,17 +64,15 @@ internal interface FundingDomainContract {
         /**
          * Purchase a contribution.
          *
-         * @param activity The activity to use for the purchase flow.
          * @param contribution The contribution to purchase.
          * @return Outcome of the purchase.
          */
         suspend fun purchaseContribution(
-            activity: Activity,
             contribution: Contribution,
         ): Outcome<Unit, ContributionError>
 
         /**
-         * Release all resources.
+         * Clears contribution resources.
          */
         fun clear()
     }

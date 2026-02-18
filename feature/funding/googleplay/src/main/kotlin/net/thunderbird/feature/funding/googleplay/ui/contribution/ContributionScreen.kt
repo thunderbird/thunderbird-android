@@ -1,14 +1,12 @@
 package net.thunderbird.feature.funding.googleplay.ui.contribution
 
 import android.content.Intent
-import android.net.Uri
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.core.net.toUri
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithBackButton
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import net.thunderbird.core.ui.contract.mvi.observe
@@ -22,7 +20,6 @@ internal fun ContributionScreen(
     modifier: Modifier = Modifier,
     viewModel: ViewModel = koinViewModel<ContributionViewModel>(),
 ) {
-    val activity = LocalActivity.current as ComponentActivity
     val context = LocalContext.current
 
     val (state, dispatch) = viewModel.observe { effect ->
@@ -37,7 +34,7 @@ internal fun ContributionScreen(
             }
 
             is ContributionContract.Effect.PurchaseContribution -> {
-                effect.startPurchaseFlow(activity)
+                effect.startPurchaseFlow()
             }
         }
     }
@@ -69,7 +66,7 @@ private fun getManageSubscriptionIntent(
     productId: String,
     packageName: String,
 ): Intent {
-    val uri = Uri.parse(SUBSCRIPTION_URL)
+    val uri = SUBSCRIPTION_URL.toUri()
         .buildUpon()
         .appendQueryParameter("sku", productId)
         .appendQueryParameter("package", packageName)

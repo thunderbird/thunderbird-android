@@ -47,6 +47,7 @@ internal val fundingDataModule = module {
             resultMapper = get(),
             productCache = get(),
             purchaseHandler = get(),
+            activityProvider = get(),
             logger = get(),
         )
     }
