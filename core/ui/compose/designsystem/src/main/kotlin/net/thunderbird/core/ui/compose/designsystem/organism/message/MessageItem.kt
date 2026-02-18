@@ -5,7 +5,6 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -127,11 +126,7 @@ internal fun MessageItem(
         color = colors.containerColor,
         contentColor = colors.contentColor,
     ) {
-        Row(
-            modifier = Modifier
-                .padding(contentPadding)
-                .height(intrinsicSize = IntrinsicSize.Min),
-        ) {
+        Row(modifier = Modifier.padding(contentPadding)) {
             // Unread/New Indicator and Sender Avatar
             Column(verticalArrangement = Arrangement.Center) {
                 LeadingElements(selected, onLeadingClick, leading)
@@ -326,6 +321,8 @@ private fun MessageItemDate(
 ) {
     TextTitleSmall(
         text = receivedAt,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
         modifier = modifier,
     )
 }
