@@ -1,6 +1,7 @@
 package net.thunderbird.feature.funding.googleplay.data
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote.ContributionDataSource
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
@@ -27,4 +28,12 @@ internal class ContributionRepository(
 
     override fun getAllPurchased(): Flow<Outcome<List<Contribution>, ContributionError>> =
         remoteContributionDataSource.getAllPurchased()
+
+    override val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>> =
+        remoteContributionDataSource.purchasedContribution
+
+    override suspend fun purchaseContribution(contribution: Contribution): Outcome<Unit, ContributionError> =
+        remoteContributionDataSource.purchaseContribution(contribution)
+
+    override fun clear() = remoteContributionDataSource.clear()
 }

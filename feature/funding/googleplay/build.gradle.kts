@@ -17,6 +17,7 @@ dependencies {
     api(projects.feature.funding.api)
 
     implementation(projects.core.common)
+    implementation(projects.core.android.common)
     implementation(projects.core.outcome)
     implementation(projects.core.logging.api)
     implementation(projects.core.ui.compose.designsystem)

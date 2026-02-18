@@ -94,11 +94,10 @@ internal class BillingPurchaseHandler(
 
                 val acknowledgeResult: BillingResult = billingClient.acknowledgePurchase(acknowledgePurchaseParams)
 
-                if (acknowledgeResult.responseCode != BillingClient.BillingResponseCode.OK) {
-                    // TODO success
+                if (acknowledgeResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    logger.info { "acknowledgePurchase success" }
                 } else {
-                    // handle acknowledge error
-                    logger.error(message = { "acknowledgePurchase failed" })
+                    logger.error(message = { "acknowledgePurchase failed: ${acknowledgeResult.debugMessage}" })
                 }
             } else {
                 logger.error(message = { "purchase already acknowledged" })
