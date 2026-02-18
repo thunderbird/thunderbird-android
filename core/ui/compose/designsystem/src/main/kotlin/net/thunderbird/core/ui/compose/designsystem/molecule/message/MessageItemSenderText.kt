@@ -49,7 +49,7 @@ internal fun MessageItemSenderTitleSmall(
                     text = text,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier,
                     color = color,
                 )
 
@@ -57,7 +57,7 @@ internal fun MessageItemSenderTitleSmall(
                     text = text.toString(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier,
                     color = color,
                 )
             }
@@ -104,7 +104,7 @@ internal fun MessageItemSenderBodyMedium(
                     text = text,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier,
                     color = color,
                 )
 
@@ -112,7 +112,7 @@ internal fun MessageItemSenderBodyMedium(
                     text = text.toString(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier,
                     color = color,
                 )
             }
