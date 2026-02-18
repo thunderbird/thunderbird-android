@@ -192,11 +192,6 @@ internal interface FundingDataContract {
             suspend fun loadPurchasedRecurringContributions(): Outcome<List<PurchasedContribution>, ContributionError>
 
             /**
-             * Load the most recent one-time contribution.
-             */
-            suspend fun loadPurchasedOneTimeContributionHistory(): Outcome<PurchasedContribution?, ContributionError>
-
-            /**
              * Purchase a contribution.
              *
              * @param contributionId The contribution id to purchase.

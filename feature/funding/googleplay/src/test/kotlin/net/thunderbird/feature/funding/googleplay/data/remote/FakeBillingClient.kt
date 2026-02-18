@@ -22,8 +22,6 @@ internal class FakeBillingClient : FundingDataContract.Remote.BillingClient {
         Outcome.success(emptyList())
     var purchasedRecurringOutcome: Outcome<List<PurchasedContribution>, ContributionError> =
         Outcome.success(emptyList())
-    var purchaseHistoryOutcome: Outcome<PurchasedContribution?, ContributionError> =
-        Outcome.success(null)
     var purchaseOutcome: Outcome<Unit, ContributionError> = Outcome.success(Unit)
     var clearCount = 0
 
@@ -53,9 +51,6 @@ internal class FakeBillingClient : FundingDataContract.Remote.BillingClient {
 
     override suspend fun loadPurchasedRecurringContributions():
         Outcome<List<PurchasedContribution>, ContributionError> = purchasedRecurringOutcome
-
-    override suspend fun loadPurchasedOneTimeContributionHistory(): Outcome<PurchasedContribution?, ContributionError> =
-        purchaseHistoryOutcome
 
     override suspend fun purchaseContribution(
         contributionId: ContributionId,

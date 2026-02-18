@@ -4,7 +4,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.outcome.flatMapSuccess
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
@@ -38,19 +37,7 @@ internal class RemoteContributionDataSource(
 
     override fun getAllPurchased(): Flow<Outcome<List<PurchasedContribution>, ContributionError>> = flow {
         val result = billingConnector.connect {
-            billingClient.loadPurchasedRecurringContributions().flatMapSuccess { recurringContributions ->
-                if (recurringContributions.isEmpty()) {
-                    billingClient.loadPurchasedOneTimeContributionHistory().flatMapSuccess { contribution ->
-                        if (contribution != null) {
-                            Outcome.success(listOf(contribution))
-                        } else {
-                            Outcome.success(emptyList())
-                        }
-                    }
-                } else {
-                    Outcome.success(recurringContributions)
-                }
-            }
+            billingClient.loadPurchasedRecurringContributions()
         }
 
         emit(result)
