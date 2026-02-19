@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract.ActivityLifecycleObserver
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract.FragmentLifecycleObserver
@@ -13,6 +14,7 @@ import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderCon
 class FundingReminder
 @OptIn(ExperimentalTime::class)
 constructor(
+    private val activityProvider: ActivityProvider,
     private val settings: FundingSettings,
     private val fragmentObserver: FragmentLifecycleObserver,
     private val activityCounterObserver: ActivityLifecycleObserver,
@@ -21,9 +23,10 @@ constructor(
 ) : FundingReminderContract.Reminder {
 
     override fun registerReminder(
-        activity: AppCompatActivity,
         onOpenFunding: () -> Unit,
     ) {
+        val activity = activityProvider.getCurrent() as? AppCompatActivity ?: return
+
         // TODO: Let the caller make the decision on which FragmentManager to use.
         val dialogFragmentManager = activity.supportFragmentManager
 
