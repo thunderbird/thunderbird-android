@@ -1,10 +1,17 @@
 plugins {
-    id(ThunderbirdPlugins.Library.androidCompose)
+    id(ThunderbirdPlugins.Library.kmpCompose)
 }
 
-android {
-    namespace = "app.k9mail.core.ui.compose.navigation"
-    resourcePrefix = "core_ui_navigation_"
+kotlin {
+    androidLibrary {
+        namespace = "app.k9mail.core.ui.compose.navigation"
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            api(libs.jetbrains.compose.navigation)
+        }
+    }
 }
 
 codeCoverage {
