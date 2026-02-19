@@ -43,9 +43,8 @@ class DefaultActivityProviderTest : RobolectricTest() {
         val controller = Robolectric.buildActivity(Activity::class.java)
 
         // Act: bring app/activity to foreground
+        testSubject.onStart(ProcessLifecycleOwner.get())
         val activity = controller.create().start().resume().get()
-        // Manually move the process to foreground as Robolectric won't do it automatically for ProcessLifecycleOwner
-        testSubject.onResume(ProcessLifecycleOwner.get())
 
         // Assert: provider returns the resumed activity
         assertThat(testSubject.getCurrent()).isEqualTo(activity)
@@ -53,13 +52,17 @@ class DefaultActivityProviderTest : RobolectricTest() {
         // Act: pause activity (still foreground process-wise)
         controller.pause()
 
-        // Assert: still returns last resumed activity while app is in foreground
+        // Assert: returns null when activity is paused
+        assertThat(testSubject.getCurrent()).isNull()
+
+        // Act: resume activity
+        controller.resume()
         assertThat(testSubject.getCurrent()).isEqualTo(activity)
 
         // Act: stop activity (app goes to background)
         controller.stop()
         // Manually move the process to background
-        testSubject.onPause(ProcessLifecycleOwner.get())
+        testSubject.onStop(ProcessLifecycleOwner.get())
 
         // Assert: returns null when app is in background
         assertThat(testSubject.getCurrent()).isNull()
@@ -80,8 +83,8 @@ class DefaultActivityProviderTest : RobolectricTest() {
         val controller2 = Robolectric.buildActivity(ComponentActivity::class.java)
 
         // Act: Start first activity and move process to foreground
+        testSubject.onStart(ProcessLifecycleOwner.get())
         val activity1 = controller1.create().start().resume().get()
-        testSubject.onResume(ProcessLifecycleOwner.get())
 
         // Assert: First activity is current
         assertThat(testSubject.getCurrent()).isEqualTo(activity1)
@@ -89,7 +92,7 @@ class DefaultActivityProviderTest : RobolectricTest() {
             LogEvent(
                 level = LogLevel.DEBUG,
                 tag = "DefaultActivityProvider",
-                message = "Resumed: setting activity to Activity",
+                message = "onActivityResumed: setting activity to Activity",
                 timestamp = TestLogger.TIMESTAMP,
             ),
         )
@@ -103,7 +106,7 @@ class DefaultActivityProviderTest : RobolectricTest() {
             LogEvent(
                 level = LogLevel.DEBUG,
                 tag = "DefaultActivityProvider",
-                message = "Resumed: setting activity to ComponentActivity",
+                message = "onActivityResumed: setting activity to ComponentActivity",
                 timestamp = TestLogger.TIMESTAMP,
             ),
         )
@@ -117,7 +120,7 @@ class DefaultActivityProviderTest : RobolectricTest() {
             LogEvent(
                 level = LogLevel.DEBUG,
                 tag = "DefaultActivityProvider",
-                message = "Activity destroyed, clearing last resumed",
+                message = "onActivityPaused: clearing current activity ComponentActivity",
                 timestamp = TestLogger.TIMESTAMP,
             ),
         )
