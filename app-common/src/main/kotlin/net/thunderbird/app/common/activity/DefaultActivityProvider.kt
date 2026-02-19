@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import java.lang.ref.WeakReference
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.core.logging.Logger
 
@@ -19,12 +20,12 @@ class DefaultActivityProvider(
     private val logger: Logger,
 ) : Application.ActivityLifecycleCallbacks, ActivityProvider, DefaultLifecycleObserver {
     @Volatile
-    private var lastResumed: Activity? = null
+    private var lastResumedRef: WeakReference<Activity>? = null
 
     @Volatile
     private var inForeground: Boolean = false
 
-    override fun getCurrent(): Activity? = if (inForeground) lastResumed else null
+    override fun getCurrent(): Activity? = if (inForeground) lastResumedRef?.get() else null
 
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
@@ -32,33 +33,39 @@ class DefaultActivityProvider(
     }
 
     // ProcessLifecycleOwner callbacks
-    override fun onResume(owner: LifecycleOwner) {
+    override fun onStart(owner: LifecycleOwner) {
         logger.debug(TAG) { "App in foreground" }
         inForeground = true
     }
 
-    override fun onPause(owner: LifecycleOwner) {
+    override fun onStop(owner: LifecycleOwner) {
         logger.debug(TAG) { "App in background" }
         inForeground = false
-        lastResumed = null
+        lastResumedRef = null
     }
 
     // ActivityLifecycleCallbacks
     override fun onActivityResumed(activity: Activity) {
-        logger.debug(TAG) { "Resumed: setting activity to ${activity::class.java.simpleName}" }
-        lastResumed = activity
+        logger.debug(TAG) { "onActivityResumed: setting activity to ${activity::class.java.simpleName}" }
+        lastResumedRef = WeakReference(activity)
+    }
+
+    override fun onActivityPaused(activity: Activity) {
+        if (lastResumedRef?.get() === activity) {
+            logger.debug(TAG) { "onActivityPaused: clearing current activity ${activity::class.java.simpleName}" }
+            lastResumedRef = null
+        }
     }
 
     override fun onActivityDestroyed(activity: Activity) {
-        if (lastResumed === activity) {
-            logger.debug(TAG) { "Activity destroyed, clearing last resumed" }
-            lastResumed = null
+        if (lastResumedRef?.get() === activity) {
+            logger.debug(TAG) { "onActivityDestroyed: clearing current activity ${activity::class.java.simpleName}" }
+            lastResumedRef = null
         }
     }
 
     override fun onActivityCreated(a: Activity, b: Bundle?) = Unit
     override fun onActivityStarted(a: Activity) = Unit
-    override fun onActivityPaused(a: Activity) = Unit
     override fun onActivityStopped(a: Activity) = Unit
     override fun onActivitySaveInstanceState(a: Activity, outState: Bundle) = Unit
 }
