@@ -4,7 +4,7 @@ plugins {
 
 kotlin {
     androidLibrary {
-        namespace = "app.k9mail.core.ui.compose.navigation"
+        namespace = "net.thunderbird.core.ui.compose.navigation"
     }
 
     sourceSets {

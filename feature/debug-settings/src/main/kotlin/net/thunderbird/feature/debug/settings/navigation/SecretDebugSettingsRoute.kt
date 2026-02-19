@@ -1,8 +1,8 @@
 package net.thunderbird.feature.debug.settings.navigation
 
 import androidx.annotation.StringRes
-import app.k9mail.core.ui.compose.navigation.Route
 import kotlinx.serialization.Serializable
+import net.thunderbird.core.ui.compose.navigation.Route
 import net.thunderbird.feature.debug.settings.R
 
 @Serializable

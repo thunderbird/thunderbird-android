@@ -2,11 +2,11 @@ package app.k9mail.feature.account.edit.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.toRoute
-import app.k9mail.core.ui.compose.navigation.deepLinkComposable
 import app.k9mail.feature.account.edit.navigation.AccountEditRoute.IncomingServerSettings
 import app.k9mail.feature.account.edit.navigation.AccountEditRoute.OutgoingServerSettings
 import app.k9mail.feature.account.edit.ui.server.settings.EditIncomingServerSettingsNavHost
 import app.k9mail.feature.account.edit.ui.server.settings.EditOutgoingServerSettingsNavHost
+import net.thunderbird.core.ui.compose.navigation.deepLinkComposable
 
 class DefaultAccountEditNavigation : AccountEditNavigation {
 

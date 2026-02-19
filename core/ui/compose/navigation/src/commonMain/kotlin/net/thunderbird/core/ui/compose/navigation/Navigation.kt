@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.navigation
+package net.thunderbird.core.ui.compose.navigation
 
 import androidx.navigation.NavGraphBuilder
 
