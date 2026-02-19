@@ -756,7 +756,12 @@ open class MessageHomeActivity :
             val search = LocalMessageSearch()
             search.addAllowedFolder(folderId)
             search.addAccountUuid(account.uuid)
-            actionDisplaySearch(this, search, noThreading = false, newTask = false)
+            if (folderId == account.autoExpandFolderId) {
+                performSearch(search)
+            } else {
+                actionDisplaySearch(this, search, noThreading = false, newTask = false)
+                initializeFolderDrawer()
+            }
         }
     }
 

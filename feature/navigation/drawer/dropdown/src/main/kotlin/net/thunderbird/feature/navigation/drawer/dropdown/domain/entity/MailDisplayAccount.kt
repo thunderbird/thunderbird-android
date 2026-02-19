@@ -8,6 +8,7 @@ internal data class MailDisplayAccount(
     val email: String,
     val color: Int,
     val avatar: Avatar = Avatar.Monogram("?"),
+    val hasAutoExpandFolder: Boolean,
     override val unreadMessageCount: Int,
     override val starredMessageCount: Int,
     override val hasError: Boolean,
