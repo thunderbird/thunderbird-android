@@ -39,6 +39,13 @@ internal interface DomainContract {
         }
 
         /**
+         * Gets AutoExpand Folder for the account.
+         */
+        fun interface GetAutoExpandFolderForAccount {
+            operator fun invoke(accountUuid: String): Long?
+        }
+
+        /**
          * Synchronize all accounts.
          */
         fun interface SyncAllAccounts {
