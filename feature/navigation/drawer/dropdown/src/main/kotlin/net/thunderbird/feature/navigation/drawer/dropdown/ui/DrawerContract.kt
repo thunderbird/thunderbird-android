@@ -34,12 +34,14 @@ internal interface DrawerContract {
         val selectedFolderId: String? = null,
         val selectedFolder: DisplayFolder? = null,
         val showAccountSelection: Boolean = false,
+        val autoExpandFolderIdForAccount: Long? = null,
         val isLoading: Boolean = false,
     )
 
     sealed interface Event {
         data class SelectAccount(val accountId: String?) : Event
         data class SelectFolder(val folderId: String?) : Event
+        data class SelectAutoExpandFolder(val folderId: Long?) : Event
         data class OnAccountClick(val account: DisplayAccount) : Event
         data class OnAccountViewClick(val account: DisplayAccount) : Event
         data class OnFolderClick(val folder: DisplayFolder) : Event
