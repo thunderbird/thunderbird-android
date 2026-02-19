@@ -52,7 +52,9 @@ abstract class BaseActivity(
         enableEdgeToEdge()
 
         WindowCompat.getInsetsController(window, window.decorView).apply {
-            isAppearanceLightStatusBars = themeManager.appTheme == Theme.LIGHT
+            val isLightTheme = themeManager.appTheme == Theme.LIGHT
+            isAppearanceLightStatusBars = isLightTheme
+            isAppearanceLightNavigationBars = isLightTheme
         }
 
         super.onCreate(savedInstanceState)
@@ -87,6 +89,14 @@ abstract class BaseActivity(
 
     private fun initializePushController() {
         pushController.init()
+    }
+
+    protected open fun getContentContainerBottomInset(systemBarsBottom: Int, imeBottom: Int): Int {
+        return max(systemBarsBottom, imeBottom)
+    }
+
+    protected open fun shouldConsumeRootInsets(): Boolean {
+        return true
     }
 
     /**
@@ -131,10 +141,13 @@ abstract class BaseActivity(
             contentContainer.updatePadding(
                 left = insets.left,
                 right = insets.right,
-                bottom = max(insets.bottom, imeInsets.bottom),
+                bottom = getContentContainerBottomInset(
+                    systemBarsBottom = insets.bottom,
+                    imeBottom = imeInsets.bottom,
+                ),
             )
 
-            WindowInsetsCompat.CONSUMED
+            if (shouldConsumeRootInsets()) WindowInsetsCompat.CONSUMED else windowInsets
         }
     }
 

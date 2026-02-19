@@ -11,6 +11,9 @@
         <!-- Draw action mode above content -->
         <item name="windowActionModeOverlay">true</item>
 
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightNavigationBar">true</item>
+
         <item name="textAppearanceDisplayLarge">@style/TextAppearance.Material3.DisplayLarge</item>
         <item name="textAppearanceDisplayMedium">@style/TextAppearance.Material3.DisplayMedium</item>
         <item name="textAppearanceDisplaySmall">@style/TextAppearance.Material3.DisplaySmall</item>
@@ -35,6 +38,9 @@
     <style name="Theme2.Main.Dark.Common" parent="Theme2.Main.Dark.Base">
         <!-- Draw action mode above content -->
         <item name="windowActionModeOverlay">true</item>
+
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightNavigationBar">false</item>
 
         <item name="textAppearanceDisplayLarge">@style/TextAppearance.Material3.DisplayLarge</item>
         <item name="textAppearanceDisplayMedium">@style/TextAppearance.Material3.DisplayMedium</item>
