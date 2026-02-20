@@ -8,19 +8,29 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import kotlin.concurrent.thread
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.testing.coroutines.MainDispatcherRule
+import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.testing.fake.FakeNotification
-import org.junit.Rule
 
 @Suppress("MaxLineLength")
 class DefaultNotificationRegistryTest {
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule(StandardTestDispatcher())
+
+    private val mainDispatcher = MainDispatcherHelper()
+
+    @BeforeTest
+    fun setUp() {
+        mainDispatcher.setUp()
+    }
+
+    @AfterTest
+    fun tearDown() {
+        mainDispatcher.tearDown()
+    }
 
     @Test
     fun `register should return NotificationId given notification`() = runTest {

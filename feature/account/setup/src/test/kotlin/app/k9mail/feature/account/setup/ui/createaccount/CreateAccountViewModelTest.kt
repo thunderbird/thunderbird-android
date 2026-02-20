@@ -25,15 +25,28 @@ import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.folders.FolderServerId
 import com.fsck.k9.mail.folders.RemoteFolder
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.testing.coroutines.MainDispatcherRule
-import org.junit.Rule
+import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
 
 class CreateAccountViewModelTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val mainDispatcher = MainDispatcherHelper(UnconfinedTestDispatcher())
+
+    @BeforeTest
+    fun setUp() {
+        mainDispatcher.setUp()
+    }
+
+    @AfterTest
+    fun tearDown() {
+        mainDispatcher.tearDown()
+    }
 
     private val fakeCreateAccount = FakeCreateAccount()
     private val accountStateRepository = InMemoryAccountStateRepository().apply {

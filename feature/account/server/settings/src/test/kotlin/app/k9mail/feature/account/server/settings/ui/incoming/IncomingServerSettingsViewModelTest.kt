@@ -22,18 +22,31 @@ import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.testing.coroutines.MainDispatcherRule
+import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.validation.ValidationError
 import net.thunderbird.core.validation.input.NumberInputField
 import net.thunderbird.core.validation.input.StringInputField
-import org.junit.Rule
-import org.junit.Test
 
 class IncomingServerSettingsViewModelTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val mainDispatcher = MainDispatcherHelper(UnconfinedTestDispatcher())
+
+    @BeforeTest
+    fun setUp() {
+        mainDispatcher.setUp()
+    }
+
+    @AfterTest
+    fun tearDown() {
+        mainDispatcher.tearDown()
+    }
 
     @Test
     fun `should load account setup state when LoadAccountState event is received`() = runMviTest {
