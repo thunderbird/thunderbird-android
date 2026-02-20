@@ -918,4 +918,5 @@
     <string name="debug_force_auth_failure_unavailable">Профилът няма настройка на OAuth.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Запазеният код за сигурност не може да бъде променен. Пробвайте местно прекратяване на действието.</string>
     <string name="debug_invalidate_access_token_already_modified">Запазеният код за сигурност вече е променен.</string>
+    <string name="no_network_message_will_be_sent_later_toast">Вие сте офлайн. Съобщението ще бъде изпратено, когато връзката стане налична.</string>
 </resources>

@@ -943,4 +943,5 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="global_settings_messageview_body_content_type_title">Typ obsahu těla</string>
     <string name="debug_feature_flags">LADĚNÍ: Příznaky funkcí</string>
     <string name="print_message_action">Tisk</string>
+    <string name="no_network_message_will_be_sent_later_toast">Jste offline. Zpráva bude odeslána, až bude připojení dostupné</string>
 </resources>

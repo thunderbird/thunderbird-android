@@ -928,4 +928,5 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="debug_invalidate_access_token_cannot_modify">A tárolt hozzáférési token módosítása sikertelen. Próbálja ki a helyi érvénytelenítést.</string>
     <string name="debug_invalidate_access_token_already_modified">A tárolt hozzéférési token már módosítva lett.</string>
     <string name="debug_feature_flags">HIBAKERESÉS: Funkciókapcsolók</string>
+    <string name="no_network_message_will_be_sent_later_toast">Nincs internetkapcsolat. Az üzenet a kapcsolat helyreállításakor kerül elküldésre.</string>
 </resources>

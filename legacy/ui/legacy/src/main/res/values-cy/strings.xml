@@ -947,4 +947,5 @@
     <string name="debug_invalidate_access_token_already_modified">Mae tocyn mynediad wedi\'i storio eisoes wedi\'i addasu.</string>
     <string name="debug_feature_flags">DADFYGIO: Baneri Nodwedd</string>
     <string name="print_message_action">Argraffu</string>
+    <string name="no_network_message_will_be_sent_later_toast">Nid oes cysylltiad rhyngrwyd. Anfonir y neges pan fydd y cysylltiad ar gael eto</string>
 </resources>

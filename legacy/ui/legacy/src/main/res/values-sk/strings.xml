@@ -894,4 +894,5 @@
     <string name="push_notification_info">Kliknite aby ste sa dozvedeli viac.</string>
     <string name="general_settings_show_compose_button_title">Zobraziť plávajúce tlačidlo na vytvorenie novej správy</string>
     <string name="message_details_loading_error">Nastala chyba počas načítania podrobností správy.</string>
+    <string name="no_network_message_will_be_sent_later_toast">Ste offline. Správa bude odoslaná, keď bude pripojenie dostupné</string>
 </resources>

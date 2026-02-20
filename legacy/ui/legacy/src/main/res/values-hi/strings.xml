@@ -161,4 +161,5 @@
     <string name="notification_action_delete_all">सब मिटाएं</string>
     <string name="about_app_authors_thunderbird">थंडरबर्ड मोबाइल टीम</string>
     <string name="open_camera">कैमरा खोलें</string>
+    <string name="no_network_message_will_be_sent_later_toast">आप ऑफ़लाइन हैं। कनेक्शन उपलब्ध होने पर संदेश भेजा जाएगा</string>
 </resources>

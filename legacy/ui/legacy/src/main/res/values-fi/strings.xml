@@ -893,4 +893,5 @@ Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavai
     <string name="settings_ui_telemetry_title">Käyttö- ja tekniset tiedot</string>
     <string name="settings_ui_telemetry_description">Jakaa tämän sovelluksen suorituskyky-, käyttö-, laitteisto- ja mukautustiedot Mozillan kanssa auttaakseen meitä parantamaan Thunderbirdia</string>
     <string name="folder_list_show_hidden_folders">Näytä piilotetut kansiot</string>
+    <string name="no_network_message_will_be_sent_later_toast">Ei internet-yhteyttä. Viesti lähetetään, kun yhteys on palautettu</string>
 </resources>

@@ -905,4 +905,5 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
     <string name="debug_enable_sync_debug_logging_summary">Protokoli diagnozajn informojn pri sinkronigado dum 24 horoj</string>
     <string name="debug_sync_export_logs_title">Elporti protokolojn pri sinkronigado</string>
     <string name="debug_open_secret_debug_screen">Malfermi sekretan sencimigan ekranon</string>
+    <string name="no_network_message_will_be_sent_later_toast">Vi estas senkonekta. La mesaĝo estos sendita kiam la konekto estos disponebla</string>
 </resources>

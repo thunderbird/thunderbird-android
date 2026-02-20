@@ -909,4 +909,5 @@
     <string name="debug_force_auth_failure_unavailable">Bu hesap için OAuth yapılandırması yok.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Saklanan erişim belirteci değiştirilemedi. Yerel geçersiz kılmayı deneyin.</string>
     <string name="debug_invalidate_access_token_already_modified">Saklanan erişim belirteci zaten değiştirildi.</string>
+    <string name="no_network_message_will_be_sent_later_toast">Çevrimdışısınız. Bağlantı kullanılabilir olduğunda mesaj gönderilecektir</string>
 </resources>

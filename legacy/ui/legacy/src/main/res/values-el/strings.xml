@@ -899,4 +899,5 @@
     <string name="message_view_menu_action_export_eml">Εξαγωγή ως EML</string>
     <string name="debug_open_secret_debug_screen">Άνοιγμα οθόνης αποσφαλμάτωσης</string>
     <string name="archiving_not_available_for_this_account">Η αρχειοθέτηση δεν είναι δυνατή για αυτόν τον λογαριασμό.</string>
+    <string name="no_network_message_will_be_sent_later_toast">Δεν υπάρχει σύνδεση στο διαδίκτυο. Το μήνυμα θα σταλεί όταν η σύνδεση αποκατασταθεί</string>
 </resources>

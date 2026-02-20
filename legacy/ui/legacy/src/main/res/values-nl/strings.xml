@@ -923,4 +923,5 @@
     <string name="global_settings_messageview_body_content_type_text_plain">Platte tekst (text/plain)</string>
     <string name="debug_feature_flags">DEBUGGEN: Functielabels</string>
     <string name="print_message_action">Afdrukken</string>
+    <string name="no_network_message_will_be_sent_later_toast">Je bent offline. Het bericht wordt verzonden wanneer de verbinding beschikbaar is.</string>
 </resources>

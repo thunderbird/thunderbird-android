@@ -794,4 +794,5 @@
     <string name="about_website_title">Web stranica</string>
     <string name="get_help_title">Zatraži pomoć</string>
     <string name="user_forum_title">Korisnički forum</string>
+    <string name="no_network_message_will_be_sent_later_toast">Niste na mreži. Poruka će biti poslana kada veza bude dostupna</string>
 </resources>

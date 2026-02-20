@@ -844,4 +844,5 @@
     <string name="openpgp_description_text2">이 아이콘을 클릭하면 암호화가 전환됩니다.</string>
     <string name="dialog_autocrypt_mutual_learn_more">자세한 내용은<a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">여기를 클릭</a>하십시오.</string>
     <string name="ac_transfer_setting_summary">종단간 설정을 다른 장치와 안전하게 공유</string>
+    <string name="no_network_message_will_be_sent_later_toast">오프라인 상태입니다. 연결이 가능해지면 메시지가 전송됩니다.</string>
 </resources>

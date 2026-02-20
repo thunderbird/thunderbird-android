@@ -901,4 +901,5 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
     <string name="swipe_action_archive_folder_not_set">Ezarri artxibo-karpeta</string>
     <string name="swipe_action_change_swipe_gestures">Aldatu \nHatza pasatzeko keinuak</string>
     <string name="archiving_not_available_for_this_account">Artxibatzea ez dago erabilgarri kontu honetarako.</string>
+    <string name="no_network_message_will_be_sent_later_toast">Ez dago Interneteko konexiorik. Mezua konexioa berrezartzen denean bidaliko da</string>
 </resources>

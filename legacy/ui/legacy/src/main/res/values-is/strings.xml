@@ -916,4 +916,5 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
     <string name="navigation_drawer_preferences">Hliðarvalmynd</string>
     <string name="expand_folders">Fletta út möppum</string>
     <string name="debug_invalidate_access_token_already_modified">Geymt aðgangsteikn þegar breytt.</string>
+    <string name="no_network_message_will_be_sent_later_toast">Þú ert ótengdur. Skilaboðin verða send þegar tenging er tiltæk.</string>
 </resources>

@@ -903,4 +903,5 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
     <string name="open_camera">Abrir Câmera</string>
     <string name="attach_file">Anexar ficheiro</string>
     <string name="camera_permission_denied">Permissão de câmera negada! Incapaz de tirar foto</string>
+    <string name="no_network_message_will_be_sent_later_toast">Está offline. A mensagem será enviada quando a ligação estiver disponível.</string>
 </resources>

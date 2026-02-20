@@ -63,4 +63,5 @@
     <string name="settings_ui_telemetry_description">Partilha dados de desempenho, uso, hardware e personalização desta app com a Mozilla, para nos ajudar a melhorar o Thunderbird</string>
     <string name="dialog_confirm_empty_spam_message">Deseja esvaziar a pasta de spam?</string>
     <string name="folder_settings_visible_label">Mostrar pasta</string>
+    <string name="no_network_message_will_be_sent_later_toast">Você está offline. A mensagem será enviada quando a conexão estiver disponível.</string>
 </resources>

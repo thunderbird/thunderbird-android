@@ -502,4 +502,5 @@
     <!--A user visible label for the email address copied to the clipboard-->
     <string name="clipboard_label_email_address">ელფოსტის მისამართი</string>
     <string name="about_website_title">ვებსაიტი</string>
+    <string name="no_network_message_will_be_sent_later_toast">ინტერნეტ კავშირი არ არის. შეტყობინება გაიგზავნება, როდესაც კავშირი აღდგება</string>
 </resources>

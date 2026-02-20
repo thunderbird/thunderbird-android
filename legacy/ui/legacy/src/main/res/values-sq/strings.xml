@@ -922,4 +922,5 @@
     <string name="expand_folders">Zgjeroji Dosjet</string>
     <string name="global_settings_messageview_body_content_type_title">Lloj Lënde Mesazhi</string>
     <string name="print_message_action">Shtypni</string>
+    <string name="no_network_message_will_be_sent_later_toast">Jeni offline. Mesazhi do të dërgohet kur lidhja të jetë e disponueshme</string>
 </resources>

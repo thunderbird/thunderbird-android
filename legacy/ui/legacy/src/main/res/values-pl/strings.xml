@@ -934,4 +934,5 @@
     <string name="global_settings_messageview_body_content_type_text_plain">Zwykły tekst (tekst/zwykły)</string>
     <string name="debug_feature_flags">DEBUGOWANIE: flagi funkcji</string>
     <string name="print_message_action">Drukuj</string>
+    <string name="no_network_message_will_be_sent_later_toast">Jesteś offline. Wiadomość zostanie wysłana, gdy połączenie będzie dostępne.</string>
 </resources>

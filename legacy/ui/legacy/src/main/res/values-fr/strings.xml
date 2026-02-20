@@ -929,4 +929,5 @@
     <string name="expand_folders">Développer les dossiers</string>
     <string name="debug_feature_flags">DÉBOGAGE : Drapeaux de fonction</string>
     <string name="print_message_action">Imprimer</string>
+    <string name="no_network_message_will_be_sent_later_toast">Aucune connexion Internet. Le message sera envoyé lorsque la connexion sera rétablie</string>
 </resources>

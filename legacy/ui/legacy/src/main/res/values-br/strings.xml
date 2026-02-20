@@ -928,4 +928,5 @@ Gallout a rit mirout ar gemennadenn-mañ hag implij anezhi evel un enrolladenn e
     <string name="set_format_html_condensed_action">Diskwel ar pajennaozañ</string>
     <string name="set_format_plain_action">Diskwel ar postel hep pajennaozañ</string>
     <string name="set_format_plain_condensed_action">Diskwel hep pajennaozañ</string>
+    <string name="no_network_message_will_be_sent_later_toast">Emaoc’h ezlinenn. Ar gemennadenn a vo kaset pa vo adkavet ar c’henlabour</string>
 </resources>

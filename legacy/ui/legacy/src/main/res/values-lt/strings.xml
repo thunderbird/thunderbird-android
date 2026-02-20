@@ -928,4 +928,5 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
     <string name="global_settings_messageview_body_content_type_title">Laiško turinio tipas</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
     <string name="global_settings_messageview_body_content_type_text_plain">Grynasis tekstas (text/plain)</string>
+    <string name="no_network_message_will_be_sent_later_toast">Esate neprisijungę. Žinutė bus išsiųsta, kai ryšys bus pasiekiamas.</string>
 </resources>

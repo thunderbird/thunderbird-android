@@ -99,6 +99,7 @@ import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.ReplyToParser;
 import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.helper.Utility;
+import net.thunderbird.core.android.network.ConnectivityManager;
 import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -234,6 +235,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final NotificationSender notificationSender = DI.get(NotificationSender.class);
     private final NotificationSenderCompat notificationSenderCompat = new NotificationSenderCompat(notificationSender);
     private final NotificationDismisser notificationDismisser = DI.get(NotificationDismisser.class);
+    private final ConnectivityManager connectivityManager = DI.get(ConnectivityManager.class);
     private final NotificationDismisserCompat notificationDismisserCompat =
         new NotificationDismisserCompat(notificationDismisser);
     private final SentFolderNotFoundConfirmationDialogFragmentFactory sentFolderNotFoundDialogFragmentFactory =
@@ -879,6 +881,10 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             && !ignoreSentFolderNotAssigned && !account.hasSentFolder()) {
             sentFolderNotFoundDialogFragmentFactory.show(account.getUuid(), getSupportFragmentManager());
             return;
+        }
+
+        if (!connectivityManager.isNetworkAvailable()) {
+            Toast.makeText(this, R.string.no_network_message_will_be_sent_later_toast, Toast.LENGTH_LONG).show();
         }
 
         currentMessageBuilder = createMessageBuilder(false);

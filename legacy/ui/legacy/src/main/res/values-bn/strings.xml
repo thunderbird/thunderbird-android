@@ -43,4 +43,5 @@
     <string name="search_action">অনুসন্ধান</string>
     <string name="send_alternate_action">শেয়ার</string>
     <string name="copy_action">অনুলিপি</string>
+    <string name="no_network_message_will_be_sent_later_toast">আপনি অফলাইনে আছেন। সংযোগ উপলব্ধ হলে বার্তাটি পাঠানো হবে।</string>
 </resources>

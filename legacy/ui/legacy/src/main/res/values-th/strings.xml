@@ -59,4 +59,5 @@
     <string name="send_alternate_action">แชร์</string>
     <string name="send_alternate_chooser_title">เลือกผู้ส่ง</string>
     <string name="about_app_authors_thunderbird">ทีมงาน Thunderbird Mobile</string>
+    <string name="no_network_message_will_be_sent_later_toast">คุณออฟไลน์อยู่ ข้อความจะถูกส่งเมื่อการเชื่อมต่อพร้อมใช้งาน</string>
 </resources>
