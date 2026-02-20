@@ -94,4 +94,10 @@ sealed interface MessageListEvent {
      * @param sortCriteria The new [SortCriteria] to apply.
      */
     data class ChangeSortCriteria(val accountId: AccountId?, val sortCriteria: SortCriteria) : UserEvent
+
+    /**
+     * A user event triggered when the footer of the message list is clicked.
+     * This is typically used to load more messages.
+     */
+    data object OnFooterClick : UserEvent
 }

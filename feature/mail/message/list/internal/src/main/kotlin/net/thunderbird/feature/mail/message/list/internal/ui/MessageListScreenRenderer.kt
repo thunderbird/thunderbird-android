@@ -56,9 +56,7 @@ internal class MessageListScreenRenderer : MessageListContract.MessageListScreen
                         ) {
                             ButtonText(
                                 text = state.metadata.footer.text,
-                                onClick = {
-
-                                },
+                                onClick = { dispatchEvent(MessageListEvent.OnFooterClick) },
                             )
                         }
                     }
