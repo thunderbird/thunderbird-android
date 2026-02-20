@@ -7,15 +7,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
 
+/**
+ * Displays the sender or subject of a message item with small title styling.
+ *
+ * The component shows either the sender or subject based on the swap parameter,
+ * with an optional thread count indicator.
+ *
+ * Text is displayed with ellipsis overflow when it exceeds available space.
+ *
+ * @param sender The sender information as an AnnotatedString to display
+ * @param subject The subject line of the message
+ * @param swapSenderWithSubject If `true`, displays the subject instead of the sender;
+ *  if `false`, displays the sender
+ * @param threadCount The number of messages in the thread; displays the count when greater than 0
+ * @param modifier The modifier to be applied to the composable
+ * @param color The text color to use for the displayed content
+ */
 @Composable
 internal fun MessageItemSenderTitleSmall(
-    sender: String,
+    sender: AnnotatedString,
     subject: String,
     swapSenderWithSubject: Boolean,
     threadCount: Int,
@@ -27,13 +44,23 @@ internal fun MessageItemSenderTitleSmall(
         subject = subject,
         swapSenderWithSubject = swapSenderWithSubject,
         text = { text ->
-            TextTitleSmall(
-                text = text,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f),
-                color = color,
-            )
+            when (text) {
+                is AnnotatedString -> TextTitleSmall(
+                    text = text,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                    color = color,
+                )
+
+                else -> TextTitleSmall(
+                    text = text.toString(),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                    color = color,
+                )
+            }
         },
         threadCount = threadCount,
         modifier = modifier,
@@ -41,9 +68,26 @@ internal fun MessageItemSenderTitleSmall(
     )
 }
 
+/**
+ * Displays the sender and subject information for a message item using medium-sized
+ * body text.
+ *
+ * The component shows either the sender or subject based on the swap parameter,
+ * with an optional thread count indicator.
+ *
+ * Text is displayed with ellipsis overflow when it exceeds available space.
+ *
+ * @param sender The sender information as an [AnnotatedString] to display
+ * @param subject The subject line of the message
+ * @param swapSenderWithSubject If `true`, displays the subject instead of the sender;
+ *  if `false`, displays the sender
+ * @param threadCount The number of messages in the thread; displays the count when greater than 0
+ * @param modifier The modifier to be applied to the composable
+ * @param color The text color to use for the displayed content
+ */
 @Composable
 internal fun MessageItemSenderBodyMedium(
-    sender: String,
+    sender: AnnotatedString,
     subject: String,
     swapSenderWithSubject: Boolean,
     threadCount: Int,
@@ -55,13 +99,23 @@ internal fun MessageItemSenderBodyMedium(
         subject = subject,
         swapSenderWithSubject = swapSenderWithSubject,
         text = { text ->
-            TextBodyMedium(
-                text = text,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f),
-                color = color,
-            )
+            when (text) {
+                is AnnotatedString -> TextBodyMedium(
+                    text = text,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                    color = color,
+                )
+
+                else -> TextBodyMedium(
+                    text = text.toString(),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                    color = color,
+                )
+            }
         },
         threadCount = threadCount,
         modifier = modifier,
@@ -71,10 +125,10 @@ internal fun MessageItemSenderBodyMedium(
 
 @Composable
 private fun MessageItemSenderText(
-    sender: String,
+    sender: AnnotatedString,
     subject: String,
     swapSenderWithSubject: Boolean,
-    text: @Composable RowScope.(text: String) -> Unit,
+    text: @Composable RowScope.(text: CharSequence) -> Unit,
     threadCount: Int,
     modifier: Modifier = Modifier,
     color: Color = MainTheme.colors.onSurface,
