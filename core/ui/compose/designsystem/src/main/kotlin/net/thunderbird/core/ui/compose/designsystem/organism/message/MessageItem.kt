@@ -4,9 +4,9 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.defaultMinSize
@@ -21,6 +21,7 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -39,6 +40,8 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import app.k9mail.core.ui.compose.common.window.WindowSizeClass
+import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIconDefaults
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
@@ -48,6 +51,8 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.designsystem.molecule.message.AccountIndicatorIcon
+import net.thunderbird.core.ui.compose.designsystem.molecule.message.HeaderRow
+import net.thunderbird.core.ui.compose.designsystem.molecule.message.HeaderRowCompact
 
 /**
  * Displays a single message item.
@@ -78,7 +83,7 @@ import net.thunderbird.core.ui.compose.designsystem.molecule.message.AccountIndi
  *  Defaults to [MessageItemDefaults.defaultContentPadding].
  * @see MessageItemDefaults
  */
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "LongMethod")
 @Composable
 internal fun MessageItem(
     leading: @Composable () -> Unit,
@@ -102,6 +107,32 @@ internal fun MessageItem(
     val outlineVariant = MainTheme.colors.outlineVariant
     var contentStart by remember { mutableFloatStateOf(0f) }
     val layoutDirection = LocalLayoutDirection.current
+
+    val windowSizeInfo = getWindowSizeInfo()
+    val isCompact = windowSizeInfo.screenWidthSizeClass == WindowSizeClass.Small
+
+    val headerRowContent: @Composable ((RowScope) -> Unit) =
+        remember(showAccountIndicator, accountIndicatorColor, receivedAt, sender, isCompact) {
+            movableContentOf { scope ->
+                with(scope) {
+                    SenderText(
+                        showAccountIndicator = showAccountIndicator,
+                        accountIndicatorColor = accountIndicatorColor,
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                    ) {
+                        sender()
+                    }
+                    if (!isCompact) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                    MessageItemDate(
+                        receivedAt = receivedAt,
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                    )
+                }
+            }
+        }
+
     Surface(
         modifier = modifier
             .combinedClickable(
@@ -133,13 +164,12 @@ internal fun MessageItem(
             }
             Spacer(modifier = Modifier.width(MainTheme.spacings.default))
             // Message Content and Contents
-            Column(modifier = Modifier.weight(1f).onPlaced { contentStart = it.positionInParent().x }) {
-                HeaderRow(
-                    showAccountIndicator = showAccountIndicator,
-                    accountIndicatorColor = accountIndicatorColor,
-                    receivedAt = receivedAt,
-                    senderOrSubject = sender,
-                )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .onPlaced { contentStart = it.positionInParent().x },
+            ) {
+                GetHeaderRow(isCompact, headerRowContent = headerRowContent)
                 MessageContent(colors = colors, preview = preview, maxPreviewLines = maxPreviewLines, subject = subject)
             }
             Spacer(modifier = Modifier.width(MainTheme.spacings.default))
@@ -154,33 +184,15 @@ internal fun MessageItem(
 }
 
 @Composable
-private fun HeaderRow(
-    showAccountIndicator: Boolean,
-    accountIndicatorColor: Color?,
-    receivedAt: String,
+private fun GetHeaderRow(
+    isCompact: Boolean,
     modifier: Modifier = Modifier,
-    senderOrSubject: @Composable () -> Unit,
+    headerRowContent: @Composable ((RowScope) -> Unit),
 ) {
-    FlowRow(
-        verticalArrangement = Arrangement.Center,
-        horizontalArrangement = Arrangement.Start,
-        maxLines = 2,
-        modifier = modifier.defaultMinSize(
-            minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT,
-        ),
-    ) {
-        SenderText(
-            showAccountIndicator = showAccountIndicator,
-            accountIndicatorColor = accountIndicatorColor,
-            modifier = Modifier.align(Alignment.CenterVertically),
-        ) {
-            senderOrSubject()
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        MessageItemDate(
-            receivedAt = receivedAt,
-            modifier = Modifier.align(Alignment.CenterVertically),
-        )
+    if (isCompact) {
+        HeaderRowCompact(modifier, headerRowContent = headerRowContent)
+    } else {
+        HeaderRow(modifier, headerRowContent = headerRowContent)
     }
 }
 

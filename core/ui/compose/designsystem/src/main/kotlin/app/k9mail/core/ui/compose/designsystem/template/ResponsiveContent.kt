@@ -31,6 +31,7 @@ fun ResponsiveContent(
     val windowSizeClass = getWindowSizeInfo()
 
     when (windowSizeClass.screenWidthSizeClass) {
+        WindowSizeClass.Small -> CompactContent(modifier = modifier, content = content)
         WindowSizeClass.Compact -> CompactContent(modifier = modifier, content = content)
         WindowSizeClass.Medium -> MediumContent(modifier = modifier, content = content)
         WindowSizeClass.Expanded -> ExpandedContent(modifier = modifier, content = content)
@@ -72,6 +73,7 @@ private fun ExpandedContent(
     content: @Composable (PaddingValues) -> Unit,
 ) {
     when (getWindowSizeInfo().screenHeightSizeClass) {
+        WindowSizeClass.Small -> CompactContent(modifier, content)
         WindowSizeClass.Compact -> MediumContent(modifier, content)
         WindowSizeClass.Medium -> {
             Box(
