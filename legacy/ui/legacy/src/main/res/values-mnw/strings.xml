@@ -2,4 +2,5 @@
 <resources>
     <string name="about_app_authors_thunderbird">ဂကောံဖုၚ်ဂစေံလလဳ</string>
     <string name="about_app_authors_k9">တၠကၠဵု ခေ-၉</string>
+    <string name="no_network_message_will_be_sent_later_toast">အင်တာနက် ဆက်သွယ်မှု မရှိပါ။ ဆက်သွယ်မှု ပြန်လည်ရရှိသောအခါ မက်ဆေ့ချ် ပို့မည်။</string>
 </resources>

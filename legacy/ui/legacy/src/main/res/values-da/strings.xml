@@ -858,4 +858,5 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
 <string name="general_settings_post_remove_action_show_next_message">Vis næste meddelelse</string>
     <string name="general_settings_post_remove_action_show_previous_message">Vis forrige meddelelse</string>
     <string name="about_title">Om <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="no_network_message_will_be_sent_later_toast">Ingen internetforbindelse. Beskeden sendes, når forbindelsen er gendannet</string>
 </resources>

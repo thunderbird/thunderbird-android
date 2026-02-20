@@ -928,4 +928,5 @@
     <string name="global_settings_messageview_body_content_type_text_plain">Rein tekst (text/plain)</string>
     <string name="global_settings_messageview_body_content_type_title">Innhaldstype for brødtekst</string>
     <string name="print_message_action">Skriv ut</string>
+    <string name="no_network_message_will_be_sent_later_toast">Du er fråkopla. Meldinga blir send når tilkoplinga er tilgjengeleg.</string>
 </resources>

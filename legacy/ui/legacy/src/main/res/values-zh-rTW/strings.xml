@@ -908,4 +908,5 @@
     <string name="debug_feature_flags">除錯：功能標幟</string>
     <string name="account_setup_auto_select_folder">自動選取資料夾</string>
     <string name="navigation_drawer_preferences">側邊選單</string>
+    <string name="no_network_message_will_be_sent_later_toast">您目前處於離線狀態。連線可用時將傳送訊息。</string>
 </resources>

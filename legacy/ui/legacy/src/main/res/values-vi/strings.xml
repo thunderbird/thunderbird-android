@@ -884,4 +884,5 @@
     <string name="folder_settings_notifications_label">Thông báo</string>
     <string name="settings_ui_telemetry_title">Mục đích sử dụng và dữ liệu chuyên sâu</string>
     <string name="settings_ui_data_collection">Thu thập dữ liệu</string>
+    <string name="no_network_message_will_be_sent_later_toast">Bạn đang ngoại tuyến. Tin nhắn sẽ được gửi khi có kết nối</string>
 </resources>

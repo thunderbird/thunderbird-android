@@ -890,4 +890,5 @@
     <string name="attach_file">Lampirkan Berkas</string>
     <string name="camera_permission_denied">Izin Kamera Ditolak! Tidak bisa mengambil foto</string>
     <string name="open_camera">Buka Kamera</string>
+    <string name="no_network_message_will_be_sent_later_toast">Anda sedang offline. Pesan akan dikirim saat koneksi tersedia.</string>
 </resources>

@@ -29,4 +29,5 @@
     <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%1$s</xliff:g>\" есептік жазбасы <xliff:g id="app_name">%2$s</xliff:g> қолданбасынан жойылады.</string>
     <string name="about_app_authors_thunderbird">Thunderbird мобильдік әзірлеу тобы</string>
     <string name="about_app_authors_k9">K-9 ит серуендетушілері</string>
+    <string name="no_network_message_will_be_sent_later_toast">Сіз офлайнсыз. Қосылым қолжетімді болған кезде хабарлама жіберіледі.</string>
 </resources>

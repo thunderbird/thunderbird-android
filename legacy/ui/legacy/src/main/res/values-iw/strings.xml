@@ -920,4 +920,5 @@
     <string name="swipe_action_change_swipe_gestures">שינוי \nמחוות החלקה</string>
     <string name="archiving_not_available_for_this_account">ארכון לא זמין עבור חשבון זה.</string>
     <string name="debug_open_secret_debug_screen">פתיחת מסך ניפוי שגיאות סודי</string>
+    <string name="no_network_message_will_be_sent_later_toast">אין חיבור לאינטרנט. ההודעה תישלח כאשר החיבור ישוחזר.</string>
 </resources>

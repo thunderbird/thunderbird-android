@@ -367,6 +367,7 @@
     <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <!--A user visible label for the email address copied to the clipboard-->
     <string name="clipboard_label_email_address">Էլ․ փոստի հասցէ</string>
+    <string name="no_network_message_will_be_sent_later_toast">Դուք օֆլայն եք։ Հաղորդագրությունը կուղարկվի, երբ կապը հասանելի լինի։</string>
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->

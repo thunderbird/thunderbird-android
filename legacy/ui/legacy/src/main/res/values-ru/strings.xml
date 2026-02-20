@@ -943,4 +943,5 @@
     <string name="expand_folders">Развернуть папки</string>
     <string name="debug_feature_flags">ОТЛАДКА: флаги функций</string>
     <string name="print_message_action">Печать</string>
+    <string name="no_network_message_will_be_sent_later_toast">Вы не в сети. Сообщение будет отправлено, когда соединение станет доступным.</string>
 </resources>

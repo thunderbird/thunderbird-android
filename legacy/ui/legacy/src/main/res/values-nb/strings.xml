@@ -926,4 +926,5 @@
     <string name="expand_folders">Utvid mapper</string>
     <string name="debug_feature_flags">FEILSØKING: Funksjonsflagg</string>
     <string name="print_message_action">Skriv ut</string>
+    <string name="no_network_message_will_be_sent_later_toast">Du er frakoblet. Meldingen sendes når tilkoblingen er tilgjengelig.</string>
 </resources>

@@ -98,4 +98,5 @@
     <string name="account_setup_options_mail_display_count_10000">10 000 mensaxes</string>
     <string name="account_setup_options_mail_display_count_50">50 mensaxes</string>
     <string name="messagelist_preferences">Llistes de mensaxes</string>
+    <string name="no_network_message_will_be_sent_later_toast">Tas ensin conexón. El mensaxe va unviase cuando tea disponible la conexón</string>
 </resources>

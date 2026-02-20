@@ -890,4 +890,5 @@
     <string name="about_title">Par <xliff:g id="app_name">%s</xliff:g></string>
     <string name="folder_settings_visible_label">Rādīt mapi</string>
     <string name="settings_list_action_support">Atbalstiet <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="no_network_message_will_be_sent_later_toast">Jūs esat bezsaistē. Ziņojums tiks nosūtīts, kad savienojums būs pieejams.</string>
 </resources>

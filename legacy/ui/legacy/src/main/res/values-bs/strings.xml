@@ -218,4 +218,5 @@
     <string name="general_settings_ui_density_relaxed">Opušten</string>
     <string name="general_settings_ui_density_default">Uobičajen</string>
     <string name="global_settings_privacy_hide_useragent">Sakrij klijent e-pošte</string>
+    <string name="no_network_message_will_be_sent_later_toast">Niste na mreži. Poruka će biti poslana kada veza bude dostupna</string>
 </resources>

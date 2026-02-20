@@ -166,6 +166,7 @@
     <string name="general_settings_title">Iɣewwaren imuta</string>
     <string name="clipboard_label_email_address">Tansa imayl</string>
     <string name="background_work_notification_remove_account">Tukksa n umiḍan…</string>
+    <string name="no_network_message_will_be_sent_later_toast">Tellaḍ deg offline. Ad yettwazen yizen ticki ara yili wassaɣ.</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> n yizen amaynut</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> n yiznan imaynuten</item>

@@ -903,4 +903,5 @@
     <string name="message_list_content_description_unread_prefix">не прачытана, %s</string>
     <string name="background_work_notification_remove_account">Выдаленне акаўнта…</string>
     <string name="settings_ui_telemetry_description">Абагульвае з Mozilla даныя прадукцыйнасці, выкарыстання, абсталявання і налад гэтай праграмы, каб дапамагчы палепшыць Thunderbird</string>
+    <string name="no_network_message_will_be_sent_later_toast">Вы не ў сетцы. Паведамленне будзе адпраўлена, калі з’явіцца злучэнне.</string>
 </resources>

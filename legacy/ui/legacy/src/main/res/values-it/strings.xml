@@ -929,4 +929,5 @@
     <string name="global_settings_messageview_body_content_type_title">Corpo del messaggio come</string>
     <string name="debug_feature_flags">DEBUG: Flag Caratteristiche</string>
     <string name="print_message_action">Stampa</string>
+    <string name="no_network_message_will_be_sent_later_toast">Sei offline. Il messaggio verrà inviato quando la connessione sarà disponibile.</string>
 </resources>

@@ -886,4 +886,5 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <string name="open_camera">Abir a cámara</string>
     <string name="attach_file">Achegar arquivo</string>
     <string name="camera_permission_denied">Non se poden tirar fotos, pois non se concedeu permiso á cámara</string>
+    <string name="no_network_message_will_be_sent_later_toast">Non hai conexión a Internet. A mensaxe enviarase cando se restableza a conexión.</string>
 </resources>

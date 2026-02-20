@@ -939,4 +939,5 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="print_message_action">Natisni</string>
     <string name="account_setup_auto_select_folder">Samodejno izberi mapo</string>
     <string name="debug_feature_flags">RAZHROŠČ.: zastavice značilnosti</string>
+    <string name="no_network_message_will_be_sent_later_toast">Ste brez povezave. Sporočilo bo poslano, ko bo povezava na voljo</string>
 </resources>

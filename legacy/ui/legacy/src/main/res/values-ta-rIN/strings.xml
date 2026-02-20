@@ -918,4 +918,5 @@
     <string name="debug_force_auth_failure_unavailable">இந்தக் கணக்கிற்கு OAuth உள்ளமைவு எதுவும் இல்லை.</string>
     <string name="debug_invalidate_access_token_cannot_modify">சேமிக்கப்பட்ட அணுகல் கிள்ளாக்கை மாற்ற முடியவில்லை. உள்ளக செல்லாததை முயற்சிக்கவும்.</string>
     <string name="debug_invalidate_access_token_already_modified">சேமிக்கப்பட்ட அணுகல் கிள்ளாக்கு ஏற்கனவே மாற்றியமைக்கப்பட்டுள்ளது.</string>
+    <string name="no_network_message_will_be_sent_later_toast">நீங்கள் ஆஃப்லைனில் உள்ளீர்கள். இணைப்பு கிடைக்கும் போது செய்தி அனுப்பப்படும்</string>
 </resources>

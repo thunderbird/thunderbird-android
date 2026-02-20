@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="no_network_message_will_be_sent_later_toast">Uko nje ya mtandao. Ujumbe utatumwa wakati muunganisho utakapopatikana</string>
 </resources>

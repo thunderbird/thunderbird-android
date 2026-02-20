@@ -919,4 +919,5 @@
     <string name="set_format_html_action">Utilitzar el format original</string>
     <string name="set_format_plain_action">Mostra el missatge sense format</string>
     <string name="global_settings_messageview_body_content_type_text_plain">Text pla (text/plain)</string>
+    <string name="no_network_message_will_be_sent_later_toast">No hi ha connexió a Internet. El missatge s’enviarà quan la connexió es restableixi.</string>
 </resources>

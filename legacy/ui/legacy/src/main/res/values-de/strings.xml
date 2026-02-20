@@ -927,4 +927,5 @@ Du kannst diese Nachricht aufheben und sie als Backup f√ºr deinen geheimen Schl√
     <string name="global_settings_messageview_body_content_type_title">Inhaltstyp des Textes</string>
     <string name="print_message_action">Drucken</string>
     <string name="debug_feature_flags">DEBUG: Feature-Flags</string>
+    <string name="no_network_message_will_be_sent_later_toast">Keine Internetverbindung. Die Nachricht wird gesendet, sobald die Verbindung wiederhergestellt ist.</string>
 </resources>
