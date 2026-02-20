@@ -175,6 +175,7 @@
     <string-array name="message_list_date_time_format_entries">
         <item>@string/general_settings_message_list_date_time_format_contextual</item>
         <item>@string/general_settings_message_list_date_time_format_full</item>
+        <item>@string/general_settings_message_list_date_time_format_iso</item>
     </string-array>
 
     <string-array name="post_remove_navigation_entries">

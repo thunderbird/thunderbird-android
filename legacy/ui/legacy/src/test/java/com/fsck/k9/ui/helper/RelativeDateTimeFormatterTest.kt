@@ -159,6 +159,25 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
         assertThat(displayDate).isEqualTo("12/31/2019, 11:59 PM")
     }
 
+    @Test
+    fun oneMinuteAgo_shouldReturnISODate() {
+        setClockTo("2020-05-17T15:42")
+        val date = "2020-05-17T15:41".toEpochMillis()
+
+        val displayDate = dateTimeFormatter.formatDate(date, MessageListDateTimeFormat.ISO)
+
+        assertThat(displayDate).isEqualTo("2020-05-17 15:41")
+    }
+
+    @Test
+    fun endOfLastYear_shouldReturnISODate() {
+        setClockTo("2020-05-17T15:42")
+        val date = LocalDateTime.parse("2019-12-31T23:59").toEpochMillis()
+
+        val displayDate = dateTimeFormatter.formatDate(date, MessageListDateTimeFormat.ISO)
+
+        assertThat(displayDate).isEqualTo("2019-12-31 23:59")
+    }
     private fun setClockTo(time: String) {
         val dateTime = LocalDateTime.parse(time)
         val timeInMillis = dateTime.toEpochMillis()

@@ -31,17 +31,25 @@ constructor(
         @OptIn(ExperimentalTime::class)
         val now = clock.now().toCalendar()
         val date = timestamp.toCalendar()
-        val format = if (dateTimeFormat == MessageListDateTimeFormat.Full) {
-            FORMAT_SHOW_DATE or FORMAT_SHOW_YEAR or FORMAT_NUMERIC_DATE or FORMAT_SHOW_TIME
-        } else {
-            when {
-                date.isToday() -> FORMAT_SHOW_TIME
-                date.isWithinPastSevenDaysOf(now) -> FORMAT_SHOW_WEEKDAY or FORMAT_ABBREV_WEEKDAY
-                date.isSameYearAs(now) -> FORMAT_SHOW_DATE or FORMAT_ABBREV_MONTH
-                else -> FORMAT_SHOW_DATE or FORMAT_SHOW_YEAR or FORMAT_NUMERIC_DATE
+        return when (dateTimeFormat) {
+            MessageListDateTimeFormat.Contextual -> {
+                val flags = when {
+                    date.isToday() -> FORMAT_SHOW_TIME
+                    date.isWithinPastSevenDaysOf(now) -> FORMAT_SHOW_WEEKDAY or FORMAT_ABBREV_WEEKDAY
+                    date.isSameYearAs(now) -> FORMAT_SHOW_DATE or FORMAT_ABBREV_MONTH
+                    else -> FORMAT_SHOW_DATE or FORMAT_SHOW_YEAR or FORMAT_NUMERIC_DATE
+                }
+                DateUtils.formatDateRange(context, timestamp, timestamp, flags)
+            }
+            MessageListDateTimeFormat.Full -> {
+                val flags = FORMAT_SHOW_TIME or FORMAT_SHOW_DATE or FORMAT_SHOW_YEAR or FORMAT_NUMERIC_DATE
+                DateUtils.formatDateRange(context, timestamp, timestamp, flags)
+            }
+            MessageListDateTimeFormat.ISO -> {
+                val sdf = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.US)
+                sdf.format(java.util.Date(timestamp))
             }
         }
-        return DateUtils.formatDateRange(context, timestamp, timestamp, format)
     }
 }
 
