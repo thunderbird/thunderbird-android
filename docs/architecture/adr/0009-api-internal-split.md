@@ -5,7 +5,7 @@
 
 ## Status
 
-- **proposed**
+- **Accepted**
 
 ## Context
 
@@ -30,6 +30,7 @@ content rules for both API and internal code — for both feature and core modul
   `:feature:*:internal` or `:core:*:internal` from a different area is prohibited.
 - Binding of contracts to implementations happens in central composition modules (application assembly): `:app-common`
   and the app-specific modules `:app-k9mail` and `:app-thunderbird`.
+- **Strict Visibility**: Within `:feature:*:internal` and `:core:*:internal` modules, use the `internal` visibility modifier for all code that is not strictly required to be `public` for dependency injection or application composition. This ensures that implementation details are not accessible directly even when a module has a dependency on the `internal` module.
 
 ### What goes into API vs. Internal
 
