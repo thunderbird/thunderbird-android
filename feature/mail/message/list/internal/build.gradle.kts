@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.core.ui.theme.api)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.folder.api)
+    implementation(projects.feature.notification.api)
     implementation(projects.legacy.mailstore)
     implementation(projects.mail.common)
 
