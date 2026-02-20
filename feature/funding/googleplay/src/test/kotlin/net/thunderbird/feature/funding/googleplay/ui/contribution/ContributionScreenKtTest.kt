@@ -15,6 +15,7 @@ internal class ContributionScreenKtTest : ComposeTest() {
 
     @Test
     fun `should call onBack when back button is pressed`() = runTest {
+        // Arrange
         val initialState = State()
         val viewModel = FakeContributionViewModel(initialState)
         var onBackCounter = 0
@@ -26,14 +27,19 @@ internal class ContributionScreenKtTest : ComposeTest() {
             )
         }
 
+        // Assert (initial)
         assertThat(onBackCounter).isEqualTo(0)
 
+        // Act (system back)
         pressBack()
 
+        // Assert (after system back)
         assertThat(onBackCounter).isEqualTo(1)
 
+        // Act (top app bar back button)
         onNodeWithTag("TopAppBarBackButton").performClick()
 
+        // Assert (after top app bar back)
         assertThat(onBackCounter).isEqualTo(2)
     }
 }

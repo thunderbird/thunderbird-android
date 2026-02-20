@@ -7,6 +7,7 @@ import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
+import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
@@ -24,6 +25,7 @@ class ContributionViewModelTest {
 
     @Test
     fun `should change selected contribution and selected type when one time contribution selected`() = runMviTest {
+        // Arrange
         val initialState = State(
             listState = ContributionListState(
                 oneTimeContributions = FakeData.oneTimeContributions,
@@ -37,13 +39,17 @@ class ContributionViewModelTest {
         )
 
         contributionRobot(initialState) {
+            // Act
             selectOneTimeContribution()
+
+            // Assert
             verifyOneTimeContributionSelected()
         }
     }
 
     @Test
     fun `should change selected contribution and selected type when recurring contribution selected`() = runMviTest {
+        // Arrange
         val initialState = State(
             listState = ContributionListState(
                 oneTimeContributions = FakeData.oneTimeContributions,
@@ -57,13 +63,17 @@ class ContributionViewModelTest {
         )
 
         contributionRobot(initialState) {
+            // Act
             selectRecurringContribution()
+
+            // Assert
             verifyRecurringContributionSelected()
         }
     }
 
     @Test
     fun `should change selected contribution when contribution item clicked`() = runMviTest {
+        // Arrange
         val initialState = State(
             listState = ContributionListState(
                 oneTimeContributions = FakeData.oneTimeContributions,
@@ -78,16 +88,46 @@ class ContributionViewModelTest {
         val selectedContribution = FakeData.recurringContributions[2]
 
         contributionRobot(initialState) {
+            // Act
             selectContributionItem(selectedContribution)
+
+            // Assert
             verifyContributionItemSelected(selectedContribution)
+        }
+    }
+
+    @Test
+    fun `should hide list when purchase successful`() = runMviTest {
+        // Arrange
+        val repository = FakeContributionRepository()
+        val contribution = FakeData.oneTimeContributions[0]
+        val initialState = State(
+            listState = ContributionListState(
+                oneTimeContributions = FakeData.oneTimeContributions,
+                recurringContributions = FakeData.recurringContributions,
+                selectedContribution = FakeData.oneTimeContributions[0],
+                isRecurringContributionSelected = false,
+                isLoading = false,
+            ),
+            purchasedContribution = null,
+            showContributionList = true,
+        )
+
+        contributionRobot(initialState = initialState, repository = repository) {
+            // Act
+            repository.purchasedContribution.value = Outcome.success(contribution)
+
+            // Assert
+            verifyListHidden(contribution)
         }
     }
 }
 
 private suspend fun MviContext.contributionRobot(
     initialState: State = State(),
+    repository: FakeContributionRepository = FakeContributionRepository(),
     interaction: suspend ContributionRobot.() -> Unit,
-) = ContributionRobot(this, initialState).apply {
+) = ContributionRobot(this, initialState, repository).apply {
     initialize()
     interaction()
 }
@@ -95,19 +135,22 @@ private suspend fun MviContext.contributionRobot(
 private class ContributionRobot(
     private val mviContext: MviContext,
     private val initialState: State = State(),
+    private val repository: FakeContributionRepository = FakeContributionRepository(),
 ) {
     // FIX use case
     private val viewModel: ContributionContract.ViewModel = ContributionViewModel(
         getAvailableContributions = {
-            Outcome.success(
-                AvailableContributions(
-                    oneTimeContributions = FakeData.oneTimeContributions,
-                    recurringContributions = FakeData.recurringContributions,
-                    purchasedContribution = FakeData.oneTimeContributions.first(),
+            flowOf(
+                Outcome.success(
+                    AvailableContributions(
+                        oneTimeContributions = FakeData.oneTimeContributions,
+                        recurringContributions = FakeData.recurringContributions,
+                        purchasedContribution = null,
+                    ),
                 ),
             )
         },
-        billingManager = FakeBillingManager(),
+        repository = repository,
         initialState = initialState,
     )
     private lateinit var turbines: MviTurbines<State, Effect>
@@ -163,6 +206,18 @@ private class ContributionRobot(
                 listState = initialState.listState.copy(
                     selectedContribution = item,
                 ),
+            ),
+        )
+    }
+
+    suspend fun verifyListHidden(purchasedContribution: Contribution) {
+        assertThat(turbines.awaitStateItem()).isEqualTo(
+            initialState.copy(
+                listState = initialState.listState.copy(
+                    isLoading = false,
+                ),
+                purchasedContribution = purchasedContribution,
+                showContributionList = false,
             ),
         )
     }
