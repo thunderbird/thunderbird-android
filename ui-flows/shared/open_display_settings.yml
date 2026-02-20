@@ -1,4 +1,5 @@
-appId: net.thunderbird.android.debug
+appId: net.thunderbird.android.beta
+#maestro test ui-flows/shared/open_display_settings.yml
 ---
 
 ## Open drawer
@@ -6,12 +7,11 @@ appId: net.thunderbird.android.debug
 
 ### Open settings
 - tapOn:
-    id: "net.thunderbird.android.debug:id/material_drawer_name"
-    index: 9
+    text: "Settings"
 
 ### Open general settings
 - tapOn:
-    id: "net.thunderbird.android.debug:id/text"
+    id: "net.thunderbird.android.beta:id/text"
     index: 0
     text: "General settings"
 
@@ -20,3 +20,22 @@ appId: net.thunderbird.android.debug
     id: "android:id/title"
     index: 0
     text: "Display"
+
+
+### Open drawer
+#- tapOn:
+#    point: 10%,10%
+#
+#### Open settings
+#- tapOn:
+#    point: 10%,90%
+#
+#### Open general settings
+#- tapOn:
+#    id: "net.thunderbird.android.beta:id/text"
+#    index: 0
+#
+#### Open display settings
+#- tapOn:
+#    id: "android:id/title"
+#    index: 0
