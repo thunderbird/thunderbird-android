@@ -19,6 +19,9 @@ import net.thunderbird.feature.mail.message.list.domain.model.SortType
  * @property sortCriteriaPerAccount The current message list sorting criteria.
  * @property activeMessage The message that is currently being viewed in a split-screen or tablet layout.
  * @property isActive `true` if the message list is the currently active screen; `false` otherwise.
+ * @property availablePrimarySortTypes The set of primary sort types that can be used for sorting messages.
+ * @property availableSecondarySortTypes The set of secondary sort types that can be used for sorting messages.
+ * @property footer The footer text to display at the bottom of the message list.
  */
 data class MessageListMetadata(
     val folder: Folder?,
@@ -28,4 +31,13 @@ data class MessageListMetadata(
     val isActive: Boolean,
     val availablePrimarySortTypes: ImmutableSet<SortType> = SortType.entries.toPersistentSet(),
     val availableSecondarySortTypes: ImmutableSet<SortType> = SortCriteria.DateSortTypeOnly.toPersistentSet(),
+    val footer: MessageListFooter = MessageListFooter(),
+)
+
+/**
+ * Represents the footer text to display at the bottom of the message list.
+ */
+data class MessageListFooter(
+    val showFooter: Boolean = true,
+    val text: String = "",
 )
