@@ -13,9 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.molecule.PullToRefreshBox
+import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageListItem
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
+import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import net.thunderbird.feature.notification.api.content.InAppNotification
@@ -44,7 +46,16 @@ internal class MessageListScreenRenderer : MessageListContract.MessageListScreen
             ) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(state.messages) { message ->
-
+                        MessageListItem(
+                            message = message,
+                            showAccountIndicator = state.metadata.showAccountIndicator,
+                            preferences = requireNotNull(state.preferences),
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = { dispatchEvent(MessageItemEvent.OnMessageClick(message)) },
+                            onLongClick = { dispatchEvent(MessageItemEvent.ToggleSelectMessages(message)) },
+                            onAvatarClick = { dispatchEvent(MessageItemEvent.ToggleSelectMessages(message)) },
+                            onFavouriteClick = { dispatchEvent(MessageItemEvent.ToggleFavourite(message)) },
+                        )
                     }
                     item {
                         Box(
