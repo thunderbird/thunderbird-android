@@ -87,7 +87,7 @@ class SingleMessageNotificationDataCreatorTest {
 
     @Test
     fun `always show delete action without confirmation`() {
-        setDeleteAction(NotificationQuickDelete.ALWAYS)
+        setMessageActions(cutoff = 3)
         fakeInteractionPreferences.setConfirmDeleteFromNotification(false)
         val content = createNotificationContent()
 
@@ -105,7 +105,7 @@ class SingleMessageNotificationDataCreatorTest {
 
     @Test
     fun `always show delete action with confirmation`() {
-        setDeleteAction(NotificationQuickDelete.ALWAYS)
+        setMessageActions(cutoff = 3)
         fakeInteractionPreferences.setConfirmDeleteFromNotification(true)
         val content = createNotificationContent()
 
@@ -122,9 +122,8 @@ class SingleMessageNotificationDataCreatorTest {
     }
 
     @Test
-    fun `show delete action for single notification without confirmation`() {
-        setDeleteAction(NotificationQuickDelete.FOR_SINGLE_MSG)
-        fakeInteractionPreferences.setConfirmDeleteFromNotification(false)
+    fun `fill actions below cutoff up to max shown`() {
+        setMessageActions(cutoff = 2)
         val content = createNotificationContent()
 
         val result = notificationDataCreator.createSingleNotificationData(
@@ -136,42 +135,6 @@ class SingleMessageNotificationDataCreatorTest {
         )
 
         assertThat(result.actions).contains(NotificationAction.Delete)
-        assertThat(result.wearActions).contains(WearNotificationAction.Delete)
-    }
-
-    @Test
-    fun `show delete action for single notification with confirmation`() {
-        setDeleteAction(NotificationQuickDelete.FOR_SINGLE_MSG)
-        fakeInteractionPreferences.setConfirmDeleteFromNotification(true)
-        val content = createNotificationContent()
-
-        val result = notificationDataCreator.createSingleNotificationData(
-            account = account,
-            notificationId = 0,
-            content = content,
-            timestamp = 0,
-            addLockScreenNotification = false,
-        )
-
-        assertThat(result.actions).contains(NotificationAction.Delete)
-        assertThat(result.wearActions).doesNotContain(WearNotificationAction.Delete)
-    }
-
-    @Test
-    fun `never show delete action`() {
-        setDeleteAction(NotificationQuickDelete.NEVER)
-        val content = createNotificationContent()
-
-        val result = notificationDataCreator.createSingleNotificationData(
-            account = account,
-            notificationId = 0,
-            content = content,
-            timestamp = 0,
-            addLockScreenNotification = false,
-        )
-
-        assertThat(result.actions).doesNotContain(NotificationAction.Delete)
-        assertThat(result.wearActions).doesNotContain(WearNotificationAction.Delete)
     }
 
     @Test
@@ -257,8 +220,11 @@ class SingleMessageNotificationDataCreatorTest {
         assertThat(result.wearActions).doesNotContain(WearNotificationAction.Spam)
     }
 
-    private fun setDeleteAction(mode: NotificationQuickDelete) {
-        fakeNotificationPreferences.setNotificationQuickDeleteBehaviour(mode)
+    private fun setMessageActions(cutoff: Int) {
+        fakeNotificationPreferences.setMessageActions(
+            order = listOf("reply", "mark_as_read", "delete", "archive", "spam"),
+            cutoff = cutoff,
+        )
     }
 
     private fun createAccount(): LegacyAccountDto {
@@ -317,6 +283,10 @@ class SingleMessageNotificationDataCreatorTest {
 
         fun setNotificationQuickDeleteBehaviour(behaviour: NotificationQuickDelete) {
             prefs.update { it.copy(notificationQuickDeleteBehaviour = behaviour) }
+        }
+
+        fun setMessageActions(order: List<String>, cutoff: Int) {
+            prefs.update { it.copy(messageActionsOrder = order, messageActionsCutoff = cutoff) }
         }
     }
 }

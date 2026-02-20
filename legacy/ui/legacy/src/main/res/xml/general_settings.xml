@@ -485,21 +485,24 @@
             />
 
         <ListPreference
-            android:dialogTitle="@string/global_settings_notification_quick_delete_title"
-            android:entries="@array/notification_quick_delete_entries"
-            android:entryValues="@array/notification_quick_delete_values"
-            android:key="notification_quick_delete"
-            app:useSimpleSummaryProvider="true"
-            android:title="@string/global_settings_notification_quick_delete_title"
-            />
-
-        <ListPreference
             android:dialogTitle="@string/global_settings_lock_screen_notification_visibility_title"
             android:entries="@array/lock_screen_notification_visibility_entries"
             android:entryValues="@array/lock_screen_notification_visibility_values"
             android:key="lock_screen_notification_visibility"
             app:useSimpleSummaryProvider="true"
             android:title="@string/global_settings_lock_screen_notification_visibility_title"
+            />
+
+        <Preference
+            android:key="notification_actions_settings"
+            android:title="@string/notification_actions_settings_title"
+            android:summary="@string/notification_actions_settings_summary"
+            />
+
+        <CheckBoxPreference
+            android:key="notification_summary_delete"
+            android:title="@string/notification_summary_delete_title"
+            android:summary="@string/notification_summary_delete_summary"
             />
 
     </PreferenceScreen>

@@ -304,8 +304,13 @@ class SummaryNotificationDataCreatorTest {
     }
 
     private fun setDeleteAction(mode: NotificationQuickDelete) {
+        val isSummaryDeleteActionEnabled = mode == NotificationQuickDelete.ALWAYS
+
         generalSettings = generalSettings.copy(
-            notification = generalSettings.notification.copy(notificationQuickDeleteBehaviour = mode),
+            notification = generalSettings.notification.copy(
+                isSummaryDeleteActionEnabled = isSummaryDeleteActionEnabled,
+                notificationQuickDeleteBehaviour = mode,
+            ),
         )
     }
 
