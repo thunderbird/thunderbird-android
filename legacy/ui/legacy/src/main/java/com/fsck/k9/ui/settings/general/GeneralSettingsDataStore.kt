@@ -230,6 +230,7 @@ class GeneralSettingsDataStore(
     }
 
     override fun getStringSet(key: String, defValues: Set<String>?): Set<String>? {
+        val visualSettings = generalSettingsManager.getConfig().display.visualSettings
         return when (key) {
             "confirm_actions" -> {
                 mutableSetOf<String>().apply {
@@ -245,11 +246,11 @@ class GeneralSettingsDataStore(
 
             "messageview_visible_refile_actions" -> {
                 mutableSetOf<String>().apply {
-                    if (K9.isMessageViewDeleteActionVisible) add("delete")
-                    if (K9.isMessageViewArchiveActionVisible) add("archive")
-                    if (K9.isMessageViewMoveActionVisible) add("move")
-                    if (K9.isMessageViewCopyActionVisible) add("copy")
-                    if (K9.isMessageViewSpamActionVisible) add("spam")
+                    if (visualSettings.isMessageViewDeleteActionVisible) add("delete")
+                    if (visualSettings.isMessageViewArchiveActionVisible) add("archive")
+                    if (visualSettings.isMessageViewMoveActionVisible) add("move")
+                    if (visualSettings.isMessageViewCopyActionVisible) add("copy")
+                    if (visualSettings.isMessageViewSpamActionVisible) add("spam")
                 }
             }
 
@@ -277,11 +278,20 @@ class GeneralSettingsDataStore(
             }
 
             "messageview_visible_refile_actions" -> {
-                K9.isMessageViewDeleteActionVisible = "delete" in checkedValues
-                K9.isMessageViewArchiveActionVisible = "archive" in checkedValues
-                K9.isMessageViewMoveActionVisible = "move" in checkedValues
-                K9.isMessageViewCopyActionVisible = "copy" in checkedValues
-                K9.isMessageViewSpamActionVisible = "spam" in checkedValues
+                skipSaveSettings = true
+                generalSettingsManager.update { settings ->
+                    settings.copy(
+                        display = settings.display.copy(
+                            visualSettings = settings.display.visualSettings.copy(
+                                isMessageViewArchiveActionVisible = "archive" in checkedValues,
+                                isMessageViewDeleteActionVisible = "delete" in checkedValues,
+                                isMessageViewMoveActionVisible = "move" in checkedValues,
+                                isMessageViewCopyActionVisible = "copy" in checkedValues,
+                                isMessageViewSpamActionVisible = "spam" in checkedValues,
+                            ),
+                        ),
+                    )
+                }
             }
 
             else -> return
