@@ -118,16 +118,17 @@ internal fun MessageItem(
                     SenderText(
                         showAccountIndicator = showAccountIndicator,
                         accountIndicatorColor = accountIndicatorColor,
-                        modifier = Modifier.align(Alignment.CenterVertically),
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .weight(1f, fill = false),
                     ) {
                         sender()
                     }
-                    if (!isCompact) {
-                        Spacer(modifier = Modifier.weight(1f))
-                    }
                     MessageItemDate(
                         receivedAt = receivedAt,
-                        modifier = Modifier.align(Alignment.CenterVertically),
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .wrapContentWidth(),
                     )
                 }
             }
@@ -334,7 +335,7 @@ private fun MessageItemDate(
     TextTitleSmall(
         text = receivedAt,
         maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
+        overflow = TextOverflow.Visible,
         modifier = modifier,
     )
 }
