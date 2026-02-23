@@ -23,6 +23,7 @@ import net.thunderbird.feature.mail.message.list.domain.model.SortType
  * @property availableSecondarySortTypes The set of secondary sort types that can be used for sorting messages.
  * @property footer The footer text to display at the bottom of the message list.
  * @property showAccountIndicator Whether to show the account indicator in the message list.
+ * @property paging The pagination state of the message list.
  */
 data class MessageListMetadata(
     val folder: Folder?,
@@ -34,6 +35,7 @@ data class MessageListMetadata(
     val availableSecondarySortTypes: ImmutableSet<SortType> = SortCriteria.DateSortTypeOnly.toPersistentSet(),
     val footer: MessageListFooter = MessageListFooter(),
     val showAccountIndicator: Boolean = false,
+    val paging: PaginationUi = PaginationUi(),
 )
 
 /**
