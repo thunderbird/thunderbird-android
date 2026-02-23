@@ -1,9 +1,9 @@
-package app.k9mail.core.ui.compose.common.mvi
+package net.thunderbird.core.ui.contract.mvi
 
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.runComposeUiTest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.testing.setContent
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.AfterTest
@@ -19,13 +19,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
 
-class UnidirectionalViewModelKtTest : ComposeTest() {
+class UnidirectionalViewModelKtTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val mainDispatcher = MainDispatcherHelper(UnconfinedTestDispatcher())
+    val mainDispatcher = MainDispatcherHelper(UnconfinedTestDispatcher())
 
     @BeforeTest
     fun setUp() {
@@ -37,8 +36,9 @@ class UnidirectionalViewModelKtTest : ComposeTest() {
         mainDispatcher.tearDown()
     }
 
+    @OptIn(ExperimentalTestApi::class)
     @Test
-    fun `observe should emit state changes, allow event dispatch and expose effects`() = runTest {
+    fun `observe should emit state changes, allow event dispatch and expose effects`() = runComposeUiTest {
         val viewModel = TestViewModel()
         val effects = mutableListOf<TestEffect>()
         lateinit var stateDispatch: StateDispatch<TestState, TestEvent>

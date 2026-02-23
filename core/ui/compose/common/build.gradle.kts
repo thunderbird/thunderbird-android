@@ -14,6 +14,7 @@ android {
 }
 
 dependencies {
+    api(projects.core.ui.contract)
     implementation(libs.androidx.window)
     implementation(projects.core.logging.api)
 

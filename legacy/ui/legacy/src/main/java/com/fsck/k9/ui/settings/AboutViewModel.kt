@@ -1,11 +1,11 @@
 package com.fsck.k9.ui.settings
 
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import com.fsck.k9.ui.settings.AboutContract.Effect
 import com.fsck.k9.ui.settings.AboutContract.Event
 import com.fsck.k9.ui.settings.AboutContract.State
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.core.common.provider.AppVersionProvider
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 internal class AboutViewModel(
     appVersionProvider: AppVersionProvider,

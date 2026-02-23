@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.common.mvi
+package net.thunderbird.core.ui.contract.mvi
 
 import app.cash.turbine.test
 import assertk.assertThat

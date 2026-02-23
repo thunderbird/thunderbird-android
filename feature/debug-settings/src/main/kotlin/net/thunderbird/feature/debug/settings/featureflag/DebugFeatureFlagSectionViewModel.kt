@@ -1,7 +1,6 @@
 package net.thunderbird.feature.debug.settings.featureflag
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.collections.immutable.toPersistentMap
@@ -10,6 +9,7 @@ import kotlinx.coroutines.flow.onEach
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagFactory
 import net.thunderbird.core.featureflag.FeatureFlagOverrides
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSectionContract.Effect
 import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSectionContract.Event
 import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSectionContract.State

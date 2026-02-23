@@ -1,6 +1,6 @@
 package net.thunderbird.ui.catalog.ui
 
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 
 interface CatalogContract {
 

@@ -1,8 +1,8 @@
 package app.k9mail.feature.account.setup.ui.options.sync
 
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
 import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 
 interface SyncOptionsContract {
 

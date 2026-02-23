@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.setup.ui.specialfolders
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOptions
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
@@ -18,6 +17,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 class SpecialFoldersViewModel(
     private val formUiModel: SpecialFoldersContract.FormUiModel,

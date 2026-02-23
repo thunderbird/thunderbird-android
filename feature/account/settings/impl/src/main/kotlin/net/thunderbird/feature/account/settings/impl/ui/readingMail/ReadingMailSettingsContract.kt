@@ -1,7 +1,7 @@
 package net.thunderbird.feature.account.settings.impl.ui.readingMail
 
 import androidx.compose.runtime.Stable
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 import net.thunderbird.core.ui.setting.SettingValue.Select.SelectOption
 import net.thunderbird.core.ui.setting.Settings
 

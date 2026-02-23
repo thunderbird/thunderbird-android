@@ -1,6 +1,6 @@
 package app.k9mail.feature.account.setup.ui.options.display
 
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 import net.thunderbird.core.validation.ValidationOutcome
 import net.thunderbird.core.validation.input.StringInputField
 

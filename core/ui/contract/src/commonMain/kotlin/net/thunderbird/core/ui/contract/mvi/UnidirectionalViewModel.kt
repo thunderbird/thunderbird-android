@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.common.mvi
+package net.thunderbird.core.ui.contract.mvi
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
