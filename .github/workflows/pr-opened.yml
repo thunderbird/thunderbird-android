@@ -8,11 +8,10 @@ on:
     branches: [beta, release]
     types: [opened]
 
-permissions:
-  pull-requests: write
-
 jobs:
   pr-opened:
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
     environment: botmobile
     steps:

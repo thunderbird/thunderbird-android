@@ -9,6 +9,8 @@ on:
 
 jobs:
   pr-auto-assign-reviewer:
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
     environment: botmobile
     steps:
