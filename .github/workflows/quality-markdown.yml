@@ -1,16 +1,17 @@
-name: Markdown CI
+---
+name: Quality - Check Markdown
 
 on:
   pull_request:
     paths:
       - '**.md'
-      - '.github/workflows/markdown.yml'
+      - 'quality-markdown.yml'
 
 permissions:
   contents: read
 
 jobs:
-  markdown_quality:
+  quality-markdown:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

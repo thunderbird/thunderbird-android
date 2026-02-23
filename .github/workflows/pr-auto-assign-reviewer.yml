@@ -1,5 +1,5 @@
 ---
-name: Auto Assign Reviewer
+name: PR - Auto Assign Reviewer
 
 # Warning, this job is running on pull_request_target and therefore has access to issue content.
 # Don't add any steps that act on external code.
@@ -8,7 +8,7 @@ on:
     types: [review_requested]
 
 jobs:
-  assign-reviewer:
+  pr-auto-assign-reviewer:
     runs-on: ubuntu-latest
     environment: botmobile
     steps:

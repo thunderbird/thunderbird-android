@@ -1,5 +1,6 @@
 ---
-name: Daily Builds
+name: Build - Daily App
+
 on:
   workflow_dispatch:
   schedule:
@@ -9,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  trigger_daily_build:
+  build-daily:
     if: ${{ github.repository_owner == 'thunderbird' }}
     uses: ./.github/workflows/shippable_builds.yml
     secrets: inherit

@@ -1,5 +1,5 @@
 ---
-name: Close old issues with the needinfo label
+name: Issue - Close old issues with the needinfo label
 
 on:
   schedule:
@@ -11,7 +11,8 @@ permissions:
   issues: write
 
 jobs:
-  build:
+  issue-needinfo-stale:
+    name: Close stale needinfo issues
     runs-on: ubuntu-latest
     environment: botmobile
     permissions:

@@ -1,4 +1,6 @@
-name: Fluidattacks - Code scanning
+---
+name: Security - Fluidattacks
+
 on:
   schedule:
     - cron: '0 10 * * 1'
@@ -8,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  fluidattacks-scan:
+  security-fluidattacks:
 
     runs-on: ubuntu-latest
 
