@@ -45,7 +45,10 @@ internal class MessageListScreenRenderer : MessageListContract.MessageListScreen
                     .padding(paddingValues),
             ) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(state.messages) { message ->
+                    items(
+                        items = state.messages,
+                        key = { message -> message.id },
+                    ) { message ->
                         MessageListItem(
                             message = message,
                             showAccountIndicator = state.metadata.showAccountIndicator,

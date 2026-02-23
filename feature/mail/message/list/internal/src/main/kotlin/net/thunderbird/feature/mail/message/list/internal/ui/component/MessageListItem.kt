@@ -276,7 +276,7 @@ private fun rememberSendersText(
     message: MessageItemUi,
     mostRecentSender: EmailIdentity,
     preferences: MessageListPreferences,
-): AnnotatedString = remember(message.senders) {
+): AnnotatedString = remember(message.senders, message.state, preferences.showCorrespondentNames) {
     buildAnnotatedString {
         withStyle(
             SpanStyle(
