@@ -100,4 +100,16 @@ sealed interface MessageListEvent {
      * This is typically used to load more messages.
      */
     data object OnFooterClick : UserEvent
+
+    /**
+     * Event triggered when the user requests to load the next page of messages in the message list.
+     *
+     * This event is typically fired when the user scrolls to the bottom of the current message list
+     * and pagination is required to fetch additional messages. It signals that more messages should
+     * be loaded from the data source and appended to the existing list.
+     *
+     * @see UserEvent
+     * @see MessageListEvent
+     */
+    data object LoadNextPage : UserEvent
 }
