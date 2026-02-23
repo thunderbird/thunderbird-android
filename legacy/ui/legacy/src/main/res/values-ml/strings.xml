@@ -692,7 +692,6 @@
     <string name="crypto_msg_encrypted_insecure">എന്നാൽ എൻ‌ക്രിപ്ഷൻ സുരക്ഷിതമാണെന്ന് കണക്കാക്കില്ല</string>
     <string name="locked_attach_unlock">അൺലോക്കുചെയ്യുക</string>
     <string name="locked_attach_unencrypted">ഈ ഭാഗം എൻ‌ക്രിപ്റ്റ് ചെയ്തിട്ടില്ല, മാത്രമല്ല സുരക്ഷിതമല്ലാത്തതാകാം.</string>
-    <string name="locked_attach_title">സുരക്ഷിതമല്ലാത്ത അറ്റാച്ചുമെന്റ്</string>
     <string name="message_progress_text">ലോഡുചെയ്യുന്നു…</string>
     <string name="messageview_decrypt_cancelled">ഡീക്രിപ്ഷൻ റദ്ദാക്കി.</string>
     <string name="messageview_decrypt_retry">വീണ്ടും ശ്രമിക്കുക</string>

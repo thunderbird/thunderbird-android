@@ -953,7 +953,7 @@
 
     <string name="locked_attach_unlock">Unlock</string>
     <string name="locked_attach_unencrypted">This part was not encrypted, and may be insecure.</string>
-    <string name="locked_attach_title">Unprotected Attachment</string>
+    <string name="encrypted_attachment_title">Encrypted attachment</string>
     <string name="message_progress_text">Loading…</string>
     <string name="messageview_decrypt_cancelled">Decryption was cancelled.</string>
     <string name="messageview_decrypt_retry">Retry</string>

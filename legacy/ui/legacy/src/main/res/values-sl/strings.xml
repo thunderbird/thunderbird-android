@@ -738,7 +738,6 @@
     <string name="crypto_msg_encrypted_insecure">vendar se šifriranje ne obravnava kot varno</string>
     <string name="locked_attach_unlock">Odkleni</string>
     <string name="locked_attach_unencrypted">Ta del sporočila ni bil ustrezno šifriran, zato je lahko nezanesljiv.</string>
-    <string name="locked_attach_title">Nezaščitena priloga</string>
     <string name="message_progress_text">Poteka nalaganje …</string>
     <string name="messageview_decrypt_cancelled">Odšifriranje je bilo preklicano.</string>
     <string name="messageview_decrypt_retry">Znova poskusi</string>

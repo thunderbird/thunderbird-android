@@ -742,7 +742,6 @@
     <string name="crypto_msg_encrypted_insecure">але шифрування не вважається безпечним</string>
     <string name="locked_attach_unlock">Розблокувати</string>
     <string name="locked_attach_unencrypted">Ця частина не була зашифрована і може бути небезпечною.</string>
-    <string name="locked_attach_title">Незахищене вкладення</string>
     <string name="message_progress_text">Завантаження…</string>
     <string name="messageview_decrypt_cancelled">Розшифровування скасовано.</string>
     <string name="messageview_decrypt_retry">Повторити спробу</string>

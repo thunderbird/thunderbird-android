@@ -716,7 +716,6 @@
     <string name="crypto_msg_encrypted_insecure">ama şifreleme güvenli olarak değerlendirilmedi</string>
     <string name="locked_attach_unlock">Kilidi aç</string>
     <string name="locked_attach_unencrypted">Bu kısım şifrelenmemiş ve güvensiz olabilir.</string>
-    <string name="locked_attach_title">Korunmasız Ek</string>
     <string name="message_progress_text">Yükleniyor…</string>
     <string name="messageview_decrypt_cancelled">Şifre çözme iptal edildi.</string>
     <string name="messageview_decrypt_retry">Yeniden dene</string>

@@ -730,7 +730,6 @@
     <string name="crypto_msg_encrypted_insecure">mar fersifering is net feilich</string>
     <string name="locked_attach_unlock">Deblokkearje</string>
     <string name="locked_attach_unencrypted">Dit ûnderdiel is net fersifere en is miskien ûnfeilich.</string>
-    <string name="locked_attach_title">Unbefeilige bylage</string>
     <string name="message_progress_text">Lade…</string>
     <string name="messageview_decrypt_cancelled">Untsifering is stoppe.</string>
     <string name="messageview_decrypt_retry">Opnij</string>

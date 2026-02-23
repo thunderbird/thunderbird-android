@@ -648,7 +648,6 @@
     <string name="crypto_msg_encrypted_insecure">met n\'eo ket gwelet evel diogel an enrinegañ</string>
     <string name="locked_attach_unlock">Dibrennañ</string>
     <string name="locked_attach_unencrypted">N’eo ket enrineget al lodenn-mañ ha marteze n’eo ket diogel.</string>
-    <string name="locked_attach_title">N’eo ket gwarezet ar genstagadenn</string>
     <string name="message_progress_text">O kargañ…</string>
     <string name="messageview_decrypt_cancelled">Nullet eo bet an ezrinegañ.</string>
     <string name="messageview_decrypt_retry">Adklask</string>

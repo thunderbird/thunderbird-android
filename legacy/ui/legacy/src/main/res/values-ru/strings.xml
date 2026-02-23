@@ -745,7 +745,6 @@
     <string name="crypto_msg_encrypted_insecure">но шифрование не считается безопасным</string>
     <string name="locked_attach_unlock">Разблокировать</string>
     <string name="locked_attach_unencrypted">Эта часть не была зашифрована и может быть небезопасна.</string>
-    <string name="locked_attach_title">Незащищённое вложение</string>
     <string name="message_progress_text">Загрузка…</string>
     <string name="messageview_decrypt_cancelled">Расшифрование отменено.</string>
     <string name="messageview_decrypt_retry">Повтор</string>

@@ -745,7 +745,6 @@
     <string name="crypto_msg_encrypted_insecure">ale šifra není považovaná za bezpečnou</string>
     <string name="locked_attach_unlock">Odemknout</string>
     <string name="locked_attach_unencrypted">Tato část nebyla zašifrovaná a nemusí proto být bezpečná.</string>
-    <string name="locked_attach_title">Nechráněná příloha</string>
     <string name="message_progress_text">Načítání…</string>
     <string name="messageview_decrypt_cancelled">Rozšifrování zrušeno.</string>
     <string name="messageview_decrypt_retry">Zkusit znovu</string>

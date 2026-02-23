@@ -687,7 +687,6 @@
     <string name="crypto_msg_encrypted_insecure">sed ĉifr-metodo ne estas sekurinda</string>
     <string name="locked_attach_unlock">Malŝlosi</string>
     <string name="locked_attach_unencrypted">Tiu ĉi parto ne estis ĉifrita kaj ĝi povas esti nesekura.</string>
-    <string name="locked_attach_title">Nesekura kunsendaĵo</string>
     <string name="message_progress_text">Ŝargado…</string>
     <string name="messageview_decrypt_cancelled">Nuligis malĉifradon.</string>
     <string name="messageview_decrypt_retry">Reprovi</string>

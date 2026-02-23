@@ -49,6 +49,7 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedG
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedGroupIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedHearthIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedImageIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedLockIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedOpenInNewIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedPersonIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedPetsIcon
@@ -135,6 +136,8 @@ object Icons {
         val Info: ImageVector = Icons.Outlined.Info
 
         val KeyboardArrowDown: ImageVector = Icons.Outlined.KeyboardArrowDown
+
+        val Lock: ImageVector = OutlinedLockIcon
 
         val Menu: ImageVector = Icons.Outlined.Menu
         val MoreVert: ImageVector = Icons.Outlined.MoreVert

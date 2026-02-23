@@ -739,7 +739,6 @@
     <string name="crypto_msg_encrypted_insecure">ond dyw\'r amgryptiad ddim yn ymddangos yn ddiogel</string>
     <string name="locked_attach_unlock">Datgloi</string>
     <string name="locked_attach_unencrypted">Chafodd y rhan hwn ddim ei amgryptio a gall fod yn anniogel.</string>
-    <string name="locked_attach_title">Atodiad heb ei Ddiogelu</string>
     <string name="message_progress_text">Yn llwytho…</string>
     <string name="messageview_decrypt_cancelled">Diddymwyd yr amgryptio.</string>
     <string name="messageview_decrypt_retry">Ceisio eto</string>

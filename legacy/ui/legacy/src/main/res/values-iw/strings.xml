@@ -815,7 +815,6 @@
     <string name="openpgp_enabled_error_gotit">הבנתי</string>
     <string name="account_settings_reading_mail">קריאת דואר</string>
     <string name="locked_attach_unlock">פתח נעילה</string>
-    <string name="locked_attach_title">צרופה לא מוגנת</string>
     <string name="message_progress_text">טוען…</string>
     <string name="openpgp_description_text1">הצפנת הודעות מוודאת שהן יוכלו להיקרא ע\"י הנמען, ולא ע\"י אף אחד אחר.</string>
     <string name="toast_openpgp_provider_error">שגיאה בחיבור אל %s!</string>

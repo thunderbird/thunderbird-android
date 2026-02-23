@@ -730,7 +730,6 @@
     <string name="crypto_msg_encrypted_insecure">mutta salausta ei mielletä turvalliseksi</string>
     <string name="locked_attach_unlock">Avaa lukitus</string>
     <string name="locked_attach_unencrypted">Tätä osaa ei salattu, joten se saattaa olla epäluotettava.</string>
-    <string name="locked_attach_title">Suojaamaton liite</string>
     <string name="message_progress_text">Ladataan…</string>
     <string name="messageview_decrypt_cancelled">Salauksen purkaminen peruttiin.</string>
     <string name="messageview_decrypt_retry">Yritä uudelleen</string>

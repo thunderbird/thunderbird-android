@@ -731,7 +731,6 @@
     <string name="crypto_msg_encrypted_insecure">aga krüptimise meetodeid ei loeta turvaliseks</string>
     <string name="locked_attach_unlock">Ava</string>
     <string name="locked_attach_unencrypted">See osa on krüptimata ja võib olla ebaturvaline.</string>
-    <string name="locked_attach_title">Krüptimata manus</string>
     <string name="message_progress_text">Laeb…</string>
     <string name="messageview_decrypt_cancelled">Dekrüptimine katkestati.</string>
     <string name="messageview_decrypt_retry">Korduskatse</string>

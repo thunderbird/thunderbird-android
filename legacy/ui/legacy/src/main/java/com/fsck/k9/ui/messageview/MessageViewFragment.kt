@@ -154,7 +154,7 @@ class MessageViewFragment :
 
     private var isActive: Boolean = false
 
-    private val attachmentListBottomSheetState = MutableStateFlow(persistentListOf<AttachmentViewInfo>())
+    private val attachmentListBottomSheetState = MutableStateFlow(persistentListOf<AttachmentListItemModel>())
 
     private val interactionSettings: InteractionSettings
         get() = generalSettingsManager.getConfig().interaction
@@ -239,8 +239,8 @@ class MessageViewFragment :
                                 onSaveAttachment(attachment)
                             },
                             onSaveAllClick = {
-                                attachments.forEach { attachment ->
-                                    onSaveAttachment(attachment)
+                                attachments.forEach { item ->
+                                    onSaveAttachment(item.attachment)
                                 }
                             },
                         )
@@ -581,10 +581,12 @@ class MessageViewFragment :
 
         val nonInlineAttachments = messageViewInfo.attachments
             ?.filter { !it.inlineAttachment }
+            ?.map { AttachmentListItemModel(attachment = it, isLocked = false) }
             .orEmpty()
 
         val extraNonInlineAttachments = messageViewInfo.extraAttachments
             ?.filter { !it.inlineAttachment }
+            ?.map { AttachmentListItemModel(attachment = it, isLocked = true) }
             .orEmpty()
 
         val allAttachments = nonInlineAttachments + extraNonInlineAttachments

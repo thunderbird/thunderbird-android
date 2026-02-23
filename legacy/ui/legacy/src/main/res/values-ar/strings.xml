@@ -722,7 +722,6 @@
     <string name="crypto_msg_encrypted_insecure">لكن التشفير لا يعتبر آمنًا </string>
     <string name="locked_attach_unlock">فك القفل</string>
     <string name="locked_attach_unencrypted">لم يتم تشفير هذا الجزء ، وربما يكون غير آمن. </string>
-    <string name="locked_attach_title">مُرفق غير محمي</string>
     <string name="message_progress_text">يُحمل…</string>
     <string name="messageview_decrypt_cancelled">تم إلغاء فك التعمية.</string>
     <string name="messageview_decrypt_retry">إعادة المحاولة</string>

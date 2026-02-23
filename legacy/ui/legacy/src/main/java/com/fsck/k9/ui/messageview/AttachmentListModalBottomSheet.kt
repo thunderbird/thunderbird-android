@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
@@ -29,9 +30,16 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.designsystem.organism.ModalBottomSheet
 
+private const val OPEN_PGP_RED = 0xFFCC0000
+
+internal data class AttachmentListItemModel(
+    val attachment: AttachmentViewInfo,
+    val isLocked: Boolean,
+)
+
 @Composable
 internal fun AttachmentListModalBottomSheet(
-    attachments: ImmutableList<AttachmentViewInfo>,
+    attachments: ImmutableList<AttachmentListItemModel>,
     sizeFormatter: SizeFormatter,
     onDismissRequest: () -> Unit,
     onAttachmentClick: (AttachmentViewInfo) -> Unit,
@@ -53,7 +61,7 @@ internal fun AttachmentListModalBottomSheet(
 
 @Composable
 private fun AttachmentListContent(
-    attachments: ImmutableList<AttachmentViewInfo>,
+    attachments: ImmutableList<AttachmentListItemModel>,
     sizeFormatter: SizeFormatter,
     onAttachmentClick: (AttachmentViewInfo) -> Unit,
     onSaveClick: (AttachmentViewInfo) -> Unit,
@@ -66,12 +74,13 @@ private fun AttachmentListContent(
     ) {
         AttachmentListHeader(onSaveAllClick = onSaveAllClick)
 
-        attachments.forEach { attachment ->
+        attachments.forEach { item ->
             AttachmentListItem(
-                attachment = attachment,
+                attachment = item.attachment,
+                isLocked = item.isLocked,
                 sizeFormatter = sizeFormatter,
-                onClick = { onAttachmentClick(attachment) },
-                onSaveClick = { onSaveClick(attachment) },
+                onClick = { onAttachmentClick(item.attachment) },
+                onSaveClick = { onSaveClick(item.attachment) },
             )
         }
     }
@@ -125,6 +134,7 @@ private fun AttachmentListHeader(
 @Composable
 private fun AttachmentListItem(
     attachment: AttachmentViewInfo,
+    isLocked: Boolean,
     sizeFormatter: SizeFormatter,
     onClick: () -> Unit,
     onSaveClick: () -> Unit,
@@ -142,24 +152,36 @@ private fun AttachmentListItem(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            imageVector = Icons.Outlined.Description,
+            imageVector = if (isLocked) Icons.Outlined.Lock else Icons.Outlined.Description,
             contentDescription = null,
-            tint = MainTheme.colors.onSurfaceVariant,
+            tint = if (isLocked) Color(OPEN_PGP_RED) else MainTheme.colors.onSurfaceVariant,
             modifier = Modifier.size(MainTheme.sizes.icon),
         )
         Spacer(modifier = Modifier.width(MainTheme.spacings.double))
         Column(modifier = Modifier.weight(1f)) {
             TextBodyMedium(
-                text = attachment.displayName,
+                text = if (isLocked) stringResource(R.string.encrypted_attachment_title) else attachment.displayName,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            if (attachment.size != AttachmentViewInfo.UNKNOWN_SIZE) {
+            if (isLocked) {
+                TextBodySmall(
+                    text = stringResource(R.string.locked_attach_unencrypted),
+                    color = MainTheme.colors.onSurfaceVariant,
+                )
+            } else if (attachment.size != AttachmentViewInfo.UNKNOWN_SIZE) {
                 TextBodySmall(
                     text = sizeFormatter.formatSize(attachment.size),
                     color = MainTheme.colors.onSurfaceVariant,
                 )
             }
+        }
+        if (isLocked) {
+            ButtonIcon(
+                onClick = onClick,
+                imageVector = Icons.Outlined.Visibility,
+                contentDescription = stringResource(R.string.locked_attach_unlock),
+            )
         }
         ButtonIcon(
             onClick = onSaveClick,

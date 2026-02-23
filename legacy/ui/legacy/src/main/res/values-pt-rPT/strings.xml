@@ -737,7 +737,6 @@
     <string name="crypto_msg_encrypted_insecure">mas a encriptação não é considerada segura</string>
     <string name="locked_attach_unlock">Desbloquear</string>
     <string name="locked_attach_unencrypted">Esta parte não foi encriptada, e pode ser insegura.</string>
-    <string name="locked_attach_title">Anexo desprotegido</string>
     <string name="message_progress_text">A carregar…</string>
     <string name="messageview_decrypt_cancelled">A desencriptação foi cancelada.</string>
     <string name="messageview_decrypt_retry">Tentar novamente</string>

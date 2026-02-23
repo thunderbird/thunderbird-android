@@ -667,7 +667,6 @@
     <string name="crypto_msg_encrypted_insecure">namun enkripsi tidak dianggap aman</string>
     <string name="locked_attach_unlock">Buka kunci</string>
     <string name="locked_attach_unencrypted">Bagian ini tidak dienkripsi dan mungkin tidak aman.</string>
-    <string name="locked_attach_title">Lampiran tidak terlindungi</string>
     <string name="message_progress_text">Memuat…</string>
     <string name="messageview_decrypt_cancelled">Dekripsi dibatalkan.</string>
     <string name="messageview_decrypt_retry">Coba lagi</string>

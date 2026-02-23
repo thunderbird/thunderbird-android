@@ -730,7 +730,6 @@
     <string name="crypto_msg_encrypted_insecure">maar versleuteling is niet veilig</string>
     <string name="locked_attach_unlock">Deblokkeren</string>
     <string name="locked_attach_unencrypted">Dit onderdeel is niet versleuteld en is misschien onveilig.</string>
-    <string name="locked_attach_title">Onbeveiligde bijlage</string>
     <string name="message_progress_text">Laden…</string>
     <string name="messageview_decrypt_cancelled">Ontsleuteling is gestopt.</string>
     <string name="messageview_decrypt_retry">Opnieuw</string>

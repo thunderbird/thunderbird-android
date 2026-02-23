@@ -736,7 +736,6 @@
     <string name="crypto_msg_encrypted_insecure">ma la crittografia non è considerata sicura</string>
     <string name="locked_attach_unlock">Sblocca</string>
     <string name="locked_attach_unencrypted">Questa parte non è criptata e potrebbe non essere sicura</string>
-    <string name="locked_attach_title">Allegato non protetto</string>
     <string name="message_progress_text">Caricamento…</string>
     <string name="messageview_decrypt_cancelled">La decrittografia è stata annullata</string>
     <string name="messageview_decrypt_retry">Riprova</string>

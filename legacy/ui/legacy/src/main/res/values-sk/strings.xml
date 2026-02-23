@@ -634,7 +634,6 @@
     <string name="crypto_msg_cancelled">Správa je šifrovaná, dešifrovanie bolo zrušené.</string>
     <string name="locked_attach_unlock">Odomknúť</string>
     <string name="locked_attach_unencrypted">Táto časť nebola zašifrovaná a nemusí byť bezpečná.</string>
-    <string name="locked_attach_title">Nechránená príloha</string>
     <string name="message_progress_text">Načítavam…</string>
     <string name="messageview_decrypt_cancelled">Dešifrovanie bolo zrušené.</string>
     <string name="messageview_decrypt_retry">Skúsiť znova</string>

@@ -730,7 +730,6 @@
     <string name="crypto_msg_encrypted_insecure">de a titkosítás nem tekinthető biztonságosnak</string>
     <string name="locked_attach_unlock">Feloldás</string>
     <string name="locked_attach_unencrypted">Ez a rész nem volt titkosítva, és esetleg nem biztonságos.</string>
-    <string name="locked_attach_title">Nem védett melléklet</string>
     <string name="message_progress_text">Betöltés…</string>
     <string name="messageview_decrypt_cancelled">A visszafejtést megszakították.</string>
     <string name="messageview_decrypt_retry">Újra</string>

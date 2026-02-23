@@ -15,6 +15,7 @@ dependencies {
     implementation(libs.okio)
     implementation(libs.commons.io)
     implementation(libs.moshi)
+    implementation(libs.androidx.annotation)
 
     // We're only using this for its DefaultHostnameVerifier
     implementation(libs.apache.httpclient5)

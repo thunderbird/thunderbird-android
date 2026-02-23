@@ -743,7 +743,6 @@
     <string name="crypto_msg_encrypted_insecure">ale szyfrowanie nie jest uważane za bezpieczne</string>
     <string name="locked_attach_unlock">Odblokuj</string>
     <string name="locked_attach_unencrypted">Ta część nie została zaszyfrowana i może nie być zabezpieczona.</string>
-    <string name="locked_attach_title">Niechroniony załącznik</string>
     <string name="message_progress_text">Wczytywanie…</string>
     <string name="messageview_decrypt_cancelled">Anulowano odszyfrowywanie.</string>
     <string name="messageview_decrypt_retry">Spróbuj ponownie</string>

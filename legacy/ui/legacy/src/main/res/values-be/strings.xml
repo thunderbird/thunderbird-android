@@ -743,7 +743,6 @@
     <string name="crypto_msg_encrypted_insecure">але шыфраванне лічыцца небяспечным</string>
     <string name="locked_attach_unlock">Разблакаваць</string>
     <string name="locked_attach_unencrypted">Гэтая частка незашыфраваная, таму небяспечная.</string>
-    <string name="locked_attach_title">Неабароненыя ўкладзеныя файлы</string>
     <string name="message_progress_text">Загрузка…</string>
     <string name="messageview_decrypt_cancelled">Расшыфроўка скасаваная.</string>
     <string name="messageview_decrypt_retry">Паўтарыць</string>

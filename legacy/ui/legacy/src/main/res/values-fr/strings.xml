@@ -736,7 +736,6 @@
     <string name="crypto_msg_encrypted_insecure">mais le niveau de sécurité du chiffrement n’est pas suffisant</string>
     <string name="locked_attach_unlock">Déverrrouiller</string>
     <string name="locked_attach_unencrypted">Cette partie n’a pas été chiffrée et pourrait ne pas être sûre.</string>
-    <string name="locked_attach_title">Fichier joint non protégé</string>
     <string name="message_progress_text">Chargement…</string>
     <string name="messageview_decrypt_cancelled">Le déchiffrement a été annulé.</string>
     <string name="messageview_decrypt_retry">Réessayer</string>

@@ -859,7 +859,6 @@
     <string name="action_add_to_contacts">Legg til i kontaktar</string>
     <string name="settings_ui_telemetry_description">Deler yting, bruk, maskinvare og tiplassingsdata om denne appen til Mozilla for å hjelpe oss å gjere Thunderbird betre</string>
     <string name="settings_ui_data_collection">Datainnsamling</string>
-    <string name="locked_attach_title">Ubeskytta vedlegg</string>
     <string name="ac_transfer_setting_title">Send Autocrypt oppsett-melding</string>
     <string name="dialog_openkeychain_info_install">Installer</string>
     <string name="dialog_autocrypt_mutual_learn_more">Du kan <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klikke her</a> for å lære meir.</string>

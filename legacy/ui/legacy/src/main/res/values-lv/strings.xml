@@ -739,7 +739,6 @@
     <string name="crypto_msg_encrypted_insecure">taču end-to-end šifrēšana netiek uzskatīta par drošu</string>
     <string name="locked_attach_unlock">Atslēgt</string>
     <string name="locked_attach_unencrypted">Šī daļa nav šifrēta un var būt nedroša.</string>
-    <string name="locked_attach_title">Neaizsargāts pielikums</string>
     <string name="message_progress_text">Ielādē…</string>
     <string name="messageview_decrypt_cancelled">Atšifrēšana atcelta</string>
     <string name="messageview_decrypt_retry">Mēģināt vēlreiz</string>

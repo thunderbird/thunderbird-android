@@ -731,7 +731,6 @@
     <string name="crypto_msg_encrypted_insecure">en dulritunin er ekki álitin örugg</string>
     <string name="locked_attach_unlock">Aflæsa</string>
     <string name="locked_attach_unencrypted">Þessi hluti var ekki dulritaður og gæti því verið óöruggur.</string>
-    <string name="locked_attach_title">Óvarið viðhengi</string>
     <string name="message_progress_text">Hleður…</string>
     <string name="messageview_decrypt_cancelled">Hætt var við afkóðun.</string>
     <string name="messageview_decrypt_retry">Reyna aftur</string>

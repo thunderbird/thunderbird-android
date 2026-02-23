@@ -736,7 +736,6 @@
     <string name="crypto_msg_encrypted_insecure">dar criptarea nu e considerată sigură</string>
     <string name="locked_attach_unlock">Deblochează</string>
     <string name="locked_attach_unencrypted">Această parte nu a fost criptată și poate fi nesigură.</string>
-    <string name="locked_attach_title">Anexă neprotejată</string>
     <string name="message_progress_text">Se încarcă…</string>
     <string name="messageview_decrypt_cancelled">Decriptarea a fost întreruptă.</string>
     <string name="messageview_decrypt_retry">Reîncearcă</string>

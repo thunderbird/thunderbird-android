@@ -737,7 +737,6 @@
     <string name="account_settings_crypto_hide_sign_only">Hide unencrypted signatures</string>
     <string name="webview_contextmenu_phone_copy_action">Copy number to clipboard</string>
     <string name="openpgp_description_text3">Encryption will only show up if supported by all recipients, and they must have sent you an email before.</string>
-    <string name="locked_attach_title">Unprotected Attachment</string>
     <string name="enable_inline_pgp">Enable PGP/INLINE</string>
     <string name="enable_encryption">Enable Encryption</string>
     <string name="crypto_msg_unencrypted_sign_unknown">from unknown end-to-end key</string>

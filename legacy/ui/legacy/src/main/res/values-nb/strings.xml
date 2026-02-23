@@ -662,7 +662,6 @@
     <string name="crypto_msg_encrypted_insecure">men krypteringen er ikke antatt å være sikker</string>
     <string name="locked_attach_unlock">Lås opp</string>
     <string name="locked_attach_unencrypted">Denne delen bar ikke krypter, og kan derfor være usikker.</string>
-    <string name="locked_attach_title">Usikret vedlegg</string>
     <string name="message_progress_text">Laster…</string>
     <string name="messageview_decrypt_cancelled">Dekryptering ble avbrutt.</string>
     <string name="messageview_decrypt_retry">Prøv på nytt</string>
