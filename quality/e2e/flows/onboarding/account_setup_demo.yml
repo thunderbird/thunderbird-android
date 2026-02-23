@@ -1,12 +1,17 @@
-# use env to provide properties:
-# env:
-#    EMAIL_ADDRESS: "demo@example.com"
-#    ACCOUNT_NAME: "Demo Account"
-#    DISPLAY_NAME: "Demo User"
-
-appId: net.thunderbird.android.debug
+appId: ${MAESTRO_APP_ID}
 ---
-## Auto-discovery screen
+# Account setup - Demo
+# Verifies screen and completes demo setup
+# Required env vars:
+#   - EMAIL_ADDRESS
+#   - ACCOUNT_NAME
+#   - USER_NAME
+
+## Verify Account Setup screen
+- assertVisible:
+    id: "account_setup_email_address_input"
+
+## Run demo account setup
 - waitForAnimationToEnd:
     timeout: 500
 - tapOn:
@@ -17,11 +22,17 @@ appId: net.thunderbird.android.debug
 - tapOn:
     id: "account_setup_next_button"
 
-## Wait for auto-discovery to complete and enter password
+## Configuration not found - tap next
+- tapOn:
+    id: "account_setup_next_button"
+
+## Wait for auto-discovery to complete
 - waitForAnimationToEnd:
     timeout: 500
+
+## Enter the password --> the test will fail because the Server is '.servername.com' instead of 'servername.com'
 - tapOn:
-    id: "account_setup_password_input"
+    text: "Password"
 - waitForAnimationToEnd:
     timeout: 500
 - inputText: "password"
@@ -39,7 +50,7 @@ appId: net.thunderbird.android.debug
 - inputText: ${ACCOUNT_NAME}
 - tapOn:
     id: "account_setup_display_options_display_name_input"
-- inputText: ${DISPLAY_NAME}
+- inputText: ${USER_NAME}
 - tapOn:
     id: "account_setup_next_button"
 
@@ -48,6 +59,5 @@ appId: net.thunderbird.android.debug
     timeout: 500
 - tapOn:
     id: "account_setup_next_button"
-
 - waitForAnimationToEnd:
     timeout: 500

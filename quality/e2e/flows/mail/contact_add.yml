@@ -1,28 +1,23 @@
-# use env to provide properties:
-# env:
-#     INDEX: 0
-#     NAME: Alice
-#     FIRST_NAME: Alice
-
-appId: net.thunderbird.android.debug
+appId: ${MAESTRO_APP_ID}
 ---
+# Add contact
 
-## Add contact
+## Open contact dialog
 - tapOn:
-    id: "net.thunderbird.android.debug:id/menu_add_contact"
-    index: ${INDEX}
-- tapOn: ${FIRST_NAME}
+    id: "menu_add_contact"
+- tapOn:
+    id: "com.android.contacts:id/cliv_name_textview"
 
+## Save contact
 - runFlow:
     when:
       visible:
         id: "com.android.contacts:id/editor_menu_save_button"
     commands:
       - inputText: " from Contacts"
-      ### Save
       - tapOn:
           id: "com.android.contacts:id/editor_menu_save_button"
 
-### Exit
+### Close contact dialog
 - tapOn:
     id: "com.android.systemui:id/back"

@@ -1,0 +1,14 @@
+appId: ${MAESTRO_APP_ID}
+---
+
+## Get started with Thunderbird, then compose and test message details
+- runFlow:
+    file: init_with_account.yml
+
+## Compose an email and send it
+- runFlow:
+    file: mail_compose_simple_message.yml
+
+## Open an email, save the sender to contacts and then delete that contact
+- runFlow:
+    file: mail_emulator_message_details_show_contact_names.yml

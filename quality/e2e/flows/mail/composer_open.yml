@@ -1,0 +1,5 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Open compose screen from mail list
+- tapOn:
+    id: "floating_action_button"
