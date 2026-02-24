@@ -19,14 +19,6 @@ kotlin {
             implementation(libs.androidx.annotation)
         }
     }
-
-    compilerOptions {
-        freeCompilerArgs.addAll(
-            listOf(
-                "-Xexpect-actual-classes",
-            ),
-        )
-    }
 }
 
 codeCoverage {
