@@ -76,6 +76,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             closeAccountSettings()
+            accountRemover.removeAccountAsync(accountUuid)
         }
     }
 
