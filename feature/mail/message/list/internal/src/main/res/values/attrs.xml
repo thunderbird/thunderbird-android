@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="K9Styles">
+        <!-- For legacy support. should be removed later-->
+        <attr name="messageListSwipeSelectColor" format="reference|color" />
+        <attr name="messageListSwipeToggleReadColor" format="reference|color" />
+        <attr name="messageListSwipeToggleStarColor" format="reference|color" />
+        <attr name="messageListSwipeArchiveColor" format="reference|color" />
+        <attr name="messageListSwipeDeleteColor" format="reference|color" />
+        <attr name="messageListSwipeSpamColor" format="reference|color" />
+        <attr name="messageListSwipeMoveColor" format="reference|color" />
+    </declare-styleable>
+</resources>

@@ -1,5 +1,6 @@
 package net.thunderbird.feature.mail.message.list.internal.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,14 +13,23 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.molecule.PullToRefreshBox
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.distinctUntilChanged
+import net.thunderbird.core.common.action.SwipeAction
+import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirection
+import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeableRow
+import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.rememberSwipeableRowState
+import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageItemSwipeBackground
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageListItem
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
@@ -32,6 +42,7 @@ import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffold
 
 private const val FOOTER_HEIGHT = 64
+const val SWIPE_THRESHOLD = 0.10f
 
 internal class MessageListScreenRenderer : MessageListContract.MessageListScreenRenderer {
     @Composable
@@ -70,21 +81,69 @@ private fun MessageList(
 
     val showAccountIndicator = state.metadata.showAccountIndicator
     val preferences = requireNotNull(state.preferences)
+    val swipeActions = state.metadata.swipeActions
     LazyColumn(modifier = modifier, state = listState) {
         items(
             items = state.messages,
             key = { message -> message.id },
         ) { message ->
-            MessageListItem(
-                message = message,
-                showAccountIndicator = showAccountIndicator,
-                preferences = preferences,
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { dispatchEvent(MessageItemEvent.OnMessageClick(message)) },
-                onLongClick = { dispatchEvent(MessageItemEvent.ToggleSelectMessages(message)) },
-                onAvatarClick = { dispatchEvent(MessageItemEvent.ToggleSelectMessages(message)) },
-                onFavouriteClick = { dispatchEvent(MessageItemEvent.ToggleFavourite(message)) },
-            )
+            val messageSwipeActions = swipeActions[message.account.id]
+            var lastSwipeConfig by remember { mutableStateOf<Pair<SwipeAction, Arrangement.Horizontal>?>(null) }
+            SwipeableRow(
+                state = rememberSwipeableRowState(
+                    swipeActionThreshold = { direction ->
+                        when (direction) {
+                            SwipeDirection.StartToEnd -> SWIPE_THRESHOLD
+                            SwipeDirection.EndToStart -> SWIPE_THRESHOLD
+                            SwipeDirection.Settled -> 0f
+                        }
+                    },
+                    accessibilityActions = persistentListOf(/*TODO*/),
+                ),
+                backgroundContent = {
+                    val (swipeAction, arrangement) = lastSwipeConfig ?: return@SwipeableRow
+                    MessageItemSwipeBackground(
+                        action = swipeAction,
+                        toggled = false,
+                        arrangement = arrangement,
+                    )
+                },
+                gesturesEnabled = messageSwipeActions != null,
+                enableDismissFromStartToEnd = messageSwipeActions?.rightAction != SwipeAction.None,
+                enableDismissFromEndToStart = messageSwipeActions?.leftAction != SwipeAction.None,
+                onSwipeChange = { direction ->
+                    messageSwipeActions?.let { swipeActions ->
+                        val swipeConfig = when (direction) {
+                            SwipeDirection.StartToEnd -> swipeActions.rightAction to Arrangement.Start
+                            SwipeDirection.EndToStart -> swipeActions.leftAction to Arrangement.End
+                            SwipeDirection.Settled -> null
+                        }
+                        lastSwipeConfig = swipeConfig
+                    }
+                },
+                onSwipeEnd = { direction ->
+                    messageSwipeActions
+                        ?.let { swipeActions ->
+                            when (direction) {
+                                SwipeDirection.StartToEnd -> swipeActions.rightAction
+                                SwipeDirection.EndToStart -> swipeActions.leftAction
+                                else -> null
+                            }
+                        }
+                        ?.let { dispatchEvent(MessageItemEvent.OnSwipeMessage(message, swipeAction = it)) }
+                },
+            ) {
+                MessageListItem(
+                    message = message,
+                    showAccountIndicator = showAccountIndicator,
+                    preferences = preferences,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { dispatchEvent(MessageItemEvent.OnMessageClick(message)) },
+                    onLongClick = { dispatchEvent(MessageItemEvent.ToggleSelectMessages(message)) },
+                    onAvatarClick = { dispatchEvent(MessageItemEvent.ToggleSelectMessages(message)) },
+                    onFavouriteClick = { dispatchEvent(MessageItemEvent.ToggleFavourite(message)) },
+                )
+            }
         }
         item {
             Box(
