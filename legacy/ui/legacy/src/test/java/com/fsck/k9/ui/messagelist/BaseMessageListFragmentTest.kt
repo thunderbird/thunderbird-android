@@ -144,10 +144,6 @@ class BaseMessageListFragmentTest : RobolectricTest() {
     class TestBaseMessageListFragment : BaseMessageListFragment() {
         override val logTag: String = "TestBaseMessageListFragment"
         override val swipeActions = MutableStateFlow<Map<AccountId, SwipeActions>>(emptyMap()).asStateFlow()
-
-        // Prevent adapter initialization by making appearance flow never emit
-        override suspend fun fetchMessageListAppearance(): kotlinx.coroutines.flow.Flow<MessageListAppearance> =
-            kotlinx.coroutines.flow.emptyFlow()
     }
 
     class TestActivity : FragmentActivity(), BaseMessageListFragment.MessageListFragmentListener {
