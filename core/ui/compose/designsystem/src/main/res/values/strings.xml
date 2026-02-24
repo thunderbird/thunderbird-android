@@ -5,4 +5,6 @@
     <string name="designsystem_molecule_email_address_input_label">Email address</string>
     <string name="designsystem_molecule_password_input_label">Password</string>
     <string name="designsystem_molecule_error_view_button_retry">Retry</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Swipe from start to end to %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Swipe from end to start to %s</string>
 </resources>
