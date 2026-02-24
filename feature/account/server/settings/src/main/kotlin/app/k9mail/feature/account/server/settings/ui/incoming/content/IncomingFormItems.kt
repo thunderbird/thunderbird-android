@@ -55,7 +55,7 @@ internal fun LazyListScope.incomingFormItems(
             onTextChange = { onEvent(Event.ServerChanged(it)) },
             label = stringResource(id = R.string.account_server_settings_server_label),
             contentPadding = defaultItemPadding(),
-            keyboardOptions = KeyboardOptions(autoCorrect = false),
+            keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
         )
     }
 
@@ -98,7 +98,7 @@ internal fun LazyListScope.incomingFormItems(
             onTextChange = { onEvent(Event.UsernameChanged(it)) },
             label = stringResource(id = R.string.account_server_settings_username_label),
             contentPadding = defaultItemPadding(),
-            keyboardOptions = KeyboardOptions(autoCorrect = false),
+            keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
             contentType = ContentType.Username + ContentType.EmailAddress,
         )
     }
