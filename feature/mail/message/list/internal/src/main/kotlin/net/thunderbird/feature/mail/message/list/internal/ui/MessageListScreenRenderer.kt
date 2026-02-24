@@ -178,10 +178,15 @@ private fun rememberMessageListLazyState(
         }
             .distinctUntilChanged()
             .collect { (lastVisible, total) ->
-                val prefetchTriggerIndex = total - 1 - latestPaging.prefetchDistance
-                val nearEnd = total > 0 && lastVisible >= prefetchTriggerIndex
+                val hasNextPage = total > 0 && lastVisible >= total - 1 && total > latestPaging.prefetchDistance
+                if (!hasNextPage) return@collect
+                val prefetchTriggerIndex = (total - 1 - latestPaging.prefetchDistance).coerceAtLeast(0)
+                val nearEnd = lastVisible >= prefetchTriggerIndex
 
-                if (nearEnd && latestPaging.phase != PaginationUi.Phase.Loading && !latestPaging.endReached) {
+                if (nearEnd &&
+                    latestPaging.phase != PaginationUi.Phase.Loading &&
+                    !latestPaging.endReached
+                ) {
                     dispatchEvent(MessageListEvent.LoadNextPage)
                 }
             }
