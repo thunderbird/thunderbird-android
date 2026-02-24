@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.feature.mail.folder.api)
 
+    implementation(libs.androidx.annotation)
     implementation(libs.mime4j.core)
     implementation(libs.mime4j.dom)
     implementation(libs.okio)

@@ -1,12 +1,9 @@
 package com.fsck.k9.mail
 
-@Deprecated(
+import androidx.annotation.Discouraged
+
+@Discouraged(
     message = "Use net.thunderbird.feature.mail.folder.api.FolderType instead",
-    replaceWith = ReplaceWith(
-        expression = "FolderType",
-        imports = ["net.thunderbird.feature.mail.folder.api.FolderType"],
-    ),
-    level = DeprecationLevel.WARNING,
 )
 enum class FolderType {
     REGULAR,
