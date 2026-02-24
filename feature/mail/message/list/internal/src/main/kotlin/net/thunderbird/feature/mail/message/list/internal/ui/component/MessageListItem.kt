@@ -10,6 +10,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
+import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.designsystem.organism.message.ActiveMessageItem
 import net.thunderbird.core.ui.compose.designsystem.organism.message.MessageItemDefaults
 import net.thunderbird.core.ui.compose.designsystem.organism.message.NewMessageItem
@@ -41,7 +42,7 @@ internal fun MessageListItem(
             mostRecentSender = mostRecentSender,
             preferences = preferences,
             contentPadding = contentPadding,
-            modifier = modifier,
+            modifier = modifier.testTagAsResourceId(MessageListItemDefaults.ACTIVE_MESSAGE_LIST_TEST_TAG),
             onClick = onClick,
             onLongClick = onLongClick,
             onAvatarClick = onAvatarClick,
@@ -55,7 +56,7 @@ internal fun MessageListItem(
             mostRecentSender = mostRecentSender,
             preferences = preferences,
             contentPadding = contentPadding,
-            modifier = modifier,
+            modifier = modifier.testTagAsResourceId(MessageListItemDefaults.NEW_MESSAGE_LIST_TEST_TAG),
             onClick = onClick,
             onLongClick = onLongClick,
             onAvatarClick = onAvatarClick,
@@ -69,7 +70,7 @@ internal fun MessageListItem(
             mostRecentSender = mostRecentSender,
             preferences = preferences,
             contentPadding = contentPadding,
-            modifier = modifier,
+            modifier = modifier.testTagAsResourceId(MessageListItemDefaults.READ_MESSAGE_LIST_TEST_TAG),
             onClick = onClick,
             onLongClick = onLongClick,
             onAvatarClick = onAvatarClick,
@@ -83,7 +84,7 @@ internal fun MessageListItem(
             mostRecentSender = mostRecentSender,
             preferences = preferences,
             contentPadding = contentPadding,
-            modifier = modifier,
+            modifier = modifier.testTagAsResourceId(MessageListItemDefaults.UNREAD_MESSAGE_LIST_TEST_TAG),
             onClick = onClick,
             onLongClick = onLongClick,
             onAvatarClick = onAvatarClick,
@@ -280,7 +281,10 @@ private fun rememberSendersText(
     buildAnnotatedString {
         withStyle(
             SpanStyle(
-                fontWeight = if (message.state == MessageItemUi.State.Unread) FontWeight.Bold else FontWeight.Normal,
+                fontWeight = when (message.state) {
+                    MessageItemUi.State.New, MessageItemUi.State.Unread -> FontWeight.Bold
+                    else -> FontWeight.Normal
+                },
             ),
         ) {
             append(mostRecentSender.senderText(preferences.showCorrespondentNames))
@@ -297,4 +301,11 @@ private fun EmailIdentity.senderText(showSendersName: Boolean) = if (showSenders
     name
 } else {
     email
+}
+
+internal object MessageListItemDefaults {
+    const val ACTIVE_MESSAGE_LIST_TEST_TAG = "ActiveMessageListItem_Root"
+    const val NEW_MESSAGE_LIST_TEST_TAG = "NewMessageListItem_Root"
+    const val READ_MESSAGE_LIST_TEST_TAG = "ReadMessageListItem_Root"
+    const val UNREAD_MESSAGE_LIST_TEST_TAG = "UnreadMessageListItem_Root"
 }
