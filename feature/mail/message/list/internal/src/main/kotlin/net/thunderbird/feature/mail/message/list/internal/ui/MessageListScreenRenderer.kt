@@ -28,10 +28,12 @@ import app.k9mail.core.ui.compose.designsystem.molecule.PullToRefreshBox
 import kotlinx.coroutines.flow.distinctUntilChanged
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
+import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirection
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeableRow
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeableRowState
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.rememberSwipeableRowState
+import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenRenderer.Companion.TEST_TAG_MESSAGE_LIST_ROOT
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageItemSwipeBackground
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageListItem
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
@@ -73,6 +75,10 @@ internal class MessageListScreenRenderer : MessageListContract.MessageListScreen
             }
         }
     }
+
+    internal companion object {
+        const val TEST_TAG_MESSAGE_LIST_ROOT = "TestMessageList_Root"
+    }
 }
 
 @Composable
@@ -85,7 +91,10 @@ private fun MessageList(
 
     val showAccountIndicator = state.metadata.showAccountIndicator
     val swipeActions = state.metadata.swipeActions
-    LazyColumn(modifier = modifier, state = listState) {
+    LazyColumn(
+        modifier = modifier.testTagAsResourceId(TEST_TAG_MESSAGE_LIST_ROOT),
+        state = listState,
+    ) {
         items(
             items = state.messages,
             key = { message -> message.id },
