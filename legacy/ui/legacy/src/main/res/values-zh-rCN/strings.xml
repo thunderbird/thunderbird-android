@@ -793,25 +793,15 @@
     <string name="push_info_disable_push_text">如果您不需要新邮件的即时通知，则应禁用推送并使用轮询。轮询会定期检查新邮件，不需要通知。</string>
     <string name="push_info_disable_push_action">禁用推送</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">选择</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">取消选择</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">标记为已读</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">标记为未读</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">添加星标</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">移除星标</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">归档</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">删除</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">标记为垃圾邮件</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">移动…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">显示悬浮撰写按钮</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -888,9 +878,7 @@
     <string name="debug_enable_sync_debug_logging_summary">记录 24 小时的同步诊断信息</string>
     <string name="debug_sync_export_logs_title">导出同步日志</string>
     <string name="debug_enable_sync_debug_logging_title">启用同步调试日志记录</string>
-    <string name="swipe_action_change_swipe_gestures">更改 \n滑动手势</string>
     <string name="archiving_not_available_for_this_account">此账号无法使用归档功能。</string>
-    <string name="swipe_action_archive_folder_not_set">设置归档文件夹</string>
     <string name="debug_open_secret_debug_screen">打开秘密调试屏幕</string>
     <string name="debug_invalidate_access_token">测试：使访问令牌失效</string>
     <string name="debug_invalidate_access_token_done">访问令牌已失效。下次请求将刷新。</string>

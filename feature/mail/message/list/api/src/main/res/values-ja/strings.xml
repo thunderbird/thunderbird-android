@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">選択</string>
+    <string name="swipe_action_deselect">選択を解除</string>
+    <string name="swipe_action_mark_as_read">既読にする</string>
+    <string name="swipe_action_mark_as_unread">未読にする</string>
+    <string name="swipe_action_add_star">スターを付ける</string>
+    <string name="swipe_action_remove_star">スターをはずす</string>
+    <string name="swipe_action_archive">アーカイブ</string>
+    <string name="swipe_action_archive_folder_not_set">アーカイブ先が未設定です</string>
+    <string name="swipe_action_change_swipe_gestures">スワイプ操作を \n変更してください</string>
+    <string name="swipe_action_delete">削除</string>
+    <string name="swipe_action_spam">迷惑メール</string>
+    <string name="swipe_action_move">移動…</string>
+</resources>

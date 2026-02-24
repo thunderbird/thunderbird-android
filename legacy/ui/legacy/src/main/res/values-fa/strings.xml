@@ -806,25 +806,15 @@
     <string name="push_info_disable_push_text">اگر برای پیام‌های جدید نیاز به آگاهی آنی ندارید، بهتر است پیشرانی را غیرفعال کنید و سرکشی را به کار ببرید. روش سرکشی در فواصل زمانی منظم آمدن نامه‌های جدید را بررسی می‌کند و به آن آگاهی نیاز ندارد.</string>
     <string name="push_info_disable_push_action">غیرفعال‌سازی پیشرانی</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">انتخاب</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">بی‌انتخاب</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">علامت‌گذاری به‌عنوان خوانده شده</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">خوانده نشد</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">افزودن ستاره</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">حذف ستاره</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">بایگانی</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">حذف</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">هرزنامه</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">انتقال…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">نمایش دکمه نوشتن شناور</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -901,8 +891,6 @@
     <string name="debug_enable_sync_debug_logging_summary">ثبت داده‌های گزارش عیب‌یابی همگام‌سازی برای ۲۴ ساعت</string>
     <string name="debug_sync_export_logs_title">برون‌برد گزارش‌های همگام‌سازی</string>
     <string name="debug_enable_sync_debug_logging_title">فعال‌سازی ثبت گزارش عیب‌یابی همگام‌سازی</string>
-    <string name="swipe_action_archive_folder_not_set">راه‌اندازی پوشه بایگانی</string>
-    <string name="swipe_action_change_swipe_gestures">تغییر \nژست‌های کشیدن</string>
     <string name="archiving_not_available_for_this_account">بایگانی کردن برای این حساب در دسترس نیست.</string>
     <string name="debug_open_secret_debug_screen">گشودن صفحهٔ اشکال‌زدایی مخفی</string>
     <string name="message_view_menu_action_export_eml">برون‌ریزی به EML</string>

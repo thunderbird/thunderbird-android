@@ -425,20 +425,13 @@
     <string name="general_settings_title">Generelle innstilingar</string>
     <!--permissions-->
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Vel</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Avmerk</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Merk som ulesen/ulesne</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Legg til stjerne</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Fjern stjerne</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arkiv</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Slett</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
@@ -469,11 +462,9 @@
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="spam_action">Spam</string>
     <string name="account_settings_vibrate_pattern_default">Standard</string>
-    <string name="swipe_action_spam">Spam</string>
     <string name="choose_folder_move_title">Flytt til…</string>
     <string name="choose_folder_copy_title">Kopier til…</string>
     <string name="general_settings_post_remove_action_title">Etter sletting eller flytting av melding</string>
-    <string name="swipe_action_move">Flytt…</string>
     <string name="message_list_error_title">Feil</string>
     <string name="unsubscribe_action">Avslutt abonnement</string>
     <string name="notification_action_spam">Spam</string>
@@ -854,7 +845,6 @@
     <string name="ac_transfer_title">Autocrypt oppsett-melding</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Er kanskje ikkje støtta for nokon av mottakarane</string>
     <string name="switch_off">Av</string>
-    <string name="swipe_action_mark_as_read">Marker som lesen</string>
     <string name="message_details_toolbar_title">Meldingsdetaljar</string>
     <string name="action_add_to_contacts">Legg til i kontaktar</string>
     <string name="settings_ui_telemetry_description">Deler yting, bruk, maskinvare og tiplassingsdata om denne appen til Mozilla for å hjelpe oss å gjere Thunderbird betre</string>
@@ -896,8 +886,6 @@
     <string name="open_camera">Opne kamera</string>
     <string name="attach_file">Legg med fil</string>
     <string name="camera_permission_denied">Kameraløyve avslått! Kan ikkje ta bilete</string>
-    <string name="swipe_action_archive_folder_not_set">Sett opp Arkivmappe</string>
-    <string name="swipe_action_change_swipe_gestures">Endre\nSveipehandlingar</string>
     <string name="archiving_not_available_for_this_account">Arkivering er ikkje tilgjengeleg for denne kontoen.</string>
     <string name="debug_enable_sync_debug_logging_title">Aktiver feilsøkingslogging for synkronisering</string>
     <string name="debug_enable_sync_debug_logging_summary">Logg informasjon frå synkroniseringdiagnostikk i 24 timar</string>

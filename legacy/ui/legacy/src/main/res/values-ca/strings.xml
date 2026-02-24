@@ -809,25 +809,15 @@
     <string name="push_info_disable_push_text">Si no necessiteu notificacions instantànies sobre missatges nous, haureu de desactivar Tramesa i utilitzar Sondeig. El sondeig comprova si hi ha correus nous a intervals regulars i no necessita la notificació.</string>
     <string name="push_info_disable_push_action">Desactiva la Tramesa</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Selecciona</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Desselecciona</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Marca com a llegit</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Marca com a no llegit</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Afegeix un estel</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Elimina l\'estel</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arxiva</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Suprimeix</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Correu brossa</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Mou…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Mostra el botó d\'escriptura flotant</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -905,8 +895,6 @@
     <string name="debug_enable_sync_debug_logging_summary">El registre sincronitza informació de diagnòstic durant 24 hores</string>
     <string name="debug_sync_export_logs_title">Exportar registres de sincronització</string>
     <string name="archiving_not_available_for_this_account">Arxivar no està disponible per aquest compte.</string>
-    <string name="swipe_action_archive_folder_not_set">Establir carpeta d\'arxiu</string>
-    <string name="swipe_action_change_swipe_gestures">Canvia \nels gestos en lliscar</string>
     <string name="debug_open_secret_debug_screen">Obrir la pantalla secreta per desenvolupadors</string>
     <string name="print_message_action">Imprimeix</string>
     <string name="account_setup_auto_select_folder">Selecciona la carpeta automàticament</string>

@@ -697,22 +697,14 @@
     <string name="ac_transfer_msg_subject">Teachdaireachd suidheachaidh Autocrypt</string>
     <!--permissions-->
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Tagh</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Dì-thagh</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Comharraich nach deach a leughadh</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Cuir rionnag ris</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Thoir an rionnag air falbh</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Tasg-lann</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Sguab às</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spama</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -880,11 +872,9 @@
     <string name="toast_openpgp_provider_error">Dh’èirich mearachd nuair a bha sinn airson ceangal ri %s!</string>
     <string name="account_settings_vibrate_pattern_1">Pàtran 1</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Fuirich san teachdaireachd seo</string>
-    <string name="swipe_action_move">Gluais…</string>
     <string name="message_list_error_title">Mearachd</string>
     <string name="action_add_to_contacts">Cuir ris an luchd-aithne</string>
     <string name="action_compose_message_to">Sgrìobh teachdaireachd gu</string>
-    <string name="swipe_action_mark_as_read">Comharraich gun deach a leughadh</string>
     <string name="action_copy_email_address">Dèan lethbhreac de sheòladh a’ phuist-d</string>
     <string name="settings_ui_telemetry_description">Bheir seo fiosrachadh mu dhèanadas, cleachdadh, bathar-cruaidh is dàta gnàthachaidh na h-aplacaid seo dha Mozilla ach an dèan sinn Thunderbird nas fheàrr</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Till gu liosta nan teachdaireachdan</string>
@@ -907,8 +897,6 @@
     <string name="open_camera">Fosgail an camara</string>
     <string name="attach_file">Ceangail faidhle ris</string>
     <string name="camera_permission_denied">Chaidh cead-inntrigidh dhan chamara a dhiùltadh ’s cha ghabh dealbh a thogail</string>
-    <string name="swipe_action_archive_folder_not_set">Suidhich pasgan na tasg-lainn</string>
-    <string name="swipe_action_change_swipe_gestures">Atharraich na gluasadan\ngrad-shlaighdidh</string>
     <string name="debug_enable_sync_debug_logging_title">Cuir an comas logadh dì-bhugachadh an t-sioncronachaidh</string>
     <string name="debug_enable_sync_debug_logging_summary">Dèan loga dhen fhiosrachadh diagnosachd fad 24 uair a thìde</string>
     <string name="debug_sync_export_logs_title">Às-phortaich logaichean an t-sioncronachaidh</string>

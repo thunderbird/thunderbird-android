@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">選擇</string>
+    <string name="swipe_action_deselect">取消選擇</string>
+    <string name="swipe_action_mark_as_read">標記為已讀</string>
+    <string name="swipe_action_mark_as_unread">標記為未讀</string>
+    <string name="swipe_action_add_star">加上星號</string>
+    <string name="swipe_action_remove_star">移除星號</string>
+    <string name="swipe_action_archive">封存</string>
+    <string name="swipe_action_archive_folder_not_set">設置歸檔文件夾</string>
+    <string name="swipe_action_change_swipe_gestures">更改\n滑動手勢</string>
+    <string name="swipe_action_delete">刪除</string>
+    <string name="swipe_action_spam">標記為垃圾郵件</string>
+    <string name="swipe_action_move">移動…</string>
+</resources>

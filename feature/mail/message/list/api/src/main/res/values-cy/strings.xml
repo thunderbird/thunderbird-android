@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Dewis</string>
+    <string name="swipe_action_deselect">Dad-ddewis</string>
+    <string name="swipe_action_mark_as_read">Marcio wedi\'i ddarllen</string>
+    <string name="swipe_action_mark_as_unread">Marcio heb ei darllen</string>
+    <string name="swipe_action_add_star">Ychwanegu seren</string>
+    <string name="swipe_action_remove_star">Tynnu seren</string>
+    <string name="swipe_action_archive">Archif</string>
+    <string name="swipe_action_archive_folder_not_set">Gosod Ffolder Archif</string>
+    <string name="swipe_action_change_swipe_gestures">Newid \nYstumiau Llusgo</string>
+    <string name="swipe_action_delete">Dileu</string>
+    <string name="swipe_action_spam">Sbam</string>
+    <string name="swipe_action_move">Symud…</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Sélectionner</string>
+    <string name="swipe_action_deselect">Dessélectionner</string>
+    <string name="swipe_action_mark_as_read">Marquer comme lu</string>
+    <string name="swipe_action_mark_as_unread">Marquer comme non lu</string>
+    <string name="swipe_action_add_star">Ajouter une étoile</string>
+    <string name="swipe_action_remove_star">Supprimer l’étoile</string>
+    <string name="swipe_action_archive">Archiver</string>
+    <string name="swipe_action_archive_folder_not_set">Configurer le dossier d’archivage</string>
+    <string name="swipe_action_change_swipe_gestures">Changer\nles gestes de balayage</string>
+    <string name="swipe_action_delete">Supprimer</string>
+    <string name="swipe_action_spam">Pourriel (indésirable)</string>
+    <string name="swipe_action_move">Déplacer…</string>
+</resources>

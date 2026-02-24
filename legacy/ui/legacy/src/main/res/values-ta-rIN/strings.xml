@@ -182,22 +182,14 @@
     <string name="openpgp_enabled_error_back">பின்</string>
     <!--permissions-->
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">தேர்தெடு</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">தேர்வு நீக்கு</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">படித்ததாக குறி</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">நட்சத்திரம் சேர்</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">நட்சத்திரம் கழி</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">காப்பகம்</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">நீக்கு</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">பயனற்றது</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -670,7 +662,6 @@
     <string name="global_settings_colorize_missing_contact_pictures_label">தொடர்பு படங்களை வண்ணமயமாக்குங்கள்</string>
     <string name="recipient_from">இருந்து</string>
     <string name="unknown_sender">&lt;அறியப்படாத அனுப்புநர்&gt;</string>
-    <string name="swipe_action_mark_as_read">குறி படித்தது</string>
     <string name="account_settings_crypto">இறுதி-இறுதி குறியாக்கம்</string>
     <string name="account_settings_crypto_app">OpenPGP ஆதரவை இயக்கவும்</string>
     <string name="account_settings_mail_check_frequency_label">கோப்புறை வாக்கெடுப்பு அதிர்வெண்</string>
@@ -844,7 +835,6 @@
     <string name="integrated_inbox_detail">ஒருங்கிணைந்த கோப்புறைகளில் உள்ள அனைத்து செய்திகளும்</string>
     <string name="account_settings_automatic_special_folder">தானியங்கி (%s)</string>
     <string name="switch_off">அணை</string>
-    <string name="swipe_action_move">நகர்த்தவும்…</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">ஒரு செய்தியை நீக்கும்போது அதைப் படித்தபடி குறிக்கவும்</string>
     <string name="account_settings_show_pictures_label">எப்போதும் படங்களைக் காட்டுங்கள்</string>
     <string name="account_settings_show_pictures_never">இல்லை</string>
@@ -902,8 +892,6 @@
     <string name="debug_enable_sync_debug_logging_title">ஒத்திசைவு பிழைத்திருத்த பதிவை இயக்கவும்</string>
     <string name="debug_enable_sync_debug_logging_summary">பதிவு ஒத்திசைவு கண்டறியும் தகவல்களை 24 மணி நேரம்</string>
     <string name="debug_sync_export_logs_title">ஏற்றுமதி ஒத்திசைவு பதிவுகள்</string>
-    <string name="swipe_action_archive_folder_not_set">காப்பக கோப்புறையை அமைக்கவும்</string>
-    <string name="swipe_action_change_swipe_gestures">மாற்றம் \nசைகைகளை ச்வைப் செய்யுங்கள்</string>
     <string name="archiving_not_available_for_this_account">இந்த கணக்கிற்கு காப்பகம் கிடைக்கவில்லை.</string>
     <string name="debug_open_secret_debug_screen">இரகசிய பிழைத்திருத்தத் திரையைத் திறக்கவும்</string>
     <string name="debug_invalidate_access_token">சோதனை: அணுகல் கிள்ளாக்கை செல்லாததாக்கு</string>

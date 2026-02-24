@@ -799,25 +799,15 @@
     <string name="push_info_disable_push_text">新着メッセージの即時通知が不要な場合は、プッシュ同期を無効にして一定間隔で同期してください。一定間隔で新着メールを確認する場合は、通知は不要です。</string>
     <string name="push_info_disable_push_action">プッシュ同期を無効化</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">選択</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">選択を解除</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">既読にする</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">未読にする</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">スターを付ける</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">スターをはずす</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">アーカイブ</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">削除</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">迷惑メール</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">移動…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">フロート編集ボタンを表示する</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -891,9 +881,7 @@
     <string name="debug_enable_sync_debug_logging_title">同期のデバッグログを有効にする</string>
     <string name="debug_enable_sync_debug_logging_summary">24 時間の同期の診断情報をログに記録します</string>
     <string name="debug_sync_export_logs_title">同期ログをエクスポート</string>
-    <string name="swipe_action_archive_folder_not_set">アーカイブ先が未設定です</string>
     <string name="archiving_not_available_for_this_account">このアカウントではアーカイブは利用できません。</string>
-    <string name="swipe_action_change_swipe_gestures">スワイプ操作を \n変更してください</string>
     <string name="debug_open_secret_debug_screen">隠しデバッグ画面を開く</string>
     <string name="message_view_menu_action_export_eml">EML にエクスポート</string>
     <string name="set_format_html_action">オリジナルのフォーマットを使用</string>

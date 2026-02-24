@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Pilih</string>
+    <string name="swipe_action_deselect">Hapus pilihan</string>
+    <string name="swipe_action_mark_as_read">Tandai sebagai dibaca</string>
+    <string name="swipe_action_mark_as_unread">Tandai belum dibaca</string>
+    <string name="swipe_action_add_star">Tambah bintang</string>
+    <string name="swipe_action_remove_star">Hapus bintang</string>
+    <string name="swipe_action_archive">Arsipkan</string>
+    <string name="swipe_action_delete">Hapus</string>
+    <string name="swipe_action_spam">Spam</string>
+    <string name="swipe_action_move">Pindahkan…</string>
+</resources>

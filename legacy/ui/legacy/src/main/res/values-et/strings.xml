@@ -805,25 +805,15 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="push_info_disable_push_text">Kui sul pole vaja ülikiiret infot saabunud kirjade kohta, siis lülita tõuketeenused välja ning lase K-9 Mail\'il kasutada tavapärast uute kirjade kontrollimist. Sellisel juhul vaatab K-9 Mail seadistatud ajavahemiku järel serverist uusi kirju ja mainitud püsiteavitust pole vaja.</string>
     <string name="push_info_disable_push_action">Ära kasuta tõuketeenuseid</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Vali</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Tühista valik</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Märgi loetuks</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Märgi mitteloetuks</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Lisa tärn</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Eemalda tärn</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arhiveeri</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Kustuta</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Rämps</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Teisalda…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Näita kirja koostamise nuppu ujuvana kirjade loendi kohal</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -900,8 +890,6 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="debug_enable_sync_debug_logging_title">Luba sünkroniseerimisandmete logimine</string>
     <string name="debug_sync_export_logs_title">Ekspordi sünkroniseerimislogid</string>
     <string name="debug_enable_sync_debug_logging_summary">Logi diagnostilised sünkroniseerimisandmed viimase 24 tunni kohta</string>
-    <string name="swipe_action_archive_folder_not_set">Määra arhiivikaust</string>
-    <string name="swipe_action_change_swipe_gestures">Muuda \nViiped</string>
     <string name="archiving_not_available_for_this_account">Selle kasutajakonto jaoks pole arhiveerimine saadaval.</string>
     <string name="debug_open_secret_debug_screen">Ava salajane veaotsingu vaade</string>
     <string name="debug_invalidate_access_token">Katse: tühista ligipääsu tunnusluba</string>
