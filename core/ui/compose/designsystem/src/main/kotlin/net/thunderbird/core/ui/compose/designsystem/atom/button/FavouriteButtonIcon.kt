@@ -8,9 +8,11 @@ import androidx.compose.ui.unit.Dp
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIconDefaults
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 
 private val FAVOURITE_ICON_COLOR = Color(color = 0xFFFF8C00)
+const val MESSAGE_ITEM_FAVOURITE_ICON_BUTTON_TEST_TAG = "MessageItem_FavouriteButtonIcon"
 
 @Composable
 fun FavouriteButtonIcon(
@@ -25,6 +27,8 @@ fun FavouriteButtonIcon(
         colors = ButtonIconDefaults.buttonIconColors(
             contentColor = if (favourite) FAVOURITE_ICON_COLOR else MainTheme.colors.onSurface,
         ),
-        modifier = modifier.size(size),
+        modifier = modifier
+            .size(size)
+            .testTagAsResourceId(MESSAGE_ITEM_FAVOURITE_ICON_BUTTON_TEST_TAG),
     )
 }
