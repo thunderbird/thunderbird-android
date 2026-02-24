@@ -1,0 +1,4 @@
+Thunderbird version 17.0b4
+
+Fixed:
+- Application navigation and account switching could crash
