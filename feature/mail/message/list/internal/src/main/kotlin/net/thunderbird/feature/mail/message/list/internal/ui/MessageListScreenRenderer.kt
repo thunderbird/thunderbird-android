@@ -25,11 +25,12 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.molecule.PullToRefreshBox
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
 import net.thunderbird.core.common.action.SwipeAction
+import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirection
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeableRow
+import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeableRowState
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.rememberSwipeableRowState
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageItemSwipeBackground
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageListItem
@@ -38,6 +39,7 @@ import net.thunderbird.feature.mail.message.list.ui.MessageListContract
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
+import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import net.thunderbird.feature.mail.message.list.ui.state.PaginationUi
 import net.thunderbird.feature.notification.api.content.InAppNotification
@@ -82,7 +84,6 @@ private fun MessageList(
     val listState = rememberMessageListLazyState(state, dispatchEvent)
 
     val showAccountIndicator = state.metadata.showAccountIndicator
-    val preferences = requireNotNull(state.preferences)
     val swipeActions = state.metadata.swipeActions
     LazyColumn(modifier = modifier, state = listState) {
         items(
@@ -90,52 +91,8 @@ private fun MessageList(
             key = { message -> message.id },
         ) { message ->
             val messageSwipeActions = swipeActions[message.account.id]
-            var lastSwipeConfig by remember { mutableStateOf<Pair<SwipeAction, Arrangement.Horizontal>?>(null) }
-            val accessibilityState = rememberMessageListScreenAccessibilityState(messageSwipeActions)
-            SwipeableRow(
-                state = rememberSwipeableRowState(
-                    swipeActionThreshold = { direction ->
-                        when (direction) {
-                            SwipeDirection.StartToEnd -> SWIPE_THRESHOLD
-                            SwipeDirection.EndToStart -> SWIPE_THRESHOLD
-                            SwipeDirection.Settled -> 0f
-                        }
-                    },
-                    accessibilityActions = accessibilityState.swipeDirectionAccessibilityAction.toImmutableList(),
-                ),
-                backgroundContent = {
-                    val (swipeAction, arrangement) = lastSwipeConfig ?: return@SwipeableRow
-                    MessageItemSwipeBackground(
-                        action = swipeAction,
-                        toggled = false,
-                        arrangement = arrangement,
-                    )
-                },
-                gesturesEnabled = messageSwipeActions != null,
-                enableDismissFromStartToEnd = messageSwipeActions?.rightAction != SwipeAction.None,
-                enableDismissFromEndToStart = messageSwipeActions?.leftAction != SwipeAction.None,
-                onSwipeChange = { direction ->
-                    messageSwipeActions?.let { swipeActions ->
-                        val swipeConfig = when (direction) {
-                            SwipeDirection.StartToEnd -> swipeActions.rightAction to Arrangement.Start
-                            SwipeDirection.EndToStart -> swipeActions.leftAction to Arrangement.End
-                            SwipeDirection.Settled -> null
-                        }
-                        lastSwipeConfig = swipeConfig
-                    }
-                },
-                onSwipeEnd = { direction ->
-                    messageSwipeActions
-                        ?.let { swipeActions ->
-                            when (direction) {
-                                SwipeDirection.StartToEnd -> swipeActions.rightAction
-                                SwipeDirection.EndToStart -> swipeActions.leftAction
-                                else -> null
-                            }
-                        }
-                        ?.let { dispatchEvent(MessageItemEvent.OnSwipeMessage(message, swipeAction = it)) }
-                },
-            ) {
+            val preferences = state.preferences ?: return@items
+            MessageListSwipeableItem(message, messageSwipeActions, dispatchEvent) { accessibilityState ->
                 MessageListItem(
                     message = message,
                     showAccountIndicator = showAccountIndicator,
@@ -153,6 +110,69 @@ private fun MessageList(
             }
         }
         item { MessageListFooter(state, dispatchEvent, Modifier.animateItem()) }
+    }
+}
+
+@Composable
+private fun rememberMessageListSwipeableRowState(
+    accessibilityState: MessageListScreenAccessibilityState,
+): SwipeableRowState = rememberSwipeableRowState(
+    swipeActionThreshold = { direction ->
+        when (direction) {
+            SwipeDirection.StartToEnd, SwipeDirection.EndToStart -> SWIPE_THRESHOLD
+            SwipeDirection.Settled -> 0f
+        }
+    },
+    accessibilityActions = accessibilityState.swipeDirectionAccessibilityAction,
+)
+
+@Composable
+private fun MessageListSwipeableItem(
+    message: MessageItemUi,
+    messageSwipeActions: SwipeActions?,
+    dispatchEvent: (MessageItemEvent) -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable (MessageListScreenAccessibilityState) -> Unit,
+) {
+    var lastSwipeConfig by remember { mutableStateOf<Pair<SwipeAction, Arrangement.Horizontal>?>(null) }
+    val accessibilityState = rememberMessageListScreenAccessibilityState(messageSwipeActions)
+    SwipeableRow(
+        state = rememberMessageListSwipeableRowState(accessibilityState),
+        backgroundContent = {
+            val (swipeAction, arrangement) = lastSwipeConfig ?: return@SwipeableRow
+            MessageItemSwipeBackground(
+                action = swipeAction,
+                toggled = false,
+                arrangement = arrangement,
+            )
+        },
+        gesturesEnabled = messageSwipeActions != null,
+        enableDismissFromStartToEnd = messageSwipeActions?.rightAction != SwipeAction.None,
+        enableDismissFromEndToStart = messageSwipeActions?.leftAction != SwipeAction.None,
+        onSwipeChange = { direction ->
+            messageSwipeActions?.let { swipeActions ->
+                val swipeConfig = when (direction) {
+                    SwipeDirection.StartToEnd -> swipeActions.rightAction to Arrangement.Start
+                    SwipeDirection.EndToStart -> swipeActions.leftAction to Arrangement.End
+                    SwipeDirection.Settled -> null
+                }
+                lastSwipeConfig = swipeConfig
+            }
+        },
+        onSwipeEnd = { direction ->
+            messageSwipeActions
+                ?.let { swipeActions ->
+                    when (direction) {
+                        SwipeDirection.StartToEnd -> swipeActions.rightAction
+                        SwipeDirection.EndToStart -> swipeActions.leftAction
+                        else -> null
+                    }
+                }
+                ?.let { dispatchEvent(MessageItemEvent.OnSwipeMessage(message, swipeAction = it)) }
+        },
+        modifier = modifier,
+    ) {
+        content(accessibilityState)
     }
 }
 

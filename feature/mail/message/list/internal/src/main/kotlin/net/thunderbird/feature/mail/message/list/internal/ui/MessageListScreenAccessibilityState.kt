@@ -1,6 +1,7 @@
 package net.thunderbird.feature.mail.message.list.internal.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.ImmutableList
@@ -28,6 +29,7 @@ import net.thunderbird.feature.mail.message.list.R as ApiR
  *  swipe gestures that can be performed on message items. Defaults to an empty list if no
  *  swipe actions are available.
  */
+@Stable
 class MessageListScreenAccessibilityState(
     private val stateDescription: Map<MessageListStateDescription, String>,
     val swipeDirectionAccessibilityAction: ImmutableList<SwipeDirectionAccessibilityAction> = persistentListOf(),
@@ -138,7 +140,7 @@ fun rememberMessageListScreenAccessibilityState(swipeActions: SwipeActions?): Me
         }
     }
 
-    return remember(stateDescription) {
+    return remember(stateDescription, swipeDirectionAccessibilityAction) {
         MessageListScreenAccessibilityState(stateDescription, swipeDirectionAccessibilityAction.toPersistentList())
     }
 }
