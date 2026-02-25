@@ -17,7 +17,6 @@
 package app.k9mail.ui.utils.itemtouchhelper;
 
 import android.graphics.Canvas;
-import android.os.Build;
 import android.view.View;
 
 import androidx.core.view.ViewCompat;
