@@ -5,7 +5,6 @@ plugins {
 kotlin {
     jvmToolchain {
         languageVersion = JavaLanguageVersion.of(11)
-        vendor = JvmVendorSpec.ADOPTIUM
     }
 }
 
