@@ -680,10 +680,10 @@ private fun createMessageUiItemList(
             )
 
             else -> createMessageUiItem(
-                state = State.Active,
+                state = State.Unread,
                 id = "id$index",
                 accountId = accountId,
-            )
+            ).copy(isActive = true)
         }
     },
 ): List<MessageItemUi> = List(size) { builder(it) }
