@@ -23,9 +23,8 @@ enum class MessageListDateTimeFormat {
     Full,
 
     /**
-     * ISO 8601 option, which is often requested by power users who prefer a
-     * deterministic, unambiguous format over the system locale defaults.
-     *      - Examples: "2026-01-23 13:23"
+     * ISO 8601 - like format
+     *  - Examples: "2026-01-23 13:23"
      */
     ISO,
 }

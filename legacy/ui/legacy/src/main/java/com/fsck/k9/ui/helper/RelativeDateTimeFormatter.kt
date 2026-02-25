@@ -9,9 +9,11 @@ import android.text.format.DateUtils.FORMAT_SHOW_DATE
 import android.text.format.DateUtils.FORMAT_SHOW_TIME
 import android.text.format.DateUtils.FORMAT_SHOW_WEEKDAY
 import android.text.format.DateUtils.FORMAT_SHOW_YEAR
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Calendar.DAY_OF_WEEK
 import java.util.Calendar.YEAR
+import java.util.Locale
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
@@ -46,7 +48,7 @@ constructor(
                 DateUtils.formatDateRange(context, timestamp, timestamp, flags)
             }
             MessageListDateTimeFormat.ISO -> {
-                val sdf = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.US)
+                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
                 sdf.format(java.util.Date(timestamp))
             }
         }
