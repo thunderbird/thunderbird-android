@@ -1,5 +1,6 @@
 package net.thunderbird.feature.mail.message.list.ui.state
 
+import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toPersistentSet
@@ -25,6 +26,7 @@ import net.thunderbird.feature.mail.message.list.domain.model.SortType
  * @property showAccountIndicator Whether to show the account indicator in the message list.
  * @property paging The pagination state of the message list.
  */
+@Immutable
 data class MessageListMetadata(
     val folder: Folder?,
     val swipeActions: ImmutableMap<AccountId, SwipeActions>,
