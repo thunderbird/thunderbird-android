@@ -20,10 +20,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.molecule.PullToRefreshBox
-import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirection
@@ -89,6 +91,7 @@ private fun MessageList(
         ) { message ->
             val messageSwipeActions = swipeActions[message.account.id]
             var lastSwipeConfig by remember { mutableStateOf<Pair<SwipeAction, Arrangement.Horizontal>?>(null) }
+            val accessibilityState = rememberMessageListScreenAccessibilityState(messageSwipeActions)
             SwipeableRow(
                 state = rememberSwipeableRowState(
                     swipeActionThreshold = { direction ->
@@ -98,7 +101,7 @@ private fun MessageList(
                             SwipeDirection.Settled -> 0f
                         }
                     },
-                    accessibilityActions = persistentListOf(/*TODO*/),
+                    accessibilityActions = accessibilityState.swipeDirectionAccessibilityAction.toImmutableList(),
                 ),
                 backgroundContent = {
                     val (swipeAction, arrangement) = lastSwipeConfig ?: return@SwipeableRow
@@ -137,7 +140,11 @@ private fun MessageList(
                     message = message,
                     showAccountIndicator = showAccountIndicator,
                     preferences = preferences,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .semantics(mergeDescendants = true) {
+                            stateDescription = accessibilityState.stateDescription(message)
+                        },
                     onClick = { dispatchEvent(MessageItemEvent.OnMessageClick(message)) },
                     onLongClick = { dispatchEvent(MessageItemEvent.ToggleSelectMessages(message)) },
                     onAvatarClick = { dispatchEvent(MessageItemEvent.ToggleSelectMessages(message)) },
@@ -145,20 +152,26 @@ private fun MessageList(
                 )
             }
         }
-        item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(FOOTER_HEIGHT.dp)
-                    .animateItem(),
-                contentAlignment = Alignment.Center,
-            ) {
-                ButtonText(
-                    text = state.metadata.footer.text,
-                    onClick = { dispatchEvent(MessageListEvent.OnFooterClick) },
-                )
-            }
-        }
+        item { MessageListFooter(state, dispatchEvent, Modifier.animateItem()) }
+    }
+}
+
+@Composable
+private fun MessageListFooter(
+    state: MessageListState,
+    dispatchEvent: (MessageListEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(FOOTER_HEIGHT.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        ButtonText(
+            text = state.metadata.footer.text,
+            onClick = { dispatchEvent(MessageListEvent.OnFooterClick) },
+        )
     }
 }
 
