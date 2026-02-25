@@ -29,7 +29,7 @@ internal class UserInputEmailAddressParser {
 
     private fun Address.isNonAsciiAddress() = !CharsetUtil.isASCII(address)
 
-    private fun Address.isInvalidDomainPart() = HostNameUtils.isLegalHostNameOrIP(hostname) == null
+    private fun Address.isInvalidDomainPart() = HostNameUtils.isLegalHostNameOrIP(checkNotNull(hostname)) == null
 }
 
 internal class NonAsciiEmailAddressException(message: String) : Exception(message)
