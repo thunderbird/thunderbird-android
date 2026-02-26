@@ -3,6 +3,8 @@ plugins {
 }
 
 kotlin {
+    explicitApi()
+
     androidLibrary {
         namespace = "net.thunderbird.core.ui.compose.navigation"
     }

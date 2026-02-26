@@ -17,7 +17,7 @@ import net.thunderbird.core.ui.navigation.Route
  * @param basePath the base path for the deep link
  * @param content the composable content to display for this route
  */
-inline fun <reified T : Route> NavGraphBuilder.deepLinkComposable(
+public inline fun <reified T : Route> NavGraphBuilder.deepLinkComposable(
     basePath: String,
     noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ) {

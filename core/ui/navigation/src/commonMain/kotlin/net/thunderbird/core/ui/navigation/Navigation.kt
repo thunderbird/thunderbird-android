@@ -8,7 +8,7 @@ import net.thunderbird.core.ui.navigation.Route
  *
  * @param T the type of route
  */
-interface Navigation<T : Route> {
+public interface Navigation<T : Route> {
 
     /**
      * Register all routes for this navigation.
@@ -17,7 +17,7 @@ interface Navigation<T : Route> {
      * @param onBack the action to perform when the back button is pressed
      * @param onFinish the action to perform when a route is finished
      */
-    fun registerRoutes(
+    public fun registerRoutes(
         navGraphBuilder: NavGraphBuilder,
         onBack: () -> Unit,
         onFinish: (T) -> Unit,
