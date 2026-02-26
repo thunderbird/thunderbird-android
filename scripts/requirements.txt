@@ -1,20 +1,20 @@
 # Python dependencies for scripts in this directory
 # Install with: pip install -r requirements.txt
 
-# Direct dependencies - all pinned and CVE-free
+# Direct dependencies - all pinned by version and hash
 
 # Required by: scripts/ci/setup_release_automation
 # Cryptography library for GitHub secret encryption
-PyNaCl==1.6.2
+PyNaCl==1.6.2 --hash=sha256:c949ea47e4206af7c8f604b8278093b674f7c79ed0d4719cc836902bf4517465
 
 # Required by: scripts/ci/render-notes.py
 # YAML parser for release notes
-PyYAML==6.0.1
+PyYAML==6.0.1 --hash=sha256:f003ed9ad21d6a4713f0a9b5a7a0a79e08dd0f221aff4525a2be4c346ee60aab
 
 # Required by: scripts/ci/render-notes.py
 # Template engine for rendering changelog files
-Jinja2==3.1.6
+Jinja2==3.1.6 --hash=sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67
 
 # Required by: scripts/ci/setup_release_automation, scripts/ci/render-notes.py
 # HTTP library for GitHub API interactions
-requests==2.32.4
+requests==2.32.4 --hash=sha256:27babd3cda2a6d50b30443204ee89830707d396671944c998b5975b031ac2b2c

@@ -36,8 +36,7 @@ source "$VENV_DIR/bin/activate"
 
 # Install dependencies
 echo "Installing dependencies..."
-pip install --quiet --upgrade pip
-pip install --quiet -r "$SCRIPT_DIR/requirements.txt"
+pip install --quiet --require-hashes --no-deps -r "$SCRIPT_DIR/requirements.txt"
 echo "✓ Dependencies installed"
 echo ""
 
