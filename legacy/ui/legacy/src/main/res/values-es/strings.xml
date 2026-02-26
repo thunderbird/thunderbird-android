@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="about_app_authors_k9">Los encargados del perrito K-9</string>
+    <string name="about_app_authors_k9">K-9 Dog Walkers</string>
     <string name="source_code">Código fuente</string>
     <string name="app_license">Licencia Apache, versión 2.0</string>
     <string name="about_project_title">Proyecto de código abierto</string>
@@ -237,7 +237,7 @@
     <string name="general_settings_ui_density_default">Normal</string>
     <string name="general_settings_ui_density_relaxed">Espacioso</string>
     <string name="global_settings_privacy_hide_useragent">Ocultar cliente de correo</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Eliminar la marca con el «agente de usuario» de las cabeceras del correo (el destinatario no verá qué programa de correo estás usando)</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Eliminar la marca «Agente Usuario» de las cabeceras del correo</string>
     <string name="global_settings_privacy_hide_timezone">Ocultar zona horaria</string>
     <string name="global_settings_privacy_hide_timezone_detail">Usar UTC («tiempo universal coordinado») en lugar de la zona horaria local en las cabeceras del correo y cabeceras de respuesta</string>
     <string name="global_settings_notification_quick_delete_title">Mostrar el botón «Borrar»</string>
@@ -702,7 +702,7 @@
     <string name="openpgp_dialog_sign_only_text">En este modo la clave PGP se usará para crear una firma criptográfica en un correo no cifrado.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Esto no cifra el correo, pero permite verificar que fue enviado con esa clave.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Las firmas pueden estropearse o perderse al enviarse a listas de correo. </string>
-    <string name="openpgp_dialog_sign_only_minus_attach">Algunos clientes de correo mostrarán las firmas como adjuntos «signature.asc».</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">En algunos clientes las firmas de correo pueden ser exhibidas como adjuntos ‘signature.asc’.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Los correos cifrados siempre incluirán una firma.</string>
     <string name="crypto_msg_title_plaintext">Texto plano</string>
     <string name="crypto_msg_unencrypted_sign_error">la firma de extremo a extremo contiene un error</string>
@@ -715,8 +715,8 @@
     <string name="crypto_msg_title_unencrypted_signed">Texto plano firmado</string>
     <string name="crypto_msg_unencrypted_sign_mismatch">pero la clave de extremo a extremo no coincide con el remitente</string>
     <string name="crypto_msg_unencrypted_sign_expired">pero la clave de extremo a extremo esta expirada</string>
-    <string name="crypto_msg_unencrypted_sign_revoked">pero la clave de extremo a extremo esta revocada</string>
-    <string name="crypto_msg_unencrypted_sign_insecure">pero la clave de extremo a extremo es insegura</string>
+    <string name="crypto_msg_unencrypted_sign_revoked">pero la clave de extremo a extremo está revocada</string>
+    <string name="crypto_msg_unencrypted_sign_insecure">pero la clave de extremo a extremo no se considera segura</string>
     <string name="crypto_msg_unencrypted_sign_unknown">desde una clave de extremo a extremo desconocida</string>
     <string name="crypto_msg_title_encrypted_unknown">Cifrado</string>
     <string name="crypto_msg_encrypted_error">pero hubo un error de descifrado</string>
@@ -729,9 +729,9 @@
     <string name="crypto_msg_title_encrypted_signed">Cifrado</string>
     <string name="crypto_msg_encrypted_sign_unknown">desde una clave de extremo a extremo desconocida</string>
     <string name="crypto_msg_encrypted_sign_mismatch">pero la clave de extremo a extremo no coincide con el remitente</string>
-    <string name="crypto_msg_encrypted_sign_expired">pero la clave de extremo a extremo esta expirada</string>
+    <string name="crypto_msg_encrypted_sign_expired">pero la clave de extremo a extremo está caducada</string>
     <string name="crypto_msg_encrypted_sign_revoked">pero la clave de extremo a extremo esta revocada</string>
-    <string name="crypto_msg_encrypted_sign_insecure">pero la clave de extremo a extremo es insegura</string>
+    <string name="crypto_msg_encrypted_sign_insecure">pero la clave de extremo a extremo no se considera segura</string>
     <string name="crypto_msg_encrypted_sign_error">pero los datos de extremo a extremo tienen errores</string>
     <string name="crypto_msg_encrypted_insecure">pero el cifrado es inseguro</string>
     <string name="locked_attach_unlock">Desbloquear</string>
@@ -864,9 +864,9 @@
     <string name="background_work_notification_remove_account">Borrando cuenta…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">sin leer, %s</string>
-    <string name="general_settings_post_remove_action_return_to_list">Volver al listado de correos</string>
-    <string name="general_settings_post_remove_action_show_previous_message">Ver correo anterior</string>
-    <string name="general_settings_post_remove_action_show_next_message">Ver siguiente correo</string>
+    <string name="general_settings_post_remove_action_return_to_list">Volver al listado de mensajes</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Mostrar mensaje anterior</string>
+    <string name="general_settings_post_remove_action_show_next_message">Mostrar siguiente mensaje</string>
     <string name="general_settings_post_remove_action_title">Tras borrar o mover un correo</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Seguir en el correo actual</string>
     <string name="general_settings_post_mark_as_unread_action_title">Tras marcar un correo como no leído</string>
@@ -929,4 +929,9 @@
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
     <string name="debug_feature_flags">DEPURACIÓN: Indicadores de características</string>
     <string name="print_message_action">Imprimir</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contextual</string>
+    <string name="general_settings_message_list_date_time_format_title">Formato de fecha/hora</string>
+    <string name="sort_by_then_by">Luego por…</string>
+    <string name="general_settings_message_list_date_time_format_full">Completo</string>
+    <string name="global_settings_splitview_when_unfolded">Cuando el dispositivo esté desencarpetado</string>
 </resources>

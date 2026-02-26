@@ -933,4 +933,9 @@
     <string name="global_settings_messageview_body_content_type_text_plain">Plain text (text/plain)</string>
     <string name="debug_feature_flags">DEBUG: Feature Flags</string>
     <string name="print_message_action">Print</string>
+    <string name="general_settings_message_list_date_time_format_title">Date/Time Format</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contextual</string>
+    <string name="general_settings_message_list_date_time_format_full">Full</string>
+    <string name="sort_by_then_by">Then by…</string>
+    <string name="global_settings_splitview_when_unfolded">When device is unfolded</string>
 </resources>

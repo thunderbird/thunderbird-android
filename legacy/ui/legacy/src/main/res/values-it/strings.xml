@@ -929,4 +929,9 @@
     <string name="global_settings_messageview_body_content_type_title">Corpo del messaggio come</string>
     <string name="debug_feature_flags">DEBUG: Flag Caratteristiche</string>
     <string name="print_message_action">Stampa</string>
+    <string name="global_settings_splitview_when_unfolded">Quando il dispositivo è aperto</string>
+    <string name="general_settings_message_list_date_time_format_title">Data Lista Messaggi/Ora formato titolo</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contestuale</string>
+    <string name="general_settings_message_list_date_time_format_full">Data Lista Messaggi/Impostazione opzione formato ora: completo</string>
+    <string name="sort_by_then_by">Poi da…</string>
 </resources>

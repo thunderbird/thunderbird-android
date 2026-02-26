@@ -318,8 +318,8 @@
     <string name="account_notify_contacts_mail_only_summary">Zobrazovat oznámení pouze na zprávy od známých kontaktů</string>
     <string name="account_settings_ignore_chat_messages_label">Ignorovat zprávy z chatů</string>
     <string name="account_settings_ignore_chat_messages_summary">Nezobrazovat oznámení na zprávy patřící do e-mailového chatu</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Označit jako přečtenou po otevření</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Označit zprávu jako přečtenou po otevření</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Označit jako přečtené po otevření</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Označit zprávu jako přečtenou po jejím otevření pro prohlížení</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Při smazání označit jako přečtené</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Při jejím mazání, označit zprávu jako přečtenou</string>
     <string name="account_settings_notification_channels_label">Kategorie oznámení</string>
@@ -327,7 +327,7 @@
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Nastavit oznámení na chyby a stavy</string>
     <string name="account_settings_show_pictures_label">Vždy zobrazovat obrázky</string>
     <string name="account_settings_show_pictures_never">Ne</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Jen od kontaktů</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Od kontaktů</string>
     <string name="account_settings_show_pictures_always">Od kohokoli</string>
     <string name="account_settings_composition">Odesílání zpráv</string>
     <string name="account_settings_default_quoted_text_shown_label">Citovat původní zprávu když odpovídám</string>
@@ -349,7 +349,7 @@
     <string name="account_settings_upload_sent_messages_label">Nahrát odeslané zprávy</string>
     <string name="account_settings_upload_sent_messages_summary">Po odeslání nahrát zprávy do složky Odesláno</string>
     <string name="account_settings_general_title">Obecná nastavení</string>
-    <string name="account_settings_reading_mail">Čtení zpráv</string>
+    <string name="account_settings_reading_mail">Čtení pošty</string>
     <string name="account_settings_sync">Stahování pošty</string>
     <string name="account_settings_folders">Složky</string>
     <string name="account_settings_quote_prefix_label">Předpona citovaného textu</string>
@@ -943,4 +943,9 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="global_settings_messageview_body_content_type_title">Typ obsahu těla</string>
     <string name="debug_feature_flags">LADĚNÍ: Příznaky funkcí</string>
     <string name="print_message_action">Tisk</string>
+    <string name="global_settings_splitview_when_unfolded">Při rozložení zařízení</string>
+    <string name="general_settings_message_list_date_time_format_title">Formát data a času</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontextový</string>
+    <string name="general_settings_message_list_date_time_format_full">Plný</string>
+    <string name="sort_by_then_by">Poté dle…</string>
 </resources>

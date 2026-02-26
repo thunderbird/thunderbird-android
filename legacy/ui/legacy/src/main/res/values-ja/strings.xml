@@ -312,8 +312,8 @@
     <string name="account_notify_contacts_mail_only_summary">既知の連絡先からのメッセージのみ通知を表示します</string>
     <string name="account_settings_ignore_chat_messages_label">チャットメッセージを無視する</string>
     <string name="account_settings_ignore_chat_messages_summary">メールチャットに属するメッセージの通知を表示しません</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">開封したときに既読にする</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">メッセージを開いて表示したときに既読にします</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">開封時に既読にする</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">メッセージを開封して閲覧したときに既読にします</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">削除したときに既読にする</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">メッセージが削除されたときに既読にします</string>
     <string name="account_settings_notification_channels_label">通知カテゴリー</string>
@@ -322,7 +322,7 @@
     <string name="account_settings_show_pictures_label">常に画像を表示</string>
     <string name="account_settings_show_pictures_never">しない</string>
     <string name="account_settings_show_pictures_only_from_contacts">連絡先からのみ</string>
-    <string name="account_settings_show_pictures_always">誰からも</string>
+    <string name="account_settings_show_pictures_always">誰からでも</string>
     <string name="account_settings_composition">メール送信</string>
     <string name="account_settings_default_quoted_text_shown_label">返信時にメッセージを引用する</string>
     <string name="account_settings_default_quoted_text_shown_summary">返信に元のメッセージを含めます。</string>
@@ -920,4 +920,9 @@
     <string name="debug_invalidate_access_token_already_modified">保存したアクセストークンは既に編集されています。</string>
     <string name="debug_feature_flags">デバッグ: 機能フラグ</string>
     <string name="print_message_action">印刷</string>
+    <string name="general_settings_message_list_date_time_format_title">日付・時刻の書式</string>
+    <string name="general_settings_message_list_date_time_format_contextual">自動</string>
+    <string name="general_settings_message_list_date_time_format_full">フル</string>
+    <string name="sort_by_then_by">次に…</string>
+    <string name="global_settings_splitview_when_unfolded">端末が折り畳まれていないとき分割</string>
 </resources>

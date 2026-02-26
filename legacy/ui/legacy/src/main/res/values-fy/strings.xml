@@ -312,16 +312,16 @@
     <string name="account_notify_contacts_mail_only_summary">Meldingen allinnich toane foar bekende kontakten</string>
     <string name="account_settings_ignore_chat_messages_label">Petearberjochten negearje</string>
     <string name="account_settings_ignore_chat_messages_summary">Gjin meldingen toane foar berjochten dy’t ûnderdiel binne fan in e-mailpetear</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">As lêzen markearje nei iepenjen</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">As lêzen markearje wannear besjoen</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">As lêzen markearje wannear iepene</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">In berjocht as lêzen markearje wannear it iepene is om te besjen</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">As lêzen markearje by wiskjen</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Markearje in berjocht as lêzen wannear’t dy wiske wurdt</string>
     <string name="account_settings_notification_channels_label">Meldingskategoryen</string>
     <string name="account_settings_open_notification_settings_messages_summary">Meldingen foar nije berjochten ynstelle</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Flater- en steatmeldingen ynstelle</string>
-    <string name="account_settings_show_pictures_label">Ofbyldingen automatysk toane</string>
+    <string name="account_settings_show_pictures_label">Ofbyldingen altyd toane</string>
     <string name="account_settings_show_pictures_never">Nee</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Allinnich fan kontakten</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Fan kontakten</string>
     <string name="account_settings_show_pictures_always">Fan elkenien</string>
     <string name="account_settings_composition">Berjochten ferstjoere</string>
     <string name="account_settings_default_quoted_text_shown_label">Berjocht by beäntwurdzjen sitearje</string>
@@ -343,7 +343,7 @@
     <string name="account_settings_upload_sent_messages_label">Ferstjoerde berjochten oplade</string>
     <string name="account_settings_upload_sent_messages_summary">Berjochten nei ferstjoeren nei de map ‘Ferstjoerd’ oplade</string>
     <string name="account_settings_general_title">Algemiene ynstellingen</string>
-    <string name="account_settings_reading_mail">Berjochten lêze</string>
+    <string name="account_settings_reading_mail">E-mailberjochten lêze</string>
     <string name="account_settings_sync">Berjochten ophelje</string>
     <string name="account_settings_folders">Mappen</string>
     <string name="account_settings_quote_prefix_label">Sitaatfoarfoegsel</string>
@@ -923,4 +923,9 @@
     <string name="global_settings_messageview_body_content_type_text_plain">Platte tekst (text/plain)</string>
     <string name="debug_feature_flags">DEBUGGE: Funksjelabels</string>
     <string name="print_message_action">Ofdrukke</string>
+    <string name="global_settings_splitview_when_unfolded">Wannear’t apparaat iepenklapt</string>
+    <string name="general_settings_message_list_date_time_format_title">Datum/Tiidopmaak</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontekstueel</string>
+    <string name="general_settings_message_list_date_time_format_full">Folslein</string>
+    <string name="sort_by_then_by">Dêrnei op…</string>
 </resources>

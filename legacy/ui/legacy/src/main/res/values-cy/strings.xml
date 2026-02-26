@@ -947,4 +947,9 @@
     <string name="debug_invalidate_access_token_already_modified">Mae tocyn mynediad wedi\'i storio eisoes wedi\'i addasu.</string>
     <string name="debug_feature_flags">DADFYGIO: Baneri Nodwedd</string>
     <string name="print_message_action">Argraffu</string>
+    <string name="global_settings_splitview_when_unfolded">Pan fydd y ddyfais wedi\'i hagor</string>
+    <string name="general_settings_message_list_date_time_format_title">Fformat Dyddiad/Amser</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Cyd-destunol</string>
+    <string name="general_settings_message_list_date_time_format_full">Llawn</string>
+    <string name="sort_by_then_by">Yna gan…</string>
 </resources>

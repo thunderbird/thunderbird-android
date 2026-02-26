@@ -318,8 +318,8 @@
     <string name="account_settings_notification_channels_label">Benachrichtigungskategorien</string>
     <string name="account_settings_open_notification_settings_messages_summary">Konfiguriere die Benachrichtigungen für neue Nachrichten</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Konfiguriere Fehler- und Statusbenachrichtigungen</string>
-    <string name="account_settings_show_pictures_label">Bilder automatisch herunterladen</string>
-    <string name="account_settings_show_pictures_never">Niemals</string>
+    <string name="account_settings_show_pictures_label">Bilder immer anzeigen</string>
+    <string name="account_settings_show_pictures_never">Nein</string>
     <string name="account_settings_show_pictures_only_from_contacts">Nur von Kontakten</string>
     <string name="account_settings_show_pictures_always">Von jedem</string>
     <string name="account_settings_composition">E-Mails versenden</string>
@@ -467,7 +467,7 @@
     <string name="sort_unread_last">Gelesene Nachrichten zuerst</string>
     <string name="sort_attach_first">Nachrichten mit Anhängen zuerst</string>
     <string name="sort_unattached_first">Nachrichten ohne Anhänge zuerst</string>
-    <string name="sort_by">Sortieren nach…</string>
+    <string name="sort_by">Sortieren nach …</string>
     <string name="sort_by_date">Datum</string>
     <string name="sort_by_arrival">Ankunftsdatum</string>
     <string name="sort_by_subject">Betreff</string>
@@ -670,8 +670,8 @@
     <string name="address_type_work">Arbeit</string>
     <string name="address_type_other">Anderes</string>
     <string name="address_type_mobile">Mobil</string>
-    <string name="compose_error_no_draft_folder">Kein Ordner für Entwürfe für dieses Konto festgelegt!</string>
-    <string name="compose_error_no_key_configured">Kein Schlüssel für dieses Konto konfiguriert! Überprüfe deine Einstellungen.</string>
+    <string name="compose_error_no_draft_folder">Keinen Ordner für Entwürfe für dieses Konto festgelegt!</string>
+    <string name="compose_error_no_key_configured">Keinen Schlüssel für dieses Konto konfiguriert! Überprüfe deine Einstellungen.</string>
     <string name="error_crypto_provider_incompatible">Verschlüsselungsdienst verwendet inkompatible Version. Bitte überprüfe deine Einstellungen!</string>
     <string name="error_crypto_provider_connect">Verbindung zum Verschlüsselungsdienst fehlgeschlagen. Überprüfe deine Einstellungen oder tippe auf das Verschlüsselungssymbol, um es erneut zu versuchen!</string>
     <string name="error_crypto_provider_ui_required">Ende-zu-Ende Verschlüsselung konnte nicht initialisiert werden, bitte überprüfe deine Einstellungen</string>
@@ -927,4 +927,9 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="global_settings_messageview_body_content_type_title">Inhaltstyp des Textes</string>
     <string name="print_message_action">Drucken</string>
     <string name="debug_feature_flags">DEBUG: Feature-Flags</string>
+    <string name="global_settings_splitview_when_unfolded">Wenn das Gerät aufgeklappt ist</string>
+    <string name="general_settings_message_list_date_time_format_title">Datums-/Zeitformat</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontextbezogen</string>
+    <string name="general_settings_message_list_date_time_format_full">Vollständig</string>
+    <string name="sort_by_then_by">Dann nach …</string>
 </resources>

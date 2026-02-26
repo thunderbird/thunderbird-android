@@ -325,7 +325,7 @@
     <string name="account_settings_notification_channels_label">Категории уведомлений</string>
     <string name="account_settings_open_notification_settings_messages_summary">Настройка уведомлений о новых сообщениях</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Настройка уведомлений об ошибках и статусе</string>
-    <string name="account_settings_show_pictures_label">Показать изображения</string>
+    <string name="account_settings_show_pictures_label">Всегда показывать изображения</string>
     <string name="account_settings_show_pictures_never">Никогда</string>
     <string name="account_settings_show_pictures_only_from_contacts">От контактов</string>
     <string name="account_settings_show_pictures_always">Всегда</string>
@@ -943,4 +943,9 @@
     <string name="expand_folders">Развернуть папки</string>
     <string name="debug_feature_flags">ОТЛАДКА: флаги функций</string>
     <string name="print_message_action">Печать</string>
+    <string name="global_settings_splitview_when_unfolded">Когда устройство развёрнуто</string>
+    <string name="general_settings_message_list_date_time_format_title">Формат даты/времени</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Контекстный</string>
+    <string name="general_settings_message_list_date_time_format_full">Полный</string>
+    <string name="sort_by_then_by">Затем по…</string>
 </resources>

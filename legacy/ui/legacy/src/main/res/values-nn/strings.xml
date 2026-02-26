@@ -163,7 +163,7 @@
     <string name="account_setup_options_mail_check_frequency_3hour">Kvar 3. time</string>
     <string name="account_setup_options_mail_check_frequency_6hour">Kvar 6. time</string>
     <string name="account_setup_options_mail_check_frequency_12hour">Kvar 12. time</string>
-    <string name="account_setup_options_mail_check_frequency_24hour">Kvart døger</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">Kvart døgn</string>
     <string name="idle_refresh_period_2min">Annakvart minutt</string>
     <string name="idle_refresh_period_3min">Kvart 3. minutt</string>
     <string name="idle_refresh_period_6min">Kvart 6. minutt</string>
@@ -928,4 +928,9 @@
     <string name="global_settings_messageview_body_content_type_text_plain">Rein tekst (text/plain)</string>
     <string name="global_settings_messageview_body_content_type_title">Innhaldstype for brødtekst</string>
     <string name="print_message_action">Skriv ut</string>
+    <string name="global_settings_splitview_when_unfolded">Når eininga er bretta ut</string>
+    <string name="general_settings_message_list_date_time_format_title">Dato/Tidsformat</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Etter kontekst</string>
+    <string name="general_settings_message_list_date_time_format_full">Full</string>
+    <string name="sort_by_then_by">Deretter etter…</string>
 </resources>

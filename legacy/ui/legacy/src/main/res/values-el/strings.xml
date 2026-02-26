@@ -124,7 +124,7 @@
     <string name="notification_notify_error_title">Σφάλμα ειδοποίησης</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_text">Σφάλμα στην προσπάθεια δημιουργίας ειδοποίησης συστήματος για νέο μήνυμα. Η ατία είναι μάλλον λείπει ο ήχος της ειδοπίησης.\n\nΠατήστε για να ανοίξετε τις ρυθμίσεων των ειδοποιήσεων.</string>
-    <string name="notification_bg_sync_ticker">Έλεγχος μηνύματος: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Έλεγχος email: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Έλεγχος μηνύματος</string>
     <string name="notification_bg_send_ticker">Αποστολή μηνύματος: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Αποστολή μηνύματος</string>
@@ -334,7 +334,7 @@
     <string name="account_settings_message_format_label">Τύπος κειμένου μηνύματος</string>
     <string name="account_settings_message_format_text">Απλό κείμενο (αφαιρούνται εικόνες και μορφοποίηση)</string>
     <string name="account_settings_message_format_html">HTML (διατηρούνται εικόνες και μορφοποίηση)</string>
-    <string name="account_settings_message_format_auto">Αυτόματα (απλό κείμενο, εκτός αν απαντά σε μήνυμα HTML)</string>
+    <string name="account_settings_message_format_auto">Αυτόματα</string>
     <string name="account_settings_always_show_cc_bcc_label">Πάντα προβολή «Κοιν.»/«Κρυφή κοιν.»</string>
     <string name="account_settings_message_read_receipt_label">Απόδειξη ανάγνωσης</string>
     <string name="account_settings_message_read_receipt_summary">Πάντοτε να απαιτείται απόδειξη ανάγνωσης</string>
@@ -899,4 +899,30 @@
     <string name="message_view_menu_action_export_eml">Εξαγωγή ως EML</string>
     <string name="debug_open_secret_debug_screen">Άνοιγμα οθόνης αποσφαλμάτωσης</string>
     <string name="archiving_not_available_for_this_account">Η αρχειοθέτηση δεν είναι δυνατή για αυτόν τον λογαριασμό.</string>
+    <string name="print_message_action">Εκτύπωση</string>
+    <string name="account_setup_auto_select_folder">Αυτόματη επιλογή φακέλου</string>
+    <string name="navigation_drawer_preferences">Πλευρικό μενού</string>
+    <string name="expand_folders">Ανάπτυξη φακέλων</string>
+    <string name="set_format_html_condensed_action">Εμφάνιση με μορφοποίηση</string>
+    <string name="set_format_plain_condensed_action">Εμφάνιση χωρίς μορφοποίηση</string>
+    <string name="global_settings_messageview_body_content_type_title">Τύπος περιεχομένου σώματος</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (κείμενο/html)</string>
+    <string name="swipe_action_change_swipe_gestures">Αλλαγή \nΧειρονομίες ολίσθησης</string>
+    <string name="set_format_html_action">Χρήση αρχικής μορφοποίησης</string>
+    <string name="set_format_plain_action">Εμφάνιση μη μορφοποιημένου μηνύματος</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Απλό κείμενο (text/plain)</string>
+    <string name="debug_feature_flags">ΕΛΕΓΧΟΣ ΣΦΑΛΜΑΤΩΝ: Σημαίες λειτουργιών</string>
+    <string name="debug_invalidate_access_token">Δοκιμή: Ακύρωση διακριτικού πρόσβασης</string>
+    <string name="global_settings_splitview_when_unfolded">Όταν η συσκευή είναι ξεδιπλωμένη</string>
+    <string name="debug_invalidate_access_token_local">Δοκιμή: Ακύρωση διακριτικού πρόσβασης (τοπικά)</string>
+    <string name="debug_invalidate_access_token_server">Δοκιμή: Ακύρωση διακριτικού πρόσβασης (διακομιστής)</string>
+    <string name="debug_invalidate_access_token_done">Το διακριτικό πρόσβασης ακυρώθηκε. Το επόμενο αίτημα θα ανανεωθεί.</string>
+    <string name="debug_invalidate_access_token_unavailable">Δεν διατίθεται κανένα διακριτικό OAuth για αυτόν τον λογαριασμό.</string>
+    <string name="debug_invalidate_access_token_local_done">Ζητήθηκε τοπική ακύρωση. Το επόμενο αίτημα θα κάνει λήψη νέου διακριτικού.</string>
+    <string name="debug_force_auth_failure_unavailable">Δεν διατίθεται καμία διαμόρφωση OAuth για αυτόν τον λογαριασμό.</string>
+    <string name="debug_invalidate_access_token_server_done">Το αποθηκευμένο διακριτικό πρόσβασης έχει καταστραφεί. Το επόμενο αίτημα θα αποτύχει και έπειτα, θα ανανεωθεί.</string>
+    <string name="debug_force_auth_failure">Δοκιμή: Εξαναγκασμός αποτυχίας ταυτοποίησης</string>
+    <string name="debug_force_auth_failure_done">Η κατάσταση OAuth απαλείφθηκε. Το επόμενο αίτημα θα αποτύχει.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Δεν ήταν δυνατή η τροποποίηση του αποθηκευμένου διακριτικού πρόσβασης. Δοκιμάστε την τοπική ακύρωση.</string>
+    <string name="debug_invalidate_access_token_already_modified">Το αποθηκευμένο διακριτικό πρόσβασης έχει ήδη τροποποιηθεί.</string>
 </resources>

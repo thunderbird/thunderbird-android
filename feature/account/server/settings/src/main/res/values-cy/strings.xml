@@ -26,7 +26,7 @@
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP neu enw gwesteiwr annilys</string>
     <string name="account_server_settings_validation_error_port_required">Mae angen porth.</string>
     <string name="account_server_settings_validation_error_port_invalid">Porth annilys (rhaid iddo fod yn 1–65535).</string>
-    <string name="account_server_settings_validation_error_username_required">Angen enw defnyddiwr FTP.</string>
+    <string name="account_server_settings_validation_error_username_required">Angen enw defnyddiwr.</string>
     <string name="account_server_settings_validation_error_password_required">Angen cyfrinair.</string>
     <string name="account_server_settings_validation_error_imap_prefix_blank">Gall rhagddodiad IMAP ddim bod yn wag.</string>
     <string name="account_server_settings_password_authentication_title">Gwiriwch eich hunaniaeth</string>

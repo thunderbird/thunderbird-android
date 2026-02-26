@@ -23,7 +23,7 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Wyświetl</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Konto „<xliff:g id="account">%1$s</xliff:g>” zostanie usunięte z <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Konto „<xliff:g id="account">%1$s</xliff:g>” zostanie usunięte z <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autorzy</string>
     <string name="about_title">O aplikacji <xliff:g id="app_name">%s</xliff:g></string>
@@ -934,4 +934,9 @@
     <string name="global_settings_messageview_body_content_type_text_plain">Zwykły tekst (tekst/zwykły)</string>
     <string name="debug_feature_flags">DEBUGOWANIE: flagi funkcji</string>
     <string name="print_message_action">Drukuj</string>
+    <string name="global_settings_splitview_when_unfolded">Po rozłożeniu urządzenia</string>
+    <string name="general_settings_message_list_date_time_format_title">Format daty i godziny</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontekstowy</string>
+    <string name="general_settings_message_list_date_time_format_full">Pełny</string>
+    <string name="sort_by_then_by">Następnie wg…</string>
 </resources>

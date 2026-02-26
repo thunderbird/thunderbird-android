@@ -140,7 +140,7 @@
     <string name="message_compose_description_edit_quoted_text">Embann an destenn meneget</string>
     <string name="message_to_label">Da:</string>
     <string name="message_view_cc_label">Cc:</string>
-    <string name="message_view_bcc_label">Bcc:</string>
+    <string name="message_view_bcc_label">Bcc :</string>
     <string name="message_view_status_attachment_not_saved">N\'haller ket enrollañ ar stagadenn.</string>
     <!--Used to display the recipient list in the message view screen.-->
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
@@ -914,18 +914,21 @@ Gallout a rit mirout ar gemennadenn-mañ hag implij anezhi evel un enrolladenn e
     <string name="attach_file">Kenstagañ restr</string>
     <string name="camera_permission_denied">Nac\'het eo bet aotre ar c\'hamera ! N\'haller ket tennañ luc\'hskeudennoù</string>
     <string name="empty_spam_action">Goullonderiñ al lastez</string>
-    <string name="debug_enable_sync_debug_logging_title">Kerzhlevr goubred diveugañ</string>
-    <string name="debug_enable_sync_debug_logging_summary">Enrollañ titouroù goubred deznaouioù evit 24 eur</string>
-    <string name="debug_sync_export_logs_title">Ezporzhiañ ar c\'herzhlevr goubred</string>
+    <string name="debug_enable_sync_debug_logging_title">Gweredekaat kerzhlevr dizreinañ an sinkronaat</string>
+    <string name="debug_enable_sync_debug_logging_summary">Mirout titouroù diagnostikañ ar sinkronaat e-pad 24 eurvezh</string>
+    <string name="debug_sync_export_logs_title">Ezporzhiañ ar c\'herzhlevr sinkronaat</string>
     <string name="dialog_confirm_empty_spam_title">Kadarnaat goullonderiñ al lastez</string>
     <string name="dialog_confirm_empty_spam_message">Ha fellout a ra deoc\'h goullonderiñ teuliad al lastez ?</string>
-    <string name="swipe_action_archive_folder_not_set">Kefluniañ an teuliad \"Dielloù\"</string>
-    <string name="swipe_action_change_swipe_gestures">Kemmañ\nRisklañ jestroù</string>
-    <string name="archiving_not_available_for_this_account">N\'eo ket hegez an diellaouiñ evit ar c\'hont-mañ.</string>
+    <string name="swipe_action_archive_folder_not_set">Kefluniañ an teuliad diellaouiñ</string>
+    <string name="swipe_action_change_swipe_gestures">Kemmañ\nar jestroù skubañ</string>
+    <string name="archiving_not_available_for_this_account">Ne c\'haller ket diellaouiñ ar gont-mañ.</string>
     <string name="message_view_menu_action_export_eml">Ezporzhiañ e stumm EML</string>
     <string name="print_message_action">Moullañ</string>
     <string name="set_format_html_action">Ober gant ar pajennaozañ orin</string>
     <string name="set_format_html_condensed_action">Diskwel ar pajennaozañ</string>
     <string name="set_format_plain_action">Diskwel ar postel hep pajennaozañ</string>
     <string name="set_format_plain_condensed_action">Diskwel hep pajennaozañ</string>
+    <string name="global_settings_splitview_when_unfolded">Pa vez an ardivink war zispleg</string>
+    <string name="general_settings_message_list_date_time_format_full">Leun</string>
+    <string name="sort_by_then_by">Goude dre…</string>
 </resources>

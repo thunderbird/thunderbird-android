@@ -32,4 +32,6 @@
     <string name="account_server_settings_password_authentication_subtitle">Ξεκλειδώστε για να δείτε τον κωδικό πρόσβασής σας</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Μη έγκυρη IP ή όνομα κεντρικού υπολογιστή</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Για να δείτε τον κωδικό πρόσβασής σας εδώ, ενεργοποιήστε το κλείδωμα οθόνης της συσκευής.</string>
+    <string name="account_server_settings_password_authentication_failed">Αποτυχία ταυτοποίησης!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Δεν είναι δυνατή η έναρξη του μηνύματος προτροπής για βιομετρικό έλεγχο.</string>
 </resources>

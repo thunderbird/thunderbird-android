@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_oauth_sign_in_with_google_button">Kirjaudu Googlella</string>
+    <string name="account_oauth_sign_in_with_google_button">Kirjaudu Googlea käyttäen</string>
     <string name="account_oauth_loading_error">OAuth-kirjautuminen epäonnistui</string>
     <string name="account_oauth_error_failed">Valtuutus epäonnistui seuraavalla virheellä: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">Sovellus ei löytänyt selainta käytettäväksi pääsyn antamiseksi tilille.</string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 ei ole tällä hetkellä tuettu tämän palveluntarjoajan kanssa.</string>
     <string name="account_oauth_error_canceled">Valtuutus peruttiin</string>
-    <string name="account_oauth_loading_message">Kirjaudu OAuthilla</string>
-    <string name="account_oauth_sign_in_description">Ohjaamme sinut sähköpostin palveluntarjoajasi puoleen kirjautumista varten. Valtuuta sovelluksen pääsy sähköpostitilillesi.</string>
+    <string name="account_oauth_loading_message">Kirjaudu OAuthia käyttäen</string>
+    <string name="account_oauth_sign_in_description">Ohjaamme sinut sähköpostinpalveluntarjoajasi luo sisäänkirjautumista varten. Anna sovellukselle pääsy sähköpostitiliisi.</string>
     <string name="account_oauth_sign_in_button">Kirjaudu sisään</string>
     <string name="account_oauth_google_sign_in_support_text">Jos sinulla on ongelmia Google-tilillä sisäänkirjautumisessa, tutustu {placeHolder}:imme.</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">tukiartikkeli</string>

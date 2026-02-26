@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_footer_payment_button">Pokračujte na platbu</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Teraz nie</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Áno</string>
@@ -13,4 +13,45 @@
     <string name="funding_googleplay_contribution_reminder_title">Podporte Thunderbird</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Skúsiť znova</string>
     <string name="funding_googleplay_contribution_error_purchase_failed">Nákup zlyhal.</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird je financovaný výhradne z príspevkov od používateľov, ako ste vy. Nikdy nezobrazujeme reklamy ani nepredávame vaše údaje. Ak sa vám Thunderbird páči, podporte nás, prosím. Bez vás to nedokážeme!</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Srdečná vďaka od nás všetkých!</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Váš príspevok pomáha ďalšiemu vývoju Thunderbirdu. Za vašu podporu sme vám úprimne vďační.</string>
+    <string name="funding_googleplay_contribution_list_title">Zabezpečený príspevok</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Príspevky nie sú odpočítateľné z dane ako dary na charitu.</string>
+    <string name="funding_googleplay_contribution_list_empty_title">Príspevky v aplikácii sú momentálne nedostupné.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Navštívte <xliff:g id="link_text">%s</xliff:g> a zistite ďalšie spôsoby, ako podporiť Thunderbird.</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Platby sú momentálne nedostupné</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Upraviť mesačné platby</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Podporte nás ďalším príspevkom</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">Ignorovať chybu</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">Príspevky sú momentálne nedostupné.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_title">Základný príspevok</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_title">Významný príspevok</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_title">Veľký príspevok</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_title">Zásadný príspevok</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_title">Výnimočný príspevok</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_title">Mimoriadny príspevok</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_description">Vaša podpora nás ženie vpred! Aj tie najmenšie príspevky dokážu rozvíriť hladinu zmien a my sme nesmierne vďační, že vás máme na palube.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_description">Pomáhate nám robiť veľké veci! Príspevkom v tejto výške nám pomáhate robiť zmysluplné kroky vpred a umožňujete nám ďalej rásť.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_description">Váš príspevok je skutočne výnimočný! Zohrávate kľúčovú úlohu v napredovaní nášho poslania, pomáhate nám dosahovať dôležité míľniky a znásobovať náš celkový dopad.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_description">Čo robíme, je možné najmä vďaka vám! Vďaka vašej štedrosti sa môžeme púšťať do väčších projektov a spoločne dosahovať nové míľniky.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_description">Vaša podpora je skutočne inšpiratívna! Vďaka vášmu významnému príspevku môžeme posúvať hranice, inovovať a robiť zásadné kroky k dosiahnutiu našich cieľov.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">Vďaka vám môžeme skutočne snívať vo veľkom! Vaša neuveriteľná podpora nám dáva silu dosahovať neobyčajné veci a zanecháva trvalú stopu vo všetkom, čo robíme.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_title">Základný mesačný príspevok</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_title">Hodnotný mesačný príspevok</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_title">Významný mesačný príspevok</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_title">Zásadný mesačný príspevok</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_title">Výnimočný mesačný príspevok</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">Mimoriadny mesačný príspevok</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_description">Vaša podpora nás ženie vpred! Každý príspevok prináša zmenu – ďakujeme!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_description">Váš príspevok nám pomáha rásť a robiť zmysluplné kroky vpred – ďakujeme!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_description">Váš príspevok je výnimočný! Ste kľúčom k napĺňaniu nášho poslania a dosahovaniu skutočných zmien.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_description">Čo robíme, je možné najmä vďaka vám! Vaša štedrosť nám pomáha dosahovať nové míľniky.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Vaša podpora nás inšpiruje! Váš príspevok nám pomáha posúvať hranice a dosahovať naše ciele.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Pomáhate nám snívať vo veľkom! Vaša podpora nám dáva silu dosahovať neobyčajné veci.</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird je bezplatný a softvér s otvoreným zdrojovým kódom.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Nezobrazujeme reklamy.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Nepredávame vaše údaje.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Sme financovaní výhradne používateľmi, ako ste vy.</string>
+    <string name="funding_googleplay_contribution_reminder_message">Pridajte sa k našej misii vytvoriť ten najlepší e-mailový nástroj, ktorý rešpektuje súkromie a ponúka maximálnu prispôsobiteľnosť.</string>
 </resources>

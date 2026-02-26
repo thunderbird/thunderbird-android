@@ -5,4 +5,6 @@
     <string name="designsystem_atom_password_textfield_show_password">Pokaż hasło</string>
     <string name="designsystem_molecule_error_view_button_retry">Spróbuj ponownie</string>
     <string name="designsystem_molecule_password_input_label">Hasło</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Przesuń od początku do końca do %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Przesuń od końca do początku do %s</string>
 </resources>
