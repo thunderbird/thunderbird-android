@@ -21,4 +21,10 @@ enum class MessageListDateTimeFormat {
      *      - Examples: "1/23/2026 1:23PM" "23/1/2026 13:23"
      */
     Full,
+
+    /**
+     * ISO 8601 - like format
+     *  - Examples: "2026-01-23 13:23"
+     */
+    ISO,
 }
