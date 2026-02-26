@@ -9,7 +9,7 @@ PyNaCl==1.6.2 --hash=sha256:c949ea47e4206af7c8f604b8278093b674f7c79ed0d4719cc836
 
 # Required by: scripts/ci/render-notes.py
 # YAML parser for release notes
-PyYAML==6.0.1 --hash=sha256:f003ed9ad21d6a4713f0a9b5a7a0a79e08dd0f221aff4525a2be4c346ee60aab
+PyYAML==6.0.1 --hash=sha256:bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43
 
 # Required by: scripts/ci/render-notes.py
 # Template engine for rendering changelog files

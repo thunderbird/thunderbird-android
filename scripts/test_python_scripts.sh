@@ -14,8 +14,16 @@ cleanup() {
     fi
 }
 
+# Print guidance when dependency installs fail under --require-hashes.
+on_install_error() {
+    echo ""
+    echo "Dependency install failed. See scripts/README.md for updating requirements.txt hashes."
+}
+
 # Ensure cleanup happens on exit
 trap cleanup EXIT
+# Print instructions if a command fails (e.g., missing hashes).
+trap on_install_error ERR
 
 echo "Python Scripts Test"
 echo "==================="
