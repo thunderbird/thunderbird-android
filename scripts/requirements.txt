@@ -5,16 +5,16 @@
 
 # Required by: scripts/ci/setup_release_automation
 # Cryptography library for GitHub secret encryption
-PyNaCl==1.6.2 --hash=sha256:c949ea47e4206af7c8f604b8278093b674f7c79ed0d4719cc836902bf4517465
+PyNaCl==1.6.2
 
 # Required by: scripts/ci/render-notes.py
 # YAML parser for release notes
-PyYAML==6.0.1 --hash=sha256:bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43
+PyYAML==6.0.1
 
 # Required by: scripts/ci/render-notes.py
 # Template engine for rendering changelog files
-Jinja2==3.1.6 --hash=sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67
+Jinja2==3.1.6
 
 # Required by: scripts/ci/setup_release_automation, scripts/ci/render-notes.py
 # HTTP library for GitHub API interactions
-requests==2.32.4 --hash=sha256:27babd3cda2a6d50b30443204ee89830707d396671944c998b5975b031ac2b2c
+requests==2.32.4
