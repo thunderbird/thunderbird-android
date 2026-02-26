@@ -604,7 +604,7 @@
     <string name="account_settings_openpgp_missing">Manglande OpenPGP app - var den avinstallert?</string>
     <string name="folder_settings_in_top_group_label">Vis i toppgruppe</string>
     <string name="account_settings_strip_signature_label">Fjern signaturar under svar</string>
-    <string name="account_settings_reading_mail">Lesing av e-post</string>
+    <string name="account_settings_reading_mail">Lesing av mail</string>
     <string name="account_settings_autodownload_message_size_64">64 KiB</string>
     <string name="move_copy_cannot_copy_unsynced_message">Kan ikkje kopiera eller flytta melding som ikkje er synkronisert med tenaren</string>
     <string name="account_settings_quote_style_label">Svarsiteringsstil</string>
@@ -624,7 +624,7 @@
     <string name="account_settings_notify_self_label">Inkluder utgåande e-post</string>
     <string name="account_notify_contacts_mail_only_label">Berre kontaktar</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Marker som lesen etter opning</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Marker ein melding som lesen etter den vert opna for visning</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marker melding som lesen når den er opna</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Marker melding som lesen etter den er sletta</string>
     <string name="account_settings_notification_channels_label">Notifikasjons-kategoriar</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Konfigurer feil- og statusnotifikasjonar</string>
@@ -933,4 +933,5 @@
     <string name="general_settings_message_list_date_time_format_contextual">Etter kontekst</string>
     <string name="general_settings_message_list_date_time_format_full">Full</string>
     <string name="sort_by_then_by">Deretter etter…</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
 </resources>
