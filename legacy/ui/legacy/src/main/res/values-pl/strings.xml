@@ -939,4 +939,5 @@
     <string name="general_settings_message_list_date_time_format_contextual">Kontekstowy</string>
     <string name="general_settings_message_list_date_time_format_full">Pełny</string>
     <string name="sort_by_then_by">Następnie wg…</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
 </resources>
