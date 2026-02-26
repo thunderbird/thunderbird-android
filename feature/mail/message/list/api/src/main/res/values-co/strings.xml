@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Selezziunà</string>
+    <string name="swipe_action_deselect">Diselezziunà</string>
+    <string name="swipe_action_mark_as_read">Marcà cum’è lettu</string>
+    <string name="swipe_action_mark_as_unread">Marcà cum’è à leghje</string>
+    <string name="swipe_action_add_star">Aghjunghje una stella</string>
+    <string name="swipe_action_remove_star">Caccià a stella</string>
+    <string name="swipe_action_archive">Archiviu</string>
+    <string name="swipe_action_archive_folder_not_set">Cunfigurà u cartulare d’archiviera</string>
+    <string name="swipe_action_change_swipe_gestures">Cambià \nI gesti di spazzatura</string>
+    <string name="swipe_action_delete">Squassà</string>
+    <string name="swipe_action_spam">Merzaghju</string>
+    <string name="swipe_action_move">Dispiazzà…</string>
+</resources>

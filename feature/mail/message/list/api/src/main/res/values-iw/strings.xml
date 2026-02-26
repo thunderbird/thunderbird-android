@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">בחר</string>
+    <string name="swipe_action_deselect">בטל בחירה</string>
+    <string name="swipe_action_mark_as_read">סמן כנקראה</string>
+    <string name="swipe_action_mark_as_unread">סמן כלא נקרא</string>
+    <string name="swipe_action_add_star">הוסף כוכב</string>
+    <string name="swipe_action_remove_star">מחק כוכב</string>
+    <string name="swipe_action_archive">העבר לארכיון</string>
+    <string name="swipe_action_archive_folder_not_set">הגדרת תיקיית ארכיון</string>
+    <string name="swipe_action_change_swipe_gestures">שינוי \nמחוות החלקה</string>
+    <string name="swipe_action_delete">מחק</string>
+    <string name="swipe_action_spam">דואר זבל</string>
+    <string name="swipe_action_move">העבר…</string>
+</resources>

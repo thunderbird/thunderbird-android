@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Выбрать</string>
+    <string name="swipe_action_deselect">Снять выбор</string>
+    <string name="swipe_action_mark_as_read">Прочитано</string>
+    <string name="swipe_action_mark_as_unread">Не прочитано</string>
+    <string name="swipe_action_add_star">Важное</string>
+    <string name="swipe_action_remove_star">Обычное</string>
+    <string name="swipe_action_archive">Архивировать</string>
+    <string name="swipe_action_archive_folder_not_set">Настроить папку архива</string>
+    <string name="swipe_action_change_swipe_gestures">Изменить \nжесты</string>
+    <string name="swipe_action_delete">Удалить</string>
+    <string name="swipe_action_spam">Отправить в спам</string>
+    <string name="swipe_action_move">Переместить в…</string>
+</resources>

@@ -495,22 +495,14 @@
     <string name="general_settings_title">הגדרות כלליות</string>
     <!--permissions-->
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">בחר</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">בטל בחירה</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">סמן כלא נקרא</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">הוסף כוכב</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">מחק כוכב</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">העבר לארכיון</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">מחק</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">דואר זבל</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -869,8 +861,6 @@
     <string name="push_notification_state_listening">ממתין לדוא\"ל חדש</string>
     <string name="ac_transfer_msg_body">הודעה זאת מכילה את כל המידע שדרוש כדי להעביר את הגדרות Autocrypt שלך יחד עם המפתח הסודי שלך באופן מאובטח מהמכשיר המקורי שלך. אנא עקוב אחר ההוראות שאמורות להיות מוצגות במכשיר החדש כדי להגדירו עבור Autocrypt. אתה יכול לשמור את ההודעה הזאת ולהשתמש בה כגיבוי למפתח הסודי שלך. אם תרצה לעשות זאת, כדאי לך לכתוב את הסיסמה ולאחסן אותה במקום בטוח.</string>
     <string name="push_info_disable_push_action">כבה דחיפה (Push)</string>
-    <string name="swipe_action_mark_as_read">סמן כנקראה</string>
-    <string name="swipe_action_move">העבר…</string>
     <string name="general_settings_show_compose_button_title">הצג כפתור כתיבת הודעה חדשה צף</string>
     <string name="message_list_error_title">שגיאה</string>
     <string name="message_list_error_folder_not_found">תיקייה לא נמצאה</string>
@@ -916,8 +906,6 @@
     <string name="debug_enable_sync_debug_logging_title">אפשר סנכרון רישום איתור באגים</string>
     <string name="debug_enable_sync_debug_logging_summary">קבל מידע אבחון עבור 24 שעות</string>
     <string name="debug_sync_export_logs_title">ייצא רישום סנכרון</string>
-    <string name="swipe_action_archive_folder_not_set">הגדרת תיקיית ארכיון</string>
-    <string name="swipe_action_change_swipe_gestures">שינוי \nמחוות החלקה</string>
     <string name="archiving_not_available_for_this_account">ארכון לא זמין עבור חשבון זה.</string>
     <string name="debug_open_secret_debug_screen">פתיחת מסך ניפוי שגיאות סודי</string>
 </resources>

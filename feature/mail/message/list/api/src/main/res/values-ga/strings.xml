@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Roghnaigh</string>
+    <string name="swipe_action_deselect">Díroghnaigh</string>
+    <string name="swipe_action_mark_as_read">Marcáil á léamh</string>
+    <string name="swipe_action_mark_as_unread">Marcáil gan léamh</string>
+    <string name="swipe_action_add_star">Cuir réalta leis</string>
+    <string name="swipe_action_remove_star">Bain réalta</string>
+    <string name="swipe_action_archive">Cartlann</string>
+    <string name="swipe_action_archive_folder_not_set">Socraigh Fillteán Cartlainne</string>
+    <string name="swipe_action_change_swipe_gestures">Athraigh\nGothaí Svaidhpe</string>
+    <string name="swipe_action_delete">Scrios</string>
+    <string name="swipe_action_spam">Turscar</string>
+    <string name="swipe_action_move">Bog…</string>
+</resources>

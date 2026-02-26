@@ -636,22 +636,14 @@
     <string name="switch_off">끄기</string>
     <!--permissions-->
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">선택</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">선택 해제</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">읽지 않음으로 표시</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">별표 표시</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">별표 삭제</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">보관</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">삭제</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">스팸</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -738,7 +730,6 @@
     <string name="crypto_no_provider_title">이 이메일은 암호화되어 있습니다</string>
     <string name="recipient_error_non_ascii">현재 특수 문자는 지원되지 않습니다!</string>
     <string name="disable_encryption">암호화 비활성화</string>
-    <string name="swipe_action_mark_as_read">읽음으로 표시</string>
     <string name="message_list_error_title">오류</string>
     <string name="changelog_snackbar_button_text">보기</string>
     <string name="account_settings_vibrate_pattern_label">진동 패턴</string>

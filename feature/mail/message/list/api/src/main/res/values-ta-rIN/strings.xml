@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">தேர்தெடு</string>
+    <string name="swipe_action_deselect">தேர்வு நீக்கு</string>
+    <string name="swipe_action_mark_as_read">குறி படித்தது</string>
+    <string name="swipe_action_mark_as_unread">படித்ததாக குறி</string>
+    <string name="swipe_action_add_star">நட்சத்திரம் சேர்</string>
+    <string name="swipe_action_remove_star">நட்சத்திரம் கழி</string>
+    <string name="swipe_action_archive">காப்பகம்</string>
+    <string name="swipe_action_archive_folder_not_set">காப்பக கோப்புறையை அமைக்கவும்</string>
+    <string name="swipe_action_change_swipe_gestures">மாற்றம் \nசைகைகளை ச்வைப் செய்யுங்கள்</string>
+    <string name="swipe_action_delete">நீக்கு</string>
+    <string name="swipe_action_spam">பயனற்றது</string>
+    <string name="swipe_action_move">நகர்த்தவும்…</string>
+</resources>
