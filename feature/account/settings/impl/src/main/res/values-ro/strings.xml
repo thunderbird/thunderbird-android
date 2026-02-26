@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_settings_general_title">Preferințe generale</string>
     <string name="account_settings_general_avatar_option_monogram">Monogramă</string>
     <string name="account_settings_general_avatar_option_image">Imagine</string>
@@ -23,4 +23,16 @@
     <string name="account_settings_general_avatar_image_select">Selectați imaginea</string>
     <string name="account_settings_avatar_error_unsupported_format">Sunt acceptate numai imagini JPEG.</string>
     <string name="account_settings_avatar_hint_jpeg_only">Numai JPEG</string>
+    <string name="account_settings_show_pictures_label">Afișează întotdeauna imagini</string>
+    <string name="account_settings_reading_mail">Se citește corespondența</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Marchează ca citit la deschidere</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marchează un mesaj ca citit atunci când este deschis pentru vizualizare</string>
+    <string name="account_settings_show_pictures_never">Nu</string>
+    <string name="account_settings_remove_account_action">Eliminare cont</string>
+    <string name="account_settings_okay_action">Ok</string>
+    <string name="account_settings_cancel_action">Anulează</string>
+    <string name="account_settings_account_delete_dlg_title">Eliminare cont</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">Contul „<xliff:g id="account">%1$s</xliff:g>” va fi eliminat din <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Numai de la contacte</string>
+    <string name="account_settings_show_pictures_always">De la oricine</string>
 </resources>

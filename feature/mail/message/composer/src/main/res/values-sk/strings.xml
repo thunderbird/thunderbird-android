@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_title">Nenašla sa zložka odoslaných správ</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Ak chcete tento e-mail po odoslaní uložiť, nastavte priečinok Odoslané v nastaveniach účtu.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Priradiť priečinok Odoslaná pošta</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Zrušiť</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Odoslať a zmazať</string>
 </resources>

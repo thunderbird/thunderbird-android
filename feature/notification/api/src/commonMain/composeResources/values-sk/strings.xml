@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Synchronizovať (Push)</string>
     <string name="notification_channel_push_description">Zobrazené po dobu čakania na nové správy</string>
@@ -34,4 +34,22 @@
     <string name="notification_action_archive">Archivovať</string>
     <string name="notification_action_archive_all">Archivovať všetko</string>
     <string name="notification_action_spam">Nevyžiadaná pošta</string>
+    <string name="notification_authentication_incoming_server_error_text">Zlyhalo overenie pre %1$s. Aktualizujte nastavenia servera prichádzajúcej pošty.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Zlyhalo overenie pre %1$s. Aktualizujte nastavenie servera odchádzajúcej pošty.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d nová správa</item>
+        <item quantity="few">%1$d nové správy</item>
+        <item quantity="many">%1$d nových správ</item>
+        <item quantity="other">%1$d nových správ</item>
+    </plurals>
+    <string name="notification_action_retry">Opakovať</string>
+    <string name="notification_action_update_server_settings">Aktualizovať nastavenia servera</string>
+    <string name="notification_action_assign_sent_folder">Priradiť priečinok</string>
+    <string name="banner_inline_notification_check_error_notifications">Skontrolovať chybové hlásenia</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Niektoré správy si vyžadujú vašu pozornosť.</string>
+    <string name="banner_inline_notification_open_notifications">Otvoriť oznámenia</string>
+    <string name="banner_inline_notification_learn_more">Zistiť viac</string>
+    <string name="banner_inline_notification_view_support_article">Zobraziť článok podpory</string>
+    <string name="sent_folder_not_found_title">Priečinok Odoslaná pošta nie je k dispozícii.</string>
 </resources>

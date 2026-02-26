@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">סנכרן (דחיפה)</string>
     <string name="notification_channel_push_description">מוצג בעת המתנה להודעות חדשות</string>
@@ -36,4 +36,21 @@
     <string name="notification_action_archive">העבר לארכיון</string>
     <string name="notification_action_archive_all">העבר הכל לארכיון</string>
     <string name="notification_action_spam">דואר זבל</string>
+    <string name="notification_authentication_incoming_server_error_text">אימות נכשל עבור %1$s. עדכן את הגדרות השרת הנכנס.</string>
+    <string name="notification_authentication_outgoing_server_error_text">אימות נכשל עבור %1$s. עדכן את הגדרות השרת היוצא.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">הודעה חדשה %1$d</item>
+        <item quantity="two">%1$d הודעות חדשות</item>
+        <item quantity="other">%1$d הודעות חדשות</item>
+    </plurals>
+    <string name="notification_action_retry">נסה שוב</string>
+    <string name="notification_action_update_server_settings">עדכן הגדרות שרת</string>
+    <string name="notification_action_assign_sent_folder">הקצה תיקייה</string>
+    <string name="banner_inline_notification_check_error_notifications">בדוק התראות שגיאה</string>
+    <string name="banner_inline_notification_some_messages_need_attention">ישנן הודעות הדורשות את תשומת לבך.</string>
+    <string name="banner_inline_notification_open_notifications">פתח התראות</string>
+    <string name="banner_inline_notification_learn_more">למד עוד</string>
+    <string name="banner_inline_notification_view_support_article">הצג מאמר תמיכה</string>
+    <string name="sent_folder_not_found_title">תיקיית 'פריטים שנשלחו' לא זמינה.</string>
 </resources>

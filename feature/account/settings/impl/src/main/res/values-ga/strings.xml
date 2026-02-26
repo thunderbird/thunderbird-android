@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_settings_general_title">Socruithe Ginearálta</string>
     <string name="account_settings_general_avatar_option_monogram">Monagram</string>
     <string name="account_settings_general_avatar_option_image">Íomhá</string>
@@ -23,4 +23,16 @@
     <string name="account_settings_general_avatar_image_select">Roghnaigh Íomhá</string>
     <string name="account_settings_avatar_error_unsupported_format">Ní thacaítear ach le híomhánna JPEG.</string>
     <string name="account_settings_avatar_hint_jpeg_only">JPEG amháin</string>
+    <string name="account_settings_show_pictures_label">Taispeáin íomhánna i gcónaí</string>
+    <string name="account_settings_reading_mail">Ag léamh ríomhphoist</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Marcáil mar léite nuair a osclaítear é</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marcáil teachtaireacht mar léite nuair a osclaítear í lena breathnú uirthi</string>
+    <string name="account_settings_show_pictures_never">Níl</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Ó theagmhálaithe</string>
+    <string name="account_settings_show_pictures_always">Ó aon duine</string>
+    <string name="account_settings_remove_account_action">Bain cuntas</string>
+    <string name="account_settings_okay_action">Ceart go leor</string>
+    <string name="account_settings_cancel_action">Cealaigh</string>
+    <string name="account_settings_account_delete_dlg_title">Bain Cuntas</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">Bainfear an cuntas \"<xliff:g id="account">%1$s</xliff:g>\" as <xliff:g id="app_name">%2$s</xliff:g>.</string>
 </resources>
