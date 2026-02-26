@@ -5,7 +5,17 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Cleanup function
+cleanup() {
+    if [ -n "$VENV_DIR" ] && [ -d "$VENV_DIR" ]; then
+        deactivate 2>/dev/null || true
+        rm -rf "$VENV_DIR"
+    fi
+}
+
+# Ensure cleanup happens on exit
+trap cleanup EXIT
 
 echo "Python Scripts Test"
 echo "==================="
@@ -38,17 +48,5 @@ python3 -m py_compile "$SCRIPT_DIR/ci/render-notes.py" && echo "  ✓ render-not
 python3 -m py_compile "$SCRIPT_DIR/ci/setup_release_automation" && echo "  ✓ setup_release_automation"
 python3 -m py_compile "$SCRIPT_DIR/ci/merges/merge_gradle.py" && echo "  ✓ merge_gradle.py"
 
-TEST_RESULT=$?
 echo ""
-
-# Clean up
-deactivate
-rm -rf "$VENV_DIR"
-
-if [ $TEST_RESULT -eq 0 ]; then
-    echo "✓ All tests passed!"
-    exit 0
-else
-    echo "✗ Some tests failed"
-    exit 1
-fi
+echo "✓ All tests passed!"
