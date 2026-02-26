@@ -939,4 +939,5 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="general_settings_message_list_date_time_format_contextual">Contextual</string>
     <string name="general_settings_message_list_date_time_format_full">Complet</string>
     <string name="sort_by_then_by">Apoi, după…</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
 </resources>
