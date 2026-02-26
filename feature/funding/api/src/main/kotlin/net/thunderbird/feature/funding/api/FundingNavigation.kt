@@ -1,8 +1,8 @@
 package net.thunderbird.feature.funding.api
 
 import kotlinx.serialization.Serializable
-import net.thunderbird.core.ui.compose.navigation.Navigation
-import net.thunderbird.core.ui.compose.navigation.Route
+import net.thunderbird.core.ui.navigation.Navigation
+import net.thunderbird.core.ui.navigation.Route
 
 const val FUNDING_BASE_DEEP_LINK = "app://feature/funding"
 

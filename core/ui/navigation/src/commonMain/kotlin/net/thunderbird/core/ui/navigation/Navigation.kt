@@ -1,6 +1,7 @@
-package net.thunderbird.core.ui.compose.navigation
+package net.thunderbird.core.ui.navigation
 
 import androidx.navigation.NavGraphBuilder
+import net.thunderbird.core.ui.navigation.Route
 
 /**
  * A Navigation is responsible for registering routes with the navigation graph.

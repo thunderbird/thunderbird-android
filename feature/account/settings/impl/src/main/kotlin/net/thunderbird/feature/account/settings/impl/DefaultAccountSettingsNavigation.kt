@@ -2,7 +2,7 @@ package net.thunderbird.feature.account.settings.impl
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.toRoute
-import net.thunderbird.core.ui.compose.navigation.deepLinkComposable
+import net.thunderbird.core.ui.navigation.deepLinkComposable
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
 import net.thunderbird.feature.account.settings.api.AccountSettingsRoute

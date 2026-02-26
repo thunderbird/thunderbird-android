@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.compose.navigation
+package net.thunderbird.core.ui.navigation
 
 /**
  * A Route represents a destination in the app.

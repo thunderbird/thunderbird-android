@@ -2,7 +2,7 @@ package app.k9mail.feature.account.setup.navigation
 
 import androidx.navigation.NavGraphBuilder
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute.AccountSetup
-import net.thunderbird.core.ui.compose.navigation.deepLinkComposable
+import net.thunderbird.core.ui.navigation.deepLinkComposable
 
 class DefaultAccountSetupNavigation : AccountSetupNavigation {
 

@@ -1,7 +1,7 @@
 package app.k9mail.feature.onboarding.main.navigation
 
 import kotlinx.serialization.Serializable
-import net.thunderbird.core.ui.compose.navigation.Route
+import net.thunderbird.core.ui.navigation.Route
 
 interface OnboardingRoute : Route {
 

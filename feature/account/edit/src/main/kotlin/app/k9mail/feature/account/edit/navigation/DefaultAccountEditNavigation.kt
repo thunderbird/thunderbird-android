@@ -6,7 +6,7 @@ import app.k9mail.feature.account.edit.navigation.AccountEditRoute.IncomingServe
 import app.k9mail.feature.account.edit.navigation.AccountEditRoute.OutgoingServerSettings
 import app.k9mail.feature.account.edit.ui.server.settings.EditIncomingServerSettingsNavHost
 import app.k9mail.feature.account.edit.ui.server.settings.EditOutgoingServerSettingsNavHost
-import net.thunderbird.core.ui.compose.navigation.deepLinkComposable
+import net.thunderbird.core.ui.navigation.deepLinkComposable
 
 class DefaultAccountEditNavigation : AccountEditNavigation {
 

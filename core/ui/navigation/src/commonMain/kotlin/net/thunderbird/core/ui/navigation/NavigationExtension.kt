@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.compose.navigation
+package net.thunderbird.core.ui.navigation
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.Composable
@@ -6,6 +6,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
+import net.thunderbird.core.ui.navigation.Route
 
 /**
  * Extension function to register a composable route with a deep link.

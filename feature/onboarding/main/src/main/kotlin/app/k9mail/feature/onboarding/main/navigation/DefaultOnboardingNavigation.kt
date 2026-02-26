@@ -2,7 +2,7 @@ package app.k9mail.feature.onboarding.main.navigation
 
 import androidx.navigation.NavGraphBuilder
 import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute.Onboarding
-import net.thunderbird.core.ui.compose.navigation.deepLinkComposable
+import net.thunderbird.core.ui.navigation.deepLinkComposable
 
 class DefaultOnboardingNavigation : OnboardingNavigation {
     override fun registerRoutes(

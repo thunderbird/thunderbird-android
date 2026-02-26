@@ -1,7 +1,7 @@
 package net.thunderbird.feature.account.settings.api
 
 import kotlinx.serialization.Serializable
-import net.thunderbird.core.ui.compose.navigation.Route
+import net.thunderbird.core.ui.navigation.Route
 
 sealed interface AccountSettingsRoute : Route {
 

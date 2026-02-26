@@ -1,7 +1,7 @@
 package net.thunderbird.feature.funding.googleplay
 
 import androidx.navigation.NavGraphBuilder
-import net.thunderbird.core.ui.compose.navigation.deepLinkComposable
+import net.thunderbird.core.ui.navigation.deepLinkComposable
 import net.thunderbird.feature.funding.api.FundingNavigation
 import net.thunderbird.feature.funding.api.FundingRoute
 import net.thunderbird.feature.funding.api.FundingRoute.Contribution
