@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
  *
  * @param initialState The initial [STATE] of the ViewModel.
  */
-abstract class BaseViewModel<STATE, EVENT, EFFECT>(
+public abstract class BaseViewModel<STATE, EVENT, EFFECT>(
     initialState: STATE,
 ) : ViewModel(),
     UnidirectionalViewModel<STATE, EVENT, EFFECT> {
