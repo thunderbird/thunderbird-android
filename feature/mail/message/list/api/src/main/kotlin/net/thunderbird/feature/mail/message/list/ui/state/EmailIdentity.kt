@@ -1,5 +1,6 @@
 package net.thunderbird.feature.mail.message.list.ui.state
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 
 /**
@@ -12,7 +13,9 @@ import androidx.compose.ui.graphics.Color
  * @param color A generated color associated with the email address, often used for placeholder avatars.
  * @param avatar The avatar information, which could be a URI for an image or initials.
  */
+@Immutable
 data class EmailIdentity(
+    val name: String,
     val email: String,
     val color: Color,
     val avatar: Avatar,

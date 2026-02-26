@@ -1,5 +1,6 @@
 package net.thunderbird.feature.mail.message.list.ui.state
 
+import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
@@ -26,7 +27,10 @@ import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferen
  * @param forwarded A flag indicating whether the message has been forwarded.
  * @param conversations A list of related messages in the same conversation thread.
  *  Defaults to an empty list. Always empty if [MessageListPreferences.groupConversations] is `false`
+ * @param isActive A flag indicating whether the message is currently active. Defaults to `false`.
+ *  **NOTE:** Only available when Home Screen is on Split mode.
  */
+@Immutable
 data class MessageItemUi(
     val state: State,
     val id: String,
@@ -44,6 +48,7 @@ data class MessageItemUi(
     val forwarded: Boolean,
     val selected: Boolean,
     val conversations: ImmutableList<MessageItemUi> = persistentListOf(),
+    val isActive: Boolean = false,
 ) {
     /**
      * Represents the visual and interactive state of a `MessageItem`.
@@ -52,13 +57,6 @@ data class MessageItemUi(
      * which dictates its styling and available actions.
      */
     enum class State {
-        /**
-         * The message is currently being displayed in the message reader pane.
-         *
-         * **Note:** Only available when Home screen is on Split mode.
-         **/
-        Active,
-
         /** The message has just been added to the message list. **/
         New,
 
