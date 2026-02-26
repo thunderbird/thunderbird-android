@@ -1,5 +1,5 @@
 ---
-name: PR Opened Actions
+name: PR - Opened
 
 # Warning, this job is running on pull_request_target and therefore has access to issue content.
 # Don't add any steps that act on external code.
@@ -8,11 +8,10 @@ on:
     branches: [beta, release]
     types: [opened]
 
-permissions:
-  pull-requests: write
-
 jobs:
-  pull-request-opened:
+  pr-opened:
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
     environment: botmobile
     steps:

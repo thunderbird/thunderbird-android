@@ -1,4 +1,5 @@
-name: Quality - CodeQL Scan
+---
+name: Security - CodeQL
 
 on:
   schedule:
@@ -9,8 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  quality-codeql-scan:
-    name: Quality - CodeQL Scan
+  security-codeql:
+    name: CodeQL Scan
 
     permissions:
       # required to upload analysis results

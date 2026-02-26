@@ -1,23 +1,21 @@
 ---
-name: Remove needinfo label
+name: Issue - Remove answered label
 
 on:
-  issue_comment:
+  issues:
     types:
-      - created
+      - labeled
 
 permissions:
-  contents: read
   issues: write
 
 jobs:
-  build:
+  issue-needinfo-answered:
+    name: Remove 'answered' label when both exist
     runs-on: ubuntu-latest
     if: |
       contains(github.event.issue.labels.*.name, 'status: needs information') &&
-      github.event.comment.author_association != 'OWNER' &&
-      github.event.comment.author_association != 'MEMBER' &&
-      github.event.comment.author_association != 'COLLABORATOR'
+      contains(github.event.issue.labels.*.name, 'status: answered')
     environment: botmobile
     permissions:
       issues: write
@@ -31,9 +29,9 @@ jobs:
           app-id: ${{ vars.BOT_CLIENT_ID }}
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
 
-      - name: Remove needinfo label and add answered label
+      - name: Remove answered label if both exist
         env:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
         run: |
-          gh issue edit $ISSUE_NUMBER --repo "$GITHUB_REPOSITORY" --remove-label "status: needs information" --add-label "status: answered"
+          gh issue edit $ISSUE_NUMBER --repo "$GITHUB_REPOSITORY" --remove-label "status: answered"

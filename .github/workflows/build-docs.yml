@@ -1,5 +1,5 @@
 ---
-name: Deploy docs
+name: Build - Docs & Deploy to GitHub Pages
 
 on:
   push:
@@ -13,6 +13,9 @@ on:
 concurrency:
   group: "pages"
   cancel-in-progress: false
+
+permissions:
+  contents: read
 
 jobs:
   build-docs:
