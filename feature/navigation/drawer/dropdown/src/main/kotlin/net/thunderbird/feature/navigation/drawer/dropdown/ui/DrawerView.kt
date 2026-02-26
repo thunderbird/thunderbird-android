@@ -2,7 +2,7 @@ package net.thunderbird.feature.navigation.drawer.dropdown.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import app.k9mail.core.ui.compose.common.mvi.observe
+import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.feature.navigation.drawer.dropdown.FolderDrawerState
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Effect
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event

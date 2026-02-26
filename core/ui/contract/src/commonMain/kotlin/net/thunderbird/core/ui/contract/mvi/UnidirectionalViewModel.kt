@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.common.mvi
+package net.thunderbird.core.ui.contract.mvi
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,29 +17,29 @@ import kotlinx.coroutines.flow.StateFlow
  * @param EFFECT The  type that represents side-effects that can occur in response to the state changes. For example,
  * a navigation event can be represented as an effect.
  */
-interface UnidirectionalViewModel<STATE, EVENT, EFFECT> {
+public interface UnidirectionalViewModel<STATE, EVENT, EFFECT> {
     /**
      * The current [STATE] of the view model.
      */
-    val state: StateFlow<STATE>
+    public val state: StateFlow<STATE>
 
     /**
      * The side-effects ([EFFECT]) produced by the view model.
      */
-    val effect: SharedFlow<EFFECT>
+    public val effect: SharedFlow<EFFECT>
 
     /**
      * Handles an [EVENT] and updates the [STATE] of the view model.
      *
      * @param event The [EVENT] to handle.
      */
-    fun event(event: EVENT)
+    public fun event(event: EVENT)
 }
 
 /**
  * Data class representing a state and a dispatch function, used for destructuring in [observe].
  */
-data class StateDispatch<STATE, EVENT>(
+public data class StateDispatch<STATE, EVENT>(
     val state: State<STATE>,
     val dispatch: (EVENT) -> Unit,
 )
@@ -83,7 +83,7 @@ data class StateDispatch<STATE, EVENT>(
  * @return A [StateDispatch] containing the state and a dispatch function.
  */
 @Composable
-inline fun <reified STATE, EVENT, EFFECT> UnidirectionalViewModel<STATE, EVENT, EFFECT>.observe(
+public inline fun <reified STATE, EVENT, EFFECT> UnidirectionalViewModel<STATE, EVENT, EFFECT>.observe(
     crossinline handleEffect: (EFFECT) -> Unit,
 ): StateDispatch<STATE, EVENT> {
     val collectedState = state.collectAsStateWithLifecycle()
@@ -134,7 +134,7 @@ inline fun <reified STATE, EVENT, EFFECT> UnidirectionalViewModel<STATE, EVENT, 
  */
 @Suppress("MaxLineLength")
 @Composable
-inline fun <reified STATE, EVENT, EFFECT> UnidirectionalViewModel<STATE, EVENT, EFFECT>.observeWithoutEffect(
+public inline fun <reified STATE, EVENT, EFFECT> UnidirectionalViewModel<STATE, EVENT, EFFECT>.observeWithoutEffect(
     // no effect handler
 ): StateDispatch<STATE, EVENT> {
     val collectedState = state.collectAsStateWithLifecycle()

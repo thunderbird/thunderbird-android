@@ -4,8 +4,8 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
-import app.k9mail.core.ui.compose.common.mvi.observe
 import com.eygraber.uri.toKmpUri
+import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.setting.SettingViewProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect

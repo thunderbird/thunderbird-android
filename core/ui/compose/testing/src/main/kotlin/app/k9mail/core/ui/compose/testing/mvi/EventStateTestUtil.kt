@@ -1,8 +1,8 @@
 package app.k9mail.core.ui.compose.testing.mvi
 
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 
 /**
  * Tests that the state of the [viewModel] changes as expected when the [event] is sent.

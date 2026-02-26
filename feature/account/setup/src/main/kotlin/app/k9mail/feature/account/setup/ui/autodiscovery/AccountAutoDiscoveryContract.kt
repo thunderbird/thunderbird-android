@@ -1,12 +1,12 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingErrorState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 import net.thunderbird.core.validation.ValidationOutcome
 import net.thunderbird.core.validation.input.BooleanInputField
 import net.thunderbird.core.validation.input.StringInputField

@@ -1,11 +1,11 @@
 package app.k9mail.feature.account.server.settings.ui.incoming
 
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.common.domain.entity.AuthenticationType
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.common.domain.entity.toDefaultPort
 import app.k9mail.feature.account.common.ui.WithInteractionMode
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 import net.thunderbird.core.validation.ValidationOutcome
 import net.thunderbird.core.validation.input.NumberInputField
 import net.thunderbird.core.validation.input.StringInputField

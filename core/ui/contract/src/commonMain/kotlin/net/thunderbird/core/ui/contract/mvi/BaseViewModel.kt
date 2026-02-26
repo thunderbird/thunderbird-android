@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.common.mvi
+package net.thunderbird.core.ui.contract.mvi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
  *
  * @param initialState The initial [STATE] of the ViewModel.
  */
-abstract class BaseViewModel<STATE, EVENT, EFFECT>(
+public abstract class BaseViewModel<STATE, EVENT, EFFECT>(
     initialState: STATE,
 ) : ViewModel(),
     UnidirectionalViewModel<STATE, EVENT, EFFECT> {

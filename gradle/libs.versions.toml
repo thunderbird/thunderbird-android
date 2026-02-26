@@ -243,6 +243,7 @@ jetbrains-compose-navigation3 = { module = "org.jetbrains.androidx.navigation3:n
 jetbrains-compose-navigation-event = { module = "org.jetbrains.androidx.navigationevent:navigationevent-compose", version.ref = "jetbrainsComposeNavigationEvent" }
 jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrainsCompose" }
 jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "jetbrainsCompose" }
+jetbrains-compose-ui-test = { module = "org.jetbrains.compose.ui:ui-test", version.ref = "jetbrainsCompose" }
 jcip-annotations = { module = "net.jcip:jcip-annotations", version.ref = "jcipAnnotations" }
 jdom2 = { module = "org.jdom:jdom2", version.ref = "jdom" }
 jmap-client = { module = "rs.ltt.jmap:jmap-client", version.ref = "jmapClient" }
@@ -313,7 +314,7 @@ shared-kmp-android = [
   "koin-android",
   "kotlinx-coroutines-android",
 ]
-shared-kmp-compose = [
+shared-kmp-compose-common = [
   "jetbrains-compose-lifecycle-runtime",
   "jetbrains-compose-lifecycle-viewmodel",
   "jetbrains-compose-lifecycle-viewmodel-compose",
@@ -332,6 +333,9 @@ shared-kmp-common-test = [
   "kotlin-test-junit",
   "kotlinx-coroutines-test",
   "turbine",
+]
+shared-kmp-compose-common-test = [
+  "jetbrains-compose-ui-test"
 ]
 
 shared-jvm-main = [

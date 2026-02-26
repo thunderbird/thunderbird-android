@@ -25,7 +25,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Switch
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
@@ -37,6 +36,7 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.collections.immutable.ImmutableMap
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.feature.debug.settings.R
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import org.koin.androidx.compose.koinViewModel

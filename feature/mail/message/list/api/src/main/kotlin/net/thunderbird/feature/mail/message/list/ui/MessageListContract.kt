@@ -1,9 +1,9 @@
 package net.thunderbird.feature.mail.message.list.ui
 
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.compose.common.mvi.BaseStateMachineViewModel
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
