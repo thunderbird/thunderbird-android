@@ -2,19 +2,14 @@
 name: Security - Scorecard
 
 on:
-  # For Branch-Protection check. Only the default branch is supported. See
-  # https://github.com/ossf/scorecard/blob/main/docs/checks.md#branch-protection
   branch_protection_rule:
-  # To guarantee Maintained check is occasionally updated. See
-  # https://github.com/ossf/scorecard/blob/main/docs/checks.md#maintained
   schedule:
     - cron: '19 22 * * 3'
   push:
     branches: [ "main" ]
   workflow_dispatch:
 
-permissions:
-  contents: read
+permissions: read-all
 
 jobs:
   security-scorecard:
@@ -37,14 +32,6 @@ jobs:
         with:
           results_file: results.sarif
           results_format: sarif
-
-          # Public repositories:
-          #   - Publish results to OpenSSF REST API for easy access by consumers
-          #   - Allows the repository to include the Scorecard badge.
-          #   - See https://github.com/ossf/scorecard-action#publishing-results.
-          # For private repositories:
-          #   - `publish_results` will always be set to `false`, regardless
-          #     of the value entered here.
           publish_results: true
 
       # Upload the results as artifacts.
