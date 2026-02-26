@@ -727,7 +727,6 @@
     <string name="crypto_msg_encrypted_insecure">暗号化が安全ではないようです</string>
     <string name="locked_attach_unlock">ロック解除</string>
     <string name="locked_attach_unencrypted">この部分は暗号化されていません。安全ではない可能性があります。</string>
-    <string name="locked_attach_title">保護されていない添付ファイル</string>
     <string name="message_progress_text">読み込み中…</string>
     <string name="messageview_decrypt_cancelled">復号がキャンセルされました。</string>
     <string name="messageview_decrypt_retry">再試行</string>

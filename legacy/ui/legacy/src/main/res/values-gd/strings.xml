@@ -660,7 +660,6 @@
     <string name="crypto_msg_encrypted_insecure">ach chan eilear a’ meas gu bheil an crioptachadh tèarainte</string>
     <string name="locked_attach_unlock">Thoir a’ ghlas dheth</string>
     <string name="locked_attach_unencrypted">Cha deach a’ phàirt seo a chrioptachadh is dh’fhaoidte gu bheil e neo-thèarainte.</string>
-    <string name="locked_attach_title">Ceanglachan gun dìon</string>
     <string name="message_progress_text">’Ga luchdadh…</string>
     <string name="messageview_decrypt_cancelled">Sguireadh dhen dì-chrioptachadh.</string>
     <string name="messageview_decrypt_retry">Feuch ris a-rithist</string>

@@ -736,7 +736,6 @@
     <string name="crypto_msg_encrypted_insecure">pero el cifrado es inseguro</string>
     <string name="locked_attach_unlock">Desbloquear</string>
     <string name="locked_attach_unencrypted">Esta parte no está cifrada y puede ser insegura.</string>
-    <string name="locked_attach_title">Adjunto desprotegido</string>
     <string name="message_progress_text">Cargando…</string>
     <string name="messageview_decrypt_cancelled">Se ha cancelado el descifrado.</string>
     <string name="messageview_decrypt_retry">Reintentar</string>

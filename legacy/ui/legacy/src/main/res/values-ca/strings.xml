@@ -739,7 +739,6 @@
     <string name="crypto_msg_encrypted_insecure">però l\'encriptació no es considera segura</string>
     <string name="locked_attach_unlock">Desbloqueja</string>
     <string name="locked_attach_unencrypted">Aquesta part no estava encriptada i pot no ser segura.</string>
-    <string name="locked_attach_title">Adjunt no protegit</string>
     <string name="message_progress_text">S\'està carregant…</string>
     <string name="messageview_decrypt_cancelled">S\'ha cancel·lat la desencriptació.</string>
     <string name="messageview_decrypt_retry">Torna-hi</string>

@@ -735,7 +735,6 @@
     <string name="crypto_msg_encrypted_sign_revoked">ach cúlghairtear an eochair ó cheann go ceann</string>
     <string name="locked_attach_unlock">Díghlasáil</string>
     <string name="locked_attach_unencrypted">Ní raibh an chuid seo criptithe, agus d\'fhéadfadh sé a bheith neamhchinnte.</string>
-    <string name="locked_attach_title">Iatán Gan Chosaint</string>
     <string name="message_progress_text">Á Luchtú…</string>
     <string name="messageview_decrypt_cancelled">Cuireadh díchriptiú ar ceal.</string>
     <string name="messageview_decrypt_incomplete">Ní mór teachtaireacht chriptithe a íoslódáil le haghaidh díchriptithe.</string>

@@ -728,7 +728,6 @@
     <string name="crypto_msg_encrypted_insecure">por fshehtëzim i konsideruar jo i siguruar</string>
     <string name="locked_attach_unlock">Shkyçe</string>
     <string name="locked_attach_unencrypted">Kjo pjesë s’qe fshehtëzuar, dhe mund të jetë e pasiguruar.</string>
-    <string name="locked_attach_title">Bashkëngjitje e Pambrojtur</string>
     <string name="message_progress_text">Po ngarkohet…</string>
     <string name="messageview_decrypt_cancelled">Shfshehtëzimi u anulua.</string>
     <string name="messageview_decrypt_retry">Riprovo</string>

@@ -731,7 +731,6 @@
     <string name="crypto_msg_encrypted_insecure">men kryptering anses inte säker</string>
     <string name="locked_attach_unlock">Lås upp</string>
     <string name="locked_attach_unencrypted">Denna del var inte krypterad och kan vara osäker.</string>
-    <string name="locked_attach_title">Oskyddad bilaga</string>
     <string name="message_progress_text">Läser in…</string>
     <string name="messageview_decrypt_cancelled">Dekryptering avbröts.</string>
     <string name="messageview_decrypt_retry">Försök igen</string>

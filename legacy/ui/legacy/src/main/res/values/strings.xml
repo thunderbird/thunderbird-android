@@ -213,6 +213,16 @@
     <string name="remove_attachment_action">Remove attachment</string>
     <string name="save_attachment_action">Save attachment</string>
 
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Attachment (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Attachments (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">View all</string>
+    <string name="message_view_attachments_view">View</string>
+    <string name="message_view_attachments_title">Attachments</string>
+    <string name="message_view_attachments_save_all">Save all</string>
+
     <string name="message_to_label">To:</string>
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_bcc_label">Bcc:</string>
@@ -945,7 +955,7 @@
 
     <string name="locked_attach_unlock">Unlock</string>
     <string name="locked_attach_unencrypted">This part was not encrypted, and may be insecure.</string>
-    <string name="locked_attach_title">Unprotected Attachment</string>
+    <string name="encrypted_attachment_title">Encrypted attachment</string>
     <string name="message_progress_text">Loading…</string>
     <string name="messageview_decrypt_cancelled">Decryption was cancelled.</string>
     <string name="messageview_decrypt_retry">Retry</string>

@@ -675,7 +675,6 @@
     <string name="crypto_msg_encrypted_insecure">али се шифровање не сматра безбедним</string>
     <string name="locked_attach_unlock">Откључај</string>
     <string name="locked_attach_unencrypted">Овај део није шифрован и може бити небезбедан.</string>
-    <string name="locked_attach_title">Незаштићен прилог</string>
     <string name="message_progress_text">Учитавање…</string>
     <string name="messageview_decrypt_cancelled">Дешифровање је отказано.</string>
     <string name="messageview_decrypt_retry">Покушај поново</string>

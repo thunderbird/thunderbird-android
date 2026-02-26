@@ -603,7 +603,6 @@
     <string name="crypto_msg_encrypted_sign_unknown">알 수 없는 종단 간 키에서 가져옴</string>
     <string name="crypto_msg_encrypted_sign_mismatch">하지만 종단간 키가 보낸 사람과 일치하지 않습니다</string>
     <string name="crypto_msg_encrypted_sign_expired">하지만 종단간 키가 만료되었습니다</string>
-    <string name="locked_attach_title">보호되지 않은 첨부 파일</string>
     <string name="message_progress_text">로딩 중…</string>
     <string name="messageview_decrypt_cancelled">복호화가 취소되었습니다.</string>
     <string name="messageview_decrypt_retry">재시도</string>

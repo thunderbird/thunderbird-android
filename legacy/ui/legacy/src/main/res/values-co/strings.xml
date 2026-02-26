@@ -237,7 +237,6 @@
     <string name="dialog_attachment_progress_title">Scaricamentu di a pezza ghjunta</string>
     <string name="openpgp_inline_minus_attach">E pezza aghjunte ùn sò micca accettate</string>
     <string name="openpgp_dialog_sign_only_minus_attach">E segnature puderianu esse affissate cum’è pezze ghjunte « signature.asc » in certe messaghjerie elettroniche.</string>
-    <string name="locked_attach_title">Pezza ghjunta nonprutetta</string>
     <string name="message_view_recipients_format">à <xliff:g id="recipients">%s</xliff:g></string>
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="message_view_show_remote_images_action">Affissà e fiure alluntanate</string>

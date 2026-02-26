@@ -733,7 +733,6 @@
     <string name="crypto_msg_encrypted_insecure">bet šifravimas nelaikomas saugiu</string>
     <string name="locked_attach_unlock">Atrakinti</string>
     <string name="locked_attach_unencrypted">Ši dalis nebuvo užšifruota ir gali būti nesaugi.</string>
-    <string name="locked_attach_title">Neapsaugotas priedas</string>
     <string name="message_progress_text">Įkeliama…</string>
     <string name="messageview_decrypt_cancelled">Iššifravimas buvo atšauktas.</string>
     <string name="messageview_decrypt_retry">Pakartoti</string>

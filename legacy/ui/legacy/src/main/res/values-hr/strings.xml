@@ -655,7 +655,6 @@
     <string name="crypto_msg_encrypted_insecure">ali šifriranje se ne smatra sigurnim</string>
     <string name="locked_attach_unlock">Otključaj</string>
     <string name="locked_attach_unencrypted">Ovaj dio nije šifrirani i može biti nesiguran.</string>
-    <string name="locked_attach_title">Nezaštićeni Privitak</string>
     <string name="message_progress_text">Učitavam…</string>
     <string name="messageview_decrypt_cancelled">Dešifriranje je otkazano.</string>
     <string name="messageview_decrypt_retry">Pokušaj ponovno</string>

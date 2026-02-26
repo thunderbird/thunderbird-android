@@ -672,7 +672,6 @@
     <string name="crypto_msg_encrypted_insecure">но шифрирането не се счита за сигурно</string>
     <string name="locked_attach_unlock">Отключване</string>
     <string name="locked_attach_unencrypted">Тази част не криптирана и може да е несигурна.</string>
-    <string name="locked_attach_title">Незащитен прикачен файл</string>
     <string name="message_progress_text">Зареждане…</string>
     <string name="messageview_decrypt_cancelled">Декриптирването е отказано.</string>
     <string name="messageview_decrypt_retry">Повторен опит</string>

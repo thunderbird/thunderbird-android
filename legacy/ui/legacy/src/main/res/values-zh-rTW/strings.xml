@@ -724,7 +724,6 @@
     <string name="crypto_msg_encrypted_insecure">但加密不被視為安全</string>
     <string name="locked_attach_unlock">解除鎖定</string>
     <string name="locked_attach_unencrypted">這部分還未加密，可能不安全。</string>
-    <string name="locked_attach_title">不受保護的連接</string>
     <string name="message_progress_text">載入中…</string>
     <string name="messageview_decrypt_cancelled">解密被取消了。</string>
     <string name="messageview_decrypt_retry">重試</string>

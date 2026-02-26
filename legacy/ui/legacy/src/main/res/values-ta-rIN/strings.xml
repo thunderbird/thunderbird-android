@@ -507,7 +507,6 @@
     <string name="account_settings_message_age_21">கடந்த 3 வாரங்கள்</string>
     <string name="account_settings_vibrate_pattern_1">முறை 1</string>
     <string name="webview_contextmenu_link_clipboard_label">இணைப்பு</string>
-    <string name="locked_attach_title">பாதுகாப்பற்ற இணைப்பு</string>
     <string name="dialog_openkeychain_info_text">இறுதி முதல் இறுதி குறியாக்கத்திற்கான ஆதரவை செயல்படுத்த OpenKeyChain பயன்பாடு தேவை.</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">பிழை மற்றும் நிலை அறிவிப்புகளை உள்ளமைக்கவும்</string>
     <string name="account_settings_show_pictures_always">யாரிடமிருந்தும்</string>

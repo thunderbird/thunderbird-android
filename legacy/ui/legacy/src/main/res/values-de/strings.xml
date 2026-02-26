@@ -729,7 +729,6 @@
     <string name="crypto_msg_encrypted_insecure">aber die Verschlüsselung wird nicht als sicher angesehen</string>
     <string name="locked_attach_unlock">Entsperren</string>
     <string name="locked_attach_unencrypted">Dieser Teil wurde nicht verschlüsselt und könnte unsicher sein.</string>
-    <string name="locked_attach_title">Ungeschützter Anhang</string>
     <string name="message_progress_text">Ladevorgang…</string>
     <string name="messageview_decrypt_cancelled">Entschlüsselung abgebrochen.</string>
     <string name="messageview_decrypt_retry">Wiederholen</string>

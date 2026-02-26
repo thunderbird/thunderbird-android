@@ -732,7 +732,6 @@
     <string name="crypto_msg_encrypted_insecure">اما رمزنگاری، امن نیست</string>
     <string name="locked_attach_unlock">قفل‌گشایی</string>
     <string name="locked_attach_unencrypted">این بخش رمزنگاری نشده و شاید ناامن باشد.</string>
-    <string name="locked_attach_title">پیوستِ محافظت‌نشده</string>
     <string name="message_progress_text">بارگیری…</string>
     <string name="messageview_decrypt_cancelled">رمزگشایی لغو شد.</string>
     <string name="messageview_decrypt_retry">تلاش دوباره</string>
