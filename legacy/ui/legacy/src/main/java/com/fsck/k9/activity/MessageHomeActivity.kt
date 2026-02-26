@@ -671,6 +671,7 @@ open class MessageHomeActivity :
             openUnifiedFolder = { openUnifiedFolders() },
             openManageFolders = { launchManageFoldersScreen() },
             openSettings = { SettingsActivity.launch(this) },
+            getAutoExpandFolderId = { accountManager.getAccount(it)?.autoExpandFolderId },
             createDrawerListener = { createDrawerListener() },
         )
     }

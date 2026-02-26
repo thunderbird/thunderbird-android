@@ -3,6 +3,7 @@ package net.thunderbird.feature.navigation.drawer.dropdown.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import app.k9mail.core.ui.compose.common.mvi.observe
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.navigation.drawer.dropdown.FolderDrawerState
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Effect
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
@@ -19,6 +20,7 @@ internal fun DrawerView(
     openManageFolders: () -> Unit,
     openSettings: () -> Unit,
     openAddAccount: () -> Unit,
+    getAutoExpandFolder: (accountId: String) -> Long?,
     closeDrawer: () -> Unit,
     viewModel: ViewModel = koinViewModel<DrawerViewModel>(),
 ) {
@@ -40,6 +42,7 @@ internal fun DrawerView(
 
     LaunchedEffect(drawerState.selectedAccountUuid) {
         dispatch(Event.SelectAccount(drawerState.selectedAccountUuid))
+        dispatch(Event.SelectAutoExpandFolder(drawerState.selectedAccountUuid?.let { getAutoExpandFolder(it) }))
     }
 
     LaunchedEffect(drawerState.selectedFolderId) {

@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
@@ -152,6 +153,7 @@ internal class DrawerViewModel(
     override fun event(event: Event) {
         when (event) {
             is Event.SelectAccount -> selectAccount(event.accountId)
+            is Event.SelectAutoExpandFolder -> selectAutoExpandFolderId(event.folderId)
             is Event.SelectFolder -> selectFolder(event.folderId)
 
             is Event.OnAccountClick -> openAccount(event.account)
@@ -179,6 +181,18 @@ internal class DrawerViewModel(
             Event.OnSyncAccount -> onSyncAccount()
             Event.OnSyncAllAccounts -> onSyncAllAccounts()
             Event.OnAddAccountClick -> emitEffect(Effect.OpenAddAccount)
+        }
+    }
+
+    private fun selectAutoExpandFolderId(folderId: Long?) {
+        if (folderId != state.value.autoExpandFolderIdForAccount) {
+            viewModelScope.launch {
+                updateState {
+                    it.copy(
+                        autoExpandFolderIdForAccount = folderId
+                    )
+                }
+            }
         }
     }
 
@@ -218,7 +232,17 @@ internal class DrawerViewModel(
 
     private fun openAccount(account: DisplayAccount?) {
         if (account != null) {
+            Log.e("current folder: " + state.value.autoExpandFolderIdForAccount.toString())
             emitEffect(Effect.OpenAccount(account.id))
+            if (state.value.autoExpandFolderIdForAccount != null) {
+                val displayFolderForAccount = state.value.folders
+                    .filterIsInstance<MailDisplayFolder>()
+                    .find { it.folder.id == state.value.autoExpandFolderIdForAccount }
+
+                displayFolderForAccount?.let {
+                    openFolder(it)
+                }
+            }
         }
     }
 
@@ -235,6 +259,7 @@ internal class DrawerViewModel(
 
     private fun openFolder(folder: DisplayFolder) {
         // Update the selected folder ID in the state
+        Log.e("current folder Id : " + folder.id)
         selectFolder(folder.id)
 
         if (folder is MailDisplayFolder) {
