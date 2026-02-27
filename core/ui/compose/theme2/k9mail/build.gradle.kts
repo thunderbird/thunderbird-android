@@ -1,14 +1,19 @@
 plugins {
-    id(ThunderbirdPlugins.Library.androidCompose)
+    id(ThunderbirdPlugins.Library.kmpCompose)
 }
 
-android {
-    namespace = "app.k9mail.core.ui.compose.theme2.k9mail"
-    resourcePrefix = "core_ui_theme2_k9mail"
-}
+kotlin {
+    android {
+        namespace = "app.k9mail.core.ui.compose.theme2.k9mail"
+        @Suppress("UnstableApiUsage")
+        androidResources.enable = true
+    }
 
-dependencies {
-    api(projects.core.ui.compose.theme2.common)
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.core.ui.compose.theme2.common)
+        }
+    }
 }
 
 codeCoverage {

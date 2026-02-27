@@ -272,8 +272,12 @@ org.jetbrains.compose.components:components-resources-android:1.10.1
 org.jetbrains.compose.components:components-resources:1.10.1
 org.jetbrains.compose.foundation:foundation-layout:1.10.1
 org.jetbrains.compose.foundation:foundation:1.10.1
+org.jetbrains.compose.material3:material3:1.9.0
+org.jetbrains.compose.material:material-ripple:1.9.1
 org.jetbrains.compose.runtime:runtime-saveable:1.10.1
 org.jetbrains.compose.runtime:runtime:1.10.1
+org.jetbrains.compose.ui:ui-backhandler-android:1.9.1
+org.jetbrains.compose.ui:ui-backhandler:1.9.1
 org.jetbrains.compose.ui:ui-geometry:1.10.1
 org.jetbrains.compose.ui:ui-graphics:1.10.1
 org.jetbrains.compose.ui:ui-text:1.10.1

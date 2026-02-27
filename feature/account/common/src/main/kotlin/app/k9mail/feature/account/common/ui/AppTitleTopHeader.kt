@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMediumAutoResize
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import org.jetbrains.compose.resources.painterResource
 
 private const val TITLE_ICON_SIZE_DP = 56
 
@@ -44,7 +44,7 @@ fun AppTitleTopHeader(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
-                painter = painterResource(id = MainTheme.images.logo),
+                painter = painterResource(MainTheme.images.logo),
                 modifier = Modifier
                     .padding(all = MainTheme.spacings.default)
                     .padding(end = MainTheme.spacings.default)

@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -31,6 +30,7 @@ import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.onboarding.welcome.R
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import org.jetbrains.compose.resources.painterResource
 
 private const val CIRCLE_COLOR = 0xFFEEEEEE
 private const val CIRCLE_SIZE_DP = 200
@@ -103,7 +103,7 @@ private fun WelcomeLogo(
                 .size(CIRCLE_SIZE_DP.dp),
         ) {
             Image(
-                painter = painterResource(id = MainTheme.images.logo),
+                painter = painterResource(MainTheme.images.logo),
                 contentDescription = null,
                 modifier = Modifier
                     .size(LOGO_SIZE_DP.dp)

@@ -20,7 +20,7 @@ internal fun FixedScaleImageBottomCenterPreview() {
                 .height(MainTheme.sizes.huge),
         ) {
             FixedScaleImage(
-                id = MainTheme.images.logo,
+                resource = MainTheme.images.logo,
                 alignment = Alignment.BottomCenter,
             )
         }
@@ -37,7 +37,7 @@ internal fun FixedScaleImageCroppedPreview() {
                 .height(MainTheme.sizes.medium),
         ) {
             FixedScaleImage(
-                id = MainTheme.images.logo,
+                resource = MainTheme.images.logo,
             )
         }
     }
@@ -53,7 +53,7 @@ internal fun FixedScaleImageHorizontallyCroppedPreview() {
                 .height(MainTheme.sizes.medium),
         ) {
             FixedScaleImage(
-                id = MainTheme.images.logo,
+                resource = MainTheme.images.logo,
             )
         }
     }
@@ -69,7 +69,7 @@ internal fun FixedScaleImageVerticallyCroppedPreview() {
                 .height(MainTheme.sizes.huge),
         ) {
             FixedScaleImage(
-                id = MainTheme.images.logo,
+                resource = MainTheme.images.logo,
             )
         }
     }

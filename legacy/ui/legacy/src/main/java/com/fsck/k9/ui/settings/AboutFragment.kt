@@ -193,7 +193,6 @@ fun AboutScreen(
     displayForum: () -> Unit = {},
 ) {
     val scrollState = rememberScrollState()
-    val context = LocalContext.current
     Surface(
         modifier = Modifier
             .fillMaxSize(),
@@ -249,7 +248,10 @@ fun AboutScreen(
 }
 
 @Composable
-fun AppLogo(logoResId: Int, modifier: Modifier = Modifier) {
+fun AppLogo(
+    logoResId: Int,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
