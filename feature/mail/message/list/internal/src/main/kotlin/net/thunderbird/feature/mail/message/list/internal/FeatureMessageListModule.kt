@@ -1,6 +1,5 @@
 package net.thunderbird.feature.mail.message.list.internal
 
-import net.thunderbird.core.common.inject.factoryListOf
 import net.thunderbird.core.common.inject.getList
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
@@ -15,19 +14,15 @@ import net.thunderbird.feature.mail.message.list.internal.ui.MessageListViewMode
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogFragment
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogViewModel
 import net.thunderbird.feature.mail.message.list.internal.ui.state.machine.MessageListStateMachine
-import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ChangeSortCriteriaSideEffect
-import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadFolderInformationSideEffect
-import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadPreferencesSideEffect
-import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSortCriteriaStateSideEffectHandler
-import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSwipeActionsStateSideEffectHandler
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.inject.messageListSideEffectsModule
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
-import net.thunderbird.feature.mail.message.list.ui.MessageListStateSideEffectHandlerFactory
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val featureMessageListModule = module {
+    includes(messageListSideEffectsModule)
     factory<DomainContract.UseCase.GetAccountFolders> { GetAccountFolders(folderRepository = get()) }
     factory<DomainContract.UseCase.CreateArchiveFolder> {
         CreateArchiveFolder(
@@ -74,43 +69,6 @@ val featureMessageListModule = module {
             getDefaultSortCriteria = get(),
         )
     }
-    factoryListOf<MessageListStateSideEffectHandlerFactory>(
-        {
-            LoadPreferencesSideEffect.Factory(
-                logger = get(),
-                getMessageListPreferences = get(),
-            )
-        },
-        {
-            LoadSwipeActionsStateSideEffectHandler.Factory(
-                logger = get(),
-                buildSwipeActions = get(),
-            )
-        },
-        { parameters ->
-            val args = parameters.get<MessageListContract.ViewModel.Args>()
-            LoadSortCriteriaStateSideEffectHandler.Factory(
-                accounts = args.accountIds,
-                logger = get(),
-                getSortCriteriaPerAccount = get(),
-            )
-        },
-        {
-            ChangeSortCriteriaSideEffect.Factory(
-                logger = get(),
-                updateSortCriteria = get(),
-            )
-        },
-        { parameters ->
-            val args = parameters.get<MessageListContract.ViewModel.Args>()
-            LoadFolderInformationSideEffect.Factory(
-                accountIds = args.accountIds,
-                folderId = args.folderId,
-                logger = get(),
-                folderRepository = get(),
-            )
-        },
-    )
     factory { MessageListStateMachine.Factory() }
     viewModel<MessageListContract.ViewModel> { parameters ->
         MessageListViewModel(
