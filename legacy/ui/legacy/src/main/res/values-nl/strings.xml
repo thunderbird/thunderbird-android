@@ -312,16 +312,16 @@
     <string name="account_notify_contacts_mail_only_summary">Meldingen alleen tonen voor bekende contacten</string>
     <string name="account_settings_ignore_chat_messages_label">Chatberichten negeren</string>
     <string name="account_settings_ignore_chat_messages_summary">Geen meldingen tonen voor berichten die onderdeel zijn van een e-mail-chat</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Als gelezen markeren na openen</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Als gelezen markeren wanneer ingezien</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Als gelezen markeren als geopend</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Een bericht als gelezen markeren als het geopend is om te bekijken</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Als gelezen markeren bij wissen</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Markeer een bericht als gelezen wanneer die wordt gewist</string>
     <string name="account_settings_notification_channels_label">Meldingscategorieën</string>
     <string name="account_settings_open_notification_settings_messages_summary">Meldingen voor nieuwe berichten instellen</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Fout- en statusmeldingen instellen</string>
-    <string name="account_settings_show_pictures_label">Afbeeldingen automatisch tonen</string>
+    <string name="account_settings_show_pictures_label">Afbeeldingen altijd tonen</string>
     <string name="account_settings_show_pictures_never">Nee</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Alleen van contacten</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Van contacten</string>
     <string name="account_settings_show_pictures_always">Van iedereen</string>
     <string name="account_settings_composition">Bericht versturen</string>
     <string name="account_settings_default_quoted_text_shown_label">Bericht bij beantwoorden citeren</string>
@@ -343,7 +343,7 @@
     <string name="account_settings_upload_sent_messages_label">Verzonden berichten uploaden</string>
     <string name="account_settings_upload_sent_messages_summary">Berichten na verzenden naar de map ‘Verzonden’ uploaden</string>
     <string name="account_settings_general_title">Algemene instellingen</string>
-    <string name="account_settings_reading_mail">Berichten lezen</string>
+    <string name="account_settings_reading_mail">E-mailberichten lezen</string>
     <string name="account_settings_sync">Berichten ophalen</string>
     <string name="account_settings_folders">Mappen</string>
     <string name="account_settings_quote_prefix_label">Citaatvoorvoegsel</string>
@@ -910,4 +910,9 @@
     <string name="global_settings_messageview_body_content_type_text_plain">Platte tekst (text/plain)</string>
     <string name="debug_feature_flags">DEBUGGEN: Functielabels</string>
     <string name="print_message_action">Afdrukken</string>
+    <string name="global_settings_splitview_when_unfolded">Wanneer apparaat openvouwt</string>
+    <string name="general_settings_message_list_date_time_format_title">Datum/Tijdopmaak</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contextueel</string>
+    <string name="general_settings_message_list_date_time_format_full">Volledig</string>
+    <string name="sort_by_then_by">Daarna op…</string>
 </resources>

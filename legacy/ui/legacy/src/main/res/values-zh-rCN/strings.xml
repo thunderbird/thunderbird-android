@@ -37,7 +37,7 @@
     <string name="choose_folder_copy_title">复制到…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已选择</string>
     <string name="send_action">发送</string>
-    <string name="empty_subject">主题为空，请再次点击以继续发送</string>
+    <string name="empty_subject">主题为空，请再次单击以继续发送</string>
     <string name="reply_action">回复</string>
     <string name="reply_all_action">回复全部</string>
     <string name="delete_action">删除</string>
@@ -357,7 +357,7 @@
     <string name="account_settings_crypto_encrypt_all_drafts_off">仅当启用加密时才加密草稿</string>
     <string name="account_settings_mail_check_frequency_label">文件夹轮询频率</string>
     <string name="account_settings_mail_display_count_label">本地文件夹大小</string>
-    <string name="account_settings_autodownload_message_size_label">收取邮件的最大尺寸为</string>
+    <string name="account_settings_autodownload_message_size_label">收取邮件大小上限</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB </string>
     <string name="account_settings_autodownload_message_size_2">2 KiB </string>
     <string name="account_settings_autodownload_message_size_4">4 KiB </string>
@@ -372,9 +372,9 @@
     <string name="account_settings_autodownload_message_size_2048">2 MiB </string>
     <string name="account_settings_autodownload_message_size_5120">5 MiB </string>
     <string name="account_settings_autodownload_message_size_10240">10 MiB </string>
-    <string name="account_settings_autodownload_message_size_any">任何大小（无限制）</string>
-    <string name="account_settings_message_age_label">同步某时段内的邮件</string>
-    <string name="account_settings_message_age_any">任何时段（无限制）</string>
+    <string name="account_settings_autodownload_message_size_any">任意大小（无限制）</string>
+    <string name="account_settings_message_age_label">同步邮件时间范围</string>
+    <string name="account_settings_message_age_any">任意时间（无限制）</string>
     <string name="account_settings_message_age_0">今天</string>
     <string name="account_settings_message_age_1">最近 2 天</string>
     <string name="account_settings_message_age_2">最近 3 天</string>
@@ -454,19 +454,19 @@
     <string name="send_as">发送身份为</string>
     <string name="no_removable_identity">您不能移除您唯一的身份</string>
     <string name="identity_has_no_email">没有电子邮件地址就无法使用身份</string>
-    <string name="sort_earliest_first">最早的邮件在前</string>
-    <string name="sort_latest_first">最近的邮件在前</string>
+    <string name="sort_earliest_first">最早邮件在前</string>
+    <string name="sort_latest_first">最新邮件在前</string>
     <string name="sort_subject_alpha">主题 A→Z</string>
     <string name="sort_subject_re_alpha">主题 Z→A</string>
     <string name="sort_sender_alpha">发件人 A→Z</string>
     <string name="sort_sender_re_alpha">发件人 Z→A</string>
-    <string name="sort_flagged_first">有星标的邮件在前</string>
-    <string name="sort_flagged_last">无星标的邮件在前</string>
+    <string name="sort_flagged_first">已加星标邮件在前</string>
+    <string name="sort_flagged_last">未加星标邮件在前</string>
     <string name="sort_unread_first">未读邮件在前</string>
     <string name="sort_unread_last">已读邮件在前</string>
-    <string name="sort_attach_first">有附件的邮件在前</string>
-    <string name="sort_unattached_first">无附件的邮件在前</string>
-    <string name="sort_by">排序方式…</string>
+    <string name="sort_attach_first">带附件邮件在前</string>
+    <string name="sort_unattached_first">无附件邮件在前</string>
+    <string name="sort_by">排序依据…</string>
     <string name="sort_by_date">日期</string>
     <string name="sort_by_arrival">到达时间</string>
     <string name="sort_by_subject">主题</string>
@@ -668,7 +668,7 @@
     <string name="compose_error_no_draft_folder">此账号未配置草稿文件夹！</string>
     <string name="compose_error_no_key_configured">此账号未配置密钥！请检查您的设置。</string>
     <string name="error_crypto_provider_incompatible">加密提供程序使用不兼容的版本。请检查您的设置！</string>
-    <string name="error_crypto_provider_connect">无法连接到加密提供程序，请检查您的设置或点击加密图标重试！</string>
+    <string name="error_crypto_provider_connect">无法连接到加密提供程序，请检查您的设置或单击加密图标重试！</string>
     <string name="error_crypto_provider_ui_required">无法初始化端到端加密，请检查您的设置</string>
     <string name="error_crypto_inline_attach">PGP/INLINE 模式不支持附件！</string>
     <string name="enable_inline_pgp">启用 PGP/INLINE</string>
@@ -747,7 +747,7 @@
     <string name="disable_encryption">禁用加密</string>
     <string name="openpgp_description_text1">对邮件进行加密可确保只有收件人才能阅读，其他人无法阅读。</string>
     <string name="openpgp_description_text3">加密功能只有在所有收件人都支持的情况下才会显示，并且他们必须之前给您发送过邮件。</string>
-    <string name="openpgp_description_text2">点击此图标切换加密。</string>
+    <string name="openpgp_description_text2">单击此图标切换加密。</string>
     <string name="openpgp_enabled_error_gotit">知道了</string>
     <string name="openpgp_enabled_error_back">返回</string>
     <string name="openpgp_enabled_error_disable">禁用加密</string>
@@ -756,7 +756,7 @@
     <string name="dialog_autocrypt_mutual_title">Autocrypt 相互模式</string>
     <string name="dialog_autocrypt_mutual_description_1">邮件通常会根据选择进行加密，或者在回复加密邮件时进行加密。</string>
     <string name="dialog_autocrypt_mutual_description_2">如果发件人和收件人均启用了相互模式，加密默认会被启用。</string>
-    <string name="dialog_autocrypt_mutual_learn_more">您可以<a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">点击此处</a>了解详情。</string>
+    <string name="dialog_autocrypt_mutual_learn_more">您可以 <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">单击此处</a> 了解详情。</string>
     <string name="general_settings_title">常规设置</string>
     <string name="dialog_openkeychain_info_title">未安装 OpenPGP 应用</string>
     <string name="dialog_openkeychain_info_install">安装</string>
@@ -902,6 +902,12 @@
     <string name="global_settings_messageview_body_content_type_title">正文内容类型</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
     <string name="global_settings_messageview_body_content_type_text_plain">纯文本（text/plain）</string>
-    <string name="debug_feature_flags">调试：功能标识</string>
+    <string name="debug_feature_flags">调试：功能标志</string>
     <string name="print_message_action">打印</string>
+    <string name="global_settings_splitview_when_unfolded">设备展开时</string>
+    <string name="general_settings_message_list_date_time_format_title">日期/时间格式</string>
+    <string name="general_settings_message_list_date_time_format_contextual">上下文</string>
+    <string name="general_settings_message_list_date_time_format_full">完整</string>
+    <string name="sort_by_then_by">次级依据…</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
 </resources>

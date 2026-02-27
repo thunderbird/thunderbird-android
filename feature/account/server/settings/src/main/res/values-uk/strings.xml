@@ -5,10 +5,10 @@
     <string name="account_server_settings_server_label">Сервер</string>
     <string name="account_server_settings_security_label">Безпека</string>
     <string name="account_server_settings_port_label">Порт</string>
-    <string name="account_server_settings_authentication_label">Автентифікація</string>
+    <string name="account_server_settings_authentication_label">Аутентифікація</string>
     <string name="account_server_settings_username_label">Ім\'я користувача</string>
     <string name="account_server_settings_connection_security_none">Немає</string>
-    <string name="account_server_settings_authentication_none">Жоден</string>
+    <string name="account_server_settings_authentication_none">Нічого</string>
     <string name="account_server_settings_authentication_password_cleartext">Звичайний пароль</string>
     <string name="account_server_settings_authentication_password_encrypted">Зашифрований пароль</string>
     <string name="account_server_settings_authentication_client_certificate">Сертифікат клієнта</string>
@@ -19,7 +19,7 @@
     <string name="account_server_settings_incoming_imap_prefix_label">Префікс шляху IMAP</string>
     <string name="account_server_settings_incoming_imap_compression_label">Використовувати стиснення</string>
     <string name="account_server_settings_outgoing_top_bar_title">Налаштування вихідного сервера</string>
-    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Недійсний IP або ім\'я хосту</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Неправильна IP або назва хосту</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
@@ -32,6 +32,6 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">Щоб переглянути тут свій пароль, увімкніть блокування екрана на цьому пристрої.</string>
     <string name="account_server_settings_password_authentication_title">Підтвердьте свою особистість</string>
     <string name="account_server_settings_password_authentication_subtitle">Розблокуйте, щоб переглянути пароль</string>
-    <string name="account_server_settings_password_authentication_failed">Не вдалося виконати автентифікацію!</string>
-    <string name="account_server_settings_password_authentication_unable_to_start">Не вдалося розпочати біометричну розпізнавання.</string>
+    <string name="account_server_settings_password_authentication_failed">Не вдалося виконати аутентифікацію!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Не вдалося розпочати біометричне розпізнавання.</string>
 </resources>

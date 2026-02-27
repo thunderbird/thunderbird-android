@@ -313,8 +313,8 @@
     <string name="account_notify_contacts_mail_only_summary">Visa aviseringar endast för meddelanden från kända kontakter</string>
     <string name="account_settings_ignore_chat_messages_label">Ignorera chattmeddelanden</string>
     <string name="account_settings_ignore_chat_messages_summary">Visa inte aviseringar för meddelanden som tillhör en e-postchatt</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Markera som läst vid öppning</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Markera ett meddelande som läst när det visas</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Markera som läst när det öppnats</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Markera ett meddelande som läst när det öppnats för visning</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Markera som läst när det tas bort</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Markera ett meddelande som läst när det tas bort</string>
     <string name="account_settings_notification_channels_label">Aviseringskategorier</string>
@@ -323,7 +323,7 @@
     <string name="account_settings_show_pictures_label">Visa alltid bilder</string>
     <string name="account_settings_show_pictures_never">Nej</string>
     <string name="account_settings_show_pictures_only_from_contacts">Från kontakter</string>
-    <string name="account_settings_show_pictures_always">Från alla</string>
+    <string name="account_settings_show_pictures_always">Från vem som helst</string>
     <string name="account_settings_composition">Skickar e-post</string>
     <string name="account_settings_default_quoted_text_shown_label">Citera meddelande när du svarar</string>
     <string name="account_settings_default_quoted_text_shown_summary">Inkludera orginalmeddelandet i ditt svar.</string>
@@ -344,7 +344,7 @@
     <string name="account_settings_upload_sent_messages_label">Skicka skickade meddelanden</string>
     <string name="account_settings_upload_sent_messages_summary">Ladda upp meddelanden till mappen Skickat efter sändning</string>
     <string name="account_settings_general_title">Allmänna inställningar</string>
-    <string name="account_settings_reading_mail">E-postläsning</string>
+    <string name="account_settings_reading_mail">Läser e-post</string>
     <string name="account_settings_sync">E-posthämtning</string>
     <string name="account_settings_folders">Mappar</string>
     <string name="account_settings_quote_prefix_label">Citatprefix</string>
@@ -916,4 +916,9 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="global_settings_messageview_body_content_type_text_plain">Oformaterad text (text/oformaterad)</string>
     <string name="debug_feature_flags">FELSÖKNING: Funktionsflaggor</string>
     <string name="print_message_action">Skriv ut</string>
+    <string name="global_settings_splitview_when_unfolded">När enheten är utfälld</string>
+    <string name="general_settings_message_list_date_time_format_title">Datum-/tidsformat</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontextuell</string>
+    <string name="general_settings_message_list_date_time_format_full">Fullständig</string>
+    <string name="sort_by_then_by">Sedan efter…</string>
 </resources>

@@ -315,7 +315,7 @@
     <string name="account_settings_ignore_chat_messages_label">Ignorer les messages de conversation</string>
     <string name="account_settings_ignore_chat_messages_summary">Ne pas afficher de notification pour les messages qui appartiennent à une conversation de courriel</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Marquer comme lu à l’ouverture</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Marquer un courriel comme lu quand il est ouvert pour être visualisé</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marquer un courriel comme lu après ouverture pour consultation</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Marquer comme lu lors de la suppression</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Marquer un courriel comme lu lors de la suppression</string>
     <string name="account_settings_notification_channels_label">Catégories de notification</string>
@@ -323,8 +323,8 @@
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Configurer les notifications d’erreur et d’état</string>
     <string name="account_settings_show_pictures_label">Toujours afficher les images</string>
     <string name="account_settings_show_pictures_never">Non</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Pour les contacts</string>
-    <string name="account_settings_show_pictures_always">Pour tout le monde</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Des contacts</string>
+    <string name="account_settings_show_pictures_always">De n’importe qui</string>
     <string name="account_settings_composition">Envoi de courriels</string>
     <string name="account_settings_default_quoted_text_shown_label">Citer le courriel lors de la réponse</string>
     <string name="account_settings_default_quoted_text_shown_summary">Le courriel initial est compris dans votre réponse.</string>
@@ -345,7 +345,7 @@
     <string name="account_settings_upload_sent_messages_label">Téléverser les courriels envoyés</string>
     <string name="account_settings_upload_sent_messages_summary">Téléverser les courriels vers le dossier Envoyés après l’envoi</string>
     <string name="account_settings_general_title">Paramètres généraux</string>
-    <string name="account_settings_reading_mail">Lecture des courriels</string>
+    <string name="account_settings_reading_mail">Lecture du courriel</string>
     <string name="account_settings_sync">Relève des courriels</string>
     <string name="account_settings_folders">Dossiers</string>
     <string name="account_settings_quote_prefix_label">Préfixe de citation</string>
@@ -774,7 +774,7 @@
     <string name="dialog_openkeychain_info_install">Installer</string>
     <string name="account_settings_crypto_encrypt_subject">Chiffrer l’objet des courriels</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Pourrait ne pas être pris en charge par certains destinataires</string>
-    <string name="toast_account_not_found">Erreur interne : le compte est invalide</string>
+    <string name="toast_account_not_found">Erreur interne : le compte est invalide !</string>
     <string name="toast_openpgp_provider_error">Erreur de connexion à %s</string>
     <string name="ac_transfer_setting_title">Envoyer un courriel de configuration Autocrypt</string>
     <string name="ac_transfer_setting_summary">Partager en toute sécurité la configuration du chiffrement de bout de bout avec d’autres appareils</string>
@@ -916,4 +916,9 @@
     <string name="expand_folders">Développer les dossiers</string>
     <string name="debug_feature_flags">DÉBOGAGE : Drapeaux de fonction</string>
     <string name="print_message_action">Imprimer</string>
+    <string name="global_settings_splitview_when_unfolded">Quand l’appareil est déplié</string>
+    <string name="general_settings_message_list_date_time_format_title">Format de la date et de l’heure</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contextuel</string>
+    <string name="general_settings_message_list_date_time_format_full">Complet</string>
+    <string name="sort_by_then_by">Ensuite, par…</string>
 </resources>

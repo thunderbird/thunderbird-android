@@ -40,4 +40,7 @@
     <string name="settings_import_authorization_required">Prosím prihláste sa</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autorizácia zrušená</string>
     <string name="settings_import_app_version_not_supported">Verzia aplikácie nie je podporovaná.</string>
+    <string name="settings_import_oauth_description">Ak chcete tento e-mailový účet používať, musíte sa prihlásiť a udeliť aplikácii prístup k vašim e-mailom.</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Overenie zlyhalo s nasledujúcou chybou: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_browser_not_found">Aplikácii sa nepodarilo nájsť prehliadač na udelenie prístupu k vášmu účtu.</string>
 </resources>

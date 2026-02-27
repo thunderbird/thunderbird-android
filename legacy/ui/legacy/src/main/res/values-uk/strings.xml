@@ -4,13 +4,13 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="about_app_authors_k9">Вигульники собак K-9</string>
+    <string name="about_app_authors_k9">K-9 Ходаки з Собаками</string>
     <string name="source_code">Програмний код</string>
-    <string name="app_license">Ліцензія Apache версії 2.0</string>
-    <string name="about_project_title">Проєкт з відкритим кодом</string>
-    <string name="about_website_title">Сайт</string>
+    <string name="app_license">Ліцензія Apache, Версія 2.0</string>
+    <string name="about_project_title">Проєкт з Відкритим Кодом</string>
+    <string name="about_website_title">Вебсайт</string>
     <string name="get_help_title">Отримати допомогу</string>
-    <string name="user_forum_title">Форум</string>
+    <string name="user_forum_title">Форум користувача</string>
     <string name="about_libraries">Бібліотеки</string>
     <string name="license">Ліцензія</string>
     <string name="changelog_title">Журнал змін</string>
@@ -32,12 +32,12 @@
     <string name="compose_title_reply_all">Відповісти всім</string>
     <string name="compose_title_forward">Переслати</string>
     <string name="compose_title_forward_as_attachment">Переслати як вкладення</string>
-    <string name="choose_folder_title">Вибрати теку</string>
+    <string name="choose_folder_title">Вибрати Папку</string>
     <string name="choose_folder_move_title">Перемістити до…</string>
     <string name="choose_folder_copy_title">Копіювати до…</string>
     <string name="actionbar_selected">Вибрано <xliff:g id="selection_count">%d</xliff:g></string>
     <string name="send_action">Надіслати</string>
-    <string name="empty_subject">Не вказано тему, натисніть знову, щоб надіслати без неї</string>
+    <string name="empty_subject">Не вказано тему листа, натисніть знову, щоб все одно надіслати</string>
     <string name="reply_action">Відповісти</string>
     <string name="reply_all_action">Відповісти всім</string>
     <string name="delete_action">Видалити</string>
@@ -54,18 +54,18 @@
     <string name="save_draft_action">Зберегти як чернетку</string>
     <string name="check_mail_action">Перевірити пошту</string>
     <string name="send_messages_action">Надіслати повідомлення</string>
-    <string name="refresh_folders_action">Оновити список тек</string>
-    <string name="filter_folders_action">Знайти теку</string>
+    <string name="refresh_folders_action">Оновити список папок</string>
+    <string name="filter_folders_action">Знайти папку</string>
     <string name="add_account_action">Додати обліковий запис</string>
     <string name="compose_action">Написати</string>
     <string name="search_action">Пошук</string>
     <string name="search_everywhere_action">Шукати всюди</string>
     <string name="search_results">Результати пошуку</string>
     <string name="new_messages_title">Нові повідомлення</string>
-    <string name="folders_action">Керувати теками</string>
+    <string name="folders_action">Керувати папками</string>
     <string name="account_settings_action">Налаштування облікового запису</string>
     <string name="remove_account_action">Вилучити обліковий запис</string>
-    <string name="mark_as_read_action">Позначити прочитаним</string>
+    <string name="mark_as_read_action">Позначити як прочитане</string>
     <string name="send_alternate_action">Поділитися</string>
     <string name="send_alternate_chooser_title">Вибрати відправника</string>
     <string name="flag_action">Додати зірочку</string>
@@ -76,19 +76,19 @@
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Адресу скопійовано до буфера обміну</item>
         <item quantity="few">Адреси скопійовано до буфера обміну</item>
-        <item quantity="many">Адреси скопійовано до буфера обміну</item>
-        <item quantity="other">Адреси скопійовано до буфера обміну</item>
+        <item quantity="many">Адрес скопійовано до буфера обміну</item>
+        <item quantity="other">Адрес скопійовано до буфера обміну</item>
     </plurals>
     <string name="copy_subject_to_clipboard">Текст теми скопійовано в буфер обміну</string>
     <string name="message_view_theme_action_dark">Перемкнути на темну тему</string>
     <string name="message_view_theme_action_light">Перемкнути на світлу тему</string>
-    <string name="mark_as_unread_action">Позначити непрочитаним</string>
+    <string name="mark_as_unread_action">Позначити як непрочитане</string>
     <string name="read_receipt">Звіт про прочитання</string>
     <string name="read_receipt_enabled">Запитувати звіт про прочитання</string>
     <string name="read_receipt_disabled">Не запитувати звіт про прочитання</string>
     <string name="add_attachment_action">Додати вкладення</string>
-    <string name="empty_trash_action">Очистити Кошик</string>
-    <string name="expunge_action">Остаточно видалити</string>
+    <string name="empty_trash_action">Очистити Смітник</string>
+    <string name="expunge_action">Викреслити</string>
     <string name="about_action">Про застосунок</string>
     <string name="prefs_title">Налаштування</string>
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
@@ -105,24 +105,24 @@
     <string name="size_format_bytes">%d Б</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> нове повідомлення</item>
-        <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> нові повідомлення</item>
+        <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> нових повідомлення</item>
         <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> нових повідомлень</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> нових повідомлень</item>
     </plurals>
-    <string name="notification_additional_messages">ще <xliff:g id="additional_messages">%1$d</xliff:g> у <xliff:g id="account">%2$s</xliff:g></string>
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> на <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Відповісти</string>
-    <string name="notification_action_mark_as_read">Позначити прочитаним</string>
-    <string name="notification_action_mark_all_as_read">Позначити всі прочитаними</string>
+    <string name="notification_action_mark_as_read">Позначити Прочитаним</string>
+    <string name="notification_action_mark_all_as_read">Позначити Всі Прочитаними</string>
     <string name="notification_action_delete">Видалити</string>
-    <string name="notification_action_delete_all">Видалити всі</string>
+    <string name="notification_action_delete_all">Видалити Всі</string>
     <string name="notification_action_archive">Архівувати</string>
-    <string name="notification_action_archive_all">Архівувати всі</string>
+    <string name="notification_action_archive_all">Архівувати Всі</string>
     <string name="notification_action_spam">Спам</string>
     <string name="notification_certificate_error_public">Помилка сертифіката</string>
     <string name="notification_certificate_error_title">Помилка сертифіката для <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Перевірте налаштування вашого сервера</string>
-    <string name="notification_authentication_error_title">Не вдалося автентифікувати</string>
-    <string name="notification_authentication_error_text">Збій автентифікації для <xliff:g id="account">%s</xliff:g>. Змініть налаштування сервера.</string>
+    <string name="notification_authentication_error_title">Помилка автентифікації</string>
+    <string name="notification_authentication_error_text">Збій аутентифікації для <xliff:g id="account">%s</xliff:g>. Оновіть ваші налаштування сервера.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Помилка сповіщення</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
@@ -130,29 +130,29 @@
     <string name="notification_bg_sync_ticker">Перевірка пошти: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Перевірка пошти</string>
     <string name="notification_bg_send_ticker">Надсилання пошти: <xliff:g id="account">%s</xliff:g></string>
-    <string name="notification_bg_send_title">Надсилання пошти</string>
+    <string name="notification_bg_send_title">Надсилання листа</string>
     <string name="notification_bg_title_separator">:</string>
     <string name="notification_channel_push_title">Синхронізація (Push)</string>
     <string name="notification_channel_push_description">Показується під час очікування нових повідомлень</string>
     <string name="notification_channel_messages_title">Повідомлення</string>
     <string name="notification_channel_messages_description">Сповіщення, пов\'язані з повідомленнями</string>
     <string name="notification_channel_miscellaneous_title">Різне</string>
-    <string name="notification_channel_miscellaneous_description">Різні сповіщення, наприклад, про помилки тощо.</string>
-    <string name="send_failure_subject">Не вдалося надіслати повідомлення</string>
+    <string name="notification_channel_miscellaneous_description">Різноманітні сповіщення, такі як помилки тощо.</string>
+    <string name="send_failure_subject">Не вдалося надіслати деякі повідомлення</string>
     <string name="version">Версія</string>
-    <string name="debug_enable_debug_logging_title">Увімкнути ведення журналу налагодження</string>
+    <string name="debug_enable_debug_logging_title">Увімкнути логування налагодження</string>
     <string name="debug_enable_debug_logging_summary">Записувати додаткову діагностичну інформацію</string>
-    <string name="debug_enable_sensitive_logging_title">Записувати конфіденційну інформацію</string>
-    <string name="debug_enable_sensitive_logging_summary">Може показувати паролі в журналах.</string>
-    <string name="debug_export_logs_title">Експорт журналів</string>
-    <string name="debug_export_logs_success">Експортовано. Журнали можуть містити конфіденційні дані. Будьте обачними щодо тих, кому їх надсилаєте.</string>
+    <string name="debug_enable_sensitive_logging_title">Записувати чутливу інформацію</string>
+    <string name="debug_enable_sensitive_logging_summary">Може показувати паролі в логах.</string>
+    <string name="debug_export_logs_title">Експорт логів</string>
+    <string name="debug_export_logs_success">Експортовано успішно. Логи можуть містити чутливі дані. Будьте обачними щодо тих, кому ви їх надсилаєте.</string>
     <string name="debug_export_logs_failure">Не вдалося експортувати.</string>
     <string name="message_list_load_more_messages_action">Завантажити більше повідомлень</string>
     <string name="message_to_fmt">Кому:<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_compose_subject_hint">Тема</string>
     <string name="message_compose_content_hint">Текст повідомлення</string>
     <string name="message_compose_signature_hint">Підпис</string>
-    <string name="message_compose_quote_header_separator">-------- Початкове повідомлення --------</string>
+    <string name="message_compose_quote_header_separator">-------- Оригінальне Повідомлення --------</string>
     <string name="message_compose_quote_header_subject">Тема:</string>
     <string name="message_compose_quote_header_send_date">Надіслано:</string>
     <string name="message_compose_quote_header_from">Від:</string>
@@ -161,13 +161,13 @@
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> пише:</string>
     <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> пише:</string>
     <string name="message_compose_error_no_recipients">Додайте принаймні одного адресата.</string>
-    <string name="compose_error_incomplete_recipient">Поле адресата містить неповні дані!</string>
+    <string name="compose_error_incomplete_recipient">Поле одержувача містить неповні дані!</string>
     <string name="error_contact_address_not_found">Не вдалося знайти адресу е-пошти для цього контакту.</string>
     <string name="message_compose_attachments_skipped_toast">Деякі вкладення не можуть бути переслані, оскільки їх не завантажено.</string>
     <string name="message_compose_attachments_forward_toast">Повідомлення не може бути переслане, оскільки деякі вкладення не завантажені.</string>
     <string name="message_compose_show_quoted_text_action">Включити цитоване повідомлення</string>
-    <string name="message_compose_description_delete_quoted_text">Вилучити цитований текст</string>
-    <string name="message_compose_description_edit_quoted_text">Редагувати цитований текст</string>
+    <string name="message_compose_description_delete_quoted_text">Вилучити текст з цитатою</string>
+    <string name="message_compose_description_edit_quoted_text">Редагувати текст з цитатою</string>
     <string name="remove_attachment_action">Вилучити вкладення</string>
     <string name="message_to_label">Кому:</string>
     <string name="message_view_cc_label">Копія:</string>
@@ -180,39 +180,39 @@
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
     <string name="message_view_me_text">мені</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
-    <string name="message_view_show_remote_images_action">Показати зображення</string>
-    <string name="message_view_no_viewer">Не знайдено переглядача <xliff:g id="mimetype">%s</xliff:g>.</string>
-    <string name="message_view_download_remainder">Завантажити все повідомлення</string>
+    <string name="message_view_show_remote_images_action">Показати віддалені зображення</string>
+    <string name="message_view_no_viewer">Не знайдено відображувача для <xliff:g id="mimetype">%s</xliff:g>.</string>
+    <string name="message_view_download_remainder">Завантажити повне повідомлення</string>
     <string name="message_view_sender_label">за допомогою %1$s</string>
     <string name="from_same_sender">Більше від цього відправника</string>
     <string name="message_discarded_toast">Повідомлення відкинуто</string>
-    <string name="message_saved_toast">Повідомлення збережено як чернетку</string>
+    <string name="message_saved_toast">Повідомлення збережено як чернетка</string>
     <string name="global_settings_flag_label">Показувати зірочки</string>
-    <string name="global_settings_flag_summary">Зірочки позначають обрані повідомлення</string>
+    <string name="global_settings_flag_summary">Зірочки відображають помічені повідомлення</string>
     <string name="global_settings_preview_lines_label">Рядки попереднього перегляду</string>
-    <string name="global_settings_show_correspondent_names_label">Показувати імена відправників</string>
-    <string name="global_settings_show_correspondent_names_summary">Показувати імена відправників замість їх електронних адрес</string>
-    <string name="global_settings_sender_above_subject_label">Відправник вище теми</string>
-    <string name="global_settings_sender_above_subject_summary">Показувати імена відправників над темою, а не під нею</string>
+    <string name="global_settings_show_correspondent_names_label">Показувати імена кореспондентів</string>
+    <string name="global_settings_show_correspondent_names_summary">Показувати імена кореспондентів замість їхніх електронних адрес</string>
+    <string name="global_settings_sender_above_subject_label">Кореспондент над темою</string>
+    <string name="global_settings_sender_above_subject_summary">Показувати імена кореспондентів над рядком теми, а не під нею</string>
     <string name="global_settings_show_contact_name_label">Показувати імена контактів</string>
-    <string name="global_settings_show_contact_name_summary">Використовувати імена одержувачів із Контактів, якщо це можливо</string>
+    <string name="global_settings_show_contact_name_summary">Використовувати імена одержувачів із Контактів, коли це можливо</string>
     <string name="global_settings_registered_name_color_label">Забарвлювати контакти</string>
-    <string name="global_settings_registered_name_color_changed">Забарвлювати імена з вашого списку контактів</string>
+    <string name="global_settings_registered_name_color_changed">Забарвлювати імена у вашому списку контактів</string>
     <string name="general_settings_contact_name_color_label">Колір імені контакту</string>
-    <string name="global_settings_messageview_fixedwidth_label">Моноширинні шрифти</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Використовувати шрифт фіксованої ширини під час показу простих текстових повідомлень</string>
-    <string name="global_settings_messageview_autofit_width_label">Допасовувати текст повідомлень до ширини екрана</string>
-    <string name="global_settings_messageview_autofit_width_summary">Стискати текст повідомлень до ширини екрана</string>
-    <string name="global_settings_confirm_actions_title">Підтвердження дій</string>
+    <string name="global_settings_messageview_fixedwidth_label">Шрифти з фіксованою шириною</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Використовувати шрифт з фіксованою шириною під час показу простих текстових повідомлень</string>
+    <string name="global_settings_messageview_autofit_width_label">Авто-заповнення повідомлення на екрані</string>
+    <string name="global_settings_messageview_autofit_width_summary">Зменшити текст повідомлень, щоб вміщалось на екрані</string>
+    <string name="global_settings_confirm_actions_title">Підтверджувати дії</string>
     <string name="global_settings_confirm_actions_summary">Показувати діалогове вікно щоразу, коли виконується вибрана дія</string>
     <string name="global_settings_confirm_action_delete">Видалити</string>
-    <string name="global_settings_confirm_action_delete_starred">Видалити позначене зірочкою (під час перегляду повідомлення)</string>
+    <string name="global_settings_confirm_action_delete_starred">Видалити Позначене Зірочкою (під час перегляду повідомлення)</string>
     <string name="global_settings_confirm_action_spam">Спам</string>
     <string name="global_settings_confirm_menu_discard">Відкинути повідомлення</string>
     <string name="global_settings_confirm_menu_mark_all_read">Позначити всі повідомлення прочитаними</string>
     <string name="global_settings_confirm_action_delete_notif">Видалити (зі сповіщення)</string>
     <!--Title of the screen to configure swipe actions-->
-    <string name="general_settings_swipe_actions_title">Жести</string>
+    <string name="general_settings_swipe_actions_title">Дії жестів</string>
     <!--Name of the setting to configure the right swipe action-->
     <string name="general_settings_right_swipe_title">Посування вправо</string>
     <!--Name of the setting to configure the left swipe action-->
@@ -220,7 +220,7 @@
     <!--The list item users select to not use a swipe action for a particular direction-->
     <string name="general_settings_swipe_action_none">Нічого</string>
     <!--Name of the swipe action to select/deselect a message-->
-    <string name="general_settings_swipe_action_toggle_selection">Вибрати лист</string>
+    <string name="general_settings_swipe_action_toggle_selection">Перемкнути вибір</string>
     <!--Name of the swipe action to mark as message as read/unread-->
     <string name="general_settings_swipe_action_toggle_read">Позначити прочитаним/непрочитаним</string>
     <!--Name of the swipe action to add/remove a star-->
@@ -241,12 +241,12 @@
     <string name="global_settings_privacy_hide_useragent">Сховати поштовий клієнт</string>
     <string name="global_settings_privacy_hide_useragent_detail">Прибрати User-Agent з заголовків пошти</string>
     <string name="global_settings_privacy_hide_timezone">Сховати часовий пояс</string>
-    <string name="global_settings_privacy_hide_timezone_detail">Використовувати UTC замість місцевого часу в заголовках пошти та відповідей</string>
-    <string name="global_settings_notification_quick_delete_title">Показувати кнопку \"Видалити\"</string>
+    <string name="global_settings_privacy_hide_timezone_detail">Використовувати UTC замість місцевої часової зони в заголовках пошти та в заголовках відповідей</string>
+    <string name="global_settings_notification_quick_delete_title">Показувати кнопку \'Видалити\'</string>
     <string name="global_settings_notification_quick_delete_never">Ніколи</string>
-    <string name="global_settings_notification_quick_delete_when_single_msg">У сповіщенні з одним повідомленням</string>
+    <string name="global_settings_notification_quick_delete_when_single_msg">Для сповіщення одного повідомлення</string>
     <string name="global_settings_notification_quick_delete_always">Завжди</string>
-    <string name="global_settings_lock_screen_notification_visibility_title">Сповіщення на заблокованому екрані</string>
+    <string name="global_settings_lock_screen_notification_visibility_title">Сповіщення на Заблокованому Екрані</string>
     <string name="global_settings_lock_screen_notification_visibility_nothing">Без сповіщень на заблокованому екрані</string>
     <string name="global_settings_lock_screen_notification_visibility_app_name">Назва застосунку</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Лічильник нових повідомлень</string>
@@ -262,35 +262,35 @@
     <string name="account_setup_incoming_delete_policy_label">Коли я видаляю повідомлення</string>
     <string name="account_setup_incoming_delete_policy_never_label">Не видаляти на сервері</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Видаляти на сервері</string>
-    <string name="account_setup_incoming_delete_policy_markread_label">Позначати прочитаним на сервері</string>
+    <string name="account_setup_incoming_delete_policy_markread_label">Позначати як прочитане на сервері</string>
     <string name="account_setup_expunge_policy_label">Стирати видалені повідомлення на сервері</string>
     <string name="account_setup_expunge_policy_immediately">Негайно</string>
-    <string name="account_setup_expunge_policy_on_poll">Під час опитування сервером</string>
+    <string name="account_setup_expunge_policy_on_poll">Під час опитування</string>
     <string name="account_setup_expunge_policy_manual">Вручну</string>
-    <string name="drafts_folder_label">Тека «Чернетки»</string>
-    <string name="sent_folder_label">Тека «Надіслані»</string>
-    <string name="trash_folder_label">Тека «Кошик»</string>
-    <string name="archive_folder_label">Тека «Архів»</string>
-    <string name="spam_folder_label">Тека «Спам»</string>
-    <string name="account_setup_incoming_subscribed_folders_only_label">Показувати лише теки, на які ви підписані</string>
+    <string name="drafts_folder_label">Папка «Чернетки»</string>
+    <string name="sent_folder_label">Папка «Надіслані»</string>
+    <string name="trash_folder_label">Папка «Смітник»</string>
+    <string name="archive_folder_label">Папка «Архів»</string>
+    <string name="spam_folder_label">Папка «Спам»</string>
+    <string name="account_setup_incoming_subscribed_folders_only_label">Показувати лише папки, на які ви підписані</string>
     <string name="account_setup_options_mail_check_frequency_never">Ніколи</string>
-    <string name="account_setup_options_mail_check_frequency_15min">Що 15 хвилин</string>
-    <string name="account_setup_options_mail_check_frequency_30min">Що 30 хвилин</string>
-    <string name="account_setup_options_mail_check_frequency_1hour">Щогодини</string>
-    <string name="account_setup_options_mail_check_frequency_2hour">Що 2 години</string>
-    <string name="account_setup_options_mail_check_frequency_3hour">Що 3 години</string>
-    <string name="account_setup_options_mail_check_frequency_6hour">Що 6 годин</string>
-    <string name="account_setup_options_mail_check_frequency_12hour">Що 12 годин</string>
-    <string name="account_setup_options_mail_check_frequency_24hour">Щодоби</string>
-    <string name="idle_refresh_period_label">Оновлювати з’єднання IMAP IDLE</string>
-    <string name="idle_refresh_period_2min">Що 2 хвилини</string>
-    <string name="idle_refresh_period_3min">Що 3 хвилини</string>
-    <string name="idle_refresh_period_6min">Що 6 хвилин</string>
-    <string name="idle_refresh_period_12min">Що 12 хвилин</string>
-    <string name="idle_refresh_period_24min">Що 24 хвилини</string>
-    <string name="idle_refresh_period_36min">Що 36 хвилин</string>
-    <string name="idle_refresh_period_48min">Що 48 хвилин</string>
-    <string name="idle_refresh_period_60min">Що 60 хвилин</string>
+    <string name="account_setup_options_mail_check_frequency_15min">Кожні 15 хвилин</string>
+    <string name="account_setup_options_mail_check_frequency_30min">Кожні 30 хвилин</string>
+    <string name="account_setup_options_mail_check_frequency_1hour">Кожну годину</string>
+    <string name="account_setup_options_mail_check_frequency_2hour">Кожні 2 години</string>
+    <string name="account_setup_options_mail_check_frequency_3hour">Кожні 3 години</string>
+    <string name="account_setup_options_mail_check_frequency_6hour">Кожні 6 годин</string>
+    <string name="account_setup_options_mail_check_frequency_12hour">Кожні 12 годин</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">Кожні 24 години</string>
+    <string name="idle_refresh_period_label">Оновити IDLE з’єднання</string>
+    <string name="idle_refresh_period_2min">Кожні 2 хвилини</string>
+    <string name="idle_refresh_period_3min">Кожні 3 хвилини</string>
+    <string name="idle_refresh_period_6min">Кожні 6 хвилин</string>
+    <string name="idle_refresh_period_12min">Кожні 12 хвилин</string>
+    <string name="idle_refresh_period_24min">Кожні 24 хвилини</string>
+    <string name="idle_refresh_period_36min">Кожні 36 хвилин</string>
+    <string name="idle_refresh_period_48min">Кожні 48 хвилин</string>
+    <string name="idle_refresh_period_60min">Кожні 60 хвилин</string>
     <string name="account_setup_options_mail_display_count_10">10 повідомлень</string>
     <string name="account_setup_options_mail_display_count_25">25 повідомлень</string>
     <string name="account_setup_options_mail_display_count_50">50 повідомлень</string>
@@ -302,52 +302,52 @@
     <string name="account_setup_options_mail_display_count_5000">5000 повідомлень</string>
     <string name="account_setup_options_mail_display_count_10000">10000 повідомлень</string>
     <string name="account_setup_options_mail_display_count_all">усі повідомлення</string>
-    <string name="move_copy_cannot_copy_unsynced_message">Не можна копіювати чи переміщувати повідомлення, не синхронізоване з сервером</string>
+    <string name="move_copy_cannot_copy_unsynced_message">Не можна копіювати чи переміщувати повідомлення, які не синхронізовані із сервером</string>
     <string name="account_settings_push_advanced_title">Додатково</string>
     <string name="account_settings_title_fmt">Налаштування облікового запису</string>
-    <string name="account_settings_notify_label">Сповіщення про нову пошту</string>
-    <string name="account_settings_notify_sync_label">Сповіщення про синхронізацію</string>
+    <string name="account_settings_notify_label">Сповіщення нового листа</string>
+    <string name="account_settings_notify_sync_label">Сповіщення синхронізації</string>
     <string name="account_settings_email_label">Адреса вашої е-пошти</string>
-    <string name="account_settings_notify_summary">Сповіщати у рядку стану про нові листи</string>
-    <string name="account_settings_notify_sync_summary">Сповіщати у рядку стану про перевірку пошти</string>
-    <string name="account_settings_notify_self_label">Включити вихідні повідомлення</string>
-    <string name="account_settings_notify_self_summary">Показати сповіщення про надіслані мною повідомлення</string>
-    <string name="account_notify_contacts_mail_only_label">Лише контактам</string>
-    <string name="account_notify_contacts_mail_only_summary">Показувати сповіщення лише для повідомлень від вже відомих контактів</string>
-    <string name="account_settings_ignore_chat_messages_label">Ігнорувати повідомлення бесіди</string>
-    <string name="account_settings_ignore_chat_messages_summary">Не показувати сповіщень про повідомлення поштової бесіди</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Позначати повідомлення прочитаним після відкриття</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Позначати повідомлення прочитаним після відкриття для перегляду</string>
-    <string name="account_settings_mark_message_as_read_on_delete_label">Позначити прочитаним після видалення</string>
-    <string name="account_settings_mark_message_as_read_on_delete_summary">Позначити повідомлення прочитаним після видалення</string>
+    <string name="account_settings_notify_summary">Сповіщати в рядку статусу коли приходять листи</string>
+    <string name="account_settings_notify_sync_summary">Сповіщати в рядку статусу коли листи перевірені</string>
+    <string name="account_settings_notify_self_label">Включити вихідні листи</string>
+    <string name="account_settings_notify_self_summary">Показувати сповіщення про надіслані мною повідомлення</string>
+    <string name="account_notify_contacts_mail_only_label">Тільки контакти</string>
+    <string name="account_notify_contacts_mail_only_summary">Показувати сповіщення лише для повідомлень від відомих контактів</string>
+    <string name="account_settings_ignore_chat_messages_label">Ігнорувати повідомлення чату</string>
+    <string name="account_settings_ignore_chat_messages_summary">Не показувати сповіщення про повідомлення які належать поштовому чату</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Позначити як прочитане при відкриванні</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Позначити повідомлення як прочитане коли воно відкрите для перегляду</string>
+    <string name="account_settings_mark_message_as_read_on_delete_label">Позначити як прочитане коли видалено</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">Позначити повідомлення як прочитане коли воно видалено</string>
     <string name="account_settings_notification_channels_label">Категорії сповіщень</string>
     <string name="account_settings_open_notification_settings_messages_summary">Налаштуйте сповіщення для нових повідомлень</string>
-    <string name="account_settings_open_notification_settings_miscellaneous_summary">Налаштуйте сповіщення про помилки та стани</string>
-    <string name="account_settings_show_pictures_label">Завжди показувати зображення</string>
+    <string name="account_settings_open_notification_settings_miscellaneous_summary">Налаштуйте сповіщення помилок та статусів</string>
+    <string name="account_settings_show_pictures_label">Завжди відображати зображення</string>
     <string name="account_settings_show_pictures_never">Ні</string>
     <string name="account_settings_show_pictures_only_from_contacts">Від контактів</string>
-    <string name="account_settings_show_pictures_always">Від усіх</string>
+    <string name="account_settings_show_pictures_always">Від будь-кого</string>
     <string name="account_settings_composition">Надсилання повідомлення</string>
     <string name="account_settings_default_quoted_text_shown_label">Цитувати повідомлення під час відповіді на нього</string>
-    <string name="account_settings_default_quoted_text_shown_summary">Включати оригінальне повідомлення у відповідь.</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Включати оригінальне повідомлення у вашу відповідь.</string>
     <string name="account_settings_reply_after_quote_label">Текст відповіді після цитованого тексту</string>
-    <string name="account_settings_reply_after_quote_summary">Оригінальне повідомлення покажеться над вашою відповіддю.</string>
+    <string name="account_settings_reply_after_quote_summary">Оригінальне повідомлення буде з\'являтись над вашою відповіддю.</string>
     <string name="account_settings_strip_signature_label">Видаляти підписи у відповіді</string>
-    <string name="account_settings_strip_signature_summary">Підписи вилучатимуться з цитованих повідомлень</string>
-    <string name="account_settings_message_format_label">Формат повідомлення</string>
-    <string name="account_settings_message_format_text">Звичайний текст (вилучити зображення та форматування)</string>
+    <string name="account_settings_strip_signature_summary">Підписи будуть вилучатися з цитованих повідомлень</string>
+    <string name="account_settings_message_format_label">Формат Повідомлення</string>
+    <string name="account_settings_message_format_text">Звичайний Текст (вилучити зображення та форматування)</string>
     <string name="account_settings_message_format_html">HTML (зберігати зображення та форматування)</string>
-    <string name="account_settings_message_format_auto">Автоматичний (звичайний текст, якщо тільки не створюється відповідь на повідомлення HTML-формату)</string>
+    <string name="account_settings_message_format_auto">Автоматично</string>
     <string name="account_settings_always_show_cc_bcc_label">Завжди показувати поля \"Копія\" / \"Прихована копія\"</string>
     <string name="account_settings_message_read_receipt_label">Звіт про прочитання</string>
     <string name="account_settings_message_read_receipt_summary">Завжди запитувати звіт про прочитання</string>
     <string name="account_settings_quote_style_label">Стиль цитування відповіді</string>
     <string name="account_settings_quote_style_prefix">Префікс (наприклад, Gmail)</string>
     <string name="account_settings_quote_style_header">Заголовок (наприклад, Outlook)</string>
-    <string name="account_settings_upload_sent_messages_label">Вивантажити надіслані повідомлення</string>
-    <string name="account_settings_upload_sent_messages_summary">Вивантажити повідомлення в теку \"Надіслані\" після надсилання</string>
+    <string name="account_settings_upload_sent_messages_label">Відвантажити надіслані повідомлення</string>
+    <string name="account_settings_upload_sent_messages_summary">Відвантажити повідомлення в папку \"Надіслані\" після надсилання</string>
     <string name="account_settings_general_title">Загальні налаштування</string>
-    <string name="account_settings_reading_mail">Читання пошти</string>
+    <string name="account_settings_reading_mail">Читання листа</string>
     <string name="account_settings_sync">Отримання пошти</string>
     <string name="account_settings_folders">Теки</string>
     <string name="account_settings_quote_prefix_label">Префікс цитованого тексту</string>
@@ -359,25 +359,25 @@
     <string name="account_settings_crypto_summary_on">Під\'єднано до %s</string>
     <string name="account_settings_crypto_summary_config">Налаштування…</string>
     <string name="account_settings_crypto_encrypt_all_drafts">Зберігати всі чернетки зашифрованими</string>
-    <string name="account_settings_crypto_encrypt_all_drafts_on">Усі чернетки зберігатимуться зашифрованими</string>
-    <string name="account_settings_crypto_encrypt_all_drafts_off">Шифрувати чернетки лише якщо шифрування ввімкнено</string>
-    <string name="account_settings_mail_check_frequency_label">Частота опитування тек</string>
-    <string name="account_settings_mail_display_count_label">Розмір локальної теки</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_on">Всі чернетки будуть збережені у зашифрованому стані</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_off">Шифрувати чернетки лише якщо шифрування увімкнено</string>
+    <string name="account_settings_mail_check_frequency_label">Частота опитування папок</string>
+    <string name="account_settings_mail_display_count_label">Розмір локальної папки</string>
     <string name="account_settings_autodownload_message_size_label">Отримувати повідомлення розміром до</string>
-    <string name="account_settings_autodownload_message_size_1">1 КБ</string>
-    <string name="account_settings_autodownload_message_size_2">2 КБ</string>
-    <string name="account_settings_autodownload_message_size_4">4 КБ</string>
-    <string name="account_settings_autodownload_message_size_8">8 КБ</string>
-    <string name="account_settings_autodownload_message_size_16">16 КБ</string>
-    <string name="account_settings_autodownload_message_size_32">32 КБ</string>
-    <string name="account_settings_autodownload_message_size_64">64 КБ</string>
-    <string name="account_settings_autodownload_message_size_128">128 КБ</string>
-    <string name="account_settings_autodownload_message_size_256">256 КБ</string>
-    <string name="account_settings_autodownload_message_size_512">512 КБ</string>
-    <string name="account_settings_autodownload_message_size_1024">1 МБ</string>
-    <string name="account_settings_autodownload_message_size_2048">2 МБ</string>
-    <string name="account_settings_autodownload_message_size_5120">5 МБ</string>
-    <string name="account_settings_autodownload_message_size_10240">10 МБ</string>
+    <string name="account_settings_autodownload_message_size_1">1 КіБ</string>
+    <string name="account_settings_autodownload_message_size_2">2 КіБ</string>
+    <string name="account_settings_autodownload_message_size_4">4 КіБ</string>
+    <string name="account_settings_autodownload_message_size_8">8 КіБ</string>
+    <string name="account_settings_autodownload_message_size_16">16 КіБ</string>
+    <string name="account_settings_autodownload_message_size_32">32 КіБ</string>
+    <string name="account_settings_autodownload_message_size_64">64 КіБ</string>
+    <string name="account_settings_autodownload_message_size_128">128 КіБ</string>
+    <string name="account_settings_autodownload_message_size_256">256 КіБ</string>
+    <string name="account_settings_autodownload_message_size_512">512 КіБ</string>
+    <string name="account_settings_autodownload_message_size_1024">1 МіБ</string>
+    <string name="account_settings_autodownload_message_size_2048">2 МіБ</string>
+    <string name="account_settings_autodownload_message_size_5120">5 МіБ</string>
+    <string name="account_settings_autodownload_message_size_10240">10 МіБ</string>
     <string name="account_settings_autodownload_message_size_any">будь-якого розміру (без обмежень)</string>
     <string name="account_settings_message_age_label">Синхронізувати повідомлення за</string>
     <string name="account_settings_message_age_any">увесь час (без обмежень)</string>
@@ -393,7 +393,7 @@
     <string name="account_settings_message_age_6_months">останні 6 місяців</string>
     <string name="account_settings_message_age_1_year">останній рік</string>
     <string name="account_settings_sync_remote_deletetions_label">Синхронізація видалень на сервері</string>
-    <string name="account_settings_sync_remote_deletetions_summary">Вилучати повідомлення, коли вони видаляються на сервері</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Вилучати повідомлення, коли вони видалені на сервері</string>
     <string name="account_settings_openpgp_missing">Немає OpenPGP-застосунку — чи був він видалений?</string>
     <string name="folder_settings_title">Налаштування тек</string>
     <string name="folder_settings_in_top_group_label">Показувати у верхній групі</string>
@@ -405,9 +405,9 @@
     <string name="account_settings_name_label">Ваше ім\'я</string>
     <string name="notifications_title">Сповіщення</string>
     <string name="account_settings_vibration">Вібрація</string>
-    <string name="account_settings_vibrate_enable">Вібрація</string>
+    <string name="account_settings_vibrate_enable">Вібрувати</string>
     <string name="account_settings_vibrate_pattern_label">Ритм вібрації</string>
-    <string name="account_settings_vibrate_pattern_default">Типовий</string>
+    <string name="account_settings_vibrate_pattern_default">Стандартний</string>
     <string name="account_settings_vibrate_pattern_1">Ритм 1</string>
     <string name="account_settings_vibrate_pattern_2">Ритм 2</string>
     <string name="account_settings_vibrate_pattern_3">Ритм 3</string>
@@ -419,7 +419,7 @@
     <string name="account_settings_notification_light_label">Спалах сповіщення</string>
     <string name="account_settings_notification_light_disabled">Вимкнено</string>
     <string name="account_settings_notification_light_account_color">Колір облікового запису</string>
-    <string name="account_settings_notification_light_default_color">Типовий колір системи</string>
+    <string name="account_settings_notification_light_default_color">Стандартний колір системи</string>
     <string name="account_settings_notification_light_white">Білий</string>
     <string name="account_settings_notification_light_red">Червоний</string>
     <string name="account_settings_notification_light_green">Зелений</string>
@@ -427,9 +427,9 @@
     <string name="account_settings_notification_light_yellow">Жовтий</string>
     <string name="account_settings_notification_light_cyan">Бірюзовий</string>
     <string name="account_settings_notification_light_magenta">Рожевий</string>
-    <string name="account_settings_composition_title">Параметри створення повідомлень</string>
-    <string name="account_settings_composition_label">Типові налаштування написання</string>
-    <string name="account_settings_composition_summary">Встановити типові значення полів \"Від\", \"Прихована копія\" і підпис</string>
+    <string name="account_settings_composition_title">Варіанти створення повідомлень</string>
+    <string name="account_settings_composition_label">Стандартне створення</string>
+    <string name="account_settings_composition_summary">Встановити стандартні значення полів \"Від\", \"Прихована копія\" і підпис</string>
     <string name="account_settings_identities_label">Керування особистостями</string>
     <string name="account_settings_identities_summary">Установити альтернативні адреси \"Від\" та підписи</string>
     <string name="manage_identities_title">Керування особистостями</string>
@@ -437,11 +437,11 @@
     <string name="edit_identity_title">Змінити особистість</string>
     <string name="edit_identity_save">Зберегти</string>
     <string name="new_identity_action">Нова особистість</string>
-    <string name="account_settings_always_bcc_label">Прихована копія всіх повідомлень до</string>
+    <string name="account_settings_always_bcc_label">Прихована копія всіх повідомлень на</string>
     <string name="manage_identities_edit_action">Редагувати</string>
     <string name="manage_identities_move_up_action">Пересунути вище</string>
     <string name="manage_identities_move_down_action">Пересунути нижче</string>
-    <string name="manage_identities_move_top_action">Пересунути на початок / зробити типовою</string>
+    <string name="manage_identities_move_top_action">Пересунути на початок / зробити стандартною</string>
     <string name="manage_identities_remove_action">Вилучити</string>
     <string name="edit_identity_description_label">Опис особистості</string>
     <string name="edit_identity_description_hint">(Необов\'язково)</string>
@@ -460,8 +460,8 @@
     <string name="send_as">Надіслати як</string>
     <string name="no_removable_identity">Не можна видалити останню особистість</string>
     <string name="identity_has_no_email">Не можна використовувати особистість без адреси е-пошти</string>
-    <string name="sort_earliest_first">Спершу давніші повідомлення</string>
-    <string name="sort_latest_first">Спершу новіші повідомлення</string>
+    <string name="sort_earliest_first">Ранні повідомлення спершу</string>
+    <string name="sort_latest_first">Останні повідомлення спершу</string>
     <string name="sort_subject_alpha">Тема за абеткою</string>
     <string name="sort_subject_re_alpha">Тема за абеткою у зворотному порядку</string>
     <string name="sort_sender_alpha">Відправники за абеткою</string>
@@ -472,23 +472,23 @@
     <string name="sort_unread_last">Спершу прочитані повідомлення</string>
     <string name="sort_attach_first">Спершу повідомлення з вкладеннями</string>
     <string name="sort_unattached_first">Спершу повідомлення без вкладень</string>
-    <string name="sort_by">Упорядкувати за…</string>
+    <string name="sort_by">Відсортувати за…</string>
     <string name="sort_by_date">Датою</string>
     <string name="sort_by_arrival">Часом отримання</string>
     <string name="sort_by_subject">Темою</string>
     <string name="sort_by_sender">Відправником</string>
     <string name="sort_by_flag">Наявністю зірочки</string>
-    <string name="sort_by_unread">Станом прочитання</string>
+    <string name="sort_by_unread">Прочитаними/непрочитаними</string>
     <string name="sort_by_attach">Наявністю вкладень</string>
-    <string name="account_delete_dlg_title">Вилучити обліковий запис</string>
-    <string name="folder_list_filter_hint">Назва теки містить</string>
+    <string name="account_delete_dlg_title">Вилучити Обліковий Запис</string>
+    <string name="folder_list_filter_hint">Назва папки містить</string>
     <string name="account_settings_signature__location_label">Розташування підпису</string>
     <string name="account_settings_signature__location_before_quoted_text">Перед цитованим повідомленням</string>
     <string name="account_settings_signature__location_after_quoted_text">Після цитованого повідомлення</string>
     <string name="setting_theme_global">Використовувати тему застосунку</string>
     <string name="setting_theme_dark">Темна</string>
     <string name="setting_theme_light">Світла</string>
-    <string name="setting_theme_follow_system">Типова системна</string>
+    <string name="setting_theme_follow_system">Використовувати стандартну системну</string>
     <string name="display_preferences">Екран</string>
     <string name="global_preferences">Глобальні</string>
     <string name="debug_preferences">Налагодження</string>
@@ -499,36 +499,36 @@
     <string name="messagelist_preferences">Списки повідомлень</string>
     <string name="messageview_preferences">Повідомлення</string>
     <string name="settings_theme_label">Тема</string>
-    <string name="settings_message_theme_label">Тема екрана перегляду повідомлень</string>
-    <string name="settings_compose_theme_label">Тема екрана створення повідомлень</string>
+    <string name="settings_message_theme_label">Тема перегляду повідомлень</string>
+    <string name="settings_compose_theme_label">Тема створення повідомлень</string>
     <string name="settings_language_label">Мова</string>
     <string name="preference_search_no_results">Налаштування не знайдені</string>
     <string name="settings_message_theme_selection_label">Фіксована тема повідомлення</string>
-    <string name="settings_message_theme_selection_summary_off">Виберіть тему екрана перегляду повідомлення під час перегляду повідомлення</string>
-    <string name="settings_message_theme_selection_summary_on">Використовувати фіксовану тему перегляду повідомлення</string>
-    <string name="setting_language_system">Типова системна</string>
+    <string name="settings_message_theme_selection_summary_off">Виберіть тему відображення повідомлення під час перегляду повідомлення</string>
+    <string name="settings_message_theme_selection_summary_on">Використовувати тему відображення фіксованого повідомлення</string>
+    <string name="setting_language_system">Стандартна системна</string>
     <string name="background_ops_label">Фонова синхронізація</string>
     <string name="background_ops_never">Ніколи</string>
     <string name="background_ops_always">Завжди</string>
-    <string name="background_ops_auto_sync_only">Коли ввімкнена \"Автосинхронізація\"</string>
+    <string name="background_ops_auto_sync_only">Коли увімкнена \"Автосинхронізація\"</string>
     <string name="batch_select_all">Вибрати все</string>
-    <string name="account_setup_push_limit_label">Найбільша кількість тек push-перевірки</string>
-    <string name="account_setup_push_limit_5">5 тек</string>
-    <string name="account_setup_push_limit_10">10 тек</string>
-    <string name="account_setup_push_limit_25">25 тек</string>
-    <string name="account_setup_push_limit_50">50 тек</string>
-    <string name="account_setup_push_limit_100">100 тек</string>
-    <string name="account_setup_push_limit_250">250 тек</string>
-    <string name="account_setup_push_limit_500">500 тек</string>
-    <string name="account_setup_push_limit_1000">1000 тек</string>
+    <string name="account_setup_push_limit_label">Максимум папок для перевірки push</string>
+    <string name="account_setup_push_limit_5">5 папок</string>
+    <string name="account_setup_push_limit_10">10 папок</string>
+    <string name="account_setup_push_limit_25">25 папок</string>
+    <string name="account_setup_push_limit_50">50 папок</string>
+    <string name="account_setup_push_limit_100">100 папок</string>
+    <string name="account_setup_push_limit_250">250 папок</string>
+    <string name="account_setup_push_limit_500">500 папок</string>
+    <string name="account_setup_push_limit_1000">1000 папок</string>
     <string name="animations_title">Анімація</string>
     <string name="animations_summary">Використовувати яскраві візуальні ефекти</string>
-    <string name="show_unified_inbox_title">Показувати Об\'єднані Вхідні</string>
-    <string name="show_starred_count_title">Показати лічильник зірочок</string>
-    <string name="integrated_inbox_title">Об\'єднані Вхідні</string>
-    <string name="integrated_inbox_detail">Усі повідомлення в об\'єднаних теках</string>
+    <string name="show_unified_inbox_title">Показувати Об\'єднану Вхідну Скриньку</string>
+    <string name="show_starred_count_title">Показати кількість помічених зірочкою</string>
+    <string name="integrated_inbox_title">Об\'єднана Вхідна Скринька</string>
+    <string name="integrated_inbox_detail">Всі повідомлення в об\'єднаних папках</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Об’єднати</string>
-    <string name="account_settings_no_folder_selected">Жодної</string>
+    <string name="account_settings_no_folder_selected">Нічого</string>
     <string name="account_settings_automatic_special_folder">Автоматично (%s)</string>
     <string name="font_size_settings_title">Розмір шрифту</string>
     <string name="font_size_settings_description">Налаштувати розмір шрифту</string>
@@ -547,11 +547,11 @@
     <string name="font_size_message_view_content">Вміст повідомлення</string>
     <string name="font_size_message_compose">Створення повідомлення</string>
     <string name="font_size_message_compose_input">Поля для вводу тексту</string>
-    <string name="font_size_default">Типовий</string>
+    <string name="font_size_default">Стандартний</string>
     <string name="font_size_tiniest">Найдрібніший</string>
     <string name="font_size_tiny">Дрібний</string>
     <string name="font_size_smaller">Менший</string>
-    <string name="font_size_small">Малий</string>
+    <string name="font_size_small">Маленький</string>
     <string name="font_size_medium">Середній</string>
     <string name="font_size_large">Великий</string>
     <string name="font_size_larger">Більший</string>
@@ -563,30 +563,30 @@
     <string name="confirm_discard_draft_message_title">Відкинути повідомлення?</string>
     <string name="confirm_discard_draft_message">Ви дійсно хочете відкинути це повідомлення?</string>
     <string name="dialog_confirm_clear_local_folder_title">Очистити локальні повідомлення?</string>
-    <string name="dialog_confirm_clear_local_folder_message">Це вилучить всі локальні повідомлення з теки. Жодне повідомлення не буде видалене з сервера.</string>
+    <string name="dialog_confirm_clear_local_folder_message">Це вилучить всі локальні повідомлення з папки. Ніякого повідомлення не буде видалено з сервера.</string>
     <string name="dialog_confirm_clear_local_folder_action">Очистити повідомлення</string>
     <string name="dialog_confirm_delete_title">Підтвердьте видалення</string>
     <string name="dialog_confirm_delete_message">Ви хочете видалити це повідомлення?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">Ви справді хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлення?</item>
-        <item quantity="few">Ви справді хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлення?</item>
-        <item quantity="many">Ви справді хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлень?</item>
-        <item quantity="other">Ви справді хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлень?</item>
+        <item quantity="one">Чи ви справді хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлення?</item>
+        <item quantity="few">Чи ви справді хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлення?</item>
+        <item quantity="many">Чи ви справді хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлень?</item>
+        <item quantity="other">Чи ви справді хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлень?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Так</string>
     <string name="dialog_confirm_delete_cancel_button">Ні</string>
-    <string name="dialog_confirm_mark_all_as_read_title">Підтвердьте позначення всіх повідомлень прочитаними</string>
-    <string name="dialog_confirm_mark_all_as_read_message">Хочете позначити всі повідомлення прочитаними?</string>
-    <string name="dialog_confirm_empty_trash_title">Підтвердьте очищення кошика</string>
-    <string name="dialog_confirm_empty_trash_message">Ви хочете очистити теку \"Кошик\"?</string>
+    <string name="dialog_confirm_mark_all_as_read_title">Підтвердьте позначення всіх повідомлень як прочитаних</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Хочете позначити всі повідомлення як прочитані?</string>
+    <string name="dialog_confirm_empty_trash_title">Підтвердьте очищення смітника</string>
+    <string name="dialog_confirm_empty_trash_message">Чи ви хочете очистити папку \"Смітник\"?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Так</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Ні</string>
-    <string name="dialog_confirm_spam_title">Підтвердьте переміщення в теку \"Спам\"</string>
+    <string name="dialog_confirm_spam_title">Підтвердьте переміщення в папку \"Спам\"</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлення до теки спаму?</item>
-        <item quantity="few">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлення до теки \"Спам\"?</item>
-        <item quantity="many">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень до теки \"Спам\"?</item>
-        <item quantity="other">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень до теки \"Спам\"?</item>
+        <item quantity="one">Чи ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлення до папки спаму?</item>
+        <item quantity="few">Чи ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлення до папки \"Спам\"?</item>
+        <item quantity="many">Чи ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень до папки \"Спам\"?</item>
+        <item quantity="other">Чи ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень до папки \"Спам\"?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Так</string>
     <string name="dialog_confirm_spam_cancel_button">Ні</string>
@@ -596,12 +596,12 @@
     <string name="settings_export_title">Експорт налаштувань</string>
     <string name="settings_export_button">Експорт</string>
     <string name="settings_export_share_button">Поділитися</string>
-    <string name="settings_export_progress_text">Налаштування експортуються…</string>
-    <string name="settings_export_success_generic">Налаштування експортовані</string>
+    <string name="settings_export_progress_text">Експорт налаштувань…</string>
+    <string name="settings_export_success_generic">Налаштування успішно експортовані</string>
     <string name="settings_export_failure">Не вдалося експортувати налаштування</string>
     <string name="webview_empty_message">Нема тексту</string>
     <string name="webview_contextmenu_link_view_action">Відкрити посилання</string>
-    <string name="webview_contextmenu_link_share_action">Надіслати посилання</string>
+    <string name="webview_contextmenu_link_share_action">Поділитись посиланням</string>
     <string name="webview_contextmenu_link_copy_action">Копіювати посилання до буфера обміну</string>
     <string name="webview_contextmenu_link_clipboard_label">Посилання</string>
     <string name="webview_contextmenu_link_text_copy_action">Скопіювати текст посилання у буфер обміну</string>
@@ -631,8 +631,8 @@
     <string name="account_settings_remote_search_num_label">Обмеження пошуку на сервері</string>
     <string name="remote_search_sending_query">Надсилання запиту до сервера</string>
     <plurals name="remote_search_downloading">
-        <item quantity="one">Отримання %dрезультату</item>
-        <item quantity="few">Отримання %dрезультатів</item>
+        <item quantity="one">Отримання %d результату</item>
+        <item quantity="few">Отримання %d результатів</item>
         <item quantity="many">Отримання %d результатів</item>
         <item quantity="other">Отримання %d результатів</item>
     </plurals>
@@ -647,24 +647,24 @@
     <string name="action_remote_search">Шукати повідомлення на сервері</string>
     <string name="remote_search_unavailable_no_network">Для пошуку на сервері необхідне з\'єднання з мережею.</string>
     <string name="global_settings_background_as_unread_indicator_label">Змінювати колір після прочитання</string>
-    <string name="global_settings_background_as_unread_indicator_summary">Інший колір тла означатиме, що повідомлення прочитане</string>
-    <string name="global_settings_threaded_view_label">Групування повідомлень</string>
-    <string name="global_settings_threaded_view_summary">Групувати повідомлення у діалоги</string>
+    <string name="global_settings_background_as_unread_indicator_summary">Інший фон буде відображати, що повідомлення було прочитане</string>
+    <string name="global_settings_threaded_view_label">Відображення у вигляді групових повідомлень</string>
+    <string name="global_settings_threaded_view_summary">Групувати повідомлення за діалогами</string>
     <string name="upgrade_databases_title">Оновлення баз даних</string>
     <string name="upgrade_databases_unspecified">Оновлення баз даних…</string>
     <string name="upgrade_database_format">Оновлення баз даних облікового запису \"<xliff:g id="account">%s</xliff:g>\"</string>
-    <string name="global_settings_splitview_mode_label">Перегляд на розділеному екрані</string>
+    <string name="global_settings_splitview_mode_label">Відображати розділений екран</string>
     <string name="global_settings_splitview_always">Завжди</string>
     <string name="global_settings_splitview_never">Ніколи</string>
-    <string name="global_settings_splitview_when_in_landscape">Коли в альбомній орієнтації</string>
+    <string name="global_settings_splitview_when_in_landscape">Коли в Альбомній орієнтації</string>
     <string name="message_view_empty">Будь ласка, виберіть повідомлення зліва</string>
     <string name="global_settings_show_contact_picture_label">Показувати зображення контактів</string>
     <string name="global_settings_show_contact_picture_summary">Показувати зображення контактів у списку повідомлень</string>
-    <string name="mark_all_as_read">Позначити все прочитаним</string>
+    <string name="mark_all_as_read">Позначити все як прочитане</string>
     <string name="global_settings_colorize_missing_contact_pictures_label">Забарвити зображення контактів</string>
     <string name="global_settings_colorize_missing_contact_pictures_summary">Забарвити зображення відсутніх контактів</string>
-    <string name="global_settings_messageview_visible_refile_actions_title">Видимі дії над повідомленням</string>
-    <string name="global_settings_messageview_visible_refile_actions_summary">Показувати вибрані дії в меню перегляду повідомлень</string>
+    <string name="global_settings_messageview_visible_refile_actions_title">Дії відображеного повідомлення</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Показувати обрані дії в меню перегляду повідомлень</string>
     <string name="loading_attachment">Завантаження вкладення…</string>
     <string name="fetching_attachment_dialog_title_send">Надсилання повідомлення</string>
     <string name="fetching_attachment_dialog_title_save">Збереження чернетки</string>
@@ -676,15 +676,15 @@
     <string name="recipient_bcc">Прихована копія</string>
     <string name="recipient_to">До</string>
     <string name="recipient_from">Від</string>
-    <string name="reply_to_label">Відповісти до</string>
-    <string name="unknown_recipient">&lt;Невідомий Адресат&gt;</string>
+    <string name="reply_to_label">Відповісти на</string>
+    <string name="unknown_recipient">&lt;Невідомий Отримувач&gt;</string>
     <string name="unknown_sender">&lt;Невідомий Відправник&gt;</string>
     <string name="address_type_home">Домашній</string>
     <string name="address_type_work">Робочий</string>
     <string name="address_type_other">Інший</string>
     <string name="address_type_mobile">Мобільний</string>
     <string name="compose_error_no_draft_folder">Теку \"Чернетки\" не налаштовано для цього облікового запису!</string>
-    <string name="compose_error_no_key_configured">Ключ не налаштовано для цього облікового запису! Перевірте налаштування.</string>
+    <string name="compose_error_no_key_configured">Для цього облікового запису не налаштовано ключа! Перевірте свої налаштування.</string>
     <string name="error_crypto_provider_incompatible">Криптопровайдер використовує несумісну версію. Перевірте свої налаштування!</string>
     <string name="error_crypto_provider_connect">Не можу з\'єднатися з криптопровайдером, перевірте ваші налаштування або натисніть на піктограму шифрування, щоб спробувати знову!</string>
     <string name="error_crypto_provider_ui_required">Не вдалося ініціалізувати наскрізне шифрування. Перевірте свої налаштування</string>
@@ -705,16 +705,16 @@
     <string name="openpgp_sign_only_disable">Вимкнути</string>
     <string name="openpgp_sign_only_keep_enabled">Залишити ввімкненим</string>
     <string name="openpgp_dialog_sign_only_title">Режим PGP Sign-Only</string>
-    <string name="openpgp_dialog_sign_only_text">У цьому режимі ваш PGP-ключ буде використаний для створення криптографічного підпису незашифрованої е-пошти.</string>
-    <string name="openpgp_dialog_sign_only_plus_verified">Це не шифрує електронний лист, але засвідчує, що він був надісланий від вашого ключа.</string>
-    <string name="openpgp_dialog_sign_only_minus_break">Підписи можуть бути пошкоджені під час надсилання листа у списки розсилки.</string>
+    <string name="openpgp_dialog_sign_only_text">У цьому режимі, ваш PGP-ключ буде використаний для створення криптографічного підпису незашифрованого листа.</string>
+    <string name="openpgp_dialog_sign_only_plus_verified">Це не зашифрує електронний лист, але засвідчує, що він був надісланий від вашого ключа.</string>
+    <string name="openpgp_dialog_sign_only_minus_break">Підписи можуть бути пошкоджені під час надсилання листа до списку розсилки.</string>
     <string name="openpgp_dialog_sign_only_minus_attach">Деякі клієнти можуть відображати підписи як вкладення \'signature.asc\'.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Зашифровані листи завжди містять підпис.</string>
     <string name="crypto_msg_title_plaintext">Простий текст</string>
     <string name="crypto_msg_unencrypted_sign_error">підпис наскрізного шифрування містив помилку</string>
     <string name="crypto_msg_incomplete_signed">необхідно повністю завантажити повідомлення для обробки підпису</string>
     <string name="crypto_msg_unsupported_signed">містить непідтримуваний підпис наскрізного шифрування</string>
-    <string name="crypto_msg_unsupported_encrypted">Повідомлення зашифроване, але цей формат не підтримується.</string>
+    <string name="crypto_msg_unsupported_encrypted">Повідомлення зашифроване, але воно в форматі яке не підтримується.</string>
     <string name="crypto_msg_cancelled">Повідомлення зашифроване, але розшифровування було скасоване.</string>
     <string name="crypto_msg_title_unencrypted_signed_e2e">Звичайний текст, підписаний наскрізним шифруванням</string>
     <string name="crypto_msg_unencrypted_sign_verified">від перевіреного підписувача</string>
@@ -743,16 +743,16 @@
     <string name="locked_attach_unlock">Розблокувати</string>
     <string name="locked_attach_unencrypted">Ця частина не була зашифрована і може бути небезпечною.</string>
     <string name="message_progress_text">Завантаження…</string>
-    <string name="messageview_decrypt_cancelled">Розшифровування скасовано.</string>
+    <string name="messageview_decrypt_cancelled">Розшифровування було скасовано.</string>
     <string name="messageview_decrypt_retry">Повторити спробу</string>
     <string name="messageview_decrypt_incomplete">Щоб розшифрувати, зашифроване повідомлення потрібно завантажити.</string>
     <string name="messageview_crypto_error_title">Помилка розшифрування е-пошти</string>
     <string name="recipient_error_non_ascii">Спеціальні символи наразі не підтримуються!</string>
-    <string name="recipient_error_parse_failed">Помилка розбору адреси!</string>
+    <string name="recipient_error_parse_failed">Помилка отримання адреси!</string>
     <string name="account_settings_crypto_hide_sign_only">Сховати незашифровані підписи</string>
-    <string name="account_settings_crypto_hide_sign_only_on">Будуть показані лише зашифровані підписи</string>
-    <string name="account_settings_crypto_hide_sign_only_off">Будуть показані всі підписи</string>
-    <string name="error_sign_only_no_encryption">Шифрування недоступне у режимі Лише підпис!</string>
+    <string name="account_settings_crypto_hide_sign_only_on">Тільки зашифровані підписи будуть відображатись</string>
+    <string name="account_settings_crypto_hide_sign_only_off">Всі підписи будуть відображені</string>
+    <string name="error_sign_only_no_encryption">Шифрування недоступне у режимі лише-входу!</string>
     <string name="unsigned_text_divider_label">Непідписаний Текст</string>
     <string name="crypto_no_provider_title">Цей електронний лист зашифровано</string>
     <string name="crypto_no_provider_message">Цей електронний лист зашифровано за допомогою OpenPGP.\nЩоб його прочитати, необхідно встановити та налаштувати сумісний OpenPGP-застосунок.</string>
@@ -763,8 +763,8 @@
     <string name="openpgp_enabled_error_msg">Деякі з вибраних адресатів не підтримують цю функцію!</string>
     <string name="enable_encryption">Увімкнути шифрування</string>
     <string name="disable_encryption">Вимкнути шифрування</string>
-    <string name="openpgp_description_text1">Шифрування повідомлень гарантує, що вони можуть бути прочитані адресатом, і ніким іншим.</string>
-    <string name="openpgp_description_text3">Можливість шифрування показуватиметься лише якщо його підтримують усі адресати, і якщо вони раніше надсилали вам е-пошту.</string>
+    <string name="openpgp_description_text1">Шифрування повідомлень гарантує, що вони можуть бути прочитані лише отримувачем, і ніким іншим.</string>
+    <string name="openpgp_description_text3">Шифрування показуватиметься лише якщо воно підтримується всіма адресатами, і якщо вони раніше надсилали вам електронного листа.</string>
     <string name="openpgp_description_text2">Перемкніть шифрування, натисканням на цю піктограму.</string>
     <string name="openpgp_enabled_error_gotit">Зрозуміло</string>
     <string name="openpgp_enabled_error_back">Назад</string>
@@ -772,17 +772,17 @@
     <string name="openpgp_encryption">Шифрування OpenPGP</string>
     <string name="account_settings_crypto_prefer_encrypt">Автоматичне шифрування у режимі взаємності</string>
     <string name="dialog_autocrypt_mutual_title">Автоматичне шифрування у режимі взаємності</string>
-    <string name="dialog_autocrypt_mutual_description_1">Повідомлення шифруватимуться за вашим вибором або під час відповіді на зашифроване повідомлення.</string>
-    <string name="dialog_autocrypt_mutual_description_2">Якщо і відправник, і адресат увімкнуть режим взаємності, шифрування типово буде увімкнене.</string>
-    <string name="dialog_autocrypt_mutual_learn_more">Ви можете <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">перейти сюди</a>, щоб дізнатися більше.</string>
+    <string name="dialog_autocrypt_mutual_description_1">Повідомлення усталено шифруватимуться за вашим вибором або під час відповіді на зашифроване повідомлення.</string>
+    <string name="dialog_autocrypt_mutual_description_2">Якщо обидва, відправник і адресат увімкнуть режим взаємності, по стандарту шифрування буде увімкнене.</string>
+    <string name="dialog_autocrypt_mutual_learn_more">Ви можете <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">натиснути сюди</a>, щоб дізнатися більше.</string>
     <string name="general_settings_title">Загальні налаштування</string>
     <string name="dialog_openkeychain_info_title">Не встановлено OpenPGP-застосунку</string>
     <string name="dialog_openkeychain_info_install">Установити</string>
     <string name="account_settings_crypto_encrypt_subject">Шифрувати теми повідомлень</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Може не підтримуватися деякими адресатами</string>
-    <string name="toast_account_not_found">Внутрішня помилка: Недійсний обліковий запис!</string>
+    <string name="toast_account_not_found">Внутрішня помилка: Не валідний обліковий запис!</string>
     <string name="toast_openpgp_provider_error">Помилка під\'єднання до %s!</string>
-    <string name="ac_transfer_setting_title">Надіслати Повідомлення з Налаштуваннями Автоматичного Шифрування</string>
+    <string name="ac_transfer_setting_title">Надіслати Повідомлення з Налаштуваннями Авто-Шифрування</string>
     <string name="ac_transfer_setting_summary">Безпечно поділитися налаштуваннями наскрізного шифрування з іншими пристроями</string>
     <string name="ac_transfer_title">Повідомлення з Налаштуваннями Автоматичного Шифрування</string>
     <string name="ac_transfer_intro">Повідомлення з Налаштуваннями Автоматичного Шифрування безпечно надсилає ваші налаштування наскрізного шифрування на інші пристрої.</string>
@@ -793,37 +793,22 @@
     <string name="ac_transfer_finish">Для завершення налаштування відкрийте повідомлення на іншому своєму пристрої та введіть Код Налаштування.</string>
     <string name="ac_transfer_show_code">Показати Код Налаштування</string>
     <string name="ac_transfer_msg_subject">Повідомлення з Налаштуваннями Автоматичного Шифрування</string>
-    <string name="ac_transfer_msg_body">Це повідомлення містить усю інформацію для безпечного надсилання налаштувань автоматичного шифрування разом з секретним ключем з вашого пристрою.
-
-Щоб налаштувати ваш новий пристрій для роботи з автоматичним шифруванням, дотримуйтесь інструкцій на його екрані.
-
-Ви можете зберегти це повідомлення і використовувати його як резервну копію вашого секретного ключа. Якщо ви хочете це зробити, запишіть пароль і збережіть його у надійному місці.
-</string>
+    <string name="ac_transfer_msg_body">Це повідомлення містить усю інформацію для безпечного надсилання налаштувань автоматичного шифрування разом з секретним ключем з вашого оригінального пристрою. Щоб налаштувати ваш новий пристрій для роботи з автоматичного шифрування, дотримуйтесь інструкцій на екрані нового пристрою. Ви можете зберегти це повідомлення і використовувати його як резервну копію вашого секретного ключа. Якщо ви хочете це зробити, запишіть пароль і збережіть його у надійному місці.</string>
     <string name="ac_transfer_error_send">Сталася помилка під час надсилання повідомлення. Перевірте під\'єднання до мережі та налаштування вихідного сервера.</string>
     <string name="switch_on">Увімкнено</string>
     <string name="switch_off">Вимкнено</string>
     <string name="generic_loading_error">Сталася помилка під час завантаження даних</string>
     <string name="push_notification_state_initializing">Ініціалізація…</string>
     <string name="push_notification_state_listening">Очікування нових листів</string>
-    <string name="push_notification_state_wait_background_sync">Очікування дозволу на фонову синхронізацію</string>
-    <string name="push_notification_state_wait_network">Очікування доступності мережі</string>
+    <string name="push_notification_state_wait_background_sync">Очікування поки фонова синхронізація буде увімкнена</string>
+    <string name="push_notification_state_wait_network">Очікування поки мережа стане доступною</string>
     <string name="push_notification_info">Натисніть, щоб дізнатися більше.</string>
     <string name="push_info_title">Інформація про Push</string>
-    <string name="push_info_configure_notification_text">Однак Android також дозволяє сховати сповіщення.</string>
-    <string name="push_info_learn_more_text">Докладніше</string>
+    <string name="push_info_configure_notification_text">Однак, Android також дозволяє сховати сповіщення.</string>
+    <string name="push_info_learn_more_text">Вивчити більше</string>
     <string name="push_info_configure_notification_action">Налаштувати сповіщення</string>
-    <string name="push_info_disable_push_text">Якщо вам не потрібне миттєве сповіщення про нові повідомлення, вам варто вимкнути Push і використовувати Polling. Polling перевіряє пошту з регулярною частотою і не потребує сповіщення.</string>
+    <string name="push_info_disable_push_text">Якщо вам не потрібне миттєві сповіщення про нові повідомлення, вам варто вимкнути Push і використовувати Polling. Polling перевіряє наявність нових листів з регулярною частотою і не потребує сповіщення.</string>
     <string name="push_info_disable_push_action">Вимкнути Push</string>
-    <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Показати пливучу кнопку створення повідомлення</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -839,7 +824,7 @@
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
     <string name="message_details_sender_section_title">Відправник</string>
     <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
-    <string name="message_details_replyto_section_title">Відповісти до</string>
+    <string name="message_details_replyto_section_title">Відповісти на</string>
     <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
     <string name="message_details_to_section_title">До</string>
     <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
@@ -851,15 +836,15 @@
     <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_add_to_contacts">Додати до контактів</string>
     <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-    <string name="action_compose_message_to">Написати лист</string>
+    <string name="action_compose_message_to">Написати повідомлення до</string>
     <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-    <string name="action_copy_email_address">Скопіювати адресу е-пошти</string>
+    <string name="action_copy_email_address">Скопіювати адресу електронної пошти</string>
     <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-    <string name="action_copy_name_and_email_address">Скопіювати ім\'я та адресу ел. пошти</string>
+    <string name="action_copy_name_and_email_address">Скопіювати ім\'я та адресу електронної пошти</string>
     <!--A user visible label for the email address copied to the clipboard-->
-    <string name="clipboard_label_email_address">Адреса е-пошти</string>
+    <string name="clipboard_label_email_address">Адреса електронної пошти</string>
     <!--A user visible label for the name and email address copied to the clipboard-->
-    <string name="clipboard_label_name_and_email_address">Ім\'я та адреса е-пошти</string>
+    <string name="clipboard_label_name_and_email_address">Ім\'я та адреса електронної пошти</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <string name="background_work_notification_remove_account">Вилучення облікового запису…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
@@ -867,7 +852,7 @@
     <string name="general_settings_post_mark_as_unread_action_stay">Залишатися на поточному повідомленні</string>
     <string name="general_settings_post_remove_action_return_to_list">Повертатися до списку повідомлень</string>
     <string name="general_settings_post_mark_as_unread_action_title">Після позначання повідомлення непрочитаним</string>
-    <string name="general_settings_post_mark_as_unread_action_return_to_list">Повертатися до списку повідомлень</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Повернутися до списку повідомлень</string>
     <string name="general_settings_post_remove_action_show_previous_message">Показувати попереднє повідомлення</string>
     <string name="general_settings_post_remove_action_show_next_message">Показувати наступне повідомлення</string>
     <string name="general_settings_post_remove_action_title">Після видалення або переміщення повідомлення</string>
@@ -877,54 +862,59 @@
     <string name="settings_ui_data_collection">Збір даних</string>
     <string name="about_title">Про <xliff:g id="app_name">%s</xliff:g></string>
     <string name="folder_settings_sync_label">Увімкнути синхронізацію</string>
-    <string name="folder_list_show_hidden_folders">Показати приховані теки</string>
+    <string name="folder_list_show_hidden_folders">Показати приховані папки</string>
     <string name="folder_settings_visible_label">Показати теку</string>
     <string name="settings_list_action_support">Підтримка <xliff:g id="app_name">%s</xliff:g></string>
     <string name="account_delete_dlg_instructions_fmt">Обліковий запис\"<xliff:g id="account">%1$s</xliff:g>\" буде вилучено з <xliff:g id="app_name">%2$s</xliff:g>.</string>
-    <string name="dialog_openkeychain_info_text">Застосунок OpenKeychain необхідний для підтримки наскрізного шифрування.</string>
+    <string name="dialog_openkeychain_info_text">Застосунок OpenKeychain необхідний для увімкнення підтримки наскрізного шифрування.</string>
     <string name="push_notification_state_alarm_permission_missing">Відсутній дозвіл на планування оповіщень</string>
-    <string name="push_notification_grant_alarm_permission">Торкніться, щоб надати дозвіл.</string>
-    <string name="push_info_notification_explanation_text">Коли використовується Push, <xliff:g id="app_name">%1$s</xliff:g> підтримує з\'єднання з поштовим сервером. Android вимагає показу поточного сповіщення під час фонової роботи застосунку. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="settings_ui_telemetry_title">Використання та технічні дані</string>
-    <string name="settings_ui_telemetry_description">Обмінюється з Mozilla даними про швидкодію, використання, апаратне забезпечення та налаштування цього застосунку, щоб допомогти нам зробити Thunderbird кращим</string>
+    <string name="push_notification_grant_alarm_permission">Натисніть, щоб надати дозвіл.</string>
+    <string name="push_info_notification_explanation_text">Коли використовується Push, <xliff:g id="app_name">%1$s</xliff:g> підтримує з\'єднання з поштовим сервером. Android вимагає відображення поточного сповіщення під час фонової роботи застосунку. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="settings_ui_telemetry_title">Використання додатку та технічні дані</string>
+    <string name="settings_ui_telemetry_description">Поділитися продуктивністю, використанням, апаратним забезпеченням та даними кастомізації з Mozilla, щоб допомогти нам зробити Thunderbird ще кращим</string>
     <string name="save_attachment_action">Зберегти вкладення</string>
     <string name="volume_navigation_title_short">Навігація кнопками гучності</string>
     <string name="volume_navigation_summary">Перехід між повідомленнями за допомогою клавіш гучності у вікні перегляду повідомлень</string>
     <string name="expand_content_description">Розгорнути</string>
-    <string name="dialog_confirm_empty_spam_message">Очистити теку зі спамом?</string>
-    <string name="empty_spam_action">Очистити спам</string>
+    <string name="dialog_confirm_empty_spam_message">Чи ви хочете очистити папку зі спамом?</string>
+    <string name="empty_spam_action">Очистити Спам</string>
     <string name="dialog_confirm_empty_spam_title">Підтвердити очищення спаму</string>
-    <string name="camera_permission_denied">Доступ до камери відхилено! Не вдалося зробити фото</string>
-    <string name="attach_file">Додати файл</string>
+    <string name="camera_permission_denied">Доступ до Камери Відхилено! Не вдалося зробити фото</string>
+    <string name="attach_file">Додати Файл</string>
     <string name="open_camera">Відкрити камеру</string>
-    <string name="debug_enable_sync_debug_logging_title">Увімкнути журнал налагодження синхронізації</string>
-    <string name="debug_enable_sync_debug_logging_summary">Записувати діагностичну інформацію синхронізації за 24 години</string>
-    <string name="debug_sync_export_logs_title">Експорт журналів синхронізації</string>
+    <string name="debug_enable_sync_debug_logging_title">Увімкнути синхронізацію логування налагодження</string>
+    <string name="debug_enable_sync_debug_logging_summary">Синхронізувати логи діагностичної інформації за 24 години</string>
+    <string name="debug_sync_export_logs_title">Експорт логів Синхронізації</string>
     <string name="archiving_not_available_for_this_account">Архівування недоступне для цього облікового запису.</string>
-    <string name="debug_open_secret_debug_screen">Відкрити екран налагодження таємниці</string>
+    <string name="debug_open_secret_debug_screen">Екран налагодження Open Secret</string>
     <string name="debug_invalidate_access_token">Тест: Визнати недійсним токен доступу</string>
     <string name="debug_invalidate_access_token_done">Токен доступу недійсний. Наступний запит буде оновлено.</string>
     <string name="debug_invalidate_access_token_unavailable">Для цього облікового запису немає доступного токена OAuth.</string>
     <string name="debug_invalidate_access_token_local">Тест: Визнати недійсним токен доступу (локальний)</string>
     <string name="debug_invalidate_access_token_local_done">Запит на локальну ануляцію. Наступний запит призведе до отримання нового токена.</string>
     <string name="debug_invalidate_access_token_server">Тест: Визнати недійсним токен доступу (сервер)</string>
-    <string name="debug_invalidate_access_token_server_done">Збережений токен доступу пошкоджено. Наступний запит завершиться невдачею, потім оновлення.</string>
-    <string name="debug_force_auth_failure">Тест: Примусова автентифікація не вдалася зараз</string>
-    <string name="debug_force_auth_failure_done">Стан OAuth очищено. Наступний запит не вдасться виконати.</string>
+    <string name="debug_invalidate_access_token_server_done">Збережений токен доступу пошкоджено. Наступний запит буде невдалим потім буде оновлення.</string>
+    <string name="debug_force_auth_failure">Тест: Примусова аутентифікація зараз не вдасться</string>
+    <string name="debug_force_auth_failure_done">Стан OAuth очищено. Наступний запит буде не вдалим.</string>
     <string name="debug_force_auth_failure_unavailable">Для цього облікового запису недоступна конфігурація OAuth.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Не вдалося змінити збережений токен доступу. Спробуйте локальну ануляцію.</string>
-    <string name="debug_invalidate_access_token_already_modified">Збережений токен доступу вже змінено.</string>
+    <string name="debug_invalidate_access_token_already_modified">Збережений токен доступу вже модифікований.</string>
     <string name="message_view_menu_action_export_eml">Експортувати як EML</string>
-    <string name="account_setup_auto_select_folder">Автовибір теки</string>
-    <string name="navigation_drawer_preferences">Бічне меню</string>
-    <string name="expand_folders">Розгорнути теки</string>
+    <string name="account_setup_auto_select_folder">Авто-вибір папки</string>
+    <string name="navigation_drawer_preferences">Бічне Меню</string>
+    <string name="expand_folders">Розгорнути Папки</string>
     <string name="set_format_html_action">Використати оригінальне форматування</string>
     <string name="set_format_html_condensed_action">Показати відформатовані</string>
     <string name="set_format_plain_action">Показати неформатоване повідомлення</string>
     <string name="set_format_plain_condensed_action">Показати неформатовані</string>
-    <string name="global_settings_messageview_body_content_type_title">Тип вмісту тіла</string>
-    <string name="global_settings_messageview_body_content_type_text_html">HTML (текст/html)</string>
-    <string name="global_settings_messageview_body_content_type_text_plain">Звичайний текст (текст/звичайний)</string>
-    <string name="debug_feature_flags">НАЛАГОДЖЕННЯ: Прапорці функцій</string>
+    <string name="global_settings_messageview_body_content_type_title">Body Content-Type</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Plain text (text/plain)</string>
+    <string name="debug_feature_flags">НАЛАГОДЖЕННЯ: Позначки Функцій</string>
     <string name="print_message_action">Друк</string>
+    <string name="global_settings_splitview_when_unfolded">Коли пристрій розгорнуто</string>
+    <string name="general_settings_message_list_date_time_format_title">Формат Дата/Час</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Контекстуальний</string>
+    <string name="general_settings_message_list_date_time_format_full">Повний</string>
+    <string name="sort_by_then_by">Потім за…</string>
 </resources>

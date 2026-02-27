@@ -5,4 +5,6 @@
     <string name="designsystem_atom_password_textfield_show_password">Shfaqe fjalëkalimin</string>
     <string name="designsystem_molecule_error_view_button_retry">Riprovoni</string>
     <string name="designsystem_molecule_password_input_label">Fjalëkalim</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Që të %s, fërkojeni me gisht nga fillimi në fund</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Që të %s, fërkojeni me gisht nga fundi në fillim</string>
 </resources>

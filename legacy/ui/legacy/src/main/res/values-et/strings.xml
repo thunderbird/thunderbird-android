@@ -313,7 +313,7 @@
     <string name="account_notify_contacts_mail_only_summary">Näita teateid ainult tuntud kontaktidelt saabunud kirjade kohta</string>
     <string name="account_settings_ignore_chat_messages_label">Eira vestlusega seotud kirju</string>
     <string name="account_settings_ignore_chat_messages_summary">Ära näita teavitusi kirjade puhul, mis on vestluse osa</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Pärast avamist märgi loetuks</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Avamisel märgi loetuks</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Vaatamiseks avamisel märgi kiri loetuks</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Pärast kustutamist märgi loetuks</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Kustutamisel märgi kiri loetuks</string>
@@ -344,7 +344,7 @@
     <string name="account_settings_upload_sent_messages_label">Laadi üles saadetud kirjad</string>
     <string name="account_settings_upload_sent_messages_summary">Pärast saatmist tõsta kirjad saadetud kirjade kausta </string>
     <string name="account_settings_general_title">Üldseadistused</string>
-    <string name="account_settings_reading_mail">Meili lugemine</string>
+    <string name="account_settings_reading_mail">E-kirjade lugemine</string>
     <string name="account_settings_sync">Meili toomine</string>
     <string name="account_settings_folders">Kaustad</string>
     <string name="account_settings_quote_prefix_label">Tsiteeritud teksti eesliide</string>
@@ -469,7 +469,7 @@
     <string name="sort_unread_last">Loetud kirjad esimesena</string>
     <string name="sort_attach_first">Manustega kirjad esimestena</string>
     <string name="sort_unattached_first">Manusteta kirjad esimestena</string>
-    <string name="sort_by">Sorteeri kasutades…</string>
+    <string name="sort_by">Järjesta kasutades…</string>
     <string name="sort_by_date">Kuupäev</string>
     <string name="sort_by_arrival">Saabumine</string>
     <string name="sort_by_subject">Teema</string>
@@ -916,4 +916,9 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="global_settings_messageview_body_content_type_text_plain">Vormindamata tekst (text/plain)</string>
     <string name="debug_feature_flags">VEAOTSING: funktsionaalsuste võtmed</string>
     <string name="print_message_action">Prindi</string>
+    <string name="global_settings_splitview_when_unfolded">Kui seade on lahtivolditud</string>
+    <string name="general_settings_message_list_date_time_format_title">Kuupäeva ja kellaaja vorming</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontekstuaalne</string>
+    <string name="general_settings_message_list_date_time_format_full">Täisvaates</string>
+    <string name="sort_by_then_by">Ja siis järjesta…</string>
 </resources>

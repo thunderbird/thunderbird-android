@@ -3,9 +3,9 @@
     <string name="settings_import_title">Імпорт налаштувань</string>
     <string name="settings_import_pick_document_button">Вибрати файл</string>
     <string name="settings_import_button">Імпорт</string>
-    <string name="settings_import_success_generic">Налаштування імпортовано</string>
+    <string name="settings_import_success_generic">Налаштування успішно імпортовано</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
-    <string name="settings_import_password_required">Введіть паролі</string>
+    <string name="settings_import_password_required">Будь-ласка введіть паролі</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <string name="settings_import_authorization_required">Будь ласка, увійдіть</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
@@ -13,7 +13,7 @@
     <string name="settings_import_failure">Не вдалося імпортувати налаштування</string>
     <string name="settings_import_read_failure">Не вдалося прочитати файл з налаштуваннями</string>
     <string name="settings_import_partial_failure">Не вдалося імпортувати деякі налаштування</string>
-    <string name="settings_import_status_success">Імпортовано</string>
+    <string name="settings_import_status_success">Успішно імпортовано</string>
     <string name="settings_import_status_password_required">Потрібен пароль</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
     <string name="settings_import_status_log_in_required">Потрібно ввійти</string>
@@ -29,13 +29,13 @@
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Пароль сервера вхідної пошти</string>
     <string name="settings_import_outgoing_server_password_hint">Пароль сервера вихідної пошти</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Використовувати той же пароль для сервера вихідної пошти</string>
-    <string name="settings_import_server_name_format">Ім\'я сервера: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Для користування цим обліковим записом е-пошти потрібно ввійти та надати застосунку доступ до е-пошти.</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Використовувати той самий пароль для сервера вихідної пошти</string>
+    <string name="settings_import_server_name_format">Назва сервера: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_description">Для користування цим обліковим записом е-пошти, потрібно увійти та надати застосунку доступ до ваших електронних листів.</string>
     <string name="settings_import_oauth_sign_in">Увійти</string>
     <string name="settings_import_oauth_sign_in_with_google">Увійти за допомогою Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled"> Авторизація скасована</string>
-    <string name="settings_import_oauth_error_oauth_flow_failed">Не вдалося авторизувати через цю помилку: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Не вдалося авторизуватися через наступну помилку: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">Цей постачальник наразі не підтримує OAuth 2.0.</string>
     <string name="settings_import_oauth_error_browser_not_found">Застосунок не може знайти браузер для надання доступу до вашого облікового запису.</string>
     <string name="settings_import_general_settings_item">Загальні налаштування</string>

@@ -131,7 +131,7 @@
     <string name="notification_channel_messages_title">İletiler</string>
     <string name="notification_channel_messages_description">İletilerle ilgili bildirimler</string>
     <string name="notification_channel_miscellaneous_title">Çeşitli</string>
-    <string name="notification_channel_miscellaneous_description">Hatalar vb. çeşitli bildirimler.</string>
+    <string name="notification_channel_miscellaneous_description">Hatalar vb. çeşitli bildirimler</string>
     <string name="send_failure_subject">Bazı iletiler gönderilemedi</string>
     <string name="version">Sürüm</string>
     <string name="debug_enable_debug_logging_title">Hata ayıklama günlüğünü etkinleştir</string>
@@ -896,4 +896,22 @@
     <string name="debug_force_auth_failure_unavailable">Bu hesap için OAuth yapılandırması yok.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Saklanan erişim belirteci değiştirilemedi. Yerel geçersiz kılmayı deneyin.</string>
     <string name="debug_invalidate_access_token_already_modified">Saklanan erişim belirteci zaten değiştirildi.</string>
+    <string name="message_view_menu_action_export_eml">EML olarak dışa aktar</string>
+    <string name="print_message_action">Yazdır</string>
+    <string name="set_format_html_action">Orijinal biçimlendirmeyi kullan</string>
+    <string name="set_format_html_condensed_action">Biçimlendirilmiş olarak göster</string>
+    <string name="set_format_plain_action">Biçimlendirilmemiş iletiyi göster</string>
+    <string name="set_format_plain_condensed_action">Biçimlendirilmemiş olarak göster</string>
+    <string name="global_settings_messageview_body_content_type_title">Body Content-Type</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Düz metin (text/plain)</string>
+    <string name="account_setup_auto_select_folder">Klasörü otomatik seç</string>
+    <string name="navigation_drawer_preferences">Yan Menü</string>
+    <string name="expand_folders">Klasörleri genişlet</string>
+    <string name="debug_feature_flags">HATA AYIKLAMA: Özellik Bayrakları</string>
+    <string name="general_settings_message_list_date_time_format_title">Tarih/Saat Biçimi</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Bağlamsal</string>
+    <string name="general_settings_message_list_date_time_format_full">Tam</string>
+    <string name="global_settings_splitview_when_unfolded">Cihaz açıldığında</string>
+    <string name="sort_by_then_by">Sonra…</string>
 </resources>

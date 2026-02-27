@@ -7,8 +7,8 @@
     <string name="swipe_action_add_star">Ouzhpennañ ur steredenn</string>
     <string name="swipe_action_remove_star">Dilemel ar steredenn</string>
     <string name="swipe_action_archive">Dielloù</string>
-    <string name="swipe_action_archive_folder_not_set">Kefluniañ an teuliad \"Dielloù\"</string>
-    <string name="swipe_action_change_swipe_gestures">Kemmañ\nRisklañ jestroù</string>
+    <string name="swipe_action_archive_folder_not_set">Kefluniañ an teuliad diellaouiñ</string>
+    <string name="swipe_action_change_swipe_gestures">Kemmañ\nar jestroù skubañ</string>
     <string name="swipe_action_delete">Dilemel</string>
     <string name="swipe_action_spam">Lastez</string>
     <string name="swipe_action_move">Dilec\'hiañ…</string>

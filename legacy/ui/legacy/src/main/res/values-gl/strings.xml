@@ -875,4 +875,22 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <string name="open_camera">Abir a cámara</string>
     <string name="attach_file">Achegar arquivo</string>
     <string name="camera_permission_denied">Non se poden tirar fotos, pois non se concedeu permiso á cámara</string>
+    <string name="message_view_menu_action_export_eml">Exportar como EML</string>
+    <string name="print_message_action">Imprimir</string>
+    <string name="set_format_html_action">Empregar o formato orixinal</string>
+    <string name="set_format_html_condensed_action">Ver con formato</string>
+    <string name="set_format_plain_action">Ver correo sen formato</string>
+    <string name="set_format_plain_condensed_action">Ver sen formato</string>
+    <string name="empty_spam_action">Valeirar Spam</string>
+    <string name="debug_enable_sync_debug_logging_title">Activar rexistro de depuración de sincronización</string>
+    <string name="debug_enable_sync_debug_logging_summary">Rexistrar datos de sincronización por 24 horas</string>
+    <string name="debug_sync_export_logs_title">Exportar rexistros de sincronización</string>
+    <string name="debug_open_secret_debug_screen">Abrir a pantalla secreta de depuración</string>
+    <string name="save_attachment_action">Gardar adxunto</string>
+    <string name="global_settings_messageview_body_content_type_title">Tipo de contido do corpo da mensaxe</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Texto plano (text/plain)</string>
+    <string name="general_settings_message_list_date_time_format_title">Formato de data/hora</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contextual</string>
+    <string name="general_settings_message_list_date_time_format_full">Completo</string>
 </resources>

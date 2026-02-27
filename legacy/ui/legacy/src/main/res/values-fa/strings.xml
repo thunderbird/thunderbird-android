@@ -566,7 +566,7 @@
     <string name="dialog_confirm_delete_title">تأیید حذف</string>
     <string name="dialog_confirm_delete_message">آیا این پیام حذف شود؟</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">واقعاً می‌خواهید این پیام را حذف کنید؟</item>
+        <item quantity="one">واقعاً می‌خواهید %1$d پیام را حذف کنید؟</item>
         <item quantity="other">واقعاً می‌خواهید <xliff:g id="message_count">%1$d</xliff:g> پیام را حذف کنید؟</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">بله</string>
@@ -579,7 +579,7 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">خیر</string>
     <string name="dialog_confirm_spam_title">تأیید انتقال به پوشهٔ هرزنامه</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">واقعاً می‌خواهید این پیام را به شاخهٔ هرزنامه منتقل کنید؟</item>
+        <item quantity="one">واقعاً می‌خواهید %1$d پیام را به شاخهٔ هرزنامه منتقل کنید؟</item>
         <item quantity="other">واقعاً می‌خواهید <xliff:g id="message_count">%1$d</xliff:g> پیام را به شاخهٔ هرزنامه منتقل کنید؟</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">بله</string>
@@ -917,4 +917,8 @@
     <string name="debug_invalidate_access_token_cannot_modify">نتوانست ژتون دسترسی ذخیره شده را دستگاری کند. آزمودن نامعتبر سازی محلی.</string>
     <string name="debug_feature_flags">اشکال‌زدایی: پرچم‌های ویژگی</string>
     <string name="print_message_action">چاپ</string>
+    <string name="general_settings_message_list_date_time_format_title">قالب تاریخ و زمان</string>
+    <string name="general_settings_message_list_date_time_format_contextual">بافتاری</string>
+    <string name="general_settings_message_list_date_time_format_full">کامل</string>
+    <string name="global_settings_splitview_when_unfolded">هنگام باز شدن افزاره</string>
 </resources>

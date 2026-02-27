@@ -15,4 +15,6 @@
 \n%s</string>
     <string name="account_server_validation_error_client_certificate_expired">Asiakkaan varmenne ei ole enää kelvollinen</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Ei pääsyä asiakkaan varmenteeseen</string>
+    <string name="account_server_validation_error_missing_server_capability">Puuttuva palvelinkyvykkyys</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Palvelimelta puuttuu tämä kyvykkyys:\n%s</string>
 </resources>
