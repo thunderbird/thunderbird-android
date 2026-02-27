@@ -1,6 +1,7 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.inject
 
 import net.thunderbird.core.common.inject.factoryListOf
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.AllConfigurationsReadySideEffect
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ChangeSortCriteriaSideEffect
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadFolderInformationSideEffect
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadPreferencesSideEffect
@@ -51,5 +52,6 @@ internal val messageListSideEffectsModule = module {
                 folderRepository = get(),
             )
         },
+        { AllConfigurationsReadySideEffect.Factory(logger = get()) },
     )
 }
