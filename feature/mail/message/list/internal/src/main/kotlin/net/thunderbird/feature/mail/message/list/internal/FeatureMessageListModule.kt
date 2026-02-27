@@ -10,6 +10,7 @@ import net.thunderbird.feature.mail.message.list.internal.domain.usecase.GetAcco
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.GetMessageListPreferences
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.GetSortCriteriaPerAccount
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.SetArchiveFolder
+import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenRenderer
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListViewModel
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogFragment
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.SetupArchiveFolderDialogViewModel
@@ -119,4 +120,5 @@ val featureMessageListModule = module {
         )
     }
     single<LocalDeleteOperationDecider> { DefaultLocalDeleteOperationDecider() }
+    factory<MessageListContract.MessageListScreenRenderer> { MessageListScreenRenderer() }
 }
