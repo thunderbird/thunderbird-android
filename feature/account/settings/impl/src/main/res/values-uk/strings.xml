@@ -1,26 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="account_settings_general_title">Загальні налаштування</string>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_settings_general_title">Загальні Налаштування</string>
     <string name="account_settings_general_avatar_option_monogram">Монограма</string>
     <string name="account_settings_general_avatar_option_image">Зображення</string>
-    <string name="account_settings_general_avatar_option_icon">Значок</string>
-    <string name="account_settings_general_name_title">Ім\'я облікового запису</string>
+    <string name="account_settings_general_avatar_option_icon">Іконка</string>
+    <string name="account_settings_general_name_title">Назва облікового запису</string>
     <string name="account_settings_general_name_description">Ім\'я, пов\'язане з вашим обліковим записом.</string>
     <string name="account_settings_general_color_title">Колір облікового запису</string>
-    <string name="account_settings_general_color_description">Акцентний колір цього облікового запису, що використовується в папках та списках облікових записів.</string>
+    <string name="account_settings_general_color_description">Акцентний колір цього облікового запису, що використовується в теках і списках облікових записів.</string>
     <string name="account_settings_general_avatar_title">Аватар</string>
-    <string name="account_settings_general_avatar_description">Виберіть, як зображатиметься аватар вашого облікового запису.</string>
+    <string name="account_settings_general_avatar_description">Виберіть, як буде відображатись аватар вашого облікового запису.</string>
     <string name="account_settings_general_name_error_empty">Ім\'я не може бути порожнім</string>
     <string name="account_settings_general_name_error_too_long">Ім\'я занадто довге</string>
     <string name="account_settings_general_avatar_monogram_title">Монограма аватара</string>
     <string name="account_settings_general_avatar_monogram_description">Монограма, яка використовується як ваш аватар.</string>
     <string name="account_settings_general_avatar_monogram_error_empty">Монограма не може бути порожньою</string>
     <string name="account_settings_general_avatar_monogram_error_too_long">Монограма занадто довга</string>
-    <string name="account_settings_general_avatar_icon_title">Значок аватара</string>
+    <string name="account_settings_general_avatar_icon_title">Іконка Аватара</string>
     <string name="account_settings_general_avatar_icon_description">Виберіть одну з іконок, щоб використовувати її як аватар.</string>
-    <string name="account_settings_general_avatar_image_title">Зображення аватара</string>
-    <string name="account_settings_general_avatar_image_description">Виберіть зображення для представлення вашого облікового запису.</string>
+    <string name="account_settings_general_avatar_image_title">Зображення Аватара</string>
+    <string name="account_settings_general_avatar_image_description">Оберіть зображення для відображення вашого облікового запису.</string>
     <string name="account_settings_general_avatar_image_select">Вибрати зображення</string>
     <string name="account_settings_avatar_error_unsupported_format">Підтримуються лише зображення у форматі JPEG.</string>
     <string name="account_settings_avatar_hint_jpeg_only">Тільки JPEG</string>
+    <string name="account_settings_show_pictures_label">Завжди відображати зображення</string>
+    <string name="account_settings_reading_mail">Читання листа</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Позначити як прочитане при відкриванні</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Позначити повідомлення як прочитане коли воно відкрите для перегляду</string>
+    <string name="account_settings_show_pictures_never">Ні</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Від контактів</string>
+    <string name="account_settings_show_pictures_always">Від будь-кого</string>
+    <string name="account_settings_remove_account_action">Вилучити обліковий запис</string>
+    <string name="account_settings_okay_action">ОК</string>
+    <string name="account_settings_cancel_action">Скасувати</string>
+    <string name="account_settings_account_delete_dlg_title">Вилучити Обліковий Запис</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">Обліковий запис \"<xliff:g id="account">%1$s</xliff:g>\" буде вилучений з <xliff:g id="app_name">%2$s</xliff:g>.</string>
 </resources>

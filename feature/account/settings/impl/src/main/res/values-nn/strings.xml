@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_settings_general_title">Generelle innstillingar</string>
     <string name="account_settings_general_avatar_option_monogram">Monogram</string>
     <string name="account_settings_general_avatar_option_image">Bilete</string>
@@ -23,4 +23,16 @@
     <string name="account_settings_general_avatar_image_select">Vel bilete</string>
     <string name="account_settings_avatar_error_unsupported_format">Berre bilete av type JPEG er støtta.</string>
     <string name="account_settings_avatar_hint_jpeg_only">Berre JPEG</string>
+    <string name="account_settings_show_pictures_label">Alltid vis bilete</string>
+    <string name="account_settings_reading_mail">Lesing av mail</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Marker som lesen etter opning</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marker melding som lesen når den er opna</string>
+    <string name="account_settings_show_pictures_never">Nei</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Frå kontaktar</string>
+    <string name="account_settings_show_pictures_always">Frå kven som helst</string>
+    <string name="account_settings_remove_account_action">Fjern konto</string>
+    <string name="account_settings_okay_action">OK</string>
+    <string name="account_settings_cancel_action">Avbryt</string>
+    <string name="account_settings_account_delete_dlg_title">Fjern konto</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">Kontoen \"<xliff:g id="account">%1$s</xliff:g>\" vil bli fjerna frå <xliff:g id="app_name">%2$s</xliff:g>.</string>
 </resources>

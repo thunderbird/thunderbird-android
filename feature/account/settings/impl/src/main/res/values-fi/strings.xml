@@ -1,3 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Yleiset asetukset</string>
+    <string name="account_settings_general_avatar_option_image">Kuva</string>
+    <string name="account_settings_general_avatar_option_icon">Kuvake</string>
+    <string name="account_settings_general_avatar_image_description">Valitse tiliäsi esittävä kuva.</string>
+    <string name="account_settings_general_avatar_image_select">Valitse kuva</string>
+    <string name="account_settings_general_name_title">Tilin nimi</string>
+    <string name="account_settings_general_name_description">Tiliisi liittyvä nimi.</string>
+    <string name="account_settings_general_name_error_empty">Nimi ei voi olla tyhjä</string>
+    <string name="account_settings_general_name_error_too_long">Nimi on liian pitkä</string>
+    <string name="account_settings_general_color_title">Tilin väri</string>
+    <string name="account_settings_general_color_description">Tällä tilillä käytettävä korostusväri kansioissa ja tililuetteloissa.</string>
+    <string name="account_settings_avatar_error_unsupported_format">Vain JPEG-kuvat ovat tuettuja.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Vain JPEG</string>
 </resources>

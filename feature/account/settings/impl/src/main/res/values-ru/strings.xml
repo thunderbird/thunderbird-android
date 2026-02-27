@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_settings_general_title">Основные настройки</string>
     <string name="account_settings_general_avatar_option_monogram">Монограмма</string>
     <string name="account_settings_general_avatar_option_image">Изображение</string>
@@ -23,4 +23,16 @@
     <string name="account_settings_general_avatar_image_select">Выбор изображения</string>
     <string name="account_settings_avatar_hint_jpeg_only">Только JPEG</string>
     <string name="account_settings_avatar_error_unsupported_format">Поддерживаются только изображения в формате JPEG.</string>
+    <string name="account_settings_show_pictures_label">Всегда показывать изображения</string>
+    <string name="account_settings_reading_mail">Чтение</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Открытое прочитано</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Отметить сообщение прочитанным после просмотра</string>
+    <string name="account_settings_show_pictures_never">Никогда</string>
+    <string name="account_settings_show_pictures_only_from_contacts">От контактов</string>
+    <string name="account_settings_show_pictures_always">Всегда</string>
+    <string name="account_settings_remove_account_action">Удалить учётную запись</string>
+    <string name="account_settings_okay_action">ОК</string>
+    <string name="account_settings_cancel_action">Отмена</string>
+    <string name="account_settings_account_delete_dlg_title">Удаление учётной записи</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">Учётная запись \"<xliff:g id="account">%1$s</xliff:g>\" будет удалена из приложения <xliff:g id="app_name">%2$s</xliff:g>.</string>
 </resources>
