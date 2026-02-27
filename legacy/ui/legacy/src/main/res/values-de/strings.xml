@@ -729,7 +729,6 @@
     <string name="crypto_msg_encrypted_insecure">aber die Verschlüsselung wird nicht als sicher angesehen</string>
     <string name="locked_attach_unlock">Entsperren</string>
     <string name="locked_attach_unencrypted">Dieser Teil wurde nicht verschlüsselt und könnte unsicher sein.</string>
-    <string name="locked_attach_title">Ungeschützter Anhang</string>
     <string name="message_progress_text">Ladevorgang…</string>
     <string name="messageview_decrypt_cancelled">Entschlüsselung abgebrochen.</string>
     <string name="messageview_decrypt_retry">Wiederholen</string>
@@ -803,25 +802,15 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="push_info_disable_push_text">Wenn du keine sofortigen Benachrichtigungen über neue Nachrichten benötigst, solltest du Push deaktivieren und die Abfrage verwenden. Die Abfrage prüft in regelmäßigen Abständen auf neue E-Mails und benötigt die Benachrichtigung nicht.</string>
     <string name="push_info_disable_push_action">Push deaktivieren</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Auswählen</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Abwählen</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Als gelesen markieren</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Als ungelesen markieren</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Als wichtig markieren</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Als unwichtig markieren</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archiv</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Löschen</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Verschieben…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Schwebendes Verfassen anzeigen</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -898,9 +887,7 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="debug_sync_export_logs_title">Synchronisationsprotokolle exportieren</string>
     <string name="debug_enable_sync_debug_logging_title">Synchronisation des Fehlerprotokolls aktivieren</string>
     <string name="debug_enable_sync_debug_logging_summary">Diagnoseinformationen zur Synchronisation für 24 Stunden protokollieren</string>
-    <string name="swipe_action_change_swipe_gestures">Ändere \nWischgesten</string>
     <string name="archiving_not_available_for_this_account">Archivierung ist für dieses Konto nicht verfügbar.</string>
-    <string name="swipe_action_archive_folder_not_set">Archivordner einrichten</string>
     <string name="debug_open_secret_debug_screen">Geheime Fehleranalyse-Ansicht öffnen</string>
     <string name="debug_invalidate_access_token">Test: Zugriffstoken ungültig machen</string>
     <string name="debug_invalidate_access_token_local">Test: Zugriffstoken ungültig machen (lokal)</string>

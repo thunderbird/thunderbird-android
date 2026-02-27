@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Elekti</string>
+    <string name="swipe_action_deselect">Malelekti</string>
+    <string name="swipe_action_mark_as_read">Marki kiel legitan</string>
+    <string name="swipe_action_mark_as_unread">Marki kiel nelegitan</string>
+    <string name="swipe_action_add_star">Steletigi</string>
+    <string name="swipe_action_remove_star">Malsteletigi</string>
+    <string name="swipe_action_archive">Arĥivi</string>
+    <string name="swipe_action_archive_folder_not_set">Agordi Arĥivujon</string>
+    <string name="swipe_action_change_swipe_gestures">Ŝanĝi \nViŝajn gestojn</string>
+    <string name="swipe_action_delete">Forigi</string>
+    <string name="swipe_action_spam">Trudmesaĝo</string>
+    <string name="swipe_action_move">Movi…</string>
+</resources>

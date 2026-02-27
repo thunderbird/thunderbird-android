@@ -731,7 +731,6 @@
     <string name="crypto_msg_encrypted_insecure">men kryptering anses inte säker</string>
     <string name="locked_attach_unlock">Lås upp</string>
     <string name="locked_attach_unencrypted">Denna del var inte krypterad och kan vara osäker.</string>
-    <string name="locked_attach_title">Oskyddad bilaga</string>
     <string name="message_progress_text">Läser in…</string>
     <string name="messageview_decrypt_cancelled">Dekryptering avbröts.</string>
     <string name="messageview_decrypt_retry">Försök igen</string>
@@ -805,25 +804,15 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="push_info_disable_push_text">Om du inte behöver omedelbara aviseringar om nya meddelanden bör du inaktivera Push och använda Polling. Polling kontrollerar regelbundet efter nya mejl och behöver inte en ständig avisering.</string>
     <string name="push_info_disable_push_action">Inaktivera Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Välj</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Välj bort</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Markera som läst</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Markera som oläst</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Lägg till stjärna</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Ta bort stjärna</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arkivera</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Ta bort</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Skräppost</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Flytta…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Visa flytande skrivknapp</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -900,8 +889,6 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="debug_sync_export_logs_title">Exportera synkroniseringsloggar</string>
     <string name="debug_enable_sync_debug_logging_title">Aktivera felsökningsloggning för synkronisering</string>
     <string name="debug_enable_sync_debug_logging_summary">Logga diagnostisk information om synkronisering i 24 timmar</string>
-    <string name="swipe_action_archive_folder_not_set">Konfigurera arkivmapp</string>
-    <string name="swipe_action_change_swipe_gestures">Ändra \nsvepgester</string>
     <string name="archiving_not_available_for_this_account">Arkivering är inte tillgängligt för det här kontot.</string>
     <string name="debug_open_secret_debug_screen">Öppna hemlig felsökningsskärm</string>
     <string name="debug_invalidate_access_token">Test: Ogiltig åtkomsttoken</string>

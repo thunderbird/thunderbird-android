@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Kijelölés</string>
+    <string name="swipe_action_deselect">Kijelölés törlése</string>
+    <string name="swipe_action_mark_as_read">Megjelölés olvasottként</string>
+    <string name="swipe_action_mark_as_unread">Megjelölés olvasatlanként</string>
+    <string name="swipe_action_add_star">Csillag hozzáadása</string>
+    <string name="swipe_action_remove_star">Csillag eltávolítása</string>
+    <string name="swipe_action_archive">Archiválás</string>
+    <string name="swipe_action_archive_folder_not_set">Archívum mappa készítése</string>
+    <string name="swipe_action_change_swipe_gestures">Csúsztatási \ngesztusok módosítása</string>
+    <string name="swipe_action_delete">Törlés</string>
+    <string name="swipe_action_spam">Levélszemét</string>
+    <string name="swipe_action_move">Áthelyezés…</string>
+</resources>

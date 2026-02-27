@@ -736,7 +736,6 @@
     <string name="crypto_msg_encrypted_insecure">dar criptarea nu e considerată sigură</string>
     <string name="locked_attach_unlock">Deblochează</string>
     <string name="locked_attach_unencrypted">Această parte nu a fost criptată și poate fi nesigură.</string>
-    <string name="locked_attach_title">Anexă neprotejată</string>
     <string name="message_progress_text">Se încarcă…</string>
     <string name="messageview_decrypt_cancelled">Decriptarea a fost întreruptă.</string>
     <string name="messageview_decrypt_retry">Reîncearcă</string>
@@ -810,25 +809,15 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="push_info_disable_push_text">Dacă nu ai nevoie de notificări instantanee cu privire la mesajele noi, dezactivează funcția Push și utilizează funcția Sondaj. Sondaj verifică dacă există mesaje noi la intervale regulate și nu are nevoie de notificare.</string>
     <string name="push_info_disable_push_action">Dezactivare Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Selectează</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Deselectează</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Marchează ca citit</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Marchează ca necitit</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Adaugă steluță</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Șterge steluță</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arhivă</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Şterge</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Mutare…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Afișează butonul flotant de compunere</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -905,9 +894,7 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="debug_enable_sync_debug_logging_title">Activează jurnalizarea de depanare a sincronizării</string>
     <string name="debug_sync_export_logs_title">Exportă jurnalele de sincronizare</string>
     <string name="debug_enable_sync_debug_logging_summary">Înregistrarea informațiilor de diagnosticare sincronizate timp de 24 de ore</string>
-    <string name="swipe_action_archive_folder_not_set">Configurați dosarul de arhivă</string>
     <string name="archiving_not_available_for_this_account">Arhivarea nu este disponibilă pentru acest cont.</string>
-    <string name="swipe_action_change_swipe_gestures">Schimbare \nGesturi de glisare</string>
     <string name="debug_open_secret_debug_screen">Deschide ecranul de depanare secret</string>
     <string name="debug_invalidate_access_token">Test: Invalidare a jetonului de acces</string>
     <string name="debug_invalidate_access_token_done">Jetonul de acces a fost invalidat. Următoarea solicitare va reîmprospăta pagina.</string>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Selektearje</string>
+    <string name="swipe_action_deselect">Deselektearje</string>
+    <string name="swipe_action_mark_as_read">As lêzen markearje</string>
+    <string name="swipe_action_mark_as_unread">As net-lêzen markearje</string>
+    <string name="swipe_action_add_star">Stjer tafoegje</string>
+    <string name="swipe_action_remove_star">Stjer fuortsmite</string>
+    <string name="swipe_action_archive">Argivearje</string>
+    <string name="swipe_action_archive_folder_not_set">Argyfmap ynstelle</string>
+    <string name="swipe_action_change_swipe_gestures">Feiaksjes \noanpasse</string>
+    <string name="swipe_action_delete">Fuortsmite</string>
+    <string name="swipe_action_spam">Net-winske</string>
+    <string name="swipe_action_move">Ferpleatse…</string>
+</resources>

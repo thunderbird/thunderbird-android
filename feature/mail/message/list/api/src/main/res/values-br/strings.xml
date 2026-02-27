@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Diuzañ</string>
+    <string name="swipe_action_deselect">Diziuzañ</string>
+    <string name="swipe_action_mark_as_read">Merkañ evel lennet</string>
+    <string name="swipe_action_mark_as_unread">Merkañ evel anlennet</string>
+    <string name="swipe_action_add_star">Ouzhpennañ ur steredenn</string>
+    <string name="swipe_action_remove_star">Dilemel ar steredenn</string>
+    <string name="swipe_action_archive">Dielloù</string>
+    <string name="swipe_action_archive_folder_not_set">Kefluniañ an teuliad diellaouiñ</string>
+    <string name="swipe_action_change_swipe_gestures">Kemmañ\nar jestroù skubañ</string>
+    <string name="swipe_action_delete">Dilemel</string>
+    <string name="swipe_action_spam">Lastez</string>
+    <string name="swipe_action_move">Dilec\'hiañ…</string>
+</resources>

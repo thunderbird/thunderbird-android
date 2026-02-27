@@ -634,7 +634,6 @@
     <string name="crypto_msg_cancelled">Správa je šifrovaná, dešifrovanie bolo zrušené.</string>
     <string name="locked_attach_unlock">Odomknúť</string>
     <string name="locked_attach_unencrypted">Táto časť nebola zašifrovaná a nemusí byť bezpečná.</string>
-    <string name="locked_attach_title">Nechránená príloha</string>
     <string name="message_progress_text">Načítavam…</string>
     <string name="messageview_decrypt_cancelled">Dešifrovanie bolo zrušené.</string>
     <string name="messageview_decrypt_retry">Skúsiť znova</string>
@@ -652,22 +651,14 @@
     <string name="general_settings_title">Všeobecné nastavenia</string>
     <!--permissions-->
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Vybrať</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Zrušiť výber</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Označiť ako neprečítané</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Pridať hviezdičku</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Odstrániť hviezdičku</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archivovať</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Vymazať</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Nevyžiadaná pošta</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -740,7 +731,6 @@
     <string name="crypto_msg_encrypted_sign_mismatch">ale end-to-end kľúč sa nezhoduje s odosielateľovým</string>
     <string name="crypto_msg_encrypted_sign_insecure">ale end-to-end kľúč nie je považovaný za bezpečný</string>
     <string name="openpgp_description_text2">Prepnete šifrovanie kliknutím na túto ikonu.</string>
-    <string name="swipe_action_mark_as_read">Označiť ako prečítané</string>
     <string name="message_list_error_folder_not_found">Zložka sa nenašla</string>
     <string name="message_details_toolbar_title">Detaily správy</string>
     <string name="message_details_replyto_section_title">Odpovedať na</string>
@@ -823,7 +813,6 @@
     <string name="account_settings_vibration">Vibrácie</string>
     <string name="crypto_msg_title_unencrypted_signed_e2e">End-to-End podpísaný čistý text</string>
     <string name="crypto_msg_unencrypted_sign_mismatch">ale end-to-end kľúč sa nezhoduje s odosielateľovým</string>
-    <string name="swipe_action_move">Presunúť…</string>
     <string name="general_settings_swipe_action_toggle_selection">Invertovať výber</string>
     <string name="account_settings_vibrate_summary_disabled">Vypnuté</string>
     <plurals name="remote_search_downloading">
@@ -922,8 +911,6 @@
     <string name="dialog_confirm_empty_spam_message">Naozaj chcete vyprázdniť priečinok s nevyžiadanou poštou?</string>
     <string name="global_settings_splitview_when_unfolded">Po rozložení zariadenia</string>
     <string name="expand_content_description">Rozbaliť</string>
-    <string name="swipe_action_archive_folder_not_set">Nastaviť archívnu zložku</string>
-    <string name="swipe_action_change_swipe_gestures">Zmeniť \nGestá potiahnutím</string>
     <string name="archiving_not_available_for_this_account">Pre tento účet archivácia nie je dostupná.</string>
     <string name="debug_invalidate_access_token">Test: Zrušiť platnosť prístupového tokenu</string>
     <string name="debug_invalidate_access_token_done">Prístupový token bol zneplatnený, Nasledujúca požiadavka ho obnoví.</string>

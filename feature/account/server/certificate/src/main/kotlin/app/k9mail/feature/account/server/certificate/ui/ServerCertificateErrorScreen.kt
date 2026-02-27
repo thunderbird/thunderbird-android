@@ -18,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
@@ -30,6 +29,7 @@ import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorCo
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.Event
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.State
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.ViewModel
+import net.thunderbird.core.ui.contract.mvi.observe
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

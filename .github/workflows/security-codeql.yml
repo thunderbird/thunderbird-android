@@ -1,0 +1,59 @@
+---
+name: Security - CodeQL
+
+on:
+  schedule:
+    - cron: '0 10 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  security-codeql:
+    name: CodeQL Scan
+
+    permissions:
+      # required to upload analysis results
+      security-events: write
+      # required to fetch internal or private CodeQL packs
+      packages: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: 'actions'
+            build-mode: 'none'
+          - language: 'java-kotlin'
+            build-mode: 'manual'
+          - language: 'python'
+            build-mode: 'none'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Gradle environment
+        if: matrix.language == 'java-kotlin'
+        uses: ./.github/actions/setup-gradle
+        with:
+          add-job-summary: 'never'
+          disable-cache: 'true'
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@89a39a4e59826350b863aa6b6252a07ad50cf83e # v4.32.4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      - if: matrix.language == 'java-kotlin'
+        name: Build with Gradle
+        run: ./gradlew assemble --no-daemon
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@89a39a4e59826350b863aa6b6252a07ad50cf83e # v4.32.4
+        with:
+          category: "/language:${{ matrix.language }}"

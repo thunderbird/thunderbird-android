@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
@@ -223,7 +224,7 @@ private fun ColumnScope.CatalogNewMessageItem(
     val coroutineScope = rememberCoroutineScope()
 
     NewMessageItem(
-        sender = config.sender,
+        sender = buildAnnotatedString { append(config.sender) },
         subject = config.subject,
         preview = config.preview,
         receivedAt = config.dateTime,
@@ -279,7 +280,7 @@ private fun ColumnScope.CatalogUnreadMessageItem(
     val coroutineScope = rememberCoroutineScope()
 
     UnreadMessageItem(
-        sender = config.sender,
+        sender = buildAnnotatedString { append(config.sender) },
         subject = config.subject,
         preview = config.preview,
         receivedAt = config.dateTime,
@@ -335,7 +336,7 @@ private fun ColumnScope.CatalogReadMessageItem(
     val coroutineScope = rememberCoroutineScope()
 
     ReadMessageItem(
-        sender = config.sender,
+        sender = buildAnnotatedString { append(config.sender) },
         subject = config.subject,
         preview = config.preview,
         receivedAt = config.dateTime,
@@ -391,7 +392,7 @@ private fun ColumnScope.CatalogActiveMessageItem(
     val coroutineScope = rememberCoroutineScope()
 
     ActiveMessageItem(
-        sender = config.sender,
+        sender = buildAnnotatedString { append(config.sender) },
         subject = config.subject,
         preview = config.preview,
         receivedAt = config.dateTime,
@@ -446,7 +447,7 @@ private fun ColumnScope.CatalogJunkMessageItem(
     val coroutineScope = rememberCoroutineScope()
 
     JunkMessageItem(
-        sender = config.sender,
+        sender = buildAnnotatedString { append(config.sender) },
         subject = config.subject,
         preview = config.preview,
         receivedAt = config.dateTime,
@@ -523,15 +524,17 @@ private fun Avatar(
             )
             .border(width = 1.dp, color = MainTheme.colors.primary, shape = CircleShape),
     ) {
-        val monogram = remember(sender) {
-            val parts = sender.split(" ")
-            buildString {
-                append(parts.first().first())
-                if (parts.size > 1) {
-                    append(parts.last().first())
+        if (sender.isNotEmpty()) {
+            val monogram = remember(sender) {
+                val parts = sender.split(" ")
+                buildString {
+                    append(parts.first().first())
+                    if (parts.size > 1 && parts.last().isNotEmpty()) {
+                        append(parts.last().first())
+                    }
                 }
             }
+            TextTitleSmall(text = monogram, modifier = Modifier.align(Alignment.Center))
         }
-        TextTitleSmall(text = monogram, modifier = Modifier.align(Alignment.Center))
     }
 }

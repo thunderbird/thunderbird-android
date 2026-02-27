@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Tagh</string>
+    <string name="swipe_action_deselect">Dì-thagh</string>
+    <string name="swipe_action_mark_as_read">Comharraich gun deach a leughadh</string>
+    <string name="swipe_action_mark_as_unread">Comharraich nach deach a leughadh</string>
+    <string name="swipe_action_add_star">Cuir rionnag ris</string>
+    <string name="swipe_action_remove_star">Thoir an rionnag air falbh</string>
+    <string name="swipe_action_archive">Tasg-lann</string>
+    <string name="swipe_action_archive_folder_not_set">Suidhich pasgan na tasg-lainn</string>
+    <string name="swipe_action_change_swipe_gestures">Atharraich na gluasadan\ngrad-shlaighdidh</string>
+    <string name="swipe_action_delete">Sguab às</string>
+    <string name="swipe_action_spam">Spama</string>
+    <string name="swipe_action_move">Gluais…</string>
+</resources>

@@ -722,7 +722,6 @@
     <string name="crypto_msg_encrypted_insecure">لكن التشفير لا يعتبر آمنًا </string>
     <string name="locked_attach_unlock">فك القفل</string>
     <string name="locked_attach_unencrypted">لم يتم تشفير هذا الجزء ، وربما يكون غير آمن. </string>
-    <string name="locked_attach_title">مُرفق غير محمي</string>
     <string name="message_progress_text">يُحمل…</string>
     <string name="messageview_decrypt_cancelled">تم إلغاء فك التعمية.</string>
     <string name="messageview_decrypt_retry">إعادة المحاولة</string>
@@ -791,25 +790,15 @@
     <string name="push_info_disable_push_text">إذا لم تكن بحاجة إلى إشعارات فورية حول الرسائل الجديدة ، فيجب عليك تعطيل ميزة Push and Use Polling. يتحقق الاقتراع من البريد الجديد على فترات منتظمة ولا يحتاج إلى الإشعارات. </string>
     <string name="push_info_disable_push_action">تعطيل الدفع </string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">حدد</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">إلغ التحديد</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">علامة القراءة </string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">علامة غير مقروء</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">أضف نجمة</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">احذف النجمة</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">أرشيف</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">احذف</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">بريد مُزعج</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">يتحرك… </string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">إظهار زر الإنشاء العائم </string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -862,8 +851,6 @@
     <string name="settings_ui_data_collection">جمع البيانات</string>
     <string name="message_list_content_description_unread_prefix">غير مقروءة، %s</string>
     <string name="background_work_notification_remove_account">إزالة الحساب…</string>
-    <string name="swipe_action_change_swipe_gestures">تغيير \nإيماءات التمرير السريع</string>
-    <string name="swipe_action_archive_folder_not_set">إعداد مجلد الأرشفة</string>
     <string name="push_notification_grant_alarm_permission">انقر لمنح الإذن.</string>
     <string name="push_notification_state_alarm_permission_missing">إذن مفقود لجدولة التنبيهات</string>
     <string name="expand_content_description">توسيع</string>

@@ -1,6 +1,6 @@
 package net.thunderbird.ui.catalog.ui.page
 
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.ui.catalog.ui.page.CatalogPageContract.Event
 import net.thunderbird.ui.catalog.ui.page.CatalogPageContract.State
 import net.thunderbird.ui.catalog.ui.page.CatalogPageContract.ViewModel

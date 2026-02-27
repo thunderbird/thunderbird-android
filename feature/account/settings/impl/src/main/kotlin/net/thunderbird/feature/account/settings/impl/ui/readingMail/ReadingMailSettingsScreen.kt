@@ -6,8 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
-import app.k9mail.core.ui.compose.common.mvi.observe
 import net.thunderbird.core.common.provider.AppNameProvider
+import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.setting.SettingViewProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.impl.ui.readingMail.ReadingMailSettingsContract.SettingsBuilder

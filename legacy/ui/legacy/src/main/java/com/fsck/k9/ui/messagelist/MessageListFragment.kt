@@ -78,7 +78,6 @@ import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.ui.compose.common.mvi.observeWithoutEffect
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
@@ -167,6 +166,7 @@ import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.compose.designsystem.atom.ClickableSurface
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.core.ui.contract.mvi.observeWithoutEffect
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_settings_general_title">Paramètres généraux</string>
     <string name="account_settings_general_avatar_option_monogram">Monogramme</string>
     <string name="account_settings_general_avatar_option_image">Image</string>
@@ -23,4 +23,16 @@
     <string name="account_settings_general_avatar_image_select">Choisir une image</string>
     <string name="account_settings_avatar_error_unsupported_format">Seules les images JPEG sont prises en charge.</string>
     <string name="account_settings_avatar_hint_jpeg_only">JPEG seulement</string>
+    <string name="account_settings_show_pictures_label">Toujours afficher les images</string>
+    <string name="account_settings_reading_mail">Lecture du courriel</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Marquer comme lu à l’ouverture</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marquer un courriel comme lu après ouverture pour consultation</string>
+    <string name="account_settings_show_pictures_never">Non</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Des contacts</string>
+    <string name="account_settings_show_pictures_always">De n’importe qui</string>
+    <string name="account_settings_remove_account_action">Supprimer le compte</string>
+    <string name="account_settings_okay_action">Valider</string>
+    <string name="account_settings_cancel_action">Annuler</string>
+    <string name="account_settings_account_delete_dlg_title">Supprimer le compte</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%1$s</xliff:g> » sera supprimé de <xliff:g id="app_name">%2$s</xliff:g>.</string>
 </resources>

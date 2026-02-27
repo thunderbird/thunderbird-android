@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_settings_general_title">Általános beállítások</string>
     <string name="account_settings_general_avatar_title">Profilkép</string>
     <string name="account_settings_general_avatar_description">Válassza ki hogyan jelenjen meg a profilképe.</string>
@@ -23,4 +23,16 @@
     <string name="account_settings_general_avatar_icon_description">Válassza ki a profilképként használandó ikont.</string>
     <string name="account_settings_avatar_error_unsupported_format">Csak a JPEG-képek támogatottak.</string>
     <string name="account_settings_avatar_hint_jpeg_only">Csak JPEG</string>
+    <string name="account_settings_show_pictures_label">Mindig mutassa a képeket</string>
+    <string name="account_settings_reading_mail">Üzenet olvasása</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Megnyitásakor olvasottnak jelölés</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Egy üzenet olvasottá jelölése ha megnyitják elolvasáshoz</string>
+    <string name="account_settings_show_pictures_never">Soha</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Kapcsolatokból</string>
+    <string name="account_settings_show_pictures_always">Bárkitől</string>
+    <string name="account_settings_remove_account_action">Fiók eltávolítása</string>
+    <string name="account_settings_okay_action">Rendben</string>
+    <string name="account_settings_cancel_action">Mégse</string>
+    <string name="account_settings_account_delete_dlg_title">Fiók eltávolítása</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">A „<xliff:g id="account">%1$s</xliff:g>” fiók eltávolításra kerül a <xliff:g id="app_name">%2$s</xliff:g> alkalmazásból.</string>
 </resources>

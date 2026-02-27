@@ -124,7 +124,6 @@
     <string name="filter_folders_action">Af-d akaram</string>
     <string name="add_account_action">Rnu amiḍan</string>
     <string name="search_everywhere_action">Nadi deg yal adeg</string>
-    <string name="swipe_action_delete">Kkes</string>
     <string name="notification_action_delete_all">Kkes-iten akk</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Kkes seg uqeddac</string>
     <string name="account_setup_incoming_delete_policy_label">Mi ara kkseɣ izen</string>

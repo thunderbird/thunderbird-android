@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Atzīmēt</string>
+    <string name="swipe_action_deselect">Noņemt atzīmi</string>
+    <string name="swipe_action_mark_as_read">Atzīmēt kā lasītu</string>
+    <string name="swipe_action_mark_as_unread">Atzīmēt kā nelasītu</string>
+    <string name="swipe_action_add_star">Pievienot zvaigznīti</string>
+    <string name="swipe_action_remove_star">Noņemt zvaigznīti</string>
+    <string name="swipe_action_archive">Arhīvs/arhivēt</string>
+    <string name="swipe_action_delete">Dzēst</string>
+    <string name="swipe_action_spam">Mēstules</string>
+    <string name="swipe_action_move">Pārvietot…</string>
+</resources>

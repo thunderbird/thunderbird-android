@@ -1,10 +1,10 @@
 package net.thunderbird.feature.funding.googleplay.ui.contribution
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import net.thunderbird.core.outcome.handle
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.UseCase
 import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions

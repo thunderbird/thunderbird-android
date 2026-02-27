@@ -1,9 +1,9 @@
 package net.thunderbird.feature.debug.settings.notification
 
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.notification.api.content.Notification
 

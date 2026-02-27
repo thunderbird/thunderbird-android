@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Вибрати</string>
+    <string name="swipe_action_deselect">Скасувати вибір</string>
+    <string name="swipe_action_mark_as_read">Позначити прочитаним</string>
+    <string name="swipe_action_mark_as_unread">Позначити непрочитаним</string>
+    <string name="swipe_action_add_star">Додати зірочку</string>
+    <string name="swipe_action_remove_star">Прибрати зірочку</string>
+    <string name="swipe_action_archive">Архівувати</string>
+    <string name="swipe_action_archive_folder_not_set">Налаштувати папку архіву</string>
+    <string name="swipe_action_change_swipe_gestures">Зміна \nжестів проведення пальцем</string>
+    <string name="swipe_action_delete">Видалити</string>
+    <string name="swipe_action_spam">Спам</string>
+    <string name="swipe_action_move">Перемістити…</string>
+</resources>

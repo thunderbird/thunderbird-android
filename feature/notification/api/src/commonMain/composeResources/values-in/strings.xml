@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Sinkronisasi (Dorongan)</string>
     <string name="notification_channel_push_description">Ditampilkan saat menunggu pesan baru</string>
@@ -36,4 +36,19 @@
     <string name="notification_action_archive">Arsipkan</string>
     <string name="notification_action_archive_all">Arsipkan Semua</string>
     <string name="notification_action_spam">Spam</string>
+    <string name="notification_authentication_incoming_server_error_text">Autentikasi gagal untuk %1$s. Perbarui pengaturan server masuk Anda.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Autentikasi gagal untuk %1$s. Perbarui pengaturan server keluar Anda.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="other">%1$d pesan baru</item>
+    </plurals>
+    <string name="notification_action_retry">Coba lagi</string>
+    <string name="notification_action_update_server_settings">Perbarui Pengaturan Server</string>
+    <string name="notification_action_assign_sent_folder">Tetapkan folder</string>
+    <string name="banner_inline_notification_check_error_notifications">Periksa Notifikasi Kesalahan</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Beberapa pesan memerlukan perhatian Anda.</string>
+    <string name="banner_inline_notification_open_notifications">Buka notifikasi</string>
+    <string name="banner_inline_notification_learn_more">Pelajari lebih lanjut</string>
+    <string name="banner_inline_notification_view_support_article">Lihat artikel dukungan</string>
+    <string name="sent_folder_not_found_title">Folder Terkirim tidak tersedia.</string>
 </resources>

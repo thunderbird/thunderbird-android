@@ -1,9 +1,9 @@
 package net.thunderbird.feature.account.settings.impl.ui.general
 
 import androidx.compose.runtime.Stable
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import com.eygraber.uri.Uri
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.core.validation.input.StringInputField

@@ -142,7 +142,6 @@
     <string name="push_info_configure_notification_text">Mar sin féin, ceadaíonn Android duit an fógra a cheilt freisin.</string>
     <string name="push_info_learn_more_text">Faigh tuilleadh eolais</string>
     <string name="push_info_disable_push_action">Díchumasaigh Brú</string>
-    <string name="swipe_action_mark_as_read">Marcáil á léamh</string>
     <string name="message_list_error_folder_not_found">Níor aimsíodh fillteán</string>
     <string name="app_license">Ceadúnas Apache, Leagan 2.0</string>
     <string name="about_project_title">Tionscadal Foinse Oscailte</string>
@@ -736,7 +735,6 @@
     <string name="crypto_msg_encrypted_sign_revoked">ach cúlghairtear an eochair ó cheann go ceann</string>
     <string name="locked_attach_unlock">Díghlasáil</string>
     <string name="locked_attach_unencrypted">Ní raibh an chuid seo criptithe, agus d\'fhéadfadh sé a bheith neamhchinnte.</string>
-    <string name="locked_attach_title">Iatán Gan Chosaint</string>
     <string name="message_progress_text">Á Luchtú…</string>
     <string name="messageview_decrypt_cancelled">Cuireadh díchriptiú ar ceal.</string>
     <string name="messageview_decrypt_incomplete">Ní mór teachtaireacht chriptithe a íoslódáil le haghaidh díchriptithe.</string>
@@ -789,15 +787,6 @@
     <string name="push_notification_state_wait_background_sync">Codladh go dtí go gceadaítear sioncronú cúlra</string>
     <string name="push_info_configure_notification_action">Cumraigh fógra</string>
     <string name="push_info_disable_push_text">Mura dteastaíonn fógraí meandaracha uait faoi theachtaireachtaí nua, ba chóir duit Brúigh a dhíchumasú agus Vótaíocht a úsáid. Seiceálacha vótaíochta le haghaidh post nua ag eatraimh rialta agus ní gá an fógra a thabhairt.</string>
-    <string name="swipe_action_select">Roghnaigh</string>
-    <string name="swipe_action_deselect">Díroghnaigh</string>
-    <string name="swipe_action_mark_as_unread">Marcáil gan léamh</string>
-    <string name="swipe_action_add_star">Cuir réalta leis</string>
-    <string name="swipe_action_remove_star">Bain réalta</string>
-    <string name="swipe_action_archive">Cartlann</string>
-    <string name="swipe_action_delete">Scrios</string>
-    <string name="swipe_action_spam">Turscar</string>
-    <string name="swipe_action_move">Bog…</string>
     <string name="general_settings_show_compose_button_title">Taispeáin cnaipe cumtha ar snámh</string>
     <string name="message_details_toolbar_title">Sonraí teachtaireachta</string>
     <string name="message_details_missing_date">Ceanntásc \'Dáta\' ar iarraidh</string>
@@ -850,8 +839,6 @@
     <string name="debug_sync_export_logs_title">Easpórtáil logaí sioncrónaithe</string>
     <string name="debug_enable_sync_debug_logging_summary">Faisnéis dhiagnóiseach sioncrónaithe logála ar feadh 24 uair an chloig</string>
     <string name="debug_enable_sync_debug_logging_title">Cumasaigh logáil dífhabhtaithe sioncrónaithe</string>
-    <string name="swipe_action_archive_folder_not_set">Socraigh Fillteán Cartlainne</string>
-    <string name="swipe_action_change_swipe_gestures">Athraigh\nGothaí Svaidhpe</string>
     <string name="archiving_not_available_for_this_account">Níl cartlannú ar fáil don chuntas seo.</string>
     <string name="debug_open_secret_debug_screen">Oscail an scáileán dífhabhtaithe Rúnda</string>
     <string name="debug_invalidate_access_token">Tástáil: Comhartha rochtana neamhbhailí</string>

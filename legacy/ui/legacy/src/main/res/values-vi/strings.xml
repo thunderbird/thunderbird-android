@@ -304,22 +304,14 @@
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <!--permissions-->
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Chọn</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Bỏ chọn</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Đánh dấu chưa đọc</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Thêm sao</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Loại bỏ sao</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Lưu trữ</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Xóa</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Thư rác</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -496,7 +488,6 @@
     <string name="dialog_confirm_mark_all_as_read_title">Xác nhận đánh dấu tất cả là đã đọc</string>
     <string name="sort_flagged_first">Tin nhắn đã gắn dấu sao trước</string>
     <string name="show_starred_count_title">Hiển thị số lượng gắn dấu sao</string>
-    <string name="locked_attach_title">Tệp đính kèm không được bảo vệ</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Có thể không được một số người nhận hỗ trợ</string>
     <string name="sort_subject_re_alpha">Chủ đề đảo ngược bảng chữ cái</string>
     <string name="sort_by_arrival">Đến</string>
@@ -841,8 +832,6 @@
     <string name="push_info_configure_notification_text">Dù vậy, Android cũng cho phép bạn ẩn thông báo.</string>
     <string name="push_info_learn_more_text">Tìm hiểu thêm</string>
     <string name="push_info_configure_notification_action">Cấu hình thông báo</string>
-    <string name="swipe_action_mark_as_read">Đã đọc</string>
-    <string name="swipe_action_move">Di chuyển…</string>
     <string name="general_settings_show_compose_button_title">Hiển thị nút viết thư</string>
     <string name="message_list_error_title">Lỗi</string>
     <string name="message_list_error_folder_not_found">Không tìm thấy thư mục</string>
