@@ -28,7 +28,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = true),
                 // TODO(#10498): Remove when UseNewMessageReaderCssStyles is no longer required
                 FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
-                FeatureFlag(MessageListFeatureFlags.EnableMessageListNewState, enabled = true),
+                FeatureFlag(MessageListFeatureFlags.EnableMessageListNewState, enabled = false),
             ),
         )
     }

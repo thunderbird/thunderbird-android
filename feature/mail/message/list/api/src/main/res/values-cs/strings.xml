@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Vybrat</string>
+    <string name="swipe_action_deselect">Zrušit výběr</string>
+    <string name="swipe_action_mark_as_read">Označit jako přečtené</string>
+    <string name="swipe_action_mark_as_unread">Označit jako nepřečtené</string>
+    <string name="swipe_action_add_star">Přidat \u2605</string>
+    <string name="swipe_action_remove_star">Odebrat \u2606</string>
+    <string name="swipe_action_archive">Archivovat</string>
+    <string name="swipe_action_archive_folder_not_set">Nastavte složku Archiv</string>
+    <string name="swipe_action_change_swipe_gestures">Změnit\ngesta posunutí</string>
+    <string name="swipe_action_delete">Smazat</string>
+    <string name="swipe_action_spam">Nevyžádaná</string>
+    <string name="swipe_action_move">Přesunout…</string>
+</resources>

@@ -318,8 +318,8 @@
     <string name="account_settings_notification_channels_label">Benachrichtigungskategorien</string>
     <string name="account_settings_open_notification_settings_messages_summary">Konfiguriere die Benachrichtigungen für neue Nachrichten</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Konfiguriere Fehler- und Statusbenachrichtigungen</string>
-    <string name="account_settings_show_pictures_label">Bilder automatisch herunterladen</string>
-    <string name="account_settings_show_pictures_never">Niemals</string>
+    <string name="account_settings_show_pictures_label">Bilder immer anzeigen</string>
+    <string name="account_settings_show_pictures_never">Nein</string>
     <string name="account_settings_show_pictures_only_from_contacts">Nur von Kontakten</string>
     <string name="account_settings_show_pictures_always">Von jedem</string>
     <string name="account_settings_composition">E-Mails versenden</string>
@@ -467,7 +467,7 @@
     <string name="sort_unread_last">Gelesene Nachrichten zuerst</string>
     <string name="sort_attach_first">Nachrichten mit Anhängen zuerst</string>
     <string name="sort_unattached_first">Nachrichten ohne Anhänge zuerst</string>
-    <string name="sort_by">Sortieren nach…</string>
+    <string name="sort_by">Sortieren nach …</string>
     <string name="sort_by_date">Datum</string>
     <string name="sort_by_arrival">Ankunftsdatum</string>
     <string name="sort_by_subject">Betreff</string>
@@ -670,8 +670,8 @@
     <string name="address_type_work">Arbeit</string>
     <string name="address_type_other">Anderes</string>
     <string name="address_type_mobile">Mobil</string>
-    <string name="compose_error_no_draft_folder">Kein Ordner für Entwürfe für dieses Konto festgelegt!</string>
-    <string name="compose_error_no_key_configured">Kein Schlüssel für dieses Konto konfiguriert! Überprüfe deine Einstellungen.</string>
+    <string name="compose_error_no_draft_folder">Keinen Ordner für Entwürfe für dieses Konto festgelegt!</string>
+    <string name="compose_error_no_key_configured">Keinen Schlüssel für dieses Konto konfiguriert! Überprüfe deine Einstellungen.</string>
     <string name="error_crypto_provider_incompatible">Verschlüsselungsdienst verwendet inkompatible Version. Bitte überprüfe deine Einstellungen!</string>
     <string name="error_crypto_provider_connect">Verbindung zum Verschlüsselungsdienst fehlgeschlagen. Überprüfe deine Einstellungen oder tippe auf das Verschlüsselungssymbol, um es erneut zu versuchen!</string>
     <string name="error_crypto_provider_ui_required">Ende-zu-Ende Verschlüsselung konnte nicht initialisiert werden, bitte überprüfe deine Einstellungen</string>
@@ -729,7 +729,6 @@
     <string name="crypto_msg_encrypted_insecure">aber die Verschlüsselung wird nicht als sicher angesehen</string>
     <string name="locked_attach_unlock">Entsperren</string>
     <string name="locked_attach_unencrypted">Dieser Teil wurde nicht verschlüsselt und könnte unsicher sein.</string>
-    <string name="locked_attach_title">Ungeschützter Anhang</string>
     <string name="message_progress_text">Ladevorgang…</string>
     <string name="messageview_decrypt_cancelled">Entschlüsselung abgebrochen.</string>
     <string name="messageview_decrypt_retry">Wiederholen</string>
@@ -803,25 +802,15 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="push_info_disable_push_text">Wenn du keine sofortigen Benachrichtigungen über neue Nachrichten benötigst, solltest du Push deaktivieren und die Abfrage verwenden. Die Abfrage prüft in regelmäßigen Abständen auf neue E-Mails und benötigt die Benachrichtigung nicht.</string>
     <string name="push_info_disable_push_action">Push deaktivieren</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Auswählen</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Abwählen</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Als gelesen markieren</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Als ungelesen markieren</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Als wichtig markieren</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Als unwichtig markieren</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archiv</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Löschen</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Verschieben…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Schwebendes Verfassen anzeigen</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -898,9 +887,7 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="debug_sync_export_logs_title">Synchronisationsprotokolle exportieren</string>
     <string name="debug_enable_sync_debug_logging_title">Synchronisation des Fehlerprotokolls aktivieren</string>
     <string name="debug_enable_sync_debug_logging_summary">Diagnoseinformationen zur Synchronisation für 24 Stunden protokollieren</string>
-    <string name="swipe_action_change_swipe_gestures">Ändere \nWischgesten</string>
     <string name="archiving_not_available_for_this_account">Archivierung ist für dieses Konto nicht verfügbar.</string>
-    <string name="swipe_action_archive_folder_not_set">Archivordner einrichten</string>
     <string name="debug_open_secret_debug_screen">Geheime Fehleranalyse-Ansicht öffnen</string>
     <string name="debug_invalidate_access_token">Test: Zugriffstoken ungültig machen</string>
     <string name="debug_invalidate_access_token_local">Test: Zugriffstoken ungültig machen (lokal)</string>
@@ -927,4 +914,9 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="global_settings_messageview_body_content_type_title">Inhaltstyp des Textes</string>
     <string name="print_message_action">Drucken</string>
     <string name="debug_feature_flags">DEBUG: Feature-Flags</string>
+    <string name="global_settings_splitview_when_unfolded">Wenn das Gerät aufgeklappt ist</string>
+    <string name="general_settings_message_list_date_time_format_title">Datums-/Zeitformat</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontextbezogen</string>
+    <string name="general_settings_message_list_date_time_format_full">Vollständig</string>
+    <string name="sort_by_then_by">Dann nach …</string>
 </resources>

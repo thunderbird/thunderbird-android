@@ -15,7 +15,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import app.k9mail.core.ui.compose.common.mvi.observeWithoutEffect
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
@@ -24,6 +23,7 @@ import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableList
+import net.thunderbird.core.ui.contract.mvi.observeWithoutEffect
 import net.thunderbird.feature.debug.settings.DebugSubSection
 import net.thunderbird.feature.debug.settings.R
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Event

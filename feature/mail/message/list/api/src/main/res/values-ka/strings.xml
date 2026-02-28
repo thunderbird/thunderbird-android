@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">არჩევა</string>
+    <string name="swipe_action_deselect">არჩევის მოხსნა</string>
+    <string name="swipe_action_mark_as_unread">მონიშვნა წაუკითხავად</string>
+    <string name="swipe_action_add_star">ვარსკვლავის დამატება</string>
+    <string name="swipe_action_remove_star">ვარსკვლავის წაშლა</string>
+    <string name="swipe_action_archive">არქივაცია</string>
+    <string name="swipe_action_delete">წაშლა</string>
+    <string name="swipe_action_spam">სპამი</string>
+</resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_settings_general_title">Rregullime të Përgjithshme</string>
     <string name="account_settings_general_avatar_option_monogram">Monogram</string>
     <string name="account_settings_general_avatar_option_image">Figurë</string>
@@ -23,4 +23,16 @@
     <string name="account_settings_general_avatar_image_select">Përzgjidhni Figurë</string>
     <string name="account_settings_avatar_error_unsupported_format">Mbulohen vetëm figura JPEG.</string>
     <string name="account_settings_avatar_hint_jpeg_only">Vetëm JPEG</string>
+    <string name="account_settings_show_pictures_label">Figurat shfaqi përherë</string>
+    <string name="account_settings_reading_mail">Lexim poste</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Vëri shenjë si i lexuar, kur hapet</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Vëri shenjë si i lexuar një mesazhi, kur hapet për ta parë</string>
+    <string name="account_settings_show_pictures_never">Jo</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Nga kontaktet</string>
+    <string name="account_settings_show_pictures_always">Nga cilido</string>
+    <string name="account_settings_remove_account_action">Hiqe llogarinë</string>
+    <string name="account_settings_okay_action">OK</string>
+    <string name="account_settings_cancel_action">Anuloje</string>
+    <string name="account_settings_account_delete_dlg_title">Hiqni Llogari</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">Llogaria \"<xliff:g id="account">%1$s</xliff:g>\" do të hiqet nga <xliff:g id="app_name">%2$s</xliff:g>.</string>
 </resources>

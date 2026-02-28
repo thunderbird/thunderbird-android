@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Označi</string>
+    <string name="swipe_action_deselect">Odznači</string>
+    <string name="swipe_action_mark_as_unread">Označi nepročitanim</string>
+    <string name="swipe_action_add_star">Dodaj zvjezdicu</string>
+    <string name="swipe_action_remove_star">Ukloni zvjezdicu</string>
+    <string name="swipe_action_archive">Arhiva</string>
+    <string name="swipe_action_delete">Obriši</string>
+    <string name="swipe_action_spam">Neželjena pošta</string>
+</resources>

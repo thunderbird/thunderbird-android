@@ -14,7 +14,7 @@
     <string name="notification_certificate_error_public">خطای گواهی</string>
     <string name="notification_certificate_error_title">خطای گواهی برای %1$s</string>
     <string name="notification_certificate_error_text">تنظیمات کارساز خود را بررسی کنید</string>
-    <string name="notification_bg_sync_ticker">بررسی کردن نامه: %1$s: %2$s</string>
+    <string name="notification_bg_sync_ticker">بررسی کردن نامه: %1$s:‏ %2$s</string>
     <string name="notification_bg_sync_title">بررسی کردن نامه</string>
     <string name="notification_bg_send_ticker">فرستادن نامه: %1$s</string>
     <string name="notification_bg_send_title">فرستادن نامه</string>

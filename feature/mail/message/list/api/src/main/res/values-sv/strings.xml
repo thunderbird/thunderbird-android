@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Välj</string>
+    <string name="swipe_action_deselect">Välj bort</string>
+    <string name="swipe_action_mark_as_read">Markera som läst</string>
+    <string name="swipe_action_mark_as_unread">Markera som oläst</string>
+    <string name="swipe_action_add_star">Lägg till stjärna</string>
+    <string name="swipe_action_remove_star">Ta bort stjärna</string>
+    <string name="swipe_action_archive">Arkivera</string>
+    <string name="swipe_action_archive_folder_not_set">Konfigurera arkivmapp</string>
+    <string name="swipe_action_change_swipe_gestures">Ändra \nsvepgester</string>
+    <string name="swipe_action_delete">Ta bort</string>
+    <string name="swipe_action_spam">Skräppost</string>
+    <string name="swipe_action_move">Flytta…</string>
+</resources>

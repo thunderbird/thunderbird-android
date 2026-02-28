@@ -19,19 +19,32 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.testing.coroutines.MainDispatcherRule
+import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.validation.ValidationError
 import net.thunderbird.core.validation.input.BooleanInputField
 import net.thunderbird.core.validation.input.StringInputField
-import org.junit.Rule
-import org.junit.Test
 
 class AccountAutoDiscoveryViewModelTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val mainDispatcher = MainDispatcherHelper(UnconfinedTestDispatcher())
+
+    @BeforeTest
+    fun setUp() {
+        mainDispatcher.setUp()
+    }
+
+    @AfterTest
+    fun tearDown() {
+        mainDispatcher.tearDown()
+    }
 
     @Test
     fun `should reset state when EmailAddressChanged event is received`() = runMviTest {

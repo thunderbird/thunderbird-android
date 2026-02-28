@@ -9,9 +9,11 @@ import android.text.format.DateUtils.FORMAT_SHOW_DATE
 import android.text.format.DateUtils.FORMAT_SHOW_TIME
 import android.text.format.DateUtils.FORMAT_SHOW_WEEKDAY
 import android.text.format.DateUtils.FORMAT_SHOW_YEAR
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Calendar.DAY_OF_WEEK
 import java.util.Calendar.YEAR
+import java.util.Locale
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
@@ -31,17 +33,25 @@ constructor(
         @OptIn(ExperimentalTime::class)
         val now = clock.now().toCalendar()
         val date = timestamp.toCalendar()
-        val format = if (dateTimeFormat == MessageListDateTimeFormat.Full) {
-            FORMAT_SHOW_DATE or FORMAT_SHOW_YEAR or FORMAT_NUMERIC_DATE or FORMAT_SHOW_TIME
-        } else {
-            when {
-                date.isToday() -> FORMAT_SHOW_TIME
-                date.isWithinPastSevenDaysOf(now) -> FORMAT_SHOW_WEEKDAY or FORMAT_ABBREV_WEEKDAY
-                date.isSameYearAs(now) -> FORMAT_SHOW_DATE or FORMAT_ABBREV_MONTH
-                else -> FORMAT_SHOW_DATE or FORMAT_SHOW_YEAR or FORMAT_NUMERIC_DATE
+        return when (dateTimeFormat) {
+            MessageListDateTimeFormat.Contextual -> {
+                val flags = when {
+                    date.isToday() -> FORMAT_SHOW_TIME
+                    date.isWithinPastSevenDaysOf(now) -> FORMAT_SHOW_WEEKDAY or FORMAT_ABBREV_WEEKDAY
+                    date.isSameYearAs(now) -> FORMAT_SHOW_DATE or FORMAT_ABBREV_MONTH
+                    else -> FORMAT_SHOW_DATE or FORMAT_SHOW_YEAR or FORMAT_NUMERIC_DATE
+                }
+                DateUtils.formatDateRange(context, timestamp, timestamp, flags)
+            }
+            MessageListDateTimeFormat.Full -> {
+                val flags = FORMAT_SHOW_TIME or FORMAT_SHOW_DATE or FORMAT_SHOW_YEAR or FORMAT_NUMERIC_DATE
+                DateUtils.formatDateRange(context, timestamp, timestamp, flags)
+            }
+            MessageListDateTimeFormat.ISO -> {
+                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                sdf.format(java.util.Date(timestamp))
             }
         }
-        return DateUtils.formatDateRange(context, timestamp, timestamp, format)
     }
 }
 

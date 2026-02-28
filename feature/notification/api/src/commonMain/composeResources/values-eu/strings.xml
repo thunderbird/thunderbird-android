@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Sinkronizatu (Push)</string>
     <string name="notification_channel_push_description">Bistaratuta mezu berrien zain geundenean</string>
@@ -34,4 +34,20 @@
     <string name="notification_action_archive">Artxibatu</string>
     <string name="notification_action_archive_all">Artxibatu denak</string>
     <string name="notification_action_spam">Zabor-posta</string>
+    <string name="notification_authentication_incoming_server_error_text">Ezin izan da %1$s kontua egiaztatu. Eguneratu sarrerako zerbitzariaren ezarpenak.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Ezin izan da %1$s kontua egiaztatu. Eguneratu irteerako zerbitzariaren ezarpenak.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">Mezu berri %1$d</item>
+        <item quantity="other">%1$d mezu berri</item>
+    </plurals>
+    <string name="notification_action_retry">Saiatu berriro</string>
+    <string name="notification_action_update_server_settings">Eguneratu zerbitzariaren ezarpenak</string>
+    <string name="notification_action_assign_sent_folder">Esleitu karpeta</string>
+    <string name="banner_inline_notification_check_error_notifications">Erroreen jakinarazpenak irakurri</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Hainbat mezuk zure arreta eskatzen dute.</string>
+    <string name="banner_inline_notification_open_notifications">Ireki jakinarazpenak</string>
+    <string name="banner_inline_notification_learn_more">Ikasi gehiago gaiari buruz</string>
+    <string name="banner_inline_notification_view_support_article">Irakurri laguntza artikulua</string>
+    <string name="sent_folder_not_found_title">Bidalitakoen karpeta ez dago eskuragarri.</string>
 </resources>

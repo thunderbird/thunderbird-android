@@ -736,7 +736,6 @@
     <string name="crypto_msg_encrypted_insecure">ma la crittografia non è considerata sicura</string>
     <string name="locked_attach_unlock">Sblocca</string>
     <string name="locked_attach_unencrypted">Questa parte non è criptata e potrebbe non essere sicura</string>
-    <string name="locked_attach_title">Allegato non protetto</string>
     <string name="message_progress_text">Caricamento…</string>
     <string name="messageview_decrypt_cancelled">La decrittografia è stata annullata</string>
     <string name="messageview_decrypt_retry">Riprova</string>
@@ -805,25 +804,15 @@
     <string name="push_info_disable_push_text">Se non hai bisogno di notifiche istantanee di nuovi messaggi, disabilita Push e usa Polling. Il polling verifica la presenza di nuova posta a intervalli regolari e non necessita di notifica.</string>
     <string name="push_info_disable_push_action">Disabilita Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Seleziona</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Deseleziona</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Letto</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Non letto</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Aggiungi stella</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Rimuovi stella</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archivia</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Elimina</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Sposta…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Mostra pulsante flottante Componi</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -898,12 +887,10 @@
     <string name="attach_file">Allega il file</string>
     <string name="debug_sync_export_logs_title">Esporta i registri di sincronizzazione</string>
     <string name="archiving_not_available_for_this_account">L\'archiviazione non è disponibile per questo account.</string>
-    <string name="swipe_action_archive_folder_not_set">Imposta la cartella di archivio</string>
     <string name="open_camera">Apri Fotocamera</string>
     <string name="debug_enable_sync_debug_logging_title">Abilita la registrazione del debug di sincronizzazione</string>
     <string name="debug_enable_sync_debug_logging_summary">Registra le informazioni diagnostiche di sincronizzazione per 24 ore</string>
     <string name="debug_open_secret_debug_screen">Apri la schermata di debug segreta</string>
-    <string name="swipe_action_change_swipe_gestures">Cambia\nGesti di Scorrimento</string>
     <string name="debug_invalidate_access_token_already_modified">Token di accesso memorizzato già modificato.</string>
     <string name="set_format_html_action">Usa formattazione originale</string>
     <string name="set_format_html_condensed_action">Mostra formattato</string>
@@ -929,4 +916,9 @@
     <string name="global_settings_messageview_body_content_type_title">Corpo del messaggio come</string>
     <string name="debug_feature_flags">DEBUG: Flag Caratteristiche</string>
     <string name="print_message_action">Stampa</string>
+    <string name="global_settings_splitview_when_unfolded">Quando il dispositivo è aperto</string>
+    <string name="general_settings_message_list_date_time_format_title">Data Lista Messaggi/Ora formato titolo</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contestuale</string>
+    <string name="general_settings_message_list_date_time_format_full">Data Lista Messaggi/Impostazione opzione formato ora: completo</string>
+    <string name="sort_by_then_by">Poi da…</string>
 </resources>

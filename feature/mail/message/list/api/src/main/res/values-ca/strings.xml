@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Selecciona</string>
+    <string name="swipe_action_deselect">Desselecciona</string>
+    <string name="swipe_action_mark_as_read">Marca com a llegit</string>
+    <string name="swipe_action_mark_as_unread">Marca com a no llegit</string>
+    <string name="swipe_action_add_star">Afegeix un estel</string>
+    <string name="swipe_action_remove_star">Elimina l\'estel</string>
+    <string name="swipe_action_archive">Arxiva</string>
+    <string name="swipe_action_archive_folder_not_set">Establir carpeta d\'arxiu</string>
+    <string name="swipe_action_change_swipe_gestures">Canvia \nels gestos en lliscar</string>
+    <string name="swipe_action_delete">Suprimeix</string>
+    <string name="swipe_action_spam">Correu brossa</string>
+    <string name="swipe_action_move">Mou…</string>
+</resources>

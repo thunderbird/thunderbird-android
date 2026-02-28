@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Նշել</string>
+    <string name="swipe_action_deselect">Ապանշել</string>
+    <string name="swipe_action_mark_as_unread">Նշել չընթերցուածները</string>
+    <string name="swipe_action_add_star">Աւելացնել աստղ</string>
+    <string name="swipe_action_remove_star">Հեռացնել աստղ</string>
+    <string name="swipe_action_archive">Արխիւ</string>
+    <string name="swipe_action_delete">Հեռացնել</string>
+    <string name="swipe_action_spam">Լցօն</string>
+</resources>

@@ -9,4 +9,6 @@
     <string name="onboarding_migration_thunderbird_new_account_button_text">Lisää sähköpostitili nyt</string>
     <string name="onboarding_migration_thunderbird_import_title">Siirtymässä toisesta sovelluksesta tai laitteelta?</string>
     <string name="onboarding_migration_thunderbird_import_button_text">Tuo tilin asetukset nyt</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Sovellusta linkin avaamiseksi ei löytynyt.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Opi päivittämään Thunderbird.</string>
 </resources>

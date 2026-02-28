@@ -30,6 +30,7 @@ import com.google.android.material.textview.MaterialTextView
 import java.util.Locale
 import kotlin.math.max
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
+import net.thunderbird.feature.mail.message.list.R as MessageListR
 
 @Suppress("TooManyFunctions")
 class MessageViewHolder(
@@ -69,9 +70,9 @@ class MessageViewHolder(
                 contactPictureView.isVisible = true
             }
             contactPictureClickArea.contentDescription = if (isSelected) {
-                res.getString(R.string.swipe_action_deselect)
+                res.getString(MessageListR.string.swipe_action_deselect)
             } else {
-                res.getString(R.string.swipe_action_select)
+                res.getString(MessageListR.string.swipe_action_select)
             }
         }
 

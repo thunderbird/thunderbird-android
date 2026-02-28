@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Избери</string>
+    <string name="swipe_action_deselect">Отмени Избор</string>
+    <string name="swipe_action_mark_as_read">Отбележи като прочетено</string>
+    <string name="swipe_action_mark_as_unread">Маркирай като непрочетено</string>
+    <string name="swipe_action_add_star">Добави звезда</string>
+    <string name="swipe_action_remove_star">Премахни звезда</string>
+    <string name="swipe_action_archive">Архивиране</string>
+    <string name="swipe_action_archive_folder_not_set">Задаване на папка \"Архиви\"</string>
+    <string name="swipe_action_change_swipe_gestures">Промяна\nЖестове с плъзгане</string>
+    <string name="swipe_action_delete">Изтриване</string>
+    <string name="swipe_action_spam">Спам</string>
+    <string name="swipe_action_move">Преместване…</string>
+</resources>

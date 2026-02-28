@@ -310,17 +310,17 @@
     <string name="account_notify_contacts_mail_only_summary">Shfaq njoftime vetëm për mesazhe nga kontakte të njohur</string>
     <string name="account_settings_ignore_chat_messages_label">Shpërfill mesazhe fjalosjesh</string>
     <string name="account_settings_ignore_chat_messages_summary">Mos shfaq njoftime për mesazhe që i përkasin një fjalosjeje me email</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Vëri shenjë si të lexuar, kur hapet</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Vëri shenjë një mesazhi të lexuar, kur hapet për parje</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Vëri shenjë si i lexuar, kur hapet</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Vëri shenjë si i lexuar një mesazhi, kur hapet për ta parë</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Vëri shenjë si i lexuar, kur fshihet</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Vëri shenjë si i lexuar një mesazhi, kur fshihet</string>
     <string name="account_settings_notification_channels_label">Kategori njoftimesh</string>
     <string name="account_settings_open_notification_settings_messages_summary">Formësoni njoftime për mesazhe të rinj</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Formësoni njoftime gabimesh dhe gjendjesh</string>
-    <string name="account_settings_show_pictures_label">Shfaqi përherë figurat</string>
+    <string name="account_settings_show_pictures_label">Figurat shfaqi përherë</string>
     <string name="account_settings_show_pictures_never">Jo</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Prej kontaktesh</string>
-    <string name="account_settings_show_pictures_always">Prej cilitdo</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Nga kontaktet</string>
+    <string name="account_settings_show_pictures_always">Nga cilido</string>
     <string name="account_settings_composition">Dërgim poste</string>
     <string name="account_settings_default_quoted_text_shown_label">Citoje mesazhin tek përgjigja</string>
     <string name="account_settings_default_quoted_text_shown_summary">Përfshini te përgjigja juaj mesazhin origjinal.</string>
@@ -728,7 +728,6 @@
     <string name="crypto_msg_encrypted_insecure">por fshehtëzim i konsideruar jo i siguruar</string>
     <string name="locked_attach_unlock">Shkyçe</string>
     <string name="locked_attach_unencrypted">Kjo pjesë s’qe fshehtëzuar, dhe mund të jetë e pasiguruar.</string>
-    <string name="locked_attach_title">Bashkëngjitje e Pambrojtur</string>
     <string name="message_progress_text">Po ngarkohet…</string>
     <string name="messageview_decrypt_cancelled">Shfshehtëzimi u anulua.</string>
     <string name="messageview_decrypt_retry">Riprovo</string>
@@ -797,25 +796,15 @@
     <string name="push_info_disable_push_text">Nëse nuk ju duhen njoftime të atypëratyshme rreth mesazhesh të reja, duhet ta çaktivizoni Push-in dhe të përdorni Vjelje. Vjelja kontrollon për postë të re sipas intervalesh të rregullta dhe nuk ka nevojë për njoftimin.</string>
     <string name="push_info_disable_push_action">Çaktivizoje Push-in</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Përzgjidhni</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Shpërzgjidhe</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Vëri shenjë si të lexuar</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Vëri shenjë si të palexuar</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Shtoji yll</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Hiqi yll</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arkivoje</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Fshije</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Vëri shenjë si të padëshiruar</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Lëvizeni…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Shfaq buton hartimesh pezull</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -894,8 +883,6 @@
     <string name="debug_enable_sync_debug_logging_title">Aktivizo regjistrim diagnostikimesh njëkohësimesh</string>
     <string name="debug_sync_export_logs_title">Eksporto regjistra Njëkohësimesh</string>
     <string name="archiving_not_available_for_this_account">Kjo llogari s’mund të përdorë arkivim.</string>
-    <string name="swipe_action_archive_folder_not_set">Ujdisni Dosje Arkiv</string>
-    <string name="swipe_action_change_swipe_gestures">Ndryshim \nGjeste Fërkimi</string>
     <string name="notification_action_archive">Arkivoje</string>
     <string name="debug_open_secret_debug_screen">Hap skenën e Fshehtë të diagnostikimeve</string>
     <string name="message_view_menu_action_export_eml">Eksportoje si EML</string>
@@ -922,4 +909,9 @@
     <string name="expand_folders">Zgjeroji Dosjet</string>
     <string name="global_settings_messageview_body_content_type_title">Lloj Lënde Mesazhi</string>
     <string name="print_message_action">Shtypni</string>
+    <string name="global_settings_splitview_when_unfolded">Kur pajisja shmbështillet</string>
+    <string name="general_settings_message_list_date_time_format_title">Format Datash/Kohe</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontekstual</string>
+    <string name="general_settings_message_list_date_time_format_full">E plotë</string>
+    <string name="sort_by_then_by">Mandej më…</string>
 </resources>

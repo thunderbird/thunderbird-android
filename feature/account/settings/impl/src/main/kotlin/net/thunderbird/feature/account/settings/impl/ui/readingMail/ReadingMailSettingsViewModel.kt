@@ -1,7 +1,6 @@
 package net.thunderbird.feature.account.settings.impl.ui.readingMail
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -9,6 +8,7 @@ import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.handle
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.core.ui.setting.SettingValue.Select.SelectOption
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.R

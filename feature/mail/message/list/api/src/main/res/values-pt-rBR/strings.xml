@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Marcar</string>
+    <string name="swipe_action_deselect">Desmarcar</string>
+    <string name="swipe_action_mark_as_read">Marcar como lida</string>
+    <string name="swipe_action_mark_as_unread">Marcar como não lida</string>
+    <string name="swipe_action_add_star">Adicionar estrela</string>
+    <string name="swipe_action_remove_star">Remover estrela</string>
+    <string name="swipe_action_archive">Arquivar</string>
+    <string name="swipe_action_archive_folder_not_set">Definir pasta de arquivamento</string>
+    <string name="swipe_action_change_swipe_gestures">Alterar\ngestos de deslizar</string>
+    <string name="swipe_action_delete">Excluir</string>
+    <string name="swipe_action_spam">Spam</string>
+    <string name="swipe_action_move">Mover…</string>
+</resources>

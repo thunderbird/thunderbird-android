@@ -9,9 +9,9 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">Untuk melihat kata sandi Anda di sini, aktifkanlah layar kunci pada perangkat ini.</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Kirim informasi klien</string>
     <string name="account_server_settings_protocol_type_label">Protokol</string>
-    <string name="account_server_settings_server_label">Peladen</string>
+    <string name="account_server_settings_server_label">Server</string>
     <string name="account_server_settings_security_label">Keamanan</string>
-    <string name="account_server_settings_port_label">Porta</string>
+    <string name="account_server_settings_port_label">Port</string>
     <string name="account_server_settings_authentication_label">Autentikasi</string>
     <string name="account_server_settings_username_label">Nama pengguna</string>
     <string name="account_server_settings_connection_security_none">Tidak ada</string>

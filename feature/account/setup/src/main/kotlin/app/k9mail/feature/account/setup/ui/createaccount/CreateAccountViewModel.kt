@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.setup.ui.createaccount
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract.AccountStateRepository
 import app.k9mail.feature.account.common.ui.WizardConstants
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
@@ -13,6 +12,7 @@ import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.S
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 class CreateAccountViewModel(
     private val createAccount: CreateAccount,

@@ -61,14 +61,15 @@ dependencyGuardPlugin = "0.5.0"
 detektPlugin = "1.23.8"
 detektPluginCompose = "0.4.27"
 fastAdapter = "5.7.0"
-forkhandlesBom = "2.25.1.0"
+forkhandlesBom = "2.25.2.1"
 glide = "4.16.0"
-gradle = "9.2.1"
+gradle = "9.3.1"
+gradleSha256 = "17f277867f6914d61b1aa02efab1ba7bb439ad652ca485cd8ca6842fccec6e43"
 icu4j = "78.2"
 javaDiffUtils = "4.16"
 jcipAnnotations = "1.0"
-jetbrainsAnnotations = "26.0.2-1"
-jetbrainsCompose = "1.10.0"
+jetbrainsAnnotations = "26.1.0"
+jetbrainsCompose = "1.10.1"
 jetbrainsComposeLifecycle = "2.9.6"
 jetbrainsComposeNavigation3 = "1.0.0-alpha06"
 jetbrainsComposeNavigationEvent = "1.0.1"
@@ -82,20 +83,20 @@ koinBom = "4.1.1"
 konsist = "0.17.3"
 kotlinBom = "2.2.21"
 # Needs to match the version used by Gradle, just check with `./gradlew --version`
-kotlinGradleBom = "2.2.20"
-kotlinKsp = "2.3.5"
+kotlinGradleBom = "2.2.21"
+kotlinKsp = "2.3.6"
 kotlinxCoroutines = "1.10.2"
 kotlinxCollectionsImmutable = "0.4.0"
 kotlinxDateTime = "0.7.1"
 kotlinxIoCore = "0.8.2"
 kotlinxSerialization = "1.9.0"
-kover = "0.9.6"
+kover = "0.9.7"
 ktlint = "1.5.0"
 ktor = "3.3.3"
 kxml2 = "1.0"
 landscapist = "2.6.1"
 leakcanary = "2.14"
-logbackClassic = "1.5.29"
+logbackClassic = "1.5.32"
 mime4j = "0.8.13"
 minidns = "1.1.1"
 mockito = "5.21.0"
@@ -242,6 +243,7 @@ jetbrains-compose-navigation3 = { module = "org.jetbrains.androidx.navigation3:n
 jetbrains-compose-navigation-event = { module = "org.jetbrains.androidx.navigationevent:navigationevent-compose", version.ref = "jetbrainsComposeNavigationEvent" }
 jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrainsCompose" }
 jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "jetbrainsCompose" }
+jetbrains-compose-ui-test = { module = "org.jetbrains.compose.ui:ui-test", version.ref = "jetbrainsCompose" }
 jcip-annotations = { module = "net.jcip:jcip-annotations", version.ref = "jcipAnnotations" }
 jdom2 = { module = "org.jdom:jdom2", version.ref = "jdom" }
 jmap-client = { module = "rs.ltt.jmap:jmap-client", version.ref = "jmapClient" }
@@ -312,7 +314,7 @@ shared-kmp-android = [
   "koin-android",
   "kotlinx-coroutines-android",
 ]
-shared-kmp-compose = [
+shared-kmp-compose-common = [
   "jetbrains-compose-lifecycle-runtime",
   "jetbrains-compose-lifecycle-viewmodel",
   "jetbrains-compose-lifecycle-viewmodel-compose",
@@ -331,6 +333,9 @@ shared-kmp-common-test = [
   "kotlin-test-junit",
   "kotlinx-coroutines-test",
   "turbine",
+]
+shared-kmp-compose-common-test = [
+  "jetbrains-compose-ui-test"
 ]
 
 shared-jvm-main = [

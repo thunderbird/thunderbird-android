@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">തിരഞ്ഞെടുക്കുക</string>
+    <string name="swipe_action_deselect">തിരഞ്ഞെടുത്തത് മാറ്റുക</string>
+    <string name="swipe_action_mark_as_unread">വായിക്കാത്തതായി അടയാളപ്പെടുത്തുക</string>
+    <string name="swipe_action_add_star">നക്ഷത്രം ചേർക്കുക</string>
+    <string name="swipe_action_remove_star">നക്ഷത്രം കളയുക</string>
+    <string name="swipe_action_archive">ശേഖരം</string>
+    <string name="swipe_action_delete">ഇല്ലാതാക്കുക</string>
+    <string name="swipe_action_spam">സ്പാം</string>
+</resources>

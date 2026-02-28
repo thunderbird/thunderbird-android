@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
@@ -69,7 +70,7 @@ internal fun MessageItemContent(
 
     when {
         isActive -> ActiveMessageItem(
-            sender = "${item.displayName}",
+            sender = buildAnnotatedString { append("${item.displayName}") },
             subject = item.subject ?: "n/a",
             preview = item.previewText,
             receivedAt = receivedAt,
@@ -98,7 +99,7 @@ internal fun MessageItemContent(
         )
 
         item.isRead -> ReadMessageItem(
-            sender = "${item.displayName}",
+            sender = buildAnnotatedString { append("${item.displayName}") },
             subject = item.subject ?: "n/a",
             preview = item.previewText,
             receivedAt = receivedAt,
@@ -127,7 +128,7 @@ internal fun MessageItemContent(
         )
 
         else -> UnreadMessageItem(
-            sender = "${item.displayName}",
+            sender = buildAnnotatedString { append("${item.displayName}") },
             subject = item.subject ?: "n/a",
             preview = item.previewText,
             receivedAt = receivedAt,

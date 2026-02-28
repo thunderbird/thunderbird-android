@@ -738,7 +738,6 @@
     <string name="crypto_msg_encrypted_insecure">vendar se šifriranje ne obravnava kot varno</string>
     <string name="locked_attach_unlock">Odkleni</string>
     <string name="locked_attach_unencrypted">Ta del sporočila ni bil ustrezno šifriran, zato je lahko nezanesljiv.</string>
-    <string name="locked_attach_title">Nezaščitena priloga</string>
     <string name="message_progress_text">Poteka nalaganje …</string>
     <string name="messageview_decrypt_cancelled">Odšifriranje je bilo preklicano.</string>
     <string name="messageview_decrypt_retry">Znova poskusi</string>
@@ -812,25 +811,15 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="push_info_disable_push_text">Če ne potrebuješ takojšnjih obvestil o novih sporočilih, moraš onemogočiti potiskanje in uporabiti navadno izpraševanje. Izpraševanje išče novo pošto v rednih časovnih presledkih in ne potrebuje obvestila.</string>
     <string name="push_info_disable_push_action">Onemogoči potisne storitve</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Izberi</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Odstrani izbor</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Označi kot prebrano</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Označi kot neprebrano</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Označi z zvezdico</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Odstrani zvezdico</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arhiviraj</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Izbriši</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Neželeno sporočilo</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Premakni …</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Prikaži lebdeči gumb za novo sporočilo</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -913,8 +902,6 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="archiving_not_available_for_this_account">Za ta račun arhiviranje ni na voljo.</string>
     <string name="open_camera">Odpri fotoaparat</string>
     <string name="attach_file">Priloži datoteko</string>
-    <string name="swipe_action_archive_folder_not_set">Nastavi mapo za arhiviranje</string>
-    <string name="swipe_action_change_swipe_gestures">Spremeni\ndejanja potega</string>
     <string name="debug_invalidate_access_token">Preizkus: razveljavi žeton za dostop</string>
     <string name="debug_invalidate_access_token_done">Žeton za dostop je bil razveljavljen. Naslednja zahteva bo pridobila novega.</string>
     <string name="debug_invalidate_access_token_unavailable">Za ta račun žeton OAuth ni na voljo.</string>

@@ -47,5 +47,6 @@
     <string-array name="message_list_date_time_format_values">
         <item>Contextual</item>
         <item>Full</item>
+        <item>ISO</item>
     </string-array>
 </resources>

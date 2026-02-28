@@ -131,7 +131,7 @@
     <string name="notification_channel_messages_title">İletiler</string>
     <string name="notification_channel_messages_description">İletilerle ilgili bildirimler</string>
     <string name="notification_channel_miscellaneous_title">Çeşitli</string>
-    <string name="notification_channel_miscellaneous_description">Hatalar vb. çeşitli bildirimler.</string>
+    <string name="notification_channel_miscellaneous_description">Hatalar vb. çeşitli bildirimler</string>
     <string name="send_failure_subject">Bazı iletiler gönderilemedi</string>
     <string name="version">Sürüm</string>
     <string name="debug_enable_debug_logging_title">Hata ayıklama günlüğünü etkinleştir</string>
@@ -716,7 +716,6 @@
     <string name="crypto_msg_encrypted_insecure">ama şifreleme güvenli olarak değerlendirilmedi</string>
     <string name="locked_attach_unlock">Kilidi aç</string>
     <string name="locked_attach_unencrypted">Bu kısım şifrelenmemiş ve güvensiz olabilir.</string>
-    <string name="locked_attach_title">Korunmasız Ek</string>
     <string name="message_progress_text">Yükleniyor…</string>
     <string name="messageview_decrypt_cancelled">Şifre çözme iptal edildi.</string>
     <string name="messageview_decrypt_retry">Yeniden dene</string>
@@ -782,25 +781,15 @@
     <string name="push_info_learn_more_text">Bilgi alın</string>
     <string name="push_info_configure_notification_action">Bildirimi yapılandır</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Seç</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Seçimi kaldır</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Okundu olarak işaretle</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Okunmadı olarak işaretle</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Yıldız ekle</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Yıldızı kaldır</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arşivle</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Sil</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Gereksiz</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Taşı…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
     <string name="message_list_error_title">Hata</string>
@@ -894,8 +883,6 @@
     <string name="debug_enable_sync_debug_logging_summary">Eşitleme tanılama bilgilerini 24 saat boyunca günlüğe kaydet</string>
     <string name="debug_sync_export_logs_title">Eşitleme günlüklerini dışa aktar</string>
     <string name="debug_open_secret_debug_screen">Gizli hata ayıklama ekranını aç</string>
-    <string name="swipe_action_archive_folder_not_set">Arşiv klasörünü ayarla</string>
-    <string name="swipe_action_change_swipe_gestures">Kaydırma\nHareketlerini Değiştir</string>
     <string name="archiving_not_available_for_this_account">Bu hesapta arşivleme kullanılamıyor.</string>
     <string name="debug_invalidate_access_token">Test: Erişim belirtecini geçersiz kıl</string>
     <string name="debug_invalidate_access_token_done">Erişim belirteci geçersiz kılındı. Bir sonraki istek yenileyecektir.</string>
@@ -909,4 +896,22 @@
     <string name="debug_force_auth_failure_unavailable">Bu hesap için OAuth yapılandırması yok.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Saklanan erişim belirteci değiştirilemedi. Yerel geçersiz kılmayı deneyin.</string>
     <string name="debug_invalidate_access_token_already_modified">Saklanan erişim belirteci zaten değiştirildi.</string>
+    <string name="message_view_menu_action_export_eml">EML olarak dışa aktar</string>
+    <string name="print_message_action">Yazdır</string>
+    <string name="set_format_html_action">Orijinal biçimlendirmeyi kullan</string>
+    <string name="set_format_html_condensed_action">Biçimlendirilmiş olarak göster</string>
+    <string name="set_format_plain_action">Biçimlendirilmemiş iletiyi göster</string>
+    <string name="set_format_plain_condensed_action">Biçimlendirilmemiş olarak göster</string>
+    <string name="global_settings_messageview_body_content_type_title">Body Content-Type</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Düz metin (text/plain)</string>
+    <string name="account_setup_auto_select_folder">Klasörü otomatik seç</string>
+    <string name="navigation_drawer_preferences">Yan Menü</string>
+    <string name="expand_folders">Klasörleri genişlet</string>
+    <string name="debug_feature_flags">HATA AYIKLAMA: Özellik Bayrakları</string>
+    <string name="general_settings_message_list_date_time_format_title">Tarih/Saat Biçimi</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Bağlamsal</string>
+    <string name="general_settings_message_list_date_time_format_full">Tam</string>
+    <string name="global_settings_splitview_when_unfolded">Cihaz açıldığında</string>
+    <string name="sort_by_then_by">Sonra…</string>
 </resources>

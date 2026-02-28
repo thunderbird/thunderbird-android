@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">선택</string>
+    <string name="swipe_action_deselect">선택 해제</string>
+    <string name="swipe_action_mark_as_read">읽음으로 표시</string>
+    <string name="swipe_action_mark_as_unread">읽지 않음으로 표시</string>
+    <string name="swipe_action_add_star">별표 표시</string>
+    <string name="swipe_action_remove_star">별표 삭제</string>
+    <string name="swipe_action_archive">보관</string>
+    <string name="swipe_action_delete">삭제</string>
+    <string name="swipe_action_spam">스팸</string>
+</resources>

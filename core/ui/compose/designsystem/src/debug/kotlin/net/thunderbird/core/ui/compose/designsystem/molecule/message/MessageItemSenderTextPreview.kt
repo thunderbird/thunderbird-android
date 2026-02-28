@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
@@ -76,7 +77,7 @@ private fun MessageItemSenderTextPreview(
             TextLabelSmall(text = "MessageItemSenderTitleSmall:")
             MessageItemSenderTitleSmall(
                 subject = params.subject,
-                sender = params.sender,
+                sender = buildAnnotatedString { append(params.sender) },
                 swapSenderWithSubject = params.swapSenderWithSubject,
                 threadCount = params.threadCount,
             )
@@ -84,7 +85,7 @@ private fun MessageItemSenderTextPreview(
             TextLabelSmall(text = "MessageItemSenderBodyMedium:")
             MessageItemSenderBodyMedium(
                 subject = params.subject,
-                sender = params.sender,
+                sender = buildAnnotatedString { append(params.sender) },
                 swapSenderWithSubject = params.swapSenderWithSubject,
                 threadCount = params.threadCount,
             )

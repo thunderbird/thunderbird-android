@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">انتخاب</string>
+    <string name="swipe_action_deselect">بی‌انتخاب</string>
+    <string name="swipe_action_mark_as_read">علامت‌گذاری به‌عنوان خوانده شده</string>
+    <string name="swipe_action_mark_as_unread">خوانده نشد</string>
+    <string name="swipe_action_add_star">افزودن ستاره</string>
+    <string name="swipe_action_remove_star">حذف ستاره</string>
+    <string name="swipe_action_archive">بایگانی</string>
+    <string name="swipe_action_archive_folder_not_set">راه‌اندازی پوشه بایگانی</string>
+    <string name="swipe_action_change_swipe_gestures">تغییر \nژست‌های کشیدن</string>
+    <string name="swipe_action_delete">حذف</string>
+    <string name="swipe_action_spam">هرزنامه</string>
+    <string name="swipe_action_move">انتقال…</string>
+</resources>

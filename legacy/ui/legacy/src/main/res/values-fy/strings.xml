@@ -312,16 +312,16 @@
     <string name="account_notify_contacts_mail_only_summary">Meldingen allinnich toane foar bekende kontakten</string>
     <string name="account_settings_ignore_chat_messages_label">Petearberjochten negearje</string>
     <string name="account_settings_ignore_chat_messages_summary">Gjin meldingen toane foar berjochten dy’t ûnderdiel binne fan in e-mailpetear</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">As lêzen markearje nei iepenjen</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">As lêzen markearje wannear besjoen</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">As lêzen markearje wannear iepene</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">In berjocht as lêzen markearje wannear it iepene is om te besjen</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">As lêzen markearje by wiskjen</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Markearje in berjocht as lêzen wannear’t dy wiske wurdt</string>
     <string name="account_settings_notification_channels_label">Meldingskategoryen</string>
     <string name="account_settings_open_notification_settings_messages_summary">Meldingen foar nije berjochten ynstelle</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Flater- en steatmeldingen ynstelle</string>
-    <string name="account_settings_show_pictures_label">Ofbyldingen automatysk toane</string>
+    <string name="account_settings_show_pictures_label">Ofbyldingen altyd toane</string>
     <string name="account_settings_show_pictures_never">Nee</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Allinnich fan kontakten</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Fan kontakten</string>
     <string name="account_settings_show_pictures_always">Fan elkenien</string>
     <string name="account_settings_composition">Berjochten ferstjoere</string>
     <string name="account_settings_default_quoted_text_shown_label">Berjocht by beäntwurdzjen sitearje</string>
@@ -343,7 +343,7 @@
     <string name="account_settings_upload_sent_messages_label">Ferstjoerde berjochten oplade</string>
     <string name="account_settings_upload_sent_messages_summary">Berjochten nei ferstjoeren nei de map ‘Ferstjoerd’ oplade</string>
     <string name="account_settings_general_title">Algemiene ynstellingen</string>
-    <string name="account_settings_reading_mail">Berjochten lêze</string>
+    <string name="account_settings_reading_mail">E-mailberjochten lêze</string>
     <string name="account_settings_sync">Berjochten ophelje</string>
     <string name="account_settings_folders">Mappen</string>
     <string name="account_settings_quote_prefix_label">Sitaatfoarfoegsel</string>
@@ -730,7 +730,6 @@
     <string name="crypto_msg_encrypted_insecure">mar fersifering is net feilich</string>
     <string name="locked_attach_unlock">Deblokkearje</string>
     <string name="locked_attach_unencrypted">Dit ûnderdiel is net fersifere en is miskien ûnfeilich.</string>
-    <string name="locked_attach_title">Unbefeilige bylage</string>
     <string name="message_progress_text">Lade…</string>
     <string name="messageview_decrypt_cancelled">Untsifering is stoppe.</string>
     <string name="messageview_decrypt_retry">Opnij</string>
@@ -799,25 +798,15 @@
     <string name="push_info_disable_push_text">As jo it net nedich fine om daliks meldingen te ûntfangen fan nije berjochten, dan kinne jo better push útskeakelje en yn stee dêrfan kieze foar peilen. Mei peilen wurdt der om de sa folle tiid kontrolearre oft der nije e-mailberjochten ynkommen binne. Dêrfoar is it toanen fan in melding net kontinu nedich.</string>
     <string name="push_info_disable_push_action">Push útskeakelje</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Selektearje</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Deselektearje</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">As lêzen markearje</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">As net-lêzen markearje</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Stjer tafoegje</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Stjer fuortsmite</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Argivearje</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Fuortsmite</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Net-winske</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Ferpleatse…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Swevende knop ‘Opstelle’ toane</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -894,8 +883,6 @@
     <string name="debug_enable_sync_debug_logging_title">Debuglogging syngronisaasje ynskeakelje</string>
     <string name="debug_enable_sync_debug_logging_summary">Log 24 oeren diagnostyske ynformaasje oer syngronisaasje</string>
     <string name="debug_sync_export_logs_title">Syngronisaasjelochboeken eksportearje</string>
-    <string name="swipe_action_change_swipe_gestures">Feiaksjes \noanpasse</string>
-    <string name="swipe_action_archive_folder_not_set">Argyfmap ynstelle</string>
     <string name="archiving_not_available_for_this_account">Argivearring is foar dizze account net beskikber.</string>
     <string name="debug_open_secret_debug_screen">Geheim debugskerm iepenje</string>
     <string name="debug_invalidate_access_token">Test: Unjildich tagongstoken</string>
@@ -923,4 +910,9 @@
     <string name="global_settings_messageview_body_content_type_text_plain">Platte tekst (text/plain)</string>
     <string name="debug_feature_flags">DEBUGGE: Funksjelabels</string>
     <string name="print_message_action">Ofdrukke</string>
+    <string name="global_settings_splitview_when_unfolded">Wannear’t apparaat iepenklapt</string>
+    <string name="general_settings_message_list_date_time_format_title">Datum/Tiidopmaak</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontekstueel</string>
+    <string name="general_settings_message_list_date_time_format_full">Folslein</string>
+    <string name="sort_by_then_by">Dêrnei op…</string>
 </resources>

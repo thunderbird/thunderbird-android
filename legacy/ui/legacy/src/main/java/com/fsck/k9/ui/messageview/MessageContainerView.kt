@@ -421,13 +421,16 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         this.attachmentCallback = attachmentCallback
 
         resetView()
-        renderAttachments(messageViewInfo)
 
         val messageText = if (!renderPlainFormat) {
             messageViewInfo.text
         } else {
             displayHtml.wrapMessageContent(messageViewInfo.textPlainFormatted)
         }
+
+        // Register attachments so inline images (CIDs) can be resolved
+        messageViewInfo.attachments?.forEach { attachments[it.internalUri] = it }
+        messageViewInfo.extraAttachments?.forEach { attachments[it.internalUri] = it }
 
         if (messageText != null && !isShowingPictures && !renderPlainFormat) {
             if (Utility.hasExternalImages(messageText)) {
@@ -484,49 +487,6 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
 
         unsignedTextContainer.isVisible = false
         unsignedText.text = ""
-    }
-
-    private fun renderAttachments(messageViewInfo: MessageViewInfo) {
-        if (messageViewInfo.attachments != null) {
-            for (attachment in messageViewInfo.attachments) {
-                attachments[attachment.internalUri] = attachment
-                if (attachment.inlineAttachment) {
-                    continue
-                }
-
-                val attachmentView = layoutInflater.inflate(
-                    R.layout.message_view_attachment,
-                    attachmentsContainer,
-                    false,
-                ) as AttachmentView
-
-                attachmentView.setCallback(attachmentCallback)
-                attachmentView.setAttachment(attachment)
-
-                attachmentViewMap[attachment] = attachmentView
-                attachmentsContainer.addView(attachmentView)
-            }
-        }
-
-        if (messageViewInfo.extraAttachments != null) {
-            for (attachment in messageViewInfo.extraAttachments) {
-                attachments[attachment.internalUri] = attachment
-                if (attachment.inlineAttachment) {
-                    continue
-                }
-
-                val lockedAttachmentView = layoutInflater.inflate(
-                    R.layout.message_view_attachment_locked,
-                    attachmentsContainer,
-                    false,
-                ) as LockedAttachmentView
-
-                lockedAttachmentView.setCallback(attachmentCallback)
-                lockedAttachmentView.setAttachment(attachment)
-
-                attachmentsContainer.addView(lockedAttachmentView)
-            }
-        }
     }
 
     private fun resetView() {

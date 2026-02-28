@@ -1,6 +1,6 @@
 package net.thunderbird.feature.funding.googleplay.ui.contribution
 
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Effect
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Event
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.State

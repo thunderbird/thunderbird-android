@@ -1,0 +1,24 @@
+K-9 Mail je e-mailový klient s otvoreným zdrojovým kódom, ktorý funguje prakticky so všetkými poskytovateľmi e-mailových služieb.
+
+<b>Funkcie</b>
+
+* Podpora viacerých účtov
+* Zjednotená doručená pošta
+* Ochrana súkromia (žiadne sledovanie, pripája sa iba k vášmu poskytovateľovi e-mailových služieb)
+* Automatická synchronizácia na pozadí alebo push notifikácie
+* Lokálne a serverové vyhľadávanie
+* Šifrovanie e-mailov OpenPGP (PGP/MIME)
+
+Nainštalujte si aplikáciu <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP
+</a> na šifrovanie/dešifrovanie e-mailov pomocou OpenPGP.
+
+<b>Podpora</b>
+
+Ak máte problémy s aplikáciou K-9 Mail, požiadajte o pomoc v našom <a href="https://forum.k9mail.app">podpornom fóre
+</a>.
+
+<b>Chcete pomôcť?</b>
+
+K-9 Mail je projekt vyvinutý komunitou. Ak máte záujem pomôcť s vylepšením aplikácie, pridajte sa k nám!
+Náš systém sledovania chýb, zdrojový kód a wiki nájdete na adrese <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+Vždy radi privítame nových vývojárov, dizajnérov, tvorcov dokumentácie, prekladateľov, analytikov chýb a priateľov.

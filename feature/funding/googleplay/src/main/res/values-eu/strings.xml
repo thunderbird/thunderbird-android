@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_error_unknown">Errore ezezaguna</string>
     <string name="funding_googleplay_contribution_header_title">Lagundu Thunderbird</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Hilero</string>
@@ -13,4 +13,45 @@
     <string name="funding_googleplay_contribution_reminder_title">Lagundu Thunderbirdi</string>
     <string name="funding_googleplay_contribution_reminder_statement">Thunderbird doakoa eta kode irekikoa da.</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Eman behin</string>
+    <string name="funding_googleplay_contribution_header_description">Zu bezalako erabiltzaileen diru ekarpenak dira Thunderbirden sarrerak. Ez dugu iragarkirik erakusten edo zure datuak saltzen. Thunderbirdek gogobetetzen bazaitu lagundu, mesedez, bere mantenuan. Ezin dugu egin zu gabe!</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Eskerrik beroenak gu guztion partetik!</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Zure ekarpenak Thunderbird-en garapena bultzatzen du eta zinez eskertzen dugu zure laguntza.</string>
+    <string name="funding_googleplay_contribution_list_title">Ekarpen segurua</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Ekarpenak ez dira zerga kengarriak dohaintza gisa.</string>
+    <string name="funding_googleplay_contribution_list_empty_title">Aplikazioaren barruko dohaintzak momentuz ez daude erabilgarri.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Bisitatu <xliff:g id="link_text">%s</xliff:g> Thunderbird laguntzeko beste bide batzuk arakatzeko.</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Jarraitu ordainketarekin</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Une honetan ezin da ordainketa egin</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Aldatu hilabeteroko ordainketa</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Egin beste ekarpen eragingarri bat</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">Ezin izan da erosi.</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">Une honetan ezin dira dohaintzak egin.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_title">Ekarpen eragingarria</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_title">Balio handiko ekarpena</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_title">Ekarpen garrantzitsua</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_title">Ekarpen handia</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_title">Ekarpen nabarmena</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_title">Aparteko ekarpena</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_description">Zure laguntzak aurrera egiten laguntzen gaitu! Ekarpen txikienek ere eraginak sortzen dituzte, eta oso eskertuta gaude zu barnean izatea.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_description">Gauza bikainak egiten laguntzen ari gaituzu! Maila honetan ekarpenak eginez, aurrera pauso esanguratsuak ematen laguntzen ari zara hazten jarraitzeko.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_description">Zure ekarpena benetan distiratsua da! Eginkizun handia jokatzen ari zara gure helburua aurrera eramateko, mugarri garrantzitsuak lortzen eta eragin handiagoa lortzen laguntzen diguzu.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_description">Arrazoi handi bat zara egiten duguna egiten jarraitzeko! Zure eskuzabaltasunari esker, proiektu handiagoak hartu eta elkarrekin mugarri berriak lor ditzakegu.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_description">Zure laguntza benetan inspiratzailea da! Zure ekarpen handiari esker, mugak gainditzeko, berritzeko eta gure helburuetarako aurrerapauso handiak eman ditzakegu.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">Benetan amets handiak egiten laguntzen ari gaituzu! Zure laguntza izugarria apartekoa lortzeko ahalmena ematen digu, egiten dugun guztian eragin iraunkorra utziz.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_title">Ezinbesteko hileroko ekarpena</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_title">Hileroko ekarpen balioduna</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_title">Hileko ekarpen esanguratsua</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_title">Hileroko ekarpen esanguratsua</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_title">Hileroko ekarpen nabarmena</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">Aparteko hileroko ekarpena</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_description">Zure laguntzak aurrera egiten laguntzen gaitu! Ekarpen bakoitzak aldaketa sortzen du, eskerrik asko!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_description">Zure ekarpenak hazten eta aurrerapauso esanguratsuak ematen laguntzen digu, eskerrik asko!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_description">Zure ekarpenak distira egiten du! Gure eginkizuna aurrera eramateko eta eragina lortzeko funtsezkoa zara.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_description">Arrazoi handi bat zara egiten duguna egiteko! Zure eskuzabaltasunak mugarri berriak lortzen laguntzen digu.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Zure laguntza inspiratzailea da! Zure ekarpenak mugak gainditzen eta gure helburuak lortzen laguntzen digu.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Amets handiak egiten laguntzen ari gaituzu! Zure laguntzak gauza apartak lortzeko ahalmena ematen digu.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Ez dugu iragarkirik erakusten.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Ez dugu zure datuak saltzen.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Gure finantzak soilik zu bezalako erabiltzaileen ekarpenek elikatzen dituzte.</string>
+    <string name="funding_googleplay_contribution_reminder_message">Bat egin gure misioan pribatutasuna errespetatzen duen eta pertsonalizagarria den posta elektronikoko esperientzia onena sortzeko.</string>
 </resources>
