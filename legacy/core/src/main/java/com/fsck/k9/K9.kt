@@ -113,9 +113,6 @@ object K9 : KoinComponent {
     @JvmStatic
     val fontSizes = FontSizes()
 
-    @JvmStatic
-    var lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT
-
     var messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
         PostMarkAsUnreadNavigation.ReturnToMessageList
 
@@ -183,11 +180,6 @@ object K9 : KoinComponent {
         val sortAscendingSetting = storage.getBoolean("sortAscending", AccountDefaultsProvider.DEFAULT_SORT_ASCENDING)
         sortAscending[sortType] = sortAscendingSetting
 
-        lockScreenNotificationVisibility = storage.getEnum(
-            "lockScreenNotificationVisibility",
-            LockScreenNotificationVisibility.MESSAGE_COUNT,
-        )
-
         featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
             .onDisabledOrUnavailable {
                 fontSizes.load(storage)
@@ -211,7 +203,6 @@ object K9 : KoinComponent {
 
         editor.putEnum("sortTypeEnum", sortType)
         editor.putBoolean("sortAscending", sortAscending[sortType] ?: false)
-        editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
 
         editor.putInt("pgpInlineDialogCounter", pgpInlineDialogCounter)
         editor.putInt("pgpSignOnlyDialogCounter", pgpSignOnlyDialogCounter)
@@ -263,14 +254,6 @@ object K9 : KoinComponent {
     const val MAX_SEND_ATTEMPTS = 5
 
     const val MANUAL_WAKE_LOCK_TIMEOUT = 120000
-
-    enum class LockScreenNotificationVisibility {
-        EVERYTHING,
-        SENDERS,
-        MESSAGE_COUNT,
-        APP_NAME,
-        NOTHING,
-    }
 
     /**
      * The navigation actions that can be to performed after the user has marked a message as unread from the message

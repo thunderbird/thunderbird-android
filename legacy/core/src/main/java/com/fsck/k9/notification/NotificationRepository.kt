@@ -4,14 +4,19 @@ import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mailstore.LocalStoreProvider
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.LockScreenNotificationVisibility
 
 internal class NotificationRepository(
     private val notificationStoreProvider: NotificationStoreProvider,
     private val localStoreProvider: LocalStoreProvider,
     private val messageStoreManager: MessageStoreManager,
     private val notificationContentCreator: NotificationContentCreator,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
     private val notificationDataStore = NotificationDataStore()
+    private val lockScreenNotificationVisibility: LockScreenNotificationVisibility
+        get() = generalSettingsManager.getConfig().notification.lockScreenNotificationVisibility
 
     @Synchronized
     fun restoreNotifications(account: LegacyAccountDto): NotificationData? {
@@ -37,6 +42,7 @@ internal class NotificationRepository(
             account,
             activeNotifications,
             inactiveNotifications,
+            lockScreenNotificationVisibility,
         )
 
         return if (notificationData.activeNotifications.isNotEmpty()) notificationData else null

@@ -12,6 +12,7 @@ import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.BodyContentType
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.LockScreenNotificationVisibility
 import net.thunderbird.core.preference.NotificationQuickDelete
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
@@ -152,7 +153,7 @@ class GeneralSettingsDataStore(
             "message_list_date_time_format" -> messageListSettings.dateTimeFormat.toString()
             "splitview_mode" -> coreSettings.splitViewMode.name
             "notification_quick_delete" -> notificationSettings.notificationQuickDeleteBehaviour.name
-            "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
+            "lock_screen_notification_visibility" -> notificationSettings.lockScreenNotificationVisibility.name
             "background_ops" -> networkSettings.backgroundOps.name
             "quiet_time_starts" -> notificationSettings.quietTimeStarts
             "quiet_time_ends" -> notificationSettings.quietTimeEnds
@@ -198,7 +199,7 @@ class GeneralSettingsDataStore(
             }
 
             "lock_screen_notification_visibility" -> {
-                K9.lockScreenNotificationVisibility = K9.LockScreenNotificationVisibility.valueOf(value)
+                setLockScreenNotificationVisibility(LockScreenNotificationVisibility.valueOf(value))
             }
 
             "background_ops" -> setBackgroundOps(value)
@@ -877,6 +878,17 @@ class GeneralSettingsDataStore(
                             dateTimeFormat = MessageListDateTimeFormat.valueOf(value),
                         ),
                     ),
+                ),
+            )
+        }
+    }
+
+    private fun setLockScreenNotificationVisibility(value: LockScreenNotificationVisibility) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                notification = settings.notification.copy(
+                    lockScreenNotificationVisibility = value,
                 ),
             )
         }
