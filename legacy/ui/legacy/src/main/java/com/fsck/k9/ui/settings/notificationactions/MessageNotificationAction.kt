@@ -48,19 +48,11 @@ internal enum class MessageNotificationAction(
     ;
 
     companion object {
-        fun fromToken(token: String): MessageNotificationAction? {
-            return entries.firstOrNull { it.token == token }
-        }
-
         fun defaultOrder(): List<MessageNotificationAction> {
-            val seen = LinkedHashSet<MessageNotificationAction>()
-            for (token in NotificationActionTokens.DEFAULT_ORDER) {
-                fromToken(token)?.let { seen.add(it) }
-            }
-            for (action in entries) {
-                seen.add(action)
-            }
-            return seen.toList()
+            return NotificationActionTokens.normalizeOrder(
+                persistedTokens = NotificationActionTokens.DEFAULT_ORDER,
+                supportedActions = entries.map { it.token to it },
+            )
         }
     }
 }

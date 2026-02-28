@@ -127,35 +127,17 @@ internal class SingleMessageNotificationDataCreator(
     }
 
     private fun parseActionsOrder(tokens: List<String>): List<NotificationAction> {
-        val seen = LinkedHashSet<NotificationAction>()
-        for (token in tokens) {
-            tokenToAction(token)?.let { seen.add(it) }
-        }
-
-        for (action in listOf(
-            NotificationAction.Reply,
-            NotificationAction.MarkAsRead,
-            NotificationAction.Delete,
-            NotificationAction.Star,
-            NotificationAction.Archive,
-            NotificationAction.Spam,
-        )) {
-            seen.add(action)
-        }
-
-        return seen.toList()
-    }
-
-    private fun tokenToAction(token: String): NotificationAction? {
-        return when (token) {
-            NotificationActionTokens.REPLY -> NotificationAction.Reply
-            NotificationActionTokens.MARK_AS_READ -> NotificationAction.MarkAsRead
-            NotificationActionTokens.DELETE -> NotificationAction.Delete
-            NotificationActionTokens.STAR -> NotificationAction.Star
-            NotificationActionTokens.ARCHIVE -> NotificationAction.Archive
-            NotificationActionTokens.SPAM -> NotificationAction.Spam
-            else -> null
-        }
+        return NotificationActionTokens.normalizeOrder(
+            persistedTokens = tokens,
+            supportedActions = listOf(
+                NotificationActionTokens.REPLY to NotificationAction.Reply,
+                NotificationActionTokens.MARK_AS_READ to NotificationAction.MarkAsRead,
+                NotificationActionTokens.DELETE to NotificationAction.Delete,
+                NotificationActionTokens.STAR to NotificationAction.Star,
+                NotificationActionTokens.ARCHIVE to NotificationAction.Archive,
+                NotificationActionTokens.SPAM to NotificationAction.Spam,
+            ),
+        )
     }
 
     private fun isDeleteActionEnabled(): Boolean {

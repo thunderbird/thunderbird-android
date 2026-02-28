@@ -10,6 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.Fragment
 import com.fsck.k9.ui.R
 import kotlinx.collections.immutable.toImmutableList
+import net.thunderbird.core.common.notification.NotificationActionTokens
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.notification.NOTIFICATION_PREFERENCE_DEFAULT_MESSAGE_ACTIONS_CUTOFF
 import net.thunderbird.core.preference.update
@@ -49,7 +50,10 @@ class NotificationActionsSettingsFragment : Fragment() {
     private fun initializeStateFromPreferences() {
         val notificationPrefs = generalSettingsManager.getConfig().notification
 
-        actionOrder = parseOrder(notificationPrefs.messageActionsOrder).toMutableList()
+        actionOrder = NotificationActionTokens.normalizeOrder(
+            persistedTokens = notificationPrefs.messageActionsOrder,
+            supportedActions = MessageNotificationAction.entries.map { it.token to it },
+        ).toMutableList()
         cutoff = notificationPrefs.messageActionsCutoff
     }
 
@@ -71,18 +75,5 @@ class NotificationActionsSettingsFragment : Fragment() {
         actionOrder = actions.toMutableList()
         this.cutoff = cutoff
         persist()
-    }
-
-    private fun parseOrder(tokens: List<String>): List<MessageNotificationAction> {
-        val seen = LinkedHashSet<MessageNotificationAction>()
-        for (token in tokens) {
-            MessageNotificationAction.fromToken(token)?.let { seen.add(it) }
-        }
-
-        for (action in MessageNotificationAction.defaultOrder()) {
-            seen.add(action)
-        }
-
-        return seen.toList()
     }
 }

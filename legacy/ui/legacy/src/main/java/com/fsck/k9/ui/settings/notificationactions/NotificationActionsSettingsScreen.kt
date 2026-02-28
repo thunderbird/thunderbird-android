@@ -17,8 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Icon as Material3Icon
-import androidx.compose.material3.IconButton as Material3IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
@@ -39,12 +38,13 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.ui.R
 import kotlinx.collections.immutable.ImmutableList
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 
 private const val DIMMED_ROW_ALPHA = 0.6f
 private const val DRAGGED_ROW_SCALE = 1.02f
@@ -268,12 +268,12 @@ private fun NotificationActionRow(
             horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
         ) {
             ArrowButton(
-                iconRes = Icons.Outlined.ExpandLess,
+                imageVector = Icons.Outlined.ExpandLess,
                 enabled = rowState.canMoveUp,
                 onClick = moveActions.onMoveUp,
             )
             ArrowButton(
-                iconRes = Icons.Outlined.ExpandMore,
+                imageVector = Icons.Outlined.ExpandMore,
                 enabled = rowState.canMoveDown,
                 onClick = moveActions.onMoveDown,
             )
@@ -388,21 +388,18 @@ private fun NotificationReorderRow(
 
 @Composable
 private fun ArrowButton(
-    iconRes: Int,
+    imageVector: ImageVector,
     enabled: Boolean,
     onClick: () -> Boolean,
     modifier: Modifier = Modifier,
 ) {
-    Material3IconButton(
+    ButtonIcon(
         onClick = { onClick() },
+        imageVector = imageVector,
         enabled = enabled,
         modifier = modifier.clearAndSetSemantics { },
-    ) {
-        Material3Icon(
-            painter = painterResource(iconRes),
-            contentDescription = null,
-        )
-    }
+        contentDescription = null,
+    )
 }
 
 private fun Modifier.immediateDragGesture(

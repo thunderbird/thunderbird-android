@@ -20,5 +20,23 @@ object NotificationActionTokens {
             .filter { it.isNotEmpty() }
     }
 
+    fun <T> normalizeOrder(
+        persistedTokens: List<String>,
+        supportedActions: List<Pair<String, T>>,
+    ): List<T> {
+        val supportedByToken = supportedActions.toMap()
+        val normalized = LinkedHashSet<T>()
+
+        for (token in persistedTokens) {
+            supportedByToken[token]?.let { normalized.add(it) }
+        }
+
+        for ((_, action) in supportedActions) {
+            normalized.add(action)
+        }
+
+        return normalized.toList()
+    }
+
     fun serializeOrder(tokens: List<String>): String = tokens.joinToString(separator = ",")
 }
