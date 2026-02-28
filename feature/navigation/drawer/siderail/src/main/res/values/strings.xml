@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="navigation_drawer_siderail_action_settings">Settings</string>
+    <string name="navigation_drawer_siderail_action_manage_folders">Manage folders</string>
+    <string name="navigation_drawer_siderail_action_sync_all_accounts">Sync all accounts</string>
+    <string name="navigation_drawer_siderail_action_show_accounts">Show accounts</string>
+    <string name="navigation_drawer_siderail_action_hide_accounts">Hide accounts</string>
+    <string name="navigation_drawer_siderail_unified_inbox_title">Unified Inbox</string>
+    <!-- This is displayed as the unread count of a folder in the folder drawer when the number of unread messages exceeds 99. Space is extremely limited. Keep this as short as possible. -->
+    <string name="navigation_drawer_siderail_folder_item_badge_count_greater_than_99">99+</string>
+    <!-- This is displayed as the unread count of a folder in the folder drawer when the number of unread messages exceeds 1000. Space is extremely limited. Keep this as short as possible. -->
+    <string name="navigation_drawer_siderail_folder_item_badge_count_greater_than_1_000">1k+</string>
+</resources>

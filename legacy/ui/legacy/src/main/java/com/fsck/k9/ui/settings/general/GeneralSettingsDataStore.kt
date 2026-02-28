@@ -58,6 +58,7 @@ class GeneralSettingsDataStore(
             "messageview_fixedwidth_font" -> visualSettings.isUseMessageViewFixedWidthFont
             "messageview_autofit_width" -> visualSettings.isAutoFitWidth
             "drawerExpandAllFolder" -> visualSettings.drawerExpandAllFolder
+            "legacy_account_menu" -> visualSettings.isLegacyAccountMenuEnabled
             "quiet_time_enabled" -> notificationSettings.isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !notificationSettings.isNotificationDuringQuietTimeEnabled
             "privacy_hide_useragent" -> privacySettings.isHideUserAgent
@@ -76,6 +77,7 @@ class GeneralSettingsDataStore(
             "fixed_message_view_theme" -> setFixedMessageViewTheme(value)
             "animations" -> setIsShowAnimations(isShowAnimations = value)
             "drawerExpandAllFolder" -> setDrawerExpandAllFolder(drawerExpandAllFolder = value)
+            "legacy_account_menu" -> setIsLegacyAccountMenuEnabled(isLegacyAccountMenuEnabled = value)
             "show_unified_inbox" -> setIsShowUnifiedInbox(value)
             "show_starred_count" -> setIsShowStarredCount(isShowStarredCount = value)
             "messagelist_stars" -> setIsShowMessageListStars(isShowMessageListStars = value)
@@ -459,6 +461,19 @@ class GeneralSettingsDataStore(
                 display = settings.display.copy(
                     visualSettings = settings.display.visualSettings.copy(
                         drawerExpandAllFolder = drawerExpandAllFolder,
+                    ),
+                ),
+            )
+        }
+    }
+
+    private fun setIsLegacyAccountMenuEnabled(isLegacyAccountMenuEnabled: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        isLegacyAccountMenuEnabled = isLegacyAccountMenuEnabled,
                     ),
                 ),
             )

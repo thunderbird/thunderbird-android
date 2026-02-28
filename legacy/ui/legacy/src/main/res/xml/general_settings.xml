@@ -210,6 +210,11 @@
                 android:title="@string/expand_folders"
                 />
 
+            <CheckBoxPreference
+                android:key="legacy_account_menu"
+                android:title="@string/legacy_account_menu_title"
+                />
+
         </PreferenceCategory>
 
         <PreferenceCategory

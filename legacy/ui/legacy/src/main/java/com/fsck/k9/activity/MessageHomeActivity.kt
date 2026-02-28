@@ -69,6 +69,7 @@ import net.thunderbird.feature.funding.api.FundingManager
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.DropDownDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
+import net.thunderbird.feature.navigation.drawer.siderail.SideRailDrawer
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
@@ -663,16 +664,28 @@ open class MessageHomeActivity :
     }
 
     private fun initializeFolderDrawer() {
-        navigationDrawer = DropDownDrawer(
-            parent = this,
-            openAccount = { accountId -> openRealAccount(accountId) },
-            openAddAccount = { launchAddAccountScreen() },
-            openFolder = { accountId, folderId -> openFolder(accountId, folderId) },
-            openUnifiedFolder = { openUnifiedFolders() },
-            openManageFolders = { launchManageFoldersScreen() },
-            openSettings = { SettingsActivity.launch(this) },
-            createDrawerListener = { createDrawerListener() },
-        )
+        if (generalSettingsManager.getConfig().display.visualSettings.isLegacyAccountMenuEnabled) {
+            navigationDrawer = SideRailDrawer(
+                parent = this,
+                openAccount = { accountId -> openRealAccount(accountId) },
+                openFolder = { accountId, folderId -> openFolder(accountId, folderId) },
+                openUnifiedFolder = { openUnifiedFolders() },
+                openManageFolders = { launchManageFoldersScreen() },
+                openSettings = { SettingsActivity.launch(this) },
+                createDrawerListener = { createDrawerListener() },
+            )
+        } else {
+            navigationDrawer = DropDownDrawer(
+                parent = this,
+                openAccount = { accountId -> openRealAccount(accountId) },
+                openAddAccount = { launchAddAccountScreen() },
+                openFolder = { accountId, folderId -> openFolder(accountId, folderId) },
+                openUnifiedFolder = { openUnifiedFolders() },
+                openManageFolders = { launchManageFoldersScreen() },
+                openSettings = { SettingsActivity.launch(this) },
+                createDrawerListener = { createDrawerListener() },
+            )
+        }
     }
 
     private fun createDrawerListener(): DrawerListener {

@@ -692,6 +692,7 @@
     <string name="show_unified_inbox_title">Show Unified Inbox</string>
     <string name="show_starred_count_title">Show starred count</string>
     <string name="expand_folders">Expand Folders</string>
+    <string name="legacy_account_menu_title">Use legacy account menu</string>
 
     <string name="integrated_inbox_title">Unified Inbox</string>
     <string name="integrated_inbox_detail">All messages in unified folders</string>

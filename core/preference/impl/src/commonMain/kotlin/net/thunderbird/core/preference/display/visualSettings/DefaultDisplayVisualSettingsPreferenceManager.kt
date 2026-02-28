@@ -25,6 +25,7 @@ import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.core.preference.storage.putEnum
 
 private const val TAG = "DefaultDisplayVisualSettingsPreferenceManager"
+const val KEY_LEGACY_ACCOUNT_MENU_ENABLED = "legacy_account_menu"
 
 class DefaultDisplayVisualSettingsPreferenceManager(
     private val logger: Logger,
@@ -77,6 +78,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
             KEY_DRAWER_EXPAND_ALL_FOLDER,
             DISPLAY_SETTINGS_DEFAULT_DRAWER_EXPAND_ALL_FOLDER,
         ),
+        isLegacyAccountMenuEnabled = storage.getBoolean(
+            KEY_LEGACY_ACCOUNT_MENU_ENABLED,
+            DISPLAY_SETTINGS_DEFAULT_LEGACY_ACCOUNT_MENU_ENABLED,
+        ),
         isMessageViewArchiveActionVisible = storage.getBoolean(
             KEY_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
@@ -111,6 +116,7 @@ class DefaultDisplayVisualSettingsPreferenceManager(
                 storageEditor.putBoolean(KEY_AUTO_FIT_WIDTH, config.isAutoFitWidth)
                 storageEditor.putEnum(KEY_MESSAGE_VIEW_BODY_CONTENT_TYPE, config.bodyContentType)
                 storageEditor.putBoolean(KEY_DRAWER_EXPAND_ALL_FOLDER, config.drawerExpandAllFolder)
+                storageEditor.putBoolean(KEY_LEGACY_ACCOUNT_MENU_ENABLED, config.isLegacyAccountMenuEnabled)
                 messageListPreferences.save(config.messageListSettings)
                 storageEditor.putBoolean(
                     KEY_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
