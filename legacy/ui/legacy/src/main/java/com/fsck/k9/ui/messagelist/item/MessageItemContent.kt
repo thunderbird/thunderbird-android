@@ -110,39 +110,47 @@ private fun rememberMessageItemUi(
     monogram: String,
     url: String?,
 ): MessageItemUi = remember(item, showContactPicture, isSelected, isActive, monogram, url) {
-    MessageItemUi(
-        state = if (item.isRead) MessageItemUi.State.Read else MessageItemUi.State.Unread,
-        id = item.messageUid,
-        messageReference = item.messageReference.toIdentityString(),
-        account = Account(
-            id = item.account.id,
-            color = Color(item.account.profile.color),
-        ),
-        senders = ComposedAddressUi(
-            displayName = item.displayAddress?.address ?: "",
-            displayNameStyles = item.buildSenderStyles(),
-            avatar = when {
-                !showContactPicture -> null
-                showContactPicture && url != null -> Avatar.Image(url = url)
-                else -> Avatar.Monogram(monogram)
-            },
-            color = Color(item.contactColor),
-        ),
-        subject = item.subject ?: "n/a",
-        excerpt = item.previewText,
-        formattedReceivedAt = item.displayMessageDateTime,
-        hasAttachments = item.hasAttachments,
-        starred = item.isStarred,
-        encrypted = item.isMessageEncrypted,
-        answered = item.isAnswered,
-        forwarded = item.isForwarded,
-        selected = isSelected,
-        threadCount = item.threadCount,
-        active = isActive,
-    )
+    item.toMessageItemUi(showContactPicture, isSelected, isActive, monogram, url)
 }
 
-private fun MessageListItem.buildSenderStyles(): ImmutableList<ComposedAddressStyle> = buildList {
+internal fun MessageListItem.toMessageItemUi(
+    showContactPicture: Boolean,
+    isSelected: Boolean,
+    isActive: Boolean,
+    monogram: String,
+    url: String?,
+): MessageItemUi = MessageItemUi(
+    state = if (isRead) MessageItemUi.State.Read else MessageItemUi.State.Unread,
+    id = messageUid,
+    messageReference = messageReference.toIdentityString(),
+    account = Account(
+        id = account.id,
+        color = Color(account.profile.color),
+    ),
+    senders = ComposedAddressUi(
+        displayName = displayAddress?.address ?: "",
+        displayNameStyles = buildSenderStyles(),
+        avatar = when {
+            !showContactPicture -> null
+                showContactPicture&& url != null -> Avatar.Image(url = url)
+            else -> Avatar.Monogram(monogram)
+        },
+        color = Color(contactColor),
+    ),
+    subject = subject ?: "n/a",
+    excerpt = previewText,
+    formattedReceivedAt = displayMessageDateTime,
+    hasAttachments = hasAttachments,
+    starred = isStarred,
+    encrypted = isMessageEncrypted,
+    answered = isAnswered,
+    forwarded = isForwarded,
+    selected = isSelected,
+    threadCount = threadCount,
+    active = isActive,
+)
+
+internal fun MessageListItem.buildSenderStyles(): ImmutableList<ComposedAddressStyle> = buildList {
     when (val separatorIndex = displayName.indexOf(',')) {
         -1 if !isRead -> add(ComposedAddressStyle.Bold(start = 0))
         in 0..Int.MAX_VALUE if !isRead -> {

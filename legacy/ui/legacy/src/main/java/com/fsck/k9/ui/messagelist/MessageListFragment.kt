@@ -65,11 +65,13 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
@@ -109,6 +111,7 @@ import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.ST
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListFragmentListener
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.ui.messagelist.debug.AuthDebugActions
+import com.fsck.k9.ui.messagelist.item.toMessageItemUi
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -119,6 +122,7 @@ import java.util.concurrent.Future
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
@@ -145,14 +149,18 @@ import net.thunderbird.core.ui.contract.mvi.observeWithoutEffect
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.UnifiedAccountId
+import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
 import net.thunderbird.feature.mail.message.list.domain.model.SortType
 import net.thunderbird.feature.mail.message.list.extension.toDomainSortType
+import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
+import net.thunderbird.feature.mail.message.list.ui.legacy.LegacyMessageListBridge
+import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListMetadata
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import net.thunderbird.feature.notification.api.content.InAppNotification
@@ -189,6 +197,7 @@ private const val TAG = "MessageListFragment"
 class MessageListFragment :
     Fragment(),
     MessageListFragmentBridgeContract,
+    LegacyMessageListBridge,
     ConfirmationDialogFragmentListener,
     MessageListItemActionListener,
     ErrorNotificationsDialogFragmentActionListener {
@@ -220,6 +229,8 @@ class MessageListFragment :
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
     private val actionModeCallback = ActionModeCallback()
+    private val contactRepository: ContactRepository by inject()
+    private val avatarMonogramCreator: AvatarMonogramCreator by inject()
 
     private val chooseFolderForMoveLauncher: ActivityResultLauncher<ChooseFolderResultContract.Input> =
         registerForActivityResult(ChooseFolderResultContract(ChooseFolderActivity.Action.MOVE)) { result ->
@@ -677,8 +688,6 @@ class MessageListFragment :
         if (forceUpdate) {
             accounts = config.search.getLegacyAccounts(accountManager)
         }
-
-        legacyViewModel.loadMessageList(config, forceUpdate)
     }
 
     override fun folderLoading(folderId: Long, loading: Boolean) {
@@ -1226,7 +1235,7 @@ class MessageListFragment :
                 when (outcome.error) {
                     is AuthDebugActions.Error.AccountNotFound,
                     is AuthDebugActions.Error.NoOAuthState,
-                    -> {
+                        -> {
                         Toast.makeText(
                             requireContext(),
                             R.string.debug_invalidate_access_token_unavailable,
@@ -1279,7 +1288,7 @@ class MessageListFragment :
                     is AuthDebugActions.Error.NoOAuthState,
                     is AuthDebugActions.Error.CannotModifyAccessToken,
                     is AuthDebugActions.Error.AlreadyModified,
-                    -> {
+                        -> {
                         Toast.makeText(
                             requireContext(),
                             R.string.debug_invalidate_access_token_unavailable,
@@ -1321,7 +1330,7 @@ class MessageListFragment :
 
                     is AuthDebugActions.Error.CannotModifyAccessToken,
                     is AuthDebugActions.Error.AlreadyModified,
-                    -> {
+                        -> {
                         // Not relevant to this action, but keep exhaustive when; show generic unavailable
                         Toast.makeText(
                             requireContext(),
@@ -2469,6 +2478,7 @@ class MessageListFragment :
         var args = MessageListContract.ViewModel.Args(
             accountIds = accounts,
             folderId = if (accounts.size == 1) currentFolder?.databaseId else null,
+            legacyMessageListBridge = this,
         )
         parametersOf(args)
     }
@@ -2481,6 +2491,48 @@ class MessageListFragment :
     internal val MessageListMetadata.currentSortCriteria: SortCriteria
         get() =
             sortCriteriaPerAccount.getValue(folder?.account?.id?.takeIf { it != UnifiedAccountId })
+
+    // region [ Legacy Message List Bridge methods ]
+    override fun loadMessages(
+        preferences: MessageListPreferences,
+        metadata: MessageListMetadata,
+    ): Flow<List<MessageItemUi>> {
+        val (primarySortType, _) = metadata.currentSortCriteria
+        val (sortType, sortAscending) = primarySortType.toDomainSortType()
+        val config = MessageListConfig(
+            search = localSearch,
+            showingThreadedList = showingThreadedList,
+            sortType = sortType,
+            sortAscending = sortAscending,
+            sortDateAscending = sortDateAscending,
+            activeMessage = activeMessage,
+            sortOverrides = legacyViewModel.messageSortOverrides.toMap(),
+        )
+        legacyViewModel.loadMessageList(config)
+        return legacyViewModel
+            .getMessageListLiveData()
+            .asFlow()
+            .map { info ->
+                info.messageListItems.map { item ->
+                    val url = contactRepository.getPhotoUri(
+                        item.displayAddress?.address ?: "",
+                    )
+                    val monogram = avatarMonogramCreator.create(
+                        item.displayName.toString(),
+                        item.displayAddress?.address,
+                    )
+                    item.toMessageItemUi(
+                        showContactPicture = preferences.showMessageAvatar,
+                        isSelected = isMessageSelected(item),
+                        isActive = item.messageReference == activeMessage,
+                        monogram = monogram,
+                        url = url?.toString(),
+                    )
+                }
+            }
+    }
+
+    // endregion [ Legacy Message List Bridge methods ]
 
     private fun showComposeDropdown(anchor: View, lifecycleOwner: LifecycleOwner, stateOwner: SavedStateRegistryOwner) {
         val context = anchor.context
