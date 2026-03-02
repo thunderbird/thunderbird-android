@@ -113,6 +113,7 @@ private fun rememberMessageItemUi(
     MessageItemUi(
         state = if (item.isRead) MessageItemUi.State.Read else MessageItemUi.State.Unread,
         id = item.messageUid,
+        messageReference = item.messageReference.toIdentityString(),
         account = Account(
             id = item.account.id,
             color = Color(item.account.profile.color),
