@@ -92,10 +92,14 @@ sealed interface MessageListState {
         override val preferences: MessageListPreferences? = null,
         override val messages: ImmutableList<MessageItemUi> = persistentListOf(),
     ) : MessageListState {
+        /**
+         * Indicates whether the warming-up state has completed and is ready to transition to an active state.
+         *
+         * @return `true` when both the metadata is ready and user preferences have been loaded, signaling
+         * that the message list screen has completed its initialization phase and can proceed to display content.
+         */
         val isReady: Boolean
-            get() = metadata.swipeActions.isNotEmpty() &&
-                preferences != null &&
-                metadata.sortCriteriaPerAccount.isNotEmpty()
+            get() = metadata.isReady && preferences != null
     }
 
     /**
