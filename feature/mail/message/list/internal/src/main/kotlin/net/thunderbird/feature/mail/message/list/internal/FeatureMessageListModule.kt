@@ -1,5 +1,6 @@
 package net.thunderbird.feature.mail.message.list.internal
 
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.common.inject.getList
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
@@ -69,7 +70,10 @@ val featureMessageListModule = module {
             getDefaultSortCriteria = get(),
         )
     }
-    factory { MessageListStateMachine.Factory() }
+    factory {
+        @OptIn(ExperimentalTime::class)
+        MessageListStateMachine.Factory(logger = get(), clock = get(), debuggingSettingsPreferenceManager = get())
+    }
     viewModel<MessageListContract.ViewModel> { parameters ->
         MessageListViewModel(
             logger = get(),
