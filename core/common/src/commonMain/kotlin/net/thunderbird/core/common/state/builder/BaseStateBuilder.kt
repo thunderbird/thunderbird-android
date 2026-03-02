@@ -4,8 +4,8 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.reflect.KClass
 import net.thunderbird.core.common.state.DefaultStateMachine.StateListeners
 import net.thunderbird.core.common.state.DefaultStateMachine.StateRegistry
-import net.thunderbird.core.common.state.StateMachine.Transition
 import net.thunderbird.core.common.state.StateMachine
+import net.thunderbird.core.common.state.StateMachine.Transition
 import net.thunderbird.core.common.state.TransactionKey
 
 /**

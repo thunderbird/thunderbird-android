@@ -2,6 +2,8 @@ package net.thunderbird.core.common.state
 
 import kotlin.reflect.KClass
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +14,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.common.state.StateMachine.Transition
+import net.thunderbird.core.common.state.builder.StateMachineDebugger
+import net.thunderbird.core.logging.Logger
 
 internal typealias TransactionKey<TState, TEvent> = Pair<KClass<out TState>, KClass<out TEvent>>
 
@@ -100,14 +104,20 @@ interface StateMachine<TState : Any, TEvent : Any> {
      * @property previousState The state of the state machine before the transition occurred.
      * @property newState The state of the state machine after the transition occurred.
      */
-    data class StateTransitionRecord<TState : Any, in TEvent : Any>(
+    @OptIn(ExperimentalTime::class)
+    data class StateTransitionRecord<TState : Any, TEvent : Any>(
         val transition: Transition<TState, TEvent>,
+        val event: TEvent,
         val previousState: TState,
         val newState: TState,
+        val timestamp: Instant,
     )
 }
 
 internal class DefaultStateMachine<TState : Any, TEvent : Any>(
+    private val logger: Logger?,
+    private val logTag: String?,
+    private val stateMachineDebugger: StateMachineDebugger<TState, TEvent>?,
     scope: CoroutineScope,
     initialState: TState,
     internal val stateRegistrar: Map<KClass<out TState>, StateRegistry<TState, TState, TEvent>>,
@@ -128,17 +138,20 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
     private val mutex = Mutex()
     private val _currentState = MutableStateFlow(initialState)
     override val currentState: StateFlow<TState> = _currentState.asStateFlow()
-    override val historyStack = ArrayDeque<StateMachine.StateTransitionRecord<TState, TEvent>>()
+    override val historyStack: List<StateMachine.StateTransitionRecord<TState, TEvent>>
+        get() = stateMachineDebugger?.historyStack ?: emptyList()
 
     init {
         scope.launch {
             // delay onEnter initialization so the viewModels are ready to receive the state
             delay(500.milliseconds)
+            verbose("StateMachine initialized with initial state: $initialState")
             stateRegistrar[initialState::class]?.listeners?.onEnter?.invoke(null, null, currentStateSnapshot)
         }
     }
 
     override suspend fun process(event: TEvent): TState {
+        debug("Processing event: $event")
         mutex.withLock {
             val currentState = _currentState.value
             val currentStateRegistry = stateRegistrar[currentState::class]
@@ -151,6 +164,9 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
                         stateClass.isInstance(currentState) && eventClass == event::class
                     }
                     .firstNotNullOfOrNull { it.value }
+            if (transition == null) {
+                verbose("Found no transition for $currentState -> $event")
+            }
 
             return when {
                 transition != null && transition.guard(currentState, event) -> {
@@ -161,29 +177,56 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
                             currentStateRegistry?.listeners?.onExit?.invoke(currentState, event)
                             newStateRegistry.listeners.onEnter?.invoke(currentState, event, newState)
                             newStateRegistry.listeners.onExit?.invoke(newState, null)
+                            verbose("Reached final state: ${newState::class.simpleName}")
                         }
 
                         currentState::class != newState::class -> {
+                            debug(
+                                "Transitioning from ${currentState::class.simpleName} to ${newState::class.simpleName}",
+                            )
                             currentStateRegistry?.listeners?.onExit?.invoke(currentState, event)
                             newStateRegistry?.listeners?.onEnter?.invoke(currentState, event, newState)
                         }
                     }
                     _currentState.update { newState }
-                    historyStack.addLast(
-                        StateMachine.StateTransitionRecord(
-                            transition = transition,
-                            previousState = currentState,
-                            newState = newState,
-                        ),
+                    stateMachineDebugger?.record(
+                        transition = transition,
+                        event = event,
+                        previousState = currentState,
+                        newState = newState,
                     )
-                    newState
+                    newState.also {
+                        debug("Transitioned from ${currentState::class.simpleName} to ${newState::class.simpleName}")
+                    }
                 }
 
                 else -> {
+                    info(
+                        "No transition defined for '${currentState::class.simpleName}' with event '$event', " +
+                            "or guard failed; Ignore event",
+                    )
                     // No transition defined, or guard failed -> Ignore event
                     currentState
                 }
+            }.also {
+                stateMachineDebugger?.dump()
             }
         }
+    }
+
+    private fun verbose(message: String) {
+        if (stateMachineDebugger != null) {
+            logger?.verbose(logTag) { message }
+        }
+    }
+
+    private fun debug(message: String) {
+        if (stateMachineDebugger != null) {
+            logger?.debug(logTag) { message }
+        }
+    }
+
+    private fun info(message: String) {
+        logger?.info(logTag) { message }
     }
 }
