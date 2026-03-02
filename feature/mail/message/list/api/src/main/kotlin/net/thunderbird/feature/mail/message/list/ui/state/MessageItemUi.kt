@@ -12,6 +12,7 @@ import androidx.compose.runtime.Immutable
  *
  * @property state The current display state of the message (e.g., Read, Unread, Selected).
  * @property id The unique identifier for the message.
+ * @param messageReference The reference to the message in the underlying data source.
  * @property account The account to which this message belongs.
  * @property senders The composed representation of the message sender(s) with display name,
  *  styling, and avatar.
@@ -32,6 +33,7 @@ import androidx.compose.runtime.Immutable
 data class MessageItemUi(
     val state: State,
     val id: String,
+    val messageReference: String,
     val account: Account,
     val senders: ComposedAddressUi,
     val subject: String,
