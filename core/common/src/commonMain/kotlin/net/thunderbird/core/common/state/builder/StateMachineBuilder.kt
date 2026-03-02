@@ -1,12 +1,15 @@
 package net.thunderbird.core.common.state.builder
 
 import kotlin.reflect.KClass
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.CoroutineScope
 import net.thunderbird.core.common.state.DefaultStateMachine
 import net.thunderbird.core.common.state.DefaultStateMachine.StateRegistry
-import net.thunderbird.core.common.state.StateMachine.Transition
 import net.thunderbird.core.common.state.StateMachine
+import net.thunderbird.core.common.state.StateMachine.Transition
 import net.thunderbird.core.common.state.TransactionKey
+import net.thunderbird.core.logging.Logger
 
 /**
  * A DSL builder for creating [StateMachine] instances.
@@ -26,6 +29,23 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
 ) {
     private var initialState: TState? = null
     private val stateRegistrar = mutableMapOf<KClass<out TState>, StateRegistry<TState, TState, TEvent>>()
+    private var logger: Logger? = null
+    private var logTag: String? = null
+    private var debuggerBuilder: StateMachineDebuggerBuilder<TState, TEvent>? = null
+
+    fun withLogger(logger: Logger, logTag: String? = null) {
+        this.logger = logger
+        this.logTag = logTag
+    }
+
+    fun enableDebug(builder: StateMachineDebuggerBuilder<TState, TEvent>.() -> Unit) {
+        debuggerBuilder = StateMachineDebuggerBuilder<TState, TEvent>().apply {
+            builder()
+            enabled = true
+            debuggerLogger = logger
+            debuggerLogTag = logTag
+        }
+    }
 
     /**
      * Defines the initial state of the state machine.
@@ -161,11 +181,74 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
                 }
             } ]"
         }
+        @OptIn(ExperimentalTime::class)
         return DefaultStateMachine(
+            logger = logger,
+            logTag = logTag,
+            stateMachineDebugger = debuggerBuilder?.build(),
             scope = scope,
             initialState = initialState,
             transitions = transitions,
             stateRegistrar = stateRegistrar,
         )
+    }
+
+    /**
+     * Builder for configuring debug functionality for a state machine.
+     *
+     * This builder allows you to enable and configure debugging capabilities for a state machine,
+     * including custom logging, timing, and value formatting. The debugger helps track state transitions,
+     * events, and timing information during state machine execution.
+     *
+     * @param TState The base type for all states in the state machine.
+     * @param TEvent The base type for all events that can trigger transitions.
+     */
+    class StateMachineDebuggerBuilder<TState : Any, TEvent : Any> {
+        internal var enabled: Boolean = false
+        internal var debuggerLogger: Logger? = null
+        internal var debuggerLogTag: String? = null
+
+        @OptIn(ExperimentalTime::class)
+        private var clock: Clock? = null
+        private var valueFormatter: (Any, formatter: (Any) -> String) -> String = { obj, _ -> obj.toString() }
+
+        /**
+         * Configures a custom formatter for values in the debugger output.
+         *
+         * Sets a function that formats values when the state machine debugger logs or displays data.
+         * The formatter receives the value to format and a default formatter function that can be used
+         * as a fallback or for nested formatting.
+         *
+         * @param valueFormatter A function that takes a value of any type and a default formatter function,
+         * and returns a formatted string representation of the value.
+         */
+        fun formatValues(valueFormatter: (Any, formatter: (Any) -> String) -> String) {
+            this.valueFormatter = valueFormatter
+        }
+
+        /**
+         * Sets the clock to be used for timing measurements in the debugger.
+         *
+         * The clock is used to track elapsed time during state machine operations and transitions.
+         * This method must be called to provide a clock instance before building the debugger.
+         *
+         * @param clock The Clock instance to use for time measurements in the debugger.
+         */
+        @OptIn(ExperimentalTime::class)
+        fun withClock(clock: Clock) {
+            this.clock = clock
+        }
+
+        internal fun build(): StateMachineDebugger<TState, TEvent> {
+            require(enabled) { "StateMachineDebugger must be enabled to use" }
+
+            @OptIn(ExperimentalTime::class)
+            return StateMachineDebugger(
+                logger = requireNotNull(debuggerLogger) { "logger must be provided for StateMachineDebugger" },
+                logTag = requireNotNull(debuggerLogTag) { "logTag must be provided for StateMachineDebugger" },
+                clock = requireNotNull(clock) { "clock must be provided for StateMachineDebugger" },
+                valueFormatter = valueFormatter,
+            )
+        }
     }
 }
