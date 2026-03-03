@@ -7,12 +7,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import androidx.compose.material3.TopAppBar as Material3TopAppBar
@@ -74,7 +74,7 @@ fun SubtitleTopAppBarWithMenuButton(
             ButtonIcon(
                 onClick = onMenuClick,
                 imageVector = Icons.Outlined.Menu,
-                modifier = Modifier.testTagAsResourceId("SubtitleTopAppBarMenuButton"),
+                modifier = Modifier.testTag("SubtitleTopAppBarMenuButton"),
             )
         },
         actions = actions,
@@ -98,7 +98,7 @@ fun SubtitleTopAppBarWithBackButton(
             ButtonIcon(
                 onClick = onBackClick,
                 imageVector = Icons.Outlined.ArrowBack,
-                modifier = Modifier.testTagAsResourceId("SubtitleTopAppBarBackButton"),
+                modifier = Modifier.testTag("SubtitleTopAppBarBackButton"),
                 contentDescription = stringResource(androidx.appcompat.R.string.abc_action_bar_up_description),
             )
         },
