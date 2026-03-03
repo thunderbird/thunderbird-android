@@ -191,6 +191,7 @@ include(
 )
 
 include(
+    ":core:ui:common",
     ":core:ui:contract",
     ":core:ui:setting:api",
     ":core:ui:setting:component",
