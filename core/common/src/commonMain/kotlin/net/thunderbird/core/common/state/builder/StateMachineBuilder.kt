@@ -42,8 +42,8 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
         debuggerBuilder = StateMachineDebuggerBuilder<TState, TEvent>().apply {
             builder()
             enabled = true
-            debuggerLogger = logger
-            debuggerLogTag = logTag
+            debuggerLogger = this@StateMachineBuilder.logger
+            debuggerLogTag = this@StateMachineBuilder.logTag
         }
     }
 
@@ -203,6 +203,7 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
      * @param TState The base type for all states in the state machine.
      * @param TEvent The base type for all events that can trigger transitions.
      */
+    @StateMachineBuilderDsl
     class StateMachineDebuggerBuilder<TState : Any, TEvent : Any> {
         internal var enabled: Boolean = false
         internal var debuggerLogger: Logger? = null
@@ -245,7 +246,7 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
             @OptIn(ExperimentalTime::class)
             return StateMachineDebugger(
                 logger = requireNotNull(debuggerLogger) { "logger must be provided for StateMachineDebugger" },
-                logTag = requireNotNull(debuggerLogTag) { "logTag must be provided for StateMachineDebugger" },
+                logTag = debuggerLogTag,
                 clock = requireNotNull(clock) { "clock must be provided for StateMachineDebugger" },
                 valueFormatter = valueFormatter,
             )
