@@ -5,7 +5,6 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.LayoutInflater
@@ -103,7 +102,6 @@ import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.AR
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.ARG_THREADED_LIST
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.STATE_ACTIVE_MESSAGE
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.STATE_ACTIVE_MESSAGES
-import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.STATE_MESSAGE_LIST_APPEARANCE
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.STATE_REMOTE_SEARCH_PERFORMED
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.STATE_SEARCH_VIEW_ICONIFIED
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.STATE_SEARCH_VIEW_QUERY
@@ -121,16 +119,11 @@ import java.util.concurrent.Future
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import net.jcip.annotations.GuardedBy
 import net.thunderbird.core.android.account.Expunge
@@ -138,13 +131,11 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.network.ConnectivityManager
-import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettings
 import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.compose.designsystem.atom.ClickableSurface
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
@@ -152,13 +143,12 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.contract.mvi.observeWithoutEffect
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
-import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.UnifiedAccountId
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
 import net.thunderbird.feature.mail.message.list.domain.model.SortType
 import net.thunderbird.feature.mail.message.list.extension.toDomainSortType
-import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
@@ -306,8 +296,6 @@ class MessageListFragment :
     private var messageListSwipeCallback: MessageListSwipeCallback? = null
     private val interactionSettings: InteractionSettings
         get() = generalSettingsManager.getConfig().interaction
-    private val messageListSettings: DisplayMessageListSettings
-        get() = generalSettingsManager.getConfig().display.visualSettings.messageListSettings
 
     /**
      * Set this to `true` when the fragment should be considered active. When active, the fragment adds its actions to
@@ -322,7 +310,6 @@ class MessageListFragment :
             maybeHideFloatingActionButton()
         }
 
-    private lateinit var messageListAppearance: MessageListAppearance
     // endregion [ LegacyMessageListFragment properties ]
 
     // region [ LegacyMessageListFragment methods]
@@ -359,7 +346,7 @@ class MessageListFragment :
             return
         }
 
-        generalSettingsManager.getSettingsFlow()
+        generalSettingsManager.getConfigFlow()
             /**
              * Skips the first emitted item from the settings flow,
              * since the initial value of `showingThreadedList` is taken
@@ -388,18 +375,6 @@ class MessageListFragment :
         initialSearchViewIconified = savedInstanceState.getBoolean(STATE_SEARCH_VIEW_ICONIFIED, true)
         val messageReferenceString = savedInstanceState.getString(STATE_ACTIVE_MESSAGE)
         activeMessage = MessageReference.parse(messageReferenceString)
-
-        messageListAppearance = requireNotNull(
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                savedInstanceState.getParcelable(STATE_MESSAGE_LIST_APPEARANCE, MessageListAppearance::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                savedInstanceState.getParcelable(STATE_MESSAGE_LIST_APPEARANCE)
-            },
-        ) {
-            "Could not restore MessageListAppearance. Missing parcelable extra '$STATE_MESSAGE_LIST_APPEARANCE'. " +
-                "Extras: $savedInstanceState"
-        }
     }
 
     private fun restoreSelectedMessages(savedInstanceState: Bundle) {
@@ -476,18 +451,6 @@ class MessageListFragment :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(state = Lifecycle.State.CREATED) {
-                viewModel
-                    .state
-                    .mapNotNull { state -> state.preferences?.toMessageListAppearance() }
-                    .distinctUntilChanged()
-                    .collectLatest { appearance ->
-                        messageListAppearance = appearance
-                    }
-            }
-        }
-
         legacyViewModel.getMessageListLiveData().observe(viewLifecycleOwner) { messageListInfo: MessageListInfo ->
             setMessageList(messageListInfo)
         }
@@ -864,9 +827,6 @@ class MessageListFragment :
         )
         if (activeMessage != null) {
             outState.putString(STATE_ACTIVE_MESSAGE, activeMessage!!.toIdentityString())
-        }
-        if (::messageListAppearance.isInitialized) {
-            outState.putParcelable(STATE_MESSAGE_LIST_APPEARANCE, messageListAppearance)
         }
     }
 
@@ -1960,17 +1920,13 @@ class MessageListFragment :
         }
 
         if (isThreadDisplay) {
-            if (messageListItems.isNotEmpty()) {
-                val strippedSubject = messageListItems.first().subject?.let { Utility.stripSubject(it) }
-                threadTitle = if (strippedSubject.isNullOrEmpty()) {
-                    getString(R.string.general_no_subject)
-                } else {
-                    strippedSubject
-                }
-                updateTitle()
+            val strippedSubject = messageListItems.first().subject?.let { Utility.stripSubject(it) }
+            threadTitle = if (strippedSubject.isNullOrEmpty()) {
+                getString(R.string.general_no_subject)
             } else {
-                // TODO: empty thread view -> return to full message list
+                strippedSubject
             }
+            updateTitle()
         }
 
         rememberedSelected?.let {
@@ -2523,14 +2479,7 @@ class MessageListFragment :
 
     internal val MessageListMetadata.currentSortCriteria: SortCriteria
         get() =
-            sortCriteriaPerAccount.getValue(folder?.account?.id)
-
-    val swipeActions: StateFlow<Map<AccountId, SwipeActions>> by lazy {
-        viewModel
-            .state
-            .map { it.metadata.swipeActions }
-            .stateIn(lifecycleScope, SharingStarted.Lazily, emptyMap())
-    }
+            sortCriteriaPerAccount.getValue(folder?.account?.id?.takeIf { it != UnifiedAccountId })
 
     private fun showComposeDropdown(anchor: View, lifecycleOwner: LifecycleOwner, stateOwner: SavedStateRegistryOwner) {
         val context = anchor.context
@@ -2616,18 +2565,6 @@ class MessageListFragment :
             )
         }
     }
-
-    private fun MessageListPreferences.toMessageListAppearance(): MessageListAppearance = MessageListAppearance(
-        previewLines = excerptLines,
-        stars = showFavouriteButton,
-        senderAboveSubject = senderAboveSubject,
-        showContactPicture = showMessageAvatar,
-        showingThreadedList = groupConversations,
-        backGroundAsReadIndicator = colorizeBackgroundWhenRead,
-        showAccountIndicator = isShowAccountIndicator,
-        density = density,
-        dateTimeFormat = dateTimeFormat,
-    )
 
     companion object Factory : MessageListFragmentBridgeContract.Factory {
         override fun newInstance(
