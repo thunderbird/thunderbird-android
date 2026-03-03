@@ -12,10 +12,13 @@ import assertk.assertions.isTrue
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.state.builder.stateMachine
+import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.core.testing.TestClock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Suppress("MaxLineLength")
@@ -249,6 +252,11 @@ class StateMachineTest {
     fun `process should add to the history stack when current state has transition for given event`() = runTest {
         // Arrange
         val stateMachine = stateMachine(scope = this) {
+            withLogger(TestLogger())
+            enableDebug {
+                @OptIn(ExperimentalTime::class)
+                withClock(TestClock())
+            }
             initialState(State.Init) {
                 transition<Event.LoadData> { _, _ -> State.Loading }
             }
@@ -302,6 +310,11 @@ class StateMachineTest {
         runTest {
             // Arrange
             val stateMachine = stateMachine<State, Event>(scope = this) {
+                withLogger(TestLogger())
+                enableDebug {
+                    @OptIn(ExperimentalTime::class)
+                    withClock(TestClock())
+                }
                 initialState(State.Init) {
                     transition<Event.LoadData> { _, _ -> State.Loading }
                 }

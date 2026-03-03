@@ -176,7 +176,10 @@ class StateMachineViewModelTest {
         }
     }
 
-    private class FakeStateMachine(initialState: String) : StateMachine<String, String> {
+    private class FakeStateMachine(
+        initialState: String,
+        override val historyStack: List<StateMachine.StateTransitionRecord<String, String>> = emptyList(),
+    ) : StateMachine<String, String> {
         private val _currentState = MutableStateFlow(initialState)
         override val currentState: StateFlow<String> = _currentState.asStateFlow()
 

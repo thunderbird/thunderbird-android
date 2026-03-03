@@ -23,7 +23,7 @@ import net.thunderbird.core.logging.Logger
  */
 internal class StateMachineDebugger<TState : Any, TEvent : Any>(
     logger: Logger,
-    logTag: String,
+    logTag: String?,
     @OptIn(ExperimentalTime::class)
     private val clock: Clock,
     val valueFormatter: (Any, formatter: (Any) -> String) -> String,
