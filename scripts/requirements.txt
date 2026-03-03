@@ -17,4 +17,4 @@ Jinja2==3.1.6
 
 # Required by: scripts/ci/setup_release_automation, scripts/ci/render-notes.py
 # HTTP library for GitHub API interactions
-requests==2.32.4
+requests==2.32.5
