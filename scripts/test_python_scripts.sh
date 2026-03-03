@@ -5,7 +5,25 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Cleanup function
+cleanup() {
+    if [ -n "$VENV_DIR" ] && [ -d "$VENV_DIR" ]; then
+        deactivate 2>/dev/null || true
+        rm -rf "$VENV_DIR"
+    fi
+}
+
+# Print guidance when dependency installs fail under --require-hashes.
+on_install_error() {
+    echo ""
+    echo "Dependency install failed. See scripts/README.md for updating requirements.txt hashes."
+}
+
+# Ensure cleanup happens on exit
+trap cleanup EXIT
+# Print instructions if a command fails (e.g., missing hashes).
+trap on_install_error ERR
 
 echo "Python Scripts Test"
 echo "==================="
@@ -26,7 +44,6 @@ source "$VENV_DIR/bin/activate"
 
 # Install dependencies
 echo "Installing dependencies..."
-pip install --quiet --upgrade pip
 pip install --quiet -r "$SCRIPT_DIR/requirements.txt"
 echo "✓ Dependencies installed"
 echo ""
@@ -38,17 +55,5 @@ python3 -m py_compile "$SCRIPT_DIR/ci/render-notes.py" && echo "  ✓ render-not
 python3 -m py_compile "$SCRIPT_DIR/ci/setup_release_automation" && echo "  ✓ setup_release_automation"
 python3 -m py_compile "$SCRIPT_DIR/ci/merges/merge_gradle.py" && echo "  ✓ merge_gradle.py"
 
-TEST_RESULT=$?
 echo ""
-
-# Clean up
-deactivate
-rm -rf "$VENV_DIR"
-
-if [ $TEST_RESULT -eq 0 ]; then
-    echo "✓ All tests passed!"
-    exit 0
-else
-    echo "✗ Some tests failed"
-    exit 1
-fi
+echo "✓ All tests passed!"

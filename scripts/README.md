@@ -6,10 +6,10 @@ Various scripts for CI/CD, release automation, and development tasks.
 
 ### Setup
 
-Install dependencies (all pinned and CVE-free):
+Install direct dependencies (hashed, no transitive deps):
 
 ```bash
-pip install -r requirements.txt
+python3 -m pip install -r scripts/requirements.txt
 ```
 
 ### Available Scripts
@@ -29,7 +29,7 @@ It's recommended to use a virtual environment:
 ```bash
 python3 -m venv venv
 source venv/bin/activate  # On macOS/Linux
-pip install -r requirements.txt
+python3 -m pip install -r scripts/requirements.txt
 ```
 
 To deactivate: `deactivate`
@@ -39,7 +39,7 @@ To deactivate: `deactivate`
 To verify everything works:
 
 ```bash
-./test_python_scripts.sh
+./scripts/test_python_scripts.sh
 ```
 
 This creates a temporary environment, installs dependencies, runs tests, and cleans up automatically.

@@ -1,0 +1,3 @@
+[tools]
+java = "temurin-21"
+python = "3.14"

@@ -7,6 +7,9 @@ on:
   pull_request_target:
     types: [review_requested]
 
+permissions:
+  contents: none
+
 jobs:
   pr-auto-assign-reviewer:
     permissions:
