@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
@@ -41,7 +42,6 @@ import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Event
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.State
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.R as CommonR
@@ -188,14 +188,14 @@ private fun BottomBar(
                         text = stringResource(CommonR.string.account_common_button_next),
                         onClick = { onEvent(Event.NextClicked) },
                         modifier = Modifier.hide(!isNextButtonVisible)
-                            .testTagAsResourceId("onboarding_permissions_next_button"),
+                            .testTag("onboarding_permissions_next_button"),
                     )
 
                     ButtonText(
                         text = stringResource(R.string.onboarding_permissions_skip_button),
                         onClick = { onEvent(Event.NextClicked) },
                         modifier = Modifier.hide(isNextButtonVisible)
-                            .testTagAsResourceId("onboarding_permissions_skip_button"),
+                            .testTag("onboarding_permissions_skip_button"),
                     )
                 }
             }
