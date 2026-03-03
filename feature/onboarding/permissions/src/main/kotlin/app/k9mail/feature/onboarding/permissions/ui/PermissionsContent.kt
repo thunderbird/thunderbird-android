@@ -35,7 +35,7 @@ import app.k9mail.feature.onboarding.permissions.R
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Event
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.State
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.IconsWithBottomRightOverlay
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.R as CommonR
 
@@ -121,7 +121,7 @@ private fun PermissionBoxes(
     onEvent: (Event) -> Unit,
 ) {
     PermissionBox(
-        icon = IconsWithBottomRightOverlay.person,
+        icon = Icons.Filled.Person,
         permissionState = state.contactsPermissionState,
         title = stringResource(R.string.onboarding_permissions_contacts_title),
         description = stringResource(R.string.onboarding_permissions_contacts_description),
@@ -132,7 +132,7 @@ private fun PermissionBoxes(
         Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
 
         PermissionBox(
-            icon = IconsWithBottomRightOverlay.notification,
+            icon = Icons.Filled.Notifications,
             permissionState = state.notificationsPermissionState,
             title = stringResource(R.string.onboarding_permissions_notifications_title),
             description = stringResource(R.string.onboarding_permissions_notifications_description),
