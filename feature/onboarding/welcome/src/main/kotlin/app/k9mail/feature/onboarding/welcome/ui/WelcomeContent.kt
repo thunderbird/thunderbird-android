@@ -27,9 +27,9 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMedium
 import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.onboarding.welcome.R
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import org.jetbrains.compose.resources.painterResource
 
 private const val CIRCLE_COLOR = 0xFFEEEEEE

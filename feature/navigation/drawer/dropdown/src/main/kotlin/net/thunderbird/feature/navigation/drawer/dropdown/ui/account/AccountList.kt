@@ -7,8 +7,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.collections.immutable.ImmutableList
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 
 @Composable

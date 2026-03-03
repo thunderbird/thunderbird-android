@@ -17,9 +17,9 @@ import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.image.FixedScaleImage
 import app.k9mail.core.ui.compose.designsystem.atom.image.RemoteImage
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.ui.catalog.ui.page.common.list.fullSpanItem

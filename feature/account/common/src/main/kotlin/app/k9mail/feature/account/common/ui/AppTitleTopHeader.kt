@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMediumAutoResize
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import org.jetbrains.compose.resources.painterResource
 
 private const val TITLE_ICON_SIZE_DP = 56

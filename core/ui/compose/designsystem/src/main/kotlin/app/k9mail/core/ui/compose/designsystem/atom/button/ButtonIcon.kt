@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import androidx.compose.material3.Icon as Material3Icon
 import androidx.compose.material3.IconButton as Material3IconButton
 import androidx.compose.material3.IconButtonColors as Material3IconButtonColors

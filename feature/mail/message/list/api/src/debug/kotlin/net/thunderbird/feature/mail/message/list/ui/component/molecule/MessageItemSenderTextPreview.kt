@@ -14,7 +14,7 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 private data class MessageItemSenderTextPreviewParams(
     val sender: String,

@@ -15,8 +15,8 @@ import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarDuratio
 import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarHost
 import app.k9mail.core.ui.compose.designsystem.organism.snackbar.rememberSnackbarHostState
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.coroutines.launch
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @Composable
 fun SnackbarItems(modifier: Modifier = Modifier) {

@@ -7,9 +7,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import app.k9mail.core.ui.compose.theme2.MainTheme
-import app.k9mail.core.ui.compose.theme2.k9mail.K9MailTheme2
-import app.k9mail.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
+import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.k9mail.K9MailTheme2
+import net.thunderbird.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
 
 @Composable
 fun PreviewWithThemes(

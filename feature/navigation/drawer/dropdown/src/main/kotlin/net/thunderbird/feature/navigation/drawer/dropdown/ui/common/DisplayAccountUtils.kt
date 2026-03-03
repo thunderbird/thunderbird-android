@@ -3,7 +3,7 @@ package net.thunderbird.feature.navigation.drawer.dropdown.ui.common
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount

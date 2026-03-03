@@ -11,9 +11,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemeLightDark
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @PreviewLightDark
 @Composable

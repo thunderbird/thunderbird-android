@@ -11,8 +11,8 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemeLightDark
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.tab.TabPrimary
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @PreviewLightDark
 @Composable

@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.tab.TabSecondary
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 /**
  * A molecule component that displays a scrollable row of secondary tabs.

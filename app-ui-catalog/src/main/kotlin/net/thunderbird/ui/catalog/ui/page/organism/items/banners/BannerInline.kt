@@ -8,7 +8,7 @@ import app.k9mail.core.ui.compose.designsystem.organism.banner.global.ErrorBanne
 import app.k9mail.core.ui.compose.designsystem.organism.banner.global.InfoBannerGlobalNotificationCard
 import app.k9mail.core.ui.compose.designsystem.organism.banner.global.SuccessBannerGlobalNotificationCard
 import app.k9mail.core.ui.compose.designsystem.organism.banner.global.WarningBannerGlobalNotificationCard
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.ui.catalog.ui.page.common.list.fullSpanItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionSubtitleItem

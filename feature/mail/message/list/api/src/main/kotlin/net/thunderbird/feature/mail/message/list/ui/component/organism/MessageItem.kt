@@ -45,10 +45,10 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIconDefaults
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
-import app.k9mail.core.ui.compose.theme2.LocalContentColor
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.core.ui.compose.theme2.LocalContentColor
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.mail.message.list.ui.component.molecule.AccountIndicatorIcon
 import net.thunderbird.feature.mail.message.list.ui.component.molecule.HeaderRow
 import net.thunderbird.feature.mail.message.list.ui.component.molecule.HeaderRowCompact

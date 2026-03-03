@@ -4,7 +4,7 @@ plugins {
 
 kotlin {
     android {
-        namespace = "app.k9mail.core.ui.compose.theme2.k9mail"
+        namespace = "net.thunderbird.core.ui.compose.theme2.k9mail"
         @Suppress("UnstableApiUsage")
         androidResources.enable = true
     }
