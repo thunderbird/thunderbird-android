@@ -1,9 +1,9 @@
 package net.thunderbird.ui.catalog.ui.page.atom
 
 import androidx.compose.runtime.Composable
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevicesWithBackground
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.ui.common.annotation.PreviewDevicesWithBackground
 
 @Composable
 @PreviewDevicesWithBackground
