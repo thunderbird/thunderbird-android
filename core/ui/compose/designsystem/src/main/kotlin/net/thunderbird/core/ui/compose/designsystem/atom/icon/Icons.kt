@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Outbox
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AllInbox
@@ -95,8 +96,8 @@ object Icons {
         val CheckCircle: ImageVector = Icons.Filled.CheckCircle
         val Dot: ImageVector = FilledDotIcon
         val Star: ImageVector = FilledStarIcon
-
         val Thundermail: ImageVector = FilledThundermail
+        val Warning: ImageVector = Icons.Filled.Warning
     }
 
     /**
