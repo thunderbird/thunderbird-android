@@ -23,7 +23,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.Avatar
 
 @Composable
 fun MessageItemAvatar(
-    avatar: Avatar,
+    avatar: Avatar?,
     showMessageAvatar: Boolean,
     modifier: Modifier = Modifier,
     onAvatarClick: () -> Unit,
@@ -60,6 +60,7 @@ fun MessageItemAvatar(
                 )
 
                 is Avatar.Monogram -> TextTitleSmall(text = avatar.value)
+                null -> Unit
             }
         }
     }

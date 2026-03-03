@@ -54,6 +54,7 @@ internal val messageListSideEffectsModule = module {
                 folderId = args.folderId,
                 logger = get(),
                 folderRepository = get(),
+                profileRepository = get(),
             )
         },
         { AllConfigurationsReadySideEffect.Factory(logger = get()) },
