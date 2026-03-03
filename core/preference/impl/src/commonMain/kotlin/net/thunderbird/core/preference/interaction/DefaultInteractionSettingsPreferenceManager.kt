@@ -63,16 +63,16 @@ class DefaultInteractionSettingsPreferenceManager(
         ),
         isConfirmDelete = storage.getBoolean(KEY_CONFIRM_DELETE, INTERACTION_SETTINGS_DEFAULT_CONFIRM_DELETE),
         isConfirmDeleteStarred = storage.getBoolean(
-            KEY_CONFIRM_DISCARD_MESSAGE,
+            KEY_CONFIRM_DELETE_STARRED,
             INTERACTION_SETTINGS_DEFAULT_CONFIRM_DELETE_STARRED,
         ),
         isConfirmDeleteFromNotification = storage.getBoolean(
-            KEY_CONFIRM_DELETE_STARRED,
+            KEY_CONFIRM_DELETE_FROM_NOTIFICATION,
             INTERACTION_SETTINGS_DEFAULT_CONFIRM_DELETE_FROM_NOTIFICATION,
         ),
         isConfirmSpam = storage.getBoolean(KEY_CONFIRM_SPAM, INTERACTION_SETTINGS_DEFAULT_CONFIRM_SPAM),
         isConfirmDiscardMessage = storage.getBoolean(
-            KEY_CONFIRM_DELETE_FROM_NOTIFICATION,
+            KEY_CONFIRM_DISCARD_MESSAGE,
             INTERACTION_SETTINGS_DEFAULT_CONFIRM_DISCARD_MESSAGE,
         ),
         isConfirmMarkAllRead = storage.getBoolean(
