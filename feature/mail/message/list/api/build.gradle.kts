@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.feature.account.api)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.folder.api)
+    implementation(projects.feature.notification.api)
 }
 
 codeCoverage {
