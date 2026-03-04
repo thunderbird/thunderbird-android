@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
-import android.os.Parcelable
 import assertk.Assert
 import assertk.all
 import assertk.assertThat
@@ -262,12 +261,10 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val cryptoStatus = defaultCryptoStatus.copy(cryptoMode = CryptoMode.SIGN_ONLY)
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
 
-        val returnIntent = mock(Intent::class.java)
-        `when`(returnIntent.getIntExtra(eq(OpenPgpApi.RESULT_CODE), anyInt()))
-            .thenReturn(OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED)
+        val returnIntent = Intent()
+        returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED)
         val mockPendingIntent = mock(PendingIntent::class.java)
-        `when`<Parcelable>(returnIntent.getParcelableExtra<Parcelable>(eq(OpenPgpApi.RESULT_INTENT)))
-            .thenReturn(mockPendingIntent)
+        returnIntent.putExtra(OpenPgpApi.RESULT_INTENT, mockPendingIntent)
 
         `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(
             returnIntent,
@@ -296,8 +293,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED)
 
             val mockPendingIntent = mock(PendingIntent::class.java)
-            `when`<Parcelable>(returnIntent.getParcelableExtra<Parcelable>(eq(OpenPgpApi.RESULT_INTENT)))
-                .thenReturn(mockPendingIntent)
+            returnIntent.putExtra(OpenPgpApi.RESULT_INTENT, mockPendingIntent)
 
             `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(
                 returnIntent,

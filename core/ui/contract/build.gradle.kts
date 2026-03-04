@@ -5,7 +5,7 @@ plugins {
 kotlin {
     explicitApi()
 
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.core.ui.contract"
     }
 

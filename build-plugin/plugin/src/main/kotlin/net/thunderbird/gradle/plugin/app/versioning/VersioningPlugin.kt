@@ -1,7 +1,7 @@
 package net.thunderbird.gradle.plugin.app.versioning
 
 import com.android.build.api.artifact.SingleArtifact
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.api.variant.ApplicationVariant
 import java.io.File
@@ -54,7 +54,7 @@ class VersioningPlugin : Plugin<Project> {
     private fun Project.getVersionInfo(variant: ApplicationVariant): Provider<VersionInfo> {
         return provider {
             val flavorNames = variant.productFlavors.map { it.second }
-            val androidExtension = extensions.findByType(BaseAppModuleExtension::class.java)
+            val androidExtension = extensions.findByType(ApplicationExtension::class.java)
             val flavor = androidExtension?.productFlavors?.find { it.name in flavorNames }
             val builtType = androidExtension?.buildTypes?.find { it.name == variant.buildType }
 
