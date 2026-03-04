@@ -243,7 +243,7 @@ class CommandSync(
 
         return okHttpClient.newCall(request).execute().use { response ->
             if (response.isSuccessful) {
-                val inputStream = response.body!!.byteStream()
+                val inputStream = response.body.byteStream()
                 MimeMessage.parseMimeMessage(inputStream, false)
             } else {
                 null
