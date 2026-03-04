@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.navigation
+package net.thunderbird.core.ui.navigation
 
 /**
  * A Route represents a destination in the app.
@@ -8,11 +8,11 @@ package app.k9mail.core.ui.compose.navigation
  *
  * @see Navigation
  */
-interface Route {
-    val basePath: String
+public interface Route {
+    public val basePath: String
 
     /**
      * The route to navigate to this screen.
      */
-    fun route(): String
+    public fun route(): String
 }

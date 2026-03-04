@@ -37,7 +37,7 @@ androidxGlanceMaterial3 = "1.1.1"
 androidxGraphicsPath = "1.1.0-alpha01"
 androidxLifecycle = "2.10.0"
 androidxLocalBroadcastManager = "1.1.0"
-androidxNavigation = "2.9.6"
+androidxNavigation = "2.9.7"
 androidxRecyclerView = "1.4.0"
 androidxPreference = "1.2.1"
 androidxSwiperefreshlayout = "1.2.0"
@@ -71,6 +71,7 @@ jcipAnnotations = "1.0"
 jetbrainsAnnotations = "26.1.0"
 jetbrainsCompose = "1.10.1"
 jetbrainsComposeLifecycle = "2.9.6"
+jetbrainsComposeNavigation = "2.9.2"
 jetbrainsComposeNavigation3 = "1.0.0-alpha06"
 jetbrainsComposeNavigationEvent = "1.0.1"
 jdom = "2.0.6.1"
@@ -239,6 +240,7 @@ jetbrains-compose-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecyc
 jetbrains-compose-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "jetbrainsComposeLifecycle" }
 jetbrains-compose-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrainsComposeLifecycle" }
 jetbrains-compose-lifecycle-viewmodel-savedstate = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "jetbrainsComposeLifecycle" }
+jetbrains-compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jetbrainsComposeNavigation" }
 jetbrains-compose-navigation3 = { module = "org.jetbrains.androidx.navigation3:navigation-compose3", version.ref = "jetbrainsComposeNavigation3" }
 jetbrains-compose-navigation-event = { module = "org.jetbrains.androidx.navigationevent:navigationevent-compose", version.ref = "jetbrainsComposeNavigationEvent" }
 jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "jetbrainsCompose" }
