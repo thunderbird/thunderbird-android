@@ -73,3 +73,11 @@ enum class NotificationQuickDelete {
     FOR_SINGLE_MSG,
     NEVER,
 }
+
+enum class LockScreenNotificationVisibility {
+    EVERYTHING,
+    SENDERS,
+    MESSAGE_COUNT,
+    APP_NAME,
+    NOTHING,
+}

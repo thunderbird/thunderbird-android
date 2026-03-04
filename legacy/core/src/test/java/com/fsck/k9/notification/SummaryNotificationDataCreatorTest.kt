@@ -15,6 +15,7 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.LockScreenNotificationVisibility
 import net.thunderbird.core.preference.NotificationQuickDelete
 import net.thunderbird.core.preference.display.DisplaySettings
 import net.thunderbird.core.preference.network.NetworkSettings
@@ -338,7 +339,12 @@ class SummaryNotificationDataCreatorTest {
             NotificationHolder(notificationId = index, TIMESTAMP, content)
         }
 
-        return NotificationData(account, activeNotifications, inactiveNotifications = emptyList())
+        return NotificationData(
+            account,
+            activeNotifications,
+            inactiveNotifications = emptyList(),
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
+        )
     }
 
     private fun createNotificationDataWithMultipleMessages(times: Int = 2): NotificationData {

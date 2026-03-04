@@ -37,6 +37,7 @@ import net.thunderbird.core.preference.AppTheme;
 import net.thunderbird.core.preference.BackgroundOps;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.preference.BodyContentType;
+import net.thunderbird.core.preference.LockScreenNotificationVisibility;
 import net.thunderbird.core.preference.NotificationQuickDelete;
 import net.thunderbird.core.preference.SplitViewMode;
 import net.thunderbird.core.preference.SubTheme;
@@ -47,7 +48,6 @@ import net.thunderbird.core.preference.network.NetworkSettingsKt;
 import net.thunderbird.core.preference.storage.Storage;
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity;
 
-import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 import static net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_MESSAGE_LIST_SENDER_ABOVE_SUBJECT;
 import static net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST;
 import static net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_MESSAGE_LIST_STAR;

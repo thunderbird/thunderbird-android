@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.preference.LockScreenNotificationVisibility
 import net.thunderbird.core.preference.NotificationQuickDelete
 import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
@@ -286,6 +287,7 @@ class SingleMessageNotificationDataCreatorTest {
                 ),
             ),
             inactiveNotifications = emptyList(),
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT,
         )
     }
 

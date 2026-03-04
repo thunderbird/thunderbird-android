@@ -2,6 +2,7 @@ package com.fsck.k9.notification
 
 import app.k9mail.legacy.message.controller.MessageReference
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.preference.LockScreenNotificationVisibility
 
 internal const val MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS = 9
 
@@ -25,10 +26,16 @@ internal class NotificationDataStore {
         account: LegacyAccountDto,
         activeNotifications: List<NotificationHolder>,
         inactiveNotifications: List<InactiveNotificationHolder>,
+        lockScreenNotificationVisibility: LockScreenNotificationVisibility,
     ): NotificationData {
         require(activeNotifications.size <= MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS)
 
-        return NotificationData(account, activeNotifications, inactiveNotifications).also { notificationData ->
+        return NotificationData(
+            account,
+            activeNotifications,
+            inactiveNotifications,
+            lockScreenNotificationVisibility,
+        ).also { notificationData ->
             notificationDataMap[account.uuid] = notificationData
         }
     }
