@@ -3,7 +3,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.core.preference.impl"
         withHostTest {}
     }

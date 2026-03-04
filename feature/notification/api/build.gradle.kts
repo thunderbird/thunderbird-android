@@ -4,7 +4,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.feature.notification.api"
         @Suppress("UnstableApiUsage")
         androidResources {

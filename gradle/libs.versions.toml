@@ -16,8 +16,8 @@ androidDesugar = "2.1.5"
 androidMaterial = "1.13.0"
 # AGP and tools should be updated together.
 # Also, make sure AGP version is compatible with both AS and IntelliJ IDEA.
-androidGradlePlugin = "8.12.3"
-androidTools = "31.12.3"
+androidGradlePlugin = "9.1.0"
+androidTools = "32.1.0"
 androidxActivity = "1.12.2"
 androidxAnnotation = "1.9.1"
 androidxAppCompat = "1.7.1"
@@ -379,6 +379,7 @@ shared-jvm-test = [
   "koin-test",
   "koin-test-junit4",
   "kotlin-test",
+  "kotlin-test-junit",
   "kotlinx-coroutines-test",
   "mockito-core",
   "mockito-kotlin",

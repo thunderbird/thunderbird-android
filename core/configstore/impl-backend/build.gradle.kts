@@ -3,7 +3,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.core.configstore.backend"
         withHostTest {}
     }
