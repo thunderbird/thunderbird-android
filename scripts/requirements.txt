@@ -9,7 +9,7 @@ PyNaCl==1.6.2
 
 # Required by: scripts/ci/render-notes.py
 # YAML parser for release notes
-PyYAML==6.0.1
+PyYAML==6.0.3
 
 # Required by: scripts/ci/render-notes.py
 # Template engine for rendering changelog files
