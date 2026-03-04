@@ -1,10 +1,13 @@
 package app.k9mail.core.ui.compose.theme2
 
 import androidx.compose.material3.ColorScheme
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.LocalContentColor as Material3LocalContentColor
+import androidx.compose.material3.contentColorFor as material3ContentColorFor
 
 /**
  * Theme color scheme following Material 3 color roles.
@@ -156,3 +159,24 @@ internal val LocalThemeColorScheme = staticCompositionLocalOf<ThemeColorScheme> 
  * This uses the Material 3 [LocalContentColor] implementation.
  */
 val LocalContentColor get() = Material3LocalContentColor
+
+/**
+ * The Material color system contains pairs of colors that are typically used for the background and
+ * content color inside a component. For example, a [androidx.compose.material3.Button] typically uses
+ * `primary` for its background, and `onPrimary` for the color of its content (usually text or iconography).
+ *
+ * This function tries to match the provided [backgroundColor] to a 'background' color in this
+ * [ColorScheme], and then will return the corresponding color used for content. For example, when
+ * [backgroundColor] is [ColorScheme.primary], this will return [ColorScheme.onPrimary].
+ *
+ * If [backgroundColor] does not match a background color in the theme, this will return the current
+ * value of [LocalContentColor] as a best-effort color.
+ *
+ * This is a wrapper from the Material3 [contentColorFor][material3ContentColorFor] implementation
+ *
+ * @return the matching content color for [backgroundColor]. If [backgroundColor] is not present in
+ *   the theme's [ColorScheme], then returns the current value of [LocalContentColor].
+ */
+@Composable
+@ReadOnlyComposable
+fun contentColorFor(backgroundColor: Color) = material3ContentColorFor(backgroundColor)
