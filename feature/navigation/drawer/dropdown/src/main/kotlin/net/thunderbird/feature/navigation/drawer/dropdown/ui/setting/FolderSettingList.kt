@@ -6,8 +6,8 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.common.window.WindowSizeClass
-import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
+import net.thunderbird.core.ui.common.window.WindowSizeClass
+import net.thunderbird.core.ui.common.window.calculateWindowSizeInfo
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.R
@@ -22,7 +22,7 @@ internal fun FolderSettingList(
     isLoading: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val windowSizeInfo = getWindowSizeInfo()
+    val windowSizeInfo = calculateWindowSizeInfo()
     val isLandscape = windowSizeInfo.screenWidth > windowSizeInfo.screenHeight
     val isCompactHeight = windowSizeInfo.screenHeightSizeClass == WindowSizeClass.Compact
     val hideText = isLandscape && isCompactHeight

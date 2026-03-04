@@ -18,6 +18,7 @@ kotlin {
             implementation(projects.feature.notification.testing)
         }
         androidMain.dependencies {
+            implementation(projects.core.ui.compose.common)
             implementation(projects.core.ui.compose.designsystem)
             implementation(projects.core.ui.compose.theme2)
         }
