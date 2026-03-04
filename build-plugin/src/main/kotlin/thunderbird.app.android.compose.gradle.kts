@@ -16,6 +16,17 @@ android {
             )
         }
     }
+
+    packaging {
+        jniLibs {
+            keepDebugSymbols += listOf(
+                "**/libandroidx.graphics.path.so",
+                "**/libdatastore_shared_counter.so",
+                "**/libimage_processing_util_jni.so",
+                "**/libsurface_util_jni.so",
+            )
+        }
+    }
 }
 
 dependencies {

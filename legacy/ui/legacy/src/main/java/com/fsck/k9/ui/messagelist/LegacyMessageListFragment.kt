@@ -559,7 +559,7 @@ class LegacyMessageListFragment :
             recyclerView.setPadding(0)
         }
 
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager()
         recyclerView.itemAnimator = MessageListItemAnimator()
 
         val itemTouchHelper = ItemTouchHelper(

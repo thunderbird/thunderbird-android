@@ -41,7 +41,6 @@ kotlin {
     sourceSets.all {
         compilerOptions {
             freeCompilerArgs.addAll(
-                "-Xexpect-actual-classes",
                 "-Xwhen-guards",
             )
         }

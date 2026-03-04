@@ -129,6 +129,20 @@ internal fun ThemeColorScheme.toMaterial3ColorScheme(): ColorScheme {
         surfaceVariant = surfaceContainerHighest,
 
         surfaceTint = surfaceContainerHighest,
+
+        // Fixed roles
+        primaryFixed = Color.Unspecified,
+        primaryFixedDim = Color.Unspecified,
+        onPrimaryFixed = Color.Unspecified,
+        onPrimaryFixedVariant = Color.Unspecified,
+        secondaryFixed = Color.Unspecified,
+        secondaryFixedDim = Color.Unspecified,
+        onSecondaryFixed = Color.Unspecified,
+        onSecondaryFixedVariant = Color.Unspecified,
+        tertiaryFixed = Color.Unspecified,
+        tertiaryFixedDim = Color.Unspecified,
+        onTertiaryFixed = Color.Unspecified,
+        onTertiaryFixedVariant = Color.Unspecified,
     )
 }
 
