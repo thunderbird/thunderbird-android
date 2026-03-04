@@ -42,6 +42,7 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedB
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedDescriptionIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedDownloadIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedDriveFileMove
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedEncrypted
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedFavoriteFolderIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedFingerprintIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedFlowerIcon
@@ -120,6 +121,7 @@ object Icons {
         val Download: ImageVector = OutlinedDownloadIcon
         val DriveFileMove: ImageVector = OutlinedDriveFileMove
 
+        val Encrypted: ImageVector = OutlinedEncrypted
         val ErrorOutline: ImageVector = Icons.Outlined.ErrorOutline
         val ExpandMore: ImageVector = Icons.Outlined.ExpandMore
         val ExpandLess: ImageVector = Icons.Outlined.ExpandLess
