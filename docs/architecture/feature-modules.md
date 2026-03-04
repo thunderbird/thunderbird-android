@@ -183,7 +183,8 @@ core:ui:navigation
 
 ### 🗄️ Navigation Drawer Module
 
-The Navigation Drawer module provides UI components for the main application navigation drawer, including dropdown and side rail variations.
+The Navigation Drawer module provides UI components for the main application navigation drawer, including dropdown
+and other variations if any.
 
 ```shell
 feature:navigation:drawer
