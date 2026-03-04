@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.compose.designsystem.organism.message
+package net.thunderbird.feature.mail.message.list.ui.component.organism
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

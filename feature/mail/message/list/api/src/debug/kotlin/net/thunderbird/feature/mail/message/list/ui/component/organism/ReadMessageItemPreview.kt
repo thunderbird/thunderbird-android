@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.compose.designsystem.organism.message
+package net.thunderbird.feature.mail.message.list.ui.component.organism
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,7 +19,7 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
 
-private class JunkMessageItemPrevParamCol : CollectionPreviewParameterProvider<MessageItemPrevParams>(
+private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<MessageItemPrevParams>(
     collection = listOf(
         MessageItemPrevParams(
             sender = "Sender Name",
@@ -57,6 +57,7 @@ private class JunkMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             preview = LoremIpsum(words = 20).values.joinToString(),
             hasAttachments = true,
             selected = true,
+            favourite = true,
             threadCount = 100,
             swapSenderWithSubject = false,
         ),
@@ -66,6 +67,7 @@ private class JunkMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             preview = LoremIpsum(words = 3).values.joinToString(),
             hasAttachments = false,
             selected = false,
+            favourite = false,
             threadCount = 0,
             swapSenderWithSubject = true,
         ),
@@ -75,6 +77,7 @@ private class JunkMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             preview = LoremIpsum(words = 5).values.joinToString(),
             hasAttachments = true,
             selected = false,
+            favourite = false,
             threadCount = 1,
             swapSenderWithSubject = true,
         ),
@@ -84,6 +87,7 @@ private class JunkMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             preview = LoremIpsum(words = 10).values.joinToString(),
             hasAttachments = false,
             selected = true,
+            favourite = true,
             threadCount = 10,
             swapSenderWithSubject = true,
         ),
@@ -93,6 +97,7 @@ private class JunkMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             preview = LoremIpsum(words = 20).values.joinToString(),
             hasAttachments = true,
             selected = true,
+            favourite = true,
             threadCount = 100,
             swapSenderWithSubject = true,
         ),
@@ -102,10 +107,10 @@ private class JunkMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
 @Preview
 @Composable
 private fun PreviewDefault(
-    @PreviewParameter(JunkMessageItemPrevParamCol::class) params: MessageItemPrevParams,
+    @PreviewParameter(ReadMessageItemPrevParamCol::class) params: MessageItemPrevParams,
 ) {
     PreviewWithThemes {
-        JunkMessageItem(
+        ReadMessageItem(
             sender = params.sender,
             subject = params.subject,
             preview = params.preview,
@@ -126,9 +131,11 @@ private fun PreviewDefault(
             onClick = { },
             onLongClick = { },
             onLeadingClick = { },
+            onFavouriteChange = { },
             modifier = Modifier.padding(MainTheme.spacings.double),
             hasAttachments = params.hasAttachments,
             selected = params.selected,
+            favourite = params.favourite,
             threadCount = params.threadCount,
             swapSenderWithSubject = params.swapSenderWithSubject,
             showAccountIndicator = true,
@@ -140,10 +147,10 @@ private fun PreviewDefault(
 @Preview
 @Composable
 private fun PreviewCompact(
-    @PreviewParameter(JunkMessageItemPrevParamCol::class) params: MessageItemPrevParams,
+    @PreviewParameter(ReadMessageItemPrevParamCol::class) params: MessageItemPrevParams,
 ) {
     PreviewWithThemes {
-        JunkMessageItem(
+        ReadMessageItem(
             sender = params.sender,
             subject = params.subject,
             preview = params.preview,
@@ -152,9 +159,11 @@ private fun PreviewCompact(
             onClick = { },
             onLongClick = { },
             onLeadingClick = { },
+            onFavouriteChange = { },
             modifier = Modifier.padding(MainTheme.spacings.double),
             hasAttachments = params.hasAttachments,
             selected = params.selected,
+            favourite = params.favourite,
             threadCount = params.threadCount,
             swapSenderWithSubject = params.swapSenderWithSubject,
             contentPadding = MessageItemDefaults.compactContentPadding,
@@ -167,10 +176,10 @@ private fun PreviewCompact(
 @Preview
 @Composable
 private fun PreviewRelaxed(
-    @PreviewParameter(JunkMessageItemPrevParamCol::class) params: MessageItemPrevParams,
+    @PreviewParameter(ReadMessageItemPrevParamCol::class) params: MessageItemPrevParams,
 ) {
     PreviewWithThemes {
-        JunkMessageItem(
+        ReadMessageItem(
             sender = params.sender,
             subject = params.subject,
             preview = params.preview,
@@ -179,9 +188,11 @@ private fun PreviewRelaxed(
             onClick = { },
             onLongClick = { },
             onLeadingClick = { },
+            onFavouriteChange = { },
             modifier = Modifier.padding(MainTheme.spacings.double),
             hasAttachments = params.hasAttachments,
             selected = params.selected,
+            favourite = params.favourite,
             threadCount = params.threadCount,
             swapSenderWithSubject = params.swapSenderWithSubject,
             contentPadding = MessageItemDefaults.relaxedContentPadding,
@@ -194,10 +205,10 @@ private fun PreviewRelaxed(
 @Preview
 @Composable
 private fun PreviewDefaultWithoutAccountIndicator(
-    @PreviewParameter(JunkMessageItemPrevParamCol::class) params: MessageItemPrevParams,
+    @PreviewParameter(ReadMessageItemPrevParamCol::class) params: MessageItemPrevParams,
 ) {
     PreviewWithThemes {
-        JunkMessageItem(
+        ReadMessageItem(
             sender = params.sender,
             subject = params.subject,
             preview = params.preview,
@@ -218,9 +229,11 @@ private fun PreviewDefaultWithoutAccountIndicator(
             onClick = { },
             onLongClick = { },
             onLeadingClick = { },
+            onFavouriteChange = { },
             modifier = Modifier.padding(MainTheme.spacings.double),
             hasAttachments = params.hasAttachments,
             selected = params.selected,
+            favourite = params.favourite,
             threadCount = params.threadCount,
             swapSenderWithSubject = params.swapSenderWithSubject,
             showAccountIndicator = false,

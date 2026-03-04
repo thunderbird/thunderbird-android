@@ -11,12 +11,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
-import net.thunderbird.core.ui.compose.designsystem.organism.message.ActiveMessageItem
-import net.thunderbird.core.ui.compose.designsystem.organism.message.MessageItemDefaults
-import net.thunderbird.core.ui.compose.designsystem.organism.message.NewMessageItem
-import net.thunderbird.core.ui.compose.designsystem.organism.message.ReadMessageItem
-import net.thunderbird.core.ui.compose.designsystem.organism.message.UnreadMessageItem
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
+import net.thunderbird.feature.mail.message.list.ui.component.organism.ActiveMessageItem
+import net.thunderbird.feature.mail.message.list.ui.component.organism.MessageItemDefaults
+import net.thunderbird.feature.mail.message.list.ui.component.organism.NewMessageItem
+import net.thunderbird.feature.mail.message.list.ui.component.organism.ReadMessageItem
+import net.thunderbird.feature.mail.message.list.ui.component.organism.UnreadMessageItem
 import net.thunderbird.feature.mail.message.list.ui.state.EmailIdentity
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 

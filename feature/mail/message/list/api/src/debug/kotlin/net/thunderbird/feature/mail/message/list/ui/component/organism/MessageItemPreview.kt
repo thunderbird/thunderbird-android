@@ -1,12 +1,10 @@
-package net.thunderbird.core.ui.compose.designsystem.organism.message
+package net.thunderbird.feature.mail.message.list.ui.component.organism
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,6 +13,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -85,12 +84,11 @@ private fun PreviewDefault(
             subject = { TextLabelLarge(text = params.subject) },
             preview = params.preview,
             action = {
-                IconButton(
+                ButtonIcon(
+                    imageVector = Icons.Filled.Star,
                     onClick = { },
                     modifier = Modifier.size(MainTheme.sizes.iconLarge),
-                ) {
-                    Image(imageVector = Icons.Filled.Star, contentDescription = null)
-                }
+                )
             },
             receivedAt = params.receivedAt,
             onClick = { },
@@ -165,12 +163,11 @@ private fun PreviewRelaxed(
             subject = { TextLabelLarge(text = params.subject) },
             preview = params.preview,
             action = {
-                IconButton(
+                ButtonIcon(
+                    imageVector = Icons.Filled.Star,
                     onClick = { },
                     modifier = Modifier.size(MainTheme.sizes.iconLarge),
-                ) {
-                    Image(imageVector = Icons.Filled.Star, contentDescription = null)
-                }
+                )
             },
             receivedAt = params.receivedAt,
             onClick = { },
@@ -206,12 +203,11 @@ private fun PreviewDefaultWithoutAccountIndicator(
             subject = { TextLabelLarge(text = params.subject) },
             preview = params.preview,
             action = {
-                IconButton(
+                ButtonIcon(
+                    imageVector = Icons.Filled.Star,
                     onClick = { },
                     modifier = Modifier.size(MainTheme.sizes.iconLarge),
-                ) {
-                    Image(imageVector = Icons.Filled.Star, contentDescription = null)
-                }
+                )
             },
             receivedAt = params.receivedAt,
             onClick = { },
