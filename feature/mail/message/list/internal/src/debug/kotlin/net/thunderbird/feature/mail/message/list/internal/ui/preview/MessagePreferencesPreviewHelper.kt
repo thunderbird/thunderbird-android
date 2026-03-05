@@ -14,8 +14,6 @@ internal object MessagePreferencesPreviewHelper {
         senderAboveSubject = false,
         excerptLines = 2,
         dateTimeFormat = MessageListDateTimeFormat.Contextual,
-        useVolumeKeyNavigation = false,
-        serverSearchLimit = -1,
     )
 
     val compactPreferences = defaultPreferences.copy(

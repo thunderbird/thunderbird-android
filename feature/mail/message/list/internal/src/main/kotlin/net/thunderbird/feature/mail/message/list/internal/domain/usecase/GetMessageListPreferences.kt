@@ -4,7 +4,6 @@ import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
-import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
@@ -29,10 +28,7 @@ class GetMessageListPreferences(
                 showFavouriteButton = inboxSettings.isShowMessageListStars,
                 senderAboveSubject = inboxSettings.isMessageListSenderAboveSubject,
                 excerptLines = messageListSettings.previewLines,
-                // TODO(#10202): update to fetch dateTimeFormat from preferences
-                dateTimeFormat = MessageListDateTimeFormat.Contextual,
-                useVolumeKeyNavigation = interactionSettings.useVolumeKeysForNavigation,
-                serverSearchLimit = -1,
+                dateTimeFormat = messageListSettings.dateTimeFormat,
                 actionRequiringUserConfirmation = interactionSettings.actionRequiringUserConfirmation.toImmutableSet(),
                 colorizeBackgroundWhenRead = messageListSettings.isUseBackgroundAsUnreadIndicator,
             )

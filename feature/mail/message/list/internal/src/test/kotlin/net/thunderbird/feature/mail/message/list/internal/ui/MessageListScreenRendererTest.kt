@@ -553,8 +553,6 @@ class MessageListScreenRendererTest : ComposeTest() {
         senderAboveSubject: Boolean = true,
         excerptLines: Int = 1,
         dateTimeFormat: MessageListDateTimeFormat = MessageListDateTimeFormat.Contextual,
-        useVolumeKeyNavigation: Boolean = false,
-        serverSearchLimit: Int = -1,
         actionRequiringUserConfirmation: ImmutableSet<ActionRequiringUserConfirmation> = persistentSetOf(),
         colorizeBackgroundWhenRead: Boolean = false,
     ) = MessageListPreferences(
@@ -566,8 +564,6 @@ class MessageListScreenRendererTest : ComposeTest() {
         senderAboveSubject = senderAboveSubject,
         excerptLines = excerptLines,
         dateTimeFormat = dateTimeFormat,
-        useVolumeKeyNavigation = useVolumeKeyNavigation,
-        serverSearchLimit = serverSearchLimit,
         actionRequiringUserConfirmation = actionRequiringUserConfirmation,
         colorizeBackgroundWhenRead = colorizeBackgroundWhenRead,
     )
