@@ -522,6 +522,13 @@
 
     </PreferenceScreen>
 
+    <Preference
+        android:icon="@drawable/ic_lock"
+        android:key="security_preferences"
+        android:title="@string/security_preferences"
+        search:ignore="true"
+        />
+
     <PreferenceScreen
         android:icon="@drawable/ic_security"
         android:key="privacy_preferences"

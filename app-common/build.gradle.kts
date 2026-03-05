@@ -8,6 +8,12 @@ android {
     buildFeatures {
         buildConfig = true
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -42,6 +48,8 @@ dependencies {
     implementation(projects.feature.account.avatar.impl)
     implementation(projects.feature.account.settings.api)
     implementation(projects.feature.account.setup)
+    implementation(projects.feature.applock.api)
+    implementation(projects.feature.applock.impl)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.message.composer)
     implementation(projects.feature.migration.provider)
@@ -64,6 +72,7 @@ dependencies {
 
     testImplementation(projects.feature.account.fake)
     testImplementation(projects.core.testing)
+    testImplementation(projects.core.android.testing)
 }
 
 codeCoverage {
