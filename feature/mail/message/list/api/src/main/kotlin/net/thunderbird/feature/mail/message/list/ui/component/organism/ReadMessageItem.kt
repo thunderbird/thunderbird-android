@@ -1,24 +1,17 @@
-package net.thunderbird.core.ui.compose.designsystem.organism.message
+package net.thunderbird.feature.mail.message.list.ui.component.organism
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.button.FavouriteButtonIcon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcons
-import net.thunderbird.core.ui.compose.designsystem.molecule.message.MessageItemSenderTitleSmall
-
-private const val NEW_MAIL_BADGE_COLOR = 0xFFF4C430
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageItemSenderBodyMedium
 
 /**
- * Represents a message item in its New Message state.
+ * Represents a message item in its Read state.
  *
  * @param sender The name of the sender.
  * @param subject The subject of the message.
@@ -43,7 +36,7 @@ private const val NEW_MAIL_BADGE_COLOR = 0xFFF4C430
  */
 @Suppress("LongParameterList")
 @Composable
-fun NewMessageItem(
+fun ReadMessageItem(
     sender: String,
     subject: String,
     preview: String,
@@ -64,7 +57,7 @@ fun NewMessageItem(
     contentPadding: PaddingValues = MessageItemDefaults.defaultContentPadding,
     swapSenderWithSubject: Boolean = false,
 ) {
-    NewMessageItem(
+    ReadMessageItem(
         sender = AnnotatedString(sender),
         subject = subject,
         preview = preview,
@@ -88,7 +81,7 @@ fun NewMessageItem(
 }
 
 /**
- * Represents a message item in its New Message state.
+ * Represents a message item in its Read state.
  *
  * @param sender The name of the sender.
  * @param subject The subject of the message.
@@ -113,7 +106,7 @@ fun NewMessageItem(
  */
 @Suppress("LongParameterList")
 @Composable
-fun NewMessageItem(
+fun ReadMessageItem(
     sender: AnnotatedString,
     subject: String,
     preview: String,
@@ -136,23 +129,14 @@ fun NewMessageItem(
 ) {
     MessageItem(
         leading = {
-            Box {
-                avatar()
-                BadgeIcon(
-                    imageVector = BadgeIcons.Filled.NewMail,
-                    tint = Color(NEW_MAIL_BADGE_COLOR),
-                    contentDescription = null,
-                    modifier = Modifier.padding(start = MainTheme.spacings.quarter, top = MainTheme.spacings.quarter),
-                )
-            }
+            avatar()
         },
         sender = {
-            MessageItemSenderTitleSmall(
+            MessageItemSenderBodyMedium(
                 sender = sender,
                 subject = subject,
                 swapSenderWithSubject = swapSenderWithSubject,
                 threadCount = threadCount,
-                color = if (swapSenderWithSubject) MainTheme.colors.primary else MainTheme.colors.onSurface,
             )
         },
         subject = {
@@ -165,22 +149,20 @@ fun NewMessageItem(
         preview = preview,
         action = { FavouriteButtonIcon(favourite = favourite, onFavouriteChange = onFavouriteChange) },
         receivedAt = receivedAt,
-        showAccountIndicator = showAccountIndicator,
-        accountIndicatorColor = accountIndicatorColor,
         onClick = onClick,
         onLongClick = onLongClick,
         onLeadingClick = onLeadingClick,
         colors = if (selected) {
             MessageItemDefaults.selectedMessageItemColors()
         } else {
-            MessageItemDefaults.newMessageItemColors(
-                subjectColor = if (swapSenderWithSubject) MainTheme.colors.onSurface else MainTheme.colors.primary,
-            )
+            MessageItemDefaults.readMessageItemColors()
         },
         modifier = modifier,
         hasAttachments = hasAttachments,
         selected = selected,
         maxPreviewLines = maxPreviewLines,
         contentPadding = contentPadding,
+        showAccountIndicator = showAccountIndicator,
+        accountIndicatorColor = accountIndicatorColor,
     )
 }

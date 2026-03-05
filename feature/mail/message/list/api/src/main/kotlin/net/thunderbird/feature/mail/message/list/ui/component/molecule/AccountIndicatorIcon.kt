@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.compose.designsystem.molecule.message
+package net.thunderbird.feature.mail.message.list.ui.component.molecule
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable

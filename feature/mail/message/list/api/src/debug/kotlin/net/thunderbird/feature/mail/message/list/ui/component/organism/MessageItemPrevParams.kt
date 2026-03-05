@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.compose.designsystem.organism.message
+package net.thunderbird.feature.mail.message.list.ui.component.organism
 
 internal data class MessageItemPrevParams(
     val sender: String,

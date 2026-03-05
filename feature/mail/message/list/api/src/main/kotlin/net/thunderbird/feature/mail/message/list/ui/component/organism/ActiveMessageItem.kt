@@ -1,24 +1,18 @@
-package net.thunderbird.core.ui.compose.designsystem.organism.message
+package net.thunderbird.feature.mail.message.list.ui.component.organism
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.button.FavouriteButtonIcon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcons
-import net.thunderbird.core.ui.compose.designsystem.molecule.message.MessageItemSenderTitleSmall
-
-private const val UNREAD_MAIL_BADGE_COLOR = 0xFF34C759
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageItemSenderBodyMedium
 
 /**
- * Represents a message item in its Unread state.
+ * Represents a message item in its Active state.
  *
  * @param sender The name of the sender.
  * @param subject The subject of the message.
@@ -43,7 +37,7 @@ private const val UNREAD_MAIL_BADGE_COLOR = 0xFF34C759
  */
 @Suppress("LongParameterList")
 @Composable
-fun UnreadMessageItem(
+fun ActiveMessageItem(
     sender: String,
     subject: String,
     preview: String,
@@ -64,7 +58,7 @@ fun UnreadMessageItem(
     contentPadding: PaddingValues = MessageItemDefaults.defaultContentPadding,
     swapSenderWithSubject: Boolean = false,
 ) {
-    UnreadMessageItem(
+    ActiveMessageItem(
         sender = AnnotatedString(sender),
         subject = subject,
         preview = preview,
@@ -88,7 +82,7 @@ fun UnreadMessageItem(
 }
 
 /**
- * Represents a message item in its Unread state.
+ * Represents a message item in its Active state.
  *
  * @param sender The name of the sender.
  * @param subject The subject of the message.
@@ -113,7 +107,7 @@ fun UnreadMessageItem(
  */
 @Suppress("LongParameterList")
 @Composable
-fun UnreadMessageItem(
+fun ActiveMessageItem(
     sender: AnnotatedString,
     subject: String,
     preview: String,
@@ -135,49 +129,40 @@ fun UnreadMessageItem(
     swapSenderWithSubject: Boolean = false,
 ) {
     MessageItem(
-        leading = {
-            Box {
-                avatar()
-                BadgeIcon(
-                    imageVector = BadgeIcons.Filled.UnreadMail,
-                    tint = Color(UNREAD_MAIL_BADGE_COLOR),
-                    contentDescription = null,
-                    modifier = Modifier.padding(start = MainTheme.spacings.quarter, top = MainTheme.spacings.quarter),
-                )
-            }
-        },
+        leading = avatar,
         sender = {
-            MessageItemSenderTitleSmall(
+            MessageItemSenderBodyMedium(
                 sender = sender,
                 subject = subject,
                 swapSenderWithSubject = swapSenderWithSubject,
                 threadCount = threadCount,
+                color = MainTheme.colors.onSurfaceVariant,
             )
         },
         subject = {
             if (swapSenderWithSubject) {
-                TextLabelLarge(text = sender, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                TextBodyMedium(text = sender, maxLines = 1, overflow = TextOverflow.Ellipsis)
             } else {
-                TextLabelLarge(text = subject, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                TextBodyMedium(text = subject, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         },
         preview = preview,
         action = { FavouriteButtonIcon(favourite = favourite, onFavouriteChange = onFavouriteChange) },
         receivedAt = receivedAt,
+        showAccountIndicator = showAccountIndicator,
+        accountIndicatorColor = accountIndicatorColor,
         onClick = onClick,
         onLongClick = onLongClick,
         onLeadingClick = onLeadingClick,
         colors = if (selected) {
             MessageItemDefaults.selectedMessageItemColors()
         } else {
-            MessageItemDefaults.unreadMessageItemColors()
+            MessageItemDefaults.activeMessageItemColors()
         },
         modifier = modifier,
         hasAttachments = hasAttachments,
         selected = selected,
         maxPreviewLines = maxPreviewLines,
         contentPadding = contentPadding,
-        showAccountIndicator = showAccountIndicator,
-        accountIndicatorColor = accountIndicatorColor,
     )
 }

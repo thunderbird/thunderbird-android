@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.compose.designsystem.organism.message
+package net.thunderbird.feature.mail.message.list.ui.component.organism
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.combinedClickable
@@ -16,8 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.Surface
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -42,6 +40,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.window.WindowSizeClass
 import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
+import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIconDefaults
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
@@ -50,9 +49,9 @@ import app.k9mail.core.ui.compose.theme2.LocalContentColor
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.designsystem.molecule.message.AccountIndicatorIcon
-import net.thunderbird.core.ui.compose.designsystem.molecule.message.HeaderRow
-import net.thunderbird.core.ui.compose.designsystem.molecule.message.HeaderRowCompact
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.AccountIndicatorIcon
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.HeaderRow
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.HeaderRowCompact
 
 /**
  * Displays a single message item.
@@ -300,7 +299,7 @@ private fun SelectedIcon(
         imageVector = Icons.Outlined.Check,
         colors = ButtonIconDefaults.buttonIconFilledColors(
             containerColor = MainTheme.colors.secondaryContainer,
-            contentColor = contentColorFor(backgroundColor = MainTheme.colors.secondaryContainer),
+            contentColor = MainTheme.colors.onSecondaryContainer,
         ),
         modifier = modifier,
     )

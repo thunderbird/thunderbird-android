@@ -1,17 +1,24 @@
-package net.thunderbird.core.ui.compose.designsystem.organism.message
+package net.thunderbird.feature.mail.message.list.ui.component.organism
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.button.FavouriteButtonIcon
-import net.thunderbird.core.ui.compose.designsystem.molecule.message.MessageItemSenderBodyMedium
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcons
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageItemSenderTitleSmall
+
+private const val UNREAD_MAIL_BADGE_COLOR = 0xFF34C759
 
 /**
- * Represents a message item in its Read state.
+ * Represents a message item in its Unread state.
  *
  * @param sender The name of the sender.
  * @param subject The subject of the message.
@@ -36,7 +43,7 @@ import net.thunderbird.core.ui.compose.designsystem.molecule.message.MessageItem
  */
 @Suppress("LongParameterList")
 @Composable
-fun ReadMessageItem(
+fun UnreadMessageItem(
     sender: String,
     subject: String,
     preview: String,
@@ -57,7 +64,7 @@ fun ReadMessageItem(
     contentPadding: PaddingValues = MessageItemDefaults.defaultContentPadding,
     swapSenderWithSubject: Boolean = false,
 ) {
-    ReadMessageItem(
+    UnreadMessageItem(
         sender = AnnotatedString(sender),
         subject = subject,
         preview = preview,
@@ -81,7 +88,7 @@ fun ReadMessageItem(
 }
 
 /**
- * Represents a message item in its Read state.
+ * Represents a message item in its Unread state.
  *
  * @param sender The name of the sender.
  * @param subject The subject of the message.
@@ -106,7 +113,7 @@ fun ReadMessageItem(
  */
 @Suppress("LongParameterList")
 @Composable
-fun ReadMessageItem(
+fun UnreadMessageItem(
     sender: AnnotatedString,
     subject: String,
     preview: String,
@@ -129,10 +136,18 @@ fun ReadMessageItem(
 ) {
     MessageItem(
         leading = {
-            avatar()
+            Box {
+                avatar()
+                BadgeIcon(
+                    imageVector = BadgeIcons.Filled.UnreadMail,
+                    tint = Color(UNREAD_MAIL_BADGE_COLOR),
+                    contentDescription = null,
+                    modifier = Modifier.padding(start = MainTheme.spacings.quarter, top = MainTheme.spacings.quarter),
+                )
+            }
         },
         sender = {
-            MessageItemSenderBodyMedium(
+            MessageItemSenderTitleSmall(
                 sender = sender,
                 subject = subject,
                 swapSenderWithSubject = swapSenderWithSubject,
@@ -155,7 +170,7 @@ fun ReadMessageItem(
         colors = if (selected) {
             MessageItemDefaults.selectedMessageItemColors()
         } else {
-            MessageItemDefaults.readMessageItemColors()
+            MessageItemDefaults.unreadMessageItemColors()
         },
         modifier = modifier,
         hasAttachments = hasAttachments,

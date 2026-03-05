@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.compose.designsystem.organism.message
+package net.thunderbird.feature.mail.message.list.ui.component.organism
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
@@ -10,7 +10,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.designsystem.molecule.message.MessageItemSenderBodyMedium
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageItemSenderBodyMedium
 
 @Suppress("LongParameterList")
 @Composable
