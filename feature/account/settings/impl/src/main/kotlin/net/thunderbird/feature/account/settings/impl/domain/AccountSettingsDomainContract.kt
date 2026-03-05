@@ -38,6 +38,13 @@ internal interface AccountSettingsDomainContract {
             ): Outcome<Unit, AccountSettingError>
         }
 
+        fun interface UpdateSearchSettings {
+            suspend operator fun invoke(
+                accountId: AccountId,
+                command: UpdateSearchSettingsCommand,
+            ): Outcome<Unit, AccountSettingError>
+        }
+
         fun interface UpdateAvatarImage {
             suspend operator fun invoke(
                 accountId: AccountId,
@@ -63,6 +70,10 @@ internal interface AccountSettingsDomainContract {
     sealed interface UpdateReadMessageSettingsCommand {
         data class UpdateShowPictures(val value: String) : UpdateReadMessageSettingsCommand
         data class UpdateIsMarkMessageAsReadOnView(val value: Boolean) : UpdateReadMessageSettingsCommand
+    }
+
+    sealed interface UpdateSearchSettingsCommand {
+        data class UpdateServerSearchLimit(val value: Int) : UpdateSearchSettingsCommand
     }
 
     sealed interface AccountSettingError {
