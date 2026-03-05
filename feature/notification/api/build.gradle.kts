@@ -6,10 +6,7 @@ plugins {
 kotlin {
     android {
         namespace = "net.thunderbird.feature.notification.api"
-        @Suppress("UnstableApiUsage")
-        androidResources {
-            enable = true
-        }
+        androidResources.enable = true
         withHostTest {
             isIncludeAndroidResources = true
         }

@@ -5,7 +5,6 @@ plugins {
 kotlin {
     android {
         namespace = "net.thunderbird.core.ui.compose.theme2.thunderbird"
-        @Suppress("UnstableApiUsage")
         androidResources.enable = true
     }
 
