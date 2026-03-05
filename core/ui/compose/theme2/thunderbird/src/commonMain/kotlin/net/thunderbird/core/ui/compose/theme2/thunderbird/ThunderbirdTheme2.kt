@@ -12,8 +12,8 @@ import net.thunderbird.core.ui.compose.theme2.default.defaultThemeShapes
 import net.thunderbird.core.ui.compose.theme2.default.defaultThemeSizes
 import net.thunderbird.core.ui.compose.theme2.default.defaultThemeSpacings
 import net.thunderbird.core.ui.compose.theme2.default.defaultTypography
-import tfa.core.ui.compose.theme2.thunderbird.generated.resources.Res
-import tfa.core.ui.compose.theme2.thunderbird.generated.resources.core_ui_theme2_thunderbird_logo
+import net.thunderbird.core.ui.compose.theme2.thunderbird.resources.Res
+import net.thunderbird.core.ui.compose.theme2.thunderbird.resources.core_ui_theme2_thunderbird_logo
 
 @Composable
 fun ThunderbirdTheme2(

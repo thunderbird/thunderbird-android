@@ -15,6 +15,12 @@ kotlin {
     }
 }
 
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "net.thunderbird.core.ui.compose.theme2.k9mail.resources"
+    generateResClass = always
+}
+
 codeCoverage {
     branchCoverage = 0
     lineCoverage = 0
