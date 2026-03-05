@@ -25,6 +25,8 @@ data class ThemeSizes(
     val bottomBarHeight: Dp,
     val bottomBarHeightWithFab: Dp,
     val bannerGlobalHeight: Dp,
+
+    val minTouchTarget: Dp,
 )
 
 internal val LocalThemeSizes = staticCompositionLocalOf<ThemeSizes> {
