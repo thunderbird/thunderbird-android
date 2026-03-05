@@ -5,6 +5,11 @@ plugins {
 
 android {
     namespace = "net.thunderbird.feature.mail.message.list.internal"
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -25,6 +30,10 @@ dependencies {
     implementation(projects.mail.common)
 
     testImplementation(projects.core.logging.testing)
+    testImplementation(projects.core.ui.compose.testing)
+    testImplementation(libs.bundles.shared.jvm.test.compose)
+    testImplementation(libs.bundles.shared.jvm.android.compose.debug)
+    testImplementation(projects.feature.notification.testing)
 }
 
 codeCoverage {
