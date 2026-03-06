@@ -1,8 +1,11 @@
 package net.thunderbird.feature.mail.message.list.ui.component.molecule
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
@@ -10,9 +13,10 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
+
+internal const val MESSAGE_CONVERSATION_COUNTER_BADGE_PADDING = 3
 
 /**
  * A composable that displays a message conversation counter badge with a customizable appearance.
@@ -36,15 +40,19 @@ internal fun MessageConversationCounterBadge(
     modifier: Modifier = Modifier,
     limit: Int = MessageConversationCounterBadgeDefaults.CONVERSATION_COUNTER_LIMIT,
 ) {
-    Surface(
-        color = color.containerColor,
-        contentColor = color.contentColor,
-        shape = MainTheme.shapes.large,
-        modifier = modifier.border(
-            width = 1.dp,
-            color = color.borderColor ?: color.containerColor,
-            shape = MainTheme.shapes.large,
-        ),
+    Box(
+        modifier = modifier
+            .background(
+                color = color.containerColor,
+                shape = MainTheme.shapes.large,
+            )
+            .border(
+                width = 1.dp,
+                color = color.borderColor ?: color.containerColor,
+                shape = MainTheme.shapes.large,
+            )
+            .padding(horizontal = MainTheme.spacings.half, vertical = MESSAGE_CONVERSATION_COUNTER_BADGE_PADDING.dp),
+        contentAlignment = Alignment.Center,
     ) {
         TextLabelSmall(
             text = buildAnnotatedString {
@@ -55,7 +63,7 @@ internal fun MessageConversationCounterBadge(
                     }
                 }
             },
-            modifier = Modifier.padding(horizontal = MainTheme.spacings.half, vertical = MainTheme.spacings.quarter),
+            color = color.contentColor,
         )
     }
 }
