@@ -19,18 +19,22 @@ internal class BillingResultMapperTest {
 
     @Test
     fun `mapToBillingClientResult returns Success when billing result is OK`() = runTest {
+        // Arrange
         val billingResult = BillingResult.newBuilder()
             .setResponseCode(BillingResponseCode.OK)
             .build()
 
+        // Act
         val result = testSubject.mapToOutcome(billingResult) {}
 
+        // Assert
         assertThat(result).isInstanceOf(Outcome.Success::class)
     }
 
     @Test
     fun `mapToBillingClientResult returns ServiceDisconnected when billing result is SERVICE_DISCONNECTED`() =
         runTest {
+            // Arrange
             val errorResults = listOf(
                 createErrorBillingResult(BillingResponseCode.SERVICE_DISCONNECTED),
                 createErrorBillingResult(BillingResponseCode.SERVICE_UNAVAILABLE),
@@ -38,10 +42,12 @@ internal class BillingResultMapperTest {
                 createErrorBillingResult(BillingResponseCode.NETWORK_ERROR),
             )
 
+            // Act
             val results = errorResults.map { billingResult ->
                 testSubject.mapToOutcome(billingResult) {}
             }
 
+            // Assert
             results.forEach { result ->
                 assertOutcomeFailure(result, ContributionError.ServiceDisconnected::class)
             }
@@ -49,16 +55,19 @@ internal class BillingResultMapperTest {
 
     @Test
     fun `mapToBillingClientResult returns PurchaseFailed when billing result is ITEM_ALREADY_OWNED`() = runTest {
+        // Arrange
         val errorResults = listOf(
             createErrorBillingResult(BillingResponseCode.ITEM_ALREADY_OWNED),
             createErrorBillingResult(BillingResponseCode.ITEM_NOT_OWNED),
             createErrorBillingResult(BillingResponseCode.ITEM_UNAVAILABLE),
         )
 
+        // Act
         val results = errorResults.map { billingResult ->
             testSubject.mapToOutcome(billingResult) {}
         }
 
+        // Assert
         results.forEach { result ->
             assertOutcomeFailure(result, ContributionError.PurchaseFailed::class)
         }
@@ -66,33 +75,42 @@ internal class BillingResultMapperTest {
 
     @Test
     fun `mapToBillingClientResult returns UserCancelled when billing result is USER_CANCELED`() = runTest {
+        // Arrange
         val billingResult = createErrorBillingResult(BillingResponseCode.USER_CANCELED)
 
+        // Act
         val result = testSubject.mapToOutcome(billingResult) {}
 
+        // Assert
         assertOutcomeFailure(result, ContributionError.UserCancelled::class)
     }
 
     @Test
     fun `mapToBillingClientResult returns DeveloperError when billing result is DEVELOPER_ERROR`() = runTest {
+        // Arrange
         val billingResult = createErrorBillingResult(BillingResponseCode.DEVELOPER_ERROR)
 
+        // Act
         val result = testSubject.mapToOutcome(billingResult) {}
 
+        // Assert
         assertOutcomeFailure(result, ContributionError.DeveloperError::class)
     }
 
     @Test
     fun `mapToBillingClientResult returns UnknownError when billing result is unknown`() = runTest {
+        // Arrange
         val errorResult = listOf(
             createErrorBillingResult(BillingResponseCode.ERROR),
             createErrorBillingResult(BillingResponseCode.FEATURE_NOT_SUPPORTED),
         )
 
+        // Act
         val results = errorResult.map { billingResult ->
             testSubject.mapToOutcome(billingResult) {}
         }
 
+        // Assert
         results.forEach { result ->
             assertOutcomeFailure(result, ContributionError.UnknownError::class)
         }

@@ -1,4 +1,4 @@
-package net.thunderbird.feature.funding.googleplay.data
+package net.thunderbird.feature.funding.googleplay.data.remote.bilingclient
 
 import android.app.Activity
 import com.android.billingclient.api.BillingClient.ProductType
@@ -23,13 +23,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.core.common.cache.Cache
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.outcome.handleAsync
 import net.thunderbird.core.outcome.mapFailure
+import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
-import net.thunderbird.feature.funding.googleplay.data.remote.startConnection
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
@@ -39,15 +40,16 @@ internal typealias OneTimeContributionOutcome = Outcome<List<OneTimeContribution
 internal typealias RecurringContributionOutcome = Outcome<List<RecurringContribution>, ContributionError>
 
 @Suppress("TooManyFunctions")
-internal class GoogleBillingClient(
-    private val clientProvider: Remote.GoogleBillingClientProvider,
+internal class BillingClient(
+    private val clientProvider: Remote.BillingClientProvider,
     private val productMapper: FundingDataContract.Mapper.Product,
     private val resultMapper: FundingDataContract.Mapper.BillingResult,
     private val productCache: Cache<String, ProductDetails>,
-    private val purchaseHandler: Remote.GoogleBillingPurchaseHandler,
+    private val purchaseHandler: Remote.BillingPurchaseHandler,
+    private val activityProvider: ActivityProvider,
     private val logger: Logger,
     backgroundDispatcher: CoroutineContext = Dispatchers.IO,
-) : FundingDataContract.BillingClient, PurchasesUpdatedListener {
+) : Remote.BillingClient, PurchasesUpdatedListener {
 
     init {
         clientProvider.setPurchasesUpdatedListener(this)
@@ -64,15 +66,8 @@ internal class GoogleBillingClient(
     override suspend fun <T> connect(
         onConnected: suspend () -> Outcome<T, ContributionError>,
     ): Outcome<T, ContributionError> {
-        val connectionResult = clientProvider.current.startConnection()
-        val result = resultMapper.mapToOutcome(connectionResult) {}
-
-        return when (result) {
-            is Outcome.Success -> {
-                onConnected()
-            }
-
-            is Outcome.Failure -> result
+        return safeConnect(clientProvider.current, resultMapper, scope = coroutineScope) {
+            onConnected()
         }
     }
 
@@ -206,12 +201,29 @@ internal class GoogleBillingClient(
         return clientProvider.current.queryPurchasesAsync(queryPurchaseParams)
     }
 
-    override suspend fun purchaseContribution(
-        activity: Activity,
-        contribution: Contribution,
-    ): Outcome<Unit, ContributionError> {
+    override suspend fun purchaseContribution(contribution: Contribution): Outcome<Unit, ContributionError> {
         val productDetails = productCache[contribution.id]
-            ?: return Outcome.failure(ContributionError.PurchaseFailed("ProductDetails not found: ${contribution.id}"))
+        val activity = activityProvider.getCurrent()
+
+        return when {
+            productDetails == null -> Outcome.failure(
+                ContributionError.PurchaseFailed("ProductDetails not found: ${contribution.id}"),
+            )
+
+            activity == null -> Outcome.failure(
+                ContributionError.PurchaseFailed("Activity not available for purchase"),
+            )
+
+            else -> {
+                processPurchase(productDetails, activity)
+            }
+        }
+    }
+
+    private suspend fun processPurchase(
+        productDetails: ProductDetails,
+        activity: Activity,
+    ): Outcome<Unit, ContributionError> {
         val offerToken = productDetails.subscriptionOfferDetails?.firstOrNull()?.offerToken
 
         val productDetailsParamsList = listOf(

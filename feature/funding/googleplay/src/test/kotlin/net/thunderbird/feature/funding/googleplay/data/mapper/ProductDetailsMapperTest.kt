@@ -18,17 +18,22 @@ class ProductDetailsMapperTest {
 
     @Test
     fun `mapToOneTimeContribution returns OneTimeContribution when product type is INAPP`() {
+        // Arrange
         val productDetails = createInAppProductDetails()
 
+        // Act
         val result = testSubject.mapToOneTimeContribution(productDetails)
 
+        // Assert
         assertThat(result).isEqualTo(ONE_TIME_CONTRIBUTION)
     }
 
     @Test
     fun `mapToOneTimeContribution throws IllegalStateException when in app product has no offer details`() {
+        // Arrange
         val productDetails = createInAppProductDetails(hasOfferDetails = false)
 
+        // Act & Assert
         assertFailure {
             testSubject.mapToOneTimeContribution(productDetails)
         }.isInstanceOf(IllegalStateException::class)
@@ -36,17 +41,22 @@ class ProductDetailsMapperTest {
 
     @Test
     fun `mapToRecurringContribution returns RecurringContribution when product type is SUBS`() {
+        // Arrange
         val productDetails = createSubscriptionProductDetails()
 
+        // Act
         val result = testSubject.mapToRecurringContribution(productDetails)
 
+        // Assert
         assertThat(result).isEqualTo(RECURRING_CONTRIBUTION)
     }
 
     @Test
     fun `mapToRecurringContribution throws IllegalStateException when subscription product has no pricing phase`() {
+        // Arrange
         val productDetails = createSubscriptionProductDetails(hasPricingPhase = false)
 
+        // Act & Assert
         assertFailure {
             testSubject.mapToRecurringContribution(productDetails)
         }.isInstanceOf(IllegalStateException::class)
@@ -54,22 +64,27 @@ class ProductDetailsMapperTest {
 
     @Test
     fun `mapToContribution return contribution for all supported types`() {
+        // Arrange
         val inAppProductDetails = createInAppProductDetails()
         val subscriptionProductDetails = createSubscriptionProductDetails()
 
+        // Act
         val oneTimeContribution = testSubject.mapToContribution(inAppProductDetails)
         val recurringContribution = testSubject.mapToContribution(subscriptionProductDetails)
 
+        // Assert
         assertThat(oneTimeContribution).isEqualTo(ONE_TIME_CONTRIBUTION)
         assertThat(recurringContribution).isEqualTo(RECURRING_CONTRIBUTION)
     }
 
     @Test
     fun `mapToContribution throws IllegalArgumentException when product type is unknown`() {
+        // Arrange
         val productDetails = mock<ProductDetails> {
             on { productType } doReturn "unknown"
         }
 
+        // Act & Assert
         assertFailure {
             testSubject.mapToContribution(productDetails)
         }.isInstanceOf(IllegalArgumentException::class)
