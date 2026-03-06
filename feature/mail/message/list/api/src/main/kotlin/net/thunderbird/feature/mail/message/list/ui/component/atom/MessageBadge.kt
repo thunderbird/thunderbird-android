@@ -12,6 +12,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 
+internal const val MESSAGE_BADGE_SIZE = 14
+
 /**
  * A composable function that displays a badge indicator for new messages.
  *
@@ -24,7 +26,7 @@ import net.thunderbird.core.ui.compose.theme2.MainTheme
 fun NewMessageBadge(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
-            .size(size = 14.dp)
+            .size(size = MESSAGE_BADGE_SIZE.dp)
             .padding(all = 1.dp)
             .clip(CircleShape)
             .background(MainTheme.colors.primary),
@@ -44,7 +46,7 @@ fun NewMessageBadge(modifier: Modifier = Modifier) {
 fun UnreadMessageBadge(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
-            .size(MainTheme.sizes.badge)
+            .size(size = MESSAGE_BADGE_SIZE.dp)
             .padding(MainTheme.spacings.quarter)
             .clip(CircleShape)
             .background(MainTheme.colors.surface)
