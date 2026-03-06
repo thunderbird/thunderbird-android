@@ -66,17 +66,14 @@ object MessageItemDefaults {
      *
      * @param containerColor The container color of this [MessageItem].
      * @param contentColor The content color of this [MessageItem].
-     * @param subjectColor The subject color of this [MessageItem].
      */
     @Composable
     fun newMessageItemColors(
         containerColor: Color = MainTheme.colors.surfaceContainerLowest,
         contentColor: Color = MainTheme.colors.onSurface,
-        subjectColor: Color = MainTheme.colors.primary,
     ): MessageItemColors = MessageItemColors(
         containerColor = containerColor,
         contentColor = contentColor,
-        subjectColor = subjectColor,
     )
 
     /**
@@ -86,18 +83,15 @@ object MessageItemDefaults {
      *
      * @param containerColor The container color of this [MessageItem].
      * @param contentColor The content color of this [MessageItem].
-     * @param subjectColor The subject color of this [MessageItem].
      *  Defaults to [contentColor] if not specified.
      */
     @Composable
     fun unreadMessageItemColors(
         containerColor: Color = MainTheme.colors.surfaceContainerLowest,
         contentColor: Color = MainTheme.colors.onSurface,
-        subjectColor: Color = contentColor,
     ): MessageItemColors = MessageItemColors(
         containerColor = containerColor,
         contentColor = contentColor,
-        subjectColor = subjectColor,
     )
 
     /**
@@ -107,18 +101,15 @@ object MessageItemDefaults {
      *
      * @param containerColor The container color of this [MessageItem].
      * @param contentColor The content color of this [MessageItem].
-     * @param subjectColor The subject color of this [MessageItem].
      *  Defaults to [contentColor] if not specified.
      */
     @Composable
     fun readMessageItemColors(
         containerColor: Color = MainTheme.colors.surfaceContainerLow,
         contentColor: Color = MainTheme.colors.onSurfaceVariant,
-        subjectColor: Color = contentColor,
     ): MessageItemColors = MessageItemColors(
         containerColor = containerColor,
         contentColor = contentColor,
-        subjectColor = subjectColor,
     )
 
     /**
@@ -128,17 +119,14 @@ object MessageItemDefaults {
      *
      * @param containerColor The container color of this [MessageItem].
      * @param contentColor The content color of this [MessageItem].
-     * @param subjectColor The subject color of this [MessageItem].
      */
     @Composable
     fun selectedMessageItemColors(
         containerColor: Color = MainTheme.colors.surfaceContainer,
         contentColor: Color = MainTheme.colors.onSurface,
-        subjectColor: Color = MainTheme.colors.onSurfaceVariant,
     ): MessageItemColors = MessageItemColors(
         containerColor = containerColor,
         contentColor = contentColor,
-        subjectColor = subjectColor,
     )
 
     /**
@@ -148,18 +136,15 @@ object MessageItemDefaults {
      *
      * @param containerColor The container color of this [MessageItem].
      * @param contentColor The content color of this [MessageItem].
-     * @param subjectColor The subject color of this [MessageItem].
      */
     @Composable
     fun activeMessageItemColors(
         // MainTheme.colors.infoContainer == MainTheme.colors.surfaceVariantBlue
         containerColor: Color = MainTheme.colors.infoContainer,
         contentColor: Color = MainTheme.colors.onSurface,
-        subjectColor: Color = MainTheme.colors.onSurfaceVariant,
     ): MessageItemColors = MessageItemColors(
         containerColor = containerColor,
         contentColor = contentColor,
-        subjectColor = subjectColor,
     )
 
     /**
@@ -191,10 +176,8 @@ object MessageItemDefaults {
  *
  * @param containerColor The color used for the background of this message item.
  * @param contentColor The preferred color for content inside this message item.
- * @param subjectColor The preferred color for the subject inside this message item.
  */
 data class MessageItemColors(
     val containerColor: Color,
     val contentColor: Color,
-    val subjectColor: Color,
 )
