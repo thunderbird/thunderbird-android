@@ -40,7 +40,7 @@ class ReplyToPresenter(private val view: ReplyToView) {
     }
 
     private fun addIdentityReplyTo() {
-        identityReplyTo = Address.parse(identity.replyTo)?.takeIf { it.isNotEmpty() }
+        identityReplyTo = Address.parse(identity.replyTo).takeIf { it.isNotEmpty() }
         identityReplyTo?.let { addresses ->
             view.silentlyAddAddresses(addresses)
         }
