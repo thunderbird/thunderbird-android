@@ -155,6 +155,7 @@ public class LinearLayoutManager extends LayoutManager implements
      * @param orientation   Layout orientation. Should be {@link #HORIZONTAL} or {@link #VERTICAL}.
      * @param reverseLayout When set to true, layouts from end to start.
      */
+    @SuppressWarnings("this-escape")
     public LinearLayoutManager(@RecyclerView.Orientation int orientation, boolean reverseLayout) {
         setOrientation(orientation);
         setReverseLayout(reverseLayout);
