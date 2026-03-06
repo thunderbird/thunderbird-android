@@ -74,8 +74,9 @@ internal class BodyCleaner {
     }
 
     private fun copyDocumentType(dirtyDocument: Document, cleanedDocument: Document) {
-        dirtyDocument.documentType()?.let { documentType ->
-            cleanedDocument.insertChildren(0, documentType)
+        val type = dirtyDocument.documentType()
+        if (type != null) {
+            cleanedDocument.insertChildren(0, type)
         }
     }
 

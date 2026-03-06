@@ -842,6 +842,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         }
 
         private val fakeGeneralSettingsManager = object : GeneralSettingsManager {
+            @Deprecated("Use PreferenceManager<GeneralSettings>.getConfig() instead")
             override fun getSettings() = GeneralSettings(
                 privacy = PrivacySettings(
                     isHideUserAgent = false,
@@ -850,6 +851,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
                 platformConfigProvider = FakePlatformConfigProvider(),
             )
 
+            @Deprecated("Use PreferenceManager<GeneralSettings>.getConfigFlow() instead")
             override fun getSettingsFlow(): Flow<GeneralSettings> = error("not implemented")
             override fun save(config: GeneralSettings) = error("not implemented")
 

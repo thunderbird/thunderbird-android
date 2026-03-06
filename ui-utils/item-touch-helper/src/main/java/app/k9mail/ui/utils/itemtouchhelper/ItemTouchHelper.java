@@ -345,6 +345,7 @@ public class ItemTouchHelper extends RecyclerView.ItemDecoration
             return mSelected != null;
         }
 
+        @SuppressWarnings("fallthrough")
         @Override
         public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent event) {
             mGestureDetector.onTouchEvent(event);
