@@ -300,6 +300,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
         return (long) a.getInteger(index, NO_KEY);
     }
 
+    @Deprecated
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
         if (restoreValue) {
