@@ -5,64 +5,100 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.feature.mail.message.list.ui.state.ComposedAddressStyle
+import net.thunderbird.feature.mail.message.list.ui.state.ComposedAddressUi
 
 private data class MessageItemSenderTextPreviewParams(
-    val sender: String,
+    val senders: ComposedAddressUi,
     val subject: String,
-    val swapSenderWithSubject: Boolean,
-    val threadCount: Int,
+    val useSender: Boolean,
 )
 
 private class MessageItemSenderTextPreviewCol : CollectionPreviewParameterProvider<MessageItemSenderTextPreviewParams>(
     listOf(
         MessageItemSenderTextPreviewParams(
-            sender = "Sender",
+            senders = ComposedAddressUi(displayName = "Sender", avatar = null, color = null),
             subject = "Subject",
-            swapSenderWithSubject = false,
-            threadCount = 0,
+            useSender = false,
         ),
         MessageItemSenderTextPreviewParams(
-            sender = "Sender",
+            senders = ComposedAddressUi(displayName = "Sender", avatar = null, color = null),
             subject = "Subject",
-            swapSenderWithSubject = true,
-            threadCount = 0,
+            useSender = true,
         ),
         MessageItemSenderTextPreviewParams(
-            sender = "Sender",
+            senders = ComposedAddressUi(displayName = "Sender", avatar = null, color = null),
             subject = "Subject",
-            swapSenderWithSubject = false,
-            threadCount = 10,
+            useSender = false,
         ),
         MessageItemSenderTextPreviewParams(
-            sender = "Sender",
+            senders = ComposedAddressUi(displayName = "Sender", avatar = null, color = null),
             subject = "Subject",
-            swapSenderWithSubject = true,
-            threadCount = 10,
+            useSender = true,
         ),
         MessageItemSenderTextPreviewParams(
-            sender = LoremIpsum(words = 10).values.joinToString(" "),
+            senders = ComposedAddressUi(
+                displayName = LoremIpsum(words = 10).values.joinToString(" "),
+                avatar = null,
+                color = null,
+            ),
             subject = "Subject",
-            swapSenderWithSubject = false,
-            threadCount = 10,
+            useSender = false,
         ),
         MessageItemSenderTextPreviewParams(
-            sender = "Sender",
+            senders = ComposedAddressUi(displayName = "Sender", avatar = null, color = null),
             subject = LoremIpsum(words = 10).values.joinToString(" "),
-            swapSenderWithSubject = true,
-            threadCount = 10,
+            useSender = true,
+        ),
+        MessageItemSenderTextPreviewParams(
+            senders = ComposedAddressUi(
+                displayName = "Mason Tran, Me, Ryan Thomas",
+                displayNameStyles = ComposedAddressStyle.styles(
+                    ComposedAddressStyle.Bold(start = 0, end = 11),
+                    ComposedAddressStyle.Regular(start = 12),
+                ),
+                avatar = null,
+                color = null,
+            ),
+            subject = LoremIpsum(words = 10).values.joinToString(" "),
+            useSender = true,
+        ),
+        MessageItemSenderTextPreviewParams(
+            senders = ComposedAddressUi(
+                displayName = "Mason Tran, Me, Ryan Thomas",
+                displayNameStyles = ComposedAddressStyle.styles(
+                    ComposedAddressStyle.Bold(start = 0, end = 11),
+                    ComposedAddressStyle.Regular(start = 12),
+                ),
+                avatar = null,
+                color = null,
+            ),
+            subject = LoremIpsum(words = 10).values.joinToString(" "),
+            useSender = false,
         ),
     ),
-)
+) {
+    override fun getDisplayName(index: Int): String {
+        return values.toList()[index].let {
+            buildString {
+                append("useSender: ${it.useSender}, ")
+                append(
+                    "senders(name: ${it.senders.displayName.take(n = 10)}, styles: ${it.senders.displayNameStyles}), ",
+                )
+                append("subject: ${it.subject}")
+            }
+        }
+    }
+}
 
 @Preview
 @Composable
@@ -71,23 +107,18 @@ private fun MessageItemSenderTextPreview(
 ) {
     PreviewWithThemes {
         Column(verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default)) {
-            DividerHorizontal(modifier = Modifier.padding(vertical = MainTheme.spacings.default))
-            TextBodySmall(text = "Params: $params")
-            DividerHorizontal(modifier = Modifier.padding(vertical = MainTheme.spacings.default))
             TextLabelSmall(text = "MessageItemSenderTitleSmall:")
-            MessageItemSenderTitleSmall(
-                subject = params.subject,
-                sender = buildAnnotatedString { append(params.sender) },
-                swapSenderWithSubject = params.swapSenderWithSubject,
-                threadCount = params.threadCount,
+            MessageItemSenderSubjectFirstLine(
+                senders = params.senders,
+                subject = AnnotatedString(params.subject),
+                useSender = params.useSender,
             )
             DividerHorizontal(modifier = Modifier.padding(vertical = MainTheme.spacings.default))
             TextLabelSmall(text = "MessageItemSenderBodyMedium:")
-            MessageItemSenderBodyMedium(
-                subject = params.subject,
-                sender = buildAnnotatedString { append(params.sender) },
-                swapSenderWithSubject = params.swapSenderWithSubject,
-                threadCount = params.threadCount,
+            MessageItemSenderSubjectSecondLine(
+                senders = params.senders,
+                subject = AnnotatedString(params.subject),
+                useSender = params.useSender,
             )
         }
     }

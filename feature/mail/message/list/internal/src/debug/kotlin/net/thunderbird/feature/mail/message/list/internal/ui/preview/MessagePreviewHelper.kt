@@ -26,7 +26,6 @@ internal object MessagePreviewHelper {
     ) = MessageItemUi(
         state = state,
         id = id,
-        folderId = "folder-inbox",
         account = messageAccount,
         senders = ComposedAddressUi(
             displayName = senderName,
@@ -121,7 +120,7 @@ internal object MessagePreviewHelper {
             subject = "Re: Project Architecture Discussion",
             excerpt = "I agree with your approach. Let's schedule a follow-up.",
             formattedReceivedAt = "3:15 PM",
-            threadCount = 2,
+            threadCount = 3,
         ),
         createMessage(
             id = "msg-2",

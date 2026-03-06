@@ -25,6 +25,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 @Suppress("LongParameterList", "LongMethod")
 @OptIn(ExperimentalTime::class)
 @Composable
+@Deprecated("Don't use. Will be removed soon.")
 internal fun MessageItemContent(
     item: MessageListItem,
     isActive: Boolean,
@@ -141,8 +142,7 @@ private fun rememberMessageItemUi(
         forwarded = item.isForwarded,
         selected = isSelected,
         threadCount = item.threadCount,
-        isActive = isActive,
-        folderId = item.folderId.toString(),
+        active = isActive,
     )
 }
 
