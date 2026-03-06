@@ -1,7 +1,5 @@
 package net.thunderbird.feature.funding.api
 
-import androidx.appcompat.app.AppCompatActivity
-
 interface FundingManager {
     /**
      * Returns the type of funding.
@@ -13,8 +11,7 @@ interface FundingManager {
      *
      * The reminder is registered to the current lifecycle of the Activity.
      *
-     * @param activity The activity to register the reminder to.
      * @param onOpenFunding The callback to be called when the user opens the funding.
      */
-    fun addFundingReminder(activity: AppCompatActivity, onOpenFunding: () -> Unit)
+    fun addFundingReminder(onOpenFunding: () -> Unit)
 }
