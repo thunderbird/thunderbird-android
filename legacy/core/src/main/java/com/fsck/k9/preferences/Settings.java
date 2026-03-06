@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.preference.storage.Storage;
 import net.thunderbird.core.preference.storage.StorageEditor;
 
 /*
@@ -117,7 +118,7 @@ public class Settings {
             TreeMap<Integer, SettingsDescription<?>> versionedSetting = settingDescriptions.get(settingName);
             Integer highestVersion = versionedSetting.lastKey();
 
-            //noinspection unchecked
+            @SuppressWarnings("unchecked")
             SettingsDescription<Object> settingDesc =
                 (SettingsDescription<Object>) versionedSetting.get(highestVersion);
 
