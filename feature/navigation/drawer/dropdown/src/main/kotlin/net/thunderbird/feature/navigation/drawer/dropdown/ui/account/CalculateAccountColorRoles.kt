@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import app.k9mail.core.ui.compose.theme2.ColorRoles
 import app.k9mail.core.ui.compose.theme2.toColorRoles
+import net.thunderbird.core.ui.compose.theme2.ColorRoles
 
 /**
  * Calculates the color roles for the given account color.

@@ -14,10 +14,10 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.designsystem.template.pager.HorizontalTabPagerSecondary
 import net.thunderbird.core.ui.compose.designsystem.template.pager.TabSecondaryConfig
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSection
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSection

@@ -139,6 +139,7 @@ android {
 
 dependencies {
     implementation(projects.appCommon)
+    implementation(projects.core.ui.compose.common)
     implementation(projects.core.ui.compose.theme2.k9mail)
     implementation(projects.core.ui.legacy.theme2.k9mail)
     implementation(projects.feature.launcher)

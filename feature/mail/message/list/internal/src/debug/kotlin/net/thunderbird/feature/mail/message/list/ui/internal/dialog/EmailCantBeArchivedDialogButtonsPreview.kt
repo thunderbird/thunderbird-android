@@ -18,7 +18,7 @@ import app.k9mail.core.ui.compose.designsystem.PreviewLightDarkLandscape
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.mail.message.list.internal.R
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.EmailCantBeArchivedDialogButtons
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract

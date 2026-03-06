@@ -21,8 +21,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.RadioGroup
 import app.k9mail.core.ui.compose.designsystem.atom.Switch
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem

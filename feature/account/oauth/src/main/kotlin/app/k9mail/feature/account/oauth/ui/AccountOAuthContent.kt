@@ -9,13 +9,13 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.oauth.R
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Event
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.State
 import app.k9mail.feature.account.oauth.ui.view.GoogleSignInSupportText
 import app.k9mail.feature.account.oauth.ui.view.SignInView
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @Composable
 internal fun AccountOAuthContent(

@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import app.k9mail.core.ui.compose.theme2.LocalContentColor
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.LocalContentColor
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import androidx.compose.material3.Tab as Material3Tab
 
 /**
