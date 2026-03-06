@@ -81,4 +81,3 @@ private fun Color.Companion.randomize(seed: Int): Color {
 private fun randomizeMonogramInitials(seed: Int) =
     "${('A' + (seed * MONOGRAM_FIRST_LETTER_MULTIPLIER) % ALPHABET_SIZE)}" +
         "${('A' + (seed * MONOGRAM_SECOND_LETTER_MULTIPLIER) % ALPHABET_SIZE)}"
-

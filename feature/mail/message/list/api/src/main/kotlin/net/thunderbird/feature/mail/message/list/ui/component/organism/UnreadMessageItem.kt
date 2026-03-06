@@ -10,9 +10,9 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import net.thunderbird.core.ui.compose.designsystem.atom.button.FavouriteButtonIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcons
+import net.thunderbird.feature.mail.message.list.ui.component.atom.FavouriteButtonIcon
 import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageItemSenderTitleSmall
 
 private const val UNREAD_MAIL_BADGE_COLOR = 0xFF34C759
