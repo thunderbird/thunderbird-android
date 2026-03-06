@@ -39,6 +39,7 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.theme2.contentColorFor
 import net.thunderbird.feature.mail.message.list.ui.component.atom.FavouriteButtonIcon
+import net.thunderbird.feature.mail.message.list.ui.component.atom.MESSAGE_BADGE_SIZE
 import net.thunderbird.feature.mail.message.list.ui.component.atom.NewMessageBadge
 import net.thunderbird.feature.mail.message.list.ui.component.atom.UnreadMessageBadge
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageBadgeStyle
@@ -195,12 +196,16 @@ private fun LeadingElements(
     modifier: Modifier = Modifier,
 ) {
     Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxHeight()) {
-        val badgeModifier = Modifier
-            .align(Alignment.CenterStart)
-            .offset(x = -MainTheme.spacings.double)
+        val badgeModifier = Modifier.align(Alignment.CenterStart)
         when (configuration.badgeStyle) {
-            MessageBadgeStyle.New -> NewMessageBadge(modifier = badgeModifier)
-            MessageBadgeStyle.Unread -> UnreadMessageBadge(modifier = badgeModifier)
+            MessageBadgeStyle.New -> NewMessageBadge(
+                modifier = badgeModifier.offset(-(MESSAGE_BADGE_SIZE.dp + MainTheme.spacings.quarter)),
+            )
+
+            MessageBadgeStyle.Unread -> UnreadMessageBadge(
+                modifier = badgeModifier.offset(-(MESSAGE_BADGE_SIZE.dp)),
+            )
+
             null -> Unit
         }
         AnimatedContent(targetState = selected) { selected ->
