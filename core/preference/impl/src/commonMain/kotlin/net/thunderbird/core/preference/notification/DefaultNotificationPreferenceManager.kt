@@ -31,10 +31,10 @@ class DefaultNotificationPreferenceManager(
     private val mutex = Mutex()
     private val storage: Storage
         get() = storagePersister.loadValues()
-    private val config: NotificationPreference
+    private val initialConfig: NotificationPreference
         get() = getConfigFromStorage(storage)
     private val configState = MutableStateFlow(
-        value = config,
+        value = initialConfig,
     )
 
     private fun getConfigFromStorage(storage: Storage): NotificationPreference {
