@@ -15,7 +15,7 @@ import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 
 
 //FIXME: Make this only detect OpenPGP messages. Move support for S/MIME messages to separate module.
-class EncryptionDetector {
+public class EncryptionDetector {
     private final TextPartFinder textPartFinder;
 
 

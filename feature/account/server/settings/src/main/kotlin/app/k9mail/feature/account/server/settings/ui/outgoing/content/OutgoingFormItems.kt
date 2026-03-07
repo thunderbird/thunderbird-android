@@ -44,7 +44,7 @@ internal fun LazyListScope.outgoingFormItems(
             label = stringResource(id = R.string.account_server_settings_server_label),
             isRequired = true,
             contentPadding = defaultItemPadding(),
-            keyboardOptions = KeyboardOptions(autoCorrect = false),
+            keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
         )
     }
 
@@ -90,7 +90,7 @@ internal fun LazyListScope.outgoingFormItems(
                 label = stringResource(id = R.string.account_server_settings_username_label),
                 isRequired = true,
                 contentPadding = defaultItemPadding(),
-                keyboardOptions = KeyboardOptions(autoCorrect = false),
+                keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
                 contentType = ContentType.Username + ContentType.EmailAddress,
             )
         }

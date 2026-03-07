@@ -2,12 +2,13 @@ package net.thunderbird.feature.account.settings.impl
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.toRoute
-import app.k9mail.core.ui.compose.navigation.deepLinkComposable
+import net.thunderbird.core.ui.navigation.deepLinkComposable
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
 import net.thunderbird.feature.account.settings.api.AccountSettingsRoute
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsScreen
 import net.thunderbird.feature.account.settings.impl.ui.readingMail.ReadingMailSettingsScreen
+import net.thunderbird.feature.account.settings.impl.ui.search.SearchSettingsScreen
 
 internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
 
@@ -18,7 +19,7 @@ internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
     ) {
         with(navGraphBuilder) {
             deepLinkComposable<AccountSettingsRoute.GeneralSettings>(
-                basePath = AccountSettingsRoute.GeneralSettings.Companion.BASE_PATH,
+                basePath = AccountSettingsRoute.GeneralSettings.BASE_PATH,
             ) { backStackEntry ->
                 val generalSettingsRoute = backStackEntry.toRoute<AccountSettingsRoute.GeneralSettings>()
                 val accountId = AccountIdFactory.of(generalSettingsRoute.accountId)
@@ -32,12 +33,26 @@ internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
 
         with(navGraphBuilder) {
             deepLinkComposable<AccountSettingsRoute.ReadingMailSettings>(
-                basePath = AccountSettingsRoute.ReadingMailSettings.Companion.BASE_PATH,
+                basePath = AccountSettingsRoute.ReadingMailSettings.BASE_PATH,
             ) { backStackEntry ->
                 val readingMailSettingsRoute = backStackEntry.toRoute<AccountSettingsRoute.ReadingMailSettings>()
                 val accountId = AccountIdFactory.of(readingMailSettingsRoute.accountId)
 
                 ReadingMailSettingsScreen(
+                    accountId = accountId,
+                    onBack = onBack,
+                )
+            }
+        }
+
+        with(navGraphBuilder) {
+            deepLinkComposable<AccountSettingsRoute.SearchSettings>(
+                basePath = AccountSettingsRoute.SearchSettings.Companion.BASE_PATH,
+            ) { backStackEntry ->
+                val searchSettingsRoute = backStackEntry.toRoute<AccountSettingsRoute.SearchSettings>()
+                val accountId = AccountIdFactory.of(searchSettingsRoute.accountId)
+
+                SearchSettingsScreen(
                     accountId = accountId,
                     onBack = onBack,
                 )

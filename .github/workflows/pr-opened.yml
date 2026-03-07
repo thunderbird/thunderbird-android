@@ -8,6 +8,9 @@ on:
     branches: [beta, release]
     types: [opened]
 
+permissions:
+  contents: none
+
 jobs:
   pr-opened:
     permissions:

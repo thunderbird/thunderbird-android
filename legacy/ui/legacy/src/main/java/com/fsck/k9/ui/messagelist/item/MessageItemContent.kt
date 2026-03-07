@@ -29,11 +29,11 @@ import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
-import net.thunderbird.core.ui.compose.designsystem.organism.message.ActiveMessageItem
-import net.thunderbird.core.ui.compose.designsystem.organism.message.MessageItemDefaults
-import net.thunderbird.core.ui.compose.designsystem.organism.message.ReadMessageItem
-import net.thunderbird.core.ui.compose.designsystem.organism.message.UnreadMessageItem
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.mail.message.list.ui.component.organism.ActiveMessageItem
+import net.thunderbird.feature.mail.message.list.ui.component.organism.MessageItemDefaults
+import net.thunderbird.feature.mail.message.list.ui.component.organism.ReadMessageItem
+import net.thunderbird.feature.mail.message.list.ui.component.organism.UnreadMessageItem
 
 @Suppress("LongParameterList", "LongMethod")
 @OptIn(ExperimentalTime::class)

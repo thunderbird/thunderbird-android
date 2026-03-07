@@ -5,6 +5,7 @@ import androidx.compose.material3.SwipeToDismissBoxState
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -136,6 +137,7 @@ enum class SwipeDirection {
  * to ensure that swipe gestures can be performed through accessibility services without
  * requiring physical touch interactions.
  */
+@Immutable
 sealed interface SwipeDirectionAccessibilityAction {
     /**
      * String resource ID for the accessibility action label.

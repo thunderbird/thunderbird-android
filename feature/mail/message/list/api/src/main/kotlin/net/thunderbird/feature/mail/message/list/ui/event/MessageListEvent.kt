@@ -94,4 +94,22 @@ sealed interface MessageListEvent {
      * @param sortCriteria The new [SortCriteria] to apply.
      */
     data class ChangeSortCriteria(val accountId: AccountId?, val sortCriteria: SortCriteria) : UserEvent
+
+    /**
+     * A user event triggered when the footer of the message list is clicked.
+     * This is typically used to load more messages.
+     */
+    data object OnFooterClick : UserEvent
+
+    /**
+     * Event triggered when the user requests to load the next page of messages in the message list.
+     *
+     * This event is typically fired when the user scrolls to the bottom of the current message list
+     * and pagination is required to fetch additional messages. It signals that more messages should
+     * be loaded from the data source and appended to the existing list.
+     *
+     * @see UserEvent
+     * @see MessageListEvent
+     */
+    data object LoadNextPage : UserEvent
 }

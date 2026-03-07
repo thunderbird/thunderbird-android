@@ -10,7 +10,11 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+
+    android {
         compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
         minSdk = ThunderbirdProjectConfig.Android.sdkMin
 

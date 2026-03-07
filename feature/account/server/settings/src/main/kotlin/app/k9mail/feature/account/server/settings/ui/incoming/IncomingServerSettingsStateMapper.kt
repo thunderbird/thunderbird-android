@@ -26,7 +26,7 @@ fun AccountState.toIncomingServerSettingsState() = incomingServerSettings?.toInc
 private fun ServerSettings.toIncomingServerSettingsState(): State {
     return State(
         protocolType = IncomingProtocolType.fromName(type),
-        server = StringInputField(value = host ?: ""),
+        server = StringInputField(value = host),
         security = connectionSecurity.toConnectionSecurity(),
         port = NumberInputField(value = port.toLong()),
         authenticationType = authenticationType.toAuthenticationType(),

@@ -182,7 +182,7 @@ abstract class BaseServerValidationViewModel(
 
             certificateErrorRepository.setCertificateError(
                 ServerCertificateError(
-                    hostname = serverSettings.host!!,
+                    hostname = serverSettings.host,
                     port = serverSettings.port,
                     certificateChain = error.certificateChain,
                 ),

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -126,7 +127,13 @@ abstract class AccountList : BaseListActivity(), OnItemClickListener {
             if (account is LegacyAccountDto) {
                 holder.chip.setBackgroundColor(account.chipColor)
             } else {
-                holder.chip.setBackgroundColor(resources.getColor(R.color.account_list_item_chip_background))
+                holder.chip.setBackgroundColor(
+                    ResourcesCompat.getColor(
+                        resources,
+                        R.color.account_list_item_chip_background,
+                        null,
+                    ),
+                )
             }
 
             holder.chip.background.alpha = BACKGROUND_ALPHA

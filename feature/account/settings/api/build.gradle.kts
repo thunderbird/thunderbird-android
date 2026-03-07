@@ -8,7 +8,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.ui.compose.navigation)
+    implementation(projects.core.ui.navigation)
     implementation(projects.core.featureflag)
     implementation(projects.core.android.account)
 }

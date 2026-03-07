@@ -30,6 +30,7 @@ graph TB
         FEATURE_SETTINGS["`**:feature:settings**`"]
         FEATURE_ONBOARDING["`**:feature:onboarding**`"]
         FEATURE_MAIL["`**:feature:mail**`"]
+        FEATURE_NAV_DRAWER["`**:feature:navigation:drawer**`"]
     end
 
     subgraph CORE[Core Modules]
@@ -89,7 +90,7 @@ graph TB
     class COMMON common
     class COMMON_APP common_module
     class FEATURE feature
-    class FEATURE_ACCOUNT,FEATURE_SETTINGS,FEATURE_ONBOARDING,FEATURE_MAIL feature_module
+    class FEATURE_ACCOUNT,FEATURE_SETTINGS,FEATURE_ONBOARDING,FEATURE_MAIL,FEATURE_NAV_DRAWER feature_module
     class CORE core
     class CORE_UI,CORE_COMMON,CORE_ANDROID,CORE_DATABASE,CORE_NETWORK,CORE_TESTING core_module
     class LIBRARY library

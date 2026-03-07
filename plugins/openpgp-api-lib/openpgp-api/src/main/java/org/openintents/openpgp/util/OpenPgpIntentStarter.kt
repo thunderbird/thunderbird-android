@@ -3,6 +3,7 @@ package org.openintents.openpgp.util
 import android.app.Activity
 import android.app.ActivityOptions
 import android.app.ActivityOptions.MODE_BACKGROUND_ACTIVITY_START_ALLOWED
+import android.app.ActivityOptions.MODE_BACKGROUND_ACTIVITY_START_ALLOW_ALWAYS
 import android.content.IntentSender
 import android.os.Build
 import android.os.Bundle
@@ -74,8 +75,14 @@ object OpenPgpIntentStarter {
     }
 
     private fun buildOptionsBundle(): Bundle? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
             ActivityOptions.makeBasic().apply {
+                setPendingIntentBackgroundActivityStartMode(MODE_BACKGROUND_ACTIVITY_START_ALLOW_ALWAYS)
+                setShareIdentityEnabled(true)
+            }.toBundle()
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            ActivityOptions.makeBasic().apply {
+                @Suppress("DEPRECATION")
                 setPendingIntentBackgroundActivityStartMode(MODE_BACKGROUND_ACTIVITY_START_ALLOWED)
                 setShareIdentityEnabled(true)
             }.toBundle()

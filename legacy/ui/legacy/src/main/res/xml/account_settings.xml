@@ -352,22 +352,11 @@
         </PreferenceCategory>
     </PreferenceScreen>
 
-    <PreferenceScreen
+    <Preference
         android:icon="@drawable/ic_search"
         android:key="search"
         android:title="@string/account_settings_search"
-        >
-
-        <ListPreference
-            android:dialogTitle="@string/account_settings_remote_search_num_label"
-            android:entries="@array/remote_search_num_results_entries"
-            android:entryValues="@array/remote_search_num_results_values"
-            android:key="account_remote_search_num_results"
-            app:useSimpleSummaryProvider="true"
-            android:title="@string/account_settings_remote_search_num_label"
-            />
-
-    </PreferenceScreen>
+        />
 
     <PreferenceScreen
         android:icon="@drawable/ic_lock"

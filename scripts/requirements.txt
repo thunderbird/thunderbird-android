@@ -1,7 +1,7 @@
 # Python dependencies for scripts in this directory
 # Install with: pip install -r requirements.txt
 
-# Direct dependencies - all pinned and CVE-free
+# Direct dependencies - all pinned by version and hash
 
 # Required by: scripts/ci/setup_release_automation
 # Cryptography library for GitHub secret encryption
@@ -9,7 +9,7 @@ PyNaCl==1.6.2
 
 # Required by: scripts/ci/render-notes.py
 # YAML parser for release notes
-PyYAML==6.0.1
+PyYAML==6.0.3
 
 # Required by: scripts/ci/render-notes.py
 # Template engine for rendering changelog files
@@ -17,4 +17,4 @@ Jinja2==3.1.6
 
 # Required by: scripts/ci/setup_release_automation, scripts/ci/render-notes.py
 # HTTP library for GitHub API interactions
-requests==2.32.4
+requests==2.32.5

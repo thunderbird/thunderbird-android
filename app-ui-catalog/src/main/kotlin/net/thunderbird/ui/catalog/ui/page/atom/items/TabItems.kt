@@ -1,7 +1,6 @@
 package net.thunderbird.ui.catalog.ui.page.atom.items
 
 import androidx.compose.foundation.lazy.grid.LazyGridScope
-import androidx.compose.material3.TabRow
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -13,6 +12,8 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.designsystem.atom.tab.TabPrimary
 import net.thunderbird.core.ui.compose.designsystem.atom.tab.TabSecondary
+import net.thunderbird.core.ui.compose.designsystem.molecule.tab.TabRowPrimary
+import net.thunderbird.core.ui.compose.designsystem.molecule.tab.TabRowSecondary
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.ui.catalog.ui.page.common.list.fullSpanItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem
@@ -21,7 +22,7 @@ fun LazyGridScope.tabItems() {
     sectionHeaderItem("Primary Tab")
     fullSpanItem {
         var selected by remember { mutableStateOf(PrimaryTabItems.TextOnly) }
-        TabRow(selectedTabIndex = PrimaryTabItems.entries.indexOf(selected)) {
+        TabRowPrimary(selectedTabIndex = PrimaryTabItems.entries.indexOf(selected)) {
             PrimaryTabItems.entries.forEach { tabItem ->
                 TabPrimary(
                     selected = selected == tabItem,
@@ -45,7 +46,7 @@ fun LazyGridScope.tabItems() {
     }
     sectionHeaderItem("Secondary Tab")
     defaultItem {
-        TabRow(selectedTabIndex = 0) {
+        TabRowSecondary(selectedTabIndex = 0) {
             TabSecondary(
                 selected = true,
                 title = { TextTitleMedium("Secondary Tab") },

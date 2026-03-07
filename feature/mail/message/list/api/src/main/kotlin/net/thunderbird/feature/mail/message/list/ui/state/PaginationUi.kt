@@ -1,5 +1,7 @@
 package net.thunderbird.feature.mail.message.list.ui.state
 
+import androidx.compose.runtime.Immutable
+
 /**
  * Represents the UI state for pagination functionality in a list.
  *
@@ -8,13 +10,17 @@ package net.thunderbird.feature.mail.message.list.ui.state
  * any error that may have occurred during pagination.
  *
  * @property phase The current phase of the pagination operation. Defaults to [Phase.Idle].
+ * @property prefetchDistance The number of items to prefetch ahead of the current viewport.
+ *  Defaults to 10.
  * @property endReached Indicates whether the end of available data has been reached. When `true`,
  *  no more data can be loaded. Defaults to `false`.
  * @property error An error message if pagination failed, or `null` if no error occurred.
  *  Defaults to `null`.
  */
+@Immutable
 data class PaginationUi(
     val phase: Phase = Phase.Idle,
+    val prefetchDistance: Int = 10,
     val endReached: Boolean = false,
     val error: String? = null,
 ) {

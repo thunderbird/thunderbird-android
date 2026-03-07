@@ -1,7 +1,7 @@
 package net.thunderbird.feature.funding.googleplay.domain
 
-import android.app.Activity
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
@@ -17,7 +17,7 @@ internal interface FundingDomainContract {
          * Get available contributions.
          */
         fun interface GetAvailableContributions {
-            suspend operator fun invoke(): Outcome<AvailableContributions, ContributionError>
+            operator fun invoke(): Flow<Outcome<AvailableContributions, ContributionError>>
         }
     }
 
@@ -29,41 +29,50 @@ internal interface FundingDomainContract {
         val recurringContributionIds: ImmutableList<String>
     }
 
-    interface BillingManager {
+    /**
+     * Repository for managing contributions.
+     */
+    interface ContributionRepository {
+        /**
+         * Get one-time contributions.
+         *
+         * @param productIds The list of product IDs to fetch.
+         * @return Flow of list of one-time contributions.
+         */
+        fun getAllOneTime(productIds: List<String>): Flow<Outcome<List<OneTimeContribution>, ContributionError>>
+
+        /**
+         * Get recurring contributions.
+         *
+         * @param productIds The list of product IDs to fetch.
+         * @return Outcome flow containing a list of recurring contributions or an error if the operation fails.
+         */
+        fun getAllRecurring(productIds: List<String>): Flow<Outcome<List<RecurringContribution>, ContributionError>>
+
+        /**
+         * Get purchased contributions.
+         *
+         * @return Outcome flow containing a list of recurring contributions or an error if the operation fails.
+         */
+        fun getAllPurchased(): Flow<Outcome<List<Contribution>, ContributionError>>
+
         /**
          * Flow that emits the last purchased contribution.
          */
         val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>>
 
         /**
-         * Load contributions.
-         */
-        suspend fun loadOneTimeContributions(): Outcome<List<OneTimeContribution>, ContributionError>
-
-        /**
-         * Load recurring contributions.
-         */
-        suspend fun loadRecurringContributions(): Outcome<List<RecurringContribution>, ContributionError>
-
-        /**
-         * Load purchased contributions.
-         */
-        suspend fun loadPurchasedContributions(): Outcome<List<Contribution>, ContributionError>
-
-        /**
          * Purchase a contribution.
          *
-         * @param activity The activity to use for the purchase flow.
          * @param contribution The contribution to purchase.
          * @return Outcome of the purchase.
          */
         suspend fun purchaseContribution(
-            activity: Activity,
             contribution: Contribution,
         ): Outcome<Unit, ContributionError>
 
         /**
-         * Release all resources.
+         * Clears contribution resources.
          */
         fun clear()
     }

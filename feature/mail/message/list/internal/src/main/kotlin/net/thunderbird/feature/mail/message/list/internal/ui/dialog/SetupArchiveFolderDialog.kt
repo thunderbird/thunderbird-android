@@ -97,8 +97,6 @@ internal fun SetupArchiveFolderDialog(
                 is State.CreateArchiveFolder -> stringResource(R.string.setup_archive_folder_dialog_create_new_folder)
                 is State.EmailCantBeArchived ->
                     stringResource(R.string.setup_archive_folder_dialog_email_can_not_be_archived)
-
-                else -> error("Invalid state: $state")
             },
             supportingText = when (state) {
                 is State.EmailCantBeArchived ->

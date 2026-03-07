@@ -68,6 +68,10 @@ class DefaultNotificationPreferenceManager(
                 key = KEY_NOTIFICATION_QUICK_DELETE_BEHAVIOUR,
                 default = NOTIFICATION_PREFERENCE_DEFAULT_QUICK_DELETE_BEHAVIOUR,
             ),
+            lockScreenNotificationVisibility = storage.getEnumOrDefault(
+                key = KEY_LOCK_SCREEN_NOTIFICATION_VISIBILITY,
+                default = NOTIFICATION_PREFERENCE_DEFAULT_LOCK_SCREEN_NOTIFICATION_VISIBILITY,
+            ),
         ),
     )
 
@@ -97,6 +101,10 @@ class DefaultNotificationPreferenceManager(
                 storageEditor.putEnum(
                     KEY_NOTIFICATION_QUICK_DELETE_BEHAVIOUR,
                     config.notificationQuickDeleteBehaviour,
+                )
+                storageEditor.putEnum(
+                    KEY_LOCK_SCREEN_NOTIFICATION_VISIBILITY,
+                    config.lockScreenNotificationVisibility,
                 )
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }

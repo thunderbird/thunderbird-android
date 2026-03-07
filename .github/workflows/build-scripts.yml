@@ -1,0 +1,37 @@
+---
+name: Build - Scripts
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/**'
+      - '.github/workflows/build-scripts.yml'
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - '.github/workflows/build-scripts.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-scripts:
+    name: Build scripts
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # @v6.2.0
+        with:
+          python-version: '3.14'
+
+      - name: Run Python script tests
+        run: bash scripts/test_python_scripts.sh

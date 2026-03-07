@@ -11,8 +11,10 @@ internal class ContributionStateTest {
 
     @Test
     fun `should set default values`() {
+        // Arrange
         val state = State()
 
+        // Assert
         assertThat(state).isEqualTo(
             State(
                 listState = ContributionListState(

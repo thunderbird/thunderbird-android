@@ -3,7 +3,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.core.common"
     }
     sourceSets {
@@ -18,14 +18,6 @@ kotlin {
         jvmMain.dependencies {
             implementation(libs.androidx.annotation)
         }
-    }
-
-    compilerOptions {
-        freeCompilerArgs.addAll(
-            listOf(
-                "-Xexpect-actual-classes",
-            ),
-        )
     }
 }
 

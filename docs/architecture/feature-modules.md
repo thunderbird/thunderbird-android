@@ -45,7 +45,7 @@ graph TB
             direction LR
             ACCOUNT["`**Account**<br>User accounts management`"]
             MAIL["`**Mail**<br>Email handling and display`"]
-            NAVIGATION["`**Navigation**<br>App navigation and UI components`"]
+            DRAWER["`**Navigation**<br>App navigation UI components`"]
             ONBOARDING["`**Onboarding**<br>User setup and introduction`"]
         end
     end
@@ -169,30 +169,36 @@ feature:mail
 
 ### 🧭 Navigation Module
 
-The Navigation module provides UI components for navigating through the application.
+The Navigation module is part of the core UI and provides infrastructure for navigating through the application.
 
 ```shell
-feature:navigation
-├── feature:navigation:api
-├── feature:navigation:internal
-└── feature:navigation:drawer
-    ├── feature:navigation:drawer:api
-    ├── feature:navigation:drawer:internal
-    ├── feature:navigation:drawer:dropdown
-    │   ├── feature:navigation:drawer:dropdown:api
-    │   └── feature:navigation:drawer:dropdown:internal
-    └── feature:navigation:drawer:siderail
-        ├── feature:navigation:drawer:siderail:api
-        └── feature:navigation:drawer:siderail:internal
+core:ui:navigation
+```
+
+#### Details:
+
+- **Navigation**: Core navigation interfaces and routing
+- **Route**: Type-safe route definitions
+- **NavigationExtension**: Compose-specific navigation extensions
+
+### 🗄️ Navigation Drawer Module
+
+The Navigation Drawer module provides UI components for the main application navigation drawer, including dropdown
+and other variations if any.
+
+```shell
+feature:navigation:drawer
+├── feature:navigation:drawer:api
+├── feature:navigation:drawer:internal
+└── feature:navigation:drawer:dropdown
+    ├── feature:navigation:drawer:dropdown:api
+    └── feature:navigation:drawer:dropdown:internal
 ```
 
 #### Subfeatures:
 
-- **API/Internal**: Core public interfaces and internal implementations for navigation
-- **Drawer**: Navigation drawer functionality
-  - **API/Internal**: Core drawer interfaces and internal implementations
-  - **Dropdown**: Dropdown-style navigation implementation
-  - **Siderail**: Side rail navigation implementation
+- **API/Internal**: Core drawer interfaces and internal implementations
+- **Dropdown**: Dropdown-style navigation implementation
 
 ### 🚀 Onboarding Module
 

@@ -18,7 +18,7 @@ import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionCo
 @Suppress("TooManyFunctions")
 internal class ContributionViewModel(
     private val getAvailableContributions: UseCase.GetAvailableContributions,
-    private val billingManager: FundingDomainContract.BillingManager,
+    private val repository: FundingDomainContract.ContributionRepository,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState),
     ViewModel {
@@ -29,7 +29,7 @@ internal class ContributionViewModel(
         }
 
         viewModelScope.launch {
-            billingManager.purchasedContribution.collect { result ->
+            repository.purchasedContribution.collect { result ->
                 result.handle(
                     onSuccess = { purchasedContribution ->
                         updateState { state ->
@@ -61,35 +61,38 @@ internal class ContributionViewModel(
     }
 
     private suspend fun loadAvailableContributions() {
-        getAvailableContributions().handle(
-            onSuccess = { data ->
-                updateState { state ->
-                    val selectedContribution = selectContribution(data)
+        getAvailableContributions().collect { outcome ->
+            outcome.handle(
+                onSuccess = { data ->
+                    updateState { state ->
+                        val selectedContribution = selectContribution(data)
 
-                    state.copy(
-                        listState = state.listState.copy(
-                            oneTimeContributions = data.oneTimeContributions.toImmutableList(),
-                            recurringContributions = data.recurringContributions.toImmutableList(),
-                            selectedContribution = selectedContribution,
-                            isRecurringContributionSelected = selectedContribution is RecurringContribution,
-                            isLoading = false,
-                        ),
-                        purchasedContribution = data.purchasedContribution,
-                        showContributionList = data.purchasedContribution == null,
-                    )
-                }
-            },
-            onFailure = {
-                updateState { state ->
-                    state.copy(
-                        listState = state.listState.copy(
-                            isLoading = false,
-                            error = it,
-                        ),
-                    )
-                }
-            },
-        )
+                        state.copy(
+                            listState = state.listState.copy(
+                                oneTimeContributions = data.oneTimeContributions.toImmutableList(),
+                                recurringContributions = data.recurringContributions.toImmutableList(),
+                                selectedContribution = selectedContribution,
+                                isRecurringContributionSelected = selectedContribution is RecurringContribution,
+                                isLoading = false,
+                            ),
+                            purchasedContribution = data.purchasedContribution,
+                            showContributionList = data.purchasedContribution == null,
+                            purchaseError = null,
+                        )
+                    }
+                },
+                onFailure = {
+                    updateState { state ->
+                        state.copy(
+                            listState = state.listState.copy(
+                                isLoading = false,
+                                error = it,
+                            ),
+                        )
+                    }
+                },
+            )
+        }
     }
 
     private fun selectContribution(data: AvailableContributions): Contribution? {
@@ -163,7 +166,7 @@ internal class ContributionViewModel(
     private fun onContributionItemClicked(item: Contribution) {
         updateState {
             it.copy(
-                it.listState.copy(
+                listState = it.listState.copy(
                     selectedContribution = item,
                 ),
             )
@@ -182,9 +185,9 @@ internal class ContributionViewModel(
         }
         emitEffect(
             Effect.PurchaseContribution(
-                startPurchaseFlow = { activity ->
+                startPurchaseFlow = {
                     viewModelScope.launch {
-                        billingManager.purchaseContribution(activity, selectedContribution).handle(
+                        repository.purchaseContribution(selectedContribution).handle(
                             onSuccess = {
                                 // we need to wait for the callback to be called
                             },
@@ -233,6 +236,6 @@ internal class ContributionViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        billingManager.clear()
+        repository.clear()
     }
 }

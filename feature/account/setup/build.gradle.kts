@@ -17,7 +17,7 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.core.validation)
     implementation(projects.core.ui.compose.designsystem)
-    implementation(projects.core.ui.compose.navigation)
+    implementation(projects.core.ui.navigation)
 
     implementation(projects.mail.common)
     implementation(projects.mail.protocols.imap)

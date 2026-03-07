@@ -76,6 +76,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             closeAccountSettings()
+            accountRemover.removeAccountAsync(accountUuid)
         }
     }
 
@@ -94,6 +95,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
         initializeGeneralSettings()
         initializeReadingMail()
+        initializeSearch()
         initializeIncomingServer()
         initializeComposition()
         initializeManageIdentities()
@@ -172,6 +174,16 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             FeatureLauncherActivity.launch(
                 context = requireActivity(),
                 target = FeatureLauncherTarget.AccountReadingMailSettings(accountUuid),
+                launcher = launcherForActivityResult,
+            )
+        }
+    }
+
+    private fun initializeSearch() {
+        findPreference<Preference>(PREFERENCE_SEARCH)?.onClick {
+            FeatureLauncherActivity.launch(
+                context = requireActivity(),
+                target = FeatureLauncherTarget.AccountSearchSettings(accountUuid),
                 launcher = launcherForActivityResult,
             )
         }
@@ -499,6 +511,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_GENERAL = "general"
 
         private const val PREFERENCE_READING_MAIL = "reading_mail"
+        private const val PREFERENCE_SEARCH = "search"
         private const val PREFERENCE_INCOMING_SERVER = "incoming"
         private const val PREFERENCE_COMPOSITION = "composition"
         private const val PREFERENCE_MANAGE_IDENTITIES = "manage_identities"

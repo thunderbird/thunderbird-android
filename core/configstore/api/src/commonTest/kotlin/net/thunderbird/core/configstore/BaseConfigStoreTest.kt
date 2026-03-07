@@ -29,8 +29,8 @@ class BaseConfigStoreTest {
         val result = testSubject.config.first()
 
         // Assert
-        assertThat(result?.stringValue).isEqualTo(testConfig.stringValue)
-        assertThat(result?.intValue).isEqualTo(testConfig.intValue)
+        assertThat(result.stringValue).isEqualTo(testConfig.stringValue)
+        assertThat(result.intValue).isEqualTo(testConfig.intValue)
     }
 
     @Test

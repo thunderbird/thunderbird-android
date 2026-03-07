@@ -97,6 +97,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
     protected void removeListeners() {
         Editable text = getText();
         if (text != null) {
+            @SuppressWarnings("unchecked")
             TokenSpanWatcher[] spanWatchers = text.getSpans(0, text.length(), TokenSpanWatcher.class);
             for (TokenSpanWatcher watcher : spanWatchers) {
                 text.removeSpan(watcher);
@@ -108,6 +109,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
     /**
      * Initialise the variables and various listeners
      */
+    @SuppressWarnings("this-escape")
     private void init() {
         if (initialized) return;
 
@@ -163,16 +165,19 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         initialized = true;
     }
 
+    @SuppressWarnings("this-escape")
     public TokenCompleteTextView(Context context) {
         super(context);
         init();
     }
 
+    @SuppressWarnings("this-escape")
     public TokenCompleteTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
+    @SuppressWarnings("this-escape")
     public TokenCompleteTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
@@ -228,7 +233,9 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         if (hiddenContent != null) {
             text = hiddenContent;
         }
-        for (TokenImageSpan span: text.getSpans(0, text.length(), TokenImageSpan.class)) {
+        @SuppressWarnings("unchecked")
+        TokenImageSpan[] spans = text.getSpans(0, text.length(), TokenImageSpan.class);
+        for (TokenImageSpan span : spans) {
             objects.add(span.getToken());
         }
         return objects;
@@ -294,14 +301,14 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
     abstract protected T defaultObject(String completionText);
 
     /**
-     * Correctly build accessibility string for token contents
-     *
+     * Correctly build accessibility string for token contents.
      * This seems to be a hidden API, but there doesn't seem to be another reasonable way
+     *
      * @return custom string for accessibility
      */
     @SuppressWarnings("unused")
     public CharSequence getTextForAccessibility() {
-        if (getObjects().size() == 0) {
+        if (getObjects().isEmpty()) {
             return getText();
         }
 
@@ -325,6 +332,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             }
 
             //Replace token spans
+            @SuppressWarnings("unchecked")
             TokenImageSpan[] tokens = text.getSpans(i, i, TokenImageSpan.class);
             if (tokens.length > 0) {
                 TokenImageSpan token = tokens[0];
@@ -387,6 +395,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         int candidateStringEnd = editable.length();
 
         //We want to find the largest string that contains the selection end that is not already tokenized
+        @SuppressWarnings("unchecked")
         TokenImageSpan[] spans = editable.getSpans(0, editable.length(), TokenImageSpan.class);
         for (TokenImageSpan span : spans) {
             int spanEnd = editable.getSpanEnd(span);
@@ -590,7 +599,9 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         TokenImageSpan best = null;
         int bestStart = Integer.MIN_VALUE;
 
-        for (TokenImageSpan s : text.getSpans(qs, qe, TokenImageSpan.class)) {
+        @SuppressWarnings("unchecked")
+        TokenImageSpan[] spans = text.getSpans(qs, qe, TokenImageSpan.class);
+        for (TokenImageSpan s : spans) {
             final int start = text.getSpanStart(s);
             if (start > bestStart && isTouchInsideSpan(text, layout, s, x, y)) {
                 // Near boundaries multiple spans can be returned; prefer the span with the greatest start index.
@@ -670,6 +681,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         Editable text = getText();
         if (text != null) {
             //Make sure if we are in a span, we select the spot 1 space after the span end
+            @SuppressWarnings("unchecked")
             TokenImageSpan[] spans = text.getSpans(selStart, selEnd, TokenImageSpan.class);
             for (TokenImageSpan span : spans) {
                 int spanEnd = text.getSpanEnd(span);
@@ -741,6 +753,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
                     setCursorVisible(wasCursorVisible);
                 });
 
+                @SuppressWarnings("unchecked")
                 TokenSpanWatcher[] watchers = getText().getSpans(0, getText().length(), TokenSpanWatcher.class);
                 if (watchers.length == 0) {
                     //Span watchers can get removed in setText
@@ -759,7 +772,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         if (allowCollapse) performCollapse(hasFocus);
     }
 
-    @SuppressWarnings("unchecked cast")
+    @SuppressWarnings("unchecked")
     @Override
     protected CharSequence convertSelectionToString(Object object) {
         selectedObject = (T) object;
@@ -877,6 +890,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
 
         // If the object is currently visible, remove it
         for (Editable text: texts) {
+            @SuppressWarnings("unchecked")
             TokenImageSpan[] spans = text.getSpans(0, text.length(), TokenImageSpan.class);
             for (TokenImageSpan span : spans) {
                 if (span.getToken().equals(object)) {
@@ -1036,7 +1050,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
 
     private class TokenSpanWatcher implements SpanWatcher {
 
-        @SuppressWarnings("unchecked cast")
+        @SuppressWarnings("unchecked")
         @Override
         public void onSpanAdded(Spannable text, Object what, int start, int end) {
             if (what instanceof TokenCompleteTextView<?>.TokenImageSpan && !savingState) {
@@ -1050,7 +1064,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             }
         }
 
-        @SuppressWarnings("unchecked cast")
+        @SuppressWarnings("unchecked")
         @Override
         public void onSpanRemoved(Spannable text, Object what, int start, int end) {
             if (what instanceof TokenCompleteTextView<?>.TokenImageSpan && !savingState) {
@@ -1078,6 +1092,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
 
                 int end = start + count;
 
+                @SuppressWarnings("unchecked")
                 TokenImageSpan[] spans = text.getSpans(start, end, TokenImageSpan.class);
 
                 //NOTE: I'm not completely sure this won't cause problems if we get stuck in a text changed loop
@@ -1128,12 +1143,13 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         return serializables;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     protected List<T> convertSerializableObjectsToTypedObjects(List s) {
         return (List<T>) s;
     }
 
     //Used to determine if we can use the Parcelable interface
+    @SuppressWarnings("rawtypes")
     private Class reifyParameterizedTypeClass() {
         //Borrowed from http://codyaray.com/2013/01/finding-generic-type-parameters-with-guava
 
@@ -1172,7 +1188,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         state.contentText = content == null ? "" : content.toString();
 
         Spanned spanned = (hiddenContent != null) ? hiddenContent : getText();
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings({"unchecked", "rawtypes"})
         TokenImageSpan[] spans = (spanned == null)
             ? (TokenImageSpan[]) new TokenCompleteTextView.TokenImageSpan[0]
             : spanned.getSpans(0, spanned.length(), TokenImageSpan.class);
@@ -1192,6 +1208,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             orderedObjects.add(s.getToken());
         }
 
+        @SuppressWarnings("rawtypes")
         Class parameterizedClass = reifyParameterizedTypeClass();
         //Our core array is Parcelable, so use that interface
         if (Parcelable.class.isAssignableFrom(parameterizedClass)) {
@@ -1244,6 +1261,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         @Nullable int[] ends
     ) {
         // Defensive: clear any existing token spans before restoring saved ranges.
+        @SuppressWarnings("unchecked")
         TokenImageSpan[] existing = editable.getSpans(0, editable.length(), TokenImageSpan.class);
         for (TokenImageSpan s : existing) {
             editable.removeSpan(s);
@@ -1342,18 +1360,22 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         @Nullable int[] tokenStarts;
         @Nullable int[] tokenEnds;
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings({"rawtypes", "deprectation"})
         SavedState(Parcel in) {
             super(in);
             allowCollapse = in.readInt() != 0;
             performBestGuess = in.readInt() != 0;
             parcelableClassName = in.readString();
             if (SERIALIZABLE_PLACEHOLDER.equals(parcelableClassName)) {
-                baseObjects = (ArrayList)in.readSerializable();
+                @SuppressWarnings("deprecation")
+                Serializable objects = in.readSerializable();
+                baseObjects = (ArrayList) objects;
             } else {
                 try {
                     ClassLoader loader = Class.forName(parcelableClassName).getClassLoader();
-                    baseObjects = in.readArrayList(loader);
+                    @SuppressWarnings("deprecation")
+                    ArrayList objects = in.readArrayList(loader);
+                    baseObjects = objects;
                 } catch (ClassNotFoundException ex) {
                     //This should really never happen, class had to be available to get here
                     throw new RuntimeException(ex);
@@ -1362,7 +1384,9 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             tokenizerClassName = in.readString();
             try {
                 ClassLoader loader = Class.forName(tokenizerClassName).getClassLoader();
-                tokenizer = in.readParcelable(loader);
+                @SuppressWarnings("deprecation")
+                Tokenizer parcel = in.readParcelable(loader);
+                tokenizer = parcel;
             } catch (ClassNotFoundException ex) {
                 //This should really never happen, class had to be available to get here
                 throw new RuntimeException(ex);
@@ -1398,6 +1422,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             out.writeIntArray(tokenEnds);
         }
 
+        @NonNull
         @Override
         public String toString() {
             String str = "TokenCompleteTextView.SavedState{"
@@ -1426,7 +1451,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean canDeleteSelection(int beforeLength) {
-        if (getObjects().size() < 1) return true;
+        if (getObjects().isEmpty()) return true;
 
         // if beforeLength is 1, we either have no selection or the call is coming from OnKey Event.
         // In these scenarios, getSelectionStart() will return the correct value.
@@ -1435,6 +1460,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         int startSelection = beforeLength == 1 ? getSelectionStart() : endSelection - beforeLength;
 
         Editable text = getText();
+        @SuppressWarnings("unchecked")
         TokenImageSpan[] spans = text.getSpans(0, text.length(), TokenImageSpan.class);
 
         // Iterate over all tokens and allow the deletion
@@ -1486,7 +1512,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             CharSequence hint = getHint();
             if (hint != null && text != null) {
                 String firstWord = hint.toString().trim().split(" ")[0];
-                if (firstWord.length() > 0 && firstWord.equals(text.toString())) {
+                if (!firstWord.isEmpty() && firstWord.equals(text.toString())) {
                     text = ""; //It was trying to use th hint, so clear that text
                 }
             }
