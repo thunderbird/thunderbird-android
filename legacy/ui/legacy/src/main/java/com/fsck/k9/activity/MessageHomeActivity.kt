@@ -246,7 +246,7 @@ open class MessageHomeActivity :
     }
 
     private fun initializeFunding() {
-        fundingManager.addFundingReminder(this) {
+        fundingManager.addFundingReminder {
             FeatureLauncherActivity.launch(
                 context = this,
                 target = FeatureLauncherTarget.Funding,

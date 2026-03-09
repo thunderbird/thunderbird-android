@@ -1,6 +1,5 @@
 package net.thunderbird.feature.funding.googleplay.ui.reminder
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 
@@ -13,7 +12,7 @@ const val FUNDING_REMINDER_MIN_ACTIVITY_MILLIS = 30 * 60 * 1000L
 interface FundingReminderContract {
 
     interface Reminder {
-        fun registerReminder(activity: AppCompatActivity, onOpenFunding: () -> Unit)
+        fun registerReminder(onOpenFunding: () -> Unit)
     }
 
     fun interface Dialog {
