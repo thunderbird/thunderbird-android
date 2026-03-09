@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 /**
  * A composable function that displays a badge indicator for new messages.
