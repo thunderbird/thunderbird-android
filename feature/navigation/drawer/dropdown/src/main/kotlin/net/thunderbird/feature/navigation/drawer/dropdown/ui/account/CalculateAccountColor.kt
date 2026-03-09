@@ -3,8 +3,8 @@ package net.thunderbird.feature.navigation.drawer.dropdown.ui.account
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.core.ui.compose.theme2.toHarmonizedColor
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 /**
  * Calculates the account color based on the provided account color and surface color.

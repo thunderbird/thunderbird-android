@@ -12,7 +12,7 @@ import app.k9mail.core.ui.compose.common.padding.calculateResponsiveWidthPadding
 import app.k9mail.core.ui.compose.common.window.WindowSizeClass
 import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 /**
  * The [ResponsiveContent] composable automatically adapts its child content to different screen sizes and resolutions,

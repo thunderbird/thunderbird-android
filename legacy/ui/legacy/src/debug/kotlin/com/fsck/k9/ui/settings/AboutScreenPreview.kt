@@ -3,7 +3,7 @@ package com.fsck.k9.ui.settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
-import app.k9mail.core.ui.compose.theme2.k9mail.R
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -15,7 +15,7 @@ internal fun AboutScreenPreview() {
             projectTitle = "Open Source Project",
             librariesTitle = "Libraries",
             versionNumber = "17.0a1",
-            appLogoResId = R.drawable.core_ui_theme2_k9mail_logo,
+            appLogoResId = Icons.Outlined.Star,
             libraries = fakeLibraryList,
         )
     }

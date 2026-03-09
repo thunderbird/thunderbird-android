@@ -20,7 +20,6 @@ import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.test.swipeRight
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
@@ -36,6 +35,7 @@ import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.core.ui.compose.designsystem.atom.button.MESSAGE_ITEM_FAVOURITE_ICON_BUTTON_TEST_TAG
+import net.thunderbird.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.internal.R
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageListItemDefaults

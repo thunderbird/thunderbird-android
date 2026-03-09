@@ -11,10 +11,10 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContentWithSurface
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.core.ui.compose.designsystem.template.pager.HorizontalTabPagerPrimary
 import net.thunderbird.core.ui.compose.designsystem.template.pager.TabPrimaryConfig
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.ui.catalog.ui.page.CatalogPageContract
 import net.thunderbird.ui.catalog.ui.page.CatalogPageContract.CatalogPage
 import net.thunderbird.ui.catalog.ui.page.common.list.fullSpanItem

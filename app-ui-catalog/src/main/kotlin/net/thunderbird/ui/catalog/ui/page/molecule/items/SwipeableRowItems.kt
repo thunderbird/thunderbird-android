@@ -20,13 +20,13 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarHost
 import app.k9mail.core.ui.compose.designsystem.organism.snackbar.rememberSnackbarHostState
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.launch
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirection
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeableRow
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.rememberSwipeableRowState
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.ui.catalog.ui.page.common.list.fullSpanItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionSubtitleItem

@@ -20,12 +20,12 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.server.certificate.R
 import app.k9mail.feature.account.server.certificate.domain.entity.FormattedServerCertificateError
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.State
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.IconsWithBaseline
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import org.koin.compose.koinInject
 
 @Composable

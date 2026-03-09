@@ -39,12 +39,12 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.settings.AboutContract.Effect
 import com.fsck.k9.ui.settings.AboutContract.Event
 import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.core.common.provider.AppNameProvider
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import org.koin.android.ext.android.inject
@@ -193,7 +193,6 @@ fun AboutScreen(
     displayForum: () -> Unit = {},
 ) {
     val scrollState = rememberScrollState()
-    val context = LocalContext.current
     Surface(
         modifier = Modifier
             .fillMaxSize(),
@@ -249,7 +248,10 @@ fun AboutScreen(
 }
 
 @Composable
-fun AppLogo(logoResId: Int, modifier: Modifier = Modifier) {
+fun AppLogo(
+    logoResId: Int,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
