@@ -47,12 +47,12 @@ class LegacyProfileDtoStorageHandlerTest {
         testSubject.save(account, storage, editor)
 
         // Assert
-        assertThat(editor.values["${accountId.asRaw()}.description"]).isEqualTo(NAME)
-        assertThat(editor.values["${accountId.asRaw()}.chipColor"]).isEqualTo(COLOR.toString())
-        assertThat(editor.values["${accountId.asRaw()}.avatarType"]).isEqualTo("IMAGE")
-        assertThat(editor.values["${accountId.asRaw()}.avatarMonogram"]).isEqualTo(null)
-        assertThat(editor.values["${accountId.asRaw()}.avatarImageUri"]).isEqualTo(AVATAR_IMAGE_URI)
-        assertThat(editor.values["${accountId.asRaw()}.avatarIconName"]).isEqualTo(null)
+        assertThat(editor.values["$accountId.description"]).isEqualTo(NAME)
+        assertThat(editor.values["$accountId.chipColor"]).isEqualTo(COLOR.toString())
+        assertThat(editor.values["$accountId.avatarType"]).isEqualTo("IMAGE")
+        assertThat(editor.values["$accountId.avatarMonogram"]).isEqualTo(null)
+        assertThat(editor.values["$accountId.avatarImageUri"]).isEqualTo(AVATAR_IMAGE_URI)
+        assertThat(editor.values["$accountId.avatarIconName"]).isEqualTo(null)
     }
 
     @Test
@@ -66,17 +66,17 @@ class LegacyProfileDtoStorageHandlerTest {
         testSubject.delete(account, storage, editor)
 
         // Assert
-        assertThat(editor.removedKeys).contains("${accountId.asRaw()}.description")
-        assertThat(editor.removedKeys).contains("${accountId.asRaw()}.chipColor")
-        assertThat(editor.removedKeys).contains("${accountId.asRaw()}.avatarType")
-        assertThat(editor.removedKeys).contains("${accountId.asRaw()}.avatarMonogram")
-        assertThat(editor.removedKeys).contains("${accountId.asRaw()}.avatarImageUri")
-        assertThat(editor.removedKeys).contains("${accountId.asRaw()}.avatarIconName")
+        assertThat(editor.removedKeys).contains("$accountId.description")
+        assertThat(editor.removedKeys).contains("$accountId.chipColor")
+        assertThat(editor.removedKeys).contains("$accountId.avatarType")
+        assertThat(editor.removedKeys).contains("$accountId.avatarMonogram")
+        assertThat(editor.removedKeys).contains("$accountId.avatarImageUri")
+        assertThat(editor.removedKeys).contains("$accountId.avatarIconName")
     }
 
     // Arrange methods
     private fun createAccount(accountId: AccountId): LegacyAccountDto {
-        return LegacyAccountDto(accountId.asRaw()).apply {
+        return LegacyAccountDto(accountId.toString()).apply {
             name = NAME
             chipColor = COLOR
             avatar = AvatarDto(
@@ -91,10 +91,10 @@ class LegacyProfileDtoStorageHandlerTest {
     private fun createStorage(accountId: AccountId): FakeStorage {
         return FakeStorage(
             mapOf(
-                "${accountId.asRaw()}.description" to NAME,
-                "${accountId.asRaw()}.chipColor" to COLOR.toString(),
-                "${accountId.asRaw()}.avatarType" to AVATAR_TYPE.name,
-                "${accountId.asRaw()}.avatarImageUri" to AVATAR_IMAGE_URI,
+                "$accountId.description" to NAME,
+                "$accountId.chipColor" to COLOR.toString(),
+                "$accountId.avatarType" to AVATAR_TYPE.name,
+                "$accountId.avatarImageUri" to AVATAR_IMAGE_URI,
             ),
         )
     }

@@ -3,12 +3,11 @@
     <string name="navigation_drawer_dropdown_action_settings">Innstillingar</string>
     <string name="navigation_drawer_dropdown_action_manage_folders">Handsam mapper</string>
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Synkroniser alle kontoar</string>
-    <string name="navigation_drawer_dropdown_action_show_accounts">Vis kontoar</string>
-    <string name="navigation_drawer_dropdown_action_hide_accounts">Skjul kontoar</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">99+</string>
     <string name="navigation_drawer_dropdown_unified_inbox_title">Innboks</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000">1k+</string>
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Kontoliste</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Samla konto</string>
     <string name="navigation_drawer_dropdown_action_add_account">Legg til konto</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Synkroniser konto</string>
 </resources>

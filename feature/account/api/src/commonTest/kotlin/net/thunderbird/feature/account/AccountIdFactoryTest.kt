@@ -19,7 +19,7 @@ class AccountIdFactoryTest {
 
         val result = AccountIdFactory.of(id)
 
-        assertThat(result.asRaw()).isEqualTo(id)
+        assertThat(result.toString()).isEqualTo(id)
     }
 
     @Test
@@ -41,12 +41,12 @@ class AccountIdFactoryTest {
     fun `new should return AccountId with a uuid`() {
         val result = AccountIdFactory.create()
 
-        assertThat(result.asRaw()).isUuid()
+        assertThat(result.toString()).isUuid()
     }
 
     @Test
     fun `create should return AccountId with unique ids`() {
-        val ids = List(10) { AccountIdFactory.create().asRaw() }
+        val ids = List(10) { AccountIdFactory.create().toString() }
 
         ids.forEachIndexed { index, id ->
             ids.drop(index + 1).forEach { otherId ->

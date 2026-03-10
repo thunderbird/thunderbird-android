@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">U monogramma hè troppu longu</string>
     <string name="account_settings_general_avatar_icon_title">Icona di a riprisentazione virtuale</string>
     <string name="account_settings_general_avatar_icon_description">Sceglie una di l’icone per impiegalla cum’è a vostra riprisentazione virtuale.</string>
+    <string name="account_settings_general_avatar_image_title">Fiura di a riprisentazione virtuale</string>
+    <string name="account_settings_general_avatar_image_description">Sciglite una fiura per riprisentà u vostru contu.</string>
+    <string name="account_settings_general_avatar_image_select">Seleziunà una fiura</string>
+    <string name="account_settings_avatar_error_unsupported_format">Solu e fiure JPEG sò accettate.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Solu JPEG</string>
 </resources>

@@ -919,4 +919,5 @@
     <string name="debug_invalidate_access_token_cannot_modify">保存したトークンを編集できません。ローカルで無効化してみてください。</string>
     <string name="debug_invalidate_access_token_already_modified">保存したアクセストークンは既に編集されています。</string>
     <string name="debug_feature_flags">デバッグ: 機能フラグ</string>
+    <string name="print_message_action">印刷</string>
 </resources>

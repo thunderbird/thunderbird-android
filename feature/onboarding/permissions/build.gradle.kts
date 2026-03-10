@@ -13,3 +13,8 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.feature.account.common)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

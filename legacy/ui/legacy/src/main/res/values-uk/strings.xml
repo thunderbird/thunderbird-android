@@ -583,10 +583,10 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Ні</string>
     <string name="dialog_confirm_spam_title">Підтвердьте переміщення в теку \"Спам\"</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень до папка спаму?</item>
-        <item quantity="few">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлення до папки \"Спам\"?</item>
-        <item quantity="many">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень до папки \"Спам\"?</item>
-        <item quantity="other">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень до папки \"Спам\"?</item>
+        <item quantity="one">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлення до теки спаму?</item>
+        <item quantity="few">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлення до теки \"Спам\"?</item>
+        <item quantity="many">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень до теки \"Спам\"?</item>
+        <item quantity="other">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень до теки \"Спам\"?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Так</string>
     <string name="dialog_confirm_spam_cancel_button">Ні</string>
@@ -916,7 +916,7 @@
     <string name="swipe_action_change_swipe_gestures">Зміна \nжестів проведення пальцем</string>
     <string name="debug_open_secret_debug_screen">Відкрити екран налагодження таємниці</string>
     <string name="debug_invalidate_access_token">Тест: Визнати недійсним токен доступу</string>
-    <string name="debug_invalidate_access_token_done">Маркер доступу недійсний. Наступний запит буде оновлено.</string>
+    <string name="debug_invalidate_access_token_done">Токен доступу недійсний. Наступний запит буде оновлено.</string>
     <string name="debug_invalidate_access_token_unavailable">Для цього облікового запису немає доступного токена OAuth.</string>
     <string name="debug_invalidate_access_token_local">Тест: Визнати недійсним токен доступу (локальний)</string>
     <string name="debug_invalidate_access_token_local_done">Запит на локальну ануляцію. Наступний запит призведе до отримання нового токена.</string>
@@ -928,9 +928,9 @@
     <string name="debug_invalidate_access_token_cannot_modify">Не вдалося змінити збережений токен доступу. Спробуйте локальну ануляцію.</string>
     <string name="debug_invalidate_access_token_already_modified">Збережений токен доступу вже змінено.</string>
     <string name="message_view_menu_action_export_eml">Експортувати як EML</string>
-    <string name="account_setup_auto_select_folder">Автоматичний вибір папки</string>
+    <string name="account_setup_auto_select_folder">Автовибір теки</string>
     <string name="navigation_drawer_preferences">Бічне меню</string>
-    <string name="expand_folders">Розгорнути папки</string>
+    <string name="expand_folders">Розгорнути теки</string>
     <string name="set_format_html_action">Використати оригінальне форматування</string>
     <string name="set_format_html_condensed_action">Показати відформатовані</string>
     <string name="set_format_plain_action">Показати неформатоване повідомлення</string>
@@ -939,4 +939,5 @@
     <string name="global_settings_messageview_body_content_type_text_html">HTML (текст/html)</string>
     <string name="global_settings_messageview_body_content_type_text_plain">Звичайний текст (текст/звичайний)</string>
     <string name="debug_feature_flags">НАЛАГОДЖЕННЯ: Прапорці функцій</string>
+    <string name="print_message_action">Друк</string>
 </resources>

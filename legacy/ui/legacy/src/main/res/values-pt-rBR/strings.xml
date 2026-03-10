@@ -917,4 +917,16 @@
     <string name="debug_force_auth_failure_done">Estado de OAuth removido. Próxima requisição falhará.</string>
     <string name="debug_force_auth_failure_unavailable">Nenhuma configuração OAuth disponível para esta conta.</string>
     <string name="message_view_menu_action_export_eml">Exportar como EML</string>
+    <string name="print_message_action">Imprimir</string>
+    <string name="set_format_html_action">Usar formatação original</string>
+    <string name="set_format_html_condensed_action">Mostrar formatado</string>
+    <string name="set_format_plain_action">Mostrar mensagem sem formatação</string>
+    <string name="set_format_plain_condensed_action">Mostrar sem formatação</string>
+    <string name="global_settings_messageview_body_content_type_title">Tipo de Conteúdo do Corpo</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Texto simples (text/plain)</string>
+    <string name="account_setup_auto_select_folder">Automaticamente selecionar pasta</string>
+    <string name="navigation_drawer_preferences">Menu Lateral</string>
+    <string name="expand_folders">Expandir Pastas</string>
+    <string name="debug_feature_flags">DEBUG: Sinalizadores de Recursos</string>
 </resources>

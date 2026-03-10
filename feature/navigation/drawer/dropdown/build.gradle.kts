@@ -30,7 +30,6 @@ dependencies {
     implementation(projects.legacy.message)
     implementation(projects.legacy.ui.folder)
     implementation(projects.core.featureflag)
-    implementation(projects.core.ui.compose.common)
 
     testImplementation(projects.core.ui.compose.testing)
     testImplementation(projects.core.logging.testing)
@@ -38,4 +37,9 @@ dependencies {
     // Fakes
     debugImplementation(projects.feature.account.fake)
     testImplementation(projects.feature.account.fake)
+}
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 9
 }

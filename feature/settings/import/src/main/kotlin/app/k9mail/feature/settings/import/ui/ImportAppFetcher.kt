@@ -3,9 +3,14 @@ package app.k9mail.feature.settings.import.ui
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.annotation.WorkerThread
+import androidx.core.content.pm.PackageInfoCompat
+import net.thunderbird.core.logging.Logger
+
+private const val TAG = "ImportAppFetcher"
 
 internal class ImportAppFetcher(
     private val context: Context,
+    private val logger: Logger,
 ) {
     private val packageManager by lazy { context.packageManager }
 
@@ -23,6 +28,7 @@ internal class ImportAppFetcher(
             getApplicationInfo(packageName, 0)
             true
         } catch (e: PackageManager.NameNotFoundException) {
+            logger.error(TAG, e) { "App with package name $packageName is not installed." }
             false
         }
     }
@@ -37,17 +43,17 @@ internal class ImportAppFetcher(
             .toList()
     }
 
-    @Suppress("SwallowedException")
     private fun PackageManager.loadAppInfo(app: AppVersion): AppInfo? {
         return try {
             val packageInfo = getPackageInfo(app.packageName, 0)
-            val isImportSupported = packageInfo.versionCode >= app.minVersionCode
+            val isImportSupported = PackageInfoCompat.getLongVersionCode(packageInfo) >= app.minVersionCode
 
             val applicationInfo = getApplicationInfo(app.packageName, 0)
             val appName = packageManager.getApplicationLabel(applicationInfo).toString()
 
             AppInfo(app.packageName, appName, isImportSupported)
         } catch (e: PackageManager.NameNotFoundException) {
+            logger.error(TAG, e) { "Failed to load app info for package ${app.packageName}." }
             null
         }
     }

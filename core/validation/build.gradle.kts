@@ -13,3 +13,7 @@ kotlin {
         }
     }
 }
+
+codeCoverage {
+    branchCoverage = 68
+}

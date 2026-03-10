@@ -16,3 +16,16 @@ dependencies {
     implementation(libs.clikt)
     implementation(libs.kxml2)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}
+
+tasks.withType<Tar> {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.withType<Zip> {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

@@ -2,7 +2,6 @@ package net.thunderbird.feature.account
 
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
-import net.thunderbird.core.architecture.model.Id
 
 /**
  * Constant for the unified account ID.
@@ -14,7 +13,7 @@ import net.thunderbird.core.architecture.model.Id
  * See [RFC 4122 Section 4.1.7](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.7) for more details on nil UUIDs.
  */
 @OptIn(ExperimentalUuidApi::class)
-val UnifiedAccountId: AccountId = Id(Uuid.NIL)
+val UnifiedAccountId: AccountId = AccountId(Uuid.NIL)
 
 /**
  * Extension property to check if an [AccountId] is the unified account ID.

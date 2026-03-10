@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">一般設定</string>
 </resources>

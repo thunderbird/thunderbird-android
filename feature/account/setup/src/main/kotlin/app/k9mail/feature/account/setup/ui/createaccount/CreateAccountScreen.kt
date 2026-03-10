@@ -2,8 +2,11 @@ package app.k9mail.feature.account.setup.ui.createaccount
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,6 +49,9 @@ internal fun CreateAccountScreen(
         topBar = {
             AppTitleTopHeader(
                 title = brandNameProvider.brandName,
+                modifier = Modifier.windowInsetsPadding(
+                    WindowInsets.statusBars.union(WindowInsets.displayCutout),
+                ),
             )
         },
         bottomBar = {

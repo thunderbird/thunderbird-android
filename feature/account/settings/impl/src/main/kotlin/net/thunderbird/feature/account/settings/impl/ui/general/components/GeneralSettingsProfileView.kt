@@ -19,18 +19,15 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.avatar.ui.Avatar
 import net.thunderbird.feature.account.avatar.ui.AvatarSize
-import net.thunderbird.feature.account.avatar.ui.rememberCompatAvatar
 
 @Composable
 internal fun GeneralSettingsProfileView(
     name: String,
     email: String?,
     color: Color,
+    avatar: Avatar,
     modifier: Modifier = Modifier,
-    avatar: Avatar? = null,
 ) {
-    val compatAvatar = rememberCompatAvatar(avatar, name)
-
     Box(
         modifier = modifier
             .padding(MainTheme.spacings.double),
@@ -44,7 +41,7 @@ internal fun GeneralSettingsProfileView(
                 .fillMaxWidth(),
         )
         Avatar(
-            avatar = compatAvatar,
+            avatar = avatar,
             color = color,
             size = AvatarSize.LARGE,
         )

@@ -9,7 +9,29 @@
         android:hasFragileUserData="false"
         android:networkSecurityConfig="@xml/network_security_config"
         android:usesCleartextTraffic="true"
-        />
+        >
+
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"
+            >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.APP_EMAIL" />
+
+                <!-- TODO: Remove once minSdkVersion has been changed to 24+ -->
+                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
+                <category android:name="android.intent.category.PENWINDOW_LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+    </application>
 
     <queries>
         <!-- Allow access to external text processing actions so they can be displayed in the text selection toolbar -->

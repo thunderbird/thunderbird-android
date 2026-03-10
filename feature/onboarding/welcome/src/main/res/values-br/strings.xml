@@ -2,4 +2,5 @@
 <resources>
     <string name="onboarding_welcome_start_button">Deraouiñ</string>
     <string name="onboarding_welcome_import_button">Enporzhiañ arventennoù</string>
+    <string name="onboarding_welcome_text">Un arload postelerezh frank evit Android prederiet gant gwarez ar roadennoù personel hag hep bruderezh.</string>
 </resources>

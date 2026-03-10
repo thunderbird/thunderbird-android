@@ -14,7 +14,7 @@
     <string name="notification_certificate_error_public">Ошибка сертификата</string>
     <string name="notification_certificate_error_title">Сбой сертификата %1$s</string>
     <string name="notification_certificate_error_text">Проверьте настройки сервера</string>
-    <string name="notification_bg_sync_ticker">Проверка %1$s:%2$s</string>
+    <string name="notification_bg_sync_ticker">Проверка почты: %1$s: %2$s</string>
     <string name="notification_bg_sync_title">Проверка почты</string>
     <string name="notification_bg_send_ticker">Отправка %1$s</string>
     <string name="notification_bg_send_title">Отправка почты</string>

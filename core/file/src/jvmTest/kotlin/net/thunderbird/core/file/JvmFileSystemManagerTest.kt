@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.eygraber.uri.Uri
 import java.io.File
+import kotlin.test.fail
 import kotlinx.io.Buffer
 import org.junit.Rule
 import org.junit.Test
@@ -121,5 +122,42 @@ class JvmFileSystemManagerTest {
 
         // Assert
         assertThat(result).isEqualTo(second)
+    }
+
+    @Test
+    fun `delete on existing file should succeed and remove file`() {
+        // Arrange
+        val tempFile: File = folder.newFile("tb-file-fs-test-jvm-delete.txt")
+        val uri = Uri.parse(tempFile.toURI().toString())
+        // Ensure file has some content
+        run {
+            val sink = checkNotNull(testSubject.openSink(uri))
+            val buf = Buffer().apply { write("x".encodeToByteArray()) }
+            sink.write(buf, buf.size)
+            sink.flush()
+            sink.close()
+        }
+
+        // Act
+        testSubject.delete(uri)
+
+        // Assert: file should no longer exist on disk
+        assertThat(tempFile.exists()).isEqualTo(false)
+    }
+
+    @Test
+    fun `delete non existing file should not throw`() {
+        // Arrange
+        val tempFile: File = folder.newFile("tb-file-fs-test-jvm-delete-missing.txt")
+        val uri = Uri.parse(tempFile.toURI().toString())
+        // Ensure the file is missing
+        check(tempFile.delete())
+
+        // Act + Assert: should not throw even if file is missing
+        try {
+            testSubject.delete(uri)
+        } catch (e: Exception) {
+            fail("Deletion of non-existing file threw an exception: $e")
+        }
     }
 }

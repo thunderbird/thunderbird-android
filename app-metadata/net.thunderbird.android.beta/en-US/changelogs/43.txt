@@ -1,0 +1,4 @@
+Thunderbird version 17.0b2
+
+Fixed:
+- Crash occurred in 17.0b1 split view mode while in landscape

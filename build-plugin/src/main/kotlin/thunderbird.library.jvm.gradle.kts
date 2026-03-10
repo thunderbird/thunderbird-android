@@ -4,6 +4,7 @@ plugins {
     `java-library`
     id("org.jetbrains.kotlin.jvm")
     id("thunderbird.quality.detekt.typed")
+    id("net.thunderbird.gradle.plugin.quality.coverage")
     id("thunderbird.quality.spotless")
 }
 

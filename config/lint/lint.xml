@@ -14,10 +14,6 @@
 
     <issue id="UnusedResources" severity="warning" />
 
-    <issue id="ViewModelConstructorInComposable">
-        <ignore path="**/debug/**" />
-    </issue>
-
     <issue id="all">
         <ignore path="**/ui-utils/ItemTouchHelper/**"/>
         <ignore path="**/ui-utils/LinearLayoutManager/**"/>

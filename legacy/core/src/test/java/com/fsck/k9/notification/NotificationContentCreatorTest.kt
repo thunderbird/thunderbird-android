@@ -10,11 +10,7 @@ import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mailstore.LocalMessage
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.RobolectricTest
-import net.thunderbird.core.preference.GeneralSettings
-import net.thunderbird.core.preference.display.DisplaySettings
-import net.thunderbird.core.preference.network.NetworkSettings
-import net.thunderbird.core.preference.notification.NotificationPreference
-import net.thunderbird.core.preference.privacy.PrivacySettings
+import net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettings
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
@@ -44,7 +40,7 @@ class NotificationContentCreatorTest : RobolectricTest() {
         val content = contentCreator.createFromMessage(account, message)
 
         assertThat(content.messageReference).isEqualTo(messageReference)
-        assertThat(content.sender).isEqualTo(SENDER_NAME)
+        assertThat(content.sender.personal).isEqualTo(SENDER_NAME)
         assertThat(content.subject).isEqualTo(SUBJECT)
         assertThat(content.preview.toString()).isEqualTo("$SUBJECT\n$PREVIEW")
         assertThat(content.summary.toString()).isEqualTo("$SENDER_NAME $SUBJECT")
@@ -110,8 +106,8 @@ class NotificationContentCreatorTest : RobolectricTest() {
 
         val content = contentCreator.createFromMessage(account, message)
 
-        assertThat(content.sender).isEqualTo("No sender")
-        assertThat(content.summary.toString()).isEqualTo(SUBJECT)
+        assertThat(content.sender.personal).isEqualTo("No sender")
+        assertThat(content.summary.toString()).isEqualTo("No sender $SUBJECT")
     }
 
     @Test
@@ -122,7 +118,7 @@ class NotificationContentCreatorTest : RobolectricTest() {
 
         val content = contentCreator.createFromMessage(account, message)
 
-        assertThat(content.sender).isEqualTo("To:Bob")
+        assertThat(content.sender.personal).isEqualTo("To:Bob")
         assertThat(content.summary.toString()).isEqualTo("To:Bob $SUBJECT")
     }
 
@@ -137,24 +133,18 @@ class NotificationContentCreatorTest : RobolectricTest() {
 
         val content = contentCreator.createFromMessage(account, message)
 
-        assertThat(content.sender).isEqualTo("No sender")
+        assertThat(content.sender.personal).isEqualTo("No sender")
         assertThat(content.subject).isEqualTo("(No subject)")
         assertThat(content.preview.toString()).isEqualTo("(No subject)")
-        assertThat(content.summary.toString()).isEqualTo("(No subject)")
+        assertThat(content.summary.toString()).isEqualTo("No sender (No subject)")
     }
 
     private fun createNotificationContentCreator(): NotificationContentCreator {
         return NotificationContentCreator(
             resourceProvider,
             contactRepository,
-            mock {
-                on { getConfig() } doReturn GeneralSettings(
-                    network = NetworkSettings(),
-                    display = DisplaySettings(),
-                    notification = NotificationPreference(),
-                    privacy = PrivacySettings(),
-                    platformConfigProvider = FakePlatformConfigProvider(),
-                )
+            messageListPreferencesManager = mock {
+                on { getConfig() } doReturn DisplayMessageListSettings()
             },
         )
     }

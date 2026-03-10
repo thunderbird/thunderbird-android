@@ -11,3 +11,8 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.assertk)
 }
+
+codeCoverage {
+    branchCoverage = 66
+    lineCoverage = 71
+}

@@ -929,4 +929,5 @@
     <string name="debug_force_auth_failure_unavailable">هیچ پیکربندی OAuthای برای این حساب موجود نیست.</string>
     <string name="debug_invalidate_access_token_cannot_modify">نتوانست ژتون دسترسی ذخیره شده را دستگاری کند. آزمودن نامعتبر سازی محلی.</string>
     <string name="debug_feature_flags">اشکال‌زدایی: پرچم‌های ویژگی</string>
+    <string name="print_message_action">چاپ</string>
 </resources>

@@ -25,3 +25,7 @@ kotlin {
         }
     }
 }
+
+codeCoverage {
+    branchCoverage = 30
+}

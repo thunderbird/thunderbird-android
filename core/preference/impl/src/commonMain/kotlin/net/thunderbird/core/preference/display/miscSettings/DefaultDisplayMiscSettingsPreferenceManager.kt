@@ -13,18 +13,21 @@ import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StoragePersister
 
 private const val TAG = "DefaultDisplayMiscSettingsPreferenceManager"
 
 class DefaultDisplayMiscSettingsPreferenceManager(
     private val logger: Logger,
-    private val storage: Storage,
+    private val storagePersister: StoragePersister,
     private val storageEditor: StorageEditor,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
 ) : DisplayMiscSettingsPreferenceManager {
     private val configState: MutableStateFlow<DisplayMiscSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
+    private val storage: Storage
+        get() = storagePersister.loadValues()
     override fun save(config: DisplayMiscSettings) {
         logger.debug(TAG) { "save() called with: config = $config" }
         writeConfig(config)

@@ -12,7 +12,7 @@ class UnifiedAccountIdTest {
 
     @Test
     fun `unified account id is nil uuid`() {
-        assertThat(UnifiedAccountId.asRaw()).isEqualTo("00000000-0000-0000-0000-000000000000")
+        assertThat(UnifiedAccountId.toString()).isEqualTo("00000000-0000-0000-0000-000000000000")
     }
 
     @Test

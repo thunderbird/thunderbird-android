@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.mime4j.dom)
     implementation(libs.uri)
     implementation(projects.feature.navigation.drawer.api)
+    implementation(projects.feature.mail.message.list.api)
     implementation(projects.feature.mail.message.reader.api)
 
     testApi(projects.core.testing)
@@ -81,4 +82,9 @@ android {
             isIncludeAndroidResources = true
         }
     }
+}
+
+codeCoverage {
+    branchCoverage = 41
+    lineCoverage = 46
 }

@@ -19,6 +19,7 @@ val unreadWidgetModule = module {
             folderRepository = get(),
             folderNameFormatter = get(),
             coreResourceProvider = get(),
+            logger = get(),
         )
     }
     single {
@@ -27,6 +28,11 @@ val unreadWidgetModule = module {
             config = get(),
         )
     }
-    single { UnreadWidgetUpdateListener(unreadWidgetUpdater = get()) }
+    single {
+        UnreadWidgetUpdateListener(
+            unreadWidgetUpdater = get(),
+            logger = get(),
+        )
+    }
     single { UnreadWidgetMigrations(accountRepository = get(), folderRepository = get()) }
 }

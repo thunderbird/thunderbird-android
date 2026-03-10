@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import android.database.sqlite.SQLiteDatabase
 import app.k9mail.legacy.mailstore.MoreMessages
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -11,18 +12,26 @@ import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.mail.folder.api.FolderType
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class UpdateFolderOperationsTest : RobolectricTest() {
-    private val sqliteDatabase = createDatabase()
-    private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val updateFolderOperations = UpdateFolderOperations(lockableDatabase)
+    private lateinit var sqliteDatabase: SQLiteDatabase
+    private lateinit var updateFolderOperations: UpdateFolderOperations
 
     @Before
     fun setUp() {
         Log.logger = TestLogger()
+        sqliteDatabase = createDatabase()
+        val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
+        updateFolderOperations = UpdateFolderOperations(lockableDatabase)
+    }
+
+    @After
+    fun tearDown() {
+        sqliteDatabase.close()
     }
 
     @Test

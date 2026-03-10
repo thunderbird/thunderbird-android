@@ -40,3 +40,8 @@ dependencies {
     implementation(libs.kotlin.reflect)
     implementation(libs.kotlinx.datetime)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

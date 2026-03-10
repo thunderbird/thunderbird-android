@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Advertencia</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Erro do certificado</string>
+    <string name="account_server_certificate_unknown_error_description_format">A aplicación atopou unha posible ameaza de seguridade e xa non conectou con <xliff:g id="serverName">%s</xliff:g>.\nDe seguires, os atacantes poderían tentar roubar información como o teu contrasinal ou correos.</string>
+    <string name="account_server_certificate_button_back">Recuar (recomendado)</string>
+    <string name="account_server_certificate_button_advanced">Avanzado</string>
+    <string name="account_server_certificate_button_continue">Aceptar o risco e seguir</string>
+    <string name="account_server_certificate_section_title">Certificado do servidor</string>
+    <string name="account_server_certificate_subject_alternative_names">Nomes alternativos do suxeito</string>
+    <string name="account_server_certificate_not_valid_before">Non válido antes de</string>
+    <string name="account_server_certificate_not_valid_after">Non válido tras</string>
+    <string name="account_server_certificate_subject">Suxeito</string>
+    <string name="account_server_certificate_issuer">Emisor</string>
+    <string name="account_server_certificate_fingerprints_section">Pegada dixital</string>
+</resources>

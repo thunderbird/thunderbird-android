@@ -17,3 +17,8 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.livedata.ktx)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

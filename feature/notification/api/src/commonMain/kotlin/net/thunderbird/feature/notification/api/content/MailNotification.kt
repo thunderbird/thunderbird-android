@@ -1,6 +1,6 @@
 package net.thunderbird.feature.notification.api.content
 
-import net.thunderbird.core.common.exception.rootCauseMassage
+import net.thunderbird.core.common.exception.rootCauseMessage
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationGroup
 import net.thunderbird.feature.notification.api.NotificationSeverity
@@ -150,7 +150,7 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             ): SendFailed = SendFailed(
                 accountUuid = accountUuid,
                 title = getString(resource = Res.string.send_failure_subject),
-                contentText = exception.rootCauseMassage,
+                contentText = exception.rootCauseMessage,
                 channel = NotificationChannel.Miscellaneous(accountUuid = accountUuid),
             )
         }

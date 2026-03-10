@@ -36,15 +36,13 @@ class ItemTouchUIUtilImpl implements ItemTouchUIUtil {
     @Override
     public void onDraw(Canvas c, RecyclerView recyclerView, View view, float dX, float dY,
             int actionState, boolean isCurrentlyActive) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            if (isCurrentlyActive) {
-                Object originalElevation = view.getTag(R.id.item_touch_helper_previous_elevation);
-                if (originalElevation == null) {
-                    originalElevation = ViewCompat.getElevation(view);
-                    float newElevation = 1f + findMaxElevation(recyclerView, view);
-                    ViewCompat.setElevation(view, newElevation);
-                    view.setTag(R.id.item_touch_helper_previous_elevation, originalElevation);
-                }
+        if (isCurrentlyActive) {
+            Object originalElevation = view.getTag(R.id.item_touch_helper_previous_elevation);
+            if (originalElevation == null) {
+                originalElevation = ViewCompat.getElevation(view);
+                float newElevation = 1f + findMaxElevation(recyclerView, view);
+                ViewCompat.setElevation(view, newElevation);
+                view.setTag(R.id.item_touch_helper_previous_elevation, originalElevation);
             }
         }
 
@@ -75,13 +73,11 @@ class ItemTouchUIUtilImpl implements ItemTouchUIUtil {
 
     @Override
     public void clearView(View view) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            final Object tag = view.getTag(R.id.item_touch_helper_previous_elevation);
-            if (tag instanceof Float) {
-                ViewCompat.setElevation(view, (Float) tag);
-            }
-            view.setTag(R.id.item_touch_helper_previous_elevation, null);
+        final Object tag = view.getTag(R.id.item_touch_helper_previous_elevation);
+        if (tag instanceof Float) {
+            ViewCompat.setElevation(view, (Float) tag);
         }
+        view.setTag(R.id.item_touch_helper_previous_elevation, null);
 
         view.setTranslationX(0f);
         view.setTranslationY(0f);

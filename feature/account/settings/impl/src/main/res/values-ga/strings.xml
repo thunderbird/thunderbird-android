@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">Tá an monagram rófhada</string>
     <string name="account_settings_general_avatar_icon_title">Deilbhín Abhatár</string>
     <string name="account_settings_general_avatar_icon_description">Roghnaigh ceann de na deilbhíní le húsáid mar d\'abhatár.</string>
+    <string name="account_settings_general_avatar_image_title">Íomhá Avatáir</string>
+    <string name="account_settings_general_avatar_image_description">Roghnaigh íomhá chun do chuntas a léiriú.</string>
+    <string name="account_settings_general_avatar_image_select">Roghnaigh Íomhá</string>
+    <string name="account_settings_avatar_error_unsupported_format">Ní thacaítear ach le híomhánna JPEG.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">JPEG amháin</string>
 </resources>

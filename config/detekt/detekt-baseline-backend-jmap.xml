@@ -1,14 +1,12 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>ForbiddenComment:CommandSync.kt$CommandSync$// FIXME: Add sort parameter</ID>
     <ID>ReturnCount:JmapAccountDiscovery.kt$JmapAccountDiscovery$fun discover(emailAddress: String, password: String): JmapDiscoveryResult</ID>
     <ID>SwallowedException:JmapAccountDiscovery.kt$JmapAccountDiscovery$e: EndpointNotFoundException</ID>
     <ID>SwallowedException:JmapAccountDiscovery.kt$JmapAccountDiscovery$e: UnauthorizedException</ID>
     <ID>SwallowedException:JmapAccountDiscovery.kt$JmapAccountDiscovery$e: UnknownHostException</ID>
-    <ID>ThrowsCount:CommandRefreshFolderList.kt$CommandRefreshFolderList$fun refreshFolderList()</ID>
-    <ID>TooGenericExceptionCaught:CommandRefreshFolderList.kt$CommandRefreshFolderList$e: Exception</ID>
     <ID>TooGenericExceptionCaught:CommandSync.kt$CommandSync$e: Exception</ID>
     <ID>TooGenericExceptionCaught:JmapAccountDiscovery.kt$JmapAccountDiscovery$e: Exception</ID>
     <ID>TooManyFunctions:CommandSync.kt$CommandSync</ID>

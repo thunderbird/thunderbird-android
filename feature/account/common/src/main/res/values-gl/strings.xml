@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_common_button_next">seguinte</string>
+    <string name="account_common_button_back">Atrás</string>
+    <string name="account_common_error_server_message">O servidor devolveu a mensaxe que segue: \n%s</string>
 </resources>

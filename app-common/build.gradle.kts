@@ -19,6 +19,7 @@ dependencies {
     api(projects.feature.navigation.drawer.api)
 
     implementation(projects.legacy.core)
+    implementation(projects.legacy.ui.base)
     implementation(projects.core.android.account)
 
     implementation(projects.core.logging.api)
@@ -49,6 +50,7 @@ dependencies {
 
     implementation(projects.feature.mail.message.export.api)
     implementation(projects.feature.mail.message.export.implEml)
+    implementation(projects.feature.mail.message.list.api)
     implementation(projects.feature.mail.message.reader.api)
     implementation(projects.feature.mail.message.reader.impl)
 
@@ -61,4 +63,9 @@ dependencies {
 
     testImplementation(projects.feature.account.fake)
     testImplementation(projects.core.testing)
+}
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
 }

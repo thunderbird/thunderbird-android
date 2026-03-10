@@ -1,7 +1,7 @@
 package app.k9mail.core.ui.compose.common.koin
 
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.onNodeWithText
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
@@ -29,5 +29,5 @@ class KoinPreviewTest : ComposeTest() {
 private fun TestComposable(
     injected: String = koinInject(),
 ) {
-    TextBodyLarge(text = injected)
+    BasicText(injected)
 }

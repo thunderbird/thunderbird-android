@@ -21,3 +21,8 @@ dependencies {
     debugImplementation(libs.androidx.glance.appwidget.preview)
     debugImplementation(libs.androidx.glance.preview)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

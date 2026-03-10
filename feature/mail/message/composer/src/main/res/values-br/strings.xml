@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_title">Ne c\'haller ket kavout an teuliad Kaset</string>
 </resources>

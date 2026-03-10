@@ -16,7 +16,7 @@
     <string name="changelog_title">變更記錄</string>
     <string name="changelog_loading_error">無法載入變更記錄。</string>
     <string name="changelog_version_title">第%s版</string>
-    <string name="changelog_recent_changes_title">最新消息</string>
+    <string name="changelog_recent_changes_title">最新變化</string>
     <string name="changelog_show_recent_changes">顯示應用程式更新後的最新變更</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <string name="changelog_snackbar_text">了解此版本的新增功能</string>
@@ -37,7 +37,7 @@
     <string name="choose_folder_copy_title">複製至…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已選擇</string>
     <string name="send_action">寄送</string>
-    <string name="empty_subject">主題空白，再次點擊以繼續寄送</string>
+    <string name="empty_subject">主旨空白，再次按一下以繼續寄送</string>
     <string name="reply_action">回覆</string>
     <string name="reply_all_action">全部回覆</string>
     <string name="delete_action">刪除</string>
@@ -67,16 +67,16 @@
     <string name="remove_account_action">刪除帳號</string>
     <string name="mark_as_read_action">標記為已讀</string>
     <string name="send_alternate_action">分享</string>
-    <string name="send_alternate_chooser_title">選擇寄件人</string>
+    <string name="send_alternate_chooser_title">選擇寄件者</string>
     <string name="flag_action">加上星號</string>
     <string name="unflag_action">移除星號</string>
     <string name="copy_action">複製</string>
     <string name="unsubscribe_action">取消訂閱</string>
     <string name="show_headers_action">顯示標頭</string>
     <plurals name="copy_address_to_clipboard">
-        <item quantity="other">位址已複製到剪貼簿</item>
+        <item quantity="other">地址已複製至剪貼簿</item>
     </plurals>
-    <string name="copy_subject_to_clipboard">主題文字已複製到剪貼簿</string>
+    <string name="copy_subject_to_clipboard">主旨文字已複製至剪貼簿</string>
     <string name="message_view_theme_action_dark">切換為暗色主題</string>
     <string name="message_view_theme_action_light">切換為亮色主題</string>
     <string name="mark_as_unread_action">標記為未讀</string>
@@ -89,19 +89,19 @@
     <string name="about_action">關於</string>
     <string name="prefs_title">設定</string>
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
-    <string name="general_no_subject">（無主題）</string>
-    <string name="general_no_sender">無寄件人</string>
-    <string name="status_loading_more">正在載入郵件…</string>
-    <string name="status_network_error">網路連接錯誤</string>
-    <string name="status_invalid_id_error">沒有找到郵件</string>
-    <string name="status_loading_error">郵件載入錯誤</string>
-    <string name="load_more_messages_fmt">再載入 <xliff:g id="messages_to_load">%d</xliff:g> 封郵件</string>
-    <string name="size_format_gigabytes">%.1fGB</string>
-    <string name="size_format_megabytes">%.1fMB</string>
-    <string name="size_format_kilobytes">%.1fkB</string>
-    <string name="size_format_bytes">%dB</string>
+    <string name="general_no_subject">（無主旨）</string>
+    <string name="general_no_sender">無寄件者</string>
+    <string name="status_loading_more">正在載入訊息…</string>
+    <string name="status_network_error">網路連線錯誤</string>
+    <string name="status_invalid_id_error">找不到訊息</string>
+    <string name="status_loading_error">訊息載入錯誤</string>
+    <string name="load_more_messages_fmt">再載入 <xliff:g id="messages_to_load">%d</xliff:g> 則訊息</string>
+    <string name="size_format_gigabytes">%.1f GB</string>
+    <string name="size_format_megabytes">%.1f MB</string>
+    <string name="size_format_kilobytes">%.1f kB</string>
+    <string name="size_format_bytes">%d B</string>
     <plurals name="notification_new_messages_title">
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 條新訊息</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 則新訊息</item>
     </plurals>
     <string name="notification_additional_messages">+ 來自<xliff:g id="account">%2$s</xliff:g>已超過<xliff:g id="additional_messages">%1$d</xliff:g>則訊息</string>
     <string name="notification_action_reply">回覆</string>
@@ -112,10 +112,10 @@
     <string name="notification_action_archive">封存</string>
     <string name="notification_action_archive_all">全部封存</string>
     <string name="notification_action_spam">垃圾郵件</string>
-    <string name="notification_certificate_error_public">證書錯誤</string>
-    <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g>驗證錯誤</string>
+    <string name="notification_certificate_error_public">憑證錯誤</string>
+    <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> 的憑證錯誤</string>
     <string name="notification_certificate_error_text">檢查你的伺服器設定</string>
-    <string name="notification_authentication_error_title">身份驗證失敗</string>
+    <string name="notification_authentication_error_title">身分驗證失敗</string>
     <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> 登入失敗。請更新你的伺服器設定。</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">通知錯誤</string>
@@ -126,36 +126,36 @@
     <string name="notification_bg_send_ticker">正在寄送郵件：<xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">正在寄送郵件</string>
     <string name="notification_bg_title_separator">：</string>
-    <string name="notification_channel_push_title">同步（推送）</string>
-    <string name="notification_channel_push_description">等待新郵件時顯示</string>
-    <string name="notification_channel_messages_title">郵件</string>
-    <string name="notification_channel_messages_description">與郵件相關的通知</string>
+    <string name="notification_channel_push_title">同步處理（推播）</string>
+    <string name="notification_channel_push_description">等待新訊息時顯示</string>
+    <string name="notification_channel_messages_title">訊息</string>
+    <string name="notification_channel_messages_description">與訊息相關的通知</string>
     <string name="notification_channel_miscellaneous_title">雜項設定</string>
     <string name="notification_channel_miscellaneous_description">其他通知，如錯誤通知等。</string>
-    <string name="send_failure_subject">有些郵件沒有成功寄送</string>
+    <string name="send_failure_subject">部分訊息沒有成功寄送</string>
     <string name="version">版本</string>
-    <string name="debug_enable_debug_logging_title">啟用除錯日誌</string>
-    <string name="debug_enable_debug_logging_summary">記錄額外的除錯訊息</string>
-    <string name="debug_enable_sensitive_logging_title">記錄敏感訊息</string>
-    <string name="debug_enable_sensitive_logging_summary">允許在日誌中顯示密碼。</string>
-    <string name="debug_export_logs_title">匯出日誌</string>
-    <string name="debug_export_logs_success">匯出成功。日誌可能包含敏感訊息。請小心選擇您要傳送的人。</string>
+    <string name="debug_enable_debug_logging_title">啟用除錯記錄</string>
+    <string name="debug_enable_debug_logging_summary">記錄額外的診斷資訊</string>
+    <string name="debug_enable_sensitive_logging_title">記錄機密資訊</string>
+    <string name="debug_enable_sensitive_logging_summary">可能在記錄中顯示密碼。</string>
+    <string name="debug_export_logs_title">匯出記錄</string>
+    <string name="debug_export_logs_success">匯出成功。記錄可能包含機密資訊。請小心選擇您要傳送的人。</string>
     <string name="debug_export_logs_failure">匯出失敗。</string>
-    <string name="message_list_load_more_messages_action">載入更多郵件</string>
-    <string name="message_to_fmt">收件人：<xliff:g id="counterParty">%s</xliff:g></string>
-    <string name="message_compose_subject_hint">主題</string>
-    <string name="message_compose_content_hint">郵件內容</string>
+    <string name="message_list_load_more_messages_action">載入更多訊息</string>
+    <string name="message_to_fmt">收件者：<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_compose_subject_hint">主旨</string>
+    <string name="message_compose_content_hint">訊息文字</string>
     <string name="message_compose_signature_hint">簽名</string>
     <string name="message_compose_quote_header_separator">--------原始郵件--------</string>
-    <string name="message_compose_quote_header_subject">主題：</string>
-    <string name="message_compose_quote_header_send_date">送件日期:</string>
-    <string name="message_compose_quote_header_from">寄件人：</string>
-    <string name="message_compose_quote_header_to">收件人：</string>
+    <string name="message_compose_quote_header_subject">主旨：</string>
+    <string name="message_compose_quote_header_send_date">寄送日期:</string>
+    <string name="message_compose_quote_header_from">寄件者：</string>
+    <string name="message_compose_quote_header_to">收件者：</string>
     <string name="message_compose_quote_header_cc">副本：</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>寫到:</string>
     <string name="message_compose_reply_header_fmt_with_date">於 <xliff:g id="sent_date">%1$s</xliff:g>，<xliff:g id="sender">%2$s</xliff:g> 寫到：</string>
-    <string name="message_compose_error_no_recipients">至少必須加入一位收件人。</string>
-    <string name="compose_error_incomplete_recipient">收件人欄位包含不完整的輸入！</string>
+    <string name="message_compose_error_no_recipients">至少必須加入一位收件者。</string>
+    <string name="compose_error_incomplete_recipient">收件者欄位包含不完整的輸入！</string>
     <string name="error_contact_address_not_found">找不到此聯絡人的電子郵件地址。</string>
     <string name="message_compose_attachments_skipped_toast">由於一些附件還沒有被下載，因此無法轉寄這些附件。</string>
     <string name="message_compose_attachments_forward_toast">因為有些附件尚未下載，所以無法轉寄郵件。</string>
@@ -163,7 +163,7 @@
     <string name="message_compose_description_delete_quoted_text">清除引用文字內容</string>
     <string name="message_compose_description_edit_quoted_text">編輯引用文字內容</string>
     <string name="remove_attachment_action">移除附件</string>
-    <string name="message_to_label">收件人：</string>
+    <string name="message_to_label">收件者：</string>
     <string name="message_view_cc_label">副本：</string>
     <string name="message_view_bcc_label">密件副本：</string>
     <string name="message_view_status_attachment_not_saved">無法存檔附件。</string>
@@ -178,20 +178,20 @@
     <string name="message_view_no_viewer">無法開啟<xliff:g id="mimetype">%s</xliff:g>。找不到可以開啟該附件的程式。</string>
     <string name="message_view_download_remainder">下載完整郵件</string>
     <string name="message_view_sender_label">透過 %1$s</string>
-    <string name="from_same_sender">來自這個寄件人的更多郵件</string>
-    <string name="message_discarded_toast">郵件已捨棄</string>
-    <string name="message_saved_toast">郵件已儲存為草稿</string>
+    <string name="from_same_sender">來自此寄件者的更多郵件</string>
+    <string name="message_discarded_toast">已捨棄訊息</string>
+    <string name="message_saved_toast">訊息已儲存為草稿</string>
     <string name="global_settings_flag_label">顯示星號</string>
     <string name="global_settings_flag_summary">顯示標記過星號的郵件</string>
     <string name="global_settings_preview_lines_label">預覽行數</string>
-    <string name="global_settings_show_correspondent_names_label">顯示收件人姓名</string>
-    <string name="global_settings_show_correspondent_names_summary">用收件人姓名取代顯示電子郵件地址</string>
-    <string name="global_settings_sender_above_subject_label">在主題上顯示寄件人姓名</string>
-    <string name="global_settings_sender_above_subject_summary">在信件匣主題上方顯示寄件人姓名，取代原先的主題下方顯示</string>
+    <string name="global_settings_show_correspondent_names_label">顯示通信者名稱</string>
+    <string name="global_settings_show_correspondent_names_summary">用通信者名稱取代顯示電子郵件地址</string>
+    <string name="global_settings_sender_above_subject_label">上方主旨的通信者</string>
+    <string name="global_settings_sender_above_subject_summary">在信件匣主旨上方顯示通信者名稱，取代原先的主旨下方顯示</string>
     <string name="global_settings_show_contact_name_label">顯示聯絡人姓名</string>
     <string name="global_settings_show_contact_name_summary">用聯絡人姓名取代顯示電子郵件地址</string>
     <string name="global_settings_registered_name_color_label">使用顏色標示特定聯絡人</string>
-    <string name="global_settings_registered_name_color_changed">使用顏色標示聯絡人列表</string>
+    <string name="global_settings_registered_name_color_changed">使用顏色標示聯絡人清單</string>
     <string name="general_settings_contact_name_color_label">聯絡人名稱顏色</string>
     <string name="global_settings_messageview_fixedwidth_label">固定寬度字體</string>
     <string name="global_settings_messageview_fixedwidth_summary">顯示純文字訊息時使用等寬字體</string>
@@ -232,7 +232,7 @@
     <string name="general_settings_ui_density_compact">密集</string>
     <string name="general_settings_ui_density_default">預設</string>
     <string name="general_settings_ui_density_relaxed">寬鬆</string>
-    <string name="global_settings_privacy_hide_useragent">隱藏郵件客戶端</string>
+    <string name="global_settings_privacy_hide_useragent">隱藏郵件用戶端</string>
     <string name="global_settings_privacy_hide_useragent_detail">從郵件標頭中移除使用者代理</string>
     <string name="global_settings_privacy_hide_timezone">隱藏時區</string>
     <string name="global_settings_privacy_hide_timezone_detail">在郵件標頭及回覆標頭中使用 UTC 時間而不是本地時間</string>
@@ -262,7 +262,7 @@
     <string name="account_setup_expunge_policy_on_poll">接收郵件時</string>
     <string name="account_setup_expunge_policy_manual">僅手動接收</string>
     <string name="drafts_folder_label">草稿名稱</string>
-    <string name="sent_folder_label">寄件備份名稱</string>
+    <string name="sent_folder_label">寄件資料夾</string>
     <string name="trash_folder_label">垃圾桶名稱</string>
     <string name="archive_folder_label">封存信件匣名稱</string>
     <string name="spam_folder_label">垃圾郵件匣名稱</string>
@@ -790,13 +790,13 @@
     <string name="push_notification_state_listening">正在等待新郵件</string>
     <string name="push_notification_state_wait_background_sync">等待背景同步允許</string>
     <string name="push_notification_state_wait_network">等待網路可用</string>
-    <string name="push_notification_info">點擊以瞭解更多。</string>
+    <string name="push_notification_info">點選以進一步瞭解。</string>
     <string name="push_info_title">推送資訊</string>
     <string name="push_info_configure_notification_text">不過，Android 也允許你隱藏通知。</string>
     <string name="push_info_learn_more_text">了解更多</string>
     <string name="push_info_configure_notification_action">設定通知</string>
     <string name="push_info_disable_push_text">如果你不需要新郵件的即時通知，則應停用推送並使用輪詢。輪詢會定期檢查新郵件，不需要通知權限。</string>
-    <string name="push_info_disable_push_action">停用推送</string>
+    <string name="push_info_disable_push_action">停用推播</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">選擇</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
@@ -865,11 +865,11 @@
     <string name="general_settings_post_mark_as_unread_action_title">標記郵件為未讀後</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">回到郵件清單</string>
     <string name="push_notification_state_alarm_permission_missing">缺少排程鬧鐘的權限</string>
-    <string name="push_notification_grant_alarm_permission">點擊以授予權限。</string>
+    <string name="push_notification_grant_alarm_permission">點選以授予權限。</string>
     <string name="about_app_authors_thunderbird">Thunderbird 行動版團隊</string>
     <string name="push_info_notification_explanation_text">使用推送時，<xliff:g id="app_name">%1$s</xliff:g> 會保持與郵件伺服器的連接。當應用程式在背景中運行時，Android 需要顯示持續通知。<xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">需要安裝 OpenKeychain 應用程式以支援端到端加密。</string>
-    <string name="account_delete_dlg_instructions_fmt">帳戶 \"<xliff:g id="account">%1$s</xliff:g>\" 將從 <xliff:g id="app_name">%2$s</xliff:g> 中移除。</string>
+    <string name="account_delete_dlg_instructions_fmt">帳號 \"<xliff:g id="account">%1$s</xliff:g>\" 將從 <xliff:g id="app_name">%2$s</xliff:g> 中移除。</string>
     <string name="about_title">關於 <xliff:g id="app_name">%s</xliff:g></string>
     <string name="settings_ui_data_collection">數據收集</string>
     <string name="folder_settings_notifications_label">通知</string>
@@ -887,14 +887,25 @@
     <string name="dialog_confirm_empty_spam_title">確認清空垃圾郵件</string>
     <string name="dialog_confirm_empty_spam_message">您想清空垃圾郵件資料夾嗎？</string>
     <string name="expand_content_description">展開</string>
-    <string name="open_camera">打開相機</string>
-    <string name="attach_file">添加附件</string>
-    <string name="camera_permission_denied">相機權限已被拒絕！無法拍攝照片</string>
-    <string name="debug_enable_sync_debug_logging_title">啓用同步調試記錄</string>
-    <string name="debug_enable_sync_debug_logging_summary">記錄24小時的同步診斷信息</string>
-    <string name="debug_sync_export_logs_title">導出同步日誌</string>
-    <string name="debug_open_secret_debug_screen">開啓隱藏偵錯畫面</string>
+    <string name="open_camera">開啟相機</string>
+    <string name="attach_file">附件檔案</string>
+    <string name="camera_permission_denied">相機權限已被拒絕！無法拍攝相片</string>
+    <string name="debug_enable_sync_debug_logging_title">啟用同步除錯記錄</string>
+    <string name="debug_enable_sync_debug_logging_summary">記錄 24 小時的同步診斷資訊</string>
+    <string name="debug_sync_export_logs_title">匯出同步記錄</string>
+    <string name="debug_open_secret_debug_screen">開啟秘密除錯畫面</string>
     <string name="swipe_action_archive_folder_not_set">設置歸檔文件夾</string>
     <string name="swipe_action_change_swipe_gestures">更改\n滑動手勢</string>
     <string name="archiving_not_available_for_this_account">該帳號無法使用歸檔功能。</string>
+    <string name="message_view_menu_action_export_eml">匯出為 EML</string>
+    <string name="set_format_html_action">使用原來的格式</string>
+    <string name="set_format_html_condensed_action">顯示格式化的內容</string>
+    <string name="set_format_plain_action">顯示未格式化的訊息</string>
+    <string name="set_format_plain_condensed_action">顯示未格式化的內容</string>
+    <string name="global_settings_messageview_body_content_type_title">本文內容類型</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">純文字（text/plain）</string>
+    <string name="debug_feature_flags">除錯：功能標幟</string>
+    <string name="account_setup_auto_select_folder">自動選取資料夾</string>
+    <string name="navigation_drawer_preferences">側邊選單</string>
 </resources>

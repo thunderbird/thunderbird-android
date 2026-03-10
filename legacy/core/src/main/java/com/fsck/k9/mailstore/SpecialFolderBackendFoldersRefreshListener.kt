@@ -12,6 +12,6 @@ class SpecialFolderBackendFoldersRefreshListener(
     override fun onBeforeFolderListRefresh() = Unit
 
     override fun onAfterFolderListRefresh() {
-        specialFolderUpdater.updateSpecialFolders()
+        specialFolderUpdater.updateSpecialFoldersSync()
     }
 }

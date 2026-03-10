@@ -13,6 +13,7 @@ import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.core.preference.storage.putEnum
 
@@ -20,13 +21,15 @@ private const val TAG = "DefaultNetworkSettingsPreferenceManager"
 
 class DefaultNetworkSettingsPreferenceManager(
     private val logger: Logger,
-    private val storage: Storage,
+    private val storagePersister: StoragePersister,
     private val storageEditor: StorageEditor,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
 ) : NetworkSettingsPreferenceManager {
     private val configState: MutableStateFlow<NetworkSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
+    private val storage: Storage
+        get() = storagePersister.loadValues()
 
     override fun getConfig(): NetworkSettings = configState.value
     override fun getConfigFlow(): Flow<NetworkSettings> = configState

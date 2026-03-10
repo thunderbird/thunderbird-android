@@ -10,3 +10,7 @@ dependencies {
     implementation(projects.feature.migration.launcher.api)
     implementation(projects.feature.migration.qrcode)
 }
+
+codeCoverage {
+    lineCoverage = 0
+}

@@ -4,7 +4,7 @@
     <string name="account_settings_general_avatar_title">Avatar</string>
     <string name="account_settings_general_avatar_description">Hesap avatarınızın nasıl görüntüleneceğini seçin.</string>
     <string name="account_settings_general_avatar_option_monogram">Monogram</string>
-    <string name="account_settings_general_avatar_option_image">Görüntü</string>
+    <string name="account_settings_general_avatar_option_image">Resim</string>
     <string name="account_settings_general_avatar_option_icon">Simge</string>
     <string name="account_settings_general_name_title">Hesap adı</string>
     <string name="account_settings_general_name_description">Hesabınızla ilişkili isim.</string>
@@ -12,8 +12,15 @@
     <string name="account_settings_general_name_error_too_long">Ad çok uzun</string>
     <string name="account_settings_general_color_title">Hesap rengi</string>
     <string name="account_settings_general_color_description">Bu hesabın vurgu rengi, klasörlerde ve hesap listelerinde kullanılır.</string>
-    <string name="account_settings_general_avatar_monogram_title">Avatar Monogramı</string>
+    <string name="account_settings_general_avatar_monogram_title">Avatar monogramı</string>
     <string name="account_settings_general_avatar_monogram_description">Avatarınız olarak kullanılan monogram.</string>
     <string name="account_settings_general_avatar_monogram_error_empty">Monogram boş bırakılamaz</string>
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogram çok uzun</string>
+    <string name="account_settings_general_avatar_image_title">Avatar resmi</string>
+    <string name="account_settings_general_avatar_image_description">Hesabınızı yansıtacak bir resim seçin.</string>
+    <string name="account_settings_general_avatar_image_select">Resim seçin</string>
+    <string name="account_settings_general_avatar_icon_description">Bu simgelerden birini avatarınız olarak seçin.</string>
+    <string name="account_settings_avatar_error_unsupported_format">Yalnızca JPEG biçimindeki resimler desteklenmektedir.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Yalnızca JPEG</string>
+    <string name="account_settings_general_avatar_icon_title">Avatar simgesi</string>
 </resources>

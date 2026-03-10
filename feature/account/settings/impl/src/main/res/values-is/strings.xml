@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">Fangamarkið er of langt</string>
     <string name="account_settings_general_avatar_icon_title">Auðkennistáknmynd</string>
     <string name="account_settings_general_avatar_icon_description">Veldu eitt tákn til að nota sem auðkennismynd þína.</string>
+    <string name="account_settings_general_avatar_image_title">Auðkennismynd</string>
+    <string name="account_settings_general_avatar_image_description">Veldu mynd til að auðkenna aðganginn þinn.</string>
+    <string name="account_settings_general_avatar_image_select">Veldu mynd</string>
+    <string name="account_settings_avatar_error_unsupported_format">Einungis JPEG-myndir eru studdar.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Einungis JPEG</string>
 </resources>

@@ -8,3 +8,8 @@ kotlin {
         withHostTest {}
     }
 }
+
+codeCoverage {
+    branchCoverage = 28
+    lineCoverage = 53
+}

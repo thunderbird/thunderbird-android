@@ -900,4 +900,7 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
     <string name="dialog_confirm_empty_spam_title">Confirmar esvaziamento do spam</string>
     <string name="dialog_confirm_empty_spam_message">Deseja esvaziar a pasta de spam?</string>
     <string name="expand_content_description">Expandir</string>
+    <string name="open_camera">Abrir Câmera</string>
+    <string name="attach_file">Anexar ficheiro</string>
+    <string name="camera_permission_denied">Permissão de câmera negada! Incapaz de tirar foto</string>
 </resources>

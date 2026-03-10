@@ -1,5 +1,6 @@
 package net.thunderbird.feature.account.settings.impl.domain
 
+import com.eygraber.uri.Uri
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.validation.ValidationError
@@ -25,6 +26,13 @@ internal interface AccountSettingsDomainContract {
             ): Outcome<Unit, AccountSettingError>
         }
 
+        fun interface UpdateAvatarImage {
+            suspend operator fun invoke(
+                accountId: AccountId,
+                imageUri: Uri,
+            ): Outcome<Avatar.Image, AccountSettingError>
+        }
+
         fun interface ValidateAccountName {
             operator fun invoke(name: String): Outcome<Unit, ValidateAccountNameError>
         }
@@ -42,6 +50,14 @@ internal interface AccountSettingsDomainContract {
 
     sealed interface AccountSettingError {
         data class NotFound(
+            val message: String,
+        ) : AccountSettingError
+
+        data class StorageError(
+            val message: String,
+        ) : AccountSettingError
+
+        data class UnsupportedFormat(
             val message: String,
         ) : AccountSettingError
     }

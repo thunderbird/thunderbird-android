@@ -34,6 +34,20 @@
     <string name="notification_action_archive">Archiválás</string>
     <string name="notification_action_archive_all">Összes archiválása</string>
     <string name="notification_action_spam">Levélszemét</string>
-    <string name="notification_authentication_incoming_server_error_text">Azonosítás sikertelen %1$s. Ellenőrizze a bejövő szerver beállításait.</string>
-    <string name="notification_authentication_outgoing_server_error_text">Azonosítás sikertelen %1$s. Ellenőrizze a kimenő szerver beállításait.</string>
+    <string name="notification_authentication_incoming_server_error_text">A hitelesítés sikertelen a következőnél: %1$s. Ellenőrizze a bejövő kiszolgáló beállításait.</string>
+    <string name="notification_authentication_outgoing_server_error_text">A hitelesítés sikertelen a következőnél: %1$s. Ellenőrizze a kimenő kiszolgáló beállításait.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d új üzenet</item>
+        <item quantity="other">%1$d új üzenet</item>
+    </plurals>
+    <string name="notification_action_retry">Újra</string>
+    <string name="notification_action_update_server_settings">Kiszolgálóbeállítások frissítése</string>
+    <string name="notification_action_assign_sent_folder">Mappa hozzárendelése</string>
+    <string name="banner_inline_notification_check_error_notifications">Hibaértesítések ellenőrzése</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Néhány üzenet a figyelmét igényli.</string>
+    <string name="banner_inline_notification_open_notifications">Értesítések megnyitása</string>
+    <string name="banner_inline_notification_learn_more">További tudnivalók</string>
+    <string name="banner_inline_notification_view_support_article">Támogatási leírás megtekintése</string>
+    <string name="sent_folder_not_found_title">Az Elküldöttek mappa nem érhető el.</string>
 </resources>

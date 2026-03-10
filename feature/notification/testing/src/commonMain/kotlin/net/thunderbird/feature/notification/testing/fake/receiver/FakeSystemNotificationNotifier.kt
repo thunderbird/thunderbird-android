@@ -6,4 +6,4 @@ import net.thunderbird.feature.notification.testing.fake.FakeNotificationRegistr
 
 open class FakeSystemNotificationNotifier(
     registry: NotificationRegistry = FakeNotificationRegistry(),
-) : AbstractFakeNotificationNotifier<SystemNotification>(registry)
+) : BaseFakeNotificationNotifier<SystemNotification>(registry)

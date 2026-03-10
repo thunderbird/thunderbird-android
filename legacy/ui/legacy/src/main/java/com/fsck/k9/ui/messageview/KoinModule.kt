@@ -7,7 +7,7 @@ val messageViewUiModule = module {
         createMessageViewRecipientFormatter(
             contactNameProvider = get(),
             resources = get(),
-            generalSettingsManager = get(),
+            messageListPreferencesManager = get(),
         )
     }
 }

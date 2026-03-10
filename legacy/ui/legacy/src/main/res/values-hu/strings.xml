@@ -123,7 +123,7 @@
     <string name="notification_notify_error_title">Értesítési hiba</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_text">Hiba történt egy új üzenethez tartozó rendszerértesítés létrehozásának kísérletekor. Az ok valószínűleg egy hiányzó értesítési hang.\n\nKoppintson az értesítési beállítások megnyitásához.</string>
-    <string name="notification_bg_sync_ticker">Levelek ellenőrzése: <xliff:g id="fiók">%1$s</xliff:g>:<xliff:g id="mappa">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Levelek ellenőrzése: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Levelek ellenőrzése</string>
     <string name="notification_bg_send_ticker">Levél küldése: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Levél küldése</string>
@@ -196,7 +196,7 @@
     <string name="global_settings_registered_name_color_changed">Nevek színezése a partnerlistában</string>
     <string name="general_settings_contact_name_color_label">Partner nevének színe</string>
     <string name="global_settings_messageview_fixedwidth_label">Rögzített szélességű betűk</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Rögzített szélességű betű használata az egyszerű szöveges üzeneteknél</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Rögzített szélességű betűkészlet használata az egyszerű szöveges üzeneteknél</string>
     <string name="global_settings_messageview_autofit_width_label">Üzenetek automatikus méretezése</string>
     <string name="global_settings_messageview_autofit_width_summary">Üzenetek összehúzása és képernyőhöz igazítása</string>
     <string name="global_settings_confirm_actions_title">Műveletek megerősítése</string>
@@ -341,7 +341,7 @@
     <string name="account_settings_quote_style_prefix">Előtag (mint például Gmail)</string>
     <string name="account_settings_quote_style_header">Fejléc (mint például Outlook)</string>
     <string name="account_settings_upload_sent_messages_label">Elküldött üzenetek feltöltése</string>
-    <string name="account_settings_upload_sent_messages_summary">Üzenetek feltöltése az Elküldött mappába a küldés után</string>
+    <string name="account_settings_upload_sent_messages_summary">Üzenetek feltöltése az Elküldöttek mappába a küldés után</string>
     <string name="account_settings_general_title">Általános beállítások</string>
     <string name="account_settings_reading_mail">Levél olvasása</string>
     <string name="account_settings_sync">Levél letöltése</string>
@@ -519,9 +519,9 @@
     <string name="account_setup_push_limit_1000">1000 mappa</string>
     <string name="animations_title">Animációk</string>
     <string name="animations_summary">Rikító látható hatások használata</string>
-    <string name="show_unified_inbox_title">Egységes beérkezett üzenetek megjelenítése</string>
+    <string name="show_unified_inbox_title">Beérkezett üzenetek egyesített megjelenítése</string>
     <string name="show_starred_count_title">Csillagszámláló megjelenítése</string>
-    <string name="integrated_inbox_title">Egységes beérkezett üzenetek</string>
+    <string name="integrated_inbox_title">Egyesített beérkezett üzenetek</string>
     <string name="integrated_inbox_detail">Az összes üzenet egységes mappákban</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Egyesítés</string>
     <string name="account_settings_no_folder_selected">Nincs</string>
@@ -694,7 +694,7 @@
     <string name="openpgp_sign_only_keep_enabled">Engedélyezve tartás</string>
     <string name="openpgp_dialog_sign_only_title">Csak PGP aláírási mód</string>
     <string name="openpgp_dialog_sign_only_text">Ebben a módban a PGP kulcs lesz használva egy titkosítatlan e-mail kriptográfiai aláírásának létrehozásához.</string>
-    <string name="openpgp_dialog_sign_only_plus_verified">Ez nem titkosítja az e-mailt, de ellenőrzi, hogy az ön kulcsából lett-e elküldve.</string>
+    <string name="openpgp_dialog_sign_only_plus_verified">Ez nem titkosítja az e-mailt, de ellenőrzi, hogy az Ön kulcsával lett-e elküldve.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Az aláírások sérülhetnek, ha levelezőlistákra küldi.</string>
     <string name="openpgp_dialog_sign_only_minus_attach">Az aláírások „signature.asc” mellékletekként lehetnek megjelenítve néhány kliensprogramban.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">A titkosított üzenetek mindig tartalmaznak aláírást.</string>
@@ -753,7 +753,7 @@
     <string name="enable_encryption">Titkosítás engedélyezése</string>
     <string name="disable_encryption">Titkosítás letiltása</string>
     <string name="openpgp_description_text1">Az üzenetek titkosítása biztosítja, hogy azokat csak a címzett olvashatja el, és senki más.</string>
-    <string name="openpgp_description_text3">A titkosítás csak akkor jelenik meg, ha az összes címzett támogatja, és korábban már küldtek e-mailt önnek.</string>
+    <string name="openpgp_description_text3">A titkosítás csak akkor jelenik meg, ha az összes címzett támogatja, és korábban már küldtek e-mailt Önnek.</string>
     <string name="openpgp_description_text2">Titkosítási be- és kikapcsolása erre az ikonra kattintva.</string>
     <string name="openpgp_enabled_error_gotit">Értem</string>
     <string name="openpgp_enabled_error_back">Vissza</string>
@@ -776,7 +776,7 @@
     <string name="ac_transfer_title">Autocrypt beállítási üzenet</string>
     <string name="ac_transfer_intro">Egy automatikusan titkosított beállítási üzenet biztonságosan megosztja a végpontok közötti beállítást más eszközökkel.</string>
     <string name="ac_transfer_button_send">Beállítási üzenet küldése</string>
-    <string name="ac_transfer_will_be_sent">Az üzenet az ön címére lesz elküldve:</string>
+    <string name="ac_transfer_will_be_sent">Az üzenet az Ön címére lesz elküldve:</string>
     <string name="ac_transfer_generating">Beállítási üzenet előállítása…</string>
     <string name="ac_transfer_sending_to">Üzenet küldése neki:</string>
     <string name="ac_transfer_finish">A befejezéshez nyissa meg az üzenetet a másik eszközén, és írja be a beállítási kódot.</string>
@@ -878,7 +878,7 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="general_settings_post_mark_as_unread_action_title">Üzenet olvasatlannak jelölése után</string>
     <string name="folder_settings_push_label">Leküldések engedélyezése</string>
     <string name="folder_settings_notifications_label">Értesítések</string>
-    <string name="settings_ui_telemetry_description">Megosztja az alkalmazás teljesítmény-, használati-, hardver- és testreszabási adatait a Mozillával, hogy segítsen nekünk a Thunderbird jobbá tételében</string>
+    <string name="settings_ui_telemetry_description">Megosztja az alkalmazás teljesítmény-, használati, hardver- és testreszabási adatait a Mozillával, hogy segítsen nekünk a Thunderbird jobbá tételében</string>
     <string name="about_title">A <xliff:g id="app_name">%s</xliff:g> névjegye</string>
     <string name="dialog_openkeychain_info_text">A végpontok közötti titkosítás támogatásához az OpenKeychain alkalmazás szükséges.</string>
     <string name="push_info_notification_explanation_text">Leküldés használatakor a <xliff:g id="app_name">%1$s</xliff:g> kapcsolatot tart fenn a levelezőkiszolgálóval. Az Android megköveteli a folyamatos értesítés megjelenítését, amíg az alkalmazás aktív a háttérben. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
@@ -893,14 +893,39 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="dialog_confirm_empty_spam_title">Levélszemét ürítésének megerősítése</string>
     <string name="dialog_confirm_empty_spam_message">Üríti a levélszemét mappát?</string>
     <string name="expand_content_description">Kibontás</string>
-    <string name="open_camera">Fényképezőgép Megnyitása</string>
+    <string name="open_camera">Fényképezőgép megnyitása</string>
     <string name="attach_file">Fájl mellékelése</string>
-    <string name="camera_permission_denied">A kamerához való hozzáférés nincs engedélyezve! Nem készíthető fénykép</string>
-    <string name="debug_enable_sync_debug_logging_title">Sync debug logolás engedélyezése</string>
-    <string name="debug_enable_sync_debug_logging_summary">Log sync diagnosztikai információ az elmúlt 24 órából</string>
-    <string name="debug_sync_export_logs_title">Sync logok exportálása</string>
+    <string name="camera_permission_denied">A kamerához való hozzáférés nincs engedélyezve! Nem készíthető fénykép.</string>
+    <string name="debug_enable_sync_debug_logging_title">Szinkronizálás hibakeresési naplózásának engedélyezése</string>
+    <string name="debug_enable_sync_debug_logging_summary">Szinkronizálás diagnosztikai információinak naplózása 24 óráig</string>
+    <string name="debug_sync_export_logs_title">Szinkronizálás naplóinak exportálása</string>
     <string name="debug_open_secret_debug_screen">Titkos hibakeresési képernyő megnyitása</string>
     <string name="swipe_action_archive_folder_not_set">Archívum mappa készítése</string>
-    <string name="archiving_not_available_for_this_account">Az archiválás nem elérhető ezen a fiókon.</string>
+    <string name="archiving_not_available_for_this_account">Az archiválás nem érhető el ennél a fióknál.</string>
     <string name="swipe_action_change_swipe_gestures">Csúsztatási \ngesztusok módosítása</string>
+    <string name="message_view_menu_action_export_eml">Exportálás EML-ként</string>
+    <string name="print_message_action">Nyomtatás</string>
+    <string name="set_format_html_action">Eredeti formázás használata</string>
+    <string name="set_format_html_condensed_action">Formázott megjelenítés</string>
+    <string name="set_format_plain_action">Formázatlan üzenet megjelenítése</string>
+    <string name="set_format_plain_condensed_action">Formázatlan megjelenítése</string>
+    <string name="global_settings_messageview_body_content_type_title">Törzs tartalomtípusa</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Egyszerű szöveg (text/plain)</string>
+    <string name="account_setup_auto_select_folder">Mappa automatikus kiválasztása</string>
+    <string name="navigation_drawer_preferences">Oldalsó menü</string>
+    <string name="expand_folders">Mappák kibontása</string>
+    <string name="debug_invalidate_access_token">Teszt: hozzáférési token érvénytelenítése</string>
+    <string name="debug_invalidate_access_token_done">Hozzáférési token érvénytelenítve. A következő kérés frissíteni fogja.</string>
+    <string name="debug_invalidate_access_token_unavailable">Nem érhető el OAuth-token ehhez a fiókhoz.</string>
+    <string name="debug_invalidate_access_token_local">Teszt: hozzáférési token érvénytelenítése (helyi)</string>
+    <string name="debug_invalidate_access_token_local_done">Helyi érvénytelenítés kérve. A következő kérés egy új tokent fog lekérni.</string>
+    <string name="debug_invalidate_access_token_server">Teszt: hozzáférési token érvénytelenítése (kiszolgáló)</string>
+    <string name="debug_invalidate_access_token_server_done">A tárolt hozzáférési token megsérült. A következő kérés hibára fog futni, majd frissíti.</string>
+    <string name="debug_force_auth_failure">Teszt: Hitelesítési hiba kényszerítése most</string>
+    <string name="debug_force_auth_failure_done">OAuth-állapot törölve. A következő kérés sikertelen lesz.</string>
+    <string name="debug_force_auth_failure_unavailable">Nem érhető el OAuth-konfiguráció ehhez a fiókhoz.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">A tárolt hozzáférési token módosítása sikertelen. Próbálja ki a helyi érvénytelenítést.</string>
+    <string name="debug_invalidate_access_token_already_modified">A tárolt hozzéférési token már módosítva lett.</string>
+    <string name="debug_feature_flags">HIBAKERESÉS: Funkciókapcsolók</string>
 </resources>

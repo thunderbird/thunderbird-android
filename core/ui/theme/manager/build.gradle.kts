@@ -13,3 +13,8 @@ dependencies {
 
     implementation(projects.core.preference.api)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

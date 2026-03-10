@@ -32,9 +32,12 @@
     <string name="settings_import_oauth_sign_in_with_google">Iniciar sesión con Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autorización cancelada</string>
     <string name="settings_import_status_log_in_required">Requírese inicio de sesión</string>
-    <string name="settings_import_oauth_description">Para usar esta conta de correo con K-9 Mail, é preciso iniciar sesión e permitirlle á app acceso aos correos.</string>
+    <string name="settings_import_oauth_description">Para usar esta conta de correo, é preciso iniciar sesión e permitirlle á app acceso aos correos.</string>
     <string name="settings_import_oauth_sign_in">Iniciar sesión</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">A autorización fallou co seguinte erro: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 non é soportado actualmente con este provedor.</string>
     <string name="settings_import_oauth_error_browser_not_found">A aplicación non puido atopar un navegador web para iniciar sesión na túa conta.</string>
+    <string name="settings_import_scan_qr_code_button">Escanear código QR</string>
+    <string name="settings_import_pick_app_button">Importar dende a aplicación</string>
+    <string name="settings_import_pick_app_dialog_title">Importar dende a aplicación</string>
 </resources>

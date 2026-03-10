@@ -69,7 +69,7 @@ class AccountSettingsViewModel(
     private fun loadFolders(account: LegacyAccountDto) {
         viewModelScope.launch {
             val remoteFolderInfo = withContext(backgroundDispatcher) {
-                val folders = folderRepository.getRemoteFolders(account)
+                val folders = folderRepository.getRemoteFolders(account.id)
                     .sortedWith(
                         compareByDescending<RemoteFolder> { it.type == FolderType.INBOX }
                             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.name },

@@ -1,5 +1,6 @@
 package net.thunderbird.android
 
+import android.app.Activity
 import android.app.Application
 import android.app.NotificationManager
 import android.content.Context
@@ -9,6 +10,7 @@ import android.content.res.Resources
 import android.util.DisplayMetrics
 import androidx.lifecycle.LifecycleOwner
 import androidx.work.WorkerParameters
+import app.k9mail.core.ui.compose.common.window.FoldableStateObserver
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import com.fsck.k9.account.AccountRemoverWorker
 import com.fsck.k9.job.MailSyncWorker
@@ -63,6 +65,7 @@ class DependencyInjectionTest {
                 ),
                 definition<DisplayHtmlFactory>(List::class),
                 definition<DisplayHtmlUiFactory>(List::class),
+                definition<FoldableStateObserver>(Activity::class),
                 definition<K9WebViewClient>(AttachmentResolver::class, MessageWebView.OnPageFinishedListener::class),
                 definition<MailSyncWorker>(WorkerParameters::class),
                 definition<SyncDebugWorker>(WorkerParameters::class),

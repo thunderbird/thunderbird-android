@@ -10,3 +10,8 @@ android {
 dependencies {
     api(projects.feature.onboarding.migration.api)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

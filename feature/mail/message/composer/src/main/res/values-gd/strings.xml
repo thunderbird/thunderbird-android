@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_title">Cha d’fhuair sinn lorg air a’ phasgan “Cuirte”</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Airson am post-d seo a shàbhaladh an dèidh dhut a chur, suidhich pasgan airson post cuirte ann an roghainnean a’ chunntais.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Iomruin pasgan “Cuirte”</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Sguir dheth</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Cuir is sguab às</string>
 </resources>

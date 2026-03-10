@@ -10,7 +10,7 @@
     <string name="account_setup_options_email_signature_error_blank">Az e-mail-aláírásnév nem lehet üres.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">A konfiguráció jóváhagyása szükséges.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Az e-mail kiszolgáló konfigurációját olyan kapcsolaton keresztül érkezett, amely nem oly biztonságos, mint szeretnénk. Ez azt jelenti, hogy csekély rá az esély, de előfordulhat, hogy valaki megváltoztatta. Tudná ellenőrizni a megadott konfigurációt, hogy az előírtaknak megfelelő-e?</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Az e-mail-kiszolgáló konfigurációja olyan kapcsolaton keresztül érkezett, amely nem annyira biztonságos, mint szeretnénk. Ez azt jelenti, hogy kis eséllyel, de előfordulhat, hogy valaki megváltoztatta. Tudná ellenőrizni a megadott konfigurációt, hogy az előírtaknak megfelelő-e?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Konfiguráció szerkesztése</string>
     <string name="account_setup_error_unknown">Ismeretlen hiba</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
@@ -18,7 +18,7 @@
     <string name="account_setup_options_account_name_label">Fióknév</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguráció megtalálva</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Az e-mail-cím megadása kötelező.</string>
-    <string name="account_setup_auto_discovery_loading_error">E-mail konfiguráció betöltése sikertelen</string>
+    <string name="account_setup_auto_discovery_loading_error">Az e-mail-konfiguráció betöltése sikertelen</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Megbízom a konfigurációban</string>
     <string name="account_setup_error_network">Hálózati hiba. Ellenőrizze a kapcsolat állapotát, és próbálja meg újra.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Az e-mail-cím nem tekinthető érvényes e-mail-címnek.</string>
@@ -41,7 +41,7 @@
     <string name="account_setup_special_folders_form_description_automatic">Az „Automatikus” lehetőség automatikusan követi a kiszolgáló módosításait. A jelenlegi kiszolgálóérték zárójelben látható.</string>
     <string name="account_setup_special_folders_success_message">Az összes speciális mappát automatikusan állította be a kiszolgáló.</string>
     <string name="account_setup_special_folders_folder_none">Nincs</string>
-    <string name="account_setup_special_folders_sent_folder_label">Elküldött mappa</string>
+    <string name="account_setup_special_folders_sent_folder_label">Elküldöttek mappa</string>
     <string name="account_setup_special_folders_folder_automatic">Automatikus (%s)</string>
     <string name="account_setup_special_folders_form_description">Adja meg a fiókja speciális mappáit.</string>
     <string name="account_setup_create_account_creating">Fiók létrehozása…</string>

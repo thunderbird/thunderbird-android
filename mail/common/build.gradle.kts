@@ -3,16 +3,12 @@ plugins {
     alias(libs.plugins.android.lint)
 }
 
-val testCoverageEnabled: Boolean by extra
-if (testCoverageEnabled) {
-    apply(plugin = "jacoco")
-}
-
 dependencies {
     api(libs.jetbrains.annotations)
 
     api(projects.core.logging.implLegacy)
     implementation(projects.core.common)
+    implementation(projects.feature.mail.folder.api)
 
     implementation(libs.mime4j.core)
     implementation(libs.mime4j.dom)
@@ -26,4 +22,9 @@ dependencies {
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
     testImplementation(libs.icu4j.charset)
+}
+
+codeCoverage {
+    branchCoverage = 27
+    lineCoverage = 47
 }

@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">字母组合太长</string>
     <string name="account_settings_general_avatar_icon_title">头像图标</string>
     <string name="account_settings_general_avatar_icon_description">请选择其中一个图标用作您的头像。</string>
+    <string name="account_settings_general_avatar_image_title">头像图片</string>
+    <string name="account_settings_general_avatar_image_description">选择一张图片来代表您的账号。</string>
+    <string name="account_settings_general_avatar_image_select">选择图片</string>
+    <string name="account_settings_avatar_error_unsupported_format">仅支持 JPEG 格式图片。</string>
+    <string name="account_settings_avatar_hint_jpeg_only">仅限 JPEG</string>
 </resources>

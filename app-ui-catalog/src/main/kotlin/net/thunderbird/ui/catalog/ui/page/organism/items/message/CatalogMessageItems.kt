@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
@@ -71,6 +72,7 @@ fun LazyGridScope.messageItems() {
                     swapSenderAndSubject = false,
                     randomizeAttachment = false,
                     maxPreviewLines = 2,
+                    showAccountIndicator = true,
                 ),
             )
         }
@@ -85,6 +87,7 @@ fun LazyGridScope.messageItems() {
                 onSwapSenderAndSubjectChange = { config = config.copy(swapSenderAndSubject = it) },
                 onRandomizeAttachmentChange = { config = config.copy(randomizeAttachment = it) },
                 onMaxPreviewLines = { config = config.copy(maxPreviewLines = it) },
+                onShowAccountIndicator = { config = config.copy(showAccountIndicator = it) },
             )
             DividerHorizontal(modifier = Modifier.padding(MainTheme.spacings.default))
             CatalogMessageItems(config = config)
@@ -101,6 +104,7 @@ private data class MessageItemConfiguration(
     val swapSenderAndSubject: Boolean,
     val randomizeAttachment: Boolean,
     val maxPreviewLines: Int,
+    val showAccountIndicator: Boolean,
 )
 
 @Suppress("LongMethod")
@@ -116,6 +120,7 @@ private fun MessageItemConfiguration(
     onSwapSenderAndSubjectChange: (Boolean) -> Unit = {},
     onRandomizeAttachmentChange: (Boolean) -> Unit = {},
     onMaxPreviewLines: (Int) -> Unit = {},
+    onShowAccountIndicator: (Boolean) -> Unit = {},
 ) {
     Column(
         modifier = modifier,
@@ -140,6 +145,11 @@ private fun MessageItemConfiguration(
             text = "Randomize attachment",
             onCheckedChange = onRandomizeAttachmentChange,
             checked = config.randomizeAttachment,
+        )
+        CheckboxInput(
+            text = "Show Account Indicator",
+            onCheckedChange = onShowAccountIndicator,
+            checked = config.showAccountIndicator,
         )
         TextFieldOutlined(
             value = config.sender,
@@ -240,6 +250,8 @@ private fun ColumnScope.CatalogNewMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
+        showAccountIndicator = config.showAccountIndicator,
+        accountIndicatorColor = Color.Magenta,
     )
 
     SnackbarHost(snackbarHostState)
@@ -295,6 +307,8 @@ private fun ColumnScope.CatalogUnreadMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
+        showAccountIndicator = config.showAccountIndicator,
+        accountIndicatorColor = Color.Magenta,
     )
 
     SnackbarHost(snackbarHostState)
@@ -350,6 +364,8 @@ private fun ColumnScope.CatalogReadMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
+        showAccountIndicator = config.showAccountIndicator,
+        accountIndicatorColor = Color.Magenta,
     )
 
     SnackbarHost(snackbarHostState)
@@ -405,6 +421,8 @@ private fun ColumnScope.CatalogActiveMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
+        showAccountIndicator = config.showAccountIndicator,
+        accountIndicatorColor = Color.Magenta,
     )
 
     SnackbarHost(snackbarHostState)
@@ -457,6 +475,8 @@ private fun ColumnScope.CatalogJunkMessageItem(
             if (config.randomizeAttachment) Random.nextBoolean() else false
         },
         maxPreviewLines = config.maxPreviewLines,
+        showAccountIndicator = config.showAccountIndicator,
+        accountIndicatorColor = Color.Magenta,
     )
 
     SnackbarHost(snackbarHostState)

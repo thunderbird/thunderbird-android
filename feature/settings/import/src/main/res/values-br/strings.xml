@@ -13,4 +13,5 @@
     <string name="settings_import_password_required">Lakait gerioù-tremen mar plij</string>
     <string name="settings_import_authorization_required">Kevreit mar plij</string>
     <string name="settings_import_authorization_and_password_required">Mar plij, kevreit ha lakait ho gerioù-tremen</string>
+    <string name="settings_import_scan_qr_code_button">Lenn ur c\'hod QR</string>
 </resources>

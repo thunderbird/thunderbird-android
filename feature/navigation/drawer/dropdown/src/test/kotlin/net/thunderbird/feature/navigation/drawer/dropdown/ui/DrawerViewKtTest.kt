@@ -33,7 +33,6 @@ internal class DrawerViewKtTest : ComposeTest() {
                 openSettings = { counter.openSettingsCount++ },
                 openAddAccount = { counter.openAddAccountCount++ },
                 closeDrawer = { counter.closeDrawerCount++ },
-                featureFlagProvider = FakeFeatureFlagProvider(isEnabled = true),
                 viewModel = viewModel,
             )
         }
@@ -88,7 +87,6 @@ internal class DrawerViewKtTest : ComposeTest() {
                 openSettings = { },
                 openAddAccount = { },
                 closeDrawer = { },
-                featureFlagProvider = FakeFeatureFlagProvider(isEnabled = true),
                 viewModel = viewModel,
             )
         }

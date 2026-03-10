@@ -63,13 +63,16 @@ fun Avatar(
                     )
                 }
 
-                is Avatar.Image -> {
-                    // TODO add support for image avatars
-                }
-
                 is Avatar.Icon -> {
                     AvatarIcon(
                         iconName = avatar.name,
+                        size = size,
+                    )
+                }
+
+                is Avatar.Image -> {
+                    AvatarImage(
+                        imageUri = avatar.uri,
                         size = size,
                     )
                 }

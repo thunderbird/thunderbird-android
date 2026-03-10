@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import android.database.sqlite.SQLiteDatabase
 import app.k9mail.legacy.mailstore.SaveMessageData
 import app.k9mail.legacy.message.extractors.PreviewResult
 import assertk.assertThat
@@ -34,30 +35,34 @@ class SaveMessageOperationsTest : RobolectricTest() {
     private val accountId = AccountIdFactory.create()
 
     private val messagePartDirectory = createRandomTempDirectory()
-    private val sqliteDatabase = createDatabase()
-    private val storageFilesProvider = object : StorageFilesProvider {
-        override fun getDatabaseFile() = error("Not implemented")
-        override fun getAttachmentDirectory() = messagePartDirectory
-    }
-    private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val attachmentFileManager = AttachmentFileManager(storageFilesProvider, mock())
-    private val basicPartInfoExtractor = BasicPartInfoExtractor()
-    private val threadMessageOperations = ThreadMessageOperations()
-    private val saveMessageOperations = SaveMessageOperations(
-        lockableDatabase,
-        attachmentFileManager,
-        basicPartInfoExtractor,
-        threadMessageOperations,
-        accountId,
-    )
+    private lateinit var sqliteDatabase: SQLiteDatabase
+    private lateinit var saveMessageOperations: SaveMessageOperations
 
     @Before
     fun setUp() {
         Log.logger = TestLogger()
+
+        sqliteDatabase = createDatabase()
+        val storageFilesProvider = object : StorageFilesProvider {
+            override fun getDatabaseFile() = error("Not implemented")
+            override fun getAttachmentDirectory() = messagePartDirectory
+        }
+        val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
+        val attachmentFileManager = AttachmentFileManager(storageFilesProvider, mock())
+        val basicPartInfoExtractor = BasicPartInfoExtractor()
+        val threadMessageOperations = ThreadMessageOperations()
+        saveMessageOperations = SaveMessageOperations(
+            lockableDatabase,
+            attachmentFileManager,
+            basicPartInfoExtractor,
+            threadMessageOperations,
+            accountId,
+        )
     }
 
     @After
     fun tearDown() {
+        sqliteDatabase.close()
         messagePartDirectory.deleteRecursively()
     }
 

@@ -49,7 +49,14 @@ interface Queue<T> : Collection<T> {
     fun peek(): T?
 }
 
-abstract class AbstractQueue<T> : AbstractMutableCollection<T>(), Queue<T> {
+/**
+ * Base class for [Queue] implementations.
+ *
+ * Provides default implementations for some of the [Queue] and [MutableCollection] operations.
+ *
+ * @param T The type of elements held in this collection.
+ */
+abstract class BaseQueue<T> : AbstractMutableCollection<T>(), Queue<T> {
 
     override fun element(): T {
         val head = peek()

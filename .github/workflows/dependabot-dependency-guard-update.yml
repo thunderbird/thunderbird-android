@@ -20,13 +20,13 @@ concurrency:
 
 jobs:
   update-dependency-guard:
-    if: github.actor == 'dependabot[bot]'
+    if: github.actor == 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == 'thunderbird/thunderbird-android'
     runs-on: ubuntu-latest
     environment: botmobile
     timeout-minutes: 90
     steps:
       - name: App Token Generate
-        uses: actions/create-github-app-token@7e473efe3cb98aa54f8d4bac15400b15fad77d94 # v2.2.0
+        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
         if: ${{ vars.BOT_CLIENT_ID }}
         id: app-token
         with:
@@ -34,7 +34,7 @@ jobs:
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
 
       - name: Checkout the repo
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ github.head_ref }}
           token: ${{ steps.app-token.outputs.token || github.token }}

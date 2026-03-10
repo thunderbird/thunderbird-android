@@ -19,7 +19,7 @@ internal class GetAccountName(
             } else {
                 Outcome.failure(
                     AccountSettingError.NotFound(
-                        message = "Account profile not found for accountId: ${accountId.asRaw()}",
+                        message = "Account profile not found for accountId: $accountId",
                     ),
                 )
             }

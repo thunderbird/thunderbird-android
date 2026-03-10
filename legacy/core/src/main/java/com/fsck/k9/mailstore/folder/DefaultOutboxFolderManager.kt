@@ -149,7 +149,7 @@ class DefaultOutboxFolderManager(
     }
 
     private fun createLocalStore(accountId: AccountId): LocalStore {
-        val account = requireNotNull(accountManager.getAccount(accountId.asRaw())) {
+        val account = requireNotNull(accountManager.getAccount(accountId.toString())) {
             "Account with id $accountId not found"
         }
 

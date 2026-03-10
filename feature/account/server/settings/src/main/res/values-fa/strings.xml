@@ -32,4 +32,6 @@
     <string name="account_server_settings_server_label">کارساز</string>
     <string name="account_server_settings_security_label">امنیت</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">ارسال اطلاعات کارخواه</string>
+    <string name="account_server_settings_password_authentication_failed">هویت‌سنجی شکست خورد!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">ناتوان در آغاز اعلان زیست‌سنجی.</string>
 </resources>

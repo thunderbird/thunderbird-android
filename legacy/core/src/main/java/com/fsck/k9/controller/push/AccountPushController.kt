@@ -4,61 +4,48 @@ import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.api.BackendPusher
 import com.fsck.k9.backend.api.BackendPusherCallback
-import com.fsck.k9.controller.MessagingController
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.Logger
+import net.thunderbird.feature.account.AccountId
+
+private const val TAG = "AccountPushController"
 
 internal class AccountPushController(
     private val backendManager: BackendManager,
-    private val messagingController: MessagingController,
     private val folderRepository: FolderRepository,
+    private val backendPusherCallback: BackendPusherCallback,
+    private val accountId: AccountId,
+    private val logger: Logger,
     backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val account: LegacyAccountDto,
 ) {
     private val coroutineScope = CoroutineScope(backgroundDispatcher)
 
     @Volatile
     private var backendPusher: BackendPusher? = null
 
-    private val backendPusherCallback = object : BackendPusherCallback {
-        override fun onPushEvent(folderServerId: String) {
-            syncFolders(folderServerId)
-        }
-
-        override fun onPushError(exception: Exception) {
-            messagingController.handleException(account, exception)
-        }
-
-        override fun onPushNotSupported() {
-            Log.v("AccountPushController(%s) - Push not supported. Disabling Push for account.", account.uuid)
-            disablePush()
-        }
-    }
-
     fun start() {
-        Log.v("AccountPushController(%s).start()", account.uuid)
+        logger.verbose(TAG) { "Starting push controller for account $accountId" }
         startBackendPusher()
         startListeningForPushFolders()
     }
 
     fun stop() {
-        Log.v("AccountPushController(%s).stop()", account.uuid)
+        logger.verbose(TAG) { "Stopping push controller for account $accountId" }
         stopListeningForPushFolders()
         stopBackendPusher()
     }
 
     fun reconnect() {
-        Log.v("AccountPushController(%s).reconnect()", account.uuid)
+        logger.verbose(TAG) { "Reconnecting push controller for account $accountId" }
         backendPusher?.reconnect()
     }
 
     private fun startBackendPusher() {
-        val backend = backendManager.getBackend(account)
+        val backend = backendManager.getBackend(accountId)
         backendPusher = backend.createPusher(backendPusherCallback).also { backendPusher ->
             backendPusher.start()
         }
@@ -71,7 +58,7 @@ internal class AccountPushController(
 
     private fun startListeningForPushFolders() {
         coroutineScope.launch {
-            folderRepository.getPushFoldersFlow(account).collect { remoteFolders ->
+            folderRepository.getPushFoldersFlow(accountId).collect { remoteFolders ->
                 val folderServerIds = remoteFolders.map { it.serverId }
                 updatePushFolders(folderServerIds)
             }
@@ -83,16 +70,8 @@ internal class AccountPushController(
     }
 
     private fun updatePushFolders(folderServerIds: List<String>) {
-        Log.v("AccountPushController(%s).updatePushFolders(): %s", account.uuid, folderServerIds)
+        logger.verbose(TAG) { "Updating push folders for account $accountId: $folderServerIds" }
 
         backendPusher?.updateFolders(folderServerIds)
-    }
-
-    private fun syncFolders(folderServerId: String) {
-        messagingController.synchronizeMailboxBlocking(account, folderServerId)
-    }
-
-    private fun disablePush() {
-        folderRepository.setPushDisabled(account)
     }
 }

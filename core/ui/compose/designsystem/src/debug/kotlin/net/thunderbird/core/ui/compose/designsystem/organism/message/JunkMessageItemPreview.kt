@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
@@ -134,6 +135,8 @@ private fun PreviewDefault(
             selected = params.selected,
             threadCount = params.threadCount,
             swapSenderWithSubject = params.swapSenderWithSubject,
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.Red,
         )
     }
 }
@@ -159,6 +162,8 @@ private fun PreviewCompact(
             threadCount = params.threadCount,
             swapSenderWithSubject = params.swapSenderWithSubject,
             contentPadding = MessageItemDefaults.compactContentPadding,
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.Red,
         )
     }
 }
@@ -184,6 +189,46 @@ private fun PreviewRelaxed(
             threadCount = params.threadCount,
             swapSenderWithSubject = params.swapSenderWithSubject,
             contentPadding = MessageItemDefaults.relaxedContentPadding,
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.Red,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewDefaultWithoutAccountIndicator(
+    @PreviewParameter(JunkMessageItemPrevParamCol::class) params: MessageItemPrevParams,
+) {
+    PreviewWithThemes {
+        JunkMessageItem(
+            sender = params.sender,
+            subject = params.subject,
+            preview = params.preview,
+            receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
+            avatar = {
+                Box(
+                    modifier = Modifier
+                        .size(MainTheme.sizes.iconAvatar)
+                        .background(
+                            color = MainTheme.colors.primaryContainer.copy(alpha = 0.15f),
+                            shape = CircleShape,
+                        )
+                        .border(width = 1.dp, color = MainTheme.colors.primary, shape = CircleShape),
+                ) {
+                    TextTitleSmall(text = "SN", modifier = Modifier.align(Alignment.Center))
+                }
+            },
+            onClick = { },
+            onLongClick = { },
+            onLeadingClick = { },
+            modifier = Modifier.padding(MainTheme.spacings.double),
+            hasAttachments = params.hasAttachments,
+            selected = params.selected,
+            threadCount = params.threadCount,
+            swapSenderWithSubject = params.swapSenderWithSubject,
+            showAccountIndicator = false,
+            accountIndicatorColor = null,
         )
     }
 }

@@ -1,14 +1,17 @@
 package com.fsck.k9.notification
 
-import com.fsck.k9.K9
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.preference.NotificationQuickDelete
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
+import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 
 internal class SingleMessageNotificationDataCreator(
     private val interactionPreferences: InteractionSettingsPreferenceManager,
+    private val notificationPreference: NotificationPreferenceManager,
 ) {
 
     private val interactionSettings get() = interactionPreferences.getConfig()
+    private val notificationSettings get() = notificationPreference.getConfig()
 
     fun createSingleNotificationData(
         account: LegacyAccountDto,
@@ -77,7 +80,7 @@ internal class SingleMessageNotificationDataCreator(
     }
 
     private fun isDeleteActionEnabled(): Boolean {
-        return K9.notificationQuickDeleteBehaviour != K9.NotificationQuickDelete.NEVER
+        return notificationSettings.notificationQuickDeleteBehaviour != NotificationQuickDelete.NEVER
     }
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.

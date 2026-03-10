@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="funding_googleplay_contribution_title">Apoia Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_title">Apoia a Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Un sincero agradecemento de parte de todos nos!</string>
+    <string name="funding_googleplay_contribution_list_title">Contribución segura</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Doar unha vez</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Mensual</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Ningún dispoñible</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">As contribucións non se poden deducir fiscalmente como doacións benéficas.</string>
+    <string name="funding_googleplay_contribution_list_empty_title">As doazóns dentro da aplicación non están dispoñibles polo de agora.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Visita <xliff:g id="link_text">%s</xliff:g> para ver máis xeitos de apoiar ó Thunderbird.</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Tentar de novo</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Continuar co pago</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Pago non dispoñible polo de agora</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Modifica o pago mensual</string>
+</resources>

@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogram yn rhy hir</string>
     <string name="account_settings_general_avatar_icon_title">Eicon Avatar</string>
     <string name="account_settings_general_avatar_icon_description">Dewis un o\'r eiconau i\'w ddefnyddio fel eich afatar.</string>
+    <string name="account_settings_general_avatar_image_title">Delwedd avatar</string>
+    <string name="account_settings_general_avatar_image_description">Dewis llun i gynrychioli eich afatar.</string>
+    <string name="account_settings_general_avatar_image_select">Dewis llun</string>
+    <string name="account_settings_avatar_error_unsupported_format">Dim ond lluniau JPEG sy\'n cael eu cynnal.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">JPEG yn unig</string>
 </resources>

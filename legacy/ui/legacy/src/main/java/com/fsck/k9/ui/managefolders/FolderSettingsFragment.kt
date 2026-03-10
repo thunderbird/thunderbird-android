@@ -5,6 +5,9 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
@@ -21,11 +24,6 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
     private val viewModel: FolderSettingsViewModel by viewModel()
     private val folderNameFormatter: FolderNameFormatter by inject()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         // Set empty preferences resource while data is being loaded
         setPreferencesFromResource(R.xml.empty_preferences, null)
@@ -33,6 +31,30 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.folder_settings_option, menu)
+
+                    val clearFolderItem = menu.findItem(R.id.clear_local_folder)
+                    clearFolderItem.isVisible = viewModel.showClearFolderInMenu
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return when (menuItem.itemId) {
+                        R.id.clear_local_folder -> {
+                            viewModel.showClearFolderConfirmationDialog()
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED,
+        )
 
         val arguments = arguments ?: error("Arguments missing")
         val accountUuid = arguments.getString(EXTRA_ACCOUNT) ?: error("Missing argument '$EXTRA_ACCOUNT'")
@@ -47,24 +69,6 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
             }
 
         viewModel.getActionEvents().observeNotNull(this) { handleActionEvents(it) }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.folder_settings_option, menu)
-
-        val clearFolderItem = menu.findItem(R.id.clear_local_folder)
-        clearFolderItem.isVisible = viewModel.showClearFolderInMenu
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.clear_local_folder -> {
-                viewModel.showClearFolderConfirmationDialog()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun navigateBack() {

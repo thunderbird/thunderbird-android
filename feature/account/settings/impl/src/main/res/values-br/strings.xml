@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_settings_general_avatar_icon_description">Tapit unan eus an arlunioù da vezañ implijet evel ho avatar deoc\'h.</string>
+    <string name="account_settings_general_avatar_icon_description">Tapit unan eus an arlunioù da vezañ implijet da avatar.</string>
     <string name="account_settings_general_title">Arventennoù hollek</string>
     <string name="account_settings_general_avatar_title">Avatar</string>
     <string name="account_settings_general_avatar_description">Dibabit penaos e vo diskwelet avatar ho kont.</string>
@@ -18,4 +18,9 @@
     <string name="account_settings_general_avatar_monogram_error_empty">Ne c\'hall ket ar monogramm bezañ goullo</string>
     <string name="account_settings_general_avatar_monogram_error_too_long">Re hir eo ar monogramm</string>
     <string name="account_settings_general_avatar_icon_title">Arlun an avatar</string>
+    <string name="account_settings_avatar_hint_jpeg_only">JPEG hepken</string>
+    <string name="account_settings_general_avatar_image_title">Skeudenn an avatar</string>
+    <string name="account_settings_general_avatar_image_description">Dibabit skeudenn arouez ho kont.</string>
+    <string name="account_settings_general_avatar_image_select">Dibab ur skeudenn</string>
+    <string name="account_settings_avatar_error_unsupported_format">N\'eo skoret nemet ar skeudennoù JPEG.</string>
 </resources>

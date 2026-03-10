@@ -11,3 +11,8 @@ dependencies {
 android {
     namespace = "app.k9mail.feature.widget.shortcut"
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

@@ -1,3 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Axustes xeráis</string>
+    <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_description">Escolle como se amosa o avatar da túa conta.</string>
+    <string name="account_settings_general_avatar_option_monogram">Iniciais</string>
+    <string name="account_settings_general_avatar_option_image">Imaxe</string>
+    <string name="account_settings_general_avatar_option_icon">Icona</string>
+    <string name="account_settings_general_avatar_image_title">Imaxe de avatar</string>
+    <string name="account_settings_general_avatar_image_description">Escolma a imaxe que represente á túa conta.</string>
+    <string name="account_settings_general_avatar_image_select">Escolma unha imaxe</string>
+    <string name="account_settings_general_name_title">Nome da conta</string>
+    <string name="account_settings_general_name_description">O nome asociado coa túa conta.</string>
+    <string name="account_settings_general_name_error_empty">O nome non pode estar baleiro</string>
+    <string name="account_settings_general_name_error_too_long">Nome longo de máis</string>
+    <string name="account_settings_general_color_title">Cor da conta</string>
+    <string name="account_settings_general_color_description">A cor principal desta conta que se emprega en cartafois e listados.</string>
+    <string name="account_settings_general_avatar_monogram_title">Avatar de iniciais</string>
 </resources>

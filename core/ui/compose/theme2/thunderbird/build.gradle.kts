@@ -10,3 +10,8 @@ android {
 dependencies {
     api(projects.core.ui.compose.theme2.common)
 }
+
+codeCoverage {
+    branchCoverage = 0
+    lineCoverage = 0
+}

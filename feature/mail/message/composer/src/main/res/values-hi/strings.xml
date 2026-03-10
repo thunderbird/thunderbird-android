@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_supporting_text">भेजने के बाद इस ईमेल को सेव करने के लिए, खाता सेटिंग्स में एक Sent फ़ोल्डर सेट करें।</string>
 </resources>
