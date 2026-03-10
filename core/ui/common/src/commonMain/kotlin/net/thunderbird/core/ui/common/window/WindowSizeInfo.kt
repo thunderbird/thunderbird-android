@@ -1,11 +1,16 @@
 package net.thunderbird.core.ui.common.window
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.unit.DpSize
 
+/**
+ * Window size information.
+ *
+ * @param sizeClass the window size class
+ * @param size the window size
+ */
 @Immutable
 public data class WindowSizeInfo(
-    val screenWidthSizeClass: WindowSizeClass,
-    val screenHeightSizeClass: WindowSizeClass,
-    val screenWidth: Int,
-    val screenHeight: Int,
+    val sizeClass: WindowSizeClass,
+    val size: DpSize,
 )

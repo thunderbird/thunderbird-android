@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
-import net.thunderbird.core.ui.common.window.WindowSizeClass
+import net.thunderbird.core.ui.common.window.WindowWidthSizeClass
 import net.thunderbird.core.ui.common.window.calculateWindowSizeInfo
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemAccountIndicator
@@ -44,7 +44,7 @@ internal fun AdaptiveMessageItemHeaderRow(
     modifier: Modifier = Modifier,
 ) {
     val windowSizeInfo = calculateWindowSizeInfo()
-    val isSmallScreen = windowSizeInfo.screenWidthSizeClass == WindowSizeClass.Small
+    val isSmallScreen = windowSizeInfo.sizeClass.widthSizeClass == WindowWidthSizeClass.Small
 
     val headerRowContent: @Composable ((RowScope) -> Unit) = rememberAdaptiveHeaderRowContent(
         isSmallScreen = isSmallScreen,

@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import net.thunderbird.core.ui.common.window.WindowSizeClass
+import net.thunderbird.core.ui.common.window.WindowHeightSizeClass
 import net.thunderbird.core.ui.common.window.calculateWindowSizeInfo
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
@@ -23,8 +23,8 @@ internal fun FolderSettingList(
     modifier: Modifier = Modifier,
 ) {
     val windowSizeInfo = calculateWindowSizeInfo()
-    val isLandscape = windowSizeInfo.screenWidth > windowSizeInfo.screenHeight
-    val isCompactHeight = windowSizeInfo.screenHeightSizeClass == WindowSizeClass.Compact
+    val isLandscape = windowSizeInfo.size.width > windowSizeInfo.size.height
+    val isCompactHeight = windowSizeInfo.sizeClass.heightSizeClass == WindowHeightSizeClass.Compact
     val hideText = isLandscape && isCompactHeight
 
     SettingList(
