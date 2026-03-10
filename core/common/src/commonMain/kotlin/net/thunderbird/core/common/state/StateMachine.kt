@@ -145,13 +145,13 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
         scope.launch {
             // delay onEnter initialization so the viewModels are ready to receive the state
             delay(500.milliseconds)
-            verbose("StateMachine initialized with initial state: $initialState")
+            verbose { "StateMachine initialized with initial state: $initialState" }
             stateRegistrar[initialState::class]?.listeners?.onEnter?.invoke(null, null, currentStateSnapshot)
         }
     }
 
     override suspend fun process(event: TEvent): TState {
-        debug("Processing event: $event")
+        debug { "Processing event: $event" }
         mutex.withLock {
             val currentState = _currentState.value
             val currentStateRegistry = stateRegistrar[currentState::class]
@@ -165,7 +165,7 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
                     }
                     .firstNotNullOfOrNull { it.value }
             if (transition == null) {
-                verbose("Found no transition for $currentState -> $event")
+                verbose { "Found no transition for $currentState -> $event" }
             }
 
             return when {
@@ -177,13 +177,13 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
                             currentStateRegistry?.listeners?.onExit?.invoke(currentState, event)
                             newStateRegistry.listeners.onEnter?.invoke(currentState, event, newState)
                             newStateRegistry.listeners.onExit?.invoke(newState, null)
-                            verbose("Reached final state: ${newState::class.simpleName}")
+                            verbose { "Reached final state: ${newState::class.simpleName}" }
                         }
 
                         currentState::class != newState::class -> {
-                            debug(
-                                "Transitioning from ${currentState::class.simpleName} to ${newState::class.simpleName}",
-                            )
+                            debug {
+                                "Transitioning from ${currentState::class.simpleName} to ${newState::class.simpleName}"
+                            }
                             currentStateRegistry?.listeners?.onExit?.invoke(currentState, event)
                             newStateRegistry?.listeners?.onEnter?.invoke(currentState, event, newState)
                         }
@@ -196,15 +196,15 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
                         newState = newState,
                     )
                     newState.also {
-                        debug("Transitioned from ${currentState::class.simpleName} to ${newState::class.simpleName}")
+                        debug { "Transitioned from ${currentState::class.simpleName} to ${newState::class.simpleName}" }
                     }
                 }
 
                 else -> {
-                    info(
+                    info {
                         "No transition defined for '${currentState::class.simpleName}' with event '$event', " +
-                            "or guard failed; Ignore event",
-                    )
+                            "or guard failed; Ignore event"
+                    }
                     // No transition defined, or guard failed -> Ignore event
                     currentState
                 }
@@ -214,19 +214,19 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
         }
     }
 
-    private fun verbose(message: String) {
+    private fun verbose(message: () -> String) {
         if (stateMachineDebugger != null) {
-            logger?.verbose(logTag) { message }
+            logger?.verbose(logTag, message = message)
         }
     }
 
-    private fun debug(message: String) {
+    private fun debug(message: () -> String) {
         if (stateMachineDebugger != null) {
-            logger?.debug(logTag) { message }
+            logger?.debug(logTag, message = message)
         }
     }
 
-    private fun info(message: String) {
-        logger?.info(logTag) { message }
+    private fun info(message: () -> String) {
+        logger?.info(logTag, message = message)
     }
 }
