@@ -72,7 +72,8 @@ class MessageListLoader(
                 )
             },
             contactLetterBitmapCreator = contactLetterBitmapCreator.takeIf {
-                featureFlagProvider.provide(MessageListFeatureFlags.UseComposeForMessageListItems).isEnabled()
+                featureFlagProvider.provide(MessageListFeatureFlags.UseComposeForMessageListItems).isEnabled() ||
+                    featureFlagProvider.provide(MessageListFeatureFlags.EnableMessageListNewState).isEnabled()
             },
         )
 
