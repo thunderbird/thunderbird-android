@@ -11,7 +11,6 @@ import kotlin.test.AfterTest
 import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import net.thunderbird.core.common.state.StateMachine
 import net.thunderbird.core.common.state.debug.StatePrettyPrinterVocabulary.STATE_HISTORY_DUMP_BEGIN
@@ -21,7 +20,6 @@ import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Test
 
-@OptIn(ExperimentalTime::class)
 class CommonStatePrettyPrinterTest {
     private val logger = TestLogger()
 
@@ -1073,7 +1071,6 @@ private sealed interface TestEvent {
     data class UpdateNested(val nested: NestedData) : TestEvent
 }
 
-@ExperimentalTime
 private class TestClock(private var now: Instant) : Clock {
     override fun now(): Instant = now
 

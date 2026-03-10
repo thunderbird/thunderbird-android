@@ -1,7 +1,6 @@
 package net.thunderbird.core.common.state.builder
 
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 import net.thunderbird.core.common.state.StateMachine
 import net.thunderbird.core.common.state.debug.StatePrettyPrinter
 import net.thunderbird.core.logging.Logger
@@ -24,7 +23,6 @@ import net.thunderbird.core.logging.Logger
 internal class StateMachineDebugger<TState : Any, TEvent : Any>(
     logger: Logger,
     logTag: String?,
-    @OptIn(ExperimentalTime::class)
     private val clock: Clock,
     val valueFormatter: (Any, formatter: (Any) -> String) -> String,
 ) {
@@ -43,7 +41,6 @@ internal class StateMachineDebugger<TState : Any, TEvent : Any>(
     val historyStack: List<StateMachine.StateTransitionRecord<TState, TEvent>> get() = _historyStack.toList()
     private val _historyStack = ArrayDeque<StateMachine.StateTransitionRecord<TState, TEvent>>()
 
-    @OptIn(ExperimentalTime::class)
     private val statePrettyPrinter: StatePrettyPrinter<TState, TEvent> =
         StatePrettyPrinter(logger, logTag, clock, valueFormatter)
 
@@ -53,7 +50,6 @@ internal class StateMachineDebugger<TState : Any, TEvent : Any>(
         previousState: TState,
         newState: TState,
     ) {
-        @OptIn(ExperimentalTime::class)
         val record = StateMachine.StateTransitionRecord(
             transition = transition,
             event = event,

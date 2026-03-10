@@ -1,7 +1,6 @@
 package net.thunderbird.core.common.state.debug
 
 import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import net.thunderbird.core.common.state.StateMachine
 import net.thunderbird.core.common.state.debug.extension.prependIndent
@@ -13,7 +12,6 @@ import net.thunderbird.core.common.state.debug.extension.prependIndent
  * and full history dumps. Delegates diff computation to [StateDiffer] and
  * value formatting to [ValueFormatter].
  */
-@OptIn(ExperimentalTime::class)
 internal class TransitionFormatter<TState : Any, TEvent : Any>(
     private val valueFormatter: ValueFormatter,
     private val differ: StateDiffer,

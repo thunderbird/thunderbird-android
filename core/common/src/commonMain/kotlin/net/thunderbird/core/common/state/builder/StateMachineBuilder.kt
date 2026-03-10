@@ -2,7 +2,6 @@ package net.thunderbird.core.common.state.builder
 
 import kotlin.reflect.KClass
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.CoroutineScope
 import net.thunderbird.core.common.state.DefaultStateMachine
 import net.thunderbird.core.common.state.DefaultStateMachine.StateRegistry
@@ -181,7 +180,6 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
                 }
             } ]"
         }
-        @OptIn(ExperimentalTime::class)
         return DefaultStateMachine(
             logger = logger,
             logTag = logTag,
@@ -209,7 +207,6 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
         internal var debuggerLogger: Logger? = null
         internal var debuggerLogTag: String? = null
 
-        @OptIn(ExperimentalTime::class)
         private var clock: Clock? = null
         private var valueFormatter: (Any, formatter: (Any) -> String) -> String = { obj, _ -> obj.toString() }
 
@@ -235,7 +232,6 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
          *
          * @param clock The Clock instance to use for time measurements in the debugger.
          */
-        @OptIn(ExperimentalTime::class)
         fun withClock(clock: Clock) {
             this.clock = clock
         }
@@ -243,7 +239,6 @@ class StateMachineBuilder<TState : Any, TEvent : Any> internal constructor(
         internal fun build(): StateMachineDebugger<TState, TEvent> {
             require(enabled) { "StateMachineDebugger must be enabled to use" }
 
-            @OptIn(ExperimentalTime::class)
             return StateMachineDebugger(
                 logger = requireNotNull(debuggerLogger) { "logger must be provided for StateMachineDebugger" },
                 logTag = debuggerLogTag,

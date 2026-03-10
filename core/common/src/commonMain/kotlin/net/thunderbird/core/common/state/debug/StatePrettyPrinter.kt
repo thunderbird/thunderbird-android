@@ -4,7 +4,6 @@ import androidx.annotation.VisibleForTesting
 import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import net.thunderbird.core.common.extension.mapOrDefault
 import net.thunderbird.core.common.state.StateMachine
@@ -70,7 +69,6 @@ internal interface StatePrettyPrinter<TState : Any, TEvent : Any> {
  * @return A platform-specific implementation of StatePrettyPrinter configured with the
  * provided parameters.
  */
-@OptIn(ExperimentalTime::class)
 internal fun <TState : Any, TEvent : Any> StatePrettyPrinter(
     logger: Logger,
     logTag: String?,
@@ -85,7 +83,6 @@ internal fun <TState : Any, TEvent : Any> StatePrettyPrinter(
  * This class handles only the logging orchestration (when and what to log). Formatting is delegated
  * to [TransitionFormatter], diffing to [StateDiffer], and value formatting to [ValueFormatter].
  */
-@OptIn(ExperimentalTime::class)
 @VisibleForTesting
 internal class CommonStatePrettyPrinter<TState : Any, TEvent : Any>(
     private val logger: Logger,
