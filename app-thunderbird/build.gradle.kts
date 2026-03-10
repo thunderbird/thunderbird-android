@@ -105,6 +105,8 @@ android {
         }
 
         create("beta") {
+            initWith(getByName("release"))
+
             signingConfig = signingConfigs.getByType(SigningType.TB_BETA)
 
             applicationIdSuffix = ".beta"
@@ -125,6 +127,8 @@ android {
         }
 
         create("daily") {
+            initWith(getByName("release"))
+
             signingConfig = signingConfigs.getByType(SigningType.TB_DAILY)
 
             applicationIdSuffix = ".daily"
