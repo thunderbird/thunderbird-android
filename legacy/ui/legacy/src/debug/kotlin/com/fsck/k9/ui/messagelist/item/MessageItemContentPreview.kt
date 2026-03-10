@@ -1,6 +1,8 @@
 package com.fsck.k9.ui.messagelist.item
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import app.k9mail.core.android.common.contact.Contact
 import app.k9mail.core.android.common.contact.ContactRepository
@@ -92,6 +94,7 @@ private val fakeMessageListItem = MessageListItem(
     messageUid = "654321",
     databaseId = 1L,
     threadRoot = 1L,
+    contactColor = Color.Magenta.toArgb(),
 )
 
 private val fakeMessageListAppearance = MessageListAppearance(
