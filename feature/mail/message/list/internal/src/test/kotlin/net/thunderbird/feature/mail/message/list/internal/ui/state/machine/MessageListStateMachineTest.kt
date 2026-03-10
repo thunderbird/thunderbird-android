@@ -637,8 +637,6 @@ private fun createMessageListPreferences(
     senderAboveSubject: Boolean = false,
     excerptLines: Int = 1,
     dateTimeFormat: MessageListDateTimeFormat = MessageListDateTimeFormat.Contextual,
-    useVolumeKeyNavigation: Boolean = false,
-    serverSearchLimit: Int = 0,
     actionRequiringUserConfirmation: ImmutableSet<ActionRequiringUserConfirmation> = persistentSetOf(),
     colorizeBackgroundWhenRead: Boolean = false,
 ) = MessageListPreferences(
@@ -650,8 +648,6 @@ private fun createMessageListPreferences(
     senderAboveSubject = senderAboveSubject,
     excerptLines = excerptLines,
     dateTimeFormat = dateTimeFormat,
-    useVolumeKeyNavigation = useVolumeKeyNavigation,
-    serverSearchLimit = serverSearchLimit,
     actionRequiringUserConfirmation = actionRequiringUserConfirmation,
     colorizeBackgroundWhenRead = colorizeBackgroundWhenRead,
 )
