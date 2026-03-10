@@ -2,7 +2,9 @@ package net.thunderbird.feature.funding.googleplay.data.remote.bilingclient
 
 import android.content.Context
 import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.PendingPurchasesParams
+import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 
@@ -20,17 +22,15 @@ class BillingClientProvider(
     override val current: BillingClient
         get() = clientInstance ?: createBillingClient().also { clientInstance = it }
 
-    private var listener: PurchasesUpdatedListener? = null
+    private val delegatingListener = DelegatingPurchasesUpdatedListener()
 
     override fun setPurchasesUpdatedListener(listener: PurchasesUpdatedListener) {
-        this.listener = listener
+        delegatingListener.listener = listener
     }
 
     private fun createBillingClient(): BillingClient {
-        require(listener != null) { "PurchasesUpdatedListener must be set before creating the billing client" }
-
         return BillingClient.newBuilder(context)
-            .setListener(listener!!)
+            .setListener(delegatingListener)
             .enablePendingPurchases(
                 PendingPurchasesParams.newBuilder()
                     .enableOneTimeProducts()
@@ -42,5 +42,13 @@ class BillingClientProvider(
     override fun clear() {
         clientInstance?.endConnection()
         clientInstance = null
+    }
+
+    private class DelegatingPurchasesUpdatedListener : PurchasesUpdatedListener {
+        var listener: PurchasesUpdatedListener? = null
+
+        override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
+            listener?.onPurchasesUpdated(billingResult, purchases)
+        }
     }
 }

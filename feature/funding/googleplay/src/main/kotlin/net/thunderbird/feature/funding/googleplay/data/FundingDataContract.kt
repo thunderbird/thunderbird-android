@@ -5,6 +5,7 @@ import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import net.thunderbird.core.common.cache.Cache
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
@@ -82,6 +83,8 @@ internal interface FundingDataContract {
             fun clear()
         }
 
+        interface BillingProductCache : Cache<String, ProductDetails>
+
         interface BillingClientProvider {
 
             /**
@@ -117,13 +120,7 @@ internal interface FundingDataContract {
             ): List<RecurringContribution>
         }
 
-        interface BillingClient {
-
-            /**
-             * Flow that emits the last purchased contribution.
-             */
-            val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>>
-
+        interface BillingConnector {
             /**
              * Connect to the billing service.
              *
@@ -137,6 +134,19 @@ internal interface FundingDataContract {
              * Disconnect from the billing service.
              */
             fun disconnect()
+        }
+
+        interface BillingClient {
+
+            /**
+             * Disconnect from the billing service.
+             */
+            fun disconnect()
+
+            /**
+             * Flow that emits the last purchased contribution.
+             */
+            val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>>
 
             /**
              * Load one-time contributions.

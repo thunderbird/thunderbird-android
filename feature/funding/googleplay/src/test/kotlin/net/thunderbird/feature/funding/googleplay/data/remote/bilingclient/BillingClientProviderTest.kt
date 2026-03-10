@@ -2,9 +2,7 @@ package net.thunderbird.feature.funding.googleplay.data.remote.bilingclient
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import assertk.assertFailure
 import assertk.assertThat
-import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNotSameInstanceAs
 import assertk.assertions.isSameInstanceAs
@@ -29,10 +27,10 @@ class BillingClientProviderTest {
     }
 
     @Test
-    fun `current throws exception if listener not set`() {
-        assertFailure {
-            testSubject.current
-        }.isInstanceOf(IllegalArgumentException::class)
+    fun `current returns billing client even if listener not set`() {
+        val client = testSubject.current
+
+        assertThat(client).isNotNull()
     }
 
     @Test

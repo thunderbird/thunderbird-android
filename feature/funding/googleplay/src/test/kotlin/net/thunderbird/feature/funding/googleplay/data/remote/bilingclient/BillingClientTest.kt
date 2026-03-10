@@ -7,10 +7,10 @@ import assertk.assertions.isInstanceOf
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
+import kotlin.test.BeforeTest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.android.common.activity.ActivityProvider
-import net.thunderbird.core.common.cache.Cache
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
@@ -21,6 +21,7 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContrib
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -33,7 +34,7 @@ class BillingClientTest {
     private val clientProvider = mock<Remote.BillingClientProvider>()
     private val productMapper = mock<FundingDataContract.Mapper.Product>()
     private val resultMapper = mock<FundingDataContract.Mapper.BillingResult>()
-    private val productCache = mock<Cache<String, ProductDetails>>()
+    private val productCache = BillingProductCache()
     private val purchaseHandler = mock<Remote.BillingPurchaseHandler>()
     private val activityProvider = mock<ActivityProvider>()
     private val logger = TestLogger()
@@ -49,11 +50,15 @@ class BillingClientTest {
         logger = logger,
     )
 
+    @BeforeTest
+    fun setup() {
+        productCache.clear()
+    }
+
     @Test
     fun `purchaseContribution should return failure when product details not in cache`() = runTest {
         // Arrange
         val contribution = OneTimeContribution("id", "title", "desc", 100L, "$1.00")
-        whenever(productCache.get("id")).thenReturn(null)
 
         // Act
         val result = testSubject.purchaseContribution(contribution)
@@ -70,7 +75,7 @@ class BillingClientTest {
         // Arrange
         val contribution = OneTimeContribution("id", "title", "desc", 100L, "$1.00")
         val productDetails = mock<ProductDetails>()
-        whenever(productCache.get("id")).thenReturn(productDetails)
+        productCache["id"] = productDetails
         whenever(activityProvider.getCurrent()).thenReturn(null)
 
         // Act
@@ -92,15 +97,13 @@ class BillingClientTest {
         val activity = mock<Activity>()
         val billingResult = mock<BillingResult>()
 
+        doReturn("id").whenever(productDetails).zza()
         whenever(productDetails.productType).thenReturn(GoogleBillingClient.ProductType.SUBS)
         whenever(productDetails.productId).thenReturn("id")
-        val zzaMethod = ProductDetails::class.java.getDeclaredMethod("zza")
-        zzaMethod.isAccessible = true
-        whenever(zzaMethod.invoke(productDetails)).thenReturn("id")
         whenever(productDetails.subscriptionOfferDetails).thenReturn(listOf(subscriptionOfferDetails))
         whenever(subscriptionOfferDetails.offerToken).thenReturn("token")
 
-        whenever(productCache.get("id")).thenReturn(productDetails)
+        productCache["id"] = productDetails
         whenever(activityProvider.getCurrent()).thenReturn(activity)
         whenever(clientProvider.current).thenReturn(googleBillingClient)
         whenever(googleBillingClient.launchBillingFlow(any(), any())).thenReturn(billingResult)

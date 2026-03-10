@@ -4,13 +4,12 @@ import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.ConsumeParams
-import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.consumePurchase
-import net.thunderbird.core.common.cache.Cache
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
+import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
@@ -19,13 +18,13 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContrib
 // TODO optimize purchase handling and reduce duplicate code
 @Suppress("TooManyFunctions")
 internal class BillingPurchaseHandler(
-    private val productCache: Cache<String, ProductDetails>,
+    private val productCache: Remote.BillingProductCache,
     private val productMapper: FundingDataContract.Mapper.Product,
     private val logger: Logger,
-) : FundingDataContract.Remote.BillingPurchaseHandler {
+) : Remote.BillingPurchaseHandler {
 
     override suspend fun handlePurchases(
-        clientProvider: FundingDataContract.Remote.BillingClientProvider,
+        clientProvider: Remote.BillingClientProvider,
         purchases: List<Purchase>,
     ): List<Contribution> {
         return purchases.flatMap { purchase ->
@@ -34,7 +33,7 @@ internal class BillingPurchaseHandler(
     }
 
     override suspend fun handleOneTimePurchases(
-        clientProvider: FundingDataContract.Remote.BillingClientProvider,
+        clientProvider: Remote.BillingClientProvider,
         purchases: List<Purchase>,
     ): List<OneTimeContribution> {
         return purchases.flatMap { purchase ->
@@ -43,7 +42,7 @@ internal class BillingPurchaseHandler(
     }
 
     override suspend fun handleRecurringPurchases(
-        clientProvider: FundingDataContract.Remote.BillingClientProvider,
+        clientProvider: Remote.BillingClientProvider,
         purchases: List<Purchase>,
     ): List<RecurringContribution> {
         return purchases.flatMap { purchase ->

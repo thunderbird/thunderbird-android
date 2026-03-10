@@ -1,14 +1,13 @@
 package net.thunderbird.feature.funding.googleplay.data
 
-import com.android.billingclient.api.ProductDetails
-import net.thunderbird.core.common.cache.Cache
-import net.thunderbird.core.common.cache.InMemoryCache
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.data.mapper.BillingResultMapper
 import net.thunderbird.feature.funding.googleplay.data.mapper.ProductDetailsMapper
 import net.thunderbird.feature.funding.googleplay.data.remote.RemoteContributionDataSource
 import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingClient
 import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingClientProvider
+import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingConnector
+import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingProductCache
 import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingPurchaseHandler
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import org.koin.dsl.module
@@ -28,14 +27,23 @@ internal val fundingDataModule = module {
         )
     }
 
-    single<Cache<String, ProductDetails>> {
-        InMemoryCache()
+    single<Remote.BillingProductCache> {
+        BillingProductCache()
     }
 
     single<Remote.BillingPurchaseHandler> {
         BillingPurchaseHandler(
             productCache = get(),
             productMapper = get(),
+            logger = get(),
+        )
+    }
+
+    single<Remote.BillingConnector> {
+        BillingConnector(
+            clientProvider = get(),
+            resultMapper = get(),
+            productCache = get(),
             logger = get(),
         )
     }
@@ -54,6 +62,7 @@ internal val fundingDataModule = module {
 
     single<Remote.ContributionDataSource> {
         RemoteContributionDataSource(
+            billingConnector = get(),
             billingClient = get(),
         )
     }
