@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.compose.designsystem.atom.button
+package net.thunderbird.feature.mail.message.list.ui.component.atom
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

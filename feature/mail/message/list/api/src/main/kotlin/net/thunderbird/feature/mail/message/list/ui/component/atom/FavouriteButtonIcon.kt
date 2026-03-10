@@ -1,5 +1,6 @@
-package net.thunderbird.core.ui.compose.designsystem.atom.button
+package net.thunderbird.feature.mail.message.list.ui.component.atom
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,7 +12,9 @@ import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 
-private val FAVOURITE_ICON_COLOR = Color(color = 0xFFFF8C00)
+private val FAVOURITE_ICON_COLOR = Color(color = 0xFFF4C430)
+
+@VisibleForTesting
 const val MESSAGE_ITEM_FAVOURITE_ICON_BUTTON_TEST_TAG = "MessageItem_FavouriteButtonIcon"
 
 @Composable

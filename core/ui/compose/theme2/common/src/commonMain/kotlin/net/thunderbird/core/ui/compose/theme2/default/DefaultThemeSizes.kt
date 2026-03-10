@@ -23,4 +23,6 @@ val defaultThemeSizes = ThemeSizes(
     bottomBarHeight = 80.dp,
     bottomBarHeightWithFab = 72.dp,
     bannerGlobalHeight = 48.dp,
+
+    minTouchTarget = 48.dp,
 )
