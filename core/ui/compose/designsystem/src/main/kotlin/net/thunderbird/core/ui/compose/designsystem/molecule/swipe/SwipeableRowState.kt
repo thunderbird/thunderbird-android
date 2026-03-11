@@ -1,113 +1,306 @@
 package net.thunderbird.core.ui.compose.designsystem.molecule.swipe
 
-import androidx.annotation.StringRes
-import androidx.compose.material3.SwipeToDismissBoxState
-import androidx.compose.material3.SwipeToDismissBoxValue
-import androidx.compose.material3.rememberSwipeToDismissBoxState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.VectorConverter
+import androidx.compose.animation.core.calculateTargetValue
+import androidx.compose.animation.splineBasedDecay
+import androidx.compose.foundation.gestures.DraggableState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.IntSize
 import app.k9mail.core.ui.compose.designsystem.R
+import kotlin.math.absoluteValue
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectionAccessibilityAction.EndToStartAccessibilityAction
-import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectionAccessibilityAction.StartToEndAccessibilityAction
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import net.thunderbird.core.common.resources.StringRes
+
+private const val SWIPE_BEHAVIOUR_REVEAL_EXTENSION = 10
 
 /**
- * State for [SwipeableRow] that manages swipe direction tracking, early completion thresholds,
- * accessibility actions, and dismiss state.
+ * Manages the state of a swipeable row component, handling swipe gestures,
+ * animations, and drag interactions.
  *
- * Use [rememberSwipeableRowState] to create and remember an instance of this state.
- *
- * @param dismissBoxState The underlying Material3 [SwipeToDismissBoxState].
- * @param swipeActionThreshold Function that returns an optional threshold value (from 0.0 to 1.0)
- *  for early swipe completion based on the given [SwipeDirection]. Returns `null` if no early
- *  completion is desired for that direction.
- * @param customAccessibilityActions A list of [SwipeDirectionAccessibilityAction] to expose
- *  custom accessibility actions for the swipe directions. This allows users of accessibility
- *  services to trigger swipe actions programmatically.
+ * @param coroutineScope The coroutine scope used for launching animations and
+ *  delayed operations
+ * @param density The density of the screen, used for calculating decay animations
+ * @param startToEndBehaviour The swipe behaviour for the [start-to-end][SwipeDirection.StartToEnd]
+ *  direction. Use [SwipeBehaviour.Disabled] to prevent swiping in this direction.
+ * @param endToStartBehaviour The swipe behaviour for the [end-to-start][SwipeDirection.EndToStart]
+ *  direction. Use [SwipeBehaviour.Disabled] to prevent swiping in this direction.
+ * @param accessibilityActions The list of accessibility actions exposed as custom
+ *  semantics actions, allowing TalkBack users to trigger swipe actions programmatically
  */
 @Stable
 class SwipeableRowState internal constructor(
-    internal val dismissBoxState: SwipeToDismissBoxState,
-    val swipeActionThreshold: (SwipeDirection) -> Float?,
-    private val customAccessibilityActions: ImmutableList<SwipeDirectionAccessibilityAction> = persistentListOf(),
+    private val coroutineScope: CoroutineScope,
+    private val density: Density,
+    private val startToEndBehaviour: SwipeBehaviour = SwipeBehaviour.Dismiss(),
+    private val endToStartBehaviour: SwipeBehaviour = SwipeBehaviour.Dismiss(),
+    internal val accessibilityActions: ImmutableList<SwipeDirectionAccessibilityAction> = persistentListOf(),
 ) {
-    internal var lastDirection by mutableStateOf<SwipeDirection?>(value = null)
-    internal var hasDismissed by mutableStateOf(value = false)
-
     /**
-     * The fraction of the progress going from currentValue to targetValue, within [0f..1f] bounds.
+     * Animatable that tracks and animates the horizontal offset of the swipeable row.
      */
-    val progress: Float get() = dismissBoxState.progress
+    val animatedOffset = Animatable(
+        initialValue = 0f,
+        typeConverter = Float.VectorConverter,
+        label = "SwipeableRowOffset",
+    )
 
     /**
-     * The direction in which the composable is being dismissed, or [SwipeDirection.Settled]
-     * if not being dismissed.
-     */
-    val dismissDirection: SwipeDirection get() = dismissBoxState.dismissDirection.toDirection()
-
-    /**
-     * The current settled value of the swipe state.
-     */
-    val currentValue: SwipeDirection get() = dismissBoxState.currentValue.toDirection()
-
-    /**
-     * Builds accessibility actions for the swipeable row component based on configured custom accessibility
-     * actions.
+     * The current direction of the swipe gesture based on the animated offset value.
      *
-     * This composable function creates a list of [CustomAccessibilityAction] instances that allow users with
-     * accessibility services to programmatically trigger swipe gestures without performing physical swipe
-     * gestures. Each action is mapped from the configured custom accessibility actions with localized
-     * descriptions.
+     * This property is derived from the animated offset and determines the swipe state:
+     * - [SwipeDirection.Settled] when the offset is zero or NaN, indicating no active swipe
+     * - [SwipeDirection.StartToEnd] when the offset is positive, indicating a rightward swipe
+     * - [SwipeDirection.EndToStart] when the offset is negative, indicating a leftward swipe
      *
-     * @param onSwipeEnd Callback function invoked when an accessibility action is triggered, receiving
-     * the [SwipeDirection] corresponding to the triggered action (either [SwipeDirection.StartToEnd]
-     * or [SwipeDirection.EndToStart]).
-     * @return A list of [CustomAccessibilityAction] to be used by accessibility services through Compose
-     * semantics.
+     * The value updates automatically as the swipe gesture progresses and is used to
+     * coordinate the display of directional background content and trigger callbacks.
      */
-    @Composable
-    internal fun buildAccessibilityActions(
-        enableDismissFromStartToEnd: Boolean,
-        enableDismissFromEndToStart: Boolean,
-        gesturesEnabled: Boolean,
-        onSwipeEnd: (SwipeDirection) -> Unit,
-    ): List<CustomAccessibilityAction> {
-        return customAccessibilityActions
-            .mapNotNull { action ->
-                val actionText = stringResource(action.actionStringRes)
-                val description = stringResource(action.descriptionStringRes, actionText)
-
-                when (action) {
-                    is EndToStartAccessibilityAction if enableDismissFromEndToStart && gesturesEnabled ->
-                        CustomAccessibilityAction(description) {
-                            onSwipeEnd(SwipeDirection.EndToStart)
-                            true
-                        }
-
-                    is StartToEndAccessibilityAction if enableDismissFromStartToEnd && gesturesEnabled ->
-                        CustomAccessibilityAction(description) {
-                            onSwipeEnd(SwipeDirection.StartToEnd)
-                            true
-                        }
-
-                    else -> null
-                }
-            }
+    val swipeDirection: SwipeDirection by derivedStateOf {
+        when {
+            animatedOffset.value == 0f || animatedOffset.value.isNaN() -> SwipeDirection.Settled
+            animatedOffset.value > 0f -> SwipeDirection.StartToEnd
+            else -> SwipeDirection.EndToStart
+        }
     }
 
     /**
-     * Reset the component to the default position with animation.
+     * Indicates whether swiping from the start edge to the end edge is enabled.
+     *
+     * @returns `true` if the [startToEndBehaviour] is not [SwipeBehaviour.Disabled],
+     * allowing the user to perform a swipe gesture from the start edge toward the end
+     * edge of the row. Returns `false` if the behaviour is disabled, preventing any
+     * start-to-end swipe gestures.
      */
-    suspend fun reset() {
-        dismissBoxState.reset()
+    internal val enableSwipeFromStartToEnd: Boolean
+        get() = startToEndBehaviour !is SwipeBehaviour.Disabled
+
+    /**
+     * Indicates whether swiping from the end edge to the start edge is enabled.
+     *
+     * @returns `true` if the [endToStartBehaviour] is not [SwipeBehaviour.Disabled],
+     * allowing the user to perform a swipe gesture from the end edge toward the start
+     * edge of the row. Returns `false` if the behaviour is disabled, preventing any
+     * end-to-start swipe gestures.
+     */
+    internal val enableSwipeFromEndToStart: Boolean
+        get() = endToStartBehaviour !is SwipeBehaviour.Disabled
+
+    private var layoutWidth by mutableFloatStateOf(0f)
+    private val offset = MutableStateFlow(0f)
+    private var hasDragStopped by mutableStateOf(false)
+    private var isRevealed by mutableStateOf(false)
+    private val decayAnimationSpec = splineBasedDecay<Float>(density)
+
+    private val activeBehaviour: SwipeBehaviour
+        get() = when {
+            animatedOffset.value > 0f -> startToEndBehaviour
+            animatedOffset.value < 0f -> endToStartBehaviour
+            else -> startToEndBehaviour
+        }
+
+    /**
+     * [DraggableState] that handles the drag delta during swipe gestures for the swipeable row.
+     *
+     * This state processes each drag delta and updates the swipe offset based on various constraints
+     * and conditions. It ensures that the swipe gesture respects the configured maximum allowed offset,
+     * directional permissions, and special behaviour for revealed states.
+     */
+    internal val draggableState = DraggableState { delta ->
+        val targetOffset = animatedOffset.value + delta
+        val targetBehaviour = if (targetOffset >= 0f) startToEndBehaviour else endToStartBehaviour
+        val targetMaxOffset = when (targetBehaviour) {
+            is SwipeBehaviour.Dismiss -> layoutWidth
+            is SwipeBehaviour.Reveal -> (targetBehaviour.threshold * layoutWidth) + SWIPE_BEHAVIOUR_REVEAL_EXTENSION
+            is SwipeBehaviour.Disabled -> 0f
+        }
+        if (targetOffset.absoluteValue < targetMaxOffset) {
+            val isDirectionAllowed = targetOffset == 0f ||
+                (targetOffset > 0f && enableSwipeFromStartToEnd) ||
+                (targetOffset < 0f && enableSwipeFromEndToStart)
+
+            val isMovingTowardZero = (animatedOffset.value > 0f && delta < 0f) ||
+                (animatedOffset.value < 0f && delta > 0f)
+
+            val isRevealRestore = activeBehaviour is SwipeBehaviour.Reveal &&
+                isRevealed &&
+                isMovingTowardZero
+
+            if (!hasDragStopped && (isDirectionAllowed || isRevealRestore)) {
+                offset.update { currentOffset ->
+                    val newOffset = currentOffset + delta
+                    if (isRevealRestore) clampTowardZero(newOffset) else newOffset
+                }
+            }
+        }
+    }
+
+    /**
+     * Collects offset changes and drives the swipe animation.
+     *
+     * Must be called from a coroutine whose lifecycle is tied to the composition
+     * (e.g., via [LaunchedEffect]) so that collection is cancelled when the state
+     * leaves the tree or is recreated.
+     */
+    internal fun observeOffset(): Job {
+        return offset.onEach { offset ->
+            if (hasDragStopped) {
+                animatedOffset.animateTo(targetValue = offset, animationSpec = activeBehaviour.animationSpec)
+            } else {
+                animatedOffset.snapTo(targetValue = offset)
+            }
+        }.launchIn(coroutineScope)
+    }
+
+    /**
+     * Updates the container width when the size of the swipeable row changes.
+     *
+     * This method should be called when the composable container's size changes to ensure proper
+     * swipe behaviour and offset calculations based on the current layout dimensions.
+     *
+     * @param size The new size of the container in pixels
+     */
+    internal fun onContainerSizeChanged(size: IntSize) {
+        layoutWidth = size.width.toFloat()
+    }
+
+    /**
+     * Called when a drag gesture starts on the swipeable row.
+     */
+    internal fun onDragStarted() {
+        hasDragStopped = false
+    }
+
+    /**
+     * Handles the completion of a drag gesture on the swipeable row and determines
+     * the final settled state.
+     *
+     * This method is called when the user releases their touch during a swipe gesture.
+     *
+     * @param velocity The velocity of the drag gesture when released, measured in
+     *  pixels per second.
+     *  Positive values indicate movement from start to end, negative values indicate
+     *  movement from end to start
+     * @return `true` if the swipe has completed and the row settled to a non-zero
+     *  offset position (revealed or dismissed), `false` if the row returned to its
+     *  resting position at zero offset
+     */
+    internal fun onDragStopped(velocity: Float): Boolean {
+        hasDragStopped = true
+
+        val intendedDirection = resolveIntendedDirection(velocity)
+        val isFlingAllowed = isFlingDirectionAllowed(intendedDirection)
+
+        if (!isFlingAllowed) {
+            offset.update { 0f }
+            return false
+        }
+
+        val behaviour = intendedDirection.behaviour
+        val willSettlePastThreshold = willSettlePastThreshold(velocity, behaviour)
+        val finalOffset = calculateFinalOffset(willSettlePastThreshold, intendedDirection, behaviour)
+
+        isRevealed = behaviour is SwipeBehaviour.Reveal && finalOffset != 0f
+
+        offset.update { finalOffset }
+
+        handlePostResetState(willSettlePastThreshold, behaviour)
+        return finalOffset != 0f
+    }
+
+    private fun willSettlePastThreshold(velocity: Float, behaviour: SwipeBehaviour): Boolean {
+        val decayTarget = decayAnimationSpec.calculateTargetValue(animatedOffset.value, velocity)
+        val finalThreshold = behaviour.threshold * layoutWidth
+        val wouldFlingPastThreshold = decayTarget.absoluteValue >= finalThreshold
+        val hasOffsetPassedThreshold = animatedOffset.value.absoluteValue >= finalThreshold
+        return hasOffsetPassedThreshold || wouldFlingPastThreshold
+    }
+
+    private fun calculateFinalOffset(
+        willSettlePastThreshold: Boolean,
+        intendedDirection: SwipeDirection,
+        behaviour: SwipeBehaviour,
+    ): Float {
+        val finalOffset = when (behaviour) {
+            is SwipeBehaviour.Dismiss if willSettlePastThreshold -> layoutWidth
+            is SwipeBehaviour.Reveal if willSettlePastThreshold -> behaviour.threshold * layoutWidth
+            is SwipeBehaviour.Disabled -> 0f
+            else -> 0f
+        }
+        val directionMultiplier = when (intendedDirection) {
+            SwipeDirection.StartToEnd, SwipeDirection.Settled -> 1
+            SwipeDirection.EndToStart -> -1
+        }
+        val result = finalOffset * directionMultiplier
+
+        return when {
+            result > 0f && !enableSwipeFromStartToEnd -> 0f
+            result < 0f && !enableSwipeFromEndToStart -> 0f
+            else -> result
+        }
+    }
+
+    private fun handlePostResetState(willSettlePastThreshold: Boolean, behaviour: SwipeBehaviour) {
+        if (behaviour is SwipeBehaviour.Reveal && behaviour.autoReset && willSettlePastThreshold) {
+            coroutineScope.launch {
+                delay(behaviour.autoResetDelayMillis)
+                offset.update { 0f }
+            }
+        }
+    }
+
+    private fun resolveIntendedDirection(velocity: Float): SwipeDirection {
+        return when {
+            animatedOffset.value > 0f -> SwipeDirection.StartToEnd
+            animatedOffset.value < 0f -> SwipeDirection.EndToStart
+            velocity > 0f -> SwipeDirection.StartToEnd
+            velocity < 0f -> SwipeDirection.EndToStart
+            else -> SwipeDirection.Settled
+        }
+    }
+
+    private fun isFlingDirectionAllowed(intendedDirection: SwipeDirection): Boolean {
+        val isRevealRestore = activeBehaviour is SwipeBehaviour.Reveal && isRevealed
+        return when (intendedDirection) {
+            SwipeDirection.StartToEnd -> enableSwipeFromStartToEnd || isRevealRestore
+            SwipeDirection.EndToStart -> enableSwipeFromEndToStart || isRevealRestore
+            SwipeDirection.Settled -> true
+        }
+    }
+
+    private val SwipeDirection.behaviour: SwipeBehaviour
+        get() = when (this) {
+            SwipeDirection.StartToEnd -> startToEndBehaviour
+            SwipeDirection.EndToStart -> endToStartBehaviour
+            SwipeDirection.Settled -> startToEndBehaviour
+        }
+
+    private fun clampTowardZero(offset: Float): Float = if (animatedOffset.value > 0f) {
+        offset.coerceAtLeast(0f)
+    } else {
+        offset.coerceAtMost(0f)
     }
 }
 
@@ -172,7 +365,7 @@ sealed interface SwipeDirectionAccessibilityAction {
      * Accessibility action for swipe gestures performed from start to end directions.
      *
      * The description for this action is fixed to a predefined string resource that
-     * describes the start-to-end swipe behavior to accessibility service users.
+     * describes the start-to-end swipe behaviour to accessibility service users.
      *
      * Example:
      * ```xml
@@ -198,7 +391,7 @@ sealed interface SwipeDirectionAccessibilityAction {
      * Accessibility action for swipe gestures performed from end to start directions.
      *
      * The description for this action is fixed to a predefined string resource that
-     * describes the end-to-start swipe behavior to accessibility service users.
+     * describes the end-to-start swipe behaviour to accessibility service users.
      *
      * Example:
      * ```xml
@@ -221,39 +414,46 @@ sealed interface SwipeDirectionAccessibilityAction {
     }
 }
 
-internal fun SwipeToDismissBoxValue.toDirection(): SwipeDirection =
-    when (this) {
-        SwipeToDismissBoxValue.StartToEnd -> SwipeDirection.StartToEnd
-        SwipeToDismissBoxValue.EndToStart -> SwipeDirection.EndToStart
-        SwipeToDismissBoxValue.Settled -> SwipeDirection.Settled
-    }
-
 /**
- * Creates and remembers a [SwipeableRowState] for managing swipeable row interactions.
+ * Creates and remembers a SwipeableRowState that controls the swipe behaviour of a swipeable row.
  *
- * This composable function creates a state holder that manages swipe gestures, dismiss animations,
- * and accessibility actions for a swipeable row component. The state is remembered across
- * recompositions and tied to the underlying [SwipeToDismissBoxState].
+ * This composable function creates a state object that manages the swipe gesture handling,
+ * animations, and accessibility actions for a swipeable row component. The state is remembered
+ * across recompositions and will be recreated when any of the specified parameters change.
  *
- * @param swipeActionThreshold Function that determines the early completion threshold for swipe
- * gestures in each direction. Takes a [SwipeDirection] and returns an optional Float value between
- * 0.0 and 1.0 representing the fraction of the swipe distance at which the action should trigger
- * early. Returns null if no early completion is desired for the given direction. Defaults to
- * returning null for all directions.
- * @param accessibilityActions Immutable list of custom accessibility actions that allow users with
- * accessibility services to trigger swipe gestures programmatically. Each action defines localized
- * strings for the action name and description. Defaults to an empty list.
- *
- * @return A remembered [SwipeableRowState] instance that manages swipe direction tracking,
- * dismiss thresholds, and accessibility actions for the swipeable row.
+ * @param startToEndBehaviour The swipe behaviour configuration that determines how the row responds to swipe
+ * gestures. Can be either Reveal (shows actions and optionally auto-resets) or Dismiss (removes
+ * the row). Defaults to Dismiss with default threshold.
+ * @param accessibilityActions An immutable list of accessibility actions that define custom
+ * swipe actions for accessibility services. These actions allow users with accessibility needs
+ * to trigger swipe gestures programmatically. Defaults to an empty list.
+ * @return A remembered SwipeableRowState instance that manages the swipe state and behaviour.
  */
 @Composable
 fun rememberSwipeableRowState(
-    swipeActionThreshold: (SwipeDirection) -> Float? = { null },
+    startToEndBehaviour: SwipeBehaviour = SwipeBehaviour.Dismiss(),
+    endToStartBehaviour: SwipeBehaviour = SwipeBehaviour.Dismiss(),
     accessibilityActions: ImmutableList<SwipeDirectionAccessibilityAction> = persistentListOf(),
 ): SwipeableRowState {
-    val dismissBoxState = rememberSwipeToDismissBoxState(initialValue = SwipeToDismissBoxValue.Settled)
-    return remember(dismissBoxState) {
-        SwipeableRowState(dismissBoxState, swipeActionThreshold, accessibilityActions)
+    val coroutineScope = rememberCoroutineScope()
+    val density = LocalDensity.current
+    val state = remember(
+        density,
+        startToEndBehaviour,
+        endToStartBehaviour,
+        accessibilityActions,
+    ) {
+        SwipeableRowState(
+            coroutineScope = coroutineScope,
+            density = density,
+            startToEndBehaviour = startToEndBehaviour,
+            endToStartBehaviour = endToStartBehaviour,
+            accessibilityActions = accessibilityActions,
+        )
     }
+    DisposableEffect(state) {
+        val job = state.observeOffset()
+        onDispose { job.cancel() }
+    }
+    return state
 }

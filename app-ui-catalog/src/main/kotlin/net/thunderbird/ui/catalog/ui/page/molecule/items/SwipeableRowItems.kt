@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -18,11 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarHost
 import app.k9mail.core.ui.compose.designsystem.organism.snackbar.rememberSnackbarHostState
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.launch
+import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeBehaviour
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirection
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeableRow
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.rememberSwipeableRowState
@@ -33,63 +36,89 @@ import net.thunderbird.ui.catalog.ui.page.common.list.sectionSubtitleItem
 
 fun LazyGridScope.swipeableRowItems() {
     sectionHeaderItem("Swipeable Row Items")
-    swipeableRowBothDirections()
-    swipeableRowStartToEnd()
-    swipeableRowEndToStart()
-    swipeableRowDisabled()
-    swipeableRowCustomBackground()
-    swipeableRowWithEarlyDismiss()
+    swipeSection("Swipe to Dismiss") { threshold -> SwipeBehaviour.Dismiss(threshold = threshold) }
+    swipeSection("Swipe to Reveal") { threshold -> SwipeBehaviour.Reveal(threshold = threshold) }
+    swipeSection("Swipe to Reveal with Auto reset") { threshold ->
+        SwipeBehaviour.Reveal(threshold = threshold, autoReset = true)
+    }
 }
 
-private fun LazyGridScope.swipeableRowBothDirections() {
-    sectionSubtitleItem("Both directions")
+private fun LazyGridScope.swipeSection(
+    subtitle: String,
+    behaviourFactory: (Float) -> SwipeBehaviour,
+) {
+    sectionSubtitleItem(subtitle)
     fullSpanItem {
+        var threshold by remember { mutableFloatStateOf(value = 0.5f) }
+        Column(modifier = Modifier.padding(horizontal = MainTheme.spacings.triple)) {
+            val behaviour = behaviourFactory(threshold)
+            SwipeableRowBothDirections(behaviour)
+            SwipeableRowStartToEnd(behaviour)
+            SwipeableRowEndToStart(behaviour)
+            SwipeableRowDisabled(behaviour)
+            SwipeableRowCustomBackground(behaviour)
+        }
+    }
+}
+
+@Composable
+private fun SwipeableRowBothDirections(behaviour: SwipeBehaviour) {
+    Column {
+        TextLabelLarge("Both directions")
         SwipeableRowItems(
             foregroundItemText = "Enabled on both directions.",
             backgroundItemText = { direction ->
                 "Swiping from ${direction.name.lowercase()}."
             },
-            direction = persistentSetOf(SwipeDirection.StartToEnd, SwipeDirection.EndToStart),
+            directions = persistentSetOf(SwipeDirection.StartToEnd, SwipeDirection.EndToStart),
+            behaviour = behaviour,
         )
     }
 }
 
-private fun LazyGridScope.swipeableRowStartToEnd() {
-    sectionSubtitleItem("Start-to-End only")
-    fullSpanItem {
+@Composable
+private fun SwipeableRowStartToEnd(behaviour: SwipeBehaviour) {
+    Column {
+        TextLabelLarge("Start-to-End only")
         SwipeableRowItems(
             foregroundItemText = "Enabled on start-to-end direction.",
             backgroundItemText = { "Background Item" },
-            direction = persistentSetOf(SwipeDirection.StartToEnd),
+            directions = persistentSetOf(SwipeDirection.StartToEnd),
+            behaviour = behaviour,
         )
     }
 }
 
-private fun LazyGridScope.swipeableRowEndToStart() {
-    sectionSubtitleItem("End-to-Start only")
-    fullSpanItem {
+@Composable
+private fun SwipeableRowEndToStart(behaviour: SwipeBehaviour) {
+    Column {
+        TextLabelLarge("End-to-Start only")
         SwipeableRowItems(
             foregroundItemText = "Enabled on end-to-start direction.",
             backgroundItemText = { "Background Item" },
-            direction = persistentSetOf(SwipeDirection.EndToStart),
+            directions = persistentSetOf(SwipeDirection.EndToStart),
+            behaviour = behaviour,
         )
     }
 }
 
-private fun LazyGridScope.swipeableRowDisabled() {
-    sectionSubtitleItem("Disabled")
-    fullSpanItem {
+@Composable
+private fun SwipeableRowDisabled(behaviour: SwipeBehaviour) {
+    Column {
+        TextLabelLarge("Disabled")
         SwipeableRowItems(
             foregroundItemText = "Disabled.",
             backgroundItemText = { error("Should not be visible") },
-            direction = persistentSetOf(),
+            directions = persistentSetOf(),
+            behaviour = behaviour,
         )
     }
 }
 
-private fun LazyGridScope.swipeableRowCustomBackground() {
-    sectionSubtitleItem("Custom background")
-    fullSpanItem {
+@Composable
+private fun SwipeableRowCustomBackground(behaviour: SwipeBehaviour) {
+    Column {
+        TextLabelLarge("Custom background")
         SwipeableRowItems(
             foregroundItemText = "Custom background.",
             backgroundItemText = { direction ->
@@ -117,31 +146,19 @@ private fun LazyGridScope.swipeableRowCustomBackground() {
                     )
                 }
             },
-            direction = persistentSetOf(SwipeDirection.StartToEnd, SwipeDirection.EndToStart),
-        )
-    }
-}
-
-private fun LazyGridScope.swipeableRowWithEarlyDismiss() {
-    sectionSubtitleItem("With early dismiss cancellation")
-    fullSpanItem {
-        SwipeableRowItems(
-            foregroundItemText = "Swiping this item won't dismiss it, but it triggers the early dismiss.",
-            backgroundItemText = { direction ->
-                "Swiping from ${direction.name.lowercase()}."
-            },
-            direction = persistentSetOf(SwipeDirection.StartToEnd, SwipeDirection.EndToStart),
-            swipeActionThreshold = { 0.5f },
+            directions = persistentSetOf(SwipeDirection.StartToEnd, SwipeDirection.EndToStart),
+            behaviour = behaviour,
         )
     }
 }
 
 @Composable
 private fun SwipeableRowItems(
+    behaviour: SwipeBehaviour,
     foregroundItemText: String,
     backgroundItemText: (SwipeDirection) -> String,
     modifier: Modifier = Modifier,
-    direction: ImmutableSet<SwipeDirection> = persistentSetOf(),
+    directions: ImmutableSet<SwipeDirection> = persistentSetOf(),
     backgroundContent: @Composable RowScope.(SwipeDirection) -> Unit = { direction ->
         Surface(
             color = MainTheme.colors.primaryContainer,
@@ -163,22 +180,38 @@ private fun SwipeableRowItems(
             }
         }
     },
-    swipeActionThreshold: (SwipeDirection) -> Float? = { null },
 ) {
     val snackbarHostState = rememberSnackbarHostState()
     val coroutineScope = rememberCoroutineScope()
     var swipeDirection by remember { mutableStateOf<SwipeDirection?>(null) }
-    val swipeableRowState = rememberSwipeableRowState(swipeActionThreshold = swipeActionThreshold)
+    val swipeableRowState = rememberSwipeableRowState(
+        startToEndBehaviour = if (directions.contains(
+                SwipeDirection.StartToEnd,
+            )
+        ) {
+            behaviour
+        } else {
+            SwipeBehaviour.Disabled
+        },
+        endToStartBehaviour = if (directions.contains(
+                SwipeDirection.EndToStart,
+            )
+        ) {
+            behaviour
+        } else {
+            SwipeBehaviour.Disabled
+        },
+    )
     Column(
         modifier = modifier.padding(MainTheme.spacings.triple),
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
     ) {
         SwipeableRow(
             state = swipeableRowState,
-            backgroundContent = backgroundContent,
-            enableDismissFromEndToStart = direction.contains(SwipeDirection.EndToStart),
-            enableDismissFromStartToEnd = direction.contains(SwipeDirection.StartToEnd),
-            gesturesEnabled = direction.isNotEmpty(),
+            backgroundContent = {
+                backgroundContent(swipeDirection ?: SwipeDirection.Settled)
+            },
+            gesturesEnabled = directions.isNotEmpty(),
             modifier = Modifier.fillMaxWidth(),
             onSwipeEnd = {
                 coroutineScope.launch {
