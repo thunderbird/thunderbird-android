@@ -1,6 +1,7 @@
 package net.thunderbird.feature.funding.googleplay.data.remote
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
@@ -16,6 +17,9 @@ internal class RemoteContributionDataSource(
     private val billingClient: FundingDataContract.Remote.BillingClient,
     private val logger: Logger,
 ) : FundingDataContract.Remote.ContributionDataSource {
+
+    override val purchasedContribution: StateFlow<Outcome<PurchasedContribution?, ContributionError>> =
+        billingClient.purchasedContribution
 
     override fun getAllOneTime(
         contributionIds: List<ContributionId>,

@@ -33,6 +33,10 @@ internal class FakeBillingClient : FundingDataContract.Remote.BillingClient {
     override val purchasedContribution: StateFlow<Outcome<PurchasedContribution?, ContributionError>>
         get() = _purchasedContribution
 
+    fun updatePurchasedContribution(outcome: Outcome<PurchasedContribution?, ContributionError>) {
+        _purchasedContribution.value = outcome
+    }
+
     override fun disconnect() {
         clearCount++
         _purchasedContribution.value = Outcome.success(null)

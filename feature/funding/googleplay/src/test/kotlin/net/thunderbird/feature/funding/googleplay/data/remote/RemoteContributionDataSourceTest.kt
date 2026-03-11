@@ -124,6 +124,24 @@ class RemoteContributionDataSourceTest {
     }
 
     @Test
+    fun `purchasedContribution should return asynchronous purchase from billingClient`() = runTest {
+        // Arrange
+        val purchasedContribution = PurchasedContribution(
+            id = ContributionId("one_time_1"),
+            contribution = OneTimeContribution(ContributionId("one_time_1"), "Title", "Desc", 100L, "$1.00"),
+            purchaseDate = LocalDateTime(2024, 1, 1, 0, 0),
+        )
+        val expectedOutcome = Outcome.success(purchasedContribution)
+        billingClient.updatePurchasedContribution(expectedOutcome)
+
+        // Act
+        val result = testSubject.purchasedContribution.first()
+
+        // Assert
+        assertThat(result).isEqualTo(expectedOutcome)
+    }
+
+    @Test
     fun `purchaseContribution should delegate to billingClient`() = runTest {
         // Arrange
         val contributionId = ContributionId("ot1")

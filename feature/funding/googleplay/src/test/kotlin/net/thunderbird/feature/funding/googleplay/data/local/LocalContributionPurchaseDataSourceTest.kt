@@ -10,12 +10,18 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Local
 import net.thunderbird.feature.funding.googleplay.data.local.configstore.ContributionConfig
 import net.thunderbird.feature.funding.googleplay.data.local.configstore.ContributionPurchase
+import net.thunderbird.feature.funding.googleplay.data.mapper.ContributionPurchaseMapper
 import org.junit.Test
+import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Mapper.ContributionPurchase as ContributionPurchaseMapperContract
 
 class LocalContributionPurchaseDataSourceTest {
 
     private val fakeConfigStore = FakeContributionConfigStore()
-    private val testSubject = LocalContributionPurchaseDataSource(fakeConfigStore)
+    private val contributionPurchaseMapper: ContributionPurchaseMapperContract = ContributionPurchaseMapper()
+    private val testSubject = LocalContributionPurchaseDataSource(
+        configStore = fakeConfigStore,
+        contributionPurchaseMapper = contributionPurchaseMapper,
+    )
 
     @Test
     fun `get should return last purchased contribution from config store`() = runTest {
@@ -28,7 +34,10 @@ class LocalContributionPurchaseDataSourceTest {
 
         // Assert
         when (result) {
-            is Outcome.Success -> assertThat(result.data).isEqualTo(purchase)
+            is Outcome.Success -> assertThat(result.data).isEqualTo(
+                contributionPurchaseMapper.mapToPurchasedContribution(purchase),
+            )
+
             else -> throw AssertionError("Expected Success, got $result")
         }
     }
@@ -51,7 +60,7 @@ class LocalContributionPurchaseDataSourceTest {
     @Test
     fun `update should update config store with new purchase`() = runTest {
         // Arrange
-        val purchase = createContributionPurchase()
+        val purchase = contributionPurchaseMapper.mapToPurchasedContribution(createContributionPurchase())
 
         // Act
         val result = testSubject.update(purchase)
@@ -60,7 +69,7 @@ class LocalContributionPurchaseDataSourceTest {
         when (result) {
             is Outcome.Success -> assertThat(
                 fakeConfigStore.getCurrentConfig().lastPurchasedContribution,
-            ).isEqualTo(purchase)
+            ).isEqualTo(contributionPurchaseMapper.mapToContributionPurchase(purchase))
 
             else -> throw AssertionError("Expected Success, got $result")
         }

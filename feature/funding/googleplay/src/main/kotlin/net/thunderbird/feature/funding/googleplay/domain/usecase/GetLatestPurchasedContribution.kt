@@ -1,6 +1,7 @@
 package net.thunderbird.feature.funding.googleplay.domain.usecase
 
 import kotlin.time.Clock
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
@@ -37,26 +38,40 @@ internal class GetLatestPurchasedContribution(
 
     /**
      * A contribution is considered active if:
-     * - For one-time contributions, they are always active.
-     * - For recurring contributions, they are active if the purchase date plus the validity period has not yet expired.
+     * - For one-time contributions, they are active for 30 days after purchase.
+     * - For recurring contributions, they are active for 90 days after purchase.
      */
     private fun PurchasedContribution.isActive(): Boolean {
         return when (val contribution = this.contribution) {
-            is OneTimeContribution -> true
-            is RecurringContribution -> checkExpired(this.purchaseDate)
+            is OneTimeContribution -> checkExpired(
+                purchaseDate = this.purchaseDate,
+                validityPeriod = ONE_TIME_CONTRIBUTION_VALIDITY_PERIOD,
+            )
+
+            is RecurringContribution -> checkExpired(
+                purchaseDate = this.purchaseDate,
+                validityPeriod = RECURRING_CONTRIBUTION_VALIDITY_PERIOD,
+            )
+
             else -> error("Unknown contribution type: ${contribution::class}")
         }
     }
 
-    private fun checkExpired(purchaseDate: LocalDateTime): Boolean {
-        val expiryDate = calculateExpiryDate(purchaseDate)
+    private fun checkExpired(
+        purchaseDate: LocalDateTime,
+        validityPeriod: Duration,
+    ): Boolean {
+        val expiryDate = calculateExpiryDate(purchaseDate, validityPeriod)
         return expiryDate > clock.now()
     }
 
-    private fun calculateExpiryDate(purchaseDate: LocalDateTime): Instant = purchaseDate
-        .toInstant(TimeZone.currentSystemDefault()).plus(RECURRING_CONTRIBUTION_VALIDITY_PERIOD)
+    private fun calculateExpiryDate(
+        purchaseDate: LocalDateTime,
+        validityPeriod: Duration,
+    ): Instant = purchaseDate.toInstant(TimeZone.currentSystemDefault()).plus(validityPeriod)
 
     private companion object {
+        private val ONE_TIME_CONTRIBUTION_VALIDITY_PERIOD = 30.days
         private val RECURRING_CONTRIBUTION_VALIDITY_PERIOD = 90.days
     }
 }

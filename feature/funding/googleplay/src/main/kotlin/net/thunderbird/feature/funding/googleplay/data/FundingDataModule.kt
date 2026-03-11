@@ -7,6 +7,7 @@ import net.thunderbird.feature.funding.googleplay.data.local.configstore.Contrib
 import net.thunderbird.feature.funding.googleplay.data.local.configstore.ContributionConfigMapper
 import net.thunderbird.feature.funding.googleplay.data.local.configstore.ContributionConfigMigration
 import net.thunderbird.feature.funding.googleplay.data.local.configstore.ContributionConfigStore
+import net.thunderbird.feature.funding.googleplay.data.mapper.ContributionPurchaseMapper
 import net.thunderbird.feature.funding.googleplay.data.mapper.ProductDetailsMapper
 import net.thunderbird.feature.funding.googleplay.data.remote.RemoteContributionDataSource
 import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingClient
@@ -44,7 +45,12 @@ internal val fundingDataModule = module {
     single<Local.ContributionPurchaseDataSource> {
         LocalContributionPurchaseDataSource(
             configStore = get(),
+            contributionPurchaseMapper = get(),
         )
+    }
+
+    single<FundingDataContract.Mapper.ContributionPurchase> {
+        ContributionPurchaseMapper()
     }
 
     single<FundingDataContract.Mapper.Product> {
@@ -98,7 +104,8 @@ internal val fundingDataModule = module {
 
     single<FundingDomainContract.ContributionRepository> {
         ContributionRepository(
-            remoteContributionDataSource = get(),
+            remoteDataSource = get(),
+            localDataSource = get(),
         )
     }
 }
