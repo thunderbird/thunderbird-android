@@ -1,4 +1,4 @@
-package net.thunderbird.feature.funding.googleplay.data.mapper
+package net.thunderbird.feature.funding.googleplay.data.remote.bilingclient
 
 import assertk.all
 import assertk.assertThat
@@ -15,17 +15,15 @@ import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.C
 
 internal class BillingResultMapperTest {
 
-    private val testSubject = BillingResultMapper()
-
     @Test
-    fun `mapToBillingClientResult returns Success when billing result is OK`() = runTest {
+    fun `mapToOutcome returns Success when billing result is OK`() {
         // Arrange
         val billingResult = BillingResult.newBuilder()
             .setResponseCode(BillingResponseCode.OK)
             .build()
 
         // Act
-        val result = testSubject.mapToOutcome(billingResult) {}
+        val result = billingResult.mapToOutcome {}
 
         // Assert
         assertThat(result).isInstanceOf(Outcome.Success::class)
@@ -44,7 +42,7 @@ internal class BillingResultMapperTest {
 
             // Act
             val results = errorResults.map { billingResult ->
-                testSubject.mapToOutcome(billingResult) {}
+                billingResult.mapToOutcome {}
             }
 
             // Assert
@@ -64,7 +62,7 @@ internal class BillingResultMapperTest {
 
         // Act
         val results = errorResults.map { billingResult ->
-            testSubject.mapToOutcome(billingResult) {}
+            billingResult.mapToOutcome {}
         }
 
         // Assert
@@ -79,7 +77,7 @@ internal class BillingResultMapperTest {
         val billingResult = createErrorBillingResult(BillingResponseCode.USER_CANCELED)
 
         // Act
-        val result = testSubject.mapToOutcome(billingResult) {}
+        val result = billingResult.mapToOutcome {}
 
         // Assert
         assertOutcomeFailure(result, ContributionError.UserCancelled::class)
@@ -91,7 +89,7 @@ internal class BillingResultMapperTest {
         val billingResult = createErrorBillingResult(BillingResponseCode.DEVELOPER_ERROR)
 
         // Act
-        val result = testSubject.mapToOutcome(billingResult) {}
+        val result = billingResult.mapToOutcome {}
 
         // Assert
         assertOutcomeFailure(result, ContributionError.DeveloperError::class)
@@ -107,7 +105,7 @@ internal class BillingResultMapperTest {
 
         // Act
         val results = errorResult.map { billingResult ->
-            testSubject.mapToOutcome(billingResult) {}
+            billingResult.mapToOutcome {}
         }
 
         // Assert

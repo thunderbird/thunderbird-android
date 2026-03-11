@@ -5,13 +5,13 @@ import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import net.thunderbird.core.common.cache.Cache
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 import com.android.billingclient.api.BillingClient as GoogleBillingClient
-import com.android.billingclient.api.BillingResult as GoogleBillingResult
 
 internal interface FundingDataContract {
 
@@ -21,13 +21,6 @@ internal interface FundingDataContract {
 
             fun mapToOneTimeContribution(product: ProductDetails): OneTimeContribution
             fun mapToRecurringContribution(product: ProductDetails): RecurringContribution
-        }
-
-        interface BillingResult {
-            suspend fun <T> mapToOutcome(
-                billingResult: GoogleBillingResult,
-                transformSuccess: suspend () -> T,
-            ): Outcome<T, ContributionError>
         }
     }
 
@@ -82,6 +75,8 @@ internal interface FundingDataContract {
             fun clear()
         }
 
+        interface BillingProductCache : Cache<String, ProductDetails>
+
         interface BillingClientProvider {
 
             /**
@@ -106,24 +101,18 @@ internal interface FundingDataContract {
                 purchases: List<Purchase>,
             ): List<Contribution>
 
-            suspend fun handleOneTimePurchases(
+            fun handleOneTimePurchases(
                 clientProvider: BillingClientProvider,
                 purchases: List<Purchase>,
             ): List<OneTimeContribution>
 
-            suspend fun handleRecurringPurchases(
+            fun handleRecurringPurchases(
                 clientProvider: BillingClientProvider,
                 purchases: List<Purchase>,
             ): List<RecurringContribution>
         }
 
-        interface BillingClient {
-
-            /**
-             * Flow that emits the last purchased contribution.
-             */
-            val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>>
-
+        interface BillingConnector {
             /**
              * Connect to the billing service.
              *
@@ -137,6 +126,19 @@ internal interface FundingDataContract {
              * Disconnect from the billing service.
              */
             fun disconnect()
+        }
+
+        interface BillingClient {
+
+            /**
+             * Disconnect from the billing service.
+             */
+            fun disconnect()
+
+            /**
+             * Flow that emits the last purchased contribution.
+             */
+            val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>>
 
             /**
              * Load one-time contributions.

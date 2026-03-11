@@ -12,13 +12,14 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribut
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
 internal class RemoteContributionDataSource(
+    private val billingConnector: FundingDataContract.Remote.BillingConnector,
     private val billingClient: FundingDataContract.Remote.BillingClient,
 ) : FundingDataContract.Remote.ContributionDataSource {
 
     override fun getAllOneTime(
         productIds: List<String>,
     ): Flow<Outcome<List<OneTimeContribution>, ContributionError>> = flow {
-        val result = billingClient.connect {
+        val result = billingConnector.connect {
             billingClient.loadOneTimeContributions(productIds = productIds)
         }
         emit(result)
@@ -27,14 +28,14 @@ internal class RemoteContributionDataSource(
     override fun getAllRecurring(
         productIds: List<String>,
     ): Flow<Outcome<List<RecurringContribution>, ContributionError>> = flow {
-        val result = billingClient.connect {
+        val result = billingConnector.connect {
             billingClient.loadRecurringContributions(productIds = productIds)
         }
         emit(result)
     }
 
     override fun getAllPurchased(): Flow<Outcome<List<Contribution>, ContributionError>> = flow {
-        val result = billingClient.connect {
+        val result = billingConnector.connect {
             billingClient.loadPurchasedRecurringContributions().flatMapSuccess { recurringContributions ->
                 if (recurringContributions.isEmpty()) {
                     billingClient.loadPurchasedOneTimeContributionHistory().flatMapSuccess { contribution ->
@@ -59,7 +60,7 @@ internal class RemoteContributionDataSource(
     override suspend fun purchaseContribution(
         contribution: Contribution,
     ): Outcome<Unit, ContributionError> {
-        return billingClient.connect {
+        return billingConnector.connect {
             billingClient.purchaseContribution(contribution)
         }
     }
