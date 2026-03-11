@@ -41,6 +41,7 @@ class BillingClientProvider(
 
     override fun clear() {
         clientInstance?.endConnection()
+        delegatingListener.listener = null
         clientInstance = null
     }
 

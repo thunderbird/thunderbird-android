@@ -1,7 +1,6 @@
 package net.thunderbird.feature.funding.googleplay.data
 
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
-import net.thunderbird.feature.funding.googleplay.data.mapper.BillingResultMapper
 import net.thunderbird.feature.funding.googleplay.data.mapper.ProductDetailsMapper
 import net.thunderbird.feature.funding.googleplay.data.remote.RemoteContributionDataSource
 import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingClient
@@ -15,10 +14,6 @@ import org.koin.dsl.module
 internal val fundingDataModule = module {
     single<FundingDataContract.Mapper.Product> {
         ProductDetailsMapper()
-    }
-
-    single<FundingDataContract.Mapper.BillingResult> {
-        BillingResultMapper()
     }
 
     single<Remote.BillingClientProvider> {
@@ -42,7 +37,6 @@ internal val fundingDataModule = module {
     single<Remote.BillingConnector> {
         BillingConnector(
             clientProvider = get(),
-            resultMapper = get(),
             productCache = get(),
             logger = get(),
         )
@@ -52,7 +46,6 @@ internal val fundingDataModule = module {
         BillingClient(
             clientProvider = get(),
             productMapper = get(),
-            resultMapper = get(),
             productCache = get(),
             purchaseHandler = get(),
             activityProvider = get(),

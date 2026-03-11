@@ -42,7 +42,6 @@ internal typealias RecurringContributionOutcome = Outcome<List<RecurringContribu
 internal class BillingClient(
     private val clientProvider: Remote.BillingClientProvider,
     private val productMapper: FundingDataContract.Mapper.Product,
-    private val resultMapper: FundingDataContract.Mapper.BillingResult,
     private val productCache: Remote.BillingProductCache,
     private val purchaseHandler: Remote.BillingPurchaseHandler,
     private val activityProvider: ActivityProvider,
@@ -68,7 +67,7 @@ internal class BillingClient(
 
     override suspend fun loadOneTimeContributions(productIds: List<String>): OneTimeContributionOutcome {
         val oneTimeProductsResult = queryProducts(ProductType.INAPP, productIds)
-        return resultMapper.mapToOutcome(oneTimeProductsResult.billingResult) {
+        return oneTimeProductsResult.billingResult.mapToOutcome {
             oneTimeProductsResult.productDetailsList.orEmpty().map {
                 val contribution = productMapper.mapToOneTimeContribution(it)
                 productCache[it.productId] = it
@@ -86,7 +85,7 @@ internal class BillingClient(
 
     override suspend fun loadRecurringContributions(productIds: List<String>): RecurringContributionOutcome {
         val recurringProductsResult = queryProducts(ProductType.SUBS, productIds)
-        return resultMapper.mapToOutcome(recurringProductsResult.billingResult) {
+        return recurringProductsResult.billingResult.mapToOutcome {
             recurringProductsResult.productDetailsList.orEmpty().map {
                 val contribution = productMapper.mapToRecurringContribution(it)
                 productCache[it.productId] = it
@@ -104,7 +103,7 @@ internal class BillingClient(
 
     override suspend fun loadPurchasedOneTimeContributions(): OneTimeContributionOutcome {
         val purchasesResult = queryPurchase(ProductType.INAPP)
-        return resultMapper.mapToOutcome(purchasesResult.billingResult) {
+        return purchasesResult.billingResult.mapToOutcome {
             purchaseHandler.handleOneTimePurchases(clientProvider, purchasesResult.purchasesList)
         }.mapFailure { billingError, _ ->
             logger.error(
@@ -118,7 +117,7 @@ internal class BillingClient(
 
     override suspend fun loadPurchasedRecurringContributions(): RecurringContributionOutcome {
         val purchasesResult = queryPurchase(ProductType.SUBS)
-        return resultMapper.mapToOutcome(purchasesResult.billingResult) {
+        return purchasesResult.billingResult.mapToOutcome {
             purchaseHandler.handleRecurringPurchases(clientProvider, purchasesResult.purchasesList)
         }.mapFailure { billingError, _ ->
             logger.error(
@@ -136,7 +135,7 @@ internal class BillingClient(
             .build()
 
         val purchasesResult = clientProvider.current.queryPurchaseHistory(queryPurchaseHistoryParams)
-        return resultMapper.mapToOutcome(purchasesResult.billingResult) {
+        return purchasesResult.billingResult.mapToOutcome {
             val recentPurchaseId =
                 purchasesResult.purchaseHistoryRecordList.orEmpty().firstOrNull()?.products?.firstOrNull {
                     productCache.hasKey(it)
@@ -231,7 +230,7 @@ internal class BillingClient(
             .build()
 
         val billingResult = clientProvider.current.launchBillingFlow(activity, billingFlowParams)
-        return resultMapper.mapToOutcome(billingResult) { }.mapFailure(
+        return billingResult.mapToOutcome { }.mapFailure(
             transformFailure = { error, _ ->
                 logger.error(message = { "Error launching billing flow: ${error.message}" })
                 error
@@ -241,7 +240,7 @@ internal class BillingClient(
 
     override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
         coroutineScope.launch {
-            resultMapper.mapToOutcome(billingResult) { }.handleAsync(
+            billingResult.mapToOutcome { }.handleAsync(
                 onSuccess = {
                     if (purchases != null) {
                         val contributions = purchaseHandler.handlePurchases(clientProvider, purchases)

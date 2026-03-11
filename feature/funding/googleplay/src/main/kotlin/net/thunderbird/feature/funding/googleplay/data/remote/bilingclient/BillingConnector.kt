@@ -1,95 +1,118 @@
 package net.thunderbird.feature.funding.googleplay.data.remote.bilingclient
 
+import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.android.billingclient.api.BillingClientStateListener
-import kotlin.coroutines.CoroutineContext
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.android.billingclient.api.BillingResult
+import kotlin.coroutines.resume
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
+import net.thunderbird.core.outcome.flatMapSuccess
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
-import com.android.billingclient.api.BillingClient as GoogleBillingClient
-import com.android.billingclient.api.BillingResult as GoogleBillingResult
+
+private const val TAG = "BillingConnector"
 
 internal class BillingConnector(
     private val clientProvider: Remote.BillingClientProvider,
-    private val resultMapper: FundingDataContract.Mapper.BillingResult,
     private val productCache: Remote.BillingProductCache,
     private val logger: Logger,
-    backgroundDispatcher: CoroutineContext = Dispatchers.IO,
 ) : Remote.BillingConnector {
 
-    private val coroutineScope = CoroutineScope(backgroundDispatcher)
     private val connectionMutex = Mutex()
 
+    /**
+     * Connect the Google BillingClient.
+     *
+     * @param onConnected Callback to execute when connection is successful
+     * @return Outcome of the connection attempt
+     */
     override suspend fun <T> connect(
         onConnected: suspend () -> Outcome<T, ContributionError>,
     ): Outcome<T, ContributionError> {
-        return safeConnect(clientProvider.current, resultMapper, scope = coroutineScope) {
+        logger.debug(TAG) { "connect() called" }
+        return if (clientProvider.current.isReady) {
+            logger.debug(TAG) { "Billing client is already ready" }
             onConnected()
+        } else {
+            connectSafely {
+                onConnected()
+            }
         }
     }
 
     override fun disconnect() {
+        logger.debug(TAG) { "disconnect() called" }
         productCache.clear()
         clientProvider.clear()
     }
 
     /**
-     * Helper to safely connect the Google BillingClient without triggering "already in process of connecting" errors.
+     * Ensures safe connection to the Google BillingClient by preventing concurrent connection attempts.
      *
-     * Usage:
-     *   safeConnect(client, billingResultMapper) { /* onConnected work returning Outcome<T, ContributionError> */ }
+     * @param onConnected Callback to execute when connection is successful
+     * @return Outcome of the connection attempt
      */
-    internal suspend fun <T> safeConnect(
-        client: GoogleBillingClient,
-        billingResultMapper: FundingDataContract.Mapper.BillingResult,
-        scope: CoroutineScope = CoroutineScope(Dispatchers.Main.immediate),
+    private suspend fun <T> connectSafely(
         onConnected: suspend () -> Outcome<T, ContributionError>,
     ): Outcome<T, ContributionError> {
-        if (client.isReady) return onConnected()
-
-        val connectionResult = connectionMutex.withLock {
-            if (client.isReady) return@withLock Outcome.success(Unit)
-
-            val deferred = CompletableDeferred<Outcome<Unit, ContributionError>>()
-
-            client.startConnection(object : BillingClientStateListener {
-                override fun onBillingSetupFinished(billingResult: GoogleBillingResult) {
-                    logger.verbose { "Billing service connected" }
-                    scope.launch {
-                        val mapped = billingResultMapper.mapToOutcome(billingResult) { }
-                        deferred.complete(mapped)
-                    }
-                }
-
-                override fun onBillingServiceDisconnected() {
-                    logger.verbose { "Billing service disconnected" }
-                    // We clear the cache and provider on disconnect because ProductDetails and their
-                    // associated offer tokens are tied to a specific BillingClient session.
-                    // Using a ProductDetails instance from a previous, disconnected session
-                    // to launch a purchase flow in a new session can lead to DEVELOPER_ERROR or
-                    // other failures in the Google Play Billing Library.
-                    disconnect()
-                    if (!deferred.isCompleted) {
-                        deferred.complete(
-                            Outcome.failure(ContributionError.ServiceDisconnected("Service disconnected")),
-                        )
-                    }
-                }
-            })
-
-            deferred.await()
+        logger.debug(TAG) { "connectSafely() called, waiting for lock" }
+        val connectionOutcome = connectionMutex.withLock {
+            if (clientProvider.current.isReady) {
+                logger.debug(TAG) { "Billing client became ready while waiting for lock" }
+                Outcome.success(Unit)
+            } else {
+                logger.debug(TAG) { "Starting billing client connection" }
+                startConnection()
+            }
         }
 
-        return when (connectionResult) {
-            is Outcome.Success -> onConnected()
-            is Outcome.Failure -> connectionResult
+        return connectionOutcome.flatMapSuccess {
+            onConnected()
         }
     }
+
+    /**
+     * Initiates a connection to the billing service and handles the connection outcome.
+     *
+     * This method uses the `clientProvider` to start a connection with the billing client and
+     * listens for the state using a [BillingClientStateListener]. Once the connection is established
+     * or fails, the corresponding [Outcome] is returned.
+     *
+     * @return An [Outcome] representing the result of the connection:
+     * - [Outcome.Success] if the connection is successful.
+     * - [Outcome.Failure] if the connection fails or the service is disconnected.
+     */
+    private suspend fun startConnection(): Outcome<Unit, ContributionError> =
+        suspendCancellableCoroutine { continuation ->
+            clientProvider.current.startConnection(
+                object : BillingClientStateListener {
+                    override fun onBillingSetupFinished(billingResult: BillingResult) {
+                        if (billingResult.responseCode == BillingResponseCode.OK) {
+                            logger.debug(TAG) { "Billing service connected successfully" }
+                        } else {
+                            logger.error(TAG) {
+                                "Billing service connection failed with responseCode: ${billingResult.responseCode}, " +
+                                    "debugMessage: ${billingResult.debugMessage}"
+                            }
+                        }
+                        continuation.resume(billingResult.mapToOutcome { })
+                    }
+
+                    override fun onBillingServiceDisconnected() {
+                        logger.debug(TAG) { "onBillingServiceDisconnected() called" }
+                        disconnect()
+                        continuation.resume(
+                            Outcome.failure(
+                                ContributionError.ServiceDisconnected(
+                                    "Service disconnected: onBillingServiceDisconnected",
+                                ),
+                            ),
+                        )
+                    }
+                },
+            )
+        }
 }

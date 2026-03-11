@@ -12,7 +12,6 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 import com.android.billingclient.api.BillingClient as GoogleBillingClient
-import com.android.billingclient.api.BillingResult as GoogleBillingResult
 
 internal interface FundingDataContract {
 
@@ -22,13 +21,6 @@ internal interface FundingDataContract {
 
             fun mapToOneTimeContribution(product: ProductDetails): OneTimeContribution
             fun mapToRecurringContribution(product: ProductDetails): RecurringContribution
-        }
-
-        interface BillingResult {
-            suspend fun <T> mapToOutcome(
-                billingResult: GoogleBillingResult,
-                transformSuccess: suspend () -> T,
-            ): Outcome<T, ContributionError>
         }
     }
 
@@ -109,12 +101,12 @@ internal interface FundingDataContract {
                 purchases: List<Purchase>,
             ): List<Contribution>
 
-            suspend fun handleOneTimePurchases(
+            fun handleOneTimePurchases(
                 clientProvider: BillingClientProvider,
                 purchases: List<Purchase>,
             ): List<OneTimeContribution>
 
-            suspend fun handleRecurringPurchases(
+            fun handleRecurringPurchases(
                 clientProvider: BillingClientProvider,
                 purchases: List<Purchase>,
             ): List<RecurringContribution>

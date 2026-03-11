@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.android.billingclient.api.BillingClientStateListener
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -28,7 +27,6 @@ import com.android.billingclient.api.BillingClient as GoogleBillingClient
 class BillingConnectorTest {
 
     private val clientProvider = FakeBillingClientProvider()
-    private val resultMapper = FakeBillingResultMapper()
     private val productCache = BillingProductCache()
     private val testDispatcher = StandardTestDispatcher()
     private val googleBillingClient = mock<GoogleBillingClient>()
@@ -42,9 +40,7 @@ class BillingConnectorTest {
 
         testSubject = BillingConnector(
             clientProvider = clientProvider,
-            resultMapper = resultMapper,
             productCache = productCache,
-            backgroundDispatcher = testDispatcher,
             logger = logger,
         )
     }
@@ -53,7 +49,6 @@ class BillingConnectorTest {
     fun `connect should return success when billing setup finished with success`() = runTest(testDispatcher) {
         // Arrange
         whenever(googleBillingClient.isReady).thenReturn(false)
-        resultMapper.outcome = Outcome.success(Unit)
 
         val captor = ArgumentCaptor.forClass(BillingClientStateListener::class.java)
 
@@ -74,10 +69,9 @@ class BillingConnectorTest {
     }
 
     @Test
-    fun `connect should be parallelized once ready`() = runTest(testDispatcher) {
+    fun `connect should be parallelized once ready and not allow to connect twice`() = runTest(testDispatcher) {
         // Arrange
         whenever(googleBillingClient.isReady).thenReturn(false)
-        resultMapper.outcome = Outcome.success(Unit)
         val captor = ArgumentCaptor.forClass(BillingClientStateListener::class.java)
 
         var call1Started = false
@@ -87,10 +81,7 @@ class BillingConnectorTest {
 
         // Act
         val job1 = launch {
-            testSubject.safeConnect(
-                client = googleBillingClient,
-                billingResultMapper = resultMapper,
-                scope = CoroutineScope(testDispatcher),
+            testSubject.connect(
                 onConnected = {
                     call1Started = true
                     call1Finished.await()
@@ -99,10 +90,7 @@ class BillingConnectorTest {
             )
         }
         val job2 = launch {
-            testSubject.safeConnect(
-                client = googleBillingClient,
-                billingResultMapper = resultMapper,
-                scope = CoroutineScope(testDispatcher),
+            testSubject.connect(
                 onConnected = {
                     call2Started = true
                     call2Finished.await()
@@ -117,12 +105,10 @@ class BillingConnectorTest {
         verify(googleBillingClient).startConnection(captor.capture())
 
         // Signal that billing setup is finished.
-        // This should complete the deferred in safeConnect and release the mutex.
         whenever(googleBillingClient.isReady).thenReturn(true)
         captor.value.onBillingSetupFinished(mock())
 
-        // We need to run the scope.launch from onBillingSetupFinished
-        // AND we need to run the follow-up code in safeConnect
+        // Wait for onBillingSetupFinished and connectSafely releases mutex
         advanceUntilIdle()
 
         // Assert
@@ -135,6 +121,8 @@ class BillingConnectorTest {
         advanceUntilIdle()
         job1.cancel()
         job2.cancel()
+        // Ensure startConnection was only called once
+        assertThat(captor.allValues.size).isEqualTo(1)
     }
 
     @Test

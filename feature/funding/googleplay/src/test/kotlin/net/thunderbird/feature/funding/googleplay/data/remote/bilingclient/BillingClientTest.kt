@@ -33,7 +33,6 @@ class BillingClientTest {
 
     private val clientProvider = mock<Remote.BillingClientProvider>()
     private val productMapper = mock<FundingDataContract.Mapper.Product>()
-    private val resultMapper = mock<FundingDataContract.Mapper.BillingResult>()
     private val productCache = BillingProductCache()
     private val purchaseHandler = mock<Remote.BillingPurchaseHandler>()
     private val activityProvider = mock<ActivityProvider>()
@@ -43,7 +42,6 @@ class BillingClientTest {
     private val testSubject = BillingClient(
         clientProvider = clientProvider,
         productMapper = productMapper,
-        resultMapper = resultMapper,
         productCache = productCache,
         purchaseHandler = purchaseHandler,
         activityProvider = activityProvider,
@@ -107,7 +105,6 @@ class BillingClientTest {
         whenever(activityProvider.getCurrent()).thenReturn(activity)
         whenever(clientProvider.current).thenReturn(googleBillingClient)
         whenever(googleBillingClient.launchBillingFlow(any(), any())).thenReturn(billingResult)
-        whenever(resultMapper.mapToOutcome<Unit>(any(), any())).thenReturn(Outcome.success(Unit))
 
         // Act
         val result = testSubject.purchaseContribution(contribution)
@@ -124,7 +121,6 @@ class BillingClientTest {
         val purchases = mutableListOf(mock<Purchase>())
         val contribution = OneTimeContribution("id", "title", "desc", 100L, "$1.00")
 
-        whenever(resultMapper.mapToOutcome<Unit>(any(), any())).thenReturn(Outcome.success(Unit))
         whenever(purchaseHandler.handlePurchases(any(), any())).thenReturn(listOf(contribution))
 
         // Act
