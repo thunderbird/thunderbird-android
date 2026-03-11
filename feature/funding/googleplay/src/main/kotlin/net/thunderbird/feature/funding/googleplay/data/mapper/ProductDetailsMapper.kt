@@ -4,6 +4,7 @@ import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.ProductDetails
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Mapper
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
@@ -24,7 +25,7 @@ internal class ProductDetailsMapper : Mapper.Product {
 
         return if (offerDetails != null) {
             OneTimeContribution(
-                id = product.productId,
+                id = ContributionId(product.productId),
                 title = product.name,
                 description = product.description.replace("\n", ""),
                 price = offerDetails.priceAmountMicros,
@@ -44,7 +45,7 @@ internal class ProductDetailsMapper : Mapper.Product {
 
         return if (pricingPhase != null) {
             RecurringContribution(
-                id = product.productId,
+                id = ContributionId(product.productId),
                 title = product.name,
                 description = product.description.replace("\n", ""),
                 price = pricingPhase.priceAmountMicros,

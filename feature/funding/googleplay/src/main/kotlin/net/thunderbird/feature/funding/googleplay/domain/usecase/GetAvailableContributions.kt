@@ -6,12 +6,14 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionIdProvider
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionRepository
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.Policy
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.UseCase
 import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
 
 internal class GetAvailableContributions(
     private val repository: ContributionRepository,
     private val contributionIdProvider: ContributionIdProvider,
+    private val preselector: Policy.ContributionPreselector,
 ) : UseCase.GetAvailableContributions {
     override fun invoke(): Flow<Outcome<AvailableContributions, ContributionError>> {
         return combine(
@@ -28,10 +30,15 @@ internal class GetAvailableContributions(
                 val recurring = (recurringResult as? Outcome.Success)?.data.orEmpty()
                 val purchased = purchasedResult.data.firstOrNull()
 
+                val onetimeContributions = oneTime.sortedByDescending { it.price }
+                val recurringContributions = recurring.sortedByDescending { it.price }
+                val preselection = preselector.preselect(onetimeContributions, recurringContributions)
+
                 Outcome.success(
                     AvailableContributions(
                         oneTimeContributions = oneTime.sortedByDescending { it.price },
                         recurringContributions = recurring.sortedByDescending { it.price },
+                        preselection = preselection,
                         purchasedContribution = purchased,
                     ),
                 )

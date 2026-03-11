@@ -14,7 +14,7 @@ internal interface Contribution {
     /**
      * The unique identifier of the contribution.
      */
-    val id: String
+    val id: ContributionId
 
     /**
      * The title of the contribution.

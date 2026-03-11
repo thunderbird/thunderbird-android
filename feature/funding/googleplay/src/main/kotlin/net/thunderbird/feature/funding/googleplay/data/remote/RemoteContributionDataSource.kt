@@ -3,33 +3,36 @@ package net.thunderbird.feature.funding.googleplay.data.remote
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.outcome.flatMapSuccess
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
 internal class RemoteContributionDataSource(
     private val billingConnector: FundingDataContract.Remote.BillingConnector,
     private val billingClient: FundingDataContract.Remote.BillingClient,
+    private val logger: Logger,
 ) : FundingDataContract.Remote.ContributionDataSource {
 
     override fun getAllOneTime(
-        productIds: List<String>,
+        contributionIds: List<ContributionId>,
     ): Flow<Outcome<List<OneTimeContribution>, ContributionError>> = flow {
         val result = billingConnector.connect {
-            billingClient.loadOneTimeContributions(productIds = productIds)
+            billingClient.loadOneTimeContributions(productIds = contributionIds.map { it.value })
         }
         emit(result)
     }
 
     override fun getAllRecurring(
-        productIds: List<String>,
+        contributionIds: List<ContributionId>,
     ): Flow<Outcome<List<RecurringContribution>, ContributionError>> = flow {
         val result = billingConnector.connect {
-            billingClient.loadRecurringContributions(productIds = productIds)
+            billingClient.loadRecurringContributions(productIds = contributionIds.map { it.value })
         }
         emit(result)
     }
@@ -58,10 +61,12 @@ internal class RemoteContributionDataSource(
         billingClient.purchasedContribution
 
     override suspend fun purchaseContribution(
-        contribution: Contribution,
+        contributionId: ContributionId,
     ): Outcome<Unit, ContributionError> {
+        logger.debug { "Attempting to purchase contributionId: $contributionId" }
         return billingConnector.connect {
-            billingClient.purchaseContribution(contribution)
+            logger.debug { "Initiating purchase flow for contributionId: $contributionId" }
+            billingClient.purchaseContribution(contributionId)
         }
     }
 

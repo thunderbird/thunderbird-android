@@ -43,7 +43,8 @@ class ContributionViewModelTest {
             listState = ContributionListState(
                 oneTimeContributions = FakeData.oneTimeContributions,
                 recurringContributions = FakeData.recurringContributions,
-                selectedContribution = FakeData.recurringContributions[FakeData.recurringContributions.size - 2],
+                preselection = FakeData.preselection,
+                selectedContributionId = FakeData.preselection.recurringId,
                 isRecurringContributionSelected = true,
                 isLoading = false,
             ),
@@ -67,7 +68,8 @@ class ContributionViewModelTest {
             listState = ContributionListState(
                 oneTimeContributions = FakeData.oneTimeContributions,
                 recurringContributions = FakeData.recurringContributions,
-                selectedContribution = FakeData.oneTimeContributions[FakeData.oneTimeContributions.size - 2],
+                preselection = FakeData.preselection,
+                selectedContributionId = FakeData.preselection.oneTimeId,
                 isRecurringContributionSelected = false,
                 isLoading = false,
             ),
@@ -91,7 +93,8 @@ class ContributionViewModelTest {
             listState = ContributionListState(
                 oneTimeContributions = FakeData.oneTimeContributions,
                 recurringContributions = FakeData.recurringContributions,
-                selectedContribution = FakeData.recurringContributions[FakeData.recurringContributions.size - 2],
+                preselection = FakeData.preselection,
+                selectedContributionId = FakeData.preselection.recurringId,
                 isRecurringContributionSelected = true,
                 isLoading = false,
             ),
@@ -118,7 +121,8 @@ class ContributionViewModelTest {
             listState = ContributionListState(
                 oneTimeContributions = FakeData.oneTimeContributions,
                 recurringContributions = FakeData.recurringContributions,
-                selectedContribution = FakeData.oneTimeContributions[0],
+                preselection = FakeData.preselection,
+                selectedContributionId = FakeData.oneTimeContributions[0].id,
                 isRecurringContributionSelected = false,
                 isLoading = false,
             ),
@@ -158,6 +162,7 @@ private class ContributionRobot(
                     AvailableContributions(
                         oneTimeContributions = FakeData.oneTimeContributions,
                         recurringContributions = FakeData.recurringContributions,
+                        preselection = FakeData.preselection,
                         purchasedContribution = null,
                     ),
                 ),
@@ -177,14 +182,12 @@ private class ContributionRobot(
     }
 
     suspend fun verifyOneTimeContributionSelected() {
-        val oneTimeContributions = initialState.listState.oneTimeContributions
-
         assertThat(turbines.awaitStateItem()).isEqualTo(
 
             initialState.copy(
                 listState = initialState.listState.copy(
                     isRecurringContributionSelected = false,
-                    selectedContribution = oneTimeContributions[oneTimeContributions.size - 2],
+                    selectedContributionId = FakeData.preselection.oneTimeId,
                 ),
                 showContributionList = true,
             ),
@@ -196,13 +199,11 @@ private class ContributionRobot(
     }
 
     suspend fun verifyRecurringContributionSelected() {
-        val recurringContributions = initialState.listState.recurringContributions
-
         assertThat(turbines.awaitStateItem()).isEqualTo(
             initialState.copy(
                 listState = initialState.listState.copy(
                     isRecurringContributionSelected = true,
-                    selectedContribution = recurringContributions[recurringContributions.size - 2],
+                    selectedContributionId = FakeData.preselection.recurringId,
                 ),
                 showContributionList = true,
             ),
@@ -210,14 +211,14 @@ private class ContributionRobot(
     }
 
     fun selectContributionItem(item: Contribution) {
-        viewModel.event(Event.OnContributionItemClicked(item))
+        viewModel.event(Event.OnContributionItemClicked(item.id))
     }
 
     suspend fun verifyContributionItemSelected(item: Contribution) {
         assertThat(turbines.awaitStateItem()).isEqualTo(
             initialState.copy(
                 listState = initialState.listState.copy(
-                    selectedContribution = item,
+                    selectedContributionId = item.id,
                 ),
             ),
         )

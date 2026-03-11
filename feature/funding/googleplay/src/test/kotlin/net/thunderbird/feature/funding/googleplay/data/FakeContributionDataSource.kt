@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
@@ -16,11 +17,11 @@ internal class FakeContributionDataSource : FundingDataContract.Remote.Contribut
         flowOf(Outcome.success(emptyList()))
 
     override fun getAllOneTime(
-        productIds: List<String>,
+        contributionIds: List<ContributionId>,
     ): Flow<Outcome<List<OneTimeContribution>, ContributionError>> = oneTimeFlow
 
     override fun getAllRecurring(
-        productIds: List<String>,
+        contributionIds: List<ContributionId>,
     ): Flow<Outcome<List<RecurringContribution>, ContributionError>> = recurringFlow
 
     var purchasedFlow: Flow<Outcome<List<Contribution>, ContributionError>> =
@@ -33,7 +34,7 @@ internal class FakeContributionDataSource : FundingDataContract.Remote.Contribut
     )
 
     override suspend fun purchaseContribution(
-        contribution: Contribution,
+        contributionId: ContributionId,
     ): Outcome<Unit, ContributionError> = Outcome.success(Unit)
 
     override fun clear() = Unit

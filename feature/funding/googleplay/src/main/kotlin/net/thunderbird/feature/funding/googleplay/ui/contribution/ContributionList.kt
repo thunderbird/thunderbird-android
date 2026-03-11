@@ -38,6 +38,7 @@ import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.funding.googleplay.R
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionListState
@@ -150,7 +151,7 @@ private fun TypeSelectionRow(
 private fun ChoicesRow(
     contributions: ImmutableList<Contribution>,
     onItemClick: (Contribution) -> Unit,
-    selectedItem: Contribution?,
+    selectedItemId: ContributionId?,
     modifier: Modifier = Modifier,
 ) {
     FlowRow(
@@ -162,7 +163,7 @@ private fun ChoicesRow(
             ContributionListItem(
                 text = it.priceFormatted,
                 onClick = { onItemClick(it) },
-                isSelected = it == selectedItem,
+                isSelected = it.id == selectedItemId,
                 modifier = Modifier.weight(1f),
             )
         }
@@ -195,7 +196,7 @@ private fun ListContentView(
             } else {
                 state.oneTimeContributions
             },
-            selectedItem = state.selectedContribution,
+            selectedItemId = state.selectedContributionId,
             onItemClick = onItemClick,
         )
     }

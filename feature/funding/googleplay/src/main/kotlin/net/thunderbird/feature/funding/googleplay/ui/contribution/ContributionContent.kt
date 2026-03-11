@@ -53,7 +53,7 @@ internal fun ContributionContent(
                         onEvent(Event.OnRecurringContributionSelected)
                     },
                     onItemClick = {
-                        onEvent(Event.OnContributionItemClicked(it))
+                        onEvent(Event.OnContributionItemClicked(it.id))
                     },
                     onRetryClick = {
                         onEvent(Event.OnRetryClicked)
@@ -73,7 +73,7 @@ internal fun ContributionContent(
                 onPurchaseClick = { onEvent(Event.OnPurchaseClicked) },
                 onManagePurchaseClick = { onEvent(Event.OnManagePurchaseClicked(it)) },
                 onShowContributionListClick = { onEvent(Event.OnShowContributionListClicked) },
-                isPurchaseEnabled = state.listState.selectedContribution != null,
+                isPurchaseEnabled = state.listState.selectedContributionId != null,
                 isContributionListShown = state.showContributionList,
             )
         }

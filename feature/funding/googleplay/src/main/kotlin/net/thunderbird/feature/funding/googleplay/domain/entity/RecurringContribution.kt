@@ -10,7 +10,7 @@ package net.thunderbird.feature.funding.googleplay.domain.entity
  * @property priceFormatted The price of the contribution formatted as a string
  */
 internal data class RecurringContribution(
-    override val id: String,
+    override val id: ContributionId,
     override val title: String,
     override val description: String,
     override val price: Long,
