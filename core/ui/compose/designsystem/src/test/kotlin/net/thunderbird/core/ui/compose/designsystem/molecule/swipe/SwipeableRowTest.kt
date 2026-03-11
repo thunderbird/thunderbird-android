@@ -7,13 +7,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.test.swipeRight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.test.swipeWithVelocity
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.R
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
@@ -57,14 +59,14 @@ class SwipeableRowTest : ComposeTest() {
     }
 
     @Test
-    fun `when enableDismissFromStartToEnd is false, should not call onSwipeEnd when swiping from start to end`() =
+    fun `when start-to-end behaviour is Disabled, should not call onSwipeEnd when swiping from start to end`() =
         runComposeTest {
             // Arrange
             val swipeEndDirections = mutableListOf<SwipeDirection>()
 
             setContentWithTheme {
                 TestSwipeableRow(
-                    enableDismissFromStartToEnd = false,
+                    startToEndBehaviour = SwipeBehaviour.Disabled,
                     onSwipeEnd = { swipeEndDirections.add(it) },
                 )
             }
@@ -78,14 +80,14 @@ class SwipeableRowTest : ComposeTest() {
         }
 
     @Test
-    fun `when enableDismissFromEndToStart is false, should not call onSwipeEnd when swiping from end to start`() =
+    fun `when end-to-start behaviour is Disabled, should not call onSwipeEnd when swiping from end to start`() =
         runComposeTest {
             // Arrange
             val swipeEndDirections = mutableListOf<SwipeDirection>()
 
             setContentWithTheme {
                 TestSwipeableRow(
-                    enableDismissFromEndToStart = false,
+                    endToStartBehaviour = SwipeBehaviour.Disabled,
                     onSwipeEnd = { swipeEndDirections.add(it) },
                 )
             }
@@ -223,12 +225,12 @@ class SwipeableRowTest : ComposeTest() {
     }
 
     @Test
-    fun `when enableDismissFromStartToEnd is false, should not have accessibility label when swiping from start to end`() =
+    fun `when start-to-end behaviour is Disabled, should not have accessibility label when swiping from start to end`() =
         runComposeTest {
             // Arrange
             setContentWithTheme {
                 TestSwipeableRow(
-                    enableDismissFromStartToEnd = false,
+                    startToEndBehaviour = SwipeBehaviour.Disabled,
                     accessibilityActions = persistentListOf(
                         StartToEndAccessibilityAction(
                             actionStringRes = R.string.designsystem_molecule_error_view_button_retry,
@@ -253,12 +255,12 @@ class SwipeableRowTest : ComposeTest() {
         }
 
     @Test
-    fun `when enableDismissFromEndToStart is false, should not have accessibility label when swiping from end to start`() =
+    fun `when end-to-start behaviour is Disabled, should not have accessibility label when swiping from end to start`() =
         runComposeTest {
             // Arrange
             setContentWithTheme {
                 TestSwipeableRow(
-                    enableDismissFromEndToStart = false,
+                    endToStartBehaviour = SwipeBehaviour.Disabled,
                     accessibilityActions = persistentListOf(
                         StartToEndAccessibilityAction(
                             actionStringRes = R.string.designsystem_molecule_error_view_button_retry,
@@ -338,40 +340,412 @@ class SwipeableRowTest : ComposeTest() {
 
     // endregion [ Accessibility verifications ]
 
+    // region [ Reveal behaviour verifications ]
+    @Test
+    fun `when using Reveal behaviour, should call onSwipeEnd when swiping from start to end`() = runComposeTest {
+        // Arrange
+        val swipeEndDirections = mutableListOf<SwipeDirection>()
+
+        setContentWithTheme {
+            TestSwipeableRow(
+                startToEndBehaviour = SwipeBehaviour.Reveal(),
+                endToStartBehaviour = SwipeBehaviour.Disabled,
+                onSwipeEnd = { swipeEndDirections.add(it) },
+            )
+        }
+
+        // Act
+        onNodeWithTag(TEST_TAG).performTouchInput { swipeRight() }
+        waitForIdle()
+
+        // Assert
+        assertThat(swipeEndDirections).isEqualTo(listOf(SwipeDirection.StartToEnd))
+    }
+
+    @Test
+    fun `when using Reveal behaviour, should call onSwipeEnd when swiping from end to start`() = runComposeTest {
+        // Arrange
+        val swipeEndDirections = mutableListOf<SwipeDirection>()
+
+        setContentWithTheme {
+            TestSwipeableRow(
+                startToEndBehaviour = SwipeBehaviour.Disabled,
+                endToStartBehaviour = SwipeBehaviour.Reveal(),
+                onSwipeEnd = { swipeEndDirections.add(it) },
+            )
+        }
+
+        // Act
+        onNodeWithTag(TEST_TAG).performTouchInput { swipeLeft() }
+        waitForIdle()
+
+        // Assert
+        assertThat(swipeEndDirections).isEqualTo(listOf(SwipeDirection.EndToStart))
+    }
+
+    @Test
+    fun `when using Reveal behaviour, should call onSwipeChange when swipe direction changes`() = runComposeTest {
+        // Arrange
+        val swipeChangeDirections = mutableListOf<SwipeDirection>()
+
+        setContentWithTheme {
+            TestSwipeableRow(
+                startToEndBehaviour = SwipeBehaviour.Reveal(),
+                endToStartBehaviour = SwipeBehaviour.Reveal(),
+                onSwipeChange = { swipeChangeDirections.add(it) },
+            )
+        }
+
+        // Act
+        onNodeWithTag(TEST_TAG).performTouchInput { swipeRight() }
+        waitForIdle()
+
+        // Assert
+        assertThat(swipeChangeDirections).contains(SwipeDirection.StartToEnd)
+    }
+    // endregion [ Reveal behaviour verifications ]
+
+    // region [ Mixed behaviour verifications ]
+    @Test
+    fun `when using Reveal for start-to-end and Dismiss for end-to-start, should call onSwipeEnd with StartToEnd on swipe right`() =
+        runComposeTest {
+            // Arrange
+            val swipeEndDirections = mutableListOf<SwipeDirection>()
+
+            setContentWithTheme {
+                TestSwipeableRow(
+                    startToEndBehaviour = SwipeBehaviour.Reveal(),
+                    endToStartBehaviour = SwipeBehaviour.Dismiss(),
+                    onSwipeEnd = { swipeEndDirections.add(it) },
+                )
+            }
+
+            // Act
+            onNodeWithTag(TEST_TAG).performTouchInput { swipeRight() }
+            waitForIdle()
+
+            // Assert
+            assertThat(swipeEndDirections).isEqualTo(listOf(SwipeDirection.StartToEnd))
+        }
+
+    @Test
+    fun `when using Reveal for start-to-end and Dismiss for end-to-start, should call onSwipeEnd with EndToStart on swipe left`() =
+        runComposeTest {
+            // Arrange
+            val swipeEndDirections = mutableListOf<SwipeDirection>()
+
+            setContentWithTheme {
+                TestSwipeableRow(
+                    startToEndBehaviour = SwipeBehaviour.Reveal(),
+                    endToStartBehaviour = SwipeBehaviour.Dismiss(),
+                    onSwipeEnd = { swipeEndDirections.add(it) },
+                )
+            }
+
+            // Act
+            onNodeWithTag(TEST_TAG).performTouchInput { swipeLeft() }
+            waitForIdle()
+
+            // Assert
+            assertThat(swipeEndDirections).isEqualTo(listOf(SwipeDirection.EndToStart))
+        }
+    // endregion [ Mixed behaviour verifications ]
+
+    // region [ Background content verifications ]
+    @Test
+    fun `should display background content when swiping`() = runComposeTest {
+        // Arrange
+        setContentWithTheme {
+            TestSwipeableRow()
+        }
+
+        // Act
+        onNodeWithTag(TEST_TAG).performTouchInput { swipeLeft() }
+        waitForIdle()
+
+        // Assert
+        onNodeWithTag(BACKGROUND_TEST_TAG).assertIsDisplayed()
+    }
+
+    @Test
+    fun `should not display background content when settled`() = runComposeTest {
+        // Arrange
+        setContentWithTheme {
+            TestSwipeableRow()
+        }
+
+        // Act & Assert
+        onNodeWithTag(BACKGROUND_TEST_TAG).assertDoesNotExist()
+    }
+
+    @Test
+    fun `when gesturesEnabled is false, should not display background content`() = runComposeTest {
+        // Arrange
+        setContentWithTheme {
+            TestSwipeableRow(gesturesEnabled = false)
+        }
+
+        // Act
+        onNodeWithTag(TEST_TAG).performTouchInput { swipeLeft() }
+        waitForIdle()
+
+        // Assert
+        onNodeWithTag(BACKGROUND_TEST_TAG).assertDoesNotExist()
+    }
+    // endregion [ Background content verifications ]
+
+    // region [ Fling verifications ]
+    @Test
+    fun `should call onSwipeEnd when flinging from start to end with Dismiss behaviour`() = runComposeTest {
+        // Arrange
+        val swipeEndDirections = mutableListOf<SwipeDirection>()
+
+        setContentWithTheme {
+            TestSwipeableRow(
+                onSwipeEnd = { swipeEndDirections.add(it) },
+            )
+        }
+
+        // Act
+        onNodeWithTag(TEST_TAG).performTouchInput {
+            swipeWithVelocity(
+                start = center,
+                end = Offset(center.x + FLING_SHORT_DISTANCE, center.y),
+                endVelocity = FLING_HIGH_VELOCITY,
+            )
+        }
+        waitForIdle()
+
+        // Assert
+        assertThat(swipeEndDirections).isEqualTo(listOf(SwipeDirection.StartToEnd))
+    }
+
+    @Test
+    fun `should call onSwipeEnd when flinging from end to start with Dismiss behaviour`() = runComposeTest {
+        // Arrange
+        val swipeEndDirections = mutableListOf<SwipeDirection>()
+
+        setContentWithTheme {
+            TestSwipeableRow(
+                onSwipeEnd = { swipeEndDirections.add(it) },
+            )
+        }
+
+        // Act
+        onNodeWithTag(TEST_TAG).performTouchInput {
+            swipeWithVelocity(
+                start = center,
+                end = Offset(center.x - FLING_SHORT_DISTANCE, center.y),
+                endVelocity = FLING_HIGH_VELOCITY,
+            )
+        }
+        waitForIdle()
+
+        // Assert
+        assertThat(swipeEndDirections).isEqualTo(listOf(SwipeDirection.EndToStart))
+    }
+
+    @Test
+    fun `should call onSwipeEnd when flinging from start to end with Reveal behaviour`() = runComposeTest {
+        // Arrange
+        val swipeEndDirections = mutableListOf<SwipeDirection>()
+
+        setContentWithTheme {
+            TestSwipeableRow(
+                startToEndBehaviour = SwipeBehaviour.Reveal(),
+                endToStartBehaviour = SwipeBehaviour.Disabled,
+                onSwipeEnd = { swipeEndDirections.add(it) },
+            )
+        }
+
+        // Act
+        onNodeWithTag(TEST_TAG).performTouchInput {
+            swipeWithVelocity(
+                start = center,
+                end = Offset(center.x + FLING_SHORT_DISTANCE, center.y),
+                endVelocity = FLING_HIGH_VELOCITY,
+            )
+        }
+        waitForIdle()
+
+        // Assert
+        assertThat(swipeEndDirections).isEqualTo(listOf(SwipeDirection.StartToEnd))
+    }
+
+    @Test
+    fun `should call onSwipeEnd when flinging from end to start with Reveal behaviour`() = runComposeTest {
+        // Arrange
+        val swipeEndDirections = mutableListOf<SwipeDirection>()
+
+        setContentWithTheme {
+            TestSwipeableRow(
+                startToEndBehaviour = SwipeBehaviour.Disabled,
+                endToStartBehaviour = SwipeBehaviour.Reveal(),
+                onSwipeEnd = { swipeEndDirections.add(it) },
+            )
+        }
+
+        // Act
+        onNodeWithTag(TEST_TAG).performTouchInput {
+            swipeWithVelocity(
+                start = center,
+                end = Offset(center.x - FLING_SHORT_DISTANCE, center.y),
+                endVelocity = FLING_HIGH_VELOCITY,
+            )
+        }
+        waitForIdle()
+
+        // Assert
+        assertThat(swipeEndDirections).isEqualTo(listOf(SwipeDirection.EndToStart))
+    }
+
+    @Test
+    fun `should not call onSwipeEnd when flinging in a disabled direction`() = runComposeTest {
+        // Arrange
+        val swipeEndDirections = mutableListOf<SwipeDirection>()
+
+        setContentWithTheme {
+            TestSwipeableRow(
+                startToEndBehaviour = SwipeBehaviour.Disabled,
+                onSwipeEnd = { swipeEndDirections.add(it) },
+            )
+        }
+
+        // Act
+        onNodeWithTag(TEST_TAG).performTouchInput {
+            swipeWithVelocity(
+                start = center,
+                end = Offset(center.x + FLING_SHORT_DISTANCE, center.y),
+                endVelocity = FLING_HIGH_VELOCITY,
+            )
+        }
+        waitForIdle()
+
+        // Assert
+        assertThat(swipeEndDirections).isEmpty()
+    }
+
+    @Test
+    fun `when gesturesEnabled is false, should not call onSwipeEnd when flinging`() = runComposeTest {
+        // Arrange
+        val swipeEndDirections = mutableListOf<SwipeDirection>()
+
+        setContentWithTheme {
+            TestSwipeableRow(
+                gesturesEnabled = false,
+                onSwipeEnd = { swipeEndDirections.add(it) },
+            )
+        }
+
+        // Act
+        onNodeWithTag(TEST_TAG).performTouchInput {
+            swipeWithVelocity(
+                start = center,
+                end = Offset(center.x + FLING_SHORT_DISTANCE, center.y),
+                endVelocity = FLING_HIGH_VELOCITY,
+            )
+        }
+        waitForIdle()
+
+        // Assert
+        assertThat(swipeEndDirections).isEmpty()
+    }
+
+    @Test
+    fun `should not call onSwipeEnd when flinging with low velocity and high Dismiss threshold`() = runComposeTest {
+        // Arrange
+        val swipeEndDirections = mutableListOf<SwipeDirection>()
+
+        setContentWithTheme {
+            TestSwipeableRow(
+                startToEndBehaviour = SwipeBehaviour.Dismiss(threshold = FLING_HIGH_THRESHOLD),
+                endToStartBehaviour = SwipeBehaviour.Disabled,
+                onSwipeEnd = { swipeEndDirections.add(it) },
+            )
+        }
+
+        // Act
+        onNodeWithTag(TEST_TAG).performTouchInput {
+            swipeWithVelocity(
+                start = center,
+                end = Offset(center.x + FLING_SHORT_DISTANCE, center.y),
+                endVelocity = FLING_LOW_VELOCITY,
+            )
+        }
+        waitForIdle()
+
+        // Assert
+        assertThat(swipeEndDirections).isEmpty()
+    }
+
+    @Test
+    fun `should not call onSwipeEnd when flinging with low velocity and high Reveal threshold`() = runComposeTest {
+        // Arrange
+        val swipeEndDirections = mutableListOf<SwipeDirection>()
+
+        setContentWithTheme {
+            TestSwipeableRow(
+                startToEndBehaviour = SwipeBehaviour.Reveal(threshold = FLING_HIGH_THRESHOLD),
+                endToStartBehaviour = SwipeBehaviour.Disabled,
+                onSwipeEnd = { swipeEndDirections.add(it) },
+            )
+        }
+
+        // Act
+        onNodeWithTag(TEST_TAG).performTouchInput {
+            swipeWithVelocity(
+                start = center,
+                end = Offset(center.x + FLING_SHORT_DISTANCE, center.y),
+                endVelocity = FLING_LOW_VELOCITY,
+            )
+        }
+        waitForIdle()
+
+        // Assert
+        assertThat(swipeEndDirections).isEmpty()
+    }
+    // endregion [ Fling verifications ]
+
     private companion object {
         const val TEST_TAG = "swipeableRow"
+        const val BACKGROUND_TEST_TAG = "backgroundContent"
+        const val FLING_HIGH_VELOCITY = 5_000f
+        const val FLING_LOW_VELOCITY = 200f
+        const val FLING_SHORT_DISTANCE = 100f
+        const val FLING_HIGH_THRESHOLD = 0.9f
     }
 }
 
 @Composable
 private fun TestSwipeableRow(
-    enableDismissFromStartToEnd: Boolean = true,
-    enableDismissFromEndToStart: Boolean = true,
+    startToEndBehaviour: SwipeBehaviour = SwipeBehaviour.Dismiss(),
+    endToStartBehaviour: SwipeBehaviour = SwipeBehaviour.Dismiss(),
     gesturesEnabled: Boolean = true,
     accessibilityActions: ImmutableList<SwipeDirectionAccessibilityAction> = persistentListOf(),
     onSwipeEnd: (SwipeDirection) -> Unit = {},
     onSwipeChange: (SwipeDirection) -> Unit = {},
 ) {
-    val state = rememberSwipeableRowState(accessibilityActions = accessibilityActions)
+    val state = rememberSwipeableRowState(
+        startToEndBehaviour = startToEndBehaviour,
+        endToStartBehaviour = endToStartBehaviour,
+        accessibilityActions = accessibilityActions,
+    )
     SwipeableRow(
         state = state,
-        backgroundContent = { direction ->
+        backgroundContent = {
             Surface(
                 color = MainTheme.colors.primaryContainer,
                 contentColor = MainTheme.colors.onPrimaryContainer,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag("backgroundContent"),
             ) {
                 Row {
                     TextBodyLarge(
-                        text = "Background Element (${direction.name.lowercase()})",
+                        text = "Background Element",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = MainTheme.spacings.quadruple, horizontal = MainTheme.spacings.double),
-                        textAlign = when (direction) {
-                            SwipeDirection.StartToEnd -> TextAlign.Start
-                            SwipeDirection.EndToStart -> TextAlign.End
-                            SwipeDirection.Settled -> TextAlign.Unspecified
-                        },
                     )
                 }
             }
@@ -380,8 +754,6 @@ private fun TestSwipeableRow(
             .testTag("swipeableRow")
             .fillMaxWidth()
             .height(80.dp),
-        enableDismissFromStartToEnd = enableDismissFromStartToEnd,
-        enableDismissFromEndToStart = enableDismissFromEndToStart,
         gesturesEnabled = gesturesEnabled,
         onSwipeEnd = onSwipeEnd,
         onSwipeChange = onSwipeChange,
