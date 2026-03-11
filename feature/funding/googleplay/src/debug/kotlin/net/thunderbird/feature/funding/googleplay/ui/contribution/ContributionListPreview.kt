@@ -15,7 +15,7 @@ internal fun ContributionListPreview() {
             state = ContributionListState(
                 oneTimeContributions = FakeData.oneTimeContributions,
                 recurringContributions = FakeData.recurringContributions,
-                selectedContribution = FakeData.recurringContributions.first(),
+                selectedContributionId = FakeData.recurringContributions.first().id,
                 isRecurringContributionSelected = true,
                 isLoading = false,
             ),
@@ -35,7 +35,7 @@ internal fun ContributionListRecurringPreview() {
             state = ContributionListState(
                 oneTimeContributions = FakeData.oneTimeContributions,
                 recurringContributions = FakeData.recurringContributions,
-                selectedContribution = FakeData.oneTimeContributions.last(),
+                selectedContributionId = FakeData.oneTimeContributions.last().id,
                 isRecurringContributionSelected = false,
                 isLoading = false,
             ),
@@ -55,7 +55,7 @@ internal fun ContributionListOneTimeOnlyPreview() {
             state = ContributionListState(
                 oneTimeContributions = FakeData.oneTimeContributions,
                 recurringContributions = persistentListOf(),
-                selectedContribution = null,
+                selectedContributionId = null,
                 isRecurringContributionSelected = false,
                 isLoading = false,
             ),
@@ -75,7 +75,7 @@ internal fun ContributionListRecurringOnlyPreview() {
             state = ContributionListState(
                 oneTimeContributions = persistentListOf(),
                 recurringContributions = FakeData.recurringContributions,
-                selectedContribution = null,
+                selectedContributionId = null,
                 isRecurringContributionSelected = true,
                 isLoading = false,
             ),
@@ -95,7 +95,7 @@ internal fun ContributionListEmptyPreview() {
             state = ContributionListState(
                 oneTimeContributions = persistentListOf(),
                 recurringContributions = persistentListOf(),
-                selectedContribution = null,
+                selectedContributionId = null,
                 isRecurringContributionSelected = false,
                 isLoading = false,
             ),
@@ -115,7 +115,7 @@ internal fun ContributionListLoadingPreview() {
             state = ContributionListState(
                 oneTimeContributions = persistentListOf(),
                 recurringContributions = persistentListOf(),
-                selectedContribution = null,
+                selectedContributionId = null,
                 isRecurringContributionSelected = false,
                 isLoading = true,
             ),
@@ -135,7 +135,7 @@ internal fun ContributionListErrorPreview() {
             state = ContributionListState(
                 oneTimeContributions = persistentListOf(),
                 recurringContributions = persistentListOf(),
-                selectedContribution = null,
+                selectedContributionId = null,
                 isRecurringContributionSelected = false,
                 isLoading = false,
                 error = FundingDomainContract.ContributionError.UnknownError(

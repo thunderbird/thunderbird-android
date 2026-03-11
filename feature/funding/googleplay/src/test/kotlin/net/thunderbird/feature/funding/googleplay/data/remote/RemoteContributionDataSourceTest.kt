@@ -5,8 +5,10 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 import org.junit.Test
@@ -14,23 +16,26 @@ import org.junit.Test
 class RemoteContributionDataSourceTest {
     private val billingConnector = FakeBillingConnector()
     private val billingClient = FakeBillingClient()
+    private val logger = TestLogger()
+
     private val testSubject = RemoteContributionDataSource(
         billingConnector,
         billingClient,
+        logger,
     )
 
     @Test
     fun `getAllOneTime should return outcome from billingClient`() = runTest {
         // Arrange
-        val productIds = listOf("one_time_1")
+        val contributionIds = listOf(ContributionId("one_time_1"))
         val contributions = listOf(
-            OneTimeContribution("id", "title", "desc", 100L, "$1.00"),
+            OneTimeContribution(ContributionId("id"), "title", "desc", 100L, "$1.00"),
         )
         val expectedOutcome = Outcome.success(contributions)
         billingClient.oneTimeOutcome = expectedOutcome
 
         // Act
-        val result = testSubject.getAllOneTime(productIds).first()
+        val result = testSubject.getAllOneTime(contributionIds).first()
 
         // Assert
         assertThat(result).isEqualTo(expectedOutcome)
@@ -39,15 +44,15 @@ class RemoteContributionDataSourceTest {
     @Test
     fun `getAllRecurring should return outcome from billingClient`() = runTest {
         // Arrange
-        val productIds = listOf("recurring_1")
+        val contributionIds = listOf(ContributionId("recurring_1"))
         val contributions = listOf(
-            RecurringContribution("id", "title", "desc", 1000L, "$10.00"),
+            RecurringContribution(ContributionId("id"), "title", "desc", 1000L, "$10.00"),
         )
         val expectedOutcome = Outcome.success(contributions)
         billingClient.recurringOutcome = expectedOutcome
 
         // Act
-        val result = testSubject.getAllRecurring(productIds).first()
+        val result = testSubject.getAllRecurring(contributionIds).first()
 
         // Assert
         assertThat(result).isEqualTo(expectedOutcome)
@@ -56,12 +61,12 @@ class RemoteContributionDataSourceTest {
     @Test
     fun `getAllOneTime should return failure when billingClient fails`() = runTest {
         // Arrange
-        val productIds = listOf("one_time_1")
+        val contributionIds = listOf(ContributionId("one_time_1"))
         val expectedOutcome = Outcome.failure(ContributionError.UnknownError("error"))
         billingClient.oneTimeOutcome = expectedOutcome
 
         // Act
-        val result = testSubject.getAllOneTime(productIds).first()
+        val result = testSubject.getAllOneTime(contributionIds).first()
 
         // Assert
         assertThat(result).isInstanceOf(Outcome.Failure::class)
@@ -71,8 +76,8 @@ class RemoteContributionDataSourceTest {
     @Test
     fun `getAllPurchased should combine one-time and recurring purchases`() = runTest {
         // Arrange
-        val oneTime = OneTimeContribution("ot1", "OneTime", "Desc", 100L, "$1.00")
-        val recurring = RecurringContribution("rec1", "Recurring", "Desc", 1000L, "$10.00")
+        val oneTime = OneTimeContribution(ContributionId("ot1"), "OneTime", "Desc", 100L, "$1.00")
+        val recurring = RecurringContribution(ContributionId("rec1"), "Recurring", "Desc", 1000L, "$10.00")
 
         billingClient.purchasedRecurringOutcome = Outcome.success(listOf(recurring))
         billingClient.purchaseHistoryOutcome = Outcome.success(oneTime)
@@ -90,7 +95,7 @@ class RemoteContributionDataSourceTest {
     @Test
     fun `getAllPurchased should return one-time when no recurring purchases`() = runTest {
         // Arrange
-        val oneTime = OneTimeContribution("ot1", "OneTime", "Desc", 100L, "$1.00")
+        val oneTime = OneTimeContribution(ContributionId("ot1"), "OneTime", "Desc", 100L, "$1.00")
 
         billingClient.purchasedRecurringOutcome = Outcome.success(emptyList())
         billingClient.purchaseHistoryOutcome = Outcome.success(oneTime)
@@ -135,12 +140,12 @@ class RemoteContributionDataSourceTest {
     @Test
     fun `purchaseContribution should delegate to billingClient`() = runTest {
         // Arrange
-        val contribution = OneTimeContribution("ot1", "OneTime", "Desc", 100L, "$1.00")
+        val contributionId = ContributionId("ot1")
         val expectedOutcome = Outcome.success(Unit)
         billingClient.purchaseOutcome = expectedOutcome
 
         // Act
-        val result = testSubject.purchaseContribution(contribution)
+        val result = testSubject.purchaseContribution(contributionId)
 
         // Assert
         assertThat(result).isEqualTo(expectedOutcome)
@@ -149,11 +154,11 @@ class RemoteContributionDataSourceTest {
     @Test
     fun `purchaseContribution should return failure when connection fails`() = runTest {
         // Arrange
-        val contribution = OneTimeContribution("ot1", "OneTime", "Desc", 100L, "$1.00")
+        val contributionId = ContributionId("ot1")
         billingConnector.connectOutcome = Outcome.failure(ContributionError.ServiceDisconnected("Disconnected"))
 
         // Act
-        val result = testSubject.purchaseContribution(contribution)
+        val result = testSubject.purchaseContribution(contributionId)
 
         // Assert
         assertThat(result).isInstanceOf(Outcome.Failure::class)

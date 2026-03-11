@@ -7,6 +7,7 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
@@ -15,14 +16,16 @@ internal class FakeContributionRepository : FundingDomainContract.ContributionRe
     var oneTimeFlow: Flow<Outcome<List<OneTimeContribution>, ContributionError>> =
         flowOf(Outcome.success(emptyList()))
 
-    override fun getAllOneTime(productIds: List<String>): Flow<Outcome<List<OneTimeContribution>, ContributionError>> =
+    override fun getAllOneTime(
+        contributionIds: List<ContributionId>,
+    ): Flow<Outcome<List<OneTimeContribution>, ContributionError>> =
         oneTimeFlow
 
     var recurringFlow: Flow<Outcome<List<RecurringContribution>, ContributionError>> =
         flowOf(Outcome.success(emptyList()))
 
     override fun getAllRecurring(
-        productIds: List<String>,
+        contributionIds: List<ContributionId>,
     ): Flow<Outcome<List<RecurringContribution>, ContributionError>> = recurringFlow
 
     var purchasedFlow: Flow<Outcome<List<Contribution>, ContributionError>> =
@@ -35,7 +38,7 @@ internal class FakeContributionRepository : FundingDomainContract.ContributionRe
         Outcome.success(null),
     )
 
-    override suspend fun purchaseContribution(contribution: Contribution) =
+    override suspend fun purchaseContribution(contributionId: ContributionId) =
         Outcome.success(Unit)
 
     override fun clear() = Unit

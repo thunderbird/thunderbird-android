@@ -6,13 +6,13 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
 internal class FakeBillingClient : FundingDataContract.Remote.BillingClient {
 
     // Configuration
-    var connectOutcome: Outcome<Unit, ContributionError> = Outcome.success(Unit)
     var oneTimeOutcome: Outcome<List<OneTimeContribution>, ContributionError> =
         Outcome.success(emptyList())
     var recurringOutcome: Outcome<List<RecurringContribution>, ContributionError> =
@@ -58,6 +58,6 @@ internal class FakeBillingClient : FundingDataContract.Remote.BillingClient {
         purchaseHistoryOutcome
 
     override suspend fun purchaseContribution(
-        contribution: Contribution,
+        contributionId: ContributionId,
     ): Outcome<Unit, ContributionError> = purchaseOutcome
 }

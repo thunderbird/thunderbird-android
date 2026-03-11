@@ -32,6 +32,7 @@ import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
@@ -70,7 +71,7 @@ internal class BillingClient(
         return oneTimeProductsResult.billingResult.mapToOutcome {
             oneTimeProductsResult.productDetailsList.orEmpty().map {
                 val contribution = productMapper.mapToOneTimeContribution(it)
-                productCache[it.productId] = it
+                productCache[ContributionId(it.productId)] = it
                 contribution
             }
         }.mapFailure { billingError, _ ->
@@ -88,7 +89,7 @@ internal class BillingClient(
         return recurringProductsResult.billingResult.mapToOutcome {
             recurringProductsResult.productDetailsList.orEmpty().map {
                 val contribution = productMapper.mapToRecurringContribution(it)
-                productCache[it.productId] = it
+                productCache[ContributionId(it.productId)] = it
                 contribution
             }
         }.mapFailure { billingError, _ ->
@@ -138,11 +139,11 @@ internal class BillingClient(
         return purchasesResult.billingResult.mapToOutcome {
             val recentPurchaseId =
                 purchasesResult.purchaseHistoryRecordList.orEmpty().firstOrNull()?.products?.firstOrNull {
-                    productCache.hasKey(it)
+                    productCache.hasKey(ContributionId(it))
                 }
 
             if (recentPurchaseId != null) {
-                val recentPurchase = productCache[recentPurchaseId]
+                val recentPurchase = productCache[ContributionId(recentPurchaseId)]
                 productMapper.mapToOneTimeContribution(recentPurchase!!)
             } else {
                 logger.error(message = { "No recent purchase found: ${purchasesResult.billingResult.debugMessage}" })
@@ -189,13 +190,13 @@ internal class BillingClient(
         return clientProvider.current.queryPurchasesAsync(queryPurchaseParams)
     }
 
-    override suspend fun purchaseContribution(contribution: Contribution): Outcome<Unit, ContributionError> {
-        val productDetails = productCache[contribution.id]
+    override suspend fun purchaseContribution(contributionId: ContributionId): Outcome<Unit, ContributionError> {
+        val productDetails = productCache[contributionId]
         val activity = activityProvider.getCurrent()
 
         return when {
             productDetails == null -> Outcome.failure(
-                ContributionError.PurchaseFailed("ProductDetails not found: ${contribution.id}"),
+                ContributionError.PurchaseFailed("ProductDetails not found for contributionId: $contributionId"),
             )
 
             activity == null -> Outcome.failure(

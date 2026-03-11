@@ -7,6 +7,8 @@ import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionPreselection
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
@@ -29,7 +31,8 @@ internal class ContributionContract {
     data class ContributionListState(
         val oneTimeContributions: ImmutableList<OneTimeContribution> = persistentListOf(),
         val recurringContributions: ImmutableList<RecurringContribution> = persistentListOf(),
-        val selectedContribution: Contribution? = null,
+        val preselection: ContributionPreselection = ContributionPreselection(null, null),
+        val selectedContributionId: ContributionId? = null,
         val isRecurringContributionSelected: Boolean = true,
 
         override val error: ContributionError? = null,
@@ -43,7 +46,7 @@ internal class ContributionContract {
         data object OnShowContributionListClicked : Event
 
         data class OnContributionItemClicked(
-            val item: Contribution,
+            val contributionId: ContributionId,
         ) : Event
 
         data object OnPurchaseClicked : Event

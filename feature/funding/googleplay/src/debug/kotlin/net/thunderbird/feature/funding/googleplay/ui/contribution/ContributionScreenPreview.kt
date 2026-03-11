@@ -19,7 +19,7 @@ fun ContributionScreenPreview() {
                         listState = ContributionListState(
                             recurringContributions = FakeData.recurringContributions,
                             oneTimeContributions = FakeData.oneTimeContributions,
-                            selectedContribution = FakeData.recurringContributions.first(),
+                            selectedContributionId = FakeData.recurringContributions.first().id,
                         ),
                     ),
                 )

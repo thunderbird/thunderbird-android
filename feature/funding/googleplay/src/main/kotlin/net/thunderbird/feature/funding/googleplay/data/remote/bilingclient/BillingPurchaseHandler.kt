@@ -15,6 +15,7 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
@@ -143,8 +144,8 @@ internal class BillingPurchaseHandler(
             return emptyList()
         }
 
-        return purchase.products.mapNotNull { product ->
-            productCache[product]
+        return purchase.products.mapNotNull { productId ->
+            productCache[ContributionId(productId)]
         }.filter { it.productType == BillingClient.ProductType.INAPP }
             .map { productMapper.mapToOneTimeContribution(it) }
     }
@@ -154,8 +155,8 @@ internal class BillingPurchaseHandler(
             return emptyList()
         }
 
-        return purchase.products.mapNotNull { product ->
-            productCache[product]
+        return purchase.products.mapNotNull { productId ->
+            productCache[ContributionId(productId)]
         }.filter { it.productType == BillingClient.ProductType.SUBS }
             .map { productMapper.mapToRecurringContribution(it) }
     }

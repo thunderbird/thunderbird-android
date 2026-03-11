@@ -20,7 +20,7 @@ internal class ContributionStateTest {
                 listState = ContributionListState(
                     recurringContributions = persistentListOf(),
                     oneTimeContributions = persistentListOf(),
-                    selectedContribution = null,
+                    selectedContributionId = null,
                     isRecurringContributionSelected = true,
                     error = null,
                     isLoading = true,

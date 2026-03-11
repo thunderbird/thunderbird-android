@@ -7,9 +7,8 @@ import net.thunderbird.core.outcome.handle
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.UseCase
-import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
-import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Effect
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Event
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.State
@@ -65,14 +64,18 @@ internal class ContributionViewModel(
             outcome.handle(
                 onSuccess = { data ->
                     updateState { state ->
-                        val selectedContribution = selectContribution(data)
+                        val selectedContributionId = state.listState.selectedContributionId ?: data.preselection.select(
+                            isRecurring = state.listState.isRecurringContributionSelected,
+                        )
+                        val isRecurringContributionSelected = selectedContributionId == data.preselection.recurringId
 
                         state.copy(
                             listState = state.listState.copy(
                                 oneTimeContributions = data.oneTimeContributions.toImmutableList(),
                                 recurringContributions = data.recurringContributions.toImmutableList(),
-                                selectedContribution = selectedContribution,
-                                isRecurringContributionSelected = selectedContribution is RecurringContribution,
+                                preselection = data.preselection,
+                                selectedContributionId = selectedContributionId,
+                                isRecurringContributionSelected = isRecurringContributionSelected,
                                 isLoading = false,
                             ),
                             purchasedContribution = data.purchasedContribution,
@@ -95,29 +98,11 @@ internal class ContributionViewModel(
         }
     }
 
-    private fun selectContribution(data: AvailableContributions): Contribution? {
-        val hasSelectedContribution = state.value.listState.selectedContribution != null &&
-            (
-                data.oneTimeContributions.contains(state.value.listState.selectedContribution) ||
-                    data.recurringContributions.contains(state.value.listState.selectedContribution)
-                )
-
-        return if (hasSelectedContribution) {
-            state.value.listState.selectedContribution
-        } else {
-            if (state.value.listState.isRecurringContributionSelected) {
-                data.recurringContributions.getSecondLowestOrNull()
-            } else {
-                data.oneTimeContributions.getSecondLowestOrNull()
-            }
-        }
-    }
-
     override fun event(event: Event) {
         when (event) {
             Event.OnOneTimeContributionSelected -> onOneTimeContributionSelected()
             Event.OnRecurringContributionSelected -> onRecurringContributionSelected()
-            is Event.OnContributionItemClicked -> onContributionItemClicked(event.item)
+            is Event.OnContributionItemClicked -> onContributionItemClicked(event.contributionId)
             is Event.OnPurchaseClicked -> onPurchaseClicked()
             is Event.OnManagePurchaseClicked -> onManagePurchaseClicked(event.contribution)
             Event.OnShowContributionListClicked -> onShowContributionListClicked()
@@ -136,7 +121,7 @@ internal class ContributionViewModel(
             it.copy(
                 listState = it.listState.copy(
                     isRecurringContributionSelected = false,
-                    selectedContribution = it.listState.oneTimeContributions.getSecondLowestOrNull(),
+                    selectedContributionId = it.listState.preselection.oneTimeId,
                 ),
                 showContributionList = true,
             )
@@ -148,33 +133,25 @@ internal class ContributionViewModel(
             it.copy(
                 listState = it.listState.copy(
                     isRecurringContributionSelected = true,
-                    selectedContribution = it.listState.recurringContributions.getSecondLowestOrNull(),
+                    selectedContributionId = it.listState.preselection.recurringId,
                 ),
                 showContributionList = true,
             )
         }
     }
 
-    private fun List<Contribution>.getSecondLowestOrNull(): Contribution? {
-        return when {
-            this.size > 1 -> this.sortedBy { it.price }[1]
-            this.size == 1 -> this[0]
-            else -> null
-        }
-    }
-
-    private fun onContributionItemClicked(item: Contribution) {
+    private fun onContributionItemClicked(contributionId: ContributionId) {
         updateState {
             it.copy(
                 listState = it.listState.copy(
-                    selectedContribution = item,
+                    selectedContributionId = contributionId,
                 ),
             )
         }
     }
 
     private fun onPurchaseClicked() {
-        val selectedContribution = state.value.listState.selectedContribution ?: return
+        val selectedContributionId = state.value.listState.selectedContributionId ?: return
 
         updateState {
             it.copy(
@@ -187,7 +164,7 @@ internal class ContributionViewModel(
             Effect.PurchaseContribution(
                 startPurchaseFlow = {
                     viewModelScope.launch {
-                        repository.purchaseContribution(selectedContribution).handle(
+                        repository.purchaseContribution(selectedContributionId).handle(
                             onSuccess = {
                                 // we need to wait for the callback to be called
                             },
@@ -209,7 +186,7 @@ internal class ContributionViewModel(
     }
 
     private fun onManagePurchaseClicked(contribution: Contribution) {
-        emitEffect(Effect.ManageSubscription(contribution.id))
+        emitEffect(Effect.ManageSubscription(contribution.id.value))
     }
 
     private fun onShowContributionListClicked() {
