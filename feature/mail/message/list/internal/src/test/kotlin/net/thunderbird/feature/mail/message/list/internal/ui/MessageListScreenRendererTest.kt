@@ -312,7 +312,7 @@ class MessageListScreenRendererTest : ComposeTest() {
             setupTestSubjectComposable(messages = listOf(message))
 
             // Assert - the sender name should be displayed
-            onNodeWithText(message.senders.first().name, substring = true, useUnmergedTree = true)
+            onNodeWithText(message.senders.displayName, substring = true, useUnmergedTree = true)
                 .assertIsDisplayed()
         }
 
@@ -326,7 +326,7 @@ class MessageListScreenRendererTest : ComposeTest() {
             setupTestSubjectComposable(messages = listOf(message))
 
             // Assert - the sender name should be displayed
-            onNodeWithText(message.senders.first().name, substring = true, useUnmergedTree = true)
+            onNodeWithText(message.senders.displayName, substring = true, useUnmergedTree = true)
                 .assertIsDisplayed()
         }
 
@@ -340,22 +340,7 @@ class MessageListScreenRendererTest : ComposeTest() {
             setupTestSubjectComposable(messages = listOf(message))
 
             // Assert - the sender name should be displayed
-            onNodeWithText(message.senders.first().name, substring = true, useUnmergedTree = true)
-                .assertIsDisplayed()
-        }
-
-    @Test
-    fun `MessageListScreen-MessageListItem - when showSendersName is false - should display email instead of name`() =
-        runComposeTest {
-            // Arrange
-            val message = MessagePreviewHelper.createMessage()
-            setupTestSubjectComposable(
-                messages = listOf(message),
-                preferences = createPreferences(showCorrespondentNames = false),
-            )
-
-            // Assert - should display email instead of name
-            onNodeWithText(message.senders.first().email, substring = true, useUnmergedTree = true)
+            onNodeWithText(message.senders.displayName, substring = true, useUnmergedTree = true)
                 .assertIsDisplayed()
         }
 
@@ -420,7 +405,7 @@ class MessageListScreenRendererTest : ComposeTest() {
 
             // Act - click on the avatar area (the leading/avatar section)
             onNodeWithText(
-                message.senders.first().avatar.let {
+                message.senders.avatar.let {
                     (it as? Avatar.Monogram)?.value ?: ""
                 },
                 useUnmergedTree = true,

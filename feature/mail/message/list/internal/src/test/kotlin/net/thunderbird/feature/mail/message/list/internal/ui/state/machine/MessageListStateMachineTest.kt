@@ -35,7 +35,7 @@ import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListSearchEvent
 import net.thunderbird.feature.mail.message.list.ui.state.Account
-import net.thunderbird.feature.mail.message.list.ui.state.EmailIdentity
+import net.thunderbird.feature.mail.message.list.ui.state.ComposedAddressUi
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemAttachment
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi.State
@@ -689,8 +689,7 @@ private fun createMessageUiItem(
     id: String,
     folderId: String = "mock",
     accountId: AccountId = AccountIdFactory.create(),
-    senders: ImmutableList<EmailIdentity> = persistentListOf(),
-    recipients: ImmutableList<EmailIdentity> = persistentListOf(),
+    senders: ComposedAddressUi = ComposedAddressUi(displayName = "sender"),
     subject: String = "mock subject",
     excerpt: String = "mock excerpt",
     formattedReceivedAt: String = "Jan 2026",
@@ -707,7 +706,6 @@ private fun createMessageUiItem(
     folderId = folderId,
     account = Account(id = accountId, color = Color.Unspecified),
     senders = senders,
-    recipients = recipients,
     subject = subject,
     excerpt = excerpt,
     formattedReceivedAt = formattedReceivedAt,
