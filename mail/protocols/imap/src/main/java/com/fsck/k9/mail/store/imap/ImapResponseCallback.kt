@@ -1,8 +1,8 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
-import com.fsck.k9.mail.filter.FixedLengthInputStream;
+import com.fsck.k9.mail.filter.FixedLengthInputStream
 
-public interface ImapResponseCallback {
+internal fun interface ImapResponseCallback {
     /**
      * Callback method that is called by the parser when a literal string
      * is found in an IMAP response.
@@ -20,5 +20,6 @@ public interface ImapResponseCallback {
      *                   and the exception will be thrown after the
      *                   complete IMAP response has been parsed.
      */
-    Object foundLiteral(ImapResponse response, FixedLengthInputStream literal) throws Exception;
+    @Throws(Exception::class)
+    fun foundLiteral(response: ImapResponse, literal: FixedLengthInputStream): Any?
 }
