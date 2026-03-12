@@ -9,7 +9,7 @@ import net.thunderbird.core.logging.Logger
 /**
  * A test logger that captures all log events in a list.
  */
-class TestLogger() : Logger {
+class TestLogger : Logger {
 
     val events: MutableList<LogEvent> = mutableListOf()
 
@@ -91,6 +91,33 @@ class TestLogger() : Logger {
                 timestamp = TIMESTAMP,
             ),
         )
+    }
+
+    /**
+     * Outputs all collected log events to standard output.
+     *
+     * Each log event is formatted with its log level prefix (first letter uppercase followed by colon),
+     * the log message, and optionally the stack trace of any associated throwable.
+     * Multi-line messages are indented to align with the content after the log level prefix.
+     * Stack traces are indented twice the length of the log level prefix.
+     */
+    fun dump() {
+        events.forEach { event ->
+            val composedLog = buildString {
+                val logLevel = "${event.level.toString().take(1).uppercase()}: "
+                append(logLevel)
+                val firstLine = event.message.takeWhile { it != '\n' }
+                val rest = event.message.drop(firstLine.length)
+                append(firstLine)
+                appendLine(rest.prependIndent(" ".repeat(logLevel.length)))
+
+                event.throwable?.let {
+                    appendLine(it.stackTraceToString().prependIndent(" ".repeat(logLevel.length * 2)))
+                }
+            }
+
+            print(composedLog)
+        }
     }
 
     companion object {
