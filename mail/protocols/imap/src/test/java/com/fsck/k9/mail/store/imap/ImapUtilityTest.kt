@@ -1,155 +1,144 @@
-/*
- * Copyright (C) 2012 The K-9 Dog Walkers
- * Copyright (C) 2011 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package com.fsck.k9.mail.store.imap
 
-package com.fsck.k9.mail.store.imap;
+import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.isEmpty
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
+import org.junit.Before
+import org.junit.Test
 
-
-import java.util.List;
-
-import net.thunderbird.core.logging.legacy.Log;
-import net.thunderbird.core.logging.testing.TestLogger;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertArrayEquals;
-
-
-public class ImapUtilityTest  {
+class ImapUtilityTest {
 
     @Before
-    public void setUp() {
-        Log.logger = new TestLogger();
+    fun setUp() {
+        Log.logger = TestLogger()
     }
 
     @Test
-    public void testGetImapSequenceValues() {
-        String[] expected;
-        List<String> actual;
-
-        // Test valid sets
-        expected = new String[] {"1"};
-        actual = ImapUtility.getImapSequenceValues("1");
-        assertArrayEquals(expected, actual.toArray());
-
-        expected = new String[] {"2147483648"};     // Integer.MAX_VALUE + 1
-        actual = ImapUtility.getImapSequenceValues("2147483648");
-        assertArrayEquals(expected, actual.toArray());
-
-        expected = new String[] {"4294967295"};     // 2^32 - 1
-        actual = ImapUtility.getImapSequenceValues("4294967295");
-        assertArrayEquals(expected, actual.toArray());
-
-        expected = new String[] {"1", "3", "2"};
-        actual = ImapUtility.getImapSequenceValues("1,3,2");
-        assertArrayEquals(expected, actual.toArray());
-
-        expected = new String[] {"4", "5", "6"};
-        actual = ImapUtility.getImapSequenceValues("4:6");
-        assertArrayEquals(expected, actual.toArray());
-
-        expected = new String[] {"9", "8", "7"};
-        actual = ImapUtility.getImapSequenceValues("9:7");
-        assertArrayEquals(expected, actual.toArray());
-
-        expected = new String[] {"1", "2", "3", "4", "9", "8", "7"};
-        actual = ImapUtility.getImapSequenceValues("1,2:4,9:7");
-        assertArrayEquals(expected, actual.toArray());
-
-        // Test numbers larger than Integer.MAX_VALUE (2147483647)
-        expected = new String[] {"2147483646", "2147483647", "2147483648"};
-        actual = ImapUtility.getImapSequenceValues("2147483646:2147483648");
-        assertArrayEquals(expected, actual.toArray());
-
-        // Test partially invalid sets
-        expected = new String[] { "1", "5" };
-        actual = ImapUtility.getImapSequenceValues("1,x,5");
-        assertArrayEquals(expected, actual.toArray());
-
-        expected = new String[] { "1", "2", "3" };
-        actual = ImapUtility.getImapSequenceValues("a:d,1:3");
-        assertArrayEquals(expected, actual.toArray());
-
-        // Test invalid sets
-        expected = new String[0];
-        actual = ImapUtility.getImapSequenceValues("");
-        assertArrayEquals(expected, actual.toArray());
-
-        expected = new String[0];
-        actual = ImapUtility.getImapSequenceValues(null);
-        assertArrayEquals(expected, actual.toArray());
-
-        expected = new String[0];
-        actual = ImapUtility.getImapSequenceValues("a");
-        assertArrayEquals(expected, actual.toArray());
-
-        expected = new String[0];
-        actual = ImapUtility.getImapSequenceValues("1:x");
-        assertArrayEquals(expected, actual.toArray());
-
-        // Test values larger than 2^32 - 1
-        expected = new String[0];
-        actual = ImapUtility.getImapSequenceValues("4294967296:4294967297");
-        assertArrayEquals(expected, actual.toArray());
-
-        expected = new String[0];
-        actual = ImapUtility.getImapSequenceValues("4294967296");     // 2^32
-        assertArrayEquals(expected, actual.toArray());
+    fun `getImapSequenceValues with single value`() {
+        assertThat(ImapUtility.getImapSequenceValues("1")).containsExactly("1")
     }
 
-    @Test public void testGetImapRangeValues() {
-        String[] expected;
-        List<String> actual;
+    @Test
+    fun `getImapSequenceValues with value above Integer MAX_VALUE`() {
+        assertThat(ImapUtility.getImapSequenceValues("2147483648")).containsExactly("2147483648")
+    }
 
-        // Test valid ranges
-        expected = new String[] {"1", "2", "3"};
-        actual = ImapUtility.getImapRangeValues("1:3");
-        assertArrayEquals(expected, actual.toArray());
+    @Test
+    fun `getImapSequenceValues with max 32-bit value`() {
+        assertThat(ImapUtility.getImapSequenceValues("4294967295")).containsExactly("4294967295")
+    }
 
-        expected = new String[] {"16", "15", "14"};
-        actual = ImapUtility.getImapRangeValues("16:14");
-        assertArrayEquals(expected, actual.toArray());
+    @Test
+    fun `getImapSequenceValues with multiple values`() {
+        assertThat(ImapUtility.getImapSequenceValues("1,3,2")).containsExactly("1", "3", "2")
+    }
 
-        // Test in-valid ranges
-        expected = new String[0];
-        actual = ImapUtility.getImapRangeValues("");
-        assertArrayEquals(expected, actual.toArray());
+    @Test
+    fun `getImapSequenceValues with ascending range`() {
+        assertThat(ImapUtility.getImapSequenceValues("4:6")).containsExactly("4", "5", "6")
+    }
 
-        expected = new String[0];
-        actual = ImapUtility.getImapRangeValues(null);
-        assertArrayEquals(expected, actual.toArray());
+    @Test
+    fun `getImapSequenceValues with descending range`() {
+        assertThat(ImapUtility.getImapSequenceValues("9:7")).containsExactly("9", "8", "7")
+    }
 
-        expected = new String[0];
-        actual = ImapUtility.getImapRangeValues("a");
-        assertArrayEquals(expected, actual.toArray());
+    @Test
+    fun `getImapSequenceValues with mixed values and ranges`() {
+        assertThat(ImapUtility.getImapSequenceValues("1,2:4,9:7"))
+            .containsExactly("1", "2", "3", "4", "9", "8", "7")
+    }
 
-        expected = new String[0];
-        actual = ImapUtility.getImapRangeValues("6");
-        assertArrayEquals(expected, actual.toArray());
+    @Test
+    fun `getImapSequenceValues with range crossing Integer MAX_VALUE`() {
+        assertThat(ImapUtility.getImapSequenceValues("2147483646:2147483648"))
+            .containsExactly("2147483646", "2147483647", "2147483648")
+    }
 
-        expected = new String[0];
-        actual = ImapUtility.getImapRangeValues("1:3,6");
-        assertArrayEquals(expected, actual.toArray());
+    @Test
+    fun `getImapSequenceValues with partially invalid set`() {
+        assertThat(ImapUtility.getImapSequenceValues("1,x,5")).containsExactly("1", "5")
+    }
 
-        expected = new String[0];
-        actual = ImapUtility.getImapRangeValues("1:x");
-        assertArrayEquals(expected, actual.toArray());
+    @Test
+    fun `getImapSequenceValues with invalid range and valid range`() {
+        assertThat(ImapUtility.getImapSequenceValues("a:d,1:3")).containsExactly("1", "2", "3")
+    }
 
-        expected = new String[0];
-        actual = ImapUtility.getImapRangeValues("1:*");
-        assertArrayEquals(expected, actual.toArray());
+    @Test
+    fun `getImapSequenceValues with empty string`() {
+        assertThat(ImapUtility.getImapSequenceValues("")).isEmpty()
+    }
+
+    @Test
+    fun `getImapSequenceValues with null`() {
+        assertThat(ImapUtility.getImapSequenceValues(null)).isEmpty()
+    }
+
+    @Test
+    fun `getImapSequenceValues with non-numeric string`() {
+        assertThat(ImapUtility.getImapSequenceValues("a")).isEmpty()
+    }
+
+    @Test
+    fun `getImapSequenceValues with invalid range`() {
+        assertThat(ImapUtility.getImapSequenceValues("1:x")).isEmpty()
+    }
+
+    @Test
+    fun `getImapSequenceValues with value exceeding 32 bits`() {
+        assertThat(ImapUtility.getImapSequenceValues("4294967296:4294967297")).isEmpty()
+    }
+
+    @Test
+    fun `getImapSequenceValues with single value exceeding 32 bits`() {
+        assertThat(ImapUtility.getImapSequenceValues("4294967296")).isEmpty()
+    }
+
+    @Test
+    fun `getImapRangeValues with ascending range`() {
+        assertThat(ImapUtility.getImapRangeValues("1:3")).containsExactly("1", "2", "3")
+    }
+
+    @Test
+    fun `getImapRangeValues with descending range`() {
+        assertThat(ImapUtility.getImapRangeValues("16:14")).containsExactly("16", "15", "14")
+    }
+
+    @Test
+    fun `getImapRangeValues with empty string`() {
+        assertThat(ImapUtility.getImapRangeValues("")).isEmpty()
+    }
+
+    @Test
+    fun `getImapRangeValues with null`() {
+        assertThat(ImapUtility.getImapRangeValues(null)).isEmpty()
+    }
+
+    @Test
+    fun `getImapRangeValues with non-numeric string`() {
+        assertThat(ImapUtility.getImapRangeValues("a")).isEmpty()
+    }
+
+    @Test
+    fun `getImapRangeValues with single number`() {
+        assertThat(ImapUtility.getImapRangeValues("6")).isEmpty()
+    }
+
+    @Test
+    fun `getImapRangeValues with range and extra segment`() {
+        assertThat(ImapUtility.getImapRangeValues("1:3,6")).isEmpty()
+    }
+
+    @Test
+    fun `getImapRangeValues with invalid upper bound`() {
+        assertThat(ImapUtility.getImapRangeValues("1:x")).isEmpty()
+    }
+
+    @Test
+    fun `getImapRangeValues with wildcard upper bound`() {
+        assertThat(ImapUtility.getImapRangeValues("1:*")).isEmpty()
     }
 }
