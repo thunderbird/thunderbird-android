@@ -2,11 +2,9 @@ package net.thunderbird.feature.mail.message.list.internal.ui.preview
 
 import androidx.compose.ui.graphics.Color
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.feature.mail.message.list.ui.state.Account
 import net.thunderbird.feature.mail.message.list.ui.state.Avatar
 import net.thunderbird.feature.mail.message.list.ui.state.ComposedAddressUi
-import net.thunderbird.feature.mail.message.list.ui.state.MessageItemAttachment
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 
 internal object MessagePreviewHelper {
@@ -22,8 +20,8 @@ internal object MessagePreviewHelper {
         forwarded: Boolean = false,
         encrypted: Boolean = false,
         selected: Boolean = false,
-        attachments: List<MessageItemAttachment> = emptyList(),
-        conversations: List<MessageItemUi> = emptyList(),
+        hasAttachments: Boolean = false,
+        threadCount: Int = 0,
         messageAccount: Account = AccountPreviewHelper.account,
     ) = MessageItemUi(
         state = state,
@@ -38,13 +36,13 @@ internal object MessagePreviewHelper {
         subject = subject,
         excerpt = excerpt,
         formattedReceivedAt = formattedReceivedAt,
-        attachments = attachments.toImmutableList(),
+        hasAttachments = hasAttachments,
         starred = starred,
         encrypted = encrypted,
         answered = answered,
         forwarded = forwarded,
         selected = selected,
-        conversations = conversations.toImmutableList(),
+        threadCount = threadCount,
     )
 
     val sampleMessages = persistentListOf(
@@ -73,9 +71,7 @@ internal object MessagePreviewHelper {
             subject = "Invoice #2024-0142",
             excerpt = "Please find attached the invoice for the consulting services provided in January.",
             formattedReceivedAt = "Monday",
-            attachments = listOf(
-                MessageItemAttachment(filename = "invoice_2024_0142.pdf", url = "", size = 245_000f),
-            ),
+            hasAttachments = true,
         ),
         createMessage(
             id = "msg-4",
@@ -125,23 +121,7 @@ internal object MessagePreviewHelper {
             subject = "Re: Project Architecture Discussion",
             excerpt = "I agree with your approach. Let's schedule a follow-up.",
             formattedReceivedAt = "3:15 PM",
-            conversations = listOf(
-                createMessage(
-                    id = "msg-thread-1a",
-                    state = MessageItemUi.State.Read,
-                    senderName = "Bob Smith <bob@example.com>",
-                    subject = "Re: Project Architecture Discussion",
-                    excerpt = "What about using a microservices approach?",
-                    formattedReceivedAt = "2:00 PM",
-                ),
-                createMessage(
-                    id = "msg-thread-1b",
-                    state = MessageItemUi.State.Read,
-                    subject = "Project Architecture Discussion",
-                    excerpt = "I'd like to propose a new architecture for our backend.",
-                    formattedReceivedAt = "1:00 PM",
-                ),
-            ),
+            threadCount = 2,
         ),
         createMessage(
             id = "msg-2",
