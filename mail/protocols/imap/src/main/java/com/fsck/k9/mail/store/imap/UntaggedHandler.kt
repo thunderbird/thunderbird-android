@@ -1,7 +1,8 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
-import java.io.IOException;
+import java.io.IOException
 
-interface UntaggedHandler {
-    void handleAsyncUntaggedResponse(ImapResponse response) throws IOException;
+internal fun interface UntaggedHandler {
+    @Throws(IOException::class)
+    fun handleAsyncUntaggedResponse(response: ImapResponse)
 }
