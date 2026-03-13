@@ -14,22 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.fsck.k9.mail.store.imap
 
-package com.fsck.k9.mail.store.imap;
-
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import net.thunderbird.core.logging.legacy.Log;
-import net.thunderbird.core.common.mail.Flag;
-
+import net.thunderbird.core.common.mail.Flag
+import net.thunderbird.core.logging.legacy.Log
 
 /**
  * Utility methods for use with IMAP.
  */
-class ImapUtility {
+internal object ImapUtility {
+
     /**
      * Gets all of the values in a sequence set per RFC 3501.
      *
@@ -39,34 +33,32 @@ class ImapUtility {
      *
      * <pre>
      * sequence-number = nz-number / "*"
-     * sequence-range  = sequence-number ":" sequence-number
-     * sequence-set    = (sequence-number / sequence-range) *("," sequence-set)
+     * sequence-range = sequence-number ":" sequence-number
+     * sequence-set = (sequence-number / sequence-range) *("," sequence-set)
      * </pre>
      *
-     * @param set
-     *         The sequence set string as received by the server.
-     *
+     * @param set The sequence set string as received by the server.
      * @return The list of IDs as strings in this sequence set. If the set is invalid, an empty
      *         list is returned.
      */
-    public static List<String> getImapSequenceValues(String set) {
-        List<String> list = new ArrayList<>();
+    @Suppress("NestedBlockDepth")
+    fun getImapSequenceValues(set: String?): List<String> {
+        val list = mutableListOf<String>()
         if (set != null) {
-            String[] setItems = set.split(",");
-            for (String item : setItems) {
+            val setItems = set.split(",")
+            for (item in setItems) {
                 if (item.indexOf(':') == -1) {
                     // simple item
                     if (isNumberValid(item)) {
-                        list.add(item);
+                        list.add(item)
                     }
                 } else {
                     // range
-                    list.addAll(getImapRangeValues(item));
+                    list.addAll(getImapRangeValues(item))
                 }
             }
         }
-
-        return list;
+        return list
     }
 
     /**
@@ -74,63 +66,59 @@ class ImapUtility {
      *
      * <pre>
      * sequence-number = nz-number / "*"
-     * sequence-range  = sequence-number ":" sequence-number
-     * sequence-set    = (sequence-number / sequence-range) *("," sequence-set)
+     * sequence-range = sequence-number ":" sequence-number
+     * sequence-set = (sequence-number / sequence-range) *("," sequence-set)
      * </pre>
      *
-     * @param range
-     *         The range string as received by the server.
-     *
+     * @param range The range string as received by the server.
      * @return The list of IDs as strings in this range. If the range is not valid, an empty list
      *         is returned.
      */
-    public static List<String> getImapRangeValues(String range) {
-        List<String> list = new ArrayList<>();
+    @Suppress("NestedBlockDepth")
+    fun getImapRangeValues(range: String?): List<String> {
+        val list = mutableListOf<String>()
         try {
             if (range != null) {
-                int colonPos = range.indexOf(':');
+                val colonPos = range.indexOf(':')
                 if (colonPos > 0) {
-                    long first  = Long.parseLong(range.substring(0, colonPos));
-                    long second = Long.parseLong(range.substring(colonPos + 1));
+                    val first = range.substring(0, colonPos).toLong()
+                    val second = range.substring(colonPos + 1).toLong()
                     if (is32bitValue(first) && is32bitValue(second)) {
                         if (first < second) {
-                            for (long i = first; i <= second; i++) {
-                                list.add(Long.toString(i));
+                            for (i in first..second) {
+                                list.add(i.toString())
                             }
                         } else {
-                            for (long i = first; i >= second; i--) {
-                                list.add(Long.toString(i));
+                            for (i in first downTo second) {
+                                list.add(i.toString())
                             }
                         }
                     } else {
-                        Log.d("Invalid range: %s", range);
+                        Log.d("Invalid range: %s", range)
                     }
                 }
             }
-        } catch (NumberFormatException e) {
-            Log.d(e, "Invalid range value: %s", range);
+        } catch (e: NumberFormatException) {
+            Log.d(e, "Invalid range value: %s", range)
         }
-
-        return list;
+        return list
     }
 
-    private static boolean isNumberValid(String number) {
+    private fun isNumberValid(number: String): Boolean {
         try {
-            long value = Long.parseLong(number);
+            val value = number.toLong()
             if (is32bitValue(value)) {
-                return true;
+                return true
             }
-        } catch (NumberFormatException e) {
+        } catch (_: NumberFormatException) {
             // do nothing
         }
-
-        Log.d("Invalid UID value: %s", number);
-
-        return false;
+        Log.d("Invalid UID value: %s", number)
+        return false
     }
 
-    private static boolean is32bitValue(long value) {
-        return ((value & ~0xFFFFFFFFL) == 0L);
+    private fun is32bitValue(value: Long): Boolean {
+        return (value and 0xFFFFFFFFL.inv()) == 0L
     }
 
     /**
@@ -142,57 +130,54 @@ class ImapUtility {
      *
      * Double quotes and backslash are escaped by prepending a backslash.
      *
-     * @param str
-     *         The input string (only 7-bit characters allowed).
-     *
+     * @param str The input string (only 7-bit characters allowed).
      * @return The string encoded as quoted (IMAP) string.
      */
-    //TODO use a literal string
-    public static String encodeString(String str) {
-        return "\"" + str.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
+    // TODO use a literal string
+    @JvmStatic
+    fun encodeString(str: String): String {
+        return "\"" + str.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
     }
 
-    public static ImapResponse getLastResponse(List<ImapResponse> responses) {
-        int lastIndex = responses.size() - 1;
-
-        return responses.get(lastIndex);
+    internal fun getLastResponse(responses: List<ImapResponse>): ImapResponse {
+        val lastIndex = responses.size - 1
+        return responses[lastIndex]
     }
 
-    public static String combineFlags(Iterable<Flag> flags, boolean canCreateForwardedFlag) {
-        List<String> flagNames = new ArrayList<>();
-        for (Flag flag : flags) {
+    internal fun combineFlags(flags: Iterable<Flag>, canCreateForwardedFlag: Boolean): String {
+        val flagNames = mutableListOf<String>()
+        for (flag in flags) {
             if (flag == Flag.SEEN) {
-                flagNames.add("\\Seen");
+                flagNames.add("\\Seen")
             } else if (flag == Flag.DELETED) {
-                flagNames.add("\\Deleted");
+                flagNames.add("\\Deleted")
             } else if (flag == Flag.ANSWERED) {
-                flagNames.add("\\Answered");
+                flagNames.add("\\Answered")
             } else if (flag == Flag.FLAGGED) {
-                flagNames.add("\\Flagged");
+                flagNames.add("\\Flagged")
             } else if (flag == Flag.FORWARDED && canCreateForwardedFlag) {
-                flagNames.add("$Forwarded");
+                flagNames.add("\$Forwarded")
             } else if (flag == Flag.DRAFT) {
-                flagNames.add("\\Draft");
+                flagNames.add("\\Draft")
             }
         }
-
-        return ImapUtility.join(" ", flagNames);
+        return join(" ", flagNames) ?: ""
     }
 
-    public static String join(String delimiter, Collection<? extends Object> tokens) {
+    private fun join(delimiter: String, tokens: Collection<*>?): String? {
         if (tokens == null) {
-            return null;
+            return null
         }
-        StringBuilder sb = new StringBuilder();
-        boolean firstTime = true;
-        for (Object token: tokens) {
+        val sb = StringBuilder()
+        var firstTime = true
+        for (token in tokens) {
             if (firstTime) {
-                firstTime = false;
+                firstTime = false
             } else {
-                sb.append(delimiter);
+                sb.append(delimiter)
             }
-            sb.append(token);
+            sb.append(token)
         }
-        return sb.toString();
+        return sb.toString()
     }
 }
