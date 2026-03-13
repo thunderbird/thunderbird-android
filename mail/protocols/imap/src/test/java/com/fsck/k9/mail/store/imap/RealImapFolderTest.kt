@@ -1771,7 +1771,7 @@ class RealImapFolderTest {
         val commandUids = commandUidsCaptor.allValues
 
         for (i in commandPrefixes.indices) {
-            val command = commandPrefixes[i] + " " + ImapUtility.join(",", commandUids[i]) +
+            val command = commandPrefixes[i] + " " + commandUids[i].joinToString(",") +
                 if (commandSuffixes[i].isEmpty()) "" else " " + commandSuffixes[i]
 
             if (command == expectedCommand) {

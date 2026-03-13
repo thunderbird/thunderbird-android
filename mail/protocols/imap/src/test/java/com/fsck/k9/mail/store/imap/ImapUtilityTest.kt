@@ -170,21 +170,6 @@ class ImapUtilityTest {
     }
 
     @Test
-    fun `getLastResponse returns last element`() {
-        val first = ImapResponse.newUntaggedResponse(null)
-        val last = ImapResponse.newTaggedResponse(null, "TAG")
-
-        assertThat(ImapUtility.getLastResponse(listOf(first, last))).isEqualTo(last)
-    }
-
-    @Test
-    fun `getLastResponse with single element returns that element`() {
-        val response = ImapResponse.newUntaggedResponse(null)
-
-        assertThat(ImapUtility.getLastResponse(listOf(response))).isEqualTo(response)
-    }
-
-    @Test
     fun `combineFlags with no flags returns empty string`() {
         assertThat(ImapUtility.combineFlags(emptyList(), false)).isEqualTo("")
     }

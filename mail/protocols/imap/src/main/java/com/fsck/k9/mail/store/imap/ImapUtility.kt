@@ -41,24 +41,15 @@ internal object ImapUtility {
      * @return The list of IDs as strings in this sequence set. If the set is invalid, an empty
      *         list is returned.
      */
-    @Suppress("NestedBlockDepth")
     fun getImapSequenceValues(set: String?): List<String> {
-        val list = mutableListOf<String>()
-        if (set != null) {
-            val setItems = set.split(",")
-            for (item in setItems) {
-                if (item.indexOf(':') == -1) {
-                    // simple item
-                    if (isNumberValid(item)) {
-                        list.add(item)
-                    }
-                } else {
-                    // range
-                    list.addAll(getImapRangeValues(item))
-                }
+        set ?: return emptyList()
+        return set.split(",").flatMap { item ->
+            if (':' !in item) {
+                if (isNumberValid(item)) listOf(item) else emptyList()
+            } else {
+                getImapRangeValues(item)
             }
         }
-        return list
     }
 
     /**
@@ -74,45 +65,35 @@ internal object ImapUtility {
      * @return The list of IDs as strings in this range. If the range is not valid, an empty list
      *         is returned.
      */
-    @Suppress("NestedBlockDepth")
     fun getImapRangeValues(range: String?): List<String> {
-        val list = mutableListOf<String>()
-        try {
-            if (range != null) {
-                val colonPos = range.indexOf(':')
-                if (colonPos > 0) {
-                    val first = range.substring(0, colonPos).toLong()
-                    val second = range.substring(colonPos + 1).toLong()
-                    if (is32bitValue(first) && is32bitValue(second)) {
-                        if (first < second) {
-                            for (i in first..second) {
-                                list.add(i.toString())
-                            }
-                        } else {
-                            for (i in first downTo second) {
-                                list.add(i.toString())
-                            }
-                        }
-                    } else {
-                        Log.d("Invalid range: %s", range)
-                    }
-                }
+        val (first, second) = parseRangeBounds(range) ?: return emptyList()
+        return if (first <= second) {
+            (first..second).map { it.toString() }
+        } else {
+            (first downTo second).map { it.toString() }
+        }
+    }
+    private fun parseRangeBounds(range: String?): Pair<Long, Long>? {
+        val colonPos = range?.indexOf(':')?.takeIf { it > 0 } ?: return null
+
+        return try {
+            val first = range.substring(0, colonPos).toLong()
+            val second = range.substring(colonPos + 1).toLong()
+            if (is32bitValue(first) && is32bitValue(second)) {
+                first to second
+            } else {
+                Log.d("Invalid range: %s", range)
+                null
             }
         } catch (e: NumberFormatException) {
             Log.d(e, "Invalid range value: %s", range)
+            null
         }
-        return list
     }
 
     private fun isNumberValid(number: String): Boolean {
-        try {
-            val value = number.toLong()
-            if (is32bitValue(value)) {
-                return true
-            }
-        } catch (_: NumberFormatException) {
-            // do nothing
-        }
+        val value = number.toLongOrNull()
+        if (value != null && is32bitValue(value)) return true
         Log.d("Invalid UID value: %s", number)
         return false
     }
@@ -139,45 +120,17 @@ internal object ImapUtility {
         return "\"" + str.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
     }
 
-    internal fun getLastResponse(responses: List<ImapResponse>): ImapResponse {
-        val lastIndex = responses.size - 1
-        return responses[lastIndex]
-    }
-
     internal fun combineFlags(flags: Iterable<Flag>, canCreateForwardedFlag: Boolean): String {
-        val flagNames = mutableListOf<String>()
-        for (flag in flags) {
-            if (flag == Flag.SEEN) {
-                flagNames.add("\\Seen")
-            } else if (flag == Flag.DELETED) {
-                flagNames.add("\\Deleted")
-            } else if (flag == Flag.ANSWERED) {
-                flagNames.add("\\Answered")
-            } else if (flag == Flag.FLAGGED) {
-                flagNames.add("\\Flagged")
-            } else if (flag == Flag.FORWARDED && canCreateForwardedFlag) {
-                flagNames.add("\$Forwarded")
-            } else if (flag == Flag.DRAFT) {
-                flagNames.add("\\Draft")
+        return flags.mapNotNull { flag ->
+            when (flag) {
+                Flag.SEEN -> "\\Seen"
+                Flag.DELETED -> "\\Deleted"
+                Flag.ANSWERED -> "\\Answered"
+                Flag.FLAGGED -> "\\Flagged"
+                Flag.FORWARDED -> if (canCreateForwardedFlag) $$"$Forwarded" else null
+                Flag.DRAFT -> "\\Draft"
+                else -> null
             }
-        }
-        return join(" ", flagNames) ?: ""
-    }
-
-    private fun join(delimiter: String, tokens: Collection<*>?): String? {
-        if (tokens == null) {
-            return null
-        }
-        val sb = StringBuilder()
-        var firstTime = true
-        for (token in tokens) {
-            if (firstTime) {
-                firstTime = false
-            } else {
-                sb.append(delimiter)
-            }
-            sb.append(token)
-        }
-        return sb.toString()
+        }.joinToString(" ")
     }
 }

@@ -153,7 +153,7 @@ internal class RealImapFolder(
                 handlePermanentFlags(response)
             }
 
-            handleSelectOrExamineOkResponse(ImapUtility.getLastResponse(responses))
+            handleSelectOrExamineOkResponse(responses.last())
 
             exists = true
 
@@ -609,7 +609,7 @@ internal class RealImapFolder(
             fetchFields.add("BODY.PEEK[]")
         }
 
-        val spaceSeparatedFetchFields = ImapUtility.join(" ", fetchFields)
+        val spaceSeparatedFetchFields = fetchFields.joinToString(" ")
         var windowStart = 0
         val processedUids = mutableSetOf<String>()
         while (windowStart < messages.size) {
@@ -617,7 +617,7 @@ internal class RealImapFolder(
             val uidWindow = uids.subList(windowStart, windowEnd)
 
             try {
-                val commaSeparatedUids = ImapUtility.join(",", uidWindow)
+                val commaSeparatedUids = uidWindow.joinToString(",")
                 val command = String.format("UID FETCH %s (%s)", commaSeparatedUids, spaceSeparatedFetchFields)
                 connection!!.sendCommand(command, false)
 
