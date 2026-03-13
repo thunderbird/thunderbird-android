@@ -69,7 +69,7 @@ class DropDownDrawer(
     }
 
     override val isOpen: Boolean
-        get() = drawer.isOpen
+        get() = drawer.isDrawerOpen(GravityCompat.START)
 
     override fun selectAccount(accountUuid: String) {
         drawerState.update {

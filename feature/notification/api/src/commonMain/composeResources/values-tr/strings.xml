@@ -5,7 +5,7 @@
     <string name="notification_channel_messages_title">İletiler</string>
     <string name="notification_channel_messages_description">İletilerle ilgili bildirimler</string>
     <string name="notification_channel_miscellaneous_title">Çeşitli</string>
-    <string name="notification_channel_miscellaneous_description">Hatalar vb. çeşitli bildirimler.</string>
+    <string name="notification_channel_miscellaneous_description">Hatalar vb. çeşitli bildirimler</string>
     <string name="notification_notify_error_title">Bildirim hatası</string>
     <string name="notification_notify_error_text">Yeni bir ileti için sistem bildirimi oluşturmaya çalışırken bir hata oluştu. Bunun nedeni büyük olasılıkla eksik bir bildirim sesidir.\n\nBildirim ayarlarını açmak için dokunun.</string>
     <string name="notification_authentication_error_title">Kimlik doğrulama başarısız oldu</string>

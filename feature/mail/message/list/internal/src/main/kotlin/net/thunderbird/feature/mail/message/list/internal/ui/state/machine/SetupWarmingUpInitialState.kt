@@ -32,8 +32,8 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.warmingUpIn
         transition<MessageListEvent.UpdatePreferences> { state, event ->
             state.copy(preferences = event.preferences)
         }
-        transition<MessageListEvent.SortTypesLoaded> { state, event ->
-            state.withMetadata { copy(selectedSortTypes = event.sortTypes.toImmutableMap()) }
+        transition<MessageListEvent.SortCriteriaLoaded> { state, event ->
+            state.withMetadata { copy(sortCriteriaPerAccount = event.sortCriteriaPerAccount.toImmutableMap()) }
         }
         transition<MessageListEvent.AllConfigsReady>(
             guard = { state, _ -> state.isReady },

@@ -126,4 +126,10 @@ the 'message view theme' setting).
         tools:visibility="visible"
         />
 
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/attachment_bottom_sheet_compose_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
 </com.fsck.k9.ui.messageview.MessageTopView>

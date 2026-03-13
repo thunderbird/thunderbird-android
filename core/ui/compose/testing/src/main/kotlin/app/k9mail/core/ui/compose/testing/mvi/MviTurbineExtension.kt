@@ -3,7 +3,6 @@ package app.k9mail.core.ui.compose.testing.mvi
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.TurbineContext
 import app.cash.turbine.turbineScope
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import assertk.Assert
 import assertk.all
 import assertk.assertThat
@@ -12,6 +11,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 
 /**
  * The `runMviTest` function is a wrapper around `runTest` and `turbineScope`

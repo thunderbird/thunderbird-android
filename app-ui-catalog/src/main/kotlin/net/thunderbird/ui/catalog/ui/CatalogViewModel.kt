@@ -1,6 +1,6 @@
 package net.thunderbird.ui.catalog.ui
 
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.ui.catalog.ui.CatalogContract.Event
 import net.thunderbird.ui.catalog.ui.CatalogContract.Event.OnThemeChanged
 import net.thunderbird.ui.catalog.ui.CatalogContract.Event.OnThemeVariantChanged

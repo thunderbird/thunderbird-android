@@ -15,9 +15,11 @@ dependencies {
     implementation(projects.core.logging.api)
     implementation(projects.core.preference.api)
     implementation(projects.core.ui.compose.common)
+    implementation(projects.core.ui.compose.designsystem)
     implementation(projects.feature.account.api)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.folder.api)
+    implementation(projects.feature.notification.api)
 }
 
 codeCoverage {

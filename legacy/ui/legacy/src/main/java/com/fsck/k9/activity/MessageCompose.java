@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.content.pm.ActivityInfo;
+import android.graphics.Typeface;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -99,6 +100,7 @@ import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.ReplyToParser;
 import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.helper.Utility;
+import net.thunderbird.core.android.network.ConnectivityManager;
 import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -234,6 +236,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final NotificationSender notificationSender = DI.get(NotificationSender.class);
     private final NotificationSenderCompat notificationSenderCompat = new NotificationSenderCompat(notificationSender);
     private final NotificationDismisser notificationDismisser = DI.get(NotificationDismisser.class);
+    private final ConnectivityManager connectivityManager = DI.get(ConnectivityManager.class);
     private final NotificationDismisserCompat notificationDismisserCompat =
         new NotificationDismisserCompat(notificationDismisser);
     private final SentFolderNotFoundConfirmationDialogFragmentFactory sentFolderNotFoundDialogFragmentFactory =
@@ -543,6 +546,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         recipientMvpView.setFontSizes(K9.getFontSizes(), fontSize);
         quotedMessageMvpView.setFontSizes(K9.getFontSizes(), fontSize);
         K9.getFontSizes().setViewTextSize(subjectView, fontSize);
+        if(generalSettingsManager.getConfig().getDisplay().getVisualSettings().isUseMessageViewFixedWidthFont())
+            messageContentView.setTypeface(Typeface.MONOSPACE);
         K9.getFontSizes().setViewTextSize(messageContentView, fontSize);
         K9.getFontSizes().setViewTextSize(signatureView, fontSize);
 
@@ -622,7 +627,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     }
 
     private void triggerIfNeededSentFolderNotFoundInAppNotification() {
-        if (account != null && account.getSentFolderId() == null) {
+        if (account != null && account.isUploadSentMessages() && !account.hasSentFolder()) {
             final SentFolderNotFoundNotification notification = NotificationFactoryCoroutineCompat.create(
                 continuation -> SentFolderNotFoundNotification(account.getUuid(), continuation)
             );
@@ -875,9 +880,14 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             return;
         }
 
-        if (!ignoreSentFolderNotAssigned && !account.hasSentFolder()) {
+        if (account.isUploadSentMessages()
+            && !ignoreSentFolderNotAssigned && !account.hasSentFolder()) {
             sentFolderNotFoundDialogFragmentFactory.show(account.getUuid(), getSupportFragmentManager());
             return;
+        }
+
+        if (!connectivityManager.isNetworkAvailable()) {
+            Toast.makeText(this, R.string.no_network_message_will_be_sent_later_toast, Toast.LENGTH_LONG).show();
         }
 
         currentMessageBuilder = createMessageBuilder(false);
@@ -2007,20 +2017,20 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             }
 
             MaterialTextView nameView = view.findViewById(R.id.attachment_name);
-            boolean hasMetadata = (attachment.state != Attachment.LoadingState.URI_ONLY);
+            boolean hasMetadata = (attachment.getState() != Attachment.LoadingState.URI_ONLY);
             if (hasMetadata) {
-                nameView.setText(attachment.name);
+                nameView.setText(attachment.getName());
             } else {
                 nameView.setText(R.string.loading_attachment);
             }
 
-            if (attachment.size != null && attachment.size >= 0) {
+            if (attachment.getSize() != null && attachment.getSize() >= 0) {
                 MaterialTextView sizeView = view.findViewById(R.id.attachment_size);
-                sizeView.setText(sizeFormatter.formatSize(attachment.size));
+                sizeView.setText(sizeFormatter.formatSize(attachment.getSize()));
             }
 
             View progressBar = view.findViewById(R.id.progressBar);
-            boolean isLoadingComplete = (attachment.state == Attachment.LoadingState.COMPLETE);
+            boolean isLoadingComplete = (attachment.getState() == Attachment.LoadingState.COMPLETE);
             if (isLoadingComplete) {
                 if (attachment.isSupportedImage()) {
                     ImageView attachmentTypeView = view.findViewById(R.id.attachment_type);
@@ -2029,7 +2039,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                     ImageView preview = view.findViewById(R.id.attachment_preview);
                     preview.setVisibility(View.VISIBLE);
                     Glide.with(MessageCompose.this)
-                            .load(new File(attachment.filename))
+                            .load(new File(attachment.getFileName()))
                             .centerCrop()
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(preview);

@@ -124,7 +124,7 @@
     <string name="notification_notify_error_title">Σφάλμα ειδοποίησης</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_text">Σφάλμα στην προσπάθεια δημιουργίας ειδοποίησης συστήματος για νέο μήνυμα. Η ατία είναι μάλλον λείπει ο ήχος της ειδοπίησης.\n\nΠατήστε για να ανοίξετε τις ρυθμίσεων των ειδοποιήσεων.</string>
-    <string name="notification_bg_sync_ticker">Έλεγχος μηνύματος: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Έλεγχος email: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Έλεγχος μηνύματος</string>
     <string name="notification_bg_send_ticker">Αποστολή μηνύματος: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Αποστολή μηνύματος</string>
@@ -334,7 +334,7 @@
     <string name="account_settings_message_format_label">Τύπος κειμένου μηνύματος</string>
     <string name="account_settings_message_format_text">Απλό κείμενο (αφαιρούνται εικόνες και μορφοποίηση)</string>
     <string name="account_settings_message_format_html">HTML (διατηρούνται εικόνες και μορφοποίηση)</string>
-    <string name="account_settings_message_format_auto">Αυτόματα (απλό κείμενο, εκτός αν απαντά σε μήνυμα HTML)</string>
+    <string name="account_settings_message_format_auto">Αυτόματα</string>
     <string name="account_settings_always_show_cc_bcc_label">Πάντα προβολή «Κοιν.»/«Κρυφή κοιν.»</string>
     <string name="account_settings_message_read_receipt_label">Απόδειξη ανάγνωσης</string>
     <string name="account_settings_message_read_receipt_summary">Πάντοτε να απαιτείται απόδειξη ανάγνωσης</string>
@@ -731,7 +731,6 @@
     <string name="crypto_msg_encrypted_insecure">όμως η κρυπτογράφηση δε θεωρείται ασφαλής</string>
     <string name="locked_attach_unlock">Ξεκλείδωσε</string>
     <string name="locked_attach_unencrypted">Αυτό το τμήμα δεν ήταν κρυπτογραφημένο και μπορεί να μην είναι ασφαλή.</string>
-    <string name="locked_attach_title">Το συνημμένο αρχείο δεν είναι προστατευμένο </string>
     <string name="message_progress_text">Φόρτωση…</string>
     <string name="messageview_decrypt_cancelled">Αποκρυπτογράφηση ακυρώθηκε.</string>
     <string name="messageview_decrypt_retry">Επανάληψη</string>
@@ -800,25 +799,15 @@
     <string name="push_info_disable_push_text">Αν δεν χρειάζεστε άμεση ειδοποίηση για νέα μηνύματα, απενεργοποιήστε το σπρώξιμο και χρησιμοποιήστε ενημέρωση (Polling). Η ενημέρωση ελέγχει για νέα μηνύματα ανά τακτά χρονικά διαστήματα και δεν χρειάζεται την ειδοποίηση.</string>
     <string name="push_info_disable_push_action">Απενεργοποίηση σπρωξίματος</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Επιλογή</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Απο-επιλογή</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Επισήμανση ως αναγνωσμένο</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Σήμανση ως μη αναγνωσμένο</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Προσθήκη αστεριού</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Αφαίρεση αστεριού</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Αρχειοθέτηση</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Διαγραφή</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Ανεπιθύμητα</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Μετακίνηση…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Εμφάνιση εικονιδίου σύνθεσης</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -895,8 +884,32 @@
     <string name="debug_enable_sync_debug_logging_summary">Καταγραφή διαγνωστικών πληροφοριών συγχρονισμού για 24 ώρες</string>
     <string name="debug_enable_sync_debug_logging_title">Ενεργοποίηση καταγραφής εντοπισμού σφαλμάτων συγχρονισμού</string>
     <string name="debug_sync_export_logs_title">Εξαγωγή αρχείων καταγραφής συγχρονισμού</string>
-    <string name="swipe_action_archive_folder_not_set">Ρυθμίστε το φάκελο αρχειοθέτησης</string>
     <string name="message_view_menu_action_export_eml">Εξαγωγή ως EML</string>
     <string name="debug_open_secret_debug_screen">Άνοιγμα οθόνης αποσφαλμάτωσης</string>
     <string name="archiving_not_available_for_this_account">Η αρχειοθέτηση δεν είναι δυνατή για αυτόν τον λογαριασμό.</string>
+    <string name="print_message_action">Εκτύπωση</string>
+    <string name="account_setup_auto_select_folder">Αυτόματη επιλογή φακέλου</string>
+    <string name="navigation_drawer_preferences">Πλευρικό μενού</string>
+    <string name="expand_folders">Ανάπτυξη φακέλων</string>
+    <string name="set_format_html_condensed_action">Εμφάνιση με μορφοποίηση</string>
+    <string name="set_format_plain_condensed_action">Εμφάνιση χωρίς μορφοποίηση</string>
+    <string name="global_settings_messageview_body_content_type_title">Τύπος περιεχομένου σώματος</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (κείμενο/html)</string>
+    <string name="set_format_html_action">Χρήση αρχικής μορφοποίησης</string>
+    <string name="set_format_plain_action">Εμφάνιση μη μορφοποιημένου μηνύματος</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Απλό κείμενο (text/plain)</string>
+    <string name="debug_feature_flags">ΕΛΕΓΧΟΣ ΣΦΑΛΜΑΤΩΝ: Σημαίες λειτουργιών</string>
+    <string name="debug_invalidate_access_token">Δοκιμή: Ακύρωση διακριτικού πρόσβασης</string>
+    <string name="global_settings_splitview_when_unfolded">Όταν η συσκευή είναι ξεδιπλωμένη</string>
+    <string name="debug_invalidate_access_token_local">Δοκιμή: Ακύρωση διακριτικού πρόσβασης (τοπικά)</string>
+    <string name="debug_invalidate_access_token_server">Δοκιμή: Ακύρωση διακριτικού πρόσβασης (διακομιστής)</string>
+    <string name="debug_invalidate_access_token_done">Το διακριτικό πρόσβασης ακυρώθηκε. Το επόμενο αίτημα θα ανανεωθεί.</string>
+    <string name="debug_invalidate_access_token_unavailable">Δεν διατίθεται κανένα διακριτικό OAuth για αυτόν τον λογαριασμό.</string>
+    <string name="debug_invalidate_access_token_local_done">Ζητήθηκε τοπική ακύρωση. Το επόμενο αίτημα θα κάνει λήψη νέου διακριτικού.</string>
+    <string name="debug_force_auth_failure_unavailable">Δεν διατίθεται καμία διαμόρφωση OAuth για αυτόν τον λογαριασμό.</string>
+    <string name="debug_invalidate_access_token_server_done">Το αποθηκευμένο διακριτικό πρόσβασης έχει καταστραφεί. Το επόμενο αίτημα θα αποτύχει και έπειτα, θα ανανεωθεί.</string>
+    <string name="debug_force_auth_failure">Δοκιμή: Εξαναγκασμός αποτυχίας ταυτοποίησης</string>
+    <string name="debug_force_auth_failure_done">Η κατάσταση OAuth απαλείφθηκε. Το επόμενο αίτημα θα αποτύχει.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Δεν ήταν δυνατή η τροποποίηση του αποθηκευμένου διακριτικού πρόσβασης. Δοκιμάστε την τοπική ακύρωση.</string>
+    <string name="debug_invalidate_access_token_already_modified">Το αποθηκευμένο διακριτικό πρόσβασης έχει ήδη τροποποιηθεί.</string>
 </resources>

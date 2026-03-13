@@ -33,4 +33,5 @@
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Geçersiz IP veya ana makine adı</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">İstemci bilgilerini gönder</string>
     <string name="account_server_settings_password_authentication_failed">Kimlik doğrulama başarısız!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Biyometrik istem başlatılamıyor.</string>
 </resources>

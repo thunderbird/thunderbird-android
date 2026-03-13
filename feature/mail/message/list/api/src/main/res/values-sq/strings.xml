@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Përzgjidhni</string>
+    <string name="swipe_action_deselect">Shpërzgjidhe</string>
+    <string name="swipe_action_mark_as_read">Vëri shenjë si të lexuar</string>
+    <string name="swipe_action_mark_as_unread">Vëri shenjë si të palexuar</string>
+    <string name="swipe_action_add_star">Shtoji yll</string>
+    <string name="swipe_action_remove_star">Hiqi yll</string>
+    <string name="swipe_action_archive">Arkivoje</string>
+    <string name="swipe_action_archive_folder_not_set">Ujdisni Dosje Arkiv</string>
+    <string name="swipe_action_change_swipe_gestures">Ndryshim \nGjeste Fërkimi</string>
+    <string name="swipe_action_delete">Fshije</string>
+    <string name="swipe_action_spam">Vëri shenjë si të padëshiruar</string>
+    <string name="swipe_action_move">Lëvizeni…</string>
+</resources>

@@ -606,7 +606,7 @@
     <string name="address_type_home">Rumah</string>
     <string name="address_type_work">Kerja</string>
     <string name="address_type_other">Lainnya</string>
-    <string name="address_type_mobile">Mobile</string>
+    <string name="address_type_mobile">Seluler</string>
     <string name="compose_error_no_draft_folder">Tidak ada folder Konsep yang dikonfigurasi untuk akun ini!</string>
     <string name="compose_error_no_key_configured">Tidak ada kunci yang dikonfigurasi untuk akun ini! Silakan periksa pengaturan Anda.</string>
     <string name="error_crypto_provider_incompatible">Penyedia kripto menggunakan versi yang tidak kompatibel. Silakan periksa pengaturan Anda!</string>
@@ -667,7 +667,6 @@
     <string name="crypto_msg_encrypted_insecure">namun enkripsi tidak dianggap aman</string>
     <string name="locked_attach_unlock">Buka kunci</string>
     <string name="locked_attach_unencrypted">Bagian ini tidak dienkripsi dan mungkin tidak aman.</string>
-    <string name="locked_attach_title">Lampiran tidak terlindungi</string>
     <string name="message_progress_text">Memuat…</string>
     <string name="messageview_decrypt_cancelled">Dekripsi dibatalkan.</string>
     <string name="messageview_decrypt_retry">Coba lagi</string>
@@ -726,22 +725,14 @@
     <string name="switch_off">Mati</string>
     <string name="generic_loading_error">Terjadi kesalahan saat memuat data</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Pilih</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Hapus pilihan</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Tandai belum dibaca</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Tambah bintang</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Hapus bintang</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arsipkan</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Hapus</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -848,8 +839,6 @@
     <string name="push_info_disable_push_action">Nonaktifkan Dorongan</string>
     <string name="push_info_configure_notification_text">Namun, Android juga mengizinkan Anda untuk menyembunyikan notifikasi tersebut.</string>
     <string name="push_info_learn_more_text">Pelajari lebih lanjut</string>
-    <string name="swipe_action_mark_as_read">Tandai sebagai dibaca</string>
-    <string name="swipe_action_move">Pindahkan…</string>
     <string name="general_settings_show_compose_button_title">Tampilkan tombol mengambang \"pesan baru\"</string>
     <string name="message_list_error_title">Kesalahan</string>
     <string name="message_list_error_folder_not_found">Folder tidak ditemukan</string>
@@ -890,4 +879,39 @@
     <string name="attach_file">Lampirkan Berkas</string>
     <string name="camera_permission_denied">Izin Kamera Ditolak! Tidak bisa mengambil foto</string>
     <string name="open_camera">Buka Kamera</string>
+    <string name="message_view_menu_action_export_eml">Ekspor sebagai EML</string>
+    <string name="print_message_action">Cetak</string>
+    <string name="set_format_html_action">Gunakan pemformatan asli</string>
+    <string name="set_format_html_condensed_action">Tampilkan terformat</string>
+    <string name="set_format_plain_action">Tampilkan pesan tanpa pemformatan</string>
+    <string name="set_format_plain_condensed_action">Tampilkan tanpa pemformatan</string>
+    <string name="debug_enable_sync_debug_logging_title">Aktifkan pencatatan debug sinkronisasi</string>
+    <string name="debug_enable_sync_debug_logging_summary">Catat informasi diagnostik sinkronisasi selama 24 jam</string>
+    <string name="debug_sync_export_logs_title">Ekspor log Sinkronisasi</string>
+    <string name="debug_open_secret_debug_screen">Buka layar debug Rahasia</string>
+    <string name="global_settings_messageview_body_content_type_title">Tipe Konten Isi</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Teks biasa (text/plain)</string>
+    <string name="general_settings_message_list_date_time_format_title">Format Tanggal/Waktu</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontekstual</string>
+    <string name="general_settings_message_list_date_time_format_full">Lengkap</string>
+    <string name="account_setup_auto_select_folder">Pilih folder secara otomatis</string>
+    <string name="sort_by_then_by">Lalu berdasarkan…</string>
+    <string name="navigation_drawer_preferences">Menu Samping</string>
+    <string name="expand_folders">Perluas Folder</string>
+    <string name="global_settings_splitview_when_unfolded">Saat perangkat dibentangkan</string>
+    <string name="archiving_not_available_for_this_account">Pengarsipan tidak tersedia untuk akun ini.</string>
+    <string name="debug_invalidate_access_token">Uji: Batalkan validitas token akses</string>
+    <string name="debug_invalidate_access_token_done">Token akses dibatalkan validitasnya. Permintaan berikutnya akan menyegarkan.</string>
+    <string name="debug_invalidate_access_token_unavailable">Tidak ada token OAuth yang tersedia untuk akun ini.</string>
+    <string name="debug_invalidate_access_token_local">Uji: Batalkan validitas token akses (lokal)</string>
+    <string name="debug_invalidate_access_token_local_done">Permintaan pembatalan lokal diajukan. Permintaan berikutnya akan mengambil token baru.</string>
+    <string name="debug_invalidate_access_token_server">Uji: Batalkan validitas token akses (server)</string>
+    <string name="debug_invalidate_access_token_server_done">Token akses tersimpan rusak. Permintaan berikutnya akan gagal lalu menyegarkan.</string>
+    <string name="debug_force_auth_failure">Uji: Paksa kegagalan autentikasi sekarang</string>
+    <string name="debug_force_auth_failure_done">Status OAuth dihapus. Permintaan berikutnya akan gagal.</string>
+    <string name="debug_force_auth_failure_unavailable">Tidak ada konfigurasi OAuth yang tersedia untuk akun ini.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Tidak dapat mengubah token akses tersimpan. Coba pembatalan lokal.</string>
+    <string name="debug_invalidate_access_token_already_modified">Token akses tersimpan sudah diubah.</string>
+    <string name="debug_feature_flags">DEBUG: Flag Fitur</string>
 </resources>

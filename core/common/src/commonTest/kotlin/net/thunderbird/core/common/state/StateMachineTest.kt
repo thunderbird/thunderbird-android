@@ -3,6 +3,8 @@ package net.thunderbird.core.common.state
 import app.cash.turbine.test
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
@@ -10,10 +12,13 @@ import assertk.assertions.isTrue
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.state.builder.stateMachine
+import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.core.testing.TestClock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Suppress("MaxLineLength")
@@ -242,6 +247,98 @@ class StateMachineTest {
             assertThat(successStateExited).isEqualTo(1)
         }
     }
+
+    @Test
+    fun `process should add to the history stack when current state has transition for given event`() = runTest {
+        // Arrange
+        val stateMachine = stateMachine(scope = this) {
+            withLogger(TestLogger())
+            enableDebug {
+                @OptIn(ExperimentalTime::class)
+                withClock(TestClock())
+            }
+            initialState(State.Init) {
+                transition<Event.LoadData> { _, _ -> State.Loading }
+            }
+            state<State.Loading> {
+                transition<Event.LoadedData> { _, _ -> State.Success }
+                transition<Event.Failure> { _, _ -> State.Error }
+            }
+            state<State.Error> {
+                transition<Event.Retry> { _, _ -> State.Loading }
+            }
+            finalState<State.Success>()
+        }
+
+        // Act - Process events with valid transitions
+        stateMachine.process(Event.LoadData)
+        stateMachine.process(Event.LoadedData)
+
+        // Assert
+        val historyStack = stateMachine.historyStack
+        assertThat(historyStack).hasSize(2)
+        assertThat(historyStack[0].previousState).isEqualTo(State.Init)
+        assertThat(historyStack[0].newState).isEqualTo(State.Loading)
+        assertThat(historyStack[1].previousState).isEqualTo(State.Loading)
+        assertThat(historyStack[1].newState).isEqualTo(State.Success)
+    }
+
+    @Test
+    fun `process should not add to the history stack when current state doesn't have transition for given event`() =
+        runTest {
+            // Arrange
+            val stateMachine = stateMachine(scope = this) {
+                initialState(State.Init) {
+                    transition<Event.LoadData> { _, _ -> State.Loading }
+                }
+                state<State.Loading> {
+                    transition<Event.LoadedData> { _, _ -> State.Success }
+                }
+                finalState<State.Success>()
+            }
+
+            // Act - Process an event without a transition from Init
+            stateMachine.process(Event.Cancel)
+
+            // Assert
+            val historyStack = stateMachine.historyStack
+            assertThat(historyStack).isEmpty()
+        }
+
+    @Test
+    fun `process should not add to the history stack when current state has transition for given event but guard fails`() =
+        runTest {
+            // Arrange
+            val stateMachine = stateMachine<State, Event>(scope = this) {
+                withLogger(TestLogger())
+                enableDebug {
+                    @OptIn(ExperimentalTime::class)
+                    withClock(TestClock())
+                }
+                initialState(State.Init) {
+                    transition<Event.LoadData> { _, _ -> State.Loading }
+                }
+                state<State.Loading> {
+                    transition<Event.Failure> { _, _ -> State.Error }
+                }
+                state<State.Error> {
+                    transition<Event.Retry>(
+                        guard = { _, event -> event.forceRetry },
+                    ) { _, _ -> State.Loading }
+                }
+                finalState<State.Success>()
+            }
+
+            // Act - Process an event with a guard that fails
+            stateMachine.process(Event.LoadData)
+            stateMachine.process(Event.Failure)
+            val resultState = stateMachine.process(Event.Retry(forceRetry = false))
+
+            // Assert - Verify state remains unchanged and no history record is added
+            assertThat(resultState).isEqualTo(State.Error)
+            val historyStack = stateMachine.historyStack
+            assertThat(historyStack).hasSize(2) // One for LoadData -> Loading, one for Loading -> Error
+        }
 
     @Test
     fun `state onEnter - when initial state - should be triggered with null state receiver, null event and Init state`() =

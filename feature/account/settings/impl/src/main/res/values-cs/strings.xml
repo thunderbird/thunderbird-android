@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_settings_general_title">Obecná nastavení</string>
     <string name="account_settings_general_avatar_option_monogram">Monogram</string>
     <string name="account_settings_general_avatar_option_image">Obrázek</string>
@@ -23,4 +23,16 @@
     <string name="account_settings_general_avatar_image_select">Vybrat obrázek</string>
     <string name="account_settings_avatar_error_unsupported_format">Jsou podporovány pouze obrázky JPEG.</string>
     <string name="account_settings_avatar_hint_jpeg_only">Pouze JPEG</string>
+    <string name="account_settings_show_pictures_label">Vždy zobrazovat obrázky</string>
+    <string name="account_settings_reading_mail">Čtení pošty</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Označit jako přečtené po otevření</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Označit zprávu jako přečtenou po jejím otevření pro prohlížení</string>
+    <string name="account_settings_show_pictures_never">Ne</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Od kontaktů</string>
+    <string name="account_settings_show_pictures_always">Od kohokoli</string>
+    <string name="account_settings_remove_account_action">Odstranit účet</string>
+    <string name="account_settings_okay_action">OK</string>
+    <string name="account_settings_cancel_action">Zrušit</string>
+    <string name="account_settings_account_delete_dlg_title">Odstranit účet</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">Účet „<xliff:g id="account">%1$s</xliff:g>“ bude odstraněn z aplikace <xliff:g id="app_name">%2$s</xliff:g>.</string>
 </resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Velja</string>
+    <string name="swipe_action_deselect">Afvelja</string>
+    <string name="swipe_action_mark_as_read">Merkja sem lesið</string>
+    <string name="swipe_action_mark_as_unread">Merkja sem ólesið</string>
+    <string name="swipe_action_add_star">Bæta við stjörnu</string>
+    <string name="swipe_action_remove_star">Fjarlægja stjörnu</string>
+    <string name="swipe_action_archive">Geymsla</string>
+    <string name="swipe_action_archive_folder_not_set">Setja upp safnmöppu</string>
+    <string name="swipe_action_change_swipe_gestures">Breyta \nstrokubendingum</string>
+    <string name="swipe_action_delete">Fjarlægja</string>
+    <string name="swipe_action_spam">Ruslpóstur</string>
+    <string name="swipe_action_move">Færa…</string>
+</resources>

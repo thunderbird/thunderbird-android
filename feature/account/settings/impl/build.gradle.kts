@@ -21,6 +21,8 @@ dependencies {
     implementation(projects.feature.account.avatar.impl)
 
     implementation(projects.core.featureflag)
+    implementation(projects.core.android.account)
+    implementation(projects.feature.mail.account.api)
     implementation(projects.core.file)
     implementation(projects.core.outcome)
     implementation(projects.core.validation)
@@ -30,7 +32,7 @@ dependencies {
 
     implementation(projects.core.logging.implLegacy)
     implementation(projects.core.ui.compose.designsystem)
-    implementation(projects.core.ui.compose.navigation)
+    implementation(projects.core.ui.navigation)
     implementation(projects.core.common)
 
     implementation(libs.uri)

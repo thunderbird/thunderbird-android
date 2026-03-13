@@ -5,4 +5,6 @@
     <string name="designsystem_molecule_email_address_input_label">E-postadresse</string>
     <string name="designsystem_molecule_password_input_label">Passord</string>
     <string name="designsystem_molecule_error_view_button_retry">Prøv igjen</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Sveip frå start til ende til %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Sveip frå ende til start til %s</string>
 </resources>

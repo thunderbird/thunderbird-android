@@ -315,7 +315,7 @@
     <string name="account_settings_ignore_chat_messages_label">Ignorer les messages de conversation</string>
     <string name="account_settings_ignore_chat_messages_summary">Ne pas afficher de notification pour les messages qui appartiennent à une conversation de courriel</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Marquer comme lu à l’ouverture</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Marquer un courriel comme lu quand il est ouvert pour être visualisé</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marquer un courriel comme lu après ouverture pour consultation</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Marquer comme lu lors de la suppression</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Marquer un courriel comme lu lors de la suppression</string>
     <string name="account_settings_notification_channels_label">Catégories de notification</string>
@@ -323,8 +323,8 @@
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Configurer les notifications d’erreur et d’état</string>
     <string name="account_settings_show_pictures_label">Toujours afficher les images</string>
     <string name="account_settings_show_pictures_never">Non</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Pour les contacts</string>
-    <string name="account_settings_show_pictures_always">Pour tout le monde</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Des contacts</string>
+    <string name="account_settings_show_pictures_always">De n’importe qui</string>
     <string name="account_settings_composition">Envoi de courriels</string>
     <string name="account_settings_default_quoted_text_shown_label">Citer le courriel lors de la réponse</string>
     <string name="account_settings_default_quoted_text_shown_summary">Le courriel initial est compris dans votre réponse.</string>
@@ -345,7 +345,7 @@
     <string name="account_settings_upload_sent_messages_label">Téléverser les courriels envoyés</string>
     <string name="account_settings_upload_sent_messages_summary">Téléverser les courriels vers le dossier Envoyés après l’envoi</string>
     <string name="account_settings_general_title">Paramètres généraux</string>
-    <string name="account_settings_reading_mail">Lecture des courriels</string>
+    <string name="account_settings_reading_mail">Lecture du courriel</string>
     <string name="account_settings_sync">Relève des courriels</string>
     <string name="account_settings_folders">Dossiers</string>
     <string name="account_settings_quote_prefix_label">Préfixe de citation</string>
@@ -736,7 +736,6 @@
     <string name="crypto_msg_encrypted_insecure">mais le niveau de sécurité du chiffrement n’est pas suffisant</string>
     <string name="locked_attach_unlock">Déverrrouiller</string>
     <string name="locked_attach_unencrypted">Cette partie n’a pas été chiffrée et pourrait ne pas être sûre.</string>
-    <string name="locked_attach_title">Fichier joint non protégé</string>
     <string name="message_progress_text">Chargement…</string>
     <string name="messageview_decrypt_cancelled">Le déchiffrement a été annulé.</string>
     <string name="messageview_decrypt_retry">Réessayer</string>
@@ -775,7 +774,7 @@
     <string name="dialog_openkeychain_info_install">Installer</string>
     <string name="account_settings_crypto_encrypt_subject">Chiffrer l’objet des courriels</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Pourrait ne pas être pris en charge par certains destinataires</string>
-    <string name="toast_account_not_found">Erreur interne : le compte est invalide</string>
+    <string name="toast_account_not_found">Erreur interne : le compte est invalide !</string>
     <string name="toast_openpgp_provider_error">Erreur de connexion à %s</string>
     <string name="ac_transfer_setting_title">Envoyer un courriel de configuration Autocrypt</string>
     <string name="ac_transfer_setting_summary">Partager en toute sécurité la configuration du chiffrement de bout de bout avec d’autres appareils</string>
@@ -805,25 +804,15 @@
     <string name="push_info_disable_push_text">Si vous n’avez pas besoin de notifications instantanées pour les nouveaux courriels, vous devriez désactiver le poussé et utiliser la synchronisation. La synchronisation vérifie la présence de nouveaux courriels à intervalles réguliers et n’a pas besoin de notification.</string>
     <string name="push_info_disable_push_action">Désactiver le poussé</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Sélectionner</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Dessélectionner</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Marquer comme lu</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Marquer comme non lu</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Ajouter une étoile</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Supprimer l’étoile</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archiver</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Supprimer</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Pourriel (indésirable)</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Déplacer…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Afficher un bouton de rédaction flottant</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -900,8 +889,6 @@
     <string name="debug_enable_sync_debug_logging_title">Activer la journalisation de débogage de la synchronisation</string>
     <string name="debug_enable_sync_debug_logging_summary">Journaliser les données de diagnostic de synchronisation pendant 24 heures</string>
     <string name="debug_sync_export_logs_title">Exporter les journaux de synchronisation</string>
-    <string name="swipe_action_archive_folder_not_set">Configurer le dossier d’archivage</string>
-    <string name="swipe_action_change_swipe_gestures">Changer\nles gestes de balayage</string>
     <string name="archiving_not_available_for_this_account">L’archivage n’est pas proposé pour ce compte.</string>
     <string name="debug_open_secret_debug_screen">Ouvrir l’écran de débogage de Secret</string>
     <string name="debug_invalidate_access_token">Essai : invalider le jeton d’accès</string>
@@ -929,4 +916,9 @@
     <string name="expand_folders">Développer les dossiers</string>
     <string name="debug_feature_flags">DÉBOGAGE : Drapeaux de fonction</string>
     <string name="print_message_action">Imprimer</string>
+    <string name="global_settings_splitview_when_unfolded">Quand l’appareil est déplié</string>
+    <string name="general_settings_message_list_date_time_format_title">Format de la date et de l’heure</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contextuel</string>
+    <string name="general_settings_message_list_date_time_format_full">Complet</string>
+    <string name="sort_by_then_by">Ensuite, par…</string>
 </resources>

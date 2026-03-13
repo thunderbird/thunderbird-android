@@ -30,13 +30,13 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineSmall
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.onboarding.permissions.R
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Event
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.State
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.IconsWithBottomRightOverlay
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.R as CommonR
 
 @Composable

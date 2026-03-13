@@ -312,8 +312,8 @@
     <string name="account_notify_contacts_mail_only_summary">既知の連絡先からのメッセージのみ通知を表示します</string>
     <string name="account_settings_ignore_chat_messages_label">チャットメッセージを無視する</string>
     <string name="account_settings_ignore_chat_messages_summary">メールチャットに属するメッセージの通知を表示しません</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">開封したときに既読にする</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">メッセージを開いて表示したときに既読にします</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">開封時に既読にする</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">メッセージを開封して閲覧したときに既読にします</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">削除したときに既読にする</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">メッセージが削除されたときに既読にします</string>
     <string name="account_settings_notification_channels_label">通知カテゴリー</string>
@@ -322,7 +322,7 @@
     <string name="account_settings_show_pictures_label">常に画像を表示</string>
     <string name="account_settings_show_pictures_never">しない</string>
     <string name="account_settings_show_pictures_only_from_contacts">連絡先からのみ</string>
-    <string name="account_settings_show_pictures_always">誰からも</string>
+    <string name="account_settings_show_pictures_always">誰からでも</string>
     <string name="account_settings_composition">メール送信</string>
     <string name="account_settings_default_quoted_text_shown_label">返信時にメッセージを引用する</string>
     <string name="account_settings_default_quoted_text_shown_summary">返信に元のメッセージを含めます。</string>
@@ -727,7 +727,6 @@
     <string name="crypto_msg_encrypted_insecure">暗号化が安全ではないようです</string>
     <string name="locked_attach_unlock">ロック解除</string>
     <string name="locked_attach_unencrypted">この部分は暗号化されていません。安全ではない可能性があります。</string>
-    <string name="locked_attach_title">保護されていない添付ファイル</string>
     <string name="message_progress_text">読み込み中…</string>
     <string name="messageview_decrypt_cancelled">復号がキャンセルされました。</string>
     <string name="messageview_decrypt_retry">再試行</string>
@@ -799,25 +798,15 @@
     <string name="push_info_disable_push_text">新着メッセージの即時通知が不要な場合は、プッシュ同期を無効にして一定間隔で同期してください。一定間隔で新着メールを確認する場合は、通知は不要です。</string>
     <string name="push_info_disable_push_action">プッシュ同期を無効化</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">選択</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">選択を解除</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">既読にする</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">未読にする</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">スターを付ける</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">スターをはずす</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">アーカイブ</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">削除</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">迷惑メール</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">移動…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">フロート編集ボタンを表示する</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -891,9 +880,7 @@
     <string name="debug_enable_sync_debug_logging_title">同期のデバッグログを有効にする</string>
     <string name="debug_enable_sync_debug_logging_summary">24 時間の同期の診断情報をログに記録します</string>
     <string name="debug_sync_export_logs_title">同期ログをエクスポート</string>
-    <string name="swipe_action_archive_folder_not_set">アーカイブ先が未設定です</string>
     <string name="archiving_not_available_for_this_account">このアカウントではアーカイブは利用できません。</string>
-    <string name="swipe_action_change_swipe_gestures">スワイプ操作を \n変更してください</string>
     <string name="debug_open_secret_debug_screen">隠しデバッグ画面を開く</string>
     <string name="message_view_menu_action_export_eml">EML にエクスポート</string>
     <string name="set_format_html_action">オリジナルのフォーマットを使用</string>
@@ -920,4 +907,9 @@
     <string name="debug_invalidate_access_token_already_modified">保存したアクセストークンは既に編集されています。</string>
     <string name="debug_feature_flags">デバッグ: 機能フラグ</string>
     <string name="print_message_action">印刷</string>
+    <string name="general_settings_message_list_date_time_format_title">日付・時刻の書式</string>
+    <string name="general_settings_message_list_date_time_format_contextual">自動</string>
+    <string name="general_settings_message_list_date_time_format_full">フル</string>
+    <string name="sort_by_then_by">次に…</string>
+    <string name="global_settings_splitview_when_unfolded">端末が折り畳まれていないとき分割</string>
 </resources>

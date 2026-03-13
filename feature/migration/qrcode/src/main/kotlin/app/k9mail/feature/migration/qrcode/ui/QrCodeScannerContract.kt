@@ -1,8 +1,8 @@
 package app.k9mail.feature.migration.qrcode.ui
 
 import android.net.Uri
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 
 internal interface QrCodeScannerContract {
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect> {

@@ -108,9 +108,12 @@ public class CharacterTokenizer implements Tokenizer {
         return 0;
     }
 
-    @SuppressWarnings({"WeakerAccess", "unchecked"})
+    @SuppressWarnings({"WeakerAccess", "unchecked", "deprecation"})
     CharacterTokenizer(Parcel in) {
-        this(in.readArrayList(Character.class.getClassLoader()), in.readString());
+        this(
+            in.readArrayList(Character.class.getClassLoader()),
+            in.readString()
+        );
     }
 
     @Override

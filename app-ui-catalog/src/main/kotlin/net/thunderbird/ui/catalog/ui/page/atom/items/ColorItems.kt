@@ -1,7 +1,7 @@
 package net.thunderbird.ui.catalog.ui.page.atom.items
 
 import androidx.compose.foundation.lazy.grid.LazyGridScope
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.ui.catalog.ui.page.atom.view.ColorContent
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem
 import net.thunderbird.ui.catalog.ui.page.common.list.wideItem

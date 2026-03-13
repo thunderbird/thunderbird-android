@@ -1,10 +1,12 @@
 package com.fsck.k9.fragment
 
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.fsck.k9.ui.R
 
 class ProgressDialogFragment : DialogFragment() {
 
@@ -13,11 +15,13 @@ class ProgressDialogFragment : DialogFragment() {
         val title = args.getString(ARG_TITLE)
         val message = args.getString(ARG_MESSAGE)
 
-        return ProgressDialog(requireActivity()).apply {
-            isIndeterminate = true
-            setTitle(title)
-            setMessage(message)
-        }
+        val view = getLayoutInflater().inflate(R.layout.progress_dialog, null)
+        view.findViewById<TextView>(R.id.progressMessage).text = message
+
+        return AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setView(view)
+            .create()
     }
 
     override fun onCancel(dialog: DialogInterface) {

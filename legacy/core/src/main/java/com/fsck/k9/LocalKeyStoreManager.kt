@@ -19,7 +19,7 @@ class LocalKeyStoreManager(
         } else {
             account.outgoingServerSettings
         }
-        localKeyStore.addCertificate(serverSettings.host!!, serverSettings.port, certificate)
+        localKeyStore.addCertificate(serverSettings.host, serverSettings.port, certificate)
     }
 
     /**
@@ -33,7 +33,7 @@ class LocalKeyStoreManager(
         } else {
             account.outgoingServerSettings
         }
-        val oldHost = serverSettings.host!!
+        val oldHost = serverSettings.host
         val oldPort = serverSettings.port
         if (oldPort == -1) {
             // This occurs when a new account is created
@@ -50,11 +50,11 @@ class LocalKeyStoreManager(
      */
     fun deleteCertificates(account: LegacyAccountDto) {
         account.incomingServerSettings.let { serverSettings ->
-            localKeyStore.deleteCertificate(serverSettings.host!!, serverSettings.port)
+            localKeyStore.deleteCertificate(serverSettings.host, serverSettings.port)
         }
 
         account.outgoingServerSettings.let { serverSettings ->
-            localKeyStore.deleteCertificate(serverSettings.host!!, serverSettings.port)
+            localKeyStore.deleteCertificate(serverSettings.host, serverSettings.port)
         }
     }
 }

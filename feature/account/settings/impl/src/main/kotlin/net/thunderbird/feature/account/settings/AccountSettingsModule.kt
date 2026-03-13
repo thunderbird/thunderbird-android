@@ -7,14 +7,23 @@ import net.thunderbird.feature.account.settings.impl.DefaultAccountSettingsNavig
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 import net.thunderbird.feature.account.settings.impl.domain.usecase.GetAccountName
 import net.thunderbird.feature.account.settings.impl.domain.usecase.GetAccountProfile
+import net.thunderbird.feature.account.settings.impl.domain.usecase.GetLegacyAccount
 import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateAvatarImage
 import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateGeneralSettings
+import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateReadEmailSettings
+import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateSearchSettings
 import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAccountName
 import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAvatarMonogram
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsBuilder
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsValidator
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsViewModel
+import net.thunderbird.feature.account.settings.impl.ui.readingMail.ReadingMailSettingsBuilder
+import net.thunderbird.feature.account.settings.impl.ui.readingMail.ReadingMailSettingsContract
+import net.thunderbird.feature.account.settings.impl.ui.readingMail.ReadingMailSettingsViewModel
+import net.thunderbird.feature.account.settings.impl.ui.search.SearchSettingBuilder
+import net.thunderbird.feature.account.settings.impl.ui.search.SearchSettingsContract
+import net.thunderbird.feature.account.settings.impl.ui.search.SearchSettingsViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -28,8 +37,26 @@ val featureAccountSettingsModule = module {
         )
     }
 
+    factory<UseCase.UpdateReadMailSettings> {
+        UpdateReadEmailSettings(
+            repository = get(),
+        )
+    }
+
+    factory<UseCase.UpdateSearchSettings> {
+        UpdateSearchSettings(
+            repository = get(),
+        )
+    }
+
     factory<UseCase.GetAccountProfile> {
         GetAccountProfile(
+            repository = get(),
+        )
+    }
+
+    factory<UseCase.GetLegacyAccount> {
+        GetLegacyAccount(
             repository = get(),
         )
     }
@@ -73,6 +100,40 @@ val featureAccountSettingsModule = module {
             updateGeneralSettings = get(),
             updateAvatarImage = get(),
             logger = get(),
+        )
+    }
+
+    factory<ReadingMailSettingsContract.SettingsBuilder> {
+        ReadingMailSettingsBuilder(
+            resources = get<StringsResourceManager>(),
+        )
+    }
+
+    factory<SearchSettingsContract.SettingsBuilder> {
+        SearchSettingBuilder(
+            resources = get<StringsResourceManager>(),
+        )
+    }
+
+    viewModel { params ->
+        ReadingMailSettingsViewModel(
+            accountId = params.get(),
+            getAccountName = get(),
+            getLegacyAccount = get(),
+            updateReadMailSettings = get(),
+            resources = get(),
+            logger = get(),
+        )
+    }
+
+    viewModel { params ->
+        SearchSettingsViewModel(
+            accountId = params.get(),
+            getAccountName = get(),
+            getLegacyAccount = get(),
+            updateSearchSettings = get(),
+            logger = get(),
+            resources = get(),
         )
     }
 }

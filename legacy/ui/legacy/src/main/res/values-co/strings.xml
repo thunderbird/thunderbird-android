@@ -237,7 +237,6 @@
     <string name="dialog_attachment_progress_title">Scaricamentu di a pezza ghjunta</string>
     <string name="openpgp_inline_minus_attach">E pezza aghjunte ùn sò micca accettate</string>
     <string name="openpgp_dialog_sign_only_minus_attach">E segnature puderianu esse affissate cum’è pezze ghjunte « signature.asc » in certe messaghjerie elettroniche.</string>
-    <string name="locked_attach_title">Pezza ghjunta nonprutetta</string>
     <string name="message_view_recipients_format">à <xliff:g id="recipients">%s</xliff:g></string>
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="message_view_show_remote_images_action">Affissà e fiure alluntanate</string>
@@ -400,7 +399,7 @@
     <string name="account_settings_incoming_label">Servitore d’entrata</string>
     <string name="account_settings_incoming_summary">Cunfigurà u servitore d’entrata di i messaghji</string>
     <string name="account_settings_outgoing_label">Servitore d’esciuta</string>
-    <string name="account_settings_name_label">U vostru nome</string>
+    <string name="account_settings_name_label">A vostra casata</string>
     <string name="notifications_title">Nutificazioni</string>
     <string name="account_settings_ringtone">Suneria di messaghju novu</string>
     <string name="account_settings_notification_light_label">Lume di nutificazione</string>
@@ -427,7 +426,7 @@
     <string name="edit_identity_description_label">Discrizzione di l’identità</string>
     <string name="edit_identity_description_hint">(Ozzionale)</string>
     <string name="edit_identity_email_hint">(Richiestu)</string>
-    <string name="edit_identity_name_label">U vostru nome</string>
+    <string name="edit_identity_name_label">A vostra casata</string>
     <string name="edit_identity_name_hint">(Ozzionale)</string>
     <string name="edit_identity_email_label">Indirizzu elettronicu</string>
     <string name="edit_identity_reply_to_label">Indirizzu di risposta</string>
@@ -703,8 +702,6 @@
     <string name="push_notification_state_wait_background_sync">Inattiva finchè a sincrunizazione in tacca di sfondulu sia permessa</string>
     <string name="push_notification_state_wait_network">Inattiva finchè a reta sia dispunibule</string>
     <string name="push_notification_grant_alarm_permission">Tuccà per cunsente u permessu.</string>
-    <string name="swipe_action_remove_star">Caccià a stella</string>
-    <string name="swipe_action_move">Dispiazzà…</string>
     <string name="general_settings_show_compose_button_title">Affissà buttone undighjante per redige</string>
     <string name="message_details_missing_date">L’intestatura « Data » hè assente</string>
     <string name="message_details_bcc_section_title">Cci</string>
@@ -741,7 +738,6 @@
     <string name="ac_transfer_msg_body">Stu messaghju cuntene tutte l’infurmazioni per trasferisce in modu sicuru i vostri parametri Autocrypt è a vostra chjave sicreta da u vostru apparechju d’origine. Per cunfigurà u vostru apparechju novu per Autocrypt, ci vole à seguità l’istruzzioni chì duverianu esse prisentate da u vostru apparechju novu. Pudete cunservà stu messaghju è impiegallu tale una salvaguardia di a vostra chjave sicreta. S’è vo vulete fà cusì, duveriate piglià nota di a parolla d’intesa è piazzalla in un locu sicuru.</string>
     <string name="push_info_title">Infurmazioni di a catapughjata</string>
     <string name="push_notification_state_alarm_permission_missing">Un permessu hè assente per pianificà l’alarme</string>
-    <string name="swipe_action_add_star">Aghjunghje una stella</string>
     <string name="push_info_disable_push_text">S’è vo ùn avete micca bisognu di nutificazione istantanea per i messaghji novi, duveriate disattivà a catapughjata è impiegà a sullicitazione. A sullicitazione cuntrolleghja l’arrivu di i messaghji novi à un intervallu regulare è ùn hà micca bisognu di nutificazione.</string>
     <string name="message_list_error_title">Sbagliu</string>
     <string name="message_details_replyto_section_title">Risponde à</string>
@@ -791,13 +787,6 @@
     <string name="push_info_learn_more_text">Per sapene di più</string>
     <string name="push_info_configure_notification_action">Cunfigurà a nutificazione</string>
     <string name="push_info_disable_push_action">Disattivà a catapughjata</string>
-    <string name="swipe_action_mark_as_read">Marcà cum’è lettu</string>
-    <string name="swipe_action_deselect">Diselezziunà</string>
-    <string name="swipe_action_select">Selezziunà</string>
-    <string name="swipe_action_mark_as_unread">Marcà cum’è à leghje</string>
-    <string name="swipe_action_archive">Archiviu</string>
-    <string name="swipe_action_delete">Squassà</string>
-    <string name="swipe_action_spam">Merzaghju</string>
     <string name="message_list_error_folder_not_found">U cartulare hè intruvevule</string>
     <string name="message_details_toolbar_title">Detaglii di u messaghju</string>
     <string name="message_details_from_section_title">Da</string>
@@ -837,8 +826,6 @@
     <string name="debug_enable_sync_debug_logging_summary">Arregistrà l’infurmazioni di diagnosticu di a sincrunizazione per 24 ore</string>
     <string name="debug_sync_export_logs_title">Espurtà i ghjurnali di sincrunizazione</string>
     <string name="debug_open_secret_debug_screen">Apre u screnu sicretu di spannatura</string>
-    <string name="swipe_action_archive_folder_not_set">Cunfigurà u cartulare d’archiviera</string>
-    <string name="swipe_action_change_swipe_gestures">Cambià \nI gesti di spazzatura</string>
     <string name="archiving_not_available_for_this_account">L’archiviera ùn hè micca dispunibule per stu contu.</string>
     <string name="debug_invalidate_access_token">Prova : invalidà u gettone d’accessu</string>
     <string name="debug_invalidate_access_token_done">U gettone d’accessu hè statu invalidatu. A prossima richiesta u rinfrescherà.</string>
@@ -865,4 +852,9 @@
     <string name="expand_folders">Spiegà i cartulari</string>
     <string name="debug_feature_flags">SPANNATURA : Bandere di funzione</string>
     <string name="print_message_action">Stampà</string>
+    <string name="global_settings_splitview_when_unfolded">Quandu l’apparechju hè apertu</string>
+    <string name="general_settings_message_list_date_time_format_title">Furmatu di a data è di l’ora</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Cuntestuale</string>
+    <string name="general_settings_message_list_date_time_format_full">Cumpletu</string>
+    <string name="sort_by_then_by">Eppò da…</string>
 </resources>

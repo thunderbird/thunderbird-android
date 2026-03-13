@@ -48,7 +48,7 @@ class CommandUpload(
                 throw MessagingException("Uploading message as blob failed")
             }
 
-            response.body!!.source().use { source ->
+            response.body.source().use { source ->
                 val adapter = moshi.adapter(JmapUploadResponse::class.java)
                 val uploadResponse = adapter.fromJson(source)
                 uploadResponse ?: throw MessagingException("Error reading upload response")

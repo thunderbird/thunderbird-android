@@ -1,0 +1,25 @@
+package net.thunderbird.core.ui.navigation
+
+import androidx.navigation.NavGraphBuilder
+import net.thunderbird.core.ui.navigation.Route
+
+/**
+ * A Navigation is responsible for registering routes with the navigation graph.
+ *
+ * @param T the type of route
+ */
+public interface Navigation<T : Route> {
+
+    /**
+     * Register all routes for this navigation.
+     *
+     * @param navGraphBuilder the navigation graph builder
+     * @param onBack the action to perform when the back button is pressed
+     * @param onFinish the action to perform when a route is finished
+     */
+    public fun registerRoutes(
+        navGraphBuilder: NavGraphBuilder,
+        onBack: () -> Unit,
+        onFinish: (T) -> Unit,
+    )
+}

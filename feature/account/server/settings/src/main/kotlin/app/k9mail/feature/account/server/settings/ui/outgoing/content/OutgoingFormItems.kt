@@ -11,7 +11,6 @@ import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.molecule.input.NumberInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.domain.entity.AuthenticationType
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
@@ -24,6 +23,7 @@ import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSett
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
 import app.k9mail.feature.account.server.settings.ui.outgoing.isPasswordFieldVisible
 import app.k9mail.feature.account.server.settings.ui.outgoing.isUsernameFieldVisible
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @Suppress("LongMethod")
 internal fun LazyListScope.outgoingFormItems(
@@ -44,7 +44,7 @@ internal fun LazyListScope.outgoingFormItems(
             label = stringResource(id = R.string.account_server_settings_server_label),
             isRequired = true,
             contentPadding = defaultItemPadding(),
-            keyboardOptions = KeyboardOptions(autoCorrect = false),
+            keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
         )
     }
 
@@ -90,7 +90,7 @@ internal fun LazyListScope.outgoingFormItems(
                 label = stringResource(id = R.string.account_server_settings_username_label),
                 isRequired = true,
                 contentPadding = defaultItemPadding(),
-                keyboardOptions = KeyboardOptions(autoCorrect = false),
+                keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
                 contentType = ContentType.Username + ContentType.EmailAddress,
             )
         }

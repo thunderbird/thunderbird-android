@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.android.lint) apply false
     alias(libs.plugins.android.test) apply false
     alias(libs.plugins.compose) apply false
-    alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
@@ -50,6 +49,7 @@ tasks.register("buildCliTools") {
 tasks.named<Wrapper>("wrapper") {
     gradleVersion = libs.versions.gradle.get()
     distributionType = Wrapper.DistributionType.ALL
+    distributionSha256Sum = libs.versions.gradleSha256.get()
 }
 
 codeCoverage {

@@ -1,11 +1,11 @@
 package app.k9mail.feature.account.setup.ui.options.sync
 
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.State
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.ViewModel
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 internal class SyncOptionsViewModel(
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Hautatu</string>
+    <string name="swipe_action_deselect">Desautatu</string>
+    <string name="swipe_action_mark_as_read">Markatu irakurritako gisa</string>
+    <string name="swipe_action_mark_as_unread">Markatu irakurri gabeko gisa</string>
+    <string name="swipe_action_add_star">Gehitu izarra</string>
+    <string name="swipe_action_remove_star">Kendu izarra</string>
+    <string name="swipe_action_archive">Artxibatu</string>
+    <string name="swipe_action_archive_folder_not_set">Ezarri artxibo-karpeta</string>
+    <string name="swipe_action_change_swipe_gestures">Aldatu \nHatza pasatzeko keinuak</string>
+    <string name="swipe_action_delete">Ezabatu</string>
+    <string name="swipe_action_spam">Zabor-posta</string>
+    <string name="swipe_action_move">Mugitu…</string>
+</resources>

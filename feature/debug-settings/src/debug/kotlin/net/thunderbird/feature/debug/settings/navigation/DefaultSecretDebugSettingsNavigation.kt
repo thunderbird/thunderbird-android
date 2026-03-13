@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.toRoute
-import app.k9mail.core.ui.compose.navigation.deepLinkComposable
+import net.thunderbird.core.ui.navigation.deepLinkComposable
 import net.thunderbird.feature.debug.settings.SecretDebugSettingsScreen
 
 internal class DefaultSecretDebugSettingsNavigation : SecretDebugSettingsNavigation {

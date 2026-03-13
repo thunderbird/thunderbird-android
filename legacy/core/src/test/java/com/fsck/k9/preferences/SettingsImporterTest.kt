@@ -15,6 +15,7 @@ import assertk.assertions.prop
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import java.util.UUID
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -117,6 +118,7 @@ class SettingsImporterTest : K9RobolectricTest() {
         }.isInstanceOf<SettingsImportExportException>()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `importSettings() should disable accounts needing passwords`() = runTest(UnconfinedTestDispatcher()) {
         val accountUuid = UUID.randomUUID().toString()

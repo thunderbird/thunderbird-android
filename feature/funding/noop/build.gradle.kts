@@ -1,14 +1,17 @@
 plugins {
-    id(ThunderbirdPlugins.Library.androidCompose)
+    id(ThunderbirdPlugins.Library.kmpCompose)
 }
 
-android {
-    namespace = "app.k9mail.feature.funding.noop"
-    resourcePrefix = "funding_noop_"
-}
+kotlin {
+    android {
+        namespace = "net.thunderbird.feature.funding.noop"
+    }
 
-dependencies {
-    api(projects.feature.funding.api)
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.feature.funding.api)
+        }
+    }
 }
 
 codeCoverage {

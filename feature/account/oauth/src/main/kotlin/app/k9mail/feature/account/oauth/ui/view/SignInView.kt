@@ -9,8 +9,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.oauth.R
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @Composable
 internal fun SignInView(

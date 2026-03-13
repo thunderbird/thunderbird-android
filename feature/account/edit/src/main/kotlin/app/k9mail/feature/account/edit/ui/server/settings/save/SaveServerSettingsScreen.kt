@@ -4,7 +4,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithBackButton
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
@@ -12,6 +11,7 @@ import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract.Effect
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract.Event
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsContract.ViewModel
+import net.thunderbird.core.ui.contract.mvi.observe
 
 @Composable
 fun SaveServerSettingsScreen(

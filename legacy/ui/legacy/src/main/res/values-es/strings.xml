@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="about_app_authors_k9">Los encargados del perrito K-9</string>
+    <string name="about_app_authors_k9">K-9 Dog Walkers</string>
     <string name="source_code">Código fuente</string>
     <string name="app_license">Licencia Apache, versión 2.0</string>
     <string name="about_project_title">Proyecto de código abierto</string>
@@ -237,7 +237,7 @@
     <string name="general_settings_ui_density_default">Normal</string>
     <string name="general_settings_ui_density_relaxed">Espacioso</string>
     <string name="global_settings_privacy_hide_useragent">Ocultar cliente de correo</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Eliminar la marca con el «agente de usuario» de las cabeceras del correo (el destinatario no verá qué programa de correo estás usando)</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Eliminar la marca «Agente Usuario» de las cabeceras del correo</string>
     <string name="global_settings_privacy_hide_timezone">Ocultar zona horaria</string>
     <string name="global_settings_privacy_hide_timezone_detail">Usar UTC («tiempo universal coordinado») en lugar de la zona horaria local en las cabeceras del correo y cabeceras de respuesta</string>
     <string name="global_settings_notification_quick_delete_title">Mostrar el botón «Borrar»</string>
@@ -702,7 +702,7 @@
     <string name="openpgp_dialog_sign_only_text">En este modo la clave PGP se usará para crear una firma criptográfica en un correo no cifrado.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Esto no cifra el correo, pero permite verificar que fue enviado con esa clave.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Las firmas pueden estropearse o perderse al enviarse a listas de correo. </string>
-    <string name="openpgp_dialog_sign_only_minus_attach">Algunos clientes de correo mostrarán las firmas como adjuntos «signature.asc».</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">En algunos clientes las firmas de correo pueden ser exhibidas como adjuntos ‘signature.asc’.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Los correos cifrados siempre incluirán una firma.</string>
     <string name="crypto_msg_title_plaintext">Texto plano</string>
     <string name="crypto_msg_unencrypted_sign_error">la firma de extremo a extremo contiene un error</string>
@@ -715,8 +715,8 @@
     <string name="crypto_msg_title_unencrypted_signed">Texto plano firmado</string>
     <string name="crypto_msg_unencrypted_sign_mismatch">pero la clave de extremo a extremo no coincide con el remitente</string>
     <string name="crypto_msg_unencrypted_sign_expired">pero la clave de extremo a extremo esta expirada</string>
-    <string name="crypto_msg_unencrypted_sign_revoked">pero la clave de extremo a extremo esta revocada</string>
-    <string name="crypto_msg_unencrypted_sign_insecure">pero la clave de extremo a extremo es insegura</string>
+    <string name="crypto_msg_unencrypted_sign_revoked">pero la clave de extremo a extremo está revocada</string>
+    <string name="crypto_msg_unencrypted_sign_insecure">pero la clave de extremo a extremo no se considera segura</string>
     <string name="crypto_msg_unencrypted_sign_unknown">desde una clave de extremo a extremo desconocida</string>
     <string name="crypto_msg_title_encrypted_unknown">Cifrado</string>
     <string name="crypto_msg_encrypted_error">pero hubo un error de descifrado</string>
@@ -729,14 +729,13 @@
     <string name="crypto_msg_title_encrypted_signed">Cifrado</string>
     <string name="crypto_msg_encrypted_sign_unknown">desde una clave de extremo a extremo desconocida</string>
     <string name="crypto_msg_encrypted_sign_mismatch">pero la clave de extremo a extremo no coincide con el remitente</string>
-    <string name="crypto_msg_encrypted_sign_expired">pero la clave de extremo a extremo esta expirada</string>
+    <string name="crypto_msg_encrypted_sign_expired">pero la clave de extremo a extremo está caducada</string>
     <string name="crypto_msg_encrypted_sign_revoked">pero la clave de extremo a extremo esta revocada</string>
-    <string name="crypto_msg_encrypted_sign_insecure">pero la clave de extremo a extremo es insegura</string>
+    <string name="crypto_msg_encrypted_sign_insecure">pero la clave de extremo a extremo no se considera segura</string>
     <string name="crypto_msg_encrypted_sign_error">pero los datos de extremo a extremo tienen errores</string>
     <string name="crypto_msg_encrypted_insecure">pero el cifrado es inseguro</string>
     <string name="locked_attach_unlock">Desbloquear</string>
     <string name="locked_attach_unencrypted">Esta parte no está cifrada y puede ser insegura.</string>
-    <string name="locked_attach_title">Adjunto desprotegido</string>
     <string name="message_progress_text">Cargando…</string>
     <string name="messageview_decrypt_cancelled">Se ha cancelado el descifrado.</string>
     <string name="messageview_decrypt_retry">Reintentar</string>
@@ -805,25 +804,15 @@
     <string name="push_info_disable_push_text">En caso de no necesitar notificaciones instantáneas de correos nuevos puedes desactivar las comprobaciones rápidas («push», o IDLE) y seguir utilizando comprobaciones normales («poll»); esta opción clásica pregunta al servidor de vez en cuando, conectándose de forma esporádica a intervalos regulares y no necesita mantener una conexión permanente ni mantener un servicio y notificación constante en segundo plano. Gastando menos batería.</string>
     <string name="push_info_disable_push_action">Desactivar sincronización rápida («push»)</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Seleccionar</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Deseleccionar</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Marcar como leído</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Marcar como no leído</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Marcar como destacado</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">No marcar como destacado</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archivar</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Borrar</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Mover…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Ver botón flotante de redacción</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -864,9 +853,9 @@
     <string name="background_work_notification_remove_account">Borrando cuenta…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">sin leer, %s</string>
-    <string name="general_settings_post_remove_action_return_to_list">Volver al listado de correos</string>
-    <string name="general_settings_post_remove_action_show_previous_message">Ver correo anterior</string>
-    <string name="general_settings_post_remove_action_show_next_message">Ver siguiente correo</string>
+    <string name="general_settings_post_remove_action_return_to_list">Volver al listado de mensajes</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Mostrar mensaje anterior</string>
+    <string name="general_settings_post_remove_action_show_next_message">Mostrar siguiente mensaje</string>
     <string name="general_settings_post_remove_action_title">Tras borrar o mover un correo</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Seguir en el correo actual</string>
     <string name="general_settings_post_mark_as_unread_action_title">Tras marcar un correo como no leído</string>
@@ -900,8 +889,6 @@
     <string name="debug_enable_sync_debug_logging_title">Registrar depuración de sincronización</string>
     <string name="debug_enable_sync_debug_logging_summary">Registra los datos de sincronización durante 24 horas</string>
     <string name="debug_sync_export_logs_title">Exportar registros de sincronización</string>
-    <string name="swipe_action_archive_folder_not_set">Configurar carpeta para archivar</string>
-    <string name="swipe_action_change_swipe_gestures">Cambiar \ngestos al deslizar</string>
     <string name="archiving_not_available_for_this_account">El archivamiento no está disponible para esta cuenta.</string>
     <string name="debug_open_secret_debug_screen">Abrir la pantalla secreta de desarrollo</string>
     <string name="debug_invalidate_access_token">Prueba: Invalidar vale de acceso</string>
@@ -929,4 +916,9 @@
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
     <string name="debug_feature_flags">DEPURACIÓN: Indicadores de características</string>
     <string name="print_message_action">Imprimir</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contextual</string>
+    <string name="general_settings_message_list_date_time_format_title">Formato de fecha/hora</string>
+    <string name="sort_by_then_by">Luego por…</string>
+    <string name="general_settings_message_list_date_time_format_full">Completo</string>
+    <string name="global_settings_splitview_when_unfolded">Cuando el dispositivo esté desencarpetado</string>
 </resources>

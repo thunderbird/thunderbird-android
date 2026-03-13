@@ -3,6 +3,7 @@ package net.thunderbird.core.configstore
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotEqualTo
 import kotlin.test.Test
 
 class ConfigKeyTest {
@@ -83,5 +84,37 @@ class ConfigKeyTest {
         // Assert
         assertThat(key.name).isEqualTo(name)
         assertThat(key).isInstanceOf(ConfigKey.DoubleKey::class)
+    }
+
+    @Test
+    fun `equals should return true for same key type and same name`() {
+        val key1 = ConfigKey.StringKey("test")
+        val key2 = ConfigKey.StringKey("test")
+
+        assertThat(key1).isEqualTo(key2)
+        assertThat(key1.hashCode()).isEqualTo(key2.hashCode())
+    }
+
+    @Test
+    fun `equals should return false for different key type and same name`() {
+        val key1 = ConfigKey.StringKey("test")
+        val key2 = ConfigKey.IntKey("test")
+
+        assertThat(key1).isNotEqualTo(key2)
+    }
+
+    @Test
+    fun `equals should return false for same key type and different name`() {
+        val key1 = ConfigKey.StringKey("test1")
+        val key2 = ConfigKey.StringKey("test2")
+
+        assertThat(key1).isNotEqualTo(key2)
+    }
+
+    @Test
+    fun `toString should return correct representation`() {
+        val key = ConfigKey.IntKey("myKey")
+
+        assertThat(key.toString()).isEqualTo("IntKey(name='myKey')")
     }
 }

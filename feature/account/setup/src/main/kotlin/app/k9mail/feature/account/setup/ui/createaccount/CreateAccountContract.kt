@@ -1,9 +1,9 @@
 package app.k9mail.feature.account.setup.ui.createaccount
 
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingErrorState
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult.Error
 import app.k9mail.feature.account.setup.domain.entity.AccountUuid
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 
 interface CreateAccountContract {
 

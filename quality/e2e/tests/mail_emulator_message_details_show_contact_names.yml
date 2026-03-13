@@ -1,0 +1,96 @@
+appId: ${MAESTRO_APP_ID}
+---
+
+## Open an email, save the sender to contacts and then delete that contact
+- runFlow:
+    when:
+      visible:
+        id: "onboarding_welcome_start_button"
+    file: init_with_account.yml
+
+## Open message
+- scrollUntilVisible:
+    element:
+      id: "subject"
+      text: "Message details demo"
+    direction: DOWN
+- tapOn:
+    id: "subject"
+    text: "Message details demo"
+
+## Check message
+- assertVisible:
+    id: "from"
+    text: "Rogoz Anamaria"
+#- assertVisible:
+#    id: "recipient_names"
+#    text: "to me"
+
+## Open message details
+- runFlow:
+    file: ../flows/mail/reader_open.yml
+
+## Check message details
+- assertVisible:
+    id: "name"
+    text: "Rogoz Anamaria"
+#- assertVisible:
+#    id: "name"
+#    text: "me"
+
+## Add contacts
+- runFlow:
+    file: contact_add.yml
+    when:
+      visible:
+        id: "menu_add_contact"
+
+## Close message details
+- runFlow:
+    file: ../flows/mail/reader_close.yml
+
+## Go back to Inbox
+- tapOn:
+    id: "com.android.systemui:id/back"
+
+## Change settings
+- runFlow:
+    file: ../flows/settings/toggle_show_contact_names.yml
+
+## Open message
+- scrollUntilVisible:
+    element:
+      id: "subject"
+      text: "Message details demo"
+    direction: DOWN
+- tapOn:
+    id: "subject"
+    index: 0
+    text: "Message details demo"
+
+### Open message details
+- runFlow:
+    file: ../flows/mail/reader_open.yml
+
+### Check message details
+- assertVisible:
+    id: "name"
+    text: "Rogoz from Contacts Anamaria"
+#- assertVisible:
+#    id: "name"
+#    text: "me"
+
+## Remove contacts
+- runFlow:
+    file: ../flows/mail/contact_remove.yml
+    env:
+      NAME: Anamaria
+#- runFlow:
+#    file: ../flows/mail/contact_remove.yml
+#    env:
+#      NAME: me
+
+## Close message
+- tapOn:
+    id: "com.android.systemui:id/back"
+- tapOn: "Navigate up"

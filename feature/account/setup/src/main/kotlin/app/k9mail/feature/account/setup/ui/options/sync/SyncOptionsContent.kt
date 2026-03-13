@@ -19,7 +19,6 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SwitchInput
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.item.defaultHeadlineItemPadding
 import app.k9mail.feature.account.common.ui.item.defaultItemPadding
@@ -29,6 +28,7 @@ import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.State
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @Suppress("LongMethod")
 @Composable

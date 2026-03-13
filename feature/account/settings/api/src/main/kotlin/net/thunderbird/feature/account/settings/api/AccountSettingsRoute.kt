@@ -1,7 +1,7 @@
 package net.thunderbird.feature.account.settings.api
 
-import app.k9mail.core.ui.compose.navigation.Route
 import kotlinx.serialization.Serializable
+import net.thunderbird.core.ui.navigation.Route
 
 sealed interface AccountSettingsRoute : Route {
 
@@ -13,6 +13,28 @@ sealed interface AccountSettingsRoute : Route {
 
         companion object {
             const val BASE_PATH = "$ACCOUNT_SETTINGS_BASE_PATH/general"
+        }
+    }
+
+    @Serializable
+    data class ReadingMailSettings(val accountId: String) : AccountSettingsRoute {
+        override val basePath: String = BASE_PATH
+
+        override fun route(): String = "$basePath/$accountId"
+
+        companion object {
+            const val BASE_PATH = "$ACCOUNT_SETTINGS_BASE_PATH/reading_mail"
+        }
+    }
+
+    @Serializable
+    data class SearchSettings(val accountId: String) : AccountSettingsRoute {
+        override val basePath: String = BASE_PATH
+
+        override fun route(): String = "$basePath/$accountId"
+
+        companion object {
+            const val BASE_PATH = "$ACCOUNT_SETTINGS_BASE_PATH/search"
         }
     }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_settings_general_title">Algemene instellingen</string>
     <string name="account_settings_general_avatar_option_monogram">Monogram</string>
     <string name="account_settings_general_avatar_option_image">Afbeelding</string>
@@ -23,4 +23,16 @@
     <string name="account_settings_general_avatar_image_select">Afbeelding selecteren</string>
     <string name="account_settings_avatar_error_unsupported_format">Alleen JPEG-afbeeldingen worden ondersteund.</string>
     <string name="account_settings_avatar_hint_jpeg_only">Alleen JPEG</string>
+    <string name="account_settings_show_pictures_label">Afbeeldingen altijd tonen</string>
+    <string name="account_settings_reading_mail">E-mailberichten lezen</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Als gelezen markeren als geopend</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Een bericht als gelezen markeren als het geopend is om te bekijken</string>
+    <string name="account_settings_show_pictures_never">Nee</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Van contacten</string>
+    <string name="account_settings_show_pictures_always">Van iedereen</string>
+    <string name="account_settings_remove_account_action">Account verwijderen</string>
+    <string name="account_settings_okay_action">OK</string>
+    <string name="account_settings_cancel_action">Annuleren</string>
+    <string name="account_settings_account_delete_dlg_title">Account verwijderen</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">De account ‘<xliff:g id="account">%1$s</xliff:g>’ zal uit <xliff:g id="app_name">%2$s</xliff:g> worden verwijderd.</string>
 </resources>

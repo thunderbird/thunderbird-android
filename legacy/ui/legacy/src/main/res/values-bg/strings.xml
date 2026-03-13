@@ -672,7 +672,6 @@
     <string name="crypto_msg_encrypted_insecure">но шифрирането не се счита за сигурно</string>
     <string name="locked_attach_unlock">Отключване</string>
     <string name="locked_attach_unencrypted">Тази част не криптирана и може да е несигурна.</string>
-    <string name="locked_attach_title">Незащитен прикачен файл</string>
     <string name="message_progress_text">Зареждане…</string>
     <string name="messageview_decrypt_cancelled">Декриптирването е отказано.</string>
     <string name="messageview_decrypt_retry">Повторен опит</string>
@@ -746,22 +745,14 @@
     <string name="push_info_disable_push_text">Ако нямате нужда от мигновени известия, трябва да деактивирате Push и да използвате Polling. Polling проверява за нови писма на регулярни интервали и не се нуждае от известия.</string>
     <string name="push_info_disable_push_action">Изключи Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Избери</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Отмени Избор</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Маркирай като непрочетено</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Добави звезда</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Премахни звезда</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Архивиране</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Изтриване</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Спам</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -818,7 +809,6 @@
     <string name="account_settings_notification_light_label">Светлина при известие</string>
     <string name="general_settings_post_remove_action_show_previous_message">Показване на предишното съобщение</string>
     <string name="account_settings_notification_light_default_color">Цвят по подразбиране</string>
-    <string name="swipe_action_move">Преместване…</string>
     <string name="show_starred_count_title">Брой важни съобщения</string>
     <string name="account_settings_vibrate_pattern_4">Шаблон 4</string>
     <string name="debug_export_logs_success">Изнасянето е успешно. Журналите може да съдържат лична информация. Внимавайте кому ги пращате.</string>
@@ -843,7 +833,6 @@
     <string name="message_details_replyto_section_title">Отговори</string>
     <string name="account_settings_notification_light_magenta">Пурпурен</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Брой нови съобщения</string>
-    <string name="swipe_action_mark_as_read">Отбележи като прочетено</string>
     <string name="action_add_to_contacts">Добави към контакти</string>
     <string name="general_settings_left_swipe_title">Жест наляво</string>
     <string name="general_settings_ui_density_compact">Компактен</string>
@@ -897,11 +886,9 @@
     <string name="dialog_confirm_empty_spam_message">Искате ли да изчистите нежеланите съобщения?</string>
     <string name="settings_list_action_support">Подкрепа на <xliff:g id="app_name">%s</xliff:g></string>
     <string name="expand_content_description">Разширяване</string>
-    <string name="swipe_action_archive_folder_not_set">Задаване на папка \"Архиви\"</string>
     <string name="settings_ui_telemetry_description">Споделя данни за производителността, използването, хардуера и настройките на това приложение с Mozilla, за да ни помогне да направим Thunderbird по-добър</string>
     <string name="archiving_not_available_for_this_account">Архивирането не е достъпно за този профил.</string>
     <string name="push_info_notification_explanation_text">Когато използвате Push, <xliff:g id="app_name">%1$s</xliff:g> поддържа връзка с пощенския сървър. Android изисква показване на текущо уведомление, докато приложението е активно във фонов режим. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="swipe_action_change_swipe_gestures">Промяна\nЖестове с плъзгане</string>
     <string name="message_view_menu_action_export_eml">Изнасяне като EML</string>
     <string name="expand_folders">Разгъване на папките</string>
     <string name="account_setup_auto_select_folder">Автоматичен избор на папка</string>

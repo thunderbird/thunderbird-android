@@ -3,6 +3,7 @@ package com.fsck.k9.ui.messagelist
 import app.k9mail.legacy.mailstore.MessageDetailsAccessor
 import app.k9mail.legacy.mailstore.MessageMapper
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
+import com.fsck.k9.contacts.ContactLetterBitmapCreator
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.ui.helper.DisplayAddressHelper
 import net.thunderbird.core.android.account.LegacyAccount
@@ -14,6 +15,8 @@ class MessageListItemMapper(
     private val account: LegacyAccount,
     private val messageListPreferencesManager: MessageListPreferencesManager,
     private val outboxFolderManager: OutboxFolderManager,
+    private val formatDate: (Long) -> String,
+    private val contactLetterBitmapCreator: ContactLetterBitmapCreator?,
 ) : MessageMapper<MessageListItem> {
 
     override fun map(message: MessageDetailsAccessor): MessageListItem {
@@ -36,6 +39,7 @@ class MessageListItemMapper(
         } else {
             messageHelper.getSenderDisplayName(displayAddress)
         }
+        val displayMessageDateTime = formatDate(message.messageDate)
 
         return MessageListItem(
             account,
@@ -45,6 +49,7 @@ class MessageListItemMapper(
             message.internalDate,
             displayName,
             displayAddress,
+            displayMessageDateTime,
             previewText,
             isMessageEncrypted,
             message.isRead,
@@ -57,6 +62,9 @@ class MessageListItemMapper(
             message.messageServerId,
             message.id,
             message.threadRoot,
+            contactColor = displayAddress?.let { displayAddress ->
+                contactLetterBitmapCreator?.calcUnknownContactColor(displayAddress)
+            } ?: -1,
         )
     }
 

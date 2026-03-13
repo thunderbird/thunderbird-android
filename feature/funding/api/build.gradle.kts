@@ -1,15 +1,19 @@
 plugins {
-    id(ThunderbirdPlugins.Library.androidCompose)
+    id(ThunderbirdPlugins.Library.kmpCompose)
     alias(libs.plugins.kotlin.serialization)
 }
 
-android {
-    namespace = "app.k9mail.feature.funding.api"
-    resourcePrefix = "funding_api_"
-}
+kotlin {
+    android {
+        namespace = "net.thunderbird.feature.funding.api"
+        withHostTest {}
+    }
 
-dependencies {
-    api(projects.core.ui.compose.navigation)
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.core.ui.navigation)
+        }
+    }
 }
 
 codeCoverage {

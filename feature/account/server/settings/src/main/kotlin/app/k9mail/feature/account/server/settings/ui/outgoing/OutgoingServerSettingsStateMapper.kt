@@ -32,7 +32,7 @@ private fun AccountState.getOutgoingServerPassword(): String {
 
 private fun ServerSettings.toOutgoingServerSettingsState(password: String): State {
     return State(
-        server = StringInputField(value = host ?: ""),
+        server = StringInputField(value = host),
         security = connectionSecurity.toConnectionSecurity(),
         port = NumberInputField(value = port.toLong()),
         authenticationType = authenticationType.toAuthenticationType(),

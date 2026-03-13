@@ -17,8 +17,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.card.CardColors
 import app.k9mail.core.ui.compose.designsystem.atom.card.CardFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.designsystem.organism.banner.BannerNotificationCardDefaults
-import app.k9mail.core.ui.compose.theme2.LocalContentColor
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.LocalContentColor
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 /**
  * Used to maintain the user’s awareness of a persistent irregular state of the application,

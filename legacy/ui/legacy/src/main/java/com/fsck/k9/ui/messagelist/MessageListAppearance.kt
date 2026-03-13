@@ -1,6 +1,9 @@
 package com.fsck.k9.ui.messagelist
 
 import com.fsck.k9.FontSizes
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 
 data class MessageListAppearance(
@@ -16,4 +19,5 @@ data class MessageListAppearance(
      */
     val showAccountIndicator: Boolean,
     val density: UiDensity,
-)
+    val dateTimeFormat: MessageListDateTimeFormat,
+) : Parcelable

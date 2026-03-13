@@ -6,7 +6,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import dev.mokkery.matcher.any
-import dev.mokkery.matcher.matching
+import dev.mokkery.matcher.matches
 import dev.mokkery.spy
 import dev.mokkery.verify
 import dev.mokkery.verify.VerifyMode.Companion.exactly
@@ -75,7 +75,7 @@ class SetArchiveFolderTest {
         }
         verify(exactly(1)) {
             fakeAccountManager.saveAccount(
-                account = matching {
+                account = matches {
                     it.id == AccountIdFactory.of(accountUuid)
                 },
             )

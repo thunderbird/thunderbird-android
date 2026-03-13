@@ -16,4 +16,19 @@ sealed class ConfigKey<T>(val name: String) {
     class LongKey(name: String) : ConfigKey<Long>(name)
     class FloatKey(name: String) : ConfigKey<Float>(name)
     class DoubleKey(name: String) : ConfigKey<Double>(name)
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+        other as ConfigKey<*>
+        return name == other.name
+    }
+
+    override fun hashCode(): Int {
+        return name.hashCode() + 31 * this::class.hashCode()
+    }
+
+    override fun toString(): String {
+        return "${this::class.simpleName}(name='$name')"
+    }
 }

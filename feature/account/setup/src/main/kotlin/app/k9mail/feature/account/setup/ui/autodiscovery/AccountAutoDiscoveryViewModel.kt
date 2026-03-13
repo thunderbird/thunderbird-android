@@ -5,7 +5,6 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.IncomingServerSettings
 import app.k9mail.autodiscovery.demo.DemoServerSettings
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
@@ -21,6 +20,7 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Validator
 import kotlinx.coroutines.launch
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.core.validation.input.StringInputField
 
 @Suppress("TooManyFunctions")

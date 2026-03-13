@@ -1,0 +1,69 @@
+---
+name: PR - Label tb-team
+
+# Warning, this job is running on pull_request_target and therefore has access to issue content.
+# Don't add any steps that act on external code.
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+permissions:
+  contents: none
+
+jobs:
+  label-tb-team:
+    permissions:
+      pull-requests: write
+    runs-on: ubuntu-latest
+    environment: review
+    steps:
+      - name: App token generate
+        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf  # v2.2.1
+        if: ${{ vars.BOT_CLIENT_ID }}
+        id: app-token
+        with:
+          app-id: ${{ vars.BOT_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
+      - name: Label tb-team for OWNER
+        env:
+          OWNER: ${{ vars.OWNER }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+        shell: bash
+        run: |
+          if [[ -z "${OWNER//[[:space:]]/}" ]]; then
+            echo "OWNER list is empty; skipping."
+            exit 0
+          fi
+
+          owners_clean="$(echo "$OWNER" | tr -d '[:space:]')"
+          author_lower="$(echo "$PR_AUTHOR" | tr '[:upper:]' '[:lower:]')"
+          match=0
+
+          IFS=',' read -ra owners <<< "$owners_clean"
+          for owner in "${owners[@]}"; do
+            owner_lower="$(echo "$owner" | tr '[:upper:]' '[:lower:]')"
+            if [[ -n "$owner_lower" && "$owner_lower" == "$author_lower" ]]; then
+              match=1
+              break
+            fi
+          done
+
+          if [[ "$match" -ne 1 ]]; then
+            echo "PR author '$PR_AUTHOR' not in OWNER list; skipping."
+            exit 0
+          fi
+
+          if ! gh label list --repo "$GITHUB_REPOSITORY" --json name --jq '.[] | select(.name=="tb-team")' | grep -q .; then
+            echo "Label 'tb-team' missing; skipping."
+            exit 0
+          fi
+
+          if gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json labels --jq '.labels[].name' | grep -Fxq 'tb-team'; then
+            echo "Label 'tb-team' already set."
+            exit 0
+          fi
+
+          gh pr edit "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --add-label "tb-team"

@@ -9,17 +9,24 @@ plugins {
     id("thunderbird.quality.spotless")
 }
 
-android {
-    configureSharedComposeConfig(libs)
-}
-
 androidComponents {
     beforeVariants(selector().withBuildType("release")) { variantBuilder ->
+        @Suppress("UnstableApiUsage")
         variantBuilder.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = false
         variantBuilder.enableAndroidTest = false
     }
 }
 
 dependencies {
-    configureSharedComposeDependencies(libs)
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
+    implementation(libs.bundles.shared.jvm.android.compose)
+
+    debugImplementation(libs.bundles.shared.jvm.android.compose.debug)
+
+    testImplementation(libs.bundles.shared.jvm.test.compose)
+
+    androidTestImplementation(libs.bundles.shared.jvm.androidtest.compose)
 }

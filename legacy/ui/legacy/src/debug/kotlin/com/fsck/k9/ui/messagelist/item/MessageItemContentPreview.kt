@@ -1,6 +1,8 @@
 package com.fsck.k9.ui.messagelist.item
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import app.k9mail.core.android.common.contact.Contact
 import app.k9mail.core.android.common.contact.ContactRepository
@@ -14,6 +16,7 @@ import com.fsck.k9.ui.messagelist.MessageListItem
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.mail.EmailAddress
+import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
@@ -78,6 +81,7 @@ private val fakeMessageListItem = MessageListItem(
     internalDate = 1234456789L,
     displayName = "Sender Name",
     displayAddress = null,
+    displayMessageDateTime = "Today",
     previewText = "This is the preview text.",
     isMessageEncrypted = false,
     isRead = false,
@@ -90,6 +94,7 @@ private val fakeMessageListItem = MessageListItem(
     messageUid = "654321",
     databaseId = 1L,
     threadRoot = 1L,
+    contactColor = Color.Magenta.toArgb(),
 )
 
 private val fakeMessageListAppearance = MessageListAppearance(
@@ -102,6 +107,7 @@ private val fakeMessageListAppearance = MessageListAppearance(
     backGroundAsReadIndicator = false,
     showAccountIndicator = true,
     density = UiDensity.Default,
+    dateTimeFormat = MessageListDateTimeFormat.Contextual,
 )
 
 private val fakeContactRepository = object : ContactRepository {

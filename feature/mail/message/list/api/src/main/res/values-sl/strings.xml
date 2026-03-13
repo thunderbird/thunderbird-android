@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Izberi</string>
+    <string name="swipe_action_deselect">Odstrani izbor</string>
+    <string name="swipe_action_mark_as_read">Označi kot prebrano</string>
+    <string name="swipe_action_mark_as_unread">Označi kot neprebrano</string>
+    <string name="swipe_action_add_star">Označi z zvezdico</string>
+    <string name="swipe_action_remove_star">Odstrani zvezdico</string>
+    <string name="swipe_action_archive">Arhiviraj</string>
+    <string name="swipe_action_archive_folder_not_set">Nastavi mapo za arhiviranje</string>
+    <string name="swipe_action_change_swipe_gestures">Spremeni\ndejanja potega</string>
+    <string name="swipe_action_delete">Izbriši</string>
+    <string name="swipe_action_spam">Neželeno sporočilo</string>
+    <string name="swipe_action_move">Premakni …</string>
+</resources>

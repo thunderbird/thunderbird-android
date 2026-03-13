@@ -1,0 +1,33 @@
+---
+name: Quality - Check Markdown
+
+on:
+  pull_request:
+    paths:
+      - '**.md'
+      - 'quality-markdown.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  quality-markdown:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Cargo cache
+        uses: actions-rust-lang/setup-rust-toolchain@a0b538fa0b742a6aa35d6e2c169b4bd06d225a98  # v1.15.3
+
+      - name: Install mdbook and extensions
+        run: ./docs/install.sh
+
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
+
+      - name: Quality - Spotless Markdown Check
+        run: ./gradlew spotlessFlexmarkCheck
+
+      - name: Test mdbook docs
+        run: mdbook test docs

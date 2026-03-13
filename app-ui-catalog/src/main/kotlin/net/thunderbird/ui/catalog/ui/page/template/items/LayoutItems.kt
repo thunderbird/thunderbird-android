@@ -20,9 +20,9 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.template.ListDetailPane
 import app.k9mail.core.ui.compose.designsystem.template.rememberListDetailNavigationController
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem
 
