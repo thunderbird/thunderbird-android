@@ -1,34 +1,50 @@
 package com.fsck.k9.ui.changelog
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import com.fsck.k9.ui.base.loader.LoaderState
-import com.fsck.k9.ui.base.loader.liveDataLoader
-import de.cketti.changelog.ReleaseItem
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
+import androidx.lifecycle.viewModelScope
+import com.fsck.k9.ui.changelog.ChangelogContract.Effect
+import com.fsck.k9.ui.changelog.ChangelogContract.Event
+import com.fsck.k9.ui.changelog.ChangelogContract.State
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.update
-
-private typealias ChangeLogState = LoaderState<List<ReleaseItem>>
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 class ChangelogViewModel(
     private val generalSettingsManager: GeneralSettingsManager,
     private val changeLogManager: ChangeLogManager,
     private val mode: ChangeLogMode,
-) : ViewModel() {
-    val showRecentChangesState: LiveData<Boolean> =
-        generalSettingsManager.getConfigFlow()
-            .map { it.display.miscSettings.showRecentChanges }
-            .distinctUntilChanged()
-            .asLiveData()
+) : BaseViewModel<State, Event, Effect>(
+    initialState = State(
+        releaseItems = persistentListOf(),
+        showRecentChanges = false,
+    ),
+) {
+    init {
+        viewModelScope.launch {
+            loadState()
+        }
+    }
+    private suspend fun loadState() {
+        combine(
+            generalSettingsManager.getConfigFlow(),
+            changeLogManager.changeLogFlow,
+        ) { settings, changeLog ->
+            Pair(settings, changeLog)
+        }.collect { (settings, changeLog) ->
 
-    val changelogState: LiveData<ChangeLogState> = liveDataLoader {
-        val changeLog = changeLogManager.changeLog
-        when (mode) {
-            ChangeLogMode.CHANGE_LOG -> changeLog.changeLog
-            ChangeLogMode.RECENT_CHANGES -> changeLog.recentChanges
+            updateState { state ->
+                state.copy(
+                    showRecentChanges = settings.display.miscSettings.showRecentChanges,
+                    releaseItems = if (mode == ChangeLogMode.CHANGE_LOG) {
+                        changeLog.changeLog.toImmutableList()
+                    } else {
+                        changeLog.recentChanges.toImmutableList()
+                    },
+                )
+            }
         }
     }
 
@@ -41,6 +57,14 @@ class ChangelogViewModel(
                     ),
                 ),
             )
+        }
+    }
+
+    override fun event(event: Event) {
+        when (event) {
+            is Event.OnShowRecentChangesCheck -> {
+                setShowRecentChanges(!event.isChecked)
+            }
         }
     }
 
