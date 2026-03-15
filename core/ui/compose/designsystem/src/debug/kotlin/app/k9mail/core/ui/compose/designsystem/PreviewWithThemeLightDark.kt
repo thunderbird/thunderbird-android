@@ -13,7 +13,7 @@ import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 /**
  * A Composable function that displays a preview of the content in both Thunderbird and K-9 Mail themes.
@@ -28,7 +28,7 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
  * @param arrangement The arrangement for the previews. Defaults to `Arrangement.spacedBy(MainTheme.spacings.triple)`.
  * @param content The content to be displayed in the previews.
  *
- * @see app.k9mail.core.ui.compose.theme2.default.defaultThemeSpacings for MainTheme.spacings
+ * @see net.thunderbird.core.ui.compose.theme2.default.defaultThemeSpacings for MainTheme.spacings
  */
 @Composable
 fun PreviewWithThemesLightDark(

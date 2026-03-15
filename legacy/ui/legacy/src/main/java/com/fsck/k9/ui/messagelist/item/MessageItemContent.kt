@@ -24,11 +24,11 @@ import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
 import app.k9mail.core.ui.compose.designsystem.atom.image.RemoteImage
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.mail.message.list.ui.component.organism.ActiveMessageItem
 import net.thunderbird.feature.mail.message.list.ui.component.organism.MessageItemDefaults
@@ -79,6 +79,7 @@ internal fun MessageItemContent(
             avatar = {
                 if (appearance.showContactPicture) {
                     ContactImageAvatar(
+                        color = Color(item.contactColor),
                         contactImageUri = uri,
                         contactImageMonogram = monogram,
                         onAvatarClick = onAvatarClick,
@@ -108,6 +109,7 @@ internal fun MessageItemContent(
             avatar = {
                 if (appearance.showContactPicture) {
                     ContactImageAvatar(
+                        color = Color(item.contactColor),
                         contactImageUri = uri,
                         contactImageMonogram = monogram,
                         onAvatarClick = onAvatarClick,
@@ -137,6 +139,7 @@ internal fun MessageItemContent(
             avatar = {
                 if (appearance.showContactPicture) {
                     ContactImageAvatar(
+                        color = Color(item.contactColor),
                         contactImageUri = uri,
                         contactImageMonogram = monogram,
                         onAvatarClick = onAvatarClick,
@@ -160,6 +163,7 @@ internal fun MessageItemContent(
 
 @Composable
 fun ContactImageAvatar(
+    color: Color,
     contactImageUri: Uri?,
     contactImageMonogram: String,
     modifier: Modifier = Modifier,
@@ -167,11 +171,11 @@ fun ContactImageAvatar(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
+        modifier = modifier
             .size(MainTheme.sizes.iconAvatar)
             .padding(MainTheme.spacings.half)
-            .background(color = MainTheme.colors.primaryContainer.copy(alpha = 0.15f), shape = CircleShape)
-            .border(width = 1.dp, color = MainTheme.colors.primary, shape = CircleShape)
+            .background(color = color.copy(alpha = 0.15f), shape = CircleShape)
+            .border(width = 1.dp, color = color, shape = CircleShape)
             .clickable(onClick = onAvatarClick),
     ) {
         contactImageUri?.let {
@@ -179,7 +183,7 @@ fun ContactImageAvatar(
                 url = it.toString(),
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.Center,
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxSize()
                     .clip(CircleShape),
                 placeholder = {

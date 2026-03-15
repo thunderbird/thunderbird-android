@@ -31,10 +31,10 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.funding.googleplay.R
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution

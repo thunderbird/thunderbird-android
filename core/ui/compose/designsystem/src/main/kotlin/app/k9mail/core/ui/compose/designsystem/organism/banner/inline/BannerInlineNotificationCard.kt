@@ -22,9 +22,9 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.designsystem.organism.banner.BannerNotificationCardDefaults
 import app.k9mail.core.ui.compose.designsystem.organism.banner.BannerNotificationCardDefaults.TEST_TAG_BANNER_INLINE_CARD_ACTION_ROW
-import app.k9mail.core.ui.compose.theme2.LocalContentColor
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import net.thunderbird.core.ui.compose.theme2.LocalContentColor
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 private const val MAX_TITLE_LENGTH = 100
 private const val MAX_SUPPORTING_TEXT_LENGTH = 200

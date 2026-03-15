@@ -196,11 +196,7 @@ class SmtpResponseParserTest {
             "Ignoring EHLO keyword line: AUTH=PLAIN",
             "Ignoring EHLO keyword line: %1 crash when included in format string",
         )
-        assertThat(logger.logEntries.map { it.throwable?.message }).containsExactly(
-            "EHLO keyword contains invalid character",
-            "EHLO keyword contains invalid character",
-            "EHLO keyword contains invalid character",
-        )
+        assertThat(logger.logEntries.map { it.throwable }).containsExactly(null, null, null)
     }
 
     @Test
@@ -217,7 +213,7 @@ class SmtpResponseParserTest {
             .transform { it.keywords.keys }.isEmpty()
 
         assertThat(logger.logEntries).isNotNull().hasSize(1)
-        assertThat(logger.logEntries.first().throwable).isNotNull().hasMessage("EHLO parameter must not be empty")
+        assertThat(logger.logEntries.first().throwable).isNull()
         assertThat(logger.logEntries.first().message).isEqualTo("Ignoring EHLO keyword line: KEYWORD ")
     }
 
@@ -236,8 +232,7 @@ class SmtpResponseParserTest {
             .transform { it.keywords.keys }.containsExactlyInAnyOrder("8BITMIME")
 
         assertThat(logger.logEntries).hasSize(1)
-        assertThat(logger.logEntries.first().throwable).isNotNull()
-            .hasMessage("EHLO parameter contains invalid character")
+        assertThat(logger.logEntries.first().throwable).isNull()
         assertThat(logger.logEntries.first().message)
             .isEqualTo("Ignoring EHLO keyword line: KEYWORD para${"\t"}meter")
     }

@@ -11,11 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlin.reflect.full.declaredMemberProperties
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcons
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem

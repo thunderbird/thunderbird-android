@@ -20,7 +20,6 @@ import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.test.swipeRight
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
@@ -35,7 +34,7 @@ import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
-import net.thunderbird.core.ui.compose.designsystem.atom.button.MESSAGE_ITEM_FAVOURITE_ICON_BUTTON_TEST_TAG
+import net.thunderbird.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.internal.R
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageListItemDefaults
@@ -43,6 +42,7 @@ import net.thunderbird.feature.mail.message.list.internal.ui.preview.AccountPrev
 import net.thunderbird.feature.mail.message.list.internal.ui.preview.MessagePreviewHelper
 import net.thunderbird.feature.mail.message.list.preferences.ActionRequiringUserConfirmation
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
+import net.thunderbird.feature.mail.message.list.ui.component.atom.MESSAGE_ITEM_FAVOURITE_ICON_BUTTON_TEST_TAG
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
@@ -553,8 +553,6 @@ class MessageListScreenRendererTest : ComposeTest() {
         senderAboveSubject: Boolean = true,
         excerptLines: Int = 1,
         dateTimeFormat: MessageListDateTimeFormat = MessageListDateTimeFormat.Contextual,
-        useVolumeKeyNavigation: Boolean = false,
-        serverSearchLimit: Int = -1,
         actionRequiringUserConfirmation: ImmutableSet<ActionRequiringUserConfirmation> = persistentSetOf(),
         colorizeBackgroundWhenRead: Boolean = false,
     ) = MessageListPreferences(
@@ -566,8 +564,6 @@ class MessageListScreenRendererTest : ComposeTest() {
         senderAboveSubject = senderAboveSubject,
         excerptLines = excerptLines,
         dateTimeFormat = dateTimeFormat,
-        useVolumeKeyNavigation = useVolumeKeyNavigation,
-        serverSearchLimit = serverSearchLimit,
         actionRequiringUserConfirmation = actionRequiringUserConfirmation,
         colorizeBackgroundWhenRead = colorizeBackgroundWhenRead,
     )

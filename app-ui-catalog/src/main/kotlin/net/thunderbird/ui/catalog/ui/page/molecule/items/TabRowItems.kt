@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlin.random.Random
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
@@ -19,6 +18,7 @@ import net.thunderbird.core.ui.compose.designsystem.atom.tab.TabPrimary
 import net.thunderbird.core.ui.compose.designsystem.atom.tab.TabSecondary
 import net.thunderbird.core.ui.compose.designsystem.molecule.tab.TabRowPrimary
 import net.thunderbird.core.ui.compose.designsystem.molecule.tab.TabRowSecondary
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.ui.catalog.ui.page.common.list.fullSpanItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionSubtitleItem

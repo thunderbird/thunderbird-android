@@ -61,7 +61,7 @@ dependencyGuardPlugin = "0.5.0"
 detektPlugin = "1.23.8"
 detektPluginCompose = "0.4.27"
 fastAdapter = "5.7.0"
-forkhandlesBom = "2.25.2.1"
+forkhandlesBom = "2.25.3.0"
 glide = "4.16.0"
 gradle = "9.3.1"
 gradleSha256 = "17f277867f6914d61b1aa02efab1ba7bb439ad652ca485cd8ca6842fccec6e43"
@@ -69,8 +69,9 @@ icu4j = "78.2"
 javaDiffUtils = "4.16"
 jcipAnnotations = "1.0"
 jetbrainsAnnotations = "26.1.0"
-jetbrainsCompose = "1.10.1"
+jetbrainsCompose = "1.10.2"
 jetbrainsComposeLifecycle = "2.9.6"
+jetbrainsComposeMaterial3 = "1.9.0"
 jetbrainsComposeNavigation = "2.9.2"
 jetbrainsComposeNavigation3 = "1.0.0-alpha06"
 jetbrainsComposeNavigationEvent = "1.0.1"
@@ -236,6 +237,7 @@ jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "j
 jetbrains-compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "jetbrainsCompose" }
 jetbrains-compose-components-ui-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "jetbrainsCompose" }
 jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "jetbrainsCompose" }
+jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "jetbrainsComposeMaterial3" }
 jetbrains-compose-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jetbrainsComposeLifecycle" }
 jetbrains-compose-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "jetbrainsComposeLifecycle" }
 jetbrains-compose-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrainsComposeLifecycle" }
@@ -364,6 +366,7 @@ shared-jvm-android-compose = [
   "koin-androidx-compose",
   "kotlinx-collections-immutable",
   "kotlinx-serialization-json",
+  "jetbrains-compose-components-resources"
 ]
 shared-jvm-android-compose-debug = [
   "androidx-compose-ui-test-manifest",

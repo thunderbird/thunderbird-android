@@ -7,9 +7,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
-import app.k9mail.core.ui.compose.theme2.MainTheme
-import app.k9mail.core.ui.compose.theme2.ThemeColorScheme
-import app.k9mail.core.ui.compose.theme2.ThemeElevations
+import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.ThemeColorScheme
+import net.thunderbird.core.ui.compose.theme2.ThemeElevations
 import androidx.compose.material3.Surface as Material3Surface
 
 /**

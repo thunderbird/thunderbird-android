@@ -17,8 +17,8 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.molecule.input.AdvancedTextInput
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.coroutines.delay
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.dialog.ui.components.dialog.SettingDialogLayout
 

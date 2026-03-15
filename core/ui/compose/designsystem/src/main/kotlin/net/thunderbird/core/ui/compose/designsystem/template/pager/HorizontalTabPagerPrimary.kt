@@ -15,11 +15,11 @@ import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.coroutines.launch
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.tab.TabPrimary
 import net.thunderbird.core.ui.compose.designsystem.molecule.tab.TabRowPrimary
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 /**
  * A Composable that displays a horizontal pager with a tab row.

@@ -25,7 +25,7 @@ concurrency:
 
 jobs:
   build-common:
-    name: Build common code
+    name: Build - Common code
     runs-on: ubuntu-latest
     timeout-minutes: 90
 
@@ -56,7 +56,7 @@ jobs:
         uses: ./.github/actions/disk-usage
 
   build-k9:
-    name: Build K9 application
+    name: Build - K9 application
     runs-on: ubuntu-latest
     timeout-minutes: 90
     needs: [build-common]
@@ -72,6 +72,20 @@ jobs:
       - name: Build K9 application
         run: ./gradlew :app-k9mail:assemble -Pci=true
 
+  check-badging-k9:
+    name: Check - K9 badging
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    needs: [ build-common ]
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 1
+
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
+
       - name: Check K9 Badging
         run: |
           ./gradlew :app-k9mail:checkFossReleaseBadging \
@@ -80,7 +94,7 @@ jobs:
                     -x build
 
   build-thunderbird:
-    name: Build Thunderbird application
+    name: Build - Thunderbird application
     runs-on: ubuntu-latest
     timeout-minutes: 90
     needs: [build-common]
@@ -96,6 +110,20 @@ jobs:
       - name: Build Thunderbird application
         run: ./gradlew :app-thunderbird:assemble -Pci=true
 
+  check-badging-thunderbird:
+    name: Check - Thunderbird badging
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    needs: [ build-common ]
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 1
+
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
+
       - name: Check Thunderbird Badging
         run: |
           ./gradlew :app-thunderbird:checkFossBetaBadging \
@@ -108,7 +136,7 @@ jobs:
                     -x build
 
   build-ui-catalog:
-    name: Build UI-catalog application
+    name: Build - UI-catalog application
     runs-on: ubuntu-latest
     timeout-minutes: 90
     needs: [build-common]

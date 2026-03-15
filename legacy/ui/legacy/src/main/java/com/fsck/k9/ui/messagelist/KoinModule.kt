@@ -19,6 +19,8 @@ val messageListUiModule = module {
             messageListPreferencesManager = get(),
             outboxFolderManager = get(),
             relativeDateTimeFormatter = get(),
+            featureFlagProvider = get(),
+            contactLetterBitmapCreator = get(),
         )
     }
     factory {

@@ -15,7 +15,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 4
-        versionName = "18.0"
+        versionName = "19.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
     }
@@ -105,6 +105,8 @@ android {
         }
 
         create("beta") {
+            initWith(getByName("release"))
+
             signingConfig = signingConfigs.getByType(SigningType.TB_BETA)
 
             applicationIdSuffix = ".beta"
@@ -125,6 +127,8 @@ android {
         }
 
         create("daily") {
+            initWith(getByName("release"))
+
             signingConfig = signingConfigs.getByType(SigningType.TB_DAILY)
 
             applicationIdSuffix = ".daily"
@@ -212,6 +216,7 @@ val fullReleaseImplementation by configurations.creating
 
 dependencies {
     implementation(projects.appCommon)
+    implementation(projects.core.ui.compose.common)
     implementation(projects.core.ui.compose.theme2.thunderbird)
     implementation(projects.core.ui.legacy.theme2.thunderbird)
     implementation(projects.feature.launcher)

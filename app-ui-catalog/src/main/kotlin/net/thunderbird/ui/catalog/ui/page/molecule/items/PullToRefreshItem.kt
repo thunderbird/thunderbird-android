@@ -11,9 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.molecule.PullToRefreshBox
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @Suppress("MagicNumber")
 @Composable

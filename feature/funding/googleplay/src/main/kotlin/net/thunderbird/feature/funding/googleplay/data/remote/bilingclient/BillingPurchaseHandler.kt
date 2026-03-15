@@ -4,13 +4,16 @@ import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.ConsumeParams
-import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.consumePurchase
-import net.thunderbird.core.common.cache.Cache
+import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
+import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
@@ -19,13 +22,16 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContrib
 // TODO optimize purchase handling and reduce duplicate code
 @Suppress("TooManyFunctions")
 internal class BillingPurchaseHandler(
-    private val productCache: Cache<String, ProductDetails>,
+    private val productCache: Remote.BillingProductCache,
     private val productMapper: FundingDataContract.Mapper.Product,
     private val logger: Logger,
-) : FundingDataContract.Remote.BillingPurchaseHandler {
+    private val backgroundDispatcher: CoroutineContext = Dispatchers.IO,
+) : Remote.BillingPurchaseHandler {
+
+    private val coroutineScope = CoroutineScope(backgroundDispatcher)
 
     override suspend fun handlePurchases(
-        clientProvider: FundingDataContract.Remote.BillingClientProvider,
+        clientProvider: Remote.BillingClientProvider,
         purchases: List<Purchase>,
     ): List<Contribution> {
         return purchases.flatMap { purchase ->
@@ -33,8 +39,8 @@ internal class BillingPurchaseHandler(
         }
     }
 
-    override suspend fun handleOneTimePurchases(
-        clientProvider: FundingDataContract.Remote.BillingClientProvider,
+    override fun handleOneTimePurchases(
+        clientProvider: Remote.BillingClientProvider,
         purchases: List<Purchase>,
     ): List<OneTimeContribution> {
         return purchases.flatMap { purchase ->
@@ -42,8 +48,8 @@ internal class BillingPurchaseHandler(
         }
     }
 
-    override suspend fun handleRecurringPurchases(
-        clientProvider: FundingDataContract.Remote.BillingClientProvider,
+    override fun handleRecurringPurchases(
+        clientProvider: Remote.BillingClientProvider,
         purchases: List<Purchase>,
     ): List<RecurringContribution> {
         return purchases.flatMap { purchase ->
@@ -62,22 +68,26 @@ internal class BillingPurchaseHandler(
         return extractContributions(purchase)
     }
 
-    private suspend fun handleOneTimePurchase(
+    private fun handleOneTimePurchase(
         billingClient: BillingClient,
         purchase: Purchase,
     ): List<OneTimeContribution> {
-        // TODO verify purchase with public key
-        consumePurchase(billingClient, purchase)
+        coroutineScope.launch {
+            // TODO verify purchase with public key
+            consumePurchase(billingClient, purchase)
+        }
 
         return extractOneTimeContributions(purchase)
     }
 
-    private suspend fun handleRecurringPurchase(
+    private fun handleRecurringPurchase(
         billingClient: BillingClient,
         purchase: Purchase,
     ): List<RecurringContribution> {
-        // TODO verify purchase with public key
-        acknowledgePurchase(billingClient, purchase)
+        coroutineScope.launch {
+            // TODO verify purchase with public key
+            acknowledgePurchase(billingClient, purchase)
+        }
 
         return extractRecurringContributions(purchase)
     }

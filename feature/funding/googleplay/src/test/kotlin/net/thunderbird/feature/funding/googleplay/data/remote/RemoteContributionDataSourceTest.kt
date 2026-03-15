@@ -12,9 +12,12 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContrib
 import org.junit.Test
 
 class RemoteContributionDataSourceTest {
-
+    private val billingConnector = FakeBillingConnector()
     private val billingClient = FakeBillingClient()
-    private val testSubject = RemoteContributionDataSource(billingClient)
+    private val testSubject = RemoteContributionDataSource(
+        billingConnector,
+        billingClient,
+    )
 
     @Test
     fun `getAllOneTime should return outcome from billingClient`() = runTest {
@@ -24,7 +27,6 @@ class RemoteContributionDataSourceTest {
             OneTimeContribution("id", "title", "desc", 100L, "$1.00"),
         )
         val expectedOutcome = Outcome.success(contributions)
-        billingClient.connectOutcome = Outcome.success(Unit)
         billingClient.oneTimeOutcome = expectedOutcome
 
         // Act
@@ -42,7 +44,6 @@ class RemoteContributionDataSourceTest {
             RecurringContribution("id", "title", "desc", 1000L, "$10.00"),
         )
         val expectedOutcome = Outcome.success(contributions)
-        billingClient.connectOutcome = Outcome.success(Unit)
         billingClient.recurringOutcome = expectedOutcome
 
         // Act
@@ -57,7 +58,6 @@ class RemoteContributionDataSourceTest {
         // Arrange
         val productIds = listOf("one_time_1")
         val expectedOutcome = Outcome.failure(ContributionError.UnknownError("error"))
-        billingClient.connectOutcome = Outcome.success(Unit)
         billingClient.oneTimeOutcome = expectedOutcome
 
         // Act
@@ -108,7 +108,7 @@ class RemoteContributionDataSourceTest {
     @Test
     fun `getAllPurchased should return failure when connection fails`() = runTest {
         // Arrange
-        billingClient.connectOutcome = Outcome.failure(ContributionError.ServiceDisconnected("Disconnected"))
+        billingConnector.connectOutcome = Outcome.failure(ContributionError.ServiceDisconnected("Disconnected"))
 
         // Act
         val result = testSubject.getAllPurchased().first()
@@ -137,7 +137,6 @@ class RemoteContributionDataSourceTest {
         // Arrange
         val contribution = OneTimeContribution("ot1", "OneTime", "Desc", 100L, "$1.00")
         val expectedOutcome = Outcome.success(Unit)
-        billingClient.connectOutcome = Outcome.success(Unit)
         billingClient.purchaseOutcome = expectedOutcome
 
         // Act
@@ -151,7 +150,7 @@ class RemoteContributionDataSourceTest {
     fun `purchaseContribution should return failure when connection fails`() = runTest {
         // Arrange
         val contribution = OneTimeContribution("ot1", "OneTime", "Desc", 100L, "$1.00")
-        billingClient.connectOutcome = Outcome.failure(ContributionError.ServiceDisconnected("Disconnected"))
+        billingConnector.connectOutcome = Outcome.failure(ContributionError.ServiceDisconnected("Disconnected"))
 
         // Act
         val result = testSubject.purchaseContribution(contribution)

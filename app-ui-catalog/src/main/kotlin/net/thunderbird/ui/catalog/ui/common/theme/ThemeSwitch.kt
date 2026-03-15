@@ -1,8 +1,8 @@
 package net.thunderbird.ui.catalog.ui.common.theme
 
 import androidx.compose.runtime.Composable
-import app.k9mail.core.ui.compose.theme2.k9mail.K9MailTheme2
-import app.k9mail.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
+import net.thunderbird.core.ui.compose.theme2.k9mail.K9MailTheme2
+import net.thunderbird.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
 import net.thunderbird.ui.catalog.ui.CatalogContract.Theme
 import net.thunderbird.ui.catalog.ui.CatalogContract.ThemeVariant
 

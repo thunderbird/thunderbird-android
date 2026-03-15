@@ -21,7 +21,6 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.SizeFormatter
@@ -29,6 +28,7 @@ import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.designsystem.organism.ModalBottomSheet
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 private const val OPEN_PGP_RED = 0xFFCC0000
 

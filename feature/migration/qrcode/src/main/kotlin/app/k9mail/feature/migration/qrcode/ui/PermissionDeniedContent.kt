@@ -14,9 +14,9 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.migration.qrcode.R
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @Composable
 internal fun PermissionDeniedContent(

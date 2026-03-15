@@ -7,10 +7,10 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.designsystem.PreviewLightDarkLandscape
-import app.k9mail.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
 import kotlin.uuid.ExperimentalUuidApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import net.thunderbird.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenPreviewParams
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenPreviewParamsProvider
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenRenderer

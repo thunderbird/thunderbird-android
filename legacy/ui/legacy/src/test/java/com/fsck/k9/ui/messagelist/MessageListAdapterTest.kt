@@ -488,6 +488,7 @@ class MessageListAdapterTest : RobolectricTest() {
             messageUid,
             databaseId,
             threadRoot,
+            contactColor = -1,
         )
     }
 

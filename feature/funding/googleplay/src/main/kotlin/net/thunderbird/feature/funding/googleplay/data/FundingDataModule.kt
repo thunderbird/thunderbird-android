@@ -1,14 +1,12 @@
 package net.thunderbird.feature.funding.googleplay.data
 
-import com.android.billingclient.api.ProductDetails
-import net.thunderbird.core.common.cache.Cache
-import net.thunderbird.core.common.cache.InMemoryCache
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
-import net.thunderbird.feature.funding.googleplay.data.mapper.BillingResultMapper
 import net.thunderbird.feature.funding.googleplay.data.mapper.ProductDetailsMapper
 import net.thunderbird.feature.funding.googleplay.data.remote.RemoteContributionDataSource
 import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingClient
 import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingClientProvider
+import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingConnector
+import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingProductCache
 import net.thunderbird.feature.funding.googleplay.data.remote.bilingclient.BillingPurchaseHandler
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import org.koin.dsl.module
@@ -18,18 +16,14 @@ internal val fundingDataModule = module {
         ProductDetailsMapper()
     }
 
-    single<FundingDataContract.Mapper.BillingResult> {
-        BillingResultMapper()
-    }
-
     single<Remote.BillingClientProvider> {
         BillingClientProvider(
             context = get(),
         )
     }
 
-    single<Cache<String, ProductDetails>> {
-        InMemoryCache()
+    single<Remote.BillingProductCache> {
+        BillingProductCache()
     }
 
     single<Remote.BillingPurchaseHandler> {
@@ -40,11 +34,18 @@ internal val fundingDataModule = module {
         )
     }
 
+    single<Remote.BillingConnector> {
+        BillingConnector(
+            clientProvider = get(),
+            productCache = get(),
+            logger = get(),
+        )
+    }
+
     single<Remote.BillingClient> {
         BillingClient(
             clientProvider = get(),
             productMapper = get(),
-            resultMapper = get(),
             productCache = get(),
             purchaseHandler = get(),
             activityProvider = get(),
@@ -54,6 +55,7 @@ internal val fundingDataModule = module {
 
     single<Remote.ContributionDataSource> {
         RemoteContributionDataSource(
+            billingConnector = get(),
             billingClient = get(),
         )
     }

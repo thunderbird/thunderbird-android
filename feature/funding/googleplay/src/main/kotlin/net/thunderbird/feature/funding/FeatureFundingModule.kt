@@ -41,6 +41,7 @@ val featureFundingModule = module {
     single<FundingReminderContract.Reminder> {
         @OptIn(ExperimentalTime::class)
         FundingReminder(
+            activityProvider = get(),
             settings = get(),
             fragmentObserver = get(),
             activityCounterObserver = get(),

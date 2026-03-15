@@ -1,14 +1,17 @@
 plugins {
-    id(ThunderbirdPlugins.Library.androidCompose)
+    id(ThunderbirdPlugins.Library.kmpCompose)
 }
 
-android {
-    namespace = "net.thunderbird.feature.funding.link"
-    resourcePrefix = "funding_link_"
-}
+kotlin {
+    android {
+        namespace = "net.thunderbird.feature.funding.link"
+    }
 
-dependencies {
-    api(projects.feature.funding.api)
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.feature.funding.api)
+        }
+    }
 }
 
 codeCoverage {

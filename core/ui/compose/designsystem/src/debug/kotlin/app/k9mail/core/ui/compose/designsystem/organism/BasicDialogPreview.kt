@@ -24,7 +24,7 @@ import app.k9mail.core.ui.compose.designsystem.PreviewLightDarkLandscape
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineSmall
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @PreviewLightDarkLandscape
 @Composable

@@ -23,12 +23,12 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.server.certificate.R
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.Effect
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.Event
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.State
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.ViewModel
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.contract.mvi.observe
 import org.koin.androidx.compose.koinViewModel
 
