@@ -10,7 +10,6 @@ import androidx.compose.ui.text.font.FontWeight
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
-import net.thunderbird.feature.mail.message.list.ui.component.organism.ActiveMessageItem
 import net.thunderbird.feature.mail.message.list.ui.component.organism.MessageItemDefaults
 import net.thunderbird.feature.mail.message.list.ui.component.organism.NewMessageItem
 import net.thunderbird.feature.mail.message.list.ui.component.organism.ReadMessageItem
@@ -32,18 +31,6 @@ internal fun MessageListItem(
 ) {
     val contentPadding = calculateContentPadding(preferences)
     when (message.state) {
-        else if message.isActive -> ActiveMessageListItem(
-            message = message,
-            showAccountIndicator = showAccountIndicator,
-            preferences = preferences,
-            contentPadding = contentPadding,
-            modifier = modifier.testTagAsResourceId(MessageListItemDefaults.ACTIVE_MESSAGE_LIST_TEST_TAG),
-            onClick = onClick,
-            onLongClick = onLongClick,
-            onAvatarClick = onAvatarClick,
-            onFavouriteClick = onFavouriteClick,
-        )
-
         MessageItemUi.State.New -> NewMessageListItem(
             message = message,
             showAccountIndicator = showAccountIndicator,
@@ -87,51 +74,6 @@ private fun calculateContentPadding(preferences: MessageListPreferences): Paddin
     UiDensity.Compact -> MessageItemDefaults.compactContentPadding
     UiDensity.Relaxed -> MessageItemDefaults.relaxedContentPadding
     else -> MessageItemDefaults.defaultContentPadding
-}
-
-@Composable
-private fun ActiveMessageListItem(
-    message: MessageItemUi,
-    showAccountIndicator: Boolean,
-    preferences: MessageListPreferences,
-    contentPadding: PaddingValues,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit = {},
-    onLongClick: () -> Unit = {},
-    onAvatarClick: () -> Unit = {},
-    onFavouriteClick: () -> Unit = {},
-) {
-    ActiveMessageItem(
-        sender = styledSenderOrSubject(
-            useSender = true,
-            senders = message.senders,
-            subject = AnnotatedString(message.subject),
-        ),
-        subject = message.subject,
-        preview = message.excerpt,
-        receivedAt = message.formattedReceivedAt,
-        showAccountIndicator = showAccountIndicator,
-        accountIndicatorColor = message.account.color,
-        avatar = {
-            MessageItemAvatar(
-                avatar = message.senders.avatar ?: return@ActiveMessageItem,
-                showMessageAvatar = preferences.showMessageAvatar,
-                onAvatarClick = onAvatarClick,
-            )
-        },
-        onClick = onClick,
-        onLongClick = onLongClick,
-        onLeadingClick = onAvatarClick,
-        onFavouriteChange = { onFavouriteClick() },
-        favourite = message.starred,
-        selected = message.selected,
-        maxPreviewLines = preferences.excerptLines,
-        threadCount = message.threadCount,
-        hasAttachments = message.hasAttachments,
-        swapSenderWithSubject = !preferences.senderAboveSubject,
-        contentPadding = contentPadding,
-        modifier = modifier,
-    )
 }
 
 @Composable

@@ -30,7 +30,6 @@ import kotlin.time.ExperimentalTime
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
-import net.thunderbird.feature.mail.message.list.ui.component.organism.ActiveMessageItem
 import net.thunderbird.feature.mail.message.list.ui.component.organism.MessageItemDefaults
 import net.thunderbird.feature.mail.message.list.ui.component.organism.ReadMessageItem
 import net.thunderbird.feature.mail.message.list.ui.component.organism.UnreadMessageItem
@@ -69,36 +68,6 @@ internal fun MessageItemContent(
     }
 
     when {
-        isActive -> ActiveMessageItem(
-            sender = buildAnnotatedString { append("${item.displayName}") },
-            subject = item.subject ?: "n/a",
-            preview = item.previewText,
-            receivedAt = receivedAt,
-            showAccountIndicator = appearance.showAccountIndicator,
-            accountIndicatorColor = Color(item.account.profile.color),
-            avatar = {
-                if (appearance.showContactPicture) {
-                    ContactImageAvatar(
-                        color = Color(item.contactColor),
-                        contactImageUri = uri,
-                        contactImageMonogram = monogram,
-                        onAvatarClick = onAvatarClick,
-                    )
-                }
-            },
-            onClick = onClick,
-            onLongClick = onLongClick,
-            onLeadingClick = onAvatarClick,
-            onFavouriteChange = onFavouriteClick,
-            favourite = item.isStarred,
-            selected = isSelected,
-            maxPreviewLines = appearance.previewLines,
-            threadCount = item.threadCount,
-            hasAttachments = item.hasAttachments,
-            swapSenderWithSubject = !appearance.senderAboveSubject,
-            contentPadding = contentPadding,
-        )
-
         item.isRead -> ReadMessageItem(
             sender = buildAnnotatedString { append("${item.displayName}") },
             subject = item.subject ?: "n/a",
