@@ -11,6 +11,11 @@ import net.thunderbird.core.ui.compose.theme2.MainTheme
  * Contains the default values used by all [MessageItem] types.
  */
 object MessageItemDefaults {
+    const val ATTACHMENT_ICON_INLINE_COMPOSABLE_ID = "attachment_icon_inline_composable_id"
+    const val ATTACHMENT_ICON_INLINE_COMPOSABLE_REPLACEMENT = "[attachment_icon]"
+    const val CONVERSATION_COUNTER_INLINE_COMPOSABLE_ID = "conversation_counter_inline_composable_id"
+    const val CONVERSATION_COUNTER_INLINE_COMPOSABLE_REPLACEMENT = "[conversation_counter]"
+
     /**
      * The default content padding.
      */
