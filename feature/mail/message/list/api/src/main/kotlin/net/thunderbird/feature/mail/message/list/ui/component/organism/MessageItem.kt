@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -45,83 +46,101 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIconDefaults
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentMapOf
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.LocalContentColor
 import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.feature.mail.message.list.ui.component.atom.FavouriteButtonIcon
+import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemConfiguration
+import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemTrailingElement
 import net.thunderbird.feature.mail.message.list.ui.component.molecule.AccountIndicatorIcon
 import net.thunderbird.feature.mail.message.list.ui.component.molecule.HeaderRow
 import net.thunderbird.feature.mail.message.list.ui.component.molecule.HeaderRowCompact
 
 /**
- * Displays a single message item.
+ * Displays a message item in a list with configurable layout and interactions.
  *
- * This composable function is responsible for rendering a single message item within a list. It includes
- * information such as the sender, subject, preview, received time, and actions.
+ * The layout consists of three main areas:
+ * - Leading area: Contains selection indicator and sender avatar
+ * - Content area:
+ *   - Primary line, usually: sender name, date
+ *   - Secondary line, usually: subject, and message excerpt
+ * - Trailing area: Contains action buttons like favourite and attachment
+ *   indicators
  *
- * @param leading A composable function to display the leading content (e.g., avatar).
- * @param sender A composable function to display the sender's information.
- * @param subject A composable function to display the message subject.
- * @param preview The message preview text.
- * @param action A composable function to display actions related to the message (e.g., star).
- * @param receivedAt The date and time the message was received.
- * @param showAccountIndicator Whether or not account indicator for universal inbox is shown.
- * @param accountIndicatorColor The color of the account indicator, if shown.
- * @param onClick A callback function to be invoked when the message item is clicked.
- * @param onLongClick A lambda function to be invoked when the message item is long-clicked.
- * @param onLeadingClick A callback function to be invoked when the leading content is clicked.
- * @param colors The colors to be used for the message item. See [MessageItemDefaults].
- * @param modifier The modifier to be applied to the message item.
- * @param hasAttachments A boolean indicating whether the message has attachments.
- *  Defaults to `false`.
- * @param selected A boolean indicating whether the message item is selected.
- *  Defaults to `false`.
- * @param maxPreviewLines The maximum number of lines to display for the message preview.
- *  Defaults to `2`.
- * @param contentPadding The padding to be applied to the content of the message item.
- *  Defaults to [MessageItemDefaults.defaultContentPadding].
- * @see MessageItemDefaults
+ * ```
+ * Message Item structure:
+ * ┌───────────┬──────────────────────┬──────────┐
+ * │  Leading  │  Primary Line        │ Trailing │
+ * │   Area    ├──────────────────────┤   Area   │
+ * │           │  Secondary Line      │          │
+ * │           │  Excerpt Line        │          │
+ * └───────────┴──────────────────────┴──────────┘
+ * ```
+ *
+ * @param firstLine Composable content for the first line, typically displaying
+ *  the sender name
+ * @param secondaryLine Composable content for the secondary line, typically
+ *  displaying the subject, with optional prefix and inline content support
+ * @param excerpt The preview text of the message body
+ * @param receivedAt The timestamp or formatted date string indicating when the
+ *  message was received
+ * @param configuration The configuration object defining visual presentation and
+ *  layout settings
+ * @param modifier The modifier to be applied to the message item
+ * @param colors The color scheme to be applied to the message item components
+ * @param selected Whether the message item is currently in a selected state
+ * @param contentPadding The padding values to be applied around the message item
+ *  content
+ * @param onClick Callback invoked when the message item is clicked
+ * @param onLongClick Callback invoked when the message item is long-pressed
+ * @param onAvatarClick Callback invoked when the sender avatar is clicked
+ * @param onTrailingClick Callback invoked when a trailing element is clicked,
+ *  providing the specific element that was interacted with
  */
-@Suppress("LongParameterList", "LongMethod")
 @Composable
+@Suppress("LongMethod")
 internal fun MessageItem(
-    leading: @Composable () -> Unit,
-    sender: @Composable () -> Unit,
-    subject: @Composable () -> Unit,
-    preview: CharSequence,
-    action: @Composable () -> Unit,
+    firstLine: @Composable () -> Unit,
+    secondaryLine: @Composable (
+        prefix: AnnotatedString?,
+        inlineContent: ImmutableMap<String, InlineTextContent>,
+    ) -> Unit,
+    excerpt: String,
     receivedAt: String,
-    showAccountIndicator: Boolean,
-    accountIndicatorColor: Color?,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit,
-    onLeadingClick: () -> Unit,
+    configuration: MessageItemConfiguration,
     modifier: Modifier = Modifier,
     colors: MessageItemColors = MessageItemDefaults.readMessageItemColors(),
-    hasAttachments: Boolean = false,
     selected: Boolean = false,
-    maxPreviewLines: Int = 2,
     contentPadding: PaddingValues = MessageItemDefaults.defaultContentPadding,
+    onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
+    onAvatarClick: () -> Unit = {},
+    onTrailingClick: (MessageItemTrailingElement) -> Unit = {},
 ) {
+    // NOTE: The current implementation changes are just to fix the compilation errors the API changes have caused.
+    // The actual implementation will be done in a follow-up PR.
     val outlineVariant = MainTheme.colors.outlineVariant
     var contentStart by remember { mutableFloatStateOf(0f) }
     val layoutDirection = LocalLayoutDirection.current
 
     val windowSizeInfo = getWindowSizeInfo()
-    val isCompact = windowSizeInfo.screenWidthSizeClass == WindowSizeClass.Small
+    val isSmall = windowSizeInfo.screenWidthSizeClass == WindowSizeClass.Small
 
     val headerRowContent: @Composable ((RowScope) -> Unit) =
-        remember(showAccountIndicator, accountIndicatorColor, receivedAt, sender, isCompact) {
+        remember(configuration, receivedAt, firstLine, isSmall) {
             movableContentOf { scope ->
                 with(scope) {
                     SenderText(
-                        showAccountIndicator = showAccountIndicator,
-                        accountIndicatorColor = accountIndicatorColor,
+                        showAccountIndicator = configuration.accountIndicator != null,
+                        accountIndicatorColor = configuration.accountIndicator?.color,
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
                             .weight(1f, fill = false),
                     ) {
-                        sender()
+                        firstLine()
                     }
                     MessageItemDate(
                         receivedAt = receivedAt,
@@ -160,7 +179,7 @@ internal fun MessageItem(
         Row(modifier = Modifier.padding(contentPadding)) {
             // Unread/New Indicator and Sender Avatar
             Column(verticalArrangement = Arrangement.Center) {
-                LeadingElements(selected, onLeadingClick, leading)
+                LeadingElements(selected, onAvatarClick, leading = {})
             }
             Spacer(modifier = Modifier.width(MainTheme.spacings.default))
             // Message Content and Contents
@@ -169,14 +188,27 @@ internal fun MessageItem(
                     .weight(1f)
                     .onPlaced { contentStart = it.positionInParent().x },
             ) {
-                GetHeaderRow(isCompact, headerRowContent = headerRowContent)
-                MessageContent(colors = colors, preview = preview, maxPreviewLines = maxPreviewLines, subject = subject)
+                GetHeaderRow(isSmall, headerRowContent = headerRowContent)
+                MessageContent(
+                    colors = colors,
+                    preview = excerpt,
+                    maxPreviewLines = configuration.maxExcerptLines,
+                    subject = {
+                        secondaryLine(null, persistentMapOf())
+                    },
+                )
             }
             Spacer(modifier = Modifier.width(MainTheme.spacings.default))
             // Message controls and interaction items
             TrailingElements(
-                action = action,
-                hasAttachments = hasAttachments,
+                action = {
+                    FavouriteButtonIcon(
+                        favourite = false,
+                        onFavouriteChange = { onTrailingClick(MessageItemTrailingElement.FavouriteIconButton(it)) },
+                        size = MainTheme.sizes.minTouchTarget,
+                    )
+                },
+                hasAttachments = false,
                 modifier = Modifier.heightIn(min = MainTheme.sizes.large),
             )
         }
