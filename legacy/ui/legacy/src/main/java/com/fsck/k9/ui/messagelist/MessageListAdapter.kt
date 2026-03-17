@@ -347,7 +347,7 @@ class MessageListAdapter internal constructor(
     private fun calculateSelectionCount(): Int {
         return when {
             selected.isEmpty() -> 0
-            !appearance.showingThreadedList -> selected.size
+            !appearance().showingThreadedList -> selected.size
             else ->
                 viewItems
                     .asSequence()
