@@ -1,0 +1,12 @@
+K-9 Mail version 17.0
+
+New:
+- Account avatar customization
+- Foldable device support
+- Email messages can be printed
+- Unified folder account indicator
+- Display account avatar in message notifications
+
+Fixed:
+- Tap behavior was unreliable in recipient fields
+- Device orientiation change duplicated recipient field text
