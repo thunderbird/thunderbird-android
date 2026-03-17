@@ -3,6 +3,8 @@ package com.fsck.k9.mail.store.imap
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
+import assertk.assertions.isEqualTo
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Before
@@ -140,5 +142,106 @@ class ImapUtilityTest {
     @Test
     fun `getImapRangeValues with wildcard upper bound`() {
         assertThat(ImapUtility.getImapRangeValues("1:*")).isEmpty()
+    }
+
+    @Test
+    fun `encodeString wraps string in double quotes`() {
+        assertThat(ImapUtility.encodeString("hello")).isEqualTo("\"hello\"")
+    }
+
+    @Test
+    fun `encodeString escapes backslash`() {
+        assertThat(ImapUtility.encodeString("a\\b")).isEqualTo("\"a\\\\b\"")
+    }
+
+    @Test
+    fun `encodeString escapes double quote`() {
+        assertThat(ImapUtility.encodeString("say \"hi\"")).isEqualTo("\"say \\\"hi\\\"\"")
+    }
+
+    @Test
+    fun `encodeString escapes backslash before double quote`() {
+        assertThat(ImapUtility.encodeString("a\\\"b")).isEqualTo("\"a\\\\\\\"b\"")
+    }
+
+    @Test
+    fun `encodeString with empty string`() {
+        assertThat(ImapUtility.encodeString("")).isEqualTo("\"\"")
+    }
+
+    @Test
+    fun `getLastResponse returns last element`() {
+        val first = ImapResponse.newUntaggedResponse(null)
+        val last = ImapResponse.newTaggedResponse(null, "TAG")
+
+        assertThat(ImapUtility.getLastResponse(listOf(first, last))).isEqualTo(last)
+    }
+
+    @Test
+    fun `getLastResponse with single element returns that element`() {
+        val response = ImapResponse.newUntaggedResponse(null)
+
+        assertThat(ImapUtility.getLastResponse(listOf(response))).isEqualTo(response)
+    }
+
+    @Test
+    fun `combineFlags with no flags returns empty string`() {
+        assertThat(ImapUtility.combineFlags(emptyList(), false)).isEqualTo("")
+    }
+
+    @Test
+    fun `combineFlags with seen flag`() {
+        assertThat(ImapUtility.combineFlags(listOf(Flag.SEEN), false))
+            .isEqualTo("\\Seen")
+    }
+
+    @Test
+    fun `combineFlags with deleted flag`() {
+        assertThat(ImapUtility.combineFlags(listOf(Flag.DELETED), false))
+            .isEqualTo("\\Deleted")
+    }
+
+    @Test
+    fun `combineFlags with answered flag`() {
+        assertThat(ImapUtility.combineFlags(listOf(Flag.ANSWERED), false))
+            .isEqualTo("\\Answered")
+    }
+
+    @Test
+    fun `combineFlags with flagged flag`() {
+        assertThat(ImapUtility.combineFlags(listOf(Flag.FLAGGED), false))
+            .isEqualTo("\\Flagged")
+    }
+
+    @Test
+    fun `combineFlags with draft flag`() {
+        assertThat(ImapUtility.combineFlags(listOf(Flag.DRAFT), false))
+            .isEqualTo("\\Draft")
+    }
+
+    @Test
+    fun `combineFlags with forwarded flag when canCreateForwardedFlag is true`() {
+        assertThat(ImapUtility.combineFlags(listOf(Flag.FORWARDED), true))
+            .isEqualTo("\$Forwarded")
+    }
+
+    @Test
+    fun `combineFlags with forwarded flag when canCreateForwardedFlag is false`() {
+        assertThat(ImapUtility.combineFlags(listOf(Flag.FORWARDED), false))
+            .isEqualTo("")
+    }
+
+    @Test
+    fun `combineFlags ignores unknown flags`() {
+        assertThat(ImapUtility.combineFlags(listOf(Flag.RECENT), false))
+            .isEqualTo("")
+    }
+
+    @Test
+    fun `combineFlags with multiple flags`() {
+        assertThat(
+            ImapUtility.combineFlags(listOf(Flag.SEEN, Flag.FLAGGED, Flag.DELETED), false),
+        )
+            .isEqualTo("\\Seen \\Flagged \\Deleted")
     }
 }
