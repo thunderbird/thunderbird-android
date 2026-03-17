@@ -2,13 +2,16 @@ package net.thunderbird.feature.funding.googleplay.ui.contribution
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.handle
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.UseCase
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
+import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionType
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Effect
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Event
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.State
@@ -18,9 +21,12 @@ import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionCo
 internal class ContributionViewModel(
     private val getAvailableContributions: UseCase.GetAvailableContributions,
     private val repository: FundingDomainContract.ContributionRepository,
+    private val logger: Logger,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState),
     ViewModel {
+
+    private var purchaseJob: Job? = null
 
     init {
         viewModelScope.launch {
@@ -36,6 +42,7 @@ internal class ContributionViewModel(
                                 listState = state.listState.copy(
                                     isLoading = false,
                                 ),
+                                isPurchasing = false,
                                 purchasedContribution = purchasedContribution,
                                 showContributionList = purchasedContribution == null,
                                 purchaseError = null,
@@ -48,9 +55,10 @@ internal class ContributionViewModel(
                                 listState = state.listState.copy(
                                     isLoading = false,
                                 ),
-                                purchasedContribution = null,
-                                showContributionList = true,
-                                purchaseError = it,
+                                isPurchasing = false,
+                                purchaseError = it.takeIf {
+                                    it !is FundingDomainContract.ContributionError.UserCancelled
+                                },
                             )
                         }
                     },
@@ -78,8 +86,9 @@ internal class ContributionViewModel(
                                 isRecurringContributionSelected = isRecurringContributionSelected,
                                 isLoading = false,
                             ),
-                            purchasedContribution = data.purchasedContribution,
-                            showContributionList = data.purchasedContribution == null,
+                            purchasedContribution = data.purchasedContribution ?: state.purchasedContribution,
+                            showContributionList =
+                            data.purchasedContribution == null && state.purchasedContribution == null,
                             purchaseError = null,
                         )
                     }
@@ -100,10 +109,10 @@ internal class ContributionViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            Event.OnOneTimeContributionSelected -> onOneTimeContributionSelected()
-            Event.OnRecurringContributionSelected -> onRecurringContributionSelected()
+            is Event.OnContributionTypeSelected -> onContributionTypeSelected(event.type)
             is Event.OnContributionItemClicked -> onContributionItemClicked(event.contributionId)
             is Event.OnPurchaseClicked -> onPurchaseClicked()
+            Event.OnCancelPurchaseClicked -> onCancelPurchaseClicked()
             is Event.OnManagePurchaseClicked -> onManagePurchaseClicked(event.contribution)
             Event.OnShowContributionListClicked -> onShowContributionListClicked()
             Event.OnDismissPurchaseErrorClicked -> updateState {
@@ -113,6 +122,13 @@ internal class ContributionViewModel(
             }
 
             Event.OnRetryClicked -> onRetryClicked()
+        }
+    }
+
+    private fun onContributionTypeSelected(type: ContributionType) {
+        when (type) {
+            ContributionType.OneTime -> onOneTimeContributionSelected()
+            ContributionType.Recurring -> onRecurringContributionSelected()
         }
     }
 
@@ -155,25 +171,24 @@ internal class ContributionViewModel(
 
         updateState {
             it.copy(
-                listState = it.listState.copy(
-                    isLoading = true,
-                ),
+                isPurchasing = true,
             )
         }
         emitEffect(
             Effect.PurchaseContribution(
                 startPurchaseFlow = {
-                    viewModelScope.launch {
+                    purchaseJob?.cancel()
+                    purchaseJob = viewModelScope.launch {
                         repository.purchaseContribution(selectedContributionId).handle(
                             onSuccess = {
+                                logger.debug { "Purchase flow successfully launched" }
                                 // we need to wait for the callback to be called
                             },
                             onFailure = { error ->
+                                logger.error { "Purchase failed: $error" }
                                 updateState { state ->
                                     state.copy(
-                                        listState = state.listState.copy(
-                                            isLoading = false,
-                                        ),
+                                        isPurchasing = false,
                                         purchaseError = error,
                                     )
                                 }
@@ -183,6 +198,16 @@ internal class ContributionViewModel(
                 },
             ),
         )
+    }
+
+    private fun onCancelPurchaseClicked() {
+        purchaseJob?.cancel()
+        purchaseJob = null
+        updateState {
+            it.copy(
+                isPurchasing = false,
+            )
+        }
     }
 
     private fun onManagePurchaseClicked(contribution: Contribution) {

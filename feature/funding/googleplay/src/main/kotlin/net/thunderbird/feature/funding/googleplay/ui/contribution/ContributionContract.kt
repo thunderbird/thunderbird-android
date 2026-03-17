@@ -24,6 +24,7 @@ internal class ContributionContract {
         val showContributionList: Boolean = true,
         val showRecurringContributions: Boolean = false,
 
+        val isPurchasing: Boolean = false,
         val purchaseError: ContributionError? = null,
     )
 
@@ -34,14 +35,24 @@ internal class ContributionContract {
         val preselection: ContributionPreselection = ContributionPreselection(null, null),
         val selectedContributionId: ContributionId? = null,
         val isRecurringContributionSelected: Boolean = true,
+        val contributionTypes: ImmutableList<ContributionType> = persistentListOf(
+            ContributionType.OneTime,
+            ContributionType.Recurring,
+        ),
 
         override val error: ContributionError? = null,
         override val isLoading: Boolean = true,
     ) : LoadingErrorState<ContributionError>
 
+    enum class ContributionType {
+        OneTime,
+        Recurring,
+    }
+
     sealed interface Event {
-        data object OnOneTimeContributionSelected : Event
-        data object OnRecurringContributionSelected : Event
+        data class OnContributionTypeSelected(
+            val type: ContributionType,
+        ) : Event
 
         data object OnShowContributionListClicked : Event
 
@@ -50,6 +61,7 @@ internal class ContributionContract {
         ) : Event
 
         data object OnPurchaseClicked : Event
+        data object OnCancelPurchaseClicked : Event
 
         data class OnManagePurchaseClicked(
             val contribution: Contribution,

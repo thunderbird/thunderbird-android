@@ -19,8 +19,7 @@ internal fun ContributionListPreview() {
                 isRecurringContributionSelected = true,
                 isLoading = false,
             ),
-            onOneTimeContributionTypeClick = {},
-            onRecurringContributionTypeClick = {},
+            onContributionTypeClick = {},
             onItemClick = {},
             onRetryClick = {},
         )
@@ -39,8 +38,7 @@ internal fun ContributionListRecurringPreview() {
                 isRecurringContributionSelected = false,
                 isLoading = false,
             ),
-            onOneTimeContributionTypeClick = {},
-            onRecurringContributionTypeClick = {},
+            onContributionTypeClick = {},
             onItemClick = {},
             onRetryClick = {},
         )
@@ -59,8 +57,7 @@ internal fun ContributionListOneTimeOnlyPreview() {
                 isRecurringContributionSelected = false,
                 isLoading = false,
             ),
-            onOneTimeContributionTypeClick = {},
-            onRecurringContributionTypeClick = {},
+            onContributionTypeClick = {},
             onItemClick = {},
             onRetryClick = {},
         )
@@ -79,8 +76,7 @@ internal fun ContributionListRecurringOnlyPreview() {
                 isRecurringContributionSelected = true,
                 isLoading = false,
             ),
-            onOneTimeContributionTypeClick = {},
-            onRecurringContributionTypeClick = {},
+            onContributionTypeClick = {},
             onItemClick = {},
             onRetryClick = {},
         )
@@ -99,8 +95,7 @@ internal fun ContributionListEmptyPreview() {
                 isRecurringContributionSelected = false,
                 isLoading = false,
             ),
-            onOneTimeContributionTypeClick = {},
-            onRecurringContributionTypeClick = {},
+            onContributionTypeClick = {},
             onItemClick = {},
             onRetryClick = {},
         )
@@ -119,8 +114,7 @@ internal fun ContributionListLoadingPreview() {
                 isRecurringContributionSelected = false,
                 isLoading = true,
             ),
-            onOneTimeContributionTypeClick = {},
-            onRecurringContributionTypeClick = {},
+            onContributionTypeClick = {},
             onItemClick = {},
             onRetryClick = {},
         )
@@ -142,8 +136,7 @@ internal fun ContributionListErrorPreview() {
                     "An error occurred",
                 ),
             ),
-            onOneTimeContributionTypeClick = {},
-            onRecurringContributionTypeClick = {},
+            onContributionTypeClick = {},
             onItemClick = {},
             onRetryClick = {},
         )

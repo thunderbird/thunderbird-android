@@ -10,10 +10,29 @@ fun ContributionFooterPreview() {
     PreviewWithTheme {
         ContributionFooter(
             onPurchaseClick = {},
+            onCancelPurchaseClick = {},
             onManagePurchaseClick = {},
             onShowContributionListClick = {},
             purchasedContribution = null,
             isPurchaseEnabled = true,
+            isPurchasing = false,
+            isContributionListShown = true,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ContributionFooterPurchasingPreview() {
+    PreviewWithTheme {
+        ContributionFooter(
+            onPurchaseClick = {},
+            onCancelPurchaseClick = {},
+            onManagePurchaseClick = {},
+            onShowContributionListClick = {},
+            purchasedContribution = null,
+            isPurchaseEnabled = true,
+            isPurchasing = true,
             isContributionListShown = true,
         )
     }
@@ -26,10 +45,12 @@ fun ContributionFooterDisabledPreview() {
         ContributionFooter(
             purchasedContribution = null,
             onPurchaseClick = {},
+            onCancelPurchaseClick = {},
             onManagePurchaseClick = {},
             onShowContributionListClick = {},
             isContributionListShown = false,
             isPurchaseEnabled = false,
+            isPurchasing = false,
         )
     }
 }
@@ -41,9 +62,11 @@ fun ContributionFooterWithRecurringContributionPreview() {
         ContributionFooter(
             purchasedContribution = FakeData.recurringContribution,
             onPurchaseClick = {},
+            onCancelPurchaseClick = {},
             onManagePurchaseClick = {},
             onShowContributionListClick = {},
             isPurchaseEnabled = true,
+            isPurchasing = false,
             isContributionListShown = false,
         )
     }
@@ -56,9 +79,11 @@ fun ContributionFooterWithOneTimeContributionPreview() {
         ContributionFooter(
             purchasedContribution = FakeData.oneTimeContribution,
             onPurchaseClick = {},
+            onCancelPurchaseClick = {},
             onManagePurchaseClick = {},
             onShowContributionListClick = {},
             isPurchaseEnabled = true,
+            isPurchasing = false,
             isContributionListShown = false,
         )
     }
@@ -71,9 +96,11 @@ fun ContributionFooterWithOneTimeContributionAndListPreview() {
         ContributionFooter(
             purchasedContribution = FakeData.oneTimeContribution,
             onPurchaseClick = {},
+            onCancelPurchaseClick = {},
             onManagePurchaseClick = {},
             onShowContributionListClick = {},
             isPurchaseEnabled = true,
+            isPurchasing = false,
             isContributionListShown = true,
         )
     }
