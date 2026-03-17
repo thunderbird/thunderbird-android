@@ -34,30 +34,25 @@ internal fun ContributionHeader(
     modifier: Modifier = Modifier,
 ) {
     AnimatedContent(
-        targetState = purchasedContribution != null,
+        targetState = purchasedContribution,
         label = "ContributionHeaderLogo",
-    ) { targetState ->
-        when (targetState) {
-            true -> {
-                val contribution = purchasedContribution!!
-                ContributionHeaderView(
-                    logo = GoldenHearthSunburst,
-                    title = ContributionIdStringMapper.mapToContributionTitle(contribution.id),
-                    description = ContributionIdStringMapper.mapToContributionDescription(contribution.id),
-                    showThankYou = true,
-                    benefits = ContributionIdStringMapper.mapToContributionBenefits(contribution.id),
-                    modifier = modifier,
-                )
-            }
-
-            false -> {
-                ContributionHeaderView(
-                    logo = HearthSunburst,
-                    title = stringResource(R.string.funding_googleplay_contribution_header_title),
-                    description = stringResource(R.string.funding_googleplay_contribution_header_description),
-                    modifier = modifier,
-                )
-            }
+    ) { contribution ->
+        if (contribution != null) {
+            ContributionHeaderView(
+                logo = GoldenHearthSunburst,
+                title = ContributionIdStringMapper.mapToContributionTitle(contribution.id),
+                description = ContributionIdStringMapper.mapToContributionDescription(contribution.id),
+                showThankYou = true,
+                benefits = ContributionIdStringMapper.mapToContributionBenefits(contribution.id),
+                modifier = modifier,
+            )
+        } else {
+            ContributionHeaderView(
+                logo = HearthSunburst,
+                title = stringResource(R.string.funding_googleplay_contribution_header_title),
+                description = stringResource(R.string.funding_googleplay_contribution_header_description),
+                modifier = modifier,
+            )
         }
     }
 }

@@ -70,6 +70,7 @@ private fun ContributionErrorView(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 TextBodyLarge(
                     text = title,
@@ -98,6 +99,7 @@ private fun ContributionErrorView(
                 TextBodySmall(
                     text = description,
                     color = MainTheme.colors.onErrorContainer,
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }

@@ -46,11 +46,8 @@ internal fun ContributionContent(
             if (state.showContributionList) {
                 ContributionList(
                     state = state.listState,
-                    onOneTimeContributionTypeClick = {
-                        onEvent(Event.OnOneTimeContributionSelected)
-                    },
-                    onRecurringContributionTypeClick = {
-                        onEvent(Event.OnRecurringContributionSelected)
+                    onContributionTypeClick = {
+                        onEvent(Event.OnContributionTypeSelected(it))
                     },
                     onItemClick = {
                         onEvent(Event.OnContributionItemClicked(it.id))
@@ -71,9 +68,11 @@ internal fun ContributionContent(
             ContributionFooter(
                 purchasedContribution = state.purchasedContribution,
                 onPurchaseClick = { onEvent(Event.OnPurchaseClicked) },
+                onCancelPurchaseClick = { onEvent(Event.OnCancelPurchaseClicked) },
                 onManagePurchaseClick = { onEvent(Event.OnManagePurchaseClicked(it)) },
                 onShowContributionListClick = { onEvent(Event.OnShowContributionListClicked) },
                 isPurchaseEnabled = state.listState.selectedContributionId != null,
+                isPurchasing = state.isPurchasing,
                 isContributionListShown = state.showContributionList,
             )
         }

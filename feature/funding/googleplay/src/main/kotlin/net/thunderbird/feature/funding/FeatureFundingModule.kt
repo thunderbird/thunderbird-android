@@ -78,6 +78,7 @@ val featureFundingModule = module {
         ContributionViewModel(
             getAvailableContributions = get(),
             repository = get(),
+            logger = get(),
         )
     }
 }
