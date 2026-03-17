@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="18.0b1" versioncode="46" date="2026-03-16">
+        <change>New: Add support for PNG avatars</change>
+        <change>New: Add setting to display ISO date and time in message list</change>
+        <change>New: Used fixed-width font for composing when user chooses fixed-width for viewing</change>
+        <change>Changed: Attachment summary moved from message bottom to header for visibility</change>
+        <change>Fixed: EHLO parsing exception appeared in logcat when sending email</change>
+        <change>Fixed: &#34;Delete (from notification)&#34; setting did not retain state</change>
+        <change>Fixed: Find folder search hint text was cut off on smaller screens</change>
+        <change>Fixed: User was not notified if they were offline when sending message</change>
+        <change>Fixed: Warned &#34;Sent folder not found&#34; when uploading sent messages was disabled</change>
+        <change>Fixed: Loading bar appeared detached from header, leaving visible gap</change>
+        <change>Fixed: CC/BCC fields were not expanded by default for Reply All</change>
+    </release>
     <release version="17.0b4" versioncode="45" date="2026-02-24">
         <change>Fixed: Application navigation and account switching could crash</change>
     </release>
