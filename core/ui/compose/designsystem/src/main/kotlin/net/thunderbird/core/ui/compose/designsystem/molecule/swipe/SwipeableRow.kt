@@ -68,12 +68,15 @@ fun SwipeableRow(
     val accessibilityCustomActions = rememberAccessibilityActions(
         state = state,
         gesturesEnabled = gesturesEnabled,
-        onSwipeEnd = onSwipeEnd,
+        onSwipeEnd = { direction ->
+            state.accessibilityState.swipeToDirection(direction)
+            onSwipeEnd(direction)
+        },
     )
 
     Box(
         modifier = modifier
-            .semantics { customActions = accessibilityCustomActions }
+            .semantics(mergeDescendants = true) { customActions = accessibilityCustomActions }
             .onSizeChanged { state.onContainerSizeChanged(it) },
         propagateMinConstraints = true,
     ) {
