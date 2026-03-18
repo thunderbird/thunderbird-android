@@ -350,6 +350,58 @@ class ContributionViewModelTest {
             verifyPurchasingStateDismissed(purchaseError = null)
         }
     }
+
+    @Test
+    fun `should dismiss loading when purchase cancelled multiple times`() = runMviTest {
+        val repository = FakeContributionRepository()
+        val oneTimeContributions = FakeData.oneTimeContributions
+        val recurringContributions = FakeData.recurringContributions
+        val preselection = FakeData.preselection
+        val selectedContributionId = preselection.recurringId!!
+        val initialState = State(
+            listState = ContributionListState(
+                oneTimeContributions = oneTimeContributions.toImmutableList(),
+                recurringContributions = recurringContributions.toImmutableList(),
+                preselection = preselection,
+                selectedContributionId = selectedContributionId,
+                isRecurringContributionSelected = true,
+                isLoading = false,
+            ),
+            purchasedContribution = null,
+            showContributionList = true,
+        )
+
+        contributionRobot(
+            initialState = initialState,
+            repository = repository,
+        ) {
+            // First cancellation
+            clickPurchase()
+            verifyPurchasingState()
+
+            repository.purchasedContribution.emit(
+                Outcome.failure(
+                    FundingDomainContract.ContributionError.UserCancelled(
+                        message = "Cancelled",
+                    ),
+                ),
+            )
+            verifyPurchasingStateDismissed(purchaseError = null)
+
+            // Second cancellation
+            clickPurchase()
+            verifyPurchasingState()
+
+            repository.purchasedContribution.emit(
+                Outcome.failure(
+                    FundingDomainContract.ContributionError.UserCancelled(
+                        message = "Cancelled",
+                    ),
+                ),
+            )
+            verifyPurchasingStateDismissed(purchaseError = null)
+        }
+    }
 }
 
 private suspend fun MviContext.contributionRobot(
@@ -464,7 +516,6 @@ private class ContributionRobot(
                 isPurchasing = true,
             ),
         )
-        turbines.awaitEffectItem()
     }
 
     suspend fun verifyPurchasingStateDismissed(purchaseError: FundingDomainContract.ContributionError?) {

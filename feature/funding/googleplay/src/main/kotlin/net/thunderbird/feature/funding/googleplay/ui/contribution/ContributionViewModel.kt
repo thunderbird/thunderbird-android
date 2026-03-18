@@ -174,30 +174,25 @@ internal class ContributionViewModel(
                 isPurchasing = true,
             )
         }
-        emitEffect(
-            Effect.PurchaseContribution(
-                startPurchaseFlow = {
-                    purchaseJob?.cancel()
-                    purchaseJob = viewModelScope.launch {
-                        repository.purchaseContribution(selectedContributionId).handle(
-                            onSuccess = {
-                                logger.debug { "Purchase flow successfully launched" }
-                                // we need to wait for the callback to be called
-                            },
-                            onFailure = { error ->
-                                logger.error { "Purchase failed: $error" }
-                                updateState { state ->
-                                    state.copy(
-                                        isPurchasing = false,
-                                        purchaseError = error,
-                                    )
-                                }
-                            },
+
+        purchaseJob?.cancel()
+        purchaseJob = viewModelScope.launch {
+            repository.purchaseContribution(selectedContributionId).handle(
+                onSuccess = {
+                    logger.debug { "Purchase flow successfully launched" }
+                    // we need to wait for the callback to be called
+                },
+                onFailure = { error ->
+                    logger.error { "Purchase failed: $error" }
+                    updateState { state ->
+                        state.copy(
+                            isPurchasing = false,
+                            purchaseError = error,
                         )
                     }
                 },
-            ),
-        )
+            )
+        }
     }
 
     private fun onCancelPurchaseClicked() {

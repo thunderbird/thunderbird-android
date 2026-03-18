@@ -32,10 +32,6 @@ internal fun ContributionScreen(
                     ),
                 )
             }
-
-            is ContributionContract.Effect.PurchaseContribution -> {
-                effect.startPurchaseFlow()
-            }
         }
     }
 
