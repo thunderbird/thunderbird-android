@@ -23,13 +23,17 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarHost
 import app.k9mail.core.ui.compose.designsystem.organism.snackbar.rememberSnackbarHostState
 import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentSetOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeBehaviour
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirection
+import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectionAccessibilityAction
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeableRow
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.rememberSwipeableRowState
 import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.ui.catalog.R
 import net.thunderbird.ui.catalog.ui.page.common.list.fullSpanItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionSubtitleItem
@@ -184,23 +188,12 @@ private fun SwipeableRowItems(
     val snackbarHostState = rememberSnackbarHostState()
     val coroutineScope = rememberCoroutineScope()
     var swipeDirection by remember { mutableStateOf<SwipeDirection?>(null) }
+    val startToEndBehaviour = if (SwipeDirection.StartToEnd in directions) behaviour else SwipeBehaviour.Disabled
+    val endToStartBehaviour = if (SwipeDirection.EndToStart in directions) behaviour else SwipeBehaviour.Disabled
     val swipeableRowState = rememberSwipeableRowState(
-        startToEndBehaviour = if (directions.contains(
-                SwipeDirection.StartToEnd,
-            )
-        ) {
-            behaviour
-        } else {
-            SwipeBehaviour.Disabled
-        },
-        endToStartBehaviour = if (directions.contains(
-                SwipeDirection.EndToStart,
-            )
-        ) {
-            behaviour
-        } else {
-            SwipeBehaviour.Disabled
-        },
+        startToEndBehaviour = startToEndBehaviour,
+        endToStartBehaviour = endToStartBehaviour,
+        accessibilityActions = buildAccessibilityActions(startToEndBehaviour, endToStartBehaviour),
     )
     Column(
         modifier = modifier.padding(MainTheme.spacings.triple),
@@ -239,3 +232,28 @@ private fun SwipeableRowItems(
         SnackbarHost(snackbarHostState)
     }
 }
+
+@Composable
+private fun buildAccessibilityActions(
+    startToEndBehaviour: SwipeBehaviour,
+    endToStartBehaviour: SwipeBehaviour,
+): PersistentList<SwipeDirectionAccessibilityAction> = buildList {
+    if (startToEndBehaviour != SwipeBehaviour.Disabled) {
+        add(
+            SwipeDirectionAccessibilityAction.StartToEndAccessibilityAction(startToEndBehaviour.actionId),
+        )
+    }
+    if (endToStartBehaviour != SwipeBehaviour.Disabled) {
+        add(
+            SwipeDirectionAccessibilityAction.EndToStartAccessibilityAction(endToStartBehaviour.actionId),
+        )
+    }
+}.toPersistentList()
+
+private val SwipeBehaviour.actionId: Int
+    get() = when (this) {
+        SwipeBehaviour.Disabled -> -1
+        is SwipeBehaviour.Dismiss -> R.string.swipe_accessibility_dismiss_custom_action
+        is SwipeBehaviour.Reveal if autoReset -> R.string.swipe_accessibility_reveal_and_reset_custom_action
+        is SwipeBehaviour.Reveal -> R.string.swipe_accessibility_reveal_custom_action
+    }
