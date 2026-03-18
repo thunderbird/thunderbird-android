@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="18.0b2" versioncode="47" date="2026-03-18">
+    </release>
     <release version="18.0b1" versioncode="46" date="2026-03-16">
         <change>New: Add support for PNG avatars</change>
         <change>New: Add setting to display ISO date and time in message list</change>
