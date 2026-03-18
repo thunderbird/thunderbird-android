@@ -1159,11 +1159,16 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             viewClass = viewClass.getSuperclass();
         }
 
-        // This operation is safe. Because viewClass is a direct sub-class, getGenericSuperclass() will
-        // always return the Type of this class. Because this class is parameterized, the cast is safe
-        ParameterizedType superclass = (ParameterizedType) viewClass.getGenericSuperclass();
-        Type type = superclass.getActualTypeArguments()[0];
-        return (Class)type;
+        final Type genericSuperclass = viewClass.getGenericSuperclass();
+        if (genericSuperclass instanceof ParameterizedType) {
+            final Type type = ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
+            return (Class) type;
+        }
+
+        // R8/ProGuard can strip the generic Signature attribute, causing getGenericSuperclass()
+        // to return a raw Class instead of ParameterizedType. Fall back to Object.class so the
+        // caller takes the Serializable path instead of Parcelable.
+        return Object.class;
     }
 
     @Override
