@@ -105,6 +105,8 @@ class SwipeableRowState internal constructor(
     internal val enableSwipeFromEndToStart: Boolean
         get() = endToStartBehaviour !is SwipeBehaviour.Disabled
 
+    internal val accessibilityState = AccessibilityState()
+
     private var layoutWidth by mutableFloatStateOf(0f)
     private val offset = MutableStateFlow(0f)
     private var hasDragStopped by mutableStateOf(false)
@@ -116,6 +118,13 @@ class SwipeableRowState internal constructor(
             animatedOffset.value > 0f -> startToEndBehaviour
             animatedOffset.value < 0f -> endToStartBehaviour
             else -> startToEndBehaviour
+        }
+
+    private val SwipeDirection.behaviour: SwipeBehaviour
+        get() = when (this) {
+            SwipeDirection.StartToEnd -> startToEndBehaviour
+            SwipeDirection.EndToStart -> endToStartBehaviour
+            SwipeDirection.Settled -> startToEndBehaviour
         }
 
     /**
@@ -219,12 +228,23 @@ class SwipeableRowState internal constructor(
         val willSettlePastThreshold = willSettlePastThreshold(velocity, behaviour)
         val finalOffset = calculateFinalOffset(willSettlePastThreshold, intendedDirection, behaviour)
 
-        isRevealed = behaviour is SwipeBehaviour.Reveal && finalOffset != 0f
-
-        offset.update { finalOffset }
-
-        handlePostResetState(willSettlePastThreshold, behaviour)
+        updateOffset(behaviour, finalOffset, willSettlePastThreshold)
         return finalOffset != 0f
+    }
+
+    internal fun updateOffset(
+        behaviour: SwipeBehaviour,
+        finalOffset: Float,
+        willSettlePastThreshold: Boolean,
+    ) {
+        isRevealed = behaviour is SwipeBehaviour.Reveal && finalOffset != 0f
+        offset.update { finalOffset }
+        if (behaviour is SwipeBehaviour.Reveal && behaviour.autoReset && willSettlePastThreshold) {
+            coroutineScope.launch {
+                delay(behaviour.autoResetDelayMillis)
+                offset.update { 0f }
+            }
+        }
     }
 
     private fun willSettlePastThreshold(velocity: Float, behaviour: SwipeBehaviour): Boolean {
@@ -235,7 +255,7 @@ class SwipeableRowState internal constructor(
         return hasOffsetPassedThreshold || wouldFlingPastThreshold
     }
 
-    private fun calculateFinalOffset(
+    internal fun calculateFinalOffset(
         willSettlePastThreshold: Boolean,
         intendedDirection: SwipeDirection,
         behaviour: SwipeBehaviour,
@@ -259,15 +279,6 @@ class SwipeableRowState internal constructor(
         }
     }
 
-    private fun handlePostResetState(willSettlePastThreshold: Boolean, behaviour: SwipeBehaviour) {
-        if (behaviour is SwipeBehaviour.Reveal && behaviour.autoReset && willSettlePastThreshold) {
-            coroutineScope.launch {
-                delay(behaviour.autoResetDelayMillis)
-                offset.update { 0f }
-            }
-        }
-    }
-
     private fun resolveIntendedDirection(velocity: Float): SwipeDirection {
         return when {
             animatedOffset.value > 0f -> SwipeDirection.StartToEnd
@@ -287,17 +298,25 @@ class SwipeableRowState internal constructor(
         }
     }
 
-    private val SwipeDirection.behaviour: SwipeBehaviour
-        get() = when (this) {
-            SwipeDirection.StartToEnd -> startToEndBehaviour
-            SwipeDirection.EndToStart -> endToStartBehaviour
-            SwipeDirection.Settled -> startToEndBehaviour
-        }
-
     private fun clampTowardZero(offset: Float): Float = if (animatedOffset.value > 0f) {
         offset.coerceAtLeast(0f)
     } else {
         offset.coerceAtMost(0f)
+    }
+
+    internal inner class AccessibilityState {
+        internal fun swipeToDirection(direction: SwipeDirection) {
+            val finalOffset = calculateFinalOffset(
+                willSettlePastThreshold = true,
+                intendedDirection = direction,
+                behaviour = direction.behaviour,
+            )
+            updateOffset(
+                behaviour = direction.behaviour,
+                finalOffset = finalOffset,
+                willSettlePastThreshold = true,
+            )
+        }
     }
 }
 
