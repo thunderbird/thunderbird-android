@@ -73,10 +73,6 @@ internal class ContributionContract {
     }
 
     sealed interface Effect {
-        data class PurchaseContribution(
-            val startPurchaseFlow: () -> Unit,
-        ) : Effect
-
         data class ManageSubscription(
             val productId: String,
         ) : Effect
