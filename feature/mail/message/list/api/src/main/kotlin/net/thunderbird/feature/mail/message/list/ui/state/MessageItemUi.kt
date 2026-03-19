@@ -15,8 +15,8 @@ import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferen
  * @param id The unique identifier for the message.
  * @param folderId The identifier of the folder containing this message.
  * @param account The account to which this message belongs.
- * @param senders A list of identities who sent the message.
- * @param recipients A list of identities who received the message.
+ * @property senders The composed representation of the message sender(s) with display name,
+ *  styling, and avatar.
  * @param subject The subject line of the message.
  * @param excerpt A short snippet or preview of the message body.
  * @param formattedReceivedAt A user-friendly, formatted string representing when the message was received.
@@ -36,8 +36,7 @@ data class MessageItemUi(
     val id: String,
     val folderId: String,
     val account: Account,
-    val senders: ImmutableList<EmailIdentity>,
-    val recipients: ImmutableList<EmailIdentity>,
+    val senders: ComposedAddressUi,
     val subject: String,
     val excerpt: String,
     val formattedReceivedAt: String,

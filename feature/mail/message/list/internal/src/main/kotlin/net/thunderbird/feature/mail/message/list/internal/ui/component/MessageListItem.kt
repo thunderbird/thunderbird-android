@@ -2,13 +2,11 @@ package net.thunderbird.feature.mail.message.list.internal.ui.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
@@ -17,7 +15,8 @@ import net.thunderbird.feature.mail.message.list.ui.component.organism.MessageIt
 import net.thunderbird.feature.mail.message.list.ui.component.organism.NewMessageItem
 import net.thunderbird.feature.mail.message.list.ui.component.organism.ReadMessageItem
 import net.thunderbird.feature.mail.message.list.ui.component.organism.UnreadMessageItem
-import net.thunderbird.feature.mail.message.list.ui.state.EmailIdentity
+import net.thunderbird.feature.mail.message.list.ui.state.ComposedAddressStyle
+import net.thunderbird.feature.mail.message.list.ui.state.ComposedAddressUi
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 
 @Composable
@@ -32,14 +31,10 @@ internal fun MessageListItem(
     onFavouriteClick: () -> Unit = {},
 ) {
     val contentPadding = calculateContentPadding(preferences)
-    val mostRecentSender = remember(message.senders) { message.senders.first() }
-    val senders = rememberSendersText(message, mostRecentSender, preferences)
     when (message.state) {
         else if message.isActive -> ActiveMessageListItem(
-            senders = senders,
             message = message,
             showAccountIndicator = showAccountIndicator,
-            mostRecentSender = mostRecentSender,
             preferences = preferences,
             contentPadding = contentPadding,
             modifier = modifier.testTagAsResourceId(MessageListItemDefaults.ACTIVE_MESSAGE_LIST_TEST_TAG),
@@ -50,10 +45,8 @@ internal fun MessageListItem(
         )
 
         MessageItemUi.State.New -> NewMessageListItem(
-            senders = senders,
             message = message,
             showAccountIndicator = showAccountIndicator,
-            mostRecentSender = mostRecentSender,
             preferences = preferences,
             contentPadding = contentPadding,
             modifier = modifier.testTagAsResourceId(MessageListItemDefaults.NEW_MESSAGE_LIST_TEST_TAG),
@@ -64,10 +57,8 @@ internal fun MessageListItem(
         )
 
         MessageItemUi.State.Read -> ReadMessageListItem(
-            senders = senders,
             message = message,
             showAccountIndicator = showAccountIndicator,
-            mostRecentSender = mostRecentSender,
             preferences = preferences,
             contentPadding = contentPadding,
             modifier = modifier.testTagAsResourceId(MessageListItemDefaults.READ_MESSAGE_LIST_TEST_TAG),
@@ -78,10 +69,8 @@ internal fun MessageListItem(
         )
 
         MessageItemUi.State.Unread -> UnreadMessageListItem(
-            senders = senders,
             message = message,
             showAccountIndicator = showAccountIndicator,
-            mostRecentSender = mostRecentSender,
             preferences = preferences,
             contentPadding = contentPadding,
             modifier = modifier.testTagAsResourceId(MessageListItemDefaults.UNREAD_MESSAGE_LIST_TEST_TAG),
@@ -102,10 +91,8 @@ private fun calculateContentPadding(preferences: MessageListPreferences): Paddin
 
 @Composable
 private fun ActiveMessageListItem(
-    senders: AnnotatedString,
     message: MessageItemUi,
     showAccountIndicator: Boolean,
-    mostRecentSender: EmailIdentity,
     preferences: MessageListPreferences,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
@@ -115,7 +102,11 @@ private fun ActiveMessageListItem(
     onFavouriteClick: () -> Unit = {},
 ) {
     ActiveMessageItem(
-        sender = senders,
+        sender = styledSenderOrSubject(
+            useSender = true,
+            senders = message.senders,
+            subject = AnnotatedString(message.subject),
+        ),
         subject = message.subject,
         preview = message.excerpt,
         receivedAt = message.formattedReceivedAt,
@@ -123,7 +114,7 @@ private fun ActiveMessageListItem(
         accountIndicatorColor = message.account.color,
         avatar = {
             MessageItemAvatar(
-                avatar = mostRecentSender.avatar,
+                avatar = message.senders.avatar ?: return@ActiveMessageItem,
                 showMessageAvatar = preferences.showMessageAvatar,
                 onAvatarClick = onAvatarClick,
             )
@@ -145,10 +136,8 @@ private fun ActiveMessageListItem(
 
 @Composable
 private fun NewMessageListItem(
-    senders: AnnotatedString,
     message: MessageItemUi,
     showAccountIndicator: Boolean,
-    mostRecentSender: EmailIdentity,
     preferences: MessageListPreferences,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
@@ -158,7 +147,11 @@ private fun NewMessageListItem(
     onFavouriteClick: () -> Unit = {},
 ) {
     NewMessageItem(
-        sender = senders,
+        sender = styledSenderOrSubject(
+            useSender = true,
+            senders = message.senders,
+            subject = AnnotatedString(message.subject),
+        ),
         subject = message.subject,
         preview = message.excerpt,
         receivedAt = message.formattedReceivedAt,
@@ -166,7 +159,7 @@ private fun NewMessageListItem(
         accountIndicatorColor = message.account.color,
         avatar = {
             MessageItemAvatar(
-                avatar = mostRecentSender.avatar,
+                avatar = message.senders.avatar ?: return@NewMessageItem,
                 showMessageAvatar = preferences.showMessageAvatar,
                 onAvatarClick = onAvatarClick,
             )
@@ -188,10 +181,8 @@ private fun NewMessageListItem(
 
 @Composable
 private fun ReadMessageListItem(
-    senders: AnnotatedString,
     message: MessageItemUi,
     showAccountIndicator: Boolean,
-    mostRecentSender: EmailIdentity,
     preferences: MessageListPreferences,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
@@ -201,7 +192,11 @@ private fun ReadMessageListItem(
     onFavouriteClick: () -> Unit = {},
 ) {
     ReadMessageItem(
-        sender = senders,
+        sender = styledSenderOrSubject(
+            useSender = true,
+            senders = message.senders,
+            subject = AnnotatedString(message.subject),
+        ),
         subject = message.subject,
         preview = message.excerpt,
         receivedAt = message.formattedReceivedAt,
@@ -209,7 +204,7 @@ private fun ReadMessageListItem(
         accountIndicatorColor = message.account.color,
         avatar = {
             MessageItemAvatar(
-                avatar = mostRecentSender.avatar,
+                avatar = message.senders.avatar ?: return@ReadMessageItem,
                 showMessageAvatar = preferences.showMessageAvatar,
                 onAvatarClick = onAvatarClick,
             )
@@ -231,10 +226,8 @@ private fun ReadMessageListItem(
 
 @Composable
 private fun UnreadMessageListItem(
-    senders: AnnotatedString,
     message: MessageItemUi,
     showAccountIndicator: Boolean,
-    mostRecentSender: EmailIdentity,
     preferences: MessageListPreferences,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
@@ -244,7 +237,11 @@ private fun UnreadMessageListItem(
     onFavouriteClick: () -> Unit = {},
 ) {
     UnreadMessageItem(
-        sender = senders,
+        sender = styledSenderOrSubject(
+            useSender = true,
+            senders = message.senders,
+            subject = AnnotatedString(message.subject),
+        ),
         subject = message.subject,
         preview = message.excerpt,
         receivedAt = message.formattedReceivedAt,
@@ -252,7 +249,7 @@ private fun UnreadMessageListItem(
         accountIndicatorColor = message.account.color,
         avatar = {
             MessageItemAvatar(
-                avatar = mostRecentSender.avatar,
+                avatar = message.senders.avatar ?: return@UnreadMessageItem,
                 showMessageAvatar = preferences.showMessageAvatar,
                 onAvatarClick = onAvatarClick,
             )
@@ -273,34 +270,45 @@ private fun UnreadMessageListItem(
 }
 
 @Composable
-private fun rememberSendersText(
-    message: MessageItemUi,
-    mostRecentSender: EmailIdentity,
-    preferences: MessageListPreferences,
-): AnnotatedString = remember(message.senders, message.state, preferences.showCorrespondentNames) {
-    buildAnnotatedString {
-        withStyle(
-            SpanStyle(
-                fontWeight = when (message.state) {
-                    MessageItemUi.State.New, MessageItemUi.State.Unread -> FontWeight.Bold
-                    else -> FontWeight.Normal
-                },
-            ),
-        ) {
-            append(mostRecentSender.senderText(preferences.showCorrespondentNames))
-            if (message.senders.size > 1) append(", ")
+private fun styledSenderOrSubject(
+    useSender: Boolean,
+    senders: ComposedAddressUi,
+    subject: AnnotatedString,
+    prefix: AnnotatedString? = null,
+    forceRegularFontWeight: Boolean = false,
+): AnnotatedString = buildAnnotatedString {
+    prefix?.let { append(it) }
+    val text = if (useSender) senders.displayName else subject
+    append(text)
+    when {
+        forceRegularFontWeight -> {
+            addStyle(SpanStyle(fontWeight = FontWeight.Normal), 0, text.length)
         }
-        message.senders.drop(1)
-            .joinTo(this, separator = ", ") {
-                it.senderText(preferences.showCorrespondentNames)
-            }
-    }
-}
 
-private fun EmailIdentity.senderText(showSendersName: Boolean) = if (showSendersName) {
-    name
-} else {
-    email
+        useSender -> {
+            senders.displayNameStyles.forEach { style ->
+                when (style) {
+                    ComposedAddressStyle.AllBold -> addStyle(
+                        SpanStyle(fontWeight = FontWeight.Bold),
+                        start = 0,
+                        end = text.length,
+                    )
+
+                    is ComposedAddressStyle.Bold -> addStyle(
+                        SpanStyle(fontWeight = FontWeight.Bold),
+                        style.start,
+                        style.end ?: text.length,
+                    )
+
+                    is ComposedAddressStyle.Regular -> addStyle(
+                        SpanStyle(fontWeight = FontWeight.Normal),
+                        style.start,
+                        style.end ?: text.length,
+                    )
+                }
+            }
+        }
+    }
 }
 
 internal object MessageListItemDefaults {
