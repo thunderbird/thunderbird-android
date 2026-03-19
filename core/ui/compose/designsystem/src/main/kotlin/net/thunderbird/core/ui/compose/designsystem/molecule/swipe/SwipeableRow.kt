@@ -1,5 +1,8 @@
 package net.thunderbird.core.ui.compose.designsystem.molecule.swipe
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -58,47 +61,55 @@ fun SwipeableRow(
     onSwipeChange: (SwipeDirection) -> Unit = {},
     content: @Composable RowScope.() -> Unit,
 ) {
-    LaunchedEffect(state, onSwipeChange) {
-        snapshotFlow { state.swipeDirection }
-            .drop(1) // Skip the initial `Settled` emission
-            .distinctUntilChanged()
-            .collectLatest { onSwipeChange(it) }
-    }
+    AnimatedContent(
+        targetState = state.swipeState,
+        modifier = modifier,
+        transitionSpec = { EnterTransition.None togetherWith state.dismissTransition },
+        label = "SwipeableRowContentAnimation",
+    ) { swipeState ->
+        if (swipeState != SwipeState.Dismissed) {
+            LaunchedEffect(state, onSwipeChange) {
+                snapshotFlow { state.swipeDirection }
+                    .drop(1) // Skip the initial `Settled` emission
+                    .distinctUntilChanged()
+                    .collectLatest { onSwipeChange(it) }
+            }
 
-    val accessibilityCustomActions = rememberAccessibilityActions(
-        state = state,
-        gesturesEnabled = gesturesEnabled,
-        onSwipeEnd = { direction ->
-            state.accessibilityState.swipeToDirection(direction)
-            onSwipeEnd(direction)
-        },
-    )
-
-    Box(
-        modifier = modifier
-            .semantics(mergeDescendants = true) { customActions = accessibilityCustomActions }
-            .onSizeChanged { state.onContainerSizeChanged(it) },
-        propagateMinConstraints = true,
-    ) {
-        if (gesturesEnabled && state.swipeDirection != SwipeDirection.Settled) {
-            Row(content = backgroundContent, modifier = Modifier.matchParentSize())
-        }
-        Row(
-            modifier = Modifier
-                .draggable(
-                    state = state.draggableState,
-                    orientation = Orientation.Horizontal,
-                    enabled = gesturesEnabled && state.acceptsGestures,
-                    onDragStopped = { velocity ->
-                        if (state.onDragStopped(velocity)) {
-                            onSwipeEnd(state.swipeDirection)
-                        }
-                    },
-                    onDragStarted = { state.onDragStarted() },
+            val accessibilityCustomActions = rememberAccessibilityActions(
+                state = state,
+                gesturesEnabled = gesturesEnabled,
+                onSwipeEnd = { direction ->
+                    state.accessibilityState.swipeToDirection(direction)
+                    onSwipeEnd(direction)
+                },
+            )
+            Box(
+                modifier = Modifier
+                    .semantics(mergeDescendants = true) { customActions = accessibilityCustomActions }
+                    .onSizeChanged { state.onContainerSizeChanged(it) },
+                propagateMinConstraints = true,
+            ) {
+                if (gesturesEnabled && state.swipeDirection != SwipeDirection.Settled) {
+                    Row(content = backgroundContent, modifier = Modifier.matchParentSize())
+                }
+                Row(
+                    modifier = Modifier
+                        .draggable(
+                            state = state.draggableState,
+                            orientation = Orientation.Horizontal,
+                            enabled = gesturesEnabled && state.acceptsGestures,
+                            onDragStopped = { velocity ->
+                                if (state.onDragStopped(velocity)) {
+                                    onSwipeEnd(state.swipeDirection)
+                                }
+                            },
+                            onDragStarted = { state.onDragStarted() },
+                        )
+                        .absoluteOffset { IntOffset(x = state.animatedOffset.value.roundToInt(), y = 0) },
+                    content = content,
                 )
-                .absoluteOffset { IntOffset(x = state.animatedOffset.value.roundToInt(), y = 0) },
-            content = content,
-        )
+            }
+        }
     }
 }
 

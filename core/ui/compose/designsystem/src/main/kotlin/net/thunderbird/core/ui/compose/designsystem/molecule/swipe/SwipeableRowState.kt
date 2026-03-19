@@ -1,5 +1,6 @@
 package net.thunderbird.core.ui.compose.designsystem.molecule.swipe
 
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.calculateTargetValue
@@ -107,6 +108,9 @@ class SwipeableRowState internal constructor(
         get() = swipeState != SwipeState.Resetting && swipeState != SwipeState.Dismissed
 
     internal val accessibilityState = AccessibilityState()
+
+    internal val dismissTransition: ExitTransition
+        get() = (activeBehaviour as? SwipeBehaviour.Dismiss)?.dismissTransition ?: ExitTransition.None
 
     private var layoutWidth by mutableFloatStateOf(0f)
     private var pendingOffset by mutableFloatStateOf(0f)

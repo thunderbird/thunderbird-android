@@ -1,8 +1,10 @@
 package net.thunderbird.core.ui.compose.designsystem.molecule.swipe
 
 import androidx.annotation.FloatRange
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Immutable
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -86,6 +88,7 @@ sealed interface SwipeBehaviour {
         @get:FloatRange(from = 0.25, to = 1.0)
         override val threshold: Float = DEFAULT_THRESHOLD,
         override val animationSpec: AnimationSpec<Float> = DefaultAnimation,
+        val dismissTransition: ExitTransition = fadeOut(),
     ) : SwipeBehaviour
 
     /**
