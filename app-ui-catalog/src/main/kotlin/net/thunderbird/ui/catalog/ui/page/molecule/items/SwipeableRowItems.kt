@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
@@ -188,7 +189,7 @@ private fun SwipeableRowDisabled(behaviour: SwipeBehaviour, onSwipeEnd: (SwipeDi
             directions = persistentSetOf(),
             behaviour = behaviour,
             onSwipeEnd = onSwipeEnd,
-        ) { error("Should not be visible") }
+        ) { _, _ -> error("Should not be visible") }
     }
 }
 
@@ -204,20 +205,25 @@ private fun SwipeableRowCustomBackground(behaviour: SwipeBehaviour, onSwipeEnd: 
             },
             directions = persistentSetOf(SwipeDirection.StartToEnd, SwipeDirection.EndToStart),
             onSwipeEnd = onSwipeEnd,
-        ) { direction ->
+        ) { swipeProgress, direction ->
+            val backgroundColor = if (direction == SwipeDirection.StartToEnd) {
+                MainTheme.colors.error
+            } else {
+                MainTheme.colors.success
+            }
             Surface(
-                color = if (direction == SwipeDirection.StartToEnd) {
-                    MainTheme.colors.error
-                } else {
-                    MainTheme.colors.success
-                },
+                color = lerp(
+                    start = MainTheme.colors.surfaceContainer,
+                    stop = backgroundColor,
+                    fraction = swipeProgress,
+                ),
                 contentColor = MainTheme.colors.onPrimary,
             ) {
                 TextBodyLarge(
                     text = "Swiped from ${direction.name.lowercase()}.",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(MainTheme.spacings.quadruple),
+                        .swipeableCommonTextPadding(),
                     textAlign = when (direction) {
                         SwipeDirection.StartToEnd -> TextAlign.Start
                         SwipeDirection.EndToStart -> TextAlign.End
@@ -236,19 +242,29 @@ private fun SwipeableRowItems(
     backgroundItemText: (SwipeDirection) -> String,
     modifier: Modifier = Modifier,
     directions: ImmutableSet<SwipeDirection> = persistentSetOf(),
-    onSwipeEnd: (SwipeDirection) -> Unit,
-    backgroundContent: @Composable RowScope.(SwipeDirection) -> Unit = { direction ->
+    onSwipeEnd: (SwipeDirection) -> Unit = {},
+    backgroundContent: @Composable RowScope.(Float, SwipeDirection) -> Unit = { swipeProgress, direction ->
         Surface(
-            color = MainTheme.colors.primaryContainer,
+            color = lerp(
+                start = MainTheme.colors.surfaceContainer,
+                stop = MainTheme.colors.primaryContainer,
+                fraction = swipeProgress,
+            ),
             contentColor = MainTheme.colors.onPrimaryContainer,
             modifier = Modifier.fillMaxSize(),
         ) {
-            Row {
+            Row(
+                horizontalArrangement = when (direction) {
+                    SwipeDirection.StartToEnd -> Arrangement.Start
+                    SwipeDirection.EndToStart -> Arrangement.End
+                    SwipeDirection.Settled -> Arrangement.Center
+                },
+            ) {
                 TextBodyLarge(
                     text = backgroundItemText(direction),
                     modifier = Modifier
                         .fillMaxWidth(fraction = if (behaviour is SwipeBehaviour.Reveal) behaviour.threshold else 1f)
-                        .padding(vertical = MainTheme.spacings.triple, horizontal = MainTheme.spacings.default),
+                        .swipeableCommonTextPadding(),
                     textAlign = when (direction) {
                         SwipeDirection.StartToEnd -> TextAlign.Start
                         SwipeDirection.EndToStart -> TextAlign.End
@@ -266,7 +282,12 @@ private fun SwipeableRowItems(
     val swipeableRowState = rememberSwipeableRowState(
         startToEndBehaviour = startToEndBehaviour,
         endToStartBehaviour = endToStartBehaviour,
-        accessibilityActions = buildAccessibilityActions(startToEndBehaviour, endToStartBehaviour),
+        accessibilityActions = remember(startToEndBehaviour, endToStartBehaviour) {
+            buildAccessibilityActions(
+                startToEndBehaviour,
+                endToStartBehaviour,
+            )
+        },
     )
     Column(
         modifier = modifier.padding(MainTheme.spacings.double),
@@ -275,7 +296,7 @@ private fun SwipeableRowItems(
         SwipeableRow(
             state = swipeableRowState,
             backgroundContent = {
-                backgroundContent(swipeDirection ?: SwipeDirection.Settled)
+                backgroundContent(swipeableRowState.swipeProgress, swipeDirection ?: SwipeDirection.Settled)
             },
             gesturesEnabled = directions.isNotEmpty(),
             modifier = Modifier.fillMaxWidth(),
@@ -289,19 +310,20 @@ private fun SwipeableRowItems(
                     text = foregroundItemText,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = MainTheme.spacings.triple, horizontal = MainTheme.spacings.default),
+                        .swipeableCommonTextPadding(),
                 )
             }
         }
 
         TextBodyLarge(
-            text = swipeDirection?.let { "Swiping to the ${it.name.lowercase()} direction." } ?: "Not swiping yet.",
+            text = swipeDirection
+                ?.takeIf { it != SwipeDirection.Settled }
+                ?.let { "Swiping to the ${it.name.lowercase()} direction." }
+                ?: "Not swiping yet.",
         )
-
     }
 }
 
-@Composable
 private fun buildAccessibilityActions(
     startToEndBehaviour: SwipeBehaviour,
     endToStartBehaviour: SwipeBehaviour,
@@ -325,3 +347,7 @@ private val SwipeBehaviour.actionId: Int
         is SwipeBehaviour.Reveal if autoReset -> R.string.swipe_accessibility_reveal_and_reset_custom_action
         is SwipeBehaviour.Reveal -> R.string.swipe_accessibility_reveal_custom_action
     }
+
+@Composable
+private fun Modifier.swipeableCommonTextPadding() = this then
+    Modifier.padding(vertical = MainTheme.spacings.triple, horizontal = MainTheme.spacings.default)
