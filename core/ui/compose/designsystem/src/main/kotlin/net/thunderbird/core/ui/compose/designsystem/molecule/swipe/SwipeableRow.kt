@@ -13,7 +13,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.customActions
@@ -61,6 +64,8 @@ fun SwipeableRow(
     onSwipeChange: (SwipeDirection) -> Unit = {},
     content: @Composable RowScope.() -> Unit,
 ) {
+    val hapticFeedback = LocalHapticFeedback.current
+
     AnimatedContent(
         targetState = state.swipeState,
         modifier = modifier,
@@ -80,6 +85,7 @@ fun SwipeableRow(
                 gesturesEnabled = gesturesEnabled,
                 onSwipeEnd = { direction ->
                     state.accessibilityState.swipeToDirection(direction)
+                    performHapticFeedback(state, hapticFeedback)
                     onSwipeEnd(direction)
                 },
             )
@@ -100,6 +106,7 @@ fun SwipeableRow(
                             enabled = gesturesEnabled && state.acceptsGestures,
                             onDragStopped = { velocity ->
                                 if (state.onDragStopped(velocity)) {
+                                    performHapticFeedback(state, hapticFeedback)
                                     onSwipeEnd(state.swipeDirection)
                                 }
                             },
@@ -110,6 +117,15 @@ fun SwipeableRow(
                 )
             }
         }
+    }
+}
+
+private fun performHapticFeedback(
+    state: SwipeableRowState,
+    hapticFeedback: HapticFeedback,
+) {
+    if (state.activeBehaviour.enableHapticFeedback) {
+        hapticFeedback.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
     }
 }
 

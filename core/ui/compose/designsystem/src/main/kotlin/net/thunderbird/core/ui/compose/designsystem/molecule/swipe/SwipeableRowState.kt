@@ -116,7 +116,21 @@ class SwipeableRowState internal constructor(
     private var pendingOffset by mutableFloatStateOf(0f)
     private val decayAnimationSpec = splineBasedDecay<Float>(density)
 
-    private val activeBehaviour: SwipeBehaviour
+    /**
+     * Gets the currently active swipe behaviour based on the current animated offset value.
+     *
+     * This property determines which swipe behaviour should be used by examining the current
+     * swipe direction indicated by the animated offset:
+     * - When the offset is positive (swiping from start to end), returns [startToEndBehaviour]
+     * - When the offset is negative (swiping from end to start), returns [endToStartBehaviour]
+     * - When the offset is zero (at rest position), defaults to [startToEndBehaviour]
+     *
+     * The active behaviour controls threshold calculations, animations, and haptic feedback
+     * for the current swipe interaction.
+     *
+     * @return The [SwipeBehaviour] that should be applied based on the current swipe state
+     */
+    internal val activeBehaviour: SwipeBehaviour
         get() = when {
             animatedOffset.value > 0f -> startToEndBehaviour
             animatedOffset.value < 0f -> endToStartBehaviour

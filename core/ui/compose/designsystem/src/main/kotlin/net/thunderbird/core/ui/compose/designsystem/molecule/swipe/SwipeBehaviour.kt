@@ -52,6 +52,15 @@ sealed interface SwipeBehaviour {
     val animationSpec: AnimationSpec<Float>
 
     /**
+     * Determines whether haptic feedback should be triggered during swipe interactions.
+     *
+     * When set to `true`, the device will provide tactile feedback to the user during
+     * swipe gestures, enhancing the user experience with physical confirmation of actions.
+     * When set to `false`, no haptic feedback will be generated.
+     */
+    val enableHapticFeedback: Boolean
+
+    /**
      * Defines a reveal swipe behaviour that allows content to be shown or hidden
      * through swipe gestures.
      *
@@ -68,6 +77,7 @@ sealed interface SwipeBehaviour {
         @get:FloatRange(from = 0.25, to = 1.0)
         override val threshold: Float = DEFAULT_THRESHOLD,
         override val animationSpec: AnimationSpec<Float> = DefaultAnimation,
+        override val enableHapticFeedback: Boolean = true,
         val autoReset: Boolean = false,
         val autoResetDelayMillis: Duration = DEFAULT_AUTO_RESET_DELAY_MILLIS.milliseconds,
     ) : SwipeBehaviour
@@ -88,6 +98,7 @@ sealed interface SwipeBehaviour {
         @get:FloatRange(from = 0.25, to = 1.0)
         override val threshold: Float = DEFAULT_THRESHOLD,
         override val animationSpec: AnimationSpec<Float> = DefaultAnimation,
+        override val enableHapticFeedback: Boolean = true,
         val dismissTransition: ExitTransition = fadeOut(),
     ) : SwipeBehaviour
 
@@ -100,6 +111,7 @@ sealed interface SwipeBehaviour {
     data object Disabled : SwipeBehaviour {
         override val threshold: Float = 1f
         override val animationSpec: AnimationSpec<Float> = DefaultAnimation
+        override val enableHapticFeedback: Boolean = false
     }
 
     companion object {
