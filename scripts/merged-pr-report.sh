@@ -59,7 +59,7 @@ MONTH="$2"
 TARGET_DIR="."
 SKIP_EXCLUDED=false
 
-# Simple argument parsing for optional TARGET_DIR and --skip-excluded
+# Parse optional TARGET_DIR and --skip-excluded
 if [[ $# -ge 3 ]]; then
   if [[ "$3" == "--skip-excluded" ]]; then
     SKIP_EXCLUDED=true
@@ -71,8 +71,6 @@ if [[ $# -eq 4 ]]; then
   if [[ "$4" == "--skip-excluded" ]]; then
     SKIP_EXCLUDED=true
   else
-    # If the 4th arg is not the flag, it's an error in this simple logic
-    # but let's just ignore it or assume it's the target dir if $3 was something else
     :
   fi
 fi
@@ -92,7 +90,6 @@ if [[ ! "$MONTH" =~ ^(0[1-9]|1[0-2])$ ]]; then
   exit 1
 fi
 
-# Date arithmetic for START and END dates (macOS/BSD specific)
 START="${YEAR}-${MONTH}-01"
 if ! END="$(date -j -v+1m -v-1d -f "%Y-%m-%d" "$START" +%Y-%m-%d 2>/dev/null)"; then
   echo "Error: Failed to calculate date range. Ensure you are on macOS or have BSD date installed."
@@ -137,23 +134,38 @@ map_report_status() {
 
 map_version() {
   local sha="$1"
-  local branch="$2"
-  local pattern="$3"
+  local mode="$2"
 
   if [[ -z "$sha" ]]; then
     echo "-"
     return
   fi
 
-  # If commit is not in the branch history, it's not applicable
-  if ! git -C "$TMP_REPO" merge-base --is-ancestor "$sha" "origin/$branch" 2>/dev/null; then
+  local target_branch
+  if [[ "$mode" == "release" ]]; then
+    target_branch="release"
+  elif [[ "$mode" == "beta" ]]; then
+    target_branch="beta"
+  else
+    echo "Error: Invalid mode '$mode' in map_version" >&2
+    return 1
+  fi
+
+  # If commit is not in the target branch history, it's not applicable
+  if ! git -C "$TMP_REPO" merge-base --is-ancestor "$sha" "origin/$target_branch" 2>/dev/null; then
     echo "-"
     return
   fi
 
   # Find the first tag (by version sorting) that contains this commit
   local first_tag
-  first_tag="$(git -C "$TMP_REPO" tag --list "$pattern" --contains "$sha" --sort=version:refname | head -n 1)"
+  if [[ "$mode" == "release" ]]; then
+    # Exclude tags containing 'b' (betas)
+    first_tag="$(git -C "$TMP_REPO" tag --list "THUNDERBIRD_*" --contains "$sha" --sort=version:refname | grep -v "b" | head -n 1)"
+  else
+    # Only tags containing 'b' (betas)
+    first_tag="$(git -C "$TMP_REPO" tag --list "THUNDERBIRD_*b*" --contains "$sha" --sort=version:refname | head -n 1)"
+  fi
 
   if [[ -n "$first_tag" ]]; then
     echo "$first_tag"
@@ -247,13 +259,13 @@ for BRANCH in "${BRANCHES[@]}"; do
     if [[ -n "$sha" ]]; then
       # Beta tag analysis
       if ! beta_version="$(get_cached_value "$BETA_CACHE_FILE" "$sha" 2>/dev/null)"; then
-        beta_version="$(map_version "$sha" "beta" 'THUNDERBIRD_*_0b*')"
+        beta_version="$(map_version "$sha" "beta")"
         set_cached_value "$BETA_CACHE_FILE" "$sha" "$beta_version"
       fi
 
       # Release tag analysis
       if ! release_version="$(get_cached_value "$RELEASE_CACHE_FILE" "$sha" 2>/dev/null)"; then
-        release_version="$(map_version "$sha" "release" 'THUNDERBIRD_*_0')"
+        release_version="$(map_version "$sha" "release")"
         set_cached_value "$RELEASE_CACHE_FILE" "$sha" "$release_version"
       fi
     else

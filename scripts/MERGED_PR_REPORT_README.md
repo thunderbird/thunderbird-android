@@ -41,14 +41,14 @@ The script reads these labels from the PR:
 
 For each PR merge commit, the script determines:
 
-- **Beta**: first beta tag containing the merge commit
-- **Release**: first release tag containing the merge commit
+- **Beta**: first beta tag (containing `b`) that contains the merge commit (only if the commit reached the `beta` branch)
+- **Release**: first production release tag (excluding `b`, including dot releases) that contains the merge commit (only if the commit reached the `release` branch)
 
 Possible values:
 
-- A tag (e.g. `THUNDERBIRD_17_0b1`, `THUNDERBIRD_17_0`)
-- `Not released yet` (commit is on branch but not tagged yet)
-- `-` (commit not present in that branch)
+- A tag (e.g. `THUNDERBIRD_115_0b1`, `THUNDERBIRD_115_1_0`)
+- `Not released yet` (commit reached the branch but is not yet tagged)
+- `-` (commit not present in that branch history)
 
 ## How it works
 
