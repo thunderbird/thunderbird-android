@@ -6,8 +6,6 @@ import androidx.compose.animation.core.calculateTargetValue
 import androidx.compose.animation.splineBasedDecay
 import androidx.compose.foundation.gestures.DraggableState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -23,14 +21,10 @@ import kotlin.math.absoluteValue
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+private const val SWIPE_BEHAVIOUR_DISMISS_OFFSCREEN_MULTIPLIER = 1.2f
 private const val SWIPE_BEHAVIOUR_REVEAL_EXTENSION = 10
 
 /**
@@ -58,10 +52,12 @@ class SwipeableRowState internal constructor(
     /**
      * Animatable that tracks and animates the horizontal offset of the swipeable row.
      */
-    val animatedOffset = Animatable(
-        initialValue = 0f,
-        typeConverter = Float.VectorConverter,
-        label = "SwipeableRowOffset",
+    val animatedOffset by mutableStateOf(
+        Animatable(
+            initialValue = 0f,
+            typeConverter = Float.VectorConverter,
+            label = "SwipeableRowOffset",
+        ),
     )
 
     /**
@@ -83,6 +79,8 @@ class SwipeableRowState internal constructor(
         }
     }
 
+    internal var swipeState: SwipeState by mutableStateOf(SwipeState.Settled)
+
     /**
      * Indicates whether swiping from the start edge to the end edge is enabled.
      *
@@ -103,14 +101,15 @@ class SwipeableRowState internal constructor(
      * end-to-start swipe gestures.
      */
     internal val enableSwipeFromEndToStart: Boolean
-        get() = endToStartBehaviour !is SwipeBehaviour.Disabled
+        get() = swipeState != SwipeState.Resetting && swipeState != SwipeState.Dismissed
+
+    internal val acceptsGestures: Boolean
+        get() = swipeState != SwipeState.Resetting && swipeState != SwipeState.Dismissed
 
     internal val accessibilityState = AccessibilityState()
 
     private var layoutWidth by mutableFloatStateOf(0f)
-    private val offset = MutableStateFlow(0f)
-    private var hasDragStopped by mutableStateOf(false)
-    private var isRevealed by mutableStateOf(false)
+    private var pendingOffset by mutableFloatStateOf(0f)
     private val decayAnimationSpec = splineBasedDecay<Float>(density)
 
     private val activeBehaviour: SwipeBehaviour
@@ -135,6 +134,8 @@ class SwipeableRowState internal constructor(
      * directional permissions, and special behaviour for revealed states.
      */
     internal val draggableState = DraggableState { delta ->
+        if (swipeState != SwipeState.Swiping && swipeState != SwipeState.Revealed) return@DraggableState
+
         val targetOffset = animatedOffset.value + delta
         val targetBehaviour = if (targetOffset >= 0f) startToEndBehaviour else endToStartBehaviour
         val targetMaxOffset = when (targetBehaviour) {
@@ -147,37 +148,17 @@ class SwipeableRowState internal constructor(
                 (targetOffset > 0f && enableSwipeFromStartToEnd) ||
                 (targetOffset < 0f && enableSwipeFromEndToStart)
 
-            val isMovingTowardZero = (animatedOffset.value > 0f && delta < 0f) ||
-                (animatedOffset.value < 0f && delta > 0f)
-
-            val isRevealRestore = activeBehaviour is SwipeBehaviour.Reveal &&
-                isRevealed &&
-                isMovingTowardZero
-
-            if (!hasDragStopped && (isDirectionAllowed || isRevealRestore)) {
-                offset.update { currentOffset ->
-                    val newOffset = currentOffset + delta
-                    if (isRevealRestore) clampTowardZero(newOffset) else newOffset
+            if (isDirectionAllowed) {
+                val newOffset = pendingOffset + delta
+                pendingOffset = newOffset
+                coroutineScope.launch {
+                    animatedOffset.animateTo(
+                        targetValue = pendingOffset,
+                        animationSpec = activeBehaviour.animationSpec,
+                    )
                 }
             }
         }
-    }
-
-    /**
-     * Collects offset changes and drives the swipe animation.
-     *
-     * Must be called from a coroutine whose lifecycle is tied to the composition
-     * (e.g., via [LaunchedEffect]) so that collection is cancelled when the state
-     * leaves the tree or is recreated.
-     */
-    internal fun observeOffset(): Job {
-        return offset.onEach { offset ->
-            if (hasDragStopped) {
-                animatedOffset.animateTo(targetValue = offset, animationSpec = activeBehaviour.animationSpec)
-            } else {
-                animatedOffset.snapTo(targetValue = offset)
-            }
-        }.launchIn(coroutineScope)
     }
 
     /**
@@ -196,7 +177,9 @@ class SwipeableRowState internal constructor(
      * Called when a drag gesture starts on the swipeable row.
      */
     internal fun onDragStarted() {
-        hasDragStopped = false
+        if (swipeState == SwipeState.Settled) {
+            swipeState = SwipeState.Swiping
+        }
     }
 
     /**
@@ -214,35 +197,55 @@ class SwipeableRowState internal constructor(
      *  resting position at zero offset
      */
     internal fun onDragStopped(velocity: Float): Boolean {
-        hasDragStopped = true
-
-        val intendedDirection = resolveIntendedDirection(velocity)
-        val isFlingAllowed = isFlingDirectionAllowed(intendedDirection)
-
-        if (!isFlingAllowed) {
-            offset.update { 0f }
+        if (swipeState != SwipeState.Swiping && swipeState != SwipeState.Revealed || pendingOffset == 0f) {
             return false
         }
 
-        val behaviour = intendedDirection.behaviour
-        val willSettlePastThreshold = willSettlePastThreshold(velocity, behaviour)
-        val finalOffset = calculateFinalOffset(willSettlePastThreshold, intendedDirection, behaviour)
+        val intendedDirection = resolveIntendedDirection(velocity)
+        return when {
+            swipeState == SwipeState.Revealed && !isClosingGesture(velocity) -> false
+            isFlingDirectionAllowed(intendedDirection) -> {
+                val behaviour = intendedDirection.behaviour
+                val willSettlePastThreshold = willSettlePastThreshold(velocity, behaviour)
+                val finalOffset = calculateFinalOffset(willSettlePastThreshold, intendedDirection, behaviour)
 
-        updateOffset(behaviour, finalOffset, willSettlePastThreshold)
-        return finalOffset != 0f
+                updateOffset(behaviour, finalOffset, willSettlePastThreshold)
+                willSettlePastThreshold
+            }
+
+            else -> {
+                pendingOffset = 0f
+                coroutineScope.launch { animatedOffset.animateTo(targetValue = 0f, activeBehaviour.animationSpec) }
+                swipeState = SwipeState.Settled
+                false
+            }
+        }
     }
+
+    private fun isClosingGesture(delta: Float): Boolean = (animatedOffset.value > 0f && delta < 0f) ||
+        (animatedOffset.value < 0f && delta > 0f)
 
     internal fun updateOffset(
         behaviour: SwipeBehaviour,
         finalOffset: Float,
         willSettlePastThreshold: Boolean,
     ) {
-        isRevealed = behaviour is SwipeBehaviour.Reveal && finalOffset != 0f
-        offset.update { finalOffset }
-        if (behaviour is SwipeBehaviour.Reveal && behaviour.autoReset && willSettlePastThreshold) {
-            coroutineScope.launch {
-                delay(behaviour.autoResetDelayMillis)
-                offset.update { 0f }
+        pendingOffset = finalOffset
+        coroutineScope.launch {
+            animatedOffset.animateTo(targetValue = finalOffset, activeBehaviour.animationSpec)
+
+            when (behaviour) {
+                is SwipeBehaviour.Reveal if (behaviour.autoReset && willSettlePastThreshold) -> {
+                    swipeState = SwipeState.Resetting
+                    delay(behaviour.autoResetDelayMillis)
+                    pendingOffset = 0f
+                    animatedOffset.animateTo(targetValue = 0f, behaviour.animationSpec)
+                    swipeState = SwipeState.Settled
+                }
+
+                is SwipeBehaviour.Reveal if willSettlePastThreshold -> swipeState = SwipeState.Revealed
+                is SwipeBehaviour.Dismiss if willSettlePastThreshold -> swipeState = SwipeState.Dismissed
+                else -> Unit
             }
         }
     }
@@ -261,7 +264,9 @@ class SwipeableRowState internal constructor(
         behaviour: SwipeBehaviour,
     ): Float {
         val finalOffset = when (behaviour) {
-            is SwipeBehaviour.Dismiss if willSettlePastThreshold -> layoutWidth
+            is SwipeBehaviour.Dismiss if willSettlePastThreshold ->
+                layoutWidth * SWIPE_BEHAVIOUR_DISMISS_OFFSCREEN_MULTIPLIER
+
             is SwipeBehaviour.Reveal if willSettlePastThreshold -> behaviour.threshold * layoutWidth
             is SwipeBehaviour.Disabled -> 0f
             else -> 0f
@@ -290,18 +295,15 @@ class SwipeableRowState internal constructor(
     }
 
     private fun isFlingDirectionAllowed(intendedDirection: SwipeDirection): Boolean {
-        val isRevealRestore = activeBehaviour is SwipeBehaviour.Reveal && isRevealed
+        if (swipeState == SwipeState.Revealed && activeBehaviour is SwipeBehaviour.Reveal) {
+            return intendedDirection.behaviour != activeBehaviour
+        }
+
         return when (intendedDirection) {
-            SwipeDirection.StartToEnd -> enableSwipeFromStartToEnd || isRevealRestore
-            SwipeDirection.EndToStart -> enableSwipeFromEndToStart || isRevealRestore
+            SwipeDirection.StartToEnd -> enableSwipeFromStartToEnd
+            SwipeDirection.EndToStart -> enableSwipeFromEndToStart
             SwipeDirection.Settled -> true
         }
-    }
-
-    private fun clampTowardZero(offset: Float): Float = if (animatedOffset.value > 0f) {
-        offset.coerceAtLeast(0f)
-    } else {
-        offset.coerceAtMost(0f)
     }
 
     internal inner class AccessibilityState {
@@ -357,9 +359,7 @@ fun rememberSwipeableRowState(
             accessibilityActions = accessibilityActions,
         )
     }
-    DisposableEffect(state) {
-        val job = state.observeOffset()
-        onDispose { job.cancel() }
-    }
     return state
 }
+
+internal enum class SwipeState { Dismissed, Swiping, Settled, Revealed, Resetting }
