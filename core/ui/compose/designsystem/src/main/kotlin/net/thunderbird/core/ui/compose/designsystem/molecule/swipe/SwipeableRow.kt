@@ -5,6 +5,7 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.absoluteOffset
@@ -26,6 +27,7 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
+import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirection.EndToStart
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirection.StartToEnd
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectionAccessibilityAction.EndToStartAccessibilityAction
@@ -66,40 +68,41 @@ fun SwipeableRow(
 ) {
     val hapticFeedback = LocalHapticFeedback.current
 
-    AnimatedContent(
-        targetState = state.swipeState,
-        modifier = modifier,
-        transitionSpec = { EnterTransition.None togetherWith state.dismissTransition },
-        label = "SwipeableRowContentAnimation",
-    ) { swipeState ->
-        if (swipeState != SwipeState.Dismissed) {
-            LaunchedEffect(state, onSwipeChange) {
-                snapshotFlow { state.swipeDirection }
-                    .drop(1) // Skip the initial `Settled` emission
-                    .distinctUntilChanged()
-                    .collectLatest { onSwipeChange(it) }
-            }
+    LaunchedEffect(state, onSwipeChange) {
+        snapshotFlow { state.swipeDirection }
+            .drop(1) // Skip the initial `Settled` emission
+            .distinctUntilChanged()
+            .collectLatest { onSwipeChange(it) }
+    }
 
-            val accessibilityCustomActions = rememberAccessibilityActions(
-                state = state,
-                gesturesEnabled = gesturesEnabled,
-                onSwipeEnd = { direction ->
-                    state.accessibilityState.swipeToDirection(direction)
-                    performHapticFeedback(state, hapticFeedback)
-                    onSwipeEnd(direction)
-                },
-            )
+    val accessibilityCustomActions = rememberAccessibilityActions(
+        state = state,
+        gesturesEnabled = gesturesEnabled,
+        onSwipeEnd = { direction ->
+            state.accessibilityState.swipeToDirection(direction)
+            performHapticFeedback(state, hapticFeedback)
+            onSwipeEnd(direction)
+        },
+    )
+
+    AnimatedContent(
+        targetState = state.swipeState == SwipeState.Dismissed,
+        transitionSpec = { EnterTransition.None togetherWith state.activeExitTransition },
+        label = "SwipeableRowContentAnimation",
+        modifier = modifier.testTagAsResourceId(SwipeableRowDefaults.SWIPEABLE_ROW_ANIMATED_CONTENT_TEST_TAG),
+    ) { isDismissed ->
+        if (!isDismissed) {
             Box(
                 modifier = Modifier
+                    .testTagAsResourceId(SwipeableRowDefaults.SWIPEABLE_ROW_CORE_ELEMENT_TEST_TAG)
                     .semantics(mergeDescendants = true) { customActions = accessibilityCustomActions }
                     .onSizeChanged { state.onContainerSizeChanged(it) },
                 propagateMinConstraints = true,
             ) {
-                if (gesturesEnabled && state.swipeDirection != SwipeDirection.Settled) {
-                    Row(content = backgroundContent, modifier = Modifier.matchParentSize())
-                }
+                SwipeableRowBackground(state, gesturesEnabled, backgroundContent)
                 Row(
                     modifier = Modifier
+                        .testTagAsResourceId(SwipeableRowDefaults.SWIPEABLE_ROW_DRAGGABLE_ELEMENT_TEST_TAG)
                         .draggable(
                             state = state.draggableState,
                             orientation = Orientation.Horizontal,
@@ -117,6 +120,22 @@ fun SwipeableRow(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun BoxScope.SwipeableRowBackground(
+    state: SwipeableRowState,
+    gesturesEnabled: Boolean,
+    backgroundContent: @Composable RowScope.() -> Unit,
+) {
+    if (gesturesEnabled && state.swipeDirection != SwipeDirection.Settled) {
+        Row(
+            content = backgroundContent,
+            modifier = Modifier
+                .matchParentSize()
+                .testTagAsResourceId(SwipeableRowDefaults.SWIPEABLE_ROW_BACKGROUND_CONTENT_TEST_TAG),
+        )
     }
 }
 
@@ -171,4 +190,11 @@ private fun rememberAccessibilityActions(
             }
         }
     }
+}
+
+object SwipeableRowDefaults {
+    const val SWIPEABLE_ROW_ANIMATED_CONTENT_TEST_TAG = "SwipeableRow_AnimatedContent"
+    const val SWIPEABLE_ROW_CORE_ELEMENT_TEST_TAG = "SwipeableRow_core_element"
+    const val SWIPEABLE_ROW_BACKGROUND_CONTENT_TEST_TAG = "SwipeableRow_background_content"
+    const val SWIPEABLE_ROW_DRAGGABLE_ELEMENT_TEST_TAG = "SwipeableRow_draggable_element"
 }

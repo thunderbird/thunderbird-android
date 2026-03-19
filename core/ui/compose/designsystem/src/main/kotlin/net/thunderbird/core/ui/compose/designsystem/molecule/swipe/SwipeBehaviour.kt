@@ -3,13 +3,15 @@ package net.thunderbird.core.ui.compose.designsystem.molecule.swipe
 import androidx.annotation.FloatRange
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.runtime.Immutable
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeBehaviour.Companion.DEFAULT_AUTO_RESET_DELAY_MILLIS
-import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeBehaviour.Companion.DEFAULT_THRESHOLD
 
 /**
  * Defines the behaviour of a swipeable component when a swipe gesture is
@@ -42,14 +44,12 @@ sealed interface SwipeBehaviour {
     val threshold: Float
 
     /**
-     * The animation specification used to animate the swipe transition between states.
+     * The animation specification used when the swipe gesture ends and the row settles to its
+     * final position (revealed, dismissed, or back to resting).
      *
-     * This defines how the row animates when transitioning during swipe gestures, including
-     * the duration, easing curve, and other animation parameters. The animation is applied
-     * to the horizontal offset of the swipeable content as it moves between its settled
-     * position and the fully swiped state.
+     * For example, a bouncy spring for reveal settle and a fast tween for dismissing.
      */
-    val animationSpec: AnimationSpec<Float>
+    val settleAnimationSpec: AnimationSpec<Float>
 
     /**
      * Determines whether haptic feedback should be triggered during swipe interactions.
@@ -64,9 +64,6 @@ sealed interface SwipeBehaviour {
      * Defines a reveal swipe behaviour that allows content to be shown or hidden
      * through swipe gestures.
      *
-     * @property threshold The fraction of the swipeable area that must be traversed
-     *  before the row settles into the revealed state. Must be between 0.25 and 1.0.
-     *  Defaults to [DEFAULT_THRESHOLD]
      * @property autoReset Whether the row should automatically return to its initial
      *  position after being revealed after a while. Defaults to `false`
      * @property autoResetDelayMillis The duration to wait before automatically resetting
@@ -76,7 +73,7 @@ sealed interface SwipeBehaviour {
     data class Reveal(
         @get:FloatRange(from = 0.25, to = 1.0)
         override val threshold: Float = DEFAULT_THRESHOLD,
-        override val animationSpec: AnimationSpec<Float> = DefaultAnimation,
+        override val settleAnimationSpec: AnimationSpec<Float> = DefaultSettleAnimation,
         override val enableHapticFeedback: Boolean = true,
         val autoReset: Boolean = false,
         val autoResetDelayMillis: Duration = DEFAULT_AUTO_RESET_DELAY_MILLIS.milliseconds,
@@ -90,16 +87,20 @@ sealed interface SwipeBehaviour {
      * or final actions where the row should be removed from view after completing the
      * swipe gesture.
      *
-     * @property threshold The fraction of the swipeable area that must be traversed
-     *  before the row settles into the revealed state. Must be between 0.25 and 1.0.
-     *  Defaults to [DEFAULT_THRESHOLD]
+     * @property dismissTransition The exit transition that will be applied when the
+     *  item is dismissed.
      */
     data class Dismiss(
         @get:FloatRange(from = 0.25, to = 1.0)
         override val threshold: Float = DEFAULT_THRESHOLD,
-        override val animationSpec: AnimationSpec<Float> = DefaultAnimation,
+        override val settleAnimationSpec: AnimationSpec<Float> = DefaultDismissAnimation,
         override val enableHapticFeedback: Boolean = true,
-        val dismissTransition: ExitTransition = fadeOut(),
+        val dismissTransition: ExitTransition = fadeOut(tween(durationMillis = 150)) + shrinkVertically(
+            tween(
+                durationMillis = 200,
+                delayMillis = 50,
+            ),
+        ),
     ) : SwipeBehaviour
 
     /**
@@ -110,14 +111,50 @@ sealed interface SwipeBehaviour {
      */
     data object Disabled : SwipeBehaviour {
         override val threshold: Float = 1f
-        override val animationSpec: AnimationSpec<Float> = DefaultAnimation
+        override val settleAnimationSpec: AnimationSpec<Float> = DefaultSettleAnimation
         override val enableHapticFeedback: Boolean = false
     }
 
     companion object {
-        const val DEFAULT_THRESHOLD = 0.5f
-        const val DEFAULT_AUTO_RESET_DELAY_MILLIS = 500L
+        internal const val DEFAULT_THRESHOLD = 0.5f
+        internal const val DEFAULT_AUTO_RESET_DELAY_MILLIS = 500L
 
-        val DefaultAnimation = SpringSpec(visibilityThreshold = 0.01f)
+        /**
+         * The default animation specification used for settling swipe gestures back to
+         * their resting position.
+         *
+         * This animation uses a spring-based motion with moderate damping and high stiffness
+         * to create a responsive, natural-feeling return animation.
+         * The spring characteristics are tuned to provide a quick yet smooth transition that
+         * feels snappy without being jarring.
+         *
+         * This default can be overridden by providing a custom animation specification to the
+         * swipe behaviour.
+         *
+         * @see SwipeBehaviour.settleAnimationSpec
+         */
+        val DefaultSettleAnimation = SpringSpec(
+            dampingRatio = 0.75f,
+            stiffness = 600f,
+            visibilityThreshold = 0.01f,
+        )
+
+        /**
+         * The default animation specification used for dismissing the [SwipeableRow] when
+         * the swipe distance exceeds the [threshold], removing it from screen.
+         *
+         * This animation uses a tween interpolation with a duration of 250 milliseconds
+         * and applies [FastOutSlowInEasing] for smooth, natural motion. The animation is
+         * applied when a swipe gesture is released.
+         *
+         * This default can be overridden by providing a custom animation specification to the
+         * [dismiss swipe behaviour][Dismiss].
+         *
+         * @see SwipeBehaviour.Dismiss.dismissTransition
+         */
+        val DefaultDismissAnimation: AnimationSpec<Float> = tween(
+            durationMillis = 250,
+            easing = FastOutSlowInEasing,
+        )
     }
 }

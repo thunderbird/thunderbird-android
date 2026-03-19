@@ -456,7 +456,10 @@ class SwipeableRowTest : ComposeTest() {
     fun `should display background content when swiping`() = runComposeTest {
         // Arrange
         setContentWithTheme {
-            TestSwipeableRow()
+            TestSwipeableRow(
+                startToEndBehaviour = SwipeBehaviour.Reveal(threshold = 0.25f),
+                endToStartBehaviour = SwipeBehaviour.Reveal(threshold = 0.25f),
+            )
         }
 
         // Act
@@ -464,7 +467,7 @@ class SwipeableRowTest : ComposeTest() {
         waitForIdle()
 
         // Assert
-        onNodeWithTag(BACKGROUND_TEST_TAG).assertIsDisplayed()
+        onNodeWithTag(BACKGROUND_TEST_TAG, useUnmergedTree = true).assertIsDisplayed()
     }
 
     @Test
@@ -707,7 +710,7 @@ class SwipeableRowTest : ComposeTest() {
     // endregion [ Fling verifications ]
 
     private companion object {
-        const val TEST_TAG = "swipeableRow"
+        const val TEST_TAG = SwipeableRowDefaults.SWIPEABLE_ROW_CORE_ELEMENT_TEST_TAG
         const val BACKGROUND_TEST_TAG = "backgroundContent"
         const val FLING_HIGH_VELOCITY = 5_000f
         const val FLING_LOW_VELOCITY = 200f
@@ -751,7 +754,6 @@ private fun TestSwipeableRow(
             }
         },
         modifier = Modifier
-            .testTag("swipeableRow")
             .fillMaxWidth()
             .height(80.dp),
         gesturesEnabled = gesturesEnabled,
