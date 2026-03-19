@@ -88,7 +88,7 @@ fun SwipeableRow(
                 .draggable(
                     state = state.draggableState,
                     orientation = Orientation.Horizontal,
-                    enabled = gesturesEnabled,
+                    enabled = gesturesEnabled && state.acceptsGestures,
                     onDragStopped = { velocity ->
                         if (state.onDragStopped(velocity)) {
                             onSwipeEnd(state.swipeDirection)
