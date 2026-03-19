@@ -1,0 +1,67 @@
+---
+name: PR - Request report labels
+
+on:
+  pull_request_target:
+    types: [opened, reopened, labeled, unlabeled]
+    branches:
+      - main
+      - beta
+      - release
+
+permissions:
+  contents: none
+
+jobs:
+  require-report-label:
+    permissions:
+      pull-requests: read
+
+    runs-on: ubuntu-latest
+    environment: review
+    steps:
+      - name: App token generate
+        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf  # v2.2.1
+        if: ${{ vars.BOT_CLIENT_ID }}
+        id: app-token
+        with:
+          app-id: ${{ vars.BOT_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
+      - name: Validate report labels
+        id: validate
+        env:
+          LABELS_JSON: ${{ toJson(github.event.pull_request.labels) }}
+        run: |
+          set -euo pipefail
+
+          include_count="$(printf '%s\n' "$LABELS_JSON" | jq '[.[] | select(.name == "report:include")] | length')"
+          exclude_count="$(printf '%s\n' "$LABELS_JSON" | jq '[.[] | select(.name == "report:exclude")] | length')"
+          highlight_count="$(printf '%s\n' "$LABELS_JSON" | jq '[.[] | select(.name == "report:highlight")] | length')"
+
+          total_count=$((include_count + exclude_count + highlight_count))
+
+          if [ "$total_count" -eq 0 ]; then
+            echo "valid=false" >> "$GITHUB_OUTPUT"
+            echo "message=Please add exactly one report label: \`report:include\`, \`report:exclude\`, or \`report:highlight\`." >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "$total_count" -gt 1 ]; then
+            echo "valid=false" >> "$GITHUB_OUTPUT"
+            echo "message=Please keep exactly one report label: \`report:include\`, \`report:exclude\`, or \`report:highlight\`." >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "valid=true" >> "$GITHUB_OUTPUT"
+
+      - name: Comment on PR
+        if: steps.validate.outputs.valid == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          MESSAGE: ${{ steps.validate.outputs.message }}
+        run: |
+          gh pr comment "$PR_NUMBER" \
+            --repo "${{ github.repository }}" \
+            --body "$MESSAGE"
