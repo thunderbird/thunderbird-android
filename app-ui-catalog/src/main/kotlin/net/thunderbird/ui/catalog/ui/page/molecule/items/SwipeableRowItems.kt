@@ -20,6 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
@@ -246,13 +247,14 @@ private fun SwipeableRowItems(
                 TextBodyLarge(
                     text = backgroundItemText(direction),
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = MainTheme.spacings.quadruple, horizontal = MainTheme.spacings.double),
+                        .fillMaxWidth(fraction = if (behaviour is SwipeBehaviour.Reveal) behaviour.threshold else 1f)
+                        .padding(vertical = MainTheme.spacings.triple, horizontal = MainTheme.spacings.default),
                     textAlign = when (direction) {
                         SwipeDirection.StartToEnd -> TextAlign.Start
                         SwipeDirection.EndToStart -> TextAlign.End
                         SwipeDirection.Settled -> TextAlign.Unspecified
                     },
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }
@@ -267,7 +269,7 @@ private fun SwipeableRowItems(
         accessibilityActions = buildAccessibilityActions(startToEndBehaviour, endToStartBehaviour),
     )
     Column(
-        modifier = modifier.padding(MainTheme.spacings.triple),
+        modifier = modifier.padding(MainTheme.spacings.double),
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
     ) {
         SwipeableRow(
@@ -287,7 +289,7 @@ private fun SwipeableRowItems(
                     text = foregroundItemText,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(MainTheme.spacings.quadruple),
+                        .padding(vertical = MainTheme.spacings.triple, horizontal = MainTheme.spacings.default),
                 )
             }
         }
