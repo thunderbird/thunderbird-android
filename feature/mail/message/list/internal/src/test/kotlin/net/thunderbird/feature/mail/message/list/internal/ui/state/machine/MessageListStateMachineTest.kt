@@ -13,9 +13,7 @@ import dev.mokkery.spy
 import dev.mokkery.verify
 import dev.mokkery.verify.VerifyMode
 import kotlin.test.Test
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
@@ -36,7 +34,6 @@ import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListSearchEvent
 import net.thunderbird.feature.mail.message.list.ui.state.Account
 import net.thunderbird.feature.mail.message.list.ui.state.ComposedAddressUi
-import net.thunderbird.feature.mail.message.list.ui.state.MessageItemAttachment
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi.State
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListMetadata
@@ -693,13 +690,13 @@ private fun createMessageUiItem(
     subject: String = "mock subject",
     excerpt: String = "mock excerpt",
     formattedReceivedAt: String = "Jan 2026",
-    attachments: ImmutableList<MessageItemAttachment> = persistentListOf(),
+    hasAttachments: Boolean = false,
     starred: Boolean = false,
     encrypted: Boolean = false,
     answered: Boolean = false,
     forwarded: Boolean = false,
     selected: Boolean = false,
-    conversations: ImmutableList<MessageItemUi> = persistentListOf(),
+    threadCount: Int = 0,
 ): MessageItemUi = MessageItemUi(
     state = state,
     id = id,
@@ -709,11 +706,11 @@ private fun createMessageUiItem(
     subject = subject,
     excerpt = excerpt,
     formattedReceivedAt = formattedReceivedAt,
-    attachments = attachments,
+    hasAttachments = hasAttachments,
     starred = starred,
     encrypted = encrypted,
     answered = answered,
     forwarded = forwarded,
     selected = selected,
-    conversations = conversations,
+    threadCount = threadCount,
 )
