@@ -61,7 +61,9 @@ jobs:
     name: Show Release Environment
     runs-on: ubuntu-latest
     needs: get_environment
-    environment: ${{ needs.get_environment.outputs.releaseEnv }}
+    environment:
+      name: ${{ needs.get_environment.outputs.releaseEnv }}
+      deployment: false
     outputs:
       matrixInclude: ${{ steps.dump.outputs.matrixInclude }}
       releaseDate: ${{ steps.dump.outputs.releaseDate }}
@@ -157,7 +159,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ dump_config ]
     if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
-    environment: notify_matrix
+    environment:
+      name: notify_matrix
+      deployment: false
     outputs:
       actorLink: ${{ steps.actorLink.outputs.actorLink }}
     steps:
@@ -192,7 +196,9 @@ jobs:
     name: Release Bumps
     runs-on: ubuntu-latest
     needs: [ dump_config, get_environment ]
-    environment: ${{ needs.get_environment.outputs.releaseEnv }}
+    environment:
+      name: ${{ needs.get_environment.outputs.releaseEnv }}
+      deployment: false
     strategy:
       max-parallel: 1
       matrix:
@@ -605,7 +611,9 @@ jobs:
     needs: [ dump_config, sign_mobile, notify_build_start ]
     if: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
     runs-on: ubuntu-latest
-    environment: notify_matrix
+    environment:
+      name: notify_matrix
+      deployment: false
     steps:
       - uses: kewisch/action-matrix-notify@3c45d89acd032c84b955b54c8a9001833ac91d17 # v1
         with:
@@ -623,7 +631,9 @@ jobs:
     name: Wait for Approval
     needs: [ dump_config, sign_mobile ]
     if: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
-    environment: publish_hold
+    environment:
+      name: publish_hold
+      deployment: false
     runs-on: ubuntu-latest
     steps:
       - name: Approval
@@ -999,7 +1009,9 @@ jobs:
     if: ${{ always() }}
     needs: [ dump_config, release_commit, build_unsigned, sign_mobile, publish_release, notify_build_start ]
     runs-on: ubuntu-latest
-    environment: notify_matrix
+    environment:
+      name: notify_matrix
+      deployment: false
     steps:
       - name: Get previous workflow status
         uses: Mercymeilya/last-workflow-status@3418710aefe8556d73b6f173a0564d38bcfd9a43
