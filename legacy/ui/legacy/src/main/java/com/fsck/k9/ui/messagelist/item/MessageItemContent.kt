@@ -58,24 +58,31 @@ internal fun MessageItemContent(
         url = uri?.toString(),
     )
 
+    val preferences = remember(appearance) {
+        MessageListPreferences(
+            density = appearance.density,
+            groupConversations = appearance.showingThreadedList,
+            showCorrespondentNames = false,
+            showMessageAvatar = appearance.showContactPicture,
+            showFavouriteButton = appearance.stars,
+            senderAboveSubject = appearance.senderAboveSubject,
+            excerptLines = appearance.previewLines,
+            dateTimeFormat = appearance.dateTimeFormat,
+            colorizeBackgroundWhenRead = appearance.backGroundAsReadIndicator,
+        )
+    }
+    val accountIndicator = remember(appearance) {
+        if (appearance.showAccountIndicator) {
+            MessageItemAccountIndicator(color = Color(item.account.profile.color))
+        } else {
+            null
+        }
+    }
     when {
         item.isRead -> ReadMessageItem(
             state = messageItemUi,
-            preferences = MessageListPreferences(
-                density = appearance.density,
-                groupConversations = appearance.showingThreadedList,
-                showCorrespondentNames = false,
-                showMessageAvatar = appearance.showContactPicture,
-                showFavouriteButton = appearance.stars,
-                senderAboveSubject = appearance.senderAboveSubject,
-                excerptLines = appearance.previewLines,
-                dateTimeFormat = appearance.dateTimeFormat,
-            ),
-            accountIndicator = if (appearance.showAccountIndicator) {
-                MessageItemAccountIndicator(color = Color(item.account.profile.color))
-            } else {
-                null
-            },
+            preferences = preferences,
+            accountIndicator = accountIndicator,
             onClick = onClick,
             onLongClick = onLongClick,
             onAvatarClick = onAvatarClick,
@@ -84,21 +91,8 @@ internal fun MessageItemContent(
 
         else -> UnreadMessageItem(
             state = messageItemUi,
-            preferences = MessageListPreferences(
-                density = appearance.density,
-                groupConversations = appearance.showingThreadedList,
-                showCorrespondentNames = false,
-                showMessageAvatar = appearance.showContactPicture,
-                showFavouriteButton = appearance.stars,
-                senderAboveSubject = appearance.senderAboveSubject,
-                excerptLines = appearance.previewLines,
-                dateTimeFormat = appearance.dateTimeFormat,
-            ),
-            accountIndicator = if (appearance.showAccountIndicator) {
-                MessageItemAccountIndicator(color = Color(item.account.profile.color))
-            } else {
-                null
-            },
+            preferences = preferences,
+            accountIndicator = accountIndicator,
             onClick = onClick,
             onLongClick = onLongClick,
             onAvatarClick = onAvatarClick,
