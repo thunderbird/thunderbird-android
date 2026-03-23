@@ -82,7 +82,8 @@ fun ReadMessageItem(
         colors = when {
             state.selected -> MessageItemDefaults.selectedMessageItemColors()
             state.active -> MessageItemDefaults.activeMessageItemColors()
-            else -> MessageItemDefaults.readMessageItemColors()
+            preferences.colorizeBackgroundWhenRead -> MessageItemDefaults.readMessageItemColors()
+            else -> MessageItemDefaults.defaultMessageItemColors()
         },
         contentPadding = preferences.density.toContentPadding(),
     )

@@ -81,7 +81,7 @@ fun UnreadMessageItem(
         colors = when {
             state.selected -> MessageItemDefaults.selectedMessageItemColors()
             state.active -> MessageItemDefaults.activeMessageItemColors()
-            else -> MessageItemDefaults.unreadMessageItemColors()
+            else -> MessageItemDefaults.defaultMessageItemColors()
         },
         contentPadding = preferences.density.toContentPadding(),
     )

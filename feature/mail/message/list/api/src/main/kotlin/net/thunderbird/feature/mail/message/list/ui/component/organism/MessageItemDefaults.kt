@@ -86,7 +86,7 @@ object MessageItemDefaults {
      *  Defaults to [contentColor] if not specified.
      */
     @Composable
-    fun unreadMessageItemColors(
+    fun defaultMessageItemColors(
         containerColor: Color = MainTheme.colors.surfaceContainerLowest,
         contentColor: Color = MainTheme.colors.onSurface,
     ): MessageItemColors = MessageItemColors(
