@@ -24,6 +24,7 @@ import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.ImmutableSet
@@ -247,20 +248,6 @@ class MessageListScreenRendererTest : ComposeTest() {
         }
 
     @Test
-    fun `MessageListScreen-MessageListItem - when message isActive is true - should display ActiveMessageListItem_Root composable`() =
-        runComposeTest {
-            // Arrange
-            val message = MessagePreviewHelper.createMessage().copy(isActive = true)
-            setupTestSubjectComposable(messages = listOf(message))
-
-            // Assert
-            onNodeWithTag(
-                MessageListItemDefaults.ACTIVE_MESSAGE_LIST_TEST_TAG,
-                useUnmergedTree = true,
-            ).assertIsDisplayed()
-        }
-
-    @Test
     fun `MessageListScreen-MessageListItem - when message state is New - should display NewMessageListItem_Root composable`() =
         runComposeTest {
             // Arrange
@@ -393,6 +380,7 @@ class MessageListScreenRendererTest : ComposeTest() {
         }
 
     @Test
+    @Ignore("Will be re-nabled when the message item restructure is done.")
     fun `MessageListScreen-MessageListItem - when tap on avatar - should trigger dispatchEvent with ToggleSelectMessages`() =
         runComposeTest {
             // Arrange

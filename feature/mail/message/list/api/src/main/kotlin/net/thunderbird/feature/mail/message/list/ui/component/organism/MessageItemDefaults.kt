@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
+import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 /**
@@ -154,22 +155,21 @@ object MessageItemDefaults {
     )
 
     /**
-     * Creates a [MessageItemColors] that represent a message item that is currently a junk message.
+     * Converts a UiDensity value to its corresponding [PaddingValues] for content
+     * spacing.
      *
-     * @param containerColor The container color of this [MessageItem].
-     * @param contentColor The content color of this [MessageItem].
-     * @param subjectColor The subject color of this [MessageItem].
+     * Maps each density level to predefined padding values that control the spacing
+     * around content elements.
+     *
+     * @return [PaddingValues] representing the appropriate content padding for the
+     * current density level.
      */
     @Composable
-    fun junkMessageItemColors(
-        containerColor: Color = MainTheme.colors.surfaceContainerLow,
-        contentColor: Color = MainTheme.colors.onSurface,
-        subjectColor: Color = MainTheme.colors.onSurfaceVariant,
-    ): MessageItemColors = MessageItemColors(
-        containerColor = containerColor,
-        contentColor = contentColor,
-        subjectColor = subjectColor,
-    )
+    internal fun UiDensity.toContentPadding(): PaddingValues = when (this) {
+        UiDensity.Compact -> compactContentPadding
+        UiDensity.Default -> defaultContentPadding
+        UiDensity.Relaxed -> relaxedContentPadding
+    }
 }
 
 /**
