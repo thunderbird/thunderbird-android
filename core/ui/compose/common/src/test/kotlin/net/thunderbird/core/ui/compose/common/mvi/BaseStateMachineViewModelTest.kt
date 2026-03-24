@@ -20,7 +20,7 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
 
-class StateMachineViewModelTest {
+class BaseStateMachineViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val mainDispatcher = MainDispatcherHelper(UnconfinedTestDispatcher())
