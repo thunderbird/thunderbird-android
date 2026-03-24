@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Slider
@@ -20,8 +21,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
@@ -80,31 +84,33 @@ fun SwipeableRowItems(modifier: Modifier = Modifier) {
             TextTitleLarge(text = "Swipeable Row Items")
             DividerHorizontal()
 
-            var threshold by remember { mutableFloatStateOf(value = 0.5f) }
+            var threshold by remember { mutableFloatStateOf(value = 150f) }
+            val thresholdDp = threshold.dp
             Column(verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default)) {
                 TextLabelLarge(text = "Control the threshold to trigger the swipe: ")
                 Slider(
                     value = threshold,
                     onValueChange = { threshold = it },
-                    valueRange = 0f..1f,
+                    valueRange = 100f..350f,
                     steps = 9,
                     modifier = Modifier.padding(horizontal = MainTheme.spacings.triple),
                 )
-                TextLabelSmall(text = "Current selected: ${threshold * 100}% of the content's width.")
+                val thresholdPx = with(LocalDensity.current) { thresholdDp.toPx() }
+                TextLabelSmall(text = "Current selected: ${threshold}dp (${thresholdPx}px).")
             }
 
             SwipeSection(
-                threshold = threshold,
+                threshold = thresholdDp,
                 subtitle = "Swipe to Dismiss",
                 onSwipeEnd = ::onSwipeEnd,
             ) { threshold -> SwipeBehaviour.Dismiss(threshold = threshold) }
             SwipeSection(
-                threshold = threshold,
+                threshold = thresholdDp,
                 subtitle = "Swipe to Reveal",
                 onSwipeEnd = ::onSwipeEnd,
             ) { threshold -> SwipeBehaviour.Reveal(threshold = threshold) }
             SwipeSection(
-                threshold = threshold,
+                threshold = thresholdDp,
                 subtitle = "Swipe to Reveal with Auto reset",
                 onSwipeEnd = ::onSwipeEnd,
             ) { threshold ->
@@ -116,10 +122,10 @@ fun SwipeableRowItems(modifier: Modifier = Modifier) {
 
 @Composable
 private fun SwipeSection(
-    threshold: Float,
+    threshold: Dp,
     subtitle: String,
     onSwipeEnd: (SwipeDirection) -> Unit,
-    behaviourFactory: (Float) -> SwipeBehaviour,
+    behaviourFactory: (Dp) -> SwipeBehaviour,
 ) {
     TextTitleMedium(text = subtitle)
     DividerHorizontal()
@@ -263,7 +269,13 @@ private fun SwipeableRowItems(
                 TextBodyLarge(
                     text = backgroundItemText(direction),
                     modifier = Modifier
-                        .fillMaxWidth(fraction = if (behaviour is SwipeBehaviour.Reveal) behaviour.threshold else 1f)
+                        .then(
+                            if (behaviour is SwipeBehaviour.Reveal) {
+                                Modifier.width(behaviour.threshold)
+                            } else {
+                                Modifier.fillMaxWidth()
+                            },
+                        )
                         .swipeableCommonTextPadding(),
                     textAlign = when (direction) {
                         SwipeDirection.StartToEnd -> TextAlign.Start

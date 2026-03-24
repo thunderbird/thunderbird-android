@@ -1,6 +1,5 @@
 package net.thunderbird.core.ui.compose.designsystem.molecule.swipe
 
-import androidx.annotation.FloatRange
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -9,6 +8,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeBehaviour.Companion.DEFAULT_AUTO_RESET_DELAY_MILLIS
@@ -40,8 +41,7 @@ sealed interface SwipeBehaviour {
      * A lower threshold makes it easier to trigger swipe actions, while a higher
      * threshold requires more deliberate swipe gestures.
      */
-    @get:FloatRange(from = 0.25, to = 1.0)
-    val threshold: Float
+    val threshold: Dp
 
     /**
      * The animation specification used when the swipe gesture ends and the row settles to its
@@ -71,8 +71,7 @@ sealed interface SwipeBehaviour {
      *  is enabled. Defaults to [DEFAULT_AUTO_RESET_DELAY_MILLIS].
      */
     data class Reveal(
-        @get:FloatRange(from = 0.25, to = 1.0)
-        override val threshold: Float = DEFAULT_THRESHOLD,
+        override val threshold: Dp = DEFAULT_THRESHOLD,
         override val settleAnimationSpec: AnimationSpec<Float> = DefaultSettleAnimation,
         override val enableHapticFeedback: Boolean = true,
         val autoReset: Boolean = false,
@@ -91,8 +90,7 @@ sealed interface SwipeBehaviour {
      *  item is dismissed.
      */
     data class Dismiss(
-        @get:FloatRange(from = 0.25, to = 1.0)
-        override val threshold: Float = DEFAULT_THRESHOLD,
+        override val threshold: Dp = DEFAULT_THRESHOLD,
         override val settleAnimationSpec: AnimationSpec<Float> = DefaultDismissAnimation,
         override val enableHapticFeedback: Boolean = true,
         val dismissTransition: ExitTransition = fadeOut(tween(durationMillis = 150)) + shrinkVertically(
@@ -110,13 +108,13 @@ sealed interface SwipeBehaviour {
      * [SwipeableRow] while keeping the component structure intact.
      */
     data object Disabled : SwipeBehaviour {
-        override val threshold: Float = 1f
+        override val threshold: Dp = Dp.Unspecified
         override val settleAnimationSpec: AnimationSpec<Float> = DefaultSettleAnimation
         override val enableHapticFeedback: Boolean = false
     }
 
     companion object {
-        internal const val DEFAULT_THRESHOLD = 0.5f
+        internal val DEFAULT_THRESHOLD = 150.dp
         internal const val DEFAULT_AUTO_RESET_DELAY_MILLIS = 500L
 
         /**

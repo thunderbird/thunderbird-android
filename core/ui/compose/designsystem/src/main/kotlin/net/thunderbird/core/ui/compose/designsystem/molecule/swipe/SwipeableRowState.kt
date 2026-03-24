@@ -102,7 +102,7 @@ class SwipeableRowState internal constructor(
         if (layoutWidth == 0f) {
             0f
         } else {
-            (animatedOffset.value.absoluteValue / (activeBehaviour.threshold * layoutWidth)).coerceIn(0f, 1f)
+            (animatedOffset.value.absoluteValue / (activeBehaviour.percentageThreshold * layoutWidth)).coerceIn(0f, 1f)
         }
     }
 
@@ -219,7 +219,9 @@ class SwipeableRowState internal constructor(
         val targetBehaviour = if (targetOffset >= 0f) startToEndBehaviour else endToStartBehaviour
         val targetMaxOffset = when (targetBehaviour) {
             is SwipeBehaviour.Dismiss -> layoutWidth
-            is SwipeBehaviour.Reveal -> (targetBehaviour.threshold * layoutWidth) + SWIPE_BEHAVIOUR_REVEAL_EXTENSION
+            is SwipeBehaviour.Reveal ->
+                (targetBehaviour.percentageThreshold * layoutWidth) + SWIPE_BEHAVIOUR_REVEAL_EXTENSION
+
             is SwipeBehaviour.Disabled -> 0f
         }
 
@@ -338,7 +340,7 @@ class SwipeableRowState internal constructor(
 
     private fun willSettlePastThreshold(velocity: Float, behaviour: SwipeBehaviour): Boolean {
         val decayTarget = decayAnimationSpec.calculateTargetValue(animatedOffset.value, velocity)
-        val finalThreshold = behaviour.threshold * layoutWidth
+        val finalThreshold = behaviour.percentageThreshold * layoutWidth
         val wouldFlingPastThreshold = decayTarget.absoluteValue >= finalThreshold
         val hasOffsetPassedThreshold = animatedOffset.value.absoluteValue >= finalThreshold
         return hasOffsetPassedThreshold || wouldFlingPastThreshold
@@ -353,7 +355,7 @@ class SwipeableRowState internal constructor(
             is SwipeBehaviour.Dismiss if willSettlePastThreshold ->
                 layoutWidth * SWIPE_BEHAVIOUR_DISMISS_OFFSCREEN_MULTIPLIER
 
-            is SwipeBehaviour.Reveal if willSettlePastThreshold -> behaviour.threshold * layoutWidth
+            is SwipeBehaviour.Reveal if willSettlePastThreshold -> behaviour.percentageThreshold * layoutWidth
             is SwipeBehaviour.Disabled -> 0f
             else -> 0f
         }
@@ -405,6 +407,9 @@ class SwipeableRowState internal constructor(
             SwipeDirection.Settled -> true
         }
     }
+
+    private val SwipeBehaviour.percentageThreshold: Float
+        get() = with(density) { threshold.toPx() } / layoutWidth
 
     /**
      * Manages accessibility-related state and actions for the swipeable row component.

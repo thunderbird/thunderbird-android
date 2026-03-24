@@ -457,8 +457,8 @@ class SwipeableRowTest : ComposeTest() {
         // Arrange
         setContentWithTheme {
             TestSwipeableRow(
-                startToEndBehaviour = SwipeBehaviour.Reveal(threshold = 0.25f),
-                endToStartBehaviour = SwipeBehaviour.Reveal(threshold = 0.25f),
+                startToEndBehaviour = SwipeBehaviour.Reveal(threshold = 25.dp),
+                endToStartBehaviour = SwipeBehaviour.Reveal(threshold = 25.dp),
             )
         }
 
@@ -715,7 +715,7 @@ class SwipeableRowTest : ComposeTest() {
         const val FLING_HIGH_VELOCITY = 5_000f
         const val FLING_LOW_VELOCITY = 200f
         const val FLING_SHORT_DISTANCE = 100f
-        const val FLING_HIGH_THRESHOLD = 0.9f
+        val FLING_HIGH_THRESHOLD = 900.dp
     }
 }
 

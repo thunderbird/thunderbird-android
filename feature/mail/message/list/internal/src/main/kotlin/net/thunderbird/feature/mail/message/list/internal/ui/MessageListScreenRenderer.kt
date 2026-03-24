@@ -15,7 +15,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -141,7 +140,7 @@ private val SwipeAction.behaviour: SwipeBehaviour
         SwipeAction.ToggleStar,
         SwipeAction.ArchiveSetupArchiveFolder,
         ->
-            SwipeBehaviour.Reveal(threshold = 0.25f, autoReset = true)
+            SwipeBehaviour.Reveal(autoReset = true)
 
         SwipeAction.Archive,
         SwipeAction.Delete,
