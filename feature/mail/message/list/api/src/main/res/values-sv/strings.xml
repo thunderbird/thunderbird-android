@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
     <string name="swipe_action_select">Välj</string>
     <string name="swipe_action_deselect">Välj bort</string>
     <string name="swipe_action_mark_as_read">Markera som läst</string>
@@ -12,4 +12,4 @@
     <string name="swipe_action_delete">Ta bort</string>
     <string name="swipe_action_spam">Skräppost</string>
     <string name="swipe_action_move">Flytta…</string>
-</resources>
+<string name="sort_by">Sortera efter...</string><string name="sort_by_date_asc">Datum (äldst först)</string><string name="sort_by_date_desc">Datum (nyast först)</string><string name="sort_by_arrival_asc">Ankomst (äldst först)</string><string name="sort_by_arrival_desc">Ankomst (nyast först)</string><string name="sort_by_subject_asc">Ämne (A-Z)</string><string name="sort_by_subject_desc">Ämne (Z-A)</string><string name="sort_by_sender_asc">Avsändare (A-Z)</string><string name="sort_by_sender_desc">Avsändare (Z-A)</string><string name="sort_by_flag_asc">Första stjärnan</string><string name="sort_by_flag_desc">Först till kvarn</string><string name="sort_by_unread_asc">Oläst första</string><string name="sort_by_unread_desc">Läs först</string><string name="sort_by_attach_asc">Med bilagor först</string><string name="sort_by_attach_desc">Utan bilagor först</string></resources>

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!--=== App-specific strings =============================================================-->
-    <!--This should make it easier for forks to change the branding-->
-    <!--Used in AndroidManifest.xml-->
-    <!--Used in the about dialog-->
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:ns0="urn:oasis:names:tc:xliff:document:1.2">
+    
+    
+    
+    
     <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
     <string name="source_code">Källkod</string>
     <string name="app_license">Apachelicens, version 2.0</string>
@@ -18,13 +18,13 @@
     <string name="changelog_version_title">Version %s</string>
     <string name="changelog_recent_changes_title">Vad är nytt</string>
     <string name="changelog_show_recent_changes">Visa senaste ändringar när appen uppdaterades</string>
-    <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
+    
     <string name="changelog_snackbar_text">Ta reda på vad som är nytt i denna utgåva</string>
-    <!--Button text of the "snack bar" that is displayed when the app was updated.-->
+    
     <string name="changelog_snackbar_button_text">Visa</string>
-    <!--Default signature-->
-    <!--General strings that include the app name-->
-    <!--=== General strings ==================================================================-->
+    
+    
+    
     <string name="authors">Upphovsmän</string>
     <string name="accounts_title">Konton</string>
     <string name="compose_title_compose">Skriva</string>
@@ -35,7 +35,7 @@
     <string name="choose_folder_title">Välj mapp</string>
     <string name="choose_folder_move_title">Flytta till…</string>
     <string name="choose_folder_copy_title">Kopiera till…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valda</string>
+    <string name="actionbar_selected"><ns0:g id="selection_count">%d</ns0:g> valda</string>
     <string name="send_action">Skicka</string>
     <string name="empty_subject">Ämnet är tomt, klicka igen för att skicka ändå</string>
     <string name="reply_action">Svara</string>
@@ -89,7 +89,7 @@
     <string name="expunge_action">Radera</string>
     <string name="about_action">Om</string>
     <string name="prefs_title">Inställningar</string>
-    <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
+    
     <string name="general_no_subject">(Inget ämne)</string>
     <string name="general_no_sender">Ingen avsändare</string>
     <string name="status_loading_more">Läser in meddelanden\u2026</string>
@@ -97,16 +97,16 @@
     <string name="status_invalid_id_error">Meddelandet hittades inte</string>
     <string name="status_loading_error">Inläsningsfel av meddelande</string>
     <string name="load_more_messages_fmt">Läs in ytterligare
-    upp till <xliff:g id="messages_to_load">%d</xliff:g></string>
+    upp till <ns0:g id="messages_to_load">%d</ns0:g></string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
     <string name="size_format_bytes">%d B</string>
     <plurals name="notification_new_messages_title">
-        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nytt meddelande</item>
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nya meddelanden</item>
+        <item quantity="one"><ns0:g id="new_message_count">%d</ns0:g> nytt meddelande</item>
+        <item quantity="other"><ns0:g id="new_message_count">%d</ns0:g> nya meddelanden</item>
     </plurals>
-    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> fler på <xliff:g id="account">%2$s</xliff:g></string>
+    <string name="notification_additional_messages">+ <ns0:g id="additional_messages">%1$d</ns0:g> fler på <ns0:g id="account">%2$s</ns0:g></string>
     <string name="notification_action_reply">Svara</string>
     <string name="notification_action_mark_as_read">Markera som läst</string>
     <string name="notification_action_mark_all_as_read">Markera alla som lästa</string>
@@ -116,17 +116,17 @@
     <string name="notification_action_archive_all">Arkivera alla</string>
     <string name="notification_action_spam">Skräppost</string>
     <string name="notification_certificate_error_public">Certifikatfel</string>
-    <string name="notification_certificate_error_title">Certifikatfel för <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_title">Certifikatfel för <ns0:g id="account">%s</ns0:g></string>
     <string name="notification_certificate_error_text">Kontrollera dina serverinställningar</string>
     <string name="notification_authentication_error_title">Autentisering misslyckades</string>
-    <string name="notification_authentication_error_text">Autentisering misslyckades för <xliff:g id="account">%s</xliff:g>. Uppdatera dina serverinställningar.</string>
-    <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
+    <string name="notification_authentication_error_text">Autentisering misslyckades för <ns0:g id="account">%s</ns0:g>. Uppdatera dina serverinställningar.</string>
+    
     <string name="notification_notify_error_title">Aviseringsfel</string>
-    <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
+    
     <string name="notification_notify_error_text">Ett fel uppstod vid försök att skapa en systemavisering för ett nytt meddelande. Anledningen är troligen att ett aviseringsljud saknas.\n\nTryck för att öppna aviseringsinställningarna.</string>
-    <string name="notification_bg_sync_ticker">Kontrollerar e-post: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Kontrollerar e-post: <ns0:g id="account">%1$s</ns0:g>:<ns0:g id="folder">%2$s</ns0:g></string>
     <string name="notification_bg_sync_title">Kontrollerar e-post</string>
-    <string name="notification_bg_send_ticker">Skickar e-post: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_ticker">Skickar e-post: <ns0:g id="account">%s</ns0:g></string>
     <string name="notification_bg_send_title">Skickar e-post</string>
     <string name="notification_bg_title_separator">:</string>
     <string name="notification_channel_push_title">Synkronisera (Push)</string>
@@ -145,7 +145,7 @@
     <string name="debug_export_logs_success">Exporten lyckades. Loggar kan innehålla känslig information. Var försiktig med vem du skickar dem till.</string>
     <string name="debug_export_logs_failure">Exporten misslyckades.</string>
     <string name="message_list_load_more_messages_action">Läs in fler meddelanden</string>
-    <string name="message_to_fmt">Till:<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_to_fmt">Till:<ns0:g id="counterParty">%s</ns0:g></string>
     <string name="message_compose_subject_hint">Ämne</string>
     <string name="message_compose_content_hint">Meddelandetext</string>
     <string name="message_compose_signature_hint">Signatur</string>
@@ -155,8 +155,8 @@
     <string name="message_compose_quote_header_from">Från:</string>
     <string name="message_compose_quote_header_to">Till:</string>
     <string name="message_compose_quote_header_cc">Kopia:</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:</string>
-    <string name="message_compose_reply_header_fmt_with_date">Den <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> skrev:</string>
+    <string name="message_compose_reply_header_fmt"><ns0:g id="sender">%s</ns0:g> skrev:</string>
+    <string name="message_compose_reply_header_fmt_with_date">Den <ns0:g id="sent_date">%1$s</ns0:g>, <ns0:g id="sender">%2$s</ns0:g> skrev:</string>
     <string name="message_compose_error_no_recipients">Du måste ange minst en mottagare.</string>
     <string name="compose_error_incomplete_recipient">Mottagarfältet innehåller ofullständig inmatning!</string>
     <string name="error_contact_address_not_found">Hittar ingen e-postadress för denna kontakt.</string>
@@ -170,15 +170,15 @@
     <string name="message_view_cc_label">Kopia:</string>
     <string name="message_view_bcc_label">Blindkopia:</string>
     <string name="message_view_status_attachment_not_saved">Det går inte att spara bilaga.</string>
-    <!--Used to display the recipient list in the message view screen.-->
-    <string name="message_view_recipients_format">till <xliff:g id="recipients">%s</xliff:g></string>
-    <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
+    
+    <string name="message_view_recipients_format">till <ns0:g id="recipients">%s</ns0:g></string>
+    
     <string name="message_view_additional_recipient_prefix">+</string>
-    <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
+    
     <string name="message_view_me_text">mig</string>
-    <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
+    
     <string name="message_view_show_remote_images_action">Visa fjärrbilder</string>
-    <string name="message_view_no_viewer">Kan inte hitta visare för <xliff:g id="mimetype">%s</xliff:g>.</string>
+    <string name="message_view_no_viewer">Kan inte hitta visare för <ns0:g id="mimetype">%s</ns0:g>.</string>
     <string name="message_view_download_remainder">Hämta hela meddelandet</string>
     <string name="message_view_sender_label">via %1$s</string>
     <string name="from_same_sender">Mer från denna avsändare</string>
@@ -208,29 +208,29 @@
     <string name="global_settings_confirm_menu_discard">Släng meddelande</string>
     <string name="global_settings_confirm_menu_mark_all_read">Markera alla meddelanden som lästa</string>
     <string name="global_settings_confirm_action_delete_notif">Ta bort (från avisering)</string>
-    <!--Title of the screen to configure swipe actions-->
+    
     <string name="general_settings_swipe_actions_title">Svepåtgärder</string>
-    <!--Name of the setting to configure the right swipe action-->
+    
     <string name="general_settings_right_swipe_title">Svep åt höger</string>
-    <!--Name of the setting to configure the left swipe action-->
+    
     <string name="general_settings_left_swipe_title">Svep åt vänster</string>
-    <!--The list item users select to not use a swipe action for a particular direction-->
+    
     <string name="general_settings_swipe_action_none">Inga</string>
-    <!--Name of the swipe action to select/deselect a message-->
+    
     <string name="general_settings_swipe_action_toggle_selection">Växla markering</string>
-    <!--Name of the swipe action to mark as message as read/unread-->
+    
     <string name="general_settings_swipe_action_toggle_read">Markera som läst/oläst</string>
-    <!--Name of the swipe action to add/remove a star-->
+    
     <string name="general_settings_swipe_action_toggle_star">Lägg till/ta bort stjärna</string>
-    <!--Name of the swipe action to archive a message-->
+    
     <string name="general_settings_swipe_action_archive">Arkivera</string>
-    <!--Name of the swipe action to delete a message-->
+    
     <string name="general_settings_swipe_action_delete">Ta bort</string>
-    <!--Name of the swipe action to move a message to the spam folder-->
+    
     <string name="general_settings_swipe_action_spam">Skräppost</string>
-    <!--Name of the swipe action to move a message to another folder-->
+    
     <string name="general_settings_swipe_action_move">Flytta</string>
-    <!--Title of the setting to specify the density of the message list-->
+    
     <string name="general_settings_message_list_density_title">Densitet</string>
     <string name="general_settings_ui_density_compact">Kompakt</string>
     <string name="general_settings_ui_density_default">Standard</string>
@@ -535,7 +535,7 @@
     <string name="font_size_message_list_date">Datum</string>
     <string name="font_size_message_list_preview">Förhandsgranskning</string>
     <string name="font_size_message_view">Meddelanden</string>
-    <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
+    
     <string name="font_size_message_view_account">Kontonamn</string>
     <string name="font_size_message_view_sender">Avsändare</string>
     <string name="font_size_message_view_recipients">Mottagare</string>
@@ -566,7 +566,7 @@
     <string name="dialog_confirm_delete_message">Vill du ta bort detta meddelande?</string>
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Vill du verkligen ta bort detta meddelande?</item>
-        <item quantity="other">Vill du verkligen ta bort <xliff:g id="message_count">%1$d</xliff:g> meddelanden?</item>
+        <item quantity="other">Vill du verkligen ta bort <ns0:g id="message_count">%1$d</ns0:g> meddelanden?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Ja</string>
     <string name="dialog_confirm_delete_cancel_button">Nej</string>
@@ -579,7 +579,7 @@
     <string name="dialog_confirm_spam_title">Bekräfta flytt till skräppostmapp</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Vill du verkligen flytta detta meddelande till skräppostmappen?</item>
-        <item quantity="other">Vill du verkligen flytta <xliff:g id="message_count">%1$d</xliff:g> meddelanden till skräppostmappen?</item>
+        <item quantity="other">Vill du verkligen flytta <ns0:g id="message_count">%1$d</ns0:g> meddelanden till skräppostmappen?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Ja</string>
     <string name="dialog_confirm_spam_cancel_button">Nej</string>
@@ -641,7 +641,7 @@
     <string name="global_settings_threaded_view_summary">Gruppera meddelanden efter konversation</string>
     <string name="upgrade_databases_title">Uppgraderar databaser</string>
     <string name="upgrade_databases_unspecified">Uppgraderar databaser…</string>
-    <string name="upgrade_database_format">Uppgraderar databas för konto \"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="upgrade_database_format">Uppgraderar databas för konto \"<ns0:g id="account">%s</ns0:g>\"</string>
     <string name="global_settings_splitview_mode_label">Använd tvådelad skärm</string>
     <string name="global_settings_splitview_always">Alltid</string>
     <string name="global_settings_splitview_never">Aldrig</string>
@@ -658,7 +658,7 @@
     <string name="fetching_attachment_dialog_title_send">Skickar meddelande</string>
     <string name="fetching_attachment_dialog_title_save">Sparar utkast</string>
     <string name="fetching_attachment_dialog_message">Hämtar bilaga…</string>
-    <!--Note: This references message_view_download_remainder-->
+    
     <string name="preview_encrypted">*Krypterad*</string>
     <string name="add_from_contacts">Lägg till från kontakter</string>
     <string name="recipient_cc">Kopia</string>
@@ -746,8 +746,8 @@
     <string name="crypto_no_provider_title">Detta e-postmeddelande är krypterat</string>
     <string name="crypto_no_provider_message">Detta e-postmeddelande har krypterats med OpenPGP.\nFör att läsa det, måste du installera och konfigurera en kompatibel OpenPGP-app.</string>
     <string name="crypto_no_provider_button">Gå till inställningar</string>
-    <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
-    <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
+    
+    
     <string name="openpgp_enabled_error_title">Kryptering inte möjligt</string>
     <string name="openpgp_enabled_error_msg">Några av de valda mottagarna stöder inte denna funktion!</string>
     <string name="enable_encryption">Aktivera kryptering</string>
@@ -803,55 +803,55 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="push_info_configure_notification_action">Anpassa avisering</string>
     <string name="push_info_disable_push_text">Om du inte behöver omedelbara aviseringar om nya meddelanden bör du inaktivera Push och använda Polling. Polling kontrollerar regelbundet efter nya mejl och behöver inte en ständig avisering.</string>
     <string name="push_info_disable_push_action">Inaktivera Push</string>
-    <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <string name="general_settings_show_compose_button_title">Visa flytande skrivknapp</string>
-    <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
+    
     <string name="message_list_error_title">Fel</string>
-    <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
+    
     <string name="message_list_error_folder_not_found">Mappen hittades inte</string>
-    <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
+    
     <string name="message_details_toolbar_title">Meddelande detaljer</string>
-    <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
+    
     <string name="message_details_missing_date">Rubriken \"Date\" saknas</string>
-    <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
+    
     <string name="message_details_from_section_title">Från</string>
-    <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
+    
     <string name="message_details_sender_section_title">Avsändare</string>
-    <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
+    
     <string name="message_details_replyto_section_title">Svara till</string>
-    <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
+    
     <string name="message_details_to_section_title">Till</string>
-    <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
+    
     <string name="message_details_cc_section_title">Kopia</string>
-    <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
+    
     <string name="message_details_bcc_section_title">Blindkopia</string>
-    <!--Displayed when loading the message details has failed-->
+    
     <string name="message_details_loading_error">Ett fel uppstod när meddelande detaljerna lästes in.</string>
-    <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    
     <string name="action_add_to_contacts">Lägg till i kontakter</string>
-    <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    
     <string name="action_compose_message_to">Skriv meddelande till</string>
-    <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    
     <string name="action_copy_email_address">Kopiera e-postadress</string>
-    <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
+    
     <string name="action_copy_name_and_email_address">Kopiera namn och e-postadress</string>
-    <!--A user visible label for the email address copied to the clipboard-->
+    
     <string name="clipboard_label_email_address">E-postadress</string>
-    <!--A user visible label for the name and email address copied to the clipboard-->
+    
     <string name="clipboard_label_name_and_email_address">Namn och e-postadress</string>
-    <!--Might be displayed in a notification when deleting an account (in the background)-->
+    
     <string name="background_work_notification_remove_account">Tar bort konto…</string>
-    <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+    
     <string name="message_list_content_description_unread_prefix">oläst, %s</string>
     <string name="general_settings_post_remove_action_return_to_list">Återgå till meddelandelista</string>
     <string name="general_settings_post_remove_action_show_previous_message">Visa förra meddelandet</string>
@@ -863,8 +863,8 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="push_notification_state_alarm_permission_missing">Saknar behörigheter för att schemalägga larm</string>
     <string name="push_notification_grant_alarm_permission">Tryck för att ge behörigheter.</string>
     <string name="dialog_openkeychain_info_text">Appen OpenKeychain krävs för att möjliggöra stöd för end-to-end-kryptering.</string>
-    <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%1$s</xliff:g>\" kommer att tas bort ifrån <xliff:g id="app_name">%2$s</xliff:g>.</string>
-    <string name="about_title">Om <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="account_delete_dlg_instructions_fmt">Kontot \"<ns0:g id="account">%1$s</ns0:g>\" kommer att tas bort ifrån <ns0:g id="app_name">%2$s</ns0:g>.</string>
+    <string name="about_title">Om <ns0:g id="app_name">%s</ns0:g></string>
     <string name="about_app_authors_thunderbird">Thunderbird mobilteam</string>
     <string name="folder_settings_push_label">Aktivera pushnotiser</string>
     <string name="folder_settings_notifications_label">Aviseringar</string>
@@ -874,8 +874,8 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="settings_ui_telemetry_title">Användning och teknisk data</string>
     <string name="settings_ui_telemetry_description">Delar prestanda, användning, hårdvara och anpassningsdata om denna app med Mozilla för att hjälpa oss att göra Thunderbird bättre</string>
     <string name="folder_settings_visible_label">Visa mapp</string>
-    <string name="settings_list_action_support">Stötta <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="push_info_notification_explanation_text">När Push-notiser används har <xliff:g id="app_name">%1$s</xliff:g> en kontinuerlig anslutning till mejlservern. Android kräver då att en ständig avisering visas medan appen är aktiv i bakgrunden. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="settings_list_action_support">Stötta <ns0:g id="app_name">%s</ns0:g></string>
+    <string name="push_info_notification_explanation_text">När Push-notiser används har <ns0:g id="app_name">%1$s</ns0:g> en kontinuerlig anslutning till mejlservern. Android kräver då att en ständig avisering visas medan appen är aktiv i bakgrunden. <ns0:g id="optional_extended_explanation">%2$s</ns0:g></string>
     <string name="volume_navigation_summary">Navigera mellan meddelanden med volymknapparna i meddelandevyn</string>
     <string name="volume_navigation_title_short">Volymknappsnavigering</string>
     <string name="save_attachment_action">Spara bilaga</string>
@@ -921,4 +921,4 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="general_settings_message_list_date_time_format_contextual">Kontextuell</string>
     <string name="general_settings_message_list_date_time_format_full">Fullständig</string>
     <string name="sort_by_then_by">Sedan efter…</string>
-</resources>
+<string name="message_view_attachments_view_all">Visa alla</string><string name="message_view_attachments_view">Utsikt</string><string name="message_view_attachments_title">Bilagor</string><string name="message_view_attachments_save_all">Spara alla</string><string name="general_settings_message_list_date_time_format_iso">ISO</string><string name="encrypted_attachment_title">Krypterad bifogad fil</string><string name="no_network_message_will_be_sent_later_toast">Offline. Meddelandet kommer att skickas när anslutningen är tillgänglig</string></resources>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="setup_archive_folder_dialog_dont_show_again">Visa inte detta meddelande igen</string>
     <string name="setup_archive_folder_dialog_email_can_not_be_archived">E-postmeddelandet kan inte arkiveras</string>
@@ -10,7 +10,7 @@
     <string name="setup_archive_folder_dialog_create_new_folder">Skapa ny mapp</string>
     <string name="setup_archive_folder_dialog_done">Klar</string>
     <string name="setup_archive_folder_dialog_cancel">Avbryt</string>
-    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Skapa och ange ny mapp]]></string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder">Skapa och ange ny mapp</string>
     <string name="setup_archive_folder_set_archive_error_account_not_found">Kunde inte hitta ett konto kopplat till UUID:t \'%1$s\'</string>
     <string name="setup_archive_folder_unhandled_error">Ohanterat fel: %1$s</string>
     <string name="setup_archive_folder_create_archive_folder_syncing">Synkroniserar…</string>
@@ -23,4 +23,4 @@
     <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Misslyckades med att synkronisera mappen \'%1$s\' med fjärrmapp. Meddelande: %2$s</string>
     <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Mappnamnet får inte vara tomt</string>
     <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Ogiltigt mappnamn \'%1$s\'</string>
-</resources>
+<string name="message_list_state_new_message_description">Nya</string><string name="message_list_state_read_message_description">Läs</string><string name="message_list_state_unread_message_description">Oläst</string><string name="message_list_state_active_new_message_description">Aktiv, Ny</string><string name="message_list_state_active_read_message_description">Aktiv, Läs</string><string name="message_list_state_active_unread_message_description">Aktiv, oläst</string><string name="message_list_state_selected_new_message_description">Utvalda, Nya</string><string name="message_list_state_selected_read_message_description">Utvalda, lästa</string><string name="message_list_state_selected_unread_message_description">Utvalda, olästa</string></resources>
