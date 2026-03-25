@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.collections.immutable.toPersistentMap
 import net.thunderbird.core.common.state.builder.StateMachineBuilder
+import net.thunderbird.feature.account.UnifiedAccountId
 import net.thunderbird.feature.mail.message.list.ui.event.FolderEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
@@ -32,7 +33,7 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.globalState
         }
 
         transition<FolderEvent.FolderLoaded> { state, (folder) ->
-            state.withMetadata { copy(folder = folder) }
+            state.withMetadata { copy(folder = folder, showAccountIndicator = folder.account.id == UnifiedAccountId) }
         }
 
         transition<MessageItemEvent.SelectAll> { state, _ ->
