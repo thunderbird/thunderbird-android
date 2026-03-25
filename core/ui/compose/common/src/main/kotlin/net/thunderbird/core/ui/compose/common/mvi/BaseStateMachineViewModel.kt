@@ -110,9 +110,22 @@ abstract class BaseStateMachineViewModel<TState : Any, TEvent : Any, TUiSideEffe
             val newState = stateMachine.process(event)
             if (newState != currentState) {
                 logger.verbose { "event(${event::class.simpleName}): state update." }
+            } else {
+                onEventWithoutStateModification(event, currentState)
             }
 
             sideEffectHandlers.forEach { it.handle(event, oldState = currentState, newState = newState) }
         }
+    }
+
+    /**
+     * Processes an event without making changes to the state machine's state. Useful for
+     * events without state transition.
+     *
+     * @param event The [TEvent] to be processed.
+     * @param currentState The current state of the [StateMachine].
+     */
+    protected open fun onEventWithoutStateModification(event: TEvent, currentState: TState) {
+        // Override this method to handle events that doesn't trigger state changes.
     }
 }

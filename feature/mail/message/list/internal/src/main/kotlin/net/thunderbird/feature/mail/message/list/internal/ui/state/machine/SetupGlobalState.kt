@@ -58,5 +58,14 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.globalState
         transition<MessageItemEvent.OnFocusExit> { currentState, _ ->
             currentState.withMetadata { copy(focusedMessage = null) }
         }
+
+        // #region [ Legacy support ]
+        transition<MessageListEvent.UpdateFooter> { state, event ->
+            state.withMetadata {
+                val showFooter = event.footer?.isNotBlank() == true
+                copy(footer = footer.copy(showFooter = showFooter, text = event.footer.orEmpty()))
+            }
+        }
+        // #endregion [ Legacy support ]
     }
 }
