@@ -5,11 +5,13 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDateTime
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 import org.junit.Test
 
@@ -76,8 +78,16 @@ class RemoteContributionDataSourceTest {
     @Test
     fun `getAllPurchased should combine one-time and recurring purchases`() = runTest {
         // Arrange
-        val oneTime = OneTimeContribution(ContributionId("ot1"), "OneTime", "Desc", 100L, "$1.00")
-        val recurring = RecurringContribution(ContributionId("rec1"), "Recurring", "Desc", 1000L, "$10.00")
+        val oneTime = PurchasedContribution(
+            id = ContributionId("ot1"),
+            contribution = OneTimeContribution(ContributionId("ot1"), "OneTime", "Desc", 100L, "$1.00"),
+            purchaseDate = LocalDateTime(2024, 1, 1, 0, 0),
+        )
+        val recurring = PurchasedContribution(
+            id = ContributionId("rec1"),
+            contribution = RecurringContribution(ContributionId("rec1"), "Recurring", "Desc", 1000L, "$10.00"),
+            purchaseDate = LocalDateTime(2024, 1, 1, 0, 0),
+        )
 
         billingClient.purchasedRecurringOutcome = Outcome.success(listOf(recurring))
         billingClient.purchaseHistoryOutcome = Outcome.success(oneTime)
@@ -95,7 +105,11 @@ class RemoteContributionDataSourceTest {
     @Test
     fun `getAllPurchased should return one-time when no recurring purchases`() = runTest {
         // Arrange
-        val oneTime = OneTimeContribution(ContributionId("ot1"), "OneTime", "Desc", 100L, "$1.00")
+        val oneTime = PurchasedContribution(
+            id = ContributionId("ot1"),
+            contribution = OneTimeContribution(ContributionId("ot1"), "OneTime", "Desc", 100L, "$1.00"),
+            purchaseDate = LocalDateTime(2024, 1, 1, 0, 0),
+        )
 
         billingClient.purchasedRecurringOutcome = Outcome.success(emptyList())
         billingClient.purchaseHistoryOutcome = Outcome.success(oneTime)

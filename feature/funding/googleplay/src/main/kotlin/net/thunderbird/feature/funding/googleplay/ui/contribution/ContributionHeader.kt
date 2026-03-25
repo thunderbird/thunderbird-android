@@ -24,13 +24,13 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.funding.googleplay.R
-import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.ui.contribution.image.GoldenHearthSunburst
 import net.thunderbird.feature.funding.googleplay.ui.contribution.image.HearthSunburst
 
 @Composable
 internal fun ContributionHeader(
-    purchasedContribution: Contribution?,
+    purchasedContribution: PurchasedContribution?,
     modifier: Modifier = Modifier,
 ) {
     AnimatedContent(

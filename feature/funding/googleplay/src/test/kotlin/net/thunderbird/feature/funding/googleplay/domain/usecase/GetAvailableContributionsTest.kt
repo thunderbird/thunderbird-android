@@ -38,11 +38,9 @@ class GetAvailableContributionsTest {
         // Arrange
         val oneTime = OneTimeContribution(ContributionId("ot1"), "Title", "Desc", 100L, "$1.00")
         val recurring = RecurringContribution(ContributionId("rec1"), "Title", "Desc", 1000L, "$10.00")
-        val purchased = OneTimeContribution(ContributionId("ot_purchased"), "Title", "Desc", 500L, "$5.00")
 
         repository.oneTimeFlow = flowOf(Outcome.success(listOf(oneTime)))
         repository.recurringFlow = flowOf(Outcome.success(listOf(recurring)))
-        repository.purchasedFlow = flowOf(Outcome.success(listOf(purchased)))
 
         // Act
         val result = testSubject().first()
@@ -52,30 +50,15 @@ class GetAvailableContributionsTest {
         val data = (result as Outcome.Success).data
         assertThat(data.oneTimeContributions).isEqualTo(listOf(oneTime))
         assertThat(data.recurringContributions).isEqualTo(listOf(recurring))
-        assertThat(data.purchasedContribution).isEqualTo(purchased)
     }
 
     @Test
-    fun `invoke should return failure when repository returns failure for purchased`() = runTest {
-        // Arrange
-        val error = ContributionError.UnknownError("Error")
-        repository.purchasedFlow = flowOf(Outcome.failure(error))
-
-        // Act
-        val result = testSubject().first()
-
-        // Assert
-        assertThat(result).isEqualTo(Outcome.failure(error))
-    }
-
-    @Test
-    fun `invoke should return success if at least one type of contribution is loaded`() = runTest {
+    fun `invoke should return success if one type (oneTime) of contributions is loaded`() = runTest {
         // Arrange
         val oneTime = OneTimeContribution(ContributionId("ot1"), "Title", "Desc", 100L, "$1.00")
 
         repository.oneTimeFlow = flowOf(Outcome.success(listOf(oneTime)))
         repository.recurringFlow = flowOf(Outcome.failure(ContributionError.UnknownError("Error")))
-        repository.purchasedFlow = flowOf(Outcome.success(emptyList()))
 
         // Act
         val result = testSubject().first()
@@ -85,5 +68,37 @@ class GetAvailableContributionsTest {
         val data = (result as Outcome.Success).data
         assertThat(data.oneTimeContributions).isEqualTo(listOf(oneTime))
         assertThat(data.recurringContributions).isEqualTo(emptyList())
+    }
+
+    @Test
+    fun `invoke should return success if one type (recurring) of contributions is loaded`() = runTest {
+        // Arrange
+        val recurring = RecurringContribution(ContributionId("rec1"), "Title", "Desc", 1000L, "$10.00")
+
+        repository.oneTimeFlow = flowOf(Outcome.failure(ContributionError.UnknownError("Error")))
+        repository.recurringFlow = flowOf(Outcome.success(listOf(recurring)))
+
+        // Act
+        val result = testSubject().first()
+
+        // Assert
+        assertThat(result).isInstanceOf(Outcome.Success::class)
+        val data = (result as Outcome.Success).data
+        assertThat(data.recurringContributions).isEqualTo(listOf(recurring))
+        assertThat(data.oneTimeContributions).isEqualTo(emptyList())
+    }
+
+    @Test
+    fun `invoke should return failure if both contribution types fail to load`() = runTest {
+        // Arrange
+        val error = ContributionError.UnknownError("Failed to load contributions")
+        repository.oneTimeFlow = flowOf(Outcome.failure(error))
+        repository.recurringFlow = flowOf(Outcome.failure(error))
+
+        // Act
+        val result = testSubject().first()
+
+        // Assert
+        assertThat(result).isEqualTo(Outcome.failure(error))
     }
 }

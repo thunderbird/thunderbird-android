@@ -10,6 +10,7 @@ import net.thunderbird.feature.funding.googleplay.domain.ContributionIdProvider
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.domain.policy.ContributionPreselector
 import net.thunderbird.feature.funding.googleplay.domain.usecase.GetAvailableContributions
+import net.thunderbird.feature.funding.googleplay.domain.usecase.GetLatestPurchasedContribution
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionViewModel
 import net.thunderbird.feature.funding.googleplay.ui.reminder.ActivityLifecycleObserver
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FragmentLifecycleObserver
@@ -71,6 +72,13 @@ val featureFundingModule = module {
             repository = get(),
             contributionIdProvider = get(),
             preselector = get(),
+        )
+    }
+
+    single<FundingDomainContract.UseCase.GetLatestPurchasedContribution> {
+        GetLatestPurchasedContribution(
+            repository = get(),
+            clock = get(),
         )
     }
 

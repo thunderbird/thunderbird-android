@@ -60,7 +60,7 @@ fun ContributionFooterDisabledPreview() {
 fun ContributionFooterWithRecurringContributionPreview() {
     PreviewWithTheme {
         ContributionFooter(
-            purchasedContribution = FakeData.recurringContribution,
+            purchasedContribution = FakeData.purchasedRecurringContribution,
             onPurchaseClick = {},
             onCancelPurchaseClick = {},
             onManagePurchaseClick = {},
@@ -77,7 +77,7 @@ fun ContributionFooterWithRecurringContributionPreview() {
 fun ContributionFooterWithOneTimeContributionPreview() {
     PreviewWithTheme {
         ContributionFooter(
-            purchasedContribution = FakeData.oneTimeContribution,
+            purchasedContribution = FakeData.purchasedOneTimeContribution,
             onPurchaseClick = {},
             onCancelPurchaseClick = {},
             onManagePurchaseClick = {},
@@ -94,7 +94,7 @@ fun ContributionFooterWithOneTimeContributionPreview() {
 fun ContributionFooterWithOneTimeContributionAndListPreview() {
     PreviewWithTheme {
         ContributionFooter(
-            purchasedContribution = FakeData.oneTimeContribution,
+            purchasedContribution = FakeData.purchasedOneTimeContribution,
             onPurchaseClick = {},
             onCancelPurchaseClick = {},
             onManagePurchaseClick = {},
