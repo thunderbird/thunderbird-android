@@ -5,10 +5,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
-import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionPreselection
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
 internal interface FundingDomainContract {
@@ -20,6 +20,13 @@ internal interface FundingDomainContract {
          */
         fun interface GetAvailableContributions {
             operator fun invoke(): Flow<Outcome<AvailableContributions, ContributionError>>
+        }
+
+        /**
+         * Get the latest purchased contribution.
+         */
+        fun interface GetLatestPurchasedContribution {
+            operator fun invoke(): Flow<Outcome<PurchasedContribution?, ContributionError>>
         }
     }
 
@@ -81,12 +88,12 @@ internal interface FundingDomainContract {
          *
          * @return Outcome flow containing a list of recurring contributions or an error if the operation fails.
          */
-        fun getAllPurchased(): Flow<Outcome<List<Contribution>, ContributionError>>
+        fun getAllPurchased(): Flow<Outcome<List<PurchasedContribution>, ContributionError>>
 
         /**
          * Flow that emits the last purchased contribution.
          */
-        val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>>
+        val purchasedContribution: StateFlow<Outcome<PurchasedContribution?, ContributionError>>
 
         /**
          * Purchase a contribution.

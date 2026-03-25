@@ -5,10 +5,12 @@ import assertk.assertions.isEqualTo
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDateTime
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote.ContributionDataSource
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 import org.junit.Test
 
@@ -21,7 +23,11 @@ internal class ContributionRepositoryTest {
     fun `getAllPurchased should delegate to remoteContributionDataSource`() = runTest {
         // Arrange
         val contributions = listOf(
-            OneTimeContribution(ContributionId("ot1"), "Title 1", "Desc 1", 100L, "$1.00"),
+            PurchasedContribution(
+                id = ContributionId("p1"),
+                contribution = OneTimeContribution(ContributionId("p1"), "Title 1", "Desc 1", 100L, "$1.00"),
+                purchaseDate = LocalDateTime(2024, 6, 1, 12, 0),
+            ),
         )
         val expectedOutcome = Outcome.success(contributions)
         (remoteContributionDataSource as FakeContributionDataSource).purchasedFlow = flowOf(expectedOutcome)

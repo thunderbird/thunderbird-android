@@ -6,9 +6,9 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote.ContributionDataSource
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
-import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
 internal class ContributionRepository(
@@ -29,10 +29,10 @@ internal class ContributionRepository(
             contributionIds = contributionIds,
         )
 
-    override fun getAllPurchased(): Flow<Outcome<List<Contribution>, ContributionError>> =
+    override fun getAllPurchased(): Flow<Outcome<List<PurchasedContribution>, ContributionError>> =
         remoteContributionDataSource.getAllPurchased()
 
-    override val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>> =
+    override val purchasedContribution: StateFlow<Outcome<PurchasedContribution?, ContributionError>> =
         remoteContributionDataSource.purchasedContribution
 
     override suspend fun purchaseContribution(contributionId: ContributionId): Outcome<Unit, ContributionError> =

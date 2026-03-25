@@ -10,6 +10,7 @@ import com.android.billingclient.api.Purchase
 import kotlin.test.BeforeTest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDateTime
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
@@ -18,6 +19,7 @@ import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remot
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
@@ -119,7 +121,17 @@ class BillingClientTest {
         // Arrange
         val billingResult = mock<BillingResult>()
         val purchases = mutableListOf(mock<Purchase>())
-        val contribution = OneTimeContribution(ContributionId("id"), "title", "desc", 100L, "$1.00")
+        val contribution = PurchasedContribution(
+            id = ContributionId("id"),
+            contribution = OneTimeContribution(
+                id = ContributionId("id"),
+                title = "title",
+                description = "desc",
+                price = 100L,
+                priceFormatted = "$1.00",
+            ),
+            purchaseDate = LocalDateTime(2024, 1, 1, 0, 0),
+        )
 
         whenever(purchaseHandler.handlePurchases(any(), any())).thenReturn(listOf(contribution))
 

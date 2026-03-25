@@ -8,9 +8,9 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.outcome.flatMapSuccess
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
-import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
 internal class RemoteContributionDataSource(
@@ -37,7 +37,7 @@ internal class RemoteContributionDataSource(
         emit(result)
     }
 
-    override fun getAllPurchased(): Flow<Outcome<List<Contribution>, ContributionError>> = flow {
+    override fun getAllPurchased(): Flow<Outcome<List<PurchasedContribution>, ContributionError>> = flow {
         val result = billingConnector.connect {
             billingClient.loadPurchasedRecurringContributions().flatMapSuccess { recurringContributions ->
                 if (recurringContributions.isEmpty()) {
@@ -49,7 +49,7 @@ internal class RemoteContributionDataSource(
                         }
                     }
                 } else {
-                    Outcome.success(recurringContributions.sortedByDescending { it.price })
+                    Outcome.success(recurringContributions)
                 }
             }
         }
@@ -57,7 +57,7 @@ internal class RemoteContributionDataSource(
         emit(result)
     }
 
-    override val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>> =
+    override val purchasedContribution: StateFlow<Outcome<PurchasedContribution?, ContributionError>> =
         billingClient.purchasedContribution
 
     override suspend fun purchaseContribution(

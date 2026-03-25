@@ -2,6 +2,7 @@ package net.thunderbird.feature.funding.googleplay.data
 
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.PurchaseHistoryRecord
 import com.android.billingclient.api.PurchasesUpdatedListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,6 +12,7 @@ import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.C
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 import com.android.billingclient.api.BillingClient as GoogleBillingClient
 
@@ -22,6 +24,16 @@ internal interface FundingDataContract {
 
             fun mapToOneTimeContribution(product: ProductDetails): OneTimeContribution
             fun mapToRecurringContribution(product: ProductDetails): RecurringContribution
+
+            fun mapToPurchasedContribution(
+                purchase: Purchase,
+                productDetails: ProductDetails,
+            ): PurchasedContribution
+
+            fun mapHistoryToPurchasedContribution(
+                purchase: PurchaseHistoryRecord,
+                productDetails: ProductDetails,
+            ): PurchasedContribution
         }
     }
 
@@ -53,12 +65,12 @@ internal interface FundingDataContract {
              *
              * @return Outcome flow containing a list of purchased contributions or an error if the operation fails.
              */
-            fun getAllPurchased(): Flow<Outcome<List<Contribution>, ContributionError>>
+            fun getAllPurchased(): Flow<Outcome<List<PurchasedContribution>, ContributionError>>
 
             /**
              * Flow that emits the last purchased contribution.
              */
-            val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>>
+            val purchasedContribution: StateFlow<Outcome<PurchasedContribution?, ContributionError>>
 
             /**
              * Purchase a contribution.
@@ -100,17 +112,17 @@ internal interface FundingDataContract {
             suspend fun handlePurchases(
                 clientProvider: BillingClientProvider,
                 purchases: List<Purchase>,
-            ): List<Contribution>
+            ): List<PurchasedContribution>
 
             fun handleOneTimePurchases(
                 clientProvider: BillingClientProvider,
                 purchases: List<Purchase>,
-            ): List<OneTimeContribution>
+            ): List<PurchasedContribution>
 
             fun handleRecurringPurchases(
                 clientProvider: BillingClientProvider,
                 purchases: List<Purchase>,
-            ): List<RecurringContribution>
+            ): List<PurchasedContribution>
         }
 
         interface BillingConnector {
@@ -139,7 +151,7 @@ internal interface FundingDataContract {
             /**
              * Flow that emits the last purchased contribution.
              */
-            val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>>
+            val purchasedContribution: StateFlow<Outcome<PurchasedContribution?, ContributionError>>
 
             /**
              * Load one-time contributions.
@@ -158,17 +170,17 @@ internal interface FundingDataContract {
             /**
              * Load purchased one-time contributions.
              */
-            suspend fun loadPurchasedOneTimeContributions(): Outcome<List<OneTimeContribution>, ContributionError>
+            suspend fun loadPurchasedOneTimeContributions(): Outcome<List<PurchasedContribution>, ContributionError>
 
             /**
              *  Load purchased recurring contributions.
              */
-            suspend fun loadPurchasedRecurringContributions(): Outcome<List<RecurringContribution>, ContributionError>
+            suspend fun loadPurchasedRecurringContributions(): Outcome<List<PurchasedContribution>, ContributionError>
 
             /**
              * Load the most recent one-time contribution.
              */
-            suspend fun loadPurchasedOneTimeContributionHistory(): Outcome<OneTimeContribution?, ContributionError>
+            suspend fun loadPurchasedOneTimeContributionHistory(): Outcome<PurchasedContribution?, ContributionError>
 
             /**
              * Purchase a contribution.

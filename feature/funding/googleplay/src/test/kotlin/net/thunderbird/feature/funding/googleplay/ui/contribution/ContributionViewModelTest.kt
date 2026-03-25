@@ -11,7 +11,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
@@ -19,6 +19,7 @@ import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionListState
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionType
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Effect
@@ -120,7 +121,7 @@ class ContributionViewModelTest {
     fun `should hide list when purchase successful`() = runMviTest {
         // Arrange
         val repository = FakeContributionRepository()
-        val contribution = FakeData.oneTimeContributions[0]
+        val purchasedContribution = FakeData.purchasedOneTimeContribution
         val initialState = State(
             listState = ContributionListState(
                 oneTimeContributions = FakeData.oneTimeContributions.toImmutableList(),
@@ -137,10 +138,10 @@ class ContributionViewModelTest {
 
         contributionRobot(initialState = initialState, repository = repository) {
             // Act
-            repository.purchasedContribution.value = Outcome.success(contribution)
+            repository.purchasedContribution.value = Outcome.success(purchasedContribution)
 
             // Assert
-            verifyListHidden(contribution)
+            verifyListHidden(purchasedContribution)
         }
     }
 
@@ -210,7 +211,7 @@ class ContributionViewModelTest {
     @Test
     fun `should keep previously purchased contribution when subsequent purchase cancelled`() = runMviTest {
         val repository = FakeContributionRepository()
-        val purchasedContribution = FakeData.oneTimeContributions[0]
+        val purchasedContribution = FakeData.purchasedOneTimeContribution
         repository.purchasedContribution.value = Outcome.success(purchasedContribution)
 
         val listState = ContributionListState(
@@ -247,7 +248,7 @@ class ContributionViewModelTest {
     @Test
     fun `should keep previously purchased contribution when subsequent purchase failed`() = runMviTest {
         val repository = FakeContributionRepository()
-        val purchasedContribution = FakeData.oneTimeContributions[0]
+        val purchasedContribution = FakeData.purchasedOneTimeContribution
         repository.purchasedContribution.value = Outcome.success(purchasedContribution)
 
         val listState = ContributionListState(
@@ -421,16 +422,15 @@ private class ContributionRobot(
     private val viewModel: ContributionContract.ViewModel by lazy {
         ContributionViewModel(
             getAvailableContributions = {
-                repository.purchasedContribution.map { purchasedOutcome ->
+                flowOf(
                     Outcome.success(
                         AvailableContributions(
                             oneTimeContributions = FakeData.oneTimeContributions,
                             recurringContributions = FakeData.recurringContributions,
                             preselection = FakeData.preselection,
-                            purchasedContribution = (purchasedOutcome as? Outcome.Success)?.data,
                         ),
-                    )
-                }
+                    ),
+                )
             },
             repository = repository,
             initialState = initialState,
@@ -488,7 +488,7 @@ private class ContributionRobot(
         )
     }
 
-    suspend fun verifyListHidden(purchasedContribution: Contribution) {
+    suspend fun verifyListHidden(purchasedContribution: PurchasedContribution) {
         assertThat(turbines.awaitStateItem()).isEqualTo(
             initialState.copy(
                 isPurchasing = false,
@@ -536,7 +536,7 @@ private class ContributionRobot(
         )
     }
 
-    suspend fun verifyPurchasedContribution(purchasedContribution: Contribution) {
+    suspend fun verifyPurchasedContribution(purchasedContribution: PurchasedContribution) {
         assertThat(turbines.awaitStateItem()).isEqualTo(
             initialState.copy(
                 isPurchasing = false,

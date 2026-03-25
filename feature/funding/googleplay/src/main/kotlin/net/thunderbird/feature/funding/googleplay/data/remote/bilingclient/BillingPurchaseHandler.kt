@@ -14,10 +14,8 @@ import kotlinx.coroutines.launch
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
-import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
-import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
-import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 
 // TODO propagate errors via Outcome
 // TODO optimize purchase handling and reduce duplicate code
@@ -34,7 +32,7 @@ internal class BillingPurchaseHandler(
     override suspend fun handlePurchases(
         clientProvider: Remote.BillingClientProvider,
         purchases: List<Purchase>,
-    ): List<Contribution> {
+    ): List<PurchasedContribution> {
         return purchases.flatMap { purchase ->
             handlePurchase(clientProvider.current, purchase)
         }
@@ -43,7 +41,7 @@ internal class BillingPurchaseHandler(
     override fun handleOneTimePurchases(
         clientProvider: Remote.BillingClientProvider,
         purchases: List<Purchase>,
-    ): List<OneTimeContribution> {
+    ): List<PurchasedContribution> {
         return purchases.flatMap { purchase ->
             handleOneTimePurchase(clientProvider.current, purchase)
         }
@@ -52,7 +50,7 @@ internal class BillingPurchaseHandler(
     override fun handleRecurringPurchases(
         clientProvider: Remote.BillingClientProvider,
         purchases: List<Purchase>,
-    ): List<RecurringContribution> {
+    ): List<PurchasedContribution> {
         return purchases.flatMap { purchase ->
             handleRecurringPurchase(clientProvider.current, purchase)
         }
@@ -61,7 +59,7 @@ internal class BillingPurchaseHandler(
     private suspend fun handlePurchase(
         billingClient: BillingClient,
         purchase: Purchase,
-    ): List<Contribution> {
+    ): List<PurchasedContribution> {
         // TODO verify purchase with public key
         consumePurchase(billingClient, purchase)
         acknowledgePurchase(billingClient, purchase)
@@ -72,7 +70,7 @@ internal class BillingPurchaseHandler(
     private fun handleOneTimePurchase(
         billingClient: BillingClient,
         purchase: Purchase,
-    ): List<OneTimeContribution> {
+    ): List<PurchasedContribution> {
         coroutineScope.launch {
             // TODO verify purchase with public key
             consumePurchase(billingClient, purchase)
@@ -84,7 +82,7 @@ internal class BillingPurchaseHandler(
     private fun handleRecurringPurchase(
         billingClient: BillingClient,
         purchase: Purchase,
-    ): List<RecurringContribution> {
+    ): List<PurchasedContribution> {
         coroutineScope.launch {
             // TODO verify purchase with public key
             acknowledgePurchase(billingClient, purchase)
@@ -131,7 +129,7 @@ internal class BillingPurchaseHandler(
         billingClient.consumePurchase(consumeParams)
     }
 
-    private fun extractContributions(purchase: Purchase): List<Contribution> {
+    private fun extractContributions(purchase: Purchase): List<PurchasedContribution> {
         if (purchase.purchaseState != Purchase.PurchaseState.PURCHASED) {
             return emptyList()
         }
@@ -139,7 +137,7 @@ internal class BillingPurchaseHandler(
         return extractOneTimeContributions(purchase) + extractRecurringContributions(purchase)
     }
 
-    private fun extractOneTimeContributions(purchase: Purchase): List<OneTimeContribution> {
+    private fun extractOneTimeContributions(purchase: Purchase): List<PurchasedContribution> {
         if (purchase.purchaseState != Purchase.PurchaseState.PURCHASED) {
             return emptyList()
         }
@@ -147,10 +145,15 @@ internal class BillingPurchaseHandler(
         return purchase.products.mapNotNull { productId ->
             productCache[ContributionId(productId)]
         }.filter { it.productType == BillingClient.ProductType.INAPP }
-            .map { productMapper.mapToOneTimeContribution(it) }
+            .map {
+                productMapper.mapToPurchasedContribution(
+                    purchase = purchase,
+                    productDetails = it,
+                )
+            }
     }
 
-    private fun extractRecurringContributions(purchase: Purchase): List<RecurringContribution> {
+    private fun extractRecurringContributions(purchase: Purchase): List<PurchasedContribution> {
         if (purchase.purchaseState != Purchase.PurchaseState.PURCHASED) {
             return emptyList()
         }
@@ -158,6 +161,11 @@ internal class BillingPurchaseHandler(
         return purchase.products.mapNotNull { productId ->
             productCache[ContributionId(productId)]
         }.filter { it.productType == BillingClient.ProductType.SUBS }
-            .map { productMapper.mapToRecurringContribution(it) }
+            .map {
+                productMapper.mapToPurchasedContribution(
+                    purchase = purchase,
+                    productDetails = it,
+                )
+            }
     }
 }

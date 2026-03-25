@@ -1,5 +1,6 @@
 package net.thunderbird.feature.funding.googleplay.domain.usecase
 
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import net.thunderbird.core.outcome.Outcome
@@ -19,16 +20,13 @@ internal class GetAvailableContributions(
         return combine(
             repository.getAllOneTime(contributionIdProvider.oneTimeContributionIds),
             repository.getAllRecurring(contributionIdProvider.recurringContributionIds),
-            repository.getAllPurchased(),
-        ) { oneTimeResult, recurringResult, purchasedResult ->
+        ) { oneTimeResult, recurringResult ->
             val isOneTimeSuccess = oneTimeResult is Outcome.Success
             val isRecurringSuccess = recurringResult is Outcome.Success
-            val isPurchasedSuccess = purchasedResult is Outcome.Success
 
-            if ((isOneTimeSuccess || isRecurringSuccess) && isPurchasedSuccess) {
+            if ((isOneTimeSuccess || isRecurringSuccess)) {
                 val oneTime = (oneTimeResult as? Outcome.Success)?.data.orEmpty()
                 val recurring = (recurringResult as? Outcome.Success)?.data.orEmpty()
-                val purchased = purchasedResult.data.firstOrNull()
 
                 val onetimeContributions = oneTime.sortedByDescending { it.price }
                 val recurringContributions = recurring.sortedByDescending { it.price }
@@ -36,14 +34,11 @@ internal class GetAvailableContributions(
 
                 Outcome.success(
                     AvailableContributions(
-                        oneTimeContributions = oneTime.sortedByDescending { it.price },
-                        recurringContributions = recurring.sortedByDescending { it.price },
+                        oneTimeContributions = oneTime.sortedByDescending { it.price }.toImmutableList(),
+                        recurringContributions = recurring.sortedByDescending { it.price }.toImmutableList(),
                         preselection = preselection,
-                        purchasedContribution = purchased,
                     ),
                 )
-            } else if (!isPurchasedSuccess) {
-                Outcome.failure((purchasedResult as Outcome.Failure).error)
             } else {
                 Outcome.failure(ContributionError.UnknownError("Failed to load contributions"))
             }

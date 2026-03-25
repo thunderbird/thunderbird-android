@@ -20,6 +20,7 @@ import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.funding.googleplay.R
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
 @SuppressWarnings(
@@ -28,7 +29,7 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContrib
 )
 @Composable
 internal fun ContributionFooter(
-    purchasedContribution: Contribution?,
+    purchasedContribution: PurchasedContribution?,
     onPurchaseClick: () -> Unit,
     onCancelPurchaseClick: () -> Unit,
     onManagePurchaseClick: (Contribution) -> Unit,
@@ -42,13 +43,13 @@ internal fun ContributionFooter(
         modifier = modifier,
     ) {
         if (purchasedContribution != null && !isContributionListShown) {
-            when (purchasedContribution) {
+            when (purchasedContribution.contribution) {
                 is RecurringContribution -> {
                     ButtonFilled(
                         text = stringResource(
                             R.string.funding_googleplay_contribution_footer_manage_button,
                         ),
-                        onClick = { onManagePurchaseClick(purchasedContribution) },
+                        onClick = { onManagePurchaseClick(purchasedContribution.contribution) },
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }

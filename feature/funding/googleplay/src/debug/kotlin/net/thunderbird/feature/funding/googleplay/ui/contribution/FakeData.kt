@@ -1,9 +1,12 @@
 package net.thunderbird.feature.funding.googleplay.ui.contribution
 
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.datetime.LocalDateTime
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionPreselection
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
 internal object FakeData {
@@ -16,7 +19,7 @@ internal object FakeData {
         priceFormatted = "50 $",
     )
 
-    val recurringContributions = persistentListOf(
+    val recurringContributions: ImmutableList<RecurringContribution> = persistentListOf(
         RecurringContribution(
             id = ContributionId("contribution_tfa_monthly_xxl"),
             title = "Monthly subscription: $250",
@@ -69,7 +72,7 @@ internal object FakeData {
         priceFormatted = "50 $",
     )
 
-    val oneTimeContributions = persistentListOf(
+    val oneTimeContributions: ImmutableList<OneTimeContribution> = persistentListOf(
         OneTimeContribution(
             id = ContributionId("contribution_tfa_onetime_xxl"),
             title = "One time payment: $250",
@@ -117,5 +120,31 @@ internal object FakeData {
     val preselection = ContributionPreselection(
         oneTimeId = ContributionId("contribution_tfa_onetime_m"),
         recurringId = ContributionId("contribution_tfa_monthly_m"),
+    )
+
+    val purchasedOneTimeContribution: PurchasedContribution = PurchasedContribution(
+        id = oneTimeContribution.id,
+        contribution = oneTimeContribution,
+        purchaseDate = LocalDateTime(
+            year = 2024,
+            month = 6,
+            day = 1,
+            hour = 12,
+            minute = 0,
+            second = 0,
+        ),
+    )
+
+    val purchasedRecurringContribution: PurchasedContribution = PurchasedContribution(
+        id = recurringContribution.id,
+        contribution = recurringContribution,
+        purchaseDate = LocalDateTime(
+            year = 2024,
+            month = 6,
+            day = 1,
+            hour = 12,
+            minute = 0,
+            second = 0,
+        ),
     )
 }

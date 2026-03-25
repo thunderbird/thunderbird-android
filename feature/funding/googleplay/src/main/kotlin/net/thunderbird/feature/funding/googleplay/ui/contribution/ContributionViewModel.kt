@@ -86,9 +86,6 @@ internal class ContributionViewModel(
                                 isRecurringContributionSelected = isRecurringContributionSelected,
                                 isLoading = false,
                             ),
-                            purchasedContribution = data.purchasedContribution ?: state.purchasedContribution,
-                            showContributionList =
-                            data.purchasedContribution == null && state.purchasedContribution == null,
                             purchaseError = null,
                         )
                     }

@@ -10,6 +10,7 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionPreselection
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
 internal class ContributionContract {
@@ -19,7 +20,7 @@ internal class ContributionContract {
     @Stable
     data class State(
         val listState: ContributionListState = ContributionListState(),
-        val purchasedContribution: Contribution? = null,
+        val purchasedContribution: PurchasedContribution? = null,
 
         val showContributionList: Boolean = true,
         val showRecurringContributions: Boolean = false,
