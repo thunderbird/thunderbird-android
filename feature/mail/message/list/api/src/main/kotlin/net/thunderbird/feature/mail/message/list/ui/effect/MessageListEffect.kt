@@ -100,4 +100,8 @@ sealed interface MessageListEffect {
     data class ScrollToMessage(val message: MessageItemUi) : MessageListEffect
 
     data class OpenMessage(val message: MessageItemUi) : MessageListEffect
+
+    // region [ Legacy Support ]
+    data object TriggerOnFooterClicked : MessageListEffect
+    // endregion [ Legacy Support ]
 }

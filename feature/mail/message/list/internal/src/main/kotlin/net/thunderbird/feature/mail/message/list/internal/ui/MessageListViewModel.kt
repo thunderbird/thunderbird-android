@@ -53,4 +53,11 @@ internal class MessageListViewModel(
             }
             .launchIn(viewModelScope)
     }
+
+    override fun onEventWithoutStateModification(event: MessageListEvent, currentState: MessageListState) {
+        when (event) {
+            is MessageListEvent.OnFooterClick -> emitEffect(MessageListEffect.TriggerOnFooterClicked)
+            else -> Unit
+        }
+    }
 }

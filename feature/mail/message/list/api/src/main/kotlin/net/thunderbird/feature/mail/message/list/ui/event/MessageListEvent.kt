@@ -112,4 +112,8 @@ sealed interface MessageListEvent {
      * @see MessageListEvent
      */
     data object LoadNextPage : UserEvent
+
+    // region [ Legacy Support events ]
+    data class UpdateFooter(val footer: String?) : SystemEvent
+    // endregion [ Legacy Support events ]
 }

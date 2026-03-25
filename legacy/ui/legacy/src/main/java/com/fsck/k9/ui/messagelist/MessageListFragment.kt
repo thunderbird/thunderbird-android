@@ -1303,7 +1303,7 @@ class MessageListFragment :
     }
 
     override fun updateFooterText(text: String?) {
-        // TODO(#10778): trigger update footer text event.
+        viewModel.event(MessageListEvent.UpdateFooter(text))
     }
 
     private fun selectAll() {
@@ -2452,6 +2452,7 @@ class MessageListFragment :
                 openMessage(messageReference)
             }
 
+            MessageListEffect.TriggerOnFooterClicked -> onFooterClicked()
             else -> Unit
         }
     }
