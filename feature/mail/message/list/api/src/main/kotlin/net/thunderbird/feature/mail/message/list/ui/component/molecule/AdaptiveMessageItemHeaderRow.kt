@@ -60,7 +60,7 @@ internal fun AdaptiveMessageItemHeaderRow(
 }
 
 @Composable
-internal fun HeaderRow(
+private fun HeaderRow(
     modifier: Modifier = Modifier,
     headerRowContent: @Composable ((RowScope) -> Unit),
 ) {
@@ -76,7 +76,7 @@ internal fun HeaderRow(
 }
 
 @Composable
-internal fun HeaderRowSmall(
+private fun HeaderRowSmall(
     modifier: Modifier = Modifier,
     headerRowContent: @Composable ((RowScope) -> Unit),
 ) {
