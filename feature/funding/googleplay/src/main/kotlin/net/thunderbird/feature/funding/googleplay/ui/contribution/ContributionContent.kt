@@ -15,10 +15,17 @@ import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Event
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.State
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionList
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.State as ListState
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract.Event as PurchaseEvent
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract.State as PurchaseState
 
 @Composable
 internal fun ContributionContent(
     state: State,
+    listState: ListState,
+    purchaseState: PurchaseState,
     onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
@@ -40,39 +47,32 @@ internal fun ContributionContent(
             verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.triple),
         ) {
             ContributionHeader(
-                purchasedContribution = state.purchasedContribution,
+                purchasedContribution = purchaseState.purchasedContribution,
             )
 
             if (state.showContributionList) {
                 ContributionList(
-                    state = state.listState,
-                    onContributionTypeClick = {
-                        onEvent(Event.OnContributionTypeSelected(it))
-                    },
-                    onItemClick = {
-                        onEvent(Event.OnContributionItemClicked(it.id))
-                    },
-                    onRetryClick = {
-                        onEvent(Event.OnRetryClicked)
-                    },
+                    state = listState,
+                    onEvent = { onEvent(Event.List(it)) },
                 )
             }
 
-            if (state.purchaseError != null) {
+            if (purchaseState.purchaseFlow is PurchaseSliceContract.PurchaseFlow.Failed) {
                 ContributionError(
-                    error = state.purchaseError,
-                    onDismissClick = { onEvent(Event.OnDismissPurchaseErrorClicked) },
+                    error = purchaseState.purchaseFlow.error,
+                    onDismissClick = {
+                        onEvent(Event.Purchase(PurchaseEvent.DismissPurchaseErrorClicked))
+                    },
                 )
             }
 
             ContributionFooter(
-                purchasedContribution = state.purchasedContribution,
-                onPurchaseClick = { onEvent(Event.OnPurchaseClicked) },
-                onCancelPurchaseClick = { onEvent(Event.OnCancelPurchaseClicked) },
-                onManagePurchaseClick = { onEvent(Event.OnManagePurchaseClicked(it)) },
-                onShowContributionListClick = { onEvent(Event.OnShowContributionListClicked) },
-                isPurchaseEnabled = state.listState.selectedContributionId != null,
-                isPurchasing = state.isPurchasing,
+                state = purchaseState,
+                onEvent = { onEvent(Event.Purchase(it)) },
+                onShowContributionListClick = {
+                    onEvent(Event.ShowContributionListClicked)
+                },
+                selectedContributionId = state.selectedContributionId,
                 isContributionListShown = state.showContributionList,
             )
         }

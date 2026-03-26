@@ -12,6 +12,10 @@ import net.thunderbird.feature.funding.googleplay.domain.policy.ContributionPres
 import net.thunderbird.feature.funding.googleplay.domain.usecase.GetAvailableContributions
 import net.thunderbird.feature.funding.googleplay.domain.usecase.GetLatestPurchasedContribution
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionViewModel
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceFactory
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceFactory
 import net.thunderbird.feature.funding.googleplay.ui.reminder.ActivityLifecycleObserver
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FragmentLifecycleObserver
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminder
@@ -82,9 +86,25 @@ val featureFundingModule = module {
         )
     }
 
+    factory<ContributionListSliceContract.Slice.Factory> {
+        ContributionListSliceFactory(
+            getAvailableContributions = get(),
+            logger = get(),
+        )
+    }
+
+    factory<PurchaseSliceContract.Slice.Factory> {
+        PurchaseSliceFactory(
+            getLastestPurchase = get(),
+            repository = get(),
+            logger = get(),
+        )
+    }
+
     viewModel {
         ContributionViewModel(
-            getAvailableContributions = get(),
+            listSliceFactory = get(),
+            purchaseSliceFactory = get(),
             repository = get(),
             logger = get(),
         )
