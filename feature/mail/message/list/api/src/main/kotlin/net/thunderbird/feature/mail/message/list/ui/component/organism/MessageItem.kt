@@ -6,21 +6,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateStartPadding
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -39,13 +35,10 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.window.WindowSizeClass
-import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIconDefaults
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
@@ -55,9 +48,7 @@ import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.mail.message.list.ui.component.atom.FavouriteButtonIcon
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemConfiguration
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemTrailingElement
-import net.thunderbird.feature.mail.message.list.ui.component.molecule.AccountIndicatorIcon
-import net.thunderbird.feature.mail.message.list.ui.component.molecule.HeaderRow
-import net.thunderbird.feature.mail.message.list.ui.component.molecule.HeaderRowCompact
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.AdaptiveMessageItemHeaderRow
 
 /**
  * Displays a message item in a list with configurable layout and interactions.
@@ -126,32 +117,6 @@ internal fun MessageItem(
     var contentStart by remember { mutableFloatStateOf(0f) }
     val layoutDirection = LocalLayoutDirection.current
 
-    val windowSizeInfo = getWindowSizeInfo()
-    val isSmall = windowSizeInfo.screenWidthSizeClass == WindowSizeClass.Small
-
-    val headerRowContent: @Composable ((RowScope) -> Unit) =
-        remember(configuration, receivedAt, firstLine, isSmall) {
-            movableContentOf { scope ->
-                with(scope) {
-                    SenderText(
-                        showAccountIndicator = configuration.accountIndicator != null,
-                        accountIndicatorColor = configuration.accountIndicator?.color,
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .weight(1f, fill = false),
-                    ) {
-                        firstLine()
-                    }
-                    MessageItemDate(
-                        receivedAt = receivedAt,
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .wrapContentWidth(),
-                    )
-                }
-            }
-        }
-
     Surface(
         modifier = modifier
             .combinedClickable(
@@ -188,7 +153,7 @@ internal fun MessageItem(
                     .weight(1f)
                     .onPlaced { contentStart = it.positionInParent().x },
             ) {
-                GetHeaderRow(isSmall, headerRowContent = headerRowContent)
+                AdaptiveMessageItemHeaderRow(configuration, receivedAt, firstLine)
                 MessageContent(
                     colors = colors,
                     preview = excerpt,
@@ -216,19 +181,6 @@ internal fun MessageItem(
 }
 
 @Composable
-private fun GetHeaderRow(
-    isCompact: Boolean,
-    modifier: Modifier = Modifier,
-    headerRowContent: @Composable ((RowScope) -> Unit),
-) {
-    if (isCompact) {
-        HeaderRowCompact(modifier, headerRowContent = headerRowContent)
-    } else {
-        HeaderRow(modifier, headerRowContent = headerRowContent)
-    }
-}
-
-@Composable
 private fun MessageContent(
     preview: CharSequence,
     maxPreviewLines: Int,
@@ -244,28 +196,6 @@ private fun MessageContent(
             Spacer(modifier = Modifier.height(MainTheme.spacings.half))
             PreviewText(preview = preview, maxLines = maxPreviewLines)
         }
-    }
-}
-
-@Composable
-private fun SenderText(
-    showAccountIndicator: Boolean,
-    accountIndicatorColor: Color?,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .wrapContentWidth()
-            .defaultMinSize(
-                minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT,
-            ),
-    ) {
-        if (showAccountIndicator && accountIndicatorColor != null) {
-            AccountIndicatorIcon(accountIndicatorColor)
-        }
-        content()
     }
 }
 
@@ -356,17 +286,4 @@ private fun TrailingElements(
             )
         }
     }
-}
-
-@Composable
-private fun MessageItemDate(
-    receivedAt: String,
-    modifier: Modifier = Modifier,
-) {
-    TextTitleSmall(
-        text = receivedAt,
-        maxLines = 1,
-        overflow = TextOverflow.Visible,
-        modifier = modifier,
-    )
 }
