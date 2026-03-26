@@ -106,6 +106,9 @@ internal class BillingClient(
 
     override suspend fun loadPurchasedOneTimeContributions(): PurchasedContributionsOutcome {
         val purchasesResult = queryPurchase(ProductType.INAPP)
+        val productIds = purchasesResult.purchasesList.flatMap { it.products }.distinct()
+        loadMissingProducts(ProductType.INAPP, productIds)
+
         return purchasesResult.billingResult.mapToOutcome {
             purchaseHandler.handleOneTimePurchases(clientProvider, purchasesResult.purchasesList)
         }.mapFailure { billingError, _ ->
@@ -120,6 +123,9 @@ internal class BillingClient(
 
     override suspend fun loadPurchasedRecurringContributions(): PurchasedContributionsOutcome {
         val purchasesResult = queryPurchase(ProductType.SUBS)
+        val productIds = purchasesResult.purchasesList.flatMap { it.products }.distinct()
+        loadMissingProducts(ProductType.SUBS, productIds)
+
         return purchasesResult.billingResult.mapToOutcome {
             purchaseHandler.handleRecurringPurchases(clientProvider, purchasesResult.purchasesList)
         }.mapFailure { billingError, _ ->
@@ -138,8 +144,11 @@ internal class BillingClient(
             .build()
 
         val purchasesResult = clientProvider.current.queryPurchaseHistory(queryPurchaseHistoryParams)
+        val purchase = purchasesResult.purchaseHistoryRecordList.orEmpty().firstOrNull()
+        val productIds = purchase?.products.orEmpty()
+        loadMissingProducts(ProductType.INAPP, productIds)
+
         return purchasesResult.billingResult.mapToOutcome {
-            val purchase = purchasesResult.purchaseHistoryRecordList.orEmpty().firstOrNull()
             val productId = purchase?.products?.firstOrNull {
                 productCache.hasKey(ContributionId(it))
             }
@@ -161,6 +170,23 @@ internal class BillingClient(
                 },
             )
             billingError
+        }
+    }
+
+    private suspend fun loadMissingProducts(
+        productType: String,
+        productIds: List<String>,
+    ) {
+        val missingProductIds = productIds.filter { !productCache.hasKey(ContributionId(it)) }
+        if (missingProductIds.isNotEmpty()) {
+            val result = queryProducts(productType, missingProductIds)
+            if (result.billingResult.responseCode ==
+                com.android.billingclient.api.BillingClient.BillingResponseCode.OK
+            ) {
+                result.productDetailsList.orEmpty().forEach { productDetails ->
+                    productCache[ContributionId(productDetails.productId)] = productDetails
+                }
+            }
         }
     }
 

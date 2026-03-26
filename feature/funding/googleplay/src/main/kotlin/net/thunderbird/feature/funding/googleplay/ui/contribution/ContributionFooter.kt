@@ -18,10 +18,12 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import net.thunderbird.core.ui.compose.theme2.LocalContentColor
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.funding.googleplay.R
-import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
-import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract.Event
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract.State
 
 @SuppressWarnings(
     "LongParameterList",
@@ -29,27 +31,26 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContrib
 )
 @Composable
 internal fun ContributionFooter(
-    purchasedContribution: PurchasedContribution?,
-    onPurchaseClick: () -> Unit,
-    onCancelPurchaseClick: () -> Unit,
-    onManagePurchaseClick: (Contribution) -> Unit,
+    state: State,
+    onEvent: (Event) -> Unit,
     onShowContributionListClick: () -> Unit,
-    isPurchaseEnabled: Boolean,
-    isPurchasing: Boolean,
+    selectedContributionId: ContributionId?,
     isContributionListShown: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
     ) {
-        if (purchasedContribution != null && !isContributionListShown) {
-            when (purchasedContribution.contribution) {
+        if (state.purchasedContribution != null && !isContributionListShown) {
+            when (state.purchasedContribution.contribution) {
                 is RecurringContribution -> {
                     ButtonFilled(
                         text = stringResource(
                             R.string.funding_googleplay_contribution_footer_manage_button,
                         ),
-                        onClick = { onManagePurchaseClick(purchasedContribution.contribution) },
+                        onClick = {
+                            onEvent(Event.ManagePurchaseClicked(state.purchasedContribution.id))
+                        },
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
@@ -64,7 +65,9 @@ internal fun ContributionFooter(
                     )
                 }
             }
-        } else if (isPurchasing) {
+        } else if (state.purchaseFlow is PurchaseSliceContract.PurchaseFlow.Launching ||
+            state.purchaseFlow is PurchaseSliceContract.PurchaseFlow.Waiting
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -88,20 +91,20 @@ internal fun ContributionFooter(
                 }
                 ButtonText(
                     text = stringResource(R.string.funding_googleplay_contribution_footer_payment_cancel_button),
-                    onClick = onCancelPurchaseClick,
+                    onClick = { onEvent(Event.CancelPurchaseClicked) },
                 )
             }
         } else {
             ButtonFilled(
                 text = stringResource(
-                    if (isPurchaseEnabled) {
+                    if (selectedContributionId != null) {
                         R.string.funding_googleplay_contribution_footer_payment_button
                     } else {
                         R.string.funding_googleplay_contribution_footer_payment_unavailable_button
                     },
                 ),
-                onClick = onPurchaseClick,
-                enabled = isPurchaseEnabled,
+                onClick = { selectedContributionId?.let { id -> onEvent(Event.PurchaseClicked(id)) } },
+                enabled = selectedContributionId != null,
                 modifier = Modifier.fillMaxWidth(),
             )
         }

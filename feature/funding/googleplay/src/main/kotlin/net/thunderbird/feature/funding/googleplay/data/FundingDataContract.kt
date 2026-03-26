@@ -68,11 +68,6 @@ internal interface FundingDataContract {
             fun getAllPurchased(): Flow<Outcome<List<PurchasedContribution>, ContributionError>>
 
             /**
-             * Flow that emits the last purchased contribution.
-             */
-            val purchasedContribution: StateFlow<Outcome<PurchasedContribution?, ContributionError>>
-
-            /**
              * Purchase a contribution.
              *
              * @param contributionId The contribution id to purchase.

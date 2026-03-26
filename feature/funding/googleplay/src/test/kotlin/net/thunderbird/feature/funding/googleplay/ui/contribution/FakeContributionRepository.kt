@@ -1,7 +1,6 @@
 package net.thunderbird.feature.funding.googleplay.ui.contribution
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
@@ -34,12 +33,9 @@ internal class FakeContributionRepository : FundingDomainContract.ContributionRe
     override fun getAllPurchased(): Flow<Outcome<List<PurchasedContribution>, ContributionError>> =
         purchasedFlow
 
-    override val purchasedContribution = MutableStateFlow<Outcome<PurchasedContribution?, ContributionError>>(
-        Outcome.success(null),
-    )
-
+    var purchaseResult: Outcome<Unit, ContributionError> = Outcome.success(Unit)
     override suspend fun purchaseContribution(contributionId: ContributionId) =
-        Outcome.success(Unit)
+        purchaseResult
 
     override fun clear() = Unit
 }

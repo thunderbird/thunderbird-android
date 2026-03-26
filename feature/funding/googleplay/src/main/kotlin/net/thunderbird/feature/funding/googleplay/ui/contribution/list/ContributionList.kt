@@ -1,4 +1,4 @@
-package net.thunderbird.feature.funding.googleplay.ui.contribution
+package net.thunderbird.feature.funding.googleplay.ui.contribution.list
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
@@ -33,6 +33,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
@@ -40,15 +41,16 @@ import net.thunderbird.feature.funding.googleplay.R
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
-import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionListState
-import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionType
+import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionListItem
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.ContributionType
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.Event
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.State
+import net.thunderbird.feature.funding.googleplay.ui.contribution.mapErrorToTitle
 
 @Composable
 internal fun ContributionList(
-    state: ContributionListState,
-    onContributionTypeClick: (ContributionType) -> Unit,
-    onItemClick: (Contribution) -> Unit,
-    onRetryClick: () -> Unit,
+    state: State,
+    onEvent: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -73,17 +75,25 @@ internal fun ContributionList(
                 error = { error ->
                     ListErrorView(
                         error = error,
-                        onRetryClick = onRetryClick,
+                        onRetryClick = {
+                            onEvent(Event.RetryClicked)
+                        },
                     )
                 },
                 content = { state ->
-                    if (state.oneTimeContributions.isEmpty() && state.recurringContributions.isEmpty()) {
+                    if (state.contributions.oneTimeContributions.isEmpty() &&
+                        state.contributions.recurringContributions.isEmpty()
+                    ) {
                         ListEmptyView()
                     } else {
                         ListContentView(
                             state = state,
-                            onContributionTypeClick = onContributionTypeClick,
-                            onItemClick = onItemClick,
+                            onContributionTypeClick = {
+                                onEvent(Event.TypeClicked(it))
+                            },
+                            onItemClick = {
+                                onEvent(Event.ItemClicked(it.id))
+                            },
                         )
                     }
                 },
@@ -127,7 +137,7 @@ private fun ChoicesRow(
 
 @Composable
 private fun ListContentView(
-    state: ContributionListState,
+    state: State,
     onContributionTypeClick: (ContributionType) -> Unit,
     onItemClick: (Contribution) -> Unit,
     modifier: Modifier = Modifier,
@@ -140,12 +150,8 @@ private fun ListContentView(
         modifier = modifier,
     ) {
         ButtonSegmentedSingleChoice(
-            options = state.contributionTypes,
-            selectedOption = if (state.isRecurringContributionSelected) {
-                ContributionType.Recurring
-            } else {
-                ContributionType.OneTime
-            },
+            options = ContributionType.entries.toImmutableList(),
+            selectedOption = state.selectedType,
             onClick = onContributionTypeClick,
             optionTitle = { type ->
                 when (type) {
@@ -157,12 +163,12 @@ private fun ListContentView(
         )
 
         ChoicesRow(
-            contributions = if (state.isRecurringContributionSelected) {
-                state.recurringContributions
+            contributions = if (state.selectedType == ContributionType.Recurring) {
+                state.contributions.recurringContributions
             } else {
-                state.oneTimeContributions
+                state.contributions.oneTimeContributions
             },
-            selectedItemId = state.selectedContributionId,
+            selectedItemId = state.selectedContribution?.id,
             onItemClick = onItemClick,
         )
     }
