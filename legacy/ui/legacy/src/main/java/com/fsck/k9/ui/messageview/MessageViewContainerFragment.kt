@@ -301,7 +301,7 @@ class MessageViewContainerFragment : Fragment() {
 
     companion object {
         private const val VIEW_PAGER_SWIPE_THRESHOLD = 0.4f
-        private const val VIEW_PAGER_SWIPE_VELOCITY_THRESHOLD = 0.8f
+        private const val VIEW_PAGER_SWIPE_VELOCITY_THRESHOLD = 3.0f
 
         private const val ARG_REFERENCE = "reference"
         private const val ARG_SHOW_ACCOUNT_INDICATOR = "showAccountIndicator"
