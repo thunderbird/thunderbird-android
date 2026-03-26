@@ -30,21 +30,17 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.customActions
-import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import com.fsck.k9.ui.R
 import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 private const val DIMMED_ROW_ALPHA = 0.6f
 private const val DRAGGED_ROW_SCALE = 1.02f
@@ -190,7 +186,7 @@ private fun NotificationActionsListItem(
                     canMoveDown = reorderController.canMove(item.key, 1),
                     dragState = dragState,
                 ),
-                moveActions = MoveActions(
+                buttonLabels = MoveActions(
                     moveUpLabel = stringResource(R.string.accessibility_move_item_up, actionLabel),
                     moveDownLabel = stringResource(R.string.accessibility_move_item_down, actionLabel),
                     onMoveUp = { reorderController.moveByStep(item.key, -1) },
@@ -203,12 +199,6 @@ private fun NotificationActionsListItem(
 
         is NotificationListItem.Cutoff -> NotificationCutoffRow(
             dragState = dragState,
-            moveActions = MoveActions(
-                moveUpLabel = stringResource(R.string.accessibility_move_cutoff_up),
-                moveDownLabel = stringResource(R.string.accessibility_move_cutoff_down),
-                onMoveUp = { reorderController.moveByStep(item.key, -1) },
-                onMoveDown = { reorderController.moveByStep(item.key, 1) },
-            ),
             dragCallbacks = dragCallbacks,
             modifier = rowModifier,
         )
@@ -227,7 +217,7 @@ private fun NotificationActionRow(
     action: MessageNotificationAction,
     contentLabel: String,
     rowState: ActionRowState,
-    moveActions: MoveActions,
+    buttonLabels: MoveActions,
     dragCallbacks: DragCallbacks,
     modifier: Modifier = Modifier,
 ) {
@@ -243,9 +233,6 @@ private fun NotificationActionRow(
     )
 
     NotificationReorderRow(
-        contentDescription = contentLabel,
-        stateDescription = itemStateDescription,
-        moveActions = moveActions,
         dragState = dragState,
         startPadding = MainTheme.spacings.default,
         dragCallbacks = dragCallbacks,
@@ -255,13 +242,16 @@ private fun NotificationActionRow(
         Image(
             painter = painterResource(action.iconRes),
             contentDescription = null,
-            modifier = Modifier.padding(MainTheme.spacings.default),
+            modifier = Modifier
+                .padding(MainTheme.spacings.default)
+                .clearAndSetSemantics { },
         )
         TextBodyLarge(
             text = contentLabel,
             modifier = Modifier
                 .weight(1f)
-                .padding(start = MainTheme.spacings.triple, end = MainTheme.spacings.default),
+                .padding(start = MainTheme.spacings.triple, end = MainTheme.spacings.default)
+                .clearAndSetSemantics { },
         )
         Row(
             modifier = Modifier.padding(end = MainTheme.spacings.default),
@@ -269,13 +259,15 @@ private fun NotificationActionRow(
         ) {
             ArrowButton(
                 imageVector = Icons.Outlined.ExpandLess,
+                contentDescription = "$contentLabel. $itemStateDescription. ${buttonLabels.moveUpLabel}",
                 enabled = rowState.canMoveUp,
-                onClick = moveActions.onMoveUp,
+                onClick = buttonLabels.onMoveUp,
             )
             ArrowButton(
                 imageVector = Icons.Outlined.ExpandMore,
+                contentDescription = "$contentLabel. $itemStateDescription. ${buttonLabels.moveDownLabel}",
                 enabled = rowState.canMoveDown,
-                onClick = moveActions.onMoveDown,
+                onClick = buttonLabels.onMoveDown,
             )
         }
     }
@@ -284,17 +276,10 @@ private fun NotificationActionRow(
 @Composable
 private fun NotificationCutoffRow(
     dragState: RowDragState,
-    moveActions: MoveActions,
     dragCallbacks: DragCallbacks,
     modifier: Modifier = Modifier,
 ) {
-    val cutoffContentLabel = stringResource(R.string.notification_actions_cutoff_description)
-    val cutoffStateDescription = stringResource(R.string.notification_actions_cutoff_state)
-
     NotificationReorderRow(
-        contentDescription = cutoffContentLabel,
-        stateDescription = cutoffStateDescription,
-        moveActions = moveActions,
         dragState = dragState.copy(alpha = 1f),
         startPadding = MainTheme.spacings.double,
         dragCallbacks = dragCallbacks,
@@ -304,7 +289,8 @@ private fun NotificationCutoffRow(
         Box(
             modifier = Modifier
                 .weight(1f)
-                .padding(end = MainTheme.spacings.default),
+                .padding(end = MainTheme.spacings.default)
+                .clearAndSetSemantics { },
         ) {
             Box(
                 modifier = Modifier
@@ -339,9 +325,6 @@ private data class MoveActions(
 
 @Composable
 private fun NotificationReorderRow(
-    contentDescription: String,
-    stateDescription: String,
-    moveActions: MoveActions,
     dragState: RowDragState,
     startPadding: androidx.compose.ui.unit.Dp,
     dragCallbacks: DragCallbacks,
@@ -372,15 +355,7 @@ private fun NotificationReorderRow(
                 onDragStart = dragCallbacks.onDragStart,
                 onDrag = dragCallbacks.onDrag,
                 onDragEnd = dragCallbacks.onDragEnd,
-            )
-            .clearAndSetSemantics {
-                this.contentDescription = contentDescription
-                this.stateDescription = stateDescription
-                customActions = listOf(
-                    CustomAccessibilityAction(moveActions.moveUpLabel) { moveActions.onMoveUp() },
-                    CustomAccessibilityAction(moveActions.moveDownLabel) { moveActions.onMoveDown() },
-                )
-            },
+            ),
         verticalAlignment = Alignment.CenterVertically,
         content = content,
     )
@@ -389,6 +364,7 @@ private fun NotificationReorderRow(
 @Composable
 private fun ArrowButton(
     imageVector: ImageVector,
+    contentDescription: String,
     enabled: Boolean,
     onClick: () -> Boolean,
     modifier: Modifier = Modifier,
@@ -397,8 +373,8 @@ private fun ArrowButton(
         onClick = { onClick() },
         imageVector = imageVector,
         enabled = enabled,
-        modifier = modifier.clearAndSetSemantics { },
-        contentDescription = null,
+        modifier = modifier,
+        contentDescription = contentDescription,
     )
 }
 
