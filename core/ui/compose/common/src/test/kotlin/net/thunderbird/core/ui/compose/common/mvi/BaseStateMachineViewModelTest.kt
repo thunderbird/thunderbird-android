@@ -20,7 +20,7 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
 
-class StateMachineViewModelTest {
+class BaseStateMachineViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val mainDispatcher = MainDispatcherHelper(UnconfinedTestDispatcher())
@@ -137,6 +137,19 @@ class StateMachineViewModelTest {
     }
 
     @Test
+    fun `event() should process an event only once when dispatched`() = runTest {
+        val stateMachine = FakeStateMachine("Initial state")
+        val viewModel = TestStateMachineViewModel(
+            initialState = "Initial state",
+            stateMachine = stateMachine,
+        )
+
+        viewModel.event("Test event")
+
+        assertThat(stateMachine.processCount).isEqualTo(1)
+    }
+
+    @Test
     fun `should trigger side effect handlers on state change`() = runTest {
         var sideEffectTriggered = false
         val sideEffectHandler = object : StateSideEffectHandler<String, String>(TestLogger(), {}) {
@@ -183,7 +196,11 @@ class StateMachineViewModelTest {
         private val _currentState = MutableStateFlow(initialState)
         override val currentState: StateFlow<String> = _currentState.asStateFlow()
 
+        var processCount = 0
+            private set
+
         override suspend fun process(event: String): String {
+            processCount++
             _currentState.value = event
             return _currentState.value
         }
