@@ -3,6 +3,7 @@ package net.thunderbird.feature.navigation.drawer.dropdown
 import net.thunderbird.feature.navigation.drawer.dropdown.data.UnifiedFolderRepository
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase.GetAutoExpandFolderForAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase.GetDisplayAccounts
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase.GetDisplayFoldersForAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase.GetDisplayTreeFolder
@@ -71,11 +72,18 @@ val navigationDropDownDrawerModule: Module = module {
         )
     }
 
+    single<UseCase.GetAutoExpandFolderForAccount> {
+        GetAutoExpandFolderForAccount(
+            accountManager = get(),
+        )
+    }
+
     viewModel {
         DrawerViewModel(
             getDrawerConfig = get(),
             getDisplayAccounts = get(),
             getDisplayFoldersForAccount = get(),
+            getAutoExpandFolderForAccount = get(),
             getDisplayTreeFolder = get(),
             syncAccount = get(),
             syncAllAccounts = get(),

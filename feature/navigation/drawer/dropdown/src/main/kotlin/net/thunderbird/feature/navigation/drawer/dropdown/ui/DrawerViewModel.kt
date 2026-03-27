@@ -37,6 +37,7 @@ internal class DrawerViewModel(
     private val getDisplayAccounts: UseCase.GetDisplayAccounts,
     private val getDisplayFoldersForAccount: UseCase.GetDisplayFoldersForAccount,
     private val getDisplayTreeFolder: UseCase.GetDisplayTreeFolder,
+    private val getAutoExpandFolderForAccount: UseCase.GetAutoExpandFolderForAccount,
     private val syncAccount: UseCase.SyncAccount,
     private val syncAllAccounts: UseCase.SyncAllAccounts,
     private val maxNestingLevel: Int = 2,
@@ -219,6 +220,14 @@ internal class DrawerViewModel(
     private fun openAccount(account: DisplayAccount?) {
         if (account != null) {
             emitEffect(Effect.OpenAccount(account.id))
+            val folder = getAutoExpandFolderForAccount
+                .invoke(account.id)
+            if (folder != null) {
+                viewModelScope.launch {
+                    delay(DRAWER_CLOSE_DELAY)
+                    emitEffect(Effect.CloseDrawer)
+                }
+            }
         }
     }
 
