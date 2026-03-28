@@ -46,9 +46,9 @@ class MessageListScreenAccessibilityState(
         stateDescription.getValue(message.toMessageStateDescription())
 
     private fun MessageItemUi.toMessageStateDescription(): MessageListStateDescription = when (state) {
-        MessageItemUi.State.New if isActive -> MessageListStateDescription.ActiveNewMessage
-        MessageItemUi.State.Read if isActive -> MessageListStateDescription.ActiveReadMessage
-        MessageItemUi.State.Unread if isActive -> MessageListStateDescription.ActiveUnreadMessage
+        MessageItemUi.State.New if active -> MessageListStateDescription.ActiveNewMessage
+        MessageItemUi.State.Read if active -> MessageListStateDescription.ActiveReadMessage
+        MessageItemUi.State.Unread if active -> MessageListStateDescription.ActiveUnreadMessage
         MessageItemUi.State.New if selected -> MessageListStateDescription.SelectedNewMessage
         MessageItemUi.State.Read if selected -> MessageListStateDescription.SelectedReadMessage
         MessageItemUi.State.Unread if selected -> MessageListStateDescription.SelectedUnreadMessage

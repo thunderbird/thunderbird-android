@@ -2,16 +2,13 @@ package net.thunderbird.feature.mail.message.list.ui.component.organism
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.style.TextOverflow
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
-import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemAccountIndicator
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemTrailingElement
 import net.thunderbird.feature.mail.message.list.ui.component.config.rememberMessageItemConfiguration
 import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageConversationCounterBadgeDefaults
-import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageItemSenderTitleSmall
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageItemSenderSubjectFirstLine
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageItemSenderSubjectSecondLine
 import net.thunderbird.feature.mail.message.list.ui.component.organism.MessageItemDefaults.toContentPadding
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 
@@ -43,30 +40,29 @@ fun UnreadMessageItem(
     onFavouriteChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val swapSenderWithSubject = !preferences.senderAboveSubject
     MessageItem(
         firstLine = {
-            MessageItemSenderTitleSmall(
-                sender = AnnotatedString(state.senders.displayName),
-                subject = state.subject,
-                swapSenderWithSubject = swapSenderWithSubject,
-                threadCount = state.threadCount,
-                color = if (swapSenderWithSubject) MainTheme.colors.primary else MainTheme.colors.onSurface,
+            MessageItemSenderSubjectFirstLine(
+                senders = state.senders,
+                subject = MessageItemDefaults.buildSubjectAnnotatedString(state.subject),
+                useSender = preferences.senderAboveSubject,
             )
         },
-        secondaryLine = { _, _ ->
-            if (swapSenderWithSubject) {
-                TextLabelLarge(text = state.senders.displayName, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            } else {
-                TextLabelLarge(text = state.subject, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            }
+        secondaryLine = { prefix, inlineContent ->
+            MessageItemSenderSubjectSecondLine(
+                senders = state.senders,
+                subject = MessageItemDefaults.buildSubjectAnnotatedString(state.subject),
+                useSender = !preferences.senderAboveSubject,
+                prefix = prefix,
+                inlineContent = inlineContent,
+            )
         },
         excerpt = state.excerpt,
         receivedAt = state.formattedReceivedAt,
         configuration = rememberMessageItemConfiguration(
             messageItemUi = state,
             preferences = preferences,
-            color = MessageConversationCounterBadgeDefaults.newMessageColor(),
+            color = MessageConversationCounterBadgeDefaults.unreadMessageColor(),
             accountIndicator = accountIndicator,
         ),
         onClick = onClick,
@@ -84,8 +80,8 @@ fun UnreadMessageItem(
         selected = state.selected,
         colors = when {
             state.selected -> MessageItemDefaults.selectedMessageItemColors()
-            state.isActive -> MessageItemDefaults.activeMessageItemColors()
-            else -> MessageItemDefaults.readMessageItemColors()
+            state.active -> MessageItemDefaults.activeMessageItemColors()
+            else -> MessageItemDefaults.defaultMessageItemColors()
         },
         contentPadding = preferences.density.toContentPadding(),
     )

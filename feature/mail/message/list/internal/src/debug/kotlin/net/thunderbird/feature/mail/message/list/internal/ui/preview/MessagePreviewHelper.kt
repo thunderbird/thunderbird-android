@@ -26,7 +26,6 @@ internal object MessagePreviewHelper {
     ) = MessageItemUi(
         state = state,
         id = id,
-        folderId = "folder-inbox",
         account = messageAccount,
         senders = ComposedAddressUi(
             displayName = senderName,
@@ -118,10 +117,28 @@ internal object MessagePreviewHelper {
     val conversationMessages = persistentListOf(
         createMessage(
             id = "msg-thread-1",
+            state = MessageItemUi.State.New,
             subject = "Re: Project Architecture Discussion",
             excerpt = "I agree with your approach. Let's schedule a follow-up.",
             formattedReceivedAt = "3:15 PM",
-            threadCount = 2,
+            threadCount = 300,
+        ),
+        createMessage(
+            id = "msg-thread-2",
+            state = MessageItemUi.State.Unread,
+            subject = "Re: Message List Project Discussion",
+            excerpt = "Awesome! Loved the new feature.",
+            formattedReceivedAt = "2:30 PM",
+            threadCount = 200,
+        ),
+        createMessage(
+            id = "msg-thread-3",
+            state = MessageItemUi.State.Read,
+            subject = "Re: Database Project Discussion",
+            excerpt = "We need to have a sync meeting to discuss more about this subject.",
+            formattedReceivedAt = "2:30 PM",
+            threadCount = 200,
+            hasAttachments = true,
         ),
         createMessage(
             id = "msg-2",

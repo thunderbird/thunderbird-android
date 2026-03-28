@@ -676,7 +676,7 @@ private fun createMessageUiItemList(
                 state = State.Unread,
                 id = "id$index",
                 accountId = accountId,
-            ).copy(isActive = true)
+            ).copy(active = true)
         }
     },
 ): List<MessageItemUi> = List(size) { builder(it) }
@@ -684,7 +684,6 @@ private fun createMessageUiItemList(
 private fun createMessageUiItem(
     state: State,
     id: String,
-    folderId: String = "mock",
     accountId: AccountId = AccountIdFactory.create(),
     senders: ComposedAddressUi = ComposedAddressUi(displayName = "sender"),
     subject: String = "mock subject",
@@ -700,7 +699,6 @@ private fun createMessageUiItem(
 ): MessageItemUi = MessageItemUi(
     state = state,
     id = id,
-    folderId = folderId,
     account = Account(id = accountId, color = Color.Unspecified),
     senders = senders,
     subject = subject,
