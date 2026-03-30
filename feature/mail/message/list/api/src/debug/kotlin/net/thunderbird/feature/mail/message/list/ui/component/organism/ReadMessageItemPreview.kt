@@ -194,7 +194,6 @@ private fun PreviewDefault(
                 forwarded = params.forwarded,
                 selected = params.selected,
                 threadCount = params.threadCount,
-                folderId = "folderId",
             ),
             preferences = MessageListPreferences(
                 density = UiDensity.Default,
@@ -243,7 +242,6 @@ private fun PreviewCompact(
                 forwarded = params.forwarded,
                 selected = params.selected,
                 threadCount = params.threadCount,
-                folderId = "folderId",
             ),
             preferences = MessageListPreferences(
                 density = UiDensity.Compact,
@@ -292,7 +290,6 @@ private fun PreviewRelaxed(
                 forwarded = params.forwarded,
                 selected = params.selected,
                 threadCount = params.threadCount,
-                folderId = "folderId",
             ),
             preferences = MessageListPreferences(
                 density = UiDensity.Relaxed,
@@ -341,7 +338,6 @@ private fun PreviewDefaultWithoutAccountIndicator(
                 forwarded = params.forwarded,
                 selected = params.selected,
                 threadCount = params.threadCount,
-                folderId = "folderId",
             ),
             preferences = MessageListPreferences(
                 density = UiDensity.Default,

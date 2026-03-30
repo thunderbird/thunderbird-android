@@ -3,14 +3,15 @@ package net.thunderbird.feature.mail.message.list.ui.state
 import androidx.compose.runtime.Immutable
 
 /**
- * Represents the UI state for a single message item in the message list.
+ * Represents the UI state of a single message item in a message list.
  *
- * This data class encapsulates all the information required to render a message item,
- * including its display state, identifiers, sender/recipient details, content snippets, and metadata.
+ * This immutable data class encapsulates all the information needed to display a message
+ * in the message list UI, including its read/unread state, sender information, content
+ * preview, metadata flags (starred, encrypted, etc.), and selection state. It supports
+ * both single messages and threaded conversations through the threadCount property.
  *
  * @property state The current display state of the message (e.g., Read, Unread, Selected).
  * @property id The unique identifier for the message.
- * @property folderId The identifier of the folder containing this message.
  * @property account The account to which this message belongs.
  * @property senders The composed representation of the message sender(s) with display name,
  *  styling, and avatar.
@@ -24,14 +25,13 @@ import androidx.compose.runtime.Immutable
  * @property forwarded A flag indicating whether the message has been forwarded.
  * @property threadCount The number of messages in the thread. A value of 0-1 indicates a single
  *  message (not threaded).
- * @property isActive A flag indicating whether the message is currently active. Defaults to `false`.
+ * @property active A flag indicating whether the message is currently active. Defaults to `false`.
  *  **NOTE:** Only available when Home Screen is on Split mode.
  */
 @Immutable
 data class MessageItemUi(
     val state: State,
     val id: String,
-    val folderId: String,
     val account: Account,
     val senders: ComposedAddressUi,
     val subject: String,
@@ -44,7 +44,7 @@ data class MessageItemUi(
     val forwarded: Boolean,
     val selected: Boolean,
     val threadCount: Int = 0,
-    val isActive: Boolean = false,
+    val active: Boolean = false,
 ) {
     /**
      * Represents the visual and interactive state of a `MessageItem`.
