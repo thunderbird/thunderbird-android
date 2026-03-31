@@ -176,9 +176,8 @@ class SwipeableRowState internal constructor(
         if (swipeState != SwipeState.Swiping && swipeState != SwipeState.Revealed) return@DraggableState
 
         // When Revealed with non-auto-reset, only allow closing gestures (toward zero)
-        if (swipeState == SwipeState.Revealed) {
-            val revealBehaviour = activeBehaviour as? SwipeBehaviour.Reveal
-            if (revealBehaviour != null && !revealBehaviour.autoReset && !isClosingGesture(delta)) {
+        if (swipeState == SwipeState.Revealed && activeBehaviour is SwipeBehaviour.Action) {
+            if (!isClosingGesture(delta)) {
                 return@DraggableState
             }
         }
@@ -188,7 +187,7 @@ class SwipeableRowState internal constructor(
         val targetBehaviour = if (targetOffset >= 0f) startToEndBehaviour else endToStartBehaviour
         val targetMaxOffset = when (targetBehaviour) {
             is SwipeBehaviour.Dismiss -> layoutWidth
-            is SwipeBehaviour.Reveal ->
+            is SwipeBehaviour.Reveal, is SwipeBehaviour.Action ->
                 (targetBehaviour.percentageThreshold * layoutWidth) + SWIPE_BEHAVIOUR_REVEAL_EXTENSION
 
             is SwipeBehaviour.Disabled -> 0f
@@ -285,9 +284,9 @@ class SwipeableRowState internal constructor(
             animatedOffset.animateTo(targetValue = finalOffset, activeBehaviour.settleAnimationSpec)
 
             when (behaviour) {
-                is SwipeBehaviour.Reveal if (behaviour.autoReset && willSettlePastThreshold) -> {
+                is SwipeBehaviour.Action if (willSettlePastThreshold) -> {
                     swipeState = SwipeState.Resetting
-                    delay(behaviour.autoResetDelayMillis)
+                    delay(behaviour.autoCloseDelayMillis)
                     pendingOffset = 0f
                     animatedOffset.animateTo(targetValue = 0f, behaviour.settleAnimationSpec)
                     swipeState = SwipeState.Settled
@@ -318,6 +317,7 @@ class SwipeableRowState internal constructor(
                 layoutWidth * SWIPE_BEHAVIOUR_DISMISS_OFFSCREEN_MULTIPLIER
 
             is SwipeBehaviour.Reveal if willSettlePastThreshold -> behaviour.percentageThreshold * layoutWidth
+            is SwipeBehaviour.Action if willSettlePastThreshold -> behaviour.percentageThreshold * layoutWidth
             is SwipeBehaviour.Disabled -> 0f
             else -> 0f
         }

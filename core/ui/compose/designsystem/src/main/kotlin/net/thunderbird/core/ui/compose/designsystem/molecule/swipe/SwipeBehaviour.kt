@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeBehaviour.Companion.DEFAULT_AUTO_RESET_DELAY_MILLIS
 
 /**
  * Defines the behaviour of a swipeable component when a swipe gesture is
@@ -42,28 +41,30 @@ sealed interface SwipeBehaviour {
     /**
      * Defines a reveal swipe behaviour that allows content to be shown or hidden
      * through swipe gestures.
-     *
-     * @property autoReset Whether the row should automatically return to its initial
-     *  position after being revealed after a while. Defaults to `false`
-     * @property autoResetDelayMillis The duration to wait before automatically resetting
-     *  the revealed state back to the initial position. Only applies when [autoReset]
-     *  is enabled. Defaults to [DEFAULT_AUTO_RESET_DELAY_MILLIS].
      */
     data class Reveal(
         override val threshold: Dp = DEFAULT_THRESHOLD,
         override val settleAnimationSpec: AnimationSpec<Float> = DefaultSettleAnimation,
         override val enableHapticFeedback: Boolean = true,
-        val autoReset: Boolean = false,
-        val autoResetDelayMillis: Duration = DEFAULT_AUTO_RESET_DELAY_MILLIS.milliseconds,
+    ) : SwipeBehaviour
+
+    /**
+     * Defines a swipe behaviour that triggers an action and then automatically
+     * resets the swipe state after a specified delay.
+     *
+     * @property autoCloseDelayMillis The duration after which the swipe state will be reset
+     * to its default state.
+     */
+    data class Action(
+        override val threshold: Dp = DEFAULT_THRESHOLD,
+        override val settleAnimationSpec: AnimationSpec<Float> = DefaultSettleAnimation,
+        override val enableHapticFeedback: Boolean = true,
+        val autoCloseDelayMillis: Duration = DEFAULT_AUTO_RESET_DELAY_MILLIS.milliseconds,
     ) : SwipeBehaviour
 
     /**
      * Defines a reveal swipe behaviour that allows content to be dismissed by swiping
      * past the threshold.
-     *
-     * This behaviour differs from Reveal in that it is typically used for destructive
-     * or final actions where the row should be removed from view after completing the
-     * swipe gesture.
      *
      * @property dismissTransition The exit transition that will be applied when the
      *  item is dismissed.

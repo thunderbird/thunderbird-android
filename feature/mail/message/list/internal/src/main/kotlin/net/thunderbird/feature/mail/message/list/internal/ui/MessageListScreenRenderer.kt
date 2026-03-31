@@ -139,8 +139,7 @@ private val SwipeAction.behaviour: SwipeBehaviour
         SwipeAction.ToggleRead,
         SwipeAction.ToggleStar,
         SwipeAction.ArchiveSetupArchiveFolder,
-        ->
-            SwipeBehaviour.Reveal(autoReset = true)
+        -> SwipeBehaviour.Action()
 
         SwipeAction.Archive,
         SwipeAction.Delete,

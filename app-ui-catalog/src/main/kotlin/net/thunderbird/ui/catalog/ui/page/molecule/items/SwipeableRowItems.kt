@@ -111,10 +111,10 @@ fun SwipeableRowItems(modifier: Modifier = Modifier) {
             ) { threshold -> SwipeBehaviour.Reveal(threshold = threshold) }
             SwipeSection(
                 threshold = thresholdDp,
-                subtitle = "Swipe to Reveal with Auto reset",
+                subtitle = "Swipe Action",
                 onSwipeEnd = ::onSwipeEnd,
             ) { threshold ->
-                SwipeBehaviour.Reveal(threshold = threshold, autoReset = true)
+                SwipeBehaviour.Action(threshold = threshold)
             }
         }
     }
@@ -270,10 +270,14 @@ private fun SwipeableRowItems(
                     text = backgroundItemText(direction),
                     modifier = Modifier
                         .then(
-                            if (behaviour is SwipeBehaviour.Reveal) {
-                                Modifier.width(behaviour.threshold)
-                            } else {
-                                Modifier.fillMaxWidth()
+                            when (behaviour) {
+                                is SwipeBehaviour.Reveal, is SwipeBehaviour.Action -> {
+                                    Modifier.width(behaviour.threshold)
+                                }
+
+                                else -> {
+                                    Modifier.fillMaxWidth()
+                                }
                             },
                         )
                         .swipeableCommonTextPadding(),
@@ -356,7 +360,7 @@ private val SwipeBehaviour.actionId: Int
     get() = when (this) {
         SwipeBehaviour.Disabled -> -1
         is SwipeBehaviour.Dismiss -> R.string.swipe_accessibility_dismiss_custom_action
-        is SwipeBehaviour.Reveal if autoReset -> R.string.swipe_accessibility_reveal_and_reset_custom_action
+        is SwipeBehaviour.Action -> R.string.swipe_accessibility_reveal_and_reset_custom_action
         is SwipeBehaviour.Reveal -> R.string.swipe_accessibility_reveal_custom_action
     }
 
