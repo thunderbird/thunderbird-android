@@ -21,42 +21,21 @@ import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeBehaviou
 @Immutable
 sealed interface SwipeBehaviour {
     /**
-     * The threshold value that determines when a swipe gesture should trigger
-     * a complete swipe action.
-     *
-     * This value represents the proportion of the swipeable area that must
-     * be traversed before the swipe is considered complete. When the swipe
-     * distance exceeds this threshold, the row will animate to its final
-     * swiped position.
-     *
-     * If the threshold is not met when the gesture ends, the row will animate
-     * back to its original position.
-     *
-     * The value must be between 0.25 and 1.0, where:
-     * - 0.25 means the swipe is triggered when 25% of the available swipe
-     *   distance is traversed
-     * - 1.0 means the entire swipe distance must be traversed to trigger
-     *   the action
-     *
-     * A lower threshold makes it easier to trigger swipe actions, while a higher
-     * threshold requires more deliberate swipe gestures.
+     * @return The threshold distance that determines when a swipe gesture should trigger
      */
     val threshold: Dp
 
     /**
-     * The animation specification used when the swipe gesture ends and the row settles to its
-     * final position (revealed, dismissed, or back to resting).
-     *
-     * For example, a bouncy spring for reveal settle and a fast tween for dismissing.
+     * @return The animation specification used when the swipe gesture ends and the row
+     * settles to its final position (revealed, dismissed, or back to resting).
      */
     val settleAnimationSpec: AnimationSpec<Float>
 
     /**
      * Determines whether haptic feedback should be triggered during swipe interactions.
      *
-     * When set to `true`, the device will provide tactile feedback to the user during
-     * swipe gestures, enhancing the user experience with physical confirmation of actions.
-     * When set to `false`, no haptic feedback will be generated.
+     * @return `true`, the device will provide tactile feedback to the user during
+     * swipe gestures; otherwise `false`.
      */
     val enableHapticFeedback: Boolean
 
@@ -120,16 +99,6 @@ sealed interface SwipeBehaviour {
         /**
          * The default animation specification used for settling swipe gestures back to
          * their resting position.
-         *
-         * This animation uses a spring-based motion with moderate damping and high stiffness
-         * to create a responsive, natural-feeling return animation.
-         * The spring characteristics are tuned to provide a quick yet smooth transition that
-         * feels snappy without being jarring.
-         *
-         * This default can be overridden by providing a custom animation specification to the
-         * swipe behaviour.
-         *
-         * @see SwipeBehaviour.settleAnimationSpec
          */
         val DefaultSettleAnimation = SpringSpec(
             dampingRatio = 0.75f,
@@ -140,15 +109,6 @@ sealed interface SwipeBehaviour {
         /**
          * The default animation specification used for dismissing the [SwipeableRow] when
          * the swipe distance exceeds the [threshold], removing it from screen.
-         *
-         * This animation uses a tween interpolation with a duration of 250 milliseconds
-         * and applies [FastOutSlowInEasing] for smooth, natural motion. The animation is
-         * applied when a swipe gesture is released.
-         *
-         * This default can be overridden by providing a custom animation specification to the
-         * [dismiss swipe behaviour][Dismiss].
-         *
-         * @see SwipeBehaviour.Dismiss.dismissTransition
          */
         val DefaultDismissAnimation: AnimationSpec<Float> = tween(
             durationMillis = 250,

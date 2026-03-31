@@ -72,15 +72,10 @@ class SwipeableRowState internal constructor(
     )
 
     /**
-     * The current direction of the swipe gesture based on the pending offset value.
+     * The current direction of the swipe gesture based on the [pendingOffset] value.
      *
-     * This property is derived from the pending offset and determines the swipe state:
-     * - [SwipeDirection.Settled] when the offset is zero or NaN, indicating no active swipe
-     * - [SwipeDirection.StartToEnd] when the offset is positive, indicating a rightward swipe
-     * - [SwipeDirection.EndToStart] when the offset is negative, indicating a leftward swipe
-     *
-     * The value updates automatically as the swipe gesture progresses and is used to
-     * coordinate the display of directional background content and trigger callbacks.
+     * @return [SwipeDirection.Settled] when no changes, [SwipeDirection.StartToEnd] when offset > 0;
+     *  otherwise [SwipeDirection.EndToStart].
      */
     val swipeDirection: SwipeDirection by derivedStateOf {
         when {
@@ -94,9 +89,8 @@ class SwipeableRowState internal constructor(
      * The current swipe progress as a fraction from 0 to 1, representing how far the swipe
      * has progressed toward the active behaviour's threshold.
      *
-     * A value of 0 means the row is at rest, and 1 means the swipe has reached or exceeded
-     * the threshold. Callers can use this to drive background content animations such as
-     * icon scaling, alpha transitions, or colour changes.
+     * @return 0 if the row is at rest, and 1 means the swipe has reached or exceeded
+     * the threshold.
      */
     val swipeProgress: Float by derivedStateOf {
         if (layoutWidth == 0f) {
@@ -108,20 +102,13 @@ class SwipeableRowState internal constructor(
 
     /**
      * The current state of the swipeable row.
-     *
-     * Tracks the lifecycle of swipe interactions, transitioning between settled, swiping,
-     * revealed, dismissed, and resetting states as the user interacts with the row or
-     * as animations complete.
      */
     internal var swipeState: SwipeState by mutableStateOf(initialSwipeState)
 
     /**
      * Indicates whether swiping from the start edge to the end edge is enabled.
      *
-     * @returns `true` if the [startToEndBehaviour] is not [SwipeBehaviour.Disabled],
-     * allowing the user to perform a swipe gesture from the start edge toward the end
-     * edge of the row. Returns `false` if the behaviour is disabled, preventing any
-     * start-to-end swipe gestures.
+     * @return `true` if the [startToEndBehaviour] is not [SwipeBehaviour.Disabled]; otherwise `false`.
      */
     internal val enableSwipeFromStartToEnd: Boolean
         get() = startToEndBehaviour !is SwipeBehaviour.Disabled
@@ -129,20 +116,16 @@ class SwipeableRowState internal constructor(
     /**
      * Indicates whether swiping from the end edge to the start edge is enabled.
      *
-     * @returns `true` if the [endToStartBehaviour] is not [SwipeBehaviour.Disabled],
-     * allowing the user to perform a swipe gesture from the end edge toward the start
-     * edge of the row. Returns `false` if the behaviour is disabled, preventing any
-     * end-to-start swipe gestures.
+     * @return `true` if the [endToStartBehaviour] is not [SwipeBehaviour.Disabled; otherwise `false`.
      */
     internal val enableSwipeFromEndToStart: Boolean
         get() = endToStartBehaviour !is SwipeBehaviour.Disabled
 
     /**
-     * Indicates whether the swipeable row is currently in a state that accepts gesture input.
+     * Whether the row currently accepts gesture input.
      *
-     * @returns `true` when the row can process swipe gestures, and `false` when gestures should be
-     * blocked or ignored. Gestures are not accepted when the row is in a transitional resetting
-     * state or had been dismissed.
+     * @return `true` if gestures can be processed, `false` if the row is dismissed or
+     * currently resetting.
      */
     internal val acceptsGestures: Boolean
         get() = swipeState != SwipeState.Resetting && swipeState != SwipeState.Dismissed
@@ -153,11 +136,10 @@ class SwipeableRowState internal constructor(
     internal val accessibilityState = AccessibilityState()
 
     /**
-     * Returns the exit transition to be applied when the swipeable row is being dismissed.
+     * The [ExitTransition] to be applied when the swipeable row is being dismissed.
      *
-     * @returns If the current active behaviour is a dismiss action, this property returns the
-     * configured dismiss transition from that behaviour. Otherwise, returns [ExitTransition.None]
-     * indicating no transition should be applied.
+     * @return the [SwipeBehaviour.Dismiss.dismissTransition] if the active behavior is
+     * a dismiss action; otherwise, returns [ExitTransition.None].
      */
     internal val activeExitTransition: ExitTransition
         get() = (activeBehaviour as? SwipeBehaviour.Dismiss)?.dismissTransition ?: ExitTransition.None
@@ -167,18 +149,9 @@ class SwipeableRowState internal constructor(
     private val decayAnimationSpec = splineBasedDecay<Float>(density)
 
     /**
-     * Gets the currently active swipe behaviour based on the current animated offset value.
+     * The [SwipeBehaviour] currently controlling calculations and feedback based on [animatedOffset].
      *
-     * This property determines which swipe behaviour should be used by examining the current
-     * swipe direction indicated by the animated offset:
-     * - When the offset is positive (swiping from start to end), returns [startToEndBehaviour]
-     * - When the offset is negative (swiping from end to start), returns [endToStartBehaviour]
-     * - When the offset is zero (at rest position), defaults to [startToEndBehaviour]
-     *
-     * The active behaviour controls threshold calculations, animations, and haptic feedback
-     * for the current swipe interaction.
-     *
-     * @return The [SwipeBehaviour] that should be applied based on the current swipe state
+     * @return [startToEndBehaviour] if the offset is positive or zero; [endToStartBehaviour] if negative.
      */
     internal val activeBehaviour: SwipeBehaviour
         get() = when {
@@ -198,10 +171,6 @@ class SwipeableRowState internal constructor(
 
     /**
      * [DraggableState] that handles the drag delta during swipe gestures for the swipeable row.
-     *
-     * This state processes each drag delta and updates the swipe offset based on various constraints
-     * and conditions. It ensures that the swipe gesture respects the configured maximum allowed offset,
-     * directional permissions, and special behaviour for revealed states.
      */
     internal val draggableState = DraggableState { delta ->
         if (swipeState != SwipeState.Swiping && swipeState != SwipeState.Revealed) return@DraggableState
@@ -264,18 +233,11 @@ class SwipeableRowState internal constructor(
     }
 
     /**
-     * Handles the completion of a drag gesture on the swipeable row and determines
-     * the final settled state.
+     * Handles the completion of a drag gesture and determines the final settled state.
      *
-     * This method is called when the user releases their touch during a swipe gesture.
-     *
-     * @param velocity The velocity of the drag gesture when released, measured in
-     *  pixels per second.
-     *  Positive values indicate movement from start to end, negative values indicate
-     *  movement from end to start
-     * @return `true` if the swipe has completed and the row settled to a non-zero
-     *  offset position (revealed or dismissed), `false` if the row returned to its
-     *  resting position at zero offset
+     * @param velocity The velocity of the drag gesture when released in pixels per second.
+     * @return `true` if the row settled to a revealed or dismissed state, `false` if it
+     *  returned to the resting position.
      */
     internal fun onDragStopped(velocity: Float): Boolean {
         dragAnimationJob?.cancel()
@@ -413,15 +375,6 @@ class SwipeableRowState internal constructor(
 
     /**
      * Manages accessibility-related state and actions for the swipeable row component.
-     *
-     * This inner class provides accessibility support by enabling users to perform swipe
-     * actions through accessibility services (such as TalkBack) rather than direct touch
-     * gestures. It translates accessibility commands into the appropriate swipe animations
-     * and state transitions.
-     *
-     * The class handles accessibility-triggered swipe gestures by calculating the final
-     * offset position and animating the swipeable content to settle at the appropriate
-     * destination based on the specified direction and configured swipe behaviour.
      */
     internal inner class AccessibilityState {
         internal fun swipeToDirection(direction: SwipeDirection) {
@@ -477,24 +430,12 @@ class SwipeableRowState internal constructor(
 }
 
 /**
- * Creates and remembers a [SwipeableRowState] that persists across recompositions.
+ * Creates and remembers a [SwipeableRowState] that persists across configuration changes.
  *
- * This function provides a stateful holder for managing the swipe state of a swipeable row component.
- * The state is remembered across recompositions and will be recreated only if any of the key
- * parameters (density, behaviours, or accessibility actions) change.
- *
- * @param startToEndBehaviour The swipe behaviour to apply when swiping from the start edge to the
- *  end edge (left to right in LTR layouts, right to left in RTL layouts). Defaults to a dismiss
- *  behaviour with default settings.
- * @param endToStartBehaviour The swipe behaviour to apply when swiping from the end edge to the
- *  start edge (right to left in LTR layouts, left to right in RTL layouts). Defaults to a dismiss
- *  behaviour with default settings.
- * @param accessibilityActions An immutable list of accessibility actions that provide alternative
- *  ways to perform swipe gestures for users relying on accessibility services. Defaults to an
- *  empty list.
- *
- * @return A [SwipeableRowState] instance that manages the swipe state, animations, and interactions
- *  for a swipeable row component.
+ * @param startToEndBehaviour The behaviour when swiping from start to end.
+ * @param endToStartBehaviour The behaviour when swiping from end to start.
+ * @param accessibilityActions Actions for users relying on accessibility services.
+ * @return A [SwipeableRowState] to manage swipe state, animations, and interactions.
  */
 @Composable
 fun rememberSwipeableRowState(

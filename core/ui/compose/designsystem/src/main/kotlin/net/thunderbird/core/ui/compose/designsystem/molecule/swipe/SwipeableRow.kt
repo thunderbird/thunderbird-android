@@ -35,12 +35,8 @@ import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectio
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.fork.draggable
 
 /**
- * A composable that provides a swipeable row, allowing users to reveal background actions
- * by swiping in either horizontal direction.
- *
- * This component wraps its main [content] in a container that can be swiped from
- * [Start-to-End][StartToEnd] (e.g., left-to-right in LTR layouts) or [End-to-Start][EndToStart].
- * Swiping reveals the [backgroundContent], which can be customized based on the swipe direction.
+ * Provides a swipeable row, allowing users to reveal background actions by swiping in either
+ * horizontal direction.
  *
  * @param state The state object that manages the swipe behaviour, created using
  *  [rememberSwipeableRowState]. It holds information about the current swipe progress,
@@ -151,11 +147,6 @@ private fun performHapticFeedback(
 /**
  * Builds accessibility actions for the swipeable row component based on configured custom accessibility
  * actions.
- *
- * This composable function creates a list of [CustomAccessibilityAction] instances that allow users with
- * accessibility services to programmatically trigger swipe gestures without performing physical swipe
- * gestures. Each action is mapped from the configured custom accessibility actions with localized
- * descriptions.
  *
  * @param onSwipeEnd Callback function invoked when an accessibility action is triggered, receiving
  * the [SwipeDirection] corresponding to the triggered action (either [SwipeDirection.StartToEnd]

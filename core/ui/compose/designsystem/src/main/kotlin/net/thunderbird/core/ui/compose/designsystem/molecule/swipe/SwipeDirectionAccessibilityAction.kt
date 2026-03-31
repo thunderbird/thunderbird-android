@@ -6,43 +6,21 @@ import net.thunderbird.core.common.resources.StringRes
 
 /**
  * Defines accessibility actions for swipe gestures in horizontal directions.
- *
- * This sealed interface represents accessibility actions that can be performed on swipeable
- * components, allowing users with accessibility services to trigger swipe gestures
- * programmatically. Each implementation specifies both the action label and description
- * that will be announced to accessibility services.
- *
- * These accessibility actions are integrated into the swipeable row component's semantics
- * to ensure that swipe gestures can be performed through accessibility services without
- * requiring physical touch interactions.
  */
 @Immutable
 sealed interface SwipeDirectionAccessibilityAction {
     /**
-     * String resource ID for the accessibility action label.
+     * The string resource ID for the accessibility action label (e.g., "Delete").
      *
-     * This resource ID references a localized string that describes the action name
-     * displayed to users through accessibility services when performing swipe gestures.
-     * The string resource is used to provide a user-friendly label for the custom
-     * accessibility action associated with a specific swipe direction.
-     *
-     * This will compose the full action label for the accessibility action, including
-     * the action name and description, so that users can easily identify the action
-     * that was triggered.
+     * This label is used to identify the specific action performed by the swipe gesture
      */
     @get:StringRes
     val actionStringRes: Int
 
     /**
-     * String resource ID for the description text of this swipe direction accessibility action.
+     * String resource ID for the format string used to describe this swipe action.
      *
-     * This resource is used to provide a detailed description to accessibility services about
-     * what happens when this swipe action is performed. The description helps users with
-     * accessibility needs to understand the result or effect of executing this action.
-     *
-     * It will include the [actionStringRes] string resource ID in the description, so that
-     * users can easily identify the action that was triggered. For example, the description
-     * for the StartToEndAccessibilityAction might be "Swipe from start to end to delete this item."
+     * This resource provides a template for accessibility services to explain the result
      */
     @get:StringRes
     val descriptionStringRes: Int
