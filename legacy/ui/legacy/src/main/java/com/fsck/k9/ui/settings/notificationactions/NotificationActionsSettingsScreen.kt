@@ -250,8 +250,7 @@ private fun NotificationActionRow(
             text = contentLabel,
             modifier = Modifier
                 .weight(1f)
-                .padding(start = MainTheme.spacings.triple, end = MainTheme.spacings.default)
-                .clearAndSetSemantics { },
+                .padding(start = MainTheme.spacings.triple, end = MainTheme.spacings.default),
         )
         Row(
             modifier = Modifier.padding(end = MainTheme.spacings.default),
@@ -259,13 +258,13 @@ private fun NotificationActionRow(
         ) {
             ArrowButton(
                 imageVector = Icons.Outlined.ExpandLess,
-                contentDescription = "$contentLabel. $itemStateDescription. ${buttonLabels.moveUpLabel}",
+                contentDescription = "$itemStateDescription. ${buttonLabels.moveUpLabel}",
                 enabled = rowState.canMoveUp,
                 onClick = buttonLabels.onMoveUp,
             )
             ArrowButton(
                 imageVector = Icons.Outlined.ExpandMore,
-                contentDescription = "$contentLabel. $itemStateDescription. ${buttonLabels.moveDownLabel}",
+                contentDescription = "$itemStateDescription. ${buttonLabels.moveDownLabel}",
                 enabled = rowState.canMoveDown,
                 onClick = buttonLabels.onMoveDown,
             )
