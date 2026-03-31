@@ -1,0 +1,4 @@
+Thunderbird version 18.0b3
+
+Fixed:
+- Crash occurred when retrieving images
