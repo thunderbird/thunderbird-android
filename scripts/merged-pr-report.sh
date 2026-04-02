@@ -28,7 +28,7 @@
 #   - PR           PR number and link
 #   - merged       Merge date (YYYY-MM-DD)
 #   - title        PR title
-#   - report       Status from labels (Highlight, Include, Exclude, Review)
+#   - report       Status from labels (Highlight, Include, FeatureFlag, Exclude, Review)
 #   - beta         First beta tag containing the merge commit (if any)
 #   - release      First release tag containing the merge commit (if any)
 #
@@ -127,6 +127,8 @@ map_report_status() {
     echo "Include"
   elif jq -e '.[] | select(.name == "report: exclude")' >/dev/null <<< "$labels_json"; then
     echo "Exclude"
+  elif jq -e '.[] | select(.name == "report: feature-flag")' >/dev/null <<< "$labels_json"; then
+    echo "FeatureFlag"
   else
     echo "$DEFAULT_STATUS"
   fi

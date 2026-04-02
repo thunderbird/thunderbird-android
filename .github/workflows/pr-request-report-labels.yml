@@ -33,16 +33,17 @@ jobs:
 
           include_count="$(jq '[.[] | select(.name == "report: include")] | length' <<< "$labels_json")"
           exclude_count="$(jq '[.[] | select(.name == "report: exclude")] | length' <<< "$labels_json")"
+          feature_flag_count="$(jq '[.[] | select(.name == "report: feature-flag")] | length' <<< "$labels_json")"
           highlight_count="$(jq '[.[] | select(.name == "report: highlight")] | length' <<< "$labels_json")"
 
-          total_count=$((include_count + exclude_count + highlight_count))
+          total_count=$((include_count + exclude_count + feature_flag_count + highlight_count))
 
           if [ "$total_count" -eq 0 ]; then
             echo "valid=false" >> "$GITHUB_OUTPUT"
-            echo "message=Missing report label. Set exactly one of: \`report: include\`, \`report: exclude\` OR \`report: highlight\`." >> "$GITHUB_OUTPUT"
+            echo "message=Missing report label. Set exactly one of: \`report: include\`, \`report: highlight\`, \`report: feature-flag\` OR \`report: exclude\`." >> "$GITHUB_OUTPUT"
           elif [ "$total_count" -gt 1 ]; then
             echo "valid=false" >> "$GITHUB_OUTPUT"
-            echo "message=Only one report label is allowed: \`report: include\`, \`report: exclude\` OR \`report: highlight\`." >> "$GITHUB_OUTPUT"
+            echo "message=Only one report label is allowed: \`report: include\`, \`report: highlight\`, \`report: feature-flag\` OR \`report: exclude\`." >> "$GITHUB_OUTPUT"
           else
             echo "valid=true" >> "$GITHUB_OUTPUT"
           fi
