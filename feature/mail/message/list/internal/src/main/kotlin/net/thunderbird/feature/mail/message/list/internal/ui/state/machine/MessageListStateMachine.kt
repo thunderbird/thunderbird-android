@@ -35,7 +35,6 @@ private const val TAG = "MessageListStateMachine"
  */
 class MessageListStateMachine(
     private val logger: Logger,
-    @OptIn(ExperimentalTime::class)
     private val clock: Clock,
     private val scope: CoroutineScope,
     private val dispatch: (MessageListEvent) -> Unit,
@@ -66,12 +65,10 @@ class MessageListStateMachine(
 ) : StateMachine<MessageListState, MessageListEvent> by stateMachine {
     class Factory(
         private val logger: Logger,
-        @OptIn(ExperimentalTime::class)
         private val clock: Clock,
         private val debuggingSettingsPreferenceManager: DebuggingSettingsPreferenceManager,
     ) {
         fun create(scope: CoroutineScope, dispatch: (MessageListEvent) -> Unit): MessageListStateMachine =
-            @OptIn(ExperimentalTime::class)
             MessageListStateMachine(
                 logger = logger,
                 clock = clock,
