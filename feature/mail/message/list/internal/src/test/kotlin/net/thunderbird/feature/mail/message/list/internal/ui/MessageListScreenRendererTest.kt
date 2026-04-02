@@ -509,7 +509,6 @@ class MessageListScreenRendererTest : ComposeTest() {
                         state = state,
                         dispatchEvent = dispatchEvent,
                         onEffect = onEffect,
-                        preferences = preferences,
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
