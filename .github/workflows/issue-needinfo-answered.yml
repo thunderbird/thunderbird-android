@@ -16,7 +16,9 @@ jobs:
     if: |
       contains(github.event.issue.labels.*.name, 'status: needs information') &&
       contains(github.event.issue.labels.*.name, 'status: answered')
-    environment: botmobile
+    environment:
+      name: botmobile
+      deployment: false
     permissions:
       issues: write
       pull-requests: write
