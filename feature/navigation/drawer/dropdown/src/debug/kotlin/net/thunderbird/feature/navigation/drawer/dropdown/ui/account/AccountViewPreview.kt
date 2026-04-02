@@ -14,6 +14,7 @@ internal fun AccountViewPreview() {
             onClick = {},
             onAvatarClick = {},
             showAccountSelection = true,
+            isShowAnimations = true,
         )
     }
 }
@@ -27,6 +28,7 @@ internal fun AccountViewWithoutAccountPreview() {
             onClick = {},
             onAvatarClick = {},
             showAccountSelection = false,
+            isShowAnimations = true,
         )
     }
 }
