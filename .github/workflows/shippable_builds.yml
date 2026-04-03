@@ -1002,7 +1002,7 @@ jobs:
     environment: notify_matrix
     steps:
       - name: Get previous workflow status
-        uses: Mercymeilya/last-workflow-status@3418710aefe8556d73b6f173a0564d38bcfd9a43
+        uses: Mercymeilya/last-workflow-status@f86bce177498d6fdd3bda4113d7d93266cfc3fca
         id: last_status
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
