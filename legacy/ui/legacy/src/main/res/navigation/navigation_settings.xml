@@ -83,7 +83,6 @@
         android:id="@+id/changelogScreen"
         android:name="com.fsck.k9.ui.changelog.ChangelogFragment"
         android:label="@string/changelog_title"
-        tools:layout="@layout/fragment_changelog"
         >
 
         <argument
@@ -97,7 +96,6 @@
         android:id="@+id/recentChangesScreen"
         android:name="com.fsck.k9.ui.changelog.ChangelogFragment"
         android:label="@string/changelog_recent_changes_title"
-        tools:layout="@layout/fragment_changelog"
         >
 
         <argument
