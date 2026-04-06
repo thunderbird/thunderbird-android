@@ -35,7 +35,6 @@ import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.rememberSwipe
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenRenderer.Companion.TEST_TAG_MESSAGE_LIST_ROOT
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageItemSwipeBackground
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageListItem
-import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
@@ -54,7 +53,6 @@ internal class MessageListScreenRenderer : MessageListContract.MessageListScreen
         state: MessageListState,
         dispatchEvent: (MessageListEvent) -> Unit,
         onEffect: (MessageListEffect) -> Unit,
-        preferences: MessageListPreferences,
         modifier: Modifier,
         inAppNotificationEventFilter: (InAppNotification) -> Boolean,
     ) {
