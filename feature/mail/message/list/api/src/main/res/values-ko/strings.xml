@@ -9,4 +9,5 @@
     <string name="swipe_action_archive">보관</string>
     <string name="swipe_action_delete">삭제</string>
     <string name="swipe_action_spam">스팸</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 선택됨</string>
 </resources>

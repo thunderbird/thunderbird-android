@@ -12,4 +12,5 @@
     <string name="swipe_action_delete">Fuortsmite</string>
     <string name="swipe_action_spam">Net-winske</string>
     <string name="swipe_action_move">Ferpleatse…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selektearre</string>
 </resources>

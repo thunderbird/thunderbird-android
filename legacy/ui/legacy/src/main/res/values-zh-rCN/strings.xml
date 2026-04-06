@@ -35,7 +35,6 @@
     <string name="choose_folder_title">选择文件夹</string>
     <string name="choose_folder_move_title">移动到…</string>
     <string name="choose_folder_copy_title">复制到…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已选择</string>
     <string name="send_action">发送</string>
     <string name="empty_subject">主题为空，请再次单击以继续发送</string>
     <string name="reply_action">回复</string>

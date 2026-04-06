@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Alege dosar</string>
     <string name="choose_folder_move_title">Mută la…</string>
     <string name="choose_folder_copy_title">Copiază la…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selectate</string>
     <string name="send_action">Trimite</string>
     <string name="empty_subject">Subiectul nu este completat, clic din nou pentru a trimite oricum</string>
     <string name="reply_action">Răspunde</string>

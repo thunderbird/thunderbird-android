@@ -3,4 +3,5 @@
     <string name="swipe_action_archive">Arxiv</string>
     <string name="swipe_action_delete">Sil</string>
     <string name="swipe_action_spam">Spam</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seçildi</string>
 </resources>

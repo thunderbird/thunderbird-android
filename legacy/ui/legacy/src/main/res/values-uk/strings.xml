@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Вибрати Папку</string>
     <string name="choose_folder_move_title">Перемістити до…</string>
     <string name="choose_folder_copy_title">Копіювати до…</string>
-    <string name="actionbar_selected">Вибрано <xliff:g id="selection_count">%d</xliff:g></string>
     <string name="send_action">Надіслати</string>
     <string name="empty_subject">Не вказано тему листа, натисніть знову, щоб все одно надіслати</string>
     <string name="reply_action">Відповісти</string>

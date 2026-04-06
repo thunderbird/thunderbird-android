@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Valitse kansio</string>
     <string name="choose_folder_move_title">Siirrä…</string>
     <string name="choose_folder_copy_title">Kopioi…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valittu</string>
     <string name="send_action">Lähetä</string>
     <string name="empty_subject">Aihe on tyhjä, napsauta uudelleen lähettääksesi silti</string>
     <string name="reply_action">Vastaa</string>

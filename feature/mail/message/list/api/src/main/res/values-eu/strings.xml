@@ -12,4 +12,5 @@
     <string name="swipe_action_delete">Ezabatu</string>
     <string name="swipe_action_spam">Zabor-posta</string>
     <string name="swipe_action_move">Mugitu…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> hautatuta</string>
 </resources>

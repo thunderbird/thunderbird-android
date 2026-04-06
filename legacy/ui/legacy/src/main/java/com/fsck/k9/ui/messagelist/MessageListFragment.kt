@@ -169,6 +169,7 @@ import org.koin.core.parameter.parametersOf
 import app.k9mail.core.ui.legacy.designsystem.R as DesignSystemR
 import com.google.android.material.R as MaterialR
 import net.thunderbird.core.android.account.SortType as LegacySortType
+import net.thunderbird.feature.mail.message.list.R as MessageListApiR
 
 private const val TAG = "MessageListFragment"
 
@@ -1412,7 +1413,7 @@ class MessageListFragment :
     private fun updateActionMode() {
         val actionMode = actionMode ?: error("actionMode == null")
         val isAllSelected = stateSnapshot.messages.size == selectedMessagesCount
-        actionMode.title = getString(R.string.actionbar_selected, selectedMessagesCount)
+        actionMode.title = getString(MessageListApiR.string.actionbar_selected, selectedMessagesCount)
         actionModeCallback.showSelectAll(!isAllSelected)
 
         actionMode.invalidate()

@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Kies een map</string>
     <string name="choose_folder_move_title">Verplaatsen naar…</string>
     <string name="choose_folder_copy_title">Kopiëren naar…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> geselecteerd</string>
     <string name="send_action">Verzenden</string>
     <string name="empty_subject">Er is geen onderwerp ingevuld. Tik nogmaals om toch te versturen</string>
     <string name="reply_action">Beantwoorden</string>

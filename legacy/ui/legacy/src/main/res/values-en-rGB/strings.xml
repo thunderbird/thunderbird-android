@@ -148,7 +148,6 @@
     <string name="search_results">Search results</string>
     <string name="send_action">Send</string>
     <string name="read_receipt">Read receipt</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>
     <string name="search_everywhere_action">Search everywhere</string>
     <string name="send_alternate_action">Share</string>
     <string name="accounts_title">Accounts</string>

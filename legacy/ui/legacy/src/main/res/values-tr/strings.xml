@@ -34,7 +34,6 @@
     <string name="choose_folder_title">Klasör Seç</string>
     <string name="choose_folder_move_title">Buraya taşı…</string>
     <string name="choose_folder_copy_title">Buraya kopyala…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> tane seçildi</string>
     <string name="send_action">Gönder</string>
     <string name="empty_subject">Konu boş. Yine de göndermek için tıklayın</string>
     <string name="reply_action">Yanıtla</string>

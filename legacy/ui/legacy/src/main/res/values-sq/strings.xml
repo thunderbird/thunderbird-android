@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Zgjidhni Dosje</string>
     <string name="choose_folder_move_title">Shpjereni te…</string>
     <string name="choose_folder_copy_title">Kopjojeni te…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> të përzgjedhur</string>
     <string name="send_action">Dërgoje</string>
     <string name="empty_subject">Subjekti është i zbrazët, riprekeni që të dërgohet sido qoftë</string>
     <string name="reply_action">Përgjigjuni</string>

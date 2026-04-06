@@ -21,7 +21,6 @@
     <string name="compose_title_forward">Treuzkas</string>
     <string name="compose_title_forward_as_attachment">Treuzkas evel stagadenn</string>
     <string name="choose_folder_title">Dibab an teuliad</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> diuzet</string>
     <string name="send_action">Kas</string>
     <string name="empty_subject">Goullo eo an danvez, klikit en-dro evit kas memestra</string>
     <string name="reply_action">Respont</string>

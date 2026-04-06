@@ -10,4 +10,5 @@
     <string name="swipe_action_delete">Slet</string>
     <string name="swipe_action_spam">Spam</string>
     <string name="swipe_action_move">Flyt…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valgt</string>
 </resources>

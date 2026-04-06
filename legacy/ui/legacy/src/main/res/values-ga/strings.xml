@@ -9,7 +9,6 @@
     <string name="compose_title_compose">Cumadóirí</string>
     <string name="about_title">Maidir le <xliff:g id="app_name">%s</xliff:g></string>
     <string name="compose_title_forward">Ar Aghaidh</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> roghnaithe</string>
     <string name="forward_action">Ar Aghaidh</string>
     <string name="move_action">Bog</string>
     <string name="check_mail_action">Seiceáil an ríomhphost</string>
