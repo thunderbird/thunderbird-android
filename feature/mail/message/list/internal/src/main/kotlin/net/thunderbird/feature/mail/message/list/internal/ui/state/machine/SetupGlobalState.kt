@@ -50,5 +50,13 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.globalState
                 messages = state.messages.map { it.copy(selected = false) }.toImmutableList(),
             )
         }
+
+        transition<MessageItemEvent.OnFocusEnter> { currentState, event ->
+            currentState.withMetadata { copy(focusedMessage = event.message) }
+        }
+
+        transition<MessageItemEvent.OnFocusExit> { currentState, _ ->
+            currentState.withMetadata { copy(focusedMessage = null) }
+        }
     }
 }
