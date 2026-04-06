@@ -81,4 +81,16 @@ sealed interface MessageListEffect {
      * that have been discarded for that account.
      */
     data class DraftsDiscarded(val messagesIdByAccountId: Map<AccountId, List<Long>>) : MessageListEffect
+
+    /**
+     * Effect to update the state and appearance of the contextual action mode toolbar.
+     *
+     * @param title The text to be displayed in the action mode toolbar, usually indicating
+     * the number of currently selected messages.
+     * @param isAllSelected Whether all available messages in the current list are selected.
+     */
+    data class UpdateToolbarActionMode(
+        val title: String,
+        val isAllSelected: Boolean,
+    ) : MessageListEffect
 }
