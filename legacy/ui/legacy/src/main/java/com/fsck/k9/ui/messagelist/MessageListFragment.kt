@@ -2574,11 +2574,11 @@ class MessageListFragment :
     private fun SortCriteriaMenuList() {
         val (state, dispatch) = viewModel.observeWithoutEffect()
         val metadata = state.value.metadata
+        val folder = metadata.folder
+        val accountId = folder?.account?.id?.takeIf { it != UnifiedAccountId }
         val primarySortTypes = metadata.availablePrimarySortTypes
         val secondarySortTypes = metadata.availableSecondarySortTypes
         val currentSortCriteria = remember(metadata) {
-            val folder = metadata.folder
-            val accountId = folder?.account?.id
             metadata.sortCriteriaPerAccount.getValue(accountId)
         }
 
@@ -2596,7 +2596,7 @@ class MessageListFragment :
                 onSortTypeClick = { sortType ->
                     dispatch(
                         MessageListEvent.ChangeSortCriteria(
-                            accountId = null,
+                            accountId = accountId,
                             sortCriteria = currentSortCriteria.copy(
                                 primary = sortType,
                                 secondary = when {
@@ -2610,7 +2610,7 @@ class MessageListFragment :
                 onSecondarySortTypeClick = { sortType ->
                     dispatch(
                         MessageListEvent.ChangeSortCriteria(
-                            accountId = null,
+                            accountId = accountId,
                             sortCriteria = currentSortCriteria.copy(secondary = sortType),
                         ),
                     )
