@@ -17,6 +17,9 @@ sealed interface MessageItemEvent : MessageListEvent.UserEvent {
      */
     data class OnMessageClick(val message: MessageItemUi) : MessageItemEvent
 
+    data object SelectAll : MessageItemEvent
+    data object DeselectAll : MessageItemEvent
+
     /**
      * Event to toggle the selection state of one or more messages.
      *
