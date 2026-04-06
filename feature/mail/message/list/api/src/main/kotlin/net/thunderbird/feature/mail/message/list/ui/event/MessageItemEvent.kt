@@ -63,4 +63,7 @@ sealed interface MessageItemEvent : MessageListEvent.UserEvent {
      * @property message The message item that was swiped.
      */
     data class OnSwipeMessage(val message: MessageItemUi, val swipeAction: SwipeAction) : MessageItemEvent
+
+    data class OnFocusEnter(val message: MessageItemUi) : MessageItemEvent
+    data class OnFocusExit(val message: MessageItemUi) : MessageItemEvent
 }

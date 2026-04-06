@@ -1388,31 +1388,17 @@ class MessageListFragment :
         viewModel.event(MessageItemEvent.SelectAll)
     }
 
-    // TODO(#10775): Remove the unused suppression.
-    private fun toggleMessageSelect(@Suppress("unused") messageListItem: MessageListItem) {
-        // TODO(#10775): trigger message toggle select event.
-        updateAfterSelectionChange()
-    }
-
-    // TODO(#10775): Verify if message is selected. Also remove the unused suppression.
-    @Suppress("unused", "FunctionOnlyReturningConstant")
-    private fun isMessageSelected(messageListItem: MessageListItem): Boolean {
-        return false
-    }
-
-    private fun updateAfterSelectionChange() {
-        if (selectedMessagesCount == 0) {
-            actionMode?.finish()
-            actionMode = null
-            return
-        }
-
-        if (actionMode == null) {
-            startAndPrepareActionMode()
-        }
-
-        computeBatchDirection()
-        updateActionMode()
+    private fun toggleMessageSelect(messageListItem: MessageListItem) {
+        val state = viewModel.state.value
+        val preferences = state.preferences
+        val messageItem = messageListItem.toMessageItemUi(
+            showContactPicture = preferences?.showMessageAvatar == true,
+            isSelected = messageListItem.messageReference in selectedMessages,
+            isActive = messageListItem.messageReference == activeMessage,
+            monogram = "",
+            url = null,
+        )
+        viewModel.event(MessageItemEvent.ToggleSelectMessages(messageItem))
     }
 
     override fun onToggleMessageSelection(item: MessageListItem) {
@@ -1420,7 +1406,16 @@ class MessageListFragment :
     }
 
     override fun onToggleMessageFlag(item: MessageListItem) {
-        setFlag(item, Flag.FLAGGED, !item.isStarred)
+        val state = viewModel.state.value
+        val preferences = state.preferences
+        val messageItem = item.toMessageItemUi(
+            showContactPicture = preferences?.showMessageAvatar == true,
+            isSelected = item.messageReference in selectedMessages,
+            isActive = item.messageReference == activeMessage,
+            monogram = "",
+            url = null,
+        )
+        setFlag(messageItem, Flag.FLAGGED, !item.isStarred)
     }
 
     private fun updateActionMode() {
@@ -1442,13 +1437,14 @@ class MessageListFragment :
 //        actionModeCallback.showFlag(notAllStarred)
     }
 
-    private fun setFlag(messageListItem: MessageListItem, flag: Flag, newState: Boolean) {
-        val account = messageListItem.account
-        if (showingThreadedList && messageListItem.threadCount > 1) {
-            val threadRootId = messageListItem.threadRoot
-            messagingController.setFlagForThreads(account.id, listOf(threadRootId), flag, newState)
+    private fun setFlag(messageItemUi: MessageItemUi, flag: Flag, newState: Boolean) {
+        val account = messageItemUi.account
+        if (showingThreadedList && messageItemUi.threadCount > 1) {
+            // TODO
+//            val threadRootId = messageItemUi.threadRoot
+//            messagingController.setFlagForThreads(account.id, listOf(threadRootId), flag, newState)
         } else {
-            val messageId = messageListItem.databaseId
+            val messageId = messageItemUi.id.toLong()
             messagingController.setFlag(account.id, listOf(messageId), flag, newState)
         }
 
@@ -1812,14 +1808,11 @@ class MessageListFragment :
         changeSort(sortType)
     }
 
-    private val selectedMessage: MessageReference?
-        get() = selectedMessageListItem?.messageReference
+    private val focusedMessageReference: MessageReference?
+        get() = MessageReference.parse(focusedMessage?.messageReference)
 
-    private val selectedMessageListItem: MessageListItem?
-        get() {
-            // TODO(#10775): return adapter.getItemById(viewHolder.uniqueId)
-            return null
-        }
+    private val focusedMessage: MessageItemUi?
+        get() = viewModel.state.value.metadata.focusedMessage
 
     private val selectedMessages: List<MessageReference>
         get() = viewModel.state
@@ -1829,43 +1822,43 @@ class MessageListFragment :
             .mapNotNull { MessageReference.parse(it.messageReference) }
 
     override fun onDelete() {
-        selectedMessage?.let { message ->
+        focusedMessageReference?.let { message ->
             onDelete(listOf(message))
         }
     }
 
     override fun toggleMessageSelect() {
-        selectedMessageListItem?.let { messageListItem ->
-            toggleMessageSelect(messageListItem)
+        focusedMessage?.let { messageItem ->
+            viewModel.event(MessageItemEvent.ToggleSelectMessages(messageItem))
         }
     }
 
     override fun onToggleFlagged() {
-        selectedMessageListItem?.let { messageListItem ->
-            setFlag(messageListItem, Flag.FLAGGED, !messageListItem.isStarred)
+        focusedMessage?.let { messageListItem ->
+            setFlag(messageListItem, Flag.FLAGGED, !messageListItem.starred)
         }
     }
 
     override fun onToggleRead() {
-        selectedMessageListItem?.let { messageListItem ->
-            setFlag(messageListItem, Flag.SEEN, !messageListItem.isRead)
+        focusedMessage?.let { messageListItem ->
+            setFlag(messageListItem, Flag.SEEN, !messageListItem.starred)
         }
     }
 
     override fun onMove() {
-        selectedMessage?.let { message ->
+        focusedMessageReference?.let { message ->
             onMove(message)
         }
     }
 
     override fun onArchive() {
-        selectedMessage?.let { message ->
+        focusedMessageReference?.let { message ->
             onArchive(message)
         }
     }
 
     override fun onCopy() {
-        selectedMessage?.let { message ->
+        focusedMessageReference?.let { message ->
             onCopy(message)
         }
     }
@@ -2530,7 +2523,7 @@ class MessageListFragment :
                     )
                     item.toMessageItemUi(
                         showContactPicture = preferences.showMessageAvatar,
-                        isSelected = isMessageSelected(item),
+                        isSelected = false,
                         isActive = item.messageReference == activeMessage,
                         monogram = monogram,
                         url = url?.toString(),
