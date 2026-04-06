@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="18.0b4" versioncode="49" date="2026-04-06">
+        <change>Fixed: Deleted messages could remain visible in message list</change>
+    </release>
     <release version="18.0b3" versioncode="48" date="2026-03-31">
         <change>Fixed: Crash occurred when retrieving images from large messages</change>
     </release>
