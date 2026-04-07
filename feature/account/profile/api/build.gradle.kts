@@ -5,7 +5,6 @@ plugins {
 kotlin {
     android {
         namespace = "net.thunderbird.feature.account.profile"
-        withHostTest {}
     }
     sourceSets {
         commonMain.dependencies {

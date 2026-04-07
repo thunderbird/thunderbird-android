@@ -5,7 +5,6 @@ plugins {
 kotlin {
     android {
         namespace = "net.thunderbird.feature.search.legacy"
-        withHostTest {}
     }
     sourceSets {
         commonMain.dependencies {

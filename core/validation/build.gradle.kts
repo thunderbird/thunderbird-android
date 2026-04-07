@@ -5,7 +5,6 @@ plugins {
 kotlin {
     android {
         namespace = "net.thunderbird.core.validation"
-        withHostTest {}
     }
     sourceSets {
         commonMain.dependencies {

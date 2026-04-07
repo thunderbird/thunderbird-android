@@ -7,9 +7,6 @@ kotlin {
     android {
         namespace = "net.thunderbird.feature.notification.api"
         androidResources.enable = true
-        withHostTest {
-            isIncludeAndroidResources = true
-        }
     }
     sourceSets {
         commonMain.dependencies {

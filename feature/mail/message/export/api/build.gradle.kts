@@ -5,7 +5,6 @@ plugins {
 kotlin {
     android {
         namespace = "net.thunderbird.feature.mail.message.export"
-        withHostTest {}
     }
     sourceSets {
         commonMain.dependencies {
