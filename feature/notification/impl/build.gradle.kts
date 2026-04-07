@@ -29,10 +29,8 @@ kotlin {
             implementation(projects.core.ui.theme.api)
         }
         androidHostTest.dependencies {
-            implementation(libs.androidx.test.core)
             implementation(libs.mockito.core)
             implementation(libs.mockito.kotlin)
-            implementation(libs.robolectric)
         }
     }
 }

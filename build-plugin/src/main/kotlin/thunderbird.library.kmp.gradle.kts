@@ -40,6 +40,18 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.bundles.shared.kmp.android)
         }
+
+        androidHostTest.dependencies {
+            implementation(libs.bundles.shared.kmp.android.test)
+        }
+
+        jvmMain.dependencies {
+            implementation(libs.bundles.shared.kmp.jvm)
+        }
+
+        jvmTest.dependencies {
+            implementation(libs.bundles.shared.kmp.jvm.test)
+        }
     }
 }
 

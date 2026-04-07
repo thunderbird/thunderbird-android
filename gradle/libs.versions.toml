@@ -313,6 +313,7 @@ zxing = { module = "com.google.zxing:core", version.ref = "zxing" }
 
 [bundles]
 shared-kmp-common = [
+  "androidx-annotation",
   "koin-core",
   "kotlinx-collections-immutable",
   "kotlinx-coroutines-core",
@@ -323,6 +324,26 @@ shared-kmp-android = [
   "koin-android",
   "kotlinx-coroutines-android",
 ]
+shared-kmp-jvm = [
+
+]
+
+shared-kmp-common-test = [
+  "assertk",
+  "koin-test",
+  "kotlin-test",
+  "kotlin-test-junit",
+  "kotlinx-coroutines-test",
+  "turbine",
+]
+shared-kmp-android-test = [
+
+]
+shared-kmp-jvm-test = [
+
+]
+
+
 shared-kmp-compose-common = [
   "jetbrains-compose-lifecycle-runtime",
   "jetbrains-compose-lifecycle-viewmodel",
@@ -336,17 +357,21 @@ shared-kmp-compose-android = [
   "koin-compose",
   "koin-compose-viewmodel",
 ]
-shared-kmp-common-test = [
-  "assertk",
-  "koin-test",
-  "kotlin-test",
-  "kotlin-test-junit",
-  "kotlinx-coroutines-test",
-  "turbine",
+shared-kmp-compose-jvm = [
+
 ]
+
 shared-kmp-compose-common-test = [
   "jetbrains-compose-ui-test"
 ]
+shared-kmp-compose-android-test = [
+  "androidx-test-espresso-core",
+  "robolectric",
+]
+shared-kmp-compose-jvm-test = [
+
+]
+
 
 shared-jvm-main = [
   "koin-core",
@@ -362,6 +387,14 @@ shared-jvm-android-app = [
   "android-material",
   "androidx-activity",
   "androidx-core-splashscreen",
+]
+
+
+shared-jvm = [
+  "androidx-annotation",
+  "koin-core",
+  "kotlinx-coroutines-core",
+  "kotlinx-datetime",
 ]
 shared-jvm-android-compose = [
   "androidx-compose-foundation",

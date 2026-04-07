@@ -18,10 +18,6 @@ kotlin {
             implementation(projects.core.testing)
             implementation(projects.core.ui.testing)
         }
-
-        jvmTest.dependencies {
-            implementation(compose.desktop.currentOs)
-        }
     }
 }
 

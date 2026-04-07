@@ -26,12 +26,6 @@ kotlin {
         }
         androidHostTest.dependencies {
             implementation(projects.core.ui.compose.testing)
-            implementation(libs.bundles.shared.jvm.test.compose)
-            implementation(libs.bundles.shared.jvm.android.compose.debug)
-        }
-        jvmTest.dependencies {
-            implementation(libs.kotlinx.coroutines.test)
-            implementation(libs.bundles.shared.jvm.test)
         }
         jvmTest.dependencies {
             implementation(libs.mockito.kotlin)
