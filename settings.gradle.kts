@@ -211,6 +211,7 @@ include(
     ":core:ui:navigation",
     ":core:ui:theme:api",
     ":core:ui:theme:manager",
+    ":core:ui:animation:manager",
 )
 
 include(
