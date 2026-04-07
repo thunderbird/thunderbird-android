@@ -49,5 +49,8 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.loadedMessa
                 messages = state.messages,
             )
         }
+        transition<MessageItemEvent.SetMessageActive> { state, event ->
+            state.withMetadata { copy(activeMessage = event.message) }
+        }
     }
 }
