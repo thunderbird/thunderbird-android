@@ -14,6 +14,7 @@ import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenPr
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenPreviewParamsProvider
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenRenderer
 import net.thunderbird.feature.mail.message.list.internal.ui.preview.MessagePreferencesPreviewHelper
+import net.thunderbird.feature.mail.message.list.ui.component.rememberMessageListScope
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
@@ -50,11 +51,13 @@ private fun MessageListScreenWarmingUpStatePreview(
         }
     } WithContent {
         ThunderbirdTheme2 {
-            renderer.Render(
-                state = params.state,
-                dispatchEvent = {},
-                onEffect = {},
-            )
+            val scope = rememberMessageListScope()
+            with(renderer) {
+                scope.Render(
+                    state = params.state,
+                    dispatchEvent = {},
+                )
+            }
         }
     }
 }

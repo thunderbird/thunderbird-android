@@ -9,6 +9,8 @@ import net.thunderbird.core.ui.compose.common.mvi.BaseStateMachineViewModel
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.message.list.ui.component.MessageListScope
+import net.thunderbird.feature.mail.message.list.ui.component.rememberMessageListScope
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
@@ -68,7 +70,7 @@ interface MessageListContract {
          * @param inAppNotificationEventFilter A filter to decide whether an in-app notification should be displayed.
          */
         @Composable
-        fun Render(
+        fun MessageListScope.Render(
             state: MessageListState,
             dispatchEvent: (MessageListEvent) -> Unit,
             modifier: Modifier = Modifier,
@@ -88,13 +90,16 @@ interface MessageListContract {
          */
         @Composable
         fun Render(
-            onEffect: (MessageListEffect) -> Unit,
+            onEffect: MessageListScope.(MessageListEffect) -> Unit,
             modifier: Modifier = Modifier,
             viewModel: ViewModel = koinViewModel(),
             inAppNotificationEventFilter: (InAppNotification) -> Boolean = { true },
         ) {
-            val (state, dispatchEvent) = viewModel.observe(onEffect)
-            Render(state.value, dispatchEvent, modifier, inAppNotificationEventFilter)
+            val scope = rememberMessageListScope()
+            val (state, dispatchEvent) = viewModel.observe { effect ->
+                scope.onEffect(effect)
+            }
+            scope.Render(state.value, dispatchEvent, modifier, inAppNotificationEventFilter)
         }
     }
 }

@@ -6,13 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.molecule.PullToRefreshBox
 import net.thunderbird.feature.mail.message.list.internal.ui.component.template.MessageList
+import net.thunderbird.feature.mail.message.list.ui.component.MessageListScope
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffold
 
 @Composable
-internal fun MessageListPage(
+internal fun MessageListScope.MessageListPage(
     inAppNotificationEventFilter: (InAppNotification) -> Boolean,
     state: MessageListState,
     dispatchEvent: (MessageListEvent) -> Unit,

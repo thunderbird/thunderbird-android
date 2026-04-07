@@ -8,25 +8,32 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.lifecycle.compose.LifecycleStartEffect
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageListItem
 import net.thunderbird.feature.mail.message.list.internal.ui.component.organism.MessageListFooter
 import net.thunderbird.feature.mail.message.list.internal.ui.component.organism.MessageListSwipeableItem
+import net.thunderbird.feature.mail.message.list.ui.component.MessageListScope
+import net.thunderbird.feature.mail.message.list.ui.component.ScrollEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
+import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import net.thunderbird.feature.mail.message.list.ui.state.PaginationUi
 
 const val TEST_TAG_MESSAGE_LIST_ROOT = "TestMessageList_Root"
 
 @Composable
-internal fun MessageList(
+internal fun MessageListScope.MessageList(
     state: MessageListState,
     dispatchEvent: (MessageListEvent) -> Unit,
     modifier: Modifier = Modifier,
@@ -35,12 +42,28 @@ internal fun MessageList(
 
     val showAccountIndicator = state.metadata.showAccountIndicator
     val swipeActions = state.metadata.swipeActions
+
+    val currentMessages by rememberUpdatedState(state.messages)
+    val scope = rememberCoroutineScope()
+    LifecycleStartEffect(scrollEvents, listState) {
+        val job = scope.launch {
+            scrollEvents.collect { event ->
+                when (event) {
+                    is ScrollEvent.ScrollToMessage -> listState.scrollToMessage(currentMessages, event)
+                }
+            }
+        }
+        onStopOrDispose {
+            job.cancel()
+        }
+    }
+
     LazyColumn(
         modifier = modifier.testTagAsResourceId(TEST_TAG_MESSAGE_LIST_ROOT),
         state = listState,
     ) {
         items(
-            items = state.messages,
+            items = currentMessages,
             key = { message -> message.id },
         ) { message ->
             val messageSwipeActions = swipeActions[message.account.id]
@@ -98,4 +121,17 @@ private fun rememberMessageListLazyState(
             }
     }
     return listState
+}
+
+private suspend fun LazyListState.scrollToMessage(
+    messages: ImmutableList<MessageItemUi>,
+    event: ScrollEvent.ScrollToMessage,
+) {
+    val (message, animated) = event
+    val index = messages.indexOfFirst { message.id == it.id }.takeIf { it >= 0 } ?: return
+    val firstVisible = layoutInfo.visibleItemsInfo.firstOrNull()?.index ?: 0
+    val lastVisible = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+    if (index !in firstVisible..lastVisible) {
+        if (animated) animateScrollToItem(index) else scrollToItem(index)
+    }
 }
