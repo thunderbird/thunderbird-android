@@ -200,6 +200,7 @@ include(
 
 include(
     ":core:ui:account",
+    ":core:ui:animation:manager",
     ":core:ui:compose:common",
     ":core:ui:compose:designsystem",
     ":core:ui:compose:testing",

@@ -1,14 +1,14 @@
 package com.fsck.k9.view;
 
 
-import app.k9mail.legacy.di.DI;
-import net.thunderbird.core.preference.GeneralSettingsManager;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ViewAnimator;
+
+import app.k9mail.legacy.di.DI;
+import net.thunderbird.core.ui.animation.manager.AnimationManager;
 
 
 /**
@@ -22,7 +22,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
     private Animation mSecondOutAnimation;
     private OnSwitchCompleteListener mListener;
 
-    private GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
+    private AnimationManager animationManager = DI.get(AnimationManager.class);
 
 
     public ViewSwitcher(Context context) {
@@ -56,7 +56,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
     }
 
     private void setupAnimations(Animation in, Animation out) {
-        if (generalSettingsManager.getConfig().getDisplay().getVisualSettings().isShowAnimations()) {
+        if (animationManager.shouldShowAnimations()) {
             setInAnimation(in);
             setOutAnimation(out);
             out.setAnimationListener(this);
@@ -67,7 +67,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
     }
 
     private void handleSwitchCompleteCallback() {
-        if (!generalSettingsManager.getConfig().getDisplay().getVisualSettings().isShowAnimations()) {
+        if (!animationManager.shouldShowAnimations()) {
             onAnimationEnd(null);
         }
     }
@@ -125,12 +125,12 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
         // unused
     }
 
-    public GeneralSettingsManager getGeneralSettingsManager() {
-        return generalSettingsManager;
+    public AnimationManager getAnimationManager() {
+        return animationManager;
     }
 
-    public void setGeneralSettingsManager(GeneralSettingsManager generalSettingsManager) {
-        this.generalSettingsManager = generalSettingsManager;
+    public void setAnimationManager(AnimationManager animationManager) {
+        this.animationManager = animationManager;
     }
 
     public interface OnSwitchCompleteListener {

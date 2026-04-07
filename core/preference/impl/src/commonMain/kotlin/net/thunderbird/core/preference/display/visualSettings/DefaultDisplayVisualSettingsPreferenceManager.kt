@@ -67,9 +67,9 @@ class DefaultDisplayVisualSettingsPreferenceManager(
             DisplayVisualSettingKey.AutoFitWidth.value,
             DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH,
         ),
-        isShowAnimations = storage.getBoolean(
+        animationPreference = storage.getEnumOrDefault(
             DisplayVisualSettingKey.Animation.value,
-            DISPLAY_SETTINGS_DEFAULT_IS_SHOW_ANIMATION,
+            DISPLAY_SETTINGS_DEFAULT_ANIMATION_PREFERENCE,
         ),
         bodyContentType = storage.getEnumOrDefault(
             DisplayVisualSettingKey.MessageViewBodyContentType.value,
@@ -105,7 +105,7 @@ class DefaultDisplayVisualSettingsPreferenceManager(
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
-                storageEditor.putBoolean(DisplayVisualSettingKey.Animation.value, config.isShowAnimations)
+                storageEditor.putEnum(DisplayVisualSettingKey.Animation.value, config.animationPreference)
                 storageEditor.putBoolean(
                     DisplayVisualSettingKey.MessageViewFixedWidthFont.value,
                     config.isUseMessageViewFixedWidthFont,
