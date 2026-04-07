@@ -1888,7 +1888,11 @@ class MessageListFragment :
     }
 
     override fun setActiveMessage(messageReference: MessageReference?) {
+        // TODO: Move the activeMessage reference somehow to viewmodel or state.
         activeMessage = messageReference
+        val message = stateSnapshot.messages
+            .find { it.messageReference == messageReference?.toIdentityString() }
+        viewModel.event(MessageItemEvent.SetMessageActive(message))
     }
 
     override fun onFullyActive() {

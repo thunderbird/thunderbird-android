@@ -66,4 +66,6 @@ sealed interface MessageItemEvent : MessageListEvent.UserEvent {
 
     data class OnFocusEnter(val message: MessageItemUi) : MessageItemEvent
     data class OnFocusExit(val message: MessageItemUi) : MessageItemEvent
+
+    data class SetMessageActive(val message: MessageItemUi?) : MessageItemEvent
 }
