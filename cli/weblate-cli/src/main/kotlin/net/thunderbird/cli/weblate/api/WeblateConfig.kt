@@ -1,4 +1,4 @@
-package net.thunderbird.cli.weblate.client
+package net.thunderbird.cli.weblate.api
 
 /**
  * Configuration for Weblate API
