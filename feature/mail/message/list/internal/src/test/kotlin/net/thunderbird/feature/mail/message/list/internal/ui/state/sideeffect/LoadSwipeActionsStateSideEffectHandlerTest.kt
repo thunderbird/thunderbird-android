@@ -3,7 +3,6 @@ package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import dev.mokkery.matcher.any
-import dev.mokkery.mock
 import dev.mokkery.spy
 import dev.mokkery.verify
 import dev.mokkery.verify.VerifyMode
@@ -23,7 +22,7 @@ import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import org.junit.Test
 
-class LoadSwipeActionsStateSideEffectHandlerTest {
+class LoadSwipeActionsStateSideEffectHandlerTest : BaseSideEffectHandlerTest() {
     @Test
     fun `handle() should return Consumed if event is LoadConfigurations`() = runTest {
         // Arrange
@@ -31,14 +30,14 @@ class LoadSwipeActionsStateSideEffectHandlerTest {
             dispatch = {},
             scope = backgroundScope,
             logger = TestLogger(),
-            buildSwipeActions = mock(),
+            buildSwipeActions = FakeBuildSwipeActionsUseCase(),
         )
 
         // Act
         val actual = testSubject.handle(
             event = MessageListEvent.LoadConfigurations,
             oldState = MessageListState.WarmingUp(),
-            newState = MessageListState.WarmingUp(),
+            newState = createReadyWarmingUpState(),
         )
 
         // Assert
@@ -52,14 +51,14 @@ class LoadSwipeActionsStateSideEffectHandlerTest {
             dispatch = {},
             scope = backgroundScope,
             logger = TestLogger(),
-            buildSwipeActions = mock(),
+            buildSwipeActions = FakeBuildSwipeActionsUseCase(),
         )
 
         // Act
         val actual = testSubject.handle(
             event = MessageListEvent.ExitSelectionMode,
             oldState = MessageListState.WarmingUp(),
-            newState = MessageListState.WarmingUp(),
+            newState = createReadyWarmingUpState(),
         )
 
         // Assert

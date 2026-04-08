@@ -3,13 +3,10 @@ package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import dev.mokkery.matcher.any
-import dev.mokkery.mock
 import dev.mokkery.spy
 import dev.mokkery.verify
 import dev.mokkery.verify.VerifyMode
 import kotlin.test.Test
-import kotlinx.collections.immutable.ImmutableSet
-import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,15 +14,13 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.feature.mail.message.list.domain.DomainContract.UseCase.GetMessageListPreferences
-import net.thunderbird.feature.mail.message.list.preferences.ActionRequiringUserConfirmation
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 
-class LoadPreferencesSideEffectTest {
+class LoadPreferencesSideEffectTest : BaseSideEffectHandlerTest() {
     @Test
     fun `handle() should return Consumed if event is LoadConfigurations`() = runTest {
         // Arrange
@@ -33,14 +28,14 @@ class LoadPreferencesSideEffectTest {
             dispatch = {},
             scope = backgroundScope,
             logger = TestLogger(),
-            getMessageListPreferences = mock(),
+            getMessageListPreferences = FakeGetMessageListPreferences(),
         )
 
         // Act
         val actual = testSubject.handle(
             event = MessageListEvent.LoadConfigurations,
             oldState = MessageListState.WarmingUp(),
-            newState = MessageListState.WarmingUp(),
+            newState = createReadyWarmingUpState(),
         )
 
         // Assert
@@ -54,14 +49,14 @@ class LoadPreferencesSideEffectTest {
             dispatch = {},
             scope = backgroundScope,
             logger = TestLogger(),
-            getMessageListPreferences = mock(),
+            getMessageListPreferences = FakeGetMessageListPreferences(),
         )
 
         // Act
         val actual = testSubject.handle(
             event = MessageListEvent.ExitSelectionMode,
             oldState = MessageListState.WarmingUp(),
-            newState = MessageListState.WarmingUp(),
+            newState = createReadyWarmingUpState(),
         )
 
         // Assert
@@ -130,30 +125,6 @@ class LoadPreferencesSideEffectTest {
                 dispatch(any())
             }
         }
-
-    private fun createMessageListPreferences(
-        density: UiDensity = UiDensity.Default,
-        groupConversations: Boolean = false,
-        showCorrespondentNames: Boolean = false,
-        showMessageAvatar: Boolean = false,
-        showFavouriteButton: Boolean = false,
-        senderAboveSubject: Boolean = false,
-        excerptLines: Int = 1,
-        dateTimeFormat: MessageListDateTimeFormat = MessageListDateTimeFormat.Contextual,
-        actionRequiringUserConfirmation: ImmutableSet<ActionRequiringUserConfirmation> = persistentSetOf(),
-        colorizeBackgroundWhenRead: Boolean = false,
-    ) = MessageListPreferences(
-        density = density,
-        groupConversations = groupConversations,
-        showCorrespondentNames = showCorrespondentNames,
-        showMessageAvatar = showMessageAvatar,
-        showFavouriteButton = showFavouriteButton,
-        senderAboveSubject = senderAboveSubject,
-        excerptLines = excerptLines,
-        dateTimeFormat = dateTimeFormat,
-        actionRequiringUserConfirmation = actionRequiringUserConfirmation,
-        colorizeBackgroundWhenRead = colorizeBackgroundWhenRead,
-    )
 
     private inner class FakeGetMessageListPreferences(
         initialValue: MessageListPreferences = createMessageListPreferences(),

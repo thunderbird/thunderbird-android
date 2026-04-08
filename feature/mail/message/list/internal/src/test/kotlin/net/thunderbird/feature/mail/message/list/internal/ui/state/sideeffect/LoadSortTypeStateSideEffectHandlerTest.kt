@@ -17,7 +17,7 @@ import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import org.junit.Test
 
-class LoadSortTypeStateSideEffectHandlerTest {
+class LoadSortTypeStateSideEffectHandlerTest : BaseSideEffectHandlerTest() {
     @Test
     fun `handle() should return Consumed when event is LoadConfigurations`() = runTest {
         // Arrange
@@ -33,7 +33,7 @@ class LoadSortTypeStateSideEffectHandlerTest {
     }
 
     @Test
-    fun `handle() should return Ignored when event is not LoadConfigurations`() = runTest  {
+    fun `handle() should return Ignored when event is not LoadConfigurations`() = runTest {
         // Arrange
         val handler = createTestSubject()
         val event = MessageListEvent.AllConfigsReady

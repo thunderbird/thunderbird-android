@@ -29,21 +29,29 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import net.thunderbird.feature.mail.folder.api.Folder as MailFolder
 
 @Suppress("MaxLineLength")
-class LoadFolderInformationSideEffectTest {
+class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
     @Test
     fun `handle() should return Consumed when event is LoadConfigurations and folderId is set and accountIds size is one`() =
         runTest {
             // Arrange
+            val accountId = AccountIdFactory.create()
+            val folderId = 1L
+            val folder = createMailFolder(id = folderId, name = "Inbox", isLocalOnly = true)
             val testSubject = createTestSubject(
-                accountIds = setOf(AccountIdFactory.create()),
-                folderId = 1L,
+                accountIds = setOf(accountId),
+                folderId = folderId,
+                folderRepository = createFolderRepository(
+                    accountId = accountId,
+                    folderId = folderId,
+                    folder = folder,
+                ),
             )
 
             // Act
             val result = testSubject.handle(
                 event = MessageListEvent.LoadConfigurations,
                 oldState = MessageListState.WarmingUp(),
-                newState = MessageListState.WarmingUp(),
+                newState = createReadyWarmingUpState(),
             )
 
             // Assert
@@ -62,7 +70,7 @@ class LoadFolderInformationSideEffectTest {
         val result = testSubject.handle(
             event = MessageListEvent.AllConfigsReady,
             oldState = MessageListState.WarmingUp(),
-            newState = MessageListState.WarmingUp(),
+            newState = createReadyWarmingUpState(),
         )
 
         // Assert
