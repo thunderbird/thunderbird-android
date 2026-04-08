@@ -34,7 +34,6 @@
     <string name="choose_folder_title">Izbor mape</string>
     <string name="choose_folder_move_title">Premakni v …</string>
     <string name="choose_folder_copy_title">Kopiraj v …</string>
-    <string name="actionbar_selected">Izbrano: <xliff:g id="selection_count">%d</xliff:g></string>
     <string name="send_action">Pošlji</string>
     <string name="empty_subject">Zadeva sporočila ni vpisana: pritisni znova, če želiš sporočilo vseeno poslati</string>
     <string name="reply_action">Odgovori</string>

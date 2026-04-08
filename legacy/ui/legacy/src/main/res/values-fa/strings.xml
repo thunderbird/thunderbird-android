@@ -35,7 +35,6 @@
     <string name="choose_folder_title">انتخاب پوشه</string>
     <string name="choose_folder_move_title">انتقال به…</string>
     <string name="choose_folder_copy_title">کپی به…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> انتخاب</string>
     <string name="send_action">ارسال</string>
     <string name="empty_subject">موضوع خالی است، دوباره بزنید می‌رود</string>
     <string name="reply_action">پاسخ</string>

@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Kies in map</string>
     <string name="choose_folder_move_title">Ferpleatse nei…</string>
     <string name="choose_folder_copy_title">Kopiearje nei…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selektearre</string>
     <string name="send_action">Ferstjoere</string>
     <string name="empty_subject">Der is gjin ûnderwerp ynfierd. Tik nochris om dochs te ferstjoeren</string>
     <string name="reply_action">Beäntwurdzje</string>

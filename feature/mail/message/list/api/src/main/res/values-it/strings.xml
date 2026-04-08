@@ -12,4 +12,5 @@
     <string name="swipe_action_delete">Elimina</string>
     <string name="swipe_action_spam">Spam</string>
     <string name="swipe_action_move">Sposta…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selezionati</string>
 </resources>

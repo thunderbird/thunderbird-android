@@ -12,4 +12,5 @@
     <string name="swipe_action_delete">Törlés</string>
     <string name="swipe_action_spam">Levélszemét</string>
     <string name="swipe_action_move">Áthelyezés…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> kiválasztva</string>
 </resources>

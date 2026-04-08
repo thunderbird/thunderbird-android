@@ -34,7 +34,6 @@
     <string name="choose_folder_title">폴더 선택</string>
     <string name="choose_folder_move_title">다음으로 이동</string>
     <string name="choose_folder_copy_title">다음으로 복사</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 선택됨</string>
     <string name="send_action">전송</string>
     <string name="empty_subject">제목이 비어 있습니다. 전송하려면 다시 클릭하세요.</string>
     <string name="reply_action">답장</string>

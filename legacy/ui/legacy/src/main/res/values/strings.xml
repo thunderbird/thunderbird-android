@@ -47,7 +47,6 @@
     <string name="choose_folder_move_title">Move to…</string>
     <string name="choose_folder_copy_title">Copy to…</string>
 
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>
     <string name="send_action">Send</string>
     <string name="empty_subject">Subject is empty, click again to send anyway</string>
     <string name="reply_action">Reply</string>

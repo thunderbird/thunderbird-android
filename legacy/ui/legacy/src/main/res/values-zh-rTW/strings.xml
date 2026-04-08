@@ -35,7 +35,6 @@
     <string name="choose_folder_title">選取信件匣</string>
     <string name="choose_folder_move_title">移至…</string>
     <string name="choose_folder_copy_title">複製至…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已選擇</string>
     <string name="send_action">寄送</string>
     <string name="empty_subject">主旨空白，再次按一下以繼續寄送</string>
     <string name="reply_action">回覆</string>

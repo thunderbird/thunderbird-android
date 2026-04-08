@@ -12,4 +12,5 @@
     <string name="swipe_action_delete">Fshije</string>
     <string name="swipe_action_spam">Vëri shenjë si të padëshiruar</string>
     <string name="swipe_action_move">Lëvizeni…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> të përzgjedhur</string>
 </resources>

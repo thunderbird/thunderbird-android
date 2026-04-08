@@ -12,4 +12,5 @@
     <string name="swipe_action_delete">删除</string>
     <string name="swipe_action_spam">标记为垃圾邮件</string>
     <string name="swipe_action_move">移动…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已选择</string>
 </resources>

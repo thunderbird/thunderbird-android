@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Selecciona una carpeta</string>
     <string name="choose_folder_move_title">Mover a…</string>
     <string name="choose_folder_copy_title">Copiar a…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionados</string>
     <string name="send_action">Enviar</string>
     <string name="empty_subject">El asunto está vacío, haz clic de nuevo para enviarlo tal cual</string>
     <string name="reply_action">Responder</string>

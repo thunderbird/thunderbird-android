@@ -78,7 +78,6 @@
     <string name="search_results">खोज के रिज़ल्ट</string>
     <string name="send_action">भेजें</string>
     <string name="read_receipt">पढ़ा रसीद</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> चुने गए</string>
     <string name="search_everywhere_action">हर जगह खोजें</string>
     <string name="send_alternate_action">शेयर करें</string>
     <string name="accounts_title">अकाउंट</string>

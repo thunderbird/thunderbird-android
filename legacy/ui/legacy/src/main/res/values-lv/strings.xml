@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Izvēlēties mapi</string>
     <string name="choose_folder_move_title">Pārvietot uz…</string>
     <string name="choose_folder_copy_title">Kopēt uz…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> atzīmēts</string>
     <string name="send_action">Sūtīt</string>
     <string name="empty_subject">Nav sūtījuma temata. Noklikšķiniet vēlreiz, lai tik un tā nosūtītu</string>
     <string name="reply_action">Atbildēt</string>

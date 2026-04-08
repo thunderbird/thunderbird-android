@@ -15,7 +15,6 @@
     <string name="choose_folder_title">Sceglie un cartulare</string>
     <string name="choose_folder_move_title">Dispiazzà versu…</string>
     <string name="choose_folder_copy_title">Cupià versu…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selezziunatu(i)</string>
     <string name="empty_subject">U sughjettu hè viotu. Tuccate torna per mandà quantunque</string>
     <string name="reply_action">Risponde</string>
     <string name="reply_all_action">Risponde à tutti</string>
