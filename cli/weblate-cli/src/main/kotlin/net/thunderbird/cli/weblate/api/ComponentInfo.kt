@@ -9,6 +9,7 @@ import kotlinx.serialization.Serializable
  * @property name The name of the component.
  * @property url The URL of the component in Weblate.
  * @property slug The slug identifier of the component (suitable for matching/include lists)
+ * @property category The category of the component
  */
 @Serializable
 data class ComponentInfo(
@@ -16,4 +17,5 @@ data class ComponentInfo(
     val name: String,
     val slug: String,
     val url: String,
+    val category: String?,
 )

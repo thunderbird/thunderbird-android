@@ -41,7 +41,7 @@ class WeblateClient(
         return components
     }
 
-    fun patchComponent(token: String, url: String, patch: ComponentConfig): Boolean {
+    fun patchComponent(token: String, url: String, patch: ComponentPatch): Boolean {
         var success = false
 
         runBlocking {

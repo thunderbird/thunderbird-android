@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.parameters.options.required
 import java.io.File
 import net.thunderbird.cli.weblate.api.Component
 import net.thunderbird.cli.weblate.api.ComponentConfig
+import net.thunderbird.cli.weblate.api.ComponentPatch
 import net.thunderbird.cli.weblate.api.WeblateClient
 
 @Suppress("TooGenericExceptionCaught")
@@ -63,12 +64,19 @@ class WeblateCli : CliktCommand(
         if (diffs.isEmpty()) {
             println("  ✅ Config matches common config")
         } else {
-            println("  ⚠\uFE0F  Config differs (dry-run). Diff:")
+            println("  ⚠\uFE0F  Config differs:")
             println()
             diffs.forEach { println("     $it") }
             if (!dryRun) {
                 try {
-                    val result = client.patchComponent(token, component.info.url, goldenConfig)
+                    val result = client.patchComponent(
+                        token,
+                        component.info.url,
+                        ComponentPatch(
+                            category = component.info.category,
+                            config = goldenConfig,
+                        ),
+                    )
                     if (result) {
                         println("    ✅ Updated component config successfully")
                     } else {
