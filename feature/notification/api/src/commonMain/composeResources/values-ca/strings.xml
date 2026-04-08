@@ -12,15 +12,15 @@
 \nToqueu per obrir la configuració de notificació.</string>
     <string name="notification_authentication_error_title">Ha fallat l\'autenticació</string>
     <string name="notification_certificate_error_public">Error de certificat</string>
-    <string name="notification_certificate_error_title">Error al certificat de %1$s</string>
-    <string name="notification_certificate_error_text">Comproveu la configuració del servidor</string>
+    <string name="notification_certificate_error_title">Error de certificat per %1$s</string>
+    <string name="notification_certificate_error_text">Comprova la configuració del servidor</string>
     <string name="notification_bg_sync_ticker">S\'està comprovant el correu: %1$s:%2$s</string>
     <string name="notification_bg_sync_title">S\'està comprovant el correu</string>
     <string name="notification_bg_send_ticker">S\'està enviant correu: %1$s</string>
     <string name="notification_bg_send_title">S\'està enviant correu</string>
     <string name="send_failure_subject">La tramesa d\'alguns missatges ha fallat</string>
     <string name="notification_additional_messages">+ %1$d més sobre %2$s</string>
-    <string name="push_notification_state_initializing">S'està iniciant…</string>
+    <string name="push_notification_state_initializing">S\\'està iniciant…</string>
     <string name="push_notification_state_listening">S\'està esperant nous correus electrònics</string>
     <string name="push_notification_state_wait_background_sync">Inactiu fins que es permeti la sincronització</string>
     <string name="push_notification_state_wait_network">Inactiu fins que la xarxa estigui disponible</string>
@@ -44,4 +44,11 @@
     <string name="notification_action_update_server_settings">Actualitza els paràmetres del servidor</string>
     <string name="banner_inline_notification_check_error_notifications">Comprova les notificacions d'errors</string>
     <string name="banner_inline_notification_view_support_article">Mostra l'article de suport</string>
+    <string name="notification_authentication_incoming_server_error_text">L\\'autenticació ha fallat per %1$s. Actualitza la teva configuració del servidor entrant.</string>
+    <string name="notification_authentication_outgoing_server_error_text">L\\'autenticació ha fallat per %1$s. Actualitza la teva configuració del servidor de sortida.</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d missatge nou</item>
+        <item quantity="many">%1$d missatges nous</item>
+        <item quantity="other">%1$d missatges nous</item>
+    </plurals>
 </resources>

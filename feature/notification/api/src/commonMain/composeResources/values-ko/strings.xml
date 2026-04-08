@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">동기화하기 (푸시)</string>
     <string name="notification_channel_push_description">새 메시지 받는 동안 표시됨</string>
@@ -17,7 +17,7 @@
     <string name="notification_bg_send_ticker">메일 전송 중: %1$s</string>
     <string name="notification_bg_send_title">메일 전송 중</string>
     <string name="send_failure_subject">일부 메시지를 보내는 데 실패했습니다</string>
-    <string name="notification_additional_messages">+ %1$d more on %2$s</string>
+    <string name="notification_additional_messages">+ %2$s에 %1$d개 더</string>
     <string name="notification_action_reply">답장</string>
     <string name="notification_action_mark_as_read">읽은 것으로 표시</string>
     <string name="notification_action_mark_all_as_read">모두 읽은 것으로 표시</string>
@@ -26,4 +26,27 @@
     <string name="notification_action_archive">보관</string>
     <string name="notification_action_archive_all">모두 보관</string>
     <string name="notification_action_spam">스팸</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="other">새 메시지 %1$d개</item>
+    </plurals>
+    <string name="push_notification_state_initializing">초기화 중…</string>
+    <string name="push_notification_state_listening">새 이메일 기다리는 중</string>
+    <string name="push_notification_info">눌러서 자세히 알아보세요.</string>
+    <string name="push_info_disable_push_action">푸시 비활성화</string>
+    <string name="notification_action_retry">재시도</string>
+    <string name="notification_action_update_server_settings">서버 설정 업데이트</string>
+    <string name="notification_action_assign_sent_folder">폴더 할당</string>
+    <string name="banner_inline_notification_check_error_notifications">오류 알림 확인</string>
+    <string name="banner_inline_notification_some_messages_need_attention">확인해야 할 메시지가 있습니다.</string>
+    <string name="banner_inline_notification_open_notifications">알림 열기</string>
+    <string name="banner_inline_notification_learn_more">자세히 알아보기</string>
+    <string name="banner_inline_notification_view_support_article">지원 문서 보기</string>
+    <string name="sent_folder_not_found_title">보낸 편지함을 이용할 수 없습니다.</string>
+    <string name="push_notification_state_alarm_permission_missing">알람을 설정할 권한이 없습니다</string>
+    <string name="push_notification_grant_alarm_permission">눌러서 권한을 부여하십시오.</string>
+    <string name="notification_authentication_incoming_server_error_text">%1$s 인증이 실패했습니다. 수신 서버 설정을 변경하십시오.</string>
+    <string name="notification_authentication_outgoing_server_error_text">%1$s 인증이 실패했습니다. 발신 서버 설정을 변경하십시오.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <string name="push_notification_state_wait_background_sync">백그라운드 동기화가 허용될 때까지 휴면 중</string>
+    <string name="push_notification_state_wait_network">네트워크에 연결할 때까지 휴면 중</string>
 </resources>

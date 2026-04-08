@@ -19,7 +19,7 @@
     <string name="notification_bg_send_ticker">Odesílání pošty: %1$s</string>
     <string name="notification_bg_send_title">Odesílání pošty</string>
     <string name="send_failure_subject">Selhalo odeslání některých zpráv</string>
-    <string name="notification_additional_messages">+ %1$d pro další na %2$s</string>
+    <string name="notification_additional_messages">+ %1$d dalších na %2$s</string>
     <string name="push_notification_state_initializing">Inicializace…</string>
     <string name="push_notification_state_listening">Čeká se na nové e-maily</string>
     <string name="push_notification_state_wait_background_sync">Uspáno do doby, než bude umožněna synchronizace na pozadí</string>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_settings_general_title">הגדרות כלליות</string>
     <string name="account_settings_general_avatar_title">אווטאר</string>
     <string name="account_settings_general_avatar_description">בחר כיצד האווטאר של חשבונך יוצג.</string>
@@ -23,4 +23,26 @@
     <string name="account_settings_general_avatar_icon_description">בחר אחד מהאיקונים לשימוש כאווטאר שלך.</string>
     <string name="account_settings_avatar_error_unsupported_format">נתמכות תמונות בפורמט JPEG בלבד.</string>
     <string name="account_settings_avatar_hint_jpeg_only">JPEG בלבד</string>
+    <string name="account_settings_show_pictures_label">הצג תמונות תמיד</string>
+    <string name="account_settings_reading_mail">קריאת דואר</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">סמן כנקרא כשנפתח</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">סמן הודעה כנקראה כשהיא נפתחת לצפיה</string>
+    <string name="account_settings_show_pictures_never">לא</string>
+    <string name="account_settings_show_pictures_only_from_contacts">מאנשי הקשר</string>
+    <string name="account_settings_show_pictures_always">מכולם</string>
+    <string name="account_settings_remove_account_action">הסר חשבון</string>
+    <string name="account_settings_okay_action">אישור</string>
+    <string name="account_settings_cancel_action">בטל</string>
+    <string name="account_settings_account_delete_dlg_title">הסר חשבון</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%1$s</xliff:g>\" יוסר מ־ <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_settings_search_action">חיפוש</string>
+    <string name="account_settings_remote_search_num_results_entries_all">הכל</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">מגבלת חיפוש בשרת</string>
 </resources>

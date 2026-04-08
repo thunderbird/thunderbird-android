@@ -26,4 +26,23 @@
     <string name="account_settings_account_delete_dlg_title">Hesabı sil</string>
     <string name="account_settings_account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%1$s</xliff:g>\" hesabı <xliff:g id="app_name">%2$s</xliff:g> uygulamasından kaldırılacaktır.</string>
     <string name="account_settings_show_pictures_label">Resimleri her zaman göster</string>
+    <string name="account_settings_reading_mail">Posta okuma</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Açılan iletileri okundu olarak işaretle</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">İleti açılıp görüntülendiğinde okundu olarak işaretle</string>
+    <string name="account_settings_show_pictures_never">Hayır</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Rehberimdeki kişilerden</string>
+    <string name="account_settings_show_pictures_always">Herkesten</string>
+    <string name="account_settings_remove_account_action">Hesabı kaldır</string>
+    <string name="account_settings_okay_action">Tamam</string>
+    <string name="account_settings_cancel_action">İptal</string>
+    <string name="account_settings_search_action">Arama</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Tümü</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">Sunucu arama sınırı</string>
 </resources>

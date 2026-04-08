@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_push_title">Sinchranizacyja (Push)</string>
+    <string name="notification_channel_push_description">Vysviatliajecca padčas čakannia na novyja paviedamlienni</string>
+    <string name="notification_action_delete">Vydalić</string>
+    <string name="notification_action_archive">Archivavać</string>
+    <string name="notification_action_spam">Spam</string>
+</resources>

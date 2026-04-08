@@ -7,7 +7,7 @@
     <string name="account_settings_general_name_title">Název účtu</string>
     <string name="account_settings_general_name_description">Název spojený s vaším účtem.</string>
     <string name="account_settings_general_color_title">Barva účtu</string>
-    <string name="account_settings_general_color_description">Barva tohot účtu použitá ve složkách a seznamech účtů.</string>
+    <string name="account_settings_general_color_description">Barva tohoto účtu použitá ve složkách a seznamech účtů.</string>
     <string name="account_settings_general_avatar_title">Avatar</string>
     <string name="account_settings_general_avatar_description">Vyberte, jak bude zobrazen avatar vašeho účtu.</string>
     <string name="account_settings_general_name_error_empty">Název nemůže být prázdný</string>
@@ -35,4 +35,14 @@
     <string name="account_settings_cancel_action">Zrušit</string>
     <string name="account_settings_account_delete_dlg_title">Odstranit účet</string>
     <string name="account_settings_account_delete_dlg_instructions_fmt">Účet „<xliff:g id="account">%1$s</xliff:g>“ bude odstraněn z aplikace <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_settings_search_action">Hledat</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Vše</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">Limit počtu výsledků vyhledávání serveru</string>
 </resources>

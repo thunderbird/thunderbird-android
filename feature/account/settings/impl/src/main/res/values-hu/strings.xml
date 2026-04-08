@@ -35,4 +35,14 @@
     <string name="account_settings_cancel_action">Mégse</string>
     <string name="account_settings_account_delete_dlg_title">Fiók eltávolítása</string>
     <string name="account_settings_account_delete_dlg_instructions_fmt">A „<xliff:g id="account">%1$s</xliff:g>” fiók eltávolításra kerül a <xliff:g id="app_name">%2$s</xliff:g> alkalmazásból.</string>
+    <string name="account_settings_search_action">Keresés</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Összes</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">Kiszolgáló keresési korlátja</string>
 </resources>

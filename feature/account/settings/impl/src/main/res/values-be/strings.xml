@@ -1,3 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_settings_general_title">Агульныя налады</string>
+    <string name="account_settings_general_name_title">Назва ўліковага запісу</string>
+    <string name="account_settings_general_avatar_image_select">Абраць выяву</string>
+    <string name="account_settings_avatar_error_unsupported_format">Падтрымліваюцца толькі выявы фармату JPEG.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">Толькі JPEG</string>
+    <string name="account_settings_cancel_action">Скасаваць</string>
+    <string name="account_settings_general_avatar_option_monogram">Манаграма</string>
+    <string name="account_settings_general_avatar_option_image">Выява</string>
+    <string name="account_settings_okay_action">ОК</string>
+    <string name="account_settings_search_action">Пошук</string>
+    <string name="account_settings_show_pictures_never">Не</string>
+    <string name="account_settings_show_pictures_always">Ад кожнага</string>
+    <string name="account_settings_show_pictures_label">Заўсёды высвятляць выявы</string>
+    <string name="account_settings_remote_search_num_label">Ліміт пошуку сервера</string>
+    <string name="account_settings_general_avatar_option_icon">Іконка</string>
+    <string name="account_settings_general_avatar_title">Аватар</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">Манаграма не можа быць пустою</string>
+    <string name="account_settings_general_avatar_description">Абярыце, як будзе высвятляцца аватар вашага ўліковага запісу.</string>
+    <string name="account_settings_general_avatar_icon_title">Іконка аватара</string>
+    <string name="account_settings_general_avatar_image_title">Выява аватара</string>
+    <string name="account_settings_general_avatar_monogram_description">Манаграма, якая выкарыстоўваецца як ваш аватар.</string>
+    <string name="account_settings_account_delete_dlg_title">Выдаліць уліковы запіс</string>
+    <string name="account_settings_general_avatar_icon_description">Абярыце адну з іконак, каб выкарыстоўваць яе як аватар.</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">Уліковы запіс \"<xliff:g id="account">%1$s</xliff:g>\" будзе выдален з праграмы <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_settings_general_avatar_image_description">Абярыце выяву для вашага уліковага запісу.</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">Манаграма занадта доўгая</string>
+    <string name="account_settings_general_avatar_monogram_title">Манаграма аватара</string>
+    <string name="account_settings_general_color_title">Колер уліковага запісу</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_general_color_description">Колер акцэнту гэтага ўліковага запісу, які будзе выкарыстоўвацца ў каталогах і спісах уліковых запісаў.</string>
+    <string name="account_settings_general_name_error_empty">Імя не можа быць пустым</string>
+    <string name="account_settings_general_name_error_too_long">Імя занадта доўгае</string>
+    <string name="account_settings_general_name_description">Імя, звязанае з вашым уліковым запісам.</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Зазначаць як прачытанае пры адкрыванні</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Зазначаць паведамленне як прачытанае, калі яно адкрыта для прагляду</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Усе</string>
+    <string name="account_settings_reading_mail">Чытанне пошты</string>
+    <string name="account_settings_remove_account_action">Выдаліць уліковы запіс</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Ад кантактаў</string>
 </resources>

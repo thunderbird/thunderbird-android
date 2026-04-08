@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_cancel_action">Скасаваць</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Адправіць і выдаліць</string>
+    <string name="sent_folder_not_found_dialog_title">Не знойдзена каталогу “Адпраўленыя”</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Прызначыць каталог “Адпраўленыя”</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Каб захаваць гэты ліст пасля адпраўкі, усталюйце каталог “Адпраўленыя” у наладах уліковых запісаў.</string>
 </resources>

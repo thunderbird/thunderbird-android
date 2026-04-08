@@ -2,4 +2,6 @@
 <resources>
     <string name="sent_folder_not_found_dialog_cancel_action">取消</string>
     <string name="sent_folder_not_found_dialog_send_and_delete_action">寄送並刪除</string>
+    <string name="sent_folder_not_found_dialog_title">找不到已傳送資料夾</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">發送後請在帳戶設定中設定傳送資料夾以儲存此郵件。</string>
 </resources>

@@ -12,4 +12,11 @@
     <string name="account_settings_general_avatar_image_title">Imatge d\'avatar</string>
     <string name="account_settings_general_avatar_image_select">Selecciona la imatge</string>
     <string name="account_settings_avatar_hint_jpeg_only">Només JPEG</string>
+    <string name="account_settings_general_avatar_description">Tria com es mostra l\'avatar del teu compte.</string>
+    <string name="account_settings_general_avatar_image_description">Tria una imatge per representar el teu compte.</string>
+    <string name="account_settings_general_name_description">El nom associat al teu compte.</string>
+    <string name="account_settings_general_name_error_empty">No pots deixar el nom en blanc</string>
+    <string name="account_settings_general_name_error_too_long">El nom és massa llarg</string>
+    <string name="account_settings_general_color_description">El color d\'accent d\'aquest compte utilitzat a les carpetes i a la llista de comptes.</string>
+    <string name="account_settings_general_avatar_monogram_description">Les inicials s\\\'utilitzen pel teu avatar.</string>
 </resources>

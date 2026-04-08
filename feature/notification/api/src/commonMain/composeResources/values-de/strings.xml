@@ -46,7 +46,7 @@
     <string name="notification_action_update_server_settings">Servereinstellungen aktualisieren</string>
     <string name="notification_action_assign_sent_folder">Ordner zuweisen</string>
     <string name="banner_inline_notification_check_error_notifications">Fehlerbenachrichtigungen überprüfen</string>
-    <string name="banner_inline_notification_some_messages_need_attention">Manche Nachrichten erfordern deine Aufmerksamkeit.</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Einige Nachrichten erfordern deine Aufmerksamkeit.</string>
     <string name="banner_inline_notification_learn_more">Mehr erfahren</string>
     <string name="banner_inline_notification_open_notifications">Benachrichtigungen öffnen</string>
     <string name="banner_inline_notification_view_support_article">Support-Artikel ansehen</string>

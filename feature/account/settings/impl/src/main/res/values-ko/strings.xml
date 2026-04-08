@@ -1,3 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_settings_general_title">일반 설정</string>
+    <string name="account_settings_general_avatar_title">아바타</string>
+    <string name="account_settings_general_avatar_description">계정 아바타가 표시되는 방식을 선택합니다.</string>
+    <string name="account_settings_general_avatar_option_image">사진</string>
+    <string name="account_settings_general_avatar_option_icon">아이콘</string>
+    <string name="account_settings_general_avatar_image_title">아바타 사진</string>
+    <string name="account_settings_general_avatar_image_description">계정을 표현하는 사진을 고르십시오.</string>
+    <string name="account_settings_general_avatar_image_select">사진 선택</string>
+    <string name="account_settings_general_name_title">계정 이름</string>
+    <string name="account_settings_general_name_description">계정에 할당된 이름입니다.</string>
+    <string name="account_settings_general_name_error_empty">이름은 비워 둘 수 없습니다</string>
+    <string name="account_settings_general_name_error_too_long">이름이 너무 깁니다</string>
+    <string name="account_settings_general_color_title">계정 색상</string>
+    <string name="account_settings_general_avatar_monogram_title">아바타 모노그램</string>
+    <string name="account_settings_general_avatar_monogram_error_empty">모노그램은 비워 둘 수 없습니다</string>
+    <string name="account_settings_general_avatar_monogram_error_too_long">모노그램이 너무 깁니다</string>
+    <string name="account_settings_general_avatar_icon_title">아바타 아이콘</string>
+    <string name="account_settings_general_avatar_icon_description">아바타에 쓸 아이콘 하나를 고릅니다.</string>
+    <string name="account_settings_avatar_error_unsupported_format">JPEG 사진만 지원합니다.</string>
+    <string name="account_settings_avatar_hint_jpeg_only">JPEG만</string>
+    <string name="account_settings_show_pictures_label">항상 사진 표시</string>
+    <string name="account_settings_reading_mail">메일 읽는 중</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">열었을 때 읽음으로 표시</string>
+    <string name="account_settings_remove_account_action">계정 제거</string>
+    <string name="account_settings_okay_action">확인</string>
+    <string name="account_settings_cancel_action">취소</string>
+    <string name="account_settings_account_delete_dlg_title">계정 제거</string>
+    <string name="account_settings_search_action">검새</string>
+    <string name="account_settings_remote_search_num_results_entries_all">모두</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">서버 검색 제한</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">메시지를 보기 위해 열었을 때 읽음으로 표시합니다</string>
+    <string name="account_settings_show_pictures_never">안 함</string>
+    <string name="account_settings_show_pictures_only_from_contacts">연락처 주소만</string>
+    <string name="account_settings_general_avatar_option_monogram">모노그램</string>
+    <string name="account_settings_general_color_description">폴더와 계정 목록에서 쓰일 이 계정의 강조 색상입니다.</string>
+    <string name="account_settings_general_avatar_monogram_description">아바타로 쓰일 모노그램입니다.</string>
+    <string name="account_settings_show_pictures_always">누구의 메일이든</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%1$s</xliff:g>\" 계정이 <xliff:g id="app_name">%2$s</xliff:g>에서 제거됩니다.</string>
 </resources>

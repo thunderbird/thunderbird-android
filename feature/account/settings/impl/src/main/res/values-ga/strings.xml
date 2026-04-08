@@ -35,4 +35,14 @@
     <string name="account_settings_cancel_action">Cealaigh</string>
     <string name="account_settings_account_delete_dlg_title">Bain Cuntas</string>
     <string name="account_settings_account_delete_dlg_instructions_fmt">Bainfear an cuntas \"<xliff:g id="account">%1$s</xliff:g>\" as <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_settings_remote_search_num_label">Teorainn chuardaigh freastalaí</string>
+    <string name="account_settings_search_action">Cuardaigh</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Gach</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
 </resources>

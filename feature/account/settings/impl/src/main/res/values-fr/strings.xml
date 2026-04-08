@@ -34,5 +34,15 @@
     <string name="account_settings_okay_action">Valider</string>
     <string name="account_settings_cancel_action">Annuler</string>
     <string name="account_settings_account_delete_dlg_title">Supprimer le compte</string>
-    <string name="account_settings_account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%1$s</xliff:g> » sera supprimé de <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%1$s</xliff:g> » sera supprimé de <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_settings_search_action">Chercher</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Tous</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
+    <string name="account_settings_remote_search_num_results_entries_25">25</string>
+    <string name="account_settings_remote_search_num_results_entries_50">50</string>
+    <string name="account_settings_remote_search_num_results_entries_100">100</string>
+    <string name="account_settings_remote_search_num_results_entries_250">250</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_label">Limite de recherche sur le serveur</string>
 </resources>

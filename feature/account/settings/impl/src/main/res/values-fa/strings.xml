@@ -23,4 +23,5 @@
     <string name="account_settings_general_avatar_monogram_description">مونوگرام به عنوان تصویر کاربری شما استفاده شده است.</string>
     <string name="account_settings_general_avatar_monogram_error_empty">مونوگرام نمی‌تواند خالی باشد</string>
     <string name="account_settings_general_avatar_monogram_error_too_long">مونوگرام خیلی طولانی است</string>
+    <string name="account_settings_remote_search_num_label">محدودیت جستجوی کارساز</string>
 </resources>
