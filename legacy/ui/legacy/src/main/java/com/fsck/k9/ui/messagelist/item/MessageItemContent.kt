@@ -132,7 +132,7 @@ internal fun MessageListItem.toMessageItemUi(
         displayNameStyles = buildSenderStyles(),
         avatar = when {
             !showContactPicture -> null
-                showContactPicture&& url != null -> Avatar.Image(url = url)
+            showContactPicture && url != null -> Avatar.Image(url = url)
             else -> Avatar.Monogram(monogram)
         },
         color = Color(contactColor),
