@@ -154,6 +154,8 @@ import net.thunderbird.feature.mail.message.list.domain.model.SortType
 import net.thunderbird.feature.mail.message.list.extension.toDomainSortType
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
+import net.thunderbird.feature.mail.message.list.ui.component.MessageListScope
+import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.legacy.LegacyMessageListBridge
@@ -2393,7 +2395,7 @@ class MessageListFragment :
                     setContent {
                         featureThemeProvider.WithTheme {
                             messageListScreenRenderer.Render(
-                                onEffect = { },
+                                onEffect = { handleMessageListEffect(it) },
                                 inAppNotificationEventFilter = ::filterInAppNotificationEvents,
                                 viewModel = viewModel,
                             )
@@ -2403,6 +2405,46 @@ class MessageListFragment :
             }
         } else {
             inflater.inflate(R.layout.message_list_error, container, false)
+        }
+    }
+
+    private fun MessageListScope.handleMessageListEffect(effect: MessageListEffect) {
+        when (effect) {
+            is MessageListEffect.ScrollToMessage -> scrollToMessage(effect.message)
+            is MessageListEffect.UpdateToolbarActionMode -> {
+                if (actionMode == null) {
+                    startAndPrepareActionMode()
+                }
+                actionMode?.let { actionMode ->
+                    actionMode.title = effect.title
+                    actionModeCallback.showSelectAll(!effect.isAllSelected)
+                    actionMode.invalidate()
+                }
+            }
+
+            is MessageListEffect.RefreshMessageList -> {
+                val (primarySortType, secondarySortType) = effect.currentState.metadata.currentSortCriteria
+                val (sortType, sortAscending) = primarySortType.toDomainSortType()
+                updateCurrentSortCriteria(
+                    sortType = sortType,
+                    sortAscending = sortAscending,
+                    sortDateAscending = when (primarySortType) {
+                        SortType.DateAsc -> true
+                        SortType.DateDesc -> false
+                        else -> secondarySortType == SortType.DateAsc
+                    },
+                )
+                loadMessageList()
+            }
+
+            is MessageListEffect.OpenMessage -> {
+                val messageReference = checkNotNull(MessageReference.parse(effect.message.messageReference)) {
+                    "The message reference should not be null when opening a message. Message: $effect"
+                }
+                openMessage(messageReference)
+            }
+
+            else -> Unit
         }
     }
 
