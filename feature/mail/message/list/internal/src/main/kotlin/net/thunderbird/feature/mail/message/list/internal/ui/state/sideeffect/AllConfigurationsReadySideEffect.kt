@@ -19,11 +19,16 @@ class AllConfigurationsReadySideEffect(
     logger: Logger,
     dispatch: suspend (MessageListEvent) -> Unit,
 ) : MessageListStateSideEffectHandler(logger, dispatch) {
-    override fun accept(event: MessageListEvent, newState: MessageListState): Boolean =
-        newState is MessageListState.WarmingUp && newState.isReady
+    override fun accept(event: MessageListEvent, oldState: MessageListState, newState: MessageListState): Boolean =
+        oldState != newState && newState is MessageListState.WarmingUp && newState.isReady
 
-    override suspend fun handle(oldState: MessageListState, newState: MessageListState) {
+    override suspend fun consume(
+        event: MessageListEvent,
+        oldState: MessageListState,
+        newState: MessageListState,
+    ): ConsumeResult {
         dispatch(MessageListEvent.AllConfigsReady)
+        return ConsumeResult.Consumed
     }
 
     class Factory(

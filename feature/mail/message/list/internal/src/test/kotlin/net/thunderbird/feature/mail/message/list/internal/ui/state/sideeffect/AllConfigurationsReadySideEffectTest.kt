@@ -2,9 +2,8 @@ package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 
 import androidx.compose.ui.graphics.Color
 import assertk.assertThat
-import assertk.assertions.isFalse
+import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
-import assertk.assertions.isTrue
 import dev.mokkery.spy
 import dev.mokkery.verifySuspend
 import kotlin.test.Test
@@ -13,6 +12,7 @@ import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
+import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.feature.account.AccountIdFactory
@@ -30,59 +30,63 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 class AllConfigurationsReadySideEffectTest {
 
     @Test
-    fun `accept() should return true when state is WarmingUp and isReady is true`() = runTest {
+    fun `handle() should return Consumed when state is WarmingUp and isReady is true`() = runTest {
         // Arrange
         val testSubject = createTestSubject()
 
         // Act
-        val result = testSubject.accept(
+        val result = testSubject.handle(
             event = MessageListEvent.SwipeActionsLoaded(persistentMapOf()),
+            oldState = MessageListState.WarmingUp(),
             newState = createReadyWarmingUpState(),
         )
 
         // Assert
-        assertThat(result).isTrue()
+        assertThat(result).isEqualTo(StateSideEffectHandler.ConsumeResult.Consumed)
     }
 
     @Test
-    fun `accept() should return false when state is WarmingUp but metadata is not ready`() = runTest {
+    fun `handle() should return Ignored when state is WarmingUp but metadata is not ready`() = runTest {
         // Arrange
         val testSubject = createTestSubject()
 
         // Act
-        val result = testSubject.accept(
+        val result = testSubject.handle(
             event = MessageListEvent.LoadConfigurations,
+            oldState = MessageListState.WarmingUp(),
             newState = MessageListState.WarmingUp(),
         )
 
         // Assert
-        assertThat(result).isFalse()
+        assertThat(result).isEqualTo(StateSideEffectHandler.ConsumeResult.Ignored)
     }
 
     @Test
-    fun `accept() should return false when state is WarmingUp but preferences is null`() = runTest {
+    fun `handle() should return Ignored when state is WarmingUp but preferences is null`() = runTest {
         // Arrange
         val testSubject = createTestSubject()
         val state = createReadyWarmingUpState().copy(preferences = null)
 
         // Act
-        val result = testSubject.accept(
+        val result = testSubject.handle(
             event = MessageListEvent.UpdatePreferences(createPreferences()),
+            oldState = MessageListState.WarmingUp(),
             newState = state,
         )
 
         // Assert
-        assertThat(result).isFalse()
+        assertThat(result).isEqualTo(StateSideEffectHandler.ConsumeResult.Ignored)
     }
 
     @Test
-    fun `accept() should return false when state is not WarmingUp`() = runTest {
+    fun `handle() should return Ignored when state is not WarmingUp`() = runTest {
         // Arrange
         val testSubject = createTestSubject()
 
         // Act
-        val result = testSubject.accept(
+        val result = testSubject.handle(
             event = MessageListEvent.AllConfigsReady,
+            oldState = MessageListState.WarmingUp(),
             newState = MessageListState.LoadedMessages(
                 metadata = createReadyMetadata(),
                 preferences = createPreferences(),
@@ -91,7 +95,7 @@ class AllConfigurationsReadySideEffectTest {
         )
 
         // Assert
-        assertThat(result).isFalse()
+        assertThat(result).isEqualTo(StateSideEffectHandler.ConsumeResult.Ignored)
     }
 
     @Test
@@ -102,7 +106,11 @@ class AllConfigurationsReadySideEffectTest {
         val state = createReadyWarmingUpState()
 
         // Act
-        testSubject.handle(oldState = MessageListState.WarmingUp(), newState = state)
+        testSubject.handle(
+            event = MessageListEvent.SwipeActionsLoaded(persistentMapOf()),
+            oldState = MessageListState.WarmingUp(),
+            newState = state,
+        )
 
         // Assert
         verifySuspend { dispatch(MessageListEvent.AllConfigsReady) }
@@ -119,6 +127,7 @@ class AllConfigurationsReadySideEffectTest {
         val result = factory.create(
             scope = this,
             dispatch = {},
+            dispatchUiEffect = {},
         )
 
         // Assert

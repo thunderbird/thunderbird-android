@@ -153,9 +153,10 @@ class BaseStateMachineViewModelTest {
     fun `should trigger side effect handlers on state change`() = runTest {
         var sideEffectTriggered = false
         val sideEffectHandler = object : StateSideEffectHandler<String, String, String>(TestLogger(), {}) {
-            override fun accept(event: String, newState: String): Boolean = true
-            override suspend fun handle(oldState: String, newState: String) {
+            override fun accept(event: String, oldState: String, newState: String): Boolean = true
+            override suspend fun consume(event: String, oldState: String, newState: String): ConsumeResult {
                 sideEffectTriggered = true
+                return ConsumeResult.Consumed
             }
         }
         val factory = StateSideEffectHandler.Factory { _, _, _ -> sideEffectHandler }

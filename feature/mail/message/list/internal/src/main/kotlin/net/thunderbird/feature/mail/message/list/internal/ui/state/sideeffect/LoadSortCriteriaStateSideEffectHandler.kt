@@ -18,14 +18,19 @@ class LoadSortCriteriaStateSideEffectHandler(
     private val logger: Logger,
     private val getSortCriteriaPerAccount: DomainContract.UseCase.GetSortCriteriaPerAccount,
 ) : MessageListStateSideEffectHandler(logger, dispatch) {
-    override fun accept(event: MessageListEvent, newState: MessageListState): Boolean =
+    override fun accept(event: MessageListEvent, oldState: MessageListState, newState: MessageListState): Boolean =
         event == MessageListEvent.LoadConfigurations
 
-    override suspend fun handle(oldState: MessageListState, newState: MessageListState) {
+    override suspend fun consume(
+        event: MessageListEvent,
+        oldState: MessageListState,
+        newState: MessageListState,
+    ): ConsumeResult {
         logger.verbose(TAG) { "$TAG.handle() called with: oldState = $oldState, newState = $newState" }
         val sortCriteriaPerAccount = getSortCriteriaPerAccount(accountIds = accounts)
         logger.verbose(TAG) { "saved sort criteria = $sortCriteriaPerAccount" }
         dispatch(MessageListEvent.SortCriteriaLoaded(sortCriteriaPerAccount))
+        return ConsumeResult.Consumed
     }
 
     class Factory(

@@ -110,10 +110,9 @@ abstract class BaseStateMachineViewModel<TState : Any, TEvent : Any, TUiSideEffe
             val newState = stateMachine.process(event)
             if (newState != currentState) {
                 logger.verbose { "event(${event::class.simpleName}): state update." }
-                sideEffectHandlers
-                    .filter { it.accept(event, newState) }
-                    .forEach { it.handle(event, oldState = currentState, newState) }
             }
+
+            sideEffectHandlers.forEach { it.handle(event, oldState = currentState, newState = newState) }
         }
     }
 }

@@ -22,10 +22,14 @@ class LoadSwipeActionsStateSideEffectHandler(
     private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions,
 ) : MessageListStateSideEffectHandler(logger, dispatch) {
     private var runningFlow: Job? = null
-    override fun accept(event: MessageListEvent, newState: MessageListState): Boolean =
+    override fun accept(event: MessageListEvent, oldState: MessageListState, newState: MessageListState): Boolean =
         event == MessageListEvent.LoadConfigurations
 
-    override suspend fun handle(oldState: MessageListState, newState: MessageListState) {
+    override suspend fun consume(
+        event: MessageListEvent,
+        oldState: MessageListState,
+        newState: MessageListState,
+    ): ConsumeResult {
         logger.verbose(TAG) { "$TAG.handle() called with: oldState = $oldState, newState = $newState" }
         runningFlow?.cancel()
         runningFlow = buildSwipeActions()
@@ -34,6 +38,8 @@ class LoadSwipeActionsStateSideEffectHandler(
             }
             .onCompletion { runningFlow = null }
             .launchIn(scope)
+
+        return ConsumeResult.Consumed
     }
 
     class Factory(

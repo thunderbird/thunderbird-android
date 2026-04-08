@@ -16,12 +16,14 @@ class ChangeSortCriteriaSideEffect(
     private val logger: Logger,
     private val updateSortCriteria: DomainContract.UseCase.UpdateSortCriteria,
 ) : MessageListStateSideEffectHandler(logger, dispatch) {
-    override fun accept(
-        event: MessageListEvent,
-        newState: MessageListState,
-    ): Boolean = event is MessageListEvent.ChangeSortCriteria
+    override fun accept(event: MessageListEvent, oldState: MessageListState, newState: MessageListState): Boolean =
+        event is MessageListEvent.ChangeSortCriteria && oldState != newState
 
-    override suspend fun handle(oldState: MessageListState, newState: MessageListState) {
+    override suspend fun consume(
+        event: MessageListEvent,
+        oldState: MessageListState,
+        newState: MessageListState,
+    ): ConsumeResult {
         logger.verbose(TAG) {
             "ChangeSortCriteriaSideEffect.handle() called with: oldState = $oldState, newState = $newState"
         }
@@ -34,6 +36,7 @@ class ChangeSortCriteriaSideEffect(
         if (oldSortCriteria != newSortCriteria) {
             updateSortCriteria(currentAccountId, newSortCriteria)
         }
+        return ConsumeResult.Consumed
     }
 
     class Factory(

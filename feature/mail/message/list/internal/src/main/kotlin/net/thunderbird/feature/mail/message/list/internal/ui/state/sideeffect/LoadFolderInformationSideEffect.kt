@@ -23,17 +23,19 @@ class LoadFolderInformationSideEffect(
     private val logger: Logger,
     private val folderRepository: FolderRepository,
 ) : MessageListStateSideEffectHandler(logger, dispatch) {
-    override fun accept(
-        event: MessageListEvent,
-        newState: MessageListState,
-    ): Boolean = accountIds.size == 1 && folderId != null && event == MessageListEvent.LoadConfigurations
+    override fun accept(event: MessageListEvent, oldState: MessageListState, newState: MessageListState): Boolean =
+        accountIds.size == 1 && folderId != null && event == MessageListEvent.LoadConfigurations
 
-    override suspend fun handle(oldState: MessageListState, newState: MessageListState) {
+    override suspend fun consume(
+        event: MessageListEvent,
+        oldState: MessageListState,
+        newState: MessageListState,
+    ): ConsumeResult {
         val accountId = accountIds.first()
         val folderId = requireNotNull(folderId)
         logger.verbose(TAG) { "$TAG.handle() called with: oldState = $oldState, newState = $newState" }
         val folder = folderRepository.getFolder(accountId, folderId)
-        if (folder != null) {
+        return if (folder != null) {
             val remoteFolder = if (!folder.isLocalOnly) {
                 folderRepository.getRemoteFolders(accountId).first { it.id == folderId }
             } else {
@@ -50,6 +52,9 @@ class LoadFolderInformationSideEffect(
                     ),
                 ),
             )
+            ConsumeResult.Consumed
+        } else {
+            ConsumeResult.Ignored
         }
     }
 

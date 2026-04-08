@@ -3,9 +3,8 @@ package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 import androidx.compose.ui.graphics.Color
 import app.k9mail.legacy.mailstore.FolderRepository
 import assertk.assertThat
-import assertk.assertions.isFalse
+import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
-import assertk.assertions.isTrue
 import dev.mokkery.matcher.any
 import dev.mokkery.mock
 import dev.mokkery.spy
@@ -14,6 +13,7 @@ import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
@@ -31,7 +31,7 @@ import net.thunderbird.feature.mail.folder.api.Folder as MailFolder
 @Suppress("MaxLineLength")
 class LoadFolderInformationSideEffectTest {
     @Test
-    fun `accept() should return true when event is LoadConfigurations and folderId is set and accountIds size is one`() =
+    fun `handle() should return Consumed when event is LoadConfigurations and folderId is set and accountIds size is one`() =
         runTest {
             // Arrange
             val testSubject = createTestSubject(
@@ -40,17 +40,18 @@ class LoadFolderInformationSideEffectTest {
             )
 
             // Act
-            val result = testSubject.accept(
+            val result = testSubject.handle(
                 event = MessageListEvent.LoadConfigurations,
+                oldState = MessageListState.WarmingUp(),
                 newState = MessageListState.WarmingUp(),
             )
 
             // Assert
-            assertThat(result).isTrue()
+            assertThat(result).isEqualTo(StateSideEffectHandler.ConsumeResult.Consumed)
         }
 
     @Test
-    fun `accept() should return false when event is not LoadConfigurations`() = runTest {
+    fun `handle() should return Ignored when event is not LoadConfigurations`() = runTest {
         // Arrange
         val testSubject = createTestSubject(
             accountIds = setOf(AccountIdFactory.create()),
@@ -58,17 +59,18 @@ class LoadFolderInformationSideEffectTest {
         )
 
         // Act
-        val result = testSubject.accept(
+        val result = testSubject.handle(
             event = MessageListEvent.AllConfigsReady,
+            oldState = MessageListState.WarmingUp(),
             newState = MessageListState.WarmingUp(),
         )
 
         // Assert
-        assertThat(result).isFalse()
+        assertThat(result).isEqualTo(StateSideEffectHandler.ConsumeResult.Ignored)
     }
 
     @Test
-    fun `accept() should return false when accountIds size is not one`() = runTest {
+    fun `handle() should return Ignored when accountIds size is not one`() = runTest {
         // Arrange
         val testSubject = createTestSubject(
             accountIds = setOf(AccountIdFactory.create(), AccountIdFactory.create()),
@@ -76,17 +78,18 @@ class LoadFolderInformationSideEffectTest {
         )
 
         // Act
-        val result = testSubject.accept(
+        val result = testSubject.handle(
             event = MessageListEvent.LoadConfigurations,
+            oldState = MessageListState.WarmingUp(),
             newState = MessageListState.WarmingUp(),
         )
 
         // Assert
-        assertThat(result).isFalse()
+        assertThat(result).isEqualTo(StateSideEffectHandler.ConsumeResult.Ignored)
     }
 
     @Test
-    fun `accept() should return false when folderId is null`() = runTest {
+    fun `handle() should return Ignored when folderId is null`() = runTest {
         // Arrange
         val testSubject = createTestSubject(
             accountIds = setOf(AccountIdFactory.create()),
@@ -94,13 +97,14 @@ class LoadFolderInformationSideEffectTest {
         )
 
         // Act
-        val result = testSubject.accept(
+        val result = testSubject.handle(
             event = MessageListEvent.LoadConfigurations,
+            oldState = MessageListState.WarmingUp(),
             newState = MessageListState.WarmingUp(),
         )
 
         // Assert
-        assertThat(result).isFalse()
+        assertThat(result).isEqualTo(StateSideEffectHandler.ConsumeResult.Ignored)
     }
 
     @Test
@@ -123,7 +127,11 @@ class LoadFolderInformationSideEffectTest {
         )
 
         // Act
-        testSubject.handle(MessageListState.WarmingUp(), MessageListState.WarmingUp())
+        testSubject.handle(
+            event = MessageListEvent.LoadConfigurations,
+            oldState = MessageListState.WarmingUp(),
+            newState = MessageListState.WarmingUp(),
+        )
 
         // Assert
         verifySuspend {
@@ -167,7 +175,11 @@ class LoadFolderInformationSideEffectTest {
         )
 
         // Act
-        testSubject.handle(MessageListState.WarmingUp(), MessageListState.WarmingUp())
+        testSubject.handle(
+            event = MessageListEvent.LoadConfigurations,
+            oldState = MessageListState.WarmingUp(),
+            newState = MessageListState.WarmingUp(),
+        )
 
         // Assert
         verifySuspend {
@@ -203,7 +215,11 @@ class LoadFolderInformationSideEffectTest {
         )
 
         // Act
-        testSubject.handle(MessageListState.WarmingUp(), MessageListState.WarmingUp())
+        testSubject.handle(
+            event = MessageListEvent.LoadConfigurations,
+            oldState = MessageListState.WarmingUp(),
+            newState = MessageListState.WarmingUp(),
+        )
 
         // Assert
         verifySuspend(mode = VerifyMode.exactly(0)) { dispatch(any()) }
@@ -235,7 +251,11 @@ class LoadFolderInformationSideEffectTest {
 
         // Act / Assert
         assertFailsWith<NoSuchElementException> {
-            testSubject.handle(MessageListState.WarmingUp(), MessageListState.WarmingUp())
+            testSubject.handle(
+                event = MessageListEvent.LoadConfigurations,
+                oldState = MessageListState.WarmingUp(),
+                newState = MessageListState.WarmingUp(),
+            )
         }
     }
 
@@ -253,6 +273,7 @@ class LoadFolderInformationSideEffectTest {
         val result = factory.create(
             scope = mock(),
             dispatch = {},
+            dispatchUiEffect = {},
         )
 
         // Assert

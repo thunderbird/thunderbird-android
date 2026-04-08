@@ -1,8 +1,7 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 
 import assertk.assertThat
-import assertk.assertions.isFalse
-import assertk.assertions.isTrue
+import assertk.assertions.isEqualTo
 import dev.mokkery.matcher.any
 import dev.mokkery.mock
 import dev.mokkery.spy
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
@@ -27,7 +27,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 
 class LoadPreferencesSideEffectTest {
     @Test
-    fun `accept() should return true if event is LoadConfigurations`() = runTest {
+    fun `handle() should return Consumed if event is LoadConfigurations`() = runTest {
         // Arrange
         val testSubject = LoadPreferencesSideEffect(
             dispatch = {},
@@ -37,17 +37,18 @@ class LoadPreferencesSideEffectTest {
         )
 
         // Act
-        val actual = testSubject.accept(
+        val actual = testSubject.handle(
             event = MessageListEvent.LoadConfigurations,
+            oldState = MessageListState.WarmingUp(),
             newState = MessageListState.WarmingUp(),
         )
 
         // Assert
-        assertThat(actual).isTrue()
+        assertThat(actual).isEqualTo(StateSideEffectHandler.ConsumeResult.Consumed)
     }
 
     @Test
-    fun `accept() should return false if event is not LoadConfigurations`() = runTest {
+    fun `handle() should return Ignored if event is not LoadConfigurations`() = runTest {
         // Arrange
         val testSubject = LoadPreferencesSideEffect(
             dispatch = {},
@@ -57,13 +58,14 @@ class LoadPreferencesSideEffectTest {
         )
 
         // Act
-        val actual = testSubject.accept(
+        val actual = testSubject.handle(
             event = MessageListEvent.ExitSelectionMode,
+            oldState = MessageListState.WarmingUp(),
             newState = MessageListState.WarmingUp(),
         )
 
         // Assert
-        assertThat(actual).isFalse()
+        assertThat(actual).isEqualTo(StateSideEffectHandler.ConsumeResult.Ignored)
     }
 
     @Test
@@ -84,7 +86,7 @@ class LoadPreferencesSideEffectTest {
             val newState = oldState.withMetadata { copy(isActive = true) }
 
             // Act
-            testSubject.handle(oldState, newState)
+            testSubject.handle(event = MessageListEvent.LoadConfigurations, oldState = oldState, newState = newState)
 
             // Assert
             verify(mode = VerifyMode.exactly(1)) {
@@ -110,7 +112,7 @@ class LoadPreferencesSideEffectTest {
             val newState = oldState.withMetadata { copy(isActive = true) }
 
             // Act
-            testSubject.handle(oldState, newState)
+            testSubject.handle(event = MessageListEvent.LoadConfigurations, oldState = oldState, newState = newState)
             repeat(times = 10) { index ->
                 fakeGetMessageListPreferences.emit(
                     preferences = createMessageListPreferences(

@@ -4,13 +4,13 @@ import androidx.compose.ui.graphics.Color
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasMessage
-import assertk.assertions.isFalse
+import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
-import assertk.assertions.isTrue
 import dev.mokkery.mock
 import kotlin.test.Test
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
@@ -24,7 +24,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 
 class ChangeSortCriteriaSideEffectTest {
     @Test
-    fun `accept() should return true if event is ChangeSortCriteria`() = runTest {
+    fun `handle() should return Consumed if event is ChangeSortCriteria`() = runTest {
         // Arrange
         val testSubject = ChangeSortCriteriaSideEffect(
             dispatch = {},
@@ -33,20 +33,21 @@ class ChangeSortCriteriaSideEffectTest {
         )
 
         // Act
-        val actual = testSubject.accept(
+        val actual = testSubject.handle(
             event = MessageListEvent.ChangeSortCriteria(
                 accountId = null,
                 sortCriteria = SortCriteria(primary = SortType.DateDesc),
             ),
+            oldState = MessageListState.WarmingUp(),
             newState = MessageListState.WarmingUp(),
         )
 
         // Assert
-        assertThat(actual).isTrue()
+        assertThat(actual).isEqualTo(StateSideEffectHandler.ConsumeResult.Consumed)
     }
 
     @Test
-    fun `accept() should return false if event is not ChangeSortCriteria`() = runTest {
+    fun `handle() should return Ignored if event is not ChangeSortCriteria`() = runTest {
         // Arrange
         val testSubject = ChangeSortCriteriaSideEffect(
             dispatch = {},
@@ -55,13 +56,14 @@ class ChangeSortCriteriaSideEffectTest {
         )
 
         // Act
-        val actual = testSubject.accept(
+        val actual = testSubject.handle(
             event = MessageListEvent.LoadMore,
+            oldState = MessageListState.WarmingUp(),
             newState = MessageListState.WarmingUp(),
         )
 
         // Assert
-        assertThat(actual).isFalse()
+        assertThat(actual).isEqualTo(StateSideEffectHandler.ConsumeResult.Ignored)
     }
 
     @Test
@@ -93,9 +95,14 @@ class ChangeSortCriteriaSideEffectTest {
             )
         }
 
+        val event = MessageListEvent.ChangeSortCriteria(
+            accountId = accountIdMissingSortCriteria,
+            sortCriteria = SortCriteria(primary = SortType.DateDesc),
+        )
+
         // Act
         val actual = assertFailure {
-            testSubject.handle(oldState, newState)
+            testSubject.handle(event, oldState, newState)
         }
 
         // Assert

@@ -1,11 +1,11 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 
 import assertk.assertThat
-import assertk.assertions.isFalse
-import assertk.assertions.isTrue
+import assertk.assertions.isEqualTo
 import dev.mokkery.spy
 import dev.mokkery.verifySuspend
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
@@ -19,37 +19,37 @@ import org.junit.Test
 
 class LoadSortTypeStateSideEffectHandlerTest {
     @Test
-    fun `accept() should return true when event is LoadConfigurations`() {
+    fun `handle() should return Consumed when event is LoadConfigurations`() = runTest {
         // Arrange
         val handler = createTestSubject()
         val event = MessageListEvent.LoadConfigurations
         val state = MessageListState.WarmingUp()
 
         // Act
-        val result = handler.accept(event, state)
+        val result = handler.handle(event, oldState = MessageListState.WarmingUp(), newState = state)
 
         // Assert
-        assertThat(result).isTrue()
+        assertThat(result).isEqualTo(StateSideEffectHandler.ConsumeResult.Consumed)
     }
 
     @Test
-    fun `accept() should return false when event is not LoadConfigurations`() {
+    fun `handle() should return Ignored when event is not LoadConfigurations`() = runTest  {
         // Arrange
         val handler = createTestSubject()
         val event = MessageListEvent.AllConfigsReady
         val state = MessageListState.WarmingUp()
 
         // Act
-        val result = handler.accept(event, state)
+        val result = handler.handle(event, oldState = MessageListState.WarmingUp(), newState = state)
 
         // Assert
-        assertThat(result).isFalse()
+        assertThat(result).isEqualTo(StateSideEffectHandler.ConsumeResult.Ignored)
     }
 
     @Test
     fun `handle() should call getSortTypes and dispatch SortTypesLoaded`() = runTest {
         // Arrange
-        val logger = TestLogger()
+        TestLogger()
         val accounts = setOf(AccountIdFactory.create())
         val dispatch = spy<suspend (MessageListEvent) -> Unit>(obj = {})
         val sortCriteriaPerAccount = mapOf(accounts.firstOrNull() to SortCriteria(primary = SortType.DateDesc))
@@ -62,7 +62,11 @@ class LoadSortTypeStateSideEffectHandlerTest {
         )
 
         // Act
-        handler.handle(oldState = MessageListState.WarmingUp(), newState = MessageListState.WarmingUp())
+        handler.handle(
+            event = MessageListEvent.LoadConfigurations,
+            oldState = MessageListState.WarmingUp(),
+            newState = MessageListState.WarmingUp(),
+        )
 
         // Assert
         verifySuspend {
