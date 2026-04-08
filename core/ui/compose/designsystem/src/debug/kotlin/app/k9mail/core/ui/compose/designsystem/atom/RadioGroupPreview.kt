@@ -9,8 +9,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 val choice = persistentListOf(
     Pair("1", "Native Android"),

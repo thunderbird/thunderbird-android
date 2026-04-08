@@ -11,7 +11,6 @@ enum class CatalogOrganismPage(
     DIALOG("Dialogs"),
     BANNER("Banners"),
     SNACKBAR("Snackbars", isFullScreen = true),
-    MESSAGE_ITEM("Message Items"),
     ;
 
     override fun toString(): String {

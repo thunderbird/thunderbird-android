@@ -312,16 +312,16 @@
     <string name="account_notify_contacts_mail_only_summary">Meldingen alleen tonen voor bekende contacten</string>
     <string name="account_settings_ignore_chat_messages_label">Chatberichten negeren</string>
     <string name="account_settings_ignore_chat_messages_summary">Geen meldingen tonen voor berichten die onderdeel zijn van een e-mail-chat</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Als gelezen markeren na openen</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Als gelezen markeren wanneer ingezien</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Als gelezen markeren als geopend</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Een bericht als gelezen markeren als het geopend is om te bekijken</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Als gelezen markeren bij wissen</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Markeer een bericht als gelezen wanneer die wordt gewist</string>
     <string name="account_settings_notification_channels_label">Meldingscategorieën</string>
     <string name="account_settings_open_notification_settings_messages_summary">Meldingen voor nieuwe berichten instellen</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Fout- en statusmeldingen instellen</string>
-    <string name="account_settings_show_pictures_label">Afbeeldingen automatisch tonen</string>
+    <string name="account_settings_show_pictures_label">Afbeeldingen altijd tonen</string>
     <string name="account_settings_show_pictures_never">Nee</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Alleen van contacten</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Van contacten</string>
     <string name="account_settings_show_pictures_always">Van iedereen</string>
     <string name="account_settings_composition">Bericht versturen</string>
     <string name="account_settings_default_quoted_text_shown_label">Bericht bij beantwoorden citeren</string>
@@ -343,7 +343,7 @@
     <string name="account_settings_upload_sent_messages_label">Verzonden berichten uploaden</string>
     <string name="account_settings_upload_sent_messages_summary">Berichten na verzenden naar de map ‘Verzonden’ uploaden</string>
     <string name="account_settings_general_title">Algemene instellingen</string>
-    <string name="account_settings_reading_mail">Berichten lezen</string>
+    <string name="account_settings_reading_mail">E-mailberichten lezen</string>
     <string name="account_settings_sync">Berichten ophalen</string>
     <string name="account_settings_folders">Mappen</string>
     <string name="account_settings_quote_prefix_label">Citaatvoorvoegsel</string>
@@ -730,7 +730,6 @@
     <string name="crypto_msg_encrypted_insecure">maar versleuteling is niet veilig</string>
     <string name="locked_attach_unlock">Deblokkeren</string>
     <string name="locked_attach_unencrypted">Dit onderdeel is niet versleuteld en is misschien onveilig.</string>
-    <string name="locked_attach_title">Onbeveiligde bijlage</string>
     <string name="message_progress_text">Laden…</string>
     <string name="messageview_decrypt_cancelled">Ontsleuteling is gestopt.</string>
     <string name="messageview_decrypt_retry">Opnieuw</string>
@@ -799,25 +798,15 @@
     <string name="push_info_disable_push_text">Als u het niet nodig vindt om per direct meldingen van nieuwe berichten te ontvangen, dan kunt u beter push uitschakelen en in plaats daarvan kiezen voor peilen. Met peilen wordt er om de zoveel tijd gekeken of er nieuwe e-mailberichten zijn binnengekomen. Daarvoor is het tonen van een melding niet continu nodig.</string>
     <string name="push_info_disable_push_action">Push uitschakelen</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Selecteren</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Deselecteren</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Als gelezen markeren</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Als ongelezen markeren</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Ster toevoegen</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Ster verwijderen</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archiveren</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Verwijderen</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Ongewenst</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Verplaatsen…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Zwevende knop ‘Opstellen’ tonen</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -894,8 +883,6 @@
     <string name="debug_sync_export_logs_title">Synchronisatielogboeken exporteren</string>
     <string name="debug_enable_sync_debug_logging_title">Debuglogging synchronisatie inschakelen</string>
     <string name="debug_enable_sync_debug_logging_summary">Log 24 uur diagnostische informatie over synchronisatie</string>
-    <string name="swipe_action_archive_folder_not_set">Archiefmap instellen</string>
-    <string name="swipe_action_change_swipe_gestures">Veegacties \naanpassen</string>
     <string name="archiving_not_available_for_this_account">Archivering is voor deze account niet beschikbaar.</string>
     <string name="debug_open_secret_debug_screen">Geheim debugscherm openen</string>
     <string name="debug_invalidate_access_token">Test: Ongeldig toegangstoken</string>
@@ -923,4 +910,9 @@
     <string name="global_settings_messageview_body_content_type_text_plain">Platte tekst (text/plain)</string>
     <string name="debug_feature_flags">DEBUGGEN: Functielabels</string>
     <string name="print_message_action">Afdrukken</string>
+    <string name="global_settings_splitview_when_unfolded">Wanneer apparaat openvouwt</string>
+    <string name="general_settings_message_list_date_time_format_title">Datum/Tijdopmaak</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contextueel</string>
+    <string name="general_settings_message_list_date_time_format_full">Volledig</string>
+    <string name="sort_by_then_by">Daarna op…</string>
 </resources>

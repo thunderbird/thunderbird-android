@@ -14,7 +14,7 @@ import androidx.compose.ui.semantics.Role
 import app.k9mail.core.ui.compose.designsystem.atom.Checkbox
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.mail.message.list.internal.R
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.State
 

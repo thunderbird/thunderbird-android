@@ -691,7 +691,6 @@
     <string name="crypto_msg_encrypted_insecure">pero o cifrado é considerado non-seguro</string>
     <string name="locked_attach_unlock">Desbloquear</string>
     <string name="locked_attach_unencrypted">Esta parte non foi cifrada, e podería ser non segura.</string>
-    <string name="locked_attach_title">Anexo non protexido</string>
     <string name="message_progress_text">A cargar…</string>
     <string name="messageview_decrypt_cancelled">O descifrado foi cancelado.</string>
     <string name="messageview_decrypt_retry">Intentar de novo</string>
@@ -766,22 +765,14 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <string name="push_info_disable_push_text">Se non precisas notificacións instantáneas sobre mensaxes novas, debes desactivar Push e usar a Enquisa. As enquisas comproba se hai correos novos a intervalos regulares e non precisa a notificación.</string>
     <string name="push_info_disable_push_action">Desactivar Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Seleccionar</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Deseleccionar</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Marcar Non Lido</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Engadir Estrela</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Eliminar Estrela</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archivo</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Eliminar</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -864,14 +855,12 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <string name="general_settings_ui_density_relaxed">Relaxado</string>
     <string name="account_settings_vibration">Vibración</string>
     <string name="font_size_message_view_recipients">Destinatarios</string>
-    <string name="swipe_action_mark_as_read">Marcar como leído</string>
     <string name="clipboard_label_name_and_email_address">Nome e enderezo de correo electrónico</string>
     <string name="notification_notify_error_text">Produciuse un erro ao tentar crear unha notificación do sistema para unha mensaxe nova. O motivo é probablemente un son de notificación que falta.
 \n
 \nToca para abrir a configuración de notificacións.</string>
     <string name="message_details_missing_date">Falta a cabeceira \"Data\"</string>
     <string name="general_settings_post_mark_as_unread_action_title">Despois de marcar unha mensaxe como non lida</string>
-    <string name="swipe_action_move">Mover…</string>
     <string name="message_list_content_description_unread_prefix">sen ler, %s</string>
     <string name="push_notification_grant_alarm_permission">Toque para garantir o permiso.</string>
     <string name="push_notification_state_alarm_permission_missing">Faltan permisos para programar alarmas</string>
@@ -886,4 +875,22 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <string name="open_camera">Abir a cámara</string>
     <string name="attach_file">Achegar arquivo</string>
     <string name="camera_permission_denied">Non se poden tirar fotos, pois non se concedeu permiso á cámara</string>
+    <string name="message_view_menu_action_export_eml">Exportar como EML</string>
+    <string name="print_message_action">Imprimir</string>
+    <string name="set_format_html_action">Empregar o formato orixinal</string>
+    <string name="set_format_html_condensed_action">Ver con formato</string>
+    <string name="set_format_plain_action">Ver correo sen formato</string>
+    <string name="set_format_plain_condensed_action">Ver sen formato</string>
+    <string name="empty_spam_action">Valeirar Spam</string>
+    <string name="debug_enable_sync_debug_logging_title">Activar rexistro de depuración de sincronización</string>
+    <string name="debug_enable_sync_debug_logging_summary">Rexistrar datos de sincronización por 24 horas</string>
+    <string name="debug_sync_export_logs_title">Exportar rexistros de sincronización</string>
+    <string name="debug_open_secret_debug_screen">Abrir a pantalla secreta de depuración</string>
+    <string name="save_attachment_action">Gardar adxunto</string>
+    <string name="global_settings_messageview_body_content_type_title">Tipo de contido do corpo da mensaxe</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Texto plano (text/plain)</string>
+    <string name="general_settings_message_list_date_time_format_title">Formato de data/hora</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contextual</string>
+    <string name="general_settings_message_list_date_time_format_full">Completo</string>
 </resources>

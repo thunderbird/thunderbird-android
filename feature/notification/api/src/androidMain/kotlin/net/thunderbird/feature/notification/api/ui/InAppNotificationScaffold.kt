@@ -20,6 +20,7 @@ import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.designsystem.template.ScaffoldFabPosition
 import kotlinx.collections.immutable.ImmutableSet
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffoldDefaults.TEST_TAG_ERROR_NOTIFICATIONS_DIALOG
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffoldDefaults.TEST_TAG_INNER_SCAFFOLD
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffoldDefaults.TEST_TAG_IN_APP_NOTIFICATION_HOST
@@ -61,6 +62,7 @@ fun InAppNotificationScaffold(
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: ScaffoldFabPosition = ScaffoldFabPosition.End,
     onNotificationActionClick: (NotificationAction) -> Unit = {},
+    eventFilter: (InAppNotification) -> Boolean = { true },
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val hostStateHolder = rememberInAppNotificationHostStateHolder(enabled)
@@ -98,6 +100,7 @@ fun InAppNotificationScaffold(
                     },
                 )
             },
+            eventFilter = eventFilter,
             modifier = Modifier.testTagAsResourceId(TEST_TAG_IN_APP_NOTIFICATION_HOST),
             content = content,
         )

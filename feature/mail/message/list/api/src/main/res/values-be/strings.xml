@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Абраць</string>
+    <string name="swipe_action_deselect">Зняць выбар</string>
+    <string name="swipe_action_mark_as_read">Пазначыць прачытаным</string>
+    <string name="swipe_action_mark_as_unread">Пазначыць як нечытанае</string>
+    <string name="swipe_action_add_star">Адзначыць</string>
+    <string name="swipe_action_remove_star">Выдаліць адзнаку</string>
+    <string name="swipe_action_archive">Архіў</string>
+    <string name="swipe_action_delete">Выдаліць</string>
+    <string name="swipe_action_spam">Спам</string>
+    <string name="swipe_action_move">Перамясціць…</string>
+</resources>

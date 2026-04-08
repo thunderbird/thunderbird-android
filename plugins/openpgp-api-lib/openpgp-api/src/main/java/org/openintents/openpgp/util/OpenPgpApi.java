@@ -47,23 +47,19 @@ public class OpenPgpApi {
     public static final int API_VERSION = 12;
 
     /**
-     * General extras
-     * --------------
-     *
-     * required extras:
-     * int           EXTRA_API_VERSION           (always required)
-     *
-     * returned extras:
-     * int           RESULT_CODE                 (RESULT_CODE_ERROR, RESULT_CODE_SUCCESS or RESULT_CODE_USER_INTERACTION_REQUIRED)
-     * OpenPgpError  RESULT_ERROR                (if RESULT_CODE == RESULT_CODE_ERROR)
-     * PendingIntent RESULT_INTENT               (if RESULT_CODE == RESULT_CODE_USER_INTERACTION_REQUIRED)
-     */
-
-    /**
-     * This action performs no operation, but can be used to check if the App has permission
-     * to access the API in general, returning a user interaction PendingIntent otherwise.
-     * This can be used to trigger the permission dialog explicitly.
-     *
+     * General extras --------------
+     * <p/>
+     * required extras: int           EXTRA_API_VERSION           (always required)
+     * <p/>
+     * returned extras: int           RESULT_CODE                 (RESULT_CODE_ERROR, RESULT_CODE_SUCCESS or
+     * RESULT_CODE_USER_INTERACTION_REQUIRED) OpenPgpError  RESULT_ERROR                (if RESULT_CODE ==
+     * RESULT_CODE_ERROR) PendingIntent RESULT_INTENT               (if RESULT_CODE ==
+     * RESULT_CODE_USER_INTERACTION_REQUIRED)
+     * <p/>
+     * This action performs no operation, but can be used to check if the App has permission to access the API in
+     * general, returning a user interaction PendingIntent otherwise. This can be used to trigger the permission dialog
+     * explicitly.
+     * <p/>
      * This action uses no extras.
      */
     public static final String ACTION_CHECK_PERMISSION = "org.openintents.openpgp.action.CHECK_PERMISSION";
@@ -72,160 +68,129 @@ public class OpenPgpApi {
     public static final String ACTION_SIGN = "org.openintents.openpgp.action.SIGN";
 
     /**
-     * Sign text resulting in a cleartext signature
-     * Some magic pre-processing of the text is done to convert it to a format usable for
-     * cleartext signatures per RFC 4880 before the text is actually signed:
-     * - end cleartext with newline
-     * - remove whitespaces on line endings
-     *
-     * required extras:
-     * long          EXTRA_SIGN_KEY_ID           (key id of signing key)
-     *
-     * optional extras:
-     * char[]        EXTRA_PASSPHRASE            (key passphrase)
+     * Sign text resulting in a cleartext signature Some magic pre-processing of the text is done to convert it to a
+     * format usable for cleartext signatures per RFC 4880 before the text is actually signed: - end cleartext with
+     * newline - remove whitespaces on line endings
+     * <p/>
+     * required extras: long          EXTRA_SIGN_KEY_ID           (key id of signing key)
+     * <p/>
+     * optional extras: char[]        EXTRA_PASSPHRASE            (key passphrase)
      */
     public static final String ACTION_CLEARTEXT_SIGN = "org.openintents.openpgp.action.CLEARTEXT_SIGN";
 
     /**
-     * Sign text or binary data resulting in a detached signature.
-     * No OutputStream necessary for ACTION_DETACHED_SIGN (No magic pre-processing like in ACTION_CLEARTEXT_SIGN)!
-     * The detached signature is returned separately in RESULT_DETACHED_SIGNATURE.
-     *
-     * required extras:
-     * long          EXTRA_SIGN_KEY_ID           (key id of signing key)
-     *
-     * optional extras:
-     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for detached signature)
-     * char[]        EXTRA_PASSPHRASE            (key passphrase)
-     *
-     * returned extras:
-     * byte[]        RESULT_DETACHED_SIGNATURE
-     * String        RESULT_SIGNATURE_MICALG     (contains the name of the used signature algorithm as a string)
+     * Sign text or binary data resulting in a detached signature. No OutputStream necessary for ACTION_DETACHED_SIGN
+     * (No magic pre-processing like in ACTION_CLEARTEXT_SIGN)! The detached signature is returned separately in
+     * RESULT_DETACHED_SIGNATURE.
+     * <p/>
+     * required extras: long          EXTRA_SIGN_KEY_ID           (key id of signing key)
+     * <p/>
+     * optional extras: boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for detached signature) char[]
+     * EXTRA_PASSPHRASE            (key passphrase)
+     * <p/>
+     * returned extras: byte[]        RESULT_DETACHED_SIGNATURE String        RESULT_SIGNATURE_MICALG     (contains the
+     * name of the used signature algorithm as a string)
      */
     public static final String ACTION_DETACHED_SIGN = "org.openintents.openpgp.action.DETACHED_SIGN";
 
     /**
      * Encrypt
-     *
-     * required extras:
-     * String[]      EXTRA_USER_IDS              (=emails of recipients, if more than one key has a user_id, a PendingIntent is returned via RESULT_INTENT)
-     * or
-     * long[]        EXTRA_KEY_IDS
-     *
-     * optional extras:
-     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
-     * char[]        EXTRA_PASSPHRASE            (key passphrase)
-     * String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata)
-     * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default ist true)
+     * <p/>
+     * required extras: String[]      EXTRA_USER_IDS              (=emails of recipients, if more than one key has a
+     * user_id, a PendingIntent is returned via RESULT_INTENT) or long[]        EXTRA_KEY_IDS
+     * <p/>
+     * optional extras: boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output) char[]
+     * EXTRA_PASSPHRASE            (key passphrase) String        EXTRA_ORIGINAL_FILENAME     (original filename to be
+     * encrypted as metadata) boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default ist true)
      */
     public static final String ACTION_ENCRYPT = "org.openintents.openpgp.action.ENCRYPT";
 
     /**
      * Sign and encrypt
-     *
-     * required extras:
-     * String[]      EXTRA_USER_IDS              (=emails of recipients, if more than one key has a user_id, a PendingIntent is returned via RESULT_INTENT)
-     * or
-     * long[]        EXTRA_KEY_IDS
-     *
-     * optional extras:
-     * long          EXTRA_SIGN_KEY_ID           (key id of signing key)
-     * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
-     * char[]        EXTRA_PASSPHRASE            (key passphrase)
-     * String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata)
-     * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default ist true)
+     * <p/>
+     * required extras: String[]      EXTRA_USER_IDS              (=emails of recipients, if more than one key has a
+     * user_id, a PendingIntent is returned via RESULT_INTENT) or long[]        EXTRA_KEY_IDS
+     * <p/>
+     * optional extras: long          EXTRA_SIGN_KEY_ID           (key id of signing key) boolean
+     * EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output) char[]        EXTRA_PASSPHRASE            (key
+     * passphrase) String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata) boolean
+     * EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default ist true)
      */
     public static final String ACTION_SIGN_AND_ENCRYPT = "org.openintents.openpgp.action.SIGN_AND_ENCRYPT";
 
     public static final String ACTION_QUERY_AUTOCRYPT_STATUS = "org.openintents.openpgp.action.QUERY_AUTOCRYPT_STATUS";
 
     /**
-     * Decrypts and verifies given input stream. This methods handles encrypted-only, signed-and-encrypted,
-     * and also signed-only input.
-     * OutputStream is optional, e.g., for verifying detached signatures!
-     *
-     * If OpenPgpSignatureResult.getResult() == OpenPgpSignatureResult.RESULT_KEY_MISSING
-     * in addition a PendingIntent is returned via RESULT_INTENT to download missing keys.
-     * On all other status, in addition a PendingIntent is returned via RESULT_INTENT to open
-     * the key view in OpenKeychain.
-     *
-     * optional extras:
-     * byte[]        EXTRA_DETACHED_SIGNATURE    (detached signature)
-     *
-     * returned extras:
-     * OpenPgpSignatureResult   RESULT_SIGNATURE
-     * OpenPgpDecryptionResult  RESULT_DECRYPTION
-     * OpenPgpDecryptMetadata   RESULT_METADATA
-     * String                   RESULT_CHARSET   (charset which was specified in the headers of ascii armored input, if any)
+     * Decrypts and verifies given input stream. This methods handles encrypted-only, signed-and-encrypted, and also
+     * signed-only input. OutputStream is optional, e.g., for verifying detached signatures!
+     * <p/>
+     * If OpenPgpSignatureResult.getResult() == OpenPgpSignatureResult.RESULT_KEY_MISSING in addition a PendingIntent is
+     * returned via RESULT_INTENT to download missing keys. On all other status, in addition a PendingIntent is returned
+     * via RESULT_INTENT to open the key view in OpenKeychain.
+     * <p/>
+     * optional extras: byte[]        EXTRA_DETACHED_SIGNATURE    (detached signature)
+     * <p/>
+     * returned extras: OpenPgpSignatureResult   RESULT_SIGNATURE OpenPgpDecryptionResult  RESULT_DECRYPTION
+     * OpenPgpDecryptMetadata   RESULT_METADATA String                   RESULT_CHARSET   (charset which was specified
+     * in the headers of ascii armored input, if any)
      */
     public static final String ACTION_DECRYPT_VERIFY = "org.openintents.openpgp.action.DECRYPT_VERIFY";
 
     /**
      * Decrypts the header of an encrypted file to retrieve metadata such as original filename.
-     *
+     * <p/>
      * This does not decrypt the actual content of the file.
-     *
-     * returned extras:
-     * OpenPgpDecryptMetadata   RESULT_METADATA
-     * String                   RESULT_CHARSET   (charset which was specified in the headers of ascii armored input, if any)
+     * <p/>
+     * returned extras: OpenPgpDecryptMetadata   RESULT_METADATA String                   RESULT_CHARSET   (charset
+     * which was specified in the headers of ascii armored input, if any)
      */
     public static final String ACTION_DECRYPT_METADATA = "org.openintents.openpgp.action.DECRYPT_METADATA";
 
     /**
      * Select key id for signing
-     *
-     * optional extras:
-     * String      EXTRA_USER_ID
-     *
-     * returned extras:
-     * long        EXTRA_SIGN_KEY_ID
+     * <p/>
+     * optional extras: String      EXTRA_USER_ID
+     * <p/>
+     * returned extras: long        EXTRA_SIGN_KEY_ID
      */
     public static final String ACTION_GET_SIGN_KEY_ID = "org.openintents.openpgp.action.GET_SIGN_KEY_ID";
 
     /**
      * Get key ids based on given user ids (=emails)
-     *
-     * required extras:
-     * String[]      EXTRA_USER_IDS
-     *
-     * returned extras:
-     * long[]        RESULT_KEY_IDS
+     * <p/>
+     * required extras: String[]      EXTRA_USER_IDS
+     * <p/>
+     * returned extras: long[]        RESULT_KEY_IDS
      */
     public static final String ACTION_GET_KEY_IDS = "org.openintents.openpgp.action.GET_KEY_IDS";
 
     /**
-     * This action returns RESULT_CODE_SUCCESS if the OpenPGP Provider already has the key
-     * corresponding to the given key id in its database.
-     *
-     * It returns RESULT_CODE_USER_INTERACTION_REQUIRED if the Provider does not have the key.
-     * The PendingIntent from RESULT_INTENT can be used to retrieve those from a keyserver.
-     *
-     * If an Output stream has been defined the whole public key is returned.
-     * required extras:
-     * long        EXTRA_KEY_ID
-     *
-     * optional extras:
-     * String      EXTRA_REQUEST_ASCII_ARMOR (request that the returned key is encoded in ASCII Armor)
+     * This action returns RESULT_CODE_SUCCESS if the OpenPGP Provider already has the key corresponding to the given
+     * key id in its database.
+     * <p/>
+     * It returns RESULT_CODE_USER_INTERACTION_REQUIRED if the Provider does not have the key. The PendingIntent from
+     * RESULT_INTENT can be used to retrieve those from a keyserver.
+     * <p/>
+     * If an Output stream has been defined the whole public key is returned. required extras: long        EXTRA_KEY_ID
+     * <p/>
+     * optional extras: String      EXTRA_REQUEST_ASCII_ARMOR (request that the returned key is encoded in ASCII Armor)
      */
     public static final String ACTION_GET_KEY = "org.openintents.openpgp.action.GET_KEY";
 
     /**
-     * Backup all keys given by EXTRA_KEY_IDS and if requested their secret parts.
-     * The encrypted backup will be written to the OutputStream.
-     * The client app has no access to the backup code used to encrypt the backup!
-     * This operation always requires user interaction with RESULT_CODE_USER_INTERACTION_REQUIRED!
-     *
-     * required extras:
-     * long[]      EXTRA_KEY_IDS       (keys that should be included in the backup)
-     * boolean     EXTRA_BACKUP_SECRET (also backup secret keys)
+     * Backup all keys given by EXTRA_KEY_IDS and if requested their secret parts. The encrypted backup will be written
+     * to the OutputStream. The client app has no access to the backup code used to encrypt the backup! This operation
+     * always requires user interaction with RESULT_CODE_USER_INTERACTION_REQUIRED!
+     * <p/>
+     * required extras: long[]      EXTRA_KEY_IDS       (keys that should be included in the backup) boolean
+     * EXTRA_BACKUP_SECRET (also backup secret keys)
      */
     public static final String ACTION_BACKUP = "org.openintents.openpgp.action.BACKUP";
 
     /**
      * Update the status of some Autocrypt peer, identified by their peer id.
-     *
-     * required extras:
-     * String                  EXTRA_AUTOCRYPT_PEER_ID       (autocrypt peer id to update)
+     * <p/>
+     * required extras: String                  EXTRA_AUTOCRYPT_PEER_ID       (autocrypt peer id to update)
      * AutocryptPeerUpdate     EXTRA_AUTOCRYPT_PEER_UPDATE   (actual peer update)
      */
     public static final String ACTION_UPDATE_AUTOCRYPT_PEER = "org.openintents.openpgp.action.UPDATE_AUTOCRYPT_PEER";
@@ -331,6 +296,7 @@ public class OpenPgpApi {
 
     public interface IOpenPgpSinkResultCallback<T> {
         void onProgress(int current, int max);
+
         void onReturn(final Intent result, T sinkResult);
     }
 
@@ -338,6 +304,7 @@ public class OpenPgpApi {
         void cancelOperation();
     }
 
+    @SuppressWarnings("deprecation")
     private class OpenPgpSourceSinkAsyncTask<T> extends AsyncTask<Void, Integer, OpenPgpDataResult<T>>
             implements CancelableBackgroundOperation {
         Intent data;
@@ -371,6 +338,7 @@ public class OpenPgpApi {
         }
     }
 
+    @SuppressWarnings("deprecation")
     class OpenPgpAsyncTask extends AsyncTask<Void, Integer, Intent> {
         Intent data;
         InputStream is;
@@ -384,6 +352,7 @@ public class OpenPgpApi {
             this.callback = callback;
         }
 
+        @Deprecated
         @Override
         protected Intent doInBackground(Void... unused) {
             return executeApi(data, is, os);
@@ -394,6 +363,7 @@ public class OpenPgpApi {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public <T> CancelableBackgroundOperation executeApiAsync(Intent data, OpenPgpDataSource dataSource,
             OpenPgpDataSink<T> dataSink, final IOpenPgpSinkResultCallback<T> callback) {
         Messenger messenger = new Messenger(new Handler(new Handler.Callback() {
@@ -414,7 +384,12 @@ public class OpenPgpApi {
         return task;
     }
 
-    public AsyncTask executeApiAsync(Intent data, OpenPgpDataSource dataSource, IOpenPgpSinkResultCallback<Void> callback) {
+    @SuppressWarnings({"deprecation", "rawtypes"})
+    public AsyncTask executeApiAsync(
+        Intent data,
+        OpenPgpDataSource dataSource,
+        IOpenPgpSinkResultCallback<Void> callback
+    ) {
         OpenPgpSourceSinkAsyncTask<Void> task = new OpenPgpSourceSinkAsyncTask<>(data, dataSource, null, callback);
 
         // don't serialize async tasks!
@@ -424,6 +399,7 @@ public class OpenPgpApi {
         return task;
     }
 
+    @SuppressWarnings("deprecation")
     public void executeApiAsync(Intent data, InputStream is, OutputStream os, IOpenPgpCallback callback) {
         OpenPgpAsyncTask task = new OpenPgpAsyncTask(data, is, os, callback);
 
@@ -478,8 +454,10 @@ public class OpenPgpApi {
             Log.e(e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
-            result.putExtra(RESULT_ERROR,
-                    new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
+            result.putExtra(
+                RESULT_ERROR,
+                new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage())
+            );
             return new OpenPgpDataResult<>(result, null);
         } finally {
             closeLoudly(output);
@@ -515,8 +493,10 @@ public class OpenPgpApi {
             Log.e(e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
-            result.putExtra(RESULT_ERROR,
-                    new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
+            result.putExtra(
+                RESULT_ERROR,
+                new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage())
+            );
             return result;
         } finally {
             closeLoudly(output);
@@ -600,8 +580,10 @@ public class OpenPgpApi {
             Log.e(e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
-            result.putExtra(RESULT_ERROR,
-                    new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
+            result.putExtra(
+                RESULT_ERROR,
+                new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage())
+            );
             return result;
         }
     }
@@ -629,8 +611,10 @@ public class OpenPgpApi {
             Log.e(e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
-            result.putExtra(RESULT_ERROR,
-                    new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
+            result.putExtra(
+                RESULT_ERROR,
+                new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage())
+            );
             return result;
         } finally {
             // close() is required to halt the TransferThread

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Valitse</string>
+    <string name="swipe_action_deselect">Poista valinta</string>
+    <string name="swipe_action_mark_as_read">Merkitse luetuksi</string>
+    <string name="swipe_action_mark_as_unread">Merkitse lukemattomaksi</string>
+    <string name="swipe_action_add_star">Lisää tähti</string>
+    <string name="swipe_action_remove_star">Poista tähti</string>
+    <string name="swipe_action_archive">Arkistoi</string>
+    <string name="swipe_action_delete">Poista</string>
+    <string name="swipe_action_spam">Roskaposti</string>
+    <string name="swipe_action_move">Siirrä…</string>
+</resources>

@@ -9,4 +9,5 @@
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Λίστα λογαριασμών</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Ενοποιημένος Λογαριασμός</string>
     <string name="navigation_drawer_dropdown_action_add_account">Προσθήκη λογαριασμού</string>
+    <string name="navigation_drawer_dropdown_action_sync_account">Συγχρονισμός λογαριασμού</string>
 </resources>

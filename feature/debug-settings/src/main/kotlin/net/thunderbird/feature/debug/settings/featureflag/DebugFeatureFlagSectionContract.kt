@@ -1,10 +1,10 @@
 package net.thunderbird.feature.debug.settings.featureflag
 
-import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 
 interface DebugFeatureFlagSectionContract {
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect>

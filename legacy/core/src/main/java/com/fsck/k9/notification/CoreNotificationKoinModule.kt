@@ -141,6 +141,7 @@ val coreNotificationModule = module {
             localStoreProvider = get(),
             messageStoreManager = get(),
             notificationContentCreator = get(),
+            generalSettingsManager = get(),
         )
     }
     factory { NotificationLightDecoder() }

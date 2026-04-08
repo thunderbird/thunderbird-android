@@ -709,14 +709,12 @@
     <string name="push_info_configure_notification_text">However, Android also allows you to hide the notification.</string>
     <string name="crypto_msg_unencrypted_sign_error">end-to-end signature contained an error</string>
     <string name="global_settings_splitview_never">Never</string>
-    <string name="swipe_action_select">Select</string>
     <string name="message_details_bcc_section_title">Bcc</string>
     <string name="openpgp_dialog_sign_only_plus_verified">This does not encrypt the email, but verifies that it was sent from your key.</string>
     <string name="openpgp_inline_minus_transit">Signatures may break during transit</string>
     <string name="ac_transfer_button_send">Send Setup Message</string>
     <string name="messageview_decrypt_incomplete">Encrypted message must be downloaded for decryption.</string>
     <string name="webview_contextmenu_email_clipboard_label">Email address</string>
-    <string name="swipe_action_move">Move…</string>
     <string name="openpgp_dialog_sign_only_title">PGP Sign-Only Mode</string>
     <string name="message_progress_text">Loading…</string>
     <string name="ac_transfer_generating">Generating setup message…</string>
@@ -737,7 +735,6 @@
     <string name="account_settings_crypto_hide_sign_only">Hide unencrypted signatures</string>
     <string name="webview_contextmenu_phone_copy_action">Copy number to clipboard</string>
     <string name="openpgp_description_text3">Encryption will only show up if supported by all recipients, and they must have sent you an email before.</string>
-    <string name="locked_attach_title">Unprotected Attachment</string>
     <string name="enable_inline_pgp">Enable PGP/INLINE</string>
     <string name="enable_encryption">Enable Encryption</string>
     <string name="crypto_msg_unencrypted_sign_unknown">from unknown end-to-end key</string>
@@ -751,7 +748,6 @@
     <string name="crypto_msg_encrypted_incomplete">must fully download message for decryption</string>
     <string name="crypto_msg_unsupported_signed">contains unsupported end-to-end signature</string>
     <string name="openpgp_sign_only_disable">Disable</string>
-    <string name="swipe_action_archive">Archive</string>
     <string name="openpgp_dialog_sign_only_text">In this mode, your PGP key will be used to create a cryptographic signature of an unencrypted email.</string>
     <string name="crypto_msg_title_encrypted_unsigned">Encrypted</string>
     <string name="crypto_msg_title_encrypted_unknown">Encrypted</string>
@@ -777,7 +773,6 @@
     <string name="preview_encrypted">*Encrypted*</string>
     <string name="enable_sign_only">Enable PGP Sign-Only</string>
     <string name="dialog_openkeychain_info_title">No OpenPGP app installed</string>
-    <string name="swipe_action_spam">Spam</string>
     <string name="push_notification_state_wait_network">Sleeping until network is available</string>
     <string name="crypto_msg_encrypted_sign_error">but end-to-end data has errors</string>
     <string name="global_settings_splitview_mode_label">Show split-screen</string>
@@ -799,7 +794,6 @@
     <string name="webview_contextmenu_link_share_action">Share link</string>
     <string name="openpgp_sign_only_ok">Got it!</string>
     <string name="upgrade_databases_title">Upgrading databases</string>
-    <string name="swipe_action_mark_as_read">Mark read</string>
     <string name="push_notification_state_wait_background_sync">Sleeping until background sync is allowed</string>
     <string name="openpgp_sign_only_keep_enabled">Keep Enabled</string>
     <string name="webview_contextmenu_image_view_action">View image</string>
@@ -825,17 +819,13 @@
     <string name="action_remote_search">Search messages on server</string>
     <string name="global_settings_splitview_always">Always</string>
     <string name="address_type_work">Work</string>
-    <string name="swipe_action_delete">Delete</string>
     <string name="openpgp_inline_text">The email is sent in PGP/INLINE format.
 \nThis should only be used for compatibility:</string>
     <string name="openpgp_enabled_error_back">Back</string>
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
-    <string name="swipe_action_deselect">Deselect</string>
     <string name="address_type_mobile">Mobile</string>
-    <string name="swipe_action_add_star">Add star</string>
     <string name="openpgp_inline_keep_enabled">Keep Enabled</string>
     <string name="ac_transfer_sending_to">Sending message to:</string>
-    <string name="swipe_action_remove_star">Remove star</string>
     <string name="reply_to_label">Reply to</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="toast_openpgp_provider_error">Error connecting to %s!</string>
@@ -869,7 +859,6 @@
     <string name="loading_attachment">Loading attachment…</string>
     <string name="openpgp_inline_title">PGP/INLINE Mode</string>
     <string name="openpgp_inline_disable">Disable</string>
-    <string name="swipe_action_mark_as_unread">Mark unread</string>
     <string name="openpgp_enabled_error_title">Encryption not possible</string>
     <string name="error_crypto_provider_incompatible">Crypto provider uses incompatible version. Please check your settings!</string>
     <string name="openpgp_enabled_error_gotit">Got it</string>
@@ -905,9 +894,7 @@
     <string name="debug_enable_sync_debug_logging_summary">Log sync diagnostic information for 24 hours</string>
     <string name="debug_sync_export_logs_title">Export Sync logs</string>
     <string name="debug_open_secret_debug_screen">Open Secret debug screen</string>
-    <string name="swipe_action_archive_folder_not_set">Set Up Archive Folder</string>
     <string name="archiving_not_available_for_this_account">Archiving is not available for this account.</string>
-    <string name="swipe_action_change_swipe_gestures">Change \n\nSwipe Gestures</string>
     <string name="debug_invalidate_access_token">Test: Invalidate access token</string>
     <string name="debug_invalidate_access_token_done">Access token invalidated. Next request will refresh.</string>
     <string name="debug_invalidate_access_token_unavailable">No OAuth token available for this account.</string>
@@ -933,4 +920,9 @@
     <string name="global_settings_messageview_body_content_type_text_plain">Plain text (text/plain)</string>
     <string name="debug_feature_flags">DEBUG: Feature Flags</string>
     <string name="print_message_action">Print</string>
+    <string name="general_settings_message_list_date_time_format_title">Date/Time Format</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contextual</string>
+    <string name="general_settings_message_list_date_time_format_full">Full</string>
+    <string name="sort_by_then_by">Then by…</string>
+    <string name="global_settings_splitview_when_unfolded">When device is unfolded</string>
 </resources>

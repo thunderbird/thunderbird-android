@@ -1,6 +1,6 @@
 package net.thunderbird.core.common.cache
 
-class InMemoryCache<KEY : Any, VALUE : Any?>(
+open class InMemoryCache<KEY : Any, VALUE>(
     private val cache: MutableMap<KEY, VALUE> = mutableMapOf(),
 ) : Cache<KEY, VALUE> {
     override fun get(key: KEY): VALUE? {

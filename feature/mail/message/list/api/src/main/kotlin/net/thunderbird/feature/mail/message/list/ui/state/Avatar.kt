@@ -1,10 +1,12 @@
 package net.thunderbird.feature.mail.message.list.ui.state
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
  * Represents the different types of avatars that can be displayed for a message sender.
  */
+@Immutable
 sealed interface Avatar {
     /**
      * Represents a text-based avatar, typically composed of the sender's initials.

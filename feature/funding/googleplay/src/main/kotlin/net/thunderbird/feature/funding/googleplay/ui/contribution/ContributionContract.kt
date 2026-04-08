@@ -1,0 +1,69 @@
+package net.thunderbird.feature.funding.googleplay.ui.contribution
+
+import androidx.compose.runtime.Stable
+import app.k9mail.core.ui.compose.designsystem.molecule.LoadingErrorState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
+import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
+
+internal class ContributionContract {
+
+    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
+
+    @Stable
+    data class State(
+        val listState: ContributionListState = ContributionListState(),
+        val purchasedContribution: Contribution? = null,
+
+        val showContributionList: Boolean = true,
+        val showRecurringContributions: Boolean = false,
+
+        val purchaseError: ContributionError? = null,
+    )
+
+    @Stable
+    data class ContributionListState(
+        val oneTimeContributions: ImmutableList<OneTimeContribution> = persistentListOf(),
+        val recurringContributions: ImmutableList<RecurringContribution> = persistentListOf(),
+        val selectedContribution: Contribution? = null,
+        val isRecurringContributionSelected: Boolean = true,
+
+        override val error: ContributionError? = null,
+        override val isLoading: Boolean = true,
+    ) : LoadingErrorState<ContributionError>
+
+    sealed interface Event {
+        data object OnOneTimeContributionSelected : Event
+        data object OnRecurringContributionSelected : Event
+
+        data object OnShowContributionListClicked : Event
+
+        data class OnContributionItemClicked(
+            val item: Contribution,
+        ) : Event
+
+        data object OnPurchaseClicked : Event
+
+        data class OnManagePurchaseClicked(
+            val contribution: Contribution,
+        ) : Event
+
+        data object OnDismissPurchaseErrorClicked : Event
+
+        data object OnRetryClicked : Event
+    }
+
+    sealed interface Effect {
+        data class PurchaseContribution(
+            val startPurchaseFlow: () -> Unit,
+        ) : Effect
+
+        data class ManageSubscription(
+            val productId: String,
+        ) : Effect
+    }
+}

@@ -5,10 +5,10 @@ import android.net.Uri
 import androidx.core.net.toUri
 import app.k9mail.feature.account.edit.navigation.AccountEditRoute
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
-import app.k9mail.feature.funding.api.FundingRoute
 import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute
 import net.thunderbird.feature.account.settings.api.AccountSettingsRoute
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
+import net.thunderbird.feature.funding.api.FundingRoute
 
 sealed class FeatureLauncherTarget(
     val deepLinkUri: Uri,
@@ -28,6 +28,14 @@ sealed class FeatureLauncherTarget(
 
     data class AccountSettings(val accountUuid: String) : FeatureLauncherTarget(
         deepLinkUri = AccountSettingsRoute.GeneralSettings(accountUuid).route().toUri(),
+    )
+
+    data class AccountReadingMailSettings(val accountUuid: String) : FeatureLauncherTarget(
+        deepLinkUri = AccountSettingsRoute.ReadingMailSettings(accountUuid).route().toUri(),
+    )
+
+    data class AccountSearchSettings(val accountUuid: String) : FeatureLauncherTarget(
+        deepLinkUri = AccountSettingsRoute.SearchSettings(accountUuid).route().toUri(),
     )
 
     data object Funding : FeatureLauncherTarget(

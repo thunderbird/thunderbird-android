@@ -1,0 +1,4 @@
+Thunderbird version 18.0b2
+
+Fixed:
+- Crash occurred when attaching attachment

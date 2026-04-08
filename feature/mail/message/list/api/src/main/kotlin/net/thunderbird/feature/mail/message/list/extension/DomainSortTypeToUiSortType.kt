@@ -1,7 +1,7 @@
 package net.thunderbird.feature.mail.message.list.extension
 
 import kotlin.to
-import net.thunderbird.feature.mail.message.list.ui.state.SortType
+import net.thunderbird.feature.mail.message.list.domain.model.SortType
 import net.thunderbird.core.android.account.SortType as DomainSortType
 
 /**

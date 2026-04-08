@@ -12,9 +12,9 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.server.certificate.R
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateProperties
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import okio.ByteString
 import org.koin.compose.koinInject
 

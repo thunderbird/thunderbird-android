@@ -43,7 +43,7 @@
     <string name="notification_bg_send_ticker">Ríomhphost á sheoladh: <xliff:g id="account">%s</xliff:g></string>
     <string name="debug_enable_sensitive_logging_title">Faisnéis íogair a logáil</string>
     <string name="message_to_fmt">Chuig:<xliff:g id="counterParty">%s</xliff:g></string>
-    <string name="message_compose_quote_header_to">Go dtí:</string>
+    <string name="message_compose_quote_header_to">Chuig:</string>
     <string name="message_compose_quote_header_cc">Cc:</string>
     <string name="message_compose_reply_header_fmt">Scríobh <xliff:g id="sender">%s</xliff:g>:</string>
     <string name="message_view_recipients_format">chuig <xliff:g id="faighteoirí">%s</xliff:g></string>
@@ -142,7 +142,6 @@
     <string name="push_info_configure_notification_text">Mar sin féin, ceadaíonn Android duit an fógra a cheilt freisin.</string>
     <string name="push_info_learn_more_text">Faigh tuilleadh eolais</string>
     <string name="push_info_disable_push_action">Díchumasaigh Brú</string>
-    <string name="swipe_action_mark_as_read">Marcáil á léamh</string>
     <string name="message_list_error_folder_not_found">Níor aimsíodh fillteán</string>
     <string name="app_license">Ceadúnas Apache, Leagan 2.0</string>
     <string name="about_project_title">Tionscadal Foinse Oscailte</string>
@@ -150,7 +149,7 @@
     <string name="user_forum_title">Fóram úsáideora</string>
     <string name="about_libraries">Leabharlanna</string>
     <string name="license">Ceadúnas</string>
-    <string name="changelog_title">ChangelogName</string>
+    <string name="changelog_title">Log Athruithe</string>
     <string name="changelog_loading_error">Níorbh fhéidir an changelog a luchtú.</string>
     <string name="changelog_version_title">Leagan %s</string>
     <string name="changelog_recent_changes_title">Cad atá nua</string>
@@ -202,7 +201,7 @@
     <string name="read_receipt_disabled">Ní iarrfaidh sé admháil léite</string>
     <string name="add_attachment_action">Cuir iatán leis</string>
     <string name="empty_trash_action">Folmhaigh an Bruscar</string>
-    <string name="expunge_action">ExpungeName</string>
+    <string name="expunge_action">Glan amach</string>
     <string name="about_action">Maidir</string>
     <string name="prefs_title">Socruithe</string>
     <string name="general_no_subject">(Gan ábhar)</string>
@@ -257,10 +256,10 @@
     <string name="message_compose_show_quoted_text_action">Cuir teachtaireacht luaite san áireamh</string>
     <string name="message_compose_description_delete_quoted_text">Bain téacs luaite</string>
     <string name="message_compose_description_edit_quoted_text">Cuir téacs luaite in eagar</string>
-    <string name="remove_attachment_action">Bain iatán</string>
-    <string name="message_to_label">Go dtí:</string>
+    <string name="remove_attachment_action">Bain ceangaltán</string>
+    <string name="message_to_label">Chuig:</string>
     <string name="message_view_cc_label">Cc:</string>
-    <string name="message_view_bcc_label">Cóip charbóin dall:</string>
+    <string name="message_view_bcc_label">Bcc:</string>
     <string name="message_view_status_attachment_not_saved">Ní féidir iatán a shábháil.</string>
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="message_view_me_text">mise</string>
@@ -348,7 +347,7 @@
     <string name="account_setup_options_mail_check_frequency_6hour">Gach 6 uair an chloig</string>
     <string name="account_setup_options_mail_check_frequency_12hour">Gach 12 uair an chloig</string>
     <string name="account_setup_options_mail_check_frequency_24hour">Gach 24 uair an chloig</string>
-    <string name="idle_refresh_period_label">Athnuaigh nasc IDLE</string>
+    <string name="idle_refresh_period_label">Athnuaigh nasc DÍOMHAOIN</string>
     <string name="idle_refresh_period_2min">Gach 2 nóiméad</string>
     <string name="idle_refresh_period_3min">Gach 3 nóiméad</string>
     <string name="idle_refresh_period_6min">Gach 6 nóiméad</string>
@@ -383,15 +382,15 @@
     <string name="account_notify_contacts_mail_only_summary">Ná taispeáin fógraí ach amháin le haghaidh teachtaireachtaí ó theagmhálacha aitheanta</string>
     <string name="account_settings_ignore_chat_messages_label">Déan neamhaird de theachtaireachtaí comhrá</string>
     <string name="account_settings_ignore_chat_messages_summary">Ná taispeáin fógraí le haghaidh teachtaireachtaí a bhaineann le comhrá ríomhphoist</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Marcáil mar a léitear é nuair a osclaítear é</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Marcáil teachtaireacht mar a léitear í nuair a osclaítear í le breathnú uirthi</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Marcáil mar léite nuair a osclaítear é</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marcáil teachtaireacht mar léite nuair a osclaítear í lena breathnú uirthi</string>
     <string name="account_settings_notification_channels_label">Catagóirí fógra</string>
     <string name="account_settings_open_notification_settings_messages_summary">Cumraigh fógraí le haghaidh teachtaireachtaí nua</string>
     <string name="account_settings_show_pictures_label">Taispeáin íomhánna i gcónaí</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Cumraigh fógraí earráide agus stádais</string>
-    <string name="account_settings_show_pictures_never">Ní hea</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Ó theagmhálacha</string>
-    <string name="account_settings_show_pictures_always">Ó dhuine ar bith</string>
+    <string name="account_settings_show_pictures_never">Níl</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Ó theagmhálaithe</string>
+    <string name="account_settings_show_pictures_always">Ó aon duine</string>
     <string name="account_settings_composition">Post á sheoladh</string>
     <string name="account_settings_default_quoted_text_shown_label">Luaigh an teachtaireacht agus freagra á thabhairt</string>
     <string name="account_settings_default_quoted_text_shown_summary">Cuir an teachtaireacht bhunaidh san áireamh i do fhreagra.</string>
@@ -411,7 +410,7 @@
     <string name="account_settings_upload_sent_messages_label">Uasluchtaigh teachtaireachtaí seolta</string>
     <string name="account_settings_upload_sent_messages_summary">Uasluchtaigh teachtaireachtaí chuig fillteán seolta tar éis iad a sheoladh</string>
     <string name="account_settings_general_title">Socruithe ginearálta</string>
-    <string name="account_settings_reading_mail">Post á léamh</string>
+    <string name="account_settings_reading_mail">Ag léamh ríomhphoist</string>
     <string name="account_settings_folders">Fillteáin</string>
     <string name="account_settings_quote_prefix_label">Réimír téacs luaite</string>
     <string name="account_settings_crypto">Criptiú ó cheann go ceann</string>
@@ -471,7 +470,7 @@
     <string name="account_settings_vibrate_pattern_5">Patrún 5</string>
     <string name="account_settings_vibrate_times">Déan creathadh arís</string>
     <string name="account_settings_vibrate_summary_disabled">Díchumasaithe</string>
-    <string name="account_settings_ringtone">Ringtone ríomhphoist nua</string>
+    <string name="account_settings_ringtone">Clingthon ríomhphoist nua</string>
     <string name="account_settings_notification_light_label">Solas fógra</string>
     <string name="account_settings_notification_light_disabled">Díchumasaithe</string>
     <string name="account_settings_notification_light_account_color">Dath an chuntais</string>
@@ -593,7 +592,7 @@
     <string name="font_size_message_compose">Comhdhéanamh na teachtaireachta</string>
     <string name="font_size_message_compose_input">Réimsí ionchurtha téacs</string>
     <string name="font_size_default">Réamhshocrú</string>
-    <string name="font_size_tiniest">Tá Tiniest</string>
+    <string name="font_size_tiniest">Is lú</string>
     <string name="font_size_tiny">Beag bídeach</string>
     <string name="font_size_smaller">Níos lú</string>
     <string name="font_size_small">Beag</string>
@@ -685,7 +684,7 @@
     <string name="preview_encrypted">*Criptithe *</string>
     <string name="add_from_contacts">Cuir ó Theagmhálacha</string>
     <string name="recipient_cc">Cc</string>
-    <string name="recipient_bcc">BccName</string>
+    <string name="recipient_bcc">Bcc</string>
     <string name="recipient_to">Chun</string>
     <string name="recipient_from">Ó</string>
     <string name="reply_to_label">Freagra</string>
@@ -736,7 +735,6 @@
     <string name="crypto_msg_encrypted_sign_revoked">ach cúlghairtear an eochair ó cheann go ceann</string>
     <string name="locked_attach_unlock">Díghlasáil</string>
     <string name="locked_attach_unencrypted">Ní raibh an chuid seo criptithe, agus d\'fhéadfadh sé a bheith neamhchinnte.</string>
-    <string name="locked_attach_title">Iatán Gan Chosaint</string>
     <string name="message_progress_text">Á Luchtú…</string>
     <string name="messageview_decrypt_cancelled">Cuireadh díchriptiú ar ceal.</string>
     <string name="messageview_decrypt_incomplete">Ní mór teachtaireacht chriptithe a íoslódáil le haghaidh díchriptithe.</string>
@@ -780,7 +778,7 @@
     <string name="ac_transfer_msg_subject">Uathchriptigh Teachtaireacht Suiteála</string>
     <string name="ac_transfer_msg_body">Tá gach faisnéis sa teachtaireacht seo chun do shocruithe Autocrypt a aistriú mar aon le d\'eochair rúnda go slán ó do ghléas bunaidh. Chun do ghléas nua a chumrú le haghaidh Autocrypt, lean na treoracha ba chóir le do ghléas nua a chur i láthair. Is féidir leat an teachtaireacht seo a choinneáil agus é a úsáid mar chúltaca do d\'eochair rúnda. Más mian leat é seo a dhéanamh, ba chóir duit an pasfhocal a scríobh síos agus é a stóráil go daingean.</string>
     <string name="ac_transfer_error_send">Tharla earráid agus an teachtaireacht á seoladh. Seiceáil do nascacht líonra agus cumraíocht freastalaí atá ag dul as oifig.</string>
-    <string name="switch_on">Maidir le</string>
+    <string name="switch_on">Ar</string>
     <string name="switch_off">As</string>
     <string name="generic_loading_error">Tharla earráid agus na sonraí á luchtú</string>
     <string name="push_notification_state_initializing">Á Thúsú…</string>
@@ -789,23 +787,14 @@
     <string name="push_notification_state_wait_background_sync">Codladh go dtí go gceadaítear sioncronú cúlra</string>
     <string name="push_info_configure_notification_action">Cumraigh fógra</string>
     <string name="push_info_disable_push_text">Mura dteastaíonn fógraí meandaracha uait faoi theachtaireachtaí nua, ba chóir duit Brúigh a dhíchumasú agus Vótaíocht a úsáid. Seiceálacha vótaíochta le haghaidh post nua ag eatraimh rialta agus ní gá an fógra a thabhairt.</string>
-    <string name="swipe_action_select">Roghnaigh</string>
-    <string name="swipe_action_deselect">Díroghnaigh</string>
-    <string name="swipe_action_mark_as_unread">Marcáil gan léamh</string>
-    <string name="swipe_action_add_star">Cuir réalta leis</string>
-    <string name="swipe_action_remove_star">Bain réalta</string>
-    <string name="swipe_action_archive">Cartlann</string>
-    <string name="swipe_action_delete">Scrios</string>
-    <string name="swipe_action_spam">Turscar</string>
-    <string name="swipe_action_move">Bog…</string>
     <string name="general_settings_show_compose_button_title">Taispeáin cnaipe cumtha ar snámh</string>
     <string name="message_details_toolbar_title">Sonraí teachtaireachta</string>
     <string name="message_details_missing_date">Ceanntásc \'Dáta\' ar iarraidh</string>
     <string name="message_list_error_title">Earráid</string>
     <string name="message_details_from_section_title">Ó</string>
-    <string name="message_details_bcc_section_title">BccName</string>
+    <string name="message_details_bcc_section_title">Bcc</string>
     <string name="message_details_loading_error">Tharla earráid agus sonraí na teachtaireachta á luchtú.</string>
-    <string name="message_details_sender_section_title">Tarchuradóir</string>
+    <string name="message_details_sender_section_title">Seoltóir</string>
     <string name="message_details_replyto_section_title">Freagra</string>
     <string name="message_details_to_section_title">Chun</string>
     <string name="message_details_cc_section_title">Cc</string>
@@ -850,8 +839,6 @@
     <string name="debug_sync_export_logs_title">Easpórtáil logaí sioncrónaithe</string>
     <string name="debug_enable_sync_debug_logging_summary">Faisnéis dhiagnóiseach sioncrónaithe logála ar feadh 24 uair an chloig</string>
     <string name="debug_enable_sync_debug_logging_title">Cumasaigh logáil dífhabhtaithe sioncrónaithe</string>
-    <string name="swipe_action_archive_folder_not_set">Socraigh Fillteán Cartlainne</string>
-    <string name="swipe_action_change_swipe_gestures">Athraigh\nGothaí Svaidhpe</string>
     <string name="archiving_not_available_for_this_account">Níl cartlannú ar fáil don chuntas seo.</string>
     <string name="debug_open_secret_debug_screen">Oscail an scáileán dífhabhtaithe Rúnda</string>
     <string name="debug_invalidate_access_token">Tástáil: Comhartha rochtana neamhbhailí</string>
@@ -879,4 +866,9 @@
     <string name="global_settings_messageview_body_content_type_text_plain">Téacs simplí (téacs/simplí)</string>
     <string name="debug_feature_flags">Dífhabhtú: Bratacha Gnéithe</string>
     <string name="print_message_action">Priontáil</string>
+    <string name="global_settings_splitview_when_unfolded">Nuair a bhíonn an gléas fillte</string>
+    <string name="general_settings_message_list_date_time_format_title">Formáid Dáta/Ama</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Comhthéacsúil</string>
+    <string name="general_settings_message_list_date_time_format_full">Lán</string>
+    <string name="sort_by_then_by">Ansin le…</string>
 </resources>

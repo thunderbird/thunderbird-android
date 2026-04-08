@@ -4,12 +4,9 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "net.thunderbird.feature.notification.api"
-        @Suppress("UnstableApiUsage")
-        androidResources {
-            enable = true
-        }
+        androidResources.enable = true
         withHostTest {
             isIncludeAndroidResources = true
         }
@@ -41,7 +38,6 @@ kotlin {
     sourceSets.all {
         compilerOptions {
             freeCompilerArgs.addAll(
-                "-Xexpect-actual-classes",
                 "-Xwhen-guards",
             )
         }

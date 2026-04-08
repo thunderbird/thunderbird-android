@@ -1,0 +1,5 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Send the composed email
+- tapOn:
+    id: "send"

@@ -14,7 +14,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.card.CardDefaults
 import app.k9mail.core.ui.compose.designsystem.organism.banner.global.BannerGlobalNotificationCard
 import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.BannerInlineNotificationCard
 import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.BannerInlineNotificationCardBehaviour
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 /**
  * Contains the default values used by [BannerInlineNotificationCard] and [BannerGlobalNotificationCard] types

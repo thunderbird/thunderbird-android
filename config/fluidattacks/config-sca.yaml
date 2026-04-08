@@ -1,0 +1,15 @@
+# SCA scan configuration for Fluid Attacks' standalone SCA scanner.
+# See: https://help.fluidattacks.com/portal/en/kb/articles/use-standalone-scanners
+namespace: thunderbird-android
+working_dir: /repo
+language: EN
+output:
+  file_path: /repo/fluidscan-sca-results.sarif
+  format: SARIF
+sca:
+  include:
+    - .
+  exclude:
+    - glob(**/test/**)
+file_size_limit: false
+tracing_opt_out: true

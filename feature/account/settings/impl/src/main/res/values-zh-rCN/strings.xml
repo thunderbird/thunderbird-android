@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_settings_general_title">常规设置</string>
     <string name="account_settings_general_avatar_option_monogram">字母组合</string>
     <string name="account_settings_general_avatar_option_image">图片</string>
@@ -23,4 +23,16 @@
     <string name="account_settings_general_avatar_image_select">选择图片</string>
     <string name="account_settings_avatar_error_unsupported_format">仅支持 JPEG 格式图片。</string>
     <string name="account_settings_avatar_hint_jpeg_only">仅限 JPEG</string>
+    <string name="account_settings_show_pictures_label">始终显示图片</string>
+    <string name="account_settings_reading_mail">阅读邮件</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">打开时标记为已读</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">打开邮件查看时将其标记为已读</string>
+    <string name="account_settings_show_pictures_never">不显示</string>
+    <string name="account_settings_show_pictures_only_from_contacts">来自联系人</string>
+    <string name="account_settings_show_pictures_always">来自任何人</string>
+    <string name="account_settings_remove_account_action">移除账号</string>
+    <string name="account_settings_okay_action">确定</string>
+    <string name="account_settings_cancel_action">取消</string>
+    <string name="account_settings_account_delete_dlg_title">移除账号</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">账号“<xliff:g id="account">%1$s</xliff:g>”将从 <xliff:g id="app_name">%2$s</xliff:g> 中移除。</string>
 </resources>

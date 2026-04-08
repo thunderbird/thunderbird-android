@@ -23,4 +23,15 @@
     <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Failed sync folder \'%1$s\' with remote. Message: %2$s</string>
     <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Folder name cannot be blank</string>
     <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Invalid folder name \'%1$s\'</string>
+
+    <!--  Message List  -->
+    <string name="message_list_state_new_message_description">New</string>
+    <string name="message_list_state_read_message_description">Read</string>
+    <string name="message_list_state_unread_message_description">Unread</string>
+    <string name="message_list_state_active_new_message_description">Active, New</string>
+    <string name="message_list_state_active_read_message_description">Active, Read</string>
+    <string name="message_list_state_active_unread_message_description">Active, Unread</string>
+    <string name="message_list_state_selected_new_message_description">Selected, New</string>
+    <string name="message_list_state_selected_read_message_description">Selected, Read</string>
+    <string name="message_list_state_selected_unread_message_description">Selected, Unread</string>
 </resources>

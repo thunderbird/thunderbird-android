@@ -692,7 +692,6 @@
     <string name="crypto_msg_encrypted_insecure">എന്നാൽ എൻ‌ക്രിപ്ഷൻ സുരക്ഷിതമാണെന്ന് കണക്കാക്കില്ല</string>
     <string name="locked_attach_unlock">അൺലോക്കുചെയ്യുക</string>
     <string name="locked_attach_unencrypted">ഈ ഭാഗം എൻ‌ക്രിപ്റ്റ് ചെയ്തിട്ടില്ല, മാത്രമല്ല സുരക്ഷിതമല്ലാത്തതാകാം.</string>
-    <string name="locked_attach_title">സുരക്ഷിതമല്ലാത്ത അറ്റാച്ചുമെന്റ്</string>
     <string name="message_progress_text">ലോഡുചെയ്യുന്നു…</string>
     <string name="messageview_decrypt_cancelled">ഡീക്രിപ്ഷൻ റദ്ദാക്കി.</string>
     <string name="messageview_decrypt_retry">വീണ്ടും ശ്രമിക്കുക</string>
@@ -754,22 +753,14 @@
     <string name="switch_on">ഓൺ</string>
     <string name="switch_off">ഓഫ്</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">തിരഞ്ഞെടുക്കുക</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">തിരഞ്ഞെടുത്തത് മാറ്റുക</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">വായിക്കാത്തതായി അടയാളപ്പെടുത്തുക</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">നക്ഷത്രം ചേർക്കുക</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">നക്ഷത്രം കളയുക</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">ശേഖരം</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">ഇല്ലാതാക്കുക</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">സ്പാം</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->

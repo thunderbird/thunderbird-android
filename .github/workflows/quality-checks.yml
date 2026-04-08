@@ -1,4 +1,5 @@
-name: Quality checks
+---
+name: Quality - Checks
 
 on:
   push:
@@ -18,6 +19,9 @@ on:
 concurrency:
   group: quality-checks-${{ github.ref }}-${{ github.event.pull_request.number || 'no-pr' }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
 
 jobs:
   quality-spotless:

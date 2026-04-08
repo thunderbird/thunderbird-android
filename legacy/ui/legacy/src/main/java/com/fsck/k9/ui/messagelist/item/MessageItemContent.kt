@@ -18,24 +18,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
 import app.k9mail.core.ui.compose.designsystem.atom.image.RemoteImage
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
-import net.thunderbird.core.ui.compose.designsystem.organism.message.ActiveMessageItem
-import net.thunderbird.core.ui.compose.designsystem.organism.message.MessageItemDefaults
-import net.thunderbird.core.ui.compose.designsystem.organism.message.ReadMessageItem
-import net.thunderbird.core.ui.compose.designsystem.organism.message.UnreadMessageItem
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.mail.message.list.ui.component.organism.ActiveMessageItem
+import net.thunderbird.feature.mail.message.list.ui.component.organism.MessageItemDefaults
+import net.thunderbird.feature.mail.message.list.ui.component.organism.ReadMessageItem
+import net.thunderbird.feature.mail.message.list.ui.component.organism.UnreadMessageItem
 
 @Suppress("LongParameterList", "LongMethod")
 @OptIn(ExperimentalTime::class)
@@ -52,10 +50,7 @@ internal fun MessageItemContent(
     onFavouriteClick: (Boolean) -> Unit,
     appearance: MessageListAppearance,
 ) {
-    val receivedAt = remember(item.messageDate) {
-        Instant.fromEpochMilliseconds(item.messageDate)
-            .toLocalDateTime(TimeZone.currentSystemDefault())
-    }
+    val receivedAt = item.displayMessageDateTime
 
     val uri by remember(item.displayAddress?.address) {
         mutableStateOf(
@@ -75,7 +70,7 @@ internal fun MessageItemContent(
 
     when {
         isActive -> ActiveMessageItem(
-            sender = "${item.displayName}",
+            sender = buildAnnotatedString { append("${item.displayName}") },
             subject = item.subject ?: "n/a",
             preview = item.previewText,
             receivedAt = receivedAt,
@@ -84,6 +79,7 @@ internal fun MessageItemContent(
             avatar = {
                 if (appearance.showContactPicture) {
                     ContactImageAvatar(
+                        color = Color(item.contactColor),
                         contactImageUri = uri,
                         contactImageMonogram = monogram,
                         onAvatarClick = onAvatarClick,
@@ -104,7 +100,7 @@ internal fun MessageItemContent(
         )
 
         item.isRead -> ReadMessageItem(
-            sender = "${item.displayName}",
+            sender = buildAnnotatedString { append("${item.displayName}") },
             subject = item.subject ?: "n/a",
             preview = item.previewText,
             receivedAt = receivedAt,
@@ -113,6 +109,7 @@ internal fun MessageItemContent(
             avatar = {
                 if (appearance.showContactPicture) {
                     ContactImageAvatar(
+                        color = Color(item.contactColor),
                         contactImageUri = uri,
                         contactImageMonogram = monogram,
                         onAvatarClick = onAvatarClick,
@@ -133,7 +130,7 @@ internal fun MessageItemContent(
         )
 
         else -> UnreadMessageItem(
-            sender = "${item.displayName}",
+            sender = buildAnnotatedString { append("${item.displayName}") },
             subject = item.subject ?: "n/a",
             preview = item.previewText,
             receivedAt = receivedAt,
@@ -142,6 +139,7 @@ internal fun MessageItemContent(
             avatar = {
                 if (appearance.showContactPicture) {
                     ContactImageAvatar(
+                        color = Color(item.contactColor),
                         contactImageUri = uri,
                         contactImageMonogram = monogram,
                         onAvatarClick = onAvatarClick,
@@ -165,6 +163,7 @@ internal fun MessageItemContent(
 
 @Composable
 fun ContactImageAvatar(
+    color: Color,
     contactImageUri: Uri?,
     contactImageMonogram: String,
     modifier: Modifier = Modifier,
@@ -172,11 +171,11 @@ fun ContactImageAvatar(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
+        modifier = modifier
             .size(MainTheme.sizes.iconAvatar)
             .padding(MainTheme.spacings.half)
-            .background(color = MainTheme.colors.primaryContainer.copy(alpha = 0.15f), shape = CircleShape)
-            .border(width = 1.dp, color = MainTheme.colors.primary, shape = CircleShape)
+            .background(color = color.copy(alpha = 0.15f), shape = CircleShape)
+            .border(width = 1.dp, color = color, shape = CircleShape)
             .clickable(onClick = onAvatarClick),
     ) {
         contactImageUri?.let {
@@ -184,7 +183,7 @@ fun ContactImageAvatar(
                 url = it.toString(),
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.Center,
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxSize()
                     .clip(CircleShape),
                 placeholder = {

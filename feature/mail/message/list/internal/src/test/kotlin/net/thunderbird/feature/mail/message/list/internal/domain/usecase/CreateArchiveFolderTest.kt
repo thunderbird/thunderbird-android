@@ -9,7 +9,6 @@ import assertk.assertions.prop
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.folders.FolderServerId
 import dev.mokkery.matcher.any
-import dev.mokkery.matcher.eq
 import dev.mokkery.spy
 import dev.mokkery.verify
 import dev.mokkery.verify.VerifyMode.Companion.exactly
@@ -158,13 +157,11 @@ class CreateArchiveFolderTest {
                     // verify doesn't support verifying the extension function `createFolder`,
                     // thus we verify the call of `createFolders(list)` instead.
                     backendStorageFactory.backendFolderUpdater.createFolders(
-                        eq(
-                            listOf(
-                                FolderInfo(
-                                    serverId = folderName,
-                                    name = folderName,
-                                    type = LegacyFolderType.ARCHIVE,
-                                ),
+                        listOf(
+                            FolderInfo(
+                                serverId = folderName,
+                                name = folderName,
+                                type = LegacyFolderType.ARCHIVE,
                             ),
                         ),
                     )
@@ -204,13 +201,11 @@ class CreateArchiveFolderTest {
                 // verify doesn't support verifying the extension function `createFolder`,
                 // thus we verify the call of `createFolders(list)` instead.
                 backendStorageFactory.backendFolderUpdater.createFolders(
-                    eq(
-                        listOf(
-                            FolderInfo(
-                                serverId = folderName,
-                                name = folderName,
-                                type = LegacyFolderType.ARCHIVE,
-                            ),
+                    listOf(
+                        FolderInfo(
+                            serverId = folderName,
+                            name = folderName,
+                            type = LegacyFolderType.ARCHIVE,
                         ),
                     ),
                 )
@@ -251,13 +246,11 @@ class CreateArchiveFolderTest {
                 // verify doesn't support verifying the extension function `createFolder`,
                 // thus we verify the call of `createFolders(list)` instead.
                 backendStorageFactory.backendFolderUpdater.createFolders(
-                    eq(
-                        listOf(
-                            FolderInfo(
-                                serverId = folderName,
-                                name = folderName,
-                                type = LegacyFolderType.ARCHIVE,
-                            ),
+                    listOf(
+                        FolderInfo(
+                            serverId = folderName,
+                            name = folderName,
+                            type = LegacyFolderType.ARCHIVE,
                         ),
                     ),
                 )
@@ -304,13 +297,11 @@ class CreateArchiveFolderTest {
                 // verify doesn't support verifying the extension function `createFolder`,
                 // thus we verify the call of `createFolders(list)` instead.
                 backendStorageFactory.backendFolderUpdater.createFolders(
-                    eq(
-                        listOf(
-                            FolderInfo(
-                                serverId = folderName,
-                                name = folderName,
-                                type = LegacyFolderType.ARCHIVE,
-                            ),
+                    listOf(
+                        FolderInfo(
+                            serverId = folderName,
+                            name = folderName,
+                            type = LegacyFolderType.ARCHIVE,
                         ),
                     ),
                 )
@@ -363,13 +354,11 @@ class CreateArchiveFolderTest {
                 // verify doesn't support verifying the extension function `createFolder`,
                 // thus we verify the call of `createFolders(list)` instead.
                 backendStorageFactory.backendFolderUpdater.createFolders(
-                    eq(
-                        listOf(
-                            FolderInfo(
-                                serverId = folderName,
-                                name = folderName,
-                                type = LegacyFolderType.ARCHIVE,
-                            ),
+                    listOf(
+                        FolderInfo(
+                            serverId = folderName,
+                            name = folderName,
+                            type = LegacyFolderType.ARCHIVE,
                         ),
                     ),
                 )

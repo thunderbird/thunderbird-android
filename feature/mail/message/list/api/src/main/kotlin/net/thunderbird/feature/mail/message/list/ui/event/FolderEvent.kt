@@ -10,6 +10,14 @@ import net.thunderbird.feature.mail.message.list.ui.state.Folder
  */
 sealed interface FolderEvent : MessageListEvent {
     /**
+     * Event triggered when a folder's content has been successfully loaded and is ready to be displayed.
+     * This event carries the folder's data, which is then used to update the UI state.
+     *
+     * @param folder The [Folder] that has been loaded.
+     */
+    data class FolderLoaded(val folder: Folder) : FolderEvent
+
+    /**
      * Event to expunge (permanently delete) messages marked for deletion in a specific folder.
      *
      * @param folder The folder from which to expunge messages.

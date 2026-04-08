@@ -35,13 +35,13 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import kotlin.test.Test
 import kotlinx.collections.immutable.persistentSetOf
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction

@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.molecule.notification.NotificationActionButton
 import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.BannerInlineNotificationCardBehaviour
 import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.ErrorBannerInlineNotificationCard
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.collections.immutable.ImmutableSet
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_BANNER_INLINE_LIST
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_CHECK_ERROR_NOTIFICATIONS
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_CHECK_ERROR_NOTIFICATIONS_ACTION

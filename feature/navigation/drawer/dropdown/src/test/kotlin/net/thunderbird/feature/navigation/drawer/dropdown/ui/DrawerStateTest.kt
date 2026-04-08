@@ -19,9 +19,9 @@ internal class DrawerStateTest {
                 config = DrawerConfig(
                     showUnifiedFolders = false,
                     showStarredCount = false,
-                    showAccountSelector = true,
                     expandAllFolder = false,
                 ),
+                showAccountSelector = true,
                 accounts = persistentListOf(),
                 selectedAccountId = null,
                 rootFolder = DisplayTreeFolder(

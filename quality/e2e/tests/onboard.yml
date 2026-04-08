@@ -1,0 +1,45 @@
+appId: ${MAESTRO_APP_ID}
+---
+
+# Onboarding sequence flow
+# Steps:
+# 1. Determine account type (demo/real) via scripts/detect_variant.js
+# 2. Launch app with clean state
+# 3. Welcome
+# 4. Migration
+# 5. Account setup (demo or real)
+# 6. Permissions
+
+## Welcome
+- runFlow:
+    file: ../flows/onboarding/welcome.yml
+
+## Migration
+- runFlow:
+    file: ../flows/onboarding/migration.yml
+
+## Account setup - demo or real based on MAESTRO_ACCOUNT_TYPE
+- runFlow:
+    when:
+      true: ${output.isDemo}
+    file: ../flows/onboarding/account_setup_demo.yml
+    env:
+        EMAIL_ADDRESS: ${output.email}
+        ACCOUNT_NAME: ${output.accountName}
+        USER_NAME: ${output.userName}
+
+- runFlow:
+    when:
+      true: ${output.isReal}
+    file: ../flows/onboarding/account_setup_real.yml
+    env:
+        EMAIL_ADDRESS: ${output.email}
+        ACCOUNT_NAME: ${output.accountName}
+        USER_NAME: ${output.userName}
+
+## Permissions
+- runFlow:
+    when:
+      visible:
+        id: "onboarding_permissions_next_button"
+    file: ../flows/onboarding/permissions.yml

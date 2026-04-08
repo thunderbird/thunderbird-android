@@ -312,16 +312,16 @@
     <string name="account_notify_contacts_mail_only_summary">Értesítések megjelenítése csak az ismert partnerektől érkező üzeneteknél</string>
     <string name="account_settings_ignore_chat_messages_label">Csevegőüzenetek kihagyása</string>
     <string name="account_settings_ignore_chat_messages_summary">Ne jelenítsen meg értesítéseket az e -mail csevegéshez tartozó üzenetekről</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Megjelölés olvasottként megnyitáskor</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Üzenet megjelölése olvasottként megtekintésre megnyitáskor</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Megnyitásakor olvasottnak jelölés</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Egy üzenet olvasottá jelölése ha megnyitják elolvasáshoz</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Megjelölés olvasottként törléskor</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Üzenet megjelölése olvasottként törléskor</string>
     <string name="account_settings_notification_channels_label">Értesítési kategóriák</string>
     <string name="account_settings_open_notification_settings_messages_summary">Értesítési beállítások az új üzenetekhez</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Hiba- és állapotértesítések beállítása</string>
-    <string name="account_settings_show_pictures_label">Képek megjelenítése mindig</string>
-    <string name="account_settings_show_pictures_never">Nem</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Partnerektől</string>
+    <string name="account_settings_show_pictures_label">Mindig mutassa a képeket</string>
+    <string name="account_settings_show_pictures_never">Soha</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Kapcsolatokból</string>
     <string name="account_settings_show_pictures_always">Bárkitől</string>
     <string name="account_settings_composition">Levél küldése</string>
     <string name="account_settings_default_quoted_text_shown_label">Üzenet idézése válaszkor</string>
@@ -343,7 +343,7 @@
     <string name="account_settings_upload_sent_messages_label">Elküldött üzenetek feltöltése</string>
     <string name="account_settings_upload_sent_messages_summary">Üzenetek feltöltése az Elküldöttek mappába a küldés után</string>
     <string name="account_settings_general_title">Általános beállítások</string>
-    <string name="account_settings_reading_mail">Levél olvasása</string>
+    <string name="account_settings_reading_mail">Üzenet olvasása</string>
     <string name="account_settings_sync">Levél letöltése</string>
     <string name="account_settings_folders">Mappák</string>
     <string name="account_settings_quote_prefix_label">Idézett szöveg előtagja</string>
@@ -730,7 +730,6 @@
     <string name="crypto_msg_encrypted_insecure">de a titkosítás nem tekinthető biztonságosnak</string>
     <string name="locked_attach_unlock">Feloldás</string>
     <string name="locked_attach_unencrypted">Ez a rész nem volt titkosítva, és esetleg nem biztonságos.</string>
-    <string name="locked_attach_title">Nem védett melléklet</string>
     <string name="message_progress_text">Betöltés…</string>
     <string name="messageview_decrypt_cancelled">A visszafejtést megszakították.</string>
     <string name="messageview_decrypt_retry">Újra</string>
@@ -804,25 +803,15 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="push_info_disable_push_text">Ha nincs szüksége azonnali értesítésekre az új levelekről, akkor letilthatja a leküldést, és használhat lekérést. A lekérés rendszeres időközönként ellenőrzi, hogy vannak-e új levelek, és nincs szüksége értesítés megjelenítésére.</string>
     <string name="push_info_disable_push_action">Leküldés letiltása</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Kijelölés</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Kijelölés törlése</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Megjelölés olvasottként</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Megjelölés olvasatlanként</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Csillag hozzáadása</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Csillag eltávolítása</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archiválás</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Törlés</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Levélszemét</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Áthelyezés…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Lebegő levélírás-gomb megjelenítése</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -900,9 +889,7 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="debug_enable_sync_debug_logging_summary">Szinkronizálás diagnosztikai információinak naplózása 24 óráig</string>
     <string name="debug_sync_export_logs_title">Szinkronizálás naplóinak exportálása</string>
     <string name="debug_open_secret_debug_screen">Titkos hibakeresési képernyő megnyitása</string>
-    <string name="swipe_action_archive_folder_not_set">Archívum mappa készítése</string>
     <string name="archiving_not_available_for_this_account">Az archiválás nem érhető el ennél a fióknál.</string>
-    <string name="swipe_action_change_swipe_gestures">Csúsztatási \ngesztusok módosítása</string>
     <string name="message_view_menu_action_export_eml">Exportálás EML-ként</string>
     <string name="print_message_action">Nyomtatás</string>
     <string name="set_format_html_action">Eredeti formázás használata</string>
@@ -928,4 +915,9 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="debug_invalidate_access_token_cannot_modify">A tárolt hozzáférési token módosítása sikertelen. Próbálja ki a helyi érvénytelenítést.</string>
     <string name="debug_invalidate_access_token_already_modified">A tárolt hozzéférési token már módosítva lett.</string>
     <string name="debug_feature_flags">HIBAKERESÉS: Funkciókapcsolók</string>
+    <string name="global_settings_splitview_when_unfolded">Amikor az eszköz kinyitva van</string>
+    <string name="general_settings_message_list_date_time_format_title">Dátum/idő formátum</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontextuális</string>
+    <string name="general_settings_message_list_date_time_format_full">Teljes</string>
+    <string name="sort_by_then_by">Akkor…</string>
 </resources>

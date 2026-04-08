@@ -9,10 +9,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemeLightDark
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import kotlinx.collections.immutable.toPersistentList
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.notification.api.content.MailNotification
 

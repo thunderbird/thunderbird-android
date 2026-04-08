@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.server.certificate.ui
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.server.certificate.domain.ServerCertificateDomainContract
 import app.k9mail.feature.account.server.certificate.domain.ServerCertificateDomainContract.UseCase
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateError
@@ -9,6 +8,7 @@ import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorCo
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.Event
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.State
 import kotlinx.coroutines.launch
+import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 class ServerCertificateErrorViewModel(
     private val certificateErrorRepository: ServerCertificateDomainContract.ServerCertificateErrorRepository,

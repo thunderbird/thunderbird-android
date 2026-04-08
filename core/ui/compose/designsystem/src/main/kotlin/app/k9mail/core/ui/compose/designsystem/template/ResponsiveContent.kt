@@ -12,7 +12,7 @@ import app.k9mail.core.ui.compose.common.padding.calculateResponsiveWidthPadding
 import app.k9mail.core.ui.compose.common.window.WindowSizeClass
 import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 /**
  * The [ResponsiveContent] composable automatically adapts its child content to different screen sizes and resolutions,
@@ -31,6 +31,7 @@ fun ResponsiveContent(
     val windowSizeClass = getWindowSizeInfo()
 
     when (windowSizeClass.screenWidthSizeClass) {
+        WindowSizeClass.Small -> CompactContent(modifier = modifier, content = content)
         WindowSizeClass.Compact -> CompactContent(modifier = modifier, content = content)
         WindowSizeClass.Medium -> MediumContent(modifier = modifier, content = content)
         WindowSizeClass.Expanded -> ExpandedContent(modifier = modifier, content = content)
@@ -72,6 +73,7 @@ private fun ExpandedContent(
     content: @Composable (PaddingValues) -> Unit,
 ) {
     when (getWindowSizeInfo().screenHeightSizeClass) {
+        WindowSizeClass.Small -> CompactContent(modifier, content)
         WindowSizeClass.Compact -> MediumContent(modifier, content)
         WindowSizeClass.Medium -> {
             Box(

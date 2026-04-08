@@ -1,0 +1,9 @@
+appId: ${MAESTRO_APP_ID}
+---
+# Open message details
+- tapOn:
+    id: "participants_container"
+- swipe:
+    from:
+      id: "message_details_list"
+    direction: UP

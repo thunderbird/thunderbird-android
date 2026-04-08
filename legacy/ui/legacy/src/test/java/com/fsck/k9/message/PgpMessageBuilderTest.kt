@@ -3,7 +3,7 @@ package com.fsck.k9.message
 import android.app.Activity
 import android.app.PendingIntent
 import android.content.Intent
-import android.os.Parcelable
+import android.net.Uri
 import assertk.Assert
 import assertk.all
 import assertk.assertThat
@@ -261,12 +261,10 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val cryptoStatus = defaultCryptoStatus.copy(cryptoMode = CryptoMode.SIGN_ONLY)
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
 
-        val returnIntent = mock(Intent::class.java)
-        `when`(returnIntent.getIntExtra(eq(OpenPgpApi.RESULT_CODE), anyInt()))
-            .thenReturn(OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED)
+        val returnIntent = Intent()
+        returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED)
         val mockPendingIntent = mock(PendingIntent::class.java)
-        `when`<Parcelable>(returnIntent.getParcelableExtra<Parcelable>(eq(OpenPgpApi.RESULT_INTENT)))
-            .thenReturn(mockPendingIntent)
+        returnIntent.putExtra(OpenPgpApi.RESULT_INTENT, mockPendingIntent)
 
         `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(
             returnIntent,
@@ -295,8 +293,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED)
 
             val mockPendingIntent = mock(PendingIntent::class.java)
-            `when`<Parcelable>(returnIntent.getParcelableExtra<Parcelable>(eq(OpenPgpApi.RESULT_INTENT)))
-                .thenReturn(mockPendingIntent)
+            returnIntent.putExtra(OpenPgpApi.RESULT_INTENT, mockPendingIntent)
 
             `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(
                 returnIntent,
@@ -682,7 +679,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val cryptoStatus = defaultCryptoStatus.copy(cryptoMode = CryptoMode.SIGN_ONLY, isPgpInlineModeEnabled = true)
 
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
-        pgpMessageBuilder.setAttachments(listOf(Attachment.createAttachment(null, 0, null, true, true)))
+        pgpMessageBuilder.setAttachments(listOf(Attachment.createAttachment(Uri.EMPTY, 0, null, true, true)))
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
@@ -699,7 +696,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             defaultCryptoStatus.copy(cryptoMode = CryptoMode.CHOICE_ENABLED, isPgpInlineModeEnabled = true)
 
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
-        pgpMessageBuilder.setAttachments(listOf(Attachment.createAttachment(null, 0, null, true, true)))
+        pgpMessageBuilder.setAttachments(listOf(Attachment.createAttachment(Uri.EMPTY, 0, null, true, true)))
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
@@ -845,6 +842,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         }
 
         private val fakeGeneralSettingsManager = object : GeneralSettingsManager {
+            @Deprecated("Use PreferenceManager<GeneralSettings>.getConfig() instead")
             override fun getSettings() = GeneralSettings(
                 privacy = PrivacySettings(
                     isHideUserAgent = false,
@@ -853,6 +851,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
                 platformConfigProvider = FakePlatformConfigProvider(),
             )
 
+            @Deprecated("Use PreferenceManager<GeneralSettings>.getConfigFlow() instead")
             override fun getSettingsFlow(): Flow<GeneralSettings> = error("not implemented")
             override fun save(config: GeneralSettings) = error("not implemented")
 

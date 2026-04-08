@@ -1,0 +1,4 @@
+Thunderbird version 18.0b4
+
+Fixed:
+- Deleted messages could remain visible in message list

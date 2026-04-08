@@ -113,35 +113,14 @@ object K9 : KoinComponent {
     @JvmStatic
     val fontSizes = FontSizes()
 
-    @JvmStatic
-    var lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT
-
     var messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
         PostMarkAsUnreadNavigation.ReturnToMessageList
-
-    @JvmStatic
-    var isShowAccountSelector = true
 
     @get:Synchronized
     @set:Synchronized
     @JvmStatic
     var sortType: SortType = AccountDefaultsProvider.DEFAULT_SORT_TYPE
     private val sortAscending = mutableMapOf<SortType, Boolean>()
-
-    @JvmStatic
-    var isMessageViewArchiveActionVisible = false
-
-    @JvmStatic
-    var isMessageViewDeleteActionVisible = true
-
-    @JvmStatic
-    var isMessageViewMoveActionVisible = false
-
-    @JvmStatic
-    var isMessageViewCopyActionVisible = false
-
-    @JvmStatic
-    var isMessageViewSpamActionVisible = false
 
     @JvmStatic
     var pgpInlineDialogCounter: Int = 0
@@ -193,7 +172,6 @@ object K9 : KoinComponent {
     @JvmStatic
     @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
-        isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
         messageViewPostMarkAsUnreadNavigation =
             storage.getEnum("messageViewPostMarkAsUnreadAction", PostMarkAsUnreadNavigation.ReturnToMessageList)
 
@@ -202,20 +180,10 @@ object K9 : KoinComponent {
         val sortAscendingSetting = storage.getBoolean("sortAscending", AccountDefaultsProvider.DEFAULT_SORT_ASCENDING)
         sortAscending[sortType] = sortAscendingSetting
 
-        lockScreenNotificationVisibility = storage.getEnum(
-            "lockScreenNotificationVisibility",
-            LockScreenNotificationVisibility.MESSAGE_COUNT,
-        )
-
         featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
             .onDisabledOrUnavailable {
                 fontSizes.load(storage)
             }
-        isMessageViewArchiveActionVisible = storage.getBoolean("messageViewArchiveActionVisible", false)
-        isMessageViewDeleteActionVisible = storage.getBoolean("messageViewDeleteActionVisible", true)
-        isMessageViewMoveActionVisible = storage.getBoolean("messageViewMoveActionVisible", false)
-        isMessageViewCopyActionVisible = storage.getBoolean("messageViewCopyActionVisible", false)
-        isMessageViewSpamActionVisible = storage.getBoolean("messageViewSpamActionVisible", false)
 
         pgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0)
         pgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0)
@@ -231,18 +199,10 @@ object K9 : KoinComponent {
 
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
-        editor.putBoolean("showAccountSelector", isShowAccountSelector)
         editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
 
         editor.putEnum("sortTypeEnum", sortType)
         editor.putBoolean("sortAscending", sortAscending[sortType] ?: false)
-        editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
-
-        editor.putBoolean("messageViewArchiveActionVisible", isMessageViewArchiveActionVisible)
-        editor.putBoolean("messageViewDeleteActionVisible", isMessageViewDeleteActionVisible)
-        editor.putBoolean("messageViewMoveActionVisible", isMessageViewMoveActionVisible)
-        editor.putBoolean("messageViewCopyActionVisible", isMessageViewCopyActionVisible)
-        editor.putBoolean("messageViewSpamActionVisible", isMessageViewSpamActionVisible)
 
         editor.putInt("pgpInlineDialogCounter", pgpInlineDialogCounter)
         editor.putInt("pgpSignOnlyDialogCounter", pgpSignOnlyDialogCounter)
@@ -294,14 +254,6 @@ object K9 : KoinComponent {
     const val MAX_SEND_ATTEMPTS = 5
 
     const val MANUAL_WAKE_LOCK_TIMEOUT = 120000
-
-    enum class LockScreenNotificationVisibility {
-        EVERYTHING,
-        SENDERS,
-        MESSAGE_COUNT,
-        APP_NAME,
-        NOTHING,
-    }
 
     /**
      * The navigation actions that can be to performed after the user has marked a message as unread from the message

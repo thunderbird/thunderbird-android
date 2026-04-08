@@ -10,7 +10,11 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+
+    android {
         compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
         minSdk = ThunderbirdProjectConfig.Android.sdkMin
 
@@ -30,7 +34,7 @@ kotlin {
             implementation(project.dependencies.platform(libs.kotlin.bom))
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.bundles.shared.kmp.common)
-            implementation(libs.bundles.shared.kmp.compose)
+            implementation(libs.bundles.shared.kmp.compose.common)
 
             implementation(libs.jetbrains.compose.runtime)
             implementation(libs.jetbrains.compose.foundation)
@@ -41,6 +45,7 @@ kotlin {
 
         commonTest.dependencies {
             implementation(libs.bundles.shared.kmp.common.test)
+            implementation(libs.bundles.shared.kmp.compose.common.test)
         }
 
         androidMain.dependencies {

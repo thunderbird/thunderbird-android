@@ -50,11 +50,11 @@
         <item quantity="other">هر %d دقیقه</item>
     </plurals>
     <plurals name="account_setup_options_email_check_frequency_hours">
-        <item quantity="one">هر ساعت</item>
+        <item quantity="one">هر %d ساعت</item>
         <item quantity="other">هر %d ساعت</item>
     </plurals>
     <plurals name="account_setup_options_email_display_count_messages">
-        <item quantity="one">۱ پیام</item>
+        <item quantity="one">%d پیام</item>
         <item quantity="other">%d پیام</item>
     </plurals>
     <string name="account_setup_options_your_name_label">نام شما</string>

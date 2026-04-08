@@ -12,10 +12,10 @@ import androidx.activity.result.contract.ActivityResultContracts.RequestPermissi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
-import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Effect
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Event
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.ui.contract.mvi.observe
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

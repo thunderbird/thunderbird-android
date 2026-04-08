@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Vel</string>
+    <string name="swipe_action_deselect">Avmerk</string>
+    <string name="swipe_action_mark_as_read">Marker som lesen</string>
+    <string name="swipe_action_mark_as_unread">Merk som ulesen/ulesne</string>
+    <string name="swipe_action_add_star">Legg til stjerne</string>
+    <string name="swipe_action_remove_star">Fjern stjerne</string>
+    <string name="swipe_action_archive">Arkiv</string>
+    <string name="swipe_action_archive_folder_not_set">Sett opp Arkivmappe</string>
+    <string name="swipe_action_change_swipe_gestures">Endre\nSveipehandlingar</string>
+    <string name="swipe_action_delete">Slett</string>
+    <string name="swipe_action_spam">Spam</string>
+    <string name="swipe_action_move">Flytt…</string>
+</resources>

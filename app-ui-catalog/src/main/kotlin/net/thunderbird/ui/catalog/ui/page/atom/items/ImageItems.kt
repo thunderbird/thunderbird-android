@@ -12,26 +12,26 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.image.FixedScaleImage
 import app.k9mail.core.ui.compose.designsystem.atom.image.RemoteImage
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.ui.catalog.ui.page.common.list.fullSpanItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionSubtitleItem
+import org.jetbrains.compose.resources.painterResource
 
 fun LazyGridScope.imageItems() {
     sectionHeaderItem(text = "Images")
     defaultItem {
         Image(
-            painter = painterResource(id = MainTheme.images.logo),
+            painter = painterResource(MainTheme.images.logo),
             contentDescription = "logo",
             modifier = Modifier.padding(defaultItemPadding()),
         )
@@ -148,7 +148,7 @@ private fun FixedScaleImageView(
                 .border(1.dp, MainTheme.colors.primary, MainTheme.shapes.small),
         ) {
             FixedScaleImage(
-                id = MainTheme.images.logo,
+                resource = MainTheme.images.logo,
                 alignment = alignment,
                 allowOverflow = allowOverflow,
             )

@@ -275,13 +275,13 @@
     <string name="account_settings_notify_self_summary">Vis et varsel for meldinger jeg sendte</string>
     <string name="account_notify_contacts_mail_only_label">Bare kontakter</string>
     <string name="account_notify_contacts_mail_only_summary">Bare vis varsel for meldinger fra kjente kontakter</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Merk som lest når åpnet</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Merk en melding som lest når den åpnes for visning</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Merk som lest etter åpning</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Merk meldinger som lest etter at de åpnes</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Marker som lest når slettet</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Marker en melding som lest når den er slettet</string>
     <string name="account_settings_show_pictures_label">Alltid vis bilder</string>
     <string name="account_settings_show_pictures_never">Nei</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Fra kontakter</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Fra kontaktene</string>
     <string name="account_settings_show_pictures_always">Fra hvem som helst</string>
     <string name="account_settings_composition">Sende e-post</string>
     <string name="account_settings_default_quoted_text_shown_label">Siter melding når du svarer</string>
@@ -303,7 +303,7 @@
     <string name="account_settings_upload_sent_messages_label">Last opp sendte meldinger</string>
     <string name="account_settings_upload_sent_messages_summary">Last opp sendte meldinger til Sendt-mappen, etter sending</string>
     <string name="account_settings_general_title">Generelle innstillinger</string>
-    <string name="account_settings_reading_mail">Lese e-post</string>
+    <string name="account_settings_reading_mail">Leser e-post</string>
     <string name="account_settings_sync">Hente e-post</string>
     <string name="account_settings_folders">Mapper</string>
     <string name="account_settings_quote_prefix_label">Prefiks for sitert tekst</string>
@@ -662,7 +662,6 @@
     <string name="crypto_msg_encrypted_insecure">men krypteringen er ikke antatt å være sikker</string>
     <string name="locked_attach_unlock">Lås opp</string>
     <string name="locked_attach_unencrypted">Denne delen bar ikke krypter, og kan derfor være usikker.</string>
-    <string name="locked_attach_title">Usikret vedlegg</string>
     <string name="message_progress_text">Laster…</string>
     <string name="messageview_decrypt_cancelled">Dekryptering ble avbrutt.</string>
     <string name="messageview_decrypt_retry">Prøv på nytt</string>
@@ -712,22 +711,14 @@
     <string name="switch_off">Av</string>
     <!--permissions-->
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Velg</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Fjern valg</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Merk uleste</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Legg til stjerne</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Fjern stjerne</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arkiver</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Slett</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Søppelpost</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -791,7 +782,6 @@
     <string name="account_settings_notification_light_default_color">Forvalgt systemfarge</string>
     <string name="ac_transfer_button_send">Send oppsettsmelding</string>
     <string name="notification_notify_error_title">Merknadsfeil</string>
-    <string name="swipe_action_move">Flytt …</string>
     <string name="show_starred_count_title">Vis antall stjernemerkede</string>
     <string name="ac_transfer_generating">Genererer oppsettsmelding …</string>
     <string name="account_settings_vibrate_pattern_4">Mønster 4</string>
@@ -830,7 +820,6 @@
     <string name="push_info_learn_more_text">Lær mer</string>
     <string name="account_settings_notification_light_magenta">Magentarød</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Antall nye meldinger</string>
-    <string name="swipe_action_mark_as_read">Marker som lest</string>
     <string name="push_notification_state_wait_background_sync">I dvale til bakgrunnssynkronisering er tillatt</string>
     <string name="action_add_to_contacts">Legg til i kontakter</string>
     <string name="choose_folder_copy_title">Kopier til …</string>
@@ -898,8 +887,6 @@
     <string name="debug_open_secret_debug_screen">Åpne hemmelig feilsøkningsmeny</string>
     <string name="folder_settings_push_label">Skru på dytting</string>
     <string name="push_info_notification_explanation_text">Ved bruk av dytting vil <xliff:g id="app_name">%1$s</xliff:g> opprettholde en tilkobling til e-posttjeneren. Android krever visning av pågående merknad når programmet er aktivt i bakgrunnen. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="swipe_action_archive_folder_not_set">Sett opp arkivmappe</string>
-    <string name="swipe_action_change_swipe_gestures">Endre \nsveipehandlinger</string>
     <string name="archiving_not_available_for_this_account">Arkivering er ikke tilgjengelig for denne kontoen.</string>
     <string name="debug_invalidate_access_token">Test: Ugyldiggjør tilgangstoken</string>
     <string name="debug_invalidate_access_token_done">Tilgangstoken ugyldiggjort. Den neste forespørselen vil oppfriske.</string>
@@ -926,4 +913,9 @@
     <string name="expand_folders">Utvid mapper</string>
     <string name="debug_feature_flags">FEILSØKING: Funksjonsflagg</string>
     <string name="print_message_action">Skriv ut</string>
+    <string name="global_settings_splitview_when_unfolded">Når enheten er brettet ut</string>
+    <string name="general_settings_message_list_date_time_format_title">Tid- og datoformat</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontekstavhengig</string>
+    <string name="general_settings_message_list_date_time_format_full">Fullstendig</string>
+    <string name="sort_by_then_by">Deretter etter…</string>
 </resources>

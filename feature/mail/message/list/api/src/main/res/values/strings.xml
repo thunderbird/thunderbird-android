@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sort_by">Sort by…</string>
+    <string name="sort_by_date_asc">Date (oldest first)</string>
+    <string name="sort_by_date_desc">Date (newest first)</string>
+    <string name="sort_by_arrival_asc">Arrival (oldest first)</string>
+    <string name="sort_by_arrival_desc">Arrival (newest first)</string>
+    <string name="sort_by_subject_asc">Subject (A-Z)</string>
+    <string name="sort_by_subject_desc">Subject (Z-A)</string>
+    <string name="sort_by_sender_asc">Sender (A-Z)</string>
+    <string name="sort_by_sender_desc">Sender (Z-A)</string>
+    <string name="sort_by_flag_asc">Starred first</string>
+    <string name="sort_by_flag_desc">Unstarred first</string>
+    <string name="sort_by_unread_asc">Unread first</string>
+    <string name="sort_by_unread_desc">Read first</string>
+    <string name="sort_by_attach_asc">With attachments first</string>
+    <string name="sort_by_attach_desc">Without attachments first</string>
+    <string name="swipe_action_select">Select</string>
+    <string name="swipe_action_deselect">Deselect</string>
+    <string name="swipe_action_mark_as_read">Mark read</string>
+    <string name="swipe_action_mark_as_unread">Mark unread</string>
+    <string name="swipe_action_add_star">Add star</string>
+    <string name="swipe_action_remove_star">Remove star</string>
+    <string name="swipe_action_archive">Archive</string>
+    <string name="swipe_action_archive_folder_not_set">Set Up Archive Folder</string>
+    <string name="swipe_action_change_swipe_gestures">Change \nSwipe Gestures</string>
+    <string name="swipe_action_delete">Delete</string>
+    <string name="swipe_action_spam">Spam</string>
+    <string name="swipe_action_move">Move…</string>
+</resources>

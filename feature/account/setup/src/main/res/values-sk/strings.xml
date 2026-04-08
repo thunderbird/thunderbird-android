@@ -61,4 +61,8 @@
     <string name="account_setup_options_email_check_frequency_never">Nikdy</string>
     <string name="account_setup_options_email_display_count_label">Počet správ na zobrazenie</string>
     <string name="account_setup_options_show_notifications_label">Zobraziť notifikácie</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Konfiguráciu vášho e-mailového servera sme prijali cez pripojenie, ktoré nie je také bezpečné, ako by sme si želali. To znamená, že existuje malé riziko, že ju niekto mohol cestou pozmeniť. Skontrolujte, prosím, poskytnuté údaje a uistite sa, že sú správne.</string>
+    <string name="account_setup_special_folders_form_description_automatic">Voľba „Automaticky“ bude automaticky sledovať zmeny vykonané na serveri. Aktuálna hodnota na serveri je zobrazená v zátvorke.</string>
+    <string name="account_setup_options_your_name_label">Vaše meno</string>
+    <string name="account_setup_options_your_name_error_required">Vaše meno je povinné.</string>
 </resources>

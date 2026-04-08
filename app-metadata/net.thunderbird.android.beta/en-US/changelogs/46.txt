@@ -1,0 +1,16 @@
+Thunderbird version 18.0b1
+
+New:
+- PNG avatars
+- Setting to display ISO date/time in message list
+- Fixed-width font for composing
+
+Changed:
+- Attachment summary moved to header for visibility
+
+Fixed:
+- "Delete (from notification)" setting did not retain state
+- Find folder search hint text was cut off
+- User not notified if offline when sending message
+- Warned "Sent folder not found" when uploading sent messages was disabled
+- CC/BCC fields were not expanded by default for Reply All

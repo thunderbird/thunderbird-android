@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Επιλογή</string>
+    <string name="swipe_action_deselect">Απο-επιλογή</string>
+    <string name="swipe_action_mark_as_read">Επισήμανση ως αναγνωσμένο</string>
+    <string name="swipe_action_mark_as_unread">Σήμανση ως μη αναγνωσμένο</string>
+    <string name="swipe_action_add_star">Προσθήκη αστεριού</string>
+    <string name="swipe_action_remove_star">Αφαίρεση αστεριού</string>
+    <string name="swipe_action_archive">Αρχειοθέτηση</string>
+    <string name="swipe_action_archive_folder_not_set">Ρυθμίστε το φάκελο αρχειοθέτησης</string>
+    <string name="swipe_action_delete">Διαγραφή</string>
+    <string name="swipe_action_spam">Ανεπιθύμητα</string>
+    <string name="swipe_action_move">Μετακίνηση…</string>
+</resources>

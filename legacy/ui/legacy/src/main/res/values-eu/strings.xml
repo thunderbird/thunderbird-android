@@ -196,7 +196,7 @@
     <string name="global_settings_registered_name_color_changed">Koloreztatu izenak kontaktu zerrendan</string>
     <string name="general_settings_contact_name_color_label">Kontaktu-izenaren kolorea</string>
     <string name="global_settings_messageview_fixedwidth_label">Zabalera finkoko letra-tipoak</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Erabili zabalera finkoko letra-tipoak testu arrunteko mezuak erakustean</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Erabili zabalera finkoko letra-tipoak testu soileko mezuak erakustean</string>
     <string name="global_settings_messageview_autofit_width_label">Doitu mezuak automatikoki</string>
     <string name="global_settings_messageview_autofit_width_summary">Txikiagotu mezuak pantailan sar daitezen</string>
     <string name="global_settings_confirm_actions_title">Berretsi ekintzak</string>
@@ -235,7 +235,7 @@
     <string name="general_settings_ui_density_default">Lehenetsia</string>
     <string name="general_settings_ui_density_relaxed">Erlaxatua</string>
     <string name="global_settings_privacy_hide_useragent">Ezkutatu posta bezeroa</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Kendu K-9 erabiltzaile-agentea posta goiburuetatik</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Kendu erabiltzaile-agentea posta goiburuetatik</string>
     <string name="global_settings_privacy_hide_timezone">Ezkutatu ordu-zona</string>
     <string name="global_settings_privacy_hide_timezone_detail">Erabili UTC tokiko ordu-zonaren ordez posta goiburuetan eta erantzunen goiburuan</string>
     <string name="global_settings_notification_quick_delete_title">Erakutsi \'Ezabatu\' botoia</string>
@@ -692,7 +692,7 @@
     <string name="openpgp_sign_only_ok">Ados!</string>
     <string name="openpgp_sign_only_disable">Desgaitu</string>
     <string name="openpgp_sign_only_keep_enabled">Mantendu gaituta</string>
-    <string name="openpgp_dialog_sign_only_title">PGP sinadura bakarrik Modua</string>
+    <string name="openpgp_dialog_sign_only_title">PGP sinadura bakarrik modua</string>
     <string name="openpgp_dialog_sign_only_text">Modu honetan, zure PGP gakoa zifratu gabeko posta batean sinadura kriptografiko bat sortzeko erabiliko da.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Honek ez du posta zifratzen, baina zure gakoarekin bidalia izan dela egiaztatzen du.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Sinadurak hautsi daitezke posta zerrendetara bidaltzean.</string>
@@ -730,7 +730,6 @@
     <string name="crypto_msg_encrypted_insecure">baina zifratzea ez da segurutzat jotzen</string>
     <string name="locked_attach_unlock">Desblokeatu</string>
     <string name="locked_attach_unencrypted">Zati hau ez zegoen zifratuta, eta posible da ez izatea segurua.</string>
-    <string name="locked_attach_title">Babesik gabeko Eranskina</string>
     <string name="message_progress_text">Kargatzen…</string>
     <string name="messageview_decrypt_cancelled">Deszifratzea bertan behera utzi da.</string>
     <string name="messageview_decrypt_retry">Saiatu berriro</string>
@@ -803,25 +802,15 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
     <string name="push_info_disable_push_text">Mezu berriei buruzko berehalako jakinarazpenik behar ez baduzu, Push desgaitu eta Bozketa erabili. Inkestak posta berriak egiaztatzen ditu aldizka eta ez du jakinarazpenik behar.</string>
     <string name="push_info_disable_push_action">Desgaitu \"Push\"a</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Hautatu</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Desautatu</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Markatu irakurritako gisa</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Markatu irakurri gabeko gisa</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Gehitu izarra</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Kendu izarra</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Artxibatu</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Ezabatu</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Zabor-posta</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Mugitu…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Erakutsi idazteko botoi flotagarria</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -898,7 +887,35 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
     <string name="dialog_confirm_empty_spam_title">Berretsi spamaren hustuketa</string>
     <string name="dialog_confirm_empty_spam_message">Hustu nahi duzu spam karpeta?</string>
     <string name="expand_content_description">Hedatu</string>
-    <string name="swipe_action_archive_folder_not_set">Ezarri artxibo-karpeta</string>
-    <string name="swipe_action_change_swipe_gestures">Aldatu \nHatza pasatzeko keinuak</string>
     <string name="archiving_not_available_for_this_account">Artxibatzea ez dago erabilgarri kontu honetarako.</string>
+    <string name="message_view_menu_action_export_eml">Esportatu EML gisa</string>
+    <string name="print_message_action">Inprimatu</string>
+    <string name="set_format_html_action">Erabili jatorrizko formatua</string>
+    <string name="set_format_html_condensed_action">Erakutsi formatudunak</string>
+    <string name="set_format_plain_action">Erakutsi formatua ez duten mezuak</string>
+    <string name="set_format_plain_condensed_action">Erakutsi formatu gabeak</string>
+    <string name="debug_open_secret_debug_screen">Erakutsi arazketa pantaila sekretua</string>
+    <string name="global_settings_messageview_body_content_type_title">Mezuaren gorputz edukiaren mota</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Testu soila (text/plain)</string>
+    <string name="general_settings_message_list_date_time_format_title">Data/denbora formatua</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Testuingurukoa</string>
+    <string name="general_settings_message_list_date_time_format_full">Osoa</string>
+    <string name="account_setup_auto_select_folder">Aukeratu karpeta automatikoki</string>
+    <string name="navigation_drawer_preferences">Alboko menua</string>
+    <string name="expand_folders">Zabaldu karpetak</string>
+    <string name="global_settings_splitview_when_unfolded">Gailua zabaltzen denean</string>
+    <string name="debug_invalidate_access_token">Proba: baliogabetu sarbide-tokena</string>
+    <string name="debug_invalidate_access_token_done">Sarbide-token baliogabetua. Hurrengo eskaera freskatu egingo du.</string>
+    <string name="debug_invalidate_access_token_unavailable">Ez dago OAuth token erabilgarri kontu honetarako.</string>
+    <string name="debug_invalidate_access_token_local">Proba: baliogabetu sarbide-tokena (tokia)</string>
+    <string name="debug_invalidate_access_token_local_done">Tokiko baliogabetzea eskatu da. Hurrengo eskaerak token berri bat eskuratuko du.</string>
+    <string name="debug_invalidate_access_token_server">Proba: baliogabetu sarbide-tokena (zerbitzaria)</string>
+    <string name="debug_invalidate_access_token_server_done">Biltegiratutako sarbide-tokena hondatuta dago. Hurrengo eskaerak huts egingo du eta gero freskatu egingo da.</string>
+    <string name="debug_force_auth_failure">Proba: behartu autentifikazio-porrota orain</string>
+    <string name="debug_force_auth_failure_done">Garbitu da OAuth egoera. Hurrengo eskaerak huts egingo du.</string>
+    <string name="debug_force_auth_failure_unavailable">Ez dago OAuth konfiguraziorik erabilgarri kontu honetarako.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Ezin izan da gordetako sarbide-tokena aldatu. Saiatu tokiko baliogabetzea.</string>
+    <string name="debug_invalidate_access_token_already_modified">Dagoeneko aldatu da gordetako sarbide-tokena.</string>
+    <string name="debug_feature_flags">ARAZKETA: funtzioen markak</string>
 </resources>

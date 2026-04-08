@@ -56,4 +56,6 @@
         <item quantity="one">Tunnin välein</item>
         <item quantity="other">%d tunnin välein</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Nimesi</string>
+    <string name="account_setup_options_your_name_error_required">Nimi on pakollinen tieto.</string>
 </resources>

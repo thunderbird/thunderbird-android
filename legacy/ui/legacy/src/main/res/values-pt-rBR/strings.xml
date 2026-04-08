@@ -736,7 +736,6 @@
     <string name="crypto_msg_encrypted_insecure">mas a criptografia não é considerada segura</string>
     <string name="locked_attach_unlock">Desbloquear</string>
     <string name="locked_attach_unencrypted">Esta parte não foi criptografada e pode estar insegura.</string>
-    <string name="locked_attach_title">Anexo desprotegido</string>
     <string name="message_progress_text">Carregando…</string>
     <string name="messageview_decrypt_cancelled">A descriptografia foi cancelada.</string>
     <string name="messageview_decrypt_retry">Tentar novamente</string>
@@ -805,25 +804,15 @@
     <string name="push_info_disable_push_text">Caso você não precise de notificações instantâneas sobre novas mensagens, deve desativar o Push e usar Polling. O Polling verifica se há novas mensagens em intervalos regulares e não necessita de notificação.</string>
     <string name="push_info_disable_push_action">Desativar Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Marcar</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Desmarcar</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Marcar como lida</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Marcar como não lida</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Adicionar estrela</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Remover estrela</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Arquivar</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Excluir</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Mover…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Exibir um botão flutuante de escrita</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -901,8 +890,6 @@
     <string name="debug_enable_sync_debug_logging_summary">Registrar informações do diagnóstico de sincronização por 24 horas</string>
     <string name="debug_sync_export_logs_title">Exportar registros de sincronização</string>
     <string name="debug_open_secret_debug_screen">Abrir tela de depuração secreta</string>
-    <string name="swipe_action_archive_folder_not_set">Definir pasta de arquivamento</string>
-    <string name="swipe_action_change_swipe_gestures">Alterar\ngestos de deslizar</string>
     <string name="archiving_not_available_for_this_account">Arquivamento indisponível para esta conta.</string>
     <string name="debug_invalidate_access_token_already_modified">Token de acesso já modificado.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Não foi possível modificar o token de acesso salvo. Tente invalidar localmente.</string>
@@ -929,4 +916,9 @@
     <string name="navigation_drawer_preferences">Menu Lateral</string>
     <string name="expand_folders">Expandir Pastas</string>
     <string name="debug_feature_flags">DEBUG: Sinalizadores de Recursos</string>
+    <string name="global_settings_splitview_when_unfolded">Quando o dispositivo é desdobrado</string>
+    <string name="general_settings_message_list_date_time_format_title">Formato de data/hora</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Contextual</string>
+    <string name="general_settings_message_list_date_time_format_full">Cheio</string>
+    <string name="sort_by_then_by">Então por…</string>
 </resources>

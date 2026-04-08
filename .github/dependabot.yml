@@ -26,3 +26,15 @@ updates:
     commit-message:
       prefix: chore
       include: scope
+  - package-ecosystem: pip
+    open-pull-requests-limit: 10
+    directories:
+      - "/scripts/*"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "type: dependency"
+      - "type: pip"
+    commit-message:
+      prefix: chore
+      include: scope

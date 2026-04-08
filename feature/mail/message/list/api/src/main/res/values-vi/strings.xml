@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="swipe_action_select">Chọn</string>
+    <string name="swipe_action_deselect">Bỏ chọn</string>
+    <string name="swipe_action_mark_as_read">Đã đọc</string>
+    <string name="swipe_action_mark_as_unread">Đánh dấu chưa đọc</string>
+    <string name="swipe_action_add_star">Thêm sao</string>
+    <string name="swipe_action_remove_star">Loại bỏ sao</string>
+    <string name="swipe_action_archive">Lưu trữ</string>
+    <string name="swipe_action_delete">Xóa</string>
+    <string name="swipe_action_spam">Thư rác</string>
+    <string name="swipe_action_move">Di chuyển…</string>
+</resources>

@@ -23,7 +23,7 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Wyświetl</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Konto „<xliff:g id="account">%1$s</xliff:g>” zostanie usunięte z <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Konto „<xliff:g id="account">%1$s</xliff:g>” zostanie usunięte z <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autorzy</string>
     <string name="about_title">O aplikacji <xliff:g id="app_name">%s</xliff:g></string>
@@ -743,7 +743,6 @@
     <string name="crypto_msg_encrypted_insecure">ale szyfrowanie nie jest uważane za bezpieczne</string>
     <string name="locked_attach_unlock">Odblokuj</string>
     <string name="locked_attach_unencrypted">Ta część nie została zaszyfrowana i może nie być zabezpieczona.</string>
-    <string name="locked_attach_title">Niechroniony załącznik</string>
     <string name="message_progress_text">Wczytywanie…</string>
     <string name="messageview_decrypt_cancelled">Anulowano odszyfrowywanie.</string>
     <string name="messageview_decrypt_retry">Spróbuj ponownie</string>
@@ -814,25 +813,15 @@
     <string name="push_info_disable_push_text">Jeśli nie potrzebujesz natychmiastowych powiadomień o nowych wiadomościach, wyłącz funkcję push i użyj regularnego sprawdzania. Sprawdzanie w regularnych odstępach czasu sprawdza nową pocztę i nie wymaga powiadomienia.</string>
     <string name="push_info_disable_push_action">Wyłącz funkcję push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Wybierz</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Cofnij wybór</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
-    <string name="swipe_action_mark_as_read">Oznacz jako przeczytane</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->
-    <string name="swipe_action_mark_as_unread">Oznacz jako nieprzeczytane</string>
     <!--Name of the swipe action to add the star to a message. Try to keep it short.-->
-    <string name="swipe_action_add_star">Dodaj gwiazdkę</string>
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
-    <string name="swipe_action_remove_star">Usuń gwiazdkę</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archiwizuj</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Usuń</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Spam</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
-    <string name="swipe_action_move">Przenieś…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
     <string name="general_settings_show_compose_button_title">Pokaż przycisk pływający „Nowa wiadomość”</string>
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
@@ -905,9 +894,7 @@
     <string name="debug_enable_sync_debug_logging_summary">Rejestruj informacje diagnostyczne synchronizacji przez 24 godziny</string>
     <string name="debug_sync_export_logs_title">Eksportuj dzienniki synchronizacji</string>
     <string name="debug_enable_sync_debug_logging_title">Włącz rejestrowanie debugowania synchronizacji</string>
-    <string name="swipe_action_change_swipe_gestures">Zmień \ngesty przesunięcia</string>
     <string name="archiving_not_available_for_this_account">Archiwizacja nie jest dostępna dla tego konta.</string>
-    <string name="swipe_action_archive_folder_not_set">Skonfiguruj folder archiwum</string>
     <string name="debug_open_secret_debug_screen">Otwórz tajny ekran debugowania</string>
     <string name="debug_invalidate_access_token_done">Token dostępu został unieważniony. Następne żądanie zostanie odświeżone.</string>
     <string name="debug_invalidate_access_token_unavailable">Brak dostępnego tokenu OAuth dla tego konta.</string>
@@ -934,4 +921,10 @@
     <string name="global_settings_messageview_body_content_type_text_plain">Zwykły tekst (tekst/zwykły)</string>
     <string name="debug_feature_flags">DEBUGOWANIE: flagi funkcji</string>
     <string name="print_message_action">Drukuj</string>
+    <string name="global_settings_splitview_when_unfolded">Po rozłożeniu urządzenia</string>
+    <string name="general_settings_message_list_date_time_format_title">Format daty i godziny</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Kontekstowy</string>
+    <string name="general_settings_message_list_date_time_format_full">Pełny</string>
+    <string name="sort_by_then_by">Następnie wg…</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
 </resources>
