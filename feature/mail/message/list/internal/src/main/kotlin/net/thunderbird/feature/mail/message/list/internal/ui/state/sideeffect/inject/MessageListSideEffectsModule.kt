@@ -8,6 +8,7 @@ import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.Lo
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSortCriteriaStateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSwipeActionsStateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.OpenMessageSideEffect
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ToggleMessageSideEffect
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.legacy.LoadMessagesLegacySideEffect
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
 import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandlerFactory
@@ -60,5 +61,6 @@ internal val messageListSideEffectsModule = module {
             LoadMessagesLegacySideEffect.Factory(logger = get(), legacyBridge = args.legacyMessageListBridge)
         },
         { OpenMessageSideEffect.Factory(logger = get()) },
+        { ToggleMessageSideEffect.Factory(logger = get()) },
     )
 }

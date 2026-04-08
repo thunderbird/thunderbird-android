@@ -32,5 +32,13 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.selectingMe
                 messages = state.messages.map { message -> message.copy(selected = false) }.toPersistentList(),
             )
         }
+
+        transition<MessageItemEvent.OnMessageClick> { currentState, event ->
+            currentState.copy(
+                messages = currentState.messages.map { message ->
+                    if (message == event.message) message.copy(selected = !message.selected) else message
+                }.toPersistentList(),
+            )
+        }
     }
 }
