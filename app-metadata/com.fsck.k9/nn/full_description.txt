@@ -14,11 +14,11 @@ Installer appen <a href="https://f-droid.org/packages/org.sufficientlysecure.key
 
 <b>Støtte</b>
 
-Om du har problemar med K-9 Mail, kan du spørje om hjelp på vårt <a href="https://forum.k9mail.app">støtteforum</a>.
+Om du har problem med K-9 Mail, kan du spørje om hjelp på <a href="https://forum.k9mail.app">støtteforumet</a> vårt.
 
 
 <b>Vil du hjelpa?</b>
 
-K-9 Mail er eit prosjekt utvikla i fellesskap. Om du er du interessert i å hjelpe å forbetre appen, ver vennleg og bli med oss!
+K-9 Mail er eit prosjekt utvikla i fellesskap. Om du er interessert i å hjelpe å forbetre appen, ver vennleg og bli med oss!
 Du kan finne vår feilsporar, kjedekode og wiki på <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
 Me er alltid glade for å ønskje nye utviklarar, designarar, dokumentarmakarar, omsetjarar, feilprioriterarar og vennar velkommen.

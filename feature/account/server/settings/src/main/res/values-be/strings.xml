@@ -2,4 +2,19 @@
 <resources>
     <string name="account_server_settings_protocol_type_label">Пратакол</string>
     <string name="account_server_settings_server_label">Сервер</string>
+    <string name="account_server_settings_security_label">Бяспека</string>
+    <string name="account_server_settings_port_label">Порт</string>
+    <string name="account_server_settings_authentication_label">Аўтэнціфікацыя</string>
+    <string name="account_server_settings_username_label">Імя карыстальніка</string>
+    <string name="account_server_settings_connection_security_none">Няма</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_authentication_none">Няма</string>
+    <string name="account_server_settings_authentication_password_cleartext">Звычайны пароль</string>
+    <string name="account_server_settings_authentication_password_encrypted">Зашыфраваны пароль</string>
+    <string name="account_server_settings_authentication_client_certificate">Сертыфікат кліента</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_client_certificate_none_selected">Няма</string>
+    <string name="account_server_settings_client_certificate_label">Сертыфікат кліента</string>
+    <string name="account_server_settings_incoming_top_bar_title">Налады ўваходнага сервера</string>
 </resources>

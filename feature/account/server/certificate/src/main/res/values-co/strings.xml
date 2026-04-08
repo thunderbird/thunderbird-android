@@ -11,7 +11,6 @@
     <string name="account_server_certificate_subject">Sughjettu</string>
     <string name="account_server_certificate_issuer">Emettore</string>
     <string name="account_server_certificate_fingerprints_section">Impronte</string>
-    <string name="account_server_certificate_unknown_error_description_format">L’appiecazione hà scupertu una minaccia pussibule di sicurità è ùn hà micca cuntinuatu à cunnettesi à <xliff:g id="serverName">%s</xliff:g>.
-\nS’è vo cuntinuate, assaltadori puderianu pruvà d’arrubavvi infurmazioni cum’è parolla d’intesa o messaghji elettronichi.</string>
+    <string name="account_server_certificate_unknown_error_description_format">L’appiecazione hà scupertu una minaccia pussibule di sicurità è ùn hà micca cuntinuatu à cunnettesi à <xliff:g id="serverName">%s</xliff:g>.\nS’è vo cuntinuate, assaltadori puderianu pruvà d’arrubavvi infurmazioni cum’è parolla d’intesa o messaghji elettronichi.</string>
     <string name="account_server_certificate_subject_alternative_names">Nomi alternativi di u sughjettu</string>
 </resources>

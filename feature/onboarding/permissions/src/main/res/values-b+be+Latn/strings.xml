@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_permissions_contacts_title">Kantakty</string>
+    <string name="onboarding_permissions_notifications_title">Apaviaščenni</string>
+    <string name="onboarding_permissions_allow_button">Dazvolić</string>
+</resources>

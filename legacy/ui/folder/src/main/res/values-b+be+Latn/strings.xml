@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="special_mailbox_name_outbox">Vychodnyja</string>
+    <string name="special_mailbox_name_sent">Adpraŭlienyja</string>
+    <string name="special_mailbox_name_trash">Vydalienyja</string>
+    <string name="special_mailbox_name_inbox">Atrymanyja</string>
+</resources>

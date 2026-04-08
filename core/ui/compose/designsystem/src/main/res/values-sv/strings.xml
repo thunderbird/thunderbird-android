@@ -5,6 +5,6 @@
     <string name="designsystem_atom_password_textfield_show_password">Visa lösenord</string>
     <string name="designsystem_molecule_password_input_label">Lösenord</string>
     <string name="designsystem_molecule_error_view_button_retry">Försök igen</string>
-    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Svep från början till slutet till %s</string>
-    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Svep från slutet till början till %s</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Höger: %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Vänster: %s</string>
 </resources>

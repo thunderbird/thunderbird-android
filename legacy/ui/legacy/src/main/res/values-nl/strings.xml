@@ -611,7 +611,7 @@
     <string name="webview_contextmenu_email_save_action">In contacten opslaan</string>
     <string name="webview_contextmenu_email_copy_action">Adres naar klembord kopiëren</string>
     <string name="webview_contextmenu_email_clipboard_label">E-mailadres</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Alle</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Alles</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -619,7 +619,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Server-zoeklimiet</string>
+    <string name="account_settings_remote_search_num_label">Zoeklimiet server</string>
     <string name="remote_search_sending_query">Zoekopdracht naar server sturen</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">%d resultaat ophalen</item>
@@ -914,4 +914,32 @@
     <string name="general_settings_message_list_date_time_format_contextual">Contextueel</string>
     <string name="general_settings_message_list_date_time_format_full">Volledig</string>
     <string name="sort_by_then_by">Daarna op…</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Bijlage (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Bijlagen (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Alles bekijken</string>
+    <string name="message_view_attachments_view">Bekijken</string>
+    <string name="message_view_attachments_title">Bijlagen</string>
+    <string name="message_view_attachments_save_all">Alles opslaan</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Versleutelde bijlage</string>
+    <string name="no_network_message_will_be_sent_later_toast">Offline. Bericht zal worden verzonden wanneer de verbinding beschikbaar is</string>
+    <string name="notification_actions_settings_title">Meldingsacties</string>
+    <string name="notification_actions_settings_summary">Kies welke acties in e-mailmeldingen verschijnen</string>
+    <string name="notification_summary_delete_title">‘Verwijderen’ op meerdere-berichtmeldingen tonen</string>
+    <string name="notification_summary_delete_summary">Voegt een Verwijder-actie toe aan meldingen die meerdere nieuwe berichten samenvatten</string>
+    <string name="notification_actions_settings_description">Meldingsacties herschikken.</string>
+    <string name="notification_actions_cutoff_description">Weergavegrens voor acties</string>
+    <string name="notification_actions_cutoff_state">Acties boven deze lijn worden in de melding getoond</string>
+    <string name="notification_actions_shown_state">In de melding getoond</string>
+    <string name="notification_actions_hidden_state">Niet in de melding getoond</string>
+    <string name="accessibility_move_up">Omhoog verplaatsen</string>
+    <string name="accessibility_move_down">Omlaag verplaatsen</string>
+    <string name="accessibility_move_item_up"><xliff:g id="item">%1$s</xliff:g> omhoog verplaatsen</string>
+    <string name="accessibility_move_item_down"><xliff:g id="item">%1$s</xliff:g> omlaag verplaatsen</string>
+    <string name="accessibility_move_cutoff_up">Weergavegrens acties omhoog verplaatsen</string>
+    <string name="accessibility_move_cutoff_down">Weergavegrens acties omlaag verplaatsen</string>
+    <string name="notification_action_star">Ster</string>
 </resources>

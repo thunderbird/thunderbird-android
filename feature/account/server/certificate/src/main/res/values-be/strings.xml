@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_warning_title">Папярэджанне</string>
     <string name="account_server_certificate_unknown_error_subtitle">Памылка сертыфіката</string>
+    <string name="account_server_certificate_button_continue">Прымаю рызыку. Працягнуць</string>
+    <string name="account_server_certificate_unknown_error_description_format">Праграма выявіла патэнцыйную пагрозу бяспекі і спыніла падключэнне да <xliff:g id="serverName">%s</xliff:g>.\nКалі вы працягнеце, злаўмыснікі могуць спрабаваць скрасць вашую інфармацыю, такую як пароль ці адрасы электроннай пошты.</string>
+    <string name="account_server_certificate_button_back">Назад (рэкамендуецца)</string>
+    <string name="account_server_certificate_button_advanced">Падрабязнасці</string>
+    <string name="account_server_certificate_section_title">Сертыфікат сервера</string>
+    <string name="account_server_certificate_subject_alternative_names">SAN</string>
+    <string name="account_server_certificate_not_valid_before">Не дзейнічае да</string>
+    <string name="account_server_certificate_not_valid_after">Не дзейнічае пасля</string>
+    <string name="account_server_certificate_subject">Уладальнік</string>
+    <string name="account_server_certificate_issuer">Выдаўца</string>
+    <string name="account_server_certificate_fingerprints_section">Лічбавы адбітак</string>
 </resources>

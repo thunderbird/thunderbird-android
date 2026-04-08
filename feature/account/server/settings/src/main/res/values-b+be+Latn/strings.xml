@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_server_settings_protocol_type_label">Pratakol</string>
+    <string name="account_server_settings_server_label">Siervier</string>
+    <string name="account_server_settings_port_label">Port</string>
+    <string name="account_server_settings_authentication_none">Nie</string>
+</resources>

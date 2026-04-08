@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_server_certificate_warning_title">Uvaha</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Pamylka sertyfikata</string>
+    <string name="account_server_certificate_button_advanced">Dadatkova</string>
+    <string name="account_server_certificate_subject">Sub\'jekt</string>
+    <string name="account_server_certificate_issuer">Vydaŭca</string>
+    <string name="account_server_certificate_fingerprints_section">Ličbavyja adbitki</string>
+</resources>

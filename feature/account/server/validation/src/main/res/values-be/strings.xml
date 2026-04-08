@@ -2,4 +2,18 @@
 <resources>
     <string name="account_server_validation_error_network">Памылка сеткі</string>
     <string name="account_server_validation_error_authentication">Памылка аўтэнтыфікацыі</string>
+    <string name="account_server_validation_error_server">Памылка сервера</string>
+    <string name="account_server_validation_error_unknown">Невядомая памылка</string>
+    <string name="account_server_validation_error_client_certificate_expired">Сертыфікат кліента больш несапраўдны</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Не ўдалося атрымаць доступ да сертыфіката кліента</string>
+    <string name="account_server_validation_error_missing_server_capability">Адсутнічае магчымасць сервера</string>
+    <string name="account_server_validation_error_details">Падрабязнасці:\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Адсутнічае магчымасць сервера:\n%s</string>
+    <string name="account_server_validation_incoming_loading_message">Праверка налад сервера атрыманай пошты…</string>
+    <string name="account_server_validation_incoming_loading_error">Памылка падчас праверкі налад сервера атрыманай пошты</string>
+    <string name="account_server_validation_incoming_success">Налады ўваходнага сервера сапраўдныя</string>
+    <string name="account_server_validation_outgoing_loading_message">Праверка налад уваходнага сервера…</string>
+    <string name="account_server_validation_outgoing_loading_error">Не ўдалося праверыць налады ўваходнага сервера</string>
+    <string name="account_server_validation_outgoing_success">Налады выходнага сервера сапраўдныя</string>
+    <string name="account_server_validation_sign_in">Калі ласка, увайдзіце</string>
 </resources>

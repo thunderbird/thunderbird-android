@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_button">Увайсці</string>
-    <string name="account_oauth_sign_in_description">Мы перанакіруем вас на старонку вашага пастаўшчыка паслуг электроннай пошты для ўваходу. Вам трэба даць праграме доступ да вашага ўліковага запісу электроннай пошты.</string>
+    <string name="account_oauth_sign_in_description">Мы перанаправім вам да вашага пастаўшчыка эл. пошты, каб вы ўвайшлі. Вам патрэбна даць праграме доступ да вашага ўліковага запісу эл. пошты.</string>
+    <string name="account_oauth_sign_in_with_google_button">Увайсці з дапамогаю Google</string>
+    <string name="account_oauth_loading_message">Уваход з дапамогаю OAuth</string>
+    <string name="account_oauth_loading_error">Не ўдалося ўвайсці праз OAuth</string>
+    <string name="account_oauth_error_canceled">Аўтарызацыя скасавана</string>
+    <string name="account_oauth_error_failed">Не ўдалося аўтарызавацца праз гэтую памылку: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_not_supported">Гэты пастаўшчык яшчэ не падтрымлівае OAuth 2.0.</string>
+    <string name="account_oauth_error_browser_not_available">Праграма не можа знайсці праглядарку, каб даць доступ да вашага ўліковага запісу.</string>
+    <string name="account_oauth_google_sign_in_support_text">Калі ў вас узніклі праблемы падчас уваходу з Google, калі ласка звярніцеся тут: {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">артыкул падтрымкі</string>
 </resources>

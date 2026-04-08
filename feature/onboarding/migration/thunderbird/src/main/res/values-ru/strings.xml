@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_migration_thunderbird_qr_code_import_title">Уже используете Thunderbird на компьютере?</string>
     <string name="onboarding_migration_thunderbird_new_account_title">Новичок в Thunderbird?</string>
-    <string name="onboarding_migration_thunderbird_new_account_button_text">Добавьте аккаунт эл. почты</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Добавьте учётную запись эл. почты</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Импортируйте настройки</string>
     <string name="onboarding_migration_thunderbird_import_title">Переходите с другого приложения или устройства?</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\"Настройки\" в панели мест (внизу слева)</string>

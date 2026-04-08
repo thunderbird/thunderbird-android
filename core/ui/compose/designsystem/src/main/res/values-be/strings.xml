@@ -5,4 +5,6 @@
     <string name="designsystem_atom_password_textfield_show_password">Паказаць пароль</string>
     <string name="designsystem_molecule_error_view_button_retry">Паўтарыць</string>
     <string name="designsystem_molecule_email_address_input_label">Адрас электроннай пошты</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Правядзіце ад пачатку да канца, каб %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Правядзіце ад канца да пачатку, каб %s</string>
 </resources>

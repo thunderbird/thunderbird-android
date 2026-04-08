@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="unread_widget_select_account">Visa antalet olästa för…</string>
     <string name="unread_widget_account_title">Konto</string>
-    <string name="unread_widget_account_summary">Kontot för vilken olästa räkningen ska visas</string>
+    <string name="unread_widget_account_summary">Kontot för vilket antalet olästa meddelanden ska visas</string>
     <string name="unread_widget_unified_inbox_account_summary">Samlad inkorg</string>
     <string name="unread_widget_folder_enabled_title">Mapp antal</string>
     <string name="unread_widget_folder_enabled_summary">Visa olästa räkningen av endast en enda mapp</string>

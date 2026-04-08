@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="message_list_glance_widget_compose_action">Стварыць</string>
+    <string name="message_list_glance_widget_inbox_title">Усе атрыманыя</string>
+    <string name="message_list_glance_widget_label">Спіс паведамленняў</string>
 </resources>

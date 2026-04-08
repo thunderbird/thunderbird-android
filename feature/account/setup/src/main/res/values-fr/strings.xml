@@ -51,12 +51,12 @@
         <item quantity="other">Toutes les %d minutes</item>
     </plurals>
     <plurals name="account_setup_options_email_check_frequency_hours">
-        <item quantity="one">Toutes les heures</item>
+        <item quantity="one">Toutes les %d heures ﻿</item>
         <item quantity="many">Toutes les %d d’heures</item>
         <item quantity="other">Toutes les %d heures</item>
     </plurals>
     <plurals name="account_setup_options_email_display_count_messages">
-        <item quantity="one">1 courriel</item>
+        <item quantity="one">%d courriel</item>
         <item quantity="many">%d de courriels</item>
         <item quantity="other">%d courriels</item>
     </plurals>

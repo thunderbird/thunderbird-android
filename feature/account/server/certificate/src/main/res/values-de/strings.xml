@@ -11,7 +11,6 @@
     <string name="account_server_certificate_issuer">Aussteller</string>
     <string name="account_server_certificate_fingerprints_section">Fingerabdrücke</string>
     <string name="account_server_certificate_unknown_error_subtitle">Zertifikatsfehler</string>
-    <string name="account_server_certificate_unknown_error_description_format">Die App hat eine potenzielle Sicherheitsbedrohung erkannt und hat daher keine Verbindung zu <xliff:g id="serverName">%s</xliff:g> hergestellt.
-\nWenn du fortfahren möchtest, könnten Angreifer versuchen, Informationen wie dein Passwort oder E-Mails zu stehlen.</string>
+    <string name="account_server_certificate_unknown_error_description_format">Die App hat eine potenzielle Sicherheitsbedrohung erkannt und hat daher keine Verbindung zu <xliff:g id="serverName">%s</xliff:g> hergestellt. \nWenn du dennoch fortfahren möchtest, könnten Angreifer versuchen, Informationen wie dein Passwort oder E-Mails zu stehlen.</string>
     <string name="account_server_certificate_button_advanced">Erweitert</string>
 </resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unread_widget_account_title">Ulikovy zapis</string>
+    <string name="unread_widget_folder_title">Kataloh</string>
+    <string name="unread_widget_action_done">OK</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_title">Padtrymać Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_title">Padtrymać Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Štomiesiac</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Jašče raz</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">Tak</string>
+</resources>

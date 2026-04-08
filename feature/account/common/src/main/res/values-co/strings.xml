@@ -2,6 +2,5 @@
 <resources>
     <string name="account_common_button_next">Seguente</string>
     <string name="account_common_button_back">Ritornu</string>
-    <string name="account_common_error_server_message">U servitore hà mandatu quessu messaghju :
-\n%s</string>
+    <string name="account_common_error_server_message">U servitore hà mandatu quellu messaghju :\n%s</string>
 </resources>

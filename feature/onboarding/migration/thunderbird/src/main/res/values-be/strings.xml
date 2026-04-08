@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_migration_thunderbird_qr_code_import_title">Ужо карыстаецеся Thunderbird на камп\'ютэры?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Лёгка імпартуйце налады вашага ўліковага запісу, скануючы QR-код.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">У Thunderbird на камп\'ютары, перайдзіце да:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">“Налады” на панэлі прылад Прасторы (унізе злева)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Для імпарту патрабуецца астатняя версія Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Пазнайце, як абнавіць Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Імпарт налад</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Упершыню ў Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Дадаць уліковы запіс эл. пошты зараз</string>
+    <string name="onboarding_migration_thunderbird_import_title">Пераходзіце з іншай праграмы альбо прылады?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Імпартаваць налады ўліковага запісу зараз</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Не знойдзена праграмы, каб адкрыць спасылку.</string>
 </resources>

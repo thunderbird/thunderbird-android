@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="unread_widget_select_account">읽지 않은 메일 수 보이기</string>
+    <string name="unread_widget_select_account">읽지 않은 항목 수를 표시할 대상</string>
     <string name="unread_widget_account_title">계정</string>
     <string name="unread_widget_folder_title">폴더</string>
     <string name="unread_widget_action_done">완료</string>
@@ -8,4 +8,10 @@
     <string name="unread_widget_folder_not_selected">폴더가 선택되지 않았습니다</string>
     <string name="unread_widget_choose_account_title">계정 선택</string>
     <string name="unread_widget_unified_inbox_account_summary">받은 편지함(전체)</string>
+    <string name="unread_widget_account_summary">읽지 않은 메일 수를 표시할 계정</string>
+    <string name="unread_widget_folder_enabled_title">폴더 내에서 세기</string>
+    <string name="unread_widget_folder_enabled_summary">폴더 하나의 읽지 않은 메일 수만 표시</string>
+    <string name="unread_widget_folder_summary">읽지 않은 메일 수를 표시할 폴더</string>
+    <string name="unread_widget_label">읽지 않은 메일 수</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
 </resources>

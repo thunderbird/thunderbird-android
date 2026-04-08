@@ -2,4 +2,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">시작하기</string>
     <string name="onboarding_welcome_import_button">설정 가져오기</string>
+    <string name="onboarding_welcome_text">Android를 위한 광고 없는, 개인정보 중시 오픈 소스 이메일 앱입니다.</string>
+    <string name="onboarding_welcome_developed_by">MZLA Technologies의 헌신적인 팀과 전 세계 자원봉사자 커뮤니티가 개발했습니다. Mozilla 제품군의 일부입니다.</string>
 </resources>

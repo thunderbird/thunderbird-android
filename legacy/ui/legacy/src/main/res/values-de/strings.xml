@@ -618,7 +618,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Maximale Resultat-Anzahl</string>
+    <string name="account_settings_remote_search_num_label">Begrenzung der Serversuche</string>
     <string name="remote_search_sending_query">Sende Anfrage an den Server</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">%d Resultat wird abgerufen</item>
@@ -728,7 +728,7 @@
     <string name="crypto_msg_encrypted_insecure">aber die Verschlüsselung wird nicht als sicher angesehen</string>
     <string name="locked_attach_unlock">Entsperren</string>
     <string name="locked_attach_unencrypted">Dieser Teil wurde nicht verschlüsselt und könnte unsicher sein.</string>
-    <string name="message_progress_text">Ladevorgang…</string>
+    <string name="message_progress_text">Wird geladen …</string>
     <string name="messageview_decrypt_cancelled">Entschlüsselung abgebrochen.</string>
     <string name="messageview_decrypt_retry">Wiederholen</string>
     <string name="messageview_decrypt_incomplete">Verschlüsselte Nachricht muss für die Entschlüsselung heruntergeladen werden.</string>
@@ -863,7 +863,7 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="account_delete_dlg_instructions_fmt">Das Konto \"<xliff:g id="account">%1$s</xliff:g>\" wird aus <xliff:g id="app_name">%2$s</xliff:g> entfernt.</string>
     <string name="about_title">Über <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Wenn Push verwendet wird, hält <xliff:g id="app_name">%1$s</xliff:g> eine Verbindung zum Mailserver aufrecht. Bei Android muss eine laufende Benachrichtigung angezeigt werden, während die App im Hintergrund aktiv ist. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="about_app_authors_thunderbird">Thunderbird-Mobile-Team</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
     <string name="folder_settings_notifications_label">Benachrichtigungen</string>
     <string name="settings_ui_telemetry_description">Leistungs-, Nutzungs-, Hardware- und Individualisierungsdaten über diese App mit Mozilla teilen, um uns zu helfen, Thunderbird zu verbessern</string>
     <string name="settings_ui_data_collection">Datenerfassung</string>
@@ -918,4 +918,32 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="general_settings_message_list_date_time_format_contextual">Kontextbezogen</string>
     <string name="general_settings_message_list_date_time_format_full">Vollständig</string>
     <string name="sort_by_then_by">Dann nach …</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Anhang (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Anhänge (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Alle anzeigen</string>
+    <string name="message_view_attachments_view">Anzeigen</string>
+    <string name="message_view_attachments_title">Anhänge</string>
+    <string name="message_view_attachments_save_all">Alle speichern</string>
+    <string name="encrypted_attachment_title">Verschlüsselter Anhang</string>
+    <string name="no_network_message_will_be_sent_later_toast">Offline. Die Nachricht wird gesendet, sobald eine Verbindung verfügbar ist.</string>
+    <string name="notification_actions_settings_title">Benachrichtigungsaktionen</string>
+    <string name="notification_actions_settings_summary">Auswählen, welche Aktionen in E-Mail-Benachrichtigungen angezeigt werden sollen</string>
+    <string name="notification_summary_delete_title">„Löschen“ bei Benachrichtigungen mit mehreren Nachrichten anzeigen</string>
+    <string name="notification_summary_delete_summary">Fügt Benachrichtigungen, die mehrere neue Nachrichten zusammenfassen, eine Löschfunktion hinzu</string>
+    <string name="notification_actions_settings_description">Benachrichtigungsaktionen neu anordnen.</string>
+    <string name="notification_actions_cutoff_description">Anzeigegrenze für Aktionen</string>
+    <string name="notification_actions_cutoff_state">Aktionen oberhalb dieser Zeile werden in der Benachrichtigung angezeigt</string>
+    <string name="notification_actions_shown_state">In der Benachrichtigung angezeigt</string>
+    <string name="notification_actions_hidden_state">In der Benachrichtigung nicht angezeigt</string>
+    <string name="accessibility_move_up">Nach oben verschieben</string>
+    <string name="accessibility_move_down">Nach unten verschieben</string>
+    <string name="accessibility_move_item_up"><xliff:g id="item">%1$s</xliff:g> nach oben verschieben</string>
+    <string name="accessibility_move_item_down"><xliff:g id="item">%1$s</xliff:g> nach unten verschieben</string>
+    <string name="accessibility_move_cutoff_up">Anzeigegrenze nach oben verschieben</string>
+    <string name="accessibility_move_cutoff_down">Anzeigegrenze nach unten verschieben</string>
+    <string name="notification_action_star">Favorit</string>
 </resources>

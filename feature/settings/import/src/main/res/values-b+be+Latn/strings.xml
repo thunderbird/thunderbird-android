@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_import_title">Impart nalad</string>
+    <string name="settings_import_pick_document_button">Abrać fajl</string>
+    <string name="settings_import_button">Impart</string>
+    <string name="settings_import_later_button">Pazniej</string>
+</resources>

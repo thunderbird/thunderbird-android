@@ -3,7 +3,7 @@
     <string name="account_server_certificate_button_back">뒤로 가기 (권장)</string>
     <string name="account_server_certificate_button_advanced">고급</string>
     <string name="account_server_certificate_section_title">서버 인증서</string>
-    <string name="account_server_certificate_subject_alternative_names">SAN</string>
+    <string name="account_server_certificate_subject_alternative_names">주체 대체 이름</string>
     <string name="account_server_certificate_not_valid_before">시작 날짜</string>
     <string name="account_server_certificate_not_valid_after">만료 날짜</string>
     <string name="account_server_certificate_subject">서버</string>

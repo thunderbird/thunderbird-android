@@ -5,4 +5,6 @@
     <string name="designsystem_atom_password_textfield_show_password">Vis passord</string>
     <string name="designsystem_molecule_error_view_button_retry">Prøv igjen</string>
     <string name="designsystem_molecule_password_input_label">Passord</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Høyre: %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Venstre: %s</string>
 </resources>

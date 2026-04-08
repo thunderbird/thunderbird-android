@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_server_validation_error_authentication">Pamylka aŭtentyfikacyi</string>
+    <string name="account_server_validation_error_network">Pamylka sieci</string>
+</resources>

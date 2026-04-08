@@ -5,6 +5,6 @@
     <string name="designsystem_atom_password_textfield_show_password">Mostra password</string>
     <string name="designsystem_molecule_error_view_button_retry">Riprova</string>
     <string name="designsystem_molecule_password_input_label">Password</string>
-    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Scorri dall\'inizio alla fine fino a %s</string>
-    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Scorri dalla fine all\'inizio fino a %s</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Destra: %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Sinistra: %s</string>
 </resources>

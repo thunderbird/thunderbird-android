@@ -2,4 +2,5 @@
 <resources>
     <string name="funding_googleplay_contribution_title">Styrkja Thunderbird</string>
     <string name="funding_googleplay_contribution_header_title">Styrkja Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird er algerlega fjármagnað með styrkjum frá notendum eins og þér. Við sýnum aldrei auglýsingar og seljum ekki gögnin þín. Ef þú ert að njóta Thunderbird, vinsamlegast styddu við okkur. Við getum þetta ekki án þín!</string>
 </resources>

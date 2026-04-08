@@ -5,6 +5,6 @@
     <string name="designsystem_molecule_email_address_input_label">Адрес электронной почты</string>
     <string name="designsystem_molecule_password_input_label">Пароль</string>
     <string name="designsystem_molecule_error_view_button_retry">Повторить</string>
-    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Провести от начала до конца, чтобы %s</string>
-    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Провести от конца к началу, чтобы %s</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Вправо: %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Влево: %s</string>
 </resources>

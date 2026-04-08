@@ -2,4 +2,9 @@
 <resources>
     <string name="onboarding_permissions_contacts_title">Кантакты</string>
     <string name="onboarding_permissions_screen_title">Палепшыць досвед</string>
+    <string name="onboarding_permissions_contacts_description">Дазвольце доступ, каб атрымліваць прапанаваныя кантакты і высвятляць імёны і фатаграфіі кантактаў.</string>
+    <string name="onboarding_permissions_notifications_title">Апавяшчэння</string>
+    <string name="onboarding_permissions_notifications_description">Уключыце апавяшчэнні, каб не прапусціць ніводнага ліста.</string>
+    <string name="onboarding_permissions_allow_button">Дазволіць</string>
+    <string name="onboarding_permissions_skip_button">Прапусціць</string>
 </resources>

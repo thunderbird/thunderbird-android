@@ -5,4 +5,6 @@
     <string name="designsystem_molecule_email_address_input_label">Indirizzu elettronicu</string>
     <string name="designsystem_molecule_password_input_label">Parolla d’intesa</string>
     <string name="designsystem_molecule_error_view_button_retry">Pruvà torna</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Spazzà da u principiu versu a fine per %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Spazzà da a fine versu u principiu per %s</string>
 </resources>

@@ -36,7 +36,7 @@
     <string name="choose_folder_move_title">移动到…</string>
     <string name="choose_folder_copy_title">复制到…</string>
     <string name="send_action">发送</string>
-    <string name="empty_subject">主题为空，请再次单击以继续发送</string>
+    <string name="empty_subject">主题为空，请再次点击以继续发送</string>
     <string name="reply_action">回复</string>
     <string name="reply_all_action">回复全部</string>
     <string name="delete_action">删除</string>
@@ -667,7 +667,7 @@
     <string name="compose_error_no_draft_folder">此账号未配置草稿文件夹！</string>
     <string name="compose_error_no_key_configured">此账号未配置密钥！请检查您的设置。</string>
     <string name="error_crypto_provider_incompatible">加密提供程序使用不兼容的版本。请检查您的设置！</string>
-    <string name="error_crypto_provider_connect">无法连接到加密提供程序，请检查您的设置或单击加密图标重试！</string>
+    <string name="error_crypto_provider_connect">无法连接到加密提供程序，请检查您的设置或点击加密图标重试！</string>
     <string name="error_crypto_provider_ui_required">无法初始化端到端加密，请检查您的设置</string>
     <string name="error_crypto_inline_attach">PGP/INLINE 模式不支持附件！</string>
     <string name="enable_inline_pgp">启用 PGP/INLINE</string>
@@ -746,7 +746,7 @@
     <string name="disable_encryption">禁用加密</string>
     <string name="openpgp_description_text1">对邮件进行加密可确保只有收件人才能阅读，其他人无法阅读。</string>
     <string name="openpgp_description_text3">加密功能只有在所有收件人都支持的情况下才会显示，并且他们必须之前给您发送过邮件。</string>
-    <string name="openpgp_description_text2">单击此图标切换加密。</string>
+    <string name="openpgp_description_text2">点击此图标切换加密。</string>
     <string name="openpgp_enabled_error_gotit">知道了</string>
     <string name="openpgp_enabled_error_back">返回</string>
     <string name="openpgp_enabled_error_disable">禁用加密</string>
@@ -755,7 +755,7 @@
     <string name="dialog_autocrypt_mutual_title">Autocrypt 相互模式</string>
     <string name="dialog_autocrypt_mutual_description_1">邮件通常会根据选择进行加密，或者在回复加密邮件时进行加密。</string>
     <string name="dialog_autocrypt_mutual_description_2">如果发件人和收件人均启用了相互模式，加密默认会被启用。</string>
-    <string name="dialog_autocrypt_mutual_learn_more">您可以 <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">单击此处</a> 了解详情。</string>
+    <string name="dialog_autocrypt_mutual_learn_more">您可以 <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">点击此处</a> 了解详情。</string>
     <string name="general_settings_title">常规设置</string>
     <string name="dialog_openkeychain_info_title">未安装 OpenPGP 应用</string>
     <string name="dialog_openkeychain_info_install">安装</string>
@@ -909,4 +909,30 @@
     <string name="general_settings_message_list_date_time_format_full">完整</string>
     <string name="sort_by_then_by">次级依据…</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> 个附件(<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">查看全部</string>
+    <string name="message_view_attachments_view">查看</string>
+    <string name="message_view_attachments_title">附件</string>
+    <string name="message_view_attachments_save_all">保存全部</string>
+    <string name="encrypted_attachment_title">加密的附件</string>
+    <string name="no_network_message_will_be_sent_later_toast">离线。一旦网络连接可用将发送消息</string>
+    <string name="notification_actions_settings_title">通知操作</string>
+    <string name="notification_actions_settings_summary">选择要在电子邮件通知中显示的操作</string>
+    <string name="notification_summary_delete_title">在多条邮件通知中显示删除</string>
+    <string name="notification_summary_delete_summary">在汇总多条新邮件的通知中添加“删除”操作</string>
+    <string name="notification_actions_settings_description">重新排序通知操作。</string>
+    <string name="notification_actions_cutoff_description">显示操作分界线</string>
+    <string name="notification_actions_cutoff_state">此线上方的操作将显示在通知中</string>
+    <string name="notification_actions_shown_state">显示在通知中</string>
+    <string name="notification_actions_hidden_state">不显示在通知中</string>
+    <string name="accessibility_move_up">向上移动</string>
+    <string name="accessibility_move_down">向下移动</string>
+    <string name="accessibility_move_item_up">将 <xliff:g id="item">%1$s</xliff:g> 向上移动</string>
+    <string name="accessibility_move_item_down">将 <xliff:g id="item">%1$s</xliff:g> 向下移动</string>
+    <string name="accessibility_move_cutoff_up">将显示的操作分界线向上移动</string>
+    <string name="accessibility_move_cutoff_down">将显示的操作分界线向下移动</string>
+    <string name="notification_action_star">星标</string>
 </resources>

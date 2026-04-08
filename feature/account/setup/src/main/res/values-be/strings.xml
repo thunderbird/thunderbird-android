@@ -2,4 +2,16 @@
 <resources>
     <string name="account_setup_error_network">Памылка сеткі. Праверце стан падключэння і паспрабуйце яшчэ раз.</string>
     <string name="account_setup_error_unknown">Невядомая памылка</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Адрас эл. пошты абавязковы.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Гэты адрас эл. пошты не дазваляецца.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Гэты адрас эл. пошты не падтрымліваецца.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Уведзены несапраўдны адрас эл. пошты.</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Патрабуецца пароль.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_loading_message">Пошук канфігурацыі…</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Знойдзена канфігурацыя</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Канфігурацыя не знойдзена</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Наладаваць аўтаматычна</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Рэдагаваць канфігурацыю</string>
 </resources>

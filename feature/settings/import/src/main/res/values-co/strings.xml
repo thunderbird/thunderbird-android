@@ -23,8 +23,8 @@
     <string name="settings_import_password_required">Stampittate e parolle d’intesa</string>
     <string name="settings_import_status_log_in_required">A cunnessione hè richiesta</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="one">Per pudè impiegà u contu \"<xliff:g id="account">%s</xliff:g>\" ci vole à pruvede a parolla d’intesa di u servitore.</item>
-        <item quantity="other">Per pudè impiegà u contu \"<xliff:g id="account">%s</xliff:g>\" ci vole à pruvede e parolle d’intesa di u servitore.</item>
+        <item quantity="one">Per pudè impiegà u contu « <x0>%s</x0> » ci vole à pruvede a parolla d’intesa di u servitore.</item>
+        <item quantity="other">Per pudè impiegà u contu « <x0>%s</x0> » ci vole à pruvede e parolle d’intesa di u servitore.</item>
     </plurals>
     <string name="settings_import_server_name_format">Nome di u servitore : <xliff:g id="hostname">%s</xliff:g></string>
     <string name="settings_import_oauth_description">Per impiegà stu contu, ci vole à cunnettesi è cuncede à l’appiecazione l’accessu à a vostra messaghjeria.</string>

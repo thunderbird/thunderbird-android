@@ -118,7 +118,7 @@
     <string name="notification_action_archive_all">Архивировать все</string>
     <string name="notification_action_spam">Спам</string>
     <string name="notification_certificate_error_public">Ошибка сертификата</string>
-    <string name="notification_certificate_error_title">Сбой сертификата <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_certificate_error_title">Ошибка сертификата <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Проверьте настройки сервера</string>
     <string name="notification_authentication_error_title">Сбой аутентификации</string>
     <string name="notification_authentication_error_text">Сбой аутентификации для <xliff:g id="account">%s</xliff:g>. Обновите настройки сервера.</string>
@@ -144,7 +144,7 @@
     <string name="debug_enable_debug_logging_title">Журнал отладки</string>
     <string name="debug_enable_debug_logging_summary">Запись диагностических сообщений</string>
     <string name="debug_enable_sensitive_logging_title">Личные данные</string>
-    <string name="debug_enable_sensitive_logging_summary">Позволить отображение паролей в журнале.</string>
+    <string name="debug_enable_sensitive_logging_summary">Возможно появление паролей в журнале</string>
     <string name="debug_export_logs_title">Экспорт журнала</string>
     <string name="debug_export_logs_success">Экспорт выполнен. Журнал может содержать личные данные. Будьте осторожнее с тем, кому вы их посылаете.</string>
     <string name="debug_export_logs_failure">Сбой экспорта.</string>
@@ -684,7 +684,7 @@
     <string name="address_type_work">Работа</string>
     <string name="address_type_other">Прочее</string>
     <string name="address_type_mobile">Мобильный</string>
-    <string name="compose_error_no_draft_folder">Для данной учётной записи не настроена папка Черновики!</string>
+    <string name="compose_error_no_draft_folder">Для данной учётной записи не настроена папка черновиков!</string>
     <string name="compose_error_no_key_configured">Для данной учётной записи не настроены ключи! Проверьте настройки.</string>
     <string name="error_crypto_provider_incompatible">Криптопровайдер использует несовместимую версию. Проверьте настройки!</string>
     <string name="error_crypto_provider_connect">Нет доступа к криптопровайдеру. Проверьте настройки или нажмите значок шифрования для повтора!</string>
@@ -758,7 +758,7 @@
     <string name="unsigned_text_divider_label">Неподписанный текст</string>
     <string name="crypto_no_provider_title">Сообщение зашифровано</string>
     <string name="crypto_no_provider_message">Сообщение зашифровано OpenPGP.\nЧтобы прочесть его, необходимо установить и настроить подходящее OpenPGP-приложение.</string>
-    <string name="crypto_no_provider_button">В Настройки</string>
+    <string name="crypto_no_provider_button">В настройки</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Шифрование невозможно</string>
@@ -782,7 +782,7 @@
     <string name="dialog_openkeychain_info_install">Установить</string>
     <string name="account_settings_crypto_encrypt_subject">Шифровать темы сообщений</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Может поддерживаться не всеми адресатами</string>
-    <string name="toast_account_not_found">Внутренний сбой: неверная учётная запись!</string>
+    <string name="toast_account_not_found">Внутренняя ошибка: неверная учётная запись!</string>
     <string name="toast_openpgp_provider_error">Сбой подключения к %s!</string>
     <string name="ac_transfer_setting_title">Отправка настроек автошифрования</string>
     <string name="ac_transfer_setting_summary">Передать настройки шифрования на другие устройства</string>
@@ -934,4 +934,34 @@
     <string name="general_settings_message_list_date_time_format_contextual">Контекстный</string>
     <string name="general_settings_message_list_date_time_format_full">Полный</string>
     <string name="sort_by_then_by">Затем по…</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> вложение (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="few"><xliff:g id="count">%1$d</xliff:g> вложения (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="many"><xliff:g id="count">%1$d</xliff:g> вложений (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> вложений (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_attachments_view_all">Посмотреть все</string>
+    <string name="message_view_attachments_view">Посмотреть</string>
+    <string name="message_view_attachments_title">Вложения</string>
+    <string name="message_view_attachments_save_all">Сохранить все</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="encrypted_attachment_title">Зашифрованное вложение</string>
+    <string name="no_network_message_will_be_sent_later_toast">Нет сети. Сообщение будет отправлено, как только появится соединение.</string>
+    <string name="notification_actions_settings_title">Действия в уведомлениях</string>
+    <string name="notification_actions_settings_summary">Выбор действий, которые будут доступны в уведомлениях об электронной почте</string>
+    <string name="notification_summary_delete_title">\"Удалить\" в сводных уведомлениях</string>
+    <string name="notification_summary_delete_summary">Показывать команду удаления в сводных уведомлениях о нескольких новых сообщениях</string>
+    <string name="notification_actions_settings_description">Изменение порядка действий в уведомлениях</string>
+    <string name="notification_actions_cutoff_state">Действия выше этой строки отображаются в уведомлении</string>
+    <string name="notification_actions_shown_state">Отображается в уведомлении</string>
+    <string name="notification_actions_hidden_state">Не отображается в уведомлении</string>
+    <string name="accessibility_move_up">Переместить выше</string>
+    <string name="accessibility_move_down">Переместить ниже</string>
+    <string name="accessibility_move_item_up">Переместить <xliff:g id="item">%1$s</xliff:g> выше</string>
+    <string name="accessibility_move_item_down">Переместить <xliff:g id="item">%1$s</xliff:g> ниже</string>
+    <string name="accessibility_move_cutoff_up">Переместить границу отображаемых действий выше</string>
+    <string name="accessibility_move_cutoff_down">Переместить границу отображаемых действий ниже</string>
+    <string name="notification_actions_cutoff_description">Граница отображаемых действий</string>
+    <string name="notification_action_star">Избранное</string>
 </resources>
