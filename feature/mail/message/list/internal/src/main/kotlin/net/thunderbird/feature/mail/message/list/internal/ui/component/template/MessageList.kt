@@ -43,27 +43,14 @@ internal fun MessageListScope.MessageList(
     val showAccountIndicator = state.metadata.showAccountIndicator
     val swipeActions = state.metadata.swipeActions
 
-    val currentMessages by rememberUpdatedState(state.messages)
-    val scope = rememberCoroutineScope()
-    LifecycleStartEffect(scrollEvents, listState) {
-        val job = scope.launch {
-            scrollEvents.collect { event ->
-                when (event) {
-                    is ScrollEvent.ScrollToMessage -> listState.scrollToMessage(currentMessages, event)
-                }
-            }
-        }
-        onStopOrDispose {
-            job.cancel()
-        }
-    }
+    ScrollEventEffect(state.messages, listState)
 
     LazyColumn(
         modifier = modifier.testTagAsResourceId(TEST_TAG_MESSAGE_LIST_ROOT),
         state = listState,
     ) {
         items(
-            items = currentMessages,
+            items = state.messages,
             key = { message -> message.id },
         ) { message ->
             val messageSwipeActions = swipeActions[message.account.id]
@@ -133,5 +120,35 @@ private suspend fun LazyListState.scrollToMessage(
     val lastVisible = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
     if (index !in firstVisible..lastVisible) {
         if (animated) animateScrollToItem(index) else scrollToItem(index)
+    }
+}
+
+@Composable
+private fun MessageListScope.ScrollEventEffect(messages: ImmutableList<MessageItemUi>, listState: LazyListState) {
+    val currentMessages by rememberUpdatedState(messages)
+
+    val scope = rememberCoroutineScope()
+    LifecycleStartEffect(scrollEvents, listState) {
+        val job = scope.launch {
+            scrollEvents.collect { event ->
+                when (event) {
+                    is ScrollEvent.ScrollToMessage -> listState.scrollToMessage(currentMessages, event)
+                }
+            }
+        }
+        onStopOrDispose {
+            job.cancel()
+        }
+    }
+
+    // For configuration restoration
+    LaunchedEffect(listState) {
+        val activeMessage = currentMessages.firstOrNull { it.active }
+        if (activeMessage != null) {
+            listState.scrollToMessage(
+                currentMessages,
+                ScrollEvent.ScrollToMessage(activeMessage, animated = false),
+            )
+        }
     }
 }
