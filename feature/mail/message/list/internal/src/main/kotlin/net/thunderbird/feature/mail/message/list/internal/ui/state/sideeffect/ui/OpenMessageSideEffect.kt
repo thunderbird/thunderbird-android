@@ -1,4 +1,4 @@
-package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
+package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ui
 
 import kotlinx.coroutines.CoroutineScope
 import net.thunderbird.core.logging.Logger
