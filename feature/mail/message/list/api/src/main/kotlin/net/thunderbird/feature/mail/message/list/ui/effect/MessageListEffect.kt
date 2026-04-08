@@ -1,6 +1,7 @@
 package net.thunderbird.feature.mail.message.list.ui.effect
 
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 
 /**
@@ -93,4 +94,8 @@ sealed interface MessageListEffect {
         val title: String,
         val isAllSelected: Boolean,
     ) : MessageListEffect
+
+    data class ScrollToMessage(val message: MessageItemUi) : MessageListEffect
+
+    data class OpenMessage(val message: MessageItemUi) : MessageListEffect
 }
