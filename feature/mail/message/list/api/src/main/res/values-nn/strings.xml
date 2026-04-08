@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Vel</string>
     <string name="swipe_action_deselect">Avmerk</string>
@@ -13,4 +13,17 @@
     <string name="swipe_action_spam">Spam</string>
     <string name="swipe_action_move">Flytt…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vald(e)</string>
+    <string name="sort_by">Sorter etter…</string>
+    <string name="sort_by_date_asc">Dato (eldste først)</string>
+    <string name="sort_by_date_desc">Dato (nyaste først)</string>
+    <string name="sort_by_arrival_asc">Framkome (eldste først)</string>
+    <string name="sort_by_arrival_desc">Framkome (nyaste først)</string>
+    <string name="sort_by_subject_asc">Emne (A-Å)</string>
+    <string name="sort_by_subject_desc">Emne (Å-A)</string>
+    <string name="sort_by_sender_asc">Avsendar (A-Å)</string>
+    <string name="sort_by_sender_desc">Avsendar (Å-A)</string>
+    <string name="sort_by_flag_asc">Stjernemerka først</string>
+    <string name="sort_by_flag_desc">Stjernemerka sist</string>
+    <string name="sort_by_unread_asc">Ulesne først</string>
+    <string name="sort_by_unread_desc">Lesne først</string>
 </resources>

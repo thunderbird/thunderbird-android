@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Përzgjidhni</string>
     <string name="swipe_action_deselect">Shpërzgjidhe</string>
@@ -12,5 +12,20 @@
     <string name="swipe_action_delete">Fshije</string>
     <string name="swipe_action_spam">Vëri shenjë si të padëshiruar</string>
     <string name="swipe_action_move">Lëvizeni…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> të përzgjedhur</string>
+    <string name="actionbar_selected">%d të përzgjedhur</string>
+    <string name="sort_by">Renditini sipas…</string>
+    <string name="sort_by_date_asc">Datash (më të vjetrit së pari)</string>
+    <string name="sort_by_date_desc">Datash (më të rinjtë së pari)</string>
+    <string name="sort_by_arrival_asc">Mbërritjesh (më të vjetrit së pari)</string>
+    <string name="sort_by_arrival_desc">Mbërritjesh (më të rinjtë së pari)</string>
+    <string name="sort_by_subject_asc">Subjektesh (A-Z)</string>
+    <string name="sort_by_subject_desc">Subjektesh (Z-A)</string>
+    <string name="sort_by_sender_asc">Dërguesish (A-Z)</string>
+    <string name="sort_by_sender_desc">Dërguesish (Z-A)</string>
+    <string name="sort_by_flag_asc">Ata me yje së pari</string>
+    <string name="sort_by_flag_desc">Ata pa yje së pari</string>
+    <string name="sort_by_unread_asc">Të palexuarit së pari</string>
+    <string name="sort_by_unread_desc">Të lexuarit së pari</string>
+    <string name="sort_by_attach_asc">Me bashkëngjitje së pari</string>
+    <string name="sort_by_attach_desc">Pa bashkëngjitje së pari</string>
 </resources>

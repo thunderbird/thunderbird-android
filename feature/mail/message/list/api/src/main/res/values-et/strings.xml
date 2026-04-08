@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Vali</string>
     <string name="swipe_action_deselect">Tühista valik</string>
@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">Rämps</string>
     <string name="swipe_action_move">Teisalda…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valitud</string>
+    <string name="sort_by">Järjesta…</string>
+    <string name="sort_by_date_asc">Kuupäev (alates vanemast)</string>
+    <string name="sort_by_date_desc">Kuupäev (alates uuemast)</string>
+    <string name="sort_by_arrival_asc">Saabumine (alates vanemast)</string>
+    <string name="sort_by_arrival_desc">Saabumine (alates uuemast)</string>
+    <string name="sort_by_subject_asc">Pealkiri (A-Z)</string>
+    <string name="sort_by_subject_desc">Pealkiri (Z-A)</string>
+    <string name="sort_by_sender_asc">Saatja (A-Z)</string>
+    <string name="sort_by_sender_desc">Saatja (Z-A)</string>
+    <string name="sort_by_flag_asc">Esmalt tärniga märgitud</string>
+    <string name="sort_by_flag_desc">Esmalt tärniga mittemärgitud</string>
+    <string name="sort_by_unread_asc">Esmalt lugemata</string>
+    <string name="sort_by_unread_desc">Esmalt loetud</string>
+    <string name="sort_by_attach_asc">Esmalt manustega</string>
+    <string name="sort_by_attach_desc">Esmalt manusteta</string>
 </resources>

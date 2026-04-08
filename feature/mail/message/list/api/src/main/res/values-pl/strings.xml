@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Wybierz</string>
     <string name="swipe_action_deselect">Cofnij wybór</string>
@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">Spam</string>
     <string name="swipe_action_move">Przenieś…</string>
     <string name="actionbar_selected">Wybrano <xliff:g id="selection_count">%d</xliff:g></string>
+    <string name="sort_by">Sortuj wg…</string>
+    <string name="sort_by_date_asc">Data (najstarsze na początku)</string>
+    <string name="sort_by_date_desc">Data (najnowsze na początku)</string>
+    <string name="sort_by_arrival_asc">Data otrzymania (najstarsze na początku)</string>
+    <string name="sort_by_arrival_desc">Data otrzymania (najnowsze na początku)</string>
+    <string name="sort_by_subject_asc">Temat (A-Z)</string>
+    <string name="sort_by_subject_desc">Temat (Z-A)</string>
+    <string name="sort_by_sender_asc">Nadawca (A-Z)</string>
+    <string name="sort_by_sender_desc">Nadawca (Z-A)</string>
+    <string name="sort_by_flag_asc">Oznaczone gwiazdką jako pierwsze</string>
+    <string name="sort_by_flag_desc">Bez gwiazdki jako pierwsze</string>
+    <string name="sort_by_unread_asc">Nieprzeczytane jako pierwsze</string>
+    <string name="sort_by_unread_desc">Przeczytane jako pierwsze</string>
+    <string name="sort_by_attach_asc">Z załącznikami jako pierwsze</string>
+    <string name="sort_by_attach_desc">Bez załączników jako pierwsze</string>
 </resources>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Sélectionner</string>
     <string name="swipe_action_deselect">Dessélectionner</string>
@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">Pourriel (indésirable)</string>
     <string name="swipe_action_move">Déplacer…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> sélectionné(s)</string>
+    <string name="sort_by">Trier par…</string>
+    <string name="sort_by_date_asc">Date (plus anciennes)</string>
+    <string name="sort_by_date_desc">Date (plus récentes)</string>
+    <string name="sort_by_arrival_asc">Réception (plus anciennes)</string>
+    <string name="sort_by_arrival_desc">Réception (plus récentes)</string>
+    <string name="sort_by_subject_asc">Objet (A à Z)</string>
+    <string name="sort_by_subject_desc">Objet (Z à A)</string>
+    <string name="sort_by_sender_asc">Expéditeur (A à Z)</string>
+    <string name="sort_by_sender_desc">Expéditeur (Z à A)</string>
+    <string name="sort_by_flag_asc">Avec étoile en premier</string>
+    <string name="sort_by_flag_desc">Sans étoile en premier</string>
+    <string name="sort_by_unread_asc">Non lus en premier</string>
+    <string name="sort_by_unread_desc">Lus en premier</string>
+    <string name="sort_by_attach_asc">Avec fichiers joints en premier</string>
+    <string name="sort_by_attach_desc">Sans fichiers joints en premier</string>
 </resources>
