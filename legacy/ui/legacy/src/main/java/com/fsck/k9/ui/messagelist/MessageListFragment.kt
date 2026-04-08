@@ -2324,7 +2324,7 @@ class MessageListFragment :
     }
     // endregion [ LegacyMessageListFragment methods]
 
-    private val viewModel: MessageListContract.ViewModel by inject {
+    private val viewModel: MessageListContract.ViewModel by viewModel {
         decodeArguments()
         val accounts = accountUuids.map { AccountIdFactory.of(it) }.toSet()
 
