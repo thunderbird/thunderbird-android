@@ -13,9 +13,10 @@ import net.thunderbird.core.logging.Logger
  * @property logger A [Logger] for logging the handler's operations.
  * @property dispatch A function to send new [TEvent]s back to the UI's event loop.
  */
-abstract class StateSideEffectHandler<TState : Any, TEvent : Any>(
+abstract class StateSideEffectHandler<TState : Any, TEvent : Any, TEffect : Any>(
     private val logger: Logger,
     protected val dispatch: suspend (TEvent) -> Unit,
+    protected val dispatchUiEffect: suspend (TEffect) -> Unit = {},
 ) {
     /**
      * Determines whether this side effect handler should be triggered.
@@ -56,7 +57,11 @@ abstract class StateSideEffectHandler<TState : Any, TEvent : Any>(
         }
     }
 
-    fun interface Factory<TState : Any, TEvent : Any> {
-        fun create(scope: CoroutineScope, dispatch: suspend (TEvent) -> Unit): StateSideEffectHandler<TState, TEvent>
+    fun interface Factory<TState : Any, TEvent : Any, TEffect : Any> {
+        fun create(
+            scope: CoroutineScope,
+            dispatch: suspend (TEvent) -> Unit,
+            dispatchUiEffect: suspend (TEffect) -> Unit,
+        ): StateSideEffectHandler<TState, TEvent, TEffect>
     }
 }

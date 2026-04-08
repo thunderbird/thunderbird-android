@@ -5,12 +5,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
-import net.thunderbird.feature.mail.message.list.ui.MessageListStateSideEffectHandlerFactory
+import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
+import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandler
+import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandlerFactory
 
 private const val TAG = "LoadSwipeActionsSideEffectHandler"
 
@@ -19,7 +20,7 @@ class LoadSwipeActionsStateSideEffectHandler(
     dispatch: suspend (MessageListEvent) -> Unit,
     private val logger: Logger,
     private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions,
-) : StateSideEffectHandler<MessageListState, MessageListEvent>(logger, dispatch) {
+) : MessageListStateSideEffectHandler(logger, dispatch) {
     private var runningFlow: Job? = null
     override fun accept(event: MessageListEvent, newState: MessageListState): Boolean =
         event == MessageListEvent.LoadConfigurations
@@ -42,7 +43,8 @@ class LoadSwipeActionsStateSideEffectHandler(
         override fun create(
             scope: CoroutineScope,
             dispatch: suspend (MessageListEvent) -> Unit,
-        ): StateSideEffectHandler<MessageListState, MessageListEvent> = LoadSwipeActionsStateSideEffectHandler(
+            dispatchUiEffect: suspend (MessageListEffect) -> Unit,
+        ): MessageListStateSideEffectHandler = LoadSwipeActionsStateSideEffectHandler(
             dispatch = dispatch,
             scope = scope,
             logger = logger,

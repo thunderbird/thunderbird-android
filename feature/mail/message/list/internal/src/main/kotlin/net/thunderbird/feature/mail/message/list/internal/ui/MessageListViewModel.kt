@@ -7,10 +7,10 @@ import net.thunderbird.core.common.state.StateMachine
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.mail.message.list.internal.ui.state.machine.MessageListStateMachine
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
-import net.thunderbird.feature.mail.message.list.ui.MessageListStateSideEffectHandlerFactory
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
+import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandlerFactory
 
 private const val TAG = "MessageListViewModel"
 
@@ -20,7 +20,7 @@ class MessageListViewModel(
     stateSideEffectHandlersFactories: List<MessageListStateSideEffectHandlerFactory>,
 ) : MessageListContract.ViewModel(logger, stateSideEffectHandlersFactories) {
     override val stateMachine: StateMachine<MessageListState, MessageListEvent> = messageListStateMachineFactory
-        .create(viewModelScope, ::event)
+        .create(scope = viewModelScope, dispatch = ::event, dispatchUiEffect = ::emitEffect)
     private var previousState: MessageListState? = null
 
     init {

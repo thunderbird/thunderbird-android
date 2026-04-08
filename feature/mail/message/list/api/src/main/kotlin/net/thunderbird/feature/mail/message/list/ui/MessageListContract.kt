@@ -3,7 +3,6 @@ package net.thunderbird.feature.mail.message.list.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
-import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.compose.common.mvi.BaseStateMachineViewModel
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
@@ -14,6 +13,7 @@ import net.thunderbird.feature.mail.message.list.ui.component.rememberMessageLis
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
+import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandlerFactory
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import org.koin.androidx.compose.koinViewModel
 
@@ -103,5 +103,3 @@ interface MessageListContract {
         }
     }
 }
-
-interface MessageListStateSideEffectHandlerFactory : StateSideEffectHandler.Factory<MessageListState, MessageListEvent>

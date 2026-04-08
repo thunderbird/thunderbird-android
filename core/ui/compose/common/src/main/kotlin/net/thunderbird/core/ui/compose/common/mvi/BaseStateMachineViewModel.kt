@@ -31,9 +31,9 @@ import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
  * @param sideEffectHandlersFactories A list of factories for creating [StateSideEffectHandler]s.
  *  These handlers can be used to trigger side effects in response to state transitions.
  */
-abstract class BaseStateMachineViewModel<TState : Any, TEvent : Any, TUiSideEffect>(
+abstract class BaseStateMachineViewModel<TState : Any, TEvent : Any, TUiSideEffect : Any>(
     protected val logger: Logger,
-    sideEffectHandlersFactories: List<StateSideEffectHandler.Factory<TState, TEvent>> = emptyList(),
+    sideEffectHandlersFactories: List<StateSideEffectHandler.Factory<TState, TEvent, TUiSideEffect>> = emptyList(),
 ) :
     ViewModel(),
     UnidirectionalViewModel<TState, TEvent, TUiSideEffect> {
@@ -50,7 +50,13 @@ abstract class BaseStateMachineViewModel<TState : Any, TEvent : Any, TUiSideEffe
 
     private val _effect = MutableSharedFlow<TUiSideEffect>()
     override val effect: SharedFlow<TUiSideEffect> = _effect.asSharedFlow()
-    private val sideEffectHandlers = sideEffectHandlersFactories.map { it.create(viewModelScope, ::event) }
+    private val sideEffectHandlers = sideEffectHandlersFactories.map {
+        it.create(
+            scope = viewModelScope,
+            dispatch = ::event,
+            dispatchUiEffect = ::emitEffect,
+        )
+    }
 
     private val handledOneTimeEvents = mutableSetOf<TEvent>()
 

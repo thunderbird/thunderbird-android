@@ -8,7 +8,7 @@ import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.Lo
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSortCriteriaStateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSwipeActionsStateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
-import net.thunderbird.feature.mail.message.list.ui.MessageListStateSideEffectHandlerFactory
+import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandlerFactory
 import org.koin.dsl.module
 
 /**
