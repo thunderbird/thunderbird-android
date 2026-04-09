@@ -913,4 +913,31 @@
     <string name="debug_invalidate_access_token_cannot_modify">Tidak dapat mengubah token akses tersimpan. Coba pembatalan lokal.</string>
     <string name="debug_invalidate_access_token_already_modified">Token akses tersimpan sudah diubah.</string>
     <string name="debug_feature_flags">DEBUG: Flag Fitur</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Lampiran (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Lihat semua</string>
+    <string name="message_view_attachments_view">Lihat</string>
+    <string name="message_view_attachments_title">Lampiran</string>
+    <string name="message_view_attachments_save_all">Simpan semua</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Lampiran terenkripsi</string>
+    <string name="no_network_message_will_be_sent_later_toast">Offline. Pesan akan dikirim setelah koneksi tersedia</string>
+    <string name="notification_actions_settings_title">Tindakan notifikasi</string>
+    <string name="notification_actions_settings_summary">Pilih tindakan mana yang muncul dalam notifikasi email</string>
+    <string name="notification_summary_delete_title">Tampilkan Hapus pada notifikasi multi-pesan</string>
+    <string name="notification_summary_delete_summary">Menambahkan tindakan Hapus pada notifikasi yang merangkum beberapa pesan baru</string>
+    <string name="notification_actions_settings_description">Urutkan ulang tindakan notifikasi.</string>
+    <string name="notification_actions_cutoff_description">Batas tindakan yang ditampilkan</string>
+    <string name="notification_actions_cutoff_state">Tindakan di atas baris ini ditampilkan dalam notifikasi</string>
+    <string name="notification_actions_shown_state">Ditampilkan dalam notifikasi</string>
+    <string name="notification_actions_hidden_state">Tidak ditampilkan dalam notifikasi</string>
+    <string name="accessibility_move_up">Pindahkan ke atas</string>
+    <string name="accessibility_move_down">Pindahkan ke bawah</string>
+    <string name="accessibility_move_item_up">Pindahkan <xliff:g id="item">%1$s</xliff:g> ke atas</string>
+    <string name="accessibility_move_item_down">Pindahkan <xliff:g id="item">%1$s</xliff:g> ke bawah</string>
+    <string name="accessibility_move_cutoff_up">Pindahkan batas tindakan yang ditampilkan ke atas</string>
+    <string name="accessibility_move_cutoff_down">Pindahkan batas tindakan yang ditampilkan ke bawah</string>
+    <string name="notification_action_star">Bintang</string>
 </resources>
