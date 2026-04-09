@@ -43,6 +43,7 @@ object ComponentConfigDiff {
         value("secondary_language") { it.secondaryLanguage },
 
         value("repoweb") { it.repoweb },
+        value("push_on_commit") { it.pushOnCommit },
         value("commit_pending_age") { it.commitPendingAge },
         value("auto_lock_error") { it.autoLockError },
 

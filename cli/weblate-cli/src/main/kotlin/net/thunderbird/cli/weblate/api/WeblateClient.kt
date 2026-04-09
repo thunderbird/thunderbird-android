@@ -85,6 +85,8 @@ class WeblateClient(
                     json(
                         Json {
                             ignoreUnknownKeys = true
+                            encodeDefaults = true
+                            explicitNulls = false
                         },
                     )
                 }

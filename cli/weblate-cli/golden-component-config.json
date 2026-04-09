@@ -26,6 +26,7 @@
 
 
   "repoweb": "https://github.com/thunderbird/thunderbird-android/blob/{{branch}}/{{filename}}#L{{line}}",
+  "push_on_commit": false,
   "commit_pending_age": 24,
   "auto_lock_error": true,
 

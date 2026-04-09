@@ -23,7 +23,8 @@ import kotlinx.serialization.Serializable
  * @property variantRegex Regex used to identify language variants
  * @property enforcedChecks List of enforced check identifiers (e.g. "plurals")
  * @property secondaryLanguage Optional secondary language code
- * @property repoweb Web UI link pattern for sources
+ * @property repoweb Web UI link pattern for
+ * @property pushOnCommit Whether to push changes on commit
  * @property commitPendingAge Age (hours) before committing pending changes
  * @property autoLockError Whether to auto-lock component on errors
  * @property commitMessage Template used for commit messages
@@ -43,16 +44,13 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ComponentConfig(
-    @SerialName("license")
     val license: String = "",
 
     @SerialName("license_url")
     val licenseUrl: String = "",
 
-    @SerialName("agreement")
     val agreement: String = "",
 
-    @SerialName("priority")
     val priority: Int = 0,
 
     @SerialName("is_glossary")
@@ -85,8 +83,10 @@ data class ComponentConfig(
     @SerialName("secondary_language")
     val secondaryLanguage: String? = null,
 
-    @SerialName("repoweb")
     val repoweb: String = "",
+
+    @SerialName("push_on_commit")
+    val pushOnCommit: Boolean = false,
 
     @SerialName("commit_pending_age")
     val commitPendingAge: Int = 0,
@@ -124,7 +124,6 @@ data class ComponentConfig(
     @SerialName("edit_template")
     val editTemplate: Boolean = false,
 
-    @SerialName("intermediate")
     val intermediate: String = "",
 
     @SerialName("new_lang")
