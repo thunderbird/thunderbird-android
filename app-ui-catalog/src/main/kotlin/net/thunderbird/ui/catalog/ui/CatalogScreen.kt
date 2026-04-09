@@ -14,7 +14,7 @@ import net.thunderbird.ui.catalog.ui.CatalogContract.Event.OnThemeChanged
 import net.thunderbird.ui.catalog.ui.CatalogContract.Event.OnThemeVariantChanged
 import net.thunderbird.ui.catalog.ui.CatalogContract.ViewModel
 import net.thunderbird.ui.catalog.ui.common.theme.ThemeSwitch
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CatalogScreen(

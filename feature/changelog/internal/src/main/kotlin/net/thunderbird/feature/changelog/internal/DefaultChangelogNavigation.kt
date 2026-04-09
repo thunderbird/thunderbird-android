@@ -6,7 +6,7 @@ import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.navigation.deepLinkComposable
 import net.thunderbird.feature.navigation.changelog.api.ChangelogNavigation
 import net.thunderbird.feature.navigation.changelog.api.ChangelogRoute
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 internal class DefaultChangelogNavigation : ChangelogNavigation {

@@ -17,7 +17,7 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Effect
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Event
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ViewModel
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract.Event as PurchaseEvent
 
 @Composable

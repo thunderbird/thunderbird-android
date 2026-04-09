@@ -259,7 +259,6 @@ io.coil-kt.coil3:coil-network-okhttp:3.4.0
 io.coil-kt.coil3:coil-video:3.4.0
 io.coil-kt.coil3:coil:3.4.0
 io.insert-koin:koin-android:4.2.1
-io.insert-koin:koin-androidx-compose:4.2.1
 io.insert-koin:koin-bom:4.2.1
 io.insert-koin:koin-compose-android:4.2.1
 io.insert-koin:koin-compose-viewmodel-android:4.2.1

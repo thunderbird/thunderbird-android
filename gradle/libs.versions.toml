@@ -261,8 +261,9 @@ jutf7 = { module = "com.beetstra.jutf7:jutf7", version.ref = "jutf7" }
 jzlib = { module = "com.jcraft:jzlib", version.ref = "jzlib" }
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koinBom" }
 koin-core = { module = "io.insert-koin:koin-core" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
+koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-android = { module = "io.insert-koin:koin-android" }
-koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
 koin-test = { module = "io.insert-koin:koin-test" }
 koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4" }
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
@@ -332,7 +333,8 @@ shared-kmp-compose-common = [
   #  "jetbrains-compose-navigation-event",
 ]
 shared-kmp-compose-android = [
-  "koin-androidx-compose",
+  "koin-compose",
+  "koin-compose-viewmodel",
 ]
 shared-kmp-common-test = [
   "assertk",
@@ -367,7 +369,8 @@ shared-jvm-android-compose = [
   "androidx-lifecycle-runtime-compose",
   "androidx-lifecycle-viewmodel-compose",
   "androidx-navigation-compose",
-  "koin-androidx-compose",
+  "koin-compose",
+  "koin-compose-viewmodel",
   "kotlinx-collections-immutable",
   "kotlinx-serialization-json",
   "jetbrains-compose-components-resources"
