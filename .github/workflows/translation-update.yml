@@ -1,0 +1,147 @@
+name: Translation - Update
+
+on:
+  schedule:
+    - cron: '0 0 * * 3' # every Wednesday at 00:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: translation-update
+  cancel-in-progress: true
+
+jobs:
+  translations-update:
+    if: github.repository == 'thunderbird/thunderbird-android'
+    runs-on: ubuntu-latest
+
+    env:
+      BRANCH_NAME: weblate/update-translations
+      BASE_BRANCH: main
+      PR_TITLE: "chore(i18n): translations update from Weblate"
+      COMMIT_MESSAGE: "chore(i18n): update translations (Weblate)"
+      PR_BODY: |
+        Automated translation update from [Weblate](https://hosted.weblate.org) for [Thunderbird Mobile - Android](https://hosted.weblate.org/projects/thunderbird/thunderbird-android/app-common/).
+
+        This PR is generated from Weblate's Git export and committed as a single bot commit while preserving contributor attribution via `Co-authored-by` trailers.
+      WEBLATE_REMOTE: "https://hosted.weblate.org/git/thunderbird/thunderbird-android/app-common/"
+      WEBLATE_BRANCH: main
+
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Configure git amd fetch remotes
+        run: |
+          git config user.name "Translation Bot"
+          git config user.email "translation-bot@thunderbird.net"
+
+          git remote remove weblate 2>/dev/null || true
+          git remote add weblate "$WEBLATE_REMOTE"
+
+          git fetch origin "$BASE_BRANCH"
+          git fetch weblate "$WEBLATE_BRANCH"
+
+      - name: Detect incoming Weblate changes
+        id: changes
+        run: |
+          if git log --oneline "origin/$BASE_BRANCH..weblate/$WEBLATE_BRANCH" | grep -q .; then
+            echo "Incoming changes found between origin/$BASE_BRANCH and weblate/$WEBLATE_BRANCH"
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No incoming Weblate changes found"
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          fi
+
+
+      - name: Build metadata
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          {
+            printf '%s\n\n' "$PR_BODY"
+            printf '### Contributors\n'
+            git log --format='%aN' "origin/$BASE_BRANCH..weblate/$WEBLATE_BRANCH" \
+              | sort -u \
+              | sed 's/^/- /'
+          } > .git/pr-body.txt
+
+          git log --format='%aN <%aE>' "origin/$BASE_BRANCH..weblate/$WEBLATE_BRANCH" \
+            | grep -Fv 'Hosted Weblate <hosted@weblate.org>' \
+            | sort -u \
+            | sed 's/^/Co-authored-by: /' > .git/weblate-coauthors.txt
+
+          {
+            printf '%s\n\n' "$COMMIT_MESSAGE"
+            if [ -s .git/weblate-coauthors.txt ]; then
+              cat .git/weblate-coauthors.txt
+            fi
+          } > .git/commit-message.txt
+
+          echo "Generated PR body:"
+          cat .git/pr-body.txt
+
+          echo "Generated co-author trailers:"
+          cat .git/weblate-coauthors.txt || true
+
+          echo "Generated commit message:"
+          cat .git/commit-message.txt
+
+      - name: Apply Weblate changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git checkout -B "$BRANCH_NAME" "origin/$BASE_BRANCH"
+          git checkout "weblate/$WEBLATE_BRANCH" -- .
+
+      - name: Create commit
+        if: steps.changes.outputs.has_changes == 'true'
+        id: commit
+        run: |
+          set -euo pipefail
+
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No staged changes after applying Weblate tree"
+            echo "created_commit=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git commit -F .git/commit-message.txt
+          echo "created_commit=true" >> "$GITHUB_OUTPUT"
+
+      - name: Push sync branch
+        if: steps.commit.outputs.created_commit == 'true'
+        run: |
+          set -euo pipefail
+          git push --force-with-lease origin "$BRANCH_NAME"
+
+      - name: Create or update pull request
+        if: steps.commit.outputs.created_commit == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER="$(gh pr list \
+          --head "$BRANCH_NAME" \
+          --base "$BASE_BRANCH" \
+          --state open \
+          --json number \
+          --jq '.[0].number')"
+
+          if [ -n "$PR_NUMBER" ] && [ "$PR_NUMBER" != "null" ]; then
+            gh pr edit "$PR_NUMBER" \
+              --title "$PR_TITLE" \
+              --body-file .git/pr-body.txt
+          else
+            gh pr create \
+            --base "$BASE_BRANCH" \
+            --head "$BRANCH_NAME" \
+            --title "$PR_TITLE" \
+            --body-file .git/pr-body.txt \
+            --label "type: translation" \
+            --label "report: include"
+          fi
