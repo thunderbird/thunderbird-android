@@ -43,6 +43,18 @@ jobs:
           elif [ "$total_count" -gt 1 ]; then
             echo "valid=false" >> "$GITHUB_OUTPUT"
             echo "message=Only one report label is allowed: \`report: include\`, \`report: exclude\` OR \`report: highlight\`." >> "$GITHUB_OUTPUT"
+          fi
+
+          feature_flag_count="$(jq '[.[] | select(.name == "feature flag")] | length' <<< "$labels_json")"
+          if [ "$feature_flag_count" -gt 0 ]; then
+            pr_body='${{ toJson(github.event.pull_request.body) }}'
+            pr_feature_flag_key="$(jq -nr --arg body "$pr_body" 'try ($body | gsub("\r"; "") | capture("(?m)^feature-flag:\\s*`(?<flag>[^`]+)`$").flag) catch ""')"
+            if [ -z "$pr_feature_flag_key" ]; then
+              echo "valid=false" >> "$GITHUB_OUTPUT"
+              echo "message=PR body must contain the feature flag key in the format: \`feature-flag: \\\`<feature-flag-key>\\\`\`." >> "$GITHUB_OUTPUT"
+            else
+              echo "valid=true" >> "$GITHUB_OUTPUT"
+            fi
           else
             echo "valid=true" >> "$GITHUB_OUTPUT"
           fi
