@@ -69,6 +69,8 @@ dependencies {
     testImplementation(projects.core.testing)
     testImplementation(projects.core.android.testing)
     testImplementation(projects.core.logging.testing)
+
+    testImplementation(libs.mockito.kotlin)
 }
 
 codeCoverage {

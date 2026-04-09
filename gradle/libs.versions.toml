@@ -391,8 +391,6 @@ shared-jvm-test = [
   "kotlin-test",
   "kotlin-test-junit",
   "kotlinx-coroutines-test",
-  "mockito-core",
-  "mockito-kotlin",
   "turbine",
 ]
 shared-jvm-test-compose = [

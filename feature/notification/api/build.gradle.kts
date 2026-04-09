@@ -33,6 +33,9 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.bundles.shared.jvm.test)
         }
+        jvmTest.dependencies {
+            implementation(libs.mockito.kotlin)
+        }
     }
 }
 

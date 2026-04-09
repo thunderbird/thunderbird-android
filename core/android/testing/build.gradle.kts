@@ -16,7 +16,8 @@ dependencies {
 
     api(libs.koin.core)
     api(libs.mockito.core)
-    api(libs.mockito.kotlin)
+
+    implementation(libs.mockito.kotlin)
 }
 
 codeCoverage {

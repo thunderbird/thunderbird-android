@@ -14,6 +14,8 @@ dependencies {
 
     testImplementation(libs.robolectric)
     testImplementation(projects.core.logging.testing)
+
+    testImplementation(libs.mockito.kotlin)
 }
 
 android {

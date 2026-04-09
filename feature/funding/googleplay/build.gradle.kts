@@ -32,6 +32,7 @@ dependencies {
 
     testImplementation(libs.androidx.lifecycle.runtime.testing)
     testImplementation(libs.androidx.fragment.testing)
+    testImplementation(libs.mockito.kotlin)
 }
 
 codeCoverage {
