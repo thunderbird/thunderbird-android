@@ -48,3 +48,7 @@ captures/
 adb-screenshots/
 # Extracted eml files
 eml-files/
+
+# Merged PRs report
+merged-prs-*.md
+merged-prs-*.csv
