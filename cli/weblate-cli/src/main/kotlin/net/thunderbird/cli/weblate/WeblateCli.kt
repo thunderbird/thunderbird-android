@@ -74,6 +74,7 @@ class WeblateCli : CliktCommand(
                         component.info.url,
                         ComponentPatch(
                             category = component.info.category,
+                            linkedComponent = component.info.linkedComponent,
                             config = goldenConfig,
                         ),
                     )

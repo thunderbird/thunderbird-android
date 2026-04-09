@@ -12,7 +12,6 @@ import kotlinx.serialization.Serializable
  * @property license SPDX license identifier for the component
  * @property licenseUrl URL to the license text
  * @property agreement Any agreement text associated with the component
- * @property reportSourceBugs URL where users should report issues
  * @property priority Component priority (numeric)
  * @property isGlossary Whether this component is a glossary
  * @property glossaryColor Color used to render glossary items in the UI
@@ -20,20 +19,12 @@ import kotlinx.serialization.Serializable
  * @property suggestionVoting Whether suggestion voting is enabled
  * @property suggestionAutoaccept Number of votes required for auto-accept (or 0)
  * @property allowTranslationPropagation Whether translation propagation is allowed
- * @property manageUnits Controls unit management behavior
  * @property checkFlags Miscellaneous check flags
  * @property variantRegex Regex used to identify language variants
  * @property enforcedChecks List of enforced check identifiers (e.g. "plurals")
  * @property secondaryLanguage Optional secondary language code
- * @property vcs Version control system identifier (e.g. "github")
- * @property repo Repository URL
- * @property branch Default branch for the component's repo
- * @property push Push URL or configuration
- * @property pushBranch Branch used for pushes
  * @property repoweb Web UI link pattern for sources
- * @property pushOnCommit Whether pushes should be triggered on commit
  * @property commitPendingAge Age (hours) before committing pending changes
- * @property mergeStyle Merge strategy for commits (e.g. "rebase")
  * @property autoLockError Whether to auto-lock component on errors
  * @property commitMessage Template used for commit messages
  * @property addMessage Template used when adding translations
@@ -46,7 +37,6 @@ import kotlinx.serialization.Serializable
  * @property fileFormatParams Nested file-format specific parameters
  * @property editTemplate Whether edit templates are enabled
  * @property intermediate Intermediate file path or marker
- * @property newBase New base branch/file marker
  * @property newLang Default new language handling value
  * @property languageCodeStyle Style applied to language codes
  * @property screenshotFilemask File mask for screenshots
@@ -61,9 +51,6 @@ data class ComponentConfig(
 
     @SerialName("agreement")
     val agreement: String = "",
-
-    @SerialName("report_source_bugs")
-    val reportSourceBugs: String = "",
 
     @SerialName("priority")
     val priority: Int = 0,
@@ -98,29 +85,11 @@ data class ComponentConfig(
     @SerialName("secondary_language")
     val secondaryLanguage: String? = null,
 
-    @SerialName("vcs")
-    val vcs: String = "",
-
-    @SerialName("repo")
-    val repo: String = "",
-
-    @SerialName("branch")
-    val branch: String = "",
-
-    @SerialName("push")
-    val push: String = "",
-
-    @SerialName("push_branch")
-    val pushBranch: String = "",
-
     @SerialName("repoweb")
     val repoweb: String = "",
 
     @SerialName("commit_pending_age")
     val commitPendingAge: Int = 0,
-
-    @SerialName("merge_style")
-    val mergeStyle: String = "",
 
     @SerialName("auto_lock_error")
     val autoLockError: Boolean = false,
@@ -157,9 +126,6 @@ data class ComponentConfig(
 
     @SerialName("intermediate")
     val intermediate: String = "",
-
-    @SerialName("new_base")
-    val newBase: String = "",
 
     @SerialName("new_lang")
     val newLang: String = "",

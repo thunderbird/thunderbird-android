@@ -1,5 +1,6 @@
 package net.thunderbird.cli.weblate.api
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -8,8 +9,9 @@ import kotlinx.serialization.Serializable
  * @property id The unique identifier of the component.
  * @property name The name of the component.
  * @property url The URL of the component in Weblate.
- * @property slug The slug identifier of the component (suitable for matching/include lists)
- * @property category The category of the component
+ * @property slug The slug identifier of the component.
+ * @property category The category url of the component.
+ * @property linkedComponent The url of the linked component.
  */
 @Serializable
 data class ComponentInfo(
@@ -18,4 +20,6 @@ data class ComponentInfo(
     val slug: String,
     val url: String,
     val category: String?,
+    @SerialName("linked_component")
+    val linkedComponent: String?,
 )

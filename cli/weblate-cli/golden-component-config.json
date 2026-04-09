@@ -2,7 +2,6 @@
   "license": "Apache-2.0",
   "license_url": "https://spdx.org/licenses/Apache-2.0.html",
   "agreement": "",
-  "report_source_bugs": "",
   "priority": 100,
   "is_glossary": false,
   "glossary_color": "silver",
@@ -26,14 +25,8 @@
   "secondary_language": null,
 
 
-  "vcs": "github",
-  "repo": "https://github.com/thunderbird/thunderbird-android",
-  "branch": "main",
-  "push": "",
-  "push_branch": "",
   "repoweb": "https://github.com/thunderbird/thunderbird-android/blob/{{branch}}/{{filename}}#L{{line}}",
   "commit_pending_age": 24,
-  "merge_style": "rebase",
   "auto_lock_error": true,
 
   "commit_message": "chore(i18n): translated using Weblate\r\n\r\nTranslation: {{ project_name }}/{{ component_name }}\r\nTranslate-URL: {{ url }}",
@@ -53,7 +46,6 @@
 
   "edit_template": false,
   "intermediate": "",
-  "new_base": "",
   "new_lang": "contact",
   "language_code_style": "",
   "screenshot_filemask": ""

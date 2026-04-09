@@ -27,7 +27,6 @@ object ComponentConfigDiff {
         value("license") { it.license },
         value("license_url") { it.licenseUrl },
         value("agreement") { it.agreement },
-        value("report_source_bugs") { it.reportSourceBugs },
         value("priority") { it.priority },
         value("is_glossary") { it.isGlossary },
         value("glossary_color") { it.glossaryColor },
@@ -43,14 +42,8 @@ object ComponentConfigDiff {
         set("enforced_checks") { it.enforcedChecks },
         value("secondary_language") { it.secondaryLanguage },
 
-        value("vcs") { it.vcs },
-        value("repo") { it.repo },
-        value("branch") { it.branch },
-        value("push") { it.push },
-        value("push_branch") { it.pushBranch },
         value("repoweb") { it.repoweb },
         value("commit_pending_age") { it.commitPendingAge },
-        value("merge_style") { it.mergeStyle },
         value("auto_lock_error") { it.autoLockError },
 
         multiline("commit_message") { it.commitMessage },
@@ -67,7 +60,6 @@ object ComponentConfigDiff {
 
         value("edit_template") { it.editTemplate },
         value("intermediate") { it.intermediate },
-        value("new_base") { it.newBase },
         value("new_lang") { it.newLang },
         value("language_code_style") { it.languageCodeStyle },
         value("screenshot_filemask") { it.screenshotFilemask },
