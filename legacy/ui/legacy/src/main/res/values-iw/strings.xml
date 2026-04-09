@@ -267,10 +267,10 @@
     <string name="account_settings_notify_self_summary">הצג התראה להודעות ששלחתי</string>
     <string name="account_notify_contacts_mail_only_label">אנשי קשר בלבד</string>
     <string name="account_settings_ignore_chat_messages_label">התעלם מהודעות צ\'אט</string>
-    <string name="account_settings_show_pictures_label">הצג תמיד תמונות</string>
+    <string name="account_settings_show_pictures_label">הצג תמונות תמיד</string>
     <string name="account_settings_show_pictures_never">לא</string>
     <string name="account_settings_show_pictures_only_from_contacts">מאנשי הקשר</string>
-    <string name="account_settings_show_pictures_always">מכל אחד</string>
+    <string name="account_settings_show_pictures_always">מכולם</string>
     <string name="account_settings_composition">שולח דואר</string>
     <string name="account_settings_default_quoted_text_shown_label">צטט את ההודעה המקורית במענה</string>
     <string name="account_settings_default_quoted_text_shown_summary">במענה להודעות, ההודעה המקורית תוצג בתגובה שלך.</string>
@@ -565,7 +565,7 @@
     <string name="global_settings_privacy_hide_useragent_detail">הסר סוכן־משתמש של K-9 מכותרות הדואר</string>
     <string name="quiet_time_notification_description">השבת לחלוטין התראות בזמן שקט</string>
     <string name="account_settings_ignore_chat_messages_summary">הסתר התראות של הודעות השייכות לצ\'אט דוא\"ל</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">כשנפתחת הודעה סמן כנקרא</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">סמן כנקרא כשנפתח</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">כשנמחקת הודעה סמן שנקראה</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">סמן הודעה כנקראה כאשר היא נמחקת</string>
     <string name="account_settings_automatic_special_folder">אוטומטי (%s)</string>
@@ -616,7 +616,7 @@
     <string name="openpgp_dialog_sign_only_minus_attach">חתימות אולי יוצגו כצרופת \'signature.asc\' אצל לקוחות (clients) מסויימים.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">הודעות מוצפנות תמיד כוללות חתימה.</string>
     <string name="account_notify_contacts_mail_only_summary">הצג התראות רק להודעות מאנשי קשר מוכרים</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">סמן הודעה כנקראה כשהיא נפתחת לצפייה</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">סמן הודעה כנקראה כשהיא נפתחת לצפיה</string>
     <string name="confirm_discard_draft_message">בטוח שברצונך לבטל הודעה זו?</string>
     <string name="dialog_confirm_empty_trash_title">אשר ריקון פריטים שנמחקו</string>
     <string name="webview_empty_message">אין טקסט</string>
@@ -655,7 +655,7 @@
     <string name="webview_contextmenu_phone_clipboard_label">מספר טלפון</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">גבול החיפוש בשרת</string>
+    <string name="account_settings_remote_search_num_label">מגבלת חיפוש בשרת</string>
     <string name="global_settings_threaded_view_label">תצוגת שֶׁזֶר (Threaded view)</string>
     <string name="upgrade_databases_title">משדרג מסדי נתונים</string>
     <string name="global_settings_background_as_unread_indicator_summary">רקע אחר יצביע על כך שההודעה נקראה</string>
@@ -935,4 +935,18 @@
     <string name="debug_invalidate_access_token_cannot_modify">לא ניתן לשנות את אסימון הגישה השמור. נסה לבצע ביטול תוקף מקומי.</string>
     <string name="debug_invalidate_access_token_already_modified">אסימון הגישה השמור כבר שונה.</string>
     <string name="debug_feature_flags">ניפוי שגיאות: דגלי תכונות</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one">צרופה<xliff:g id="count">%1$d</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="two"><xliff:g id="count">%1$d</xliff:g> צרופות (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> צרופות (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">הצג הכל</string>
+    <string name="message_view_attachments_view">הצג</string>
+    <string name="message_view_attachments_title">צרופות</string>
+    <string name="message_view_attachments_save_all">שמור הכל</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="sort_by_then_by">ואז לפי…</string>
+    <string name="encrypted_attachment_title">הצפן צרופה</string>
+    <string name="no_network_message_will_be_sent_later_toast">לא מקוון. ההודעה תישלח כשיתאפשר חיבור</string>
 </resources>

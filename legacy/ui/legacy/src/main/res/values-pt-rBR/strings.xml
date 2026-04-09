@@ -920,4 +920,33 @@
     <string name="general_settings_message_list_date_time_format_contextual">Contextual</string>
     <string name="general_settings_message_list_date_time_format_full">Cheio</string>
     <string name="sort_by_then_by">Então por…</string>
+    <string name="notification_actions_settings_title">Ações de notificação</string>
+    <string name="notification_actions_settings_summary">Escolha quais ações aparecem nas notificações por e-mail</string>
+    <string name="notification_summary_delete_title">Mostrar Excluir em notificações de múltiplas mensagens</string>
+    <string name="notification_summary_delete_summary">Adiciona a ação Excluir às notificações que resumem várias mensagens novas</string>
+    <string name="notification_actions_settings_description">Reordena as ações de notificação.</string>
+    <string name="notification_actions_cutoff_description">Limite de ações mostradas</string>
+    <string name="notification_actions_cutoff_state">As ações acima desta linha são mostradas na notificação</string>
+    <string name="notification_actions_shown_state">Mostrado na notificação</string>
+    <string name="notification_actions_hidden_state">Não mostrado na notificação</string>
+    <string name="accessibility_move_up">Mover para cima</string>
+    <string name="accessibility_move_down">Mover para baixo</string>
+    <string name="accessibility_move_item_up">Mover <xliff:g id="item">%1$s</xliff:g> para cima</string>
+    <string name="accessibility_move_item_down">Mover <xliff:g id="item">%1$s</xliff:g> para baixo</string>
+    <string name="accessibility_move_cutoff_up">Mover o limite de ações mostradas para cima</string>
+    <string name="accessibility_move_cutoff_down">Mover o limite das ações mostradas para baixo</string>
+    <string name="notification_action_star">Estrela</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> anexo (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="many"><xliff:g id="count">%1$d</xliff:g> anexos (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> anexos (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">ver todos</string>
+    <string name="message_view_attachments_view">Ver</string>
+    <string name="message_view_attachments_title">Anexos</string>
+    <string name="message_view_attachments_save_all">Salvar todos</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Anexo criptografado</string>
+    <string name="no_network_message_will_be_sent_later_toast">Offline. A mensagem será enviada assim que a conexão estiver disponível</string>
 </resources>

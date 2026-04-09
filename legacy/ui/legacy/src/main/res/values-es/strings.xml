@@ -313,8 +313,8 @@
     <string name="account_notify_contacts_mail_only_summary">Solo mostrar notificaciones para correos de contactos conocidos</string>
     <string name="account_settings_ignore_chat_messages_label">Ignorar mensajes de chat</string>
     <string name="account_settings_ignore_chat_messages_summary">No mostrar notificaciones para mensajes que formen parte de un chat a través de correo electrónico</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Marcar correo como leído al abrirlo</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Marca el correo como leído cuando se abre para verlo</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Marcar como leído al abrirlo</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marcar el correo como leído cuando se abre para leerlo</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Marcar como leído al borrar</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Marcar el correo como leído al borrarlo</string>
     <string name="account_settings_notification_channels_label">Categorías de notificaciones</string>
@@ -322,7 +322,7 @@
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Configura las notificaciones de error y estado actual</string>
     <string name="account_settings_show_pictures_label">Mostrar imágenes siempre</string>
     <string name="account_settings_show_pictures_never">No</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Sólo de mis contactos</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Solo de contactos</string>
     <string name="account_settings_show_pictures_always">De cualquiera</string>
     <string name="account_settings_composition">Correo saliente</string>
     <string name="account_settings_default_quoted_text_shown_label">Incluir correo original al responder</string>
@@ -615,7 +615,7 @@
     <string name="webview_contextmenu_email_save_action">Guardar en contactos</string>
     <string name="webview_contextmenu_email_copy_action">Copiar dirección de correo al portapapeles</string>
     <string name="webview_contextmenu_email_clipboard_label">Dirección de correo</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Todos</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Todo</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -623,7 +623,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Limitar resultados en búsquedas en el servidor</string>
+    <string name="account_settings_remote_search_num_label">Se ha llegado a límite de búsqueda del servidor</string>
     <string name="remote_search_sending_query">Haciendo petición al servidor</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Obteniendo %d elemento</item>
@@ -920,4 +920,33 @@
     <string name="sort_by_then_by">Luego por…</string>
     <string name="general_settings_message_list_date_time_format_full">Completo</string>
     <string name="global_settings_splitview_when_unfolded">Cuando el dispositivo esté desencarpetado</string>
+    <string name="encrypted_attachment_title">Adjunto cifrado</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Adjunto (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="many"><xliff:g id="count">%1$d</xliff:g> Adjuntos (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Adjuntos (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Ver todo</string>
+    <string name="message_view_attachments_view">Ver</string>
+    <string name="message_view_attachments_title">Adjuntos</string>
+    <string name="message_view_attachments_save_all">Guardar todo</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="no_network_message_will_be_sent_later_toast">Sin conexión, se enviará el correo cuando tengas Internet</string>
+    <string name="accessibility_move_up">Subir</string>
+    <string name="accessibility_move_down">Bajar</string>
+    <string name="notification_actions_hidden_state">No aparece en la notificación</string>
+    <string name="notification_actions_shown_state">Aparece en la notificación</string>
+    <string name="notification_actions_cutoff_state">Las acciones por encima de este punto aparecen en la notificación</string>
+    <string name="notification_actions_settings_title">Acciones en la notificación</string>
+    <string name="notification_actions_settings_summary">Elige los botones que aparecen en tus notificaciones de correos</string>
+    <string name="notification_summary_delete_title">Mostrar «Borrar» en notificaciones con varios correos</string>
+    <string name="notification_summary_delete_summary">Añade un botón de «Borrar» en notificaciones en las que se reciban varios correos a la vez</string>
+    <string name="notification_actions_settings_description">Reordena el orden de los botones de acciones.</string>
+    <string name="notification_actions_cutoff_description">Fin de los botones disponibles</string>
+    <string name="accessibility_move_item_up">Subir <xliff:g id="item">%1$s</xliff:g></string>
+    <string name="accessibility_move_item_down">Bajar <xliff:g id="item">%1$s</xliff:g></string>
+    <string name="accessibility_move_cutoff_up">Sube el tope de botones disponible</string>
+    <string name="accessibility_move_cutoff_down">Baja el tope de botones disponible</string>
+    <string name="notification_action_star">Destacar</string>
 </resources>

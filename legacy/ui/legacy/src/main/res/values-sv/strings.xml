@@ -920,4 +920,32 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="general_settings_message_list_date_time_format_contextual">Kontextuell</string>
     <string name="general_settings_message_list_date_time_format_full">Fullständig</string>
     <string name="sort_by_then_by">Sedan efter…</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Bilaga (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Bilagor (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Visa alla</string>
+    <string name="message_view_attachments_view">Visa</string>
+    <string name="message_view_attachments_title">Bilagor</string>
+    <string name="message_view_attachments_save_all">Spara alla</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Krypterad bilaga</string>
+    <string name="no_network_message_will_be_sent_later_toast">Offline. Meddelandet skickas när anslutningen är tillgänglig</string>
+    <string name="notification_actions_settings_title">Aviseringsåtgärder</string>
+    <string name="notification_actions_settings_summary">Välj vilka åtgärder som visas i e-postaviseringar</string>
+    <string name="accessibility_move_up">Flytta upp</string>
+    <string name="accessibility_move_down">Flytta ner</string>
+    <string name="notification_action_star">Stjärna</string>
+    <string name="notification_summary_delete_title">Visa Ta bort vid aviseringar om flera meddelanden</string>
+    <string name="notification_summary_delete_summary">Lägger till en borttagningsåtgärd till aviseringar som sammanfattar flera nya meddelanden</string>
+    <string name="notification_actions_settings_description">Ändra ordning på aviseringsåtgärder.</string>
+    <string name="notification_actions_cutoff_description">Gränsvärde för visade åtgärder</string>
+    <string name="notification_actions_cutoff_state">Åtgärder ovanför den här raden visas i avisering</string>
+    <string name="notification_actions_shown_state">Visas i avisering</string>
+    <string name="notification_actions_hidden_state">Visas inte i avisering</string>
+    <string name="accessibility_move_item_up">Flytta <xliff:g id="item">%1$s</xliff:g> upp</string>
+    <string name="accessibility_move_item_down">Flytta <xliff:g id="item">%1$s</xliff:g> ner</string>
+    <string name="accessibility_move_cutoff_up">Flytta uppåt i avgränsningsområdet för visade åtgärder</string>
+    <string name="accessibility_move_cutoff_down">Flytta nedåt i avgränsningsområdet för visade åtgärder</string>
 </resources>

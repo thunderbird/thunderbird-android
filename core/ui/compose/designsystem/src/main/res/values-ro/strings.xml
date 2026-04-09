@@ -5,4 +5,6 @@
     <string name="designsystem_atom_password_textfield_show_password">Arată parola</string>
     <string name="designsystem_molecule_error_view_button_retry">Reîncearcă</string>
     <string name="designsystem_molecule_password_input_label">Parola</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Dreapta: %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Stânga: %s</string>
 </resources>
