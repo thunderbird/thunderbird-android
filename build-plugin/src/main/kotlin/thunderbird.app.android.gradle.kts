@@ -89,7 +89,7 @@ dependencies {
     implementation(platform(libs.kotlin.bom))
     implementation(platform(libs.koin.bom))
 
-    implementation(libs.bundles.shared.jvm.android.app)
+    implementation(libs.bundles.shared.android.app)
 
-    testImplementation(libs.bundles.shared.jvm.test)
+    testImplementation(libs.bundles.shared.android.app.test)
 }

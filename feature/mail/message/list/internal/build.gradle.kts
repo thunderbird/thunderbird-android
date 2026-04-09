@@ -31,8 +31,6 @@ dependencies {
 
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)
-    testImplementation(libs.bundles.shared.jvm.test.compose)
-    testImplementation(libs.bundles.shared.jvm.android.compose.debug)
     testImplementation(projects.feature.notification.testing)
 
     testImplementation(libs.mockito.kotlin)

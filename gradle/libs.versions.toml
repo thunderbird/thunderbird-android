@@ -321,11 +321,11 @@ shared-kmp-common = [
   "kotlinx-serialization-json",
 ]
 shared-kmp-android = [
+  "androidx-core-ktx",
   "koin-android",
   "kotlinx-coroutines-android",
 ]
 shared-kmp-jvm = [
-
 ]
 
 shared-kmp-common-test = [
@@ -337,14 +337,14 @@ shared-kmp-common-test = [
   "turbine",
 ]
 shared-kmp-android-test = [
-
 ]
 shared-kmp-jvm-test = [
-
 ]
 
 
 shared-kmp-compose-common = [
+  "koin-compose",
+  "koin-compose-viewmodel",
   "jetbrains-compose-lifecycle-runtime",
   "jetbrains-compose-lifecycle-viewmodel",
   "jetbrains-compose-lifecycle-viewmodel-compose",
@@ -354,39 +354,82 @@ shared-kmp-compose-common = [
   #  "jetbrains-compose-navigation-event",
 ]
 shared-kmp-compose-android = [
-  "koin-compose",
-  "koin-compose-viewmodel",
 ]
 shared-kmp-compose-jvm = [
-
 ]
 
 shared-kmp-compose-common-test = [
   "jetbrains-compose-ui-test"
 ]
 shared-kmp-compose-android-test = [
-  "androidx-test-espresso-core",
+  "androidx-compose-ui-test-junit4",
+  "androidx-compose-ui-test-manifest",
   "robolectric",
 ]
 shared-kmp-compose-jvm-test = [
-
 ]
 
 
-shared-jvm-main = [
-  "koin-core",
-  "kotlinx-coroutines-core",
-  "kotlinx-datetime",
-]
-shared-jvm-android = [
-  "androidx-core",
+shared-android = [
+  "androidx-annotation",
   "androidx-core-ktx",
   "koin-android",
+  "kotlinx-coroutines-android",
+  "kotlinx-datetime",
 ]
-shared-jvm-android-app = [
-  "android-material",
-  "androidx-activity",
+shared-android-compose = [
+  "androidx-compose-runtime",
+  "androidx-compose-foundation",
+  "androidx-compose-ui-tooling-preview",
+  "koin-compose",
+  "koin-compose-viewmodel",
+  "kotlinx-collections-immutable",
+  "jetbrains-compose-components-resources"
+]
+shared-android-compose-debug = [
+  "androidx-compose-ui-tooling"
+]
+
+shared-android-test = [
+  "assertk",
+  "koin-test",
+  "koin-test-junit4",
+  "kotlin-test",
+  "kotlin-test-junit",
+  "kotlinx-coroutines-test",
+  "turbine",
+]
+shared-android-compose-test = [
+  "androidx-compose-ui-test-manifest",
+  "jetbrains-compose-ui-test",
+  "robolectric",
+]
+shared-android-compose-androidTest = [
+]
+
+
+shared-android-app = [
   "androidx-core-splashscreen",
+]
+shared-android-app-compose = [
+  "koin-compose",
+  "koin-compose-viewmodel",
+  "kotlinx-collections-immutable",
+  "jetbrains-compose-components-resources"
+]
+shared-android-app-compose-debug = [
+  "androidx-compose-ui-tooling",
+]
+
+shared-android-app-test = [
+  "assertk",
+  "koin-test",
+  "kotlin-test",
+  "kotlin-test-junit",
+]
+shared-android-app-compose-test = [
+]
+shared-android-app-compose-androidTest = [
 ]
 
 
@@ -396,38 +439,9 @@ shared-jvm = [
   "kotlinx-coroutines-core",
   "kotlinx-datetime",
 ]
-shared-jvm-android-compose = [
-  "androidx-compose-foundation",
-  "androidx-compose-ui-tooling-preview",
-  "androidx-lifecycle-runtime-compose",
-  "androidx-lifecycle-viewmodel-compose",
-  "androidx-navigation-compose",
-  "koin-compose",
-  "koin-compose-viewmodel",
-  "kotlinx-collections-immutable",
-  "kotlinx-serialization-json",
-  "jetbrains-compose-components-resources"
-]
-shared-jvm-android-compose-debug = [
-  "androidx-compose-ui-test-manifest",
-  "androidx-compose-ui-tooling",
-]
-shared-jvm-androidtest-compose = [
-  "androidx-compose-ui-test-junit4",
-  "androidx-lifecycle-runtime-testing",
-]
 shared-jvm-test = [
   "assertk",
-  "junit",
-  "koin-test",
-  "koin-test-junit4",
   "kotlin-test",
   "kotlin-test-junit",
   "kotlinx-coroutines-test",
-  "turbine",
-]
-shared-jvm-test-compose = [
-  "androidx-compose-ui-test-junit4",
-  "androidx-test-espresso-core",
-  "robolectric",
 ]

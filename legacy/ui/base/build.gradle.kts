@@ -14,9 +14,7 @@ dependencies {
     api(libs.androidx.navigation.ui)
     api(libs.androidx.lifecycle.livedata.ktx)
 
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.biometric)
-    implementation(libs.kotlinx.coroutines.core)
 }
 
 android {

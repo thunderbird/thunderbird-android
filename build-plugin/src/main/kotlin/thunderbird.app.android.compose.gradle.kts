@@ -34,13 +34,15 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
-    implementation(libs.bundles.shared.jvm.android.compose)
+    implementation(libs.bundles.shared.android.app)
+    implementation(libs.bundles.shared.android.app.compose)
 
-    debugImplementation(libs.bundles.shared.jvm.android.compose.debug)
+    debugImplementation(libs.bundles.shared.android.app.compose.debug)
 
-    testImplementation(libs.bundles.shared.jvm.test.compose)
+    testImplementation(libs.bundles.shared.android.app.test)
+    testImplementation(libs.bundles.shared.android.app.compose.test)
 
-    androidTestImplementation(libs.bundles.shared.jvm.androidtest.compose)
+    androidTestImplementation(libs.bundles.shared.android.app.compose.androidTest)
 
     implementation(libs.androidx.activity.compose)
 }

@@ -9,6 +9,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.feature.mail.message.export.api)
+
             implementation(projects.core.outcome)
             implementation(projects.core.file)
 

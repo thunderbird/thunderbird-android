@@ -10,6 +10,9 @@ kotlin {
         commonMain.dependencies {
             api(projects.core.outcome)
         }
+        commonTest.dependencies {
+            implementation(libs.kotlin.reflect)
+        }
     }
 }
 
