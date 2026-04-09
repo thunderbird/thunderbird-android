@@ -23,3 +23,6 @@ ij_continuation_indent_size = 2
 
 [*.md]
 trim_trailing_whitespace = false
+
+[*.sh]
+indent_size = 2
