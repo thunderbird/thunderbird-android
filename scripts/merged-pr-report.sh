@@ -207,6 +207,15 @@ escape_csv() {
   printf '"%s"' "$value"
 }
 
+fn_fetch_feature_fag() {
+  feature_flag=$(
+    jq -nr \
+      --arg body "$1" \
+      'try ($body | gsub("\r"; "") | capture("(?m)^feature-flag:\\s*`(?<flag>[^`]+)`$").flag) catch ""'
+  )
+  echo "$feature_flag"
+}
+
 {
   echo "# Merged PR Report (${YEAR}-${MONTH})"
   echo
@@ -222,21 +231,21 @@ for BRANCH in "${BRANCHES[@]}"; do
 
   echo "## Branch: $BRANCH" >> "$MD_OUT"
   echo >> "$MD_OUT"
-  echo "| PR | Merged | Title | Report | Beta | Release |" >> "$MD_OUT"
-  echo "|---|---|---|---|---|---|" >> "$MD_OUT"
+  echo "| PR | Merged | Title | Report | Feature Flag | Beta | Release |" >> "$MD_OUT"
+  echo "|---|---|---|---|---|---|---|" >> "$MD_OUT"
 
   prs_json="$(gh pr list \
     --repo "$OWNER/$REPO" \
     --state merged \
     --base "$BRANCH" \
     --search "merged:$START..$END" \
-    --json number,title,url,mergedAt,mergeCommit,labels,author \
+    --json number,title,body,url,mergedAt,mergeCommit,labels,author \
     --limit 1000)"
 
   sorted_prs_json="$(jq 'sort_by(.mergedAt)' <<< "$prs_json")"
 
   if [[ "$(jq 'length' <<< "$sorted_prs_json")" -eq 0 ]]; then
-    echo "| - | - | _No merged PRs in this range._ | - | - | - |" >> "$MD_OUT"
+    echo "| - | - | - | _No merged PRs in this range._ | - | - | - |" >> "$MD_OUT"
     echo >> "$MD_OUT"
     continue
   fi
@@ -251,6 +260,9 @@ for BRANCH in "${BRANCHES[@]}"; do
     author="$(jq -r '.author.login // "ghost"' <<< "$pr")"
     labels_json="$(jq -c '.labels // []' <<< "$pr")"
     status="$(map_report_status "$labels_json")"
+    feature_flag="$(jq -r \
+      'try (.body // "" | gsub("\r"; "") | capture("(?m)^feature-flag:\\s*`(?<flag>[^`]+)`$").flag) catch "" // "-"' \
+      <<< "$pr")"
 
     if [[ "$SKIP_EXCLUDED" == "true" && "$status" == "Exclude" ]]; then
       continue
@@ -273,15 +285,16 @@ for BRANCH in "${BRANCHES[@]}"; do
       release_version="-"
     fi
 
-    echo "| [#$number]($url) | $merged_at | $title_md | $status | $beta_version | $release_version |" >> "$MD_OUT"
+    echo "| [#$number]($url) | $merged_at | $title_md | $status | $feature_flag | $beta_version | $release_version |" >> "$MD_OUT"
 
-    printf '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n' \
+    printf '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n' \
       "$(escape_csv "$BRANCH")" \
       "$(escape_csv "$number")" \
       "$(escape_csv "$merged_at")" \
       "$(escape_csv "$author")" \
       "$(escape_csv "$title")" \
       "$(escape_csv "$status")" \
+      "$(escape_csv "$feature_flag")" \
       "$(escape_csv "$beta_version")" \
       "$(escape_csv "$release_version")" \
       "$(escape_csv "$sha")" \
