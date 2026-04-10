@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Вибрати Папку</string>
     <string name="choose_folder_move_title">Перемістити до…</string>
     <string name="choose_folder_copy_title">Копіювати до…</string>
-    <string name="actionbar_selected">Вибрано <xliff:g id="selection_count">%d</xliff:g></string>
     <string name="send_action">Надіслати</string>
     <string name="empty_subject">Не вказано тему листа, натисніть знову, щоб все одно надіслати</string>
     <string name="reply_action">Відповісти</string>
@@ -620,7 +619,7 @@
     <string name="webview_contextmenu_email_save_action">Зберегти до Контактів</string>
     <string name="webview_contextmenu_email_copy_action">Копіювати електронну адресу до буфера обміну</string>
     <string name="webview_contextmenu_email_clipboard_label">Адреса е-пошти</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Усі</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Всі</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -628,7 +627,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Обмеження пошуку на сервері</string>
+    <string name="account_settings_remote_search_num_label">Серверне обмеження пошуку</string>
     <string name="remote_search_sending_query">Надсилання запиту до сервера</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Отримання %d результату</item>
@@ -917,4 +916,34 @@
     <string name="general_settings_message_list_date_time_format_contextual">Контекстуальний</string>
     <string name="general_settings_message_list_date_time_format_full">Повний</string>
     <string name="sort_by_then_by">Потім за…</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Вкладення (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="few"><xliff:g id="count">%1$d</xliff:g> Вкладення (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="many"><xliff:g id="count">%1$d</xliff:g> Вкладень (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Вкладень (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Показати всі</string>
+    <string name="message_view_attachments_view">Показати</string>
+    <string name="message_view_attachments_title">Вкладення</string>
+    <string name="message_view_attachments_save_all">Зберегти всі</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Зашифроване вкладення</string>
+    <string name="no_network_message_will_be_sent_later_toast">Офлайн. Повідомлення буде вислано як тільки з\'явиться з\'єднання</string>
+    <string name="notification_actions_settings_title">Дії сповіщень</string>
+    <string name="notification_actions_settings_summary">Оберіть які дії з\'являтимуться в сповіщеннях електронної пошти</string>
+    <string name="notification_summary_delete_title">Відображати Видалити на сповіщеннях багатьох-повідомлень</string>
+    <string name="notification_summary_delete_summary">Додає дію Видалити до сповіщень які групують багато нових повідомлень</string>
+    <string name="notification_actions_settings_description">Змінити порядок дій сповіщень.</string>
+    <string name="notification_actions_cutoff_description">Відображено границю дій</string>
+    <string name="notification_actions_cutoff_state">Дії над цією лінією є відображено в сповіщеннях</string>
+    <string name="notification_actions_shown_state">Відображено в сповіщені</string>
+    <string name="notification_actions_hidden_state">Не відображено в сповіщені</string>
+    <string name="accessibility_move_up">Перемістити вище</string>
+    <string name="accessibility_move_down">Перемістити нижче</string>
+    <string name="accessibility_move_item_up">Перемістити <xliff:g id="item">%1$s</xliff:g> вище</string>
+    <string name="accessibility_move_item_down">Перемістити <xliff:g id="item">%1$s</xliff:g> нижче</string>
+    <string name="accessibility_move_cutoff_up">Перемістити границю відображених дій вище</string>
+    <string name="accessibility_move_cutoff_down">Перемістити границю відображених дій нижче</string>
+    <string name="notification_action_star">Помітити зіркою</string>
 </resources>

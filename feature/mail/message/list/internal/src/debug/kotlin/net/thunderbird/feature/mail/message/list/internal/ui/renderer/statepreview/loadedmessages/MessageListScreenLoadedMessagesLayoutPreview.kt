@@ -80,7 +80,6 @@ private fun MessageListScreenLayoutPreview(
                 state = params.state,
                 dispatchEvent = {},
                 onEffect = {},
-                preferences = params.preferences,
             )
         }
     }

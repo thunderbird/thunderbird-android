@@ -12,4 +12,5 @@
     <string name="swipe_action_delete">Sil</string>
     <string name="swipe_action_spam">Gereksiz</string>
     <string name="swipe_action_move">Taşı…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> tane seçildi</string>
 </resources>

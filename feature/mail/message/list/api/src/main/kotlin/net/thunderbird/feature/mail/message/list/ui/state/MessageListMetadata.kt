@@ -38,7 +38,18 @@ data class MessageListMetadata(
     val footer: MessageListFooter = MessageListFooter(),
     val showAccountIndicator: Boolean = false,
     val paging: PaginationUi = PaginationUi(),
-)
+) {
+    /**
+     * Indicates whether the message list metadata contains all required data to display the message list.
+     *
+     * @return `true` when swipe actions are configured, sorting criteria are available, and a folder
+     *  is selected; otherwise, `false` if any of these required components are missing.
+     */
+    val isReady: Boolean
+        get() = swipeActions.isNotEmpty() &&
+            sortCriteriaPerAccount.isNotEmpty() &&
+            folder != null
+}
 
 /**
  * Represents the footer text to display at the bottom of the message list.

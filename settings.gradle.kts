@@ -256,6 +256,7 @@ include(
     ":cli:html-cleaner-cli",
     ":cli:resource-mover-cli",
     ":cli:translation-cli",
+    ":cli:weblate-cli",
 )
 
 include(

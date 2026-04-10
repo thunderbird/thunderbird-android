@@ -1,0 +1,3 @@
+#!/bin/sh
+
+./gradlew --quiet ":cli:weblate-cli:installDist" < /dev/null && ./cli/weblate-cli/build/install/weblate-cli/bin/weblate-cli "$@"

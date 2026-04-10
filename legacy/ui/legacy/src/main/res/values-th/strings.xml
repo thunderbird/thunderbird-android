@@ -27,7 +27,6 @@
     <string name="choose_folder_title">เลือกโฟลเดอร์</string>
     <string name="choose_folder_move_title">ย้ายไปที่…</string>
     <string name="choose_folder_copy_title">คัดลอกไปยัง…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> เลือกแล้ว</string>
     <string name="send_action">ส่ง</string>
     <string name="empty_subject">หัวเรื่องว่างเปล่า คลิกอีกครั้งเพื่อส่งต่อไป</string>
     <string name="reply_action">ตอบกลับ</string>

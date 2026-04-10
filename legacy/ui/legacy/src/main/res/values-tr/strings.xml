@@ -34,7 +34,6 @@
     <string name="choose_folder_title">Klasör Seç</string>
     <string name="choose_folder_move_title">Buraya taşı…</string>
     <string name="choose_folder_copy_title">Buraya kopyala…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> tane seçildi</string>
     <string name="send_action">Gönder</string>
     <string name="empty_subject">Konu boş. Yine de göndermek için tıklayın</string>
     <string name="reply_action">Yanıtla</string>
@@ -606,7 +605,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Sunucu arama limiti</string>
+    <string name="account_settings_remote_search_num_label">Sunucu arama sınırı</string>
     <string name="remote_search_sending_query">Sorgu sunucuya gönderiliyor</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">%d sonuç getiriliyor</item>
@@ -838,7 +837,7 @@
     <string name="message_view_recipients_format">Alıcı: <xliff:g id="recipients">%s</xliff:g></string>
     <string name="push_info_title">Anında İlet Bilgileri</string>
     <string name="general_settings_ui_density_relaxed">Geniş</string>
-    <string name="changelog_snackbar_button_text">Göster</string>
+    <string name="changelog_snackbar_button_text">Görüntüle</string>
     <string name="account_settings_ignore_chat_messages_summary">E-posta sohbetlerine ait iletiler için bildirim gösterme</string>
     <string name="message_details_loading_error">İleti ayrıntıları yüklenirken bir hata oluştu.</string>
     <string name="action_add_to_contacts">Kişilere ekle</string>
@@ -885,12 +884,12 @@
     <string name="debug_open_secret_debug_screen">Gizli hata ayıklama ekranını aç</string>
     <string name="archiving_not_available_for_this_account">Bu hesapta arşivleme kullanılamıyor.</string>
     <string name="debug_invalidate_access_token">Test: Erişim belirtecini geçersiz kıl</string>
-    <string name="debug_invalidate_access_token_done">Erişim belirteci geçersiz kılındı. Bir sonraki istek yenileyecektir.</string>
+    <string name="debug_invalidate_access_token_done">Erişim belirteci geçersiz kılındı. Bir sonraki istekte yenilenecektir.</string>
     <string name="debug_invalidate_access_token_unavailable">Bu hesap için OAuth belirteci yok.</string>
     <string name="debug_invalidate_access_token_local">Test: Erişim belirtecini geçersiz kıl (yerel)</string>
     <string name="debug_invalidate_access_token_local_done">Yerel geçersiz kılma istendi. Bir sonraki istek yeni bir belirteç alacak.</string>
     <string name="debug_invalidate_access_token_server">Test: Erişim belirtecini geçersiz kıl (sunucu)</string>
-    <string name="debug_invalidate_access_token_server_done">Saklanan erişim belirteci bozuldu. Bir sonraki istek başarısız olacak, ardından yenileyecektir.</string>
+    <string name="debug_invalidate_access_token_server_done">Saklanan erişim belirteci hasarlı. Bir sonraki istek başarısız olacak, ardından belirteç yenilenecektir.</string>
     <string name="debug_force_auth_failure">Test: Şimdi kimlik doğrulama hatasına zorla</string>
     <string name="debug_force_auth_failure_done">OAuth durumu silindi. Bir sonraki istek başarısız olacak.</string>
     <string name="debug_force_auth_failure_unavailable">Bu hesap için OAuth yapılandırması yok.</string>
@@ -908,10 +907,22 @@
     <string name="account_setup_auto_select_folder">Klasörü otomatik seç</string>
     <string name="navigation_drawer_preferences">Yan Menü</string>
     <string name="expand_folders">Klasörleri genişlet</string>
-    <string name="debug_feature_flags">HATA AYIKLAMA: Özellik Bayrakları</string>
-    <string name="general_settings_message_list_date_time_format_title">Tarih/Saat Biçimi</string>
+    <string name="debug_feature_flags">HATA AYIKLAMA: Özellik bayrakları</string>
+    <string name="general_settings_message_list_date_time_format_title">Tarih/saat biçimi</string>
     <string name="general_settings_message_list_date_time_format_contextual">Bağlamsal</string>
     <string name="general_settings_message_list_date_time_format_full">Tam</string>
-    <string name="global_settings_splitview_when_unfolded">Cihaz açıldığında</string>
+    <string name="global_settings_splitview_when_unfolded">Cihazın kapağı açıldığında</string>
     <string name="sort_by_then_by">Sonra…</string>
+    <string name="encrypted_attachment_title">Şifrelenmiş ek</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> ek (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> ek (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Tümünü görüntüle</string>
+    <string name="message_view_attachments_view">Görüntüle</string>
+    <string name="message_view_attachments_title">Ekler</string>
+    <string name="message_view_attachments_save_all">Tümünü kaydet</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="no_network_message_will_be_sent_later_toast">Çevrim dışı. Bağlantı kurulduğunda ileti gönderilecek</string>
 </resources>

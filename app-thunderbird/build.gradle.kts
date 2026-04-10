@@ -15,7 +15,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 49
-        versionName = "18.0"
+        versionName = "19.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
     }
@@ -110,7 +110,7 @@ android {
             signingConfig = signingConfigs.getByType(SigningType.TB_BETA)
 
             applicationIdSuffix = ".beta"
-            versionNameSuffix = "b4"
+            versionNameSuffix = "b0"
 
             isMinifyEnabled = !isCI
             isShrinkResources = !isCI

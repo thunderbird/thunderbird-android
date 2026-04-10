@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Vali kaust</string>
     <string name="choose_folder_move_title">Teisalda…</string>
     <string name="choose_folder_copy_title">Kopeeri…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valitud</string>
     <string name="send_action">Saada</string>
     <string name="empty_subject">Teema on tühi, ikkagi saatmiseks klõpsa uuesti</string>
     <string name="reply_action">Vasta</string>
@@ -621,7 +620,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Serverist otsingu limiit</string>
+    <string name="account_settings_remote_search_num_label">Järgi serveri otsingupiirangut</string>
     <string name="remote_search_sending_query">Saadab serverile päringut</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Toon %d tuelmuse</item>
@@ -921,4 +920,18 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="general_settings_message_list_date_time_format_contextual">Kontekstuaalne</string>
     <string name="general_settings_message_list_date_time_format_full">Täisvaates</string>
     <string name="sort_by_then_by">Ja siis järjesta…</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Manus (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Manused (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Vaata kõiki</string>
+    <string name="message_view_attachments_view">Vaata</string>
+    <string name="message_view_attachments_title">Manused</string>
+    <string name="message_view_attachments_save_all">Salvesta kõik</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Krüptitud manus</string>
+    <string name="no_network_message_will_be_sent_later_toast">Võrguühendus puudub. Kiri saadetakse selle taastumisel</string>
+    <string name="notification_actions_settings_title">Toimingud teavitustes</string>
+    <string name="notification_actions_settings_summary">Saad valida tegevused, mis kuvatakse e-kirjade teavitustes</string>
 </resources>

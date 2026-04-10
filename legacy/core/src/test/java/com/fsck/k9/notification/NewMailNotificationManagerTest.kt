@@ -59,6 +59,16 @@ class NewMailNotificationManagerTest {
     private val localStoreProvider = createLocalStoreProvider()
     private val generalSettingsManager = FakeGeneralSettingManager()
     private val clock = TestClock(Instant.fromEpochMilliseconds(TIMESTAMP))
+    private val generalSettings = GeneralSettings(
+        display = DisplaySettings(),
+        network = NetworkSettings(),
+        notification = NotificationPreference(
+            quietTimeStarts = "23:00",
+            quietTimeEnds = "00:00",
+        ),
+        privacy = PrivacySettings(),
+        platformConfigProvider = FakePlatformConfigProvider(),
+    )
     private val manager = NewMailNotificationManager(
         notificationContentCreator,
         createNotificationRepository(),
@@ -67,26 +77,17 @@ class NewMailNotificationManagerTest {
             interactionPreferences = mock {
                 on { getConfig() } doReturn InteractionSettings()
             },
-            notificationPreference = mock { on { getConfig() } doReturn NotificationPreference() },
+            notificationPreference = mock { on { getConfig() } doReturn generalSettings.notification },
         ),
         SummaryNotificationDataCreator(
             singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
                 interactionPreferences = mock {
                     on { getConfig() } doReturn InteractionSettings()
                 },
-                notificationPreference = mock { on { getConfig() } doReturn NotificationPreference() },
+                notificationPreference = mock { on { getConfig() } doReturn generalSettings.notification },
             ),
             generalSettingsManager = mock {
-                on { getConfig() } doReturn GeneralSettings(
-                    display = DisplaySettings(),
-                    network = NetworkSettings(),
-                    notification = NotificationPreference(
-                        quietTimeStarts = "23:00",
-                        quietTimeEnds = "00:00",
-                    ),
-                    privacy = PrivacySettings(),
-                    platformConfigProvider = FakePlatformConfigProvider(),
-                )
+                on { getConfig() } doReturn generalSettings
             },
         ),
         clock,

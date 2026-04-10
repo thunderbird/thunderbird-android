@@ -12,4 +12,5 @@
     <string name="swipe_action_delete">Forigi</string>
     <string name="swipe_action_spam">Trudmesaĝo</string>
     <string name="swipe_action_move">Movi…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> elektitaj</string>
 </resources>

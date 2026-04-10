@@ -15,7 +15,7 @@
     <string name="license">授權</string>
     <string name="changelog_title">變更記錄</string>
     <string name="changelog_loading_error">無法載入變更記錄。</string>
-    <string name="changelog_version_title">第%s版</string>
+    <string name="changelog_version_title">版本 %s</string>
     <string name="changelog_recent_changes_title">最新變化</string>
     <string name="changelog_show_recent_changes">顯示應用程式更新後的最新變更</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
@@ -35,7 +35,6 @@
     <string name="choose_folder_title">選取信件匣</string>
     <string name="choose_folder_move_title">移至…</string>
     <string name="choose_folder_copy_title">複製至…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已選擇</string>
     <string name="send_action">寄送</string>
     <string name="empty_subject">主旨空白，再次按一下以繼續寄送</string>
     <string name="reply_action">回覆</string>

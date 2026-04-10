@@ -1,6 +1,6 @@
 Aidez-nous à rendre la prochaine version de Thunderbird aussi fantastique que possible en téléchargeant Thunderbird version bêta et en profitant d’un accès anticipé aux dernières fonctions et correctifs de bogues avant leur sortie officielle. Vos tests et vos commentaires sont importants. Signalez-nous les bogues, les imperfections et parlez-nous de votre expérience.
 
-Vous trouverez notre système de suivi des bogues, notre code source et notre wiki sur <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android.</a>
+Vous trouverez notre système de suivi des bogues, notre code source et notre wiki sur <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
 
 Nous accueillons avec plaisir les nouveaux développeurs, concepteurs, documentalistes, traducteurs, trieurs des bogues et les amis. Rendez-nous visitez sur <a href="https://thunderbird.net/participate">https://thunderbird.net/participate</a> pour commencer.
 

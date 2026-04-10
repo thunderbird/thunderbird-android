@@ -108,7 +108,6 @@ abstract class BaseStateMachineViewModel<TState : Any, TEvent : Any, TUiSideEffe
                     .filter { it.accept(event, newState) }
                     .forEach { it.handle(event, oldState = currentState, newState) }
             }
-            stateMachine.process(event)
         }
     }
 }

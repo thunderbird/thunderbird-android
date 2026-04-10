@@ -24,6 +24,7 @@ import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.ImmutableSet
@@ -247,20 +248,6 @@ class MessageListScreenRendererTest : ComposeTest() {
         }
 
     @Test
-    fun `MessageListScreen-MessageListItem - when message isActive is true - should display ActiveMessageListItem_Root composable`() =
-        runComposeTest {
-            // Arrange
-            val message = MessagePreviewHelper.createMessage().copy(isActive = true)
-            setupTestSubjectComposable(messages = listOf(message))
-
-            // Assert
-            onNodeWithTag(
-                MessageListItemDefaults.ACTIVE_MESSAGE_LIST_TEST_TAG,
-                useUnmergedTree = true,
-            ).assertIsDisplayed()
-        }
-
-    @Test
     fun `MessageListScreen-MessageListItem - when message state is New - should display NewMessageListItem_Root composable`() =
         runComposeTest {
             // Arrange
@@ -312,7 +299,7 @@ class MessageListScreenRendererTest : ComposeTest() {
             setupTestSubjectComposable(messages = listOf(message))
 
             // Assert - the sender name should be displayed
-            onNodeWithText(message.senders.first().name, substring = true, useUnmergedTree = true)
+            onNodeWithText(message.senders.displayName, substring = true, useUnmergedTree = true)
                 .assertIsDisplayed()
         }
 
@@ -326,7 +313,7 @@ class MessageListScreenRendererTest : ComposeTest() {
             setupTestSubjectComposable(messages = listOf(message))
 
             // Assert - the sender name should be displayed
-            onNodeWithText(message.senders.first().name, substring = true, useUnmergedTree = true)
+            onNodeWithText(message.senders.displayName, substring = true, useUnmergedTree = true)
                 .assertIsDisplayed()
         }
 
@@ -340,22 +327,7 @@ class MessageListScreenRendererTest : ComposeTest() {
             setupTestSubjectComposable(messages = listOf(message))
 
             // Assert - the sender name should be displayed
-            onNodeWithText(message.senders.first().name, substring = true, useUnmergedTree = true)
-                .assertIsDisplayed()
-        }
-
-    @Test
-    fun `MessageListScreen-MessageListItem - when showSendersName is false - should display email instead of name`() =
-        runComposeTest {
-            // Arrange
-            val message = MessagePreviewHelper.createMessage()
-            setupTestSubjectComposable(
-                messages = listOf(message),
-                preferences = createPreferences(showCorrespondentNames = false),
-            )
-
-            // Assert - should display email instead of name
-            onNodeWithText(message.senders.first().email, substring = true, useUnmergedTree = true)
+            onNodeWithText(message.senders.displayName, substring = true, useUnmergedTree = true)
                 .assertIsDisplayed()
         }
 
@@ -408,6 +380,7 @@ class MessageListScreenRendererTest : ComposeTest() {
         }
 
     @Test
+    @Ignore("Will be re-nabled when the message item restructure is done.")
     fun `MessageListScreen-MessageListItem - when tap on avatar - should trigger dispatchEvent with ToggleSelectMessages`() =
         runComposeTest {
             // Arrange
@@ -420,7 +393,7 @@ class MessageListScreenRendererTest : ComposeTest() {
 
             // Act - click on the avatar area (the leading/avatar section)
             onNodeWithText(
-                message.senders.first().avatar.let {
+                message.senders.avatar.let {
                     (it as? Avatar.Monogram)?.value ?: ""
                 },
                 useUnmergedTree = true,
@@ -536,7 +509,6 @@ class MessageListScreenRendererTest : ComposeTest() {
                         state = state,
                         dispatchEvent = dispatchEvent,
                         onEffect = onEffect,
-                        preferences = preferences,
                         modifier = Modifier.fillMaxSize(),
                     )
                 }

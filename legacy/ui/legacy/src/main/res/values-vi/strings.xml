@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Chọn thư mục</string>
     <string name="choose_folder_move_title">Chuyển đến…</string>
     <string name="choose_folder_copy_title">Sao chép đến…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> đã được chọn</string>
     <string name="send_action">Gửi</string>
     <string name="empty_subject">Chủ đề trống, bấm lại để gửi bất chấp</string>
     <string name="reply_action">Trả lời</string>

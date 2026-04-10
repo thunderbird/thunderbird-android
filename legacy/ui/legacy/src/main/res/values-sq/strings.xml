@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Zgjidhni Dosje</string>
     <string name="choose_folder_move_title">Shpjereni te…</string>
     <string name="choose_folder_copy_title">Kopjojeni te…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> të përzgjedhur</string>
     <string name="send_action">Dërgoje</string>
     <string name="empty_subject">Subjekti është i zbrazët, riprekeni që të dërgohet sido qoftë</string>
     <string name="reply_action">Përgjigjuni</string>
@@ -618,7 +617,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Kufi kërkimesh në shërbyes</string>
+    <string name="account_settings_remote_search_num_label">Kufi kërkimesh shërbyesi</string>
     <string name="remote_search_sending_query">Po dërgohet kërkesa te shërbyesi</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Po sillet %d përfundim</item>
@@ -914,4 +913,32 @@
     <string name="general_settings_message_list_date_time_format_contextual">Kontekstual</string>
     <string name="general_settings_message_list_date_time_format_full">E plotë</string>
     <string name="sort_by_then_by">Mandej më…</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Bashkëngjitje (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Bashkëngjitje (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Shihini krejt</string>
+    <string name="message_view_attachments_view">Shiheni</string>
+    <string name="message_view_attachments_title">Bashkëngjitje</string>
+    <string name="message_view_attachments_save_all">Ruaji krejt</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Bashkëngjitje e fshehtëzuar</string>
+    <string name="no_network_message_will_be_sent_later_toast">Pa lidhje në internet. Mesazhi do të dërgohet sapo të ketë lidhje</string>
+    <string name="notification_actions_settings_title">Veprime njoftimesh</string>
+    <string name="notification_actions_settings_summary">Zgjidhni cilat veprime shfaqen te njoftime email</string>
+    <string name="notification_summary_delete_title">Shfaq “Fshije” në njoftime për shumë mesazhe</string>
+    <string name="notification_summary_delete_summary">Shton një veprim “Fshije” te njoftime që përmbledhin disa mesazhe të reja njëherësh</string>
+    <string name="notification_actions_settings_description">Rirenditni veprime njoftimesh.</string>
+    <string name="notification_actions_cutoff_state">Veprime mbi këtë vijë shfaqen te njoftimi</string>
+    <string name="notification_actions_cutoff_description">Prerje veprimesh të shfaqur</string>
+    <string name="notification_actions_shown_state">Shfaqur te njoftimi</string>
+    <string name="notification_actions_hidden_state">Jo i shfaqur te njoftimi</string>
+    <string name="accessibility_move_up">Ngjite sipër</string>
+    <string name="accessibility_move_down">Zbrite poshtë</string>
+    <string name="accessibility_move_item_up">Ngjite <xliff:g id="item">%1$s</xliff:g> sipër</string>
+    <string name="accessibility_move_item_down">Zbrite <xliff:g id="item">%1$s</xliff:g> poshtë</string>
+    <string name="accessibility_move_cutoff_up">Ngjite prerjen e veprimeve të shfaqur sipër</string>
+    <string name="accessibility_move_cutoff_down">Zbritje prerjen e veprimeve të shfaqur poshtë</string>
+    <string name="notification_action_star">Yll</string>
 </resources>

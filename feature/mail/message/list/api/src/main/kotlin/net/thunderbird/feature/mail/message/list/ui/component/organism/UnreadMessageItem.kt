@@ -1,183 +1,88 @@
 package net.thunderbird.feature.mail.message.list.ui.component.organism
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.style.TextOverflow
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
-import net.thunderbird.feature.mail.message.list.ui.component.atom.FavouriteButtonIcon
-import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageItemSenderTitleSmall
-
-private const val UNREAD_MAIL_BADGE_COLOR = 0xFF34C759
+import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
+import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemAccountIndicator
+import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemTrailingElement
+import net.thunderbird.feature.mail.message.list.ui.component.config.rememberMessageItemConfiguration
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageConversationCounterBadgeDefaults
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageItemSenderSubjectFirstLine
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageItemSenderSubjectSecondLine
+import net.thunderbird.feature.mail.message.list.ui.component.organism.MessageItemDefaults.toContentPadding
+import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 
 /**
  * Represents a message item in its Unread state.
  *
- * @param sender The name of the sender.
- * @param subject The subject of the message.
- * @param preview A short preview of the message content.
- * @param receivedAt The date and time the message was received.
- * @param favourite Whether the message is marked as favourite.
- * @param avatar A composable function to display the sender's avatar.
- * @param onClick A lambda function to be invoked when the message item is clicked.
- * @param onLongClick A lambda function to be invoked when the message item is long-clicked.
- * @param onLeadingClick A lambda function to be invoked when the leading avatar is clicked.
- * @param onFavouriteChange A lambda function to be invoked when the favourite button is clicked.
- * @param modifier A [Modifier] to be applied to the message item.
- * @param hasAttachments Whether the message has attachments. Defaults to `false`.
- * @param threadCount The number of messages in the thread. Defaults to `0`. If greater than 0,
- * it will be displayed next to the sender.
- * @param selected Whether the message item is currently selected. Defaults to `false`.
- * @param maxPreviewLines The maximum number of lines to display for the preview. Defaults to `2`.
- * @param contentPadding The padding to apply to the content of the message item. Defaults to
- * [MessageItemDefaults.defaultContentPadding].
- * @param swapSenderWithSubject If `true`, the sender and subject will be swapped in their display positions.
- * Defaults to `false`.
+ * @param state The UI state containing all message information to be displayed.
+ * @param preferences User preferences that control the appearance and layout of
+ *  the message item.
+ * @param accountIndicator Optional visual indicator to identify which account
+ *  the message belongs to, useful in unified inbox view. Pass `null` if no
+ *  indicator should be shown.
+ * @param onClick Callback invoked when the message item is clicked.
+ * @param onLongClick Callback invoked when the message item is long-clicked.
+ * @param onAvatarClick Callback invoked when the message avatar is clicked.
+ * @param onFavouriteChange Callback invoked when the favourite/starred state
+ *  changes. Receives the new favourite state as a parameter.
+ * @param modifier The modifier to be applied to the message item.
  */
 @Suppress("LongParameterList")
 @Composable
 fun UnreadMessageItem(
-    sender: String,
-    subject: String,
-    preview: String,
-    receivedAt: String,
-    showAccountIndicator: Boolean,
-    accountIndicatorColor: Color?,
-    avatar: @Composable () -> Unit,
+    state: MessageItemUi,
+    preferences: MessageListPreferences,
+    accountIndicator: MessageItemAccountIndicator?,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
-    onLeadingClick: () -> Unit,
+    onAvatarClick: () -> Unit,
     onFavouriteChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    favourite: Boolean = false,
-    hasAttachments: Boolean = false,
-    threadCount: Int = 0,
-    selected: Boolean = false,
-    maxPreviewLines: Int = 2,
-    contentPadding: PaddingValues = MessageItemDefaults.defaultContentPadding,
-    swapSenderWithSubject: Boolean = false,
-) {
-    UnreadMessageItem(
-        sender = AnnotatedString(sender),
-        subject = subject,
-        preview = preview,
-        receivedAt = receivedAt,
-        showAccountIndicator = showAccountIndicator,
-        accountIndicatorColor = accountIndicatorColor,
-        avatar = avatar,
-        onClick = onClick,
-        onLongClick = onLongClick,
-        onLeadingClick = onLeadingClick,
-        onFavouriteChange = onFavouriteChange,
-        modifier = modifier,
-        favourite = favourite,
-        hasAttachments = hasAttachments,
-        threadCount = threadCount,
-        selected = selected,
-        maxPreviewLines = maxPreviewLines,
-        contentPadding = contentPadding,
-        swapSenderWithSubject = swapSenderWithSubject,
-    )
-}
-
-/**
- * Represents a message item in its Unread state.
- *
- * @param sender The name of the sender.
- * @param subject The subject of the message.
- * @param preview A short preview of the message content.
- * @param receivedAt The date and time the message was received.
- * @param favourite Whether the message is marked as favourite.
- * @param avatar A composable function to display the sender's avatar.
- * @param onClick A lambda function to be invoked when the message item is clicked.
- * @param onLongClick A lambda function to be invoked when the message item is long-clicked.
- * @param onLeadingClick A lambda function to be invoked when the leading avatar is clicked.
- * @param onFavouriteChange A lambda function to be invoked when the favourite button is clicked.
- * @param modifier A [Modifier] to be applied to the message item.
- * @param hasAttachments Whether the message has attachments. Defaults to `false`.
- * @param threadCount The number of messages in the thread. Defaults to `0`. If greater than 0,
- * it will be displayed next to the sender.
- * @param selected Whether the message item is currently selected. Defaults to `false`.
- * @param maxPreviewLines The maximum number of lines to display for the preview. Defaults to `2`.
- * @param contentPadding The padding to apply to the content of the message item. Defaults to
- * [MessageItemDefaults.defaultContentPadding].
- * @param swapSenderWithSubject If `true`, the sender and subject will be swapped in their display positions.
- * Defaults to `false`.
- */
-@Suppress("LongParameterList")
-@Composable
-fun UnreadMessageItem(
-    sender: AnnotatedString,
-    subject: String,
-    preview: String,
-    receivedAt: String,
-    showAccountIndicator: Boolean,
-    accountIndicatorColor: Color?,
-    avatar: @Composable () -> Unit,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit,
-    onLeadingClick: () -> Unit,
-    onFavouriteChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
-    favourite: Boolean = false,
-    hasAttachments: Boolean = false,
-    threadCount: Int = 0,
-    selected: Boolean = false,
-    maxPreviewLines: Int = 2,
-    contentPadding: PaddingValues = MessageItemDefaults.defaultContentPadding,
-    swapSenderWithSubject: Boolean = false,
 ) {
     MessageItem(
-        leading = {
-            Box {
-                avatar()
-                BadgeIcon(
-                    imageVector = BadgeIcons.Filled.UnreadMail,
-                    tint = Color(UNREAD_MAIL_BADGE_COLOR),
-                    contentDescription = null,
-                    modifier = Modifier.padding(start = MainTheme.spacings.quarter, top = MainTheme.spacings.quarter),
-                )
-            }
-        },
-        sender = {
-            MessageItemSenderTitleSmall(
-                sender = sender,
-                subject = subject,
-                swapSenderWithSubject = swapSenderWithSubject,
-                threadCount = threadCount,
+        firstLine = {
+            MessageItemSenderSubjectFirstLine(
+                senders = state.senders,
+                subject = MessageItemDefaults.buildSubjectAnnotatedString(state.subject),
+                useSender = preferences.senderAboveSubject,
             )
         },
-        subject = {
-            if (swapSenderWithSubject) {
-                TextLabelLarge(text = sender, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            } else {
-                TextLabelLarge(text = subject, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            }
+        secondaryLine = { prefix, inlineContent ->
+            MessageItemSenderSubjectSecondLine(
+                senders = state.senders,
+                subject = MessageItemDefaults.buildSubjectAnnotatedString(state.subject),
+                useSender = !preferences.senderAboveSubject,
+                prefix = prefix,
+                inlineContent = inlineContent,
+            )
         },
-        preview = preview,
-        action = { FavouriteButtonIcon(favourite = favourite, onFavouriteChange = onFavouriteChange) },
-        receivedAt = receivedAt,
+        excerpt = state.excerpt,
+        receivedAt = state.formattedReceivedAt,
+        configuration = rememberMessageItemConfiguration(
+            messageItemUi = state,
+            preferences = preferences,
+            color = MessageConversationCounterBadgeDefaults.unreadMessageColor(),
+            accountIndicator = accountIndicator,
+        ),
         onClick = onClick,
         onLongClick = onLongClick,
-        onLeadingClick = onLeadingClick,
-        colors = if (selected) {
-            MessageItemDefaults.selectedMessageItemColors()
-        } else {
-            MessageItemDefaults.unreadMessageItemColors()
+        onAvatarClick = onAvatarClick,
+        onTrailingClick = { element ->
+            when (element) {
+                is MessageItemTrailingElement.FavouriteIconButton if preferences.showFavouriteButton ->
+                    onFavouriteChange(element.favourite)
+
+                else -> Unit
+            }
         },
         modifier = modifier,
-        hasAttachments = hasAttachments,
-        selected = selected,
-        maxPreviewLines = maxPreviewLines,
-        contentPadding = contentPadding,
-        showAccountIndicator = showAccountIndicator,
-        accountIndicatorColor = accountIndicatorColor,
+        selected = state.selected,
+        colors = when {
+            state.selected -> MessageItemDefaults.selectedMessageItemColors()
+            state.active -> MessageItemDefaults.activeMessageItemColors()
+            else -> MessageItemDefaults.defaultMessageItemColors()
+        },
+        contentPadding = preferences.density.toContentPadding(),
     )
 }
