@@ -25,6 +25,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<MessageItemPrevParams>(
     collection = listOf(
         MessageItemPrevParams(
+            previewName = "Single sender with monogram",
             sender = "Cynthia Alvarez",
             subject = "Laptop not booting after Windows update",
             excerpt = LoremIpsum(words = 20).values.joinToString(),
@@ -36,6 +37,7 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             avatar = Avatar.Monogram("CA"),
         ),
         MessageItemPrevParams(
+            previewName = "Multiple senders threaded",
             sender = "Mason Tran, Me, Ryan Thomas",
             subject = "Follow-up on gaming PC build specs",
             excerpt = LoremIpsum(words = 20).values.joinToString(),
@@ -47,6 +49,7 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             avatar = Avatar.Monogram("MT"),
         ),
         MessageItemPrevParams(
+            previewName = "Threaded no excerpt",
             sender = "Mason Tran, Me, Ryan Thomas",
             subject = "Follow-up on gaming PC build specs",
             excerpt = LoremIpsum(words = 20).values.joinToString(),
@@ -59,6 +62,7 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             maxExcerptLines = 0,
         ),
         MessageItemPrevParams(
+            previewName = "Subject first red monogram",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 3).values.joinToString(),
@@ -71,6 +75,7 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             avatarColor = Color.Red,
         ),
         MessageItemPrevParams(
+            previewName = "Subject first long text blue",
             sender = LoremIpsum(words = 100).values.joinToString(),
             subject = LoremIpsum(words = 100).values.joinToString(),
             excerpt = LoremIpsum(words = 5).values.joinToString(),
@@ -83,6 +88,7 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             avatarColor = Color.Blue,
         ),
         MessageItemPrevParams(
+            previewName = "Subject first selected favourite",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 10).values.joinToString(),
@@ -93,6 +99,7 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             senderAboveSubject = false,
         ),
         MessageItemPrevParams(
+            previewName = "Subject first selected with attachment",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 20).values.joinToString(),
@@ -103,6 +110,7 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             senderAboveSubject = false,
         ),
         MessageItemPrevParams(
+            previewName = "Minimal no avatar",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 3).values.joinToString(),
@@ -113,6 +121,7 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Long sender and subject",
             sender = LoremIpsum(words = 100).values.joinToString(),
             subject = LoremIpsum(words = 100).values.joinToString(),
             excerpt = LoremIpsum(words = 5).values.joinToString(),
@@ -123,6 +132,7 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Selected favourite threaded",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 10).values.joinToString(),
@@ -133,6 +143,7 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Selected favourite with attachment",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 20).values.joinToString(),
@@ -143,6 +154,7 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Icon avatar no excerpt",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = "",
@@ -155,6 +167,7 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             avatarColor = Color.DarkGray,
         ),
         MessageItemPrevParams(
+            previewName = "Long excerpt five lines",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 100).values.joinToString { it.replace("\n", "") },
@@ -165,7 +178,9 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             maxExcerptLines = 5,
         ),
     ),
-)
+) {
+    override fun getDisplayName(index: Int): String = values.elementAt(index).previewName
+}
 
 @Preview
 @Composable

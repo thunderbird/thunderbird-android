@@ -31,6 +31,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.Avatar
 private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<MessageItemPrevParams>(
     collection = listOf(
         MessageItemPrevParams(
+            previewName = "Monogram encrypted favourite",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 3).values.joinToString(),
@@ -44,14 +45,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             ),
         ),
         MessageItemPrevParams(
-            sender = "Sender Name",
-            subject = "The subject",
-            excerpt = LoremIpsum(words = 3).values.joinToString(),
-            hasAttachments = false,
-            selected = false,
-            receivedAt = "12:34",
-        ),
-        MessageItemPrevParams(
+            previewName = "Monogram with attachment",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 5).values.joinToString(),
@@ -62,6 +56,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             avatarColor = Color.Magenta,
         ),
         MessageItemPrevParams(
+            previewName = "Icon avatar selected",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 10).values.joinToString(),
@@ -72,6 +67,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             avatarColor = Color.DarkGray,
         ),
         MessageItemPrevParams(
+            previewName = "Selected threaded with attachment",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 20).values.joinToString(),
@@ -81,6 +77,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             receivedAt = "12:34",
         ),
         MessageItemPrevParams(
+            previewName = "No excerpt threaded",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = "",
@@ -91,6 +88,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             maxExcerptLines = 0,
         ),
         MessageItemPrevParams(
+            previewName = "New badge no excerpt",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = "",
@@ -102,6 +100,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             badgeStyle = MessageBadgeStyle.New,
         ),
         MessageItemPrevParams(
+            previewName = "New badge icon avatar",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = "",
@@ -115,6 +114,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             avatarColor = Color.DarkGray,
         ),
         MessageItemPrevParams(
+            previewName = "Unread long excerpt",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 100).values.joinToString { it.replace("\n", "") },
@@ -126,8 +126,29 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             avatar = Avatar.Icon(imageVector = Icons.Outlined.Bank),
             badgeStyle = MessageBadgeStyle.Unread,
         ),
+        MessageItemPrevParams(
+            previewName = "No avatar",
+            sender = "Sender Name",
+            subject = "The subject",
+            excerpt = LoremIpsum(words = 3).values.joinToString(),
+            hasAttachments = false,
+            selected = false,
+            receivedAt = "12:34",
+        ),
+        MessageItemPrevParams(
+            previewName = "No avatar new badge",
+            sender = "Sender Name",
+            subject = "The subject",
+            excerpt = LoremIpsum(words = 3).values.joinToString(),
+            hasAttachments = false,
+            selected = false,
+            receivedAt = "12:34",
+            badgeStyle = MessageBadgeStyle.New,
+        ),
     ),
-)
+) {
+    override fun getDisplayName(index: Int): String = values.elementAt(index).previewName
+}
 
 @Preview
 @Composable

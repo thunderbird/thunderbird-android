@@ -30,7 +30,7 @@ object MessageItemDefaults {
         get() = PaddingValues(
             top = MainTheme.spacings.oneHalf,
             bottom = MainTheme.spacings.oneHalf,
-            start = MainTheme.spacings.triple,
+            start = MainTheme.spacings.default,
         )
 
     /**
@@ -43,7 +43,7 @@ object MessageItemDefaults {
         get() = PaddingValues(
             top = MainTheme.spacings.default,
             bottom = MainTheme.spacings.default,
-            start = MainTheme.spacings.double,
+            start = MainTheme.spacings.half,
         )
 
     /**
@@ -56,7 +56,7 @@ object MessageItemDefaults {
         get() = PaddingValues(
             top = MainTheme.spacings.double,
             bottom = MainTheme.spacings.double,
-            start = MainTheme.spacings.quadruple,
+            start = MainTheme.spacings.double,
         )
 
     /**
