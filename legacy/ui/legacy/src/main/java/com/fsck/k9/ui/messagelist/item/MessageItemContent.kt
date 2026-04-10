@@ -121,6 +121,7 @@ private fun rememberMessageItemUi(
             displayName = item.displayAddress?.address ?: "",
             displayNameStyles = item.buildSenderStyles(),
             avatar = when {
+                !showContactPicture -> null
                 showContactPicture && url != null -> Avatar.Image(url = url)
                 else -> Avatar.Monogram(monogram)
             },
