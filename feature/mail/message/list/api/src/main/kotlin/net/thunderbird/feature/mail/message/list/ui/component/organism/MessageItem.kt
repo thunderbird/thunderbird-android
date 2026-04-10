@@ -215,8 +215,8 @@ private fun LeadingElements(
                         contentColor = contentColorFor(backgroundColor = MainTheme.colors.secondaryContainer),
                     ),
                     modifier = Modifier
-                        .padding(MainTheme.spacings.half)
-                        .size(MainTheme.sizes.iconAvatar),
+                        .size(MainTheme.sizes.iconAvatar)
+                        .padding(MainTheme.spacings.half),
                 )
 
                 configuration.avatar != null ->
