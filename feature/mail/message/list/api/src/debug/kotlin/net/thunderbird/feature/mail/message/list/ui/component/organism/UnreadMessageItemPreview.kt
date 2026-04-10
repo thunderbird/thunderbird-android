@@ -24,6 +24,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 private class UnreadMessageItemPrevParamCol : CollectionPreviewParameterProvider<MessageItemPrevParams>(
     collection = listOf(
         MessageItemPrevParams(
+            previewName = "Single sender with monogram",
             sender = "Cynthia Alvarez",
             senderStyles = ComposedAddressStyle.AllBold,
             subject = "Laptop not booting after Windows update",
@@ -36,6 +37,7 @@ private class UnreadMessageItemPrevParamCol : CollectionPreviewParameterProvider
             avatar = Avatar.Monogram("CA"),
         ),
         MessageItemPrevParams(
+            previewName = "Multiple senders threaded",
             sender = "Mason Tran, Me, Ryan Thomas",
             senderStyles = persistentListOf(
                 ComposedAddressStyle.Bold(0, 11),
@@ -50,6 +52,7 @@ private class UnreadMessageItemPrevParamCol : CollectionPreviewParameterProvider
             avatar = Avatar.Monogram("MT"),
         ),
         MessageItemPrevParams(
+            previewName = "Threaded with attachment no avatar",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 3).values.joinToString(),
@@ -60,6 +63,7 @@ private class UnreadMessageItemPrevParamCol : CollectionPreviewParameterProvider
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Long sender and subject",
             sender = LoremIpsum(words = 100).values.joinToString(),
             senderStyles = ComposedAddressStyle.AllBold,
             subject = LoremIpsum(words = 100).values.joinToString(),
@@ -71,6 +75,7 @@ private class UnreadMessageItemPrevParamCol : CollectionPreviewParameterProvider
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Selected favourite threaded",
             sender = "Sender Name",
             senderStyles = ComposedAddressStyle.AllBold,
             subject = "The subject",
@@ -82,6 +87,7 @@ private class UnreadMessageItemPrevParamCol : CollectionPreviewParameterProvider
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Selected favourite with attachment",
             sender = "Sender Name",
             senderStyles = ComposedAddressStyle.AllBold,
             subject = "The subject",
@@ -93,6 +99,7 @@ private class UnreadMessageItemPrevParamCol : CollectionPreviewParameterProvider
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Minimal no avatar",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 3).values.joinToString(),
@@ -103,6 +110,7 @@ private class UnreadMessageItemPrevParamCol : CollectionPreviewParameterProvider
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Long sender and subject bold",
             sender = LoremIpsum(words = 100).values.joinToString(),
             senderStyles = ComposedAddressStyle.AllBold,
             subject = LoremIpsum(words = 100).values.joinToString(),
@@ -114,6 +122,7 @@ private class UnreadMessageItemPrevParamCol : CollectionPreviewParameterProvider
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Selected favourite bold",
             sender = "Sender Name",
             senderStyles = ComposedAddressStyle.AllBold,
             subject = "The subject",
@@ -125,6 +134,7 @@ private class UnreadMessageItemPrevParamCol : CollectionPreviewParameterProvider
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Selected no excerpt",
             sender = "Sender Name",
             senderStyles = ComposedAddressStyle.AllBold,
             subject = "The subject",
@@ -137,7 +147,9 @@ private class UnreadMessageItemPrevParamCol : CollectionPreviewParameterProvider
             maxExcerptLines = 0,
         ),
     ),
-)
+) {
+    override fun getDisplayName(index: Int): String = values.elementAt(index).previewName
+}
 
 @Preview
 @Composable
