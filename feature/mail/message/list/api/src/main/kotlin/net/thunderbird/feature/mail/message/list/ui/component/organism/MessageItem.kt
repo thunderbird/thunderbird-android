@@ -148,7 +148,7 @@ internal fun MessageItem(
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .widthIn(min = MainTheme.sizes.minTouchTarget),
+                    .widthIn(min = MainTheme.sizes.icon),
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -157,6 +157,16 @@ internal fun MessageItem(
                         is MessageItemTrailingElement.EncryptedBadge -> Icon(
                             imageVector = Icons.Outlined.Encrypted,
                             contentDescription = null,
+                            modifier = Modifier.then(
+                                if (element.isFavouriteHidden) {
+                                    Modifier.padding(
+                                        start = MainTheme.spacings.half,
+                                        end = MainTheme.spacings.default,
+                                    )
+                                } else {
+                                    Modifier
+                                },
+                            ),
                         )
 
                         is MessageItemTrailingElement.FavouriteIconButton -> FavouriteButtonIcon(

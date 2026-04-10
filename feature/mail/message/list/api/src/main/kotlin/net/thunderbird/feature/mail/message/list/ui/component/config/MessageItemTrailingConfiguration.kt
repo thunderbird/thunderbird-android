@@ -35,6 +35,6 @@ data class MessageItemTrailingConfiguration(
  */
 @Immutable
 sealed interface MessageItemTrailingElement {
-    data object EncryptedBadge : MessageItemTrailingElement
+    data class EncryptedBadge(val isFavouriteHidden: Boolean) : MessageItemTrailingElement
     data class FavouriteIconButton(val favourite: Boolean) : MessageItemTrailingElement
 }
