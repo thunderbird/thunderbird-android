@@ -3,7 +3,6 @@ package net.thunderbird.feature.mail.message.list.ui.component.organism
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -195,18 +193,17 @@ private fun LeadingElements(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxHeight()) {
-        val badgeModifier = Modifier.align(Alignment.CenterStart)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.quarter),
+        modifier = modifier.fillMaxHeight(),
+    ) {
         when (configuration.badgeStyle) {
-            MessageBadgeStyle.New -> NewMessageBadge(
-                modifier = badgeModifier.offset(-(MESSAGE_BADGE_SIZE.dp + MainTheme.spacings.quarter)),
-            )
+            MessageBadgeStyle.New -> NewMessageBadge()
 
-            MessageBadgeStyle.Unread -> UnreadMessageBadge(
-                modifier = badgeModifier.offset(-(MESSAGE_BADGE_SIZE.dp)),
-            )
+            MessageBadgeStyle.Unread -> UnreadMessageBadge()
 
-            null -> Unit
+            null -> Spacer(Modifier.width(MESSAGE_BADGE_SIZE.dp))
         }
         AnimatedContent(targetState = selected) { selected ->
             when {
