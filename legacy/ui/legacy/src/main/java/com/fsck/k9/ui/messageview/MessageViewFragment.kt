@@ -41,6 +41,7 @@ import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.legacy.message.controller.MessageReference
 import com.eygraber.uri.toKmpUri
 import com.fsck.k9.activity.MessageCompose
+import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.activity.MessageLoaderHelper
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks
 import com.fsck.k9.activity.MessageLoaderHelperFactory
@@ -470,6 +471,7 @@ class MessageViewFragment :
 
             R.id.set_format_plain -> onDisplayPlainText()
             R.id.set_format_html -> onDisplayHTML()
+            R.id.view_compose -> MessageActions.actionCompose(requireActivity(), account)
             else -> return false
         }
 
