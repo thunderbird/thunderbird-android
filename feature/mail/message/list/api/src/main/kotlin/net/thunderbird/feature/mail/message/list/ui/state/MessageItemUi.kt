@@ -1,6 +1,7 @@
 package net.thunderbird.feature.mail.message.list.ui.state
 
 import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.toPersistentList
 
 /**
  * Represents the UI state of a single message item in a message list.
@@ -64,4 +65,30 @@ data class MessageItemUi(
         /** The message has not yet been read by the user. */
         Unread,
     }
+}
+
+/**
+ * Create a copy of this message item with the updated [state] and refreshed sender
+ * display name styling.
+ *
+ * @param state The new state to apply.
+ * @return A new [MessageItemUi] instance with the updated state and styling.
+ */
+fun MessageItemUi.withState(state: MessageItemUi.State): MessageItemUi {
+    val styles = buildList {
+        when (val separatorIndex = senders.displayName.indexOf(',')) {
+            -1 if state != MessageItemUi.State.Read -> add(ComposedAddressStyle.Bold(start = 0))
+            in 0..Int.MAX_VALUE if state != MessageItemUi.State.Read -> {
+                add(ComposedAddressStyle.Bold(start = 0, end = separatorIndex))
+                add(ComposedAddressStyle.Regular(start = separatorIndex))
+            }
+
+            else -> add(ComposedAddressStyle.Regular(start = 0))
+        }
+    }.toPersistentList()
+
+    return copy(
+        senders = senders.copy(displayNameStyles = styles),
+        state = state,
+    )
 }
