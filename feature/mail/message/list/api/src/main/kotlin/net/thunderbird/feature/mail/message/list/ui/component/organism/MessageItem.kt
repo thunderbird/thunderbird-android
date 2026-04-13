@@ -131,8 +131,8 @@ internal fun MessageItem(
             Spacer(Modifier.width(MainTheme.spacings.default))
             // Message Content and Contents
             Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+                modifier = Modifier.weight(1f).fillMaxHeight(),
+                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half, Alignment.CenterVertically),
             ) {
                 AdaptiveMessageItemHeaderRow(configuration, receivedAt, firstLine)
                 MessageBodyContent(

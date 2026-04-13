@@ -1,7 +1,6 @@
 package net.thunderbird.feature.mail.message.list.ui.component.molecule
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.InlineTextContent
@@ -54,24 +53,22 @@ internal fun MessageBodyContent(
     modifier: Modifier = Modifier,
     subject: @Composable (AnnotatedString?, ImmutableMap<String, InlineTextContent>) -> Unit,
 ) {
-    Row(modifier = modifier) {
-        Column {
-            val (prefixAnnotatedString, inlineContent) = secondaryLineContent(configuration)
-            subject(prefixAnnotatedString, inlineContent)
-            Spacer(modifier = Modifier.height(MainTheme.spacings.half))
-            if (configuration.maxExcerptLines > 0) {
-                val inlineContent = rememberInlineContent(configuration.excerptLineConfiguration)
-                val prefixAnnotatedString = rememberPrefixAnnotatedString(configuration.excerptLineConfiguration)
-                TextBodySmall(
-                    text = buildAnnotatedString {
-                        append(prefixAnnotatedString)
-                        append(excerpt)
-                    },
-                    maxLines = configuration.maxExcerptLines,
-                    overflow = TextOverflow.Ellipsis,
-                    inlineContent = inlineContent,
-                )
-            }
+    Column(modifier = modifier) {
+        val (prefixAnnotatedString, inlineContent) = secondaryLineContent(configuration)
+        subject(prefixAnnotatedString, inlineContent)
+        Spacer(modifier = Modifier.height(MainTheme.spacings.half))
+        if (configuration.maxExcerptLines > 0) {
+            val inlineContent = rememberInlineContent(configuration.excerptLineConfiguration)
+            val prefixAnnotatedString = rememberPrefixAnnotatedString(configuration.excerptLineConfiguration)
+            TextBodySmall(
+                text = buildAnnotatedString {
+                    append(prefixAnnotatedString)
+                    append(excerpt)
+                },
+                maxLines = configuration.maxExcerptLines,
+                overflow = TextOverflow.Ellipsis,
+                inlineContent = inlineContent,
+            )
         }
     }
 }
