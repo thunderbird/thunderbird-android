@@ -207,15 +207,6 @@ escape_csv() {
   printf '"%s"' "$value"
 }
 
-fn_fetch_feature_fag() {
-  feature_flag=$(
-    jq -nr \
-      --arg body "$1" \
-      'try ($body | gsub("\r"; "") | capture("(?m)^feature-flag:\\s*`(?<flag>[^`]+)`$").flag) catch ""'
-  )
-  echo "$feature_flag"
-}
-
 {
   echo "# Merged PR Report (${YEAR}-${MONTH})"
   echo
