@@ -152,13 +152,14 @@ class BaseStateMachineViewModelTest {
     @Test
     fun `should trigger side effect handlers on state change`() = runTest {
         var sideEffectTriggered = false
-        val sideEffectHandler = object : StateSideEffectHandler<String, String>(TestLogger(), {}) {
-            override fun accept(event: String, newState: String): Boolean = true
-            override suspend fun handle(oldState: String, newState: String) {
+        val sideEffectHandler = object : StateSideEffectHandler<String, String, String>(TestLogger(), {}) {
+            override fun accept(event: String, oldState: String, newState: String): Boolean = true
+            override suspend fun consume(event: String, oldState: String, newState: String): ConsumeResult {
                 sideEffectTriggered = true
+                return ConsumeResult.Consumed
             }
         }
-        val factory = StateSideEffectHandler.Factory { _, _ -> sideEffectHandler }
+        val factory = StateSideEffectHandler.Factory { _, _, _ -> sideEffectHandler }
 
         val viewModel = TestStateMachineViewModel(
             initialState = "Initial state",
@@ -177,7 +178,7 @@ class BaseStateMachineViewModelTest {
         initialState: String,
         logger: Logger = TestLogger(),
         override val stateMachine: StateMachine<String, String> = FakeStateMachine(initialState),
-        sideEffectHandlersFactories: List<StateSideEffectHandler.Factory<String, String>> = emptyList(),
+        sideEffectHandlersFactories: List<StateSideEffectHandler.Factory<String, String, String>> = emptyList(),
     ) : BaseStateMachineViewModel<String, String, String>(logger, sideEffectHandlersFactories) {
 
         fun callEmitEffect(effect: String) {

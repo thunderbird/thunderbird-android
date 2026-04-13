@@ -38,6 +38,7 @@ import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
 import net.thunderbird.feature.mail.message.list.domain.model.SortType
 import net.thunderbird.feature.mail.message.list.preferences.ActionRequiringUserConfirmation
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
+import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.FolderEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
@@ -53,11 +54,15 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 @Suppress("MaxLineLength")
 @OptIn(ExperimentalCoroutinesApi::class)
 class MessageListStateMachineTest {
-    private fun TestScope.createStateMachine(dispatch: (MessageListEvent) -> Unit = {}) = MessageListStateMachine(
+    private fun TestScope.createStateMachine(
+        dispatch: (MessageListEvent) -> Unit = {},
+        dispatchUiEffect: (MessageListEffect) -> Unit = {},
+    ) = MessageListStateMachine(
         logger = TestLogger(),
         clock = TestClock(),
         scope = this,
         dispatch = dispatch,
+        dispatchUiEffect = dispatchUiEffect,
         debuggingSettingsPreferenceManager = FakeDebuggingSettingsPreferenceManager(),
     )
 

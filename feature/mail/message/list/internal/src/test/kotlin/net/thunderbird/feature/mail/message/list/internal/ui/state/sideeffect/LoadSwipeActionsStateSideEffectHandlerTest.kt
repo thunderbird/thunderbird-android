@@ -1,10 +1,8 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 
 import assertk.assertThat
-import assertk.assertions.isFalse
-import assertk.assertions.isTrue
+import assertk.assertions.isEqualTo
 import dev.mokkery.matcher.any
-import dev.mokkery.mock
 import dev.mokkery.spy
 import dev.mokkery.verify
 import dev.mokkery.verify.VerifyMode
@@ -15,6 +13,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
+import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
@@ -23,45 +22,47 @@ import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import org.junit.Test
 
-class LoadSwipeActionsStateSideEffectHandlerTest {
+class LoadSwipeActionsStateSideEffectHandlerTest : BaseSideEffectHandlerTest() {
     @Test
-    fun `accept() should return true if event is LoadConfigurations`() = runTest {
+    fun `handle() should return Consumed if event is LoadConfigurations`() = runTest {
         // Arrange
         val testSubject = LoadSwipeActionsStateSideEffectHandler(
             dispatch = {},
-            scope = this,
+            scope = backgroundScope,
             logger = TestLogger(),
-            buildSwipeActions = mock(),
+            buildSwipeActions = FakeBuildSwipeActionsUseCase(),
         )
 
         // Act
-        val actual = testSubject.accept(
+        val actual = testSubject.handle(
             event = MessageListEvent.LoadConfigurations,
-            newState = MessageListState.WarmingUp(),
+            oldState = MessageListState.WarmingUp(),
+            newState = createReadyWarmingUpState(),
         )
 
         // Assert
-        assertThat(actual).isTrue()
+        assertThat(actual).isEqualTo(StateSideEffectHandler.ConsumeResult.Consumed)
     }
 
     @Test
-    fun `accept() should return false if event is not LoadConfigurations`() = runTest {
+    fun `handle() should return Ignored if event is not LoadConfigurations`() = runTest {
         // Arrange
         val testSubject = LoadSwipeActionsStateSideEffectHandler(
             dispatch = {},
-            scope = this,
+            scope = backgroundScope,
             logger = TestLogger(),
-            buildSwipeActions = mock(),
+            buildSwipeActions = FakeBuildSwipeActionsUseCase(),
         )
 
         // Act
-        val actual = testSubject.accept(
+        val actual = testSubject.handle(
             event = MessageListEvent.ExitSelectionMode,
-            newState = MessageListState.WarmingUp(),
+            oldState = MessageListState.WarmingUp(),
+            newState = createReadyWarmingUpState(),
         )
 
         // Assert
-        assertThat(actual).isFalse()
+        assertThat(actual).isEqualTo(StateSideEffectHandler.ConsumeResult.Ignored)
     }
 
     @Test
@@ -84,7 +85,7 @@ class LoadSwipeActionsStateSideEffectHandlerTest {
             val newState = oldState.withMetadata { copy(isActive = true) }
 
             // Act
-            testSubject.handle(oldState, newState)
+            testSubject.handle(event = MessageListEvent.LoadConfigurations, oldState = oldState, newState = newState)
 
             // Assert
             verify(mode = VerifyMode.exactly(1)) {
@@ -115,7 +116,7 @@ class LoadSwipeActionsStateSideEffectHandlerTest {
             val newState = oldState.withMetadata { copy(isActive = true) }
 
             // Act
-            testSubject.handle(oldState, newState)
+            testSubject.handle(event = MessageListEvent.LoadConfigurations, oldState = oldState, newState = newState)
 
             swipeActions.entries.foldIndexed(mapOf<AccountId, SwipeActions>()) {
                     index,

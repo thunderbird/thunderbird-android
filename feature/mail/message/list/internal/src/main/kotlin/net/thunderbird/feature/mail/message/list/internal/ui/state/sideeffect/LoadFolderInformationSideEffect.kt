@@ -3,15 +3,16 @@ package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 import androidx.compose.ui.graphics.Color
 import app.k9mail.legacy.mailstore.FolderRepository
 import kotlinx.coroutines.CoroutineScope
-import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.mail.message.list.ui.MessageListStateSideEffectHandlerFactory
+import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.FolderEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.Account
 import net.thunderbird.feature.mail.message.list.ui.state.Folder
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
+import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandler
+import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandlerFactory
 
 private const val TAG = "LoadFolderInformationSideEffect"
 
@@ -21,18 +22,20 @@ class LoadFolderInformationSideEffect(
     dispatch: suspend (MessageListEvent) -> Unit,
     private val logger: Logger,
     private val folderRepository: FolderRepository,
-) : StateSideEffectHandler<MessageListState, MessageListEvent>(logger, dispatch) {
-    override fun accept(
-        event: MessageListEvent,
-        newState: MessageListState,
-    ): Boolean = accountIds.size == 1 && folderId != null && event == MessageListEvent.LoadConfigurations
+) : MessageListStateSideEffectHandler(logger, dispatch) {
+    override fun accept(event: MessageListEvent, oldState: MessageListState, newState: MessageListState): Boolean =
+        accountIds.size == 1 && folderId != null && event == MessageListEvent.LoadConfigurations
 
-    override suspend fun handle(oldState: MessageListState, newState: MessageListState) {
+    override suspend fun consume(
+        event: MessageListEvent,
+        oldState: MessageListState,
+        newState: MessageListState,
+    ): ConsumeResult {
         val accountId = accountIds.first()
         val folderId = requireNotNull(folderId)
         logger.verbose(TAG) { "$TAG.handle() called with: oldState = $oldState, newState = $newState" }
         val folder = folderRepository.getFolder(accountId, folderId)
-        if (folder != null) {
+        return if (folder != null) {
             val remoteFolder = if (!folder.isLocalOnly) {
                 folderRepository.getRemoteFolders(accountId).first { it.id == folderId }
             } else {
@@ -49,6 +52,9 @@ class LoadFolderInformationSideEffect(
                     ),
                 ),
             )
+            ConsumeResult.Consumed
+        } else {
+            ConsumeResult.Ignored
         }
     }
 
@@ -61,7 +67,8 @@ class LoadFolderInformationSideEffect(
         override fun create(
             scope: CoroutineScope,
             dispatch: suspend (MessageListEvent) -> Unit,
-        ): StateSideEffectHandler<MessageListState, MessageListEvent> = LoadFolderInformationSideEffect(
+            dispatchUiEffect: suspend (MessageListEffect) -> Unit,
+        ): MessageListStateSideEffectHandler = LoadFolderInformationSideEffect(
             accountIds = accountIds,
             folderId = folderId,
             dispatch = dispatch,

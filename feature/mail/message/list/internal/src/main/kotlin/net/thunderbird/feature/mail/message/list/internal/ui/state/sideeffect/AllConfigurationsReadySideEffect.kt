@@ -1,11 +1,12 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 
 import kotlinx.coroutines.CoroutineScope
-import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.feature.mail.message.list.ui.MessageListStateSideEffectHandlerFactory
+import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
+import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandler
+import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandlerFactory
 
 /**
  * A side effect handler that monitors the message list state and dispatches an event when all
@@ -17,12 +18,17 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 class AllConfigurationsReadySideEffect(
     logger: Logger,
     dispatch: suspend (MessageListEvent) -> Unit,
-) : StateSideEffectHandler<MessageListState, MessageListEvent>(logger, dispatch) {
-    override fun accept(event: MessageListEvent, newState: MessageListState): Boolean =
-        newState is MessageListState.WarmingUp && newState.isReady
+) : MessageListStateSideEffectHandler(logger, dispatch) {
+    override fun accept(event: MessageListEvent, oldState: MessageListState, newState: MessageListState): Boolean =
+        oldState != newState && newState is MessageListState.WarmingUp && newState.isReady
 
-    override suspend fun handle(oldState: MessageListState, newState: MessageListState) {
+    override suspend fun consume(
+        event: MessageListEvent,
+        oldState: MessageListState,
+        newState: MessageListState,
+    ): ConsumeResult {
         dispatch(MessageListEvent.AllConfigsReady)
+        return ConsumeResult.Consumed
     }
 
     class Factory(
@@ -31,7 +37,8 @@ class AllConfigurationsReadySideEffect(
         override fun create(
             scope: CoroutineScope,
             dispatch: suspend (MessageListEvent) -> Unit,
-        ): StateSideEffectHandler<MessageListState, MessageListEvent> = AllConfigurationsReadySideEffect(
+            dispatchUiEffect: suspend (MessageListEffect) -> Unit,
+        ): MessageListStateSideEffectHandler = AllConfigurationsReadySideEffect(
             dispatch = dispatch,
             logger = logger,
         )
