@@ -9,13 +9,32 @@ import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ui.ToggleMessageSideEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 
 class ToggleMessageSideEffectTest : BaseSideEffectHandlerTest() {
 
     @Test
-    fun `handle() should return Consumed when event is OnMessageClick and newState is SelectingMessages`() = runTest {
+    fun `handle() should return Consumed when event is OnMessageClick and both states are SelectingMessages`() =
+        runTest {
+            // Arrange
+            val message = createMessageItemUi()
+            val testSubject = createTestSubject()
+
+            // Act
+            val result = testSubject.handle(
+                event = MessageItemEvent.OnMessageClick(message),
+                oldState = createSelectingMessagesState(),
+                newState = createSelectingMessagesState(),
+            )
+
+            // Assert
+            assertThat(result).isEqualTo(StateSideEffectHandler.ConsumeResult.Consumed)
+        }
+
+    @Test
+    fun `handle() should return Ignored when event is OnMessageClick but oldState is LoadedMessages`() = runTest {
         // Arrange
         val message = createMessageItemUi()
         val testSubject = createTestSubject()
@@ -28,7 +47,7 @@ class ToggleMessageSideEffectTest : BaseSideEffectHandlerTest() {
         )
 
         // Assert
-        assertThat(result).isEqualTo(StateSideEffectHandler.ConsumeResult.Consumed)
+        assertThat(result).isEqualTo(StateSideEffectHandler.ConsumeResult.Ignored)
     }
 
     @Test
@@ -40,7 +59,7 @@ class ToggleMessageSideEffectTest : BaseSideEffectHandlerTest() {
         // Act
         val result = testSubject.handle(
             event = MessageItemEvent.OnMessageClick(message),
-            oldState = createLoadedMessagesState(),
+            oldState = createSelectingMessagesState(),
             newState = createLoadedMessagesState(),
         )
 
@@ -56,7 +75,7 @@ class ToggleMessageSideEffectTest : BaseSideEffectHandlerTest() {
         // Act
         val result = testSubject.handle(
             event = MessageListEvent.EnterSelectionMode,
-            oldState = createLoadedMessagesState(),
+            oldState = createSelectingMessagesState(),
             newState = createSelectingMessagesState(),
         )
 
@@ -74,7 +93,7 @@ class ToggleMessageSideEffectTest : BaseSideEffectHandlerTest() {
         // Act
         testSubject.handle(
             event = MessageItemEvent.OnMessageClick(message),
-            oldState = createLoadedMessagesState(),
+            oldState = createSelectingMessagesState(),
             newState = createSelectingMessagesState(),
         )
 

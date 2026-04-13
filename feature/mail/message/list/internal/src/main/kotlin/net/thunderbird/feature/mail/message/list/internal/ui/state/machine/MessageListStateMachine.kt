@@ -61,7 +61,7 @@ class MessageListStateMachine(
         globalState()
         loadingMessagesState(dispatch)
         loadedMessagesState()
-        selectingMessagesState()
+        selectingMessagesState(dispatch, dispatchUiEffect)
         searchingMessagesState()
     },
 ) : StateMachine<MessageListState, MessageListEvent> by stateMachine {

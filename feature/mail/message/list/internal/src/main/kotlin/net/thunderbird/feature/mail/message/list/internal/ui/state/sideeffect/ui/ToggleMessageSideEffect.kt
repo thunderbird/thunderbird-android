@@ -1,4 +1,4 @@
-package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
+package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ui
 
 import kotlinx.coroutines.CoroutineScope
 import net.thunderbird.core.logging.Logger
@@ -15,7 +15,9 @@ internal class ToggleMessageSideEffect(
 ) : MessageListStateSideEffectHandler(logger, dispatch) {
 
     override fun accept(event: MessageListEvent, oldState: MessageListState, newState: MessageListState): Boolean =
-        event is MessageItemEvent.OnMessageClick && newState is MessageListState.SelectingMessages
+        event is MessageItemEvent.OnMessageClick &&
+            oldState is MessageListState.SelectingMessages &&
+            newState is MessageListState.SelectingMessages
 
     override suspend fun consume(
         event: MessageListEvent,
