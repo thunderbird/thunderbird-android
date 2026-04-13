@@ -12,7 +12,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageList
 
 private const val TAG = "LoadSortCriteriaStateSideEffectHandler"
 
-class LoadSortCriteriaStateSideEffectHandler(
+internal class LoadSortCriteriaStateSideEffectHandler(
     private val accounts: Set<AccountId>,
     dispatch: suspend (MessageListEvent) -> Unit,
     private val logger: Logger,

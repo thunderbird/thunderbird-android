@@ -11,7 +11,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageList
 
 private const val TAG = "ChangeSortCriteriaSideEffect"
 
-class ChangeSortCriteriaSideEffect(
+internal class ChangeSortCriteriaSideEffect(
     dispatch: suspend (MessageListEvent) -> Unit,
     private val logger: Logger,
     private val updateSortCriteria: DomainContract.UseCase.UpdateSortCriteria,

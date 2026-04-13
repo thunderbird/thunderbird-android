@@ -15,7 +15,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageList
  * @param logger A logger instance for tracking and debugging side effect execution.
  * @param dispatch A suspend function that dispatches [MessageListEvent] instances to the state machine.
  */
-class AllConfigurationsReadySideEffect(
+internal class AllConfigurationsReadySideEffect(
     logger: Logger,
     dispatch: suspend (MessageListEvent) -> Unit,
 ) : MessageListStateSideEffectHandler(logger, dispatch) {
