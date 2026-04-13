@@ -16,7 +16,7 @@ import net.thunderbird.feature.mail.message.list.R as MessageListApiR
 
 private const val TAG = "MessageListViewModel"
 
-class MessageListViewModel(
+internal class MessageListViewModel(
     logger: Logger,
     messageListStateMachineFactory: MessageListStateMachine.Factory,
     stateSideEffectHandlersFactories: List<MessageListStateSideEffectHandlerFactory>,

@@ -9,7 +9,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandlerFactory
 
-class SetMessageActiveSideEffect(
+internal class SetMessageActiveSideEffect(
     private val logger: Logger,
     dispatch: suspend (MessageListEvent) -> Unit,
     dispatchUiEffect: suspend (MessageListEffect) -> Unit,
