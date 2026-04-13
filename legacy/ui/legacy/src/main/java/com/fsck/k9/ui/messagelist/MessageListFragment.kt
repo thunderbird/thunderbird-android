@@ -2412,6 +2412,9 @@ class MessageListFragment :
         when (effect) {
             is MessageListEffect.ScrollToMessage -> scrollToMessage(effect.message)
             is MessageListEffect.UpdateToolbarActionMode -> {
+                println(
+                    "[MessageList] UpdateToolbarActionMode called with title: ${effect.title}, state = $stateSnapshot",
+                )
                 if (actionMode == null) {
                     startAndPrepareActionMode()
                 }
@@ -2420,6 +2423,11 @@ class MessageListFragment :
                     actionModeCallback.showSelectAll(!effect.isAllSelected)
                     actionMode.invalidate()
                 }
+            }
+
+            is MessageListEffect.ResetToolbarActionMode -> {
+                println("[MessageList] ResetToolbarActionMode called with state = $stateSnapshot")
+                resetActionMode()
             }
 
             is MessageListEffect.RefreshMessageList -> {

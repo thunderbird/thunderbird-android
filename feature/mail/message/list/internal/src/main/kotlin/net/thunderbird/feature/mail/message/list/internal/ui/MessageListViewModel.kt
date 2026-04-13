@@ -34,13 +34,17 @@ internal class MessageListViewModel(
                     is MessageListState.SelectingMessages -> {
                         val selectedCount = state.messages.count { it.selected }
                         emitEffect(
-                            MessageListEffect.UpdateToolbarActionMode(
-                                title = stringsResourceManager.stringResource(
-                                    MessageListApiR.string.actionbar_selected,
-                                    selectedCount,
-                                ),
-                                isAllSelected = selectedCount == state.messages.size,
-                            ),
+                            if (selectedCount > 0) {
+                                MessageListEffect.UpdateToolbarActionMode(
+                                    title = stringsResourceManager.stringResource(
+                                        MessageListApiR.string.actionbar_selected,
+                                        selectedCount,
+                                    ),
+                                    isAllSelected = selectedCount == state.messages.size,
+                                )
+                            } else {
+                                MessageListEffect.ResetToolbarActionMode
+                            },
                         )
                     }
 

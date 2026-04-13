@@ -15,7 +15,9 @@ internal class OpenMessageSideEffect(
     dispatchUiEffect: suspend (MessageListEffect) -> Unit,
 ) : MessageListStateSideEffectHandler(logger, dispatch, dispatchUiEffect) {
     override fun accept(event: MessageListEvent, oldState: MessageListState, newState: MessageListState): Boolean =
-        event is MessageItemEvent.OnMessageClick && newState is MessageListState.LoadedMessages
+        event is MessageItemEvent.OnMessageClick &&
+            oldState is MessageListState.LoadedMessages &&
+            newState is MessageListState.LoadedMessages
 
     override suspend fun consume(
         event: MessageListEvent,

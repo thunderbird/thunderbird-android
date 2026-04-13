@@ -95,6 +95,8 @@ sealed interface MessageListEffect {
         val isAllSelected: Boolean,
     ) : MessageListEffect
 
+    data object ResetToolbarActionMode : MessageListEffect
+
     data class ScrollToMessage(val message: MessageItemUi) : MessageListEffect
 
     data class OpenMessage(val message: MessageItemUi) : MessageListEffect
