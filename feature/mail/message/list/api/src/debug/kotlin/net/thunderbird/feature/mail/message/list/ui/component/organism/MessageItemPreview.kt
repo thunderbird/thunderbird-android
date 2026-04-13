@@ -40,7 +40,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             receivedAt = "12:34",
             avatar = Avatar.Monogram("AV"),
             trailingElements = persistentListOf(
-                MessageItemTrailingElement.EncryptedBadge,
+                MessageItemTrailingElement.EncryptedBadge(isFavouriteHidden = false),
                 MessageItemTrailingElement.FavouriteIconButton(favourite = true),
             ),
         ),
