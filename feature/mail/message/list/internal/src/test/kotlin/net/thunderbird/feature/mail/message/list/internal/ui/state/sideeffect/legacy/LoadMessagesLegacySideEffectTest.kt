@@ -1,6 +1,5 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.legacy
 
-import androidx.compose.ui.graphics.Color
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
@@ -20,14 +19,11 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.BaseSideEffectHandlerTest
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.legacy.LegacyMessageListBridge
-import net.thunderbird.feature.mail.message.list.ui.state.Account
-import net.thunderbird.feature.mail.message.list.ui.state.ComposedAddressUi
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListMetadata
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
@@ -334,35 +330,6 @@ class LoadMessagesLegacySideEffectTest : BaseSideEffectHandlerTest() {
         logger = logger,
         legacyBridge = legacyBridge,
         dispatch = dispatch,
-    )
-
-    private fun createLoadingMessagesState(
-        progress: Float = 0f,
-        metadata: MessageListMetadata = createMetadata(),
-        preferences: MessageListPreferences = createMessageListPreferences(),
-    ) = MessageListState.LoadingMessages(
-        progress = progress,
-        metadata = metadata,
-        preferences = preferences,
-    )
-
-    private fun createMessageItemUi(
-        id: String = "1",
-    ) = MessageItemUi(
-        state = MessageItemUi.State.Unread,
-        id = id,
-        messageReference = "ref-$id",
-        account = Account(id = AccountIdFactory.create(), color = Color.Unspecified),
-        senders = ComposedAddressUi(displayName = "sender"),
-        subject = "subject",
-        excerpt = "excerpt",
-        formattedReceivedAt = "Jan 2026",
-        hasAttachments = false,
-        starred = false,
-        encrypted = false,
-        answered = false,
-        forwarded = false,
-        selected = false,
     )
 }
 
