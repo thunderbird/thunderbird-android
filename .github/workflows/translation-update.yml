@@ -95,7 +95,10 @@ jobs:
         if: steps.changes.outputs.has_changes == 'true'
         run: |
           git checkout -B "$BRANCH_NAME" "origin/$BASE_BRANCH"
-          git checkout "weblate/$WEBLATE_BRANCH" -- .
+          git checkout "weblate/$WEBLATE_BRANCH" -- \
+            'app-metadata/' \
+            ':(glob)**/res/values-*/strings.xml' \
+            ':(glob)**/composeResources/values-*/strings.xml'
 
       - name: Create commit
         if: steps.changes.outputs.has_changes == 'true'
