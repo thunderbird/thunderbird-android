@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="19.0b1" versioncode="50" date="2026-04-14">
+        <change>New: Message notification actions can be configured</change>
+        <change>New: Message font size scales with device preferences</change>
+        <change>Fixed: Thunderbird crashed on Android 8 when fetching images</change>
+        <change>Fixed: Accidental swipe in message viewer marked unread email as read</change>
+    </release>
     <release version="18.0b4" versioncode="49" date="2026-04-06">
         <change>Fixed: Deleted messages could remain visible in message list</change>
     </release>
