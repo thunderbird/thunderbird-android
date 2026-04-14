@@ -36,8 +36,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Configure git amd fetch remotes
+      - name: Configure git and fetch remotes
         run: |
+          set -euo pipefail
+
           git config user.name "Translation Bot"
           git config user.email "translation-bot@thunderbird.net"
 
@@ -62,6 +64,8 @@ jobs:
       - name: Build metadata
         if: steps.changes.outputs.has_changes == 'true'
         run: |
+          set -euo pipefail
+
           {
             printf '%s\n\n' "$PR_BODY"
             printf '### Contributors\n'
@@ -94,6 +98,8 @@ jobs:
       - name: Apply Weblate changes
         if: steps.changes.outputs.has_changes == 'true'
         run: |
+          set -euo pipefail
+
           git checkout -B "$BRANCH_NAME" "origin/$BASE_BRANCH"
           git checkout "weblate/$WEBLATE_BRANCH" -- \
             'app-metadata/' \
@@ -121,6 +127,7 @@ jobs:
         if: steps.commit.outputs.created_commit == 'true'
         run: |
           set -euo pipefail
+
           git push --force-with-lease origin "$BRANCH_NAME"
 
       - name: Create or update pull request
@@ -128,6 +135,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
+
           PR_NUMBER="$(gh pr list \
           --head "$BRANCH_NAME" \
           --base "$BASE_BRANCH" \
