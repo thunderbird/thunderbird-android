@@ -1,6 +1,5 @@
 package app.k9mail.core.ui.compose.designsystem.atom.button
 
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,7 +23,7 @@ fun ButtonText(
         enabled = enabled,
         colors = ButtonDefaults.textButtonColors(
             contentColor = color ?: MainTheme.colors.primary,
-        ),
+        ).toMaterial3Colors(),
     ) {
         leadingIcon?.invoke()
         Material3Text(
