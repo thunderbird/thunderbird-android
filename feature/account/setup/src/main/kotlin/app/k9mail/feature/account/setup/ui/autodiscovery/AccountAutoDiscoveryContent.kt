@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import android.content.res.Resources
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -32,6 +33,7 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.autodiscovery.view.AutoDiscoveryResultApprovalView
 import app.k9mail.feature.account.setup.ui.autodiscovery.view.AutoDiscoveryResultView
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import net.thunderbird.core.ui.compose.designsystem.organism.ThundermailButtonPanel
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @Composable
@@ -149,6 +151,16 @@ internal fun ContentView(
                 )
             }
             Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+        }
+
+        AnimatedVisibility(state.emailAddress.value.isBlank()) {
+            ThundermailButtonPanel(
+                onThundermailClick = {},
+                onScanQrCodeClick = {},
+                modifier = Modifier
+                    .testTagAsResourceId("thundermail_panel")
+                    .padding(bottom = MainTheme.spacings.quadruple),
+            )
         }
 
         EmailAddressInput(

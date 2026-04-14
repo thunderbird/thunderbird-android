@@ -7,4 +7,7 @@
     <string name="designsystem_molecule_error_view_button_retry">Retry</string>
     <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Right: %s</string>
     <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Left: %s</string>
+    <string name="designsystem_organism_thundermail_button_panel_sign_in">Sign in with Thundermail</string>
+    <string name="designsystem_organism_thundermail_button_panel_scan_qr_code">Scan QR code</string>
+    <string name="designsystem_organism_thundermail_button_panel_sign_in_or">or</string>
 </resources>
