@@ -33,13 +33,14 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.autodiscovery.view.AutoDiscoveryResultApprovalView
 import app.k9mail.feature.account.setup.ui.autodiscovery.view.AutoDiscoveryResultView
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
-import net.thunderbird.core.ui.compose.designsystem.organism.ThundermailButtonPanel
 import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.feature.thundermail.ui.component.ThundermailButtonPanel
 
 @Composable
 internal fun AccountAutoDiscoveryContent(
     state: State,
     onEvent: (Event) -> Unit,
+    onThundermailClick: () -> Unit,
     oAuthViewModel: AccountOAuthContract.ViewModel,
     brandName: String,
     contentPadding: PaddingValues,
@@ -68,9 +69,11 @@ internal fun AccountAutoDiscoveryContent(
                     title = brandName,
                 )
                 Spacer(modifier = Modifier.weight(1f))
+                @Suppress("ViewModelForwarding")
                 AutoDiscoveryContent(
                     state = state,
                     onEvent = onEvent,
+                    onThundermailClick = onThundermailClick,
                     oAuthViewModel = oAuthViewModel,
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -89,6 +92,7 @@ internal fun AccountAutoDiscoveryContent(
 internal fun AutoDiscoveryContent(
     state: State,
     onEvent: (Event) -> Unit,
+    onThundermailClick: () -> Unit,
     oAuthViewModel: AccountOAuthContract.ViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -115,6 +119,7 @@ internal fun AutoDiscoveryContent(
             ContentView(
                 state = contentState,
                 onEvent = onEvent,
+                onThundermailClick = onThundermailClick,
                 oAuthViewModel = oAuthViewModel,
                 resources = resources,
             )
@@ -129,6 +134,7 @@ internal fun AutoDiscoveryContent(
 internal fun ContentView(
     state: State,
     onEvent: (Event) -> Unit,
+    onThundermailClick: () -> Unit,
     oAuthViewModel: AccountOAuthContract.ViewModel,
     resources: Resources,
     modifier: Modifier = Modifier,
@@ -155,7 +161,7 @@ internal fun ContentView(
 
         AnimatedVisibility(state.emailAddress.value.isBlank()) {
             ThundermailButtonPanel(
-                onThundermailClick = {},
+                onThundermailClick = onThundermailClick,
                 onScanQrCodeClick = {},
                 modifier = Modifier
                     .testTagAsResourceId("thundermail_panel")

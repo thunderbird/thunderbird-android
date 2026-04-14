@@ -15,6 +15,7 @@ import net.thunderbird.core.ui.contract.mvi.observe
 internal fun AccountAutoDiscoveryScreen(
     onNext: (AutoDiscoveryUiResult) -> Unit,
     onBack: () -> Unit,
+    onThundermailClick: () -> Unit,
     viewModel: ViewModel,
     brandNameProvider: BrandNameProvider,
     modifier: Modifier = Modifier,
@@ -36,6 +37,7 @@ internal fun AccountAutoDiscoveryScreen(
         AccountAutoDiscoveryContent(
             state = state.value,
             onEvent = { dispatch(it) },
+            onThundermailClick = onThundermailClick,
             oAuthViewModel = viewModel.oAuthViewModel,
             brandName = brandNameProvider.brandName,
             contentPadding = innerPadding,
