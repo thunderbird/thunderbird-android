@@ -69,9 +69,14 @@ class IdentityHeaderBuilderTest : RobolectricTest() {
         signature: String? = null,
         signatureUse: Boolean = false,
         replyTo: String? = null,
-    ): Identity {
-        return Identity(description, name, email, signature, signatureUse, replyTo)
-    }
+    ): Identity = Identity(
+        description = description,
+        name = name,
+        email = email,
+        signature = signature,
+        signatureUse = signatureUse,
+        replyTo = replyTo,
+    )
 }
 
 private fun Assert<String>.containsParameter(identityField: IdentityField, value: String) = given { actual ->

@@ -36,6 +36,9 @@ class IdentitySettingsDescriptions {
                 new V(1, new BooleanSetting(true)),
                 new V(68, new BooleanSetting(false))
         ));
+        s.put("signatureIsHtml", Settings.versions(
+                new V(111, new BooleanSetting(false))
+        ));
         s.put("replyTo", Settings.versions(
                 new V(1, new OptionalEmailAddressSetting())
         ));

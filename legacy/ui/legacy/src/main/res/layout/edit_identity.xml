@@ -137,6 +137,21 @@
                     android:layout_width="fill_parent"
                     android:hint="@string/edit_identity_signature_hint"
                     />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/signature_is_html"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_settings_signature_is_html_label"
+                    />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/signature_is_html_summary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_settings_signature_is_html_summary"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
