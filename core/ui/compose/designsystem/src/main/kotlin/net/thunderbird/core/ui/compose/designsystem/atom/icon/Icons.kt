@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.dualtone.DualToneWarningIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.FilledDotIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.FilledStarIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.FilledThundermail
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedAccountIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedBadgeIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedBankIcon
@@ -93,6 +94,8 @@ object Icons {
         val CheckCircle: ImageVector = Icons.Filled.CheckCircle
         val Dot: ImageVector = FilledDotIcon
         val Star: ImageVector = FilledStarIcon
+
+        val Thundermail: ImageVector = FilledThundermail
     }
 
     /**
