@@ -5,6 +5,7 @@ import net.thunderbird.core.logging.legacy.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.message.html.HtmlConverter;
+import com.fsck.k9.message.html.HtmlSignatureSanitizer;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
@@ -20,6 +21,7 @@ class TextBodyBuilder {
     private boolean mSignatureBeforeQuotedText = false;
     private boolean mInsertSeparator = false;
     private boolean mAppendSignature = true;
+    private boolean mSignatureIsHtml = false;
 
     private String mMessageContent;
     private String mSignature;
@@ -182,7 +184,10 @@ class TextBodyBuilder {
     private String getSignature() {
         String signature = "";
         if (!isEmpty(mSignature)) {
-            signature = "\r\n" + mSignature;
+            String plainSignature = mSignatureIsHtml
+                    ? HtmlConverter.htmlToText(mSignature)
+                    : mSignature;
+            signature = "\r\n" + plainSignature;
         }
 
         return signature;
@@ -191,7 +196,9 @@ class TextBodyBuilder {
     private String getSignatureHtml() {
         String signature = "";
         if (!isEmpty(mSignature)) {
-            signature = HtmlConverter.textToHtmlFragment(mSignature);
+            signature = mSignatureIsHtml
+                    ? HtmlSignatureSanitizer.sanitize(mSignature)
+                    : HtmlConverter.textToHtmlFragment(mSignature);
         }
         return signature;
     }
@@ -242,6 +249,10 @@ class TextBodyBuilder {
 
     public void setAppendSignature(boolean appendSignature) {
         mAppendSignature = appendSignature;
+    }
+
+    public void setSignatureIsHtml(boolean signatureIsHtml) {
+        mSignatureIsHtml = signatureIsHtml;
     }
 
     private static boolean isEmpty(String s) {

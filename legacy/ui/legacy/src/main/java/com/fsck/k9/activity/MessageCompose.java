@@ -102,6 +102,7 @@ import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.helper.Utility;
 import net.thunderbird.core.android.network.ConnectivityManager;
 import net.thunderbird.core.common.mail.Flag;
+import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import net.thunderbird.core.common.exception.MessagingException;
@@ -226,6 +227,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final MessagingController messagingController = DI.get(MessagingController.class);
     private final Preferences preferences = DI.get(Preferences.class);
     private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
+    private final com.fsck.k9.view.WebViewConfigProvider webViewConfigProvider =
+            DI.get(com.fsck.k9.view.WebViewConfigProvider.class);
 
     private final IntentDataMapper indentDataMapper = DI.get(IntentDataMapper.class);
 
@@ -284,6 +287,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private MaterialTextView chooseIdentityView;
     private EditText subjectView;
     private EditText signatureView;
+    private com.fsck.k9.view.MessageWebView signatureHtmlPreview;
     private EditText messageContentView;
     private LinearLayout attachmentsView;
 
@@ -372,6 +376,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         EditText upperSignature = findViewById(R.id.upper_signature);
         EditText lowerSignature = findViewById(R.id.lower_signature);
+        com.fsck.k9.view.MessageWebView upperSignaturePreview = findViewById(R.id.upper_signature_html_preview);
+        com.fsck.k9.view.MessageWebView lowerSignaturePreview = findViewById(R.id.lower_signature_html_preview);
 
 
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
@@ -493,16 +499,34 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         if (account.isSignatureBeforeQuotedText()) {
             signatureView = upperSignature;
+            signatureHtmlPreview = upperSignaturePreview;
             lowerSignature.setVisibility(View.GONE);
+            lowerSignaturePreview.setVisibility(View.GONE);
         } else {
             signatureView = lowerSignature;
+            signatureHtmlPreview = lowerSignaturePreview;
             upperSignature.setVisibility(View.GONE);
+            upperSignaturePreview.setVisibility(View.GONE);
         }
+        signatureHtmlPreview.configure(webViewConfigProvider.createForMessageCompose());
+        // Override MessageWebView's inbound-mail defaults: the signature is the user's own
+        // content, so allow remote images, and render at natural device size rather than
+        // the 980px "wide viewport" that would shrink short signatures.
+        signatureHtmlPreview.blockNetworkData(false);
+        signatureHtmlPreview.getSettings().setUseWideViewPort(false);
+        signatureHtmlPreview.getSettings().setLoadWithOverviewMode(false);
+        signatureHtmlPreview.setWebViewClient(new android.webkit.WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
+                return true;
+            }
+        });
         updateSignature();
         signatureView.addTextChangedListener(signTextWatcher);
 
         if (!identity.getSignatureUse()) {
             signatureView.setVisibility(View.GONE);
+            signatureHtmlPreview.setVisibility(View.GONE);
         }
 
         requestReadReceipt = account.isMessageReadReceipt();
@@ -1087,9 +1111,25 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         if (identity.getSignatureUse()) {
             String signature = CrLfConverter.toLf(identity.getSignature());
             signatureView.setText(signature);
-            signatureView.setVisibility(View.VISIBLE);
+            // The plain EditText can't render HTML, so for HTML signatures we hide it and
+            // show a rendered preview in a WebView instead. The EditText still holds the
+            // raw HTML so signatureView.getText() continues to feed the outgoing message.
+            if (identity.getSignatureIsHtml() && signature != null) {
+                signatureView.setVisibility(View.GONE);
+                String sanitized = com.fsck.k9.message.html.HtmlSignatureSanitizer.sanitize(signature);
+                String document = "<!DOCTYPE html><html><head>" +
+                        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" +
+                        "<style>body{margin:12px;word-wrap:break-word;}img{max-width:100%;height:auto;}</style>" +
+                        "</head><body>" + sanitized + "</body></html>";
+                signatureHtmlPreview.displayHtmlContentWithInlineAttachments(document, null, null);
+                signatureHtmlPreview.setVisibility(View.VISIBLE);
+            } else {
+                signatureHtmlPreview.setVisibility(View.GONE);
+                signatureView.setVisibility(View.VISIBLE);
+            }
         } else {
             signatureView.setVisibility(View.GONE);
+            signatureHtmlPreview.setVisibility(View.GONE);
         }
     }
 
@@ -1568,6 +1608,27 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         } else {
             newIdentity = newIdentity.withEmail(identity.getEmail());
         }
+
+        // The draft's identity header does not encode whether the signature is HTML, so
+        // inherit the flag from the matching account identity (looked up by email) so that
+        // multi-identity accounts preserve each identity's setting. If no match, fall back
+        // to the currently-loaded default identity.
+        Identity matchedIdentity = null;
+        String draftEmail = newIdentity.getEmail();
+        if (draftEmail != null) {
+            try {
+                Address[] parsed = Address.parse(draftEmail);
+                if (parsed.length > 0) {
+                    matchedIdentity = account.findIdentity(parsed[0]);
+                }
+            } catch (Exception e) {
+                // Ignore — fall back to default identity below.
+            }
+        }
+        boolean signatureIsHtml = matchedIdentity != null
+                ? matchedIdentity.getSignatureIsHtml()
+                : identity.getSignatureIsHtml();
+        newIdentity = newIdentity.withSignatureIsHtml(signatureIsHtml);
 
         if (k9identity.containsKey(IdentityField.ORIGINAL_MESSAGE)) {
             relatedMessageReference = null;

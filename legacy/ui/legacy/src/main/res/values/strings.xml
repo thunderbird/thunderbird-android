@@ -619,6 +619,8 @@
 
     <string name="account_settings_signature_use_label">Use Signature</string>
     <string name="account_settings_signature_label">Signature</string>
+    <string name="account_settings_signature_is_html_label">Format signature as HTML</string>
+    <string name="account_settings_signature_is_html_summary">Interpret the signature as HTML. Scripts and event handlers will be removed for security.</string>
 
     <string name="default_identity_description">Initial identity</string>
     <string name="choose_identity_title">Choose identity</string>

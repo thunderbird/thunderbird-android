@@ -113,6 +113,20 @@
                     android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                     />
 
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/account_signature_is_html"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_settings_signature_is_html_label"
+                    />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_settings_signature_is_html_summary"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    />
+
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
