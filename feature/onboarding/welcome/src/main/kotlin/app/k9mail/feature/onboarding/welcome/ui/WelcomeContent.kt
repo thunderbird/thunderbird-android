@@ -17,6 +17,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
@@ -28,9 +29,12 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMedium
 import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.feature.onboarding.welcome.R
+import net.thunderbird.core.common.provider.BrandTypographyProvider
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.feature.thundermail.ui.RegisteredTrademarkInjector
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.koinInject
 
 private const val CIRCLE_COLOR = 0xFFEEEEEE
 private const val CIRCLE_SIZE_DP = 200
@@ -122,7 +126,7 @@ private fun WelcomeTitleItem(
         modifier = modifier,
     ) {
         WelcomeTitle(
-            title = title,
+            title = RegisteredTrademarkInjector.inject(title),
             modifier = Modifier.defaultItemModifier(),
         )
     }
@@ -130,17 +134,20 @@ private fun WelcomeTitleItem(
 
 @Composable
 private fun WelcomeTitle(
-    title: String,
+    title: AnnotatedString,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.padding(horizontal = MainTheme.spacings.quadruple),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        TextDisplayMedium(
-            text = title,
-            textAlign = TextAlign.Center,
-        )
+        val brandTypographyProvider = koinInject<BrandTypographyProvider>()
+        brandTypographyProvider.UsingTypography {
+            TextDisplayMedium(
+                text = title,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }
 

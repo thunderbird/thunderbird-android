@@ -45,6 +45,6 @@ internal fun ThemeTypography.toMaterial3Typography() = Typography(
     labelSmall = labelSmall,
 )
 
-internal val LocalThemeTypography = staticCompositionLocalOf<ThemeTypography> {
+val LocalThemeTypography = staticCompositionLocalOf<ThemeTypography> {
     error("No ThemeTypography provided")
 }
