@@ -1,44 +1,37 @@
 package app.k9mail.feature.onboarding.welcome.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMedium
-import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.feature.onboarding.welcome.R
-import net.thunderbird.core.common.provider.BrandTypographyProvider
+import net.thunderbird.core.common.provider.UsingBrandTypography
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.thundermail.ui.RegisteredTrademarkInjector
 import org.jetbrains.compose.resources.painterResource
-import org.koin.compose.koinInject
 
-private const val CIRCLE_COLOR = 0xFFEEEEEE
-private const val CIRCLE_SIZE_DP = 200
 private const val LOGO_SIZE_DP = 125
+private const val LOGO_DESCRIPTION_SPACING = 48
 
 @Composable
 internal fun WelcomeContent(
@@ -52,24 +45,43 @@ internal fun WelcomeContent(
         modifier = modifier.fillMaxHeight(),
         useSurfaceForExpandedContent = false,
     ) { contentPadding ->
-        LazyColumnWithHeaderFooter(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = contentPadding,
-            verticalArrangement = Arrangement.SpaceEvenly,
-            header = {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxHeight()
+                .verticalScroll(rememberScrollState())
+                .padding(contentPadding),
+        ) {
+            Spacer(modifier = Modifier.weight(weight = .5f))
+            Column(
+                verticalArrangement = Arrangement.spacedBy(LOGO_DESCRIPTION_SPACING.dp),
+            ) {
                 WelcomeHeaderSection(title = appName)
-            },
-            footer = {
-                WelcomeFooterSection(
-                    showImportButton = showImportButton,
-                    onStartClick = onStartClick,
-                    onImportClick = onImportClick,
+                TextBodyMedium(
+                    text = stringResource(id = R.string.onboarding_welcome_text),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.defaultItemModifier(),
                 )
-            },
-            content = {
-                item { WelcomeMessageItem() }
-            },
-        )
+            }
+            Spacer(modifier = Modifier.weight(weight = 1f))
+
+            WelcomeActionButtons(
+                showImportButton = showImportButton,
+                onStartClick = onStartClick,
+                onImportClick = onImportClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = MainTheme.spacings.quadruple),
+            )
+
+            Spacer(modifier = Modifier.weight(weight = .25f))
+            TextBodySmall(
+                text = stringResource(R.string.onboarding_welcome_developed_by),
+                modifier = Modifier.padding(MainTheme.spacings.quadruple),
+            )
+            Spacer(modifier = Modifier.weight(weight = .25f))
+        }
     }
 }
 
@@ -81,13 +93,14 @@ private fun WelcomeHeaderSection(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .defaultItemModifier()
             .padding(top = MainTheme.spacings.quadruple),
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         WelcomeLogo()
-        WelcomeTitleItem(title = title)
+        WelcomeTitle(
+            title = RegisteredTrademarkInjector.inject(title),
+        )
     }
 }
 
@@ -99,34 +112,10 @@ private fun WelcomeLogo(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(
-            modifier = Modifier
-                .clip(CircleShape)
-                .background(Color(CIRCLE_COLOR))
-                .size(CIRCLE_SIZE_DP.dp),
-        ) {
-            Image(
-                painter = painterResource(MainTheme.images.logo),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(LOGO_SIZE_DP.dp)
-                    .align(Alignment.Center),
-            )
-        }
-    }
-}
-
-@Composable
-private fun WelcomeTitleItem(
-    title: String,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier,
-    ) {
-        WelcomeTitle(
-            title = RegisteredTrademarkInjector.inject(title),
-            modifier = Modifier.defaultItemModifier(),
+        Image(
+            painter = painterResource(MainTheme.images.logo),
+            contentDescription = null,
+            modifier = Modifier.size(LOGO_SIZE_DP.dp),
         )
     }
 }
@@ -140,8 +129,7 @@ private fun WelcomeTitle(
         modifier = modifier.padding(horizontal = MainTheme.spacings.quadruple),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val brandTypographyProvider = koinInject<BrandTypographyProvider>()
-        brandTypographyProvider.UsingTypography {
+        UsingBrandTypography {
             TextDisplayMedium(
                 text = title,
                 textAlign = TextAlign.Center,
@@ -151,60 +139,7 @@ private fun WelcomeTitle(
 }
 
 @Composable
-private fun WelcomeMessageItem(
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier,
-    ) {
-        WelcomeMessage(
-            modifier = Modifier.defaultItemModifier(),
-        )
-    }
-}
-
-@Composable
-private fun WelcomeMessage(
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = Modifier
-            .padding(horizontal = MainTheme.spacings.quadruple)
-            .then(modifier),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        TextBodyLarge(
-            text = stringResource(id = R.string.onboarding_welcome_text),
-            textAlign = TextAlign.Center,
-        )
-    }
-}
-
-@Composable
-private fun WelcomeFooterSection(
-    showImportButton: Boolean,
-    onStartClick: () -> Unit,
-    onImportClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = MainTheme.spacings.quadruple),
-    ) {
-        WelcomeFooter(
-            showImportButton = showImportButton,
-            onStartClick = onStartClick,
-            onImportClick = onImportClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = MainTheme.spacings.quadruple),
-        )
-    }
-}
-
-@Composable
-private fun WelcomeFooter(
+private fun WelcomeActionButtons(
     showImportButton: Boolean,
     onStartClick: () -> Unit,
     onImportClick: () -> Unit,
@@ -226,17 +161,10 @@ private fun WelcomeFooter(
                 onClick = onImportClick,
             )
         }
-
-        TextBodySmall(
-            text = stringResource(R.string.onboarding_welcome_developed_by),
-            modifier = Modifier
-                .padding(top = MainTheme.spacings.quadruple)
-                .padding(horizontal = MainTheme.spacings.double),
-        )
     }
 }
 
-private fun Modifier.defaultItemModifier() = composed {
-    fillMaxWidth()
-        .padding(MainTheme.spacings.default)
-}
+@Composable
+private fun Modifier.defaultItemModifier() = this then Modifier
+    .fillMaxWidth()
+    .padding(MainTheme.spacings.default)
