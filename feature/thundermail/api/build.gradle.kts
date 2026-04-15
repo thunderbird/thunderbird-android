@@ -14,6 +14,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.featureflag)
+            implementation(projects.core.ui.compose.theme2.common)
+            implementation(libs.jetbrains.compose.components.resources)
         }
     }
 }
