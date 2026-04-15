@@ -1,0 +1,17 @@
+K-9 Mail version 18.0
+
+New:
+- PNG avatars
+- Setting to display ISO date/time in message list
+- Fixed-width font for composing
+
+Changed:
+- Attachment summary moved to header
+
+Fixed:
+- "Delete (from notification)" setting did not retain state
+- Find folder search hint text was cut off
+- User not notified if offline when sending message
+- CC/BCC fields were not expanded by default for Reply All
+- Crash occurred when retrieving images
+- Deleted messages could remain visible in message list
