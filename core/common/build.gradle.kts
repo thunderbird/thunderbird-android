@@ -24,6 +24,7 @@ kotlin {
             implementation(projects.core.logging.implLegacy)
             implementation(projects.core.logging.api)
             implementation(projects.core.logging.implFile)
+            implementation(libs.koin.compose)
         }
         getByName("commonJvmMain") {
             dependencies {
