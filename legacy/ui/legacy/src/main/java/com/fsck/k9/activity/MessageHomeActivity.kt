@@ -33,8 +33,6 @@ import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.K9
-import com.fsck.k9.K9.PostMarkAsUnreadNavigation
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessagingController
@@ -63,6 +61,7 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SplitViewMode
+import net.thunderbird.core.preference.interaction.PostMarkAsUnreadNavigation
 import net.thunderbird.core.preference.interaction.PostRemoveNavigation
 import net.thunderbird.feature.account.storage.legacy.mapper.LegacyAccountDataMapper
 import net.thunderbird.feature.funding.api.FundingManager
@@ -1289,7 +1288,7 @@ open class MessageHomeActivity :
     }
 
     override fun performNavigationAfterMarkAsUnread() {
-        when (K9.messageViewPostMarkAsUnreadNavigation) {
+        when (generalSettingsManager.getConfig().interaction.messageViewPostMarkAsUnreadNavigation) {
             PostMarkAsUnreadNavigation.StayOnCurrentMessage -> Unit
             PostMarkAsUnreadNavigation.ReturnToMessageList -> returnToMessageList()
         }
