@@ -12,8 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMediumAutoResize
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
+import net.thunderbird.core.common.provider.BrandTypographyProvider
 import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.feature.thundermail.ui.RegisteredTrademarkInjector
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.koinInject
 
 private const val TITLE_ICON_SIZE_DP = 56
 
@@ -52,7 +55,10 @@ fun AppTitleTopHeader(
                 contentDescription = null,
             )
 
-            TextDisplayMediumAutoResize(text = title)
+            val brandTypographyProvider = koinInject<BrandTypographyProvider>()
+            brandTypographyProvider.UsingTypography {
+                TextDisplayMediumAutoResize(text = RegisteredTrademarkInjector.inject(title))
+            }
         }
     }
 }
