@@ -39,7 +39,7 @@ fun TextDisplayMediumAutoResize(
         onTextLayout = { result ->
             if (result.didOverflowWidth) {
                 resizedTextStyle = resizedTextStyle.copy(
-                    fontSize = resizedTextStyle.fontSize * 0.95,
+                    fontSize = resizedTextStyle.fontSize * 0.98,
                 )
             } else {
                 shouldDraw = true
