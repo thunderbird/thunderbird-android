@@ -11,6 +11,7 @@ fun ButtonFilled(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    leadingIcon: (@Composable () -> Unit)? = null,
     enabled: Boolean = true,
 ) {
     Material3Button(
@@ -18,6 +19,7 @@ fun ButtonFilled(
         modifier = modifier,
         enabled = enabled,
     ) {
+        leadingIcon?.invoke()
         Material3Text(
             text = text,
             textAlign = TextAlign.Center,
