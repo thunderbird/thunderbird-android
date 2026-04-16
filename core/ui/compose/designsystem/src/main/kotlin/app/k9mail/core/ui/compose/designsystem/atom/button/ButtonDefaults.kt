@@ -14,6 +14,8 @@ import androidx.compose.material3.ButtonDefaults as Material3ButtonDefaults
  * Contains the default values used by buttons in the design system.
  */
 data object ButtonDefaults {
+    val ContentPadding = Material3ButtonDefaults.ContentPadding
+
     /**
      * Creates a [ButtonColors] that represents the default container and content
      * colours used in a text button.
