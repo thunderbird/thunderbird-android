@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
+
+import net.thunderbird.backend.api.BackendStorageFactory;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
 import net.thunderbird.core.featureflag.FeatureFlagResult.Disabled;
@@ -17,7 +19,6 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
 import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mailstore.LegacyAccountDtoBackendStorageFactory;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateChainException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -95,7 +96,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Mock
     private SpecialLocalFoldersCreator specialLocalFoldersCreator;
     @Mock
-    private LegacyAccountDtoBackendStorageFactory backendStorageFactory;
+    private BackendStorageFactory backendStorageFactory;
     @Mock
     private SimpleMessagingListener listener;
     @Mock
@@ -125,6 +126,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private Preferences preferences;
     private String accountUuid;
     private FeatureFlagProvider featureFlagProvider;
+    @Mock
+    private FolderIdResolver folderIdResolver;
 
     @Mock
     private Logger syncLogger;
@@ -163,7 +166,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
             syncLogger,
             notificationManager,
             fakeOutboxFolderManager,
-            backendStorageFactory
+            backendStorageFactory,
+            folderIdResolver
         );
 
         configureAccount();
