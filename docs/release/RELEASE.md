@@ -129,6 +129,14 @@ For example:
 - `2025-10-12 09:23` → `2 | 285 | 09 | 23` → `22850923`
 - `2122-02-09 16:45` → `99 | 040 | 16 | 45` → `990401645`
 
+## Milestones
+
+We use GitHub Milestones to track work for each major release. There is only one milestone for the whole major release, so work going into 9.0 and 9.1 would both be in the "Thunderbird 9" milestone. Each milestone has the due date set to the anticipated release date.
+
+There are exactly three open milestones at any given time, some of our automation depends on this being the case. The milestone with the date furthest into the future is the target for the `main` branch, the one closest is the target for the `release` branch. When an uplift occurs, the milestone is changed to the respective next target.
+
+Learn more on the [milestones page](https://github.com/thunderbird/thunderbird-android/milestones)
+
 ## Merge Days
 
 Active development occurs on the `main` branch and becomes part of the daily build. Every 4 weeks:
@@ -142,7 +150,9 @@ On the latter, code that was in beta goes to release, where the general populati
 When a merge occurs, the version name is carried forward to the next branch, and the alpha/beta suffixes are removed/reset accordingly. For example, let’s say we are shortly before the Thunderbird 9.0 release. The latest releases were Thunderbird 8.1, Thunderbird Beta 9.0b4, and Thunderbird Daily 10.0a1. Here is what happens:
 
 - The `beta` branch is merged to `release`. The resulting version on release changes from 8.1 to 9.0.
+  - The version *code* will not be incremented on `release` until the [Shippable Build & Signing](https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml) action is run for the 9.0 release
 - The `main` branch is merged to `beta`. The resulting version on beta changes from 9.0b4 to 10.0b1
+  - The version *code* will not be incremented on `beta` until the [Shippable Build & Signing](https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml) action is run for the 10.0b1 release
 - The `main` branch version number is changed from 10.0a1 to 11.0a1
 
 While the version name changes, it must be ensured that the version code remains on the same sequence for each branch. For example:
@@ -156,15 +166,7 @@ Our application IDs are specific to the branch they are on. For example:
 - Release always uses `net.thunderbird.android` as the app ID for TfA.
 - Release always uses `com.fsck.k9` as the app ID for K-9.
 
-## Milestones
-
-We use GitHub Milestones to track work for each major release. There is only one milestone for the whole major release, so work going into 9.0 and 9.1 would both be in the "Thunderbird 9" milestone. Each milestone has the due date set to the anticipated release date.
-
-There are exactly three open milestones at any given time, some of our automation depends on this being the case. The milestone with the date furthest into the future is the target for the `main` branch, the one closest is the target for the `release` branch. When an uplift occurs, the milestone is changed to the respective next target.
-
-Learn more on the [milestones page](https://github.com/thunderbird/thunderbird-android/milestones)
-
-## Merge Process
+### Merge Process
 
 The merge process enables various benefits, including:
 
@@ -174,25 +176,33 @@ The merge process enables various benefits, including:
 - Files/code that is unique per branch can remain that way (e.g. notes files such as changelog_master.xml, version codes).
 
 The following steps are taken when merging main into beta:
+
 1. Lock the main branch with the 'CLOSED TREE (main)' ruleset
 2. Send a message to the #tb-mobile-dev:mozilla.org matrix channel to let them know:
+
 - You will be performing the merge from main into beta
 - The main branch is locked and cannot be changed during the merge
 - You will let them know when the merge is complete and main is re-opened
+
 3. Review merge results and ensure correctness
 4. Push the merge
 5. Update milestones (must be done before version increment in main)
+
 - Open a new milestone for the new version
 - Close the oldest milestone
 - There should always be 3 milestones open (main, beta, release)
+
 6. Submit a pull request that increments the version in main
 7. Once the version increment is merged into main, unlock the branch
 8. Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion and that main is re-opened
 
 The following steps are taken when merging beta into release:
+
 1. Send a message to the #tb-mobile-dev:mozilla.org matrix channel to let them know:
+
 - You will be performing the merge from beta into release
 - You will let them know when the merge is complete
+
 2. Review merge results and ensure correctness
 3. Push the merge
 4. Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion
@@ -213,7 +223,8 @@ Files of particular importance are:
 - app-thunderbird/build.gradle.kts
 - app-k9mail/src/main/res/raw/changelog_master.xml
 
-These build.gradle.kts files must be handled as described in "Merge Days" section above. This is part of the do_merge.sh automation.
+These build.gradle.kts files must be handled as described under "Merge Days" above. This is part of the do_merge.sh automation.
+
 The app-k9mail/src/main/res/raw/changelog_master.xml should not include any beta notes in the release branch.
 
 ## Releases
@@ -227,24 +238,40 @@ For the historical manual release process, see [Releasing](HISTORICAL_RELEASE.md
 
 These are the general steps for a release:
 
-1. Perform merge or uplifts. Each release is the result of either a merge or uplift.
-2. Draft release notes at [thunderbird-notes](https://github.com/thunderbird/thunderbird-notes).
-3. Trigger build via the [Shippable Build & Signing](https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml) action.
-4. Review the build results by reviewing the action summary and the git commits resulting from the build.
-   - Make sure the version code is incremented properly and not wildly off
-   - Ensure the commits are correct
-   - Ensure the symlink `app-metadata` points to the right product at this commit
+1. Perform merge or uplifts. Each release is the result of either a merge or uplift
+2. Draft release notes at [thunderbird-notes](https://github.com/thunderbird/thunderbird-notes)
+3. Trigger build via the [Shippable Build & Signing](https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml) action
+
+- Release notes must be landed to `prod` before triggering [Shippable Build & Signing](https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml), or the build will fail
+
+4. Review the build results by reviewing the action summary and the git commits resulting from the build
+
+- Make sure the version code is incremented properly and not wildly off
+- Ensure the commits are correct
+- Ensure the symlink `app-metadata` points to the right product at this commit
+
 5. Test the build in the internal testing track
-   - Release versions should be thoroughly tested with the test plan in Testrail
-   - Beta versions only require a basic smoke test to ensure it installs
-6. Promote TfA and K-9 releases to production track in Play Store.
-   - Set rollout to a low rate (generally 10-30%).
-   - Betas are only released for TfA. K-9 beta users are advised to use Thunderbird.
-7. Wait for Play Store review to complete.
-   - Release versions of TfA and K-9 have managed publishing enabled. Once the review has completed you need to publish the release
-   - Beta versions of TfA do not have managed publishing enabled. It will be available once Google has reviewed, even on a weekend.
-8. Update F-Droid to new TfA and K-9 releases by sending a pull request to [fdroiddata](https://gitlab.com/fdroid/fdroiddata)
-9. Send community updates to Matrix channels, and beta or planning mailing lists as needed.
-10. Approximately 24 hours after initial release to production, assess the following before updating rollout to a higher rate:
-    - Crash rates, GitHub issues, install base, and reviews.
+
+- Release versions should be thoroughly tested with the test plan in Testrail
+- Beta versions only require a basic smoke test to ensure it installs
+
+6. Document contributors on Thunderbird and K-9 GitHub releases page
+
+- Contributors can be compiled from the GitHub release notes template that can be generated when editing a release
+
+7. Promote TfA and K-9 releases to production track in Play Store
+
+- Set rollout to a low rate (generally 10-30%)
+- Betas are only released for TfA. K-9 beta users are advised to use Thunderbird
+
+8. Wait for Play Store review to complete
+
+- Release versions of TfA and K-9 have managed publishing enabled. Once the review has completed you need to publish the release
+- Beta versions of TfA do not have managed publishing enabled. It will be available once Google has reviewed, even on a weekend
+
+9. Update F-Droid to new TfA and K-9 releases by sending a pull request to [fdroiddata](https://gitlab.com/fdroid/fdroiddata)
+10. Send community updates to Matrix channels, and beta or planning mailing lists as needed
+11. Approximately 24 hours after initial release to production, assess the following before updating rollout to a higher rate:
+
+- Crash rates, GitHub issues, install base, and reviews
 
