@@ -58,6 +58,7 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedM
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedOpenInNewIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedPersonIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedPetsIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedQrCode
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedRocketIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedSchoolIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedSmileIcon
@@ -159,6 +160,8 @@ object Icons {
 
         val Person: ImageVector = OutlinedPersonIcon
         val Pets: ImageVector = OutlinedPetsIcon
+
+        val QrCode: ImageVector = OutlinedQrCode
 
         val Report: ImageVector = Icons.Outlined.Report
         val Rocket: ImageVector = OutlinedRocketIcon
