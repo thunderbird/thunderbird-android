@@ -11,54 +11,34 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMediumAutoResize
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import net.thunderbird.core.common.provider.BrandTypographyProvider
+import net.thunderbird.core.common.provider.UsingBrandTypography
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.thundermail.ui.RegisteredTrademarkInjector
 import org.jetbrains.compose.resources.painterResource
-import org.koin.compose.koinInject
-
-private const val TITLE_ICON_SIZE_DP = 56
 
 @Composable
 fun AppTitleTopHeader(
     title: String,
     modifier: Modifier = Modifier,
 ) {
-    ResponsiveWidthContainer(
-        modifier = Modifier
+    Row(
+        modifier = modifier
             .fillMaxWidth()
             .padding(
-                top = MainTheme.spacings.quadruple,
-                bottom = MainTheme.spacings.default,
-            )
-            .then(modifier),
-    ) { contentPadding ->
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = MainTheme.spacings.half,
-                    end = MainTheme.spacings.quadruple,
-                )
-                .padding(contentPadding)
-                .then(modifier),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Image(
-                painter = painterResource(MainTheme.images.logo),
-                modifier = Modifier
-                    .padding(all = MainTheme.spacings.default)
-                    .padding(end = MainTheme.spacings.default)
-                    .size(TITLE_ICON_SIZE_DP.dp),
-                contentDescription = null,
-            )
+                start = MainTheme.spacings.half,
+                end = MainTheme.spacings.quadruple,
+            ),
+        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Image(
+            painter = painterResource(MainTheme.images.logo),
+            modifier = Modifier.size(width = 52.dp, height = 50.dp),
+            contentDescription = null,
+        )
 
-            val brandTypographyProvider = koinInject<BrandTypographyProvider>()
-            brandTypographyProvider.UsingTypography {
-                TextDisplayMediumAutoResize(text = RegisteredTrademarkInjector.inject(title))
-            }
+        UsingBrandTypography {
+            TextDisplayMediumAutoResize(text = RegisteredTrademarkInjector.inject(title))
         }
     }
 }
