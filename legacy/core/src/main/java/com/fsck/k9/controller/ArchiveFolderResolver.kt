@@ -4,7 +4,7 @@ import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mailstore.LocalMessage
 import java.util.Locale
 import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -68,12 +68,11 @@ internal class ArchiveFolderResolver(
         }
     }
 
-    @OptIn(ExperimentalTime::class)
     private val LocalMessage.messageDate: LocalDate
         get() {
             val epochMillis = (internalDate ?: sentDate)?.time
             val timeZone = TimeZone.currentSystemDefault()
-            val instant = epochMillis?.let { kotlin.time.Instant.fromEpochMilliseconds(it) }
+            val instant = epochMillis?.let { Instant.fromEpochMilliseconds(it) }
                 ?: Clock.System.now()
             return instant.toLocalDateTime(timeZone).date
         }
