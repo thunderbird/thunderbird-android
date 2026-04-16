@@ -3,17 +3,17 @@ package com.fsck.k9.controller
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.createFolder
 import com.fsck.k9.backend.api.updateFolders
-import com.fsck.k9.mailstore.LegacyAccountDtoBackendStorageFactory
+import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 
 internal class BackendStorageArchiveFolderCreator(
-    private val backendStorageFactory: LegacyAccountDtoBackendStorageFactory,
+    private val backendStorageFactory: BackendStorageFactory,
 ) : ArchiveFolderCreator {
     @Suppress("TooGenericExceptionCaught")
     override fun createFolder(account: LegacyAccountDto, folderInfo: FolderInfo): Long? {
         return try {
-            val backendStorage = backendStorageFactory.createBackendStorage(account)
+            val backendStorage = backendStorageFactory.createBackendStorage(account.id)
             backendStorage.updateFolders {
                 createFolder(folderInfo)
             }
