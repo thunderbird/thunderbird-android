@@ -1,5 +1,6 @@
 package app.k9mail.core.ui.compose.designsystem.atom.button
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -29,6 +30,7 @@ fun ButtonOutlined(
     icon: ImageVector? = null,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(),
     shape: ButtonShape = ButtonDefaults.outlinedShape(),
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
 ) {
     Material3OutlinedButton(
         onClick = onClick,
@@ -37,6 +39,7 @@ fun ButtonOutlined(
         shape = shape.shape,
         colors = colors.toMaterial3Colors(),
         border = shape.borderStroke?.toMaterial3BorderStroke(),
+        contentPadding = contentPadding,
     ) {
         icon?.let {
             Icon(
