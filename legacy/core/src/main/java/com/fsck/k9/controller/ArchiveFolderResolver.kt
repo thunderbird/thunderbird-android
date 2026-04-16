@@ -63,6 +63,7 @@ internal class ArchiveFolderResolver(
                 serverId = subfolderServerId,
                 name = subfolderServerId,
                 type = LegacyFolderType.ARCHIVE,
+                folderPathDelimiter = delimiter,
             )
             folderCreator.createFolder(account, folderInfo)
         }
