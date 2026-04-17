@@ -42,21 +42,22 @@ jobs:
       - name: Install mdbook and extensions
         run: ./docs/install.sh
 
-      - name: Build docs
-        run: mdbook build docs --dest-dir=./../book/docs/latest
-
       - name: Test docs
         run: mdbook test docs
 
-      - name: Clean docs
+      - name: Build docs
         run: |
-          rm -rf book/docs/latest/html/assets/draw.io
-          rm -f book/docs/latest/html/.gitignore
-          rm -f book/docs/latest/html/install.sh
+          BUILD_DIR=$(mktemp -d)
+          echo "BUILD_DIR=${BUILD_DIR}" >> $GITHUB_ENV
+          echo "Building docs into ${BUILD_DIR}"
+          mdbook build docs --dest-dir="${BUILD_DIR}"
+          echo "Build output preview:"
+          ls -la "${BUILD_DIR}" || true
 
-          # Restore mermaid.min.js, it has already been copied over to book/docs/latest
-          git restore .
-
+          # Clean up unwanted files from the build directory before copying to gh-pages
+          rm -rf "${BUILD_DIR}/assets/draw.io" || true
+          rm -f "${BUILD_DIR}/.gitignore" || true
+          rm -f "${BUILD_DIR}/install.sh" || true
 
       - name: Deploy docs to gh-pages
         env:
@@ -78,10 +79,16 @@ jobs:
           find docs/latest -mindepth 1 -delete  # Delete old files inside docs/latest
 
           # Copy new docs to gh-pages branch
-          cp -r book/docs/latest/* docs/latest/
+          if [ ! -d "${BUILD_DIR}" ]; then
+            echo "ERROR: BUILD_DIR '${BUILD_DIR}' does not exist. The docs build may have failed."
+            exit 1
+          fi
 
-          # Remove
-          rm -rf book
+          echo "Copy docs from ${BUILD_DIR} to docs/latest/"
+          cp -a "${BUILD_DIR}/." docs/latest/ || { echo "ERROR: No files to copy from ${BUILD_DIR}"; exit 1; }
+
+          # Remove temporary build directory
+          rm -rf "${BUILD_DIR}" || true
 
           # Add, commit, and push changes
           git add .
