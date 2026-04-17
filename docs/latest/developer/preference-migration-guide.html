@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Development Environment - Thunderbird for Android - Developer Documentation</title>
+        <title>Preference Migration Guide - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -145,7 +145,7 @@
                         <a href="https://github.com/thunderbird/thunderbird-android/" title="Git repository" aria-label="Git repository">
                             <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./contributing/development-environment.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./developer/preference-migration-guide.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -179,167 +179,157 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="-development-environment"><a class="header" href="#-development-environment">🚀 Development Environment</a></h1>
-<p>This guide will help you set up your development environment and get started with contributing to the Thunderbird for
-Android project.</p>
-<h2 id="-prerequisites"><a class="header" href="#-prerequisites">📋 Prerequisites</a></h2>
-<p>Before you begin, ensure you have the following installed:</p>
+                        <h1 id="preference-migration-guide"><a class="header" href="#preference-migration-guide">Preference Migration Guide</a></h1>
+<p>This document explains how to update and migrate preferences in Thunderbird for Android.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>Thunderbird for Android uses a dedicated SQLite database to store its preferences as key-value pairs.
+Both the database file and the primary table are named <code>preferences_storage</code>. This is managed by the
+<code>K9StoragePersister</code>.</p>
 <ul>
-<li><strong><a href="https://adoptium.net/temurin/releases/?version=21">Java Development Kit (JDK)</a></strong> - Version 21 or higher (Temurin OpenJDK recommended)</li>
-<li><strong><a href="https://developer.android.com/studio">Android Studio</a></strong> - Latest stable version recommended</li>
-<li><strong><a href="https://git-scm.com/downloads">Git</a></strong> - For version control</li>
-<li><strong>Gradle</strong> - Use the Gradle wrapper included in this repo (<code>./gradlew</code>); no separate install required</li>
-<li><strong>Android SDK &amp; command-line tools</strong> – Installed and managed via Android Studio SDK Manager</li>
+<li><strong>Database Name:</strong> <code>preferences_storage</code></li>
+<li><strong>Storage Table:</strong> <code>preferences_storage</code></li>
+<li><strong>Columns:</strong> <code>primkey</code> (TEXT), <code>value</code> (TEXT)</li>
+<li><strong>Persister:</strong> <code>legacy/storage/src/main/java/com/fsck/k9/preferences/K9StoragePersister.java</code></li>
+<li><strong>Migration Manager:</strong> <code>legacy/storage/src/main/java/com/fsck/k9/preferences/migration/StorageMigrations.kt</code></li>
 </ul>
-<h2 id="-setting-up-the-development-environment"><a class="header" href="#-setting-up-the-development-environment">🔧 Setting Up the Development Environment</a></h2>
-<h3 id="1-get-the-source-code"><a class="header" href="#1-get-the-source-code">1. Get the Source Code</a></h3>
-<p>All contributions happen through a personal fork of the repository.</p>
+<h2 id="when-to-use-a-preference-migration"><a class="header" href="#when-to-use-a-preference-migration">When to use a Preference Migration</a></h2>
+<p>You must implement a preference migration whenever you:</p>
 <ul>
-<li>If you haven’t forked the project yet, see the <a href="contribution-workflow.html">Contribution Workflow</a> for step-by-step instructions.</li>
-<li>Once you have a fork, clone it to your machine and open it in Android Studio.</li>
+<li>Rename a preference key.</li>
+<li>Change the format of a preference value.</li>
+<li>Move a preference to a different storage location.</li>
+<li>Delete an obsolete preference.</li>
 </ul>
+<h2 id="adding-a-new-preference"><a class="header" href="#adding-a-new-preference">Adding a New Preference</a></h2>
+<p>If you are adding a completely new preference, you don’t necessarily need a migration unless you need to populate it
+with a default value that depends on other existing settings.</p>
+<p>To add a new preference:</p>
 <ol>
-<li>Go to the <a href="https://github.com/thunderbird/thunderbird-android">Thunderbird for Android repository</a></li>
-<li>Click the <strong>Fork</strong> button in the top-right corner</li>
-<li>Create a fork under your GitHub account</li>
+<li>Define the key in the relevant component.</li>
+<li>Use the <code>GeneralSettingsManager</code> or a specific preference manager to read and write the value.</li>
+<li>If using the legacy <code>Storage</code> system directly, use <code>StorageEditor</code> to save the value.</li>
 </ol>
-<h3 id="2-import-the-project-into-android-studio"><a class="header" href="#2-import-the-project-into-android-studio">2. Import the Project into Android Studio</a></h3>
-<ol>
-<li>Open Android Studio</li>
-<li>Select <strong>Open an Existing Project</strong></li>
-<li>Navigate to the cloned repository and open it</li>
-<li>Wait for project sync and indexing</li>
-</ol>
-<h3 id="3-configure-android-studio"><a class="header" href="#3-configure-android-studio">3. Configure Android Studio</a></h3>
-<p>For the best development experience, we recommend the following settings:</p>
-<ul>
-<li><strong>Recommended plugins:</strong>
-<ul>
-<li><strong>Kotlin Multiplatform</strong> (usually bundled; if not, install from the JetBrains Marketplace)</li>
-</ul>
-</li>
-</ul>
-<h2 id="-building-the-project"><a class="header" href="#-building-the-project">🏗️ Building the Project</a></h2>
-<h3 id="building-from-android-studio"><a class="header" href="#building-from-android-studio">Building from Android Studio</a></h3>
-<ol>
-<li>Select the app module (e.g., <code>app-thunderbird</code> or <code>app-k9mail</code>) in the <strong>Run/Debug Configuration</strong> dropdown</li>
-<li>Select build variant you want to work with (Debug/Release) from Build Variants window</li>
-<li>Click the <strong>Build</strong> button or press <code>Ctrl+F9</code> (Windows/Linux) or <code>Cmd+F9</code> (macOS)</li>
-</ol>
-<h3 id="building-from-command-line"><a class="header" href="#building-from-command-line">Building from Command Line</a></h3>
-<p>A Gradle wrapper is included in the project, so you can build the project from the command line without installing
-Gradle globally. Run the following commands from the root of the project, where <code>./gradlew</code> is the Gradle wrapper script
-and the command to <code>build</code> runs tests and other checks, while <code>assemble</code> only compiles the code and packages the APK.</p>
-<pre><code class="language-bash"># Build all variants
-./gradlew assemble
-./gradlew build
-
-# Build debug or release variant
-./gradlew assembleDebug
-./gradlew assembleRelease
-
-# Build a specific app module
-./gradlew :app-thunderbird:assembleDebug
-./gradlew :app-k9mail:assembleDebug
-
-# Build a specific library/feature module
-./gradlew :module-name:build
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<p>If the new preference requires a default value that depends on existing settings, you must follow the
+<a href="#step-by-step-guide-for-migrations">migration guide</a> below and bump the database version.</p>
+</blockquote>
+<pre><code class="language-kotlin">val editor = preferences.createStorageEditor()
+editor.putBoolean("my_new_preference", true)
+editor.commit()
 </code></pre>
-<p>Replace <code>module-name</code> with the actual name of the module you want to build.</p>
-<h2 id="-running-the-application"><a class="header" href="#-running-the-application">🚀 Running the Application</a></h2>
-<h3 id="running-on-an-emulator"><a class="header" href="#running-on-an-emulator">Running on an Emulator</a></h3>
-<ol>
-<li><a href="https://developer.android.com/studio/run/managing-avds">Set up an Android Virtual Device (AVD)</a> in Android Studio with a recent API level with Google APIs image.</li>
-<li>Select the AVD from the device dropdown.</li>
-<li>Click the <strong>Run</strong> button or press <code>Shift+F10</code> (Windows/Linux) or <code>Ctrl+R</code> (macOS)</li>
-</ol>
-<h3 id="running-on-a-physical-device"><a class="header" href="#running-on-a-physical-device">Running on a Physical Device</a></h3>
-<ol>
-<li><a href="https://developer.android.com/studio/debug/dev-options">Enable Developer Options and USB Debugging</a> on your device</li>
-<li>Connect your device to your computer via USB and confirm trust dialog if prompted</li>
-<li>Select your device from the device dropdown and click <strong>Run</strong></li>
-</ol>
-<h2 id="-running-tests"><a class="header" href="#-running-tests">🧪 Running Tests</a></h2>
-<pre><code class="language-bash"># Run all tests across modules
-./gradlew test
-
-# Run unit tests for a specific module
-./gradlew :module-name:test
-
-# Run instrumented tests (device/emulator required)
-./gradlew connectedAndroidTest
+<h2 id="step-by-step-guide-for-migrations"><a class="header" href="#step-by-step-guide-for-migrations">Step-by-Step Guide for Migrations</a></h2>
+<h3 id="1-bump-the-preference-database-version"><a class="header" href="#1-bump-the-preference-database-version">1. Bump the Preference Database Version</a></h3>
+<p>The <code>DB_VERSION</code> constant in <code>K9StoragePersister.java</code> must be incremented by exactly <strong>1</strong>. This version increase is what triggers the migration process.</p>
+<pre><code class="language-java">// legacy/storage/src/main/java/com/fsck/k9/preferences/K9StoragePersister.java
+public class K9StoragePersister implements StoragePersister {
+    private static final int DB_VERSION = 29; // Increment this
+    // ...
+}
 </code></pre>
-<p>See the <a href="testing-guide.html">Testing Guide</a> for details.</p>
-<h2 id="-checking-code-quality"><a class="header" href="#-checking-code-quality">🔍 Checking Code Quality</a></h2>
-<p>Maintaining high code quality is essential for the long-term sustainability of the Thunderbird for Android project. The project uses several tools and practices to ensure code quality:</p>
-<ul>
-<li><strong>Static Analysis Tools</strong>: Android Lint, Detekt, and Spotless</li>
-<li><strong>Code Style Guidelines</strong>: Kotlin style guide and project-specific conventions</li>
-<li><strong>Testing</strong>: Unit tests, integration tests, and UI tests</li>
-<li><strong>Code Reviews</strong>: Peer review process for all code changes</li>
-<li><strong>Continuous Integration</strong>: Automated checks for build success, tests, and code quality</li>
-</ul>
-<p>To run the basic code quality checks:</p>
-<pre><code class="language-bash"># Run lint checks
-./gradlew lint
-
-# Run detekt
-./gradlew detekt
-
-# Check code formatting
-./gradlew spotlessCheck
-
-# Apply code formatting fixes
-./gradlew spotlessApply
-</code></pre>
-<p>See the <a href="code-quality-guide.html">Code Quality Guide</a> for more details.</p>
-<h2 id="-debugging"><a class="header" href="#-debugging">🐛 Debugging</a></h2>
-<h3 id="using-the-debugger"><a class="header" href="#using-the-debugger">Using the Debugger</a></h3>
-<ol>
-<li>Set breakpoints in your code by clicking in the gutter next to the line numbers</li>
-<li>Start debugging by clicking the <strong>Debug</strong> button or pressing <code>Shift+F9</code> (Windows/Linux) or <code>Ctrl+D</code> (macOS)</li>
-<li>Use the debugger controls to step through code, inspect variables, and evaluate expressions</li>
-<li></li>
-</ol>
-<p>See the <a href="https://developer.android.com/studio/debug">Android Studio Debugger Guide</a> for a detailed description.</p>
-<h3 id="logging"><a class="header" href="#logging">Logging</a></h3>
-<p>Use the project’s core logging API <code>net.thunderbird.core.logging.Logger</code>, which is provided via dependency injection
-(Koin). Avoid logging <strong>personally identifiable information (PII)</strong>.</p>
-<p>Example with DI (Koin):</p>
-<pre><code class="language-kotlin">private const val TAG = "ExampleActivity"
-
-class ExampleActivity : ComponentActivity() {
-    private val logger: Logger by inject()
-
-    fun doSomething() {
-        logger.debug(tag = TAG) { "Debug message" }
-        
-        try {
-            // Some code that might throw an exception
-        } catch (exception: Exception) {
-            logger.error(tag = TAG, throwable = exception) { "An error occurred" }
+<h3 id="2-create-a-new-migration-class"><a class="header" href="#2-create-a-new-migration-class">2. Create a New Migration Class</a></h3>
+<p>Create a new Kotlin class in <code>legacy/storage/src/main/java/com/fsck/k9/preferences/migration/</code> named <code>StorageMigrationToXX.kt</code>, where <code>XX</code> is the new version number.</p>
+<p>Use the <code>StorageMigrationHelper</code> to interact with the database.</p>
+<pre><code class="language-kotlin">/**
+ * Describe the purpose of the migration here.
+ */
+class StorageMigrationToXX(
+    private val db: SQLiteDatabase,
+    private val migrationsHelper: StorageMigrationHelper,
+) {
+    fun runMigration() {
+        val oldValue = migrationsHelper.readValue(db, "old_key")
+        if (oldValue != null) {
+            // Perform transformation if needed
+            migrationsHelper.insertValue(db, "new_key", oldValue)
+            migrationsHelper.writeValue(db, "old_key", null) // Deletes old_key
         }
     }
 }
 </code></pre>
-<h3 id="profiling"><a class="header" href="#profiling">Profiling</a></h3>
-<p>Use Android Studio’s built-in <a href="https://developer.android.com/studio/profile/android-profiler">Android Profiler</a> to monitor:</p>
+<h3 id="3-register-the-migration"><a class="header" href="#3-register-the-migration">3. Register the Migration</a></h3>
+<p>Add the new migration to the <code>StorageMigrations.upgradeDatabase()</code> method.</p>
+<pre><code class="language-kotlin">// legacy/storage/src/main/java/com/fsck/k9/preferences/migration/StorageMigrations.kt
+internal object StorageMigrations {
+    @JvmStatic
+    fun upgradeDatabase(db: SQLiteDatabase, migrationsHelper: StorageMigrationHelper) {
+        val oldVersion = db.version
+
+        // ... existing migrations ...
+        if (oldVersion &lt; XX) StorageMigrationToXX(db, migrationsHelper).runMigration()
+    }
+}
+</code></pre>
+<h2 id="requirements"><a class="header" href="#requirements">Requirements</a></h2>
 <ul>
-<li>CPU usage</li>
-<li>Memory allocation</li>
-<li>Network activity</li>
+<li><strong>No Application Logic:</strong> Do not use <code>Preferences</code> or other high-level application classes inside migrations, as their behavior might change over time. Use <code>StorageMigrationHelper</code> for direct database access.</li>
+<li><strong>No Network Calls:</strong> Do not perform network calls during the migration, as they may fail due to external factors. In case it is really necessary, properly handle network failures to avoid data wipeout.</li>
+<li><strong>Testing:</strong> Always write unit tests for your migrations. See the <a href="#writing-unit-tests">Writing Unit Tests</a> section for details.</li>
+<li><strong>Idempotency:</strong> Migrations should be safe to run multiple times, although the framework typically ensures they run only once.</li>
+<li><strong>Self-contained:</strong> Keep the migration logic simple and contained within its class.</li>
 </ul>
-<p>For performance-sensitive code, also consider Baseline Profiles or Macrobenchmark tests.</p>
+<h2 id="writing-unit-tests"><a class="header" href="#writing-unit-tests">Writing Unit Tests</a></h2>
+<p>Writing unit tests for preference migrations is mandatory to ensure data integrity and prevent regressions. These tests use Robolectric to provide a realistic Android environment.</p>
+<h3 id="test-setup"><a class="header" href="#test-setup">Test Setup</a></h3>
+<p>Your test class should be located in <code>legacy/storage/src/test/java/com/fsck/k9/preferences/migration/</code> and named
+<code>StorageMigrationToXXTest.kt</code>.</p>
+<p>Basic template for a migration test:</p>
+<pre><code class="language-kotlin">@RunWith(RobolectricTestRunner::class)
+class StorageMigrationToXXTest {
+    private val database = createPreferencesDatabase()
+    private val migrationHelper = DefaultStorageMigrationHelper()
+    private val migration = StorageMigrationToXX(database, migrationHelper)
+
+    @After
+    fun tearDown() {
+        database.close()
+    }
+
+    @Test
+    fun `migration should rename old_key to new_key`() {
+        // Arrange: Insert old data into the database
+        migrationHelper.insertValue(database, "old_key", "some value")
+
+        // Act: Run the migration
+        migration.runMigration()
+
+        // Assert: Verify the results
+        val values = migrationHelper.readAllValues(database)
+        assertThat(values).key("new_key").isEqualTo("some value")
+        assertThat(values).doesNotContainKey("old_key")
+    }
+}
+</code></pre>
+<h3 id="key-considerations-for-testing"><a class="header" href="#key-considerations-for-testing">Key Considerations for Testing</a></h3>
+<ul>
+<li><strong>Initial State:</strong> Always start with a known state by inserting the necessary keys and values into the database using <code>migrationHelper.insertValue()</code>.</li>
+<li><strong>Edge Cases:</strong> Test scenarios where keys might be missing, have unexpected values, or are in an old format.</li>
+<li><strong>Data Integrity:</strong> Verify that values are correctly transformed if the migration involves format changes.</li>
+<li><strong>Cleanup:</strong> Ensure the database is closed in the <code>@After</code> method to avoid resource leaks between tests.</li>
+</ul>
+<h2 id="common-tasks"><a class="header" href="#common-tasks">Common Tasks</a></h2>
+<h3 id="renaming-a-key"><a class="header" href="#renaming-a-key">Renaming a Key</a></h3>
+<p>Use <code>readValue</code> to get the old value, <code>insertValue</code> to set the new key, and <code>writeValue(db, key, null)</code> to remove the old key.</p>
+<h3 id="account-specific-preferences"><a class="header" href="#account-specific-preferences">Account-specific Preferences</a></h3>
+<p>Account preferences are prefixed with the account UUID. You can find all account UUIDs by reading the <code>accountUuids</code> key.</p>
+<pre><code class="language-kotlin">val accountUuids = migrationsHelper.readValue(db, "accountUuids")?.split(",") ?: emptyList()
+for (uuid in accountUuids) {
+    val key = "$uuid.some_preference"
+    // ...
+}
+</code></pre>
+<h3 id="deleting-obsolete-keys"><a class="header" href="#deleting-obsolete-keys">Deleting Obsolete Keys</a></h3>
+<p>Simply use <code>migrationsHelper.writeValue(db, "obsolete_key", null)</code>.</p>
 <footer id="last-change">Last change: <time datetime="2026-04-17">2026-04-17</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/6386ad7">6386ad7</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../CONTRIBUTING.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../developer/foldable-device-support.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../contributing/contribution-workflow.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../release/RELEASE.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -349,11 +339,11 @@ class ExampleActivity : ComponentActivity() {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../CONTRIBUTING.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../developer/foldable-device-support.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../contributing/contribution-workflow.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../release/RELEASE.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

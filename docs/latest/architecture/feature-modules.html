@@ -12,26 +12,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-bb060dd9.css">
+        <link rel="stylesheet" href="../css/general-0d197534.css">
+        <link rel="stylesheet" href="../css/chrome-2bf922bf.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts-868d674e.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="../assets/additional/css/last-changed.css">
-        <link rel="stylesheet" href="../assets/additional/css/navigation.css">
-        <link rel="stylesheet" href="../assets/additional/css/pagetoc.css">
+        <link rel="stylesheet" href="../assets/additional/css/last-changed-baed6e4e.css">
+        <link rel="stylesheet" href="../assets/additional/css/navigation-c5b35b00.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -39,10 +37,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex.js";
+            window.path_to_searchindex_js = "../searchindex-1e412ff6.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc.js"></script>
+        <script src="../toc-3a2bbd25.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -56,7 +54,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -85,12 +83,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -105,36 +103,36 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="dark">Dark</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-dark">Dark</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -142,113 +140,46 @@
 
                     <div class="right-buttons">
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
+                        <a href="https://github.com/thunderbird/thunderbird-android/" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./architecture/feature-modules.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
-                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./architecture/feature-modules.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
-                        <style>
-.mdbook-alerts {
-  padding: 8px 16px;
-  margin-bottom: 16px;
-  border-left: 0.25em solid var(--mdbook-alerts-color);
-}
-
-.mdbook-alerts > *:first-child {
-  margin-top: 0;
-}
-
-.mdbook-alerts > *:last-child {
-  margin-bottom: 0;
-}
-
-.mdbook-alerts-title {
-  display: flex;
-  font-weight: 600;
-  align-items: center;
-  line-height: 1;
-  color: var(--mdbook-alerts-color);
-  text-transform: capitalize;
-}
-
-.mdbook-alerts-icon {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  margin-right: 0.2em;
-  background-color: currentColor;
-  -webkit-mask: no-repeat center / 100%;
-  mask: no-repeat center / 100%;
-  -webkit-mask-image: var(--mdbook-alerts-icon);
-  mask-image: var(--mdbook-alerts-icon);
-}
-
-.mdbook-alerts-note {
-  --mdbook-alerts-color: rgb(9, 105, 218);
-  /* https://icon-sets.iconify.design/material-symbols/info-outline-rounded/ */
-  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 17q.425 0 .713-.288T13 16v-4q0-.425-.288-.712T12 11q-.425 0-.712.288T11 12v4q0 .425.288.713T12 17m0-8q.425 0 .713-.288T13 8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8q0 .425.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20m0-8"%2F%3E%3C%2Fsvg%3E');
-}
-
-.mdbook-alerts-tip {
-  --mdbook-alerts-color: rgb(26, 127, 55);
-  /* https://icon-sets.iconify.design/material-symbols/lightbulb-outline-rounded/ */
-  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 22q-.825 0-1.412-.587T10 20h4q0 .825-.587 1.413T12 22m-3-3q-.425 0-.712-.288T8 18q0-.425.288-.712T9 17h6q.425 0 .713.288T16 18q0 .425-.288.713T15 19zm-.75-3q-1.725-1.025-2.738-2.75T4.5 9.5q0-3.125 2.188-5.312T12 2q3.125 0 5.313 2.188T19.5 9.5q0 2.025-1.012 3.75T15.75 16zm.6-2h6.3q1.125-.8 1.738-1.975T17.5 9.5q0-2.3-1.6-3.9T12 4Q9.7 4 8.1 5.6T6.5 9.5q0 1.35.613 2.525T8.85 14M12 14"%2F%3E%3C%2Fsvg%3E');
-}
-
-.mdbook-alerts-important {
-  --mdbook-alerts-color: rgb(130, 80, 223);
-  /* https://icon-sets.iconify.design/material-symbols/chat-info-outline-rounded/ */
-  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 7q.425 0 .713-.288T13 6q0-.425-.288-.712T12 5q-.425 0-.712.288T11 6q0 .425.288.713T12 7m0 8q.425 0 .713-.288T13 14v-4q0-.425-.288-.712T12 9q-.425 0-.712.288T11 10v4q0 .425.288.713T12 15m-6 3l-2.3 2.3q-.475.475-1.088.213T2 19.575V4q0-.825.588-1.412T4 2h16q.825 0 1.413.588T22 4v12q0 .825-.587 1.413T20 18zm-.85-2H20V4H4v13.125zM4 16V4z"%2F%3E%3C%2Fsvg%3E');
-}
-
-.mdbook-alerts-warning {
-  --mdbook-alerts-color: rgb(154, 103, 0);
-  /* https://icon-sets.iconify.design/material-symbols/warning-outline-rounded/ */
-  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M2.725 21q-.275 0-.5-.137t-.35-.363q-.125-.225-.137-.488t.137-.512l9.25-16q.15-.25.388-.375T12 3q.25 0 .488.125t.387.375l9.25 16q.15.25.138.513t-.138.487q-.125.225-.35.363t-.5.137zm1.725-2h15.1L12 6zM12 18q.425 0 .713-.288T13 17q0-.425-.288-.712T12 16q-.425 0-.712.288T11 17q0 .425.288.713T12 18m0-3q.425 0 .713-.288T13 14v-3q0-.425-.288-.712T12 10q-.425 0-.712.288T11 11v3q0 .425.288.713T12 15m0-2.5"%2F%3E%3C%2Fsvg%3E');
-}
-
-.mdbook-alerts-caution {
-  --mdbook-alerts-color: rgb(207, 34, 46);
-  /* https://icon-sets.iconify.design/material-symbols/brightness-alert-outline-rounded/ */
-  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.712T12 15q-.425 0-.712.288T11 16q0 .425.288.713T12 17m0-4q.425 0 .713-.288T13 12V8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8v4q0 .425.288.713T12 13m-3.35 7H6q-.825 0-1.412-.587T4 18v-2.65L2.075 13.4q-.275-.3-.425-.662T1.5 12q0-.375.15-.737t.425-.663L4 8.65V6q0-.825.588-1.412T6 4h2.65l1.95-1.925q.3-.275.663-.425T12 1.5q.375 0 .738.15t.662.425L15.35 4H18q.825 0 1.413.588T20 6v2.65l1.925 1.95q.275.3.425.663t.15.737q0 .375-.15.738t-.425.662L20 15.35V18q0 .825-.587 1.413T18 20h-2.65l-1.95 1.925q-.3.275-.662.425T12 22.5q-.375 0-.737-.15t-.663-.425zm.85-2l2.5 2.5l2.5-2.5H18v-3.5l2.5-2.5L18 9.5V6h-3.5L12 3.5L9.5 6H6v3.5L3.5 12L6 14.5V18zm2.5-6"%2F%3E%3C%2Fsvg%3E');
-}
-
-</style>
-<h1 id="-feature-modules-and-extensions"><a class="header" href="#-feature-modules-and-extensions">📦 Feature Modules and Extensions</a></h1>
+                        <h1 id="-feature-modules-and-extensions"><a class="header" href="#-feature-modules-and-extensions">📦 Feature Modules and Extensions</a></h1>
 <p>The Thunderbird for Android project is organized into multiple feature modules, each encapsulating a specific
 functionality of the application. This document provides an overview of the main feature modules, how they are
 split into subfeatures, and how the application can be extended with additional features.</p>
@@ -276,20 +207,20 @@ application’s functionality:</p>
         direction TB
         
         
-        subgraph ROW_2[&quot; &quot;]
+        subgraph ROW_2[" "]
             direction LR
-            SETTINGS[&quot;`**Settings**&lt;br&gt;App configuration`&quot;]
-            NOTIFICATION[&quot;`**Notification**&lt;br&gt;Push and alert handling`&quot;]
-            SEARCH[&quot;`**Search**&lt;br&gt;Content discovery`&quot;]
-            WIDGET[&quot;`**Widget**&lt;br&gt;Home screen components`&quot;]
+            SETTINGS["`**Settings**&lt;br&gt;App configuration`"]
+            NOTIFICATION["`**Notification**&lt;br&gt;Push and alert handling`"]
+            SEARCH["`**Search**&lt;br&gt;Content discovery`"]
+            WIDGET["`**Widget**&lt;br&gt;Home screen components`"]
         end
         
-        subgraph ROW_1[&quot; &quot;]
+        subgraph ROW_1[" "]
             direction LR
-            ACCOUNT[&quot;`**Account**&lt;br&gt;User accounts management`&quot;]
-            MAIL[&quot;`**Mail**&lt;br&gt;Email handling and display`&quot;]
-            NAVIGATION[&quot;`**Navigation**&lt;br&gt;App navigation and UI components`&quot;]
-            ONBOARDING[&quot;`**Onboarding**&lt;br&gt;User setup and introduction`&quot;]
+            ACCOUNT["`**Account**&lt;br&gt;User accounts management`"]
+            MAIL["`**Mail**&lt;br&gt;Email handling and display`"]
+            DRAWER["`**Navigation**&lt;br&gt;App navigation UI components`"]
+            ONBOARDING["`**Onboarding**&lt;br&gt;User setup and introduction`"]
         end
     end
 
@@ -301,61 +232,62 @@ application’s functionality:</p>
     class FEATURE feature
     class ACCOUNT,MAIL,NAVIGATION,ONBOARDING,SETTINGS,NOTIFICATION,SEARCH,WIDGET feature_module
 </pre>
+
 <h2 id="-feature-module-details"><a class="header" href="#-feature-module-details">🧩 Feature Module Details</a></h2>
 <h3 id="-account-module"><a class="header" href="#-account-module">🔑 Account Module</a></h3>
 <p>The Account module manages all aspects of email accounts, including setup, configuration, and authentication.</p>
 <pre><code class="language-shell">feature:account
 ├── feature:account:api
-├── feature:account:impl
+├── feature:account:internal
 ├── feature:account:setup
 │   ├── feature:account:setup:api
-│   └── feature:account:setup:impl
+│   └── feature:account:setup:internal
 ├── feature:account:settings
 │   ├── feature:account:settings:api
-│   └── feature:account:settings:impl
+│   └── feature:account:settings:internal
 ├── feature:account:server
 │   ├── feature:account:server:api
-│   ├── feature:account:server:impl
+│   ├── feature:account:server:internal
 │   ├── feature:account:server:certificate
 │   │   ├── feature:account:server:certificate:api
-│   │   └── feature:account:server:certificate:impl
+│   │   └── feature:account:server:certificate:internal
 │   ├── feature:account:server:settings
 │   │   ├── feature:account:server:settings:api
-│   │   └── feature:account:server:settings:impl
+│   │   └── feature:account:server:settings:internal
 │   └── feature:account:server:validation
 │       ├── feature:account:server:validation:api
-│       └── feature:account:server:validation:impl
+│       └── feature:account:server:validation:internal
 ├── feature:account:auth
 │   ├── feature:account:auth:api
-│   ├── feature:account:auth:impl
+│   ├── feature:account:auth:internal
 │   └── feature:account:auth:oauth
 │       ├── feature:account:auth:oauth:api
-│       └── feature:account:auth:oauth:impl
+│       └── feature:account:auth:oauth:internal
 └── feature:account:storage
     ├── feature:account:storage:api
-    ├── feature:account:storage:impl
+    ├── feature:account:storage:internal
     └── feature:account:storage:legacy
         ├── feature:account:storage:legacy:api
-        └── feature:account:storage:legacy:impl
+        └── feature:account:storage:legacy:internal
 </code></pre>
 <h4 id="subfeatures"><a class="header" href="#subfeatures">Subfeatures:</a></h4>
 <ul>
-<li><strong>API/Implementation</strong>: Core public interfaces and implementations for account management</li>
+<li><strong>API/Internal</strong>: Core public interfaces and internal implementation details for account management</li>
 <li><strong>Setup</strong>: New account setup wizard functionality
 <ul>
 <li><strong>API</strong>: Public interfaces for account setup</li>
-<li><strong>Implementation</strong>: Concrete implementations of setup flows</li>
+<li><strong>Internal</strong>: Concrete implementations of setup flows</li>
 </ul>
 </li>
 <li><strong>Settings</strong>: Account-specific settings management
 <ul>
 <li><strong>API</strong>: Public interfaces for account settings</li>
-<li><strong>Implementation</strong>: Concrete implementations of settings functionality</li>
+<li><strong>Internal</strong>: Concrete implementations of settings functionality</li>
 </ul>
 </li>
 <li><strong>Server</strong>: Server configuration and management
 <ul>
-<li><strong>API/Implementation</strong>: Core server management interfaces and implementations</li>
+<li><strong>API/Internal</strong>: Core server management interfaces and internal implementations</li>
 <li><strong>Certificate</strong>: SSL certificate handling</li>
 <li><strong>Settings</strong>: Server settings configuration</li>
 <li><strong>Validation</strong>: Server connection validation</li>
@@ -363,13 +295,13 @@ application’s functionality:</p>
 </li>
 <li><strong>Auth</strong>: Authentication functionality
 <ul>
-<li><strong>API/Implementation</strong>: Core authentication interfaces and implementations</li>
+<li><strong>API/Internal</strong>: Core authentication interfaces and internal implementations</li>
 <li><strong>OAuth</strong>: OAuth-specific authentication implementation</li>
 </ul>
 </li>
 <li><strong>Storage</strong>: Account data persistence
 <ul>
-<li><strong>API/Implementation</strong>: Core storage interfaces and implementations</li>
+<li><strong>API/Internal</strong>: Core storage interfaces and internal implementations</li>
 <li><strong>Legacy</strong>: Legacy storage implementation</li>
 </ul>
 </li>
@@ -378,33 +310,33 @@ application’s functionality:</p>
 <p>The Mail module handles core email functionality, including message display, composition, and folder management.</p>
 <pre><code class="language-shell">feature:mail
 ├── feature:mail:api
-├── feature:mail:impl
+├── feature:mail:internal
 ├── feature:mail:account
 │   ├── feature:mail:account:api
-│   └── feature:mail:account:impl
+│   └── feature:mail:account:internal
 ├── feature:mail:folder
 │   ├── feature:mail:folder:api
-│   └── feature:mail:folder:impl
+│   └── feature:mail:folder:internal
 ├── feature:mail:compose
 │   ├── feature:mail:compose:api
-│   └── feature:mail:compose:impl
+│   └── feature:mail:compose:internal
 └── feature:mail:message
     ├── feature:mail:message:api
-    ├── feature:mail:message:impl
+    ├── feature:mail:message:internal
     ├── feature:mail:message:view
     │   ├── feature:mail:message:view:api
-    │   └── feature:mail:message:view:impl
+    │   └── feature:mail:message:view:internal
     └── feature:mail:message:list
         ├── feature:mail:message:list:api
-        └── feature:mail:message:list:impl
+        └── feature:mail:message:list:internal
 </code></pre>
 <h4 id="subfeatures-1"><a class="header" href="#subfeatures-1">Subfeatures:</a></h4>
 <ul>
-<li><strong>API/Implementation</strong>: Core public interfaces and implementations for mail functionality</li>
-<li><strong>Account</strong>: Mail-specific account interfaces and implementations
+<li><strong>API/Internal</strong>: Core public interfaces and internal implementations for mail functionality</li>
+<li><strong>Account</strong>: Mail-specific account interfaces and internal implementations
 <ul>
 <li><strong>API</strong>: Public interfaces for mail account integration</li>
-<li><strong>Implementation</strong>: Concrete implementations of mail account functionality</li>
+<li><strong>Internal</strong>: Concrete implementations of mail account functionality</li>
 </ul>
 </li>
 <li><strong>Folder</strong>: Email folder management
@@ -416,91 +348,90 @@ application’s functionality:</p>
 <li><strong>Compose</strong>: Email composition functionality
 <ul>
 <li><strong>API</strong>: Public interfaces for message composition</li>
-<li><strong>Implementation</strong>: Concrete implementations of composition features</li>
+<li><strong>Internal</strong>: Concrete implementations of composition features</li>
 </ul>
 </li>
 <li><strong>Message</strong>: Message handling and display
 <ul>
-<li><strong>API/Implementation</strong>: Core message handling interfaces and implementations</li>
+<li><strong>API/Internal</strong>: Core message handling interfaces and internal implementations</li>
 <li><strong>View</strong>: Individual message viewing functionality</li>
 <li><strong>List</strong>: Message list display and interaction</li>
 </ul>
 </li>
 </ul>
 <h3 id="-navigation-module"><a class="header" href="#-navigation-module">🧭 Navigation Module</a></h3>
-<p>The Navigation module provides UI components for navigating through the application.</p>
-<pre><code class="language-shell">feature:navigation
-├── feature:navigation:api
-├── feature:navigation:impl
-└── feature:navigation:drawer
-    ├── feature:navigation:drawer:api
-    ├── feature:navigation:drawer:impl
-    ├── feature:navigation:drawer:dropdown
-    │   ├── feature:navigation:drawer:dropdown:api
-    │   └── feature:navigation:drawer:dropdown:impl
-    └── feature:navigation:drawer:siderail
-        ├── feature:navigation:drawer:siderail:api
-        └── feature:navigation:drawer:siderail:impl
+<p>The Navigation module is part of the core UI and provides infrastructure for navigating through the application.</p>
+<pre><code class="language-shell">core:ui:navigation
+</code></pre>
+<h4 id="details"><a class="header" href="#details">Details:</a></h4>
+<ul>
+<li><strong>Navigation</strong>: Core navigation interfaces and routing</li>
+<li><strong>Route</strong>: Type-safe route definitions</li>
+<li><strong>NavigationExtension</strong>: Compose-specific navigation extensions</li>
+</ul>
+<h3 id="-navigation-drawer-module"><a class="header" href="#-navigation-drawer-module">🗄️ Navigation Drawer Module</a></h3>
+<p>The Navigation Drawer module provides UI components for the main application navigation drawer, including dropdown
+and other variations if any.</p>
+<pre><code class="language-shell">feature:navigation:drawer
+├── feature:navigation:drawer:api
+├── feature:navigation:drawer:internal
+└── feature:navigation:drawer:dropdown
+    ├── feature:navigation:drawer:dropdown:api
+    └── feature:navigation:drawer:dropdown:internal
 </code></pre>
 <h4 id="subfeatures-2"><a class="header" href="#subfeatures-2">Subfeatures:</a></h4>
 <ul>
-<li><strong>API/Implementation</strong>: Core public interfaces and implementations for navigation</li>
-<li><strong>Drawer</strong>: Navigation drawer functionality
-<ul>
-<li><strong>API/Implementation</strong>: Core drawer interfaces and implementations</li>
+<li><strong>API/Internal</strong>: Core drawer interfaces and internal implementations</li>
 <li><strong>Dropdown</strong>: Dropdown-style navigation implementation</li>
-<li><strong>Siderail</strong>: Side rail navigation implementation</li>
-</ul>
-</li>
 </ul>
 <h3 id="-onboarding-module"><a class="header" href="#-onboarding-module">🚀 Onboarding Module</a></h3>
 <p>The Onboarding module guides new users through the initial setup process.</p>
 <pre><code class="language-shell">feature:onboarding
 ├── feature:onboarding:api
-├── feature:onboarding:impl
+├── feature:onboarding:internal
 ├── feature:onboarding:main
 │   ├── feature:onboarding:main:api
-│   └── feature:onboarding:main:impl
+│   └── feature:onboarding:main:internal
 ├── feature:onboarding:welcome
 │   ├── feature:onboarding:welcome:api
-│   └── feature:onboarding:welcome:impl
+│   └── feature:onboarding:welcome:internal
 ├── feature:onboarding:permissions
 │   ├── feature:onboarding:permissions:api
-│   └── feature:onboarding:permissions:impl
+│   └── feature:onboarding:permissions:internal
 └── feature:onboarding:migration
     ├── feature:onboarding:migration:api
-    ├── feature:onboarding:migration:impl
+    ├── feature:onboarding:migration:internal
     ├── feature:onboarding:migration:thunderbird
     │   ├── feature:onboarding:migration:thunderbird:api
-    │   └── feature:onboarding:migration:thunderbird:impl
+    │   └── feature:onboarding:migration:thunderbird:internal
     └── feature:onboarding:migration:noop
         ├── feature:onboarding:migration:noop:api
-        └── feature:onboarding:migration:noop:impl
+        └── feature:onboarding:migration:noop:internal
 </code></pre>
 <h4 id="subfeatures-3"><a class="header" href="#subfeatures-3">Subfeatures:</a></h4>
 <ul>
-<li><strong>API/Implementation</strong>: Core public interfaces and implementations for onboarding</li>
+<li><strong>API/Internal</strong>: Core public interfaces and internal implementations for onboarding</li>
 <li><strong>Main</strong>: Main onboarding flow
 <ul>
 <li><strong>API</strong>: Public interfaces for the main onboarding process</li>
-<li><strong>Implementation</strong>: Concrete implementations of the onboarding flow</li>
+<li><strong>Internal</strong>: Concrete implementations of the onboarding flow</li>
 </ul>
 </li>
 <li><strong>Welcome</strong>: Welcome screens and initial user experience
 <ul>
 <li><strong>API</strong>: Public interfaces for welcome screens</li>
-<li><strong>Implementation</strong>: Concrete implementations of welcome screens</li>
+<li><strong>Internal</strong>: Concrete implementations of welcome screens</li>
 </ul>
 </li>
 <li><strong>Permissions</strong>: Permission request handling
 <ul>
 <li><strong>API</strong>: Public interfaces for permission management</li>
-<li><strong>Implementation</strong>: Concrete implementations of permission requests</li>
+<li><strong>Internal</strong>: Concrete implementations of permission requests</li>
 </ul>
 </li>
 <li><strong>Migration</strong>: Data migration from other apps
 <ul>
-<li><strong>API/Implementation</strong>: Core migration interfaces and implementations</li>
+<li><strong>API/Internal</strong>: Core migration interfaces and internal implementations</li>
 <li><strong>Thunderbird</strong>: Thunderbird-specific migration implementation</li>
 <li><strong>Noop</strong>: No-operation implementation for testing</li>
 </ul>
@@ -510,27 +441,27 @@ application’s functionality:</p>
 <p>The Settings module provides interfaces for configuring application behavior.</p>
 <pre><code class="language-shell">feature:settings
 ├── feature:settings:api
-├── feature:settings:impl
+├── feature:settings:internal
 ├── feature:settings:import
 │   ├── feature:settings:import:api
-│   └── feature:settings:import:impl
+│   └── feature:settings:import:internal
 └── feature:settings:ui
     ├── feature:settings:ui:api
-    └── feature:settings:ui:impl
+    └── feature:settings:ui:internal
 </code></pre>
 <h4 id="subfeatures-4"><a class="header" href="#subfeatures-4">Subfeatures:</a></h4>
 <ul>
-<li><strong>API/Implementation</strong>: Core public interfaces and implementations for settings</li>
+<li><strong>API/Internal</strong>: Core public interfaces and internal implementations for settings</li>
 <li><strong>Import</strong>: Settings import functionality
 <ul>
 <li><strong>API</strong>: Public interfaces for settings import</li>
-<li><strong>Implementation</strong>: Concrete implementations of import functionality</li>
+<li><strong>Internal</strong>: Concrete implementations of import functionality</li>
 </ul>
 </li>
 <li><strong>UI</strong>: Settings user interface components
 <ul>
 <li><strong>API</strong>: Public interfaces for settings UI</li>
-<li><strong>Implementation</strong>: Concrete implementations of settings screens</li>
+<li><strong>Internal</strong>: Concrete implementations of settings screens</li>
 </ul>
 </li>
 </ul>
@@ -538,27 +469,27 @@ application’s functionality:</p>
 <p>The Notification module handles push notifications and alerts for new emails and events.</p>
 <pre><code class="language-shell">feature:notification
 ├── feature:notification:api
-├── feature:notification:impl
+├── feature:notification:internal
 ├── feature:notification:email
 │   ├── feature:notification:email:api
-│   └── feature:notification:email:impl
+│   └── feature:notification:email:internal
 └── feature:notification:push
     ├── feature:notification:push:api
-    └── feature:notification:push:impl
+    └── feature:notification:push:internal
 </code></pre>
 <h4 id="subfeatures-5"><a class="header" href="#subfeatures-5">Subfeatures:</a></h4>
 <ul>
-<li><strong>API/Implementation</strong>: Core public interfaces and implementations for notifications</li>
+<li><strong>API/Internal</strong>: Core public interfaces and internal implementations for notifications</li>
 <li><strong>Email</strong>: Email-specific notification handling
 <ul>
 <li><strong>API</strong>: Public interfaces for email notifications</li>
-<li><strong>Implementation</strong>: Concrete implementations of email alerts</li>
+<li><strong>Internal</strong>: Concrete implementations of email alerts</li>
 </ul>
 </li>
 <li><strong>Push</strong>: Push notification handling
 <ul>
 <li><strong>API</strong>: Public interfaces for push notifications</li>
-<li><strong>Implementation</strong>: Concrete implementations of push notification processing</li>
+<li><strong>Internal</strong>: Concrete implementations of push notification processing</li>
 </ul>
 </li>
 </ul>
@@ -566,36 +497,36 @@ application’s functionality:</p>
 <p>The Search module provides functionality for searching through emails and contacts.</p>
 <pre><code class="language-shell">feature:search
 ├── feature:search:api
-├── feature:search:impl
+├── feature:search:internal
 ├── feature:search:email
 │   ├── feature:search:email:api
-│   └── feature:search:email:impl
+│   └── feature:search:email:internal
 ├── feature:search:contact
 │   ├── feature:search:contact:api
-│   └── feature:search:contact:impl
+│   └── feature:search:contact:internal
 └── feature:search:ui
     ├── feature:search:ui:api
-    └── feature:search:ui:impl
+    └── feature:search:ui:internal
 </code></pre>
 <h4 id="subfeatures-6"><a class="header" href="#subfeatures-6">Subfeatures:</a></h4>
 <ul>
-<li><strong>API/Implementation</strong>: Core public interfaces and implementations for search functionality</li>
+<li><strong>API/Internal</strong>: Core public interfaces and internal implementations for search functionality</li>
 <li><strong>Email</strong>: Email-specific search capabilities
 <ul>
 <li><strong>API</strong>: Public interfaces for email search</li>
-<li><strong>Implementation</strong>: Concrete implementations of email search</li>
+<li><strong>Internal</strong>: Concrete implementations of email search</li>
 </ul>
 </li>
 <li><strong>Contact</strong>: Contact search functionality
 <ul>
 <li><strong>API</strong>: Public interfaces for contact search</li>
-<li><strong>Implementation</strong>: Concrete implementations of contact search</li>
+<li><strong>Internal</strong>: Concrete implementations of contact search</li>
 </ul>
 </li>
 <li><strong>UI</strong>: Search user interface components
 <ul>
 <li><strong>API</strong>: Public interfaces for search UI</li>
-<li><strong>Implementation</strong>: Concrete implementations of search screens</li>
+<li><strong>Internal</strong>: Concrete implementations of search screens</li>
 </ul>
 </li>
 </ul>
@@ -603,45 +534,45 @@ application’s functionality:</p>
 <p>The Widget module provides home screen widgets for quick access to email functionality.</p>
 <pre><code class="language-shell">feature:widget
 ├── feature:widget:api
-├── feature:widget:impl
+├── feature:widget:internal
 ├── feature:widget:message-list
 │   ├── feature:widget:message-list:api
-│   └── feature:widget:message-list:impl
+│   └── feature:widget:message-list:internal
 ├── feature:widget:message-list-glance
 │   ├── feature:widget:message-list-glance:api
-│   └── feature:widget:message-list-glance:impl
+│   └── feature:widget:message-list-glance:internal
 ├── feature:widget:shortcut
 │   ├── feature:widget:shortcut:api
-│   └── feature:widget:shortcut:impl
+│   └── feature:widget:shortcut:internal
 └── feature:widget:unread
     ├── feature:widget:unread:api
-    └── feature:widget:unread:impl
+    └── feature:widget:unread:internal
 </code></pre>
 <h4 id="subfeatures-7"><a class="header" href="#subfeatures-7">Subfeatures:</a></h4>
 <ul>
-<li><strong>API/Implementation</strong>: Core public interfaces and implementations for widgets</li>
+<li><strong>API/Internal</strong>: Core public interfaces and internal implementations for widgets</li>
 <li><strong>Message List</strong>: Email list widget
 <ul>
 <li><strong>API</strong>: Public interfaces for message list widget</li>
-<li><strong>Implementation</strong>: Concrete implementations of message list widget</li>
+<li><strong>Internal</strong>: Concrete implementations of message list widget</li>
 </ul>
 </li>
 <li><strong>Message List Glance</strong>: Glanceable message widget
 <ul>
 <li><strong>API</strong>: Public interfaces for glance widget</li>
-<li><strong>Implementation</strong>: Concrete implementations of glance widget</li>
+<li><strong>Internal</strong>: Concrete implementations of glance widget</li>
 </ul>
 </li>
 <li><strong>Shortcut</strong>: App shortcut widgets
 <ul>
 <li><strong>API</strong>: Public interfaces for shortcut widgets</li>
-<li><strong>Implementation</strong>: Concrete implementations of shortcut widgets</li>
+<li><strong>Internal</strong>: Concrete implementations of shortcut widgets</li>
 </ul>
 </li>
 <li><strong>Unread</strong>: Unread message counter widget
 <ul>
 <li><strong>API</strong>: Public interfaces for unread counter widget</li>
-<li><strong>Implementation</strong>: Concrete implementations of unread counter widget</li>
+<li><strong>Internal</strong>: Concrete implementations of unread counter widget</li>
 </ul>
 </li>
 </ul>
@@ -695,25 +626,25 @@ structure:</p>
 <p>A Calendar feature could be added to integrate calendar functionality with email.</p>
 <pre><code class="language-shell">feature:calendar
 ├── feature:calendar:api
-├── feature:calendar:impl
+├── feature:calendar:internal
 ├── feature:calendar:event
 │   ├── feature:calendar:event:api
-│   └── feature:calendar:event:impl
+│   └── feature:calendar:event:internal
 └── feature:calendar:sync
     ├── feature:calendar:sync:api
-    └── feature:calendar:sync:impl
+    └── feature:calendar:sync:internal
 </code></pre>
 <h3 id="-appointments-feature"><a class="header" href="#-appointments-feature">🗓️ Appointments Feature</a></h3>
 <p>An Appointments feature could manage meetings and appointments.</p>
 <pre><code class="language-shell">feature:appointment
 ├── feature:appointment:api
-├── feature:appointment:impl
+├── feature:appointment:internal
 ├── feature:appointment:scheduler
 │   ├── feature:appointment:scheduler:api
-│   └── feature:appointment:scheduler:impl
+│   └── feature:appointment:scheduler:internal
 └── feature:appointment:notification
     ├── feature:appointment:notification:api
-    └── feature:appointment:notification:impl
+    └── feature:appointment:notification:internal
 </code></pre>
 <h2 id="-feature-relationships"><a class="header" href="#-feature-relationships">🔗 Feature Relationships</a></h2>
 <p>Features in the application interact with each other through well-defined APIs. The diagram below illustrates the
@@ -748,17 +679,18 @@ relationships between different features:</p>
     class EXTENSIONS extension
     class CALENDAR,TODO,SYNC,NOTES,APPOINTMENT extension_module
 </pre>
-<footer id="last-change">Last change: <time datetime="2025-11-14">2025-11-14</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/9ed8524">9ed8524</a></footer>
+
+<footer id="last-change">Last change: <time datetime="2026-04-17">2026-04-17</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/6386ad7">6386ad7</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                             <a rel="prev" href="../architecture/module-structure.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
                             <a rel="next prefetch" href="../architecture/ui-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
                         <div style="clear: both"></div>
@@ -768,16 +700,21 @@ relationships between different features:</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                     <a rel="prev" href="../architecture/module-structure.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
                     <a rel="next prefetch" href="../architecture/ui-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -786,19 +723,18 @@ relationships between different features:</p>
         </script>
 
 
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-7163d6e2.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="../assets/additional/js/mermaid.min.js"></script>
-        <script src="../assets/additional/js/mermaid-init.js"></script>
-        <script src="../assets/additional/js/navigation.js"></script>
-        <script src="../assets/additional/js/pagetoc.js"></script>
+        <script src="../assets/additional/js/mermaid-217b66ef.min.js"></script>
+        <script src="../assets/additional/js/mermaid-init-73b11a66.js"></script>
+        <script src="../assets/additional/js/navigation-dde10ad4.js"></script>
 
 
 

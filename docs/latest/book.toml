@@ -3,7 +3,6 @@ title = "Thunderbird for Android - Developer Documentation"
 authors = ["Thunderbird Mobile Team"]
 description = "Developer Documentation for the Thunderbird for Android project."
 language = "en"
-multilingual = false
 src = "."
 
 [rust]
@@ -12,36 +11,26 @@ edition = "2018"
 [build]
 build-dir = "../book/docs/latest"
 create-missing = false
-use-default-preprocessors = false
+use-default-preprocessors = true
 
 [output.html]
-git-repository-url = "https://github.com/thunderbird/thunderbird-android"
-edit-url-template = "https://github.com/thunderbird/thunderbird-android/edit/main/{path}"
-git-branch = "main"
-fold.enable = true
+git-repository-url = "https://github.com/thunderbird/thunderbird-android/"
+edit-url-template = "https://github.com/thunderbird/thunderbird-android/edit/main/docs/{path}"
 theme = "assets/tb-theme"
-additional-js = ["assets/additional/js/mermaid.min.js", "assets/additional/js/mermaid-init.js", "assets/additional/js/navigation.js", "assets/additional/js/pagetoc.js"]
-additional-css = ["assets/additional/css/last-changed.css", "assets/additional/css/navigation.css", "assets/additional/css/pagetoc.css"]
+additional-js = ["assets/additional/js/mermaid.min.js", "assets/additional/js/mermaid-init.js", "assets/additional/js/navigation.js"]
+additional-css = ["assets/additional/css/last-changed.css", "assets/additional/css/navigation.css"]
+sidebar-header-nav = false
+admonitions = true
+definition-lists = true
+hash-files = true
 
-[output.linkcheck]
-follow-web-links = false
-traverse-parent-directories = false
-warning-policy = "error"
-exclude = [ 'mozilla\.com', '0000-adr-template\.md' ]
-
-[preprocessor]
-
-[preprocessor.alerts]
-
-[preprocessor.external-links]
+[output.html.fold]
+enable = true
+level = 1
 
 [preprocessor.last-changed]
 command = "mdbook-last-changed"
 renderer = ["html"]
 
-[preprocessor.links]
-
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
-
-[preprocessor.pagetoc]

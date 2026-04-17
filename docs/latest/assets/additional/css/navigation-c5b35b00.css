@@ -1,0 +1,13 @@
+.sidebar-scrollbox .section a[href*="adr"]:not([href*="index.html"]) strong {
+    display: none;
+}
+.sidebar-scrollbox .section a[href*="adr"]:not([href*="index.html"]) .number {
+    font-weight: 550;
+}
+
+.chapter li .chapter-item div {
+    display: block;
+      padding: 0;
+      text-decoration: none;
+      color: var(--sidebar-fg);
+}
