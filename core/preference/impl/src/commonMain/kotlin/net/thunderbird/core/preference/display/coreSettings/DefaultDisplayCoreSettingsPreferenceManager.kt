@@ -11,6 +11,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangeSubscriber
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
@@ -24,8 +26,13 @@ class DefaultDisplayCoreSettingsPreferenceManager(
     private val storagePersister: StoragePersister,
     private val storageEditor: StorageEditor,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    preferenceChangeBroker: PreferenceChangeBroker,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
-) : DisplayCoreSettingsPreferenceManager {
+) : DisplayCoreSettingsPreferenceManager, PreferenceChangeSubscriber {
+
+    init {
+        preferenceChangeBroker.subscribe(this)
+    }
 
     private val configState: MutableStateFlow<DisplayCoreSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
@@ -87,5 +94,9 @@ class DefaultDisplayCoreSettingsPreferenceManager(
                 }
             }
         }
+    }
+
+    override fun receive() {
+        configState.update { loadConfig() }
     }
 }
