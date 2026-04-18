@@ -130,6 +130,7 @@ val preferencesModule = module {
             storageEditor = get<Preferences>().createStorageEditor(),
             logLevelManager = get(),
             platformConfigProvider = get(),
+            preferenceChangeBroker = get(),
         )
     }
     single<PlatformInitializer> {
