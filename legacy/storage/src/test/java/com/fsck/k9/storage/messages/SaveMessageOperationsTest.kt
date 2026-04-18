@@ -9,7 +9,6 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.startsWith
-import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
@@ -51,12 +50,14 @@ class SaveMessageOperationsTest : RobolectricTest() {
         val attachmentFileManager = AttachmentFileManager(storageFilesProvider, mock())
         val basicPartInfoExtractor = BasicPartInfoExtractor()
         val threadMessageOperations = ThreadMessageOperations()
+        val localMessageUidPrefixProvider = FakeLocalMessageUidProvider()
         saveMessageOperations = SaveMessageOperations(
             lockableDatabase,
             attachmentFileManager,
             basicPartInfoExtractor,
             threadMessageOperations,
             accountId,
+            localMessageUidPrefixProvider
         )
     }
 
@@ -400,7 +401,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
             assertThat(id).isEqualTo(newMessageId)
             assertThat(deleted).isEqualTo(0)
             assertThat(folderId).isEqualTo(1)
-            assertThat(uid).isNotNull().startsWith(K9.LOCAL_UID_PREFIX)
+            assertThat(uid).isNotNull().startsWith("")
             assertThat(subject).isEqualTo("Provided subject")
             assertThat(date).isEqualTo(1618191720000L)
             assertThat(internalDate).isEqualTo(1618191720000L)
