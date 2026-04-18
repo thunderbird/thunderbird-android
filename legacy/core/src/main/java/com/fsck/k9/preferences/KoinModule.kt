@@ -185,7 +185,13 @@ val preferencesModule = module {
 
     factory { GeneralSettingsValidator() }
     factory { GeneralSettingsUpgrader() }
-    factory { GeneralSettingsWriter(preferences = get(), generalSettingsManager = get()) }
+    factory {
+        GeneralSettingsWriter(
+            preferences = get(),
+            generalSettingsManager = get(),
+            changePublisher = get(),
+        )
+    }
 
     factory { AccountSettingsValidator() }
 
