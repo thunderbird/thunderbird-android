@@ -11,6 +11,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangeSubscriber
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
@@ -21,9 +23,14 @@ class DefaultPrivacySettingsPreferenceManager(
     private val logger: Logger,
     private val storagePersister: StoragePersister,
     private val storageEditor: StorageEditor,
+    preferenceChangeBroker: PreferenceChangeBroker,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
-) : PrivacySettingsPreferenceManager {
+) : PrivacySettingsPreferenceManager, PreferenceChangeSubscriber {
+
+    init {
+        preferenceChangeBroker.subscribe(this)
+    }
     private val configState: MutableStateFlow<PrivacySettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
     private val storage: Storage
@@ -60,5 +67,9 @@ class DefaultPrivacySettingsPreferenceManager(
                 }
             }
         }
+    }
+
+    override fun receive() {
+        configState.update { loadConfig() }
     }
 }
