@@ -119,6 +119,7 @@ val preferencesModule = module {
             logger = get(),
             storage = get(),
             storageEditor = get(),
+            preferenceChangeBroker = get(),
         )
     }
     single<NetworkSettingsPreferenceManager> {
