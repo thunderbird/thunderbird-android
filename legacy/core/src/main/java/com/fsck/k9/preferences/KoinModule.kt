@@ -110,6 +110,7 @@ val preferencesModule = module {
             inboxSettingsPreferenceManager = get(),
             visualSettingsPreferenceManager = get(),
             miscSettingsPreferenceManager = get(),
+            preferenceChangeBroker = get(),
         )
     }
     single<MessageListPreferencesManager> {
