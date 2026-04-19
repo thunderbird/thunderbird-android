@@ -134,7 +134,7 @@ private fun WelcomeTitle(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(horizontal = MainTheme.spacings.quadruple),
+        modifier = modifier.padding(horizontal = MainTheme.spacings.double),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextDisplayMedium(
