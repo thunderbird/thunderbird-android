@@ -40,7 +40,7 @@ internal class PreviewTextExtractor {
         intermediateText = intermediateText.replace("\\s*([-=_]{30,}+)\\s*".toRegex(), " ")
 
         // Remove parsed html links: <url>
-        intermediateText = intermediateText.replace("<https?://\\S+".toRegex(), " ")
+        intermediateText = intermediateText.replace("<https?://\\S+>".toRegex(), " ")
         // URLs in the preview should just be shown as "..." - They're not
         // clickable and they usually overwhelm the preview
         intermediateText = intermediateText.replace("https?://\\S+".toRegex(), "...")
