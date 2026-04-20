@@ -15,6 +15,7 @@ internal class PreviewTextExtractor {
 
         // Always converts from html, independently from mimetype
         val plainText = HtmlConverter.htmlToText(text)
+
         return stripTextForPreview(plainText)
     }
 
