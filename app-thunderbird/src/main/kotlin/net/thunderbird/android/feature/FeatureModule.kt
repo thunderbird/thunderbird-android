@@ -10,6 +10,7 @@ import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.featureFundingModule
 import net.thunderbird.feature.mail.message.list.internal.featureMessageListModule
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
+import net.thunderbird.feature.thundermail.thunderbird.inject.featureThundermailModule
 import org.koin.dsl.module
 
 internal val featureModule = module {
@@ -19,6 +20,7 @@ internal val featureModule = module {
     includes(onboardingMigrationModule)
     includes(featureMigrationModule)
     includes(featureMessageListModule)
+    includes(featureThundermailModule)
 
     single<FundingSettings> { TbFundingSettings() }
 
