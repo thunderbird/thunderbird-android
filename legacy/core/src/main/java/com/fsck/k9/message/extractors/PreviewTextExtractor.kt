@@ -37,6 +37,11 @@ internal class PreviewTextExtractor {
         // Remove horizontal rules.
         intermediateText = intermediateText.replace("\\s*([-=_]{30,}+)\\s*".toRegex(), " ")
 
+        // Always parse the text as HTML, independently of the mimetype
+        intermediateText = HtmlConverter.htmlToText(intermediateText)
+        // Remove parsed HTML links/images "<url>", "( url )", "(url)", etc.
+        intermediateText = intermediateText.replace("[(<]\\s?https?://\\S+[^)>]\\s?[>)]".toRegex(), " ")
+
         // URLs in the preview should just be shown as "..." - They're not
         // clickable and they usually overwhelm the preview
         intermediateText = intermediateText.replace("https?://\\S+".toRegex(), "...")
