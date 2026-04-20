@@ -13,7 +13,8 @@ internal class PreviewTextExtractor {
         val text = MessageExtractor.getTextFromPart(textPart, MAX_CHARACTERS_CHECKED_FOR_PREVIEW)
             ?: throw PreviewExtractionException("Couldn't get text from part")
 
-        val plainText = convertFromHtmlIfNecessary(textPart, text)
+        // Always converts from html, independently from mimetype
+        val plainText = HtmlConverter.htmlToText(text)
         return stripTextForPreview(plainText)
     }
 
