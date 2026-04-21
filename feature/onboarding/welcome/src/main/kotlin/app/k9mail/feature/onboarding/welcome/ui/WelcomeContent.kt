@@ -71,14 +71,15 @@ internal fun WelcomeContent(
                 onStartClick = onStartClick,
                 onImportClick = onImportClick,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = MainTheme.spacings.quadruple),
+                    .defaultItemModifier()
+                    .padding(top = MainTheme.spacings.triple),
             )
 
             Spacer(modifier = Modifier.weight(weight = .25f))
             TextBodySmall(
                 text = stringResource(R.string.onboarding_welcome_developed_by),
-                modifier = Modifier.padding(MainTheme.spacings.quadruple),
+                modifier = Modifier.defaultItemModifier(),
+                textAlign = TextAlign.Center,
             )
             Spacer(modifier = Modifier.weight(weight = .25f))
         }
@@ -167,4 +168,4 @@ private fun WelcomeActionButtons(
 @Composable
 private fun Modifier.defaultItemModifier() = this then Modifier
     .fillMaxWidth()
-    .padding(MainTheme.spacings.default)
+    .padding(horizontal = MainTheme.spacings.quadruple, vertical = MainTheme.spacings.default)
