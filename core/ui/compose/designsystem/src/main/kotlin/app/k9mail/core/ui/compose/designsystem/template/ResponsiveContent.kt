@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.movableContentOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -26,6 +28,7 @@ import net.thunderbird.core.ui.compose.theme2.MainTheme
 @Composable
 fun ResponsiveContent(
     modifier: Modifier = Modifier,
+    useSurfaceForExpandedContent: Boolean = true,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val windowSizeClass = getWindowSizeInfo()
@@ -34,7 +37,11 @@ fun ResponsiveContent(
         WindowSizeClass.Small -> CompactContent(modifier = modifier, content = content)
         WindowSizeClass.Compact -> CompactContent(modifier = modifier, content = content)
         WindowSizeClass.Medium -> MediumContent(modifier = modifier, content = content)
-        WindowSizeClass.Expanded -> ExpandedContent(modifier = modifier, content = content)
+        WindowSizeClass.Expanded -> ExpandedContent(
+            modifier = modifier,
+            useSurface = useSurfaceForExpandedContent,
+            content = content,
+        )
     }
 }
 
@@ -70,6 +77,7 @@ private fun MediumContent(
 @Composable
 private fun ExpandedContent(
     modifier: Modifier = Modifier,
+    useSurface: Boolean = true,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     when (getWindowSizeInfo().screenHeightSizeClass) {
@@ -82,11 +90,7 @@ private fun ExpandedContent(
                     .then(modifier),
                 contentAlignment = Alignment.TopCenter,
             ) {
-                Surface(
-                    tonalElevation = MainTheme.elevations.level1,
-                ) {
-                    content(calculateResponsiveWidthPadding())
-                }
+                ContentWithOrWithoutSurface(useSurface = useSurface, content = content)
             }
         }
 
@@ -97,14 +101,33 @@ private fun ExpandedContent(
                     .then(modifier),
                 contentAlignment = Alignment.Center,
             ) {
-                Surface(
+                ContentWithOrWithoutSurface(
+                    useSurface = useSurface,
                     modifier = Modifier
                         .requiredHeight(WindowSizeClass.MEDIUM_MAX_HEIGHT.dp),
-                    tonalElevation = MainTheme.elevations.level1,
-                ) {
-                    content(calculateResponsiveWidthPadding())
-                }
+                    content = content,
+                )
+                content(calculateResponsiveWidthPadding())
             }
         }
+    }
+}
+
+@Composable
+private fun ContentWithOrWithoutSurface(
+    useSurface: Boolean,
+    modifier: Modifier = Modifier,
+    content: @Composable ((PaddingValues) -> Unit),
+) {
+    val effectiveContent = remember { movableContentOf { content(calculateResponsiveWidthPadding()) } }
+    if (useSurface) {
+        Surface(
+            tonalElevation = MainTheme.elevations.level1,
+            modifier = modifier,
+        ) {
+            effectiveContent()
+        }
+    } else {
+        effectiveContent()
     }
 }
