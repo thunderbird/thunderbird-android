@@ -50,6 +50,7 @@ internal fun WelcomeContent(
 ) {
     ResponsiveContent(
         modifier = modifier.fillMaxHeight(),
+        useSurfaceForExpandedContent = false,
     ) { contentPadding ->
         LazyColumnWithHeaderFooter(
             modifier = Modifier.fillMaxSize(),
