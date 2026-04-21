@@ -133,6 +133,7 @@ complexity:
       - 'Preview'
       - 'PreviewLightDark'
       - 'PreviewLightDarkLandscape'
+      - 'PreviewScreenSizes'
   LongParameterList:
     active: true
     functionThreshold: 8
@@ -628,6 +629,7 @@ style:
       - 'Preview'
       - 'PreviewLightDark'
       - 'PreviewLightDarkLandscape'
+      - 'PreviewScreenSizes'
     ignoreNamedArgument: true
     ignoreEnums: false
     ignoreRanges: false
@@ -750,6 +752,7 @@ style:
       - 'Preview'
       - 'PreviewLightDark'
       - 'PreviewLightDarkLandscape'
+      - 'PreviewScreenSizes'
   UnusedPrivateProperty:
     active: true
     allowedNames: '_|ignored|expected|serialVersionUID'
@@ -757,6 +760,7 @@ style:
       - 'Preview'
       - 'PreviewLightDark'
       - 'PreviewLightDarkLandscape'
+      - 'PreviewScreenSizes'
   UseAnyOrNoneInsteadOfFind:
     active: true
   UseArrayLiteralsInAnnotations:
