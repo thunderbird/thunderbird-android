@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.testing.setContentWithTheme
+import app.k9mail.core.ui.compose.testing.setContentWithKoinAndTheme
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.ui.FakeBrandNameProvider
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
@@ -9,6 +9,7 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.provider.BrandTypographyProvider
 import org.junit.Test
 
 class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
@@ -20,7 +21,11 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
         var onNextCounter = 0
         var onBackCounter = 0
 
-        setContentWithTheme {
+        setContentWithKoinAndTheme(
+            modules = {
+                single<BrandTypographyProvider> { BrandTypographyProvider {} }
+            },
+        ) {
             AccountAutoDiscoveryScreen(
                 onNext = { onNextCounter++ },
                 onBack = { onBackCounter++ },

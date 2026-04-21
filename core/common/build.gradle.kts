@@ -2,7 +2,7 @@ import com.android.build.api.withAndroid
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
-    id(ThunderbirdPlugins.Library.kmp)
+    id(ThunderbirdPlugins.Library.kmpCompose)
 }
 
 kotlin {
