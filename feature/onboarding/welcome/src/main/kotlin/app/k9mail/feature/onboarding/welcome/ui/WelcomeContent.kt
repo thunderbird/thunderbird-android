@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
@@ -48,29 +48,27 @@ internal fun WelcomeContent(
     showImportButton: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
-        modifier = modifier,
-    ) {
-        ResponsiveContent { contentPadding ->
-            LazyColumnWithHeaderFooter(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = contentPadding,
-                verticalArrangement = Arrangement.SpaceEvenly,
-                header = {
-                    WelcomeHeaderSection(title = appName)
-                },
-                footer = {
-                    WelcomeFooterSection(
-                        showImportButton = showImportButton,
-                        onStartClick = onStartClick,
-                        onImportClick = onImportClick,
-                    )
-                },
-                content = {
-                    item { WelcomeMessageItem() }
-                },
-            )
-        }
+    ResponsiveContent(
+        modifier = modifier.fillMaxHeight(),
+    ) { contentPadding ->
+        LazyColumnWithHeaderFooter(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = contentPadding,
+            verticalArrangement = Arrangement.SpaceEvenly,
+            header = {
+                WelcomeHeaderSection(title = appName)
+            },
+            footer = {
+                WelcomeFooterSection(
+                    showImportButton = showImportButton,
+                    onStartClick = onStartClick,
+                    onImportClick = onImportClick,
+                )
+            },
+            content = {
+                item { WelcomeMessageItem() }
+            },
+        )
     }
 }
 
