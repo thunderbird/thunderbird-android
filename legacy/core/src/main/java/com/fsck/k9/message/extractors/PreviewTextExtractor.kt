@@ -39,8 +39,8 @@ internal class PreviewTextExtractor {
 
         // Always parse the text as HTML, independently of the mimetype
         intermediateText = HtmlConverter.htmlToText(intermediateText)
-        // Remove parsed HTML links/images "<url>"
-        intermediateText = intermediateText.replace("<https?://\\S+>".toRegex(), " ")
+        // Remove parsed HTML links/images "<url>", "( url )", "(url)", etc.
+        intermediateText = intermediateText.replace("[(<]\\s?https?://\\S+[^)>]\\s?[>)]".toRegex(), " ")
 
         // URLs in the preview should just be shown as "..." - They're not
         // clickable and they usually overwhelm the preview
