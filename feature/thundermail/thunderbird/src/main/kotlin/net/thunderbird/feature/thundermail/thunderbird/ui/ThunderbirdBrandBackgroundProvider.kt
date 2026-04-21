@@ -1,7 +1,11 @@
 package net.thunderbird.feature.thundermail.thunderbird.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import net.thunderbird.feature.thundermail.ui.BrandBackgroundModifierProvider
 
 /**
@@ -11,12 +15,19 @@ import net.thunderbird.feature.thundermail.ui.BrandBackgroundModifierProvider
  * @return A [BrandBackgroundModifierProvider] containing the modifier with the applied
  * brand background and decorative layers.
  */
-@Suppress("MagicNumber")
-internal fun Modifier.thunderbirdBrandBackgroundProvider(): BrandBackgroundModifierProvider =
-    BrandBackgroundModifierProvider {
-        this@thunderbirdBrandBackgroundProvider then if (isSystemInDarkTheme()) {
+internal object ThunderbirdBrandBackgroundProvider : BrandBackgroundModifierProvider {
+    @Composable
+    override fun Modifier.brandBackground(): Modifier {
+        return this then if (isSystemInDarkTheme()) {
             Modifier.thunderbirdBrandDark()
         } else {
             Modifier.thunderbirdBrandLight()
         }
     }
+}
+
+@PreviewLightDark
+@Composable
+private fun Preview() {
+    Box(modifier = with(ThunderbirdBrandBackgroundProvider) { Modifier.fillMaxSize().brandBackground() })
+}

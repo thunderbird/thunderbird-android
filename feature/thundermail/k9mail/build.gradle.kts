@@ -14,6 +14,7 @@ android {
 
 dependencies {
     implementation(projects.feature.thundermail.api)
+    implementation(projects.core.ui.compose.theme2.common)
 }
 
 codeCoverage {
