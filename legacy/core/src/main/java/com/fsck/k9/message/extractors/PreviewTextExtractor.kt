@@ -13,9 +13,7 @@ internal class PreviewTextExtractor {
         val text = MessageExtractor.getTextFromPart(textPart, MAX_CHARACTERS_CHECKED_FOR_PREVIEW)
             ?: throw PreviewExtractionException("Couldn't get text from part")
 
-        // Always converts from html, independently from mimetype
-        val plainText = HtmlConverter.htmlToText(text)
-
+        val plainText = convertFromHtmlIfNecessary(textPart, text)
         return stripTextForPreview(plainText)
     }
 
@@ -39,10 +37,11 @@ internal class PreviewTextExtractor {
         // Remove horizontal rules.
         intermediateText = intermediateText.replace("\\s*([-=_]{30,}+)\\s*".toRegex(), " ")
 
-        // Remove parsed html links: <url>
+        // Always parse the text as HTML, independently of the mimetype
+        intermediateText = HtmlConverter.htmlToText(intermediateText)
+        // Remove parsed HTML links/images "<url>"
         intermediateText = intermediateText.replace("<https?://\\S+>".toRegex(), " ")
-        // Remove ( url )
-        intermediateText = intermediateText.replace("\\( https?://\\S+ \\)".toRegex(), " ")
+
         // URLs in the preview should just be shown as "..." - They're not
         // clickable and they usually overwhelm the preview
         intermediateText = intermediateText.replace("https?://\\S+".toRegex(), "...")
