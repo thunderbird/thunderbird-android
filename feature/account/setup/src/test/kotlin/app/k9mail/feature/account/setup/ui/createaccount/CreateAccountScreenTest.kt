@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.setup.ui.createaccount
 
 import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.testing.setContentWithTheme
+import app.k9mail.core.ui.compose.testing.setContentWithKoinAndTheme
 import app.k9mail.feature.account.setup.domain.entity.AccountUuid
 import app.k9mail.feature.account.setup.ui.FakeBrandNameProvider
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.Effect
@@ -12,6 +12,7 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.provider.BrandTypographyProvider
 
 class CreateAccountScreenTest : ComposeTest() {
 
@@ -26,7 +27,11 @@ class CreateAccountScreenTest : ComposeTest() {
         val navigateNextArguments = mutableListOf<AccountUuid>()
         var navigateBackCounter = 0
 
-        setContentWithTheme {
+        setContentWithKoinAndTheme(
+            modules = {
+                single<BrandTypographyProvider> { BrandTypographyProvider {} }
+            },
+        ) {
             CreateAccountScreen(
                 onNext = { accountUuid -> navigateNextArguments.add(accountUuid) },
                 onBack = { navigateBackCounter++ },
