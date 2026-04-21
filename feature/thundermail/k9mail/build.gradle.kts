@@ -1,26 +1,19 @@
 plugins {
-    id(ThunderbirdPlugins.Library.kmpCompose)
-    alias(libs.plugins.dev.mokkery)
+    id(ThunderbirdPlugins.Library.androidCompose)
 }
 
-kotlin {
-    android {
-        namespace = "net.thunderbird.feature.thundermail.k9mail"
-        androidResources.enable = true
-        withHostTest {
+android {
+    namespace = "net.thunderbird.feature.thundermail.k9mail"
+
+    testOptions {
+        unitTests {
             isIncludeAndroidResources = true
         }
     }
-    sourceSets {
-        commonMain.dependencies {
-            implementation(projects.feature.thundermail.api)
-        }
-    }
 }
 
-compose.resources {
-    publicResClass = false
-    packageOfResClass = "net.thunderbird.feature.thundermail.k9mail.resources"
+dependencies {
+    implementation(projects.feature.thundermail.api)
 }
 
 codeCoverage {
