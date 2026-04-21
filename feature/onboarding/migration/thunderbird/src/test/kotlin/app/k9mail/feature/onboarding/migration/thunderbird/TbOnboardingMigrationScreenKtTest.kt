@@ -4,17 +4,22 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.testing.setContentWithTheme
+import app.k9mail.core.ui.compose.testing.setContentWithKoinAndTheme
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import net.thunderbird.core.common.provider.BrandNameProvider
+import net.thunderbird.core.common.provider.BrandTypographyProvider
 import org.junit.Test
 
 class TbOnboardingMigrationScreenKtTest : ComposeTest() {
     @Test
     fun `pressing QrCodeImportButton should call onQrCodeScan`() = runComposeTest {
         var qrCodeScanClickCounter = 0
-        setContentWithTheme {
+        setContentWithKoinAndTheme(
+            modules = {
+                single<BrandTypographyProvider> { BrandTypographyProvider {} }
+            },
+        ) {
             TbOnboardingMigrationScreen(
                 onQrCodeScan = { qrCodeScanClickCounter++ },
                 onAddAccount = { error("Should not be called") },
@@ -33,7 +38,11 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
     @Test
     fun `pressing AddAccountButton button should call onAddAccount`() = runComposeTest {
         var addAccountClickCounter = 0
-        setContentWithTheme {
+        setContentWithKoinAndTheme(
+            modules = {
+                single<BrandTypographyProvider> { BrandTypographyProvider {} }
+            },
+        ) {
             TbOnboardingMigrationScreen(
                 onQrCodeScan = { error("Should not be called") },
                 onAddAccount = { addAccountClickCounter++ },
@@ -52,7 +61,11 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
     @Test
     fun `pressing ImportButton button should call onImport`() = runComposeTest {
         var importClickCounter = 0
-        setContentWithTheme {
+        setContentWithKoinAndTheme(
+            modules = {
+                single<BrandTypographyProvider> { BrandTypographyProvider {} }
+            },
+        ) {
             TbOnboardingMigrationScreen(
                 onQrCodeScan = { error("Should not be called") },
                 onAddAccount = { error("Should not be called") },

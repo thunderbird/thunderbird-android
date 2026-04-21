@@ -1,13 +1,14 @@
 package app.k9mail.feature.account.server.validation.ui
 
 import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.testing.setContentWithTheme
+import app.k9mail.core.ui.compose.testing.setContentWithKoinAndTheme
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.provider.BrandNameProvider
+import net.thunderbird.core.common.provider.BrandTypographyProvider
 import org.junit.Test
 
 class ServerValidationScreenKtTest : ComposeTest() {
@@ -19,7 +20,11 @@ class ServerValidationScreenKtTest : ComposeTest() {
         var onNextCounter = 0
         var onBackCounter = 0
 
-        setContentWithTheme {
+        setContentWithKoinAndTheme(
+            modules = {
+                single<BrandTypographyProvider> { BrandTypographyProvider {} }
+            },
+        ) {
             ServerValidationScreen(
                 onNext = { onNextCounter++ },
                 onBack = { onBackCounter++ },
