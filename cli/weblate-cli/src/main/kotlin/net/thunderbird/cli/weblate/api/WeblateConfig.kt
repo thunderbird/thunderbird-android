@@ -9,8 +9,8 @@ package net.thunderbird.cli.weblate.api
  */
 data class WeblateConfig(
     val baseUrl: String = "https://hosted.weblate.org/api/",
-    val projectName: String = "tb-android",
-    val defaultComponent: String = "app-strings",
+    val projectName: String = "thunderbird",
+    val defaultComponent: String = "thunderbird-android%252Fapp-common",
     private val defaultHeaders: Map<String, String> = mapOf(
         "Accept" to "application/json",
         "Authorization" to "Token $PLACEHOLDER_TOKEN",

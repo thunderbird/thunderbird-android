@@ -22,4 +22,5 @@ data class ComponentInfo(
     val category: String?,
     @SerialName("linked_component")
     val linkedComponent: String?,
+    val locked: Boolean = false,
 )

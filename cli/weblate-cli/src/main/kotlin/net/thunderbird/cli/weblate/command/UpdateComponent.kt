@@ -31,8 +31,9 @@ class UpdateComponent : BaseCommand(name = "update") {
 
         if (skipped.isNotEmpty()) {
             println("-------")
+            println()
             println("Skipped components (not in managed list):")
-            println("")
+            println()
             skipped.forEach { println("${it.info.slug} # ID: ${it.info.id}") }
             println()
         }
@@ -56,6 +57,7 @@ class UpdateComponent : BaseCommand(name = "update") {
                             category = component.info.category,
                             linkedComponent = component.info.linkedComponent,
                             config = componentConfig,
+                            locked = component.info.locked,
                         ),
                     )
                     if (result) {
