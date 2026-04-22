@@ -13,6 +13,7 @@ android {
 
 dependencies {
     implementation(projects.core.logging.api)
+    implementation(projects.core.outcome)
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.compose.theme2.common)
     implementation(projects.feature.account.common)

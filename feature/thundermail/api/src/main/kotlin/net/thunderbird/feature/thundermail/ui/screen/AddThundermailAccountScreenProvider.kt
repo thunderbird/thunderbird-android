@@ -10,9 +10,9 @@ fun interface AddThundermailAccountScreenProvider {
     @Composable
     fun Content(
         header: @Composable ColumnScope.() -> Unit,
-        onSignWithThundermailClick: () -> Unit,
         onScanQrCodeClick: () -> Unit,
         onSetupAnotherAccountClick: () -> Unit,
+        onOAuthSuccess: () -> Unit,
         modifier: Modifier,
     )
 }

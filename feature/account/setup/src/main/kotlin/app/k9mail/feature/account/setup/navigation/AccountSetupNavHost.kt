@@ -29,9 +29,9 @@ import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersViewMode
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
-private const val NESTED_NAVIGATION_AUTO_CONFIG = "autoconfig"
+const val NESTED_NAVIGATION_AUTO_CONFIG = "autoconfig"
 private const val NESTED_NAVIGATION_INCOMING_SERVER_CONFIG = "incoming-server/config"
-private const val NESTED_NAVIGATION_INCOMING_SERVER_VALIDATION = "incoming-server/validation"
+const val NESTED_NAVIGATION_INCOMING_SERVER_VALIDATION = "incoming-server/validation"
 private const val NESTED_NAVIGATION_OUTGOING_SERVER_CONFIG = "outgoing-server/config"
 private const val NESTED_NAVIGATION_OUTGOING_SERVER_VALIDATION = "outgoing-server/validation"
 private const val NESTED_NAVIGATION_SPECIAL_FOLDERS = "special-folders"
@@ -44,14 +44,19 @@ private const val NESTED_NAVIGATION_CREATE_ACCOUNT = "create-account"
 fun AccountSetupNavHost(
     onBack: () -> Unit,
     onFinish: (AccountSetupRoute) -> Unit,
+    skipToIncomingValidation: Boolean = false,
 ) {
     val navController = rememberNavController()
-    var isAutomaticConfig by rememberSaveable { mutableStateOf(false) }
+    var isAutomaticConfig by rememberSaveable { mutableStateOf(skipToIncomingValidation) }
     var hasSpecialFolders by rememberSaveable { mutableStateOf(false) }
 
     NavHost(
         navController = navController,
-        startDestination = NESTED_NAVIGATION_AUTO_CONFIG,
+        startDestination = if (skipToIncomingValidation) {
+            NESTED_NAVIGATION_INCOMING_SERVER_VALIDATION
+        } else {
+            NESTED_NAVIGATION_AUTO_CONFIG
+        },
     ) {
         composable(route = NESTED_NAVIGATION_AUTO_CONFIG) {
             AccountAutoDiscoveryScreen(

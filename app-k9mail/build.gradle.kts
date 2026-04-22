@@ -159,6 +159,7 @@ dependencies {
     implementation(projects.feature.migration.launcher.noop)
     implementation(projects.feature.onboarding.migration.noop)
     implementation(projects.feature.thundermail.k9mail)
+    implementation(projects.feature.thundermail.api)
     implementation(projects.feature.telemetry.noop)
     implementation(projects.feature.widget.messageList)
     implementation(projects.feature.widget.messageListGlance)
