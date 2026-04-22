@@ -12,22 +12,22 @@ is provided at `./scripts/weblate` which builds and runs the CLI.
 Basic examples:
 
 ```bash
-# Dry-run using the default golden config and include file
-./scripts/weblate --token YOUR_WEBLATE_TOKEN --dry-run
+# Dry-run using the default golden config and managed components file
+./scripts/weblate --token YOUR_WEBLATE_TOKEN --dry-run update
 
-# Apply changes to included components
-./scripts/weblate --token YOUR_WEBLATE_TOKEN
+# Apply changes to managed components
+./scripts/weblate --token YOUR_WEBLATE_TOKEN update
 
-# Use a custom include file and golden config
-./scripts/weblate --token YOUR_WEBLATE_TOKEN --include-file-path ./cli/weblate-cli/include-components.txt --golden-config-path ./cli/weblate-cli/golden-component-config.json --dry-run
+# Use a custom managed components file and golden config
+./scripts/weblate --token YOUR_WEBLATE_TOKEN --managed-components-file ./cli/weblate-cli/managed-components.txt --golden-config-path ./cli/weblate-cli/golden-component-config.json --dry-run update
 ```
 
 ## Defaults
 
 - Golden config: `./cli/weblate-cli/golden-component-config.json`
-- Include file: `./cli/weblate-cli/include-components.txt`
+- Managed components file: `./cli/weblate-cli/managed-components.txt`
 
-## Include file format
+## Managed components file format
 
 - One component slug per non-empty line. Inline comments are allowed after `#` and full-line comments that
   start with `#` are ignored.

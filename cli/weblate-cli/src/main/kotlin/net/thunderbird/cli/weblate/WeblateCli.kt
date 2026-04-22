@@ -28,15 +28,16 @@ class WeblateCli : CliktCommand(
         help = "Path to golden component config JSON",
     ).default("./cli/weblate-cli/golden-component-config.json")
 
-    private val includeFilePath: String by option(
-        help = "Path to file with component slug to include (one per line, '#' comments)",
-    ).default("./cli/weblate-cli/include-components.txt")
+    internal val managedComponentsFile: String by option(
+        "--managed-components-file",
+        help = "Path to file with managed component slugs (one per line, '#' comments)",
+    ).default("./cli/weblate-cli/managed-components.txt")
 
     override fun help(context: Context): String = "Weblate CLI"
 
     override fun run() {
         val goldenConfig = loadGoldenConfig(goldenConfigPath)
-        val includeConfig = loadIncludeConfig(includeFilePath)
+        val managedConfig = loadManagedConfig(managedComponentsFile)
 
         val client = WeblateClient()
         val components = client.loadComponents(token)
@@ -48,8 +49,8 @@ class WeblateCli : CliktCommand(
             println("- ${component.info.name} (slug: ${component.info.slug} # ID: ${component.info.id}) ")
             println()
 
-            if (!includeConfig.contains(component.info.slug)) {
-                println("  ⏭\uFE0F  skipped (not listed in include file)")
+            if (!managedConfig.contains(component.info.slug)) {
+                println("  ⏭\uFE0F  skipped (not listed in managed components file)")
             } else {
                 processComponent(component, goldenConfig, client)
             }
@@ -103,10 +104,10 @@ class WeblateCli : CliktCommand(
         }
     }
 
-    private fun loadIncludeConfig(path: String): Set<String> {
+    private fun loadManagedConfig(path: String): Set<String> {
         val file = File(path)
         if (!file.exists()) {
-            error("Include file not found: $file — no components will be managed")
+            error("Managed components file not found: $file — no components will be managed")
         }
 
         return try {
@@ -119,7 +120,7 @@ class WeblateCli : CliktCommand(
                 .filter { it.isNotEmpty() }
                 .toSet()
         } catch (e: Exception) {
-            error("Failed to read include file $file: ${e.message}")
+            error("Failed to read managed components file $file: ${e.message}")
         }
     }
 }
