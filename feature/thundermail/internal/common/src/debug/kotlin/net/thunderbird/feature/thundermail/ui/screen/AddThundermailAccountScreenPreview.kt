@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemeLightDark
 import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.feature.thundermail.internal.common.ui.screen.AddThundermailAccountScreen
 import net.thunderbird.feature.thundermail.ui.BrandBackgroundModifierProvider
 
 @PreviewLightDark
@@ -34,9 +35,9 @@ private fun Preview() {
             ) {
                 AddThundermailAccountScreen(
                     header = {},
-                    onSignWithThundermailClick = {},
                     onScanQrCodeClick = {},
                     onSetupAnotherAccountClick = {},
+                    dispatch = { },
                 )
             }
         }

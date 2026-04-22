@@ -20,7 +20,7 @@ import app.k9mail.feature.onboarding.welcome.ui.WelcomeScreen
 import app.k9mail.feature.settings.import.ui.SettingsImportAction
 import app.k9mail.feature.settings.import.ui.SettingsImportScreen
 import net.thunderbird.core.common.provider.AppNameProvider
-import net.thunderbird.feature.thundermail.ui.screen.AddThundermailAccountScreen
+import net.thunderbird.feature.thundermail.ui.screen.AddThundermailAccountScreenProvider
 import org.koin.compose.koinInject
 
 private const val NESTED_NAVIGATION_ROUTE_WELCOME = "welcome"
@@ -66,6 +66,7 @@ fun OnboardingNavHost(
     onFinish: (OnboardingRoute) -> Unit,
     modifier: Modifier = Modifier,
     onboardingMigrationManager: OnboardingMigrationManager = koinInject(),
+    addThundermailAccountScreenProvider: AddThundermailAccountScreenProvider = koinInject(),
 ) {
     val navController = rememberNavController()
     var accountUuid by rememberSaveable { mutableStateOf<String?>(null) }
@@ -92,7 +93,7 @@ fun OnboardingNavHost(
 
         composable(route = NESTED_NAVIGATION_ROUTE_ADD_THUNDERMAIL_ACCOUNT) {
             val appNameProvider = koinInject<AppNameProvider>()
-            AddThundermailAccountScreen(
+            addThundermailAccountScreenProvider.Content(
                 header = {
                     AppTitleTopHeader(
                         title = appNameProvider.appName,

@@ -8,6 +8,7 @@ import net.thunderbird.feature.mail.message.composer.inject.featureMessageCompos
 import net.thunderbird.feature.mail.message.reader.impl.inject.featureMessageReaderModule
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract
 import net.thunderbird.feature.notification.impl.inject.featureNotificationModule
+import net.thunderbird.feature.thundermail.internal.common.inject.featureThundermailCommonModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -18,6 +19,7 @@ internal val appCommonFeatureModule = module {
     includes(featureNotificationModule)
     includes(featureMessageComposerModule)
     includes(featureMessageReaderModule)
+    includes(featureThundermailCommonModule)
 
     factory<FeatureLauncherExternalContract.MessageListLauncher> {
         MessageListLauncher(
