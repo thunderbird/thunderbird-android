@@ -21,17 +21,18 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 
 class WeblateClient(
+    private val token: String,
     private val client: HttpClient = createClient(),
     private val config: WeblateConfig = WeblateConfig(),
 ) {
 
-    fun loadComponents(token: String): List<Component> {
+    fun loadComponents(): List<Component> {
         val components = mutableListOf<Component>()
         var page = 1
         var hasNextPage = true
 
         while (hasNextPage) {
-            val componentPage = loadComponentPage(token, page)
+            val componentPage = loadComponentPage(page)
             components.addAll(componentPage.results)
 
             hasNextPage = componentPage.next != null
@@ -41,35 +42,26 @@ class WeblateClient(
         return components
     }
 
-    fun patchComponent(token: String, url: String, patch: ComponentPatch): Boolean {
-        var success = false
-
-        runBlocking {
+    fun patchComponent(url: String, patch: ComponentPatch): Boolean {
+        return runBlocking {
             val response = client.patch(url) {
-                header(HttpHeaders.ContentType, "application/json")
                 header(HttpHeaders.Authorization, "Token $token")
                 contentType(ContentType.Application.Json)
                 setBody(patch)
             }
 
-            success = response.status.value in SUCCESS
+            response.status.value in SUCCESS
         }
-
-        return success
     }
 
-    private fun loadComponentPage(token: String, page: Int): ComponentResponse {
-        val componentResponse: ComponentResponse
-
-        runBlocking {
-            componentResponse = client.get(config.componentsUrl(page)) {
+    private fun loadComponentPage(page: Int): ComponentResponse {
+        return runBlocking {
+            client.get(config.componentsUrl(page)) {
                 headers {
                     config.getDefaultHeaders(token).forEach { (key, value) -> append(key, value) }
                 }
             }.body()
         }
-
-        return componentResponse
     }
 
     private companion object {

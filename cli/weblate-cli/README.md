@@ -1,30 +1,35 @@
 # Weblate CLI
 
 This is a command line interface that inspects Weblate project components and applies a
-"golden" component configuration. It's intended for maintainers to review component configuration
-consistency and, when appropriate, patch components to match the golden config.
+"default" component configuration. It's intended for maintainers to review component configuration
+consistency and, when appropriate, patch components to match the component config.
 
 ## Usage
 
 You need a Weblate API token (available from your Weblate account profile). A convenience wrapper script
 is provided at `./scripts/weblate` which builds and runs the CLI.
 
+The CLI uses a subcommand pattern: `weblate [OPTIONS] COMMAND [ARGS]...`
+
+Available commands:
+- `update`: Update managed components with the standard configuration.
+
 Basic examples:
 
 ```bash
-# Dry-run using the default golden config and managed components file
+# Dry-run using the default configuration and managed components file
 ./scripts/weblate --token YOUR_WEBLATE_TOKEN --dry-run update
 
 # Apply changes to managed components
 ./scripts/weblate --token YOUR_WEBLATE_TOKEN update
 
-# Use a custom managed components file and golden config
-./scripts/weblate --token YOUR_WEBLATE_TOKEN --managed-components-file ./cli/weblate-cli/managed-components.txt --golden-config-path ./cli/weblate-cli/golden-component-config.json --dry-run update
+# Use a custom managed components file and default config
+./scripts/weblate --token YOUR_WEBLATE_TOKEN --managed-components-file ./cli/weblate-cli/managed-components.txt --component-config-file ./cli/weblate-cli/default-component-config.json --dry-run update
 ```
 
 ## Defaults
 
-- Golden config: `./cli/weblate-cli/golden-component-config.json`
+- Component config: `./cli/weblate-cli/default-component-config.json`
 - Managed components file: `./cli/weblate-cli/managed-components.txt`
 
 ## Managed components file format
@@ -45,4 +50,6 @@ app-common
 ## Safety notes
 
 - Always run with `--dry-run` first to verify diffs before applying changes to the live Weblate instance.
+- The `update` command only processes components listed in the managed components file.
+- Use `./scripts/weblate --help` to see all available commands and options.
 
