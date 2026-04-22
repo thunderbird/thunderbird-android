@@ -19,11 +19,15 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
         val viewModel = FakeAccountAutoDiscoveryViewModel(initialState)
         var onNextCounter = 0
         var onBackCounter = 0
+        var onThundermailClick = 0
+        var onScanQrCodeClick = 0
 
         setContentWithTheme {
             AccountAutoDiscoveryScreen(
                 onNext = { onNextCounter++ },
                 onBack = { onBackCounter++ },
+                onThundermailClick = { onThundermailClick++ },
+                onScanQrCodeClick = { onScanQrCodeClick++ },
                 viewModel = viewModel,
                 brandNameProvider = FakeBrandNameProvider,
             )
@@ -43,10 +47,14 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
 
         assertThat(onNextCounter).isEqualTo(1)
         assertThat(onBackCounter).isEqualTo(0)
+        assertThat(onThundermailClick).isEqualTo(0)
+        assertThat(onScanQrCodeClick).isEqualTo(0)
 
         viewModel.effect(Effect.NavigateBack)
 
         assertThat(onNextCounter).isEqualTo(1)
         assertThat(onBackCounter).isEqualTo(1)
+        assertThat(onThundermailClick).isEqualTo(0)
+        assertThat(onScanQrCodeClick).isEqualTo(0)
     }
 }

@@ -17,6 +17,7 @@ internal fun AccountAutoDiscoveryScreenPreview() {
             onNext = {},
             onBack = {},
             onThundermailClick = {},
+            onScanQrCodeClick = {},
             viewModel = viewModel {
                 AccountAutoDiscoveryViewModel(
                     validator = AccountAutoDiscoveryValidator(),

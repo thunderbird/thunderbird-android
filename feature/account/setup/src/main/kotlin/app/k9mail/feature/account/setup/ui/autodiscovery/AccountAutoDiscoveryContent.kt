@@ -41,6 +41,7 @@ internal fun AccountAutoDiscoveryContent(
     state: State,
     onEvent: (Event) -> Unit,
     onThundermailClick: () -> Unit,
+    onScanQrCodeClick: () -> Unit,
     oAuthViewModel: AccountOAuthContract.ViewModel,
     brandName: String,
     contentPadding: PaddingValues,
@@ -74,6 +75,7 @@ internal fun AccountAutoDiscoveryContent(
                     state = state,
                     onEvent = onEvent,
                     onThundermailClick = onThundermailClick,
+                    onScanQrCodeClick = onScanQrCodeClick,
                     oAuthViewModel = oAuthViewModel,
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -93,6 +95,7 @@ internal fun AutoDiscoveryContent(
     state: State,
     onEvent: (Event) -> Unit,
     onThundermailClick: () -> Unit,
+    onScanQrCodeClick: () -> Unit,
     oAuthViewModel: AccountOAuthContract.ViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -120,6 +123,7 @@ internal fun AutoDiscoveryContent(
                 state = contentState,
                 onEvent = onEvent,
                 onThundermailClick = onThundermailClick,
+                onScanQrCodeClick = onScanQrCodeClick,
                 oAuthViewModel = oAuthViewModel,
                 resources = resources,
             )
@@ -135,6 +139,7 @@ internal fun ContentView(
     state: State,
     onEvent: (Event) -> Unit,
     onThundermailClick: () -> Unit,
+    onScanQrCodeClick: () -> Unit,
     oAuthViewModel: AccountOAuthContract.ViewModel,
     resources: Resources,
     modifier: Modifier = Modifier,
@@ -162,7 +167,7 @@ internal fun ContentView(
         AnimatedVisibility(state.emailAddress.value.isBlank()) {
             ThundermailButtonPanel(
                 onThundermailClick = onThundermailClick,
-                onScanQrCodeClick = {},
+                onScanQrCodeClick = onScanQrCodeClick,
                 modifier = Modifier
                     .testTagAsResourceId("thundermail_panel")
                     .padding(bottom = MainTheme.spacings.quadruple),

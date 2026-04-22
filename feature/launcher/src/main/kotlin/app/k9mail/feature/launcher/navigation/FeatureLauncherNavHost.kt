@@ -20,6 +20,7 @@ import net.thunderbird.feature.thundermail.navigation.ThundermailNavigation
 import net.thunderbird.feature.thundermail.navigation.ThundermailRoute
 import org.koin.compose.koinInject
 
+@Suppress("LongMethod")
 @Composable
 fun FeatureLauncherNavHost(
     navController: NavHostController,
@@ -50,6 +51,12 @@ fun FeatureLauncherNavHost(
                         messageListLauncher.launch(it.accountId)
                         activity.finish()
                     }
+
+                    is OnboardingRoute.ThundermailScanQrCode ->
+                        navController.navigate(ThundermailRoute.ScanQrCode)
+
+                    is OnboardingRoute.ThundermailSignIn ->
+                        navController.navigate(ThundermailRoute.SignInWithThundermail)
                 }
             },
         )
@@ -59,11 +66,18 @@ fun FeatureLauncherNavHost(
             onBack = onBack,
             onFinish = { route ->
                 when (route) {
-                    is ThundermailRoute.AccountSetup -> {
+                    is ThundermailRoute.IncomingSettings ->
+                        navController.navigate(ThundermailRoute.IncomingSettings)
+
+                    is ThundermailRoute.AccountSetup ->
                         messageListLauncher.launch(accountUuid = route.accountId)
+
+                    is ThundermailRoute.Permissions -> {
+                        messageListLauncher.launch(route.accountId)
+                        activity.finish()
                     }
 
-                    else -> onBack()
+                    else -> Unit
                 }
             },
         )
@@ -76,6 +90,12 @@ fun FeatureLauncherNavHost(
                     is AccountSetupRoute.AccountSetup -> {
                         messageListLauncher.launch(it.accountId)
                     }
+
+                    is AccountSetupRoute.ThundermailScanQrCode ->
+                        navController.navigate(ThundermailRoute.ScanQrCode)
+
+                    is AccountSetupRoute.ThundermailSignIn ->
+                        navController.navigate(ThundermailRoute.SignInWithThundermail)
                 }
             },
         )
