@@ -486,6 +486,9 @@ class MessageViewFragment :
         val subject = messageInfo.message.subject ?: getString(R.string.general_no_subject)
         val headerHtml = buildPrintHeaderHtml(messageInfo)
         val bodyHtml = messageInfo.text ?: ""
+        val cleanBodyHtml = bodyHtml
+            .replace(Regex("(?i)<a\\b[^>]*>"), "")
+            .replace(Regex("(?i)</a>"), "")
         val printWebView = MessageWebView(context)
         val fullHtml = """
         <html>
@@ -507,7 +510,7 @@ class MessageViewFragment :
         <body>
             <div class="page-wrapper">
                 $headerHtml
-                $bodyHtml
+                $cleanBodyHtml
             </div>
         </body>
         </html>
