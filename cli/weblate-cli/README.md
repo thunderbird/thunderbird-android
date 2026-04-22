@@ -23,9 +23,17 @@ Basic examples:
 # Apply changes to managed components
 ./scripts/weblate --token YOUR_WEBLATE_TOKEN update
 
-# Use a custom managed components file and default config
-./scripts/weblate --token YOUR_WEBLATE_TOKEN --managed-components-file ./cli/weblate-cli/managed-components.txt --component-config-file ./cli/weblate-cli/default-component-config.json --dry-run update
+# Use a custom managed components file, component config, and set log level to ALL
+./scripts/weblate --token YOUR_WEBLATE_TOKEN --managed-components-file ./cli/weblate-cli/managed-components.txt --component-config-file ./cli/weblate-cli/default-component-config.json --log-level ALL --dry-run update
 ```
+
+## Available options
+
+- `--token`: Weblate API token (required).
+- `--component-config-file`: Path to component config JSON (default: `./cli/weblate-cli/default-component-config.json`).
+- `--managed-components-file`: Path to file with managed component slugs (default: `./cli/weblate-cli/managed-components.txt`).
+- `--dry-run`: Dry run the command without making any changes.
+- `--log-level`: Log level for the Weblate API client (`NONE`, `INFO`, `HEADERS`, `BODY`, `ALL`). Default: `NONE`.
 
 ## Defaults
 

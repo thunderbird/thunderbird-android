@@ -22,8 +22,9 @@ import kotlinx.serialization.json.Json
 
 class WeblateClient(
     private val token: String,
-    private val client: HttpClient = createClient(),
     private val config: WeblateConfig = WeblateConfig(),
+    private val logLevel: LogLevel = LogLevel.INFO,
+    private val client: HttpClient = createClient(logLevel),
 ) {
 
     fun loadComponents(): List<Component> {
@@ -67,11 +68,11 @@ class WeblateClient(
     private companion object {
         val SUCCESS = 200..299
 
-        fun createClient(): HttpClient {
+        fun createClient(logLevel: LogLevel): HttpClient {
             return HttpClient(CIO) {
                 install(Logging) {
                     logger = Logger.DEFAULT
-                    level = LogLevel.INFO
+                    level = logLevel
                 }
                 install(ContentNegotiation) {
                     json(
