@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="thundermail_add_account_title">Add Account</string>
+    <string name="thundermail_sign_in_to_thundermail">Sign in to Thundermail</string>
+    <string name="thundermail_sign_in_with_thundermail_button">Sign in with Thundermail</string>
+    <string name="thundermail_or_divider">– or –</string>
+    <string name="thundermail_add_your_account_copy">Add your account easily by scanning the QR code on your Thundermail dashboard.</string>
+    <string name="thundermail_scan_qr_code_button">Scan QR code</string>
+    <string name="thundermail_what_is_thundermail">What is Thundermail?</string>
+    <string name="thundermail_setup_another_account_button">Setup another account</string>
+</resources>
