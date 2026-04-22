@@ -502,7 +502,7 @@ class MessageViewFragment :
                     font-family: Arial, sans-serif;
                     color: #000;
                 }
-                p {
+                .page-wrapper > div p {
                     margin: 4px 0;
                 }
             </style>
@@ -529,18 +529,29 @@ class MessageViewFragment :
     private fun buildPrintHeaderHtml(messageInfo: MessageViewInfo): String {
         val message = messageInfo.message
         val subject = message.subject ?: getString(R.string.general_no_subject)
+        val subjectGood = subject
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
         val from = message.from
             ?.joinToString(", ") {
                 val email = it.address
                 val name = it.personal ?: ""
-                if (name.isNotBlank()) "$name <$email>" else email
+                if (name.isNotBlank() && email.isNotBlank()) {
+                    "$name &lt;$email&gt;"
+                } else {
+                    email
+                }
             } ?: ""
 
         val to = message.getRecipients(Message.RecipientType.TO)
             ?.joinToString(", ") {
                 val email = it.address
                 val name = it.personal ?: ""
-                if (name.isNotBlank()) "$name <$email>" else email
+                if (name.isNotBlank() && email.isNotBlank()) {
+                    "$name &lt;$email&gt;"
+                } else {
+                    email ?: ""
+                }
             } ?: ""
 
         val date = message.sentDate?.let {
@@ -550,7 +561,7 @@ class MessageViewFragment :
 
         return """
         <div style="font-size:15px; margin-bottom:16px;">
-            <p><b>Subject:</b> $subject</p>
+            <p><b>Subject:</b> $subjectGood</p>
             <p><b>From:</b> $from</p>
             <p><b>Date:</b> $date</p>
             <p><b>To:</b> $to</p>
