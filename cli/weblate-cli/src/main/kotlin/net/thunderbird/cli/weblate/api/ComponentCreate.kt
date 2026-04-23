@@ -26,6 +26,7 @@ import kotlinx.serialization.json.put
  * @property linkedComponent The url of the linked component to use as a base
  * @property repo The repository URL of the component
  * @property vcs The VCS type (e.g., git, github)
+ * @property mergeStyle The merge style
  * @property config The configuration of the component
  */
 @Serializable(with = ComponentCreate.ComponentCreateSerializer::class)
@@ -43,6 +44,8 @@ data class ComponentCreate(
     val linkedComponent: String? = null,
     val repo: String,
     val vcs: String,
+    @SerialName("merge_style")
+    val mergeStyle: String,
     val config: ComponentConfig,
 ) {
     companion object ComponentCreateSerializer : KSerializer<ComponentCreate> {
@@ -57,6 +60,7 @@ data class ComponentCreate(
             element<String?>("linked_component", isOptional = true)
             element<String>("repo")
             element<String>("vcs")
+            element<String>("merge_style")
             element("config", ComponentConfig.serializer().descriptor)
         }
 
@@ -80,6 +84,7 @@ data class ComponentCreate(
                 value.linkedComponent?.let { put("linked_component", it) }
                 put("repo", value.repo)
                 put("vcs", value.vcs)
+                put("merge_style", value.mergeStyle)
 
                 val configJson = encoder.json.encodeToJsonElement(ComponentConfig.serializer(), value.config)
                 configJson.jsonObject.forEach { (key, value) ->

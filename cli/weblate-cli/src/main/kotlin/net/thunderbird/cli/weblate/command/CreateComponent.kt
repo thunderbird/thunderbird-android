@@ -119,7 +119,8 @@ class CreateComponent : BaseCommand(name = "create") {
             linkedComponent = defaultInfo.url,
             repo = "weblate://thunderbird/thunderbird-android/app-common",
             vcs = "github",
-            config = defaultConfig,
+            mergeStyle = "merge",
+            config = defaultConfig.copy(editTemplate = false),
         )
     }
 
