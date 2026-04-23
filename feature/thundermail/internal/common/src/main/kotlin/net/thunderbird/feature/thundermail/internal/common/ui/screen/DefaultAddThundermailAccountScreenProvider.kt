@@ -1,5 +1,7 @@
-package net.thunderbird.feature.thundermail.ui.screen
+package net.thunderbird.feature.thundermail.internal.common.ui.screen
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -37,20 +39,56 @@ import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.feature.thundermail.R
+import net.thunderbird.feature.thundermail.internal.common.ui.screen.AddThundermailAccountScreenDefaults.TEST_TAG_CONTENT_ROOT
+import net.thunderbird.feature.thundermail.internal.common.ui.screen.AddThundermailAccountScreenDefaults.TEST_TAG_SCAN_QR_CODE_BUTTON
+import net.thunderbird.feature.thundermail.internal.common.ui.screen.AddThundermailAccountScreenDefaults.TEST_TAG_SETUP_ANOTHER_ACCOUNT_BUTTON
+import net.thunderbird.feature.thundermail.internal.common.ui.screen.AddThundermailAccountScreenDefaults.TEST_TAG_SIGN_IN_WITH_THUNDERMAIL_BUTTON
+import net.thunderbird.feature.thundermail.internal.common.ui.screen.AddThundermailAccountScreenDefaults.TEST_TAG_WHAT_IS_THUNDERMAIL_LINK
+import net.thunderbird.feature.thundermail.ui.ThundermailContract
 import net.thunderbird.feature.thundermail.ui.brandBackground
-import net.thunderbird.feature.thundermail.ui.screen.AddThundermailAccountScreenDefaults.TEST_TAG_CONTENT_ROOT
-import net.thunderbird.feature.thundermail.ui.screen.AddThundermailAccountScreenDefaults.TEST_TAG_SCAN_QR_CODE_BUTTON
-import net.thunderbird.feature.thundermail.ui.screen.AddThundermailAccountScreenDefaults.TEST_TAG_SETUP_ANOTHER_ACCOUNT_BUTTON
-import net.thunderbird.feature.thundermail.ui.screen.AddThundermailAccountScreenDefaults.TEST_TAG_SIGN_IN_WITH_THUNDERMAIL_BUTTON
-import net.thunderbird.feature.thundermail.ui.screen.AddThundermailAccountScreenDefaults.TEST_TAG_WHAT_IS_THUNDERMAIL_LINK
+import net.thunderbird.feature.thundermail.ui.screen.AddThundermailAccountScreenProvider
+import org.koin.androidx.compose.koinViewModel
+
+object DefaultAddThundermailAccountScreenProvider : AddThundermailAccountScreenProvider {
+    @Composable
+    override fun Content(
+        header: @Composable ColumnScope.() -> Unit,
+        onScanQrCodeClick: () -> Unit,
+        onSetupAnotherAccountClick: () -> Unit,
+        onOAuthSuccess: () -> Unit,
+        modifier: Modifier,
+    ) {
+        val viewModel = koinViewModel<ThundermailContract.ViewModel>()
+        val oAuthLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartActivityForResult(),
+        ) {
+            viewModel.event(ThundermailContract.Event.OnOAuthResult(it.resultCode, it.data))
+        }
+
+        val (_, dispatch) = viewModel.observe { effect ->
+            when (effect) {
+                is ThundermailContract.Effect.LaunchOAuth -> oAuthLauncher.launch(effect.intent)
+                is ThundermailContract.Effect.NavigateToIncomingServerSettings -> onOAuthSuccess()
+            }
+        }
+        AddThundermailAccountScreen(
+            header = header,
+            onScanQrCodeClick = onScanQrCodeClick,
+            onSetupAnotherAccountClick = onSetupAnotherAccountClick,
+            dispatch = dispatch,
+            modifier = modifier,
+        )
+    }
+}
 
 @Composable
-fun AddThundermailAccountScreen(
+internal fun AddThundermailAccountScreen(
     header: @Composable ColumnScope.() -> Unit,
-    onSignWithThundermailClick: () -> Unit,
     onScanQrCodeClick: () -> Unit,
     onSetupAnotherAccountClick: () -> Unit,
+    dispatch: (ThundermailContract.Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(modifier) { paddingValues ->
@@ -78,7 +116,7 @@ fun AddThundermailAccountScreen(
                     color = MainTheme.colors.primary,
                 )
                 ThundermailPanel(
-                    onSignWithThundermailClick = onSignWithThundermailClick,
+                    onSignWithThundermailClick = { dispatch(ThundermailContract.Event.SignInClicked) },
                     onScanQrCodeClick = onScanQrCodeClick,
                     modifier = Modifier.fillMaxWidth(),
                 )

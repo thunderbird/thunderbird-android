@@ -274,6 +274,7 @@ include(
 
 include(
     ":feature:thundermail:api",
+    ":feature:thundermail:internal:common",
     ":feature:thundermail:thunderbird",
     ":feature:thundermail:k9mail",
 )
