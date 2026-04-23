@@ -44,6 +44,7 @@ import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageLoaderHelper
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks
 import com.fsck.k9.activity.MessageLoaderHelperFactory
+import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment
@@ -470,6 +471,7 @@ class MessageViewFragment :
 
             R.id.set_format_plain -> onDisplayPlainText()
             R.id.set_format_html -> onDisplayHTML()
+            R.id.view_compose -> MessageActions.actionCompose(requireActivity(), account)
             else -> return false
         }
 
