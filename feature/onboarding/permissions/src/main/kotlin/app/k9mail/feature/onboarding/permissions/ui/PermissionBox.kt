@@ -10,14 +10,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.image.ImageWithOverlayCoordinate
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
@@ -27,8 +26,7 @@ import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.UiPermis
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
-
-private val MAX_WIDTH = 500.dp
+import net.thunderbird.feature.thundermail.ui.screen.ThundermailConstants
 
 @Composable
 internal fun PermissionBox(
@@ -40,7 +38,7 @@ internal fun PermissionBox(
 ) {
     Column(
         modifier = Modifier
-            .width(MAX_WIDTH)
+            .widthIn(max = ThundermailConstants.MaxContainerWidth)
             .padding(horizontal = MainTheme.spacings.double),
     ) {
         Row {

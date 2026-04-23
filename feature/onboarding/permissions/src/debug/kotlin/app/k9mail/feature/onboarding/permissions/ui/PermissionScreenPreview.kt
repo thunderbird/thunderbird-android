@@ -4,14 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.k9mail.core.android.permissions.PermissionState
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import kotlinx.coroutines.Dispatchers
 import net.thunderbird.core.common.provider.BrandNameProvider
+import net.thunderbird.feature.thundermail.ui.preview.ThundermailPreview
 
 @Composable
 @PreviewDevices
 internal fun PermissionScreenPreview() {
-    PreviewWithTheme {
+    ThundermailPreview {
         PermissionsScreen(
             viewModel = viewModel {
                 PermissionsViewModel(
