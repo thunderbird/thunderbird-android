@@ -8,10 +8,10 @@ import net.thunderbird.feature.thundermail.ui.preview.ThundermailPreview
 
 @Composable
 @PreviewDevices
-private fun TbOnboardingMigrationScreenPreview() {
+private fun ImportAccountScreenPreview() {
     ThundermailPreview {
         Surface {
-            TbOnboardingMigrationScreen(
+            ImportAccountScreen(
                 onQrCodeScan = {},
                 onAddAccount = {},
                 onImport = {},

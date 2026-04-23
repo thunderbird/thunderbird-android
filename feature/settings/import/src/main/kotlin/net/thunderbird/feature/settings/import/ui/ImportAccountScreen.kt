@@ -51,7 +51,7 @@ import net.thunderbird.core.ui.compose.theme2.MainTheme
 import org.koin.compose.koinInject
 
 @Composable
-fun TbOnboardingMigrationScreen(
+fun ImportAccountScreen(
     onQrCodeScan: () -> Unit,
     onAddAccount: () -> Unit,
     onImport: () -> Unit,

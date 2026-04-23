@@ -11,7 +11,7 @@ import net.thunderbird.core.common.provider.BrandNameProvider
 import net.thunderbird.core.common.provider.BrandTypographyProvider
 import org.junit.Test
 
-class TbOnboardingMigrationScreenKtTest : ComposeTest() {
+class ImportAccountScreenKtTest : ComposeTest() {
     @Test
     fun `pressing QrCodeImportButton should call onQrCodeScan`() = runComposeTest {
         var qrCodeScanClickCounter = 0
@@ -20,7 +20,7 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
                 single<BrandTypographyProvider> { BrandTypographyProvider {} }
             },
         ) {
-            TbOnboardingMigrationScreen(
+            ImportAccountScreen(
                 onQrCodeScan = { qrCodeScanClickCounter++ },
                 onAddAccount = { error("Should not be called") },
                 onImport = { error("Should not be called") },
@@ -43,7 +43,7 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
                 single<BrandTypographyProvider> { BrandTypographyProvider {} }
             },
         ) {
-            TbOnboardingMigrationScreen(
+            ImportAccountScreen(
                 onQrCodeScan = { error("Should not be called") },
                 onAddAccount = { addAccountClickCounter++ },
                 onImport = { error("Should not be called") },
@@ -66,7 +66,7 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
                 single<BrandTypographyProvider> { BrandTypographyProvider {} }
             },
         ) {
-            TbOnboardingMigrationScreen(
+            ImportAccountScreen(
                 onQrCodeScan = { error("Should not be called") },
                 onAddAccount = { error("Should not be called") },
                 onImport = { importClickCounter++ },
@@ -80,8 +80,8 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
 
         assertThat(importClickCounter).isEqualTo(1)
     }
-}
 
-private object FakeBrandNameProvider : BrandNameProvider {
-    override val brandName = "Thunderbird"
+    private object FakeBrandNameProvider : BrandNameProvider {
+        override val brandName = "Thunderbird"
+    }
 }
