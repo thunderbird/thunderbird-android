@@ -2,6 +2,9 @@
 ## Main Component
 app-common # ID: 44665
 ## Child Components
+core-ui-compose-designsystem # ID: 49031
+legacy-ui-base # ID: 49036
+legacy-ui-folder # ID: 49035
 legacy-ui-legacy # ID: 44667
 app-thunderbird # ID: 46953
 app-k9mail # ID: 46954
@@ -12,5 +15,23 @@ feature-account-edit # ID: 46958
 feature-account-oauth # ID: 46959
 feature-account-server-certificate # ID: 46960
 feature-account-server-settings # ID: 46961
+feature-account-server-validation # ID: 49047
 feature-account-settings-impl # ID: 46962
 feature-account-setup # ID: 46963
+feature-debug-settings # ID: 49053
+feature-funding-googleplay # ID: 49052
+feature-mail-message-composer # ID: 49043
+feature-mail-message-list-api # ID: 49045
+feature-mail-message-list-internal # ID: 49044
+feature-migration-qrcode # ID: 49048
+feature-navigation-drawer-dropdown # ID: 49046
+feature-notification-api # ID: 49042
+feature-onboarding-migration-thunderbird # ID: 49051
+feature-onboarding-permissions # ID: 49050
+feature-onboarding-welcome # ID: 49049
+feature-settings-import # ID: 49037
+feature-widget-message-list # ID: 49039
+feature-widget-message-list-glance # ID: 49040
+feature-widget-shortcut # ID: 49038
+feature-widget-unread # ID: 49041
+

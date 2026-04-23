@@ -13,6 +13,7 @@ The CLI uses a subcommand pattern: `weblate [OPTIONS] COMMAND [ARGS]...`
 
 Available commands:
 - `update`: Update managed components with the standard configuration.
+- `create`: Create missing components on Weblate based on local modules.
 
 Basic examples:
 
@@ -22,6 +23,9 @@ Basic examples:
 
 # Apply changes to managed components
 ./scripts/weblate --token YOUR_WEBLATE_TOKEN update
+
+# Create missing components
+./scripts/weblate --token YOUR_WEBLATE_TOKEN create
 
 # Use a custom managed components file, component config, and set log level to ALL
 ./scripts/weblate --token YOUR_WEBLATE_TOKEN --managed-components-file ./cli/weblate-cli/managed-components.txt --component-config-file ./cli/weblate-cli/default-component-config.json --log-level ALL --dry-run update

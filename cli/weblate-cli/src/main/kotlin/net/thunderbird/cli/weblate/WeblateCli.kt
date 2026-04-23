@@ -39,7 +39,7 @@ class WeblateCli : CliktCommand(
 
     override fun run() {
         currentContext.findOrSetObject {
-            WeblateConfig(
+            CliConfig(
                 token = token,
                 componentConfigFile = componentConfigFile,
                 managedComponentsFile = managedComponentsFile,

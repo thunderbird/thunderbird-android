@@ -13,7 +13,7 @@ class UpdateComponent : BaseCommand(name = "update") {
 
     override fun onRun(
         client: WeblateClient,
-        componentConfig: ComponentConfig,
+        defaultComponentConfig: ComponentConfig,
         managedComponents: Set<String>,
     ) {
         val allComponents = client.loadComponents()
@@ -25,7 +25,7 @@ class UpdateComponent : BaseCommand(name = "update") {
             println()
             println("- ${component.info.name} (slug: ${component.info.slug} # ID: ${component.info.id}) ")
             println()
-            processComponent(component, componentConfig, client)
+            processComponent(component, defaultComponentConfig, client)
             println()
         }
 

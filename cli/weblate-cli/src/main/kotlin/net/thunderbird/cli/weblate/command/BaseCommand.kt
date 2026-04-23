@@ -3,28 +3,29 @@ package net.thunderbird.cli.weblate.command
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.requireObject
 import java.io.File
+import net.thunderbird.cli.weblate.CliConfig
 import net.thunderbird.cli.weblate.ComponentConfigLoader
-import net.thunderbird.cli.weblate.WeblateConfig
 import net.thunderbird.cli.weblate.api.ComponentConfig
 import net.thunderbird.cli.weblate.api.WeblateClient
+import net.thunderbird.cli.weblate.project.ModuleInfo
 
 @Suppress("TooGenericExceptionCaught")
 abstract class BaseCommand(name: String) : CliktCommand(name = name) {
 
-    internal val config by requireObject<WeblateConfig>()
+    internal val config by requireObject<CliConfig>()
 
     override fun run() {
-        val componentConfig = loadComponentConfig(config.componentConfigFile)
+        val defaultComponentConfig = loadComponentConfig(config.componentConfigFile)
         val managedComponents = loadManagedConfig(config.managedComponentsFile)
 
         val client = WeblateClient(token = config.token, logLevel = config.logLevel)
 
-        onRun(client, componentConfig, managedComponents)
+        onRun(client, defaultComponentConfig, managedComponents)
     }
 
     abstract fun onRun(
         client: WeblateClient,
-        componentConfig: ComponentConfig,
+        defaultComponentConfig: ComponentConfig,
         managedComponents: Set<String>,
     )
 
@@ -51,13 +52,25 @@ abstract class BaseCommand(name: String) : CliktCommand(name = name) {
             file.readLines()
                 .map { it.trim() }
                 .map { line ->
-                    // Remove inline comments safely; substringBefore handles missing '#'
+                    // Remove inline comments
                     line.substringBefore('#').trim()
                 }
                 .filter { it.isNotEmpty() }
                 .toSet()
         } catch (e: Exception) {
             error("Failed to read managed components file $file: ${e.message}")
+        }
+    }
+
+    protected fun reportUnmanagedManagedComponents(
+        localModules: List<ModuleInfo>,
+        managedComponents: Set<String>,
+    ) {
+        val unmanaged = localModules.filter { it.slug !in managedComponents }
+
+        if (unmanaged.isNotEmpty()) {
+            println("\nLocal modules NOT in managed components file:")
+            unmanaged.forEach { println("  - ${it.path} (${it.type})") }
         }
     }
 }
