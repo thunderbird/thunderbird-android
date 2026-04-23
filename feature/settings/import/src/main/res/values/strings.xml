@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="settings_import_title">Import settings</string>
+    <string name="settings_import_account">Import Account</string>
     <string name="settings_import_pick_document_button">Select file</string>
     <string name="settings_import_scan_qr_code_button">Scan QR code</string>
     <string name="settings_import_pick_app_button">Import from app</string>

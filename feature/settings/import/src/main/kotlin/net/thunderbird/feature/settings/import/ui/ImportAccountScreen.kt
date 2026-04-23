@@ -1,150 +1,179 @@
 package net.thunderbird.feature.settings.import.ui
 
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.widget.Toast
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextDecoration
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonDefaults
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
+import app.k9mail.core.ui.compose.designsystem.atom.card.CardDefaults
 import app.k9mail.core.ui.compose.designsystem.atom.card.CardFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
+import app.k9mail.feature.account.common.ui.WizardNavigationBar
+import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.settings.importing.R
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.core.common.provider.BrandNameProvider
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.feature.settings.import.ui.ImportAccountScreenDefaults.TEST_TAG_IMPORT_ACCOUNT_IMPORT_BUTTON
+import net.thunderbird.feature.settings.import.ui.ImportAccountScreenDefaults.TEST_TAG_IMPORT_ACCOUNT_QR_CODE_SCAN_BUTTON
+import net.thunderbird.feature.settings.import.ui.ImportAccountScreenDefaults.TEST_TAG_IMPORT_ACCOUNT_ROOT
+import net.thunderbird.feature.settings.import.ui.ImportAccountScreenDefaults.TEST_TAG_IMPORT_ACCOUNT_SELECT_FILE_BUTTON
+import net.thunderbird.feature.thundermail.ui.brandBackground
 import org.koin.compose.koinInject
 
 @Composable
 fun ImportAccountScreen(
     onQrCodeScan: () -> Unit,
-    onAddAccount: () -> Unit,
     onImport: () -> Unit,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
     brandNameProvider: BrandNameProvider = koinInject(),
 ) {
-    val scrollState = rememberScrollState()
-
-    Scaffold(
-        modifier = modifier,
-    ) { innerPadding ->
-        ResponsiveWidthContainer(
+    ResponsiveWidthContainer(
+        modifier = modifier
+            .fillMaxSize()
+            .brandBackground()
+            .testTagAsResourceId(TEST_TAG_IMPORT_ACCOUNT_ROOT),
+    ) { contentPadding ->
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
-        ) { contentPadding ->
+                .padding(contentPadding),
+        ) {
+            Spacer(modifier = Modifier.weight(weight = .15f))
+            AppTitleTopHeader(title = brandNameProvider.brandName)
+            Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
+            TextTitleLarge(
+                text = stringResource(R.string.settings_import_account),
+                color = MainTheme.colors.primary,
+                modifier = Modifier.padding(
+                    horizontal = MainTheme.spacings.double,
+                    vertical = MainTheme.spacings.default,
+                ),
+            )
+            Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(scrollState)
-                    .padding(contentPadding),
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
             ) {
-                AppTitleTopHeader(
-                    title = brandNameProvider.brandName,
+                AlreadyUsingThunderbirdCard(
+                    onQrCodeScan = onQrCodeScan,
+                    modifier = Modifier.padding(horizontal = MainTheme.spacings.double),
                 )
-
-                Spacer(
-                    modifier = Modifier
-                        .height(MainTheme.spacings.double)
-                        .weight(1f),
-                )
-
-                AlreadyUsingThunderbirdCard(onQrCodeScan)
-
-                Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
-
-                TextGroup(title = stringResource(R.string.settings_import_thunderbird_new_account_title)) {
-                    ButtonOutlined(
-                        text = stringResource(R.string.settings_import_thunderbird_new_account_button_text),
-                        onClick = onAddAccount,
-                        modifier = Modifier.testTagAsResourceId("onboarding_migration_new_account_button"),
-                    )
-                }
-
+                Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
                 TextGroup(title = stringResource(R.string.settings_import_thunderbird_import_title)) {
-                    ButtonOutlined(
+                    MovingFromAnotherDeviceButton(
+                        text = stringResource(R.string.settings_import_pick_document_button),
+                        onClick = onImport,
+                        modifier = Modifier.testTagAsResourceId(TEST_TAG_IMPORT_ACCOUNT_SELECT_FILE_BUTTON),
+                    )
+                    MovingFromAnotherDeviceButton(
                         text = stringResource(R.string.settings_import_thunderbird_import_button_text),
                         onClick = onImport,
-                        modifier = Modifier.testTagAsResourceId("ImportButton"),
+                        modifier = Modifier.testTagAsResourceId(TEST_TAG_IMPORT_ACCOUNT_IMPORT_BUTTON),
                     )
                 }
-
-                Spacer(
-                    modifier = Modifier
-                        .height(MainTheme.spacings.double)
-                        .weight(1f),
-                )
             }
+
+            WizardNavigationBar(
+                onNextClick = { },
+                onBackClick = onBack,
+                state = WizardNavigationBarState(showNext = false),
+                modifier = Modifier
+                    .padding(top = MainTheme.spacings.double)
+                    .padding(horizontal = MainTheme.spacings.double),
+            )
         }
     }
 }
 
 @Composable
-private fun AlreadyUsingThunderbirdCard(onQrCodeScan: () -> Unit) {
-    TextCard(title = stringResource(R.string.settings_import_thunderbird_qr_code_import_title)) {
+fun MovingFromAnotherDeviceButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    ButtonOutlined(
+        text = text,
+        onClick = onClick,
+        modifier = modifier,
+        colors = ButtonDefaults.outlinedButtonColors(contentColor = MainTheme.colors.primary),
+        shape = ButtonDefaults.outlinedShape(
+            border = ButtonDefaults.outlinedButtonBorder(color = MainTheme.colors.outline),
+        ),
+        contentPadding = PaddingValues(
+            vertical = MainTheme.spacings.oneHalf,
+            horizontal = MainTheme.spacings.triple,
+        ),
+    )
+}
+
+@Composable
+private fun AlreadyUsingThunderbirdCard(onQrCodeScan: () -> Unit, modifier: Modifier = Modifier) {
+    TextCard(
+        title = stringResource(R.string.settings_import_thunderbird_qr_code_import_title),
+        modifier = modifier,
+    ) {
         TextBodyMedium(
             text = stringResource(R.string.settings_import_thunderbird_qr_code_import_text),
-            modifier = Modifier
-                .padding(bottom = MainTheme.spacings.double),
         )
 
-        TextBodyMedium(
-            text = stringResource(R.string.settings_import_thunderbird_qr_code_import_instructions_intro),
-        )
-
-        BulletList(
-            items = persistentListOf(
-                stringResource(R.string.settings_import_thunderbird_qr_code_import_instructions_bullet_1),
-                stringResource(R.string.settings_import_thunderbird_qr_code_import_instructions_bullet_2_v2),
-            ),
-            modifier = Modifier
-                .padding(
-                    top = MainTheme.spacings.half,
-                    bottom = MainTheme.spacings.double,
+        Column {
+            TextBodyMedium(
+                text = stringResource(R.string.settings_import_thunderbird_qr_code_import_instructions_intro),
+            )
+            BulletList(
+                items = persistentListOf(
+                    stringResource(R.string.settings_import_thunderbird_qr_code_import_instructions_bullet_1),
+                    stringResource(R.string.settings_import_thunderbird_qr_code_import_instructions_bullet_2_v2),
                 ),
-        )
+                modifier = Modifier.padding(top = MainTheme.spacings.half),
+            )
+        }
 
         ButtonFilled(
-            text = stringResource(R.string.settings_import_thunderbird_qr_code_import_button_text),
+            text = stringResource(R.string.settings_import_scan_qr_code_button),
             onClick = onQrCodeScan,
             modifier = Modifier
-                .testTagAsResourceId("QrCodeImportButton")
+                .testTagAsResourceId(TEST_TAG_IMPORT_ACCOUNT_QR_CODE_SCAN_BUTTON)
                 .align(Alignment.CenterHorizontally),
+            leadingIcon = {
+                Icon(Icons.Outlined.QrCode)
+                Spacer(modifier = Modifier.width(MainTheme.spacings.default))
+            },
+            contentPadding = PaddingValues(
+                top = MainTheme.spacings.oneHalf,
+                bottom = MainTheme.spacings.oneHalf,
+                start = MainTheme.spacings.double,
+                end = MainTheme.spacings.triple,
+            ),
         )
 
         ThunderbirdVersionNote(
@@ -159,69 +188,40 @@ private fun AlreadyUsingThunderbirdCard(onQrCodeScan: () -> Unit) {
 private fun ThunderbirdVersionNote(
     modifier: Modifier = Modifier,
 ) {
-    val formatString = if (LocalInspectionMode.current) {
-        // When called from Android Studio previews, stringResource() replaces format string placeholders. We work
-        // around that by using a static string.
-        "Import requires the latest version of Thunderbird Desktop 128. %s"
-    } else {
-        stringResource(R.string.settings_import_thunderbird_qr_code_import_instructions_require_latest)
-    }
-
-    val context = LocalContext.current
-
-    Box(
-        modifier = modifier
-            .clip(MainTheme.shapes.small)
-            .clickable { context.launchLearnHowToUpdateThunderbird() }
-            .semantics { role = Role.Button }
-            .padding(MainTheme.spacings.double),
-    ) {
-        check("%s" in formatString) { "Placeholder needs to be exactly %s" }
-
-        val prefix = formatString.substringBefore("%s")
-        val suffix = formatString.substringAfter("%s")
-
-        val text = buildAnnotatedString {
-            val linkText = AnnotatedString(
-                text = stringResource(
-                    R.string.settings_import_thunderbird_qr_code_import_instructions_learn_update,
-                ),
-                spanStyle = SpanStyle(
-                    color = MainTheme.colors.primary,
-                    textDecoration = TextDecoration.Underline,
-                ),
-            )
-
+    TextBodySmall(
+        text = buildAnnotatedString {
+            val formatString =
+                stringResource(R.string.settings_import_thunderbird_qr_code_import_instructions_require_latest)
+            val prefix = formatString.substringBefore("%s")
+            val suffix = formatString.substringAfter("%s")
             append(prefix)
-            append(linkText)
+            pushLink(LinkAnnotation.Url(stringResource(R.string.settings_import_thunderbird_update_thunderbird_url)))
+            append(
+                stringResource(R.string.settings_import_thunderbird_qr_code_import_instructions_learn_update),
+            )
             append(suffix)
-        }
-
-        TextBodySmall(text)
-    }
+        },
+        modifier = modifier.padding(MainTheme.spacings.default),
+    )
 }
 
 @Composable
 private fun TextCard(
     title: String,
+    modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     CardFilled(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = MainTheme.spacings.quadruple),
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MainTheme.colors.surfaceContainerLowest),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MainTheme.spacings.double),
+                .padding(horizontal = MainTheme.spacings.double, vertical = MainTheme.spacings.triple),
+            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
         ) {
-            TextTitleMedium(
-                text = title,
-                color = MainTheme.colors.primary,
-                modifier = Modifier
-                    .padding(bottom = MainTheme.spacings.double),
-            )
+            TextTitleMedium(text = title, color = MainTheme.colors.primary)
 
             content()
         }
@@ -235,6 +235,7 @@ private fun TextGroup(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
         modifier = Modifier
             .fillMaxWidth()
             .padding(MainTheme.spacings.double),
@@ -242,10 +243,7 @@ private fun TextGroup(
         TextTitleMedium(
             text = title,
             color = MainTheme.colors.primary,
-            modifier = Modifier
-                .padding(bottom = MainTheme.spacings.default),
         )
-
         content()
     }
 }
@@ -268,19 +266,9 @@ private fun BulletList(
     }
 }
 
-private fun Context.launchLearnHowToUpdateThunderbird() {
-    try {
-        val url = getString(R.string.settings_import_thunderbird_update_thunderbird_url)
-        val viewIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-
-        startActivity(viewIntent)
-    } catch (e: ActivityNotFoundException) {
-        Log.d(e, "Failed to open URL")
-
-        Toast.makeText(
-            this,
-            getString(R.string.settings_import_thunderbird_link_open_error),
-            Toast.LENGTH_SHORT,
-        ).show()
-    }
+internal object ImportAccountScreenDefaults {
+    const val TEST_TAG_IMPORT_ACCOUNT_ROOT = "ImportAccountScreen_root"
+    const val TEST_TAG_IMPORT_ACCOUNT_QR_CODE_SCAN_BUTTON = "QrCodeImportButton"
+    const val TEST_TAG_IMPORT_ACCOUNT_SELECT_FILE_BUTTON = "ImportAccountScreen_selectFileButton"
+    const val TEST_TAG_IMPORT_ACCOUNT_IMPORT_BUTTON = "ImportButton"
 }

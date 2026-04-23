@@ -18,13 +18,13 @@ dependencies {
     implementation(projects.feature.account.common)
     implementation(projects.feature.migration.launcher.api)
     implementation(projects.feature.account.oauth)
+    implementation(projects.feature.thundermail.api)
     implementation(libs.appauth)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.fragment.compose)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.fastadapter)
-    debugImplementation(projects.feature.thundermail.api)
 
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)

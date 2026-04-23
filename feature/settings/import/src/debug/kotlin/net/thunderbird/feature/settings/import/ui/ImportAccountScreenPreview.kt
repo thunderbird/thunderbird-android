@@ -13,8 +13,8 @@ private fun ImportAccountScreenPreview() {
         Surface {
             ImportAccountScreen(
                 onQrCodeScan = {},
-                onAddAccount = {},
                 onImport = {},
+                onBack = {},
                 brandNameProvider = object : BrandNameProvider {
                     override val brandName: String = "Thunderbird"
                 },
