@@ -21,6 +21,8 @@ dependencies {
     implementation(projects.feature.account.common)
 
     testImplementation(projects.core.ui.compose.testing)
+
+    debugImplementation(projects.feature.thundermail.api)
 }
 
 codeCoverage {

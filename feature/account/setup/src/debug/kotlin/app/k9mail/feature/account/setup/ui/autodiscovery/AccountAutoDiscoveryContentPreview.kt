@@ -18,12 +18,13 @@ import net.thunderbird.core.common.provider.BrandTypographyProvider
 import net.thunderbird.core.validation.input.StringInputField
 import net.thunderbird.feature.thundermail.ui.BrandBackgroundModifierProvider
 import net.thunderbird.feature.thundermail.ui.RegisteredTrademarkInjector
+import net.thunderbird.feature.thundermail.ui.preview.ThundermailPreview
 
 @Composable
 @PreviewLightDark
 @PreviewDevices
 internal fun AccountAutoDiscoveryContentPreview() {
-    PreviewWithKoin {
+    ThundermailPreview {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(),
             onEvent = {},
@@ -37,7 +38,7 @@ internal fun AccountAutoDiscoveryContentPreview() {
 @Composable
 @PreviewLightDark
 internal fun AccountAutoDiscoveryContentEmailPreview() {
-    PreviewWithKoin {
+    ThundermailPreview {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 emailAddress = StringInputField(value = "test@example.com"),
@@ -53,7 +54,7 @@ internal fun AccountAutoDiscoveryContentEmailPreview() {
 @Composable
 @PreviewLightDark
 internal fun AccountAutoDiscoveryContentPasswordPreview() {
-    PreviewWithKoin {
+    ThundermailPreview {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 configStep = AccountAutoDiscoveryContract.ConfigStep.PASSWORD,
@@ -71,7 +72,7 @@ internal fun AccountAutoDiscoveryContentPasswordPreview() {
 @Composable
 @PreviewLightDark
 internal fun AccountAutoDiscoveryContentPasswordUntrustedSettingsPreview() {
-    PreviewWithKoin {
+    ThundermailPreview {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 configStep = AccountAutoDiscoveryContract.ConfigStep.PASSWORD,
@@ -89,7 +90,7 @@ internal fun AccountAutoDiscoveryContentPasswordUntrustedSettingsPreview() {
 @Composable
 @PreviewLightDark
 internal fun AccountAutoDiscoveryContentPasswordNoSettingsPreview() {
-    PreviewWithKoin {
+    ThundermailPreview {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 configStep = AccountAutoDiscoveryContract.ConfigStep.PASSWORD,
@@ -106,7 +107,7 @@ internal fun AccountAutoDiscoveryContentPasswordNoSettingsPreview() {
 @Composable
 @PreviewLightDark
 internal fun AccountAutoDiscoveryContentOAuthPreview() {
-    PreviewWithKoin {
+    ThundermailPreview {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 configStep = AccountAutoDiscoveryContract.ConfigStep.OAUTH,
@@ -118,24 +119,5 @@ internal fun AccountAutoDiscoveryContentOAuthPreview() {
             brandName = "BrandName",
             contentPadding = PaddingValues(),
         )
-    }
-}
-
-@Composable
-private fun PreviewWithKoin(content: @Composable () -> Unit) {
-    val backgroundColor = if (isSystemInDarkTheme()) Color(color = 0xFF262C40) else Color(color = 0xFFF0F8FF)
-    koinPreview {
-        single<BrandBackgroundModifierProvider> {
-            BrandBackgroundModifierProvider {
-                Modifier.background(backgroundColor)
-            }
-        }
-        single<BrandTypographyProvider> {
-            BrandTypographyProvider {
-                TextDisplayMediumAutoResize(text = RegisteredTrademarkInjector.inject("Thunderbird"))
-            }
-        }
-    } WithContent {
-        PreviewWithTheme(content = content)
     }
 }
