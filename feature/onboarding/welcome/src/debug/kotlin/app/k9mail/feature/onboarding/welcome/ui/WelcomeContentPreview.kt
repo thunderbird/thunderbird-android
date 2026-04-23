@@ -11,9 +11,7 @@ internal fun WelcomeContentThunderbirdPreview() {
     PreviewWithTheme(themeType = PreviewThemeType.THUNDERBIRD) {
         WelcomeContent(
             onStartClick = {},
-            onImportClick = {},
             appName = "Thunderbird Beta",
-            showImportButton = false,
         )
     }
 }
@@ -24,9 +22,7 @@ internal fun WelcomeContentK9MailPreview() {
     PreviewWithTheme(themeType = PreviewThemeType.K9MAIL) {
         WelcomeContent(
             onStartClick = {},
-            onImportClick = {},
             appName = "K-9 Mail",
-            showImportButton = true,
         )
     }
 }

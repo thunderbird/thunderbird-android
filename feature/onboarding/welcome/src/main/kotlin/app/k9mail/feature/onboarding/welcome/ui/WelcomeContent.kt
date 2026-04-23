@@ -18,7 +18,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMedium
@@ -36,9 +35,7 @@ private const val LOGO_DESCRIPTION_SPACING = 48
 @Composable
 internal fun WelcomeContent(
     onStartClick: () -> Unit,
-    onImportClick: () -> Unit,
     appName: String,
-    showImportButton: Boolean,
     modifier: Modifier = Modifier,
 ) {
     ResponsiveContent(
@@ -67,9 +64,7 @@ internal fun WelcomeContent(
             Spacer(modifier = Modifier.weight(weight = 1f))
 
             WelcomeActionButtons(
-                showImportButton = showImportButton,
                 onStartClick = onStartClick,
-                onImportClick = onImportClick,
                 modifier = Modifier
                     .defaultItemModifier()
                     .padding(top = MainTheme.spacings.triple),
@@ -141,9 +136,7 @@ private fun WelcomeTitle(
 
 @Composable
 private fun WelcomeActionButtons(
-    showImportButton: Boolean,
     onStartClick: () -> Unit,
-    onImportClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -156,12 +149,6 @@ private fun WelcomeActionButtons(
             onClick = onStartClick,
             modifier = Modifier.testTagAsResourceId("onboarding_welcome_start_button"),
         )
-        if (showImportButton) {
-            ButtonText(
-                text = stringResource(id = R.string.onboarding_welcome_import_button),
-                onClick = onImportClick,
-            )
-        }
     }
 }
 

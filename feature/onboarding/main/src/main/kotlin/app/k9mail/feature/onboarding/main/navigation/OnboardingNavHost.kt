@@ -16,7 +16,6 @@ import androidx.navigation.navArgument
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.setup.navigation.AccountSetupNavHost
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
-import app.k9mail.feature.onboarding.migration.api.OnboardingMigrationManager
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsScreen
 import app.k9mail.feature.onboarding.welcome.ui.WelcomeScreen
 import app.k9mail.feature.settings.import.ui.SettingsImportAction
@@ -26,7 +25,6 @@ import net.thunderbird.feature.thundermail.ui.screen.AddThundermailAccountScreen
 import org.koin.compose.koinInject
 
 private const val NESTED_NAVIGATION_ROUTE_WELCOME = "welcome"
-private const val NESTED_NAVIGATION_ROUTE_MIGRATION = "migration"
 private const val NESTED_NAVIGATION_ROUTE_ACCOUNT_SETUP = "account_setup"
 private const val NESTED_NAVIGATION_ROUTE_SETTINGS_IMPORT = "settings_import"
 private const val NESTED_NAVIGATION_ROUTE_SETTINGS_IMPORT_QR_CODE = "settings_import_qr_code"
@@ -50,14 +48,6 @@ private fun NavController.navigateToAccountSetup(skipToIncomingValidation: Boole
     )
 }
 
-private fun NavController.navigateToSettingsImport() {
-    navigate(NESTED_NAVIGATION_ROUTE_SETTINGS_IMPORT)
-}
-
-private fun NavController.navigateToSettingsImportQrCode() {
-    navigate(NESTED_NAVIGATION_ROUTE_SETTINGS_IMPORT_QR_CODE)
-}
-
 private fun NavController.navigateToPermissions() {
     navigate(NESTED_NAVIGATION_ROUTE_PERMISSIONS) {
         popUpTo(NESTED_NAVIGATION_ROUTE_WELCOME) {
@@ -71,7 +61,6 @@ private fun NavController.navigateToPermissions() {
 fun OnboardingNavHost(
     onFinish: (OnboardingRoute) -> Unit,
     modifier: Modifier = Modifier,
-    onboardingMigrationManager: OnboardingMigrationManager = koinInject(),
     addThundermailAccountScreenProvider: AddThundermailAccountScreenProvider = koinInject(),
 ) {
     val navController = rememberNavController()
@@ -91,9 +80,7 @@ fun OnboardingNavHost(
                 onStartClick = {
                     navController.navigateToAddThundermailAccount()
                 },
-                onImportClick = { navController.navigateToSettingsImport() },
                 appNameProvider = koinInject(),
-                onboardingMigrationManager = koinInject(),
             )
         }
 
@@ -118,14 +105,6 @@ fun OnboardingNavHost(
                 action = SettingsImportAction.ScanQrCode,
                 onImportSuccess = ::onImportSuccess,
                 onBack = { navController.popBackStack() },
-            )
-        }
-
-        composable(route = NESTED_NAVIGATION_ROUTE_MIGRATION) {
-            onboardingMigrationManager.OnboardingMigrationScreen(
-                onQrCodeScan = { navController.navigateToSettingsImportQrCode() },
-                onAddAccount = { navController.navigateToAccountSetup() },
-                onImport = { navController.navigateToSettingsImport() },
             )
         }
 
