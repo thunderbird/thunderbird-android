@@ -43,4 +43,17 @@
     <string name="settings_import_scan_qr_code_button">Skenuoti QR kodą</string>
     <string name="settings_import_pick_app_dialog_title">Importuoti iš programos</string>
     <string name="settings_import_app_version_not_supported">Programos versija nepalaikoma.</string>
+    <string name="settings_import_thunderbird_new_account_title">Naujas su Thunderbird?</string>
+    <string name="settings_import_thunderbird_new_account_button_text">Pridėkite pašto paskyrą dabar</string>
+    <string name="settings_import_thunderbird_import_title">Persikeliate iš kitos programos ar įrenginio?</string>
+    <string name="settings_import_thunderbird_import_button_text">Įkelti paskyros nustatymus</string>
+    <string name="settings_import_thunderbird_qr_code_import_title">Jau naudojatės „Thunderbird“ kompiuteryje?</string>
+    <string name="settings_import_thunderbird_qr_code_import_text">Paprastai importuokite savo paskyrų nuostatas, nuskenuodami QR kodą.</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_intro">Kompiuteryje paleistoje „Thunderbird“ programoje atlikite šiuos veiksmus:</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_bullet_1">\"Nustatymai\" įrankinėje (kairėje apačioje)</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_bullet_2_v2">Pasirinkit \"Eksportuoti į mobilų\"</string>
+    <string name="settings_import_thunderbird_qr_code_import_button_text">Importuoti nustatymus</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_require_latest">Importavimui reikalinga naujausia Thunderbird Desktop 128 versija. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_learn_update">Sužinokite kaip atnaujinti Thunderbird.</string>
+    <string name="settings_import_thunderbird_link_open_error">Atverti šiai nuorodai nerasta jokia programa.</string>
 </resources>

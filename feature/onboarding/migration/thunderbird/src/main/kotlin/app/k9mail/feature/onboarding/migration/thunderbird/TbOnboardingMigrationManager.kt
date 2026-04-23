@@ -2,6 +2,7 @@ package app.k9mail.feature.onboarding.migration.thunderbird
 
 import androidx.compose.runtime.Composable
 import app.k9mail.feature.onboarding.migration.api.OnboardingMigrationManager
+import net.thunderbird.feature.settings.import.ui.TbOnboardingMigrationScreen
 
 class TbOnboardingMigrationManager : OnboardingMigrationManager {
     override fun isFeatureIncluded(): Boolean = true

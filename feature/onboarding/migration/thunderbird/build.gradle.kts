@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.core.logging.implLegacy)
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.feature.account.common)
+    implementation(projects.feature.settings.import)
 
     testImplementation(projects.core.ui.compose.testing)
 

@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.legacy.designsystem)
 
+    implementation(projects.feature.account.common)
     implementation(projects.feature.migration.launcher.api)
     implementation(projects.feature.account.oauth)
     implementation(libs.appauth)
@@ -23,8 +24,10 @@ dependencies {
     implementation(libs.androidx.fragment.compose)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.fastadapter)
+    debugImplementation(projects.feature.thundermail.api)
 
     testImplementation(projects.core.logging.testing)
+    testImplementation(projects.core.ui.compose.testing)
 }
 
 codeCoverage {

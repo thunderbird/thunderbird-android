@@ -43,4 +43,17 @@
     <string name="settings_import_pick_app_dialog_title">Імпорт із застосунку</string>
     <string name="settings_import_scan_qr_code_button">Сканувати QR-код</string>
     <string name="settings_import_app_version_not_supported">Версія застосунку не підтримується.</string>
+    <string name="settings_import_thunderbird_new_account_title">Вперше у Thunderbird?</string>
+    <string name="settings_import_thunderbird_new_account_button_text">Додайте обліковий запис е-пошти зараз</string>
+    <string name="settings_import_thunderbird_import_title">Переходите з іншого застосунку або пристрою?</string>
+    <string name="settings_import_thunderbird_import_button_text">Імпортуйте налаштування свого облікового запису зараз</string>
+    <string name="settings_import_thunderbird_qr_code_import_title">Уже використовуєте Thunderbird на комп\'ютері?</string>
+    <string name="settings_import_thunderbird_qr_code_import_text">Легко імпортуйте налаштування свого облікового запису, зісканувавши QR-код.</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_intro">У Thunderbird для комп\'ютера перейдіть до:</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_bullet_1">«Налаштування» на панелі інструментів Простори (внизу ліворуч)</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_bullet_2_v2">Виберіть «Експортувати на Мобільний»</string>
+    <string name="settings_import_thunderbird_qr_code_import_button_text">Імпорт налаштувань</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_require_latest">Для імпорту потрібна остання версія Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_learn_update">Навчіться як оновлювати Thunderbird.</string>
+    <string name="settings_import_thunderbird_link_open_error">Застосунку для відкриття посилання не знайдено.</string>
 </resources>

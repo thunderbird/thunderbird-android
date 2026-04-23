@@ -43,4 +43,17 @@
     <string name="settings_import_pick_app_dialog_title">Импорт из приложения</string>
     <string name="settings_import_scan_qr_code_button">Сканировать QR-код</string>
     <string name="settings_import_app_version_not_supported">Версия приложения не поддерживается.</string>
+    <string name="settings_import_thunderbird_new_account_title">Новичок в Thunderbird?</string>
+    <string name="settings_import_thunderbird_new_account_button_text">Добавьте аккаунт эл. почты</string>
+    <string name="settings_import_thunderbird_import_title">Переходите с другого приложения или устройства?</string>
+    <string name="settings_import_thunderbird_import_button_text">Импортируйте настройки своей учётной записи</string>
+    <string name="settings_import_thunderbird_qr_code_import_title">Уже используете Thunderbird на компьютере?</string>
+    <string name="settings_import_thunderbird_qr_code_import_text">Можно легко импортировать настройки своей учётной записи сканированием QR-кода.</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_intro">В Thunderbird на компьютере перейдите в:</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_bullet_1">\"Настройки\" в панели мест (внизу слева)</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_bullet_2_v2">Выберите \"Экспорт для мобильного\"</string>
+    <string name="settings_import_thunderbird_qr_code_import_button_text">Импортируйте настройки</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_require_latest">Для импортирования требуется последняя версия Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_learn_update">Узнайте, как обновить Thunderbird.</string>
+    <string name="settings_import_thunderbird_link_open_error">Не найдено приложение, позволяющее открыть ссылку.</string>
 </resources>

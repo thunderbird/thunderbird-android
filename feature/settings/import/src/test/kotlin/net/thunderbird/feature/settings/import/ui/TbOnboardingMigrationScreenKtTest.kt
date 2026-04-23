@@ -1,0 +1,87 @@
+package net.thunderbird.feature.settings.import.ui
+
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import app.k9mail.core.ui.compose.testing.ComposeTest
+import app.k9mail.core.ui.compose.testing.setContentWithKoinAndTheme
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import net.thunderbird.core.common.provider.BrandNameProvider
+import net.thunderbird.core.common.provider.BrandTypographyProvider
+import org.junit.Test
+
+class TbOnboardingMigrationScreenKtTest : ComposeTest() {
+    @Test
+    fun `pressing QrCodeImportButton should call onQrCodeScan`() = runComposeTest {
+        var qrCodeScanClickCounter = 0
+        setContentWithKoinAndTheme(
+            modules = {
+                single<BrandTypographyProvider> { BrandTypographyProvider {} }
+            },
+        ) {
+            TbOnboardingMigrationScreen(
+                onQrCodeScan = { qrCodeScanClickCounter++ },
+                onAddAccount = { error("Should not be called") },
+                onImport = { error("Should not be called") },
+                brandNameProvider = FakeBrandNameProvider,
+            )
+        }
+
+        composeTestRule.onNodeWithTag("QrCodeImportButton")
+            .performScrollTo()
+            .performClick()
+
+        assertThat(qrCodeScanClickCounter).isEqualTo(1)
+    }
+
+    @Test
+    fun `pressing AddAccountButton button should call onAddAccount`() = runComposeTest {
+        var addAccountClickCounter = 0
+        setContentWithKoinAndTheme(
+            modules = {
+                single<BrandTypographyProvider> { BrandTypographyProvider {} }
+            },
+        ) {
+            TbOnboardingMigrationScreen(
+                onQrCodeScan = { error("Should not be called") },
+                onAddAccount = { addAccountClickCounter++ },
+                onImport = { error("Should not be called") },
+                brandNameProvider = FakeBrandNameProvider,
+            )
+        }
+
+        composeTestRule.onNodeWithTag("onboarding_migration_new_account_button")
+            .performScrollTo()
+            .performClick()
+
+        assertThat(addAccountClickCounter).isEqualTo(1)
+    }
+
+    @Test
+    fun `pressing ImportButton button should call onImport`() = runComposeTest {
+        var importClickCounter = 0
+        setContentWithKoinAndTheme(
+            modules = {
+                single<BrandTypographyProvider> { BrandTypographyProvider {} }
+            },
+        ) {
+            TbOnboardingMigrationScreen(
+                onQrCodeScan = { error("Should not be called") },
+                onAddAccount = { error("Should not be called") },
+                onImport = { importClickCounter++ },
+                brandNameProvider = FakeBrandNameProvider,
+            )
+        }
+
+        composeTestRule.onNodeWithTag("ImportButton")
+            .performScrollTo()
+            .performClick()
+
+        assertThat(importClickCounter).isEqualTo(1)
+    }
+}
+
+private object FakeBrandNameProvider : BrandNameProvider {
+    override val brandName = "Thunderbird"
+}

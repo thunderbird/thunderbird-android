@@ -37,4 +37,17 @@
     <string name="settings_import_pick_app_dialog_title">Impurtà da l’appiecazione</string>
     <string name="settings_import_scan_qr_code_button">Leghje un codice QR</string>
     <string name="settings_import_app_version_not_supported">A versione di l’appiecazione ùn hè micca accettata.</string>
+    <string name="settings_import_thunderbird_new_account_title">Principiante nant’à Thunderbird ?</string>
+    <string name="settings_import_thunderbird_new_account_button_text">Aghjunghje subitu un contu di messaghjeria</string>
+    <string name="settings_import_thunderbird_import_title">Venite da un’altra appiecazione o da un altru apparechju ?</string>
+    <string name="settings_import_thunderbird_import_button_text">Impurtà subitu i vostri parametri di conti</string>
+    <string name="settings_import_thunderbird_qr_code_import_title">Impiegate dighjà Thunderbird nant’à l’urdinatore ?</string>
+    <string name="settings_import_thunderbird_qr_code_import_text">Impurtate in quattru è trè sette i vostri parametri di conti analizendu un codice QR.</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_intro">In Thunderbird nant’à l’urdinatore, andà à :</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_bullet_1">« Parametri » in a barra d’attrezzi di i spazii (in bassu è à manca)</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_bullet_2_v2">Selezziunate « Espurtà versu u mobile »</string>
+    <string name="settings_import_thunderbird_qr_code_import_button_text">Impurtà i parametri</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_require_latest">L’impurtazione richiede l’ultima versione 128 di Thunderbird per l’urdinatore. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_learn_update">Scuprite cumu mette Thunderbird à livellu.</string>
+    <string name="settings_import_thunderbird_link_open_error">Nisuna appiecazione hè stata trova per apre u liame.</string>
 </resources>
