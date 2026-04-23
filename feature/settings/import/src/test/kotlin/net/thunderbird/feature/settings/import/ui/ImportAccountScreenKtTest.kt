@@ -9,11 +9,14 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import net.thunderbird.core.common.provider.BrandNameProvider
 import net.thunderbird.core.common.provider.BrandTypographyProvider
+import net.thunderbird.feature.settings.import.ui.ImportAccountScreenDefaults.TEST_TAG_IMPORT_ACCOUNT_IMPORT_BUTTON
+import net.thunderbird.feature.settings.import.ui.ImportAccountScreenDefaults.TEST_TAG_IMPORT_ACCOUNT_QR_CODE_SCAN_BUTTON
+import net.thunderbird.feature.settings.import.ui.ImportAccountScreenDefaults.TEST_TAG_IMPORT_ACCOUNT_SELECT_FILE_BUTTON
 import org.junit.Test
 
 class ImportAccountScreenKtTest : ComposeTest() {
     @Test
-    fun `pressing QrCodeImportButton should call onQrCodeScan`() = runComposeTest {
+    fun `pressing QrCodeImportButton should call onQrCodeScanClick`() = runComposeTest {
         var qrCodeScanClickCounter = 0
         setContentWithKoinAndTheme(
             modules = {
@@ -21,14 +24,15 @@ class ImportAccountScreenKtTest : ComposeTest() {
             },
         ) {
             ImportAccountScreen(
-                onQrCodeScan = { qrCodeScanClickCounter++ },
-                onAddAccount = { error("Should not be called") },
-                onImport = { error("Should not be called") },
+                onQrCodeScanClick = { qrCodeScanClickCounter++ },
+                onSelectFileClick = { error("Should not be called") },
+                onImportClick = { error("Should not be called") },
+                onBack = { error("Should not be called") },
                 brandNameProvider = FakeBrandNameProvider,
             )
         }
 
-        composeTestRule.onNodeWithTag("QrCodeImportButton")
+        composeTestRule.onNodeWithTag(TEST_TAG_IMPORT_ACCOUNT_QR_CODE_SCAN_BUTTON)
             .performScrollTo()
             .performClick()
 
@@ -36,30 +40,31 @@ class ImportAccountScreenKtTest : ComposeTest() {
     }
 
     @Test
-    fun `pressing AddAccountButton button should call onAddAccount`() = runComposeTest {
-        var addAccountClickCounter = 0
+    fun `pressing Select file button should call onSelectFileClick`() = runComposeTest {
+        var onSelectFileClickCounter = 0
         setContentWithKoinAndTheme(
             modules = {
                 single<BrandTypographyProvider> { BrandTypographyProvider {} }
             },
         ) {
             ImportAccountScreen(
-                onQrCodeScan = { error("Should not be called") },
-                onAddAccount = { addAccountClickCounter++ },
-                onImport = { error("Should not be called") },
+                onQrCodeScanClick = { error("Should not be called") },
+                onSelectFileClick = { onSelectFileClickCounter++ },
+                onImportClick = { error("Should not be called") },
+                onBack = { error("Should not be called") },
                 brandNameProvider = FakeBrandNameProvider,
             )
         }
 
-        composeTestRule.onNodeWithTag("onboarding_migration_new_account_button")
+        composeTestRule.onNodeWithTag(TEST_TAG_IMPORT_ACCOUNT_SELECT_FILE_BUTTON)
             .performScrollTo()
             .performClick()
 
-        assertThat(addAccountClickCounter).isEqualTo(1)
+        assertThat(onSelectFileClickCounter).isEqualTo(1)
     }
 
     @Test
-    fun `pressing ImportButton button should call onImport`() = runComposeTest {
+    fun `pressing ImportButton button should call onImportClick`() = runComposeTest {
         var importClickCounter = 0
         setContentWithKoinAndTheme(
             modules = {
@@ -67,14 +72,15 @@ class ImportAccountScreenKtTest : ComposeTest() {
             },
         ) {
             ImportAccountScreen(
-                onQrCodeScan = { error("Should not be called") },
-                onAddAccount = { error("Should not be called") },
-                onImport = { importClickCounter++ },
+                onQrCodeScanClick = { error("Should not be called") },
+                onSelectFileClick = { error("Should not be called") },
+                onImportClick = { importClickCounter++ },
+                onBack = { },
                 brandNameProvider = FakeBrandNameProvider,
             )
         }
 
-        composeTestRule.onNodeWithTag("ImportButton")
+        composeTestRule.onNodeWithTag(TEST_TAG_IMPORT_ACCOUNT_IMPORT_BUTTON)
             .performScrollTo()
             .performClick()
 

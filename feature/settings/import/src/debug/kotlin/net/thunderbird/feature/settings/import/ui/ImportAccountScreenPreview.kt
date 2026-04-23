@@ -12,8 +12,9 @@ private fun ImportAccountScreenPreview() {
     ThundermailPreview {
         Surface {
             ImportAccountScreen(
-                onQrCodeScan = {},
-                onImport = {},
+                onQrCodeScanClick = {},
+                onSelectFileClick = {},
+                onImportClick = {},
                 onBack = {},
                 brandNameProvider = object : BrandNameProvider {
                     override val brandName: String = "Thunderbird"

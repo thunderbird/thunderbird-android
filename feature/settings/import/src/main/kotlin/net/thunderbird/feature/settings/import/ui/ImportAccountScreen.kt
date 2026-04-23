@@ -49,8 +49,9 @@ import org.koin.compose.koinInject
 
 @Composable
 fun ImportAccountScreen(
-    onQrCodeScan: () -> Unit,
-    onImport: () -> Unit,
+    onQrCodeScanClick: () -> Unit,
+    onSelectFileClick: () -> Unit,
+    onImportClick: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     brandNameProvider: BrandNameProvider = koinInject(),
@@ -84,19 +85,19 @@ fun ImportAccountScreen(
                     .verticalScroll(rememberScrollState()),
             ) {
                 AlreadyUsingThunderbirdCard(
-                    onQrCodeScan = onQrCodeScan,
+                    onQrCodeScan = onQrCodeScanClick,
                     modifier = Modifier.padding(horizontal = MainTheme.spacings.double),
                 )
                 Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
                 TextGroup(title = stringResource(R.string.settings_import_thunderbird_import_title)) {
                     MovingFromAnotherDeviceButton(
                         text = stringResource(R.string.settings_import_pick_document_button),
-                        onClick = onImport,
+                        onClick = onSelectFileClick,
                         modifier = Modifier.testTagAsResourceId(TEST_TAG_IMPORT_ACCOUNT_SELECT_FILE_BUTTON),
                     )
                     MovingFromAnotherDeviceButton(
                         text = stringResource(R.string.settings_import_thunderbird_import_button_text),
-                        onClick = onImport,
+                        onClick = onImportClick,
                         modifier = Modifier.testTagAsResourceId(TEST_TAG_IMPORT_ACCOUNT_IMPORT_BUTTON),
                     )
                 }

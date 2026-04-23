@@ -17,6 +17,7 @@ class TbOnboardingMigrationManager : OnboardingMigrationManager {
             onQrCodeScan,
             onAddAccount,
             onImport,
+            {},
         )
     }
 }

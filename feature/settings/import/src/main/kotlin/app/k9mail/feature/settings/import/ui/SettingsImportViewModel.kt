@@ -32,6 +32,7 @@ import net.thunderbird.core.logging.Logger
 
 private typealias AccountUuid = String
 private typealias AccountNumber = Int
+
 private const val TAG = "SettingsImportViewModel"
 
 internal class SettingsImportViewModel(
@@ -230,6 +231,8 @@ internal class SettingsImportViewModel(
             when (action) {
                 SettingsImportAction.Overview -> Unit
                 SettingsImportAction.ScanQrCode -> onScanQrCodeButtonClicked()
+                SettingsImportAction.PickApp -> onPickAppButtonClicked()
+                SettingsImportAction.PickDocument -> onPickDocumentButtonClicked()
             }
         }
     }

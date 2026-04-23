@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -28,6 +29,7 @@ import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersScreen
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersViewModel
 import app.k9mail.feature.settings.import.ui.SettingsImportAction
 import app.k9mail.feature.settings.import.ui.SettingsImportScreen
+import net.thunderbird.feature.settings.import.ui.ImportAccountScreen
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
@@ -40,7 +42,9 @@ private const val NESTED_NAVIGATION_SPECIAL_FOLDERS = "special-folders"
 private const val NESTED_NAVIGATION_DISPLAY_OPTIONS = "display-options"
 private const val NESTED_NAVIGATION_SYNC_OPTIONS = "sync-options"
 private const val NESTED_NAVIGATION_CREATE_ACCOUNT = "create-account"
+private const val NESTED_NAVIGATION_IMPORT_ACCOUNT = "import_account"
 private const val NESTED_NAVIGATION_SETTINGS_IMPORT = "settings_import"
+private const val NESTED_NAVIGATION_SETTINGS_IMPORT_ACTION_PARAM = "action"
 
 @Suppress("LongMethod")
 @Composable
@@ -73,7 +77,7 @@ fun AccountSetupNavHost(
                     }
                 },
                 onBack = onBack,
-                onImportAccountNavigate = { navController.navigate(NESTED_NAVIGATION_SETTINGS_IMPORT) },
+                onImportAccountNavigate = { navController.navigate(NESTED_NAVIGATION_IMPORT_ACCOUNT) },
                 viewModel = koinViewModel<AccountAutoDiscoveryViewModel>(),
                 brandNameProvider = koinInject(),
             )
@@ -188,14 +192,35 @@ fun AccountSetupNavHost(
             )
         }
 
-        composable(route = NESTED_NAVIGATION_SETTINGS_IMPORT) {
+        composable(route = NESTED_NAVIGATION_IMPORT_ACCOUNT) {
+            ImportAccountScreen(
+                onQrCodeScanClick = { navController.navigateToSettingsImport(SettingsImportAction.ScanQrCode) },
+                onSelectFileClick = { navController.navigateToSettingsImport(SettingsImportAction.PickDocument) },
+                onImportClick = { navController.navigateToSettingsImport(SettingsImportAction.PickApp) },
+                onBack = { navController.popBackStack() },
+                brandNameProvider = koinInject(),
+            )
+        }
+
+        composable(route = "${NESTED_NAVIGATION_SETTINGS_IMPORT}/{${NESTED_NAVIGATION_SETTINGS_IMPORT_ACTION_PARAM}}") { backstackEntry ->
+            val action = requireNotNull(
+                backstackEntry.arguments
+                    ?.getString(NESTED_NAVIGATION_SETTINGS_IMPORT_ACTION_PARAM)
+                    ?.let(SettingsImportAction::valueOf),
+            ) {
+                "SettingsImportAction must be provided in the arguments"
+            }
             SettingsImportScreen(
-                action = SettingsImportAction.Overview,
+                action = action,
                 onImportSuccess = { onFinish(AccountSetupRoute.AccountSetup(null)) },
                 onBack = { navController.popBackStack() },
             )
         }
     }
+}
+
+private fun NavController.navigateToSettingsImport(action: SettingsImportAction) {
+    navigate("$NESTED_NAVIGATION_SETTINGS_IMPORT/${action.name}")
 }
 
 internal fun checkSpecialFoldersSupport(protocolType: IncomingProtocolType?): Boolean {
