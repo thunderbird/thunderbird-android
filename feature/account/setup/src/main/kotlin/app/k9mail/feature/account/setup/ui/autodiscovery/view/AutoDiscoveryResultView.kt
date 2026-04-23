@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
@@ -37,11 +36,13 @@ internal fun AutoDiscoveryResultView(
         modifier = modifier,
     ) {
         Surface(
+            color = MainTheme.colors.surfaceContainerLowest,
+            contentColor = MainTheme.colors.onSurface,
             shape = MainTheme.shapes.small,
             modifier = Modifier
                 .border(
                     width = 1.dp,
-                    color = Color.Gray.copy(alpha = 0.5f),
+                    color = MainTheme.colors.outline.copy(alpha = 0.5f),
                     shape = MainTheme.shapes.small,
                 ).let {
                     if (discoveryResultHeaderState.isExpandable) {
