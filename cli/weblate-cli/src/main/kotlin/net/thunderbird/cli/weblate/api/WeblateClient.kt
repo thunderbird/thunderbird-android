@@ -8,6 +8,7 @@ import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.patch
@@ -81,6 +82,16 @@ class WeblateClient(
                 header(HttpHeaders.Authorization, "Token $token")
                 contentType(ContentType.Application.Json)
                 setBody(create)
+            }
+
+            response.status.value in SUCCESS
+        }
+    }
+
+    fun deleteComponent(url: String): Boolean {
+        return runBlocking {
+            val response = client.delete(url) {
+                header(HttpHeaders.Authorization, "Token $token")
             }
 
             response.status.value in SUCCESS
