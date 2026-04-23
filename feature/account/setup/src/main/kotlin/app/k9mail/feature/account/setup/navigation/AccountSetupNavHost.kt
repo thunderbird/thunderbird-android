@@ -26,6 +26,8 @@ import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsScreen
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsViewModel
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersScreen
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersViewModel
+import app.k9mail.feature.settings.import.ui.SettingsImportAction
+import app.k9mail.feature.settings.import.ui.SettingsImportScreen
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
@@ -38,6 +40,7 @@ private const val NESTED_NAVIGATION_SPECIAL_FOLDERS = "special-folders"
 private const val NESTED_NAVIGATION_DISPLAY_OPTIONS = "display-options"
 private const val NESTED_NAVIGATION_SYNC_OPTIONS = "sync-options"
 private const val NESTED_NAVIGATION_CREATE_ACCOUNT = "create-account"
+private const val NESTED_NAVIGATION_SETTINGS_IMPORT = "settings_import"
 
 @Suppress("LongMethod")
 @Composable
@@ -70,6 +73,7 @@ fun AccountSetupNavHost(
                     }
                 },
                 onBack = onBack,
+                onImportAccountNavigate = { navController.navigate(NESTED_NAVIGATION_SETTINGS_IMPORT) },
                 viewModel = koinViewModel<AccountAutoDiscoveryViewModel>(),
                 brandNameProvider = koinInject(),
             )
@@ -181,6 +185,14 @@ fun AccountSetupNavHost(
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<CreateAccountViewModel>(),
                 brandNameProvider = koinInject(),
+            )
+        }
+
+        composable(route = NESTED_NAVIGATION_SETTINGS_IMPORT) {
+            SettingsImportScreen(
+                action = SettingsImportAction.Overview,
+                onImportSuccess = { onFinish(AccountSetupRoute.AccountSetup(null)) },
+                onBack = { navController.popBackStack() },
             )
         }
     }

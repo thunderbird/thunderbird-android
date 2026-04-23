@@ -1,18 +1,29 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.lifecycle.viewmodel.compose.viewModel
+import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
+import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMediumAutoResize
 import app.k9mail.feature.account.server.validation.ui.fake.FakeAccountOAuthViewModel
 import app.k9mail.feature.account.setup.ui.autodiscovery.fake.fakeAutoDiscoveryResultSettings
+import net.thunderbird.core.common.provider.BrandTypographyProvider
 import net.thunderbird.core.validation.input.StringInputField
+import net.thunderbird.feature.thundermail.ui.BrandBackgroundModifierProvider
+import net.thunderbird.feature.thundermail.ui.RegisteredTrademarkInjector
 
 @Composable
-@Preview(showBackground = true)
+@PreviewLightDark
+@PreviewDevices
 internal fun AccountAutoDiscoveryContentPreview() {
-    PreviewWithTheme {
+    PreviewWithKoin {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(),
             onEvent = {},
@@ -24,9 +35,9 @@ internal fun AccountAutoDiscoveryContentPreview() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@PreviewLightDark
 internal fun AccountAutoDiscoveryContentEmailPreview() {
-    PreviewWithTheme {
+    PreviewWithKoin {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 emailAddress = StringInputField(value = "test@example.com"),
@@ -40,9 +51,9 @@ internal fun AccountAutoDiscoveryContentEmailPreview() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@PreviewLightDark
 internal fun AccountAutoDiscoveryContentPasswordPreview() {
-    PreviewWithTheme {
+    PreviewWithKoin {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 configStep = AccountAutoDiscoveryContract.ConfigStep.PASSWORD,
@@ -58,9 +69,9 @@ internal fun AccountAutoDiscoveryContentPasswordPreview() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@PreviewLightDark
 internal fun AccountAutoDiscoveryContentPasswordUntrustedSettingsPreview() {
-    PreviewWithTheme {
+    PreviewWithKoin {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 configStep = AccountAutoDiscoveryContract.ConfigStep.PASSWORD,
@@ -76,9 +87,9 @@ internal fun AccountAutoDiscoveryContentPasswordUntrustedSettingsPreview() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@PreviewLightDark
 internal fun AccountAutoDiscoveryContentPasswordNoSettingsPreview() {
-    PreviewWithTheme {
+    PreviewWithKoin {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 configStep = AccountAutoDiscoveryContract.ConfigStep.PASSWORD,
@@ -93,9 +104,9 @@ internal fun AccountAutoDiscoveryContentPasswordNoSettingsPreview() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@PreviewLightDark
 internal fun AccountAutoDiscoveryContentOAuthPreview() {
-    PreviewWithTheme {
+    PreviewWithKoin {
         AccountAutoDiscoveryContent(
             state = AccountAutoDiscoveryContract.State(
                 configStep = AccountAutoDiscoveryContract.ConfigStep.OAUTH,
@@ -107,5 +118,24 @@ internal fun AccountAutoDiscoveryContentOAuthPreview() {
             brandName = "BrandName",
             contentPadding = PaddingValues(),
         )
+    }
+}
+
+@Composable
+private fun PreviewWithKoin(content: @Composable () -> Unit) {
+    val backgroundColor = if (isSystemInDarkTheme()) Color(color = 0xFF262C40) else Color(color = 0xFFF0F8FF)
+    koinPreview {
+        single<BrandBackgroundModifierProvider> {
+            BrandBackgroundModifierProvider {
+                Modifier.background(backgroundColor)
+            }
+        }
+        single<BrandTypographyProvider> {
+            BrandTypographyProvider {
+                TextDisplayMediumAutoResize(text = RegisteredTrademarkInjector.inject("Thunderbird"))
+            }
+        }
+    } WithContent {
+        PreviewWithTheme(content = content)
     }
 }

@@ -1,20 +1,32 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
-import android.content.res.Resources
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonDefaults
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
@@ -56,30 +68,40 @@ internal fun AccountAutoDiscoveryContent(
             .testTagAsResourceId("AccountAutoDiscoveryContent"),
     ) { responsiveWidthPadding ->
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(responsiveWidthPadding),
         ) {
+            Spacer(modifier = Modifier.weight(weight = .15f))
+            AppTitleTopHeader(title = brandName)
+            Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
+            TextTitleLarge(
+                text = stringResource(R.string.account_setup_discovery_add_email_account),
+                color = MainTheme.colors.primary,
+                modifier = Modifier.padding(
+                    horizontal = MainTheme.spacings.double,
+                    vertical = MainTheme.spacings.default,
+                ),
+            )
+            Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
             Column(
                 modifier = Modifier
                     .weight(1f)
                     .verticalScroll(scrollState)
-                    .padding(responsiveWidthPadding),
+                    .padding(horizontal = MainTheme.spacings.double),
             ) {
-                AppTitleTopHeader(
-                    title = brandName,
-                )
-                Spacer(modifier = Modifier.weight(1f))
                 AutoDiscoveryContent(
                     state = state,
                     onEvent = onEvent,
                     oAuthViewModel = oAuthViewModel,
                 )
-                Spacer(modifier = Modifier.weight(1f))
             }
 
             WizardNavigationBar(
                 onNextClick = { onEvent(Event.OnNextClicked) },
                 onBackClick = { onEvent(Event.OnBackClicked) },
                 state = WizardNavigationBarState(showNext = state.isNextButtonVisible),
+                modifier = Modifier.padding(horizontal = MainTheme.spacings.double),
             )
         }
     }
@@ -116,12 +138,10 @@ internal fun AutoDiscoveryContent(
                 state = contentState,
                 onEvent = onEvent,
                 oAuthViewModel = oAuthViewModel,
-                resources = resources,
             )
         },
-        modifier = Modifier
-            .fillMaxSize()
-            .then(modifier),
+        modifier = modifier
+            .fillMaxSize(),
     )
 }
 
@@ -130,14 +150,11 @@ internal fun ContentView(
     state: State,
     onEvent: (Event) -> Unit,
     oAuthViewModel: AccountOAuthContract.ViewModel,
-    resources: Resources,
     modifier: Modifier = Modifier,
 ) {
+    val resources = LocalResources.current
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(MainTheme.spacings.quadruple)
-            .then(modifier),
+        modifier = modifier.fillMaxSize(),
     ) {
         if (state.configStep != AccountAutoDiscoveryContract.ConfigStep.EMAIL_ADDRESS) {
             AutoDiscoveryResultView(
@@ -179,6 +196,36 @@ internal fun ContentView(
                 viewModel = oAuthViewModel,
                 isEnabled = isAutoDiscoverySettingsTrusted || isConfigurationApproved,
             )
+        }
+        Spacer(Modifier.height(MainTheme.spacings.quadruple))
+
+        AnimatedVisibility(
+            visible = state.configStep == AccountAutoDiscoveryContract.ConfigStep.EMAIL_ADDRESS,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = MainTheme.spacings.quadruple),
+            ) {
+                TextTitleMedium(
+                    text = stringResource(R.string.account_setup_discovery_migration),
+                    color = MainTheme.colors.primary,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.widthIn(max = 292.dp),
+                )
+                ButtonOutlined(
+                    text = stringResource(R.string.account_setup_discovery_import_existing_account),
+                    onClick = { onEvent(Event.ImportAccountClicked) },
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = MainTheme.colors.primary),
+                    shape = ButtonDefaults.outlinedShape(
+                        border = ButtonDefaults.outlinedButtonBorder(color = MainTheme.colors.outline),
+                    ),
+                )
+            }
         }
     }
 }

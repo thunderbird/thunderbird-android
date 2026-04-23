@@ -15,6 +15,7 @@ import net.thunderbird.core.ui.contract.mvi.observe
 internal fun AccountAutoDiscoveryScreen(
     onNext: (AutoDiscoveryUiResult) -> Unit,
     onBack: () -> Unit,
+    onImportAccountNavigate: () -> Unit,
     viewModel: ViewModel,
     brandNameProvider: BrandNameProvider,
     modifier: Modifier = Modifier,
@@ -23,6 +24,7 @@ internal fun AccountAutoDiscoveryScreen(
         when (effect) {
             Effect.NavigateBack -> onBack()
             is Effect.NavigateNext -> onNext(effect.result)
+            Effect.NavigateToImportAccount -> onImportAccountNavigate()
         }
     }
 

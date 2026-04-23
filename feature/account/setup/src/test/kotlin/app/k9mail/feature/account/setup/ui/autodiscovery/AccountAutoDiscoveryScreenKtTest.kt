@@ -20,6 +20,7 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
         val viewModel = FakeAccountAutoDiscoveryViewModel(initialState)
         var onNextCounter = 0
         var onBackCounter = 0
+        var onImportAccountNavigateCounter = 0
 
         setContentWithKoinAndTheme(
             modules = {
@@ -29,6 +30,7 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
             AccountAutoDiscoveryScreen(
                 onNext = { onNextCounter++ },
                 onBack = { onBackCounter++ },
+                onImportAccountNavigate = { onImportAccountNavigateCounter++ },
                 viewModel = viewModel,
                 brandNameProvider = FakeBrandNameProvider,
             )
@@ -36,6 +38,7 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
 
         assertThat(onNextCounter).isEqualTo(0)
         assertThat(onBackCounter).isEqualTo(0)
+        assertThat(onImportAccountNavigateCounter).isEqualTo(0)
 
         viewModel.effect(
             Effect.NavigateNext(
@@ -48,10 +51,17 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
 
         assertThat(onNextCounter).isEqualTo(1)
         assertThat(onBackCounter).isEqualTo(0)
+        assertThat(onImportAccountNavigateCounter).isEqualTo(0)
 
         viewModel.effect(Effect.NavigateBack)
 
         assertThat(onNextCounter).isEqualTo(1)
         assertThat(onBackCounter).isEqualTo(1)
+        assertThat(onImportAccountNavigateCounter).isEqualTo(0)
+
+        viewModel.effect(Effect.NavigateToImportAccount)
+        assertThat(onNextCounter).isEqualTo(1)
+        assertThat(onBackCounter).isEqualTo(1)
+        assertThat(onImportAccountNavigateCounter).isEqualTo(1)
     }
 }

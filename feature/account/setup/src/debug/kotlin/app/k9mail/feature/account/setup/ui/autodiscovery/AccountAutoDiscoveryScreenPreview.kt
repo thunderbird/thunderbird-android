@@ -16,6 +16,7 @@ internal fun AccountAutoDiscoveryScreenPreview() {
         AccountAutoDiscoveryScreen(
             onNext = {},
             onBack = {},
+            onImportAccountNavigate = {},
             viewModel = viewModel {
                 AccountAutoDiscoveryViewModel(
                     validator = AccountAutoDiscoveryValidator(),
