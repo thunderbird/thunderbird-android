@@ -33,6 +33,7 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.view.AutoDiscoveryResul
 import app.k9mail.feature.account.setup.ui.autodiscovery.view.AutoDiscoveryResultView
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.feature.thundermail.ui.brandBackground
 
 @Composable
 internal fun AccountAutoDiscoveryContent(
@@ -48,6 +49,7 @@ internal fun AccountAutoDiscoveryContent(
     ResponsiveWidthContainer(
         modifier = modifier
             .fillMaxSize()
+            .brandBackground()
             .padding(contentPadding)
             .consumeWindowInsets(contentPadding)
             .imePadding()
