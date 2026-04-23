@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
@@ -31,7 +30,6 @@ import app.k9mail.core.ui.compose.designsystem.atom.DelayedCircularProgressIndic
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
@@ -42,6 +40,7 @@ import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.IconsWithBottomRightOverlay
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.thundermail.ui.brandBackground
+import net.thunderbird.feature.thundermail.ui.component.organism.ThundermailToolbar
 import net.thunderbird.feature.thundermail.ui.screen.ThundermailConstants
 import app.k9mail.feature.account.common.R as CommonR
 
@@ -56,24 +55,10 @@ internal fun PermissionsContent(
 
     Scaffold(
         topBar = {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Spacer(modifier = Modifier.heightIn(MainTheme.sizes.medium, MainTheme.sizes.large))
-                AppTitleTopHeader(title = brandName)
-                Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
-                TextTitleLarge(
-                    text = stringResource(R.string.onboarding_permissions_screen_title),
-                    color = MainTheme.colors.primary,
-                    modifier = Modifier
-                        .widthIn(max = ThundermailConstants.MaxContainerWidth)
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = MainTheme.spacings.double,
-                            vertical = MainTheme.spacings.default,
-                        ),
-                )
-            }
+            ThundermailToolbar(
+                header = { AppTitleTopHeader(title = brandName) },
+                subHeaderText = stringResource(R.string.onboarding_permissions_screen_title),
+            )
         },
         modifier = modifier.windowInsetsPadding(WindowInsets.navigationBars),
     ) { innerPadding ->
