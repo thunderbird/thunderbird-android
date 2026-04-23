@@ -205,12 +205,13 @@ Used to check translation coverage before adding or removing languages.
 ```bash
 ./scripts/translation --token <weblate-token>
 
-# Specify the low 60% threshold
-./scripts/translation --token <weblate-token> --threshold 60
+# Specify the low 60% threshold and verbose logging
+./scripts/translation --token <weblate-token> --threshold 60 --log-level BODY
 ```
 
 - Requires a [Weblate API token](https://hosted.weblate.org/accounts/profile/#api)
 - Default threshold is 70% (can be changed with `--threshold <N>`)
+- Default log level is `NONE` (can be changed with `--log-level <LEVEL>`)
 
 For example code integration, run with `--print-all`:
 
