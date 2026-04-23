@@ -54,6 +54,6 @@ Community chat (Matrix):
 
 We welcome contributions of all kinds:
 - Development: [Contributing Guide](CONTRIBUTING.md) if you want to help with code
-- Translations: [Weblate Project](https://hosted.weblate.org/projects/tb-android/) if you want to help localize the app
+- Translations: [Weblate Project](https://hosted.weblate.org/projects/thunderbird/thunderbird-android/) if you want to help localize the app
 - [Other ways to help](https://blog.thunderbird.net/2024/09/contribute-to-thunderbird-for-android/)
 - [Participation guidelines](https://www.mozilla.org/about/governance/policies/participation/)

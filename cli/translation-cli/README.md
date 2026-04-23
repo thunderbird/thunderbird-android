@@ -1,6 +1,6 @@
 # Translation CLI
 
-This is a command line interface that will check the [weblate](https://hosted.weblate.org/projects/tb-android/#languages) translation state for all languages and print out the ones that are above a certain threshold.
+This is a command line interface that will check the [weblate](https://hosted.weblate.org/projects/thunderbird/thunderbird-android/#languages) translation state for all languages and print out the ones that are above a certain threshold.
 
 ## Usage
 

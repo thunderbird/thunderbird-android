@@ -2,7 +2,7 @@
 
 This document explains how you can help translate Thunderbird for Android into your language.
 
-- All translations for Thunderbird for Android are managed in [Thunderbird for Android Weblate project](https://hosted.weblate.org/projects/tb-android/).
+- All translations for Thunderbird for Android are managed in [Thunderbird for Android Weblate project](https://hosted.weblate.org/projects/thunderbird/thunderbird-android/).
 - The Source language is **English** (American English, represented as `en`).
 - Translations are done only in Weblate, not in this repository.
 - The Thunderbird team regularly syncs Weblate with the repository to pull in translation updates.
@@ -17,7 +17,7 @@ Before contributing, familiarize yourself with [documentation](https://docs.webl
 To start translating Thunderbird for Android:
 
 1. Create a [Weblate account](https://hosted.weblate.org/accounts/signup/).
-2. Go to the [Thunderbird for Android Weblate project](https://hosted.weblate.org/projects/tb-android/).
+2. Go to the [Thunderbird for Android Weblate project](https://hosted.weblate.org/projects/thunderbird/thunderbird-android/).
 3. Select your language from the list of languages.
 4. Start translating strings through the Weblate web interface.
 

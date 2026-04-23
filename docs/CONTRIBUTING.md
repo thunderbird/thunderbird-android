@@ -46,7 +46,7 @@ We don’t track new ideas or feature requests in GitHub Issues.
 If you'd like to help to translate Thunderbird for Android, please visit:
 
 - **[Translations](contributing/translations.md)** – How to help localize Thunderbird for Android via Weblate.
-- **[Weblate - Thunderbird for Android project](https://hosted.weblate.org/projects/tb-android/)** - Translation platform where all localization happens.
+- **[Weblate - Thunderbird for Android project](https://hosted.weblate.org/projects/thunderbird/thunderbird-android/)** - Translation platform where all localization happens.
 
 ## 🤝 Contributing Code
 
