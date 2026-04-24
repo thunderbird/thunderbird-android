@@ -97,7 +97,6 @@ fun OnboardingNavHost(
                             sharedTransitionScope = this@SharedTransitionLayout,
                             animatedVisibilityScope = this@composable,
                             modifier = Modifier.fillMaxWidth(),
-                            contentPadding = PaddingValues(horizontal = MainTheme.spacings.quadruple),
                         )
                     },
                     onScanQrCodeClick = { navController.navigateToQrCodeScanner() },
