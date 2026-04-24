@@ -8,14 +8,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.feature.account.common.ui.item.ErrorItem
 import app.k9mail.feature.account.common.ui.item.ListItem
 import app.k9mail.feature.account.common.ui.item.LoadingItem
@@ -35,85 +38,82 @@ internal fun ServerValidationContent(
     oAuthViewModel: AccountOAuthContract.ViewModel,
     onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
+    maxWidth: Dp,
     modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
 ) {
     val resources = LocalResources.current
 
-    ResponsiveWidthContainer(
-        modifier = Modifier
+    LazyColumn(
+        modifier = modifier
             .testTagAsResourceId("AccountValidationContent")
-            .padding(contentPadding)
-            .fillMaxWidth()
-            .then(modifier),
-    ) { contentPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .imePadding(),
-            contentPadding = contentPadding,
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double, Alignment.CenterVertically),
-        ) {
-            if (state.error != null) {
-                item(key = "error") {
-                    // TODO add raw error message
-                    ErrorItem(
-                        title = stringResource(
-                            id = if (isIncomingValidation) {
-                                R.string.account_server_validation_incoming_loading_error
-                            } else {
-                                R.string.account_server_validation_outgoing_loading_error
-                            },
-                        ),
-                        message = state.error.toResourceString(resources),
-                        onRetry = { onEvent(Event.OnRetryClicked) },
-                    )
-                }
-            } else if (state.isSuccess) {
-                item(key = "success") {
-                    LoadingItem(
-                        message = stringResource(
-                            id = if (isIncomingValidation) {
-                                R.string.account_server_validation_incoming_success
-                            } else {
-                                R.string.account_server_validation_outgoing_success
-                            },
-                        ),
-                    )
-                }
-            } else if (state.needsAuthorization) {
-                item(key = "oauth") {
-                    ListItem {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            TextTitleMedium(
-                                text = stringResource(
-                                    id = R.string.account_server_validation_sign_in,
-                                ),
-                            )
-                            Spacer(modifier = Modifier.padding(MainTheme.spacings.default))
-                            AccountOAuthView(
-                                onOAuthResult = { result -> onEvent(Event.OnOAuthResult(result)) },
-                                viewModel = oAuthViewModel,
-                            )
-                        }
+            .fillMaxSize()
+            .imePadding()
+            .widthIn(max = maxWidth),
+        contentPadding = contentPadding,
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double, Alignment.CenterVertically),
+        state = listState,
+    ) {
+        if (state.error != null) {
+            item(key = "error") {
+                // TODO add raw error message
+                ErrorItem(
+                    title = stringResource(
+                        id = if (isIncomingValidation) {
+                            R.string.account_server_validation_incoming_loading_error
+                        } else {
+                            R.string.account_server_validation_outgoing_loading_error
+                        },
+                    ),
+                    message = state.error.toResourceString(resources),
+                    onRetry = { onEvent(Event.OnRetryClicked) },
+                )
+            }
+        } else if (state.isSuccess) {
+            item(key = "success") {
+                LoadingItem(
+                    message = stringResource(
+                        id = if (isIncomingValidation) {
+                            R.string.account_server_validation_incoming_success
+                        } else {
+                            R.string.account_server_validation_outgoing_success
+                        },
+                    ),
+                )
+            }
+        } else if (state.needsAuthorization) {
+            item(key = "oauth") {
+                ListItem {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        TextTitleMedium(
+                            text = stringResource(
+                                id = R.string.account_server_validation_sign_in,
+                            ),
+                        )
+                        Spacer(modifier = Modifier.padding(MainTheme.spacings.default))
+                        AccountOAuthView(
+                            onOAuthResult = { result -> onEvent(Event.OnOAuthResult(result)) },
+                            viewModel = oAuthViewModel,
+                        )
                     }
                 }
-            } else {
-                item(key = "loading") {
-                    LoadingItem(
-                        message = stringResource(
-                            id = if (isIncomingValidation) {
-                                R.string.account_server_validation_incoming_loading_message
-                            } else {
-                                R.string.account_server_validation_outgoing_loading_message
-                            },
-                        ),
-                    )
-                }
+            }
+        } else {
+            item(key = "loading") {
+                LoadingItem(
+                    message = stringResource(
+                        id = if (isIncomingValidation) {
+                            R.string.account_server_validation_incoming_loading_message
+                        } else {
+                            R.string.account_server_validation_outgoing_loading_message
+                        },
+                    ),
+                )
             }
         }
     }

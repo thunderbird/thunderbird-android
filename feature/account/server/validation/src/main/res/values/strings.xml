@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_server_validation_title">Validating %s</string>
+    <string name="account_server_validation_incoming_server">Incoming server settings</string>
+    <string name="account_server_validation_outgoing_server">Outgoing server settings</string>
     <string name="account_server_validation_error_authentication">Authentication error</string>
     <string name="account_server_validation_error_network">Network error</string>
     <string name="account_server_validation_error_server">Server error</string>

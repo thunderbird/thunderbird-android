@@ -26,6 +26,8 @@ dependencies {
     implementation(projects.feature.account.oauth)
     implementation(projects.feature.account.server.certificate)
 
+    implementation(projects.feature.thundermail.api)
+
     testImplementation(projects.core.ui.compose.testing)
 }
 
