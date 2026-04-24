@@ -22,7 +22,9 @@ fun ThundermailScaffold(
     modifier: Modifier = Modifier,
     canScrollForward: Boolean = false,
     maxWidth: Dp = ThundermailConstants.MaxContainerWidth,
-    headerContentPadding: PaddingValues = PaddingValues(),
+    headerContentPadding: PaddingValues = PaddingValues(
+        horizontal = MainTheme.spacings.quadruple,
+    ),
     content: @Composable (scaffoldPaddingValues: PaddingValues, responsivePaddingValues: PaddingValues, maxWidth: Dp) -> Unit,
 ) {
     ThundermailScaffold(

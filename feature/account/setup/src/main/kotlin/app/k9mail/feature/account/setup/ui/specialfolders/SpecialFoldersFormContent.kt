@@ -5,12 +5,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
@@ -26,16 +30,19 @@ import net.thunderbird.core.ui.compose.theme2.MainTheme
 fun SpecialFoldersFormContent(
     state: FormState,
     onEvent: (FormEvent) -> Unit,
+    maxWidth: Dp,
     modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
 ) {
     val resources = LocalResources.current
 
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .imePadding()
-            .then(modifier),
+            .widthIn(max = maxWidth),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+        state = listState,
     ) {
         item {
             Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
