@@ -1,6 +1,8 @@
 package app.k9mail.feature.account.server.settings.ui.outgoing
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.Dp
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
@@ -13,6 +15,8 @@ internal fun OutgoingServerSettingsContentPreview() {
             mode = InteractionMode.Create,
             state = OutgoingServerSettingsContract.State(),
             onEvent = { },
+            contentPadding = PaddingValues(),
+            maxWidth = Dp.Unspecified,
         )
     }
 }
