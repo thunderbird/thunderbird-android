@@ -44,6 +44,7 @@ internal val appCommonAccountModule = module {
         DefaultAccountProfileLocalDataSource(
             accountManager = get(),
             dataMapper = get(),
+            avatarMonogramCreator = get(),
         )
     }
 
