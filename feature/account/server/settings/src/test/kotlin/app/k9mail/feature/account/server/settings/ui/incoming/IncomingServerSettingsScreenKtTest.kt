@@ -1,5 +1,7 @@
 package app.k9mail.feature.account.server.settings.ui.incoming
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithKoinAndTheme
@@ -9,6 +11,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.provider.BrandNameProvider
+import net.thunderbird.core.common.provider.BrandTypographyProvider
 import net.thunderbird.feature.thundermail.ui.BrandBackgroundModifierProvider
 import org.junit.Test
 
@@ -23,21 +26,27 @@ class IncomingServerSettingsScreenKtTest : ComposeTest() {
 
         setContentWithKoinAndTheme(
             modules = {
-                single {
+                single<BrandNameProvider> {
                     object : BrandNameProvider {
                         override val brandName: String = "Thunderbird"
                     }
                 }
-                single {
+                single<BrandBackgroundModifierProvider> {
                     BrandBackgroundModifierProvider { Modifier }
                 }
+                single<BrandTypographyProvider> { BrandTypographyProvider {} }
             },
         ) {
-            IncomingServerSettingsScreen(
-                onNext = { onNextCounter++ },
-                onBack = { onBackCounter++ },
-                viewModel = viewModel,
-            )
+            SharedTransitionLayout {
+                AnimatedVisibility(true) {
+                    IncomingServerSettingsScreen(
+                        onNext = { onNextCounter++ },
+                        onBack = { onBackCounter++ },
+                        viewModel = viewModel,
+                        animatedVisibilityScope = this,
+                    )
+                }
+            }
         }
 
         assertThat(onNextCounter).isEqualTo(0)

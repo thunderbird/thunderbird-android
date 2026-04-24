@@ -7,6 +7,11 @@ android {
     // Using "importing" because "import" is not allowed in Java package names (it's fine with Kotlin, though)
     namespace = "app.k9mail.feature.settings.importing"
     resourcePrefix = "settings_import_"
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {

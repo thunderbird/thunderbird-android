@@ -1,5 +1,8 @@
 package net.thunderbird.feature.settings.import.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -12,6 +15,7 @@ import net.thunderbird.core.common.provider.BrandTypographyProvider
 import net.thunderbird.feature.settings.import.ui.ImportAccountScreenDefaults.TEST_TAG_IMPORT_ACCOUNT_IMPORT_BUTTON
 import net.thunderbird.feature.settings.import.ui.ImportAccountScreenDefaults.TEST_TAG_IMPORT_ACCOUNT_QR_CODE_SCAN_BUTTON
 import net.thunderbird.feature.settings.import.ui.ImportAccountScreenDefaults.TEST_TAG_IMPORT_ACCOUNT_SELECT_FILE_BUTTON
+import net.thunderbird.feature.thundermail.ui.BrandBackgroundModifierProvider
 import org.junit.Test
 
 class ImportAccountScreenKtTest : ComposeTest() {
@@ -21,15 +25,21 @@ class ImportAccountScreenKtTest : ComposeTest() {
         setContentWithKoinAndTheme(
             modules = {
                 single<BrandTypographyProvider> { BrandTypographyProvider {} }
+                single { BrandBackgroundModifierProvider { Modifier } }
             },
         ) {
-            ImportAccountScreen(
-                onQrCodeScanClick = { qrCodeScanClickCounter++ },
-                onSelectFileClick = { error("Should not be called") },
-                onImportClick = { error("Should not be called") },
-                onBack = { error("Should not be called") },
-                brandNameProvider = FakeBrandNameProvider,
-            )
+            SharedTransitionLayout {
+                AnimatedVisibility(true) {
+                    ImportAccountScreen(
+                        onQrCodeScanClick = { qrCodeScanClickCounter++ },
+                        onSelectFileClick = { error("Should not be called") },
+                        onImportClick = { error("Should not be called") },
+                        onBack = { error("Should not be called") },
+                        brandNameProvider = FakeBrandNameProvider,
+                        animatedVisibilityScope = this,
+                    )
+                }
+            }
         }
 
         composeTestRule.onNodeWithTag(TEST_TAG_IMPORT_ACCOUNT_QR_CODE_SCAN_BUTTON)
@@ -45,15 +55,21 @@ class ImportAccountScreenKtTest : ComposeTest() {
         setContentWithKoinAndTheme(
             modules = {
                 single<BrandTypographyProvider> { BrandTypographyProvider {} }
+                single<BrandBackgroundModifierProvider> { BrandBackgroundModifierProvider { Modifier } }
             },
         ) {
-            ImportAccountScreen(
-                onQrCodeScanClick = { error("Should not be called") },
-                onSelectFileClick = { onSelectFileClickCounter++ },
-                onImportClick = { error("Should not be called") },
-                onBack = { error("Should not be called") },
-                brandNameProvider = FakeBrandNameProvider,
-            )
+            SharedTransitionLayout {
+                AnimatedVisibility(true) {
+                    ImportAccountScreen(
+                        onQrCodeScanClick = { error("Should not be called") },
+                        onSelectFileClick = { onSelectFileClickCounter++ },
+                        onImportClick = { error("Should not be called") },
+                        onBack = { error("Should not be called") },
+                        brandNameProvider = FakeBrandNameProvider,
+                        animatedVisibilityScope = this,
+                    )
+                }
+            }
         }
 
         composeTestRule.onNodeWithTag(TEST_TAG_IMPORT_ACCOUNT_SELECT_FILE_BUTTON)
@@ -69,15 +85,21 @@ class ImportAccountScreenKtTest : ComposeTest() {
         setContentWithKoinAndTheme(
             modules = {
                 single<BrandTypographyProvider> { BrandTypographyProvider {} }
+                single { BrandBackgroundModifierProvider { Modifier } }
             },
         ) {
-            ImportAccountScreen(
-                onQrCodeScanClick = { error("Should not be called") },
-                onSelectFileClick = { error("Should not be called") },
-                onImportClick = { importClickCounter++ },
-                onBack = { },
-                brandNameProvider = FakeBrandNameProvider,
-            )
+            SharedTransitionLayout {
+                AnimatedVisibility(true) {
+                    ImportAccountScreen(
+                        onQrCodeScanClick = { error("Should not be called") },
+                        onSelectFileClick = { error("Should not be called") },
+                        onImportClick = { importClickCounter++ },
+                        onBack = { error("Should not be called") },
+                        brandNameProvider = FakeBrandNameProvider,
+                        animatedVisibilityScope = this,
+                    )
+                }
+            }
         }
 
         composeTestRule.onNodeWithTag(TEST_TAG_IMPORT_ACCOUNT_IMPORT_BUTTON)

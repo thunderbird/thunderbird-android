@@ -1,5 +1,8 @@
 package app.k9mail.feature.account.setup.ui.options.display
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithKoinAndTheme
 import app.k9mail.feature.account.setup.ui.FakeBrandNameProvider
@@ -9,6 +12,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.provider.BrandTypographyProvider
+import net.thunderbird.feature.thundermail.ui.BrandBackgroundModifierProvider
 import org.junit.Test
 
 class DisplayOptionsScreenKtTest : ComposeTest() {
@@ -23,14 +27,20 @@ class DisplayOptionsScreenKtTest : ComposeTest() {
         setContentWithKoinAndTheme(
             modules = {
                 single<BrandTypographyProvider> { BrandTypographyProvider {} }
+                single { BrandBackgroundModifierProvider { Modifier } }
             },
         ) {
-            DisplayOptionsScreen(
-                onNext = { onNextCounter++ },
-                onBack = { onBackCounter++ },
-                viewModel = viewModel,
-                brandNameProvider = FakeBrandNameProvider,
-            )
+            SharedTransitionLayout {
+                AnimatedVisibility(true) {
+                    DisplayOptionsScreen(
+                        onNext = { onNextCounter++ },
+                        onBack = { onBackCounter++ },
+                        viewModel = viewModel,
+                        brandNameProvider = FakeBrandNameProvider,
+                        animatedVisibilityScope = this,
+                    )
+                }
+            }
         }
 
         assertThat(onNextCounter).isEqualTo(0)

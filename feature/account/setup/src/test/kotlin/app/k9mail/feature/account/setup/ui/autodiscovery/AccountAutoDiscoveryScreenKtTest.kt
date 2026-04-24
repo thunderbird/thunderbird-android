@@ -1,5 +1,8 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithKoinAndTheme
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
@@ -10,6 +13,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.provider.BrandTypographyProvider
+import net.thunderbird.feature.thundermail.ui.BrandBackgroundModifierProvider
 import org.junit.Test
 
 class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
@@ -25,15 +29,21 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
         setContentWithKoinAndTheme(
             modules = {
                 single<BrandTypographyProvider> { BrandTypographyProvider {} }
+                single { BrandBackgroundModifierProvider { Modifier } }
             },
         ) {
-            AccountAutoDiscoveryScreen(
-                onNext = { onNextCounter++ },
-                onBack = { onBackCounter++ },
-                onImportAccountNavigate = { onImportAccountNavigateCounter++ },
-                viewModel = viewModel,
-                brandNameProvider = FakeBrandNameProvider,
-            )
+            SharedTransitionLayout {
+                AnimatedVisibility(true) {
+                    AccountAutoDiscoveryScreen(
+                        onNext = { onNextCounter++ },
+                        onBack = { onBackCounter++ },
+                        onImportAccountNavigate = { onImportAccountNavigateCounter++ },
+                        viewModel = viewModel,
+                        brandNameProvider = FakeBrandNameProvider,
+                        animatedVisibilityScope = this,
+                    )
+                }
+            }
         }
 
         assertThat(onNextCounter).isEqualTo(0)
