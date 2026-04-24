@@ -3,6 +3,8 @@ package app.k9mail.feature.account.server.settings.ui.incoming
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +23,7 @@ internal fun IncomingServerSettingsContent(
     state: State,
     onEvent: (Event) -> Unit,
     modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
 ) {
     val resources = LocalResources.current
 
@@ -34,6 +37,7 @@ internal fun IncomingServerSettingsContent(
             contentPadding = contentPadding,
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            state = listState,
         ) {
             incomingFormItems(
                 mode = mode,
