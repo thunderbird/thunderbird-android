@@ -12,8 +12,8 @@ import net.thunderbird.core.ui.compose.theme2.default.defaultThemeShapes
 import net.thunderbird.core.ui.compose.theme2.default.defaultThemeSizes
 import net.thunderbird.core.ui.compose.theme2.default.defaultThemeSpacings
 import net.thunderbird.core.ui.compose.theme2.default.defaultTypography
-import net.thunderbird.core.ui.compose.theme2.k9mail.resources.Res
-import net.thunderbird.core.ui.compose.theme2.k9mail.resources.core_ui_theme2_k9mail_logo
+import net.thunderbird.core.ui.compose.theme2.resources.Res
+import net.thunderbird.core.ui.compose.theme2.resources.core_ui_theme2_k9mail_logo
 
 @Composable
 fun K9MailTheme2(

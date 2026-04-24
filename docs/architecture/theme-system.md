@@ -64,11 +64,11 @@ graph TD
 
 The theme system consists of three main layers:
 
-1. **App-Specific Themes Layer**: The top layer contains theme implementations for specific applications (ThunderbirdTheme2, K9MailTheme2). Each app theme:
+1. **App-Specific Themes**: The `core:ui:compose:theme2` module contains theme implementations for specific applications (ThunderbirdTheme2, K9MailTheme2). Each app theme:
    - Defines its own brand colors, logos, and other app-specific visual elements
    - Creates a ThemeConfig with these customizations
    - Uses the MainTheme as its foundation
-2. **Main Theme Layer**: The middle layer provides our extended theming system:
+2. **Main Theme**: This layer provides our extended theming system:
    - MainTheme: A composable function that sets up the theme environment
    - ThemeConfig: A data class that holds all theme components
    - This layer extends Material Design with additional components like custom spacings, elevations, and app-specific colors
