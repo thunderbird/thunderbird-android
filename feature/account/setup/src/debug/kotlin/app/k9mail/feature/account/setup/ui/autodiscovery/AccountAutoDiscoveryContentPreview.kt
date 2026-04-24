@@ -29,7 +29,6 @@ internal fun AccountAutoDiscoveryContentPreview() {
             state = AccountAutoDiscoveryContract.State(),
             onEvent = {},
             oAuthViewModel = viewModel { FakeAccountOAuthViewModel() },
-            brandName = "BrandName",
             contentPadding = PaddingValues(),
         )
     }
@@ -45,7 +44,6 @@ internal fun AccountAutoDiscoveryContentEmailPreview() {
             ),
             onEvent = {},
             oAuthViewModel = viewModel { FakeAccountOAuthViewModel() },
-            brandName = "BrandName",
             contentPadding = PaddingValues(),
         )
     }
@@ -63,7 +61,6 @@ internal fun AccountAutoDiscoveryContentPasswordPreview() {
             ),
             onEvent = {},
             oAuthViewModel = viewModel { FakeAccountOAuthViewModel() },
-            brandName = "BrandName",
             contentPadding = PaddingValues(),
         )
     }
@@ -81,7 +78,6 @@ internal fun AccountAutoDiscoveryContentPasswordUntrustedSettingsPreview() {
             ),
             onEvent = {},
             oAuthViewModel = viewModel { FakeAccountOAuthViewModel() },
-            brandName = "BrandName",
             contentPadding = PaddingValues(),
         )
     }
@@ -98,7 +94,6 @@ internal fun AccountAutoDiscoveryContentPasswordNoSettingsPreview() {
             ),
             onEvent = {},
             oAuthViewModel = viewModel { FakeAccountOAuthViewModel() },
-            brandName = "BrandName",
             contentPadding = PaddingValues(),
         )
     }
@@ -116,7 +111,6 @@ internal fun AccountAutoDiscoveryContentOAuthPreview() {
             ),
             onEvent = {},
             oAuthViewModel = viewModel { FakeAccountOAuthViewModel() },
-            brandName = "BrandName",
             contentPadding = PaddingValues(),
         )
     }
