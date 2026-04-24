@@ -1,7 +1,6 @@
 package app.k9mail.feature.onboarding.main.navigation
 
 import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,7 +22,6 @@ import app.k9mail.feature.onboarding.welcome.ui.WelcomeScreen
 import app.k9mail.feature.settings.import.ui.SettingsImportAction
 import app.k9mail.feature.settings.import.ui.SettingsImportScreen
 import net.thunderbird.core.common.provider.BrandNameProvider
-import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.thundermail.ui.screen.AddThundermailAccountScreenProvider
 import org.koin.compose.koinInject
 

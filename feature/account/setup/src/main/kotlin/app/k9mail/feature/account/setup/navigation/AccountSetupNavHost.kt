@@ -8,6 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -48,7 +50,7 @@ private const val NESTED_NAVIGATION_IMPORT_ACCOUNT = "import_account"
 private const val NESTED_NAVIGATION_SETTINGS_IMPORT = "settings_import"
 private const val NESTED_NAVIGATION_SETTINGS_IMPORT_ACTION_PARAM = "action"
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
 fun SharedTransitionScope.AccountSetupNavHost(
     onBack: () -> Unit,
@@ -204,31 +206,52 @@ fun SharedTransitionScope.AccountSetupNavHost(
             )
         }
 
-        composable(route = NESTED_NAVIGATION_IMPORT_ACCOUNT) {
-            ImportAccountScreen(
-                onQrCodeScanClick = { navController.navigateToSettingsImport(SettingsImportAction.ScanQrCode) },
-                onSelectFileClick = { navController.navigateToSettingsImport(SettingsImportAction.PickDocument) },
-                onImportClick = { navController.navigateToSettingsImport(SettingsImportAction.PickApp) },
-                onBack = { navController.popBackStack() },
-                animatedVisibilityScope = animatedVisibilityScope ?: this,
-                brandNameProvider = koinInject(),
-            )
-        }
+        registerImportAccountNavigation(
+            sharedTransitionScope = this@AccountSetupNavHost,
+            navController = navController,
+            animatedVisibilityScope = animatedVisibilityScope,
+        )
 
-        composable(route = "${NESTED_NAVIGATION_SETTINGS_IMPORT}/{${NESTED_NAVIGATION_SETTINGS_IMPORT_ACTION_PARAM}}") { backstackEntry ->
-            val action = requireNotNull(
-                backstackEntry.arguments
-                    ?.getString(NESTED_NAVIGATION_SETTINGS_IMPORT_ACTION_PARAM)
-                    ?.let(SettingsImportAction::valueOf),
-            ) {
-                "SettingsImportAction must be provided in the arguments"
-            }
-            SettingsImportScreen(
-                action = action,
-                onImportSuccess = { onFinish(AccountSetupRoute.AccountSetup(null)) },
-                onBack = { navController.popBackStack() },
-            )
+        registerSettingsImportScreen(onFinish, navController)
+    }
+}
+
+private fun NavGraphBuilder.registerImportAccountNavigation(
+    sharedTransitionScope: SharedTransitionScope,
+    navController: NavHostController,
+    animatedVisibilityScope: AnimatedVisibilityScope?,
+) {
+    composable(route = NESTED_NAVIGATION_IMPORT_ACCOUNT) {
+        sharedTransitionScope.ImportAccountScreen(
+            onQrCodeScanClick = { navController.navigateToSettingsImport(SettingsImportAction.ScanQrCode) },
+            onSelectFileClick = { navController.navigateToSettingsImport(SettingsImportAction.PickDocument) },
+            onImportClick = { navController.navigateToSettingsImport(SettingsImportAction.PickApp) },
+            onBack = { navController.popBackStack() },
+            animatedVisibilityScope = animatedVisibilityScope ?: this,
+            brandNameProvider = koinInject(),
+        )
+    }
+}
+
+private fun NavGraphBuilder.registerSettingsImportScreen(
+    onFinish: (AccountSetupRoute) -> Unit,
+    navController: NavHostController,
+) {
+    composable(
+        route = "${NESTED_NAVIGATION_SETTINGS_IMPORT}/{${NESTED_NAVIGATION_SETTINGS_IMPORT_ACTION_PARAM}}",
+    ) { backstackEntry ->
+        val action = requireNotNull(
+            backstackEntry.arguments
+                ?.getString(NESTED_NAVIGATION_SETTINGS_IMPORT_ACTION_PARAM)
+                ?.let(SettingsImportAction::valueOf),
+        ) {
+            "SettingsImportAction must be provided in the arguments"
         }
+        SettingsImportScreen(
+            action = action,
+            onImportSuccess = { onFinish(AccountSetupRoute.AccountSetup(null)) },
+            onBack = { navController.popBackStack() },
+        )
     }
 }
 

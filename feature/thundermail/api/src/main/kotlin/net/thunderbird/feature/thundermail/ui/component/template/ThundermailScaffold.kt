@@ -28,7 +28,11 @@ fun SharedTransitionScope.ThundermailScaffold(
         horizontal = MainTheme.spacings.quadruple,
         vertical = MainTheme.spacings.default,
     ),
-    content: @Composable (scaffoldPaddingValues: PaddingValues, responsivePaddingValues: PaddingValues, maxWidth: Dp) -> Unit,
+    content: @Composable (
+        scaffoldPaddingValues: PaddingValues,
+        responsivePaddingValues: PaddingValues,
+        maxWidth: Dp,
+    ) -> Unit,
 ) {
     ThundermailScaffold(
         toolbar = {
@@ -58,7 +62,11 @@ fun SharedTransitionScope.ThundermailScaffold(
     modifier: Modifier = Modifier,
     canScrollForward: Boolean = false,
     maxWidth: Dp = ThundermailConstants.MaxContainerWidth,
-    content: @Composable (scaffoldPaddingValues: PaddingValues, responsivePaddingValues: PaddingValues, maxWidth: Dp) -> Unit,
+    content: @Composable (
+        scaffoldPaddingValues: PaddingValues,
+        responsivePaddingValues: PaddingValues,
+        maxWidth: Dp,
+    ) -> Unit,
 ) {
     val scope = this
     Scaffold(

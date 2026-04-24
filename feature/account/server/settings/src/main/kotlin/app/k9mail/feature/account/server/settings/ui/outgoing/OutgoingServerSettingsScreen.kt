@@ -63,32 +63,7 @@ fun SharedTransitionScope.OutgoingServerSettingsScreen(
     val lazyListState = rememberLazyListState()
     ThundermailScaffold(
         toolbar = {
-            if (viewModel.mode == InteractionMode.Edit) {
-                TopAppBarWithBackButton(
-                    title = stringResource(id = R.string.account_server_settings_outgoing_top_bar_title),
-                    onBackClick = { dispatch(Event.OnBackClicked) },
-                )
-            } else {
-                ResponsiveWidthContainer { paddingValues ->
-                    ThundermailToolbar(
-                        header = {
-                            AppTitleTopHeader(
-                                brandNameProvider.brandName,
-                                sharedTransitionScope = this,
-                                animatedVisibilityScope = animatedVisibilityScope,
-                            )
-                        },
-                        subHeaderText = stringResource(id = R.string.account_server_settings_outgoing_top_bar_title),
-                        maxWidth = Dp.Unspecified,
-                        contentPadding = PaddingValues(
-                            horizontal = MainTheme.spacings.quadruple,
-                        ),
-                        modifier = Modifier
-                            .statusBarsPadding()
-                            .padding(paddingValues),
-                    )
-                }
-            }
+            Toolbar(viewModel.mode, dispatch, brandNameProvider, animatedVisibilityScope)
         },
         bottomBar = { paddingValues, containerColor ->
             WizardNavigationBar(
@@ -118,5 +93,40 @@ fun SharedTransitionScope.OutgoingServerSettingsScreen(
                 .consumeWindowInsets(scaffoldPaddingValues)
                 .imePadding(),
         )
+    }
+}
+
+@Composable
+private fun SharedTransitionScope.Toolbar(
+    mode: InteractionMode,
+    dispatch: (Event) -> Unit,
+    brandNameProvider: BrandNameProvider,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+) {
+    if (mode == InteractionMode.Edit) {
+        TopAppBarWithBackButton(
+            title = stringResource(id = R.string.account_server_settings_outgoing_top_bar_title),
+            onBackClick = { dispatch(Event.OnBackClicked) },
+        )
+    } else {
+        ResponsiveWidthContainer { paddingValues ->
+            ThundermailToolbar(
+                header = {
+                    AppTitleTopHeader(
+                        brandNameProvider.brandName,
+                        sharedTransitionScope = this,
+                        animatedVisibilityScope = animatedVisibilityScope,
+                    )
+                },
+                subHeaderText = stringResource(id = R.string.account_server_settings_outgoing_top_bar_title),
+                maxWidth = Dp.Unspecified,
+                contentPadding = PaddingValues(
+                    horizontal = MainTheme.spacings.quadruple,
+                ),
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .padding(paddingValues),
+            )
+        }
     }
 }

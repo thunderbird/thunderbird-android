@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -118,17 +119,7 @@ internal fun ContentView(
         modifier = modifier.fillMaxSize(),
     ) {
         if (state.configStep != AccountAutoDiscoveryContract.ConfigStep.EMAIL_ADDRESS) {
-            AutoDiscoveryResultView(
-                settings = state.autoDiscoverySettings,
-                onEditConfigurationClick = { onEvent(Event.OnEditConfigurationClicked) },
-            )
-            if (state.autoDiscoverySettings != null && state.autoDiscoverySettings.isTrusted.not()) {
-                AutoDiscoveryResultApprovalView(
-                    approvalState = state.configurationApproved,
-                    onApprovalChange = { onEvent(Event.ResultApprovalChanged(it)) },
-                )
-            }
-            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+            AutoDiscoveryResultContent(state, onEvent)
         }
 
         EmailAddressInput(
@@ -165,28 +156,51 @@ internal fun ContentView(
             enter = fadeIn(),
             exit = fadeOut(),
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = MainTheme.spacings.quadruple),
-            ) {
-                TextTitleMedium(
-                    text = stringResource(R.string.account_setup_discovery_migration),
-                    color = MainTheme.colors.primary,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.widthIn(max = 292.dp),
-                )
-                ButtonOutlined(
-                    text = stringResource(R.string.account_setup_discovery_import_existing_account),
-                    onClick = { onEvent(Event.ImportAccountClicked) },
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = MainTheme.colors.primary),
-                    shape = ButtonDefaults.outlinedShape(
-                        border = ButtonDefaults.outlinedButtonBorder(color = MainTheme.colors.outline),
-                    ),
-                )
-            }
+            AccountMigrationOptionsScreen(onEvent)
         }
     }
+}
+
+@Composable
+private fun AccountMigrationOptionsScreen(onEvent: (Event) -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(all = MainTheme.spacings.quadruple),
+    ) {
+        TextTitleMedium(
+            text = stringResource(R.string.account_setup_discovery_migration),
+            color = MainTheme.colors.primary,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.widthIn(max = 292.dp),
+        )
+        ButtonOutlined(
+            text = stringResource(R.string.account_setup_discovery_import_existing_account),
+            onClick = { onEvent(Event.ImportAccountClicked) },
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = MainTheme.colors.primary),
+            shape = ButtonDefaults.outlinedShape(
+                border = ButtonDefaults.outlinedButtonBorder(color = MainTheme.colors.outline),
+            ),
+        )
+    }
+}
+
+@Composable
+private fun ColumnScope.AutoDiscoveryResultContent(
+    state: State,
+    onEvent: (Event) -> Unit,
+) {
+    AutoDiscoveryResultView(
+        settings = state.autoDiscoverySettings,
+        onEditConfigurationClick = { onEvent(Event.OnEditConfigurationClicked) },
+    )
+    if (state.autoDiscoverySettings != null && state.autoDiscoverySettings.isTrusted.not()) {
+        AutoDiscoveryResultApprovalView(
+            approvalState = state.configurationApproved,
+            onApprovalChange = { onEvent(Event.ResultApprovalChanged(it)) },
+        )
+    }
+    Spacer(modifier = Modifier.height(MainTheme.spacings.double))
 }
