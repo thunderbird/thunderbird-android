@@ -1,5 +1,6 @@
 package app.k9mail.feature.onboarding.main.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,7 +21,8 @@ import app.k9mail.feature.onboarding.permissions.ui.PermissionsScreen
 import app.k9mail.feature.onboarding.welcome.ui.WelcomeScreen
 import app.k9mail.feature.settings.import.ui.SettingsImportAction
 import app.k9mail.feature.settings.import.ui.SettingsImportScreen
-import net.thunderbird.core.common.provider.AppNameProvider
+import net.thunderbird.core.common.provider.BrandNameProvider
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.thundermail.ui.screen.AddThundermailAccountScreenProvider
 import org.koin.compose.koinInject
 
@@ -85,12 +87,13 @@ fun OnboardingNavHost(
         }
 
         composable(route = NESTED_NAVIGATION_ROUTE_ADD_THUNDERMAIL_ACCOUNT) {
-            val appNameProvider = koinInject<AppNameProvider>()
+            val provider = koinInject<BrandNameProvider>()
             addThundermailAccountScreenProvider.Content(
                 header = {
                     AppTitleTopHeader(
-                        title = appNameProvider.appName,
+                        title = provider.brandName,
                         modifier = Modifier.fillMaxWidth(),
+                        contentPadding = PaddingValues(horizontal = MainTheme.spacings.quadruple),
                     )
                 },
                 onScanQrCodeClick = { navController.navigateToQrCodeScanner() },

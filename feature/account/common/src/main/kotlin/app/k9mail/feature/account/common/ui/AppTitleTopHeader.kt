@@ -2,6 +2,7 @@ package app.k9mail.feature.account.common.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,14 +21,15 @@ import org.jetbrains.compose.resources.painterResource
 fun AppTitleTopHeader(
     title: String,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(
+        start = MainTheme.spacings.half,
+        end = MainTheme.spacings.quadruple,
+    ),
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(
-                start = MainTheme.spacings.half,
-                end = MainTheme.spacings.quadruple,
-            ),
+            .padding(contentPadding),
         horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically,
     ) {

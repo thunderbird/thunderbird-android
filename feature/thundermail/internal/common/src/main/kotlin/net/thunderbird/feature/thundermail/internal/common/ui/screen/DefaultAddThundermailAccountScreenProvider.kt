@@ -105,7 +105,7 @@ internal fun AddThundermailAccountScreen(
                 modifier = Modifier
                     .padding(responsivePadding)
                     .verticalScroll(rememberScrollState())
-                    .padding(MainTheme.spacings.quadruple),
+                    .padding(vertical = MainTheme.spacings.quadruple),
                 verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.quadruple),
             ) {
                 Spacer(modifier = Modifier.weight(weight = .5f))
@@ -114,11 +114,14 @@ internal fun AddThundermailAccountScreen(
                 TextTitleLarge(
                     text = stringResource(R.string.thundermail_add_account_title),
                     color = MainTheme.colors.primary,
+                    modifier = Modifier.padding(horizontal = MainTheme.spacings.quadruple),
                 )
                 ThundermailPanel(
                     onSignWithThundermailClick = { dispatch(ThundermailContract.Event.SignInClicked) },
                     onScanQrCodeClick = onScanQrCodeClick,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = MainTheme.spacings.quadruple),
                 )
                 ButtonOutlined(
                     text = stringResource(R.string.thundermail_setup_another_account_button),
@@ -128,6 +131,7 @@ internal fun AddThundermailAccountScreen(
                     ),
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
+                        .padding(horizontal = MainTheme.spacings.quadruple)
                         .testTagAsResourceId(TEST_TAG_SETUP_ANOTHER_ACCOUNT_BUTTON),
                 )
                 Spacer(modifier = Modifier.weight(weight = .5f))
