@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
@@ -52,12 +53,7 @@ fun SpecialFoldersScreen(
 
     val lazyListState = rememberLazyListState()
     ThundermailScaffold(
-        header = { paddingValues ->
-            AppTitleTopHeader(
-                title = brandNameProvider.brandName,
-                modifier = Modifier.padding(paddingValues),
-            )
-        },
+        header = { AppTitleTopHeader(title = brandNameProvider.brandName) },
         subHeaderText = stringResource(R.string.account_setup_special_folders_form_title),
         bottomBar = { paddingValues, containerColor ->
             WizardNavigationBar(
@@ -74,6 +70,7 @@ fun SpecialFoldersScreen(
                     .padding(horizontal = MainTheme.spacings.quadruple),
             )
         },
+        maxWidth = Dp.Unspecified,
         modifier = modifier.windowInsetsPadding(WindowInsets.navigationBars),
     ) { scaffoldPaddingValues, responsivePaddingValues, maxWidth ->
         SpecialFoldersContent(

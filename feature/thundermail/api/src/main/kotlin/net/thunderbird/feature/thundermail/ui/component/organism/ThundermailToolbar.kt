@@ -33,7 +33,7 @@ fun ThundermailToolbar(
         verticalArrangement = Arrangement.Bottom,
         modifier = modifier.fillMaxWidth(),
     ) {
-        Spacer(modifier = Modifier.heightIn(min = MainTheme.sizes.large, max = MainTheme.sizes.huge))
+        Spacer(modifier = Modifier.heightIn(min = MainTheme.sizes.large, max = MainTheme.sizes.huger))
         header()
         Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
         TextTitleLarge(

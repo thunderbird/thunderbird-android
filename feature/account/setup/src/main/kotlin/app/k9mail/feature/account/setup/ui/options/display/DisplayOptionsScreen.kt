@@ -1,20 +1,31 @@
 package app.k9mail.feature.account.setup.ui.options.display
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
+import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
+import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.ViewModel
 import net.thunderbird.core.common.provider.BrandNameProvider
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.contract.mvi.observe
+import net.thunderbird.feature.thundermail.ui.brandBackground
+import net.thunderbird.feature.thundermail.ui.component.template.ThundermailScaffold
 
 @Composable
 internal fun DisplayOptionsScreen(
@@ -39,21 +50,37 @@ internal fun DisplayOptionsScreen(
         dispatch(Event.OnBackClicked)
     }
 
-    Scaffold(
-        bottomBar = {
+    val lazyListState = rememberLazyListState()
+    ThundermailScaffold(
+        header = { AppTitleTopHeader(title = brandNameProvider.brandName) },
+        subHeaderText = stringResource(R.string.account_setup_options_section_display_options),
+        bottomBar = { paddingValues, containerColor ->
             WizardNavigationBar(
                 onNextClick = { dispatch(Event.OnNextClicked) },
                 onBackClick = { dispatch(Event.OnBackClicked) },
-                modifier = Modifier.imePadding(),
+                modifier = Modifier
+                    .imePadding()
+                    .background(containerColor)
+                    .padding(paddingValues)
+                    .padding(top = MainTheme.spacings.default)
+                    .padding(horizontal = MainTheme.spacings.quadruple),
             )
         },
+        maxWidth = Dp.Unspecified,
         modifier = modifier.windowInsetsPadding(WindowInsets.navigationBars),
-    ) { innerPadding ->
+    ) { scaffoldPaddingValues, responsivePaddingValues, maxWidth ->
         DisplayOptionsContent(
             state = state.value,
             onEvent = { dispatch(it) },
-            contentPadding = innerPadding,
-            brandName = brandNameProvider.brandName,
+            contentPadding = responsivePaddingValues,
+            maxWidth = maxWidth,
+            listState = lazyListState,
+            modifier = Modifier
+                .fillMaxSize()
+                .brandBackground()
+                .padding(scaffoldPaddingValues)
+                .consumeWindowInsets(scaffoldPaddingValues)
+                .imePadding(),
         )
     }
 }

@@ -16,7 +16,7 @@ import net.thunderbird.feature.thundermail.ui.screen.ThundermailConstants
 
 @Composable
 fun ThundermailScaffold(
-    header: @Composable (PaddingValues) -> Unit,
+    header: @Composable () -> Unit,
     subHeaderText: String,
     bottomBar: @Composable (PaddingValues, containerColor: Color) -> Unit,
     modifier: Modifier = Modifier,
@@ -24,6 +24,7 @@ fun ThundermailScaffold(
     maxWidth: Dp = ThundermailConstants.MaxContainerWidth,
     headerContentPadding: PaddingValues = PaddingValues(
         horizontal = MainTheme.spacings.quadruple,
+        vertical = MainTheme.spacings.default,
     ),
     content: @Composable (scaffoldPaddingValues: PaddingValues, responsivePaddingValues: PaddingValues, maxWidth: Dp) -> Unit,
 ) {
@@ -31,7 +32,7 @@ fun ThundermailScaffold(
         toolbar = {
             ResponsiveWidthContainer { paddingValues ->
                 ThundermailToolbar(
-                    header = { header(paddingValues) },
+                    header = header,
                     subHeaderText = subHeaderText,
                     maxWidth = maxWidth,
                     contentPadding = headerContentPadding,
