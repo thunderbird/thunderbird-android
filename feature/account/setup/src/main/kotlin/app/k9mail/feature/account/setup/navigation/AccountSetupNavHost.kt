@@ -1,5 +1,7 @@
 package app.k9mail.feature.account.setup.navigation
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,10 +50,11 @@ private const val NESTED_NAVIGATION_SETTINGS_IMPORT_ACTION_PARAM = "action"
 
 @Suppress("LongMethod")
 @Composable
-fun AccountSetupNavHost(
+fun SharedTransitionScope.AccountSetupNavHost(
     onBack: () -> Unit,
     onFinish: (AccountSetupRoute) -> Unit,
     skipToIncomingValidation: Boolean = false,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
     val navController = rememberNavController()
     var isAutomaticConfig by rememberSaveable { mutableStateOf(skipToIncomingValidation) }
@@ -77,6 +80,7 @@ fun AccountSetupNavHost(
                     }
                 },
                 onBack = onBack,
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 onImportAccountNavigate = { navController.navigate(NESTED_NAVIGATION_IMPORT_ACCOUNT) },
                 viewModel = koinViewModel<AccountAutoDiscoveryViewModel>(),
                 brandNameProvider = koinInject(),
@@ -89,6 +93,7 @@ fun AccountSetupNavHost(
                     hasSpecialFolders = checkSpecialFoldersSupport(state.protocolType)
                     navController.navigate(NESTED_NAVIGATION_INCOMING_SERVER_VALIDATION)
                 },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<IncomingServerSettingsViewModel>(),
             )
@@ -108,6 +113,7 @@ fun AccountSetupNavHost(
                     }
                 },
                 onBack = { navController.popBackStack() },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 viewModel = koinViewModel<IncomingServerValidationViewModel>(),
                 brandNameProvider = koinInject(),
             )
@@ -117,6 +123,7 @@ fun AccountSetupNavHost(
             OutgoingServerSettingsScreen(
                 onNext = { navController.navigate(NESTED_NAVIGATION_OUTGOING_SERVER_VALIDATION) },
                 onBack = { navController.popBackStack() },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 viewModel = koinViewModel<OutgoingServerSettingsViewModel>(),
             )
         }
@@ -138,6 +145,7 @@ fun AccountSetupNavHost(
                         }
                     }
                 },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<OutgoingServerValidationViewModel>(),
                 brandNameProvider = koinInject(),
@@ -160,6 +168,7 @@ fun AccountSetupNavHost(
                     }
                 },
                 onBack = { navController.popBackStack() },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 viewModel = koinViewModel<SpecialFoldersViewModel>(),
                 brandNameProvider = koinInject(),
             )
@@ -169,6 +178,7 @@ fun AccountSetupNavHost(
             DisplayOptionsScreen(
                 onNext = { navController.navigate(NESTED_NAVIGATION_SYNC_OPTIONS) },
                 onBack = { navController.popBackStack() },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 viewModel = koinViewModel<DisplayOptionsViewModel>(),
                 brandNameProvider = koinInject(),
             )
@@ -178,6 +188,7 @@ fun AccountSetupNavHost(
             SyncOptionsScreen(
                 onNext = { navController.navigate(NESTED_NAVIGATION_CREATE_ACCOUNT) },
                 onBack = { navController.popBackStack() },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 viewModel = koinViewModel<SyncOptionsViewModel>(),
                 brandNameProvider = koinInject(),
             )
@@ -188,6 +199,7 @@ fun AccountSetupNavHost(
                 onNext = { accountUuid -> onFinish(AccountSetupRoute.AccountSetup(accountUuid.value)) },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<CreateAccountViewModel>(),
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 brandNameProvider = koinInject(),
             )
         }
@@ -198,6 +210,7 @@ fun AccountSetupNavHost(
                 onSelectFileClick = { navController.navigateToSettingsImport(SettingsImportAction.PickDocument) },
                 onImportClick = { navController.navigateToSettingsImport(SettingsImportAction.PickApp) },
                 onBack = { navController.popBackStack() },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 brandNameProvider = koinInject(),
             )
         }

@@ -1,6 +1,8 @@
 package app.k9mail.feature.account.setup.ui.options.display
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -28,9 +30,10 @@ import net.thunderbird.feature.thundermail.ui.brandBackground
 import net.thunderbird.feature.thundermail.ui.component.template.ThundermailScaffold
 
 @Composable
-internal fun DisplayOptionsScreen(
+internal fun SharedTransitionScope.DisplayOptionsScreen(
     onNext: () -> Unit,
     onBack: () -> Unit,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     viewModel: ViewModel,
     brandNameProvider: BrandNameProvider,
     modifier: Modifier = Modifier,
@@ -52,7 +55,13 @@ internal fun DisplayOptionsScreen(
 
     val lazyListState = rememberLazyListState()
     ThundermailScaffold(
-        header = { AppTitleTopHeader(title = brandNameProvider.brandName) },
+        header = {
+            AppTitleTopHeader(
+                title = brandNameProvider.brandName,
+                sharedTransitionScope = this,
+                animatedVisibilityScope = animatedVisibilityScope,
+            )
+        },
         subHeaderText = stringResource(R.string.account_setup_options_section_display_options),
         bottomBar = { paddingValues, containerColor ->
             WizardNavigationBar(

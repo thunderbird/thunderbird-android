@@ -1,5 +1,7 @@
 package app.k9mail.feature.onboarding.welcome.ui
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,15 +29,18 @@ import net.thunderbird.core.common.provider.UsingBrandTypography
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.thundermail.ui.RegisteredTrademarkInjector
+import net.thunderbird.feature.thundermail.ui.modifier.brandLogoSharedTransition
+import net.thunderbird.feature.thundermail.ui.modifier.brandNameSharedTransition
 import org.jetbrains.compose.resources.painterResource
 
 private const val LOGO_SIZE_DP = 125
 private const val LOGO_DESCRIPTION_SPACING = 48
 
 @Composable
-internal fun WelcomeContent(
+internal fun SharedTransitionScope.WelcomeContent(
     onStartClick: () -> Unit,
     appName: String,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
 ) {
     ResponsiveContent(
@@ -54,7 +59,11 @@ internal fun WelcomeContent(
             Column(
                 verticalArrangement = Arrangement.spacedBy(LOGO_DESCRIPTION_SPACING.dp),
             ) {
-                WelcomeHeaderSection(title = appName)
+                WelcomeHeaderSection(
+                    title = appName,
+                    sharedTransitionScope = this@WelcomeContent,
+                    animatedVisibilityScope = animatedVisibilityScope,
+                )
                 TextBodyMedium(
                     text = stringResource(id = R.string.onboarding_welcome_text),
                     textAlign = TextAlign.Center,
@@ -84,6 +93,8 @@ internal fun WelcomeContent(
 @Composable
 private fun WelcomeHeaderSection(
     title: String,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -93,15 +104,19 @@ private fun WelcomeHeaderSection(
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        WelcomeLogo()
+        WelcomeLogo(sharedTransitionScope, animatedVisibilityScope)
         WelcomeTitle(
             title = RegisteredTrademarkInjector.inject(title),
+            sharedTransitionScope = sharedTransitionScope,
+            animatedVisibilityScope = animatedVisibilityScope,
         )
     }
 }
 
 @Composable
 private fun WelcomeLogo(
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -111,7 +126,9 @@ private fun WelcomeLogo(
         Image(
             painter = painterResource(MainTheme.images.logo),
             contentDescription = null,
-            modifier = Modifier.size(LOGO_SIZE_DP.dp),
+            modifier = Modifier
+                .size(LOGO_SIZE_DP.dp)
+                .brandLogoSharedTransition(sharedTransitionScope, animatedVisibilityScope),
         )
     }
 }
@@ -119,6 +136,8 @@ private fun WelcomeLogo(
 @Composable
 private fun WelcomeTitle(
     title: AnnotatedString,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -129,6 +148,7 @@ private fun WelcomeTitle(
             TextDisplayMedium(
                 text = title,
                 textAlign = TextAlign.Center,
+                modifier = Modifier.brandNameSharedTransition(sharedTransitionScope, animatedVisibilityScope),
             )
         }
     }

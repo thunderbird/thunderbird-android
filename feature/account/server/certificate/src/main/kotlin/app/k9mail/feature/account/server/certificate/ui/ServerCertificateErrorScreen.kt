@@ -2,6 +2,7 @@ package app.k9mail.feature.account.server.certificate.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -31,7 +32,7 @@ import net.thunderbird.feature.thundermail.ui.component.template.ThundermailScaf
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ServerCertificateErrorScreen(
+fun SharedTransitionScope.ServerCertificateErrorScreen(
     onCertificateAccepted: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,

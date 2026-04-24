@@ -1,5 +1,9 @@
 package net.thunderbird.feature.thundermail.ui.preview
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
@@ -15,7 +19,7 @@ import net.thunderbird.feature.thundermail.ui.RegisteredTrademarkInjector
 @Composable
 fun ThundermailPreview(
     appName: String = "Thunderbird",
-    content: @Composable () -> Unit,
+    content: @Composable SharedTransitionScope.(animatedVisibilityScope: AnimatedVisibilityScope) -> Unit,
 ) {
     val backgroundColor = if (isSystemInDarkTheme()) Color(color = 0xFF262C40) else Color(color = 0xFFF0F8FF)
     koinPreview {
@@ -30,6 +34,12 @@ fun ThundermailPreview(
             }
         }
     } WithContent {
-        PreviewWithTheme(content = content)
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                PreviewWithTheme {
+                    content(this)
+                }
+            }
+        }
     }
 }

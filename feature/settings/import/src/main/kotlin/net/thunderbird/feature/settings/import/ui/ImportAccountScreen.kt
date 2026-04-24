@@ -1,16 +1,25 @@
 package net.thunderbird.feature.settings.import.ui
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -19,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.unit.Dp
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonDefaults
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
@@ -26,9 +36,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.card.CardDefaults
 import app.k9mail.core.ui.compose.designsystem.atom.card.CardFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
@@ -45,72 +53,73 @@ import net.thunderbird.feature.settings.import.ui.ImportAccountScreenDefaults.TE
 import net.thunderbird.feature.settings.import.ui.ImportAccountScreenDefaults.TEST_TAG_IMPORT_ACCOUNT_ROOT
 import net.thunderbird.feature.settings.import.ui.ImportAccountScreenDefaults.TEST_TAG_IMPORT_ACCOUNT_SELECT_FILE_BUTTON
 import net.thunderbird.feature.thundermail.ui.brandBackground
+import net.thunderbird.feature.thundermail.ui.component.template.ThundermailScaffold
 import org.koin.compose.koinInject
 
 @Composable
-fun ImportAccountScreen(
+fun SharedTransitionScope.ImportAccountScreen(
     onQrCodeScanClick: () -> Unit,
     onSelectFileClick: () -> Unit,
     onImportClick: () -> Unit,
     onBack: () -> Unit,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
     brandNameProvider: BrandNameProvider = koinInject(),
 ) {
-    ResponsiveWidthContainer(
-        modifier = modifier
-            .fillMaxSize()
-            .brandBackground()
-            .testTagAsResourceId(TEST_TAG_IMPORT_ACCOUNT_ROOT),
-    ) { contentPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(contentPadding),
-        ) {
-            Spacer(modifier = Modifier.weight(weight = .15f))
-            AppTitleTopHeader(title = brandNameProvider.brandName)
-            Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
-            TextTitleLarge(
-                text = stringResource(R.string.settings_import_account),
-                color = MainTheme.colors.primary,
-                modifier = Modifier.padding(
-                    horizontal = MainTheme.spacings.double,
-                    vertical = MainTheme.spacings.default,
-                ),
+    val scrollState = rememberScrollState()
+    ThundermailScaffold(
+        header = {
+            AppTitleTopHeader(
+                title = brandNameProvider.brandName,
+                sharedTransitionScope = this,
+                animatedVisibilityScope = animatedVisibilityScope,
             )
-            Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState()),
-            ) {
-                AlreadyUsingThunderbirdCard(
-                    onQrCodeScan = onQrCodeScanClick,
-                    modifier = Modifier.padding(horizontal = MainTheme.spacings.double),
-                )
-                Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
-                TextGroup(title = stringResource(R.string.settings_import_thunderbird_import_title)) {
-                    MovingFromAnotherDeviceButton(
-                        text = stringResource(R.string.settings_import_pick_document_button),
-                        onClick = onSelectFileClick,
-                        modifier = Modifier.testTagAsResourceId(TEST_TAG_IMPORT_ACCOUNT_SELECT_FILE_BUTTON),
-                    )
-                    MovingFromAnotherDeviceButton(
-                        text = stringResource(R.string.settings_import_thunderbird_import_button_text),
-                        onClick = onImportClick,
-                        modifier = Modifier.testTagAsResourceId(TEST_TAG_IMPORT_ACCOUNT_IMPORT_BUTTON),
-                    )
-                }
-            }
-
+        },
+        subHeaderText = stringResource(R.string.settings_import_account),
+        bottomBar = { paddingValues, containerColor ->
             WizardNavigationBar(
                 onNextClick = { },
                 onBackClick = onBack,
                 state = WizardNavigationBarState(showNext = false),
                 modifier = Modifier
-                    .padding(top = MainTheme.spacings.double)
-                    .padding(horizontal = MainTheme.spacings.double),
+                    .imePadding()
+                    .background(containerColor)
+                    .padding(paddingValues)
+                    .padding(top = MainTheme.spacings.default)
+                    .padding(horizontal = MainTheme.spacings.quadruple),
             )
+        },
+        maxWidth = Dp.Unspecified,
+        canScrollForward = scrollState.canScrollForward,
+        modifier = modifier
+            .windowInsetsPadding(WindowInsets.navigationBars.union(WindowInsets.displayCutout)),
+    ) { scaffoldPaddingValues, responsivePaddingValues, maxWidth ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .brandBackground()
+                .padding(scaffoldPaddingValues)
+                .padding(responsivePaddingValues)
+                .testTagAsResourceId(TEST_TAG_IMPORT_ACCOUNT_ROOT),
+        ) {
+            AlreadyUsingThunderbirdCard(
+                onQrCodeScan = onQrCodeScanClick,
+                modifier = Modifier.padding(horizontal = MainTheme.spacings.double),
+            )
+            Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
+            TextGroup(title = stringResource(R.string.settings_import_thunderbird_import_title)) {
+                MovingFromAnotherDeviceButton(
+                    text = stringResource(R.string.settings_import_pick_document_button),
+                    onClick = onSelectFileClick,
+                    modifier = Modifier.testTagAsResourceId(TEST_TAG_IMPORT_ACCOUNT_SELECT_FILE_BUTTON),
+                )
+                MovingFromAnotherDeviceButton(
+                    text = stringResource(R.string.settings_import_thunderbird_import_button_text),
+                    onClick = onImportClick,
+                    modifier = Modifier.testTagAsResourceId(TEST_TAG_IMPORT_ACCOUNT_IMPORT_BUTTON),
+                )
+            }
         }
     }
 }

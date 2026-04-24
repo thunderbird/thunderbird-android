@@ -1,5 +1,7 @@
 package app.k9mail.feature.account.common.ui
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,11 +17,15 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMediumAutoRe
 import net.thunderbird.core.common.provider.UsingBrandTypography
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.thundermail.ui.RegisteredTrademarkInjector
+import net.thunderbird.feature.thundermail.ui.modifier.brandLogoSharedTransition
+import net.thunderbird.feature.thundermail.ui.modifier.brandNameSharedTransition
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun AppTitleTopHeader(
     title: String,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(
         start = MainTheme.spacings.half,
@@ -35,12 +41,17 @@ fun AppTitleTopHeader(
     ) {
         Image(
             painter = painterResource(MainTheme.images.logo),
-            modifier = Modifier.size(width = 52.dp, height = 50.dp),
+            modifier = Modifier
+                .size(width = 52.dp, height = 50.dp)
+                .brandLogoSharedTransition(sharedTransitionScope, animatedVisibilityScope),
             contentDescription = null,
         )
 
         UsingBrandTypography {
-            TextDisplayMediumAutoResize(text = RegisteredTrademarkInjector.inject(title))
+            TextDisplayMediumAutoResize(
+                text = RegisteredTrademarkInjector.inject(title),
+                modifier = Modifier.brandNameSharedTransition(sharedTransitionScope, animatedVisibilityScope),
+            )
         }
     }
 }

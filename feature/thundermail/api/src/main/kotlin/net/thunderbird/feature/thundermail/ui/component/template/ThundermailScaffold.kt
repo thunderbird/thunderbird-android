@@ -1,5 +1,6 @@
 package net.thunderbird.feature.thundermail.ui.component.template
 
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -16,7 +17,7 @@ import net.thunderbird.feature.thundermail.ui.component.organism.ThundermailTool
 import net.thunderbird.feature.thundermail.ui.screen.ThundermailConstants
 
 @Composable
-fun ThundermailScaffold(
+fun SharedTransitionScope.ThundermailScaffold(
     header: @Composable () -> Unit,
     subHeaderText: String,
     bottomBar: @Composable (PaddingValues, containerColor: Color) -> Unit,
@@ -51,16 +52,19 @@ fun ThundermailScaffold(
 }
 
 @Composable
-fun ThundermailScaffold(
-    toolbar: @Composable () -> Unit,
+fun SharedTransitionScope.ThundermailScaffold(
+    toolbar: @Composable SharedTransitionScope.() -> Unit,
     bottomBar: @Composable (PaddingValues, containerColor: Color) -> Unit,
     modifier: Modifier = Modifier,
     canScrollForward: Boolean = false,
     maxWidth: Dp = ThundermailConstants.MaxContainerWidth,
     content: @Composable (scaffoldPaddingValues: PaddingValues, responsivePaddingValues: PaddingValues, maxWidth: Dp) -> Unit,
 ) {
+    val scope = this
     Scaffold(
-        topBar = toolbar,
+        topBar = {
+            with(scope) { toolbar() }
+        },
         bottomBar = {
             ResponsiveWidthContainer { paddingValues ->
                 // Elevate the bottom bar when some scrollable content is "underneath" it

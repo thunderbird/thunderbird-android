@@ -17,6 +17,7 @@ internal fun PermissionContentPreview() {
                 isNextButtonVisible = false,
             ),
             onEvent = {},
+            animatedVisibilityScope = it,
             brandName = "BrandName",
         )
     }

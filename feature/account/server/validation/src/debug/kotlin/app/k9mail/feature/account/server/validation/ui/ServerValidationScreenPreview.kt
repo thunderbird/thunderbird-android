@@ -26,6 +26,7 @@ internal fun IncomingServerValidationScreenPreview() {
                     oAuthViewModel = FakeAccountOAuthViewModel(),
                 )
             },
+            animatedVisibilityScope = it,
             brandNameProvider = FakeBrandNameProvider,
         )
     }
@@ -47,6 +48,7 @@ internal fun OutgoingServerValidationScreenPreview() {
                     oAuthViewModel = FakeAccountOAuthViewModel(),
                 )
             },
+            animatedVisibilityScope = it,
             brandNameProvider = FakeBrandNameProvider,
         )
     }

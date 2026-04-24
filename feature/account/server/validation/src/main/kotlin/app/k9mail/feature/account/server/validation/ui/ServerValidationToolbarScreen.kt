@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.server.validation.ui
 
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -21,7 +22,7 @@ import net.thunderbird.feature.thundermail.ui.brandBackground
 import net.thunderbird.feature.thundermail.ui.component.template.ThundermailScaffold
 
 @Composable
-internal fun ServerValidationToolbarScreen(
+internal fun SharedTransitionScope.ServerValidationToolbarScreen(
     title: String,
     viewModel: ViewModel,
     modifier: Modifier = Modifier,

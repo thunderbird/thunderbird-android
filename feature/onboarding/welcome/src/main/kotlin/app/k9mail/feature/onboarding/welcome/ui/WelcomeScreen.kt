@@ -1,5 +1,7 @@
 package app.k9mail.feature.onboarding.welcome.ui
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -9,9 +11,10 @@ import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.feature.thundermail.ui.brandBackground
 
 @Composable
-fun WelcomeScreen(
+fun SharedTransitionScope.WelcomeScreen(
     onStartClick: () -> Unit,
     appNameProvider: AppNameProvider,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -20,6 +23,7 @@ fun WelcomeScreen(
         WelcomeContent(
             onStartClick = onStartClick,
             appName = appNameProvider.appName,
+            animatedVisibilityScope = animatedVisibilityScope,
             modifier = Modifier
                 .fillMaxSize()
                 .brandBackground()

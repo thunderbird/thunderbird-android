@@ -22,6 +22,7 @@ internal fun IncomingServerSettingsScreenPreview() {
                     accountStateRepository = FakeAccountStateRepository(),
                 )
             },
+            animatedVisibilityScope = it,
             brandNameProvider = object : BrandNameProvider {
                 override val brandName: String = "Thunderbird"
             },

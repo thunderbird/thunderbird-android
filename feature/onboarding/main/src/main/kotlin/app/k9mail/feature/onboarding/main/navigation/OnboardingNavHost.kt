@@ -1,5 +1,6 @@
 package app.k9mail.feature.onboarding.main.navigation
 
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -71,92 +72,98 @@ fun OnboardingNavHost(
     fun onImportSuccess() {
         navController.navigateToPermissions()
     }
+    SharedTransitionLayout {
+        NavHost(
+            navController = navController,
+            startDestination = NESTED_NAVIGATION_ROUTE_WELCOME,
+            modifier = modifier,
+        ) {
+            composable(route = NESTED_NAVIGATION_ROUTE_WELCOME) {
+                WelcomeScreen(
+                    onStartClick = {
+                        navController.navigateToAddThundermailAccount()
+                    },
+                    animatedVisibilityScope = this,
+                    appNameProvider = koinInject(),
+                )
+            }
 
-    NavHost(
-        navController = navController,
-        startDestination = NESTED_NAVIGATION_ROUTE_WELCOME,
-        modifier = modifier,
-    ) {
-        composable(route = NESTED_NAVIGATION_ROUTE_WELCOME) {
-            WelcomeScreen(
-                onStartClick = {
-                    navController.navigateToAddThundermailAccount()
-                },
-                appNameProvider = koinInject(),
-            )
-        }
+            composable(route = NESTED_NAVIGATION_ROUTE_ADD_THUNDERMAIL_ACCOUNT) {
+                val provider = koinInject<BrandNameProvider>()
+                addThundermailAccountScreenProvider.Content(
+                    header = {
+                        AppTitleTopHeader(
+                            title = provider.brandName,
+                            sharedTransitionScope = this@SharedTransitionLayout,
+                            animatedVisibilityScope = this@composable,
+                            modifier = Modifier.fillMaxWidth(),
+                            contentPadding = PaddingValues(horizontal = MainTheme.spacings.quadruple),
+                        )
+                    },
+                    onScanQrCodeClick = { navController.navigateToQrCodeScanner() },
+                    onSetupAnotherAccountClick = { navController.navigateToAccountSetup() },
+                    onOAuthSuccess = { navController.navigateToAccountSetup(skipToIncomingValidation = true) },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
 
-        composable(route = NESTED_NAVIGATION_ROUTE_ADD_THUNDERMAIL_ACCOUNT) {
-            val provider = koinInject<BrandNameProvider>()
-            addThundermailAccountScreenProvider.Content(
-                header = {
-                    AppTitleTopHeader(
-                        title = provider.brandName,
-                        modifier = Modifier.fillMaxWidth(),
-                        contentPadding = PaddingValues(horizontal = MainTheme.spacings.quadruple),
-                    )
-                },
-                onScanQrCodeClick = { navController.navigateToQrCodeScanner() },
-                onSetupAnotherAccountClick = { navController.navigateToAccountSetup() },
-                onOAuthSuccess = { navController.navigateToAccountSetup(skipToIncomingValidation = true) },
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+            composable(route = NESTED_NAVIGATION_ROUTE_QR_CODE_SCANNER) {
+                SettingsImportScreen(
+                    action = SettingsImportAction.ScanQrCode,
+                    onImportSuccess = ::onImportSuccess,
+                    onBack = { navController.popBackStack() },
+                )
+            }
 
-        composable(route = NESTED_NAVIGATION_ROUTE_QR_CODE_SCANNER) {
-            SettingsImportScreen(
-                action = SettingsImportAction.ScanQrCode,
-                onImportSuccess = ::onImportSuccess,
-                onBack = { navController.popBackStack() },
-            )
-        }
-
-        composable(
-            route = "$NESTED_NAVIGATION_ROUTE_ACCOUNT_SETUP?$NESTED_NAVIGATION_ARG_SKIP_TO_INCOMING_VALIDATION=" +
-                "{$NESTED_NAVIGATION_ARG_SKIP_TO_INCOMING_VALIDATION}",
-            arguments = listOf(
-                navArgument(NESTED_NAVIGATION_ARG_SKIP_TO_INCOMING_VALIDATION) {
-                    type = NavType.BoolType
-                    defaultValue = false
-                },
-            ),
-        ) { backStackEntry ->
-            val skipToIncomingValidation = backStackEntry.arguments
-                ?.getBoolean(NESTED_NAVIGATION_ARG_SKIP_TO_INCOMING_VALIDATION)
-                ?: false
-            AccountSetupNavHost(
-                onBack = { navController.popBackStack() },
-                onFinish = { route: AccountSetupRoute ->
-                    when (route) {
-                        is AccountSetupRoute.AccountSetup -> {
-                            navController.navigateToPermissions()
+            composable(
+                route = "$NESTED_NAVIGATION_ROUTE_ACCOUNT_SETUP?$NESTED_NAVIGATION_ARG_SKIP_TO_INCOMING_VALIDATION=" +
+                    "{$NESTED_NAVIGATION_ARG_SKIP_TO_INCOMING_VALIDATION}",
+                arguments = listOf(
+                    navArgument(NESTED_NAVIGATION_ARG_SKIP_TO_INCOMING_VALIDATION) {
+                        type = NavType.BoolType
+                        defaultValue = false
+                    },
+                ),
+            ) { backStackEntry ->
+                val skipToIncomingValidation = backStackEntry.arguments
+                    ?.getBoolean(NESTED_NAVIGATION_ARG_SKIP_TO_INCOMING_VALIDATION)
+                    ?: false
+                AccountSetupNavHost(
+                    onBack = { navController.popBackStack() },
+                    onFinish = { route: AccountSetupRoute ->
+                        when (route) {
+                            is AccountSetupRoute.AccountSetup -> {
+                                navController.navigateToPermissions()
+                            }
                         }
-                    }
-                },
-                skipToIncomingValidation = skipToIncomingValidation,
-            )
-        }
+                    },
+                    skipToIncomingValidation = skipToIncomingValidation,
+                    animatedVisibilityScope = this,
+                )
+            }
 
-        composable(route = NESTED_NAVIGATION_ROUTE_SETTINGS_IMPORT) {
-            SettingsImportScreen(
-                action = SettingsImportAction.Overview,
-                onImportSuccess = ::onImportSuccess,
-                onBack = { navController.popBackStack() },
-            )
-        }
+            composable(route = NESTED_NAVIGATION_ROUTE_SETTINGS_IMPORT) {
+                SettingsImportScreen(
+                    action = SettingsImportAction.Overview,
+                    onImportSuccess = ::onImportSuccess,
+                    onBack = { navController.popBackStack() },
+                )
+            }
 
-        composable(route = NESTED_NAVIGATION_ROUTE_SETTINGS_IMPORT_QR_CODE) {
-            SettingsImportScreen(
-                action = SettingsImportAction.ScanQrCode,
-                onImportSuccess = ::onImportSuccess,
-                onBack = { navController.popBackStack() },
-            )
-        }
+            composable(route = NESTED_NAVIGATION_ROUTE_SETTINGS_IMPORT_QR_CODE) {
+                SettingsImportScreen(
+                    action = SettingsImportAction.ScanQrCode,
+                    onImportSuccess = ::onImportSuccess,
+                    onBack = { navController.popBackStack() },
+                )
+            }
 
-        composable(route = NESTED_NAVIGATION_ROUTE_PERMISSIONS) {
-            PermissionsScreen(
-                onNext = { onFinish(OnboardingRoute.Onboarding(accountUuid)) },
-            )
+            composable(route = NESTED_NAVIGATION_ROUTE_PERMISSIONS) {
+                PermissionsScreen(
+                    onNext = { onFinish(OnboardingRoute.Onboarding(accountUuid)) },
+                    animatedVisibilityScope = this,
+                )
+            }
         }
     }
 }

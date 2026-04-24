@@ -1,6 +1,8 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -29,10 +31,11 @@ import net.thunderbird.feature.thundermail.ui.brandBackground
 import net.thunderbird.feature.thundermail.ui.component.template.ThundermailScaffold
 
 @Composable
-internal fun AccountAutoDiscoveryScreen(
+internal fun SharedTransitionScope.AccountAutoDiscoveryScreen(
     onNext: (AutoDiscoveryUiResult) -> Unit,
     onBack: () -> Unit,
     onImportAccountNavigate: () -> Unit,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     viewModel: ViewModel,
     brandNameProvider: BrandNameProvider,
     modifier: Modifier = Modifier,
@@ -51,7 +54,13 @@ internal fun AccountAutoDiscoveryScreen(
 
     val scrollState = rememberScrollState()
     ThundermailScaffold(
-        header = { AppTitleTopHeader(title = brandNameProvider.brandName) },
+        header = {
+            AppTitleTopHeader(
+                title = brandNameProvider.brandName,
+                sharedTransitionScope = this,
+                animatedVisibilityScope = animatedVisibilityScope,
+            )
+        },
         subHeaderText = stringResource(R.string.account_setup_discovery_add_email_account),
         bottomBar = { paddingValues, containerColor ->
             WizardNavigationBar(

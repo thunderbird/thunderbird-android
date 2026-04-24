@@ -6,6 +6,8 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Effect
@@ -16,7 +18,8 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 @Composable
-fun PermissionsScreen(
+fun SharedTransitionScope.PermissionsScreen(
+    animatedVisibilityScope: AnimatedVisibilityScope,
     viewModel: PermissionsContract.ViewModel = koinViewModel<PermissionsViewModel>(),
     brandNameProvider: BrandNameProvider = koinInject(),
     onNext: () -> Unit,
@@ -49,6 +52,7 @@ fun PermissionsScreen(
         state = state.value,
         onEvent = dispatch,
         brandName = brandNameProvider.brandName,
+        animatedVisibilityScope = animatedVisibilityScope,
     )
 }
 

@@ -1,6 +1,8 @@
 package app.k9mail.feature.account.server.settings.ui.outgoing
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -35,10 +37,11 @@ import net.thunderbird.feature.thundermail.ui.component.template.ThundermailScaf
 import org.koin.compose.koinInject
 
 @Composable
-fun OutgoingServerSettingsScreen(
+fun SharedTransitionScope.OutgoingServerSettingsScreen(
     onNext: () -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
     brandNameProvider: BrandNameProvider = koinInject(),
 ) {
@@ -68,7 +71,13 @@ fun OutgoingServerSettingsScreen(
             } else {
                 ResponsiveWidthContainer { paddingValues ->
                     ThundermailToolbar(
-                        header = { AppTitleTopHeader(brandNameProvider.brandName) },
+                        header = {
+                            AppTitleTopHeader(
+                                brandNameProvider.brandName,
+                                sharedTransitionScope = this,
+                                animatedVisibilityScope = animatedVisibilityScope,
+                            )
+                        },
                         subHeaderText = stringResource(id = R.string.account_server_settings_outgoing_top_bar_title),
                         maxWidth = Dp.Unspecified,
                         contentPadding = PaddingValues(

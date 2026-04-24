@@ -15,6 +15,7 @@ internal fun SpecialFoldersScreenPreview() {
             onNext = {},
             onBack = {},
             viewModel = viewModel { FakeSpecialFoldersViewModel() },
+            animatedVisibilityScope = it,
             brandNameProvider = FakeBrandNameProvider,
         )
     }

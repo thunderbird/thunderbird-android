@@ -1,6 +1,8 @@
 package app.k9mail.feature.account.setup.ui.specialfolders
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -29,11 +31,12 @@ import net.thunderbird.feature.thundermail.ui.brandBackground
 import net.thunderbird.feature.thundermail.ui.component.template.ThundermailScaffold
 
 @Composable
-fun SpecialFoldersScreen(
+fun SharedTransitionScope.SpecialFoldersScreen(
     onNext: (isManualSetup: Boolean) -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
     brandNameProvider: BrandNameProvider,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
@@ -53,7 +56,13 @@ fun SpecialFoldersScreen(
 
     val lazyListState = rememberLazyListState()
     ThundermailScaffold(
-        header = { AppTitleTopHeader(title = brandNameProvider.brandName) },
+        header = {
+            AppTitleTopHeader(
+                title = brandNameProvider.brandName,
+                sharedTransitionScope = this,
+                animatedVisibilityScope = animatedVisibilityScope,
+            )
+        },
         subHeaderText = stringResource(R.string.account_setup_special_folders_form_title),
         bottomBar = { paddingValues, containerColor ->
             WizardNavigationBar(

@@ -21,6 +21,7 @@ internal fun DisplayOptionsScreenPreview() {
                     accountOwnerNameProvider = { null },
                 )
             },
+            animatedVisibilityScope = it,
             brandNameProvider = FakeBrandNameProvider,
         )
     }

@@ -1,6 +1,8 @@
 package app.k9mail.feature.account.server.validation.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -13,11 +15,12 @@ import net.thunderbird.core.ui.contract.mvi.observe
 
 @Suppress("ViewModelForwarding")
 @Composable
-fun ServerValidationScreen(
+fun SharedTransitionScope.ServerValidationScreen(
     onNext: () -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
     brandNameProvider: BrandNameProvider,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
     title: String? = null,
 ) {
@@ -53,6 +56,7 @@ fun ServerValidationScreen(
             ServerValidationMainScreen(
                 viewModel = viewModel,
                 brandNameProvider = brandNameProvider,
+                animatedVisibilityScope = animatedVisibilityScope,
                 modifier = modifier,
             )
         }

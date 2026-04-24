@@ -3,14 +3,14 @@ package app.k9mail.feature.account.server.validation.ui
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.server.validation.ui.fake.FakeAccountOAuthViewModel
 import app.k9mail.feature.account.server.validation.ui.fake.FakeIncomingServerValidationViewModel
+import net.thunderbird.feature.thundermail.ui.preview.ThundermailPreview
 
 @Composable
 @PreviewDevices
 internal fun IncomingServerValidationToolbarScreenPreview() {
-    PreviewWithTheme {
+    ThundermailPreview {
         ServerValidationToolbarScreen(
             title = "Incoming server settings",
             viewModel = viewModel {
@@ -25,7 +25,7 @@ internal fun IncomingServerValidationToolbarScreenPreview() {
 @Composable
 @PreviewDevices
 internal fun OutgoingServerValidationToolbarScreenPreview() {
-    PreviewWithTheme {
+    ThundermailPreview {
         ServerValidationToolbarScreen(
             title = "Incoming server settings",
             viewModel = viewModel {

@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.edit.ui.server.settings
 
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
@@ -38,39 +39,43 @@ fun EditOutgoingServerSettingsNavHost(
 ) {
     val navController = rememberNavController()
 
-    NavHost(
-        navController = navController,
-        startDestination = NESTED_NAVIGATION_ROUTE_MODIFY,
-    ) {
-        composable(route = NESTED_NAVIGATION_ROUTE_MODIFY) {
-            OutgoingServerSettingsScreen(
-                onBack = onBack,
-                onNext = { navController.navigateToValidate() },
-                viewModel = koinViewModel<ModifyOutgoingServerSettingsViewModel> {
-                    parametersOf(accountUuid)
-                },
-            )
-        }
-        composable(route = NESTED_NAVIGATION_ROUTE_VALIDATE) {
-            ServerValidationScreen(
-                title = stringResource(id = R.string.account_server_settings_outgoing_top_bar_title),
-                onBack = { navController.popBackStack() },
-                onNext = { navController.navigateToSave() },
-                viewModel = koinViewModel<OutgoingServerValidationViewModel> {
-                    parametersOf(accountUuid)
-                },
-                brandNameProvider = koinInject(),
-            )
-        }
-        composable(route = NESTED_NAVIGATION_ROUTE_SAVE) {
-            SaveServerSettingsScreen(
-                title = stringResource(id = R.string.account_server_settings_outgoing_top_bar_title),
-                onNext = { onFinish(AccountEditRoute.OutgoingServerSettings(accountUuid)) },
-                onBack = { navController.popBackStack(route = NESTED_NAVIGATION_ROUTE_MODIFY, inclusive = false) },
-                viewModel = koinViewModel<SaveOutgoingServerSettingsViewModel> {
-                    parametersOf(accountUuid)
-                },
-            )
+    SharedTransitionLayout {
+        NavHost(
+            navController = navController,
+            startDestination = NESTED_NAVIGATION_ROUTE_MODIFY,
+        ) {
+            composable(route = NESTED_NAVIGATION_ROUTE_MODIFY) {
+                OutgoingServerSettingsScreen(
+                    onBack = onBack,
+                    onNext = { navController.navigateToValidate() },
+                    animatedVisibilityScope = this,
+                    viewModel = koinViewModel<ModifyOutgoingServerSettingsViewModel> {
+                        parametersOf(accountUuid)
+                    },
+                )
+            }
+            composable(route = NESTED_NAVIGATION_ROUTE_VALIDATE) {
+                ServerValidationScreen(
+                    title = stringResource(id = R.string.account_server_settings_outgoing_top_bar_title),
+                    onBack = { navController.popBackStack() },
+                    onNext = { navController.navigateToSave() },
+                    animatedVisibilityScope = this,
+                    viewModel = koinViewModel<OutgoingServerValidationViewModel> {
+                        parametersOf(accountUuid)
+                    },
+                    brandNameProvider = koinInject(),
+                )
+            }
+            composable(route = NESTED_NAVIGATION_ROUTE_SAVE) {
+                SaveServerSettingsScreen(
+                    title = stringResource(id = R.string.account_server_settings_outgoing_top_bar_title),
+                    onNext = { onFinish(AccountEditRoute.OutgoingServerSettings(accountUuid)) },
+                    onBack = { navController.popBackStack(route = NESTED_NAVIGATION_ROUTE_MODIFY, inclusive = false) },
+                    viewModel = koinViewModel<SaveOutgoingServerSettingsViewModel> {
+                        parametersOf(accountUuid)
+                    },
+                )
+            }
         }
     }
 }

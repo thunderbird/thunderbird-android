@@ -1,5 +1,7 @@
 package app.k9mail.feature.account.server.validation.ui
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -26,16 +28,23 @@ import net.thunderbird.feature.thundermail.ui.brandBackground
 import net.thunderbird.feature.thundermail.ui.component.template.ThundermailScaffold
 
 @Composable
-internal fun ServerValidationMainScreen(
+internal fun SharedTransitionScope.ServerValidationMainScreen(
     viewModel: ViewModel,
     brandNameProvider: BrandNameProvider,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
 ) {
     val (state, dispatch) = viewModel.observeWithoutEffect()
 
     val lazyListState = rememberLazyListState()
     ThundermailScaffold(
-        header = { AppTitleTopHeader(title = brandNameProvider.brandName) },
+        header = {
+            AppTitleTopHeader(
+                title = brandNameProvider.brandName,
+                sharedTransitionScope = this,
+                animatedVisibilityScope = animatedVisibilityScope,
+            )
+        },
         subHeaderText = stringResource(
             R.string.account_server_validation_title,
             stringResource(

@@ -16,6 +16,7 @@ private fun ImportAccountScreenPreview() {
                 onSelectFileClick = {},
                 onImportClick = {},
                 onBack = {},
+                animatedVisibilityScope = it,
                 brandNameProvider = object : BrandNameProvider {
                     override val brandName: String = "Thunderbird"
                 },

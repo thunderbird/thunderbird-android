@@ -3,15 +3,15 @@ package app.k9mail.feature.account.setup.ui.createaccount
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.feature.account.setup.ui.fake.FakeBrandNameProvider
+import net.thunderbird.feature.thundermail.ui.preview.ThundermailPreview
 
 @Composable
 @PreviewDevices
 internal fun AccountOptionsScreenK9Preview() {
-    PreviewWithTheme {
+    ThundermailPreview {
         CreateAccountScreen(
             onNext = {},
             onBack = {},
@@ -21,6 +21,7 @@ internal fun AccountOptionsScreenK9Preview() {
                     accountStateRepository = InMemoryAccountStateRepository(),
                 )
             },
+            animatedVisibilityScope = it,
             brandNameProvider = FakeBrandNameProvider,
         )
     }

@@ -1,6 +1,8 @@
 package app.k9mail.feature.account.setup.ui.options.sync
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -15,11 +17,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.setup.R
-import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.ViewModel
@@ -30,9 +30,10 @@ import net.thunderbird.feature.thundermail.ui.brandBackground
 import net.thunderbird.feature.thundermail.ui.component.template.ThundermailScaffold
 
 @Composable
-internal fun SyncOptionsScreen(
+internal fun SharedTransitionScope.SyncOptionsScreen(
     onNext: () -> Unit,
     onBack: () -> Unit,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     viewModel: ViewModel,
     brandNameProvider: BrandNameProvider,
     modifier: Modifier = Modifier,
@@ -54,7 +55,13 @@ internal fun SyncOptionsScreen(
 
     val lazyListState = rememberLazyListState()
     ThundermailScaffold(
-        header = { AppTitleTopHeader(title = brandNameProvider.brandName) },
+        header = {
+            AppTitleTopHeader(
+                title = brandNameProvider.brandName,
+                sharedTransitionScope = this,
+                animatedVisibilityScope = animatedVisibilityScope,
+            )
+        },
         subHeaderText = stringResource(R.string.account_setup_options_section_sync_options),
         bottomBar = { paddingValues, containerColor ->
             WizardNavigationBar(

@@ -22,6 +22,7 @@ internal fun PermissionScreenPreview() {
             brandNameProvider = object : BrandNameProvider {
                 override val brandName: String = "BrandName"
             },
+            animatedVisibilityScope = it,
             onNext = {},
         )
     }
