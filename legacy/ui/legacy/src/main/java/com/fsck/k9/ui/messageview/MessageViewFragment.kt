@@ -20,7 +20,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.webkit.WebView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.collectAsState
@@ -482,15 +481,16 @@ class MessageViewFragment :
     private fun printMessage() {
         val context = context ?: return
         val printManager = context.getSystemService(Context.PRINT_SERVICE) as? PrintManager ?: return
-        val messageInfo = mMessageViewInfo ?: return
-        val subject = messageInfo.message.subject ?: getString(R.string.general_no_subject)
-        val headerHtml = buildPrintHeaderHtml(messageInfo)
-        val bodyHtml = messageInfo.text ?: ""
-        val cleanBodyHtml = bodyHtml
-            .replace(Regex("(?i)<a\\b[^>]*>"), "")
-            .replace(Regex("(?i)</a>"), "")
-        val printWebView = MessageWebView(context)
-        val fullHtml = """
+
+        mMessageViewInfo?.let { messageInfo ->
+            val subject = messageInfo.message.subject ?: getString(R.string.general_no_subject)
+            val headerHtml = buildPrintHeaderHtml(messageInfo)
+            val bodyHtml = messageInfo.text ?: ""
+            val cleanBodyHtml = bodyHtml
+                .replace(Regex("(?i)<a\\b[^>]*>"), "")
+                .replace(Regex("(?i)</a>"), "")
+            val printWebView = MessageWebView(context)
+            val fullHtml = """
         <html>
         <head>
             <style>
@@ -514,19 +514,19 @@ class MessageViewFragment :
             </div>
         </body>
         </html>
-    """.trimIndent()
+            """.trimIndent()
 
-        printWebView.displayHtmlContentWithInlineAttachments(
-            htmlText = fullHtml,
-            attachmentResolver = null,
-            onPageFinishedListener = {
-                val jobName = appNameProvider.appName + ": " + subject
-                val printAdapter = printWebView.createPrintDocumentAdapter(jobName)
-                printManager.print(jobName, printAdapter, PrintAttributes.Builder().build())
-            }
-        )
-    }
-    private fun buildPrintHeaderHtml(messageInfo: MessageViewInfo): String {
+            printWebView.displayHtmlContentWithInlineAttachments(
+                htmlText = fullHtml,
+                attachmentResolver = null,
+                onPageFinishedListener = {
+                    val jobName = appNameProvider.appName + ": " + subject
+                    val printAdapter = printWebView.createPrintDocumentAdapter(jobName)
+                    printManager.print(jobName, printAdapter, PrintAttributes.Builder().build())
+                },
+            )
+        }
+    } private fun buildPrintHeaderHtml(messageInfo: MessageViewInfo): String {
         val message = messageInfo.message
         val subject = message.subject ?: getString(R.string.general_no_subject)
         val subjectGood = subject
@@ -567,7 +567,7 @@ class MessageViewFragment :
             <p><b>To:</b> $to</p>
         </div>
         <hr style="border:none; border-top:1px solid #ccc; margin:12px 0;">
-    """.trimIndent()
+        """.trimIndent()
     }
     private fun onShowHeaders() {
         val launchIntent = MessageSourceActivity.createLaunchIntent(requireActivity(), messageReference)
