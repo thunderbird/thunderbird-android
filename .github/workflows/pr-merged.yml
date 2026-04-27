@@ -40,10 +40,16 @@ jobs:
             release) milestone_index=2 ;;
           esac
           echo "$milestone_index"
-          gh api repos/$GITHUB_REPOSITORY/milestones --jq "
+          MILESTONES=$(gh api repos/$GITHUB_REPOSITORY/milestones --jq "
                 map(select(.state == \"open\" and .due_on != null))
-                | sort_by(.due_on) | reverse
-                | .[${milestone_index}] | { number, title }
+                | sort_by(.due_on) | reverse")
+          MILESTONE_COUNT=$(echo "$MILESTONES" | jq "length")
+          if [ "$MILESTONE_COUNT" -ne 3 ]; then
+            echo "Expected exactly 3 open milestones with due dates, but found $MILESTONE_COUNT."
+            exit 1
+          fi
+          echo "$MILESTONES" | jq -r "
+                .[${milestone_index}] | { number, title }
                 | to_entries
                 | map(.key + \"=\" + (.value|tostring)) | join(\"\n\")" | tee -a $GITHUB_OUTPUT
 
