@@ -10,8 +10,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Event
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.State
@@ -25,7 +25,7 @@ internal fun ContributionContent(
 ) {
     ResponsiveWidthContainer(
         modifier = modifier
-            .testTagAsResourceId("ContributionContent")
+            .testTag("ContributionContent")
             .padding(contentPadding),
     ) { contentPadding ->
         val scrollState = rememberScrollState()

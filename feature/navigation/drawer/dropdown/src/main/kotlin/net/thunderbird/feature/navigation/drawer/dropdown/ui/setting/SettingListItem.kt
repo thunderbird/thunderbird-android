@@ -11,10 +11,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
-import app.k9mail.core.ui.compose.common.window.WindowSizeClass
-import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItem
+import net.thunderbird.core.ui.common.window.WindowSizeClass
+import net.thunderbird.core.ui.common.window.calculateWindowSizeInfo
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 
 @Composable
@@ -26,7 +26,7 @@ internal fun SettingListItem(
     isLoading: Boolean = false,
 ) {
     // Determine whether we should hide text for settings items (phone in landscape)
-    val windowSizeInfo = getWindowSizeInfo()
+    val windowSizeInfo = calculateWindowSizeInfo()
     val isLandscape = windowSizeInfo.screenWidth > windowSizeInfo.screenHeight
     // On phones in landscape, the height size class is typically Compact even if width is Medium.
     // Use height size class to better detect phone-in-landscape and hide labels accordingly.

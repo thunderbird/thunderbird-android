@@ -19,6 +19,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
@@ -27,7 +28,6 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirection.EndToStart
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirection.StartToEnd
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectionAccessibilityAction.EndToStartAccessibilityAction
@@ -85,12 +85,12 @@ fun SwipeableRow(
         targetState = state.swipeState == SwipeState.Dismissed,
         transitionSpec = { EnterTransition.None togetherWith state.activeExitTransition },
         label = "SwipeableRowContentAnimation",
-        modifier = modifier.testTagAsResourceId(SwipeableRowDefaults.SWIPEABLE_ROW_ANIMATED_CONTENT_TEST_TAG),
+        modifier = modifier.testTag(SwipeableRowDefaults.SWIPEABLE_ROW_ANIMATED_CONTENT_TEST_TAG),
     ) { isDismissed ->
         if (!isDismissed) {
             Box(
                 modifier = Modifier
-                    .testTagAsResourceId(SwipeableRowDefaults.SWIPEABLE_ROW_CORE_ELEMENT_TEST_TAG)
+                    .testTag(SwipeableRowDefaults.SWIPEABLE_ROW_CORE_ELEMENT_TEST_TAG)
                     .semantics(mergeDescendants = true) { customActions = accessibilityCustomActions }
                     .onSizeChanged { state.onContainerSizeChanged(it) },
                 propagateMinConstraints = true,
@@ -98,7 +98,7 @@ fun SwipeableRow(
                 SwipeableRowBackground(state, gesturesEnabled, backgroundContent)
                 Row(
                     modifier = Modifier
-                        .testTagAsResourceId(SwipeableRowDefaults.SWIPEABLE_ROW_DRAGGABLE_ELEMENT_TEST_TAG)
+                        .testTag(SwipeableRowDefaults.SWIPEABLE_ROW_DRAGGABLE_ELEMENT_TEST_TAG)
                         .draggable(
                             state = state.draggableState,
                             orientation = Orientation.Horizontal,
@@ -130,7 +130,7 @@ private fun BoxScope.SwipeableRowBackground(
             content = backgroundContent,
             modifier = Modifier
                 .matchParentSize()
-                .testTagAsResourceId(SwipeableRowDefaults.SWIPEABLE_ROW_BACKGROUND_CONTENT_TEST_TAG),
+                .testTag(SwipeableRowDefaults.SWIPEABLE_ROW_BACKGROUND_CONTENT_TEST_TAG),
         )
     }
 }

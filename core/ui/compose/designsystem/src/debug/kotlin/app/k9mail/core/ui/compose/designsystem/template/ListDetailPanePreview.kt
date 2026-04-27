@@ -10,13 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import net.thunderbird.core.ui.common.annotation.PreviewDevices
 
 @Composable
 @PreviewDevices

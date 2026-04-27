@@ -8,10 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.padding.calculateResponsiveWidthPadding
-import app.k9mail.core.ui.compose.common.window.WindowSizeClass
-import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
+import net.thunderbird.core.ui.common.padding.calculateResponsiveWidthPadding
+import net.thunderbird.core.ui.common.window.WindowSizeClass
+import net.thunderbird.core.ui.common.window.calculateWindowSizeInfo
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 /**
@@ -28,9 +28,9 @@ fun ResponsiveContent(
     modifier: Modifier = Modifier,
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    val windowSizeClass = getWindowSizeInfo()
+    val windowSizeInfo = calculateWindowSizeInfo()
 
-    when (windowSizeClass.screenWidthSizeClass) {
+    when (windowSizeInfo.screenWidthSizeClass) {
         WindowSizeClass.Small -> CompactContent(modifier = modifier, content = content)
         WindowSizeClass.Compact -> CompactContent(modifier = modifier, content = content)
         WindowSizeClass.Medium -> MediumContent(modifier = modifier, content = content)
@@ -72,7 +72,9 @@ private fun ExpandedContent(
     modifier: Modifier = Modifier,
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    when (getWindowSizeInfo().screenHeightSizeClass) {
+    val windowSizeInfo = calculateWindowSizeInfo()
+
+    when (windowSizeInfo.screenHeightSizeClass) {
         WindowSizeClass.Small -> CompactContent(modifier, content)
         WindowSizeClass.Compact -> MediumContent(modifier, content)
         WindowSizeClass.Medium -> {

@@ -7,18 +7,20 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.image.ImageWithOverlayCoordinate
+import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
@@ -32,7 +34,7 @@ private val MAX_WIDTH = 500.dp
 
 @Composable
 internal fun PermissionBox(
-    icon: ImageWithOverlayCoordinate,
+    icon: ImageVector,
     permissionState: UiPermissionState,
     title: String,
     description: String,
@@ -81,49 +83,51 @@ internal fun PermissionBox(
 
 @Composable
 private fun IconWithPermissionStateOverlay(
-    icon: ImageWithOverlayCoordinate,
+    icon: ImageVector,
     permissionState: UiPermissionState,
 ) {
-    Box {
-        val iconSize = MainTheme.sizes.iconLarge
-        val overlayIconSize = iconSize / 2
-        val overlayIconOffset = overlayIconSize / 2
-        val scalingFactor = iconSize / icon.image.defaultHeight
-        val overlayOffsetX = (icon.overlayOffsetX * scalingFactor) - overlayIconOffset
-        val overlayOffsetY = (icon.overlayOffsetY * scalingFactor) - overlayIconOffset
-
+    Box(
+        contentAlignment = Alignment.BottomEnd,
+    ) {
         Icon(
-            imageVector = icon.image,
-            modifier = Modifier.size(iconSize),
+            imageVector = icon,
+            modifier = Modifier.size(MainTheme.sizes.iconLarge),
         )
 
         when (permissionState) {
             UiPermissionState.Unknown -> Unit
             UiPermissionState.Granted -> {
-                Icon(
+                OverlayIcon(
                     imageVector = Icons.Filled.CheckCircle,
                     tint = MainTheme.colors.success,
-                    modifier = Modifier
-                        .size(overlayIconSize)
-                        .offset(
-                            x = overlayOffsetX,
-                            y = overlayOffsetY,
-                        ),
                 )
             }
 
             UiPermissionState.Denied -> {
-                Icon(
+                OverlayIcon(
                     imageVector = Icons.Filled.Cancel,
                     tint = MainTheme.colors.warning,
-                    modifier = Modifier
-                        .size(overlayIconSize)
-                        .offset(
-                            x = overlayOffsetX,
-                            y = overlayOffsetY,
-                        ),
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun OverlayIcon(
+    imageVector: ImageVector,
+    tint: Color,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        color = MainTheme.colors.surface,
+        shape = CircleShape,
+        modifier = modifier,
+    ) {
+        Icon(
+            imageVector = imageVector,
+            tint = tint,
+            modifier = Modifier.size(MainTheme.sizes.iconSmall),
+        )
     }
 }

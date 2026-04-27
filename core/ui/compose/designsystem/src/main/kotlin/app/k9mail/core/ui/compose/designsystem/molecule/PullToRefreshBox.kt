@@ -7,7 +7,7 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import androidx.compose.ui.platform.testTag
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox as Material3PullToRefreshBox
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,14 +24,13 @@ fun PullToRefreshBox(
     Material3PullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = onRefresh,
-        modifier = modifier
-            .testTagAsResourceId("PullToRefreshBox"),
+        modifier = modifier.testTag("PullToRefreshBox"),
         state = state,
         contentAlignment = contentAlignment,
         indicator = {
             Indicator(
                 modifier = Modifier.align(Alignment.TopCenter)
-                    .testTagAsResourceId("PullToRefreshIndicator"),
+                    .testTag("PullToRefreshIndicator"),
                 isRefreshing = isRefreshing,
                 state = state,
             )

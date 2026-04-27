@@ -1,6 +1,7 @@
 package app.k9mail.core.ui.compose.designsystem.atom.textfield
 
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assertIsDisplayed
@@ -15,7 +16,6 @@ import app.k9mail.core.ui.compose.testing.onNodeWithText
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import org.junit.Test
 
 private const val PASSWORD = "Password input"
@@ -148,7 +148,7 @@ class TextFieldOutlinedPasswordKtTest : ComposeTest() {
             TextFieldOutlinedPassword(
                 value = value,
                 onValueChange = { value = it },
-                modifier = Modifier.testTagAsResourceId(TEST_TAG),
+                modifier = Modifier.testTag(TEST_TAG),
             )
         }
 
@@ -167,7 +167,7 @@ class TextFieldOutlinedPasswordKtTest : ComposeTest() {
                 onValueChange = { value = it },
                 isPasswordVisible = false,
                 onPasswordVisibilityToggleClicked = {},
-                modifier = Modifier.testTagAsResourceId(TEST_TAG),
+                modifier = Modifier.testTag(TEST_TAG),
             )
         }
 
@@ -184,7 +184,7 @@ class TextFieldOutlinedPasswordKtTest : ComposeTest() {
             TextFieldOutlinedPassword(
                 value = value,
                 onValueChange = { value = it },
-                modifier = Modifier.testTagAsResourceId(TEST_TAG),
+                modifier = Modifier.testTag(TEST_TAG),
             )
         }
 
@@ -203,7 +203,7 @@ class TextFieldOutlinedPasswordKtTest : ComposeTest() {
                 onValueChange = { value = it },
                 isPasswordVisible = false,
                 onPasswordVisibilityToggleClicked = {},
-                modifier = Modifier.testTagAsResourceId(TEST_TAG),
+                modifier = Modifier.testTag(TEST_TAG),
             )
         }
 

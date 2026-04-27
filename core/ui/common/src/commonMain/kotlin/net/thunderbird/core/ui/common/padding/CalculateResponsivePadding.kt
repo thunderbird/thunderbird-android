@@ -1,14 +1,14 @@
-package app.k9mail.core.ui.compose.common.padding
+package net.thunderbird.core.ui.common.padding
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.window.WindowSizeClass
-import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
+import net.thunderbird.core.ui.common.window.WindowSizeClass
+import net.thunderbird.core.ui.common.window.calculateWindowSizeInfo
 
 @Composable
-fun calculateResponsiveWidthPadding(): PaddingValues {
-    val windowSizeInfo = getWindowSizeInfo()
+public fun calculateResponsiveWidthPadding(): PaddingValues {
+    val windowSizeInfo = calculateWindowSizeInfo()
     val horizontalPadding = when (windowSizeInfo.screenWidthSizeClass) {
         WindowSizeClass.Small, WindowSizeClass.Compact -> 0.dp
 
