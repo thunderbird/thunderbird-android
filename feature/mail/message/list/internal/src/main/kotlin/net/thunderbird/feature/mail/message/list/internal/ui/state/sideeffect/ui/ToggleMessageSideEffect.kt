@@ -1,33 +1,31 @@
-package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
+package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ui
 
 import kotlinx.coroutines.CoroutineScope
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
+import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandlerFactory
 
-/**
- * A side effect handler that monitors the message list state and dispatches an event when all
- * initial configurations have been loaded and the system is ready to proceed.
- *
- * @param logger A logger instance for tracking and debugging side effect execution.
- * @param dispatch A suspend function that dispatches [MessageListEvent] instances to the state machine.
- */
-internal class AllConfigurationsReadySideEffect(
+internal class ToggleMessageSideEffect(
     logger: Logger,
     dispatch: suspend (MessageListEvent) -> Unit,
 ) : MessageListStateSideEffectHandler(logger, dispatch) {
+
     override fun accept(event: MessageListEvent, oldState: MessageListState, newState: MessageListState): Boolean =
-        oldState != newState && newState is MessageListState.WarmingUp && newState.isReady
+        event is MessageItemEvent.OnMessageClick &&
+            oldState is MessageListState.SelectingMessages &&
+            newState is MessageListState.SelectingMessages
 
     override suspend fun consume(
         event: MessageListEvent,
         oldState: MessageListState,
         newState: MessageListState,
     ): ConsumeResult {
-        dispatch(MessageListEvent.AllConfigsReady)
+        val event = event as? MessageItemEvent.OnMessageClick ?: return ConsumeResult.Ignored
+        dispatch(MessageItemEvent.ToggleSelectMessages(event.message))
         return ConsumeResult.Consumed
     }
 
@@ -38,9 +36,9 @@ internal class AllConfigurationsReadySideEffect(
             scope: CoroutineScope,
             dispatch: suspend (MessageListEvent) -> Unit,
             dispatchUiEffect: suspend (MessageListEffect) -> Unit,
-        ): MessageListStateSideEffectHandler = AllConfigurationsReadySideEffect(
-            dispatch = dispatch,
+        ): MessageListStateSideEffectHandler = ToggleMessageSideEffect(
             logger = logger,
+            dispatch = dispatch,
         )
     }
 }

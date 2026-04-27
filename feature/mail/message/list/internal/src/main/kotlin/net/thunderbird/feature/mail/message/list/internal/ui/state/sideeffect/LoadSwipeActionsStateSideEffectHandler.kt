@@ -15,7 +15,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageList
 
 private const val TAG = "LoadSwipeActionsSideEffectHandler"
 
-class LoadSwipeActionsStateSideEffectHandler(
+internal class LoadSwipeActionsStateSideEffectHandler(
     private val scope: CoroutineScope,
     dispatch: suspend (MessageListEvent) -> Unit,
     private val logger: Logger,
