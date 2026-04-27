@@ -30,7 +30,7 @@
   "commit_pending_age": 24,
   "auto_lock_error": true,
 
-  "commit_message": "chore(i18n): translated using Weblate\r\n\r\nTranslation: {{ project_name }}/{{ component_name }}\r\nTranslate-URL: {{ url }}",
+  "commit_message": "chore(i18n): translated using Weblate ({{ language_name }})\r\n\r\nTranslation: {{ project_name }}/{{ component_name }}\r\nTranslate-URL: {{ url }}",
   "add_message": "chore(i18n): added translation using Weblate ({{ language_name }})",
   "delete_message": "chore(i18n): deleted translation using Weblate ({{ language_name }})",
   "merge_message": "chore(i18n): merge branch '{{ component_remote_branch }}' into Weblate",
