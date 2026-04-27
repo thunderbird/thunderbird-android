@@ -16,7 +16,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageList
 
 private const val TAG = "LoadFolderInformationSideEffect"
 
-class LoadFolderInformationSideEffect(
+internal class LoadFolderInformationSideEffect(
     private val accountIds: Set<AccountId>,
     private val folderId: Long?,
     dispatch: suspend (MessageListEvent) -> Unit,
