@@ -1,6 +1,6 @@
-## Core - UI - Compose - Theme2 - Common
+## Core - UI - Compose - Theme2
 
-This provides the common `MainTheme` with dark/light variation support, a wrapper for the Compose Material 3 theme. It supports [CompositionLocal](https://developer.android.com/jetpack/compose/compositionlocal) changes to colors, typography, shapes and adds additionally elevations, sizes, spacings and images.
+This provides the `MainTheme` with dark/light variation support, a wrapper for the Compose Material 3 theme. It supports [CompositionLocal](https://developer.android.com/jetpack/compose/compositionlocal) changes to colors, typography, shapes and adds additionally elevations, sizes, spacings and images.
 
 To change Material 3 related properties use `MainTheme` instead of `MaterialTheme`:
 
@@ -13,3 +13,24 @@ To change Material 3 related properties use `MainTheme` instead of `MaterialThem
 - `MainTheme.typography`: Material 3 typography
 
 To use the MainTheme, you need to provide a `ThemeConfig` with your desired colors, typography, shapes, elevations, sizes, spacings and images. The `ThemeConfig` is a data class that holds all the necessary information for the `MainTheme` to work.
+
+## Usage
+
+```kotlin
+@Composable
+fun MyComposable() {
+    ThunderbirdTheme2 {
+        // Your app content
+    }
+}
+```
+
+```kotlin
+@Composable
+fun MyComposable() {
+    K9MailTheme2 {
+        // Your app content
+    }
+}
+```
+

@@ -4,20 +4,24 @@ plugins {
 
 kotlin {
     android {
-        namespace = "net.thunderbird.core.ui.compose.theme2.thunderbird"
+        namespace = "net.thunderbird.core.ui.compose.theme2"
         androidResources.enable = true
     }
 
     sourceSets {
+        androidMain.dependencies {
+            implementation(libs.android.material)
+        }
+
         commonMain.dependencies {
-            api(projects.core.ui.compose.theme2.common)
+            implementation(libs.jetbrains.compose.material3)
         }
     }
 }
 
 compose.resources {
     publicResClass = true
-    packageOfResClass = "net.thunderbird.core.ui.compose.theme2.thunderbird.resources"
+    packageOfResClass = "net.thunderbird.core.ui.compose.theme2.resources"
     generateResClass = always
 }
 
