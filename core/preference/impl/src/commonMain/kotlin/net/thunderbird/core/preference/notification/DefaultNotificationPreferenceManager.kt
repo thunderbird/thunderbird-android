@@ -13,6 +13,8 @@ import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.common.notification.NotificationActionTokens
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.NotificationQuickDelete
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangeSubscriber
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
@@ -25,9 +27,14 @@ class DefaultNotificationPreferenceManager(
     private val logger: Logger,
     private val storagePersister: StoragePersister,
     private val storageEditor: StorageEditor,
+    preferenceChangeBroker: PreferenceChangeBroker,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
-) : NotificationPreferenceManager {
+) : NotificationPreferenceManager, PreferenceChangeSubscriber {
+
+    init {
+        preferenceChangeBroker.subscribe(this)
+    }
     private val mutex = Mutex()
     private val storage: Storage
         get() = storagePersister.loadValues()
@@ -139,5 +146,9 @@ class DefaultNotificationPreferenceManager(
             }
             configState.update { config }
         }
+    }
+
+    override fun receive() {
+        configState.update { getConfigFromStorage(storage) }
     }
 }

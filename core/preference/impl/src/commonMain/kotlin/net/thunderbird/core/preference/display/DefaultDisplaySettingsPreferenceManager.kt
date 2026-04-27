@@ -4,6 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangeSubscriber
 import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsPreferenceManager
 import net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsPreferenceManager
 import net.thunderbird.core.preference.display.miscSettings.DisplayMiscSettingsPreferenceManager
@@ -17,7 +19,12 @@ class DefaultDisplaySettingsPreferenceManager(
     private val inboxSettingsPreferenceManager: DisplayInboxSettingsPreferenceManager,
     private val visualSettingsPreferenceManager: DisplayVisualSettingsPreferenceManager,
     private val miscSettingsPreferenceManager: DisplayMiscSettingsPreferenceManager,
-) : DisplaySettingsPreferenceManager {
+    preferenceChangeBroker: PreferenceChangeBroker,
+) : DisplaySettingsPreferenceManager, PreferenceChangeSubscriber {
+
+    init {
+        preferenceChangeBroker.subscribe(this)
+    }
     private val configState: MutableStateFlow<DisplaySettings> = MutableStateFlow(value = loadConfig())
 
     override fun getConfig(): DisplaySettings = configState.value
@@ -38,4 +45,8 @@ class DefaultDisplaySettingsPreferenceManager(
         visualSettings = visualSettingsPreferenceManager.getConfig(),
         miscSettings = miscSettingsPreferenceManager.getConfig(),
     )
+
+    override fun receive() {
+        configState.update { loadConfig() }
+    }
 }

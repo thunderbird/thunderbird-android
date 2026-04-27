@@ -54,6 +54,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<NotificationPreferenceManager> {
@@ -61,6 +62,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DisplayCoreSettingsPreferenceManager> {
@@ -68,6 +70,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DisplayInboxSettingsPreferenceManager> {
@@ -75,6 +78,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DisplayVisualSettingsPreferenceManager> {
@@ -91,6 +95,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<InteractionSettingsPreferenceManager> {
@@ -98,6 +103,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DisplaySettingsPreferenceManager> {
@@ -107,6 +113,7 @@ val preferencesModule = module {
             inboxSettingsPreferenceManager = get(),
             visualSettingsPreferenceManager = get(),
             miscSettingsPreferenceManager = get(),
+            preferenceChangeBroker = get(),
         )
     }
     single<MessageListPreferencesManager> {
@@ -114,6 +121,7 @@ val preferencesModule = module {
             logger = get(),
             storage = get(),
             storageEditor = get(),
+            preferenceChangeBroker = get(),
         )
     }
     single<NetworkSettingsPreferenceManager> {
@@ -121,6 +129,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DebuggingSettingsPreferenceManager> {
@@ -130,6 +139,7 @@ val preferencesModule = module {
             storageEditor = get<Preferences>().createStorageEditor(),
             logLevelManager = get(),
             platformConfigProvider = get(),
+            preferenceChangeBroker = get(),
         )
     }
     single<PlatformInitializer> {
@@ -175,7 +185,13 @@ val preferencesModule = module {
 
     factory { GeneralSettingsValidator() }
     factory { GeneralSettingsUpgrader() }
-    factory { GeneralSettingsWriter(preferences = get(), generalSettingsManager = get()) }
+    factory {
+        GeneralSettingsWriter(
+            preferences = get(),
+            generalSettingsManager = get(),
+            changePublisher = get(),
+        )
+    }
 
     factory { AccountSettingsValidator() }
 

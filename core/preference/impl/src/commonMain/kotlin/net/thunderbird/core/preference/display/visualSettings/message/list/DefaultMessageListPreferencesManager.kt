@@ -4,6 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangeSubscriber
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
@@ -15,7 +17,12 @@ class DefaultMessageListPreferencesManager(
     private val logger: Logger,
     private val storage: Storage,
     private val storageEditor: StorageEditor,
-) : MessageListPreferencesManager {
+    preferenceChangeBroker: PreferenceChangeBroker,
+) : MessageListPreferencesManager, PreferenceChangeSubscriber {
+
+    init {
+        preferenceChangeBroker.subscribe(this)
+    }
     private val preferences = MutableStateFlow(value = loadPreferences())
     override fun save(config: DisplayMessageListSettings) {
         logger.debug(TAG) { "save() called with: config = $config" }
@@ -84,4 +91,7 @@ class DefaultMessageListPreferencesManager(
 
     override fun getConfig(): DisplayMessageListSettings = preferences.value
     override fun getConfigFlow(): Flow<DisplayMessageListSettings> = preferences
+    override fun receive() {
+        preferences.update { loadPreferences() }
+    }
 }
