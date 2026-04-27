@@ -192,9 +192,12 @@
 
             </PreferenceScreen>
 
-            <CheckBoxPreference
+            <ListPreference
+                android:dialogTitle="@string/animations_title"
+                android:entries="@array/animation_entries"
+                android:entryValues="@array/animation_values"
                 android:key="animations"
-                android:summary="@string/animations_summary"
+                app:useSimpleSummaryProvider="true"
                 android:title="@string/animations_title"
                 />
 
