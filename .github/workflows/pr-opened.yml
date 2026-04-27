@@ -1,9 +1,14 @@
 ---
 name: PR - Opened
 
-# Warning, this job is running on pull_request_target and therefore has access to issue content.
-# Don't add any steps that act on external code.
-on:
+# This workflow uses pull_request_target so it has access to secrets and write
+# permissions even for fork PRs, which is required to post comments.
+#
+# Security constraints that must be maintained to prevent code injection:
+#   - Do not checkout or execute any code.
+#   - Do not interpolate free-form PR fields.
+
+on: # zizmor: ignore[dangerous-triggers]
   pull_request_target:
     branches: [beta, release]
     types: [opened]
@@ -30,7 +35,6 @@ jobs:
         env:
           PR_NUMBER: ${{  github.event.pull_request.number  }}
           GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
-          MILESTONE: ${{ steps.milestone.outputs.title }}
           MESSAGE: |
             Thank you for your uplift request! Please add a comment with the following approval request template filled out.
 

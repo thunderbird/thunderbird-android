@@ -1,10 +1,11 @@
 ---
 name: PR - Update dependency guard for Dependabot PRs
 
-# Warning, this job is running on pull_request_target and therefore has access to issue content.
-# Don't add any steps that act on external code.
+# This workflow uses pull_request (not pull_request_target) because it only runs
+# on same-repo dependabot PRs, guarded by head.repo.full_name. Same-repo PRs have
+# write permissions and secret access without needing pull_request_target.
 on:
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - synchronize
@@ -26,7 +27,7 @@ permissions:
 
 jobs:
   pr-update-dependency-guard:
-    if: github.actor == 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == 'thunderbird/thunderbird-android'
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == 'thunderbird/thunderbird-android'
     runs-on: ubuntu-latest
     environment: botmobile
     timeout-minutes: 90
@@ -44,6 +45,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           token: ${{ steps.app-token.outputs.token || github.token }}
+          persist-credentials: false
 
       - name: Setup Gradle environment
         uses: ./.github/actions/setup-gradle
