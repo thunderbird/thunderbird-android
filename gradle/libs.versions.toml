@@ -260,6 +260,7 @@ junit = { module = "junit:junit", version.ref = "junit" }
 jutf7 = { module = "com.beetstra.jutf7:jutf7", version.ref = "jutf7" }
 jzlib = { module = "com.jcraft:jzlib", version.ref = "jzlib" }
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koinBom" }
+koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-core = { module = "io.insert-koin:koin-core" }
 koin-android = { module = "io.insert-koin:koin-android" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }

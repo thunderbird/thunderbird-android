@@ -2,7 +2,7 @@ import com.android.build.api.withAndroid
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
-    id(ThunderbirdPlugins.Library.kmp)
+    id(ThunderbirdPlugins.Library.kmpCompose)
 }
 
 kotlin {
@@ -24,6 +24,7 @@ kotlin {
             implementation(projects.core.logging.implLegacy)
             implementation(projects.core.logging.api)
             implementation(projects.core.logging.implFile)
+            implementation(libs.koin.compose)
         }
         getByName("commonJvmMain") {
             dependencies {

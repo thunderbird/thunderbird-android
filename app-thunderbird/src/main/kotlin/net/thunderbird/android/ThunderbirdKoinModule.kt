@@ -9,11 +9,13 @@ import net.thunderbird.android.dev.developmentModuleAdditions
 import net.thunderbird.android.feature.featureModule
 import net.thunderbird.android.featureflag.TbFeatureFlagFactory
 import net.thunderbird.android.provider.providerModule
+import net.thunderbird.android.ui.typography.ThunderbirdBrandTypographyProvider
 import net.thunderbird.android.widget.provider.MessageListWidgetProvider
 import net.thunderbird.android.widget.provider.UnreadWidgetProvider
 import net.thunderbird.android.widget.widgetModule
 import net.thunderbird.app.common.appCommonModule
 import net.thunderbird.core.common.oauth.OAuthConfigurationFactory
+import net.thunderbird.core.common.provider.BrandTypographyProvider
 import net.thunderbird.core.featureflag.FeatureFlagFactory
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -30,6 +32,7 @@ val appModule = module {
     single<AppConfig> { appConfig }
     single<OAuthConfigurationFactory> { TbOAuthConfigurationFactory() }
     single<FeatureFlagFactory> { TbFeatureFlagFactory() }
+    single<BrandTypographyProvider> { ThunderbirdBrandTypographyProvider() }
 
     developmentModuleAdditions()
 }
