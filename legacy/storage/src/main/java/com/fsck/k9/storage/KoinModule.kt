@@ -15,6 +15,7 @@ val storageModule = module {
             storageFilesProviderFactory = get(),
             basicPartInfoExtractor = get(),
             generalSettingsManager = get(),
+            localMessageUidPrefixProvider = get()
         )
     }
     single<NotificationStoreProvider> {

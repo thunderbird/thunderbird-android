@@ -2,6 +2,7 @@ package net.thunderbird.feature.mail.message.list.internal
 
 import net.thunderbird.core.common.inject.getList
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.BuildSwipeActions
 import net.thunderbird.feature.mail.message.list.internal.domain.usecase.CreateArchiveFolder
@@ -80,5 +81,6 @@ val featureMessageListModule = module {
         )
     }
     single<LocalDeleteOperationDecider> { DefaultLocalDeleteOperationDecider() }
+    single<LocalMessageUidPrefixProvider> { DefaultLocalMessageUidPrefixProvider() }
     factory<MessageListContract.MessageListScreenRenderer> { MessageListScreenRenderer() }
 }

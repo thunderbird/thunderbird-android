@@ -236,7 +236,6 @@ object K9 : KoinComponent {
         putString(key, value.name)
     }
 
-    const val LOCAL_UID_PREFIX = "K9LOCAL:"
 
     const val IDENTITY_HEADER = K9MailLib.IDENTITY_HEADER
 

@@ -11,6 +11,7 @@ import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MigrationsHelper
 import com.fsck.k9.storage.K9SchemaDefinitionFactory
 import java.io.File
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import org.mockito.ArgumentMatchers
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
@@ -212,4 +213,8 @@ fun SQLiteDatabase.createMessagePart(
             File(directory, messagePartId.toString()).createNewFile()
         }
     }
+}
+
+class FakeLocalMessageUidProvider : LocalMessageUidPrefixProvider {
+    override fun get(): String = "K9LOCAL:1"
 }

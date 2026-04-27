@@ -17,6 +17,7 @@ import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.FolderDetails
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 
 class K9MessageStore(
@@ -25,6 +26,7 @@ class K9MessageStore(
     basicPartInfoExtractor: BasicPartInfoExtractor,
     generalSettingsManager: GeneralSettingsManager,
     accountId: AccountId,
+    localMessageUidPrefixProvider: LocalMessageUidPrefixProvider,
 ) : MessageStore {
     private val attachmentFileManager = AttachmentFileManager(storageFilesProvider, generalSettingsManager)
     private val threadMessageOperations = ThreadMessageOperations()
@@ -34,21 +36,24 @@ class K9MessageStore(
         partInfoExtractor = basicPartInfoExtractor,
         threadMessageOperations = threadMessageOperations,
         accountId = accountId,
+        localMessageUidPrefixProvider = localMessageUidPrefixProvider
     )
     private val copyMessageOperations = CopyMessageOperations(
         lockableDatabase = database,
         attachmentFileManager = attachmentFileManager,
         threadMessageOperations = threadMessageOperations,
         accountId = accountId,
+        localMessageUidPrefixProvider = localMessageUidPrefixProvider
     )
     private val moveMessageOperations = MoveMessageOperations(
         database = database,
         threadMessageOperations = threadMessageOperations,
         accountId = accountId,
+        localMessageUidPrefixProvider = localMessageUidPrefixProvider
     )
     private val flagMessageOperations = FlagMessageOperations(database)
     private val updateMessageOperations = UpdateMessageOperations(database)
-    private val retrieveMessageOperations = RetrieveMessageOperations(database)
+    private val retrieveMessageOperations = RetrieveMessageOperations(database, localMessageUidPrefixProvider)
     private val retrieveMessageListOperations = RetrieveMessageListOperations(database)
     private val deleteMessageOperations = DeleteMessageOperations(database, attachmentFileManager)
     private val createFolderOperations = CreateFolderOperations(database, accountId)
