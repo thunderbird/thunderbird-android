@@ -1,10 +1,15 @@
 package app.k9mail.feature.account.setup.navigation
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -26,6 +31,9 @@ import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsScreen
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsViewModel
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersScreen
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersViewModel
+import app.k9mail.feature.settings.import.ui.SettingsImportAction
+import app.k9mail.feature.settings.import.ui.SettingsImportScreen
+import net.thunderbird.feature.settings.import.ui.ImportAccountScreen
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
@@ -38,13 +46,17 @@ private const val NESTED_NAVIGATION_SPECIAL_FOLDERS = "special-folders"
 private const val NESTED_NAVIGATION_DISPLAY_OPTIONS = "display-options"
 private const val NESTED_NAVIGATION_SYNC_OPTIONS = "sync-options"
 private const val NESTED_NAVIGATION_CREATE_ACCOUNT = "create-account"
+private const val NESTED_NAVIGATION_IMPORT_ACCOUNT = "import_account"
+private const val NESTED_NAVIGATION_SETTINGS_IMPORT = "settings_import"
+private const val NESTED_NAVIGATION_SETTINGS_IMPORT_ACTION_PARAM = "action"
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
-fun AccountSetupNavHost(
+fun SharedTransitionScope.AccountSetupNavHost(
     onBack: () -> Unit,
     onFinish: (AccountSetupRoute) -> Unit,
     skipToIncomingValidation: Boolean = false,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
     val navController = rememberNavController()
     var isAutomaticConfig by rememberSaveable { mutableStateOf(skipToIncomingValidation) }
@@ -70,6 +82,8 @@ fun AccountSetupNavHost(
                     }
                 },
                 onBack = onBack,
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
+                onImportAccountNavigate = { navController.navigate(NESTED_NAVIGATION_IMPORT_ACCOUNT) },
                 viewModel = koinViewModel<AccountAutoDiscoveryViewModel>(),
                 brandNameProvider = koinInject(),
             )
@@ -81,6 +95,7 @@ fun AccountSetupNavHost(
                     hasSpecialFolders = checkSpecialFoldersSupport(state.protocolType)
                     navController.navigate(NESTED_NAVIGATION_INCOMING_SERVER_VALIDATION)
                 },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<IncomingServerSettingsViewModel>(),
             )
@@ -100,6 +115,7 @@ fun AccountSetupNavHost(
                     }
                 },
                 onBack = { navController.popBackStack() },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 viewModel = koinViewModel<IncomingServerValidationViewModel>(),
                 brandNameProvider = koinInject(),
             )
@@ -109,6 +125,7 @@ fun AccountSetupNavHost(
             OutgoingServerSettingsScreen(
                 onNext = { navController.navigate(NESTED_NAVIGATION_OUTGOING_SERVER_VALIDATION) },
                 onBack = { navController.popBackStack() },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 viewModel = koinViewModel<OutgoingServerSettingsViewModel>(),
             )
         }
@@ -130,6 +147,7 @@ fun AccountSetupNavHost(
                         }
                     }
                 },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<OutgoingServerValidationViewModel>(),
                 brandNameProvider = koinInject(),
@@ -152,6 +170,7 @@ fun AccountSetupNavHost(
                     }
                 },
                 onBack = { navController.popBackStack() },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 viewModel = koinViewModel<SpecialFoldersViewModel>(),
                 brandNameProvider = koinInject(),
             )
@@ -161,6 +180,7 @@ fun AccountSetupNavHost(
             DisplayOptionsScreen(
                 onNext = { navController.navigate(NESTED_NAVIGATION_SYNC_OPTIONS) },
                 onBack = { navController.popBackStack() },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 viewModel = koinViewModel<DisplayOptionsViewModel>(),
                 brandNameProvider = koinInject(),
             )
@@ -170,6 +190,7 @@ fun AccountSetupNavHost(
             SyncOptionsScreen(
                 onNext = { navController.navigate(NESTED_NAVIGATION_CREATE_ACCOUNT) },
                 onBack = { navController.popBackStack() },
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 viewModel = koinViewModel<SyncOptionsViewModel>(),
                 brandNameProvider = koinInject(),
             )
@@ -180,10 +201,62 @@ fun AccountSetupNavHost(
                 onNext = { accountUuid -> onFinish(AccountSetupRoute.AccountSetup(accountUuid.value)) },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<CreateAccountViewModel>(),
+                animatedVisibilityScope = animatedVisibilityScope ?: this,
                 brandNameProvider = koinInject(),
             )
         }
+
+        registerImportAccountNavigation(
+            sharedTransitionScope = this@AccountSetupNavHost,
+            navController = navController,
+            animatedVisibilityScope = animatedVisibilityScope,
+        )
+
+        registerSettingsImportScreen(onFinish, navController)
     }
+}
+
+private fun NavGraphBuilder.registerImportAccountNavigation(
+    sharedTransitionScope: SharedTransitionScope,
+    navController: NavHostController,
+    animatedVisibilityScope: AnimatedVisibilityScope?,
+) {
+    composable(route = NESTED_NAVIGATION_IMPORT_ACCOUNT) {
+        sharedTransitionScope.ImportAccountScreen(
+            onQrCodeScanClick = { navController.navigateToSettingsImport(SettingsImportAction.ScanQrCode) },
+            onSelectFileClick = { navController.navigateToSettingsImport(SettingsImportAction.PickDocument) },
+            onImportClick = { navController.navigateToSettingsImport(SettingsImportAction.PickApp) },
+            onBack = { navController.popBackStack() },
+            animatedVisibilityScope = animatedVisibilityScope ?: this,
+            brandNameProvider = koinInject(),
+        )
+    }
+}
+
+private fun NavGraphBuilder.registerSettingsImportScreen(
+    onFinish: (AccountSetupRoute) -> Unit,
+    navController: NavHostController,
+) {
+    composable(
+        route = "${NESTED_NAVIGATION_SETTINGS_IMPORT}/{${NESTED_NAVIGATION_SETTINGS_IMPORT_ACTION_PARAM}}",
+    ) { backstackEntry ->
+        val action = requireNotNull(
+            backstackEntry.arguments
+                ?.getString(NESTED_NAVIGATION_SETTINGS_IMPORT_ACTION_PARAM)
+                ?.let(SettingsImportAction::valueOf),
+        ) {
+            "SettingsImportAction must be provided in the arguments"
+        }
+        SettingsImportScreen(
+            action = action,
+            onImportSuccess = { onFinish(AccountSetupRoute.AccountSetup(null)) },
+            onBack = { navController.popBackStack() },
+        )
+    }
+}
+
+private fun NavController.navigateToSettingsImport(action: SettingsImportAction) {
+    navigate("$NESTED_NAVIGATION_SETTINGS_IMPORT/${action.name}")
 }
 
 internal fun checkSpecialFoldersSupport(protocolType: IncomingProtocolType?): Boolean {

@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.navigation
 
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.navigation.NavGraphBuilder
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute.AccountSetup
 import net.thunderbird.core.ui.navigation.deepLinkComposable
@@ -15,10 +16,12 @@ class DefaultAccountSetupNavigation : AccountSetupNavigation {
             deepLinkComposable<AccountSetup>(
                 basePath = AccountSetup.BASE_PATH,
             ) {
-                AccountSetupNavHost(
-                    onBack = onBack,
-                    onFinish = onFinish,
-                )
+                SharedTransitionLayout {
+                    AccountSetupNavHost(
+                        onBack = onBack,
+                        onFinish = onFinish,
+                    )
+                }
             }
         }
     }

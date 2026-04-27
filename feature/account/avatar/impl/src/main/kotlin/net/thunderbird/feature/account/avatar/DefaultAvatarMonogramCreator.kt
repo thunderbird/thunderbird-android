@@ -1,5 +1,7 @@
 package net.thunderbird.feature.account.avatar
 
+import net.thunderbird.feature.account.avatar.AvatarMonogramCreator.Companion.AVATAR_MONOGRAM_DEFAULT
+
 /**
  * Creates a monogram based on a name or email address.
  *
@@ -19,9 +21,5 @@ class DefaultAvatarMonogramCreator : AvatarMonogramCreator {
 
     private fun composeAvatarMonogram(name: String): String {
         return name.replace(" ", "").take(2).uppercase()
-    }
-
-    private companion object {
-        private const val AVATAR_MONOGRAM_DEFAULT = "XX"
     }
 }

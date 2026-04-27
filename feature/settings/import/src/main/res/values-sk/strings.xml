@@ -43,4 +43,17 @@
     <string name="settings_import_oauth_description">Ak chcete tento e-mailový účet používať, musíte sa prihlásiť a udeliť aplikácii prístup k vašim e-mailom.</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">Overenie zlyhalo s nasledujúcou chybou: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_browser_not_found">Aplikácii sa nepodarilo nájsť prehliadač na udelenie prístupu k vášmu účtu.</string>
+    <string name="settings_import_thunderbird_new_account_title">Ste v Thunderbirde noví?</string>
+    <string name="settings_import_thunderbird_new_account_button_text">Pridať teraz e-mailové konto</string>
+    <string name="settings_import_thunderbird_import_title">Prechádzate z inej aplikácie alebo zariadenia?</string>
+    <string name="settings_import_thunderbird_import_button_text">Importujte si nastavenia účtu</string>
+    <string name="settings_import_thunderbird_qr_code_import_title">Používate Thunderbird na PC?</string>
+    <string name="settings_import_thunderbird_qr_code_import_text">Jednoducho importujte nastavenia konta naskenovaním QR kódu.</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_intro">V počítačovej verzií Thunderbird choďte na:</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_bullet_1">‘Nastavenia’ v paneli schránok (naľavo dole)</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_bullet_2_v2">Vyberte \'Export pre mobilné zariadenie\'</string>
+    <string name="settings_import_thunderbird_qr_code_import_button_text">Importovať nastavenia</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_require_latest">Import vyžaduje najnovšiu verziu aplikácie Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_learn_update">Naučte sa ako aktualizovať Thunderbird.</string>
+    <string name="settings_import_thunderbird_link_open_error">Nenašla sa aplikácia na otvorenie odkazu.</string>
 </resources>

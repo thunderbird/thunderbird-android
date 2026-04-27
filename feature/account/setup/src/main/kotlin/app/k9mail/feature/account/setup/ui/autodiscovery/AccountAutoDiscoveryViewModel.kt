@@ -44,13 +44,11 @@ internal class AccountAutoDiscoveryViewModel(
             is Event.PasswordChanged -> changePassword(event.password)
             is Event.ResultApprovalChanged -> changeConfigurationApproval(event.confirmed)
             is Event.OnOAuthResult -> onOAuthResult(event.result)
-
             Event.OnNextClicked -> onNext()
             Event.OnBackClicked -> onBack()
             Event.OnRetryClicked -> onRetry()
-            Event.OnEditConfigurationClicked -> {
-                navigateNext(isAutomaticConfig = false)
-            }
+            Event.OnEditConfigurationClicked -> navigateNext(isAutomaticConfig = false)
+            Event.ImportAccountClicked -> emitEffect(Effect.NavigateToImportAccount)
         }
     }
 

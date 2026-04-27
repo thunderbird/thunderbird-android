@@ -9,7 +9,6 @@ import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.feature.account.setup.R
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 
@@ -19,30 +18,26 @@ internal fun CreateAccountContent(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    ResponsiveWidthContainer(
-        modifier = Modifier
+    ContentLoadingErrorView(
+        state = state,
+        loading = {
+            LoadingView(
+                message = stringResource(R.string.account_setup_create_account_creating),
+            )
+        },
+        error = {
+            ErrorView(
+                title = stringResource(R.string.account_setup_create_account_error),
+            )
+        },
+        content = {
+            LoadingView(
+                message = stringResource(R.string.account_setup_create_account_created),
+            )
+        },
+        modifier = modifier
+            .fillMaxSize()
             .padding(contentPadding)
-            .testTagAsResourceId("CreateAccountContent")
-            .then(modifier),
-    ) { contentPadding ->
-        ContentLoadingErrorView(
-            state = state,
-            loading = {
-                LoadingView(
-                    message = stringResource(R.string.account_setup_create_account_creating),
-                )
-            },
-            error = {
-                ErrorView(
-                    title = stringResource(R.string.account_setup_create_account_error),
-                )
-            },
-            content = {
-                LoadingView(
-                    message = stringResource(R.string.account_setup_create_account_created),
-                )
-            },
-            modifier = Modifier.fillMaxSize().padding(contentPadding),
-        )
-    }
+            .testTagAsResourceId("CreateAccountContent"),
+    )
 }

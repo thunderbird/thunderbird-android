@@ -1,17 +1,20 @@
 package app.k9mail.feature.account.setup.ui.createaccount
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.displayCutout
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
+import androidx.compose.ui.unit.Dp
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
@@ -20,14 +23,18 @@ import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.E
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.Event
 import app.k9mail.feature.account.setup.ui.createaccount.CreateAccountContract.ViewModel
 import net.thunderbird.core.common.provider.BrandNameProvider
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.contract.mvi.observe
+import net.thunderbird.feature.thundermail.ui.brandBackground
+import net.thunderbird.feature.thundermail.ui.component.template.ThundermailScaffold
 
 @Composable
-internal fun CreateAccountScreen(
+internal fun SharedTransitionScope.CreateAccountScreen(
     onNext: (AccountUuid) -> Unit,
     onBack: () -> Unit,
     viewModel: ViewModel,
     brandNameProvider: BrandNameProvider,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier,
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
@@ -45,33 +52,44 @@ internal fun CreateAccountScreen(
         dispatch(Event.OnBackClicked)
     }
 
-    Scaffold(
-        topBar = {
+    ThundermailScaffold(
+        header = {
             AppTitleTopHeader(
                 title = brandNameProvider.brandName,
-                modifier = Modifier.windowInsetsPadding(
-                    WindowInsets.statusBars.union(WindowInsets.displayCutout),
-                ),
+                sharedTransitionScope = this,
+                animatedVisibilityScope = animatedVisibilityScope,
             )
         },
-        bottomBar = {
+        subHeaderText = "",
+        bottomBar = { paddingValues, containerColor ->
             WizardNavigationBar(
                 onNextClick = {},
-                onBackClick = {
-                    dispatch(Event.OnBackClicked)
-                },
+                onBackClick = { dispatch(Event.OnBackClicked) },
                 state = WizardNavigationBarState(
                     showNext = false,
                     isBackEnabled = state.value.error != null,
                 ),
-                modifier = Modifier.imePadding(),
+                modifier = Modifier
+                    .imePadding()
+                    .windowInsetsPadding(WindowInsets.navigationBars)
+                    .background(containerColor)
+                    .padding(paddingValues)
+                    .padding(top = MainTheme.spacings.default)
+                    .padding(horizontal = MainTheme.spacings.quadruple),
             )
         },
+        maxWidth = Dp.Unspecified,
         modifier = modifier.windowInsetsPadding(WindowInsets.navigationBars),
-    ) { innerPadding ->
+    ) { scaffoldPaddingValues, responsivePaddingValues, maxWidth ->
         CreateAccountContent(
             state = state.value,
-            contentPadding = innerPadding,
+            contentPadding = responsivePaddingValues,
+            modifier = Modifier
+                .fillMaxSize()
+                .brandBackground()
+                .padding(scaffoldPaddingValues)
+                .consumeWindowInsets(scaffoldPaddingValues)
+                .imePadding(),
         )
     }
 }

@@ -1,5 +1,8 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithKoinAndTheme
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
@@ -10,6 +13,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.provider.BrandTypographyProvider
+import net.thunderbird.feature.thundermail.ui.BrandBackgroundModifierProvider
 import org.junit.Test
 
 class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
@@ -20,22 +24,31 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
         val viewModel = FakeAccountAutoDiscoveryViewModel(initialState)
         var onNextCounter = 0
         var onBackCounter = 0
+        var onImportAccountNavigateCounter = 0
 
         setContentWithKoinAndTheme(
             modules = {
                 single<BrandTypographyProvider> { BrandTypographyProvider {} }
+                single { BrandBackgroundModifierProvider { Modifier } }
             },
         ) {
-            AccountAutoDiscoveryScreen(
-                onNext = { onNextCounter++ },
-                onBack = { onBackCounter++ },
-                viewModel = viewModel,
-                brandNameProvider = FakeBrandNameProvider,
-            )
+            SharedTransitionLayout {
+                AnimatedVisibility(true) {
+                    AccountAutoDiscoveryScreen(
+                        onNext = { onNextCounter++ },
+                        onBack = { onBackCounter++ },
+                        onImportAccountNavigate = { onImportAccountNavigateCounter++ },
+                        viewModel = viewModel,
+                        brandNameProvider = FakeBrandNameProvider,
+                        animatedVisibilityScope = this,
+                    )
+                }
+            }
         }
 
         assertThat(onNextCounter).isEqualTo(0)
         assertThat(onBackCounter).isEqualTo(0)
+        assertThat(onImportAccountNavigateCounter).isEqualTo(0)
 
         viewModel.effect(
             Effect.NavigateNext(
@@ -48,10 +61,17 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
 
         assertThat(onNextCounter).isEqualTo(1)
         assertThat(onBackCounter).isEqualTo(0)
+        assertThat(onImportAccountNavigateCounter).isEqualTo(0)
 
         viewModel.effect(Effect.NavigateBack)
 
         assertThat(onNextCounter).isEqualTo(1)
         assertThat(onBackCounter).isEqualTo(1)
+        assertThat(onImportAccountNavigateCounter).isEqualTo(0)
+
+        viewModel.effect(Effect.NavigateToImportAccount)
+        assertThat(onNextCounter).isEqualTo(1)
+        assertThat(onBackCounter).isEqualTo(1)
+        assertThat(onImportAccountNavigateCounter).isEqualTo(1)
     }
 }

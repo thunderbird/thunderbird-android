@@ -28,6 +28,9 @@ dependencies {
     implementation(projects.feature.autodiscovery.service)
     implementation(projects.feature.autodiscovery.demo)
 
+    implementation(projects.feature.thundermail.api)
+    implementation(projects.feature.settings.import)
+
     api(projects.feature.account.common)
     implementation(projects.feature.account.oauth)
     implementation(projects.feature.account.server.settings)

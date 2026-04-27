@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
@@ -40,9 +41,10 @@ internal fun ServerCertificateErrorContentPreview() {
     } WithContent {
         PreviewWithTheme {
             ServerCertificateErrorContent(
-                innerPadding = PaddingValues(all = 0.dp),
+                contentPadding = PaddingValues(all = 0.dp),
                 state = state,
                 scrollState = rememberScrollState(),
+                maxWidth = Dp.Unspecified,
             )
         }
     }

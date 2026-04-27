@@ -1,29 +1,37 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
-import android.content.res.Resources
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonDefaults
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import app.k9mail.core.ui.compose.designsystem.molecule.input.EmailAddressInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.feature.account.common.ui.AppTitleTopHeader
-import app.k9mail.feature.account.common.ui.WizardNavigationBar
-import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.oauth.ui.AccountOAuthView
 import app.k9mail.feature.account.setup.R
@@ -39,47 +47,25 @@ internal fun AccountAutoDiscoveryContent(
     state: State,
     onEvent: (Event) -> Unit,
     oAuthViewModel: AccountOAuthContract.ViewModel,
-    brandName: String,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
+    scrollState: ScrollState = rememberScrollState(),
+    maxWidth: Dp = Dp.Unspecified,
 ) {
-    val scrollState = rememberScrollState()
-
-    ResponsiveWidthContainer(
+    Column(
         modifier = modifier
+            .verticalScroll(scrollState)
+            .widthIn(max = maxWidth)
             .fillMaxSize()
             .padding(contentPadding)
-            .consumeWindowInsets(contentPadding)
-            .imePadding()
+            .padding(horizontal = MainTheme.spacings.quadruple)
             .testTagAsResourceId("AccountAutoDiscoveryContent"),
-    ) { responsiveWidthPadding ->
-        Column(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(scrollState)
-                    .padding(responsiveWidthPadding),
-            ) {
-                AppTitleTopHeader(
-                    title = brandName,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                AutoDiscoveryContent(
-                    state = state,
-                    onEvent = onEvent,
-                    oAuthViewModel = oAuthViewModel,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-            }
-
-            WizardNavigationBar(
-                onNextClick = { onEvent(Event.OnNextClicked) },
-                onBackClick = { onEvent(Event.OnBackClicked) },
-                state = WizardNavigationBarState(showNext = state.isNextButtonVisible),
-            )
-        }
+    ) {
+        AutoDiscoveryContent(
+            state = state,
+            onEvent = onEvent,
+            oAuthViewModel = oAuthViewModel,
+        )
     }
 }
 
@@ -114,12 +100,10 @@ internal fun AutoDiscoveryContent(
                 state = contentState,
                 onEvent = onEvent,
                 oAuthViewModel = oAuthViewModel,
-                resources = resources,
             )
         },
-        modifier = Modifier
-            .fillMaxSize()
-            .then(modifier),
+        modifier = modifier
+            .fillMaxSize(),
     )
 }
 
@@ -128,27 +112,14 @@ internal fun ContentView(
     state: State,
     onEvent: (Event) -> Unit,
     oAuthViewModel: AccountOAuthContract.ViewModel,
-    resources: Resources,
     modifier: Modifier = Modifier,
 ) {
+    val resources = LocalResources.current
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(MainTheme.spacings.quadruple)
-            .then(modifier),
+        modifier = modifier.fillMaxSize(),
     ) {
         if (state.configStep != AccountAutoDiscoveryContract.ConfigStep.EMAIL_ADDRESS) {
-            AutoDiscoveryResultView(
-                settings = state.autoDiscoverySettings,
-                onEditConfigurationClick = { onEvent(Event.OnEditConfigurationClicked) },
-            )
-            if (state.autoDiscoverySettings != null && state.autoDiscoverySettings.isTrusted.not()) {
-                AutoDiscoveryResultApprovalView(
-                    approvalState = state.configurationApproved,
-                    onApprovalChange = { onEvent(Event.ResultApprovalChanged(it)) },
-                )
-            }
-            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+            AutoDiscoveryResultContent(state, onEvent)
         }
 
         EmailAddressInput(
@@ -178,5 +149,58 @@ internal fun ContentView(
                 isEnabled = isAutoDiscoverySettingsTrusted || isConfigurationApproved,
             )
         }
+        Spacer(Modifier.height(MainTheme.spacings.quadruple))
+
+        AnimatedVisibility(
+            visible = state.configStep == AccountAutoDiscoveryContract.ConfigStep.EMAIL_ADDRESS,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            AccountMigrationOptionsScreen(onEvent)
+        }
     }
+}
+
+@Composable
+private fun AccountMigrationOptionsScreen(onEvent: (Event) -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(all = MainTheme.spacings.quadruple),
+    ) {
+        TextTitleMedium(
+            text = stringResource(R.string.account_setup_discovery_migration),
+            color = MainTheme.colors.primary,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.widthIn(max = 292.dp),
+        )
+        ButtonOutlined(
+            text = stringResource(R.string.account_setup_discovery_import_existing_account),
+            onClick = { onEvent(Event.ImportAccountClicked) },
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = MainTheme.colors.primary),
+            shape = ButtonDefaults.outlinedShape(
+                border = ButtonDefaults.outlinedButtonBorder(color = MainTheme.colors.outline),
+            ),
+        )
+    }
+}
+
+@Composable
+private fun ColumnScope.AutoDiscoveryResultContent(
+    state: State,
+    onEvent: (Event) -> Unit,
+) {
+    AutoDiscoveryResultView(
+        settings = state.autoDiscoverySettings,
+        onEditConfigurationClick = { onEvent(Event.OnEditConfigurationClicked) },
+    )
+    if (state.autoDiscoverySettings != null && state.autoDiscoverySettings.isTrusted.not()) {
+        AutoDiscoveryResultApprovalView(
+            approvalState = state.configurationApproved,
+            onApprovalChange = { onEvent(Event.ResultApprovalChanged(it)) },
+        )
+    }
+    Spacer(modifier = Modifier.height(MainTheme.spacings.double))
 }

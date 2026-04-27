@@ -15,4 +15,8 @@ fun interface AvatarMonogramCreator {
      * @return A string representing the monogram, or an empty string if the name or email is null or empty.
      */
     fun create(name: String?, email: String?): String
+
+    companion object {
+        const val AVATAR_MONOGRAM_DEFAULT = "XX"
+    }
 }

@@ -9,17 +9,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import app.k9mail.core.ui.compose.common.baseline.withBaseline
 import app.k9mail.core.ui.compose.common.resources.annotatedStringResource
 import app.k9mail.core.ui.compose.common.text.bold
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.feature.account.server.certificate.R
 import app.k9mail.feature.account.server.certificate.domain.entity.FormattedServerCertificateError
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.State
@@ -30,25 +31,28 @@ import org.koin.compose.koinInject
 
 @Composable
 internal fun ServerCertificateErrorContent(
-    innerPadding: PaddingValues,
+    contentPadding: PaddingValues,
     state: State,
     scrollState: ScrollState,
+    maxWidth: Dp,
+    modifier: Modifier = Modifier,
 ) {
-    ResponsiveWidthContainer(modifier = Modifier.padding(innerPadding)) { contentPadding ->
-        Column(
-            modifier = Modifier.verticalScroll(scrollState).padding(contentPadding),
-        ) {
-            CertificateErrorOverview(state)
+    Column(
+        modifier = modifier
+            .verticalScroll(scrollState)
+            .padding(contentPadding)
+            .widthIn(max = maxWidth),
+    ) {
+        CertificateErrorOverview(state)
 
-            AnimatedContent(
-                targetState = state.isShowServerCertificate,
-                label = "ServerCertificateViewVisibility",
-            ) { isShowServerCertificate ->
-                if (isShowServerCertificate) {
-                    ServerCertificateView(
-                        serverCertificateProperties = state.certificateError!!.serverCertificateProperties,
-                    )
-                }
+        AnimatedContent(
+            targetState = state.isShowServerCertificate,
+            label = "ServerCertificateViewVisibility",
+        ) { isShowServerCertificate ->
+            if (isShowServerCertificate) {
+                ServerCertificateView(
+                    serverCertificateProperties = state.certificateError!!.serverCertificateProperties,
+                )
             }
         }
     }

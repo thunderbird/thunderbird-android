@@ -3,24 +3,21 @@ package app.k9mail.feature.account.setup.ui.options.sync
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
+import androidx.compose.ui.unit.Dp
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SwitchInput
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.feature.account.common.ui.AppTitleTopHeader
-import app.k9mail.feature.account.common.ui.item.defaultHeadlineItemPadding
 import app.k9mail.feature.account.common.ui.item.defaultItemPadding
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
@@ -30,81 +27,60 @@ import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.Stat
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 
-@Suppress("LongMethod")
 @Composable
 internal fun SyncOptionsContent(
     state: State,
     onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
-    brandName: String,
     modifier: Modifier = Modifier,
+    maxWidth: Dp = Dp.Unspecified,
+    listState: LazyListState = rememberLazyListState(),
 ) {
     val resources = LocalResources.current
+    LazyColumn(
+        modifier = modifier
+            .widthIn(max = maxWidth)
+            .fillMaxSize()
+            .imePadding()
+            .testTagAsResourceId("SyncOptionsContent"),
+        contentPadding = contentPadding,
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        state = listState,
+    ) {
+        item {
+            SelectInput(
+                options = EmailCheckFrequency.all(),
+                optionToStringTransformation = { it.toResourceString(resources) },
+                selectedOption = state.checkFrequency,
+                onOptionChange = { onEvent(Event.OnCheckFrequencyChanged(it)) },
+                label = stringResource(id = R.string.account_setup_options_account_check_frequency_label),
+                contentPadding = defaultItemPadding(),
+            )
+        }
 
-    ResponsiveWidthContainer(
-        modifier = Modifier
-            .testTagAsResourceId("SyncOptionsContent")
-            .consumeWindowInsets(contentPadding)
-            .padding(contentPadding)
-            .then(modifier),
-    ) { contentPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .imePadding(),
-            contentPadding = contentPadding,
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
-        ) {
-            item {
-                AppTitleTopHeader(
-                    title = brandName,
-                )
-            }
+        item {
+            SelectInput(
+                options = EmailDisplayCount.all(),
+                optionToStringTransformation = { it.toResourceString(resources) },
+                selectedOption = state.messageDisplayCount,
+                onOptionChange = { onEvent(Event.OnMessageDisplayCountChanged(it)) },
+                label = stringResource(id = R.string.account_setup_options_email_display_count_label),
+                contentPadding = defaultItemPadding(),
+            )
+        }
 
-            item {
-                TextLabelSmall(
-                    text = stringResource(id = R.string.account_setup_options_section_sync_options),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(defaultHeadlineItemPadding()),
-                )
-            }
+        item {
+            SwitchInput(
+                text = stringResource(id = R.string.account_setup_options_show_notifications_label),
+                checked = state.showNotification,
+                onCheckedChange = { onEvent(Event.OnShowNotificationChanged(it)) },
+                contentPadding = defaultItemPadding(),
+            )
+        }
 
-            item {
-                SelectInput(
-                    options = EmailCheckFrequency.all(),
-                    optionToStringTransformation = { it.toResourceString(resources) },
-                    selectedOption = state.checkFrequency,
-                    onOptionChange = { onEvent(Event.OnCheckFrequencyChanged(it)) },
-                    label = stringResource(id = R.string.account_setup_options_account_check_frequency_label),
-                    contentPadding = defaultItemPadding(),
-                )
-            }
-
-            item {
-                SelectInput(
-                    options = EmailDisplayCount.all(),
-                    optionToStringTransformation = { it.toResourceString(resources) },
-                    selectedOption = state.messageDisplayCount,
-                    onOptionChange = { onEvent(Event.OnMessageDisplayCountChanged(it)) },
-                    label = stringResource(id = R.string.account_setup_options_email_display_count_label),
-                    contentPadding = defaultItemPadding(),
-                )
-            }
-
-            item {
-                SwitchInput(
-                    text = stringResource(id = R.string.account_setup_options_show_notifications_label),
-                    checked = state.showNotification,
-                    onCheckedChange = { onEvent(Event.OnShowNotificationChanged(it)) },
-                    contentPadding = defaultItemPadding(),
-                )
-            }
-
-            item {
-                Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
-            }
+        item {
+            Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
         }
     }
 }

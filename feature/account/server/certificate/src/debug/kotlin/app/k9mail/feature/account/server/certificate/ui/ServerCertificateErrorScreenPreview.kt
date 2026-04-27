@@ -4,12 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.common.koin.koinPreview
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.server.certificate.data.InMemoryServerCertificateErrorRepository
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateError
 import app.k9mail.feature.account.server.certificate.domain.usecase.FormatServerCertificateError
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
+import net.thunderbird.feature.thundermail.ui.preview.ThundermailPreview
 
 @Composable
 @PreviewDevices
@@ -59,7 +59,7 @@ internal fun ServerCertificateErrorScreenPreview() {
         factory<ServerNameFormatter> { DefaultServerNameFormatter() }
         factory<FingerprintFormatter> { DefaultFingerprintFormatter() }
     } WithContent {
-        PreviewWithTheme {
+        ThundermailPreview {
             ServerCertificateErrorScreen(
                 onCertificateAccepted = {},
                 onBack = {},

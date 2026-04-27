@@ -41,4 +41,17 @@
     <string name="settings_import_pick_app_dialog_title">درون‌ریزی از برنامه</string>
     <string name="settings_import_app_version_not_supported">نگارش کاره پشتیبانی نمی‌شود.</string>
     <string name="settings_import_scan_qr_code_button">پویش رمزینه</string>
+    <string name="settings_import_thunderbird_new_account_title">کاربر جدید تاندربرد؟</string>
+    <string name="settings_import_thunderbird_new_account_button_text">افزودن حساب رایانامه</string>
+    <string name="settings_import_thunderbird_import_title">جابه‌جایی از برنامه یا دستگاهی دیگر؟</string>
+    <string name="settings_import_thunderbird_import_button_text">درون‌ریزی تنظیمات حسابتان</string>
+    <string name="settings_import_thunderbird_qr_code_import_title">استفادهٔ پیشین از تاندربر روی میزکار؟</string>
+    <string name="settings_import_thunderbird_qr_code_import_text">درون‌ریزی آسان تنظیمات حسابتان با پویش رمزینه.</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_intro">در تاندربرد میزکار، رفتن به:</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_bullet_1">«تنظیمات» در نوار ابزار فضاها (پایین سمت راست)</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_bullet_2_v2">گزینه \"Export to Mobile\" را انتخاب کنید</string>
+    <string name="settings_import_thunderbird_qr_code_import_button_text">درون‌ریزی تنظیمات</string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_require_latest">وارد کردن، به آخرین نسخه تاندربرد نیازمند است. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="settings_import_thunderbird_qr_code_import_instructions_learn_update">چگونگی به‌روزرسانی تاندربرد را بیاموزید.</string>
+    <string name="settings_import_thunderbird_link_open_error">هیچ برنامه‌ای برای باز کردن پیوند یافت نشد.</string>
 </resources>

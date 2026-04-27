@@ -14,6 +14,7 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.Avatar
+import net.thunderbird.feature.account.avatar.DefaultAvatarMonogramCreator
 import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultAccountProfileDataMapper
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultAvatarDataMapper
@@ -180,6 +181,7 @@ class DefaultAccountProfileLocalDataSourceTest {
                 dataMapper = DefaultAccountProfileDataMapper(
                     avatarMapper = DefaultAvatarDataMapper(),
                 ),
+                avatarMonogramCreator = DefaultAvatarMonogramCreator(),
             )
         }
     }

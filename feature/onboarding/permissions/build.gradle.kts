@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.core.android.permissions)
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.feature.account.common)
+    implementation(projects.feature.thundermail.api)
 }
 
 codeCoverage {

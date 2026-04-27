@@ -3,17 +3,17 @@ package app.k9mail.feature.account.server.validation.ui
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.common.ui.fake.FakeAccountStateRepository
 import app.k9mail.feature.account.server.certificate.data.InMemoryServerCertificateErrorRepository
 import app.k9mail.feature.account.server.validation.ui.fake.FakeAccountOAuthViewModel
 import app.k9mail.feature.account.server.validation.ui.fake.FakeBrandNameProvider
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
+import net.thunderbird.feature.thundermail.ui.preview.ThundermailPreview
 
 @Composable
 @PreviewDevices
 internal fun IncomingServerValidationScreenPreview() {
-    PreviewWithTheme {
+    ThundermailPreview {
         ServerValidationScreen(
             onNext = { },
             onBack = { },
@@ -26,6 +26,7 @@ internal fun IncomingServerValidationScreenPreview() {
                     oAuthViewModel = FakeAccountOAuthViewModel(),
                 )
             },
+            animatedVisibilityScope = it,
             brandNameProvider = FakeBrandNameProvider,
         )
     }
@@ -34,7 +35,7 @@ internal fun IncomingServerValidationScreenPreview() {
 @Composable
 @PreviewDevices
 internal fun OutgoingServerValidationScreenPreview() {
-    PreviewWithTheme {
+    ThundermailPreview {
         ServerValidationScreen(
             onNext = { },
             onBack = { },
@@ -47,6 +48,7 @@ internal fun OutgoingServerValidationScreenPreview() {
                     oAuthViewModel = FakeAccountOAuthViewModel(),
                 )
             },
+            animatedVisibilityScope = it,
             brandNameProvider = FakeBrandNameProvider,
         )
     }

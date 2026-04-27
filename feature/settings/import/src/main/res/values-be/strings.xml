@@ -43,4 +43,5 @@
     <string name="settings_import_pick_app_dialog_title">Імпартаваць з праграмы</string>
     <string name="settings_import_scan_qr_code_button">Сканаваць QR-код</string>
     <string name="settings_import_app_version_not_supported">Версія праграмы не падтрымліваецца.</string>
+    <string name="settings_import_thunderbird_qr_code_import_title">Ужо карыстаецеся Thunderbird на камп\'ютэры?</string>
 </resources>

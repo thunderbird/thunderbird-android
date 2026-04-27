@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.common)
     implementation(projects.feature.account.common)
+    implementation(projects.feature.thundermail.api)
 
     implementation(projects.mail.common)
     implementation(libs.okio)

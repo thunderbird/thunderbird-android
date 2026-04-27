@@ -20,6 +20,7 @@ dependencies {
 
     implementation(projects.mail.common)
     implementation(projects.mail.protocols.imap)
+    implementation(projects.feature.thundermail.api)
 
     implementation(projects.feature.account.common)
     implementation(libs.androidx.activity.compose)

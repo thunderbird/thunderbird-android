@@ -1,5 +1,6 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
+import androidx.compose.runtime.Stable
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingErrorState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
@@ -26,6 +27,7 @@ interface AccountAutoDiscoveryContract {
         fun initState(state: State)
     }
 
+    @Stable
     data class State(
         val configStep: ConfigStep = ConfigStep.EMAIL_ADDRESS,
         val emailAddress: StringInputField = StringInputField(),
@@ -51,6 +53,7 @@ interface AccountAutoDiscoveryContract {
         data object OnBackClicked : Event
         data object OnRetryClicked : Event
         data object OnEditConfigurationClicked : Event
+        data object ImportAccountClicked : Event
     }
 
     sealed class Effect {
@@ -59,6 +62,7 @@ interface AccountAutoDiscoveryContract {
         ) : Effect()
 
         data object NavigateBack : Effect()
+        data object NavigateToImportAccount : Effect()
     }
 
     interface Validator {

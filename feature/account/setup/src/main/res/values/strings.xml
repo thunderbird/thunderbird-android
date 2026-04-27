@@ -4,6 +4,9 @@
     <string name="account_setup_error_network">Network error. Please check your connection status and try again.</string>
     <string name="account_setup_error_unknown">Unknown error</string>
 
+    <string name="account_setup_discovery_add_email_account">Add email account</string>
+    <string name="account_setup_discovery_migration">Adding from Thunderbird Desktop, another app, or device?</string>
+    <string name="account_setup_discovery_import_existing_account">Import an existing account</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Email address is required.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">This email address is not allowed.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">This email address is not supported.</string>
@@ -24,6 +27,7 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">I trust this configuration</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">It is required to approve the configuration.</string>
 
+    <string name="account_setup_special_folders_form_title">Configuring special folders</string>
     <string name="account_setup_special_folders_form_description">Please specify the special folders for your account.</string>
     <string name="account_setup_special_folders_form_description_automatic">The \"Automatic\" entry will follow changes made by the server automatically. The current server value is displayed in parentheses.</string>
     <string name="account_setup_special_folders_loading_message">Fetching list of folders…</string>
@@ -65,4 +69,5 @@
     <string name="account_setup_create_account_creating">Creating account…</string>
     <string name="account_setup_create_account_error">An error occurred while trying to create the account</string>
     <string name="account_setup_create_account_created">Account successfully created</string>
+
 </resources>

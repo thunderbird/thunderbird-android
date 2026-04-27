@@ -5,14 +5,16 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Event
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.State
@@ -25,48 +27,46 @@ fun SpecialFoldersContent(
     state: State,
     onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
-    brandName: String,
+    maxWidth: Dp,
     modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
 ) {
-    ResponsiveWidthContainer(
-        modifier = Modifier
+    Column(
+        modifier
             .testTagAsResourceId("SpecialFoldersContent")
-            .padding(contentPadding)
-            .then(modifier),
-    ) { contentPadding ->
-        Column(Modifier.padding(contentPadding)) {
-            AppTitleTopHeader(
-                title = brandName,
-            )
-
-            ContentLoadingErrorView(
-                state = state,
-                loading = {
-                    LoadingView(
-                        message = stringResource(id = R.string.account_setup_special_folders_loading_message),
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                },
-                error = { error ->
-                    SpecialFoldersErrorView(
-                        failure = error,
-                        onRetry = { onEvent(Event.OnRetryClicked) },
-                    )
-                },
-                modifier = Modifier.fillMaxSize(),
-            ) { state ->
-                if (state.isSuccess) {
-                    LoadingView(
-                        message = stringResource(id = R.string.account_setup_special_folders_success_message),
-                        modifier = Modifier.padding(horizontal = MainTheme.spacings.double),
-                    )
-                } else {
-                    SpecialFoldersFormContent(
-                        state = state.formState,
-                        onEvent = onEvent,
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
+            .padding(contentPadding),
+    ) {
+        ContentLoadingErrorView(
+            state = state,
+            loading = {
+                LoadingView(
+                    message = stringResource(id = R.string.account_setup_special_folders_loading_message),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            },
+            error = { error ->
+                SpecialFoldersErrorView(
+                    failure = error,
+                    onRetry = { onEvent(Event.OnRetryClicked) },
+                )
+            },
+            modifier = Modifier.fillMaxSize(),
+        ) { state ->
+            if (state.isSuccess) {
+                LoadingView(
+                    message = stringResource(id = R.string.account_setup_special_folders_success_message),
+                    modifier = Modifier
+                        .padding(horizontal = MainTheme.spacings.double)
+                        .widthIn(max = maxWidth),
+                )
+            } else {
+                SpecialFoldersFormContent(
+                    state = state.formState,
+                    onEvent = onEvent,
+                    modifier = Modifier.fillMaxSize(),
+                    maxWidth = maxWidth,
+                    listState = listState,
+                )
             }
         }
     }
