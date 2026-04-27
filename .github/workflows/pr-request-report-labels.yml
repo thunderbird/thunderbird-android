@@ -1,9 +1,14 @@
 ---
 name: PR - Request report labels
 
-# Warning, this job is running on pull_request_target and therefore has access to issue content.
-# Don't add any steps that act on external code.
-on:
+# This workflow uses pull_request_target so it has access to secrets and write
+# permissions even for fork PRs, which is required to post comments and add labels.
+#
+# Security constraints that must be maintained to prevent code injection:
+#   - Do not checkout or execute any code.
+#   - Do not interpolate free-form PR fields.
+
+on: # zizmor: ignore[dangerous-triggers]
   pull_request_target:
     types: [ opened, reopened, synchronize, labeled, unlabeled ]
     branches:
@@ -23,10 +28,13 @@ jobs:
     steps:
       - name: Validate report label
         id: validate
+        env:
+          LABELS_JSON: ${{ toJson(github.event.pull_request.labels) }}
+          PR_BODY: ${{ toJson(github.event.pull_request.body) }}
         run: |
           set -euo pipefail
 
-          labels_json='${{ toJson(github.event.pull_request.labels) }}'
+          labels_json="$LABELS_JSON"
 
           echo "Current labels:"
           echo "$labels_json" | jq -r '.[].name'
@@ -47,7 +55,7 @@ jobs:
 
           feature_flag_count="$(jq '[.[] | select(.name == "feature flag")] | length' <<< "$labels_json")"
           if [ "$feature_flag_count" -gt 0 ]; then
-            pr_body='${{ toJson(github.event.pull_request.body) }}'
+            pr_body="$PR_BODY"
             pr_feature_flag_key="$(jq -nr --arg body "$pr_body" 'try ($body | gsub("\r"; "") | capture("(?m)^feature-flag:\\s*`(?<flag>[^`]+)`$").flag) catch ""')"
             if [ -z "$pr_feature_flag_key" ]; then
               echo "valid=false" >> "$GITHUB_OUTPUT"
@@ -64,10 +72,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
           MESSAGE: ${{ steps.validate.outputs.message }}
         run: |
           gh pr comment "$PR_NUMBER" \
-            --repo "${{ github.repository }}" \
+            --repo "$REPO" \
             --body "$MESSAGE"
 
       - name: Fail if invalid

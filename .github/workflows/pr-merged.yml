@@ -1,9 +1,14 @@
 ---
 name: PR - Merged
 
-# Warning, this job is running on pull_request_target and therefore has access to issue content.
-# Don't add any steps that act on external code.
-on:
+# This workflow uses pull_request_target so it has access to secrets and write
+# permissions even for fork PRs, which is required to post comments and set milestones.
+#
+# Security constraints that must be maintained to prevent code injection:
+#   - Do not checkout or execute any code.
+#   - Do not interpolate free-form PR fields.
+
+on: # zizmor: ignore[dangerous-triggers]
   pull_request_target:
     branches: [main, beta, release]
     types: [closed]
@@ -33,19 +38,19 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
         run: |
           # There should be exactly 3 milestones open at all times
-          TARGET_BRANCH="${{ github.base_ref }}"
+          TARGET_BRANCH="${GITHUB_BASE_REF}"
           case "$TARGET_BRANCH" in
             main) milestone_index=0 ;;
             beta) milestone_index=1 ;;
             release) milestone_index=2 ;;
           esac
           echo "$milestone_index"
-          gh api repos/$GITHUB_REPOSITORY/milestones --jq "
+          gh api "repos/$GITHUB_REPOSITORY/milestones" --jq "
                 map(select(.state == \"open\" and .due_on != null))
                 | sort_by(.due_on) | reverse
                 | .[${milestone_index}] | { number, title }
                 | to_entries
-                | map(.key + \"=\" + (.value|tostring)) | join(\"\n\")" | tee -a $GITHUB_OUTPUT
+                | map(.key + \"=\" + (.value|tostring)) | join(\"\n\")" | tee -a "$GITHUB_OUTPUT"
 
       - name: Thank you
         if: |
@@ -67,7 +72,7 @@ jobs:
 
             Hope to see you there! 🚀📱🐦
         run: |
-          gh pr comment $PR_NUMBER --repo $GITHUB_REPOSITORY --body "$MESSAGE"
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$MESSAGE"
 
       - name: Set active milestone on PR
         env:
@@ -75,4 +80,4 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
           MILESTONE: ${{ steps.milestone.outputs.number }}
         run: |
-          gh api --method PATCH /repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER -f milestone=$MILESTONE
+          gh api --method PATCH "/repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER" -f "milestone=$MILESTONE"

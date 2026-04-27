@@ -13,7 +13,14 @@ jobs:
   build-daily:
     if: ${{ github.repository_owner == 'thunderbird' }}
     uses: ./.github/workflows/shippable_builds.yml
-    secrets: inherit
+    secrets:
+      MATRIX_NOTIFY_TOKEN: ${{ secrets.MATRIX_NOTIFY_TOKEN }}
+      BOT_PRIVATE_KEY: ${{ secrets.BOT_PRIVATE_KEY }}
+      SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+      PLAY_STORE_ACCOUNT: ${{ secrets.PLAY_STORE_ACCOUNT }}
     permissions:
       id-token: write # For GCS publishing (ftp.mo)
       contents: read

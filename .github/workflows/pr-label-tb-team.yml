@@ -1,9 +1,14 @@
 ---
 name: PR - Label tb-team
 
-# Warning, this job is running on pull_request_target and therefore has access to issue content.
-# Don't add any steps that act on external code.
-on:
+# This workflow uses pull_request_target so it has access to secrets and write
+# permissions even for fork PRs, which is required to add labels.
+#
+# Security constraints that must be maintained to prevent code injection:
+#   - Do not checkout or execute any code.
+#   - Do not interpolate free-form PR fields.
+
+on: # zizmor: ignore[dangerous-triggers]
   pull_request_target:
     types: [opened, reopened]
 

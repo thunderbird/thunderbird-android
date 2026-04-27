@@ -2,6 +2,21 @@
 name: Shippable Build & Signing
 on:
   workflow_call:
+    secrets:
+      MATRIX_NOTIFY_TOKEN:
+        required: false
+      BOT_PRIVATE_KEY:
+        required: false
+      SIGNING_KEY:
+        required: false
+      KEY_ALIAS:
+        required: false
+      KEY_PASSWORD:
+        required: false
+      KEY_STORE_PASSWORD:
+        required: false
+      PLAY_STORE_ACCOUNT:
+        required: false
   workflow_dispatch:
     inputs:
       skipThunderbird:
@@ -219,6 +234,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token || github.token }}
+          persist-credentials: false
 
       - name: Setup Gradle environment
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
@@ -458,6 +474,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ steps.sha.outputs.app_sha }}
+          persist-credentials: false
 
       - name: Setup Gradle environment
         uses: ./.github/actions/setup-gradle
@@ -682,6 +699,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ steps.shanotes.outputs.app_sha }}
+          persist-credentials: false
 
       - name: Download Artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -755,17 +773,25 @@ jobs:
       - name: Publish to GitHub Releases
         id: publish_gh
         if: ${{ contains(matrix.releaseTarget, 'github') }}
-        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda  # v3.0.0
-        with:
-          token: ${{ steps.app-token.outputs.token || github.token }}
-          target_commitish: ${{ steps.shanotes.outputs.app_sha }}
-          tag_name: ${{ steps.pkginfo.outputs.TAG_NAME }}
-          name: ${{ steps.pkginfo.outputs.FULL_VERSION_NAME }}
-          body: ${{ steps.shanotes.outputs.app_github_notes }}
-          prerelease: ${{ env.RELEASE_TYPE != 'release' }}
-          fail_on_unmatched_files: true
-          files: |
-            uploads/${{ steps.rename.outputs.PKG_FILE }}
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+          TAG_NAME: ${{ steps.pkginfo.outputs.TAG_NAME }}
+          FULL_VERSION_NAME: ${{ steps.pkginfo.outputs.FULL_VERSION_NAME }}
+          RELEASE_NOTES: ${{ steps.shanotes.outputs.app_github_notes }}
+          COMMITISH: ${{ steps.shanotes.outputs.app_sha }}
+          PKG_FILE: uploads/${{ steps.rename.outputs.PKG_FILE }}
+          IS_PRERELEASE: ${{ env.RELEASE_TYPE != 'release' }}
+        run: |
+          args=(
+            "$TAG_NAME"
+            --title "$FULL_VERSION_NAME"
+            --notes "$RELEASE_NOTES"
+            --target "$COMMITISH"
+            "$PKG_FILE"
+          )
+          [ "$IS_PRERELEASE" = "true" ] && args+=(--prerelease)
+          url=$(gh release create "${args[@]}")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
 
       - name: Adjust release notes for play store upload
         if: ${{ !inputs.skipGooglePlay && contains(matrix.releaseTarget, 'play') && matrix.playTargetTrack }}
@@ -1005,7 +1031,7 @@ jobs:
         uses: Mercymeilya/last-workflow-status@f86bce177498d6fdd3bda4113d7d93266cfc3fca
         id: last_status
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
 
       - name: Info
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
