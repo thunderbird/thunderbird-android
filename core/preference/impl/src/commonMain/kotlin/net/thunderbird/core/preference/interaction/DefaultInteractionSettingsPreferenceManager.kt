@@ -51,6 +51,10 @@ class DefaultInteractionSettingsPreferenceManager(
             KEY_MESSAGE_VIEW_POST_DELETE_ACTION,
             INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_REMOVE_NAVIGATION,
         ),
+        messageViewPostMarkAsUnreadNavigation = storage.getEnumOrDefault(
+            KEY_MESSAGE_VIEW_POST_MARK_AS_UNREAD_ACTION,
+            INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_MARK_AS_UNREAD_NAVIGATION,
+        ),
         swipeActions = SwipeActions(
             leftAction = storage.getEnumOrDefault(
                 key = KEY_SWIPE_ACTION_LEFT,
@@ -87,6 +91,10 @@ class DefaultInteractionSettingsPreferenceManager(
             mutex.withLock {
                 storageEditor.putBoolean(KEY_USE_VOLUME_KEYS_FOR_NAVIGATION, config.useVolumeKeysForNavigation)
                 storageEditor.putString(KEY_MESSAGE_VIEW_POST_DELETE_ACTION, config.messageViewPostRemoveNavigation)
+                storageEditor.putEnum(
+                    KEY_MESSAGE_VIEW_POST_MARK_AS_UNREAD_ACTION,
+                    config.messageViewPostMarkAsUnreadNavigation,
+                )
                 storageEditor.putEnum(KEY_SWIPE_ACTION_LEFT, config.swipeActions.leftAction)
                 storageEditor.putEnum(KEY_SWIPE_ACTION_RIGHT, config.swipeActions.rightAction)
                 storageEditor.putBoolean(KEY_CONFIRM_DELETE, config.isConfirmDelete)

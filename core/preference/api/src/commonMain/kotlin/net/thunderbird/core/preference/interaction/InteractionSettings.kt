@@ -5,6 +5,8 @@ import net.thunderbird.core.common.action.SwipeActions
 
 const val INTERACTION_SETTINGS_DEFAULT_USE_VOLUME_KEYS_NAVIGATION = false
 val INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_REMOVE_NAVIGATION = PostRemoveNavigation.ReturnToMessageList.name
+val INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_MARK_AS_UNREAD_NAVIGATION =
+    PostMarkAsUnreadNavigation.ReturnToMessageList
 val INTERACTION_SETTINGS_DEFAULT_SWIPE_ACTION = SwipeActions(
     leftAction = SwipeAction.ToggleRead,
     rightAction = SwipeAction.ToggleSelection,
@@ -19,6 +21,8 @@ const val INTERACTION_SETTINGS_DEFAULT_CONFIRM_MARK_ALL_READ = true
 data class InteractionSettings(
     val useVolumeKeysForNavigation: Boolean = INTERACTION_SETTINGS_DEFAULT_USE_VOLUME_KEYS_NAVIGATION,
     val messageViewPostRemoveNavigation: String = INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_REMOVE_NAVIGATION,
+    var messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
+        INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_MARK_AS_UNREAD_NAVIGATION,
     val swipeActions: SwipeActions = INTERACTION_SETTINGS_DEFAULT_SWIPE_ACTION,
     val isConfirmDelete: Boolean = INTERACTION_SETTINGS_DEFAULT_CONFIRM_DELETE,
     val isConfirmDeleteStarred: Boolean = INTERACTION_SETTINGS_DEFAULT_CONFIRM_DELETE_STARRED,
@@ -36,4 +40,13 @@ enum class PostRemoveNavigation {
     ReturnToMessageList,
     ShowPreviousMessage,
     ShowNextMessage,
+}
+
+/**
+ * The navigation actions that can be to performed after the user has marked a
+ * message as unread from the message view screen.
+ */
+enum class PostMarkAsUnreadNavigation {
+    StayOnCurrentMessage,
+    ReturnToMessageList,
 }
