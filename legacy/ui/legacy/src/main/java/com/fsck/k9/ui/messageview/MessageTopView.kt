@@ -73,6 +73,10 @@ class MessageTopView(
         layoutInflater = LayoutInflater.from(context)
 
         viewAnimator = findViewById(R.id.message_layout_animator)
+        if (!visualSettingsPrefManager.getConfig().isShowAnimations) {
+            viewAnimator.inAnimation = null
+            viewAnimator.outAnimation = null
+        }
         progressBar = findViewById(R.id.message_progress)
         progressText = findViewById(R.id.message_progress_text)
 
