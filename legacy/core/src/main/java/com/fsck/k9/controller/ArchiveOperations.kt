@@ -13,16 +13,17 @@ import net.thunderbird.core.logging.legacy.Log
 internal class ArchiveOperations(
     private val messagingController: MessagingController,
     private val featureFlagProvider: FeatureFlagProvider,
+    private val archiveFolderResolver: ArchiveFolderResolver,
 ) {
     fun archiveThreads(messages: List<MessageReference>) {
-        archiveByFolder("archiveThreads", messages) { account, folderId, messagesInFolder, archiveFolderId ->
-            archiveThreads(account, folderId, messagesInFolder, archiveFolderId)
+        archiveByFolder("archiveThreads", messages) { account, folderId, messagesInFolder ->
+            archiveThreads(account, folderId, messagesInFolder)
         }
     }
 
     fun archiveMessages(messages: List<MessageReference>) {
-        archiveByFolder("archiveMessages", messages) { account, folderId, messagesInFolder, archiveFolderId ->
-            archiveMessages(account, folderId, messagesInFolder, archiveFolderId)
+        archiveByFolder("archiveMessages", messages) { account, folderId, messagesInFolder ->
+            archiveMessages(account, folderId, messagesInFolder)
         }
     }
 
@@ -37,7 +38,6 @@ internal class ArchiveOperations(
             account: LegacyAccountDto,
             folderId: Long,
             messagesInFolder: List<LocalMessage>,
-            archiveFolderId: Long,
         ) -> Unit,
     ) {
         actOnMessagesGroupedByAccountAndFolder(messages) { account, messageFolder, messagesInFolder ->
@@ -54,7 +54,7 @@ internal class ArchiveOperations(
                 else -> {
                     messagingController.suppressMessages(account, messagesInFolder)
                     messagingController.putBackground(description, null) {
-                        action(account, sourceFolderId, messagesInFolder, archiveFolderId)
+                        action(account, sourceFolderId, messagesInFolder)
                     }
                 }
             }
@@ -65,30 +65,37 @@ internal class ArchiveOperations(
         account: LegacyAccountDto,
         sourceFolderId: Long,
         messages: List<LocalMessage>,
-        archiveFolderId: Long,
     ) {
         val messagesInThreads = messagingController.collectMessagesInThreads(account, messages)
-        archiveMessages(account, sourceFolderId, messagesInThreads, archiveFolderId)
+        archiveMessages(account, sourceFolderId, messagesInThreads)
     }
 
     private fun archiveMessages(
         account: LegacyAccountDto,
         sourceFolderId: Long,
         messages: List<LocalMessage>,
-        archiveFolderId: Long,
     ) {
+        val messagesByDestination = messages.groupBy { message ->
+            archiveFolderResolver.resolveArchiveFolder(account, message)
+        }
+
         val operation = featureFlagProvider.provide("archive_marks_as_read".toFeatureFlagKey())
             .whenEnabledOrNot(
                 onEnabled = { MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ },
                 onDisabledOrUnavailable = { MoveOrCopyFlavor.MOVE },
             )
-        messagingController.moveOrCopyMessageSynchronous(
-            account,
-            sourceFolderId,
-            messages,
-            archiveFolderId,
-            operation,
-        )
+
+        for ((destinationFolderId, messagesForFolder) in messagesByDestination) {
+            if (destinationFolderId != null) {
+                messagingController.moveOrCopyMessageSynchronous(
+                    account,
+                    sourceFolderId,
+                    messagesForFolder,
+                    destinationFolderId,
+                    operation,
+                )
+            }
+        }
     }
 
     private fun actOnMessagesGroupedByAccountAndFolder(
