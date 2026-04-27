@@ -10,14 +10,16 @@ import com.android.billingclient.api.Purchase
 import kotlin.test.BeforeTest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDateTime
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
-import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
@@ -56,28 +58,28 @@ class BillingClientTest {
     @Test
     fun `purchaseContribution should return failure when product details not in cache`() = runTest {
         // Arrange
-        val contribution = OneTimeContribution("id", "title", "desc", 100L, "$1.00")
+        val contributionId = ContributionId("id")
 
         // Act
-        val result = testSubject.purchaseContribution(contribution)
+        val result = testSubject.purchaseContribution(contributionId)
 
         // Assert
         assertThat(result).isInstanceOf(Outcome.Failure::class)
         val error = (result as Outcome.Failure).error
         assertThat(error).isInstanceOf(ContributionError.PurchaseFailed::class)
-        assertThat(error.message).isEqualTo("ProductDetails not found: id")
+        assertThat(error.message).isEqualTo("ProductDetails not found for contributionId: id")
     }
 
     @Test
     fun `purchaseContribution should return failure when activity not available`() = runTest {
         // Arrange
-        val contribution = OneTimeContribution("id", "title", "desc", 100L, "$1.00")
+        val contributionId = ContributionId("id")
         val productDetails = mock<ProductDetails>()
-        productCache["id"] = productDetails
+        productCache[contributionId] = productDetails
         whenever(activityProvider.getCurrent()).thenReturn(null)
 
         // Act
-        val result = testSubject.purchaseContribution(contribution)
+        val result = testSubject.purchaseContribution(contributionId)
 
         // Assert
         assertThat(result).isInstanceOf(Outcome.Failure::class)
@@ -89,7 +91,7 @@ class BillingClientTest {
     @Test
     fun `purchaseContribution should launch billing flow when conditions met`() = runTest {
         // Arrange
-        val contribution = RecurringContribution("id", "title", "desc", 1000L, "$10.00")
+        val contributionId = ContributionId("id")
         val productDetails = mock<ProductDetails>()
         val subscriptionOfferDetails = mock<ProductDetails.SubscriptionOfferDetails>()
         val activity = mock<Activity>()
@@ -101,13 +103,13 @@ class BillingClientTest {
         whenever(productDetails.subscriptionOfferDetails).thenReturn(listOf(subscriptionOfferDetails))
         whenever(subscriptionOfferDetails.offerToken).thenReturn("token")
 
-        productCache["id"] = productDetails
+        productCache[contributionId] = productDetails
         whenever(activityProvider.getCurrent()).thenReturn(activity)
         whenever(clientProvider.current).thenReturn(googleBillingClient)
         whenever(googleBillingClient.launchBillingFlow(any(), any())).thenReturn(billingResult)
 
         // Act
-        val result = testSubject.purchaseContribution(contribution)
+        val result = testSubject.purchaseContribution(contributionId)
 
         // Assert
         assertThat(result).isInstanceOf(Outcome.Success::class)
@@ -119,7 +121,17 @@ class BillingClientTest {
         // Arrange
         val billingResult = mock<BillingResult>()
         val purchases = mutableListOf(mock<Purchase>())
-        val contribution = OneTimeContribution("id", "title", "desc", 100L, "$1.00")
+        val contribution = PurchasedContribution(
+            id = ContributionId("id"),
+            contribution = OneTimeContribution(
+                id = ContributionId("id"),
+                title = "title",
+                description = "desc",
+                price = 100L,
+                priceFormatted = "$1.00",
+            ),
+            purchaseDate = LocalDateTime(2024, 1, 1, 0, 0),
+        )
 
         whenever(purchaseHandler.handlePurchases(any(), any())).thenReturn(listOf(contribution))
 

@@ -5,44 +5,45 @@ import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
-import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionListState
-
-@Composable
-@Preview(showBackground = true)
-internal fun ContributionListPreview() {
-    PreviewWithTheme {
-        ContributionList(
-            state = ContributionListState(
-                oneTimeContributions = FakeData.oneTimeContributions,
-                recurringContributions = FakeData.recurringContributions,
-                selectedContribution = FakeData.recurringContributions.first(),
-                isRecurringContributionSelected = true,
-                isLoading = false,
-            ),
-            onOneTimeContributionTypeClick = {},
-            onRecurringContributionTypeClick = {},
-            onItemClick = {},
-            onRetryClick = {},
-        )
-    }
-}
+import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionList
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.ContributionType
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.State
 
 @Composable
 @Preview(showBackground = true)
 internal fun ContributionListRecurringPreview() {
     PreviewWithTheme {
         ContributionList(
-            state = ContributionListState(
-                oneTimeContributions = FakeData.oneTimeContributions,
-                recurringContributions = FakeData.recurringContributions,
-                selectedContribution = FakeData.oneTimeContributions.last(),
-                isRecurringContributionSelected = false,
+            state = State(
+                contributions = AvailableContributions(
+                    oneTimeContributions = FakeData.oneTimeContributions,
+                    recurringContributions = FakeData.recurringContributions,
+                    preselection = FakeData.preselection,
+                ),
+                selectedType = ContributionType.Recurring,
                 isLoading = false,
             ),
-            onOneTimeContributionTypeClick = {},
-            onRecurringContributionTypeClick = {},
-            onItemClick = {},
-            onRetryClick = {},
+            onEvent = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContributionListOneTimePreview() {
+    PreviewWithTheme {
+        ContributionList(
+            state = State(
+                contributions = AvailableContributions(
+                    oneTimeContributions = FakeData.oneTimeContributions,
+                    recurringContributions = FakeData.recurringContributions,
+                    preselection = FakeData.preselection,
+                ),
+                selectedType = ContributionType.OneTime,
+                isLoading = false,
+            ),
+            onEvent = {},
         )
     }
 }
@@ -52,17 +53,18 @@ internal fun ContributionListRecurringPreview() {
 internal fun ContributionListOneTimeOnlyPreview() {
     PreviewWithTheme {
         ContributionList(
-            state = ContributionListState(
-                oneTimeContributions = FakeData.oneTimeContributions,
-                recurringContributions = persistentListOf(),
-                selectedContribution = null,
-                isRecurringContributionSelected = false,
+            state = State(
+                contributions = AvailableContributions(
+                    oneTimeContributions = FakeData.oneTimeContributions,
+                    recurringContributions = persistentListOf(),
+                    preselection = FakeData.preselection.copy(
+                        recurringId = null,
+                    ),
+                ),
+                selectedType = ContributionType.OneTime,
                 isLoading = false,
             ),
-            onOneTimeContributionTypeClick = {},
-            onRecurringContributionTypeClick = {},
-            onItemClick = {},
-            onRetryClick = {},
+            onEvent = {},
         )
     }
 }
@@ -72,17 +74,18 @@ internal fun ContributionListOneTimeOnlyPreview() {
 internal fun ContributionListRecurringOnlyPreview() {
     PreviewWithTheme {
         ContributionList(
-            state = ContributionListState(
-                oneTimeContributions = persistentListOf(),
-                recurringContributions = FakeData.recurringContributions,
-                selectedContribution = null,
-                isRecurringContributionSelected = true,
+            state = State(
+                contributions = AvailableContributions(
+                    oneTimeContributions = persistentListOf(),
+                    recurringContributions = FakeData.recurringContributions,
+                    preselection = FakeData.preselection.copy(
+                        oneTimeId = null,
+                    ),
+                ),
+                selectedType = ContributionType.Recurring,
                 isLoading = false,
             ),
-            onOneTimeContributionTypeClick = {},
-            onRecurringContributionTypeClick = {},
-            onItemClick = {},
-            onRetryClick = {},
+            onEvent = {},
         )
     }
 }
@@ -92,17 +95,12 @@ internal fun ContributionListRecurringOnlyPreview() {
 internal fun ContributionListEmptyPreview() {
     PreviewWithTheme {
         ContributionList(
-            state = ContributionListState(
-                oneTimeContributions = persistentListOf(),
-                recurringContributions = persistentListOf(),
-                selectedContribution = null,
-                isRecurringContributionSelected = false,
+            state = State(
+                contributions = AvailableContributions.Empty,
+                selectedType = ContributionType.Recurring,
                 isLoading = false,
             ),
-            onOneTimeContributionTypeClick = {},
-            onRecurringContributionTypeClick = {},
-            onItemClick = {},
-            onRetryClick = {},
+            onEvent = {},
         )
     }
 }
@@ -112,17 +110,12 @@ internal fun ContributionListEmptyPreview() {
 internal fun ContributionListLoadingPreview() {
     PreviewWithTheme {
         ContributionList(
-            state = ContributionListState(
-                oneTimeContributions = persistentListOf(),
-                recurringContributions = persistentListOf(),
-                selectedContribution = null,
-                isRecurringContributionSelected = false,
+            state = State(
+                contributions = AvailableContributions.Empty,
+                selectedType = ContributionType.Recurring,
                 isLoading = true,
             ),
-            onOneTimeContributionTypeClick = {},
-            onRecurringContributionTypeClick = {},
-            onItemClick = {},
-            onRetryClick = {},
+            onEvent = {},
         )
     }
 }
@@ -132,20 +125,15 @@ internal fun ContributionListLoadingPreview() {
 internal fun ContributionListErrorPreview() {
     PreviewWithTheme {
         ContributionList(
-            state = ContributionListState(
-                oneTimeContributions = persistentListOf(),
-                recurringContributions = persistentListOf(),
-                selectedContribution = null,
-                isRecurringContributionSelected = false,
+            state = State(
+                contributions = AvailableContributions.Empty,
+                selectedType = ContributionType.Recurring,
                 isLoading = false,
                 error = FundingDomainContract.ContributionError.UnknownError(
                     "An error occurred",
                 ),
             ),
-            onOneTimeContributionTypeClick = {},
-            onRecurringContributionTypeClick = {},
-            onItemClick = {},
-            onRetryClick = {},
+            onEvent = {},
         )
     }
 }

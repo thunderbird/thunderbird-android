@@ -31,12 +31,15 @@ import net.thunderbird.core.outcome.mapFailure
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
-import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
 internal typealias OneTimeContributionOutcome = Outcome<List<OneTimeContribution>, ContributionError>
 internal typealias RecurringContributionOutcome = Outcome<List<RecurringContribution>, ContributionError>
+internal typealias PurchasedContributionOutcome = Outcome<PurchasedContribution?, ContributionError>
+internal typealias PurchasedContributionsOutcome = Outcome<List<PurchasedContribution>, ContributionError>
 
 @Suppress("TooManyFunctions")
 internal class BillingClient(
@@ -55,10 +58,10 @@ internal class BillingClient(
 
     private val coroutineScope = CoroutineScope(backgroundDispatcher)
 
-    private val _purchasedContribution = MutableStateFlow<Outcome<Contribution?, ContributionError>>(
+    private val _purchasedContribution = MutableStateFlow<Outcome<PurchasedContribution?, ContributionError>>(
         value = Outcome.success(null),
     )
-    override val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>> =
+    override val purchasedContribution: StateFlow<Outcome<PurchasedContribution?, ContributionError>> =
         _purchasedContribution.asStateFlow()
 
     override fun disconnect() {
@@ -70,7 +73,7 @@ internal class BillingClient(
         return oneTimeProductsResult.billingResult.mapToOutcome {
             oneTimeProductsResult.productDetailsList.orEmpty().map {
                 val contribution = productMapper.mapToOneTimeContribution(it)
-                productCache[it.productId] = it
+                productCache[ContributionId(it.productId)] = it
                 contribution
             }
         }.mapFailure { billingError, _ ->
@@ -88,7 +91,7 @@ internal class BillingClient(
         return recurringProductsResult.billingResult.mapToOutcome {
             recurringProductsResult.productDetailsList.orEmpty().map {
                 val contribution = productMapper.mapToRecurringContribution(it)
-                productCache[it.productId] = it
+                productCache[ContributionId(it.productId)] = it
                 contribution
             }
         }.mapFailure { billingError, _ ->
@@ -101,8 +104,11 @@ internal class BillingClient(
         }
     }
 
-    override suspend fun loadPurchasedOneTimeContributions(): OneTimeContributionOutcome {
+    override suspend fun loadPurchasedOneTimeContributions(): PurchasedContributionsOutcome {
         val purchasesResult = queryPurchase(ProductType.INAPP)
+        val productIds = purchasesResult.purchasesList.flatMap { it.products }.distinct()
+        loadMissingProducts(ProductType.INAPP, productIds)
+
         return purchasesResult.billingResult.mapToOutcome {
             purchaseHandler.handleOneTimePurchases(clientProvider, purchasesResult.purchasesList)
         }.mapFailure { billingError, _ ->
@@ -115,8 +121,11 @@ internal class BillingClient(
         }
     }
 
-    override suspend fun loadPurchasedRecurringContributions(): RecurringContributionOutcome {
+    override suspend fun loadPurchasedRecurringContributions(): PurchasedContributionsOutcome {
         val purchasesResult = queryPurchase(ProductType.SUBS)
+        val productIds = purchasesResult.purchasesList.flatMap { it.products }.distinct()
+        loadMissingProducts(ProductType.SUBS, productIds)
+
         return purchasesResult.billingResult.mapToOutcome {
             purchaseHandler.handleRecurringPurchases(clientProvider, purchasesResult.purchasesList)
         }.mapFailure { billingError, _ ->
@@ -129,21 +138,27 @@ internal class BillingClient(
         }
     }
 
-    override suspend fun loadPurchasedOneTimeContributionHistory(): Outcome<OneTimeContribution?, ContributionError> {
+    override suspend fun loadPurchasedOneTimeContributionHistory(): PurchasedContributionOutcome {
         val queryPurchaseHistoryParams = QueryPurchaseHistoryParams.newBuilder()
             .setProductType(ProductType.INAPP)
             .build()
 
         val purchasesResult = clientProvider.current.queryPurchaseHistory(queryPurchaseHistoryParams)
-        return purchasesResult.billingResult.mapToOutcome {
-            val recentPurchaseId =
-                purchasesResult.purchaseHistoryRecordList.orEmpty().firstOrNull()?.products?.firstOrNull {
-                    productCache.hasKey(it)
-                }
+        val purchase = purchasesResult.purchaseHistoryRecordList.orEmpty().firstOrNull()
+        val productIds = purchase?.products.orEmpty()
+        loadMissingProducts(ProductType.INAPP, productIds)
 
-            if (recentPurchaseId != null) {
-                val recentPurchase = productCache[recentPurchaseId]
-                productMapper.mapToOneTimeContribution(recentPurchase!!)
+        return purchasesResult.billingResult.mapToOutcome {
+            val productId = purchase?.products?.firstOrNull {
+                productCache.hasKey(ContributionId(it))
+            }
+            val productDetails = productId?.let { productCache[ContributionId(it)] }
+
+            if (purchase != null && productDetails != null) {
+                productMapper.mapHistoryToPurchasedContribution(
+                    purchase = purchase,
+                    productDetails = productDetails,
+                )
             } else {
                 logger.error(message = { "No recent purchase found: ${purchasesResult.billingResult.debugMessage}" })
                 null
@@ -155,6 +170,23 @@ internal class BillingClient(
                 },
             )
             billingError
+        }
+    }
+
+    private suspend fun loadMissingProducts(
+        productType: String,
+        productIds: List<String>,
+    ) {
+        val missingProductIds = productIds.filter { !productCache.hasKey(ContributionId(it)) }
+        if (missingProductIds.isNotEmpty()) {
+            val result = queryProducts(productType, missingProductIds)
+            if (result.billingResult.responseCode ==
+                com.android.billingclient.api.BillingClient.BillingResponseCode.OK
+            ) {
+                result.productDetailsList.orEmpty().forEach { productDetails ->
+                    productCache[ContributionId(productDetails.productId)] = productDetails
+                }
+            }
         }
     }
 
@@ -189,13 +221,13 @@ internal class BillingClient(
         return clientProvider.current.queryPurchasesAsync(queryPurchaseParams)
     }
 
-    override suspend fun purchaseContribution(contribution: Contribution): Outcome<Unit, ContributionError> {
-        val productDetails = productCache[contribution.id]
+    override suspend fun purchaseContribution(contributionId: ContributionId): Outcome<Unit, ContributionError> {
+        val productDetails = productCache[contributionId]
         val activity = activityProvider.getCurrent()
 
         return when {
             productDetails == null -> Outcome.failure(
-                ContributionError.PurchaseFailed("ProductDetails not found: ${contribution.id}"),
+                ContributionError.PurchaseFailed("ProductDetails not found for contributionId: $contributionId"),
             )
 
             activity == null -> Outcome.failure(
@@ -254,12 +286,13 @@ internal class BillingClient(
                     }
                 },
                 onFailure = { error ->
-                    logger.error(
-                        message = {
-                            "Error onPurchasesUpdated: " +
-                                "${billingResult.responseCode}: ${billingResult.debugMessage}"
-                        },
-                    )
+                    if (error is ContributionError.UserCancelled) {
+                        logger.debug(message = { "User cancelled the purchase flow" })
+                    } else if (error is ContributionError.PurchaseFailed) {
+                        logger.error(message = { "Purchase failed: ${error.message}" })
+                    } else {
+                        logger.error(message = { "Purchase failed with unknown error: ${error.message}" })
+                    }
                     _purchasedContribution.value = Outcome.failure(error)
                 },
             )

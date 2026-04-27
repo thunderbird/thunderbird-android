@@ -30,33 +30,34 @@ class BaseViewModelTest {
 
     @Test
     fun `should emit initial state`() = runTest {
-        val viewModel = TestBaseViewModel()
-        assertThat(viewModel.state.value).isEqualTo("Initial state")
+        val testSubject = TestBaseViewModel()
+
+        assertThat(testSubject.state.value).isEqualTo("Initial state")
     }
 
     @Test
     fun `should update state`() = runTest {
-        val viewModel = TestBaseViewModel()
+        val testSubject = TestBaseViewModel()
 
-        viewModel.event("Test event")
+        testSubject.event("Test event")
 
-        assertThat(viewModel.state.value).isEqualTo("Test event")
+        assertThat(testSubject.state.value).isEqualTo("Test event")
 
-        viewModel.event("Another test event")
+        testSubject.event("Another test event")
 
-        assertThat(viewModel.state.value).isEqualTo("Another test event")
+        assertThat(testSubject.state.value).isEqualTo("Another test event")
     }
 
     @Test
     fun `should emit effects`() = runTest {
-        val viewModel = TestBaseViewModel()
+        val testSubject = TestBaseViewModel()
 
-        viewModel.effect.test {
-            viewModel.event("Test effect")
+        testSubject.effect.test {
+            testSubject.effect("Test effect")
 
             assertThat(awaitItem()).isEqualTo("Test effect")
 
-            viewModel.event("Another test effect")
+            testSubject.effect("Another test effect")
 
             assertThat(awaitItem()).isEqualTo("Another test effect")
         }
@@ -64,10 +65,10 @@ class BaseViewModelTest {
 
     @Test
     fun `handleOneTimeEvent() should execute block`() = runTest {
-        val viewModel = TestBaseViewModel()
+        val testSubject = TestBaseViewModel()
         var eventHandled = false
 
-        viewModel.callHandleOneTimeEvent(event = "event") {
+        testSubject.callHandleOneTimeEvent(event = "event") {
             eventHandled = true
         }
 
@@ -76,11 +77,11 @@ class BaseViewModelTest {
 
     @Test
     fun `handleOneTimeEvent() should execute block only once`() = runTest {
-        val viewModel = TestBaseViewModel()
+        val testSubject = TestBaseViewModel()
         var eventHandledCount = 0
 
         repeat(2) {
-            viewModel.callHandleOneTimeEvent(event = "event") {
+            testSubject.callHandleOneTimeEvent(event = "event") {
                 eventHandledCount++
             }
         }
@@ -90,18 +91,18 @@ class BaseViewModelTest {
 
     @Test
     fun `handleOneTimeEvent() should support multiple one-time events`() = runTest {
-        val viewModel = TestBaseViewModel()
+        val testSubject = TestBaseViewModel()
         var eventOneHandled = false
         var eventTwoHandled = false
 
-        viewModel.callHandleOneTimeEvent(event = "eventOne") {
+        testSubject.callHandleOneTimeEvent(event = "eventOne") {
             eventOneHandled = true
         }
 
         assertThat(eventOneHandled).isTrue()
         assertThat(eventTwoHandled).isFalse()
 
-        viewModel.callHandleOneTimeEvent(event = "eventTwo") {
+        testSubject.callHandleOneTimeEvent(event = "eventTwo") {
             eventTwoHandled = true
         }
 
@@ -112,11 +113,14 @@ class BaseViewModelTest {
     private class TestBaseViewModel : BaseViewModel<String, String, String>("Initial state") {
         override fun event(event: String) {
             updateState { event }
-            emitEffect(event)
         }
 
         fun callHandleOneTimeEvent(event: String, block: () -> Unit) {
             handleOneTimeEvent(event, block)
+        }
+
+        fun effect(effect: String) {
+            emitEffect(effect)
         }
     }
 }

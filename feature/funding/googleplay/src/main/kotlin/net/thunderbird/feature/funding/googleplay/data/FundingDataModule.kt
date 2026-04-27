@@ -57,6 +57,7 @@ internal val fundingDataModule = module {
         RemoteContributionDataSource(
             billingConnector = get(),
             billingClient = get(),
+            logger = get(),
         )
     }
 
