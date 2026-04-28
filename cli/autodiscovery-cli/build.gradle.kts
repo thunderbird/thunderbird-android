@@ -12,7 +12,6 @@ dependencies {
     implementation(projects.feature.autodiscovery.api)
     implementation(projects.feature.autodiscovery.autoconfig)
 
-    implementation(libs.kotlinx.coroutines.core)
     implementation(libs.clikt)
     implementation(libs.kxml2)
 }
@@ -22,10 +21,12 @@ codeCoverage {
     lineCoverage = 0
 }
 
-tasks.withType<Tar> {
+tasks.named<Sync>("installDist") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-
-tasks.withType<Zip> {
+tasks.named<Zip>("distZip") {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+tasks.named<Tar>("distTar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
