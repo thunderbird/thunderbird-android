@@ -145,6 +145,8 @@
     <string name="notification_actions_settings_summary">Choose which actions appear in email notifications</string>
     <string name="notification_summary_delete_title">Show Delete on multi-message notifications</string>
     <string name="notification_summary_delete_summary">Adds a Delete action to notifications that summarize multiple new messages</string>
+    <string name="notification_show_contact_picture_title">Show contact pictures in notifications</string>
+    <string name="notification_show_contact_picture_summary">Display sender avatars in new message notifications</string>
     <string name="notification_actions_settings_description">Reorder notification actions.</string>
     <string name="notification_actions_cutoff_description">Shown actions cutoff</string>
     <string name="notification_actions_cutoff_state">Actions above this line are shown in the notification</string>

@@ -77,6 +77,10 @@ class DefaultNotificationPreferenceManager(
                 defValue = NOTIFICATION_PREFERENCE_DEFAULT_MESSAGE_ACTIONS_CUTOFF,
             ),
             isSummaryDeleteActionEnabled = isSummaryDeleteActionEnabled,
+            isShowContactPictureInNotification = storage.getBoolean(
+                key = KEY_SHOW_CONTACT_PICTURE_IN_NOTIFICATION,
+                defValue = NOTIFICATION_PREFERENCE_DEFAULT_IS_SHOW_CONTACT_PICTURE_IN_NOTIFICATION,
+            ),
             notificationQuickDeleteBehaviour = notificationQuickDeleteBehaviour,
             lockScreenNotificationVisibility = storage.getEnumOrDefault(
                 key = KEY_LOCK_SCREEN_NOTIFICATION_VISIBILITY,
@@ -125,6 +129,10 @@ class DefaultNotificationPreferenceManager(
                 )
                 storageEditor.putInt(KEY_MESSAGE_ACTIONS_CUTOFF, config.messageActionsCutoff)
                 storageEditor.putBoolean(KEY_IS_SUMMARY_DELETE_ACTION_ENABLED, config.isSummaryDeleteActionEnabled)
+                storageEditor.putBoolean(
+                    KEY_SHOW_CONTACT_PICTURE_IN_NOTIFICATION,
+                    config.isShowContactPictureInNotification,
+                )
                 storageEditor.putEnum(
                     KEY_NOTIFICATION_QUICK_DELETE_BEHAVIOUR,
                     config.notificationQuickDeleteBehaviour,
