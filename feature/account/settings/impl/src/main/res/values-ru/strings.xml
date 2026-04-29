@@ -23,7 +23,7 @@
     <string name="account_settings_general_avatar_image_select">Выбор изображения</string>
     <string name="account_settings_avatar_hint_jpeg_only">Только JPEG</string>
     <string name="account_settings_avatar_error_unsupported_format">Поддерживаются только изображения в формате JPEG.</string>
-    <string name="account_settings_show_pictures_label">Всегда показывать изображения</string>
+    <string name="account_settings_show_pictures_label">Показывать изображения</string>
     <string name="account_settings_reading_mail">Чтение</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Открытое прочитано</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Отметить сообщение прочитанным после просмотра</string>
