@@ -10,8 +10,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.os.SystemClock
-import android.print.PrintAttributes
-import android.print.PrintManager
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.Menu
@@ -50,7 +48,6 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.helper.HttpsUnsubscribeUri
 import com.fsck.k9.helper.MailtoUnsubscribeUri
 import com.fsck.k9.helper.UnsubscribeUri
-import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.MessageViewInfo
@@ -65,8 +62,6 @@ import com.fsck.k9.ui.messagesource.MessageSourceActivity
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.share.ShareIntentBuilder
-import com.fsck.k9.view.MessageWebView
-import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.time.Instant
 import kotlinx.collections.immutable.persistentListOf
@@ -479,96 +474,14 @@ class MessageViewFragment :
     }
 
     private fun printMessage() {
-        val context = context ?: return
-        val printManager = context.getSystemService(Context.PRINT_SERVICE) as? PrintManager ?: return
-
-        mMessageViewInfo?.let { messageInfo ->
-            val subject = messageInfo.message.subject ?: getString(R.string.general_no_subject)
-            val headerHtml = buildPrintHeaderHtml(messageInfo)
-            val bodyHtml = messageInfo.text ?: ""
-            val cleanBodyHtml = bodyHtml
-                .replace(Regex("(?i)<a\\b[^>]*>"), "")
-                .replace(Regex("(?i)</a>"), "")
-            val printWebView = MessageWebView(context)
-            val fullHtml = """
-        <html>
-        <head>
-            <style>
-                @page {
-                    margin: 24px;
-                }
-                .page-wrapper {
-                    padding: 24px;
-                    font-family: Arial, sans-serif;
-                    color: #000;
-                }
-                .page-wrapper > div p {
-                    margin: 4px 0;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="page-wrapper">
-                $headerHtml
-                $cleanBodyHtml
-            </div>
-        </body>
-        </html>
-            """.trimIndent()
-
-            printWebView.displayHtmlContentWithInlineAttachments(
-                htmlText = fullHtml,
-                attachmentResolver = null,
-                onPageFinishedListener = {
-                    val jobName = appNameProvider.appName + ": " + subject
-                    val printAdapter = printWebView.createPrintDocumentAdapter(jobName)
-                    printManager.print(jobName, printAdapter, PrintAttributes.Builder().build())
-                },
-            )
-        }
-    } private fun buildPrintHeaderHtml(messageInfo: MessageViewInfo): String {
-        val message = messageInfo.message
-        val subject = message.subject ?: getString(R.string.general_no_subject)
-        val subjectGood = subject
-            .replace("<", "&lt;")
-            .replace(">", "&gt;")
-        val from = message.from
-            ?.joinToString(", ") {
-                val email = it.address
-                val name = it.personal ?: ""
-                if (name.isNotBlank() && email.isNotBlank()) {
-                    "$name &lt;$email&gt;"
-                } else {
-                    email
-                }
-            } ?: ""
-
-        val to = message.getRecipients(Message.RecipientType.TO)
-            ?.joinToString(", ") {
-                val email = it.address
-                val name = it.personal ?: ""
-                if (name.isNotBlank() && email.isNotBlank()) {
-                    "$name &lt;$email&gt;"
-                } else {
-                    email ?: ""
-                }
-            } ?: ""
-
-        val date = message.sentDate?.let {
-            val formatter = SimpleDateFormat("M/d/yyyy, h:mm a", Locale.getDefault())
-            formatter.format(it)
-        } ?: ""
-
-        return """
-        <div style="font-size:15px; margin-bottom:16px;">
-            <p><b>Subject:</b> $subjectGood</p>
-            <p><b>From:</b> $from</p>
-            <p><b>Date:</b> $date</p>
-            <p><b>To:</b> $to</p>
-        </div>
-        <hr style="border:none; border-top:1px solid #ccc; margin:12px 0;">
-        """.trimIndent()
+        val messageViewInfo = mMessageViewInfo ?: return
+        MessagePrinter(
+            context = requireContext(),
+            appName = appNameProvider.appName,
+            noSubjectText = getString(R.string.general_no_subject),
+        ).print(messageViewInfo)
     }
+
     private fun onShowHeaders() {
         val launchIntent = MessageSourceActivity.createLaunchIntent(requireActivity(), messageReference)
         startActivity(launchIntent)
