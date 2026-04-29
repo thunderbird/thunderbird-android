@@ -12,7 +12,7 @@
     <string name="notification_certificate_error_public">Sertifikaadiviga</string>
     <string name="notification_certificate_error_title">Sertifikaadi viga kontol %1$s</string>
     <string name="notification_certificate_error_text">Kontrolli serveri seadistusi</string>
-    <string name="notification_bg_sync_ticker">Kontrollib e-kirju: %1$s:%2$s</string>
+    <string name="notification_bg_sync_ticker">E-kirjade kontroll: %1$s:%2$s</string>
     <string name="notification_bg_sync_title">Kontrollib e-kirju</string>
     <string name="notification_bg_send_ticker">Saadab e-kirja: %1$s</string>
     <string name="notification_bg_send_title">Saadab e-kirja</string>
@@ -33,7 +33,7 @@
     <string name="notification_action_delete_all">Kustuta kõik</string>
     <string name="notification_action_archive">Arhiveeri</string>
     <string name="notification_action_archive_all">Arhiveeri kõik</string>
-    <string name="notification_action_spam">Rämps</string>
+    <string name="notification_action_spam">Rämpspost</string>
     <string name="notification_authentication_incoming_server_error_text">Autentimine teenuses %1$s ei õnnestunud. Palun kontrolli saabuvate kirjade serveri seadistusi.</string>
     <string name="notification_authentication_outgoing_server_error_text">Autentimine teenuses %1$s ei õnnestunud. Palun kontrolli väljuvate kirjade serveri seadistusi.</string>
     <string name="notification_bg_sync_text">%1$s: %2$s</string>

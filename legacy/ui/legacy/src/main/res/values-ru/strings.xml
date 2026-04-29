@@ -324,7 +324,7 @@
     <string name="account_settings_notification_channels_label">Категории уведомлений</string>
     <string name="account_settings_open_notification_settings_messages_summary">Настройка уведомлений о новых сообщениях</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Настройка уведомлений об ошибках и статусе</string>
-    <string name="account_settings_show_pictures_label">Всегда показывать изображения</string>
+    <string name="account_settings_show_pictures_label">Показывать изображения</string>
     <string name="account_settings_show_pictures_never">Никогда</string>
     <string name="account_settings_show_pictures_only_from_contacts">От контактов</string>
     <string name="account_settings_show_pictures_always">Всегда</string>
