@@ -3,7 +3,6 @@ package com.fsck.k9.ui.settings.general
 import androidx.preference.PreferenceDataStore
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import com.fsck.k9.K9
-import com.fsck.k9.K9.PostMarkAsUnreadNavigation
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.base.AppLanguageManager
 import net.thunderbird.core.common.action.SwipeAction
@@ -17,6 +16,7 @@ import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
+import net.thunderbird.core.preference.interaction.PostMarkAsUnreadNavigation
 import net.thunderbird.core.preference.update
 
 @Suppress("LargeClass")
@@ -173,7 +173,7 @@ class GeneralSettingsDataStore(
             "swipe_action_left" -> swipeActionToString(interactionSettings.swipeActions.leftAction)
             "message_list_density" -> messageListSettings.uiDensity.toString()
             "post_remove_navigation" -> interactionSettings.messageViewPostRemoveNavigation
-            "post_mark_as_unread_navigation" -> K9.messageViewPostMarkAsUnreadNavigation.name
+            "post_mark_as_unread_navigation" -> interactionSettings.messageViewPostMarkAsUnreadNavigation.name
             else -> defValue
         }
     }
@@ -215,10 +215,7 @@ class GeneralSettingsDataStore(
             "swipe_action_left" -> updateSwipeAction(value) { swipeAction -> copy(leftAction = swipeAction) }
             "message_list_density" -> updateMessageListDensity(value)
             "post_remove_navigation" -> setMessageViewPostRemoveNavigation(value)
-            "post_mark_as_unread_navigation" -> {
-                K9.messageViewPostMarkAsUnreadNavigation = PostMarkAsUnreadNavigation.valueOf(value)
-            }
-
+            "post_mark_as_unread_navigation" -> setMessageViewPostMarkAsUnreadNavigation(value)
             else -> return
         }
 
@@ -742,6 +739,17 @@ class GeneralSettingsDataStore(
             settings.copy(
                 interaction = settings.interaction.copy(
                     messageViewPostRemoveNavigation = value,
+                ),
+            )
+        }
+    }
+
+    private fun setMessageViewPostMarkAsUnreadNavigation(value: String) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                interaction = settings.interaction.copy(
+                    messageViewPostMarkAsUnreadNavigation = PostMarkAsUnreadNavigation.valueOf(value),
                 ),
             )
         }
