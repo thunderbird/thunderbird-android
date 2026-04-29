@@ -700,7 +700,6 @@
     <string name="account_setup_push_limit_1000">1000 folders</string>
 
     <string name="animations_title">Animation</string>
-    <string name="animations_summary">Use gaudy visual effects</string>
     <string name="animation_setting_on">On</string>
     <string name="animation_setting_off">Off</string>
     <string name="animation_setting_follow_system">Use system default</string>
