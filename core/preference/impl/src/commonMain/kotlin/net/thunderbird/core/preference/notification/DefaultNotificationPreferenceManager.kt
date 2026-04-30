@@ -31,7 +31,7 @@ class DefaultNotificationPreferenceManager(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
     preferenceChangeBroker: PreferenceChangeBroker,
-) : NotificationPreferenceManager, PreferenceChangeSubscriber {
+) : NotificationPreferenceManager, PreferenceChangeSubscriber  {
 
     init {
         preferenceChangeBroker.subscribe(this)
