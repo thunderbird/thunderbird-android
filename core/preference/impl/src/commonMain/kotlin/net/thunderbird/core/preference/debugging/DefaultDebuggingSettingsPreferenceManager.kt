@@ -14,6 +14,9 @@ import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.LogLevelManager
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangeSubscriber
+import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
@@ -28,7 +31,12 @@ class DefaultDebuggingSettingsPreferenceManager(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
     private val platformConfigProvider: PlatformConfigProvider,
-) : DebuggingSettingsPreferenceManager {
+    preferenceChangeBroker: PreferenceChangeBroker,
+) : DebuggingSettingsPreferenceManager, PreferenceChangeSubscriber {
+
+    init {
+        preferenceChangeBroker.subscribe(this)
+    }
     private val configState: MutableStateFlow<DebuggingSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
     private val storage: Storage
@@ -77,6 +85,12 @@ class DefaultDebuggingSettingsPreferenceManager(
             logLevelManager.override(LogLevel.VERBOSE)
         } else {
             logLevelManager.restoreDefault()
+        }
+    }
+
+    override fun receive(scope: PreferenceScope) {
+        if(scope == PreferenceScope.ALL || scope == PreferenceScope.DEBUGGING) {
+            configState.update { loadConfig() }
         }
     }
 }
