@@ -12,6 +12,7 @@ internal fun TbOnboardingMigrationScreenPreview() {
     ThunderbirdTheme2 {
         Surface {
             TbOnboardingMigrationScreen(
+                onThundermailClick = {},
                 onQrCodeScan = {},
                 onAddAccount = {},
                 onImport = {},

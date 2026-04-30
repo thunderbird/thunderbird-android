@@ -53,6 +53,7 @@ import org.koin.compose.koinInject
 @Composable
 internal fun TbOnboardingMigrationScreen(
     onQrCodeScan: () -> Unit,
+    onThundermailClick: () -> Unit,
     onAddAccount: () -> Unit,
     onImport: () -> Unit,
     modifier: Modifier = Modifier,
@@ -85,7 +86,7 @@ internal fun TbOnboardingMigrationScreen(
                 )
 
                 ThundermailButtonPanel(
-                    onThundermailClick = { },
+                    onThundermailClick = onThundermailClick,
                     onScanQrCodeClick = onQrCodeScan,
                     modifier = Modifier.padding(bottom = MainTheme.spacings.quadruple),
                 )

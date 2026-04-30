@@ -6,9 +6,9 @@ import net.thunderbird.core.ui.navigation.Route
 @Serializable
 sealed interface ThundermailRoute : Route {
     companion object {
-        const val BASE_PATH = "app://thundermail"
-        const val SIGN_IN_WITH_THUNDERMAIL_ROUTE = "$BASE_PATH/sign-in"
-        const val SCAN_QR_CODE_ROUTE = "$BASE_PATH/scan-qr-code"
+        private const val BASE_PATH = "app://thundermail"
+        internal const val SIGN_IN_WITH_THUNDERMAIL_ROUTE = "$BASE_PATH/sign-in"
+        internal const val SCAN_QR_CODE_ROUTE = "$BASE_PATH/scan-qr-code"
     }
 
     @Serializable

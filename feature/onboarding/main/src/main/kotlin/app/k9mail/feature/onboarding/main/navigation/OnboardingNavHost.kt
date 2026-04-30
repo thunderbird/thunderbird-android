@@ -16,6 +16,7 @@ import app.k9mail.feature.onboarding.permissions.ui.PermissionsScreen
 import app.k9mail.feature.onboarding.welcome.ui.WelcomeScreen
 import app.k9mail.feature.settings.import.ui.SettingsImportAction
 import app.k9mail.feature.settings.import.ui.SettingsImportScreen
+import net.thunderbird.feature.thundermail.navigation.ThundermailRoute
 import org.koin.compose.koinInject
 
 private const val NESTED_NAVIGATION_ROUTE_WELCOME = "welcome"
@@ -84,6 +85,7 @@ fun OnboardingNavHost(
         composable(route = NESTED_NAVIGATION_ROUTE_MIGRATION) {
             onboardingMigrationManager.OnboardingMigrationScreen(
                 onQrCodeScan = { navController.navigateToSettingsImportQrCode() },
+                onThundermailClick = { navController.navigate(ThundermailRoute.SignInWithThundermail) },
                 onAddAccount = { navController.navigateToAccountSetup() },
                 onImport = { navController.navigateToSettingsImport() },
             )
