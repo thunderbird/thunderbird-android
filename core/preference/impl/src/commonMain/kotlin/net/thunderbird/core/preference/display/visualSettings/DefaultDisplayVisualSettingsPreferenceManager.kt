@@ -15,6 +15,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangeSubscriber
+import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
@@ -31,7 +34,12 @@ class DefaultDisplayVisualSettingsPreferenceManager(
     private val messageListPreferences: MessageListPreferencesManager,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob()),
-) : DisplayVisualSettingsPreferenceManager {
+    preferenceChangeBroker: PreferenceChangeBroker,
+) : DisplayVisualSettingsPreferenceManager, PreferenceChangeSubscriber {
+
+    init {
+        preferenceChangeBroker.subscribe(this)
+    }
 
     private val internalConfigState = MutableStateFlow(value = loadConfig())
     private val configState: StateFlow<DisplayVisualSettings> = combine(
@@ -136,4 +144,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
     override fun getConfig() = configState.value
 
     override fun getConfigFlow(): Flow<DisplayVisualSettings> = configState
+
+    override fun receive(scope: PreferenceScope) {
+        if (scope == PreferenceScope.ALL || scope == PreferenceScope.DISPLAY_VISUAL) {
+            internalConfigState.update { loadConfig() }
+        }
+    }
 }
