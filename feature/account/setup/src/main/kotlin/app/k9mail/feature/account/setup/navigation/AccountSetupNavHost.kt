@@ -26,8 +26,7 @@ import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsScreen
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsViewModel
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersScreen
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersViewModel
-import app.k9mail.feature.settings.import.ui.SettingsImportAction
-import app.k9mail.feature.settings.import.ui.SettingsImportScreen
+import net.thunderbird.feature.thundermail.navigation.ThundermailRoute
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
@@ -40,7 +39,6 @@ private const val NESTED_NAVIGATION_SPECIAL_FOLDERS = "special-folders"
 private const val NESTED_NAVIGATION_DISPLAY_OPTIONS = "display-options"
 private const val NESTED_NAVIGATION_SYNC_OPTIONS = "sync-options"
 private const val NESTED_NAVIGATION_CREATE_ACCOUNT = "create-account"
-private const val NESTED_NAVIGATION_SIGN_IN_THUNDERMAIL = "sign-in-thundermail"
 
 @Suppress("LongMethod")
 @Composable
@@ -68,7 +66,7 @@ fun AccountSetupNavHost(
                     }
                 },
                 onBack = onBack,
-                onThundermailClick = { navController.navigate(NESTED_NAVIGATION_SIGN_IN_THUNDERMAIL) },
+                onThundermailClick = { navController.navigate(ThundermailRoute.ScanQrCode) },
                 viewModel = koinViewModel<AccountAutoDiscoveryViewModel>(),
                 brandNameProvider = koinInject(),
             )
@@ -180,14 +178,6 @@ fun AccountSetupNavHost(
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<CreateAccountViewModel>(),
                 brandNameProvider = koinInject(),
-            )
-        }
-
-        composable(route = NESTED_NAVIGATION_SIGN_IN_THUNDERMAIL) {
-            SettingsImportScreen(
-                action = SettingsImportAction.ScanQrCode,
-                onImportSuccess = { onFinish(AccountSetupRoute.AccountSetup(null)) },
-                onBack = { navController.popBackStack() },
             )
         }
     }

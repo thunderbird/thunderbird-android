@@ -37,6 +37,8 @@ dependencies {
     implementation(projects.feature.settings.import)
     api(projects.feature.account.server.validation)
 
+    implementation(projects.feature.thundermail.api)
+
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)
 

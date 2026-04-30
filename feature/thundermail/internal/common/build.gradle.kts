@@ -13,6 +13,8 @@ android {
 
 dependencies {
     implementation(projects.core.logging.api)
+    implementation(projects.core.ui.navigation)
+    implementation(projects.feature.settings.import)
     implementation(projects.feature.thundermail.api)
 }
 
