@@ -2,8 +2,19 @@ package net.thunderbird.core.preference.debugging
 
 import net.thunderbird.core.preference.PreferenceManager
 
-const val KEY_ENABLE_DEBUG_LOGGING = "enableDebugLogging"
-const val KEY_ENABLE_SYNC_DEBUG_LOGGING = "enableSyncDebugLogging"
-const val KEY_ENABLE_SENSITIVE_LOGGING = "enableSensitiveLogging"
+enum class DebugSettingKey(val value: String) {
+
+    EnableDebugLogging("enableDebugLogging"),
+    EnableSyncDebugLogging("enableSyncDebugLogging"),
+    EnableSensitiveLogging("enableSensitiveLogging"),
+    ;
+
+    companion object {
+
+        fun isValid(value: String): Boolean {
+            return entries.any { it.value == value }
+        }
+    }
+}
 
 interface DebuggingSettingsPreferenceManager : PreferenceManager<DebuggingSettings>
