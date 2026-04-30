@@ -61,6 +61,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DisplayCoreSettingsPreferenceManager> {

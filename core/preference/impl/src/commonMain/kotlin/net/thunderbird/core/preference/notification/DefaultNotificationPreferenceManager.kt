@@ -31,7 +31,7 @@ class DefaultNotificationPreferenceManager(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
     preferenceChangeBroker: PreferenceChangeBroker,
-) : NotificationPreferenceManager, PreferenceChangeSubscriber {
+) : NotificationPreferenceManager, PreferenceChangeSubscriber  {
 
     init {
         preferenceChangeBroker.subscribe(this)
@@ -86,7 +86,7 @@ class DefaultNotificationPreferenceManager(
             ),
             isSummaryDeleteActionEnabled = isSummaryDeleteActionEnabled,
             isShowContactPictureInNotification = storage.getBoolean(
-                key = KEY_SHOW_CONTACT_PICTURE_IN_NOTIFICATION,
+                key = NotificationSettingKey.ShowContactPictureInNotification.value,
                 defValue = NOTIFICATION_PREFERENCE_DEFAULT_IS_SHOW_CONTACT_PICTURE_IN_NOTIFICATION,
             ),
             notificationQuickDeleteBehaviour = notificationQuickDeleteBehaviour,
@@ -141,7 +141,7 @@ class DefaultNotificationPreferenceManager(
                     config.isSummaryDeleteActionEnabled,
                 )
                 storageEditor.putBoolean(
-                    KEY_SHOW_CONTACT_PICTURE_IN_NOTIFICATION,
+                    NotificationSettingKey.ShowContactPictureInNotification.value,
                     config.isShowContactPictureInNotification,
                 )
                 storageEditor.putEnum(
