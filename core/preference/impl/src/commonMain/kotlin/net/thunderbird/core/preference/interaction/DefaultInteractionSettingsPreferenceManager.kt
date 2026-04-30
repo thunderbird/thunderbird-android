@@ -12,6 +12,9 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangeSubscriber
+import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
@@ -26,7 +29,12 @@ class DefaultInteractionSettingsPreferenceManager(
     private val storageEditor: StorageEditor,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
-) : InteractionSettingsPreferenceManager {
+    preferenceChangeBroker: PreferenceChangeBroker,
+) : InteractionSettingsPreferenceManager, PreferenceChangeSubscriber {
+
+    init {
+        preferenceChangeBroker.subscribe(this)
+    }
     private val configState: MutableStateFlow<InteractionSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
 
@@ -107,6 +115,12 @@ class DefaultInteractionSettingsPreferenceManager(
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
             }
+        }
+    }
+
+    override fun receive(scope: PreferenceScope) {
+        if(scope == PreferenceScope.ALL || scope == PreferenceScope.INTERACTION) {
+            configState.update { loadConfig() }
         }
     }
 }
