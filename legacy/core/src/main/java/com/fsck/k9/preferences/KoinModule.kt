@@ -83,7 +83,6 @@ val preferencesModule = module {
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
             messageListPreferences = get(),
-            preferenceChangeBroker = get(),
         )
     }
     single<DisplayMiscSettingsPreferenceManager> {
