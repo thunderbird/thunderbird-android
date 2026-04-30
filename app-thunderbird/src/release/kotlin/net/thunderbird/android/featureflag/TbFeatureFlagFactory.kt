@@ -10,6 +10,7 @@ import net.thunderbird.core.featureflag.toFeatureFlagKey
 import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 import net.thunderbird.feature.mail.message.list.MessageListFeatureFlags
 import net.thunderbird.feature.mail.message.reader.api.MessageReaderFeatureFlags
+import net.thunderbird.feature.thundermail.featureflag.ThundermailFeatureFlags
 
 /**
  * Feature flags for Thunderbird (release)
@@ -31,6 +32,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
                 FeatureFlag(MessageListFeatureFlags.EnableMessageListNewState, enabled = false),
                 FeatureFlag(MessageReaderFeatureFlags.UseComposeForMessageReader, enabled = false),
+                FeatureFlag(ThundermailFeatureFlags.ThundermailOnboardingEnabled, enabled = false),
             ),
         )
     }
