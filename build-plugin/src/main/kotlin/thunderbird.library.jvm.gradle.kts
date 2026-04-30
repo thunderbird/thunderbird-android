@@ -20,6 +20,13 @@ tasks.withType<Jar> {
     archiveBaseName.set(projectDotPath)
 }
 
+tasks.withType<Test> {
+    jvmArgs(
+        "-XX:+EnableDynamicAgentLoading",
+        "-Djdk.attach.allowAttachSelf=true",
+    )
+}
+
 configureKotlinJavaCompatibility()
 
 dependencies {
