@@ -68,6 +68,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DisplayInboxSettingsPreferenceManager> {
@@ -75,6 +76,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DisplayVisualSettingsPreferenceManager> {
@@ -83,6 +85,7 @@ val preferencesModule = module {
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
             messageListPreferences = get(),
+            preferenceChangeBroker = get(),
         )
     }
     single<DisplayMiscSettingsPreferenceManager> {
@@ -90,6 +93,7 @@ val preferencesModule = module {
             logger = get(),
             storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
+            preferenceChangeBroker = get(),
         )
     }
     single<InteractionSettingsPreferenceManager> {
@@ -113,6 +117,7 @@ val preferencesModule = module {
             logger = get(),
             storage = get(),
             storageEditor = get(),
+            preferenceChangeBroker = get(),
         )
     }
     single<NetworkSettingsPreferenceManager> {
