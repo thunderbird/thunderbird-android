@@ -13,13 +13,5 @@ enum class NotificationSettingKey(val value: String) {
     IsSummaryDeleteActionEnabled("isSummaryDeleteActionEnabled"),
     NotificationQuickDeleteBehaviour("notificationQuickDelete"),
     LockScreenNotificationVisibility("lockScreenNotificationVisibility"),
-    ;
-
-    companion object {
-
-        fun isValid(value: String): Boolean {
-            return entries.any { it.value == value }
-        }
-    }
 }
 interface NotificationPreferenceManager : PreferenceManager<NotificationPreference>

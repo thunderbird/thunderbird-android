@@ -14,14 +14,6 @@ enum class DisplayVisualSettingKey(val value: String) {
     MessageViewMoveActionVisible("messageViewMoveActionVisible"),
     MessageViewCopyActionVisible("messageViewCopyActionVisible"),
     MessageViewSpamActionVisible("messageViewSpamActionVisible"),
-    ;
-
-    companion object {
-
-        fun isValid(value: String): Boolean {
-            return entries.any { it.value == value }
-        }
-    }
 }
 
 interface DisplayVisualSettingsPreferenceManager : PreferenceManager<DisplayVisualSettings>

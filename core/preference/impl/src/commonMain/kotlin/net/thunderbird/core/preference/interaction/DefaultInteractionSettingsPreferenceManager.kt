@@ -60,7 +60,7 @@ class DefaultInteractionSettingsPreferenceManager(
             INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_REMOVE_NAVIGATION,
         ),
         messageViewPostMarkAsUnreadNavigation = storage.getEnumOrDefault(
-            KEY_MESSAGE_VIEW_POST_MARK_AS_UNREAD_ACTION,
+            InteractionSettingKey.MessageViewPostMarkAsRead.value,
             INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_MARK_AS_UNREAD_NAVIGATION,
         ),
         swipeActions = SwipeActions(
@@ -112,7 +112,7 @@ class DefaultInteractionSettingsPreferenceManager(
                     config.messageViewPostRemoveNavigation,
                 )
                 storageEditor.putEnum(
-                    KEY_MESSAGE_VIEW_POST_MARK_AS_UNREAD_ACTION,
+                    InteractionSettingKey.MessageViewPostMarkAsRead.value,
                     config.messageViewPostMarkAsUnreadNavigation,
                 )
                 storageEditor.putEnum(InteractionSettingKey.SwipeActionLeft.value, config.swipeActions.leftAction)
