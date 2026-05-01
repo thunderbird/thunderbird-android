@@ -1,22 +1,26 @@
 package app.k9mail.feature.onboarding.migration.thunderbird
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.testing.setContentWithTheme
+import app.k9mail.core.ui.compose.testing.setContentWithKoinAndTheme
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import net.thunderbird.core.common.provider.BrandNameProvider
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.FeatureFlagResult
 import org.junit.Test
 
 class TbOnboardingMigrationScreenKtTest : ComposeTest() {
     @Test
     fun `pressing QrCodeImportButton should call onQrCodeScan`() = runComposeTest {
         var qrCodeScanClickCounter = 0
-        setContentWithTheme {
+        setContentWithFeatureFlag {
             TbOnboardingMigrationScreen(
                 onQrCodeScan = { qrCodeScanClickCounter++ },
+                onThundermailClick = { error("Should not be called") },
                 onAddAccount = { error("Should not be called") },
                 onImport = { error("Should not be called") },
                 brandNameProvider = FakeBrandNameProvider,
@@ -33,9 +37,10 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
     @Test
     fun `pressing AddAccountButton button should call onAddAccount`() = runComposeTest {
         var addAccountClickCounter = 0
-        setContentWithTheme {
+        setContentWithFeatureFlag {
             TbOnboardingMigrationScreen(
                 onQrCodeScan = { error("Should not be called") },
+                onThundermailClick = { error("Should not be called") },
                 onAddAccount = { addAccountClickCounter++ },
                 onImport = { error("Should not be called") },
                 brandNameProvider = FakeBrandNameProvider,
@@ -52,9 +57,10 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
     @Test
     fun `pressing ImportButton button should call onImport`() = runComposeTest {
         var importClickCounter = 0
-        setContentWithTheme {
+        setContentWithFeatureFlag {
             TbOnboardingMigrationScreen(
                 onQrCodeScan = { error("Should not be called") },
+                onThundermailClick = { error("Should not be called") },
                 onAddAccount = { error("Should not be called") },
                 onImport = { importClickCounter++ },
                 brandNameProvider = FakeBrandNameProvider,
@@ -67,6 +73,15 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
 
         assertThat(importClickCounter).isEqualTo(1)
     }
+
+    private fun setContentWithFeatureFlag(content: @Composable () -> Unit) = setContentWithKoinAndTheme(
+        modules = {
+            single<FeatureFlagProvider> {
+                FeatureFlagProvider { FeatureFlagResult.Unavailable }
+            }
+        },
+        content = content,
+    )
 }
 
 private object FakeBrandNameProvider : BrandNameProvider {

@@ -44,6 +44,7 @@ dependencies {
 
     testImplementation(platform(libs.forkhandles.bom))
     testImplementation(libs.forkhandles.fabrikate4k)
+    testImplementation(projects.core.featureflag)
 }
 
 codeCoverage {

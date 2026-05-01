@@ -1,7 +1,8 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
+import androidx.compose.runtime.Composable
 import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.testing.setContentWithTheme
+import app.k9mail.core.ui.compose.testing.setContentWithKoinAndTheme
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.setup.ui.FakeBrandNameProvider
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
@@ -9,6 +10,8 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.FeatureFlagResult
 import org.junit.Test
 
 class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
@@ -22,7 +25,7 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
         var onThundermailClick = 0
         var onScanQrCodeClick = 0
 
-        setContentWithTheme {
+        setContent {
             AccountAutoDiscoveryScreen(
                 onNext = { onNextCounter++ },
                 onBack = { onBackCounter++ },
@@ -57,4 +60,13 @@ class AccountAutoDiscoveryScreenKtTest : ComposeTest() {
         assertThat(onThundermailClick).isEqualTo(0)
         assertThat(onScanQrCodeClick).isEqualTo(0)
     }
+
+    private fun setContent(content: @Composable () -> Unit) = setContentWithKoinAndTheme(
+        modules = {
+            single<FeatureFlagProvider> {
+                FeatureFlagProvider { FeatureFlagResult.Unavailable }
+            }
+        },
+        content = content,
+    )
 }
