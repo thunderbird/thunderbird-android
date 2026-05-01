@@ -37,7 +37,7 @@ fun ThundermailButtonPanel(
         ) {
             FlowRow(
                 horizontalArrangement = Arrangement.Center,
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
             ) {
                 ButtonOutlined(
                     text = stringResource(R.string.designsystem_organism_thundermail_button_panel_sign_in),
