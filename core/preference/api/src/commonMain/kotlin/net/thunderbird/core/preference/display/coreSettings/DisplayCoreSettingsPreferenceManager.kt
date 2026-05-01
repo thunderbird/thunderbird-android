@@ -10,14 +10,6 @@ enum class DisplayCoreSettingKey(val value: String) {
     AppLanguage("language"),
     SplitViewMode("splitViewMode"),
     Theme("theme"),
-    ;
-
-    companion object {
-
-        fun isValid(value: String): Boolean {
-            return entries.any { it.value == value }
-        }
-    }
 }
 
 interface DisplayCoreSettingsPreferenceManager : PreferenceManager<DisplayCoreSettings>

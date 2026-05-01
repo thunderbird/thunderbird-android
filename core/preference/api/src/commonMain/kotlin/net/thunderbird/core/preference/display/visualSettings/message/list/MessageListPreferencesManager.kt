@@ -14,14 +14,6 @@ enum class DisplayMessageListSettingKey(val value: String) {
     MessageListDensity("messageListDensity"),
     RegisteredNameColor("registeredNameColor"),
     MessageListDateTimeFormat("messageListDateTimeFormat"),
-    ;
-
-    companion object {
-
-        fun isValid(value: String): Boolean {
-            return entries.any { it.value == value }
-        }
-    }
 }
 
 interface MessageListPreferencesManager : PreferenceManager<DisplayMessageListSettings>

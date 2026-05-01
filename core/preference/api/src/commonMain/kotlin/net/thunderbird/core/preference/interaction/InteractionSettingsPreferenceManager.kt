@@ -14,14 +14,7 @@ enum class InteractionSettingKey(val value: String) {
     ConfirmSpam("confirmSpam"),
     ConfirmDeleteFromNotification("confirmDeleteFromNotification"),
     ConfirmMarkAllRead("confirmMarkAllRead"),
-    ;
-
-    companion object {
-
-        fun isValid(value: String): Boolean {
-            return entries.any { it.value == value }
-        }
-    }
+    MessageViewPostMarkAsRead("messageViewPostMarkAsReadAction"),
 }
 
 interface InteractionSettingsPreferenceManager : PreferenceManager<InteractionSettings>
