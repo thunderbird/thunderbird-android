@@ -8,11 +8,4 @@ enum class NetworkSettingKey(val value: String) {
     ;
 }
 
-    companion object {
-
-        fun isValid(value: String): Boolean {
-            return entries.any { it.value == value }
-        }
-    }
-}
 interface NetworkSettingsPreferenceManager : PreferenceManager<NetworkSettings>

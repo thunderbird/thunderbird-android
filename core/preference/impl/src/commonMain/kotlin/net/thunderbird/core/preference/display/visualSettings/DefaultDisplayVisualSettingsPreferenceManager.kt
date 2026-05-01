@@ -60,43 +60,43 @@ class DefaultDisplayVisualSettingsPreferenceManager(
 
     private fun loadConfig(): DisplayVisualSettings = DisplayVisualSettings(
         isUseMessageViewFixedWidthFont = storage.getBoolean(
-            KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT,
+            DisplayVisualSettingKey.MessageViewFixedWidthFont.value,
             DISPLAY_SETTINGS_DEFAULT_IS_USE_MESSAGE_VIEW_FIXED_WIDTH_FONT,
         ),
         isAutoFitWidth = storage.getBoolean(
-            KEY_AUTO_FIT_WIDTH,
+            DisplayVisualSettingKey.AutoFitWidth.value,
             DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH,
         ),
         isShowAnimations = storage.getBoolean(
-            KEY_ANIMATION,
+            DisplayVisualSettingKey.Animation.value,
             DISPLAY_SETTINGS_DEFAULT_IS_SHOW_ANIMATION,
         ),
         bodyContentType = storage.getEnumOrDefault(
-            KEY_MESSAGE_VIEW_BODY_CONTENT_TYPE,
+            DisplayVisualSettingKey.MessageViewBodyContentType.value,
             DISPLAY_SETTINGS_DEFAULT_BODY_CONTENT_TYPE,
         ),
         drawerExpandAllFolder = storage.getBoolean(
-            KEY_DRAWER_EXPAND_ALL_FOLDER,
+            DisplayVisualSettingKey.DrawerExpandAllFolder.value,
             DISPLAY_SETTINGS_DEFAULT_DRAWER_EXPAND_ALL_FOLDER,
         ),
         isMessageViewArchiveActionVisible = storage.getBoolean(
-            KEY_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
+            DisplayVisualSettingKey.MessageViewArchiveActionVisible.value,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
         ),
         isMessageViewDeleteActionVisible = storage.getBoolean(
-            KEY_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
+            DisplayVisualSettingKey.MessageViewDeleteActionVisible.value,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
         ),
         isMessageViewMoveActionVisible = storage.getBoolean(
-            KEY_MESSAGE_VIEW_MOVE_ACTION_VISIBLE,
+            DisplayVisualSettingKey.MessageViewMoveActionVisible.value,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_MOVE_ACTION_VISIBLE,
         ),
         isMessageViewCopyActionVisible = storage.getBoolean(
-            KEY_MESSAGE_VIEW_COPY_ACTION_VISIBLE,
+            DisplayVisualSettingKey.MessageViewCopyActionVisible.value,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_COPY_ACTION_VISIBLE,
         ),
         isMessageViewSpamActionVisible = storage.getBoolean(
-            KEY_MESSAGE_VIEW_SPAM_ACTION_VISIBLE,
+            DisplayVisualSettingKey.MessageViewSpamActionVisible.value,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_SPAM_ACTION_VISIBLE,
         ),
     )
@@ -105,33 +105,36 @@ class DefaultDisplayVisualSettingsPreferenceManager(
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
-                storageEditor.putBoolean(KEY_ANIMATION, config.isShowAnimations)
+                storageEditor.putBoolean(DisplayVisualSettingKey.Animation.value, config.isShowAnimations)
                 storageEditor.putBoolean(
-                    KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT,
+                    DisplayVisualSettingKey.MessageViewFixedWidthFont.value,
                     config.isUseMessageViewFixedWidthFont,
                 )
-                storageEditor.putBoolean(KEY_AUTO_FIT_WIDTH, config.isAutoFitWidth)
-                storageEditor.putEnum(KEY_MESSAGE_VIEW_BODY_CONTENT_TYPE, config.bodyContentType)
-                storageEditor.putBoolean(KEY_DRAWER_EXPAND_ALL_FOLDER, config.drawerExpandAllFolder)
+                storageEditor.putBoolean(DisplayVisualSettingKey.AutoFitWidth.value, config.isAutoFitWidth)
+                storageEditor.putEnum(DisplayVisualSettingKey.MessageViewBodyContentType.value, config.bodyContentType)
+                storageEditor.putBoolean(
+                    DisplayVisualSettingKey.DrawerExpandAllFolder.value,
+                    config.drawerExpandAllFolder,
+                )
                 messageListPreferences.save(config.messageListSettings)
                 storageEditor.putBoolean(
-                    KEY_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE,
+                    DisplayVisualSettingKey.MessageViewArchiveActionVisible.value,
                     config.isMessageViewArchiveActionVisible,
                 )
                 storageEditor.putBoolean(
-                    KEY_MESSAGE_VIEW_DELETE_ACTION_VISIBLE,
+                    DisplayVisualSettingKey.MessageViewDeleteActionVisible.value,
                     config.isMessageViewDeleteActionVisible,
                 )
                 storageEditor.putBoolean(
-                    KEY_MESSAGE_VIEW_MOVE_ACTION_VISIBLE,
+                    DisplayVisualSettingKey.MessageViewMoveActionVisible.value,
                     config.isMessageViewMoveActionVisible,
                 )
                 storageEditor.putBoolean(
-                    KEY_MESSAGE_VIEW_COPY_ACTION_VISIBLE,
+                    DisplayVisualSettingKey.MessageViewCopyActionVisible.value,
                     config.isMessageViewCopyActionVisible,
                 )
                 storageEditor.putBoolean(
-                    KEY_MESSAGE_VIEW_SPAM_ACTION_VISIBLE,
+                    DisplayVisualSettingKey.MessageViewSpamActionVisible.value,
                     config.isMessageViewSpamActionVisible,
                 )
                 storageEditor.commit().also { commited ->

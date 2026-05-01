@@ -52,11 +52,11 @@ class DefaultInteractionSettingsPreferenceManager(
 
     private fun loadConfig(): InteractionSettings = InteractionSettings(
         useVolumeKeysForNavigation = storage.getBoolean(
-            KEY_USE_VOLUME_KEYS_FOR_NAVIGATION,
+            InteractionSettingKey.UseVolumeKeysForNavigation.value,
             INTERACTION_SETTINGS_DEFAULT_USE_VOLUME_KEYS_NAVIGATION,
         ),
         messageViewPostRemoveNavigation = storage.getStringOrDefault(
-            KEY_MESSAGE_VIEW_POST_DELETE_ACTION,
+            InteractionSettingKey.MessageViewPostDeleteAction.value,
             INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_REMOVE_NAVIGATION,
         ),
         messageViewPostMarkAsUnreadNavigation = storage.getEnumOrDefault(
@@ -65,30 +65,36 @@ class DefaultInteractionSettingsPreferenceManager(
         ),
         swipeActions = SwipeActions(
             leftAction = storage.getEnumOrDefault(
-                key = KEY_SWIPE_ACTION_LEFT,
+                key = InteractionSettingKey.SwipeActionLeft.value,
                 default = INTERACTION_SETTINGS_DEFAULT_SWIPE_ACTION.leftAction,
             ),
             rightAction = storage.getEnumOrDefault(
-                key = KEY_SWIPE_ACTION_RIGHT,
+                key = InteractionSettingKey.SwipeActionRight.value,
                 default = INTERACTION_SETTINGS_DEFAULT_SWIPE_ACTION.rightAction,
             ),
         ),
-        isConfirmDelete = storage.getBoolean(KEY_CONFIRM_DELETE, INTERACTION_SETTINGS_DEFAULT_CONFIRM_DELETE),
+        isConfirmDelete = storage.getBoolean(
+            InteractionSettingKey.ConfirmDelete.value,
+            INTERACTION_SETTINGS_DEFAULT_CONFIRM_DELETE,
+        ),
         isConfirmDeleteStarred = storage.getBoolean(
-            KEY_CONFIRM_DELETE_STARRED,
+            InteractionSettingKey.ConfirmDeleteStarred.value,
             INTERACTION_SETTINGS_DEFAULT_CONFIRM_DELETE_STARRED,
         ),
         isConfirmDeleteFromNotification = storage.getBoolean(
-            KEY_CONFIRM_DELETE_FROM_NOTIFICATION,
+            InteractionSettingKey.ConfirmDeleteFromNotification.value,
             INTERACTION_SETTINGS_DEFAULT_CONFIRM_DELETE_FROM_NOTIFICATION,
         ),
-        isConfirmSpam = storage.getBoolean(KEY_CONFIRM_SPAM, INTERACTION_SETTINGS_DEFAULT_CONFIRM_SPAM),
+        isConfirmSpam = storage.getBoolean(
+            InteractionSettingKey.ConfirmSpam.value,
+            INTERACTION_SETTINGS_DEFAULT_CONFIRM_SPAM,
+        ),
         isConfirmDiscardMessage = storage.getBoolean(
-            KEY_CONFIRM_DISCARD_MESSAGE,
+            InteractionSettingKey.ConfirmDiscardMessage.value,
             INTERACTION_SETTINGS_DEFAULT_CONFIRM_DISCARD_MESSAGE,
         ),
         isConfirmMarkAllRead = storage.getBoolean(
-            KEY_CONFIRM_MARK_ALL_READ,
+            InteractionSettingKey.ConfirmMarkAllRead.value,
             INTERACTION_SETTINGS_DEFAULT_CONFIRM_MARK_ALL_READ,
         ),
     )
@@ -97,20 +103,35 @@ class DefaultInteractionSettingsPreferenceManager(
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
-                storageEditor.putBoolean(KEY_USE_VOLUME_KEYS_FOR_NAVIGATION, config.useVolumeKeysForNavigation)
-                storageEditor.putString(KEY_MESSAGE_VIEW_POST_DELETE_ACTION, config.messageViewPostRemoveNavigation)
+                storageEditor.putBoolean(
+                    InteractionSettingKey.UseVolumeKeysForNavigation.value,
+                    config.useVolumeKeysForNavigation,
+                )
+                storageEditor.putString(
+                    InteractionSettingKey.MessageViewPostDeleteAction.value,
+                    config.messageViewPostRemoveNavigation,
+                )
                 storageEditor.putEnum(
                     KEY_MESSAGE_VIEW_POST_MARK_AS_UNREAD_ACTION,
                     config.messageViewPostMarkAsUnreadNavigation,
                 )
-                storageEditor.putEnum(KEY_SWIPE_ACTION_LEFT, config.swipeActions.leftAction)
-                storageEditor.putEnum(KEY_SWIPE_ACTION_RIGHT, config.swipeActions.rightAction)
-                storageEditor.putBoolean(KEY_CONFIRM_DELETE, config.isConfirmDelete)
-                storageEditor.putBoolean(KEY_CONFIRM_DISCARD_MESSAGE, config.isConfirmDiscardMessage)
-                storageEditor.putBoolean(KEY_CONFIRM_DELETE_STARRED, config.isConfirmDeleteStarred)
-                storageEditor.putBoolean(KEY_CONFIRM_SPAM, config.isConfirmSpam)
-                storageEditor.putBoolean(KEY_CONFIRM_DELETE_FROM_NOTIFICATION, config.isConfirmDeleteFromNotification)
-                storageEditor.putBoolean(KEY_CONFIRM_MARK_ALL_READ, config.isConfirmMarkAllRead)
+                storageEditor.putEnum(InteractionSettingKey.SwipeActionLeft.value, config.swipeActions.leftAction)
+                storageEditor.putEnum(InteractionSettingKey.SwipeActionRight.value, config.swipeActions.rightAction)
+                storageEditor.putBoolean(InteractionSettingKey.ConfirmDelete.value, config.isConfirmDelete)
+                storageEditor.putBoolean(
+                    InteractionSettingKey.ConfirmDiscardMessage.value,
+                    config.isConfirmDiscardMessage,
+                )
+                storageEditor.putBoolean(
+                    InteractionSettingKey.ConfirmDeleteStarred.value,
+                    config.isConfirmDeleteStarred,
+                )
+                storageEditor.putBoolean(InteractionSettingKey.ConfirmSpam.value, config.isConfirmSpam)
+                storageEditor.putBoolean(
+                    InteractionSettingKey.ConfirmDeleteFromNotification.value,
+                    config.isConfirmDeleteFromNotification,
+                )
+                storageEditor.putBoolean(InteractionSettingKey.ConfirmMarkAllRead.value, config.isConfirmMarkAllRead)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
@@ -119,7 +140,7 @@ class DefaultInteractionSettingsPreferenceManager(
     }
 
     override fun receive(scope: PreferenceScope) {
-        if(scope == PreferenceScope.ALL || scope == PreferenceScope.INTERACTION) {
+        if (scope == PreferenceScope.ALL || scope == PreferenceScope.INTERACTION) {
             configState.update { loadConfig() }
         }
     }

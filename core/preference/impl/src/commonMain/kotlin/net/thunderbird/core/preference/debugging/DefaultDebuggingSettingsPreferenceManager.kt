@@ -53,15 +53,15 @@ class DefaultDebuggingSettingsPreferenceManager(
 
     private fun loadConfig(): DebuggingSettings = DebuggingSettings(
         isDebugLoggingEnabled = storage.getBoolean(
-            KEY_ENABLE_DEBUG_LOGGING,
+            DebugSettingKey.EnableDebugLogging.value,
             platformConfigProvider.isDebug,
         ),
         isSyncLoggingEnabled = storage.getBoolean(
-            KEY_ENABLE_SYNC_DEBUG_LOGGING,
+            DebugSettingKey.EnableSyncDebugLogging.value,
             DEBUGGING_SETTINGS_DEFAULT_IS_SYNC_LOGGING_ENABLED,
         ),
         isSensitiveLoggingEnabled = storage.getBoolean(
-            key = KEY_ENABLE_SENSITIVE_LOGGING,
+            key = DebugSettingKey.EnableSensitiveLogging.value,
             defValue = DEBUGGING_SETTINGS_DEFAULT_SENSITIVE_LOGGING_ENABLED,
         ),
     ).also(::updateDebugLogLevel)
@@ -70,9 +70,9 @@ class DefaultDebuggingSettingsPreferenceManager(
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
-                storageEditor.putBoolean(KEY_ENABLE_DEBUG_LOGGING, config.isDebugLoggingEnabled)
-                storageEditor.putBoolean(KEY_ENABLE_SYNC_DEBUG_LOGGING, config.isSyncLoggingEnabled)
-                storageEditor.putBoolean(KEY_ENABLE_SENSITIVE_LOGGING, config.isSensitiveLoggingEnabled)
+                storageEditor.putBoolean(DebugSettingKey.EnableDebugLogging.value, config.isDebugLoggingEnabled)
+                storageEditor.putBoolean(DebugSettingKey.EnableSyncDebugLogging.value, config.isSyncLoggingEnabled)
+                storageEditor.putBoolean(DebugSettingKey.EnableSensitiveLogging.value, config.isSensitiveLoggingEnabled)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
@@ -89,7 +89,7 @@ class DefaultDebuggingSettingsPreferenceManager(
     }
 
     override fun receive(scope: PreferenceScope) {
-        if(scope == PreferenceScope.ALL || scope == PreferenceScope.DEBUGGING) {
+        if (scope == PreferenceScope.ALL || scope == PreferenceScope.DEBUGGING) {
             configState.update { loadConfig() }
         }
     }
