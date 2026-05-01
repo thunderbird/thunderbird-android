@@ -48,11 +48,11 @@ class DefaultPrivacySettingsPreferenceManager(
 
     private fun loadConfig(): PrivacySettings = PrivacySettings(
         isHideTimeZone = storage.getBoolean(
-            key = KEY_HIDE_TIME_ZONE,
+            key = PrivacySettingKey.HideTimeZone.value,
             defValue = PRIVACY_SETTINGS_DEFAULT_HIDE_TIME_ZONE,
         ),
         isHideUserAgent = storage.getBoolean(
-            key = KEY_HIDE_USER_AGENT,
+            key = PrivacySettingKey.HideUserAgent.value,
             defValue = PRIVACY_SETTINGS_DEFAULT_HIDE_USER_AGENT,
         ),
     )
@@ -61,8 +61,8 @@ class DefaultPrivacySettingsPreferenceManager(
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
-                storageEditor.putBoolean(KEY_HIDE_TIME_ZONE, config.isHideTimeZone)
-                storageEditor.putBoolean(KEY_HIDE_USER_AGENT, config.isHideUserAgent)
+                storageEditor.putBoolean(PrivacySettingKey.HideTimeZone.value, config.isHideTimeZone)
+                storageEditor.putBoolean(PrivacySettingKey.HideUserAgent.value, config.isHideUserAgent)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
@@ -71,7 +71,7 @@ class DefaultPrivacySettingsPreferenceManager(
     }
 
     override fun receive(scope: PreferenceScope) {
-        if(scope == PreferenceScope.ALL || scope == PreferenceScope.PRIVACY) {
+        if (scope == PreferenceScope.ALL || scope == PreferenceScope.PRIVACY) {
             configState.update { loadConfig() }
         }
     }

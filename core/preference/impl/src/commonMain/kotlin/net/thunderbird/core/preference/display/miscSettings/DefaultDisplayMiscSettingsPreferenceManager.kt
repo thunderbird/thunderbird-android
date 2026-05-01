@@ -48,11 +48,11 @@ class DefaultDisplayMiscSettingsPreferenceManager(
 
     private fun loadConfig(): DisplayMiscSettings = DisplayMiscSettings(
         showRecentChanges = storage.getBoolean(
-            KEY_SHOW_RECENT_CHANGES,
+            DisplayMiscSettingKey.ShowRecentChanges.value,
             DISPLAY_SETTINGS_DEFAULT_SHOW_RECENT_CHANGES,
         ),
         shouldShowSetupArchiveFolderDialog = storage.getBoolean(
-            KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
+            DisplayMiscSettingKey.ShouldShowSetupArchiveFolderDialog.value,
             DISPLAY_SETTINGS_DEFAULT_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
         ),
     )
@@ -62,10 +62,10 @@ class DefaultDisplayMiscSettingsPreferenceManager(
         scope.launch(ioDispatcher) {
             mutex.withLock {
                 storageEditor.putBoolean(
-                    KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
+                    DisplayMiscSettingKey.ShouldShowSetupArchiveFolderDialog.value,
                     config.shouldShowSetupArchiveFolderDialog,
                 )
-                storageEditor.putBoolean(KEY_SHOW_RECENT_CHANGES, config.showRecentChanges)
+                storageEditor.putBoolean(DisplayMiscSettingKey.ShowRecentChanges.value, config.showRecentChanges)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }

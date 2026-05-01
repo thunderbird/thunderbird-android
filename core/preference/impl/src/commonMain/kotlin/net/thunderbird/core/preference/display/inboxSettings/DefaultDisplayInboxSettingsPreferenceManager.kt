@@ -49,27 +49,27 @@ class DefaultDisplayInboxSettingsPreferenceManager(
 
     private fun loadConfig(): DisplayInboxSettings = DisplayInboxSettings(
         isShowUnifiedInbox = storage.getBoolean(
-            KEY_SHOW_UNIFIED_INBOX,
+            DisplayInboxSettingKey.ShowUnifiedInbox.value,
             DISPLAY_SETTINGS_DEFAULT_IS_SHOW_UNIFIED_INBOX,
         ),
         isShowComposeButtonOnMessageList = storage.getBoolean(
-            KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST,
+            DisplayInboxSettingKey.ShowComposeButtonOnMessageList.value,
             DISPLAY_SETTINGS_DEFAULT_IS_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST,
         ),
         isThreadedViewEnabled = storage.getBoolean(
-            KEY_THREAD_VIEW_ENABLED,
+            DisplayInboxSettingKey.ThreadViewEnabled.value,
             DISPLAY_SETTINGS_DEFAULT_IS_THREAD_VIEW_ENABLED,
         ),
         isShowStarredCount = storage.getBoolean(
-            KEY_SHOW_STAR_COUNT,
+            DisplayInboxSettingKey.ShowStarCount.value,
             DISPLAY_SETTINGS_DEFAULT_IS_SHOW_STAR_COUNT,
         ),
         isShowMessageListStars = storage.getBoolean(
-            KEY_SHOW_MESSAGE_LIST_STARS,
+            DisplayInboxSettingKey.ShowMessageListStars.value,
             DISPLAY_SETTINGS_DEFAULT_IS_SHOW_MESSAGE_LIST_STAR,
         ),
         isMessageListSenderAboveSubject = storage.getBoolean(
-            KEY_MESSAGE_LIST_SENDER_ABOVE_SUBJECT,
+            DisplayInboxSettingKey.MessageListSenderAboveSubject.value,
             DISPLAY_SETTINGS_DEFAULT_IS_MESSAGE_LIST_SENDER_ABOVE_SUBJECT,
         ),
     )
@@ -79,23 +79,23 @@ class DefaultDisplayInboxSettingsPreferenceManager(
         scope.launch(ioDispatcher) {
             mutex.withLock {
                 storageEditor.putBoolean(
-                    KEY_MESSAGE_LIST_SENDER_ABOVE_SUBJECT,
+                    DisplayInboxSettingKey.MessageListSenderAboveSubject.value,
                     config.isMessageListSenderAboveSubject,
                 )
                 storageEditor.putBoolean(
-                    KEY_SHOW_MESSAGE_LIST_STARS,
+                    DisplayInboxSettingKey.ShowMessageListStars.value,
                     config.isShowMessageListStars,
                 )
                 storageEditor.putBoolean(
-                    KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST,
+                    DisplayInboxSettingKey.ShowComposeButtonOnMessageList.value,
                     config.isShowComposeButtonOnMessageList,
                 )
                 storageEditor.putBoolean(
-                    KEY_THREAD_VIEW_ENABLED,
+                    DisplayInboxSettingKey.ThreadViewEnabled.value,
                     config.isThreadedViewEnabled,
                 )
-                storageEditor.putBoolean(KEY_SHOW_UNIFIED_INBOX, config.isShowUnifiedInbox)
-                storageEditor.putBoolean(KEY_SHOW_STAR_COUNT, config.isShowStarredCount)
+                storageEditor.putBoolean(DisplayInboxSettingKey.ShowUnifiedInbox.value, config.isShowUnifiedInbox)
+                storageEditor.putBoolean(DisplayInboxSettingKey.ShowStarCount.value, config.isShowStarredCount)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }

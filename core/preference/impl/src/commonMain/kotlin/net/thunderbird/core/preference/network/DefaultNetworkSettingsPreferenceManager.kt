@@ -49,14 +49,17 @@ class DefaultNetworkSettingsPreferenceManager(
     }
 
     private fun loadConfig(): NetworkSettings = NetworkSettings(
-        backgroundOps = storage.getEnumOrDefault(KEY_BG_OPS, NETWORK_SETTINGS_DEFAULT_BACKGROUND_OPS),
+        backgroundOps = storage.getEnumOrDefault(
+            NetworkSettingKey.BackgroundOperations.value,
+            NETWORK_SETTINGS_DEFAULT_BACKGROUND_OPS,
+        ),
     )
 
     private fun writeConfig(config: NetworkSettings) {
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
-                storageEditor.putEnum(KEY_BG_OPS, config.backgroundOps)
+                storageEditor.putEnum(NetworkSettingKey.BackgroundOperations.value, config.backgroundOps)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
@@ -65,7 +68,7 @@ class DefaultNetworkSettingsPreferenceManager(
     }
 
     override fun receive(scope: PreferenceScope) {
-        if(scope == PreferenceScope.ALL || scope == PreferenceScope.NETWORK) {
+        if (scope == PreferenceScope.ALL || scope == PreferenceScope.NETWORK) {
             configState.update { loadConfig() }
         }
     }

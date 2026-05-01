@@ -33,58 +33,73 @@ class DefaultMessageListPreferencesManager(
 
     private fun loadPreferences(): DisplayMessageListSettings = DisplayMessageListSettings(
         isColorizeMissingContactPictures = storage.getBoolean(
-            KEY_COLORIZE_MISSING_CONTACT_PICTURE,
+            DisplayMessageListSettingKey.ColorizeMissingContactPicture.value,
             MESSAGE_LIST_SETTINGS_DEFAULT_IS_COLORIZE_MISSING_CONTACT_PICTURE,
         ),
         isChangeContactNameColor = storage.getBoolean(
-            KEY_CHANGE_REGISTERED_NAME_COLOR,
+            DisplayMessageListSettingKey.ChangeRegisteredNameColor.value,
             MESSAGE_LIST_SETTINGS_DEFAULT_IS_CHANGE_CONTACT_NAME_COLOR,
         ),
         isUseBackgroundAsUnreadIndicator = storage.getBoolean(
-            KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR,
+            DisplayMessageListSettingKey.UseBackgroundAsUnreadIndicator.value,
             MESSAGE_LIST_SETTINGS_DEFAULT_IS_USE_BACKGROUND_AS_INDICATOR,
         ),
         isShowCorrespondentNames = storage.getBoolean(
-            KEY_SHOW_CORRESPONDENT_NAMES,
+            DisplayMessageListSettingKey.ShowCorrespondentNames.value,
             MESSAGE_LIST_SETTINGS_DEFAULT_IS_SHOW_CORRESPONDENT_NAMES,
         ),
         isShowContactName = storage.getBoolean(
-            KEY_SHOW_CONTACT_NAME,
+            DisplayMessageListSettingKey.ShowContactName.value,
             MESSAGE_LIST_SETTINGS_DEFAULT_IS_SHOW_CONTACT_NAME,
         ),
         isShowContactPicture = storage.getBoolean(
-            KEY_SHOW_CONTACT_PICTURE,
+            DisplayMessageListSettingKey.ShowContactPicture.value,
             MESSAGE_LIST_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE,
         ),
         previewLines = storage.getInt(
-            KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES,
+            DisplayMessageListSettingKey.MessageListPreviewLines.value,
             MESSAGE_LIST_SETTINGS_DEFAULT_PREVIEW_LINES,
         ),
         uiDensity = storage.getEnumOrDefault(
-            KEY_MESSAGE_LIST_VIEW_DENSITY,
+            DisplayMessageListSettingKey.MessageListDensity.value,
             MESSAGE_LIST_SETTINGS_DEFAULT_UI_DENSITY,
         ),
         contactNameColor = storage.getInt(
-            KEY_REGISTERED_NAME_COLOR,
+            DisplayMessageListSettingKey.RegisteredNameColor.value,
             DISPLAY_SETTINGS_DEFAULT_CONTACT_NAME_COLOR,
         ),
         dateTimeFormat = storage.getEnumOrDefault(
-            KEY_MESSAGE_LIST_DATE_TIME_FORMAT,
+            DisplayMessageListSettingKey.MessageListDateTimeFormat.value,
             MESSAGE_LIST_SETTINGS_DEFAULT_DATE_TIME_FORMAT,
         ),
     )
 
     private fun write(preferences: DisplayMessageListSettings) {
-        storageEditor.putBoolean(KEY_CHANGE_REGISTERED_NAME_COLOR, preferences.isChangeContactNameColor)
-        storageEditor.putBoolean(KEY_COLORIZE_MISSING_CONTACT_PICTURE, preferences.isColorizeMissingContactPictures)
-        storageEditor.putBoolean(KEY_SHOW_CONTACT_PICTURE, preferences.isShowContactPicture)
-        storageEditor.putBoolean(KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR, preferences.isUseBackgroundAsUnreadIndicator)
-        storageEditor.putBoolean(KEY_SHOW_CONTACT_NAME, preferences.isShowContactName)
-        storageEditor.putBoolean(KEY_SHOW_CORRESPONDENT_NAMES, preferences.isShowCorrespondentNames)
-        storageEditor.putInt(KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES, preferences.previewLines)
-        storageEditor.putInt(KEY_REGISTERED_NAME_COLOR, preferences.contactNameColor)
-        storageEditor.putEnum(KEY_MESSAGE_LIST_VIEW_DENSITY, preferences.uiDensity)
-        storageEditor.putEnum(KEY_MESSAGE_LIST_DATE_TIME_FORMAT, preferences.dateTimeFormat)
+        storageEditor.putBoolean(
+            DisplayMessageListSettingKey.ChangeRegisteredNameColor.value,
+            preferences.isChangeContactNameColor,
+        )
+        storageEditor.putBoolean(
+            DisplayMessageListSettingKey.ColorizeMissingContactPicture.value,
+            preferences.isColorizeMissingContactPictures,
+        )
+        storageEditor.putBoolean(
+            DisplayMessageListSettingKey.ShowContactPicture.value,
+            preferences.isShowContactPicture,
+        )
+        storageEditor.putBoolean(
+            DisplayMessageListSettingKey.UseBackgroundAsUnreadIndicator.value,
+            preferences.isUseBackgroundAsUnreadIndicator,
+        )
+        storageEditor.putBoolean(DisplayMessageListSettingKey.ShowContactName.value, preferences.isShowContactName)
+        storageEditor.putBoolean(
+            DisplayMessageListSettingKey.ShowCorrespondentNames.value,
+            preferences.isShowCorrespondentNames,
+        )
+        storageEditor.putInt(DisplayMessageListSettingKey.MessageListPreviewLines.value, preferences.previewLines)
+        storageEditor.putInt(DisplayMessageListSettingKey.RegisteredNameColor.value, preferences.contactNameColor)
+        storageEditor.putEnum(DisplayMessageListSettingKey.MessageListDensity.value, preferences.uiDensity)
+        storageEditor.putEnum(DisplayMessageListSettingKey.MessageListDateTimeFormat.value, preferences.dateTimeFormat)
         storageEditor.commit().also { commited ->
             logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
         }

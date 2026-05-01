@@ -51,24 +51,24 @@ class DefaultDisplayCoreSettingsPreferenceManager(
 
     private fun loadConfig(): DisplayCoreSettings = DisplayCoreSettings(
         fixedMessageViewTheme = storage.getBoolean(
-            KEY_FIXED_MESSAGE_VIEW_THEME,
+            DisplayCoreSettingKey.FixedMessageViewTheme.value,
             DISPLAY_SETTINGS_DEFAULT_FIXED_MESSAGE_VIEW_THEME,
         ),
-        appTheme = storage.getEnumOrDefault(KEY_THEME, DISPLAY_SETTINGS_DEFAULT_APP_THEME),
+        appTheme = storage.getEnumOrDefault(DisplayCoreSettingKey.Theme.value, DISPLAY_SETTINGS_DEFAULT_APP_THEME),
         messageViewTheme = storage.getEnumOrDefault(
-            KEY_MESSAGE_VIEW_THEME,
+            DisplayCoreSettingKey.MessageViewTheme.value,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_THEME,
         ),
         messageComposeTheme = storage.getEnumOrDefault(
-            KEY_MESSAGE_COMPOSE_THEME,
+            DisplayCoreSettingKey.MessageComposeTheme.value,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_COMPOSE_THEME,
         ),
         appLanguage = storage.getStringOrDefault(
-            KEY_APP_LANGUAGE,
+            DisplayCoreSettingKey.AppLanguage.value,
             DISPLAY_SETTINGS_DEFAULT_APP_LANGUAGE,
         ),
         splitViewMode = storage.getEnumOrDefault(
-            KEY_SPLIT_VIEW_MODE,
+            DisplayCoreSettingKey.SplitViewMode.value,
             DISPLAY_SETTINGS_DEFAULT_SPLIT_VIEW_MODE,
         ),
     )
@@ -77,18 +77,18 @@ class DefaultDisplayCoreSettingsPreferenceManager(
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
-                storageEditor.putEnum(KEY_THEME, config.appTheme)
-                storageEditor.putEnum(KEY_MESSAGE_VIEW_THEME, config.messageViewTheme)
+                storageEditor.putEnum(DisplayCoreSettingKey.Theme.value, config.appTheme)
+                storageEditor.putEnum(DisplayCoreSettingKey.MessageViewTheme.value, config.messageViewTheme)
                 storageEditor.putEnum(
-                    KEY_MESSAGE_COMPOSE_THEME,
+                    DisplayCoreSettingKey.MessageComposeTheme.value,
                     config.messageComposeTheme,
                 )
                 storageEditor.putBoolean(
-                    KEY_FIXED_MESSAGE_VIEW_THEME,
+                    DisplayCoreSettingKey.FixedMessageViewTheme.value,
                     config.fixedMessageViewTheme,
                 )
-                storageEditor.putString(KEY_APP_LANGUAGE, config.appLanguage)
-                storageEditor.putEnum(KEY_SPLIT_VIEW_MODE, config.splitViewMode)
+                storageEditor.putString(DisplayCoreSettingKey.AppLanguage.value, config.appLanguage)
+                storageEditor.putEnum(DisplayCoreSettingKey.SplitViewMode.value, config.splitViewMode)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
