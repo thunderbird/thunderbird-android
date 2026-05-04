@@ -28,12 +28,14 @@ data class ComponentPatch(
     @SerialName("linked_component")
     val linkedComponent: String?,
     val config: ComponentConfig,
+    val locked: Boolean,
 ) {
     companion object ComponentPatchSerializer : KSerializer<ComponentPatch> {
         override val descriptor: SerialDescriptor = buildClassSerialDescriptor("ComponentPatch") {
             element<String>("category")
             element<String>("linked_component")
             element("config", ComponentConfig.serializer().descriptor)
+            element<Boolean>("locked")
         }
 
         override fun deserialize(decoder: Decoder): ComponentPatch {
@@ -50,6 +52,7 @@ data class ComponentPatch(
             val json = buildJsonObject {
                 value.category?.let { put("category", it) }
                 value.linkedComponent?.let { put("linked_component", it) }
+                put("locked", value.locked)
                 config.jsonObject.forEach { (key, value) ->
                     put(key, value)
                 }

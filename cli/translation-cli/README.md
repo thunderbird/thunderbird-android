@@ -1,6 +1,6 @@
 # Translation CLI
 
-This is a command line interface that will check the [weblate](https://hosted.weblate.org/projects/tb-android/#languages) translation state for all languages and print out the ones that are above a certain threshold.
+This is a command line interface that will check the [weblate](https://hosted.weblate.org/projects/thunderbird/thunderbird-android/#languages) translation state for all languages and print out the ones that are above a certain threshold.
 
 ## Usage
 
@@ -9,10 +9,12 @@ To use this script you need to have a [weblate token](https://hosted.weblate.org
 You can run the script with the following command:
 
 ```bash
-./scripts/translation --token <weblate-token> [--threshold 70]
+./scripts/translation --token <weblate-token> [--threshold 70] [--log-level INFO]
 ```
 
 It will print out the languages that are above the threshold. The default threshold is 70. You can change it by passing the `--threshold` argument.
+
+The `--log-level` option controls the verbosity of the Weblate API client's logs. Supported values are: `NONE`, `INFO`, `HEADERS`, `BODY`, `ALL`. The default is `NONE`.
 
 If you want a code example, you can pass the `--print-all` argument. It will print out example code for easier integration into the project.
 

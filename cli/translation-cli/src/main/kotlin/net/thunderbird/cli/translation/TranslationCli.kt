@@ -7,6 +7,9 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.double
+import com.github.ajalt.clikt.parameters.types.enum
+import io.ktor.client.plugins.logging.LogLevel
+import net.thunderbird.cli.translation.net.WeblateConfig
 
 const val TRANSLATED_THRESHOLD = 70.0
 
@@ -29,9 +32,16 @@ class TranslationCli(
         help = "Print code example",
     ).flag()
 
+    private val logLevel: LogLevel by option(
+        "--log-level",
+        help = "Log level for the Weblate API client",
+    ).enum<LogLevel>(ignoreCase = true).default(LogLevel.NONE)
+
     override fun help(context: Context): String = "Translation CLI"
 
     override fun run() {
+        val config = WeblateConfig(logLevel = logLevel)
+        val languageCodeLoader = LanguageCodeLoader(config = config)
         val languageCodes = languageCodeLoader.loadCurrentAndroidLanguageCodes(token, threshold)
         val androidLanguageCodes = languageCodes.map { AndroidLanguageCodeHelper.fixLanguageCodeFormat(it) }
         val size = languageCodes.size
