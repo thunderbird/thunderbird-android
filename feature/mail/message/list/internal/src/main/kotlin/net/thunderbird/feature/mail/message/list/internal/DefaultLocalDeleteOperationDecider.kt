@@ -3,7 +3,7 @@ package net.thunderbird.feature.mail.message.list.internal
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
 
-class DefaultLocalDeleteOperationDecider : LocalDeleteOperationDecider {
+internal class DefaultLocalDeleteOperationDecider : LocalDeleteOperationDecider {
     override fun isDeleteImmediately(
         account: LegacyAccountDto,
         folderId: Long,

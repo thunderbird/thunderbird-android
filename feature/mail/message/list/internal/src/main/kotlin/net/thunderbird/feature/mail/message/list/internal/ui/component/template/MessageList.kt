@@ -12,6 +12,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.lifecycle.compose.LifecycleStartEffect
@@ -64,6 +65,14 @@ internal fun MessageListScope.MessageList(
                         .fillMaxWidth()
                         .semantics(mergeDescendants = true) {
                             stateDescription = accessibilityState.stateDescription(message)
+                        }
+                        .focusProperties {
+                            // TODO: Need improvement. Once the `MessageHomeActivity.onCustomKeyDown` is executed
+                            //  the focus go back to the toolbar's navigation button.
+                            //  We may replace the `MessageHomeActivity.onCustomKeyDown` with a modifier such
+                            //  as onPreviewKeyEvent in the future as well.
+                            onEnter = { dispatchEvent(MessageItemEvent.OnFocusEnter(message)) }
+                            onExit = { dispatchEvent(MessageItemEvent.OnFocusExit(message)) }
                         },
                     onClick = { dispatchEvent(MessageItemEvent.OnMessageClick(message)) },
                     onLongClick = { dispatchEvent(MessageItemEvent.ToggleSelectMessages(message)) },
