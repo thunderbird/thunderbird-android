@@ -152,6 +152,12 @@
         <item>follow_system</item>
     </string-array>
 
+    <string-array name="animation_values" translatable="false">
+        <item>ON</item>
+        <item>OFF</item>
+        <item>FOLLOW_SYSTEM</item>
+    </string-array>
+
     <string-array name="message_theme_values" translatable="false">
         <item>light</item>
         <item>dark</item>
