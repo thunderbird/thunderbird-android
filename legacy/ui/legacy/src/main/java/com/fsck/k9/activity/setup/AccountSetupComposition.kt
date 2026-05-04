@@ -28,6 +28,7 @@ class AccountSetupComposition : BaseActivity() {
     private lateinit var accountAlwaysBcc: EditText
     private lateinit var accountSenderName: EditText
     private lateinit var accountSignatureUse: MaterialCheckBox
+    private lateinit var accountSignatureIsHtml: MaterialCheckBox
     private lateinit var accountSignatureBeforeLocation: MaterialRadioButton
     private lateinit var accountSignatureAfterLocation: MaterialRadioButton
     private lateinit var accountSignatureLayout: LinearLayout
@@ -49,6 +50,7 @@ class AccountSetupComposition : BaseActivity() {
         accountSignatureLayout = findViewById(R.id.account_signature_layout)
         accountSignatureUse = findViewById(R.id.account_signature_use)
         accountSignature = findViewById(R.id.account_signature)
+        accountSignatureIsHtml = findViewById(R.id.account_signature_is_html)
         accountSignatureBeforeLocation = findViewById(R.id.account_signature_location_before_quoted_text)
         accountSignatureAfterLocation = findViewById(R.id.account_signature_location_after_quoted_text)
 
@@ -62,6 +64,7 @@ class AccountSetupComposition : BaseActivity() {
             if (isChecked) {
                 accountSignatureLayout.isVisible = true
                 accountSignature.setText(account.signature)
+                accountSignatureIsHtml.isChecked = account.signatureIsHtml
 
                 val isSignatureBeforeQuotedText = account.isSignatureBeforeQuotedText
                 accountSignatureBeforeLocation.isChecked = isSignatureBeforeQuotedText
@@ -73,6 +76,7 @@ class AccountSetupComposition : BaseActivity() {
 
         if (useSignature) {
             accountSignature.setText(account.signature)
+            accountSignatureIsHtml.isChecked = account.signatureIsHtml
 
             val isSignatureBeforeQuotedText = account.isSignatureBeforeQuotedText
             accountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText)
@@ -131,6 +135,7 @@ class AccountSetupComposition : BaseActivity() {
         account.signatureUse = accountSignatureUse.isChecked
         if (accountSignatureUse.isChecked) {
             account.signature = accountSignature.text.toString()
+            account.signatureIsHtml = accountSignatureIsHtml.isChecked
             account.isSignatureBeforeQuotedText = accountSignatureBeforeLocation.isChecked
         }
 

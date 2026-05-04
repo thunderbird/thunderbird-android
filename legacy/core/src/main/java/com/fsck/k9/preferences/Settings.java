@@ -35,7 +35,7 @@ public class Settings {
      *
      * @see SettingsExporter
      */
-    public static final int VERSION = 110;
+    public static final int VERSION = 111;
 
     static Map<String, Object> validate(int version, Map<String, TreeMap<Integer, SettingsDescription<?>>> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {
