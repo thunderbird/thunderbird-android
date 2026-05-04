@@ -29,7 +29,7 @@ fun ButtonOutlined(
     enabled: Boolean = true,
     icon: ImageVector? = null,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(),
-    shape: ButtonShape = ButtonDefaults.outlinedShape(),
+    shape: ButtonShape = ButtonDefaults.outlinedShape(enabled),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
 ) {
     Material3OutlinedButton(

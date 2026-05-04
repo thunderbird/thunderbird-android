@@ -81,8 +81,9 @@ data object ButtonDefaults {
      */
     @Composable
     fun outlinedShape(
+        enabled: Boolean = true,
         shape: Shape = Material3ButtonDefaults.outlinedShape,
-        border: ButtonBorderStroke = outlinedButtonBorder(),
+        border: ButtonBorderStroke = outlinedButtonBorder(enabled),
     ): ButtonShape = ButtonShape(shape = shape, borderStroke = border)
 
     /**
@@ -139,7 +140,7 @@ private fun Material3ButtonColors.toButtonColors(
     containerColor = containerColor,
     contentColor = contentColor,
     disabledContainerColor = disabledContainerColor,
-    disabledContentColor = disabledContainerColor,
+    disabledContentColor = disabledContentColor,
     iconColor = iconColor,
     iconDisabledColor = iconDisabledColor,
 )
@@ -148,7 +149,7 @@ internal fun ButtonColors.toMaterial3Colors(): Material3ButtonColors = Material3
     containerColor = containerColor,
     contentColor = contentColor,
     disabledContainerColor = disabledContainerColor,
-    disabledContentColor = disabledContainerColor,
+    disabledContentColor = disabledContentColor,
 )
 
 /**
