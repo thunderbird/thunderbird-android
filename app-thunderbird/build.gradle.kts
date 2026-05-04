@@ -258,6 +258,7 @@ dependencies {
 
     implementation(projects.feature.onboarding.migration.thunderbird)
     implementation(projects.feature.migration.launcher.thunderbird)
+    implementation(projects.feature.thundermail.api)
     implementation(projects.feature.thundermail.thunderbird)
 
     // TODO remove once OAuth ids have been moved from TBD to TBA
@@ -266,6 +267,7 @@ dependencies {
     // Required for DependencyInjectionTest
     testImplementation(projects.feature.account.api)
     testImplementation(projects.feature.account.common)
+    testImplementation(projects.feature.thundermail.internal.common)
     testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
     testImplementation(libs.appauth)
 }

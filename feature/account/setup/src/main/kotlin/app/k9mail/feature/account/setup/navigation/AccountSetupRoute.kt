@@ -18,6 +18,18 @@ sealed interface AccountSetupRoute : Route {
         }
     }
 
+    data object ThundermailSignIn : AccountSetupRoute {
+        override val basePath: String = ACCOUNT_SETUP_BASE_PATH
+
+        override fun route(): String = "$basePath/thundermail-sign-in"
+    }
+
+    data object ThundermailScanQrCode : AccountSetupRoute {
+        override val basePath: String = ACCOUNT_SETUP_BASE_PATH
+
+        override fun route(): String = "$basePath/thundermail-scan-qr-code"
+    }
+
     companion object {
         const val ACCOUNT_SETUP_BASE_PATH = "app://account/setup"
     }

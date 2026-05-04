@@ -14,6 +14,8 @@ android {
 
 dependencies {
     implementation(projects.core.featureflag)
+    implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.core.ui.navigation)
 }
 
 codeCoverage {
