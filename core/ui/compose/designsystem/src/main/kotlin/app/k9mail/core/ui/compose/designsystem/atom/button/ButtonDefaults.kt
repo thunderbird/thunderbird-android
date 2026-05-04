@@ -46,6 +46,34 @@ data object ButtonDefaults {
 
     /**
      * Creates a [ButtonColors] instance representing the default colours used
+     * in a filled button.
+     *
+     * @param containerColor the container colour of this button when enabled.
+     * @param contentColor the content colour of this button when enabled.
+     * @param disabledContainerColor the container colour of this button when
+     *  not enabled.
+     * @param disabledContentColor the content colour of this button when not
+     *  enabled.
+     * @param iconColor the colour of the icon when enabled.
+     * @param iconDisabledColor the colour of the icon when not enabled.
+     */
+    @Composable
+    fun filledButtonColors(
+        containerColor: Color = Color.Unspecified,
+        contentColor: Color = Color.Unspecified,
+        disabledContainerColor: Color = Color.Unspecified,
+        disabledContentColor: Color = Color.Unspecified,
+        iconColor: Color = contentColor,
+        iconDisabledColor: Color = disabledContentColor,
+    ): ButtonColors = Material3ButtonDefaults.buttonColors(
+        containerColor = containerColor,
+        contentColor = contentColor,
+        disabledContainerColor = disabledContainerColor,
+        disabledContentColor = disabledContentColor,
+    ).toButtonColors(iconColor, iconDisabledColor)
+
+    /**
+     * Creates a [ButtonColors] instance representing the default colours used
      * in an outlined button.
      *
      * @param containerColor the container colour of this button when enabled.
@@ -71,6 +99,17 @@ data object ButtonDefaults {
         disabledContainerColor = disabledContainerColor,
         disabledContentColor = disabledContentColor,
     ).toButtonColors(iconColor, iconDisabledColor)
+
+    /**
+     * Creates a [ButtonShape] that represents the default shape and border
+     * used in a filled button.
+     *
+     * @param shape the [Shape] of the button.
+     */
+    @Composable
+    fun filledShape(
+        shape: Shape = Material3ButtonDefaults.shape,
+    ): ButtonShape = ButtonShape(shape = shape)
 
     /**
      * Creates a [ButtonShape] that represents the default shape and border
