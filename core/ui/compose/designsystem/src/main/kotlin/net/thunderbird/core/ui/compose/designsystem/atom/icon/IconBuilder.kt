@@ -1,5 +1,6 @@
 package net.thunderbird.core.ui.compose.designsystem.atom.icon
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathFillType
 import androidx.compose.ui.graphics.SolidColor
@@ -46,6 +47,7 @@ internal inline fun icon(
  *
  * @param fill fill for this path
  * @param fillAlpha fill alpha for this path
+ * @param stroke stroke fill for this path
  * @param strokeAlpha stroke alpha for this path
  * @param pathFillType [PathFillType] for this path
  * @param pathBuilder builder lambda to add commands to this path
@@ -53,6 +55,7 @@ internal inline fun icon(
 internal inline fun ImageVector.Builder.iconPath(
     fill: SolidColor = SolidColor(Color.Black),
     fillAlpha: Float = 1f,
+    stroke: Brush? = null,
     strokeAlpha: Float = 1f,
     pathFillType: PathFillType = DefaultFillType,
     pathBuilder: PathBuilder.() -> Unit,
@@ -60,7 +63,7 @@ internal inline fun ImageVector.Builder.iconPath(
     path(
         fill = fill,
         fillAlpha = fillAlpha,
-        stroke = null,
+        stroke = stroke,
         strokeAlpha = strokeAlpha,
         strokeLineWidth = 1f,
         strokeLineCap = StrokeCap.Butt,
