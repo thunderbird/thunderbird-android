@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Architecture Decision Records - Thunderbird for Android - Developer Documentation</title>
+        <title>Settings - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -12,35 +12,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../../favicon-de23e50b.svg">
-        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
-        <link rel="stylesheet" href="../../css/variables-bb060dd9.css">
-        <link rel="stylesheet" href="../../css/general-0d197534.css">
-        <link rel="stylesheet" href="../../css/chrome-2bf922bf.css">
-        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-bb060dd9.css">
+        <link rel="stylesheet" href="../css/general-0d197534.css">
+        <link rel="stylesheet" href="../css/chrome-2bf922bf.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../../fonts/fonts-868d674e.css">
+        <link rel="stylesheet" href="../fonts/fonts-868d674e.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
-        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
-        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="../../assets/additional/css/last-changed-baed6e4e.css">
-        <link rel="stylesheet" href="../../assets/additional/css/navigation-c5b35b00.css">
+        <link rel="stylesheet" href="../assets/additional/css/last-changed-baed6e4e.css">
+        <link rel="stylesheet" href="../assets/additional/css/navigation-c5b35b00.css">
 
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "../../";
+            const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-258e5bcb.js";
+            window.path_to_searchindex_js = "../searchindex-258e5bcb.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-2ec647ce.js"></script>
+        <script src="../toc-2ec647ce.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -107,7 +107,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
             <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -139,13 +139,13 @@
                     <h1 class="menu-title">Thunderbird for Android - Developer Documentation</h1>
 
                     <div class="right-buttons">
-                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/thunderbird/thunderbird-android/" title="Git repository" aria-label="Git repository">
                             <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./architecture/adr/README.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./architecture/settings.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -179,80 +179,143 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="architecture-decision-records"><a class="header" href="#architecture-decision-records">Architecture Decision Records</a></h1>
-<p>ADRs are short text documents that serve as a historical context for the architecture decisions we make over the
-course of the project.</p>
-<h2 id="what-is-an-adr"><a class="header" href="#what-is-an-adr">What is an ADR?</a></h2>
-<p>An Architecture Decision Record (ADR) is a document that captures an important architectural decision made along
-with its context and consequences. ADRs record the decision making process and allow others to understand the
-rationale behind decisions, providing insight and facilitating future decision-making processes.</p>
-<h2 id="format-of-an-adr"><a class="header" href="#format-of-an-adr">Format of an ADR</a></h2>
-<p>We adhere to Michael Nygard’s <a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions">ADR format proposal</a>,
-where each ADR document should contain:</p>
-<ol>
-<li><strong>Title</strong>: A short descriptive name for the decision.
-<ol>
-<li><strong>Link to Issue</strong>: A link to the issue that prompted the decision.</li>
-<li><strong>Link to Pull Request</strong>: A link to the pull request that implements the ADR.</li>
-<li><strong>Link to Tracking Issue</strong>: A link to the tracking issue, if applicable.</li>
-</ol>
-</li>
-<li><strong>Status</strong>: The current status of the decision (proposed, accepted, rejected, deprecated, superseded)</li>
-<li><strong>Context</strong>: The context that motivates this decision.</li>
-<li><strong>Decision</strong>: The change that we’re proposing and/or doing.</li>
-<li><strong>Consequences</strong>: What becomes easier or more difficult to do and any risks introduced as a result of the decision.</li>
-</ol>
-<h2 id="creating-a-new-adr"><a class="header" href="#creating-a-new-adr">Creating a new ADR</a></h2>
-<p>When creating a new ADR, please follow the provided <a href="0000-adr-template.html">ADR template file</a> and ensure that your
-document is clear and concise.</p>
-<p>Once you are ready to propose your ADR, you should:</p>
-<ol>
-<li>Create an issue in the repository, get consensus from at least one other project contributor.</li>
-<li>Make a post on <a href="https://thunderbird.topicbox.com/groups/mobile-planning">the mobile-planning list</a>
-to announce your ADR. You can use the below template as needed.</li>
-<li>Create a pull request in the repository linking the issue.</li>
-<li>Make a decision together with mobile module owners, the PR will be merged when accepted.</li>
-</ol>
-<h2 id="directory-structure"><a class="header" href="#directory-structure">Directory Structure</a></h2>
-<p>The ADRs will be stored in a directory named <code>docs/adr</code>, and each ADR will be a file named <code>NNNN-title-with-dashes.md</code>
-where <code>NNNN</code> is a four-digit number that is increased by 1 for every new adr.</p>
-<h2 id="adr-life-cycle"><a class="header" href="#adr-life-cycle">ADR Life Cycle</a></h2>
-<p>The life cycle of an ADR is as follows:</p>
-<ol>
-<li><strong>Proposed</strong>: The ADR is under consideration.</li>
-<li><strong>Accepted</strong>: The decision described in the ADR has been accepted and should be adhered to, unless it is superseded by another ADR.</li>
-<li><strong>Rejected</strong>: The decision described in the ADR has been rejected.</li>
-<li><strong>Deprecated</strong>: The decision described in the ADR is no longer relevant due to changes in system context.</li>
-<li><strong>Superseded</strong>: The decision described in the ADR has been replaced by another decision.</li>
-</ol>
-<p>Each ADR will have a status indicating its current life-cycle stage. An ADR can be updated over time, either to change
-the status or to add more information.</p>
-<h2 id="contributions"><a class="header" href="#contributions">Contributions</a></h2>
-<p>We welcome contributions in the form of new ADRs or updates to existing ones. Please ensure all contributions follow
-the standard format and provide clear and concise information.</p>
-<h2 id="appendix-intent-to-adopt-template"><a class="header" href="#appendix-intent-to-adopt-template">Appendix: Intent to Adopt Template</a></h2>
-<p>You may use this template in your Intent to Adopt email as noted above. Tweak it as you feel is useful.</p>
-<blockquote>
-<p>Hello everyone,</p>
-<p>I’m writing to share an intent to adopt a new architecture decision: [ADR-[Number]] [Title of ADR]</p>
-<p>This change addresses [brief summary of the problem] and proposes [brief description of the approach].</p>
-<p>This decision is based on [briefly mention motivating factors, constraints, or technical context].</p>
-<p>You can read the full proposal here: [link to ADR]</p>
-<p>If you have feedback or concerns, please respond in the linked issue. We plan to finalize the
-decision after [proposed date], factoring in discussion at that time.</p>
-<p>Thanks,
-[Your Name]</p>
-</blockquote>
+                        <h1 id="-settings-architecture"><a class="header" href="#-settings-architecture">⚙️ Settings Architecture</a></h1>
+<p>This document describes the settings architecture in Thunderbird for Android, explaining how preferences are organized,
+stored, and upgraded.</p>
+<h2 id="-overview"><a class="header" href="#-overview">🏗️ Overview</a></h2>
+<p>Settings are divided into several scopes to handle different levels of configuration:</p>
+<pre class="mermaid">graph TD
+    subgraph Settings
+        APP[General Settings]
+        ACCOUNT[Account Settings]
+        IDENTITY[Identity Settings]
+        FOLDER[Folder Settings]
+    end
 
+    ACCOUNT --&gt; IDENTITY
+    ACCOUNT --&gt; FOLDER
+
+    linkStyle default stroke:#999,stroke-width:2px
+</pre>
+
+<ul>
+<li><strong>General Settings</strong>: Application-wide preferences (e.g., theme, language, global notification settings).</li>
+<li><strong>Account Settings</strong>: Preferences specific to a single email account (e.g., check frequency, notification sounds).</li>
+<li><strong>Identity Settings</strong>: Preferences specific to a user identity within an account (e.g., name, email address, signature).</li>
+<li><strong>Folder Settings</strong>: Preferences specific to a mail folder (e.g., notification state, sync settings).</li>
+</ul>
+<h2 id="-code-location"><a class="header" href="#-code-location">📂 Code Location</a></h2>
+<p>Most of the settings definition and validation logic resides in the <code>legacy:core</code> module:</p>
+<ul>
+<li><code>com.fsck.k9.preferences.Settings</code>: Base classes for setting types (Boolean, String, Enum, etc.) and versioning logic.</li>
+<li><code>com.fsck.k9.preferences.AccountSettingsDescriptions</code>: Definitions and upgraders for account-level settings.</li>
+<li><code>com.fsck.k9.preferences.IdentitySettingsDescriptions</code>: Definitions and upgraders for identity-level settings.</li>
+<li><code>com.fsck.k9.preferences.CombinedSettingsUpgraders</code>: Registry for complex, multi-component upgraders.</li>
+<li><code>com.fsck.k9.preferences.ValidatedSettings</code>: Data classes representing the structure of validated settings.</li>
+</ul>
+<blockquote class="blockquote-tag blockquote-tag-tip">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<p>Use <code>ValidatedSettings.kt</code> as the source of truth for the data structure when implementing complex <code>CombinedSettingsUpgrader</code> logic.</p>
+</blockquote>
+<h2 id="-preferences-vs-metadata"><a class="header" href="#-preferences-vs-metadata">🔑 Preferences vs. Metadata</a></h2>
+<p>A key architectural distinction in this codebase is the separation of <strong>Fixed Metadata</strong> from <strong>User Preferences</strong>:</p>
+<ol>
+<li><strong>Fixed Metadata</strong>: Fundamental attributes like an account’s <code>uuid</code>, <code>name</code>, or an identity’s <code>email</code>. These are treated as structural properties and are typically mapped to specific database columns or high-level keys.</li>
+<li><strong>User Preferences (The <code>settings</code> Map)</strong>: These are key-value pairs stored in a <code>MutableMap</code>. They represent choices made by the user that don’t change the fundamental nature of the account (e.g., “Always BCC”, “Show images”).</li>
+</ol>
+<h2 id="-how-to-add-a-new-setting"><a class="header" href="#-how-to-add-a-new-setting">🆕 How to Add a New Setting</a></h2>
+<p>Adding a new setting typically involves the following steps:</p>
+<ol>
+<li><strong>Define the Setting</strong>: Add a new entry to the <code>SETTINGS</code> map in <code>AccountSettingsDescriptions</code> (or <code>IdentitySettingsDescriptions</code>).</li>
+<li><strong>Assign a Version</strong>: Use the current <code>Settings.VERSION</code> for the initial version of your setting.</li>
+<li><strong>Increment Global Version</strong>: If you are adding a setting that didn’t exist before, or changing the structure of existing settings, increment <code>Settings.VERSION</code>.</li>
+</ol>
+<blockquote class="blockquote-tag blockquote-tag-important">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p>When incrementing <code>Settings.VERSION</code>, ensure you update all relevant <code>AccountSettingsDescriptions</code>, <code>IdentitySettingsDescriptions</code>, and tests.</p>
+</blockquote>
+<ol start="4">
+<li><strong>Update UI</strong>: Implement the UI component in the relevant settings screen using Jetpack Compose and the Atomic Design system. Ensure you use components from <code>core:ui:compose:designsystem</code>.</li>
+</ol>
+<p>Example entry in <code>AccountSettingsDescriptions</code>:</p>
+<pre><code class="language-java">s.put("myNewSetting", Settings.versions(
+    new V(Settings.VERSION, new BooleanSetting(true))
+));
+</code></pre>
+<h2 id="-settings-upgraders"><a class="header" href="#-settings-upgraders">🔄 Settings Upgraders</a></h2>
+<p>As the application evolves, the format and structure of saved settings may change. Upgraders migrate data from an older
+version to a newer one during settings import or app updates.</p>
+<p>The upgrade process follows a specific sequence:</p>
+<pre class="mermaid">%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "darkMode": false,
+    "background": "#ffffff",
+    "mainBkg": "#ffffff",
+    "textColor": "#111111",
+    "actorTextColor": "#111111",
+    "labelTextColor": "#111111"
+  }
+}}%%
+sequenceDiagram
+    participant AU as AccountSettingsUpgrader
+    participant SU as SettingsUpgradeHelper
+    participant CU as CombinedSettingsUpgrader
+
+    rect rgb(240, 240, 240)
+        Note over AU, CU: For each version &gt; currentVersion
+        AU-&gt;&gt;SU: Upgrade per-scope maps (to version-1)
+        AU-&gt;&gt;CU: factory.invoke()
+        AU-&gt;&gt;CU: upgrade(account)
+        CU--&gt;&gt;AU: updated account
+        AU-&gt;&gt;SU: Upgrade per-scope maps (to version)
+    end
+</pre>
+
+<h3 id="1-settingsupgrader"><a class="header" href="#1-settingsupgrader">1. SettingsUpgrader</a></h3>
+<p>The <code>SettingsUpgrader</code> is the standard interface for upgrading a specific map of key-value preferences.</p>
+<ul>
+<li><strong>Interface</strong>: <code>fun interface SettingsUpgrader { fun upgrade(settings: MutableMap&lt;String, Any?&gt;) }</code></li>
+<li><strong>When to use</strong>: When you only need to modify, rename, or transform existing keys within the <code>settings</code> map.</li>
+<li><strong>Data processed</strong>: A single <code>MutableMap&lt;String, Any?&gt;</code> for the scope being upgraded.</li>
+<li><strong>Registration</strong>: Registered in maps like <code>AccountSettingsDescriptions.UPGRADERS</code> (version → upgrader).</li>
+</ul>
+<h3 id="2-combinedsettingsupgrader"><a class="header" href="#2-combinedsettingsupgrader">2. CombinedSettingsUpgrader</a></h3>
+<p>The <code>CombinedSettingsUpgrader</code> is used for complex migrations that require context from multiple parts of an account.</p>
+<ul>
+<li><strong>Interface</strong>: <code>fun interface CombinedSettingsUpgrader { fun upgrade(account: ValidatedSettings.Account): ValidatedSettings.Account }</code></li>
+<li><strong>When to use</strong>: When the upgrade depends on “core” account data (e.g., <code>uuid</code>, <code>name</code>) or needs to affect multiple sub-components (e.g., changing folder settings based on a server setting).</li>
+<li><strong>Registration</strong>: Registered as version → factory in <code>CombinedSettingsUpgraders.UPGRADERS</code>.</li>
+</ul>
+<h2 id="-upgrader-guidelines"><a class="header" href="#-upgrader-guidelines">📏 Upgrader Guidelines</a></h2>
+<ul>
+<li><strong>Deterministic</strong>: Prefer pure, deterministic, and side-effect-free transformations.</li>
+<li><strong>No Side Effects</strong>: Avoid performing network calls or file I/O inside upgraders.</li>
+<li><strong>Privacy</strong>: <strong>NEVER</strong> log PII (names, email addresses, tokens, credentials). Use the project’s <code>Logger</code> via DI where appropriate, but never for sensitive data.</li>
+<li><strong>Performance</strong>: Upgraders execute synchronously during import/upgrade; keep them lean and fast.</li>
+<li><strong>Idempotency</strong>: Ensure that running the same upgrader multiple times (if it were to happen) doesn’t corrupt data.</li>
+</ul>
+<h2 id="-validation"><a class="header" href="#-validation">🔍 Validation</a></h2>
+<p>Before settings are applied or stored, they are validated against their descriptions. The <code>Settings.validate()</code> method ensures that:</p>
+<ul>
+<li>All required keys are present (or uses default values).</li>
+<li>Values are of the correct type.</li>
+<li>Values fall within allowed ranges or enum sets.</li>
+</ul>
+<p>For the exact types and shape of the data, see <code>ValidatedSettings.kt</code>.</p>
+<h2 id="-related-documentation"><a class="header" href="#-related-documentation">📚 Related Documentation</a></h2>
+<p>For information on how settings are persisted to the database and how to perform low-level database migrations,
+see the <a href="../developer/preference-migration-guide.html">Preference Migration Guide</a>.</p>
+<footer id="last-change">Last change: <time datetime="2026-05-04">2026-05-04</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/18cd527">18cd527</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../architecture/legacy-module-integration.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../architecture/user-flows.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../../architecture/adr/0001-switch-from-java-to-kotlin.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../architecture/legacy-module-integration.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -262,11 +325,11 @@ decision after [proposed date], factoring in discussion at that time.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../architecture/legacy-module-integration.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../architecture/user-flows.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../../architecture/adr/0001-switch-from-java-to-kotlin.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../architecture/legacy-module-integration.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
@@ -286,18 +349,18 @@ decision after [proposed date], factoring in discussion at that time.</p>
         </script>
 
 
-        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
-        <script src="../../mark-09e88c2c.min.js"></script>
-        <script src="../../searcher-c2a407aa.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
 
-        <script src="../../clipboard-1626706a.min.js"></script>
-        <script src="../../highlight-abc7f01d.js"></script>
-        <script src="../../book-7163d6e2.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-7163d6e2.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="../../assets/additional/js/mermaid-217b66ef.min.js"></script>
-        <script src="../../assets/additional/js/mermaid-init-73b11a66.js"></script>
-        <script src="../../assets/additional/js/navigation-dde10ad4.js"></script>
+        <script src="../assets/additional/js/mermaid-217b66ef.min.js"></script>
+        <script src="../assets/additional/js/mermaid-init-73b11a66.js"></script>
+        <script src="../assets/additional/js/navigation-dde10ad4.js"></script>
 
 
 
