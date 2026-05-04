@@ -11,6 +11,7 @@ import com.fsck.k9.mailstore.SaveMessageDataCreator
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.notification.NotificationStrategy
+import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
@@ -21,6 +22,7 @@ import org.koin.dsl.binds
 import org.koin.dsl.module
 
 val controllerModule = module {
+    single<FolderIdResolver> { MessageStoreFolderIdResolver(messageStoreManager = get()) }
     single {
         MessagingController(
             get<Context>(),
@@ -38,6 +40,8 @@ val controllerModule = module {
             get<Logger>(named("syncDebug")),
             get<NotificationManager>(),
             get<OutboxFolderManager>(),
+            get<BackendStorageFactory>(),
+            get<FolderIdResolver>(),
         )
     } binds arrayOf(MessagingControllerRegistry::class)
 

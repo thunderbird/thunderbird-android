@@ -303,6 +303,16 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
+    private fun initializeArchiveFolderPreference() {
+        findPreference<Preference>(PREFERENCE_ARCHIVE_FOLDER)?.apply {
+            setOnPreferenceChangeListener { pref, newValue ->
+                val granularity = findPreference<Preference>(PREFERENCE_ARCHIVE_GRANULARITY)
+                granularity?.isEnabled = (pref as? FolderListPreference)?.isNoneSelected(newValue?.toString()) == false
+                true
+            }
+        }
+    }
+
     private fun maybeUpdateNotificationPreferences(account: LegacyAccountDto) {
         if (notificationSoundPreference != null ||
             notificationLightPreference != null ||
@@ -422,10 +432,13 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
             if (!messagingController.isMoveCapable(account)) {
                 findPreference<Preference>(PREFERENCE_ARCHIVE_FOLDER).remove()
+                findPreference<Preference>(PREFERENCE_ARCHIVE_GRANULARITY).remove()
                 findPreference<Preference>(PREFERENCE_DRAFTS_FOLDER).remove()
                 findPreference<Preference>(PREFERENCE_SENT_FOLDER).remove()
                 findPreference<Preference>(PREFERENCE_SPAM_FOLDER).remove()
                 findPreference<Preference>(PREFERENCE_TRASH_FOLDER).remove()
+            } else {
+                initializeArchiveFolderPreference()
             }
 
             loadFolders(account)
@@ -455,6 +468,15 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
         val automaticFolder = remoteFolderInfo.automaticSpecialFolders[type]
         folderListPreference.setFolders(remoteFolderInfo.folders, automaticFolder)
+        when (type) {
+            FolderType.ARCHIVE if folderListPreference.selected == null ->
+                findPreference<Preference>(PREFERENCE_ARCHIVE_GRANULARITY)?.isEnabled = false
+
+            FolderType.ARCHIVE ->
+                findPreference<Preference>(PREFERENCE_ARCHIVE_GRANULARITY)?.isEnabled = true
+
+            else -> Unit
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -529,6 +551,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_AUTO_SELECT_FOLDER = "auto_select_folder"
         private const val PREFERENCE_SUBSCRIBED_FOLDERS_ONLY = "subscribed_folders_only"
         private const val PREFERENCE_ARCHIVE_FOLDER = "archive_folder"
+        private const val PREFERENCE_ARCHIVE_GRANULARITY = "archive_granularity"
         private const val PREFERENCE_DRAFTS_FOLDER = "drafts_folder"
         private const val PREFERENCE_SENT_FOLDER = "sent_folder"
         private const val PREFERENCE_SPAM_FOLDER = "spam_folder"
