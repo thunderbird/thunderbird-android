@@ -5,75 +5,53 @@ name: PR - Request report labels
 # Don't add any steps that act on external code.
 on:
   pull_request_target:
-    types: [ opened, reopened, synchronize, labeled, unlabeled ]
+    types: [ opened, reopened, synchronize, labeled, unlabeled, edited ]
     branches:
       - main
       - beta
       - release
 
 permissions:
-  contents: none
+  contents: read
+  pull-requests: write
 
 jobs:
   require-report-label:
-    permissions:
-      pull-requests: write
-
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
       - name: Validate report label
         id: validate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          set -euo pipefail
-
-          labels_json='${{ toJson(github.event.pull_request.labels) }}'
-
-          echo "Current labels:"
-          echo "$labels_json" | jq -r '.[].name'
-
-          include_count="$(jq '[.[] | select(.name == "report: include")] | length' <<< "$labels_json")"
-          exclude_count="$(jq '[.[] | select(.name == "report: exclude")] | length' <<< "$labels_json")"
-          highlight_count="$(jq '[.[] | select(.name == "report: highlight")] | length' <<< "$labels_json")"
-
-          total_count=$((include_count + exclude_count + highlight_count))
-
-          if [ "$total_count" -eq 0 ]; then
-            echo "valid=false" >> "$GITHUB_OUTPUT"
-            echo "message=Missing report label. Set exactly one of: \`report: include\`, \`report: exclude\` OR \`report: highlight\`." >> "$GITHUB_OUTPUT"
-          elif [ "$total_count" -gt 1 ]; then
-            echo "valid=false" >> "$GITHUB_OUTPUT"
-            echo "message=Only one report label is allowed: \`report: include\`, \`report: exclude\` OR \`report: highlight\`." >> "$GITHUB_OUTPUT"
-          fi
-
-          feature_flag_count="$(jq '[.[] | select(.name == "feature flag")] | length' <<< "$labels_json")"
-          if [ "$feature_flag_count" -gt 0 ]; then
-            pr_body='${{ toJson(github.event.pull_request.body) }}'
-            pr_feature_flag_key="$(jq -nr --arg body "$pr_body" 'try ($body | gsub("\r"; "") | capture("(?m)^feature-flag:\\s*`(?<flag>[^`]+)`$").flag) catch ""')"
-            if [ -z "$pr_feature_flag_key" ]; then
-              echo "valid=false" >> "$GITHUB_OUTPUT"
-              echo "message=PR body must contain the feature flag key in the format: \`feature-flag: \\\`<feature-flag-key>\\\`\`." >> "$GITHUB_OUTPUT"
-            else
-              echo "valid=true" >> "$GITHUB_OUTPUT"
+          ./scripts/ci/validate-pr-report-labels.sh "$PR_NUMBER" | while read -r line; do
+            echo "$line"
+            if [[ "$line" == "valid="* ]] || [[ "$line" == "message="* ]]; then
+              echo "$line" >> "$GITHUB_OUTPUT"
             fi
-          else
-            echo "valid=true" >> "$GITHUB_OUTPUT"
-          fi
+          done
 
-      - name: Comment on PR (only on error)
+      - name: Fail if invalid
         if: steps.validate.outputs.valid == 'false'
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           MESSAGE: ${{ steps.validate.outputs.message }}
+          IDENTIFIER: "<!-- pr-report-label-validation-comment -->"
         run: |
-          gh pr comment "$PR_NUMBER" \
-            --repo "${{ github.repository }}" \
-            --body "$MESSAGE"
-
-      - name: Fail if invalid
-        if: steps.validate.outputs.valid == 'false'
-        env:
-          MESSAGE: ${{ steps.validate.outputs.message }}
-        run: |
+          ./scripts/ci/manage-pr-comment.sh "$PR_NUMBER" "$IDENTIFIER" "$MESSAGE" "invalid"
           echo "::error::$MESSAGE"
           exit 1
+
+      - name: Mark as resolved if valid
+        if: steps.validate.outputs.valid == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          IDENTIFIER: "<!-- pr-report-label-validation-comment -->"
+        run: |
+          ./scripts/ci/manage-pr-comment.sh "$PR_NUMBER" "$IDENTIFIER" "" "valid"
