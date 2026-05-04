@@ -112,6 +112,7 @@ val coreNotificationModule = module {
             actionCreator = get(),
             resourceProvider = get(),
             lockScreenNotificationCreator = get(),
+            notificationPreferenceManager = get(),
             application = androidApplication(),
         )
     }

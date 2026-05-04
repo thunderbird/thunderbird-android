@@ -61,6 +61,7 @@ class GeneralSettingsDataStore(
             "quiet_time_enabled" -> notificationSettings.isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !notificationSettings.isNotificationDuringQuietTimeEnabled
             "notification_summary_delete" -> notificationSettings.isSummaryDeleteActionEnabled
+            "notification_show_contact_picture" -> notificationSettings.isShowContactPictureInNotification
             "privacy_hide_useragent" -> privacySettings.isHideUserAgent
             "privacy_hide_timezone" -> privacySettings.isHideTimeZone
             "debug_logging" -> debuggingSettings.isDebugLoggingEnabled
@@ -103,6 +104,10 @@ class GeneralSettingsDataStore(
             "quiet_time_enabled" -> setIsQuietTimeEnabled(isQuietTimeEnabled = value)
             "disable_notifications_during_quiet_time" -> setIsNotificationDuringQuietTimeEnabled(!value)
             "notification_summary_delete" -> setIsSummaryDeleteActionEnabled(isSummaryDeleteActionEnabled = value)
+            "notification_show_contact_picture" -> setIsShowContactPictureInNotification(
+                isShowContactPictureInNotification = value,
+            )
+
             "privacy_hide_useragent" -> setIsHideUserAgent(isHideUserAgent = value)
             "privacy_hide_timezone" -> setIsHideTimeZone(isHideTimeZone = value)
             "debug_logging" -> setIsDebugLoggingEnabled(isDebugLoggingEnabled = value)
@@ -662,6 +667,17 @@ class GeneralSettingsDataStore(
             settings.copy(
                 notification = settings.notification.copy(
                     isSummaryDeleteActionEnabled = isSummaryDeleteActionEnabled,
+                ),
+            )
+        }
+    }
+
+    private fun setIsShowContactPictureInNotification(isShowContactPictureInNotification: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                notification = settings.notification.copy(
+                    isShowContactPictureInNotification = isShowContactPictureInNotification,
                 ),
             )
         }
