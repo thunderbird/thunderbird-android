@@ -2,6 +2,8 @@ package net.thunderbird.core.preference.network
 
 import net.thunderbird.core.preference.PreferenceManager
 
-const val KEY_BG_OPS = "backgroundOperations"
+enum class NetworkSettingKey(val value: String) {
+    BackgroundOperations("backgroundOperations"),
+}
 
 interface NetworkSettingsPreferenceManager : PreferenceManager<NetworkSettings>

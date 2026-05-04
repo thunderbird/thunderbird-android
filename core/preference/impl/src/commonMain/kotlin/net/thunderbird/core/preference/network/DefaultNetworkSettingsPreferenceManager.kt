@@ -11,6 +11,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangeSubscriber
+import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
@@ -25,7 +28,12 @@ class DefaultNetworkSettingsPreferenceManager(
     private val storageEditor: StorageEditor,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
-) : NetworkSettingsPreferenceManager {
+    preferenceChangeBroker: PreferenceChangeBroker,
+) : NetworkSettingsPreferenceManager, PreferenceChangeSubscriber {
+
+    init {
+        preferenceChangeBroker.subscribe(this)
+    }
     private val configState: MutableStateFlow<NetworkSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
     private val storage: Storage
@@ -41,18 +49,27 @@ class DefaultNetworkSettingsPreferenceManager(
     }
 
     private fun loadConfig(): NetworkSettings = NetworkSettings(
-        backgroundOps = storage.getEnumOrDefault(KEY_BG_OPS, NETWORK_SETTINGS_DEFAULT_BACKGROUND_OPS),
+        backgroundOps = storage.getEnumOrDefault(
+            NetworkSettingKey.BackgroundOperations.value,
+            NETWORK_SETTINGS_DEFAULT_BACKGROUND_OPS,
+        ),
     )
 
     private fun writeConfig(config: NetworkSettings) {
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
-                storageEditor.putEnum(KEY_BG_OPS, config.backgroundOps)
+                storageEditor.putEnum(NetworkSettingKey.BackgroundOperations.value, config.backgroundOps)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
             }
+        }
+    }
+
+    override fun receive(scope: PreferenceScope) {
+        if (scope == PreferenceScope.ALL || scope == PreferenceScope.NETWORK) {
+            configState.update { loadConfig() }
         }
     }
 }
