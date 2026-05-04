@@ -77,6 +77,7 @@ val featureMessageListModule = module {
             logger = get(),
             messageListStateMachineFactory = get(),
             stateSideEffectHandlersFactories = getList { parameters },
+            stringsResourceManager = get(),
         )
     }
     single<LocalDeleteOperationDecider> { DefaultLocalDeleteOperationDecider() }
