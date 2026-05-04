@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import androidx.annotation.WorkerThread;
+import android.provider.DocumentsContract;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingController;
@@ -62,6 +63,14 @@ public class AttachmentController {
         }
     }
 
+    public void saveAttachmentToDirectory(Uri directoryUri) {
+        if (!attachment.isContentAvailable()) {
+            downloadAndSaveAttachmentToDirectory((LocalPart) attachment.part, directoryUri);
+        } else {
+            saveLocalAttachmentToDirectory(directoryUri);
+        }
+    }
+
     private void downloadAndViewAttachment(LocalPart localPart) {
         downloadAttachment(localPart, new Runnable() {
             @Override
@@ -73,6 +82,16 @@ public class AttachmentController {
     }
 
     private void downloadAndSaveAttachmentTo(LocalPart localPart, final Uri documentUri) {
+        downloadAttachment(localPart, new Runnable() {
+            @Override
+            public void run() {
+                messageViewFragment.refreshAttachmentThumbnail(attachment);
+                saveLocalAttachmentTo(documentUri);
+            }
+        });
+    }
+
+    private void downloadAndSaveAttachmentToDirectory(LocalPart localPart, final Uri documentUri) {
         downloadAttachment(localPart, new Runnable() {
             @Override
             public void run() {
@@ -108,6 +127,10 @@ public class AttachmentController {
     }
 
     private void saveLocalAttachmentTo(Uri documentUri) {
+        new SaveAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, documentUri);
+    }
+
+    private void saveLocalAttachmentToDirectory(Uri directoryUri) {
         new SaveAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, documentUri);
     }
 

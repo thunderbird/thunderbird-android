@@ -20,6 +20,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
@@ -65,6 +66,7 @@ import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.share.ShareIntentBuilder
 import java.util.Locale
 import kotlin.time.Instant
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -109,6 +111,10 @@ class MessageViewFragment :
     private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
         registerForActivityResult(CreateDocumentResultContract()) { documentUri ->
             onCreateDocumentResult(documentUri)
+        }
+    private val openDocumentTreeLauncher: ActivityResultLauncher<Uri?> =
+        registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { directoryUri ->
+            onOpenDocumentTreeResult(directoryUri)
         }
     private val chooseFolderForCopyLauncher: ActivityResultLauncher<ChooseFolderResultContract.Input> =
         registerForActivityResult(ChooseFolderResultContract(ChooseFolderActivity.Action.COPY)) { result ->
@@ -237,9 +243,10 @@ class MessageViewFragment :
                                 onSaveAttachment(attachment)
                             },
                             onSaveAllClick = {
-                                attachments.forEach { item ->
-                                    onSaveAttachment(item.attachment)
-                                }
+                                onSaveAllAttachments()
+//                                attachments.forEach { item ->
+//                                    onSaveAttachment(item.attachment)
+//                                }
                             },
                         )
                     }
@@ -816,6 +823,16 @@ class MessageViewFragment :
         createAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(uri)
     }
 
+    private fun onOpenDocumentTreeResult(directoryUri: Uri?) {
+        if (directoryUri == null) return
+
+        val messageView = mMessageViewInfo ?: return
+        val attachments = messageView.attachments.orEmpty() + messageView.attachments.filter { !it.inlineAttachment }
+        attachments.forEach {
+            createAttachmentController(it).saveAttachmentToDirectory(directoryUri)
+        }
+    }
+
     private fun onChooseFolderMoveResult(result: ChooseFolderResultContract.Result?) {
         if (result == null) return
 
@@ -1176,6 +1193,14 @@ class MessageViewFragment :
         currentAttachmentViewInfo = attachment
 
         createAttachmentController(attachment).viewAttachment()
+    }
+
+    fun onSaveAllAttachments() {
+        try {
+            openDocumentTreeLauncher.launch(null)
+        } catch (_: ActivityNotFoundException) {
+            Toast.makeText(requireContext(), R.string.error_activity_not_found, Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onSaveAttachment(attachment: AttachmentViewInfo) {
