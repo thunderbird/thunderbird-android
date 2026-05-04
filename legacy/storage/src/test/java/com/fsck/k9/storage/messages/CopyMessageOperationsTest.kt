@@ -36,11 +36,13 @@ class CopyMessageOperationsTest : RobolectricTest() {
         val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
         attachmentFileManager = AttachmentFileManager(storageFilesProvider, mock())
         val threadMessageOperations = ThreadMessageOperations()
+        val localMessageUidPrefixProvider = FakeLocalMessageUidProvider()
         copyMessageOperations = CopyMessageOperations(
             lockableDatabase,
             attachmentFileManager,
             threadMessageOperations,
             accountId,
+            localMessageUidPrefixProvider
         )
     }
 

@@ -2,7 +2,8 @@
 
 package com.fsck.k9.controller
 
-import com.fsck.k9.K9
+import app.k9mail.legacy.di.DI
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 
 fun <T : Any> requireNotNull(value: T?) {
     kotlin.requireNotNull(value)
@@ -25,5 +26,6 @@ fun requireValidUids(uids: List<String?>?) {
 
 private fun requireNotLocalUid(uid: String?) {
     kotlin.requireNotNull(uid)
-    require(!uid.startsWith(K9.LOCAL_UID_PREFIX)) { "Local UID found: $uid" }
+    val localMessageUidPrefix = DI.get(LocalMessageUidPrefixProvider::class.java).get()
+    require(!uid.startsWith(localMessageUidPrefix)) { "Local UID found: $uid" }
 }

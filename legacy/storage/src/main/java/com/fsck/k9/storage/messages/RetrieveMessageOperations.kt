@@ -10,8 +10,12 @@ import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MessageNotFoundException
 import java.util.Date
 import net.thunderbird.core.common.mail.Flag
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 
-internal class RetrieveMessageOperations(private val lockableDatabase: LockableDatabase) {
+internal class RetrieveMessageOperations(
+    private val lockableDatabase: LockableDatabase,
+    private val localMessageUidPrefixProvider: LocalMessageUidPrefixProvider
+) {
 
     fun getMessageServerId(messageId: Long): String? {
         return lockableDatabase.execute(false) { database ->
@@ -65,10 +69,11 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
     }
 
     fun getMessageServerIds(folderId: Long): Set<String> {
+        val localMessageUidPrefix = localMessageUidPrefixProvider.get()
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(
                 "SELECT uid FROM messages" +
-                    " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'",
+                    " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${localMessageUidPrefix}%'",
                 arrayOf(folderId.toString()),
             ).use { cursor ->
                 val result = mutableSetOf<String>()
@@ -137,10 +142,11 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
     }
 
     fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?> {
+        val localMessageUidPrefix = localMessageUidPrefixProvider.get()
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(
                 "SELECT uid, date FROM messages" +
-                    " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'",
+                    " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '$localMessageUidPrefix%'",
                 arrayOf(folderId.toString()),
             ).use { cursor ->
                 val result = mutableMapOf<String, Long?>()

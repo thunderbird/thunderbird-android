@@ -7,7 +7,6 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.startsWith
-import com.fsck.k9.K9
 import com.fsck.k9.storage.RobolectricTest
 import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
@@ -21,6 +20,7 @@ private const val MESSAGE_ID_HEADER = "<00000000-0000-4000-0000-000000000000@dom
 class MoveMessageOperationsTest : RobolectricTest() {
 
     private val accountId = AccountIdFactory.create()
+    val localMessageUidPrefixProvider = FakeLocalMessageUidProvider()
     private lateinit var sqliteDatabase: SQLiteDatabase
     private lateinit var moveMessageOperations: MoveMessageOperations
 
@@ -32,6 +32,7 @@ class MoveMessageOperationsTest : RobolectricTest() {
             lockableDatabase,
             ThreadMessageOperations(),
             accountId,
+            localMessageUidPrefixProvider
         )
     }
 
@@ -66,7 +67,7 @@ class MoveMessageOperationsTest : RobolectricTest() {
         assertPlaceholderEntry(sourceMessage)
 
         val destinationMessage = messages.first { it.id == destinationMessageId }
-        assertThat(destinationMessage.uid).isNotNull().startsWith(K9.LOCAL_UID_PREFIX)
+        assertThat(destinationMessage.uid).isNotNull().startsWith(localMessageUidPrefixProvider.get())
         assertThat(destinationMessage).isEqualTo(
             originalMessage.copy(
                 id = destinationMessageId,
@@ -134,7 +135,7 @@ class MoveMessageOperationsTest : RobolectricTest() {
         assertPlaceholderEntry(sourceMessage)
 
         val destinationMessage = messages.first { it.id == destinationMessageId }
-        assertThat(destinationMessage.uid).isNotNull().startsWith(K9.LOCAL_UID_PREFIX)
+        assertThat(destinationMessage.uid).isNotNull().startsWith(localMessageUidPrefixProvider.get())
         assertThat(destinationMessage).isEqualTo(
             originalMessage.copy(
                 id = destinationMessageId,
@@ -187,7 +188,7 @@ class MoveMessageOperationsTest : RobolectricTest() {
         assertPlaceholderEntry(sourceMessage)
 
         val destinationMessage = messages.first { it.id == destinationMessageId }
-        assertThat(destinationMessage.uid).isNotNull().startsWith(K9.LOCAL_UID_PREFIX)
+        assertThat(destinationMessage.uid).isNotNull().startsWith(localMessageUidPrefixProvider.get())
         assertThat(destinationMessage).isEqualTo(
             originalMessage.copy(
                 id = destinationMessageId,

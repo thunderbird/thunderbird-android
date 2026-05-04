@@ -4,6 +4,7 @@ import android.content.Context
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageCountsProvider
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.mailstore.LocalStoreProvider
@@ -33,6 +34,7 @@ val controllerModule = module {
             get<SaveMessageDataCreator>(),
             get<SpecialLocalFoldersCreator>(),
             get<LocalDeleteOperationDecider>(),
+            get<LocalMessageUidPrefixProvider>(),
             get(named("controllerExtensions")),
             get<FeatureFlagProvider>(),
             get<Logger>(named("syncDebug")),

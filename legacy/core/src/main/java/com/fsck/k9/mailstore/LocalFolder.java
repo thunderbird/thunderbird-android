@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.mailstore.MoreMessages;
 import com.fsck.k9.K9;
 import app.k9mail.legacy.message.controller.MessageReference;
@@ -34,6 +35,7 @@ import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.preference.GeneralSettingsManager;
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -64,7 +66,8 @@ public class LocalFolder {
     private final LocalStore localStore;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
     private GeneralSettingsManager generalSettingsManager;
-
+    private final LocalMessageUidPrefixProvider localMessageUidPrefixProvider =
+        DI.get(LocalMessageUidPrefixProvider.class);
 
     private String status = null;
     private long lastChecked = 0;
@@ -904,7 +907,7 @@ public class LocalFolder {
     }
 
     public void destroyLocalOnlyMessages() throws MessagingException {
-        destroyMessages("uid LIKE '" + K9.LOCAL_UID_PREFIX + "%'");
+        destroyMessages("uid LIKE '" + localMessageUidPrefixProvider.get() + "%'");
     }
 
     public void destroyDeletedMessages() throws MessagingException {
