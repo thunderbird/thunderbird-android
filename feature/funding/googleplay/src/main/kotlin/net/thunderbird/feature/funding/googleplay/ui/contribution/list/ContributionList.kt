@@ -1,4 +1,4 @@
-package net.thunderbird.feature.funding.googleplay.ui.contribution
+package net.thunderbird.feature.funding.googleplay.ui.contribution.list
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
@@ -24,6 +24,7 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import app.k9mail.core.ui.compose.common.resources.annotatedStringResource
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonSegmentedSingleChoice
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
@@ -32,23 +33,24 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.funding.googleplay.R
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
-import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
-import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
-import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionListState
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
+import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionListItem
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.ContributionType
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.Event
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.State
+import net.thunderbird.feature.funding.googleplay.ui.contribution.mapErrorToTitle
 
 @Composable
 internal fun ContributionList(
-    state: ContributionListState,
-    onOneTimeContributionTypeClick: () -> Unit,
-    onRecurringContributionTypeClick: () -> Unit,
-    onItemClick: (Contribution) -> Unit,
-    onRetryClick: () -> Unit,
+    state: State,
+    onEvent: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -73,18 +75,25 @@ internal fun ContributionList(
                 error = { error ->
                     ListErrorView(
                         error = error,
-                        onRetryClick = onRetryClick,
+                        onRetryClick = {
+                            onEvent(Event.RetryClicked)
+                        },
                     )
                 },
                 content = { state ->
-                    if (state.oneTimeContributions.isEmpty() && state.recurringContributions.isEmpty()) {
+                    if (state.contributions.oneTimeContributions.isEmpty() &&
+                        state.contributions.recurringContributions.isEmpty()
+                    ) {
                         ListEmptyView()
                     } else {
                         ListContentView(
                             state = state,
-                            onOneTimeContributionTypeClick = onOneTimeContributionTypeClick,
-                            onRecurringContributionTypeClick = onRecurringContributionTypeClick,
-                            onItemClick = onItemClick,
+                            onContributionTypeClick = {
+                                onEvent(Event.TypeClicked(it))
+                            },
+                            onItemClick = {
+                                onEvent(Event.ItemClicked(it.id))
+                            },
                         )
                     }
                 },
@@ -102,55 +111,12 @@ internal fun ContributionList(
     }
 }
 
-@Composable
-private fun TypeSelectionRow(
-    oneTimeContributions: ImmutableList<OneTimeContribution>,
-    recurringContributions: ImmutableList<RecurringContribution>,
-    isRecurringContributionSelected: Boolean,
-    onOneTimeContributionTypeClick: () -> Unit,
-    onRecurringContributionTypeClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(top = MainTheme.spacings.default),
-        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
-    ) {
-        if (oneTimeContributions.isEmpty() && recurringContributions.isEmpty()) {
-            ContributionListItem(
-                text = stringResource(R.string.funding_googleplay_contribution_list_type_none_available),
-                onClick = {},
-                isSelected = true,
-                modifier = Modifier.weight(1f),
-            )
-        } else {
-            if (oneTimeContributions.isNotEmpty()) {
-                ContributionListItem(
-                    text = stringResource(R.string.funding_googleplay_contribution_list_type_one_time),
-                    onClick = onOneTimeContributionTypeClick,
-                    isSelected = !isRecurringContributionSelected,
-                    modifier = Modifier.weight(1f),
-                )
-            }
-            if (recurringContributions.isNotEmpty()) {
-                ContributionListItem(
-                    text = stringResource(R.string.funding_googleplay_contribution_list_type_recurring),
-                    onClick = onRecurringContributionTypeClick,
-                    isSelected = isRecurringContributionSelected,
-                    modifier = Modifier.weight(1f),
-                )
-            }
-        }
-    }
-}
-
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ChoicesRow(
     contributions: ImmutableList<Contribution>,
     onItemClick: (Contribution) -> Unit,
-    selectedItem: Contribution?,
+    selectedItemId: ContributionId?,
     modifier: Modifier = Modifier,
 ) {
     FlowRow(
@@ -162,7 +128,7 @@ private fun ChoicesRow(
             ContributionListItem(
                 text = it.priceFormatted,
                 onClick = { onItemClick(it) },
-                isSelected = it == selectedItem,
+                isSelected = it.id == selectedItemId,
                 modifier = Modifier.weight(1f),
             )
         }
@@ -171,31 +137,38 @@ private fun ChoicesRow(
 
 @Composable
 private fun ListContentView(
-    state: ContributionListState,
-    onOneTimeContributionTypeClick: () -> Unit,
-    onRecurringContributionTypeClick: () -> Unit,
+    state: State,
+    onContributionTypeClick: (ContributionType) -> Unit,
     onItemClick: (Contribution) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val oneTimeLabel = stringResource(R.string.funding_googleplay_contribution_list_type_one_time)
+    val recurringLabel = stringResource(R.string.funding_googleplay_contribution_list_type_recurring)
+
     Column(
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
         modifier = modifier,
     ) {
-        TypeSelectionRow(
-            oneTimeContributions = state.oneTimeContributions,
-            recurringContributions = state.recurringContributions,
-            isRecurringContributionSelected = state.isRecurringContributionSelected,
-            onOneTimeContributionTypeClick = onOneTimeContributionTypeClick,
-            onRecurringContributionTypeClick = onRecurringContributionTypeClick,
+        ButtonSegmentedSingleChoice(
+            options = ContributionType.entries.toImmutableList(),
+            selectedOption = state.selectedType,
+            onClick = onContributionTypeClick,
+            optionTitle = { type ->
+                when (type) {
+                    ContributionType.OneTime -> oneTimeLabel
+                    ContributionType.Recurring -> recurringLabel
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
         )
 
         ChoicesRow(
-            contributions = if (state.isRecurringContributionSelected) {
-                state.recurringContributions
+            contributions = if (state.selectedType == ContributionType.Recurring) {
+                state.contributions.recurringContributions
             } else {
-                state.oneTimeContributions
+                state.contributions.oneTimeContributions
             },
-            selectedItem = state.selectedContribution,
+            selectedItemId = state.selectedContribution?.id,
             onItemClick = onItemClick,
         )
     }

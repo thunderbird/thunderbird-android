@@ -24,40 +24,35 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.funding.googleplay.R
-import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.ui.contribution.image.GoldenHearthSunburst
 import net.thunderbird.feature.funding.googleplay.ui.contribution.image.HearthSunburst
 
 @Composable
 internal fun ContributionHeader(
-    purchasedContribution: Contribution?,
+    purchasedContribution: PurchasedContribution?,
     modifier: Modifier = Modifier,
 ) {
     AnimatedContent(
-        targetState = purchasedContribution != null,
+        targetState = purchasedContribution,
         label = "ContributionHeaderLogo",
-    ) { targetState ->
-        when (targetState) {
-            true -> {
-                val contribution = purchasedContribution!!
-                ContributionHeaderView(
-                    logo = GoldenHearthSunburst,
-                    title = ContributionIdStringMapper.mapToContributionTitle(contribution.id),
-                    description = ContributionIdStringMapper.mapToContributionDescription(contribution.id),
-                    showThankYou = true,
-                    benefits = ContributionIdStringMapper.mapToContributionBenefits(contribution.id),
-                    modifier = modifier,
-                )
-            }
-
-            false -> {
-                ContributionHeaderView(
-                    logo = HearthSunburst,
-                    title = stringResource(R.string.funding_googleplay_contribution_header_title),
-                    description = stringResource(R.string.funding_googleplay_contribution_header_description),
-                    modifier = modifier,
-                )
-            }
+    ) { contribution ->
+        if (contribution != null) {
+            ContributionHeaderView(
+                logo = GoldenHearthSunburst,
+                title = ContributionIdStringMapper.mapToContributionTitle(contribution.id),
+                description = ContributionIdStringMapper.mapToContributionDescription(contribution.id),
+                showThankYou = true,
+                benefits = ContributionIdStringMapper.mapToContributionBenefits(contribution.id),
+                modifier = modifier,
+            )
+        } else {
+            ContributionHeaderView(
+                logo = HearthSunburst,
+                title = stringResource(R.string.funding_googleplay_contribution_header_title),
+                description = stringResource(R.string.funding_googleplay_contribution_header_description),
+                modifier = modifier,
+            )
         }
     }
 }

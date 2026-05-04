@@ -8,8 +8,14 @@ import net.thunderbird.feature.funding.googleplay.GooglePlayFundingNavigation
 import net.thunderbird.feature.funding.googleplay.data.fundingDataModule
 import net.thunderbird.feature.funding.googleplay.domain.ContributionIdProvider
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
+import net.thunderbird.feature.funding.googleplay.domain.policy.ContributionPreselector
 import net.thunderbird.feature.funding.googleplay.domain.usecase.GetAvailableContributions
+import net.thunderbird.feature.funding.googleplay.domain.usecase.GetLatestPurchasedContribution
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionViewModel
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceFactory
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceFactory
 import net.thunderbird.feature.funding.googleplay.ui.reminder.ActivityLifecycleObserver
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FragmentLifecycleObserver
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminder
@@ -61,17 +67,46 @@ val featureFundingModule = module {
         ContributionIdProvider()
     }
 
+    single<FundingDomainContract.Policy.ContributionPreselector> {
+        ContributionPreselector()
+    }
+
     single<FundingDomainContract.UseCase.GetAvailableContributions> {
         GetAvailableContributions(
             repository = get(),
             contributionIdProvider = get(),
+            preselector = get(),
+        )
+    }
+
+    single<FundingDomainContract.UseCase.GetLatestPurchasedContribution> {
+        GetLatestPurchasedContribution(
+            repository = get(),
+            clock = get(),
+        )
+    }
+
+    factory<ContributionListSliceContract.Slice.Factory> {
+        ContributionListSliceFactory(
+            getAvailableContributions = get(),
+            logger = get(),
+        )
+    }
+
+    factory<PurchaseSliceContract.Slice.Factory> {
+        PurchaseSliceFactory(
+            getLastestPurchase = get(),
+            repository = get(),
+            logger = get(),
         )
     }
 
     viewModel {
         ContributionViewModel(
-            getAvailableContributions = get(),
+            listSliceFactory = get(),
+            purchaseSliceFactory = get(),
             repository = get(),
+            logger = get(),
         )
     }
 }

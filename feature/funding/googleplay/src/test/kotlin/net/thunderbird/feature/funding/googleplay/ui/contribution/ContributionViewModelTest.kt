@@ -10,16 +10,18 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
-import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
-import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
-import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionListState
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Effect
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Event
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.State
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract
 
 class ContributionViewModelTest {
 
@@ -37,201 +39,143 @@ class ContributionViewModelTest {
     }
 
     @Test
-    fun `should change selected contribution and selected type when one time contribution selected`() = runMviTest {
+    fun `should update state when list selection changed effect received`() = runMviTest {
         // Arrange
-        val initialState = State(
-            listState = ContributionListState(
-                oneTimeContributions = FakeData.oneTimeContributions,
-                recurringContributions = FakeData.recurringContributions,
-                selectedContribution = FakeData.recurringContributions[FakeData.recurringContributions.size - 2],
-                isRecurringContributionSelected = true,
-                isLoading = false,
-            ),
-            purchasedContribution = null,
-            showContributionList = true,
-        )
+        val initialState = State()
+        val contributionId = FakeData.oneTimeContribution.id
 
         contributionRobot(initialState) {
             // Act
-            selectOneTimeContribution()
+            listEffectFlow.emit(ContributionListSliceContract.Effect.SelectionChanged(contributionId))
 
             // Assert
-            verifyOneTimeContributionSelected()
+            verifyState {
+                assertThat(it.selectedContributionId).isEqualTo(contributionId)
+            }
         }
     }
 
     @Test
-    fun `should change selected contribution and selected type when recurring contribution selected`() = runMviTest {
+    fun `should hide list when purchased effect received`() = runMviTest {
         // Arrange
-        val initialState = State(
-            listState = ContributionListState(
-                oneTimeContributions = FakeData.oneTimeContributions,
-                recurringContributions = FakeData.recurringContributions,
-                selectedContribution = FakeData.oneTimeContributions[FakeData.oneTimeContributions.size - 2],
-                isRecurringContributionSelected = false,
-                isLoading = false,
-            ),
-            purchasedContribution = null,
-            showContributionList = true,
-        )
+        val initialState = State(showContributionList = true)
+        val contributionId = FakeData.oneTimeContribution.id
 
         contributionRobot(initialState) {
             // Act
-            selectRecurringContribution()
+            purchaseEffectFlow.emit(PurchaseSliceContract.Effect.Purchased(contributionId))
 
             // Assert
-            verifyRecurringContributionSelected()
+            verifyState {
+                assertThat(it.showContributionList).isEqualTo(false)
+            }
         }
     }
 
     @Test
-    fun `should change selected contribution when contribution item clicked`() = runMviTest {
+    fun `should show list when purchased effect received with null id`() = runMviTest {
         // Arrange
-        val initialState = State(
-            listState = ContributionListState(
-                oneTimeContributions = FakeData.oneTimeContributions,
-                recurringContributions = FakeData.recurringContributions,
-                selectedContribution = FakeData.recurringContributions[FakeData.recurringContributions.size - 2],
-                isRecurringContributionSelected = true,
-                isLoading = false,
-            ),
-            purchasedContribution = null,
-            showContributionList = true,
-        )
-        val selectedContribution = FakeData.recurringContributions[2]
+        val initialState = State(showContributionList = false)
 
         contributionRobot(initialState) {
             // Act
-            selectContributionItem(selectedContribution)
+            purchaseEffectFlow.emit(PurchaseSliceContract.Effect.Purchased(null))
 
             // Assert
-            verifyContributionItemSelected(selectedContribution)
+            verifyState {
+                assertThat(it.showContributionList).isEqualTo(true)
+            }
         }
     }
 
     @Test
-    fun `should hide list when purchase successful`() = runMviTest {
+    fun `should emit ManageSubscription effect when purchase slice emits it`() = runMviTest {
         // Arrange
-        val repository = FakeContributionRepository()
-        val contribution = FakeData.oneTimeContributions[0]
-        val initialState = State(
-            listState = ContributionListState(
-                oneTimeContributions = FakeData.oneTimeContributions,
-                recurringContributions = FakeData.recurringContributions,
-                selectedContribution = FakeData.oneTimeContributions[0],
-                isRecurringContributionSelected = false,
-                isLoading = false,
-            ),
-            purchasedContribution = null,
-            showContributionList = true,
-        )
+        val initialState = State()
+        val contributionId = FakeData.oneTimeContribution.id
 
-        contributionRobot(initialState = initialState, repository = repository) {
+        contributionRobot(initialState) {
             // Act
-            repository.purchasedContribution.value = Outcome.success(contribution)
+            purchaseEffectFlow.emit(PurchaseSliceContract.Effect.ManageSubscription(contributionId))
 
             // Assert
-            verifyListHidden(contribution)
+            verifyEffect(Effect.ManageSubscription(contributionId))
         }
     }
-}
 
-private suspend fun MviContext.contributionRobot(
-    initialState: State = State(),
-    repository: FakeContributionRepository = FakeContributionRepository(),
-    interaction: suspend ContributionRobot.() -> Unit,
-) = ContributionRobot(this, initialState, repository).apply {
-    initialize()
-    interaction()
-}
+    @Test
+    fun `should show list when ShowContributionListClicked event received`() = runMviTest {
+        // Arrange
+        val initialState = State(showContributionList = false)
 
-private class ContributionRobot(
-    private val mviContext: MviContext,
-    private val initialState: State = State(),
-    private val repository: FakeContributionRepository = FakeContributionRepository(),
-) {
-    // FIX use case
-    private val viewModel: ContributionContract.ViewModel = ContributionViewModel(
-        getAvailableContributions = {
-            flowOf(
-                Outcome.success(
-                    AvailableContributions(
-                        oneTimeContributions = FakeData.oneTimeContributions,
-                        recurringContributions = FakeData.recurringContributions,
-                        purchasedContribution = null,
-                    ),
-                ),
-            )
-        },
-        repository = repository,
-        initialState = initialState,
-    )
-    private lateinit var turbines: MviTurbines<State, Effect>
+        contributionRobot(initialState) {
+            // Act
+            event(Event.ShowContributionListClicked)
 
-    suspend fun initialize() {
-        turbines = mviContext.turbinesWithInitialStateCheck(viewModel, initialState)
+            // Assert
+            verifyState {
+                assertThat(it.showContributionList).isEqualTo(true)
+            }
+        }
     }
 
-    fun selectOneTimeContribution() {
-        viewModel.event(Event.OnOneTimeContributionSelected)
-    }
+    private suspend fun MviContext.contributionRobot(
+        initialState: State,
+        block: suspend ContributionRobot.() -> Unit,
+    ) {
+        val listStateFlow = MutableStateFlow(ContributionListSliceContract.State())
+        val listEffectFlow = MutableSharedFlow<ContributionListSliceContract.Effect>()
+        val purchaseStateFlow = MutableStateFlow(PurchaseSliceContract.State())
+        val purchaseEffectFlow = MutableSharedFlow<PurchaseSliceContract.Effect>()
 
-    suspend fun verifyOneTimeContributionSelected() {
-        val oneTimeContributions = initialState.listState.oneTimeContributions
+        val listSlice = object : ContributionListSliceContract.Slice {
+            override val state: StateFlow<ContributionListSliceContract.State> = listStateFlow
+            override val effect: SharedFlow<ContributionListSliceContract.Effect> = listEffectFlow
+            override fun event(event: ContributionListSliceContract.Event) = Unit
+        }
+        val purchaseSlice = object : PurchaseSliceContract.Slice {
+            override val state: StateFlow<PurchaseSliceContract.State> = purchaseStateFlow
+            override val effect: SharedFlow<PurchaseSliceContract.Effect> = purchaseEffectFlow
+            override fun event(event: PurchaseSliceContract.Event) = Unit
+        }
 
-        assertThat(turbines.awaitStateItem()).isEqualTo(
+        val listSliceFactory = object : ContributionListSliceContract.Slice.Factory {
+            override fun create(scope: kotlinx.coroutines.CoroutineScope) = listSlice
+        }
+        val purchaseSliceFactory = object : PurchaseSliceContract.Slice.Factory {
+            override fun create(scope: kotlinx.coroutines.CoroutineScope) = purchaseSlice
+        }
 
-            initialState.copy(
-                listState = initialState.listState.copy(
-                    isRecurringContributionSelected = false,
-                    selectedContribution = oneTimeContributions[oneTimeContributions.size - 2],
-                ),
-                showContributionList = true,
-            ),
+        val testSubject = ContributionViewModel(
+            listSliceFactory = listSliceFactory,
+            purchaseSliceFactory = purchaseSliceFactory,
+            repository = FakeContributionRepository(),
+            logger = TestLogger(),
+            initialState = initialState,
         )
+
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
+
+        ContributionRobot(testSubject, turbines, listEffectFlow, purchaseEffectFlow).block()
     }
 
-    fun selectRecurringContribution() {
-        viewModel.event(Event.OnRecurringContributionSelected)
-    }
+    private class ContributionRobot(
+        private val viewModel: ContributionContract.ViewModel,
+        private val turbines: MviTurbines<State, Effect>,
+        val listEffectFlow: MutableSharedFlow<ContributionListSliceContract.Effect>,
+        val purchaseEffectFlow: MutableSharedFlow<PurchaseSliceContract.Effect>,
+    ) {
 
-    suspend fun verifyRecurringContributionSelected() {
-        val recurringContributions = initialState.listState.recurringContributions
+        fun event(event: Event) {
+            viewModel.event(event)
+        }
 
-        assertThat(turbines.awaitStateItem()).isEqualTo(
-            initialState.copy(
-                listState = initialState.listState.copy(
-                    isRecurringContributionSelected = true,
-                    selectedContribution = recurringContributions[recurringContributions.size - 2],
-                ),
-                showContributionList = true,
-            ),
-        )
-    }
+        suspend fun verifyState(block: (State) -> Unit) {
+            block(turbines.stateTurbine.awaitItem())
+        }
 
-    fun selectContributionItem(item: Contribution) {
-        viewModel.event(Event.OnContributionItemClicked(item))
-    }
-
-    suspend fun verifyContributionItemSelected(item: Contribution) {
-        assertThat(turbines.awaitStateItem()).isEqualTo(
-            initialState.copy(
-                listState = initialState.listState.copy(
-                    selectedContribution = item,
-                ),
-            ),
-        )
-    }
-
-    suspend fun verifyListHidden(purchasedContribution: Contribution) {
-        assertThat(turbines.awaitStateItem()).isEqualTo(
-            initialState.copy(
-                listState = initialState.listState.copy(
-                    isLoading = false,
-                ),
-                purchasedContribution = purchasedContribution,
-                showContributionList = false,
-            ),
-        )
+        suspend fun verifyEffect(effect: Effect) {
+            assertThat(turbines.effectTurbine.awaitItem()).isEqualTo(effect)
+        }
     }
 }
