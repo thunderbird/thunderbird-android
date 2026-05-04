@@ -16,10 +16,7 @@ android {
 
 dependencies {
     api(projects.core.ui.compose.common)
-    api(projects.core.ui.compose.theme2.common)
-
-    debugApi(projects.core.ui.compose.theme2.k9mail)
-    debugApi(projects.core.ui.compose.theme2.thunderbird)
+    api(projects.core.ui.compose.theme2)
 
     implementation(libs.androidx.autofill)
     implementation(libs.androidx.compose.material3)
