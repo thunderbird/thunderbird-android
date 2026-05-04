@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.core.android.common)
     implementation(projects.core.outcome)
     implementation(projects.core.logging.api)
+    implementation(projects.core.ui.compose.common)
     implementation(projects.core.ui.compose.designsystem)
 
     implementation(libs.android.billing)

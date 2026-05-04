@@ -1,10 +1,28 @@
-package app.k9mail.core.ui.compose.common.window
+package net.thunderbird.core.ui.common.window
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import org.junit.Test
+import kotlin.test.Test
 
 class WindowSizeClassTest {
+
+    @Test
+    fun `should return small when width is less than 350`() {
+        val width = 349
+
+        val windowSizeClass = WindowSizeClass.fromWidth(width)
+
+        assertThat(windowSizeClass).isEqualTo(WindowSizeClass.Small)
+    }
+
+    @Test
+    fun `should return compact when width is 350`() {
+        val width = 350
+
+        val windowSizeClass = WindowSizeClass.fromWidth(width)
+
+        assertThat(windowSizeClass).isEqualTo(WindowSizeClass.Compact)
+    }
 
     @Test
     fun `should return compact when width is less than 600`() {
@@ -40,6 +58,24 @@ class WindowSizeClassTest {
         val windowSizeClass = WindowSizeClass.fromWidth(width)
 
         assertThat(windowSizeClass).isEqualTo(WindowSizeClass.Expanded)
+    }
+
+    @Test
+    fun `should return small when height is less than 350`() {
+        val height = 349
+
+        val windowSizeClass = WindowSizeClass.fromHeight(height)
+
+        assertThat(windowSizeClass).isEqualTo(WindowSizeClass.Small)
+    }
+
+    @Test
+    fun `should return compact when height is 350`() {
+        val height = 350
+
+        val windowSizeClass = WindowSizeClass.fromHeight(height)
+
+        assertThat(windowSizeClass).isEqualTo(WindowSizeClass.Compact)
     }
 
     @Test

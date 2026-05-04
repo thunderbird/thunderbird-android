@@ -2,7 +2,7 @@ package net.thunderbird.feature.mail.message.list.internal.ui.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import androidx.compose.ui.platform.testTag
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemAccountIndicator
 import net.thunderbird.feature.mail.message.list.ui.component.organism.NewMessageItem
@@ -34,7 +34,7 @@ internal fun MessageListItem(
             onLongClick = onLongClick,
             onAvatarClick = onAvatarClick,
             onFavouriteChange = { onFavouriteClick() },
-            modifier = modifier.testTagAsResourceId(MessageListItemDefaults.NEW_MESSAGE_LIST_TEST_TAG),
+            modifier = modifier.testTag(MessageListItemDefaults.NEW_MESSAGE_LIST_TEST_TAG),
         )
 
         MessageItemUi.State.Read -> ReadMessageItem(
@@ -49,7 +49,7 @@ internal fun MessageListItem(
             onLongClick = onLongClick,
             onAvatarClick = onAvatarClick,
             onFavouriteChange = { onFavouriteClick() },
-            modifier = modifier.testTagAsResourceId(MessageListItemDefaults.READ_MESSAGE_LIST_TEST_TAG),
+            modifier = modifier.testTag(MessageListItemDefaults.READ_MESSAGE_LIST_TEST_TAG),
         )
 
         MessageItemUi.State.Unread -> UnreadMessageItem(
@@ -64,7 +64,7 @@ internal fun MessageListItem(
             onLongClick = onLongClick,
             onAvatarClick = onAvatarClick,
             onFavouriteChange = { onFavouriteClick() },
-            modifier = modifier.testTagAsResourceId(MessageListItemDefaults.UNREAD_MESSAGE_LIST_TEST_TAG),
+            modifier = modifier.testTag(MessageListItemDefaults.UNREAD_MESSAGE_LIST_TEST_TAG),
         )
     }
 }

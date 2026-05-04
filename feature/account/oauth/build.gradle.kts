@@ -14,8 +14,9 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.common)
+    implementation(projects.core.ui.compose.common)
+    implementation(projects.core.ui.compose.designsystem)
 
     implementation(projects.mail.common)
 

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
@@ -27,7 +28,6 @@ import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import assertk.assertThat
 import assertk.assertions.isTrue
 import kotlin.test.Test
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.host.rememberInAppNotificationHostStateHolder
@@ -361,7 +361,7 @@ class BannerGlobalNotificationHostTest : ComposeTest() {
             ButtonText(
                 text = "Trigger Notification",
                 onClick = { state.showInAppNotification(notification) },
-                modifier = Modifier.testTagAsResourceId(BUTTON_NOTIFICATION_TEST_TAG),
+                modifier = Modifier.testTag(BUTTON_NOTIFICATION_TEST_TAG),
             )
 
             BannerGlobalNotificationHost(

@@ -1,9 +1,9 @@
 package app.k9mail.feature.onboarding.welcome.ui
 
 import androidx.compose.runtime.Composable
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.PreviewThemeType
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
+import net.thunderbird.core.ui.common.annotation.PreviewDevices
 
 @Composable
 @PreviewDevices

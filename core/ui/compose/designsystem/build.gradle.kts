@@ -15,7 +15,8 @@ android {
 }
 
 dependencies {
-    api(projects.core.ui.compose.common)
+    api(projects.core.ui.contract)
+    api(projects.core.ui.common)
     api(projects.core.ui.compose.theme2.common)
 
     debugApi(projects.core.ui.compose.theme2.k9mail)

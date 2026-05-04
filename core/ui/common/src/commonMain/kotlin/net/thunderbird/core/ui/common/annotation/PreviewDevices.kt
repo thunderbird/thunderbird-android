@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.common.annotation
+package net.thunderbird.core.ui.common.annotation
 
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -13,4 +13,4 @@ import androidx.compose.ui.tooling.preview.Preview
 @Preview(name = "Foldable", device = "spec:width=673dp,height=841dp,dpi=420")
 @Preview(name = "Tablet", device = "spec:width=1280dp,height=800dp,dpi=240")
 @Preview(name = "Desktop", device = "spec:width=1920dp,height=1080dp,dpi=160")
-annotation class PreviewDevices
+public annotation class PreviewDevices

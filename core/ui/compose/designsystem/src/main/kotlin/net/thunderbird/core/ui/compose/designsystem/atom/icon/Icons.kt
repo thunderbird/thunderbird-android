@@ -5,8 +5,11 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.Send
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Outbox
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AllInbox
@@ -92,7 +95,10 @@ object Icons {
         val Cancel: ImageVector = Icons.Filled.Cancel
         val CheckCircle: ImageVector = Icons.Filled.CheckCircle
         val Dot: ImageVector = FilledDotIcon
+        val Notifications: ImageVector = Icons.Filled.Notifications
+        val Person: ImageVector = Icons.Filled.Person
         val Star: ImageVector = FilledStarIcon
+        val Warning: ImageVector = Icons.Filled.Warning
     }
 
     /**
