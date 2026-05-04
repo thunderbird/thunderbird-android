@@ -42,6 +42,7 @@ internal object MessagePreviewHelper {
         forwarded = forwarded,
         selected = selected,
         threadCount = threadCount,
+        messageReference = "reference",
     )
 
     val sampleMessages = persistentListOf(
