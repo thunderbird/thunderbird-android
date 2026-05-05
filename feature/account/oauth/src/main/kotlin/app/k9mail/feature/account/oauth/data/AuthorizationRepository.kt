@@ -86,7 +86,11 @@ class AuthorizationRepository(
         val authRequest = authRequestBuilder
             .setScope(configuration.scopes.joinToString(" "))
             .setCodeVerifier(codeVerifier)
-            .setLoginHint(emailAddress)
+            .apply {
+                if (emailAddress.isNotBlank()) {
+                    setLoginHint(emailAddress)
+                }
+            }
             .build()
 
         return service.getAuthorizationRequestIntent(authRequest)

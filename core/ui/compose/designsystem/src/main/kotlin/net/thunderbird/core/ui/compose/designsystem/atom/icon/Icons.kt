@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.dualtone.DualToneWarningIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.FilledDotIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.FilledStarIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.FilledThundermail
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedAccountIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedBadgeIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedBankIcon
@@ -57,6 +58,7 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedM
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedOpenInNewIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedPersonIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedPetsIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedQrCode
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedRocketIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedSchoolIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedSmileIcon
@@ -93,6 +95,8 @@ object Icons {
         val CheckCircle: ImageVector = Icons.Filled.CheckCircle
         val Dot: ImageVector = FilledDotIcon
         val Star: ImageVector = FilledStarIcon
+
+        val Thundermail: ImageVector = FilledThundermail
     }
 
     /**
@@ -156,6 +160,8 @@ object Icons {
 
         val Person: ImageVector = OutlinedPersonIcon
         val Pets: ImageVector = OutlinedPetsIcon
+
+        val QrCode: ImageVector = OutlinedQrCode
 
         val Report: ImageVector = Icons.Outlined.Report
         val Rocket: ImageVector = OutlinedRocketIcon

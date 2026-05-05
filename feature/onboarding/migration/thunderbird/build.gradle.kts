@@ -19,8 +19,10 @@ dependencies {
     implementation(projects.core.logging.implLegacy)
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.feature.account.common)
+    implementation(projects.feature.thundermail.api)
 
     testImplementation(projects.core.ui.compose.testing)
+    testImplementation(projects.core.featureflag)
 }
 
 codeCoverage {
