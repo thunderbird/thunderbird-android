@@ -9,9 +9,11 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.update
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.feature.navigation.changelog.api.ChangeLogMode
 
 class ChangelogViewModel(
     private val generalSettingsManager: GeneralSettingsManager,
@@ -29,6 +31,7 @@ class ChangelogViewModel(
         }
     }
     private suspend fun loadState() {
+        Log.i("EMON1234 MODE:${mode.name}")
         combine(
             generalSettingsManager.getConfigFlow(),
             changeLogManager.changeLogFlow,
@@ -71,11 +74,6 @@ class ChangelogViewModel(
     override fun onCleared() {
         changeLogManager.writeCurrentVersion()
     }
-}
-
-enum class ChangeLogMode {
-    CHANGE_LOG,
-    RECENT_CHANGES,
 }
 
 enum class ChangeType {

@@ -18,7 +18,6 @@ import com.fsck.k9.job.SyncDebugWorker
 import com.fsck.k9.mailstore.AttachmentResolver
 import com.fsck.k9.message.html.DisplayHtml
 import com.fsck.k9.message.html.DisplayHtmlFactory
-import com.fsck.k9.ui.changelog.ChangeLogMode
 import com.fsck.k9.ui.changelog.ChangelogViewModel
 import com.fsck.k9.ui.helper.DisplayHtmlUiFactory
 import com.fsck.k9.view.K9WebViewClient
@@ -29,6 +28,7 @@ import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
+import net.thunderbird.feature.navigation.changelog.api.ChangeLogMode
 import net.thunderbird.feature.thundermail.internal.common.ui.ThundermailContract
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
