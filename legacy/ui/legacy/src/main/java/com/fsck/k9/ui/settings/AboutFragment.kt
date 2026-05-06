@@ -34,11 +34,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
+import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.launcher.FeatureLauncherTarget
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.settings.AboutContract.Effect
 import com.fsck.k9.ui.settings.AboutContract.Event
@@ -47,6 +48,7 @@ import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
+import net.thunderbird.feature.navigation.changelog.api.ChangeLogMode
 import org.koin.android.ext.android.inject
 import app.k9mail.core.ui.legacy.designsystem.R as DesignSystemR
 import app.k9mail.core.ui.legacy.theme2.common.R as Theme2CommonR
@@ -70,9 +72,12 @@ class AboutFragment : Fragment() {
             setContent {
                 val (state, dispatch) = viewModel.observe { effect ->
                     when (effect) {
-                        is Effect.OpenChangeLog ->
-                            findNavController()
-                                .navigate(R.id.action_aboutScreen_to_changelogScreen)
+                        is Effect.OpenChangeLog -> {
+                            FeatureLauncherActivity.launch(
+                                context = requireContext(),
+                                target = FeatureLauncherTarget.Changelog(changeLogMode = ChangeLogMode.CHANGE_LOG),
+                            )
+                        }
 
                         is Effect.OpenUrl ->
                             context.openUrl(effect.url)
