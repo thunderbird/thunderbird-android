@@ -16,6 +16,7 @@ import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsNavigation
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import net.thunderbird.feature.funding.api.FundingNavigation
+import net.thunderbird.feature.navigation.changelog.api.ChangelogNavigation
 import net.thunderbird.feature.thundermail.navigation.ThundermailNavigation
 import net.thunderbird.feature.thundermail.navigation.ThundermailRoute
 import org.koin.compose.koinInject
@@ -34,6 +35,7 @@ fun FeatureLauncherNavHost(
     fundingNavigation: FundingNavigation = koinInject(),
     secretDebugSettingsNavigation: SecretDebugSettingsNavigation = koinInject(),
     thundermailNavigation: ThundermailNavigation = koinInject(),
+    changelogNavigation: ChangelogNavigation = koinInject(),
 ) {
     val activity = LocalActivity.current as ComponentActivity
 
@@ -42,6 +44,11 @@ fun FeatureLauncherNavHost(
         startDestination = OnboardingRoute.Onboarding(),
         modifier = modifier,
     ) {
+        changelogNavigation.registerRoutes(
+            navGraphBuilder = this,
+            onBack = onBack,
+            onFinish = { onBack() },
+        )
         onboardingNavigation.registerRoutes(
             navGraphBuilder = this,
             onBack = onBack,
