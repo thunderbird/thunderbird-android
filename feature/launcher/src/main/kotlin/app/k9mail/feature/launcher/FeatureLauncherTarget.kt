@@ -9,6 +9,8 @@ import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute
 import net.thunderbird.feature.account.settings.api.AccountSettingsRoute
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import net.thunderbird.feature.funding.api.FundingRoute
+import net.thunderbird.feature.navigation.changelog.api.ChangeLogMode
+import net.thunderbird.feature.navigation.changelog.api.ChangelogRoute
 
 sealed class FeatureLauncherTarget(
     val deepLinkUri: Uri,
@@ -40,6 +42,10 @@ sealed class FeatureLauncherTarget(
 
     data object Funding : FeatureLauncherTarget(
         deepLinkUri = FundingRoute.Contribution.route().toUri(),
+    )
+
+    data class Changelog(val changeLogMode: ChangeLogMode) : FeatureLauncherTarget(
+        deepLinkUri = ChangelogRoute(changeLogMode = changeLogMode).route().toUri(),
     )
 
     data object Onboarding : FeatureLauncherTarget(
