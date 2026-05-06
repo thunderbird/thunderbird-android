@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-258e5bcb.js";
+            window.path_to_searchindex_js = "../searchindex-1b17b71c.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-2ec647ce.js"></script>
@@ -243,14 +243,14 @@ architecture, components, customization, and usage.</p>
 <h3 id="-architecture-layers"><a class="header" href="#-architecture-layers">🏗️ Architecture Layers</a></h3>
 <p>The theme system consists of three main layers:</p>
 <ol>
-<li><strong>App-Specific Themes Layer</strong>: The top layer contains theme implementations for specific applications (ThunderbirdTheme2, K9MailTheme2). Each app theme:
+<li><strong>App-Specific Themes</strong>: The <code>core:ui:compose:theme2</code> module contains theme implementations for specific applications (ThunderbirdTheme2, K9MailTheme2). Each app theme:
 <ul>
 <li>Defines its own brand colors, logos, and other app-specific visual elements</li>
 <li>Creates a ThemeConfig with these customizations</li>
 <li>Uses the MainTheme as its foundation</li>
 </ul>
 </li>
-<li><strong>Main Theme Layer</strong>: The middle layer provides our extended theming system:
+<li><strong>Main Theme</strong>: This layer provides our extended theming system:
 <ul>
 <li>MainTheme: A composable function that sets up the theme environment</li>
 <li>ThemeConfig: A data class that holds all theme components</li>
@@ -797,7 +797,7 @@ fun testThemedButton() {
     composeTestRule.onNodeWithText("Click Me").assertExists()
 }
 </code></pre>
-<footer id="last-change">Last change: <time datetime="2026-05-04">2026-05-04</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/18cd527">18cd527</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-05-06">2026-05-06</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/ed6c77d">ed6c77d</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
