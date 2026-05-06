@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,12 +31,15 @@ import app.k9mail.core.ui.compose.designsystem.atom.Checkbox
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.DividerVertical
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.card.CardFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
+import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
+import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import com.fsck.k9.ui.R
 import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
@@ -46,45 +50,64 @@ import net.thunderbird.core.ui.compose.theme2.MainTheme
 internal fun ChangelogScreen(
     releaseItems: ImmutableList<ReleaseUiModel>,
     showRecentChanges: Boolean,
-    modifier: Modifier = Modifier,
     onShowRecentChangesCheck: (Boolean) -> Unit,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Surface(
-        modifier = modifier.fillMaxSize(),
-    ) {
-        Column {
-            LazyColumn(
-                modifier = Modifier.weight(1f),
-            ) {
-                items(
-                    items = releaseItems,
-                    key = { it.version },
-                ) { releaseItem ->
-                    Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
-                    ReleaseComposable(
-                        releaseItem = releaseItem,
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = stringResource(R.string.changelog_title),
+                navigationIcon = {
+                    ButtonIcon(
+                        onClick = onBack,
+                        imageVector = Icons.Outlined.ArrowBack,
+                    )
+                },
+            )
+        },
+    ) { innerPadding ->
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding),
+        ) {
+            Column {
+                LazyColumn(
+                    modifier = Modifier.weight(1f),
+                ) {
+                    items(
+                        items = releaseItems,
+                        key = { it.version },
+                    ) { releaseItem ->
+                        Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
+                        ReleaseComposable(
+                            releaseItem = releaseItem,
+                        )
+                    }
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            onShowRecentChangesCheck(showRecentChanges)
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Checkbox(
+                        checked = showRecentChanges,
+                        onCheckedChange = {
+                            onShowRecentChangesCheck(it)
+                        },
+                    )
+
+                    TextLabelMedium(
+                        text = stringResource(R.string.changelog_show_recent_changes),
                     )
                 }
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        onShowRecentChangesCheck(showRecentChanges)
-                    },
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Checkbox(
-                    checked = showRecentChanges,
-                    onCheckedChange = {
-                        onShowRecentChangesCheck(it)
-                    },
-                )
-
-                TextLabelMedium(
-                    text = stringResource(R.string.changelog_show_recent_changes),
-                )
             }
         }
     }
