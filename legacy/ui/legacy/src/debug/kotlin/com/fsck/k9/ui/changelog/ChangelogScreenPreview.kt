@@ -13,6 +13,7 @@ fun ChangelogScreenPreview() {
             releaseItems = releases,
             showRecentChanges = true,
             onShowRecentChangesCheck = {},
+            onBack = {},
         )
     }
 }
