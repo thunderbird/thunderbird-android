@@ -47,11 +47,13 @@ import net.thunderbird.core.common.provider.BrandNameProvider
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.feature.thundermail.ui.component.ThundermailButtonPanel
 import org.koin.compose.koinInject
 
 @Composable
 internal fun TbOnboardingMigrationScreen(
     onQrCodeScan: () -> Unit,
+    onThundermailClick: () -> Unit,
     onAddAccount: () -> Unit,
     onImport: () -> Unit,
     modifier: Modifier = Modifier,
@@ -81,6 +83,12 @@ internal fun TbOnboardingMigrationScreen(
                     modifier = Modifier
                         .height(MainTheme.spacings.double)
                         .weight(1f),
+                )
+
+                ThundermailButtonPanel(
+                    onThundermailClick = onThundermailClick,
+                    onScanQrCodeClick = onQrCodeScan,
+                    modifier = Modifier.padding(bottom = MainTheme.spacings.quadruple),
                 )
 
                 AlreadyUsingThunderbirdCard(onQrCodeScan)

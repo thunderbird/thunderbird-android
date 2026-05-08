@@ -272,6 +272,13 @@ include(
     ":feature:debug-settings",
 )
 
+include(
+    ":feature:thundermail:api",
+    ":feature:thundermail:internal:common",
+    ":feature:thundermail:thunderbird",
+    ":feature:thundermail:k9mail",
+)
+
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {
     """
         Java 21+ is required to build Thunderbird for Android.

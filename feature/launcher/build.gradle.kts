@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.legacy.ui.base)
     implementation(projects.feature.onboarding.main)
+    implementation(projects.feature.thundermail.api)
     implementation(projects.feature.settings.import)
 
     implementation(projects.feature.account.edit)
