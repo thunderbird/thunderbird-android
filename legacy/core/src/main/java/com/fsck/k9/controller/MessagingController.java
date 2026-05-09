@@ -2166,7 +2166,21 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             }
 
             unsuppressMessages(account, messages);
+            // Ensure unified inbox (and other aggregated views) always reload after a delete.
+            // In contrast to multi-select delete, swipe-delete may trigger only in-memory hiding/unhiding,
+            // which relies on MessageListRepository notifications to update the UI.
+            for (MessagingListener l : getListeners()) {
+                for (LocalMessage message : messages) {
+                    String uid = message.getUid();
+                    if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                        // Use folderServerId so listeners can correlate with their search/account context.
+                        String folderServerId = message.getFolder().getServerId();
+                        l.synchronizeMailboxRemovedMessage(account, folderServerId, uid);
+                    }
+                }
+            }
         } catch (MessagingException me) {
+
             throw new RuntimeException("Error deleting message from local store.", me);
         }
     }
