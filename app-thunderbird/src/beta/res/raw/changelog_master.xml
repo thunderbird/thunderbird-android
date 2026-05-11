@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="19.0b2" versioncode="51" date="2026-05-11">
+        <change>New: Integrate an easily discoverable way to configure and use Thundermail</change>
+    </release>
     <release version="19.0b1" versioncode="50" date="2026-04-14">
         <change>New: Message notification actions can be configured</change>
         <change>New: Message font size scales with device preferences</change>
