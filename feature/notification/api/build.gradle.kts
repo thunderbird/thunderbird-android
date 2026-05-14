@@ -34,14 +34,6 @@ kotlin {
             implementation(libs.bundles.shared.jvm.test)
         }
     }
-
-    sourceSets.all {
-        compilerOptions {
-            freeCompilerArgs.addAll(
-                "-Xwhen-guards",
-            )
-        }
-    }
 }
 
 compose.resources {
