@@ -5,6 +5,7 @@ import app.k9mail.feature.launcher.di.featureLauncherModule
 import app.k9mail.legacy.ui.folder.uiFolderModule
 import com.fsck.k9.account.accountModule
 import com.fsck.k9.activity.activityModule
+import com.fsck.k9.activity.setup.setUpModule
 import com.fsck.k9.contacts.contactsModule
 import com.fsck.k9.ui.account.accountUiModule
 import com.fsck.k9.ui.base.uiBaseModule
@@ -46,4 +47,5 @@ val legacyUiModules = listOf(
     messageViewUiModule,
     identityUiModule,
     featureLauncherModule,
+    setUpModule,
 )
