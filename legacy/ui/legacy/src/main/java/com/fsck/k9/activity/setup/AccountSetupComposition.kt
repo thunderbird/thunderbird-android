@@ -64,44 +64,21 @@ class AccountSetupComposition : BaseActivity() {
 
                 when (effect) {
                     is Effect.ToggleSaveButtonEnabled -> saveActionEnabled = effect.isEnabled
-                    is Effect.DoneUpdatingAccount -> finish()
+                    is Effect.DoneUpdatingAccount, is Effect.Back -> finish()
                 }
             }
 
             themeProvider.WithTheme {
                 AccountSetupCompositionScreen(
                     senderName = state.value.senderName,
-                    onSenderNameChange = {
-                        dispatch(Event.SenderNameChange(it))
-                    },
                     senderEmail = state.value.senderEmail,
-                    onSenderEmailChange = {
-                        dispatch(Event.SenderEmailChange(it))
-                    },
+                    onEvent = { event -> dispatch(event) },
                     bccEmail = state.value.bccEmail,
-                    onBccEmailChange = {
-                        dispatch(Event.BccEmailChange(it))
-                    },
                     useSignature = state.value.useSignature,
                     saveActionEnabled = saveActionEnabled,
                     signature = state.value.signature,
                     signatureLocations = state.value.signatureLocations,
                     selectedSignatureLocations = state.value.selectedSignatureLocations,
-                    onSignatureLocationChange = {
-                        dispatch(Event.SignatureLocationChange(it))
-                    },
-                    onUseSignatureChange = {
-                        dispatch(Event.UseSignatureChange(it))
-                    },
-                    onSignatureChange = {
-                        dispatch(Event.SignatureChange(it))
-                    },
-                    onSavePressed = {
-                        dispatch(Event.SavePressed)
-                    },
-                    onBackPressed = {
-                        finish()
-                    },
                 )
             }
         }
@@ -123,21 +100,14 @@ class AccountSetupComposition : BaseActivity() {
 @Composable
 fun AccountSetupCompositionScreen(
     senderName: String,
-    onSenderNameChange: (String) -> Unit,
     senderEmail: String,
-    onSenderEmailChange: (String) -> Unit,
     bccEmail: String,
-    onBccEmailChange: (String) -> Unit,
     useSignature: Boolean,
     signature: String,
     saveActionEnabled: Boolean,
     signatureLocations: PersistentList<Pair<Int, String>>,
     selectedSignatureLocations: Pair<Int, String>,
-    onSignatureChange: (String) -> Unit,
-    onSignatureLocationChange: (Pair<Int, String>) -> Unit,
-    onUseSignatureChange: (Boolean) -> Unit,
-    onSavePressed: () -> Unit,
-    onBackPressed: () -> Unit,
+    onEvent: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -147,14 +117,14 @@ fun AccountSetupCompositionScreen(
                 title = stringResource(R.string.account_settings_composition_label),
                 navigationIcon = {
                     ButtonIcon(
-                        onClick = onBackPressed,
+                        onClick = { onEvent(Event.BackPressed) },
                         imageVector = Icons.Outlined.ArrowBack,
                     )
                 },
                 actions = {
                     ButtonText(
                         enabled = saveActionEnabled,
-                        onClick = onSavePressed,
+                        onClick = { onEvent(Event.SavePressed) },
                         text = stringResource(R.string.edit_identity_save),
                     )
                 },
@@ -173,13 +143,13 @@ fun AccountSetupCompositionScreen(
             ) {
                 TextInput(
                     text = senderName,
-                    onTextChange = onSenderNameChange,
+                    onTextChange = { onEvent(Event.SenderNameChange(it)) },
                     label = stringResource(id = R.string.account_settings_name_label),
                     keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
                 )
                 TextFieldOutlinedEmailAddress(
                     value = senderEmail,
-                    onValueChange = onSenderEmailChange,
+                    onValueChange = { onEvent(Event.SenderEmailChange(it)) },
                     label = stringResource(id = R.string.account_settings_email_label),
                     modifier = Modifier
                         .padding(horizontal = MainTheme.spacings.double)
@@ -187,26 +157,31 @@ fun AccountSetupCompositionScreen(
                 )
                 TextFieldOutlinedEmailAddress(
                     value = bccEmail,
-                    onValueChange = onBccEmailChange,
+                    onValueChange = { onEvent(Event.BccEmailChange(it)) },
                     label = stringResource(id = R.string.account_settings_always_bcc_label),
                     modifier = Modifier
                         .padding(horizontal = MainTheme.spacings.double)
                         .fillMaxWidth(),
                 )
                 Row(
-                    modifier = Modifier.fillMaxWidth().clickable(enabled = true, onClick = {
-                        onUseSignatureChange(!useSignature)
-                    }),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            enabled = true,
+                            onClick = {
+                                onEvent(Event.UseSignatureChange(!useSignature))
+                            },
+                        ),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Checkbox(checked = useSignature, onCheckedChange = onUseSignatureChange)
+                    Checkbox(checked = useSignature, onCheckedChange = { onEvent(Event.UseSignatureChange(it)) })
                     TextBodySmall(text = stringResource(R.string.account_settings_signature_use_label))
                 }
                 if (useSignature) {
                     TextFieldOutlined(
                         label = stringResource(id = R.string.account_settings_signature_label),
                         value = signature,
-                        onValueChange = onSignatureChange,
+                        onValueChange = { onEvent(Event.SignatureChange(it)) },
                         modifier = Modifier
                             .padding(horizontal = MainTheme.spacings.double)
                             .fillMaxWidth(),
@@ -218,7 +193,7 @@ fun AccountSetupCompositionScreen(
                     )
 
                     RadioGroup(
-                        onClick = onSignatureLocationChange,
+                        onClick = { onEvent(Event.SignatureLocationChange(it)) },
                         options = signatureLocations,
                         optionTitle = { it.second },
                         selectedOption = selectedSignatureLocations,

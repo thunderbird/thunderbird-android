@@ -41,11 +41,13 @@ interface AccountSetupCompositionContract {
         data class SignatureChange(val signature: String) : Event
         data class SignatureLocationChange(val signatureLocation: Pair<Int, String>) : Event
         data object SavePressed : Event
+        data object BackPressed: Event
     }
 
     sealed interface Effect {
         data class ToggleSaveButtonEnabled(val isEnabled: Boolean) : Effect
 
         data object DoneUpdatingAccount : Effect
+        data object Back: Effect
     }
 }

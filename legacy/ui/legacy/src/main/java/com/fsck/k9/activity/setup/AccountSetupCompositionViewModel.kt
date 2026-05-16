@@ -69,6 +69,10 @@ class AccountSetupCompositionViewModel(
                 saveAccount()
                 emitEffect(Effect.DoneUpdatingAccount)
             }
+
+            is Event.BackPressed -> {
+                emitEffect(Effect.Back)
+            }
         }
     }
 
