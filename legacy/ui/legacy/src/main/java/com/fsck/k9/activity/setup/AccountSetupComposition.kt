@@ -3,138 +3,108 @@ package com.fsck.k9.activity.setup
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.EditText
-import android.widget.LinearLayout
-import androidx.core.view.isVisible
-import androidx.core.widget.doAfterTextChanged
-import com.fsck.k9.EmailAddressValidator
-import com.fsck.k9.Preferences
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import app.k9mail.core.ui.compose.designsystem.atom.Checkbox
+import app.k9mail.core.ui.compose.designsystem.atom.RadioGroup
+import app.k9mail.core.ui.compose.designsystem.atom.Surface
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
+import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlined
+import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedEmailAddress
+import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
+import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
+import app.k9mail.core.ui.compose.designsystem.template.Scaffold
+import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Effect
+import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Event
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
-import com.google.android.material.checkbox.MaterialCheckBox
-import com.google.android.material.radiobutton.MaterialRadioButton
-import net.thunderbird.core.android.account.LegacyAccountDto
+import kotlinx.collections.immutable.PersistentList
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.contract.mvi.observe
+import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class AccountSetupComposition : BaseActivity() {
-    private val emailAddressValidator: EmailAddressValidator by inject()
 
-    private lateinit var account: LegacyAccountDto
-
-    private lateinit var accountSignature: EditText
-    private lateinit var accountEmail: EditText
-    private lateinit var accountAlwaysBcc: EditText
-    private lateinit var accountSenderName: EditText
-    private lateinit var accountSignatureUse: MaterialCheckBox
-    private lateinit var accountSignatureBeforeLocation: MaterialRadioButton
-    private lateinit var accountSignatureAfterLocation: MaterialRadioButton
-    private lateinit var accountSignatureLayout: LinearLayout
-
-    private var isSaveActionEnabled = false
+    private val themeProvider: FeatureThemeProvider by inject()
+    private val viewModel: AccountSetupCompositionViewModel by viewModel {
+        val accountId = intent.getStringExtra(EXTRA_ACCOUNT) ?: error("Missing account UUID")
+        parametersOf(accountId)
+    }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setLayout(R.layout.account_setup_composition)
-        setTitle(R.string.account_settings_composition_label)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        setContent {
+            var saveActionEnabled by rememberSaveable { mutableStateOf(true) }
+            val (state, dispatch) = viewModel.observe { effect ->
 
-        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: error("Missing account UUID")
-        account = Preferences.getPreferences().getAccount(accountUuid) ?: error("Couldn't find account")
+                when (effect) {
+                    is Effect.ToggleSaveButtonEnabled -> saveActionEnabled = effect.isEnabled
+                    is Effect.DoneUpdatingAccount -> finish()
+                }
+            }
 
-        accountSenderName = findViewById(R.id.account_name)
-        accountEmail = findViewById(R.id.account_email)
-        accountAlwaysBcc = findViewById(R.id.account_always_bcc)
-        accountSignatureLayout = findViewById(R.id.account_signature_layout)
-        accountSignatureUse = findViewById(R.id.account_signature_use)
-        accountSignature = findViewById(R.id.account_signature)
-        accountSignatureBeforeLocation = findViewById(R.id.account_signature_location_before_quoted_text)
-        accountSignatureAfterLocation = findViewById(R.id.account_signature_location_after_quoted_text)
-
-        accountSenderName.setText(account.senderName)
-        accountEmail.setText(account.email)
-        accountAlwaysBcc.setText(account.alwaysBcc)
-
-        val useSignature = account.signatureUse
-        accountSignatureUse.isChecked = useSignature
-        accountSignatureUse.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                accountSignatureLayout.isVisible = true
-                accountSignature.setText(account.signature)
-
-                val isSignatureBeforeQuotedText = account.isSignatureBeforeQuotedText
-                accountSignatureBeforeLocation.isChecked = isSignatureBeforeQuotedText
-                accountSignatureAfterLocation.isChecked = !isSignatureBeforeQuotedText
-            } else {
-                accountSignatureLayout.isVisible = false
+            themeProvider.WithTheme {
+                AccountSetupCompositionScreen(
+                    senderName = state.value.senderName,
+                    onSenderNameChange = {
+                        dispatch(Event.SenderNameChange(it))
+                    },
+                    senderEmail = state.value.senderEmail,
+                    onSenderEmailChange = {
+                        dispatch(Event.SenderEmailChange(it))
+                    },
+                    bccEmail = state.value.bccEmail,
+                    onBccEmailChange = {
+                        dispatch(Event.BccEmailChange(it))
+                    },
+                    useSignature = state.value.useSignature,
+                    saveActionEnabled = saveActionEnabled,
+                    signature = state.value.signature,
+                    signatureLocations = state.value.signatureLocations,
+                    selectedSignatureLocations = state.value.selectedSignatureLocations,
+                    onSignatureLocationChange = {
+                        dispatch(Event.SignatureLocationChange(it))
+                    },
+                    onUseSignatureChange = {
+                        dispatch(Event.UseSignatureChange(it))
+                    },
+                    onSignatureChange = {
+                        dispatch(Event.SignatureChange(it))
+                    },
+                    onSavePressed = {
+                        dispatch(Event.SavePressed)
+                    },
+                    onBackPressed = {
+                        finish()
+                    },
+                )
             }
         }
-
-        if (useSignature) {
-            accountSignature.setText(account.signature)
-
-            val isSignatureBeforeQuotedText = account.isSignatureBeforeQuotedText
-            accountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText)
-            accountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText)
-        } else {
-            accountSignatureLayout.isVisible = false
-        }
-
-        setTextChangedListeners()
-        validateFields()
-    }
-
-    private fun setTextChangedListeners() {
-        accountEmail.doAfterTextChanged { validateFields() }
-    }
-
-    private fun validateFields() {
-        val valid = isValidEmailAddress(accountEmail)
-
-        isSaveActionEnabled = valid
-        invalidateOptionsMenu()
-    }
-
-    private fun isValidEmailAddress(textView: EditText): Boolean {
-        return emailAddressValidator.isValidAddressOnly(textView.text.trim())
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.account_setup_composition_menu, menu)
-        return true
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        menu.findItem(R.id.account_setup_composition_save).isEnabled = isSaveActionEnabled
-        return true
-    }
-
-    @Suppress("ReturnCount")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
-            return true
-        } else if (item.itemId == R.id.account_setup_composition_save) {
-            saveSettings()
-            finish()
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun saveSettings() {
-        account.email = accountEmail.text.toString().trim()
-        account.alwaysBcc = accountAlwaysBcc.text.toString().takeUnless { it.isBlank() }
-        account.senderName = accountSenderName.text.toString().takeUnless { it.isBlank() }
-        account.signatureUse = accountSignatureUse.isChecked
-        if (accountSignatureUse.isChecked) {
-            account.signature = accountSignature.text.toString()
-            account.isSignatureBeforeQuotedText = accountSignatureBeforeLocation.isChecked
-        }
-
-        Preferences.getPreferences().saveAccount(account)
     }
 
     companion object {
@@ -145,6 +115,117 @@ class AccountSetupComposition : BaseActivity() {
             intent.setAction(Intent.ACTION_EDIT)
             intent.putExtra(EXTRA_ACCOUNT, accountUuid)
             context.startActivity(intent)
+        }
+    }
+}
+
+@Suppress("LongMethod", "LongParameterList")
+@Composable
+fun AccountSetupCompositionScreen(
+    senderName: String,
+    onSenderNameChange: (String) -> Unit,
+    senderEmail: String,
+    onSenderEmailChange: (String) -> Unit,
+    bccEmail: String,
+    onBccEmailChange: (String) -> Unit,
+    useSignature: Boolean,
+    signature: String,
+    saveActionEnabled: Boolean,
+    signatureLocations: PersistentList<Pair<Int, String>>,
+    selectedSignatureLocations: Pair<Int, String>,
+    onSignatureChange: (String) -> Unit,
+    onSignatureLocationChange: (Pair<Int, String>) -> Unit,
+    onUseSignatureChange: (Boolean) -> Unit,
+    onSavePressed: () -> Unit,
+    onBackPressed: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = stringResource(R.string.account_settings_composition_label),
+                navigationIcon = {
+                    ButtonIcon(
+                        onClick = onBackPressed,
+                        imageVector = Icons.Outlined.ArrowBack,
+                    )
+                },
+                actions = {
+                    ButtonText(
+                        enabled = saveActionEnabled,
+                        onClick = onSavePressed,
+                        text = stringResource(R.string.edit_identity_save),
+                    )
+                },
+            )
+        },
+    ) { innerPadding ->
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding),
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+            ) {
+                TextInput(
+                    text = senderName,
+                    onTextChange = onSenderNameChange,
+                    label = stringResource(id = R.string.account_settings_name_label),
+                    keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
+                )
+                TextFieldOutlinedEmailAddress(
+                    value = senderEmail,
+                    onValueChange = onSenderEmailChange,
+                    label = stringResource(id = R.string.account_settings_email_label),
+                    modifier = Modifier
+                        .padding(horizontal = MainTheme.spacings.double)
+                        .fillMaxWidth(),
+                )
+                TextFieldOutlinedEmailAddress(
+                    value = bccEmail,
+                    onValueChange = onBccEmailChange,
+                    label = stringResource(id = R.string.account_settings_always_bcc_label),
+                    modifier = Modifier
+                        .padding(horizontal = MainTheme.spacings.double)
+                        .fillMaxWidth(),
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth().clickable(enabled = true, onClick = {
+                        onUseSignatureChange(!useSignature)
+                    }),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Checkbox(checked = useSignature, onCheckedChange = onUseSignatureChange)
+                    TextBodySmall(text = stringResource(R.string.account_settings_signature_use_label))
+                }
+                if (useSignature) {
+                    TextFieldOutlined(
+                        label = stringResource(id = R.string.account_settings_signature_label),
+                        value = signature,
+                        onValueChange = onSignatureChange,
+                        modifier = Modifier
+                            .padding(horizontal = MainTheme.spacings.double)
+                            .fillMaxWidth(),
+                    )
+                    Spacer(modifier = Modifier.height(MainTheme.spacings.half))
+                    TextBodyLarge(
+                        text = stringResource(R.string.account_settings_signature__location_label),
+                        modifier = Modifier.padding(horizontal = MainTheme.spacings.double),
+                    )
+
+                    RadioGroup(
+                        onClick = onSignatureLocationChange,
+                        options = signatureLocations,
+                        optionTitle = { it.second },
+                        selectedOption = selectedSignatureLocations,
+                        modifier = Modifier.padding(horizontal = MainTheme.spacings.default),
+                    )
+                }
+            }
         }
     }
 }
