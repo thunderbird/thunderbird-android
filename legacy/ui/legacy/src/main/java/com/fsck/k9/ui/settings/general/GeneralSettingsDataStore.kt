@@ -13,7 +13,6 @@ import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.BodyContentType
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.LockScreenNotificationVisibility
-import net.thunderbird.core.preference.NotificationQuickDelete
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
@@ -61,6 +60,7 @@ class GeneralSettingsDataStore(
             "drawerExpandAllFolder" -> visualSettings.drawerExpandAllFolder
             "quiet_time_enabled" -> notificationSettings.isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !notificationSettings.isNotificationDuringQuietTimeEnabled
+            "notification_summary_delete" -> notificationSettings.isSummaryDeleteActionEnabled
             "privacy_hide_useragent" -> privacySettings.isHideUserAgent
             "privacy_hide_timezone" -> privacySettings.isHideTimeZone
             "debug_logging" -> debuggingSettings.isDebugLoggingEnabled
@@ -102,6 +102,7 @@ class GeneralSettingsDataStore(
             "messageview_autofit_width" -> setIsAutoFitWidth(isAutoFitWidth = value)
             "quiet_time_enabled" -> setIsQuietTimeEnabled(isQuietTimeEnabled = value)
             "disable_notifications_during_quiet_time" -> setIsNotificationDuringQuietTimeEnabled(!value)
+            "notification_summary_delete" -> setIsSummaryDeleteActionEnabled(isSummaryDeleteActionEnabled = value)
             "privacy_hide_useragent" -> setIsHideUserAgent(isHideUserAgent = value)
             "privacy_hide_timezone" -> setIsHideTimeZone(isHideTimeZone = value)
             "debug_logging" -> setIsDebugLoggingEnabled(isDebugLoggingEnabled = value)
@@ -192,12 +193,6 @@ class GeneralSettingsDataStore(
             "messagelist_preview_lines" -> setMessageListPreviewLines(value.toInt())
             "message_list_date_time_format" -> updateMessageListDateTimeFormat(value)
             "splitview_mode" -> setSplitViewModel(SplitViewMode.valueOf(value.uppercase()))
-            "notification_quick_delete" -> {
-                setNotificationQuickDeleteBehaviour(
-                    behaviour = NotificationQuickDelete.valueOf(value),
-                )
-            }
-
             "lock_screen_notification_visibility" -> {
                 setLockScreenNotificationVisibility(LockScreenNotificationVisibility.valueOf(value))
             }
@@ -378,13 +373,6 @@ class GeneralSettingsDataStore(
                     ),
                 ),
             )
-        }
-    }
-
-    private fun setNotificationQuickDeleteBehaviour(behaviour: NotificationQuickDelete) {
-        skipSaveSettings = true
-        generalSettingsManager.update { settings ->
-            settings.copy(notification = settings.notification.copy(notificationQuickDeleteBehaviour = behaviour))
         }
     }
 
@@ -666,6 +654,17 @@ class GeneralSettingsDataStore(
             settings.copy(
                 notification = settings.notification.copy(
                     isNotificationDuringQuietTimeEnabled = isNotificationDuringQuietTimeEnabled,
+                ),
+            )
+        }
+    }
+
+    private fun setIsSummaryDeleteActionEnabled(isSummaryDeleteActionEnabled: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                notification = settings.notification.copy(
+                    isSummaryDeleteActionEnabled = isSummaryDeleteActionEnabled,
                 ),
             )
         }

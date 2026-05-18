@@ -93,7 +93,6 @@ private fun MessageListScreenLoadingMessagesStatePreview(
                 state = params.state,
                 dispatchEvent = {},
                 onEffect = {},
-                preferences = params.preferences,
             )
         }
     }

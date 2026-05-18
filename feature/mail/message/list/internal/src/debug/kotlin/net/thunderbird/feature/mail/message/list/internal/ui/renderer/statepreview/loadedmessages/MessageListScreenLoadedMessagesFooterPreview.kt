@@ -76,7 +76,6 @@ private fun MessageListScreenLoadedMessagesFooterPreview(
                 state = params.state,
                 dispatchEvent = {},
                 onEffect = {},
-                preferences = params.preferences,
             )
         }
     }

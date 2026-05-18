@@ -33,7 +33,6 @@
     <string name="choose_folder_title">Избери Папка</string>
     <string name="choose_folder_move_title">Преместване в…</string>
     <string name="choose_folder_copy_title">Копиране в…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> избрани</string>
     <string name="send_action">Изпрати</string>
     <string name="empty_subject">Полето Тема е празно, натиснете повторно ако искате да изпратите въпреки това</string>
     <string name="reply_action">Отговори</string>

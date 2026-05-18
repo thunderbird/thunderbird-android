@@ -34,7 +34,6 @@
     <string name="choose_folder_title">Dewis Ffolder</string>
     <string name="choose_folder_move_title">Symud i…</string>
     <string name="choose_folder_copy_title">Copïo i…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> wedi\'i dewis</string>
     <string name="send_action">Anfon</string>
     <string name="empty_subject">Does dim pwnc, cliciwch eto i\'w anfon beth bynnag</string>
     <string name="reply_action">Ateb</string>

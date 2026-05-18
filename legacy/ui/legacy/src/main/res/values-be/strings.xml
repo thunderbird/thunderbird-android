@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Абраць каталог</string>
     <string name="choose_folder_move_title">Перамясціць у…</string>
     <string name="choose_folder_copy_title">Скапіяваць у…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> абрана</string>
     <string name="send_action">Адправіць</string>
     <string name="empty_subject">Тэма пустая. Пстрыкніце яшчэ раз, каб адправіць без яе</string>
     <string name="reply_action">Адказаць</string>
@@ -317,17 +316,17 @@
     <string name="account_notify_contacts_mail_only_summary">Апавяшчаць толькі пра лісты ад кантактаў</string>
     <string name="account_settings_ignore_chat_messages_label">Не зважаць на лісты ў чаце</string>
     <string name="account_settings_ignore_chat_messages_summary">Не паказваць апавяшчэнні пра лісты паштовага чата</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Пазначаць прачытаным пры адкрыцці</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Пазначаць ліст прачытаным пасля прагляду</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Зазначаць як прачытанае пры адкрыванні</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Зазначаць паведамленне як прачытанае, калі яно адкрыта для прагляду</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Пазначаць як прачытанае пры выдаленні</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Пазначаць ліст як прачытаны пасля яго выдалення</string>
     <string name="account_settings_notification_channels_label">Катэгорыі апавяшчэнняў</string>
     <string name="account_settings_open_notification_settings_messages_summary">Наладжванне апавяшчэнняў пра новыя лісты</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Наладжванне апавяшчэнняў пра памылкі і стан</string>
-    <string name="account_settings_show_pictures_label">Заўсёды паказваць выявы</string>
+    <string name="account_settings_show_pictures_label">Заўсёды высвятляць выявы</string>
     <string name="account_settings_show_pictures_never">Не</string>
     <string name="account_settings_show_pictures_only_from_contacts">Ад кантактаў</string>
-    <string name="account_settings_show_pictures_always">Ад усіх</string>
+    <string name="account_settings_show_pictures_always">Ад кожнага</string>
     <string name="account_settings_composition">Адпраўленне пошты</string>
     <string name="account_settings_default_quoted_text_shown_label">Цытаваць пры адказе</string>
     <string name="account_settings_default_quoted_text_shown_summary">Уключаць у адказ зыходны ліст.</string>
@@ -629,7 +628,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Ліміт пошуку на серверы</string>
+    <string name="account_settings_remote_search_num_label">Ліміт пошуку сервера</string>
     <string name="remote_search_sending_query">Адпраўленне запытаў на сервер</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Атрыманне %d выніку</item>
@@ -892,4 +891,7 @@
     <string name="message_list_content_description_unread_prefix">не прачытана, %s</string>
     <string name="background_work_notification_remove_account">Выдаленне акаўнта…</string>
     <string name="settings_ui_telemetry_description">Абагульвае з Mozilla даныя прадукцыйнасці, выкарыстання, абсталявання і налад гэтай праграмы, каб дапамагчы палепшыць Thunderbird</string>
+    <string name="open_camera">Адкрыць камеру</string>
+    <string name="attach_file">Дадаць файл</string>
+    <string name="camera_permission_denied">Адмоўлена ў доступе да камеры! Немагчыма зрабіць фота</string>
 </resources>

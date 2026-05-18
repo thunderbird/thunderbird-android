@@ -80,7 +80,6 @@ private fun MessageListScreenLoadedMessagesDensityPreview(
                 state = params.state,
                 dispatchEvent = {},
                 onEffect = {},
-                preferences = params.preferences,
             )
         }
     }

@@ -5,4 +5,6 @@
     <string name="designsystem_atom_password_textfield_show_password">Näita salasõna</string>
     <string name="designsystem_molecule_error_view_button_retry">Proovi uuesti</string>
     <string name="designsystem_molecule_password_input_label">Salasõna</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Paremale: %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Vasakule: %s</string>
 </resources>

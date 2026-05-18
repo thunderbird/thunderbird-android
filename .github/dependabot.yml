@@ -12,6 +12,7 @@ updates:
     labels:
       - "type: dependency"
       - "type: github actions"
+      - "report: exclude"
     commit-message:
       prefix: chore
       include: scope

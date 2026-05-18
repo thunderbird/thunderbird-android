@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Scegli cartella</string>
     <string name="choose_folder_move_title">Sposta in…</string>
     <string name="choose_folder_copy_title">Copia in…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selezionati</string>
     <string name="send_action">Invia</string>
     <string name="empty_subject">Oggetto vuoto, clicca di nuovo per inviare comunque</string>
     <string name="reply_action">Rispondi</string>
@@ -921,4 +920,33 @@
     <string name="general_settings_message_list_date_time_format_contextual">Contestuale</string>
     <string name="general_settings_message_list_date_time_format_full">Data Lista Messaggi/Impostazione opzione formato ora: completo</string>
     <string name="sort_by_then_by">Poi da…</string>
+    <string name="message_view_single_attachment_summary"><xliff:g id="nome">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Vedi tutto</string>
+    <string name="message_view_attachments_view">Vedi</string>
+    <string name="message_view_attachments_title">Allegati</string>
+    <string name="message_view_attachments_save_all">Salva tutti</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Allegato criptato</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Allegato (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="many"><xliff:g id="count">%1$d</xliff:g> Allegati (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Allegati (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="no_network_message_will_be_sent_later_toast">Offline. Il messaggio sarà inviato quando la connessione sarà disponibile</string>
+    <string name="notification_actions_settings_title">Azioni di notifica</string>
+    <string name="notification_actions_settings_summary">Scegli quali azioni vengono visualizzate nelle notifiche e-mail</string>
+    <string name="notification_summary_delete_title">Mostra Elimina nelle notifiche multi-messaggio</string>
+    <string name="notification_summary_delete_summary">Aggiunge un\'azione Elimina alle notifiche che riassumono più nuovi messaggi</string>
+    <string name="notification_actions_settings_description">Riordina le azioni di notifica.</string>
+    <string name="notification_actions_cutoff_description">Interruzione delle azioni mostrate</string>
+    <string name="notification_actions_cutoff_state">Le azioni sopra questa riga sono mostrate nella notifica</string>
+    <string name="notification_actions_shown_state">Mostrato nella notifica</string>
+    <string name="notification_actions_hidden_state">Non mostrato nella notifica</string>
+    <string name="accessibility_move_up">Sposta su</string>
+    <string name="accessibility_move_down">Sposta giù</string>
+    <string name="accessibility_move_item_up">Sposta <xliff:g id="item">%1$s</xliff:g> su</string>
+    <string name="accessibility_move_item_down">Sposta <xliff:g id="item">%1$s</xliff:g> giù</string>
+    <string name="accessibility_move_cutoff_up">Sposta su le azioni mostrate interrompendole</string>
+    <string name="accessibility_move_cutoff_down">Sposta giù le azioni mostrate interrompendole</string>
+    <string name="notification_action_star">Stella</string>
 </resources>

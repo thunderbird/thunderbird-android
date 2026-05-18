@@ -8,4 +8,5 @@
     <string name="swipe_action_archive">Arhiva</string>
     <string name="swipe_action_delete">Obriši</string>
     <string name="swipe_action_spam">Neželjena pošta</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> odabrano</string>
 </resources>

@@ -6,6 +6,7 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import assertk.assertions.prop
@@ -13,30 +14,37 @@ import dev.mokkery.spy
 import dev.mokkery.verify
 import dev.mokkery.verify.VerifyMode
 import kotlin.test.Test
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
+import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.core.preference.debugging.DebuggingSettings
+import net.thunderbird.core.preference.debugging.DebuggingSettingsPreferenceManager
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
+import net.thunderbird.core.testing.TestClock
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.UnifiedAccountId
+import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
 import net.thunderbird.feature.mail.message.list.domain.model.SortType
 import net.thunderbird.feature.mail.message.list.preferences.ActionRequiringUserConfirmation
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
+import net.thunderbird.feature.mail.message.list.ui.event.FolderEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListSearchEvent
 import net.thunderbird.feature.mail.message.list.ui.state.Account
-import net.thunderbird.feature.mail.message.list.ui.state.EmailIdentity
-import net.thunderbird.feature.mail.message.list.ui.state.MessageItemAttachment
+import net.thunderbird.feature.mail.message.list.ui.state.ComposedAddressUi
+import net.thunderbird.feature.mail.message.list.ui.state.Folder
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi.State
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListMetadata
@@ -46,8 +54,11 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 @OptIn(ExperimentalCoroutinesApi::class)
 class MessageListStateMachineTest {
     private fun TestScope.createStateMachine(dispatch: (MessageListEvent) -> Unit = {}) = MessageListStateMachine(
+        logger = TestLogger(),
+        clock = TestClock(),
         scope = this,
         dispatch = dispatch,
+        debuggingSettingsPreferenceManager = FakeDebuggingSettingsPreferenceManager(),
     )
 
     // region [WarmingUp state]
@@ -144,9 +155,11 @@ class MessageListStateMachineTest {
         val stateMachine = createStateMachine()
         val preferences = createMessageListPreferences()
         val sortCriteriaPerAccount = mapOf<AccountId?, SortCriteria>(null to SortCriteria(SortType.DateDesc))
-        val swipeActions = mapOf<AccountId, SwipeActions>(
+        val swipeActions = mapOf(
             AccountIdFactory.create() to SwipeActions(SwipeAction.None, SwipeAction.None),
         )
+        val expectedFolderId = "this-is-my-folder"
+        val folder = createFolder(id = expectedFolderId)
         advanceUntilIdle()
 
         // Act
@@ -164,6 +177,10 @@ class MessageListStateMachineTest {
 
             stateMachine.process(MessageListEvent.SwipeActionsLoaded(swipeActions))
             assertThat(awaitItem()).isInstanceOf<MessageListState.WarmingUp>()
+
+            stateMachine.process(FolderEvent.FolderLoaded(folder = folder))
+            assertThat(awaitItem()).isInstanceOf<MessageListState.WarmingUp>()
+
             stateMachine.process(event = MessageListEvent.AllConfigsReady)
             assertThat(awaitItem())
                 .isInstanceOf<MessageListState.LoadingMessages>()
@@ -173,7 +190,10 @@ class MessageListStateMachineTest {
                     transform { it.metadata }.all {
                         prop(MessageListMetadata::swipeActions).isEqualTo(swipeActions)
                         prop(MessageListMetadata::sortCriteriaPerAccount).isEqualTo(sortCriteriaPerAccount)
-                        prop(MessageListMetadata::folder).isNull()
+                        prop(MessageListMetadata::folder)
+                            .isNotNull()
+                            .prop(Folder::id)
+                            .isEqualTo(expectedFolderId)
                     }
                 }
 
@@ -295,7 +315,7 @@ class MessageListStateMachineTest {
                         prop(MessageListState.LoadedMessages::preferences).isEqualTo(preferences)
                         prop(MessageListState.LoadedMessages::messages).isEqualTo(messages)
                         transform { it.metadata }.all {
-                            prop(MessageListMetadata::folder).isNull()
+                            prop(MessageListMetadata::folder).isNotNull()
                             prop(MessageListMetadata::activeMessage).isNull()
                             prop(MessageListMetadata::swipeActions).isEqualTo(swipeActions)
                             prop(MessageListMetadata::sortCriteriaPerAccount).isEqualTo(sortCriteriaPerAccount)
@@ -554,12 +574,14 @@ class MessageListStateMachineTest {
         swipeActions: Map<AccountId, SwipeActions> = mapOf(
             AccountIdFactory.create() to SwipeActions(SwipeAction.None, SwipeAction.None),
         ),
+        folder: Folder = createFolder(),
     ): MessageListStateMachine {
         val stateMachine = createStateMachine()
         advanceUntilIdle()
         stateMachine.process(event = MessageListEvent.UpdatePreferences(preferences))
         stateMachine.process(event = MessageListEvent.SortCriteriaLoaded(sortCriteriaPerAccount))
         stateMachine.process(event = MessageListEvent.SwipeActionsLoaded(swipeActions))
+        stateMachine.process(event = FolderEvent.FolderLoaded(folder = folder))
         stateMachine.process(event = MessageListEvent.AllConfigsReady)
         advanceUntilIdle()
         return stateMachine
@@ -572,12 +594,14 @@ class MessageListStateMachineTest {
         swipeActions: Map<AccountId, SwipeActions> = mapOf(
             AccountIdFactory.create() to SwipeActions(SwipeAction.None, SwipeAction.None),
         ),
+        folder: Folder = createFolder(),
     ): MessageListStateMachine {
         val stateMachine = createStateMachine()
         advanceUntilIdle()
         stateMachine.process(event = MessageListEvent.UpdatePreferences(preferences))
         stateMachine.process(event = MessageListEvent.SortCriteriaLoaded(sortCriteriaPerAccount))
         stateMachine.process(event = MessageListEvent.SwipeActionsLoaded(swipeActions))
+        stateMachine.process(event = FolderEvent.FolderLoaded(folder = folder))
         stateMachine.process(event = MessageListEvent.AllConfigsReady)
         stateMachine.process(event = MessageListEvent.UpdateLoadingProgress(progress = 1f))
         stateMachine.process(event = MessageListEvent.MessagesLoaded(messages))
@@ -592,12 +616,14 @@ class MessageListStateMachineTest {
         swipeActions: Map<AccountId, SwipeActions> = mapOf(
             AccountIdFactory.create() to SwipeActions(SwipeAction.None, SwipeAction.None),
         ),
+        folder: Folder = createFolder(),
     ): MessageListStateMachine {
         val stateMachine = createStateMachine()
         advanceUntilIdle()
         stateMachine.process(MessageListEvent.UpdatePreferences(preferences))
         stateMachine.process(MessageListEvent.SortCriteriaLoaded(sortCriteriaPerAccount))
         stateMachine.process(MessageListEvent.SwipeActionsLoaded(swipeActions))
+        stateMachine.process(event = FolderEvent.FolderLoaded(folder = folder))
         stateMachine.process(event = MessageListEvent.AllConfigsReady)
         stateMachine.process(event = MessageListEvent.UpdateLoadingProgress(progress = 1f))
         stateMachine.process(event = MessageListEvent.MessagesLoaded(messages))
@@ -613,12 +639,14 @@ class MessageListStateMachineTest {
         swipeActions: Map<AccountId, SwipeActions> = mapOf(
             AccountIdFactory.create() to SwipeActions(SwipeAction.None, SwipeAction.None),
         ),
+        folder: Folder = createFolder(),
     ): MessageListStateMachine {
         val stateMachine = createStateMachine()
         advanceUntilIdle()
         stateMachine.process(event = MessageListEvent.UpdatePreferences(preferences))
         stateMachine.process(event = MessageListEvent.SortCriteriaLoaded(sortCriteriaPerAccount))
         stateMachine.process(event = MessageListEvent.SwipeActionsLoaded(swipeActions))
+        stateMachine.process(event = FolderEvent.FolderLoaded(folder = folder))
         stateMachine.process(event = MessageListEvent.AllConfigsReady)
         stateMachine.process(event = MessageListEvent.UpdateLoadingProgress(progress = 1f))
         stateMachine.process(event = MessageListEvent.MessagesLoaded(messages))
@@ -679,7 +707,7 @@ private fun createMessageUiItemList(
                 state = State.Unread,
                 id = "id$index",
                 accountId = accountId,
-            ).copy(isActive = true)
+            ).copy(active = true)
         }
     },
 ): List<MessageItemUi> = List(size) { builder(it) }
@@ -687,35 +715,65 @@ private fun createMessageUiItemList(
 private fun createMessageUiItem(
     state: State,
     id: String,
-    folderId: String = "mock",
     accountId: AccountId = AccountIdFactory.create(),
-    senders: ImmutableList<EmailIdentity> = persistentListOf(),
-    recipients: ImmutableList<EmailIdentity> = persistentListOf(),
+    senders: ComposedAddressUi = ComposedAddressUi(displayName = "sender"),
     subject: String = "mock subject",
     excerpt: String = "mock excerpt",
     formattedReceivedAt: String = "Jan 2026",
-    attachments: ImmutableList<MessageItemAttachment> = persistentListOf(),
+    hasAttachments: Boolean = false,
     starred: Boolean = false,
     encrypted: Boolean = false,
     answered: Boolean = false,
     forwarded: Boolean = false,
     selected: Boolean = false,
-    conversations: ImmutableList<MessageItemUi> = persistentListOf(),
+    threadCount: Int = 0,
 ): MessageItemUi = MessageItemUi(
     state = state,
     id = id,
-    folderId = folderId,
     account = Account(id = accountId, color = Color.Unspecified),
     senders = senders,
-    recipients = recipients,
     subject = subject,
     excerpt = excerpt,
     formattedReceivedAt = formattedReceivedAt,
-    attachments = attachments,
+    hasAttachments = hasAttachments,
     starred = starred,
     encrypted = encrypted,
     answered = answered,
     forwarded = forwarded,
     selected = selected,
-    conversations = conversations,
+    threadCount = threadCount,
 )
+
+private fun createFolder(
+    id: String = "fake",
+    account: Account = Account(id = UnifiedAccountId, Color.Unspecified),
+    name: String = "unified",
+    type: FolderType = FolderType.INBOX,
+    parent: Folder? = null,
+    root: Folder? = null,
+    canExpunge: Boolean = false,
+): Folder = Folder(
+    id = id,
+    account = account,
+    name = name,
+    type = type,
+    parent = parent,
+    root = root,
+    canExpunge = canExpunge,
+)
+
+private class FakeDebuggingSettingsPreferenceManager(
+    private val enabledDebug: Boolean = true,
+) : DebuggingSettingsPreferenceManager {
+    override fun save(config: DebuggingSettings) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getConfig(): DebuggingSettings = DebuggingSettings(
+        isDebugLoggingEnabled = enabledDebug,
+        isSyncLoggingEnabled = false,
+        isSensitiveLoggingEnabled = false,
+    )
+
+    override fun getConfigFlow(): Flow<DebuggingSettings> = flowOf(getConfig())
+}

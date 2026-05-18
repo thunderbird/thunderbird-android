@@ -1,0 +1,4 @@
+Thunderbird version 19.0b2
+
+New:
+- Integrate an easily discoverable way to configure and use Thundermail

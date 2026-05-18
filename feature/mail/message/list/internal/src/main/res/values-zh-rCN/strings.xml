@@ -23,4 +23,13 @@
     <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">与远程同步文件夹“%1$s”失败。消息：%2$s</string>
     <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">文件夹名称不能为空</string>
     <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">文件夹名称“%1$s”无效</string>
+    <string name="message_list_state_new_message_description">新邮件</string>
+    <string name="message_list_state_read_message_description">已读</string>
+    <string name="message_list_state_unread_message_description">未读</string>
+    <string name="message_list_state_active_new_message_description">活动，新邮件</string>
+    <string name="message_list_state_active_read_message_description">活动，已读</string>
+    <string name="message_list_state_active_unread_message_description">活动，未读</string>
+    <string name="message_list_state_selected_new_message_description">已选择，新邮件</string>
+    <string name="message_list_state_selected_read_message_description">已选择，已读</string>
+    <string name="message_list_state_selected_unread_message_description">已选择，未读</string>
 </resources>

@@ -124,6 +124,7 @@ import net.thunderbird.feature.search.legacy.serialization.LocalMessageSearchSer
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import net.thunderbird.feature.mail.message.list.R as MessageListApiR
 
 const val MAXIMUM_MESSAGE_SORT_OVERRIDES = 3
 const val MINIMUM_CLICK_INTERVAL = 200L
@@ -1459,7 +1460,7 @@ class LegacyMessageListFragment :
 
     private fun updateActionMode() {
         val actionMode = actionMode ?: error("actionMode == null")
-        actionMode.title = getString(R.string.actionbar_selected, adapter.selectedCount)
+        actionMode.title = getString(MessageListApiR.string.actionbar_selected, adapter.selectedCount)
         actionModeCallback.showSelectAll(!adapter.isAllSelected)
 
         actionMode.invalidate()

@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Thunderbird Catalog</string>
+    <string name="swipe_accessibility_dismiss_custom_action">Dismiss custom action</string>
+    <string name="swipe_accessibility_reveal_custom_action">Reveal custom action</string>
+    <string name="swipe_accessibility_reveal_and_reset_custom_action">Reveal and reset custom action</string>
 </resources>

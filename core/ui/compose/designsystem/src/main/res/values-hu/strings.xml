@@ -5,4 +5,6 @@
     <string name="designsystem_atom_password_textfield_show_password">Jelszó megjelenítése</string>
     <string name="designsystem_molecule_error_view_button_retry">Újra</string>
     <string name="designsystem_molecule_password_input_label">Jelszó</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Jobb: %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Bal: %s</string>
 </resources>

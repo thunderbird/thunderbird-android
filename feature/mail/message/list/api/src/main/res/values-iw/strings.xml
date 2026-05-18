@@ -12,4 +12,5 @@
     <string name="swipe_action_delete">מחק</string>
     <string name="swipe_action_spam">דואר זבל</string>
     <string name="swipe_action_move">העבר…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> נבחרו</string>
 </resources>

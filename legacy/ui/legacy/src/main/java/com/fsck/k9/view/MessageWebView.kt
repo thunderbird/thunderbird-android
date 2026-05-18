@@ -2,11 +2,13 @@ package com.fsck.k9.view
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.os.Build
 import android.util.AttributeSet
 import android.webkit.WebView
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mailstore.AttachmentResolver
+import kotlin.math.roundToInt
 import net.thunderbird.core.android.common.view.showInDarkMode
 import net.thunderbird.core.android.common.view.showInLightMode
 import net.thunderbird.core.logging.legacy.Log
@@ -60,6 +62,10 @@ class MessageWebView : WebView, KoinComponent {
             overScrollMode = OVER_SCROLL_NEVER
 
             textZoom = config.textZoom
+
+            // Values range from smaller than default (1.0) to double size: 0.85, 1.0, 1.15, 1.3, 1.5, 1.8, 2.0
+            val fontScale = Resources.getSystem().configuration.fontScale
+            settings.textZoom = (settings.textZoom * fontScale).roundToInt()
         }
 
         // Disable network images by default. This is overridden by preferences.

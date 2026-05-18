@@ -35,7 +35,6 @@
     <string name="choose_folder_title">إختر مجلد</string>
     <string name="choose_folder_move_title">نقل إلى…</string>
     <string name="choose_folder_copy_title">نسخ إلى…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> محدد</string>
     <string name="send_action">أرسل</string>
     <string name="empty_subject">موضوع الرسالة فارغ، أنقر مرة أخرى لمواصلة الإرسال</string>
     <string name="reply_action">رُد</string>

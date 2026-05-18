@@ -12,4 +12,5 @@
     <string name="swipe_action_delete">நீக்கு</string>
     <string name="swipe_action_spam">பயனற்றது</string>
     <string name="swipe_action_move">நகர்த்தவும்…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> தேர்வாகியுள்ளது</string>
 </resources>

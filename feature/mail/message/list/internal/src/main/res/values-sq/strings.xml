@@ -23,4 +23,13 @@
     <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">S’u arrit të njëkohësohej dosja \'%1$s\' me të largëtën. Mesazh: %2$s</string>
     <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Emri i dosjes s’mund të jetë i zbrazët</string>
     <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Emër i pavlefshëm dosjeje \'%1$s\'</string>
+    <string name="message_list_state_new_message_description">Të rinj</string>
+    <string name="message_list_state_read_message_description">Të lexuar</string>
+    <string name="message_list_state_unread_message_description">Të palexuar</string>
+    <string name="message_list_state_active_new_message_description">Aktive, Të rinj</string>
+    <string name="message_list_state_active_read_message_description">Aktive, Të lexuar</string>
+    <string name="message_list_state_active_unread_message_description">Aktive, Të palexuar</string>
+    <string name="message_list_state_selected_new_message_description">Të përzgjedhur, Të rinj</string>
+    <string name="message_list_state_selected_unread_message_description">Të përzgjedhur, Të palexuar</string>
+    <string name="message_list_state_selected_read_message_description">Të përzgjedhur, Të lexuar</string>
 </resources>

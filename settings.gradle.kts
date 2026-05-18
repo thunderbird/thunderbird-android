@@ -256,6 +256,7 @@ include(
     ":cli:html-cleaner-cli",
     ":cli:resource-mover-cli",
     ":cli:translation-cli",
+    ":cli:weblate-cli",
 )
 
 include(
@@ -269,6 +270,13 @@ include(
 
 include(
     ":feature:debug-settings",
+)
+
+include(
+    ":feature:thundermail:api",
+    ":feature:thundermail:internal:common",
+    ":feature:thundermail:thunderbird",
+    ":feature:thundermail:k9mail",
 )
 
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {

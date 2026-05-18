@@ -1,0 +1,9 @@
+Thunderbird version 19.0b1
+
+New:
+- Message notification actions can be configured
+- Message font size scales with device preferences
+
+Fixed:
+- Thunderbird crashed on Android 8 when fetching images
+- Accidental swipe in message viewer marked unread email as read

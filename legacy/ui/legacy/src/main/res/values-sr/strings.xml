@@ -28,7 +28,6 @@
     <string name="compose_title_forward">Проследи</string>
     <string name="compose_title_forward_as_attachment">Проследи као прилог</string>
     <string name="choose_folder_title">Избор фолдера</string>
-    <string name="actionbar_selected">Изабрано: <xliff:g id="selection_count">%d</xliff:g></string>
     <string name="send_action">Пошаљи</string>
     <string name="empty_subject">Тема је празна, додирните да ипак пошаљете</string>
     <string name="reply_action">Одговори</string>

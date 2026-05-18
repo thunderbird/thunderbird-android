@@ -10,4 +10,5 @@
     <string name="swipe_action_delete">Vymazať</string>
     <string name="swipe_action_spam">Nevyžiadaná pošta</string>
     <string name="swipe_action_move">Presunúť…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vybraných</string>
 </resources>

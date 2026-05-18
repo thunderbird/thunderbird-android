@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">서버 설정 저장 중…</string>
+    <string name="account_edit_save_server_settings_error_message">서버 설정 저장 실패</string>
+    <string name="account_edit_save_server_settings_success_message">서버 설정 저장 완료</string>
+</resources>

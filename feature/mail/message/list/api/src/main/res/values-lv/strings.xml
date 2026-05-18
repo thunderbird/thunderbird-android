@@ -10,4 +10,5 @@
     <string name="swipe_action_delete">Dzēst</string>
     <string name="swipe_action_spam">Mēstules</string>
     <string name="swipe_action_move">Pārvietot…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> atzīmēts</string>
 </resources>

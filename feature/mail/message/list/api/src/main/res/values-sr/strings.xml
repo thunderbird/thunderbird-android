@@ -12,4 +12,5 @@
     <string name="swipe_action_delete">Избриши</string>
     <string name="swipe_action_spam">Непожељно</string>
     <string name="swipe_action_move">Премести…</string>
+    <string name="actionbar_selected">Изабрано: <xliff:g id="selection_count">%d</xliff:g></string>
 </resources>

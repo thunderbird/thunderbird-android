@@ -12,4 +12,5 @@
     <string name="swipe_action_delete">Slett</string>
     <string name="swipe_action_spam">Spam</string>
     <string name="swipe_action_move">Flytt…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vald(e)</string>
 </resources>

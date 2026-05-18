@@ -9,7 +9,6 @@ import net.thunderbird.core.ui.compose.common.mvi.BaseStateMachineViewModel
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
@@ -66,7 +65,6 @@ interface MessageListContract {
          * @param state The current state of the message list to be rendered.
          * @param dispatchEvent A lambda function to be invoked when a user action or other UI event occurs.
          * @param onEffect A lambda function to handle one-time side effects from the ViewModel.
-         * @param preferences User preferences for the message list, influencing its appearance and behavior.
          * @param modifier The modifier to be applied to the root container of the message list screen.
          * @param inAppNotificationEventFilter A filter to decide whether an in-app notification should be displayed.
          */
@@ -75,7 +73,6 @@ interface MessageListContract {
             state: MessageListState,
             dispatchEvent: (MessageListEvent) -> Unit,
             onEffect: (MessageListEffect) -> Unit,
-            preferences: MessageListPreferences,
             modifier: Modifier = Modifier,
             inAppNotificationEventFilter: (InAppNotification) -> Boolean = { true },
         )
@@ -86,7 +83,6 @@ interface MessageListContract {
          * This is a convenience overload of [Render] that automatically retrieves the [ViewModel]
          * using Koin and observes its state.
          *
-         * @param preferences The user's preferences for the message list.
          * @param onEffect A callback to handle one-time side effects from the [ViewModel], such as navigation.
          * @param modifier The modifier to be applied to the layout.
          * @param viewModel The [ViewModel] instance for this screen. Defaults to the instance provided by Koin.
@@ -94,14 +90,13 @@ interface MessageListContract {
          */
         @Composable
         fun Render(
-            preferences: MessageListPreferences,
             onEffect: (MessageListEffect) -> Unit,
             modifier: Modifier = Modifier,
             viewModel: ViewModel = koinViewModel(),
             inAppNotificationEventFilter: (InAppNotification) -> Boolean = { true },
         ) {
             val (state, dispatchEvent) = viewModel.observe(onEffect)
-            Render(state.value, dispatchEvent, onEffect, preferences, modifier, inAppNotificationEventFilter)
+            Render(state.value, dispatchEvent, onEffect, modifier, inAppNotificationEventFilter)
         }
     }
 }

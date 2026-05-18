@@ -16,8 +16,11 @@ import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsNavigation
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import net.thunderbird.feature.funding.api.FundingNavigation
+import net.thunderbird.feature.thundermail.navigation.ThundermailNavigation
+import net.thunderbird.feature.thundermail.navigation.ThundermailRoute
 import org.koin.compose.koinInject
 
+@Suppress("LongMethod")
 @Composable
 fun FeatureLauncherNavHost(
     navController: NavHostController,
@@ -30,6 +33,7 @@ fun FeatureLauncherNavHost(
     onboardingNavigation: OnboardingNavigation = koinInject(),
     fundingNavigation: FundingNavigation = koinInject(),
     secretDebugSettingsNavigation: SecretDebugSettingsNavigation = koinInject(),
+    thundermailNavigation: ThundermailNavigation = koinInject(),
 ) {
     val activity = LocalActivity.current as ComponentActivity
 
@@ -47,6 +51,33 @@ fun FeatureLauncherNavHost(
                         messageListLauncher.launch(it.accountId)
                         activity.finish()
                     }
+
+                    is OnboardingRoute.ThundermailScanQrCode ->
+                        navController.navigate(ThundermailRoute.ScanQrCode)
+
+                    is OnboardingRoute.ThundermailSignIn ->
+                        navController.navigate(ThundermailRoute.SignInWithThundermail)
+                }
+            },
+        )
+
+        thundermailNavigation.registerRoutes(
+            navGraphBuilder = this,
+            onBack = onBack,
+            onFinish = { route ->
+                when (route) {
+                    is ThundermailRoute.IncomingSettings ->
+                        navController.navigate(ThundermailRoute.IncomingSettings)
+
+                    is ThundermailRoute.AccountSetup ->
+                        messageListLauncher.launch(accountUuid = route.accountId)
+
+                    is ThundermailRoute.Permissions -> {
+                        messageListLauncher.launch(route.accountId)
+                        activity.finish()
+                    }
+
+                    else -> Unit
                 }
             },
         )
@@ -59,6 +90,12 @@ fun FeatureLauncherNavHost(
                     is AccountSetupRoute.AccountSetup -> {
                         messageListLauncher.launch(it.accountId)
                     }
+
+                    is AccountSetupRoute.ThundermailScanQrCode ->
+                        navController.navigate(ThundermailRoute.ScanQrCode)
+
+                    is AccountSetupRoute.ThundermailSignIn ->
+                        navController.navigate(ThundermailRoute.SignInWithThundermail)
                 }
             },
         )

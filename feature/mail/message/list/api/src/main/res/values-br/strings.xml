@@ -12,4 +12,5 @@
     <string name="swipe_action_delete">Dilemel</string>
     <string name="swipe_action_spam">Lastez</string>
     <string name="swipe_action_move">Dilec\'hiañ…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> diuzet</string>
 </resources>

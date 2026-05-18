@@ -87,7 +87,6 @@ private fun MessageListScreenSearchingMessagesStatePreview(
                 state = params.state,
                 dispatchEvent = {},
                 onEffect = {},
-                preferences = params.preferences,
             )
         }
     }

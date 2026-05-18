@@ -54,7 +54,6 @@ private fun MessageListScreenWarmingUpStatePreview(
                 state = params.state,
                 dispatchEvent = {},
                 onEffect = {},
-                preferences = params.preferences,
             )
         }
     }

@@ -62,7 +62,6 @@ private fun MessageListScreenSelectingMessagesStatePreview(
                 state = params.state,
                 dispatchEvent = {},
                 onEffect = {},
-                preferences = params.preferences,
             )
         }
     }

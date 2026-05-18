@@ -59,6 +59,8 @@ dependencies {
     implementation(projects.mail.protocols.imap)
     implementation(projects.backend.imap)
 
+    implementation(projects.feature.thundermail.internal.common)
+
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.lifecycle.process)
     implementation(libs.kotlinx.collections.immutable)

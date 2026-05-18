@@ -8,4 +8,5 @@
     <string name="swipe_action_archive">ശേഖരം</string>
     <string name="swipe_action_delete">ഇല്ലാതാക്കുക</string>
     <string name="swipe_action_spam">സ്പാം</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> തിരഞ്ഞെടുത്തു</string>
 </resources>

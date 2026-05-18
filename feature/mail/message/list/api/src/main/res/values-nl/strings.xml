@@ -12,4 +12,5 @@
     <string name="swipe_action_delete">Verwijderen</string>
     <string name="swipe_action_spam">Ongewenst</string>
     <string name="swipe_action_move">Verplaatsen…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> geselecteerd</string>
 </resources>

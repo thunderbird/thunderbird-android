@@ -3,26 +3,21 @@ package net.thunderbird.feature.mail.message.list.ui.component.organism
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.calculateStartPadding
-import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.movableContentOf
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
@@ -32,309 +27,212 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.drawOutline
-import androidx.compose.ui.layout.onPlaced
-import androidx.compose.ui.layout.positionInParent
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.window.WindowSizeClass
-import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIconDefaults
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
+import kotlinx.collections.immutable.ImmutableMap
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.LocalContentColor
 import net.thunderbird.core.ui.compose.theme2.MainTheme
-import net.thunderbird.feature.mail.message.list.ui.component.molecule.AccountIndicatorIcon
-import net.thunderbird.feature.mail.message.list.ui.component.molecule.HeaderRow
-import net.thunderbird.feature.mail.message.list.ui.component.molecule.HeaderRowCompact
+import net.thunderbird.core.ui.compose.theme2.contentColorFor
+import net.thunderbird.feature.mail.message.list.ui.component.atom.FavouriteButtonIcon
+import net.thunderbird.feature.mail.message.list.ui.component.atom.MESSAGE_BADGE_SIZE
+import net.thunderbird.feature.mail.message.list.ui.component.atom.NewMessageBadge
+import net.thunderbird.feature.mail.message.list.ui.component.atom.UnreadMessageBadge
+import net.thunderbird.feature.mail.message.list.ui.component.config.MessageBadgeStyle
+import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemConfiguration
+import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemLeadingConfiguration
+import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemTrailingElement
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.AdaptiveMessageItemHeaderRow
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageBodyContent
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageItemAvatarCircle
+import net.thunderbird.feature.mail.message.list.ui.component.molecule.MessageItemAvatarCircleDefaults
 
 /**
- * Displays a single message item.
+ * Displays a message item in a list with configurable layout and interactions.
  *
- * This composable function is responsible for rendering a single message item within a list. It includes
- * information such as the sender, subject, preview, received time, and actions.
+ * The layout consists of three main areas:
+ * - Leading area: Contains selection indicator and sender avatar
+ * - Content area:
+ *   - Primary line, usually: sender name, date
+ *   - Secondary line, usually: subject, and message excerpt
+ * - Trailing area: Contains action buttons like favourite and attachment
+ *   indicators
  *
- * @param leading A composable function to display the leading content (e.g., avatar).
- * @param sender A composable function to display the sender's information.
- * @param subject A composable function to display the message subject.
- * @param preview The message preview text.
- * @param action A composable function to display actions related to the message (e.g., star).
- * @param receivedAt The date and time the message was received.
- * @param showAccountIndicator Whether or not account indicator for universal inbox is shown.
- * @param accountIndicatorColor The color of the account indicator, if shown.
- * @param onClick A callback function to be invoked when the message item is clicked.
- * @param onLongClick A lambda function to be invoked when the message item is long-clicked.
- * @param onLeadingClick A callback function to be invoked when the leading content is clicked.
- * @param colors The colors to be used for the message item. See [MessageItemDefaults].
- * @param modifier The modifier to be applied to the message item.
- * @param hasAttachments A boolean indicating whether the message has attachments.
- *  Defaults to `false`.
- * @param selected A boolean indicating whether the message item is selected.
- *  Defaults to `false`.
- * @param maxPreviewLines The maximum number of lines to display for the message preview.
- *  Defaults to `2`.
- * @param contentPadding The padding to be applied to the content of the message item.
- *  Defaults to [MessageItemDefaults.defaultContentPadding].
- * @see MessageItemDefaults
+ * ```
+ * Message Item structure:
+ * ┌───────────┬──────────────────────┬──────────┐
+ * │  Leading  │  Primary Line        │ Trailing │
+ * │   Area    ├──────────────────────┤   Area   │
+ * │           │  Secondary Line      │          │
+ * │           │  Excerpt Line        │          │
+ * └───────────┴──────────────────────┴──────────┘
+ * ```
+ *
+ * @param firstLine Composable content for the first line, typically displaying
+ *  the sender name
+ * @param secondaryLine Composable content for the secondary line, typically
+ *  displaying the subject, with optional prefix and inline content support
+ * @param excerpt The preview text of the message body
+ * @param receivedAt The timestamp or formatted date string indicating when the
+ *  message was received
+ * @param configuration The configuration object defining visual presentation and
+ *  layout settings
+ * @param modifier The modifier to be applied to the message item
+ * @param colors The color scheme to be applied to the message item components
+ * @param selected Whether the message item is currently in a selected state
+ * @param contentPadding The padding values to be applied around the message item
+ *  content
+ * @param onClick Callback invoked when the message item is clicked
+ * @param onLongClick Callback invoked when the message item is long-pressed
+ * @param onAvatarClick Callback invoked when the sender avatar is clicked
+ * @param onTrailingClick Callback invoked when a trailing element is clicked,
+ *  providing the specific element that was interacted with
  */
-@Suppress("LongParameterList", "LongMethod")
 @Composable
+@Suppress("LongMethod")
 internal fun MessageItem(
-    leading: @Composable () -> Unit,
-    sender: @Composable () -> Unit,
-    subject: @Composable () -> Unit,
-    preview: CharSequence,
-    action: @Composable () -> Unit,
+    firstLine: @Composable () -> Unit,
+    secondaryLine: @Composable (
+        prefix: AnnotatedString?,
+        inlineContent: ImmutableMap<String, InlineTextContent>,
+    ) -> Unit,
+    excerpt: String,
     receivedAt: String,
-    showAccountIndicator: Boolean,
-    accountIndicatorColor: Color?,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit,
-    onLeadingClick: () -> Unit,
+    configuration: MessageItemConfiguration,
     modifier: Modifier = Modifier,
     colors: MessageItemColors = MessageItemDefaults.readMessageItemColors(),
-    hasAttachments: Boolean = false,
     selected: Boolean = false,
-    maxPreviewLines: Int = 2,
     contentPadding: PaddingValues = MessageItemDefaults.defaultContentPadding,
+    onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
+    onAvatarClick: () -> Unit = {},
+    onTrailingClick: (MessageItemTrailingElement) -> Unit = {},
 ) {
-    val outlineVariant = MainTheme.colors.outlineVariant
-    var contentStart by remember { mutableFloatStateOf(0f) }
-    val layoutDirection = LocalLayoutDirection.current
-
-    val windowSizeInfo = getWindowSizeInfo()
-    val isCompact = windowSizeInfo.screenWidthSizeClass == WindowSizeClass.Small
-
-    val headerRowContent: @Composable ((RowScope) -> Unit) =
-        remember(showAccountIndicator, accountIndicatorColor, receivedAt, sender, isCompact) {
-            movableContentOf { scope ->
-                with(scope) {
-                    SenderText(
-                        showAccountIndicator = showAccountIndicator,
-                        accountIndicatorColor = accountIndicatorColor,
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .weight(1f, fill = false),
-                    ) {
-                        sender()
-                    }
-                    MessageItemDate(
-                        receivedAt = receivedAt,
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .wrapContentWidth(),
-                    )
-                }
-            }
-        }
-
     Surface(
         modifier = modifier
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = onLongClick,
-            )
-            .drawWithCache {
-                onDrawWithContent {
-                    drawContent()
-                    val x = contentStart + contentPadding.calculateStartPadding(layoutDirection).toPx()
-                    drawOutline(
-                        outline = Outline.Rectangle(
-                            rect = Rect(
-                                offset = Offset(x = x, y = size.height - 1.dp.toPx()),
-                                size = Size(width = size.width - x, height = 1.dp.toPx()),
-                            ),
-                        ),
-                        color = outlineVariant,
-                    )
-                }
-            },
+            .combinedClickable(onClick = onClick, onLongClick = onLongClick)
+            .borderBottom(width = 1.dp, color = MainTheme.colors.outlineVariant),
         color = colors.containerColor,
         contentColor = colors.contentColor,
     ) {
-        Row(modifier = Modifier.padding(contentPadding)) {
+        Row(
+            modifier = Modifier
+                .padding(contentPadding)
+                .height(IntrinsicSize.Min),
+        ) {
             // Unread/New Indicator and Sender Avatar
-            Column(verticalArrangement = Arrangement.Center) {
-                LeadingElements(selected, onLeadingClick, leading)
-            }
-            Spacer(modifier = Modifier.width(MainTheme.spacings.default))
+            LeadingElements(
+                selected = selected,
+                configuration = configuration.leadingConfiguration,
+                onClick = onAvatarClick,
+            )
+            Spacer(Modifier.width(MainTheme.spacings.default))
             // Message Content and Contents
             Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .onPlaced { contentStart = it.positionInParent().x },
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
             ) {
-                GetHeaderRow(isCompact, headerRowContent = headerRowContent)
-                MessageContent(colors = colors, preview = preview, maxPreviewLines = maxPreviewLines, subject = subject)
+                AdaptiveMessageItemHeaderRow(configuration, receivedAt, firstLine)
+                MessageBodyContent(
+                    excerpt = excerpt,
+                    configuration = configuration,
+                    subject = secondaryLine,
+                )
             }
-            Spacer(modifier = Modifier.width(MainTheme.spacings.default))
+            Spacer(Modifier.width(MainTheme.spacings.half))
             // Message controls and interaction items
-            TrailingElements(
-                action = action,
-                hasAttachments = hasAttachments,
-                modifier = Modifier.heightIn(min = MainTheme.sizes.large),
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .widthIn(min = MainTheme.sizes.minTouchTarget),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                configuration.trailingConfiguration.elements.forEach { element ->
+                    when (element) {
+                        is MessageItemTrailingElement.EncryptedBadge -> Icon(
+                            imageVector = Icons.Outlined.Encrypted,
+                            contentDescription = null,
+                        )
+
+                        is MessageItemTrailingElement.FavouriteIconButton -> FavouriteButtonIcon(
+                            favourite = element.favourite,
+                            onFavouriteChange = { onTrailingClick(element) },
+                            size = MainTheme.sizes.minTouchTarget,
+                            modifier = Modifier.height(MainTheme.sizes.minTouchTarget / 2),
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+private fun Modifier.borderBottom(width: Dp, color: Color): Modifier = this then Modifier
+    .drawWithCache {
+        onDrawWithContent {
+            drawContent()
+            drawOutline(
+                outline = Outline.Rectangle(
+                    rect = Rect(
+                        offset = Offset(x = 0f, y = size.height - width.toPx()),
+                        size = Size(width = size.width, height = width.toPx()),
+                    ),
+                ),
+                color = color,
             )
         }
     }
-}
-
-@Composable
-private fun GetHeaderRow(
-    isCompact: Boolean,
-    modifier: Modifier = Modifier,
-    headerRowContent: @Composable ((RowScope) -> Unit),
-) {
-    if (isCompact) {
-        HeaderRowCompact(modifier, headerRowContent = headerRowContent)
-    } else {
-        HeaderRow(modifier, headerRowContent = headerRowContent)
-    }
-}
-
-@Composable
-private fun MessageContent(
-    preview: CharSequence,
-    maxPreviewLines: Int,
-    modifier: Modifier = Modifier,
-    colors: MessageItemColors = MessageItemDefaults.readMessageItemColors(),
-    subject: @Composable () -> Unit,
-) {
-    Row(modifier = modifier) {
-        Column {
-            SubjectText(colors.subjectColor) {
-                subject()
-            }
-            Spacer(modifier = Modifier.height(MainTheme.spacings.half))
-            PreviewText(preview = preview, maxLines = maxPreviewLines)
-        }
-    }
-}
-
-@Composable
-private fun SenderText(
-    showAccountIndicator: Boolean,
-    accountIndicatorColor: Color?,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .wrapContentWidth()
-            .defaultMinSize(
-                minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT,
-            ),
-    ) {
-        if (showAccountIndicator && accountIndicatorColor != null) {
-            AccountIndicatorIcon(accountIndicatorColor)
-        }
-        content()
-    }
-}
-
-@Composable
-private fun SubjectText(
-    subjectColor: Color,
-    content: @Composable () -> Unit,
-) {
-    CompositionLocalProvider(LocalContentColor provides subjectColor) {
-        content()
-    }
-}
-
-@Composable
-private fun PreviewText(
-    preview: CharSequence,
-    maxLines: Int,
-    modifier: Modifier = Modifier,
-) {
-    when (preview) {
-        is AnnotatedString -> TextBodySmall(
-            text = preview,
-            maxLines = maxLines,
-            overflow = TextOverflow.Ellipsis,
-            modifier = modifier,
-        )
-
-        else -> TextBodySmall(
-            text = preview.toString(),
-            maxLines = maxLines,
-            overflow = TextOverflow.Ellipsis,
-            modifier = modifier,
-        )
-    }
-}
 
 @Composable
 private fun LeadingElements(
     selected: Boolean,
-    onClick: () -> Unit,
-    leading: @Composable (() -> Unit),
-    modifier: Modifier = Modifier,
-) {
-    AnimatedContent(
-        targetState = selected,
-        modifier = modifier,
-    ) { selected ->
-        if (selected) {
-            SelectedIcon(onClick = onClick)
-        } else {
-            leading()
-        }
-    }
-}
-
-@Composable
-private fun SelectedIcon(
+    configuration: MessageItemLeadingConfiguration,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    ButtonIcon(
-        onClick = onClick,
-        imageVector = Icons.Outlined.Check,
-        colors = ButtonIconDefaults.buttonIconFilledColors(
-            containerColor = MainTheme.colors.secondaryContainer,
-            contentColor = MainTheme.colors.onSecondaryContainer,
-        ),
-        modifier = modifier,
-    )
-}
-
-@Composable
-private fun TrailingElements(
-    action: @Composable (() -> Unit),
-    hasAttachments: Boolean,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
-        modifier = modifier,
-    ) {
-        action()
-        if (hasAttachments) {
-            Icon(
-                imageVector = Icons.Outlined.Attachment,
-                modifier = Modifier.size(MainTheme.sizes.icon),
+    Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxHeight()) {
+        val badgeModifier = Modifier.align(Alignment.CenterStart)
+        when (configuration.badgeStyle) {
+            MessageBadgeStyle.New -> NewMessageBadge(
+                modifier = badgeModifier.offset(-(MESSAGE_BADGE_SIZE.dp + MainTheme.spacings.quarter)),
             )
+
+            MessageBadgeStyle.Unread -> UnreadMessageBadge(
+                modifier = badgeModifier.offset(-(MESSAGE_BADGE_SIZE.dp)),
+            )
+
+            null -> Unit
+        }
+        AnimatedContent(targetState = selected) { selected ->
+            when {
+                selected -> ButtonIcon(
+                    onClick = onClick,
+                    imageVector = Icons.Outlined.Check,
+                    colors = ButtonIconDefaults.buttonIconFilledColors(
+                        containerColor = MainTheme.colors.secondaryContainer,
+                        contentColor = contentColorFor(backgroundColor = MainTheme.colors.secondaryContainer),
+                    ),
+                    modifier = Modifier
+                        .padding(MainTheme.spacings.half)
+                        .size(MainTheme.sizes.iconAvatar),
+                )
+
+                configuration.avatar != null ->
+                    MessageItemAvatarCircle(
+                        avatar = configuration.avatar,
+                        colors = MessageItemAvatarCircleDefaults.colorsFrom(
+                            configuration.avatarColor ?: MainTheme.colors.secondaryContainer,
+                        ),
+                        onClick = onClick,
+                    )
+
+                else -> Unit
+            }
         }
     }
-}
-
-@Composable
-private fun MessageItemDate(
-    receivedAt: String,
-    modifier: Modifier = Modifier,
-) {
-    TextTitleSmall(
-        text = receivedAt,
-        maxLines = 1,
-        overflow = TextOverflow.Visible,
-        modifier = modifier,
-    )
 }

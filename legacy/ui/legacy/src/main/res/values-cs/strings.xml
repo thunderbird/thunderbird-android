@@ -35,7 +35,6 @@
     <string name="choose_folder_title">Výběr složky</string>
     <string name="choose_folder_move_title">Přesunout do…</string>
     <string name="choose_folder_copy_title">Zkopírovat do…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vybraných</string>
     <string name="send_action">Odeslat</string>
     <string name="empty_subject">Předmět není vyplněn, pro odeslání klepněte znovu</string>
     <string name="reply_action">Odpovědět</string>
@@ -109,7 +108,7 @@
         <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
     </plurals>
-    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> pro účet <xliff:g id="account">%2$s</xliff:g></string>
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> dalších na <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Odpovědět</string>
     <string name="notification_action_mark_as_read">Přečteno</string>
     <string name="notification_action_mark_all_as_read">Označit vše jako přečtené</string>
@@ -630,7 +629,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Limit počtu výsledků prohledávání serveru</string>
+    <string name="account_settings_remote_search_num_label">Limit počtu výsledků vyhledávání serveru</string>
     <string name="remote_search_sending_query">Odeslání dotazu na server</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Načítání %d výsledku</item>
@@ -935,4 +934,34 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="general_settings_message_list_date_time_format_contextual">Kontextový</string>
     <string name="general_settings_message_list_date_time_format_full">Plný</string>
     <string name="sort_by_then_by">Poté dle…</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> příloha (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="few"><xliff:g id="count">%1$d</xliff:g> přílohy (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="many"><xliff:g id="count">%1$d</xliff:g> příloh (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> příloh (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Zobrazit vše</string>
+    <string name="message_view_attachments_view">Zobrazit</string>
+    <string name="message_view_attachments_title">Přílohy</string>
+    <string name="message_view_attachments_save_all">Uložit vše</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Zašifrovaná příloha</string>
+    <string name="no_network_message_will_be_sent_later_toast">Jste offline. Zpráva bude odeslána, jakmile bude dostupné připojení</string>
+    <string name="notification_actions_settings_title">Akce oznámení</string>
+    <string name="notification_actions_settings_summary">Vyberte, které akce se zobrazí v oznámeních o e-mailech</string>
+    <string name="notification_summary_delete_title">Zobrazit tlačítko Odstranit u oznámeních s vícero zprávami</string>
+    <string name="notification_summary_delete_summary">Přidá akci Odstranit k oznámením, které shrnují několik nových zpráv</string>
+    <string name="notification_actions_settings_description">Změnit pořadí akcí oznámení.</string>
+    <string name="notification_actions_cutoff_description">Hranice zobrazených akcí</string>
+    <string name="notification_actions_cutoff_state">Akce nad touto linkou budou zobrazeny v oznámení</string>
+    <string name="notification_actions_shown_state">Zobrazeno v oznámení</string>
+    <string name="notification_actions_hidden_state">Nezobrazeno v oznámení</string>
+    <string name="accessibility_move_up">Přesunout nahoru</string>
+    <string name="accessibility_move_down">Přesunout dolů</string>
+    <string name="accessibility_move_item_up">Přesunout <xliff:g id="item">%1$s</xliff:g> nahoru</string>
+    <string name="accessibility_move_item_down">Přesunout <xliff:g id="item">%1$s</xliff:g> dolů</string>
+    <string name="accessibility_move_cutoff_up">Přesunout hranici zobrazených akcí nahoru</string>
+    <string name="accessibility_move_cutoff_down">Přesunout hranici zobrazených akcí dolů</string>
+    <string name="notification_action_star">Hvězdička</string>
 </resources>
