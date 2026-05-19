@@ -207,8 +207,8 @@ jobs:
     outputs:
       k9mail_sha: ${{ steps.commit.outputs.k9mail_sha }}
       thunderbird_sha: ${{ steps.commit.outputs.thunderbird_sha }}
-      k9mail_github_notes: ${{ steps.render_notes.outputs.k9mail_github_notes }}
-      thunderbird_github_notes: ${{ steps.render_notes.outputs.thunderbird_github_notes }}
+      k9mail_github_notes: ${{ steps.append_contributors.outputs.k9mail_github_notes }}
+      thunderbird_github_notes: ${{ steps.append_contributors.outputs.thunderbird_github_notes }}
       old_version_code: ${{ steps.new_version_code.outputs.old_version_code }}
       new_version_code: ${{ steps.new_version_code.outputs.new_version_code }}
     steps:
@@ -414,6 +414,53 @@ jobs:
 
           echo "${APP_NAME}_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Append Contributors
+        id: append_contributors
+        if: "${{ contains(matrix.releaseTarget, 'github') && contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
+        shell: bash
+        env:
+          APP_NAME: ${{ matrix.appName }}
+          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+          APPLICATION_LABEL: ${{ steps.appinfo.outputs.APPLICATION_LABEL }}
+          VERSION_CODE: ${{ steps.new_version_code.outputs.new_version_code }}
+          FULL_VERSION_NAME: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
+          K9MAIL_GITHUB_NOTES: ${{ steps.render_notes.outputs.k9mail_github_notes }}
+          THUNDERBIRD_GITHUB_NOTES: ${{ steps.render_notes.outputs.thunderbird_github_notes }}
+        run: |
+          case "${APP_NAME}:${RELEASE_TYPE}" in
+            thunderbird:beta) TAG_REGEX='^THUNDERBIRD_[0-9]+_0b[0-9]+$'
+                              GITHUB_NOTES=$THUNDERBIRD_GITHUB_NOTES
+                              ;;
+            thunderbird:*) TAG_REGEX='^THUNDERBIRD_[0-9]+_[0-9]+$'
+                           GITHUB_NOTES=$THUNDERBIRD_GITHUB_NOTES
+                           ;;
+            k9mail:*) TAG_REGEX='^K9MAIL_[0-9]+_[0-9]+$'
+                      GITHUB_NOTES=$K9MAIL_GITHUB_NOTES
+                      ;;
+          esac
+
+          TAG_NAME="${APP_NAME^^}_${FULL_VERSION_NAME//./_}"
+          NOTES_FILE="$(mktemp -d)/github_notes.txt"
+          CONTRIBUTORS_FILE="$(mktemp -d)/contributors.txt"
+          echo "${GITHUB_NOTES}" >> "${NOTES_FILE}"
+
+          python ./scripts/ci/contributor_list.py \
+            --regex "$TAG_REGEX" \
+            --head "HEAD" \
+            --changelog-head "$TAG_NAME" \
+          "$CONTRIBUTORS_FILE"
+
+          cat "${CONTRIBUTORS_FILE}" >> "${NOTES_FILE}"
+
+          echo "${APP_NAME}_github_notes<<EOF" >> $GITHUB_OUTPUT
+          cat $NOTES_FILE >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "<h2>${APPLICATION_LABEL} ${FULL_VERSION_NAME} Contributors (${VERSION_CODE})</h2>" | tee -a $GITHUB_STEP_SUMMARY
+          echo -e "\n\n\`\`\`" | tee -a $GITHUB_STEP_SUMMARY
+          cat $CONTRIBUTORS_FILE | tee -a $GITHUB_STEP_SUMMARY
+          echo -e "\`\`\`" | tee -a $GITHUB_STEP_SUMMARY
 
       - name: Summary
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
