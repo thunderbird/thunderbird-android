@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Browser
+import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
@@ -118,6 +119,14 @@ class K9WebViewClient(
         super.onPageFinished(view, url)
 
         onPageFinishedListener?.onPageFinished()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
+        super.onReceivedError(view, request, error)
+        if (request.isForMainFrame) {
+            Log.d("Message WebView load error: %d %s for %s", error.errorCode, error.description, request.url)
+        }
     }
 
     companion object {
