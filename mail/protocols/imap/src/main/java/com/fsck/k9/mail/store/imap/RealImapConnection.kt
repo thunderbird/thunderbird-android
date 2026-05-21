@@ -321,6 +321,7 @@ internal class RealImapConnection(
                     throw MissingCapabilityException(Capabilities.AUTH_OAUTHBEARER)
                 }
             }
+
             AuthType.CRAM_MD5 -> {
                 if (hasCapability(Capabilities.AUTH_CRAM_MD5)) {
                     authCramMD5()
@@ -328,6 +329,7 @@ internal class RealImapConnection(
                     throw MissingCapabilityException(Capabilities.AUTH_CRAM_MD5)
                 }
             }
+
             AuthType.PLAIN -> {
                 if (hasCapability(Capabilities.AUTH_PLAIN)) {
                     saslAuthPlainWithLoginFallback()
@@ -337,6 +339,7 @@ internal class RealImapConnection(
                     throw MissingCapabilityException(Capabilities.AUTH_PLAIN)
                 }
             }
+
             AuthType.EXTERNAL -> {
                 if (hasCapability(Capabilities.AUTH_EXTERNAL)) {
                     saslAuthExternal()
@@ -344,6 +347,7 @@ internal class RealImapConnection(
                     throw MissingCapabilityException(Capabilities.AUTH_EXTERNAL)
                 }
             }
+
             else -> {
                 throw MessagingException("Unhandled authentication method found in the server settings (bug).")
             }
@@ -409,7 +413,11 @@ internal class RealImapConnection(
         val authString = method.buildInitialClientResponse(settings.username, token)
         val tag = sendSaslIrCommand(method.command, authString, true)
 
-        return responseParser.readStatusResponse(tag, method.command, logId, ::handleOAuthUntaggedResponse)
+        return responseParser.readStatusResponse(
+            tag,
+            method.command,
+            logId,
+        ) { handleOAuthUntaggedResponse(it) }
     }
 
     private fun handleOAuthUntaggedResponse(response: ImapResponse) {
