@@ -37,10 +37,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-e8955b3b.js";
+            window.path_to_searchindex_js = "../searchindex-32b3181c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-30e77ebd.js"></script>
+        <script src="../toc-cea24de8.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -344,42 +344,96 @@ On the latter, code that was in beta goes to release, where the general populati
 <li>Git tags are retained in the git log.</li>
 <li>Files/code that is unique per branch can remain that way (e.g. notes files such as changelog_master.xml, version codes).</li>
 </ul>
-<p>The following steps are taken when merging main into beta:</p>
+<p><strong>The following steps are taken when merging main into beta:</strong></p>
 <ol>
 <li>Lock the main branch with the ‘CLOSED TREE (main)’ ruleset</li>
-<li>Send a message to the #tb-mobile-dev:mozilla.org matrix channel to let them know:</li>
-</ol>
+<li>Send a message to the #tb-mobile-dev:mozilla.org matrix channel to let them know:
 <ul>
 <li>You will be performing the merge from main into beta</li>
 <li>The main branch is locked and cannot be changed during the merge</li>
 <li>You will let them know when the merge is complete and main is re-opened</li>
 </ul>
-<ol start="3">
-<li>Review merge results and ensure correctness</li>
-<li>Push the merge</li>
-<li>Update milestones (must be done before version increment in main)</li>
-</ol>
+</li>
+<li>Clone thunderbird-android into three working directories:
+<ul>
+<li><code>merge_beta</code> - where you’ll perform the merge; check out the <code>beta</code> branch</li>
+<li><code>orig_main</code> - reference copy on the <code>main</code> branch</li>
+<li><code>orig_beta</code> - reference copy on the <code>beta</code> branch</li>
+</ul>
+</li>
+<li>From <code>merge_beta</code>, run <code>scripts/ci/merges/do_merge.sh beta</code></li>
+<li>Handle merge conflicts if there are any:
+<ul>
+<li>See conflicting files with <code>git status</code></li>
+<li>Search for <code>&lt;&lt;&lt;&lt;</code> to find conflicts</li>
+<li>Fix conflicts</li>
+<li><code>git add &lt;file&gt;</code> each fixed file</li>
+<li>When all files have been fixed and added, run <code>git merge --continue</code></li>
+<li>Tip: use the <code>orig_main</code> and <code>orig_beta</code> repos to diff conflicting files, e.g. <code>vimdiff "${orig_main}/${f}" "${orig_beta}/${f}"</code></li>
+</ul>
+</li>
+<li>Review merge results and ensure correctness:
+<ul>
+<li>Review the changes to <code>app-thunderbird/build.gradle.kts</code>, <code>app-k9mail/build.gradle.kts</code>, and release note files</li>
+<li>Diff the merge commit with <code>git diff HEAD~1 HEAD --name-only</code> and sanity check the files that changed</li>
+<li>Diff main vs the new beta with <code>diff -Naur --exclude=".git" --exclude="images" "${orig_main}" "${merge_beta}"</code>
+<ul>
+<li>Note: Ensure the metadata symlink is the same on each repo to ensure proper diff</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Push the merge (<code>git push</code>)</li>
+<li>Update milestones (must be done before version increment in main)
 <ul>
 <li>Open a new milestone for the new version</li>
 <li>Close the oldest milestone</li>
 <li>There should always be 3 milestones open (main, beta, release)</li>
 </ul>
-<ol start="6">
-<li>Submit a pull request that increments the version in main</li>
+</li>
+<li>Submit a pull request that increments the version name in main (e.g. https://github.com/thunderbird/thunderbird-android/pull/11034)</li>
 <li>Once the version increment is merged into main, unlock the branch</li>
-<li>Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion and that main is re-opened</li>
+<li>Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion and that main is re-opened for the new version (e.g. 21.0)</li>
 </ol>
-<p>The following steps are taken when merging beta into release:</p>
+<p><strong>The following steps are taken when merging beta into release:</strong></p>
 <ol>
-<li>Send a message to the #tb-mobile-dev:mozilla.org matrix channel to let them know:</li>
-</ol>
+<li>Send a message to the #tb-mobile-dev:mozilla.org matrix channel to let them know:
 <ul>
 <li>You will be performing the merge from beta into release</li>
 <li>You will let them know when the merge is complete</li>
 </ul>
-<ol start="2">
-<li>Review merge results and ensure correctness</li>
-<li>Push the merge</li>
+</li>
+<li>Clone thunderbird-android into three working directories:
+<ul>
+<li><code>merge_release</code> - where you’ll perform the merge; check out the <code>release</code> branch</li>
+<li><code>orig_beta</code> - reference copy on the <code>beta</code> branch</li>
+<li><code>orig_release</code> - reference copy on the <code>release</code> branch</li>
+</ul>
+</li>
+<li>From <code>merge_release</code>, run <code>scripts/ci/merges/do_merge.sh release</code></li>
+<li>Handle merge conflicts if there are any:
+<ul>
+<li>See conflicting files with <code>git status</code></li>
+<li>Search for <code>&lt;&lt;&lt;&lt;</code> to find conflicts</li>
+<li>Fix conflicts</li>
+<li><code>git add &lt;file&gt;</code> each fixed file</li>
+<li>When all files have been fixed and added, run <code>git merge --continue</code></li>
+<li>Tip: use the <code>orig_beta</code> and <code>orig_release</code> repos to diff conflicting files, e.g. <code>vimdiff "${orig_beta}/${f}" "${orig_release}/${f}"</code></li>
+</ul>
+</li>
+<li>Review merge results and ensure correctness:
+<ul>
+<li>Review the changes to <code>app-thunderbird/build.gradle.kts</code>, <code>app-k9mail/build.gradle.kts</code>, and release note files</li>
+<li>Ensure <code>app-k9mail/src/main/res/raw/changelog_master.xml</code> does not include any beta notes</li>
+<li>Diff the merge commit with <code>git diff HEAD~1 HEAD --name-only</code> and sanity check the files that changed</li>
+<li>Diff beta vs the new release with <code>diff -Naur --exclude=".git" --exclude="images" "${orig_beta}" "${merge_release}"</code>
+<ul>
+<li>Note: Ensure the metadata symlink is the same on each repo to ensure proper diff</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Push the merge (<code>git push</code>)</li>
 <li>Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion</li>
 </ol>
 <p>Merges are performed with the <code>do_merge.sh</code> script.</p>
@@ -453,7 +507,7 @@ Daily builds are scheduled with the <a href="https://github.com/thunderbird/thun
 <ul>
 <li>Crash rates, GitHub issues, install base, and reviews</li>
 </ul>
-<footer id="last-change">Last change: <time datetime="2026-05-08">2026-05-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/607e9ff">607e9ff</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-05-21">2026-05-21</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/d78aa2d">d78aa2d</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
@@ -498,7 +552,7 @@ Daily builds are scheduled with the <a href="https://github.com/thunderbird/thun
 
         <script src="../elasticlunr-ef4e11c1.min.js"></script>
         <script src="../mark-09e88c2c.min.js"></script>
-        <script src="../searcher-c2a407aa.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
 
         <script src="../clipboard-1626706a.min.js"></script>
         <script src="../highlight-abc7f01d.js"></script>
