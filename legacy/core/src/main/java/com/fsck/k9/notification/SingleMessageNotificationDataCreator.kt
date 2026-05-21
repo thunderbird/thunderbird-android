@@ -95,7 +95,7 @@ internal class SingleMessageNotificationDataCreator(
         hasSpamFolder: Boolean,
         isSpamEnabled: Boolean,
     ): List<NotificationAction> {
-        val desired = order.take(cutoff).filter { action ->
+        return order.take(cutoff).filter { action ->
             action.isAvailable(
                 hasArchiveFolder = hasArchiveFolder,
                 isDeleteEnabled = isDeleteEnabled,
@@ -103,27 +103,6 @@ internal class SingleMessageNotificationDataCreator(
                 isSpamEnabled = isSpamEnabled,
             )
         }
-        if (desired.size == NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN) return desired
-
-        val filled = buildList {
-            addAll(desired)
-            for (action in order.drop(cutoff)) {
-                if (size == NOTIFICATION_PREFERENCE_MAX_MESSAGE_ACTIONS_SHOWN) break
-                if (
-                    action !in this &&
-                    action.isAvailable(
-                        hasArchiveFolder = hasArchiveFolder,
-                        isDeleteEnabled = isDeleteEnabled,
-                        hasSpamFolder = hasSpamFolder,
-                        isSpamEnabled = isSpamEnabled,
-                    )
-                ) {
-                    add(action)
-                }
-            }
-        }
-
-        return filled
     }
 
     private fun parseActionsOrder(tokens: List<String>): List<NotificationAction> {

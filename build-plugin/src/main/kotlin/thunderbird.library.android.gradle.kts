@@ -74,11 +74,6 @@ kotlin {
     compilerOptions {
         jvmTarget.set(ThunderbirdProjectConfig.Compiler.jvmTarget)
     }
-    sourceSets.all {
-        compilerOptions {
-            freeCompilerArgs.add("-Xwhen-guards")
-        }
-    }
 }
 
 dependencies {

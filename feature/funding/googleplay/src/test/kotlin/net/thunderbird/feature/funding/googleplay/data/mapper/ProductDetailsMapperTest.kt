@@ -7,6 +7,7 @@ import assertk.assertions.isInstanceOf
 import com.android.billingclient.api.BillingClient.ProductType
 import com.android.billingclient.api.ProductDetails
 import kotlin.test.Test
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 import org.mockito.kotlin.doReturn
@@ -149,7 +150,7 @@ class ProductDetailsMapperTest {
         const val ONE_TIME_PRICE_FORMATTED = "$10.00"
 
         val ONE_TIME_CONTRIBUTION = OneTimeContribution(
-            id = ONE_TIME_ID,
+            id = ContributionId(ONE_TIME_ID),
             title = ONE_TIME_TITLE,
             description = ONE_TIME_DESCRIPTION,
             price = ONE_TIME_PRICE,
@@ -164,7 +165,7 @@ class ProductDetailsMapperTest {
         const val RECURRING_PRICE_FORMATTED = "$20.00"
 
         val RECURRING_CONTRIBUTION = RecurringContribution(
-            id = RECURRING_ID,
+            id = ContributionId(RECURRING_ID),
             title = RECURRING_TITLE,
             description = RECURRING_DESCRIPTION,
             price = RECURRING_PRICE,

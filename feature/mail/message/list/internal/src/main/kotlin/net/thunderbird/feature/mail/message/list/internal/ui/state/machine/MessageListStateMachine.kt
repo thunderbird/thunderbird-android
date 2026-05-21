@@ -9,6 +9,7 @@ import net.thunderbird.core.common.state.builder.stateMachine
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.debugging.DebuggingSettingsPreferenceManager
+import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.Folder
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
@@ -38,6 +39,7 @@ class MessageListStateMachine(
     private val clock: Clock,
     private val scope: CoroutineScope,
     private val dispatch: (MessageListEvent) -> Unit,
+    private val dispatchUiEffect: (MessageListEffect) -> Unit,
     private val debuggingSettingsPreferenceManager: DebuggingSettingsPreferenceManager,
     private val stateMachine: StateMachine<MessageListState, MessageListEvent> = stateMachine(scope) {
         withLogger(logger, TAG)
@@ -68,12 +70,17 @@ class MessageListStateMachine(
         private val clock: Clock,
         private val debuggingSettingsPreferenceManager: DebuggingSettingsPreferenceManager,
     ) {
-        fun create(scope: CoroutineScope, dispatch: (MessageListEvent) -> Unit): MessageListStateMachine =
+        fun create(
+            scope: CoroutineScope,
+            dispatch: (MessageListEvent) -> Unit,
+            dispatchUiEffect: (MessageListEffect) -> Unit,
+        ): MessageListStateMachine =
             MessageListStateMachine(
                 logger = logger,
                 clock = clock,
                 scope = scope,
                 dispatch = dispatch,
+                dispatchUiEffect = dispatchUiEffect,
                 debuggingSettingsPreferenceManager = debuggingSettingsPreferenceManager,
             )
     }

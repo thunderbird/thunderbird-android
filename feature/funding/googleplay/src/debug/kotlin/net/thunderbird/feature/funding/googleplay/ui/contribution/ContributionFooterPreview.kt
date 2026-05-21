@@ -3,17 +3,39 @@ package net.thunderbird.feature.funding.googleplay.ui.contribution
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract.PurchaseFlow
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract.State
 
 @Composable
 @Preview(showBackground = true)
 fun ContributionFooterPreview() {
     PreviewWithTheme {
         ContributionFooter(
-            onPurchaseClick = {},
-            onManagePurchaseClick = {},
+            state = State(
+                purchasedContribution = null,
+                purchaseFlow = PurchaseFlow.Idle,
+            ),
+            onEvent = {},
             onShowContributionListClick = {},
-            purchasedContribution = null,
-            isPurchaseEnabled = true,
+            selectedContributionId = ContributionId("contributionId"),
+            isContributionListShown = true,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ContributionFooterPurchasingPreview() {
+    PreviewWithTheme {
+        ContributionFooter(
+            state = State(
+                purchasedContribution = null,
+                purchaseFlow = PurchaseFlow.Launching(ContributionId("contributionId")),
+            ),
+            onEvent = {},
+            onShowContributionListClick = {},
+            selectedContributionId = ContributionId("contributionId"),
             isContributionListShown = true,
         )
     }
@@ -24,12 +46,14 @@ fun ContributionFooterPreview() {
 fun ContributionFooterDisabledPreview() {
     PreviewWithTheme {
         ContributionFooter(
-            purchasedContribution = null,
-            onPurchaseClick = {},
-            onManagePurchaseClick = {},
+            state = State(
+                purchasedContribution = null,
+                purchaseFlow = PurchaseFlow.Idle,
+            ),
+            onEvent = {},
             onShowContributionListClick = {},
+            selectedContributionId = null,
             isContributionListShown = false,
-            isPurchaseEnabled = false,
         )
     }
 }
@@ -39,11 +63,13 @@ fun ContributionFooterDisabledPreview() {
 fun ContributionFooterWithRecurringContributionPreview() {
     PreviewWithTheme {
         ContributionFooter(
-            purchasedContribution = FakeData.recurringContribution,
-            onPurchaseClick = {},
-            onManagePurchaseClick = {},
+            state = State(
+                purchasedContribution = FakeData.purchasedRecurringContribution,
+                purchaseFlow = PurchaseFlow.Idle,
+            ),
+            onEvent = {},
             onShowContributionListClick = {},
-            isPurchaseEnabled = true,
+            selectedContributionId = ContributionId("contributionId"),
             isContributionListShown = false,
         )
     }
@@ -54,11 +80,13 @@ fun ContributionFooterWithRecurringContributionPreview() {
 fun ContributionFooterWithOneTimeContributionPreview() {
     PreviewWithTheme {
         ContributionFooter(
-            purchasedContribution = FakeData.oneTimeContribution,
-            onPurchaseClick = {},
-            onManagePurchaseClick = {},
+            state = State(
+                purchasedContribution = FakeData.purchasedOneTimeContribution,
+                purchaseFlow = PurchaseFlow.Idle,
+            ),
+            onEvent = {},
             onShowContributionListClick = {},
-            isPurchaseEnabled = true,
+            selectedContributionId = ContributionId("contributionId"),
             isContributionListShown = false,
         )
     }
@@ -69,11 +97,13 @@ fun ContributionFooterWithOneTimeContributionPreview() {
 fun ContributionFooterWithOneTimeContributionAndListPreview() {
     PreviewWithTheme {
         ContributionFooter(
-            purchasedContribution = FakeData.oneTimeContribution,
-            onPurchaseClick = {},
-            onManagePurchaseClick = {},
+            state = State(
+                purchasedContribution = FakeData.purchasedOneTimeContribution,
+                purchaseFlow = PurchaseFlow.Idle,
+            ),
+            onEvent = {},
             onShowContributionListClick = {},
-            isPurchaseEnabled = true,
+            selectedContributionId = ContributionId("contributionId"),
             isContributionListShown = true,
         )
     }

@@ -620,15 +620,15 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Serverns sökgräns</string>
+    <string name="account_settings_remote_search_num_label">Server sökgräns</string>
     <string name="remote_search_sending_query">Skickar fråga till servern</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Hämtar %d resultat</item>
-        <item quantity="other">Hämtar %d resultat</item>
+        <item quantity="other">Hämtar %d flera resultat</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">Hämtar %1$d av %2$d resultat</item>
-        <item quantity="other">Hämtar %1$d av %2$d resultat</item>
+        <item quantity="other">Hämtar %1$d av %2$d flera resultat</item>
     </plurals>
     <string name="remote_search_error">Fjärrsökning misslyckades</string>
     <string name="account_settings_search">Sök</string>
@@ -665,8 +665,6 @@
     <string name="recipient_to">Till</string>
     <string name="recipient_from">Från</string>
     <string name="reply_to_label">Svara till</string>
-    <string name="unknown_recipient">&lt;Okänd mottagare&gt;</string>
-    <string name="unknown_sender">&lt;Okänd avsändare&gt;</string>
     <string name="address_type_home">Hem</string>
     <string name="address_type_work">Arbete</string>
     <string name="address_type_other">Annat</string>
@@ -948,4 +946,8 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="accessibility_move_item_down">Flytta <xliff:g id="item">%1$s</xliff:g> ner</string>
     <string name="accessibility_move_cutoff_up">Flytta uppåt i avgränsningsområdet för visade åtgärder</string>
     <string name="accessibility_move_cutoff_down">Flytta nedåt i avgränsningsområdet för visade åtgärder</string>
+    <string name="changelog_latest_label_text">SENASTE</string>
+    <string name="changelog_type_new_text">NY</string>
+    <string name="changelog_type_changed_text">ÄNDRAD</string>
+    <string name="changelog_type_fixed_text">FIXAT</string>
 </resources>

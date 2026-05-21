@@ -13,6 +13,8 @@ updates:
       - "type: dependency"
       - "type: github actions"
       - "report: exclude"
+    cooldown:
+      default-days: 7
     commit-message:
       prefix: chore
       include: scope
@@ -24,6 +26,8 @@ updates:
     labels:
       - "type: dependency"
       - "type: gradle"
+    cooldown:
+      default-days: 7
     commit-message:
       prefix: chore
       include: scope
@@ -36,6 +40,8 @@ updates:
     labels:
       - "type: dependency"
       - "type: pip"
+    cooldown:
+      default-days: 7
     commit-message:
       prefix: chore
       include: scope

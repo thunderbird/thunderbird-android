@@ -5,34 +5,34 @@ import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
-import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 
 internal class FakeBillingClient : FundingDataContract.Remote.BillingClient {
 
     // Configuration
-    var connectOutcome: Outcome<Unit, ContributionError> = Outcome.success(Unit)
     var oneTimeOutcome: Outcome<List<OneTimeContribution>, ContributionError> =
         Outcome.success(emptyList())
     var recurringOutcome: Outcome<List<RecurringContribution>, ContributionError> =
         Outcome.success(emptyList())
 
-    var purchasedOneTimeOutcome: Outcome<List<OneTimeContribution>, ContributionError> =
+    var purchasedOneTimeOutcome: Outcome<List<PurchasedContribution>, ContributionError> =
         Outcome.success(emptyList())
-    var purchasedRecurringOutcome: Outcome<List<RecurringContribution>, ContributionError> =
+    var purchasedRecurringOutcome: Outcome<List<PurchasedContribution>, ContributionError> =
         Outcome.success(emptyList())
-    var purchaseHistoryOutcome: Outcome<OneTimeContribution?, ContributionError> =
+    var purchaseHistoryOutcome: Outcome<PurchasedContribution?, ContributionError> =
         Outcome.success(null)
     var purchaseOutcome: Outcome<Unit, ContributionError> = Outcome.success(Unit)
     var clearCount = 0
 
     // State
-    private val _purchasedContribution = MutableStateFlow<Outcome<Contribution?, ContributionError>>(
+    private val _purchasedContribution = MutableStateFlow<Outcome<PurchasedContribution?, ContributionError>>(
         Outcome.success(null),
     )
 
-    override val purchasedContribution: StateFlow<Outcome<Contribution?, ContributionError>>
+    override val purchasedContribution: StateFlow<Outcome<PurchasedContribution?, ContributionError>>
         get() = _purchasedContribution
 
     override fun disconnect() {
@@ -48,16 +48,16 @@ internal class FakeBillingClient : FundingDataContract.Remote.BillingClient {
         productIds: List<String>,
     ): Outcome<List<RecurringContribution>, ContributionError> = recurringOutcome
 
-    override suspend fun loadPurchasedOneTimeContributions(): Outcome<List<OneTimeContribution>, ContributionError> =
+    override suspend fun loadPurchasedOneTimeContributions(): Outcome<List<PurchasedContribution>, ContributionError> =
         purchasedOneTimeOutcome
 
     override suspend fun loadPurchasedRecurringContributions():
-        Outcome<List<RecurringContribution>, ContributionError> = purchasedRecurringOutcome
+        Outcome<List<PurchasedContribution>, ContributionError> = purchasedRecurringOutcome
 
-    override suspend fun loadPurchasedOneTimeContributionHistory(): Outcome<OneTimeContribution?, ContributionError> =
+    override suspend fun loadPurchasedOneTimeContributionHistory(): Outcome<PurchasedContribution?, ContributionError> =
         purchaseHistoryOutcome
 
     override suspend fun purchaseContribution(
-        contribution: Contribution,
+        contributionId: ContributionId,
     ): Outcome<Unit, ContributionError> = purchaseOutcome
 }

@@ -10,6 +10,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.Avatar
 import net.thunderbird.feature.mail.message.list.ui.state.ComposedAddressStyle
 
 internal data class MessageItemPrevParams(
+    val previewName: String,
     val sender: String,
     val senderStyles: ImmutableList<ComposedAddressStyle> = persistentListOf(),
     val subject: String,

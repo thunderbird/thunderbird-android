@@ -15,6 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
@@ -32,7 +33,6 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.view.AutoDiscoveryResultApprovalView
 import app.k9mail.feature.account.setup.ui.autodiscovery.view.AutoDiscoveryResultView
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.thundermail.ui.component.ThundermailButtonPanel
 
@@ -55,7 +55,7 @@ internal fun AccountAutoDiscoveryContent(
             .padding(contentPadding)
             .consumeWindowInsets(contentPadding)
             .imePadding()
-            .testTagAsResourceId("AccountAutoDiscoveryContent"),
+            .testTag("AccountAutoDiscoveryContent"),
     ) { responsiveWidthPadding ->
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -169,7 +169,7 @@ internal fun ContentView(
                 onThundermailClick = onThundermailClick,
                 onScanQrCodeClick = onScanQrCodeClick,
                 modifier = Modifier
-                    .testTagAsResourceId("thundermail_panel")
+                    .testTag("thundermail_panel")
                     .padding(bottom = MainTheme.spacings.quadruple),
             )
         }
@@ -179,7 +179,7 @@ internal fun ContentView(
             errorMessage = state.emailAddress.error?.toAutoDiscoveryValidationErrorString(resources),
             onEmailAddressChange = { onEvent(Event.EmailAddressChanged(it)) },
             contentPadding = PaddingValues(),
-            modifier = Modifier.testTagAsResourceId("account_setup_email_address_input"),
+            modifier = Modifier.testTag("account_setup_email_address_input"),
         )
 
         if (state.configStep == AccountAutoDiscoveryContract.ConfigStep.PASSWORD) {
@@ -189,7 +189,7 @@ internal fun ContentView(
                 errorMessage = state.password.error?.toAutoDiscoveryValidationErrorString(resources),
                 onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
                 contentPadding = PaddingValues(),
-                modifier = Modifier.testTagAsResourceId("account_setup_password_input"),
+                modifier = Modifier.testTag("account_setup_password_input"),
             )
         } else if (state.configStep == AccountAutoDiscoveryContract.ConfigStep.OAUTH) {
             val isAutoDiscoverySettingsTrusted = state.autoDiscoverySettings?.isTrusted ?: false

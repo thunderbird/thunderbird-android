@@ -61,6 +61,7 @@ internal class GetDisplayAccounts(
                             unreadMessageCount = messageCounts.unread,
                             starredMessageCount = messageCounts.starred,
                             hasError = accountsMap[account] == true,
+                            hasAutoExpandFolder = account.autoExpandFolderId != null,
                         )
                     }
 

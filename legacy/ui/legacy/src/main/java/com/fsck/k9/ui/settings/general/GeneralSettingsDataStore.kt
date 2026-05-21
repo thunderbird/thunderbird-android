@@ -3,7 +3,6 @@ package com.fsck.k9.ui.settings.general
 import androidx.preference.PreferenceDataStore
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import com.fsck.k9.K9
-import com.fsck.k9.K9.PostMarkAsUnreadNavigation
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.base.AppLanguageManager
 import net.thunderbird.core.common.action.SwipeAction
@@ -17,6 +16,7 @@ import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
+import net.thunderbird.core.preference.interaction.PostMarkAsUnreadNavigation
 import net.thunderbird.core.preference.update
 
 @Suppress("LargeClass")
@@ -61,6 +61,7 @@ class GeneralSettingsDataStore(
             "quiet_time_enabled" -> notificationSettings.isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !notificationSettings.isNotificationDuringQuietTimeEnabled
             "notification_summary_delete" -> notificationSettings.isSummaryDeleteActionEnabled
+            "notification_show_contact_picture" -> notificationSettings.isShowContactPictureInNotification
             "privacy_hide_useragent" -> privacySettings.isHideUserAgent
             "privacy_hide_timezone" -> privacySettings.isHideTimeZone
             "debug_logging" -> debuggingSettings.isDebugLoggingEnabled
@@ -103,6 +104,10 @@ class GeneralSettingsDataStore(
             "quiet_time_enabled" -> setIsQuietTimeEnabled(isQuietTimeEnabled = value)
             "disable_notifications_during_quiet_time" -> setIsNotificationDuringQuietTimeEnabled(!value)
             "notification_summary_delete" -> setIsSummaryDeleteActionEnabled(isSummaryDeleteActionEnabled = value)
+            "notification_show_contact_picture" -> setIsShowContactPictureInNotification(
+                isShowContactPictureInNotification = value,
+            )
+
             "privacy_hide_useragent" -> setIsHideUserAgent(isHideUserAgent = value)
             "privacy_hide_timezone" -> setIsHideTimeZone(isHideTimeZone = value)
             "debug_logging" -> setIsDebugLoggingEnabled(isDebugLoggingEnabled = value)
@@ -173,7 +178,7 @@ class GeneralSettingsDataStore(
             "swipe_action_left" -> swipeActionToString(interactionSettings.swipeActions.leftAction)
             "message_list_density" -> messageListSettings.uiDensity.toString()
             "post_remove_navigation" -> interactionSettings.messageViewPostRemoveNavigation
-            "post_mark_as_unread_navigation" -> K9.messageViewPostMarkAsUnreadNavigation.name
+            "post_mark_as_unread_navigation" -> interactionSettings.messageViewPostMarkAsUnreadNavigation.name
             else -> defValue
         }
     }
@@ -215,10 +220,7 @@ class GeneralSettingsDataStore(
             "swipe_action_left" -> updateSwipeAction(value) { swipeAction -> copy(leftAction = swipeAction) }
             "message_list_density" -> updateMessageListDensity(value)
             "post_remove_navigation" -> setMessageViewPostRemoveNavigation(value)
-            "post_mark_as_unread_navigation" -> {
-                K9.messageViewPostMarkAsUnreadNavigation = PostMarkAsUnreadNavigation.valueOf(value)
-            }
-
+            "post_mark_as_unread_navigation" -> setMessageViewPostMarkAsUnreadNavigation(value)
             else -> return
         }
 
@@ -670,6 +672,17 @@ class GeneralSettingsDataStore(
         }
     }
 
+    private fun setIsShowContactPictureInNotification(isShowContactPictureInNotification: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                notification = settings.notification.copy(
+                    isShowContactPictureInNotification = isShowContactPictureInNotification,
+                ),
+            )
+        }
+    }
+
     private fun setIsHideTimeZone(isHideTimeZone: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
@@ -742,6 +755,17 @@ class GeneralSettingsDataStore(
             settings.copy(
                 interaction = settings.interaction.copy(
                     messageViewPostRemoveNavigation = value,
+                ),
+            )
+        }
+    }
+
+    private fun setMessageViewPostMarkAsUnreadNavigation(value: String) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                interaction = settings.interaction.copy(
+                    messageViewPostMarkAsUnreadNavigation = PostMarkAsUnreadNavigation.valueOf(value),
                 ),
             )
         }

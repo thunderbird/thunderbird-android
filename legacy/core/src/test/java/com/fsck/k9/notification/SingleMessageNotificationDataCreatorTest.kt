@@ -3,7 +3,9 @@ package com.fsck.k9.notification
 import app.k9mail.legacy.message.controller.MessageReference
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.containsExactly
 import assertk.assertions.doesNotContain
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
@@ -123,7 +125,7 @@ class SingleMessageNotificationDataCreatorTest {
     }
 
     @Test
-    fun `fill actions below cutoff up to max shown`() {
+    fun `only show actions above cutoff`() {
         setMessageActions(cutoff = 2)
         val content = createNotificationContent()
 
@@ -135,7 +137,26 @@ class SingleMessageNotificationDataCreatorTest {
             addLockScreenNotification = false,
         )
 
-        assertThat(result.actions).contains(NotificationAction.Delete)
+        assertThat(result.actions).containsExactly(
+            NotificationAction.Reply,
+            NotificationAction.MarkAsRead,
+        )
+    }
+
+    @Test
+    fun `show no actions when cutoff is zero`() {
+        setMessageActions(cutoff = 0)
+        val content = createNotificationContent()
+
+        val result = notificationDataCreator.createSingleNotificationData(
+            account = account,
+            notificationId = 0,
+            content = content,
+            timestamp = 0,
+            addLockScreenNotification = false,
+        )
+
+        assertThat(result.actions).isEmpty()
     }
 
     @Test

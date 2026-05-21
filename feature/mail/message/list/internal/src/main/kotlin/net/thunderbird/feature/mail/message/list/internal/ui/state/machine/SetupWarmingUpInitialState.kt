@@ -28,7 +28,6 @@ internal fun StateMachineBuilder<MessageListState, MessageListEvent>.warmingUpIn
         onEnter { _, _ ->
             dispatch(MessageListEvent.LoadConfigurations)
         }
-        transition<MessageListEvent.LoadConfigurations> { state, _ -> state.withMetadata { copy(isActive = true) } }
         transition<MessageListEvent.UpdatePreferences> { state, event ->
             state.copy(preferences = event.preferences)
         }

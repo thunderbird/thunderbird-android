@@ -24,6 +24,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 private class NewMessageItemPrevParamCol : CollectionPreviewParameterProvider<MessageItemPrevParams>(
     collection = listOf(
         MessageItemPrevParams(
+            previewName = "Single sender with monogram",
             sender = "Cynthia Alvarez",
             senderStyles = ComposedAddressStyle.AllBold,
             subject = "Laptop not booting after Windows update",
@@ -36,6 +37,7 @@ private class NewMessageItemPrevParamCol : CollectionPreviewParameterProvider<Me
             avatar = Avatar.Monogram("CA"),
         ),
         MessageItemPrevParams(
+            previewName = "Multiple senders threaded",
             sender = "Mason Tran, Me, Ryan Thomas",
             senderStyles = persistentListOf(
                 ComposedAddressStyle.Bold(0, 11),
@@ -50,6 +52,7 @@ private class NewMessageItemPrevParamCol : CollectionPreviewParameterProvider<Me
             avatar = Avatar.Monogram("MT"),
         ),
         MessageItemPrevParams(
+            previewName = "Threaded with attachment no avatar",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 3).values.joinToString(),
@@ -60,6 +63,7 @@ private class NewMessageItemPrevParamCol : CollectionPreviewParameterProvider<Me
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Long sender and subject",
             sender = LoremIpsum(words = 100).values.joinToString(),
             senderStyles = ComposedAddressStyle.AllBold,
             subject = LoremIpsum(words = 100).values.joinToString(),
@@ -71,6 +75,7 @@ private class NewMessageItemPrevParamCol : CollectionPreviewParameterProvider<Me
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Selected favourite threaded",
             sender = "Sender Name",
             senderStyles = ComposedAddressStyle.AllBold,
             subject = "The subject",
@@ -82,6 +87,7 @@ private class NewMessageItemPrevParamCol : CollectionPreviewParameterProvider<Me
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Selected favourite with attachment",
             sender = "Sender Name",
             senderStyles = ComposedAddressStyle.AllBold,
             subject = "The subject",
@@ -93,6 +99,7 @@ private class NewMessageItemPrevParamCol : CollectionPreviewParameterProvider<Me
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Minimal no avatar",
             sender = "Sender Name",
             subject = "The subject",
             excerpt = LoremIpsum(words = 3).values.joinToString(),
@@ -103,6 +110,7 @@ private class NewMessageItemPrevParamCol : CollectionPreviewParameterProvider<Me
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Long sender and subject bold",
             sender = LoremIpsum(words = 100).values.joinToString(),
             senderStyles = ComposedAddressStyle.AllBold,
             subject = LoremIpsum(words = 100).values.joinToString(),
@@ -114,6 +122,7 @@ private class NewMessageItemPrevParamCol : CollectionPreviewParameterProvider<Me
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Selected favourite bold",
             sender = "Sender Name",
             senderStyles = ComposedAddressStyle.AllBold,
             subject = "The subject",
@@ -125,6 +134,7 @@ private class NewMessageItemPrevParamCol : CollectionPreviewParameterProvider<Me
             senderAboveSubject = true,
         ),
         MessageItemPrevParams(
+            previewName = "Selected no excerpt",
             sender = "Sender Name",
             senderStyles = ComposedAddressStyle.AllBold,
             subject = "The subject",
@@ -137,7 +147,9 @@ private class NewMessageItemPrevParamCol : CollectionPreviewParameterProvider<Me
             maxExcerptLines = 0,
         ),
     ),
-)
+) {
+    override fun getDisplayName(index: Int): String = values.elementAt(index).previewName
+}
 
 @Preview
 @Composable
@@ -161,7 +173,7 @@ private fun PreviewDefault(
                 formattedReceivedAt = params.receivedAt,
                 hasAttachments = params.hasAttachments,
                 starred = params.favourite,
-                encrypted = params.trailingElements.any { it == MessageItemTrailingElement.EncryptedBadge },
+                encrypted = params.trailingElements.any { it is MessageItemTrailingElement.EncryptedBadge },
                 answered = params.answered,
                 forwarded = params.forwarded,
                 selected = params.selected,
@@ -209,7 +221,7 @@ private fun PreviewCompact(
                 formattedReceivedAt = params.receivedAt,
                 hasAttachments = params.hasAttachments,
                 starred = params.favourite,
-                encrypted = params.trailingElements.any { it == MessageItemTrailingElement.EncryptedBadge },
+                encrypted = params.trailingElements.any { it is MessageItemTrailingElement.EncryptedBadge },
                 answered = params.answered,
                 forwarded = params.forwarded,
                 selected = params.selected,
@@ -257,7 +269,7 @@ private fun PreviewRelaxed(
                 formattedReceivedAt = params.receivedAt,
                 hasAttachments = params.hasAttachments,
                 starred = params.favourite,
-                encrypted = params.trailingElements.any { it == MessageItemTrailingElement.EncryptedBadge },
+                encrypted = params.trailingElements.any { it is MessageItemTrailingElement.EncryptedBadge },
                 answered = params.answered,
                 forwarded = params.forwarded,
                 selected = params.selected,
@@ -305,7 +317,7 @@ private fun PreviewDefaultWithoutAccountIndicator(
                 formattedReceivedAt = params.receivedAt,
                 hasAttachments = params.hasAttachments,
                 starred = params.favourite,
-                encrypted = params.trailingElements.any { it == MessageItemTrailingElement.EncryptedBadge },
+                encrypted = params.trailingElements.any { it is MessageItemTrailingElement.EncryptedBadge },
                 answered = params.answered,
                 forwarded = params.forwarded,
                 selected = params.selected,

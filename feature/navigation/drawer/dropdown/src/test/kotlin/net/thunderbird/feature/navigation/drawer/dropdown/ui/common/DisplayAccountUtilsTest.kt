@@ -38,6 +38,7 @@ class DisplayAccountUtilsTest {
             unreadMessageCount = 5,
             starredMessageCount = 1,
             hasError = false,
+            hasAutoExpandFolder = false,
         )
 
         // Act

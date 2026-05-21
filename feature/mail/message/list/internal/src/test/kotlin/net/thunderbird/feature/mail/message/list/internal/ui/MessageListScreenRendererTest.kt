@@ -39,12 +39,13 @@ import net.thunderbird.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.internal.R
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageListItemDefaults
+import net.thunderbird.feature.mail.message.list.internal.ui.component.template.TEST_TAG_MESSAGE_LIST_ROOT
 import net.thunderbird.feature.mail.message.list.internal.ui.preview.AccountPreviewHelper
 import net.thunderbird.feature.mail.message.list.internal.ui.preview.MessagePreviewHelper
 import net.thunderbird.feature.mail.message.list.preferences.ActionRequiringUserConfirmation
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.component.atom.MESSAGE_ITEM_FAVOURITE_ICON_BUTTON_TEST_TAG
-import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
+import net.thunderbird.feature.mail.message.list.ui.component.rememberMessageListScope
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.Avatar
@@ -160,7 +161,7 @@ class MessageListScreenRendererTest : ComposeTest() {
             )
 
             // Act
-            onNodeWithTag(MessageListScreenRenderer.TEST_TAG_MESSAGE_LIST_ROOT).performTouchInput { swipeDown() }
+            onNodeWithTag(TEST_TAG_MESSAGE_LIST_ROOT).performTouchInput { swipeDown() }
             waitForIdle()
 
             // Assert
@@ -490,7 +491,6 @@ class MessageListScreenRendererTest : ComposeTest() {
     private fun ComposeTest.setupTestSubjectComposable(
         messages: List<MessageItemUi>,
         dispatchEvent: (MessageListEvent) -> Unit = {},
-        onEffect: (MessageListEffect) -> Unit = {},
         preferences: MessageListPreferences = createPreferences(),
         metadata: MessageListMetadata = createMetadata(),
         state: MessageListState = MessageListState.LoadedMessages(
@@ -505,12 +505,14 @@ class MessageListScreenRendererTest : ComposeTest() {
                 koinPreview {
                     single<InAppNotificationStream> { FakeInAppNotificationStream() }
                 } WithContent {
-                    renderer.Render(
-                        state = state,
-                        dispatchEvent = dispatchEvent,
-                        onEffect = onEffect,
-                        modifier = Modifier.fillMaxSize(),
-                    )
+                    val scope = rememberMessageListScope()
+                    with(renderer) {
+                        scope.Render(
+                            state = state,
+                            dispatchEvent = dispatchEvent,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
                 }
             }
         }

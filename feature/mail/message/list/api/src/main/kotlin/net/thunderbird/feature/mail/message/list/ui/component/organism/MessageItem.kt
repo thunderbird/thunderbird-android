@@ -3,7 +3,6 @@ package net.thunderbird.feature.mail.message.list.ui.component.organism
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -133,8 +131,8 @@ internal fun MessageItem(
             Spacer(Modifier.width(MainTheme.spacings.default))
             // Message Content and Contents
             Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+                modifier = Modifier.weight(1f).fillMaxHeight(),
+                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half, Alignment.CenterVertically),
             ) {
                 AdaptiveMessageItemHeaderRow(configuration, receivedAt, firstLine)
                 MessageBodyContent(
@@ -148,7 +146,7 @@ internal fun MessageItem(
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .widthIn(min = MainTheme.sizes.minTouchTarget),
+                    .widthIn(min = MainTheme.sizes.icon),
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -157,6 +155,16 @@ internal fun MessageItem(
                         is MessageItemTrailingElement.EncryptedBadge -> Icon(
                             imageVector = Icons.Outlined.Encrypted,
                             contentDescription = null,
+                            modifier = Modifier.then(
+                                if (element.isFavouriteHidden) {
+                                    Modifier.padding(
+                                        start = MainTheme.spacings.half,
+                                        end = MainTheme.spacings.default,
+                                    )
+                                } else {
+                                    Modifier
+                                },
+                            ),
                         )
 
                         is MessageItemTrailingElement.FavouriteIconButton -> FavouriteButtonIcon(
@@ -195,18 +203,17 @@ private fun LeadingElements(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxHeight()) {
-        val badgeModifier = Modifier.align(Alignment.CenterStart)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.quarter),
+        modifier = modifier.fillMaxHeight(),
+    ) {
         when (configuration.badgeStyle) {
-            MessageBadgeStyle.New -> NewMessageBadge(
-                modifier = badgeModifier.offset(-(MESSAGE_BADGE_SIZE.dp + MainTheme.spacings.quarter)),
-            )
+            MessageBadgeStyle.New -> NewMessageBadge()
 
-            MessageBadgeStyle.Unread -> UnreadMessageBadge(
-                modifier = badgeModifier.offset(-(MESSAGE_BADGE_SIZE.dp)),
-            )
+            MessageBadgeStyle.Unread -> UnreadMessageBadge()
 
-            null -> Unit
+            null -> Spacer(Modifier.width(MESSAGE_BADGE_SIZE.dp))
         }
         AnimatedContent(targetState = selected) { selected ->
             when {
@@ -218,8 +225,8 @@ private fun LeadingElements(
                         contentColor = contentColorFor(backgroundColor = MainTheme.colors.secondaryContainer),
                     ),
                     modifier = Modifier
-                        .padding(MainTheme.spacings.half)
-                        .size(MainTheme.sizes.iconAvatar),
+                        .size(MainTheme.sizes.iconAvatar)
+                        .padding(MainTheme.spacings.half),
                 )
 
                 configuration.avatar != null ->

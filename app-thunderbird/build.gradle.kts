@@ -15,7 +15,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 51
-        versionName = "19.0"
+        versionName = "20.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
     }
@@ -110,7 +110,7 @@ android {
             signingConfig = signingConfigs.getByType(SigningType.TB_BETA)
 
             applicationIdSuffix = ".beta"
-            versionNameSuffix = "b2"
+            versionNameSuffix = "b0"
 
             isMinifyEnabled = !isCI
             isShrinkResources = !isCI
@@ -217,7 +217,7 @@ val fullReleaseImplementation by configurations.creating
 dependencies {
     implementation(projects.appCommon)
     implementation(projects.core.ui.compose.common)
-    implementation(projects.core.ui.compose.theme2.thunderbird)
+    implementation(projects.core.ui.compose.theme2)
     implementation(projects.core.ui.legacy.theme2.thunderbird)
     implementation(projects.feature.launcher)
 

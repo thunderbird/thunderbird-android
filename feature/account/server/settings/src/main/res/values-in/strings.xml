@@ -32,4 +32,6 @@
     <string name="account_server_settings_outgoing_top_bar_title">Pengaturan peladen yang keluar</string>
     <string name="account_server_settings_validation_error_server_required">Nama peladen diperlukan.</string>
     <string name="account_server_settings_validation_error_port_required">Porta diperlukan.</string>
+    <string name="account_server_settings_password_authentication_failed">Autentikasi gagal!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Tidak dapat menjalankan permintaan biometrik.</string>
 </resources>

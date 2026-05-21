@@ -30,6 +30,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
                 // TODO(#10498): Remove when UseNewMessageReaderCssStyles is no longer required
                 FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
                 FeatureFlag(MessageListFeatureFlags.EnableMessageListNewState, enabled = false),
+                FeatureFlag(MessageReaderFeatureFlags.UseComposeForMessageReader, enabled = false),
                 FeatureFlag(ThundermailFeatureFlags.ThundermailOnboardingEnabled, enabled = true),
             ),
         )

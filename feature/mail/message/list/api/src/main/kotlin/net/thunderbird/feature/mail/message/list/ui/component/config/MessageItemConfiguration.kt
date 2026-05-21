@@ -95,7 +95,7 @@ private fun buildTrailingElementsList(
     messageItemUi: MessageItemUi,
 ): PersistentList<MessageItemTrailingElement> = buildList {
     if (messageItemUi.encrypted) {
-        add(MessageItemTrailingElement.EncryptedBadge)
+        add(MessageItemTrailingElement.EncryptedBadge(isFavouriteHidden = !preferences.showFavouriteButton))
     }
     if (preferences.showFavouriteButton) {
         add(MessageItemTrailingElement.FavouriteIconButton(favourite = messageItemUi.starred))

@@ -12,7 +12,7 @@ dependencies {
     api(libs.assertk)
 
     implementation(projects.core.ui.contract)
-    implementation(projects.core.ui.compose.theme2.thunderbird)
+    implementation(projects.core.ui.compose.theme2)
 
     implementation(libs.bundles.shared.jvm.test.compose)
 }

@@ -5,4 +5,6 @@
     <string name="designsystem_molecule_email_address_input_label">Alamat surel</string>
     <string name="designsystem_molecule_password_input_label">Kata sandi</string>
     <string name="designsystem_molecule_error_view_button_retry">Coba lagi</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Kanan: %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Kiri: %s</string>
 </resources>

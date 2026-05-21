@@ -7,6 +7,8 @@ import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonDecoder
+import kotlinx.serialization.json.JsonEncoder
+import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonObject
 
 @Serializable(with = Component.ComponentSerializer::class)
@@ -40,7 +42,19 @@ data class Component(
             encoder: Encoder,
             value: Component,
         ) {
-            error("Component serialization is not supported")
+            require(encoder is JsonEncoder) {
+                "Expected JsonEncoder, got ${encoder::class.simpleName}"
+            }
+
+            val info = encoder.json.encodeToJsonElement(ComponentInfo.serializer(), value.info)
+            val config = encoder.json.encodeToJsonElement(ComponentConfig.serializer(), value.config)
+
+            val jsonObject = buildJsonObject {
+                info.jsonObject.forEach { (key, value) -> put(key, value) }
+                config.jsonObject.forEach { (key, value) -> put(key, value) }
+            }
+
+            encoder.encodeJsonElement(jsonObject)
         }
     }
 }
