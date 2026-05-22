@@ -1,0 +1,132 @@
+package net.thunderbird.feature.thundermail.internal.common.ui
+
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
+import app.k9mail.core.ui.compose.designsystem.template.Scaffold
+import app.k9mail.feature.account.common.ui.WizardNavigationBar
+import app.k9mail.feature.account.common.ui.WizardNavigationBarState
+import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.contract.mvi.observe
+import net.thunderbird.feature.thundermail.internal.common.R
+import net.thunderbird.feature.thundermail.navigation.ThundermailRoute
+import org.koin.androidx.compose.koinViewModel
+
+@Composable
+internal fun ThundermailOAuthRedirectScreen(
+    viewModel: ThundermailContract.ViewModel = koinViewModel<ThundermailContract.ViewModel>(),
+    onBack: () -> Unit,
+    onFinish: (ThundermailRoute) -> Unit,
+) {
+    val oAuthLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+    ) {
+        viewModel.event(ThundermailContract.Event.OnOAuthResult(it.resultCode, it.data))
+    }
+
+    val (state, dispatch) = viewModel.observe { effect ->
+        when (effect) {
+            is ThundermailContract.Effect.LaunchOAuth -> oAuthLauncher.launch(effect.intent)
+            is ThundermailContract.Effect.NavigateToIncomingServerSettings ->
+                onFinish(ThundermailRoute.IncomingSettings)
+        }
+    }
+
+    var launchedOAuth by remember { mutableStateOf(false) }
+
+    LaunchedEffect(state.value.initialized) {
+        if (state.value.initialized && !launchedOAuth) {
+            dispatch(ThundermailContract.Event.SignInClicked)
+            launchedOAuth = true
+        }
+    }
+
+    LaunchedErrorEffect(state.value, onBack)
+
+    Scaffold(
+        bottomBar = {
+            WizardNavigationBar(
+                onNextClick = {},
+                onBackClick = onBack,
+                state = WizardNavigationBarState(showNext = false, showBack = state.value.error != null),
+            )
+        },
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+                .safeContentPadding(),
+        ) {
+            Column(
+                modifier = Modifier.align(Alignment.Center),
+                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Crossfade(
+                    targetState = state.value.error,
+                ) { error ->
+                    if (error == null) {
+                        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(MainTheme.sizes.medium),
+                            )
+                        }
+                        TextBodyLarge(stringResource(R.string.thundermail_redirecting))
+                    } else {
+                        ErrorDetails(error, onBack)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun LaunchedErrorEffect(
+    state: ThundermailContract.State,
+    onBack: () -> Unit,
+) {
+    LaunchedEffect(state.error) {
+        when (state.error) {
+            ThundermailContract.Error.Canceled -> onBack()
+            else -> Unit
+        }
+    }
+}
+
+@Composable
+fun ErrorDetails(error: ThundermailContract.Error, onBack: () -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+    ) {
+        TextTitleLarge(text = "Something went wrong")
+        TextBodyLarge(
+            text = when (error) {
+                ThundermailContract.Error.Canceled -> "Operation was canceled"
+                is ThundermailContract.Error.Unknown -> "Unknown error. Please consider reporting."
+            },
+        )
+    }
+}
