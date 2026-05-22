@@ -19,6 +19,7 @@ import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -243,6 +244,7 @@ class AccountOAuthViewModelTest {
                 isGoogleSignIn
             },
             initialState = initialState,
+            logger = TestLogger(),
         )
     }
 }

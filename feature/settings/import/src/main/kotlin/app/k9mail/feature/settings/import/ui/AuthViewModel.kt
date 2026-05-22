@@ -92,6 +92,8 @@ internal class AuthViewModel(
                 _uiState.update { AuthFlowState.NotSupported }
             }
 
+            AuthorizationIntentResult.BrowserNotAvailable -> _uiState.update { AuthFlowState.BrowserNotFound }
+
             is AuthorizationIntentResult.Success -> resultObserver.login(authRequestIntentResult.intent)
         }
     }

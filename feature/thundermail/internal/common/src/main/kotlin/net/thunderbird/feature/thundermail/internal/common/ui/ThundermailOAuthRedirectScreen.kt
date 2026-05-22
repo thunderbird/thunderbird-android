@@ -124,6 +124,9 @@ fun ErrorDetails(error: ThundermailContract.Error, onBack: () -> Unit, modifier:
         TextTitleLarge(text = "Something went wrong")
         TextBodyLarge(
             text = when (error) {
+                ThundermailContract.Error.BrowserNotAvailable ->
+                    "Browser is not available. Please verify your's device configuration"
+
                 ThundermailContract.Error.Canceled -> "Operation was canceled"
                 is ThundermailContract.Error.Unknown -> "Unknown error. Please consider reporting."
             },
