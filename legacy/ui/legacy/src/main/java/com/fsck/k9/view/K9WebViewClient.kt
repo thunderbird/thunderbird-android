@@ -22,6 +22,7 @@ import net.thunderbird.core.logging.legacy.Log
 /**
  * [WebViewClient] that intercepts requests for `cid:` URIs to load the respective body part.
  */
+@Suppress("TooManyFunctions")
 class K9WebViewClient(
     private val clipboardManager: ClipboardManager,
     private val attachmentResolver: AttachmentResolver?,
