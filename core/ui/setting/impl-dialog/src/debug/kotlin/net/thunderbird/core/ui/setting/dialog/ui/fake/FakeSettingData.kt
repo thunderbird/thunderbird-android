@@ -16,6 +16,15 @@ internal object FakeSettingData {
         value = "Value",
     )
 
+    val actionText = SettingValue.ActionText(
+        id = "text",
+        icon = { Icons.Outlined.Delete },
+        title = { "Title" },
+        description = { "Description" },
+        value = "Value",
+        onClick = {},
+    )
+
     val color = SettingValue.Color(
         id = "color",
         icon = { Icons.Outlined.Delete },
