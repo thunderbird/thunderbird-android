@@ -9,11 +9,15 @@ import net.thunderbird.feature.account.settings.impl.domain.usecase.GetAccountNa
 import net.thunderbird.feature.account.settings.impl.domain.usecase.GetAccountProfile
 import net.thunderbird.feature.account.settings.impl.domain.usecase.GetLegacyAccount
 import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateAvatarImage
+import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateFetchingMailSettings
 import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateGeneralSettings
 import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateReadEmailSettings
 import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateSearchSettings
 import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAccountName
 import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAvatarMonogram
+import net.thunderbird.feature.account.settings.impl.ui.fetchingMail.FetchingMailSettingsBuilder
+import net.thunderbird.feature.account.settings.impl.ui.fetchingMail.FetchingMailSettingsContract
+import net.thunderbird.feature.account.settings.impl.ui.fetchingMail.FetchingMailSettingsViewModel
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsBuilder
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsValidator
@@ -39,6 +43,12 @@ val featureAccountSettingsModule = module {
 
     factory<UseCase.UpdateReadMailSettings> {
         UpdateReadEmailSettings(
+            repository = get(),
+        )
+    }
+
+    factory<UseCase.UpdateFetchingMailSettings> {
+        UpdateFetchingMailSettings(
             repository = get(),
         )
     }
@@ -109,6 +119,12 @@ val featureAccountSettingsModule = module {
         )
     }
 
+    factory<FetchingMailSettingsContract.SettingsBuilder> {
+        FetchingMailSettingsBuilder(
+            resources = get<StringsResourceManager>(),
+        )
+    }
+
     factory<SearchSettingsContract.SettingsBuilder> {
         SearchSettingBuilder(
             resources = get<StringsResourceManager>(),
@@ -123,6 +139,17 @@ val featureAccountSettingsModule = module {
             updateReadMailSettings = get(),
             resources = get(),
             logger = get(),
+        )
+    }
+
+    viewModel { params ->
+        FetchingMailSettingsViewModel(
+            accountId = params.get(),
+            resources = get(),
+            logger = get(),
+            getAccountName = get(),
+            getLegacyAccount = get(),
+            updateFetchingMailSettings = get(),
         )
     }
 
