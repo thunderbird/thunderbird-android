@@ -37,6 +37,7 @@ internal fun ThundermailOAuthRedirectScreen(
     viewModel: ThundermailContract.ViewModel = koinViewModel<ThundermailContract.ViewModel>(),
     onBack: () -> Unit,
     onFinish: (ThundermailRoute) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val oAuthLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -63,39 +64,40 @@ internal fun ThundermailOAuthRedirectScreen(
 
     LaunchedErrorEffect(state.value, onBack)
 
+    ThundermailOAuthRedirectScreen(state = state.value, onBack = onBack, modifier = modifier)
+}
+
+@Composable
+internal fun ThundermailOAuthRedirectScreen(
+    state: ThundermailContract.State,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Scaffold(
         bottomBar = {
             WizardNavigationBar(
                 onNextClick = {},
                 onBackClick = onBack,
-                state = WizardNavigationBarState(showNext = false, showBack = state.value.error != null),
+                state = WizardNavigationBarState(showNext = false, showBack = state.error != null),
             )
         },
+        modifier = modifier,
     ) { paddingValues ->
         Box(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
-                .safeContentPadding(),
+                .safeContentPadding()
+                .padding(horizontal = MainTheme.spacings.quadruple),
         ) {
-            Column(
+            Crossfade(
+                targetState = state.error,
                 modifier = Modifier.align(Alignment.Center),
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Crossfade(
-                    targetState = state.value.error,
-                ) { error ->
-                    if (error == null) {
-                        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(MainTheme.sizes.medium),
-                            )
-                        }
-                        TextBodyLarge(stringResource(R.string.thundermail_redirecting))
-                    } else {
-                        ErrorDetails(error, onBack)
-                    }
+            ) { error ->
+                if (error == null) {
+                    RedirectingUserContent()
+                } else {
+                    ErrorDetails(error, modifier = Modifier.fillMaxWidth())
                 }
             }
         }
@@ -116,7 +118,23 @@ private fun LaunchedErrorEffect(
 }
 
 @Composable
-fun ErrorDetails(error: ThundermailContract.Error, onBack: () -> Unit, modifier: Modifier = Modifier) {
+private fun RedirectingUserContent(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(MainTheme.sizes.medium),
+            )
+        }
+        TextBodyLarge(stringResource(R.string.thundermail_redirecting))
+    }
+}
+
+@Composable
+fun ErrorDetails(error: ThundermailContract.Error, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
