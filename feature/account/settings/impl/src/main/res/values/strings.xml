@@ -34,6 +34,7 @@
 
     <string name="account_settings_show_pictures_label">Always show images</string>
     <string name="account_settings_reading_mail">Reading mail</string>
+    <string name="account_settings_fetching_mail">Fetching mail</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Mark a message as read when it is opened for viewing</string>
     <string name="account_settings_show_pictures_never">No</string>
@@ -55,4 +56,102 @@
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">Server search limit</string>
+
+    <string name="account_settings_mail_display_count_label">Local folder size</string>
+
+    <string name="account_settings_options_mail_display_count_10">10 messages</string>
+    <string name="account_settings_options_mail_display_count_25">25 messages</string>
+    <string name="account_settings_options_mail_display_count_50">50 messages</string>
+    <string name="account_settings_options_mail_display_count_100">100 messages</string>
+    <string name="account_settings_options_mail_display_count_250">250 messages</string>
+    <string name="account_settings_options_mail_display_count_500">500 messages</string>
+    <string name="account_settings_options_mail_display_count_1000">1000 messages</string>
+    <string name="account_settings_options_mail_display_count_2500">2500 messages</string>
+    <string name="account_settings_options_mail_display_count_5000">5000 messages</string>
+    <string name="account_settings_options_mail_display_count_10000">10000 messages</string>
+    <string name="account_settings_options_mail_display_count_all">all messages</string>
+
+    <string name="account_settings_message_age_label">Sync messages from</string>
+    <string name="account_settings_message_age_any">any time (no limit)</string>
+    <string name="account_settings_message_age_0">today</string>
+    <string name="account_settings_message_age_1">the last 2 days</string>
+    <string name="account_settings_message_age_2">the last 3 days</string>
+    <string name="account_settings_message_age_7">the last week</string>
+    <string name="account_settings_message_age_14">the last 2 weeks</string>
+    <string name="account_settings_message_age_21">the last 3 weeks</string>
+    <string name="account_settings_message_age_1_month">the last month</string>
+    <string name="account_settings_message_age_2_months">the last 2 months</string>
+    <string name="account_settings_message_age_3_months">the last 3 months</string>
+    <string name="account_settings_message_age_6_months">the last 6 months</string>
+    <string name="account_settings_message_age_1_year">the last year</string>
+
+    <string name="account_settings_autodownload_message_size_label">Fetch messages up to</string>
+    <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+    <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+    <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+    <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+    <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+    <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+    <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+    <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+    <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+    <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+    <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+    <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+    <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+    <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
+    <string name="account_settings_autodownload_message_size_any">any size (no limit)</string>
+
+    <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
+    <string name="account_settings_options_mail_check_frequency_never">Never</string>
+    <string name="account_settings_options_mail_check_frequency_15min">Every 15 minutes</string>
+    <string name="account_settings_options_mail_check_frequency_30min">Every 30 minutes</string>
+    <string name="account_settings_options_mail_check_frequency_1hour">Every hour</string>
+    <string name="account_settings_options_mail_check_frequency_2hour">Every 2 hours</string>
+    <string name="account_settings_options_mail_check_frequency_3hour">Every 3 hours</string>
+    <string name="account_settings_options_mail_check_frequency_6hour">Every 6 hours</string>
+    <string name="account_settings_options_mail_check_frequency_12hour">Every 12 hours</string>
+    <string name="account_settings_options_mail_check_frequency_24hour">Every 24 hours</string>
+
+    <string name="account_settings_sync_remote_deletetions_label">Sync server deletions</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Remove messages when deleted on server</string>
+
+    <string name="account_settings_mark_message_as_read_on_delete_label">Mark as read when deleted</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">Mark a message as read when it is deleted</string>
+
+    <string name="account_settings_incoming_delete_policy_label">When I delete a message</string>
+    <string name="account_settings_incoming_delete_policy_never_label">Do not delete on server</string>
+    <string name="account_settings_incoming_delete_policy_delete_label">Delete from server</string>
+    <string name="account_settings_incoming_delete_policy_markread_label">Mark as read on server</string>
+
+    <string name="account_settings_expunge_policy_label">Erase deleted messages on server</string>
+    <string name="account_settings_expunge_policy_immediately">Immediately</string>
+    <string name="account_settings_expunge_policy_on_poll">When polling</string>
+    <string name="account_settings_expunge_policy_manual">Manually</string>
+
+    <string name="account_settings_incoming_label">Incoming server</string>
+    <string name="account_settings_incoming_summary">Configure the incoming mail server</string>
+
+    <string name="account_settings_push_advanced_title">Advanced</string>
+
+    <string name="account_settings_push_limit_label">Max folders to check with push</string>
+    <string name="account_settings_push_limit_5">5 folders</string>
+    <string name="account_settings_push_limit_10">10 folders</string>
+    <string name="account_settings_push_limit_25">25 folders</string>
+    <string name="account_settings_push_limit_50">50 folders</string>
+    <string name="account_settings_push_limit_100">100 folders</string>
+    <string name="account_settings_push_limit_250">250 folders</string>
+    <string name="account_settings_push_limit_500">500 folders</string>
+    <string name="account_settings_push_limit_1000">1000 folders</string>
+
+    <string name="account_settings_idle_refresh_period_label">Refresh IDLE connection</string>
+    <string name="account_settings_idle_refresh_period_2min">Every 2 minutes</string>
+    <string name="account_settings_idle_refresh_period_3min">Every 3 minutes</string>
+    <string name="account_settings_idle_refresh_period_6min">Every 6 minutes</string>
+    <string name="account_settings_idle_refresh_period_12min">Every 12 minutes</string>
+    <string name="account_settings_idle_refresh_period_24min">Every 24 minutes</string>
+    <string name="account_settings_idle_refresh_period_36min">Every 36 minutes</string>
+    <string name="account_settings_idle_refresh_period_48min">Every 48 minutes</string>
+    <string name="account_settings_idle_refresh_period_60min">Every 60 minutes</string>
+
 </resources>
