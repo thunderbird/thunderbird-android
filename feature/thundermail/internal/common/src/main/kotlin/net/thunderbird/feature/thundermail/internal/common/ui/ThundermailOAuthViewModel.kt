@@ -56,7 +56,9 @@ internal class ThundermailOAuthViewModel(
                     it.copy(
                         initialized = true,
                         error = when (val error = state.error) {
-                            AccountOAuthContract.Error.BrowserNotAvailable -> ThundermailContract.Error.BrowserNotAvailable
+                            AccountOAuthContract.Error.BrowserNotAvailable ->
+                                ThundermailContract.Error.BrowserNotAvailable
+
                             AccountOAuthContract.Error.Canceled -> ThundermailContract.Error.Canceled
                             is AccountOAuthContract.Error.Unknown -> ThundermailContract.Error.Unknown(error.error)
                             else -> null

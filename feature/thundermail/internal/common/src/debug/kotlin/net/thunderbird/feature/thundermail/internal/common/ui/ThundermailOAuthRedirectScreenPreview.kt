@@ -11,7 +11,8 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithThemeLightDark
 @Preview
 @Composable
 private fun ThundermailOAuthRedirectScreenPreview(
-    @PreviewParameter(ThundermailOAuthRedirectScreenPreviewColProvider::class) param: Pair<String, ThundermailContract.State>,
+    @PreviewParameter(ThundermailOAuthRedirectScreenPreviewColProvider::class) param:
+    Pair<String, ThundermailContract.State>,
 ) {
     val (_, state) = param
     PreviewWithThemeLightDark {

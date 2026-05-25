@@ -34,10 +34,10 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun ThundermailOAuthRedirectScreen(
-    viewModel: ThundermailContract.ViewModel = koinViewModel<ThundermailContract.ViewModel>(),
     onBack: () -> Unit,
     onFinish: (ThundermailRoute) -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: ThundermailContract.ViewModel = koinViewModel<ThundermailContract.ViewModel>(),
 ) {
     val oAuthLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -139,14 +139,16 @@ fun ErrorDetails(error: ThundermailContract.Error, modifier: Modifier = Modifier
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
     ) {
-        TextTitleLarge(text = "Something went wrong")
+        TextTitleLarge(text = stringResource(R.string.thundermail_something_went_wrong))
         TextBodyLarge(
             text = when (error) {
                 ThundermailContract.Error.BrowserNotAvailable ->
-                    "Browser is not available. Please verify your's device configuration"
+                    stringResource(R.string.thundermail_browser_is_not_available)
 
-                ThundermailContract.Error.Canceled -> "Operation was canceled"
-                is ThundermailContract.Error.Unknown -> "Unknown error. Please consider reporting."
+                ThundermailContract.Error.Canceled -> stringResource(R.string.thundermail_operation_was_canceled)
+
+                is ThundermailContract.Error.Unknown ->
+                    stringResource(R.string.thundermail_unknown_error_please_consider_reporting)
             },
         )
     }
