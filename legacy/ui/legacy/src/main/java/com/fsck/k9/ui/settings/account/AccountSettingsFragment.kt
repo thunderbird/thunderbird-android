@@ -95,6 +95,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
         initializeGeneralSettings()
         initializeReadingMail()
+        initializeFetchingMail()
         initializeSearch()
         initializeIncomingServer()
         initializeComposition()
@@ -174,6 +175,16 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             FeatureLauncherActivity.launch(
                 context = requireActivity(),
                 target = FeatureLauncherTarget.AccountReadingMailSettings(accountUuid),
+                launcher = launcherForActivityResult,
+            )
+        }
+    }
+
+    private fun initializeFetchingMail() {
+        findPreference<Preference>(PREFERENCE_FETCHING_MAIL)?.onClick {
+            FeatureLauncherActivity.launch(
+                context = requireActivity(),
+                target = FeatureLauncherTarget.AccountFetchingMailSettings(accountUuid),
                 launcher = launcherForActivityResult,
             )
         }
@@ -511,6 +522,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_GENERAL = "general"
 
         private const val PREFERENCE_READING_MAIL = "reading_mail"
+        private const val PREFERENCE_FETCHING_MAIL = "fetching_mail"
         private const val PREFERENCE_SEARCH = "search"
         private const val PREFERENCE_INCOMING_SERVER = "incoming"
         private const val PREFERENCE_COMPOSITION = "composition"
