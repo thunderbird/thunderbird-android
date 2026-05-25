@@ -37,6 +37,8 @@ dependencies {
 
     implementation(libs.uri)
 
+    implementation(projects.feature.launcher)
+
     debugImplementation(projects.core.ui.setting.implDialog)
 
     testImplementation(projects.core.logging.testing)
