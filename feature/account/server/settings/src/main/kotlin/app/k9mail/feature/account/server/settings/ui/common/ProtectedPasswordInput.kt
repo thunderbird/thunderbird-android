@@ -73,8 +73,10 @@ private fun AuthenticationError.mapToStringRes(): Int {
     return when (this) {
         AuthenticationError.NotAvailable ->
             R.string.account_server_settings_password_authentication_screen_lock_required
+
         AuthenticationError.Failed ->
             R.string.account_server_settings_password_authentication_failed
+
         AuthenticationError.UnableToStart ->
             R.string.account_server_settings_password_authentication_unable_to_start
     }

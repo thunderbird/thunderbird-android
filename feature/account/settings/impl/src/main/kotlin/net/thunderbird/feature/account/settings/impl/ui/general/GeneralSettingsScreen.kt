@@ -34,6 +34,7 @@ internal fun GeneralSettingsScreen(
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
             is Effect.NavigateBack -> onBack()
+
             is Effect.OpenAvatarImagePicker -> {
                 imagePicker.launch(arrayOf("image/jpeg", "image/png"))
             }

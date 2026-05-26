@@ -102,6 +102,7 @@ class SearchConditionTreeNode private constructor(
             }
 
             Operator.CONDITION -> condition.toString()
+
             Operator.NOT -> "(NOT ${left?.toString() ?: "null"})"
         }
     }

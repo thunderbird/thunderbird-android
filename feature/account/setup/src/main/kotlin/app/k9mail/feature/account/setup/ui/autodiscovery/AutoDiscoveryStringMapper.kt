@@ -30,6 +30,7 @@ internal fun AccountAutoDiscoveryContract.Error.toAutoDiscoveryErrorString(resou
 internal fun ValidationError.toAutoDiscoveryValidationErrorString(resources: Resources): String {
     return when (this) {
         is ValidateEmailAddress.ValidateEmailAddressError -> toEmailAddressErrorString(resources)
+
         is ValidatePassword.ValidatePasswordError -> toPasswordErrorString(resources)
 
         is ValidateConfigurationApproval.ValidateConfigurationApprovalError -> toConfigurationApprovalErrorString(

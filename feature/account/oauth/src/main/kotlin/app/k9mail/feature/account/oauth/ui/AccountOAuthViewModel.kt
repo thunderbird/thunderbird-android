@@ -35,11 +35,8 @@ class AccountOAuthViewModel(
     override fun event(event: Event) {
         when (event) {
             is Event.OnOAuthResult -> onOAuthResult(event.resultCode, event.data)
-
             Event.SignInClicked -> onSignIn()
-
             Event.OnBackClicked -> navigateBack()
-
             Event.OnRetryClicked -> onRetry()
         }
     }
@@ -93,8 +90,11 @@ class AccountOAuthViewModel(
         viewModelScope.launch {
             when (val result = finishOAuthSignIn.execute(data)) {
                 AuthorizationResult.BrowserNotAvailable -> updateErrorState(Error.BrowserNotAvailable)
+
                 AuthorizationResult.Canceled -> updateErrorState(Error.Canceled)
+
                 is AuthorizationResult.Failure -> updateErrorState(Error.Unknown(result.error))
+
                 is AuthorizationResult.Success -> {
                     updateState { state ->
                         state.copy(isLoading = false)

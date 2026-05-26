@@ -59,6 +59,7 @@ internal class StateDiffer(
 
         when {
             oldIsObject && newIsObject -> appendObjectDiff(key, oldVal, newVal, context)
+
             oldVal is Map<*, *> && newVal is Map<*, *> ->
                 appendMapDiff(key, oldVal, newVal, context)
 

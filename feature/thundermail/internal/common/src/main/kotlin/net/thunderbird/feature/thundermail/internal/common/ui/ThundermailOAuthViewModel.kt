@@ -65,6 +65,7 @@ internal class ThundermailOAuthViewModel(
                     )
 
                     AccountOAuthContract.Effect.NavigateBack -> Unit
+
                     is AccountOAuthContract.Effect.NavigateNext -> handleNavigateNext(effect)
                 }
             }

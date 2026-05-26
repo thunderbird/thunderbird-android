@@ -187,6 +187,7 @@ class SwipeableRowState internal constructor(
         val targetBehaviour = if (targetOffset >= 0f) startToEndBehaviour else endToStartBehaviour
         val targetMaxOffset = when (targetBehaviour) {
             is SwipeBehaviour.Dismiss -> layoutWidth
+
             is SwipeBehaviour.Reveal, is SwipeBehaviour.Action ->
                 (targetBehaviour.percentageThreshold * layoutWidth) + SWIPE_BEHAVIOUR_REVEAL_EXTENSION
 
@@ -248,6 +249,7 @@ class SwipeableRowState internal constructor(
         val intendedDirection = resolveIntendedDirection(velocity)
         return when {
             swipeState == SwipeState.Revealed && !isClosingGesture(velocity) -> false
+
             isFlingDirectionAllowed(intendedDirection) -> {
                 val behaviour = intendedDirection.behaviour
                 val willSettlePastThreshold = willSettlePastThreshold(velocity, behaviour)
@@ -293,7 +295,9 @@ class SwipeableRowState internal constructor(
                 }
 
                 is SwipeBehaviour.Reveal if willSettlePastThreshold -> swipeState = SwipeState.Revealed
+
                 is SwipeBehaviour.Dismiss if willSettlePastThreshold -> swipeState = SwipeState.Dismissed
+
                 else -> Unit
             }
         }
@@ -317,8 +321,11 @@ class SwipeableRowState internal constructor(
                 layoutWidth * SWIPE_BEHAVIOUR_DISMISS_OFFSCREEN_MULTIPLIER
 
             is SwipeBehaviour.Reveal if willSettlePastThreshold -> behaviour.percentageThreshold * layoutWidth
+
             is SwipeBehaviour.Action if willSettlePastThreshold -> behaviour.percentageThreshold * layoutWidth
+
             is SwipeBehaviour.Disabled -> 0f
+
             else -> 0f
         }
         val directionMultiplier = when (intendedDirection) {
@@ -339,6 +346,7 @@ class SwipeableRowState internal constructor(
         val resistanceStart = maxOffset * ELASTIC_RESISTANCE_START_FRACTION
         return when {
             currentAbsOffset >= maxOffset -> ELASTIC_RESISTANCE_MIN_FACTOR
+
             currentAbsOffset >= resistanceStart -> {
                 val progress = (currentAbsOffset - resistanceStart) / (maxOffset - resistanceStart)
                 lerp(start = 1f, stop = ELASTIC_RESISTANCE_MIN_FACTOR, fraction = progress)

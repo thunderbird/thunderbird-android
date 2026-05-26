@@ -46,6 +46,7 @@ internal class DisplayOptionsViewModel(
             }
 
             Event.OnNextClicked -> submit()
+
             Event.OnBackClicked -> navigateBack()
         }
     }

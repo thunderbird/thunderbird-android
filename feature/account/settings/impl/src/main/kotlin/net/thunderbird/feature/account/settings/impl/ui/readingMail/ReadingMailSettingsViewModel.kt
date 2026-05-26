@@ -38,6 +38,7 @@ internal class ReadingMailSettingsViewModel(
     override fun event(event: Event) {
         when (event) {
             is Event.OnBackPressed -> emitEffect(Effect.NavigateBack)
+
             is Event.OnShowPicturesChange -> {
                 viewModelScope.launch {
                     updateReadMailSettings(
@@ -55,6 +56,7 @@ internal class ReadingMailSettingsViewModel(
                     )
                 }
             }
+
             is Event.OnIsMarkMessageAsReadOnViewToggle -> {
                 viewModelScope.launch {
                     updateReadMailSettings(

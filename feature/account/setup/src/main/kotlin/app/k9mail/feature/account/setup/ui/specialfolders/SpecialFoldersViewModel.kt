@@ -31,9 +31,7 @@ class SpecialFoldersViewModel(
     override fun event(event: Event) {
         when (event) {
             Event.LoadSpecialFolderOptions -> handleOneTimeEvent(event, ::onLoadSpecialFolderOptions)
-
             is FormEvent -> onFormEvent(event)
-
             Event.OnNextClicked -> onNextClicked()
             Event.OnBackClicked -> onBackClicked()
             Event.OnRetryClicked -> onRetryClicked()
