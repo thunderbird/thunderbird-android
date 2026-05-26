@@ -9,6 +9,7 @@ import net.thunderbird.core.common.state.debug.extension.prependIndent
  * Provides constants and formatting functions used by [StatePrettyPrinter] to produce
  * human-readable representations of state machine transitions and history dumps.
  */
+@Suppress("TooManyFunctions")
 internal object StatePrettyPrinterVocabulary {
     const val STATE_CHANGE_MARKER = "->"
     const val STATE_NO_CHANGE_MARKER = "⟳"
