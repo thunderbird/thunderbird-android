@@ -1,0 +1,10 @@
+K-9 Mail version 19.0
+
+New:
+- Message notification actions can be configured
+- Message font size scales with device preferences
+- Integrate an easily discoverable way to configure and use Thundermail
+
+Fixed:
+- Thunderbird crashed on Android 8 when fetching images
+- Accidental swipe in message viewer marked unread email as read
