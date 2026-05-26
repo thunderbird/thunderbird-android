@@ -2,7 +2,7 @@ plugins {
     id("com.android.library")
     id("net.thunderbird.gradle.plugin.quality.coverage")
     id("net.thunderbird.gradle.plugin.quality.detekt")
-    id("thunderbird.quality.spotless")
+    id("net.thunderbird.gradle.plugin.quality.spotless")
 }
 
 android {
