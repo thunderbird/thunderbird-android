@@ -39,6 +39,7 @@ class DefaultDataStoreConfigBackend(
         config
     }
 
+    @Suppress("CyclomaticComplexMethod")
     override suspend fun update(keys: List<ConfigKey<*>>, transform: (Config) -> Config) {
         val current = read(keys).first()
         val updated = transform(current)

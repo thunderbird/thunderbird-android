@@ -52,6 +52,10 @@ class DetektPlugin : Plugin<Project> {
     private fun Project.configureDetektTasks() {
         with(tasks) {
             withType<Detekt>().configureEach {
+                if (name.contains("androidHostTest", ignoreCase = true)) {
+                    enabled = false
+                }
+
                 jvmTarget = ProjectConfig.Compiler.jvmTarget.target
 
                 exclude(defaultExcludes)
@@ -66,6 +70,10 @@ class DetektPlugin : Plugin<Project> {
             }
 
             withType<DetektCreateBaselineTask>().configureEach {
+                if (name.contains("androidHostTest", ignoreCase = true)) {
+                    enabled = false
+                }
+
                 jvmTarget = ProjectConfig.Compiler.jvmTarget.target
 
                 exclude(defaultExcludes)
@@ -98,6 +106,7 @@ private val defaultExcludes = listOf(
     "**/.gradle/**",
     "**/.idea/**",
     "**/build/**",
+    "**/generated/**",
     ".github/**",
     "gradle/**",
 )
