@@ -297,8 +297,8 @@ org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0
 org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.11.0
 org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.11.0
 org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0
-org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.7.1
-org.jetbrains.kotlinx:kotlinx-datetime:0.7.1
+org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.8.0
+org.jetbrains.kotlinx:kotlinx-datetime:0.8.0
 org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm:0.9.0
 org.jetbrains.kotlinx:kotlinx-io-bytestring:0.9.0
 org.jetbrains.kotlinx:kotlinx-io-core-jvm:0.9.0
