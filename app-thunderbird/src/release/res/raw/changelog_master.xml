@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="19.0" versioncode="23" date="2026-05-26">
+        <change>New: Message notification actions can be configured</change>
+        <change>New: Message font size scales with device preferences</change>
+        <change>New: Integrate an easily discoverable way to configure and use Thundermail</change>
+        <change>Fixed: Thunderbird crashed on Android 8 when fetching images</change>
+        <change>Fixed: Accidental swipe in message viewer marked unread email as read</change>
+    </release>
     <release version="18.0" versioncode="22" date="2026-04-14">
         <change>New: Add support for PNG avatars</change>
         <change>New: Add setting to display ISO date and time in message list</change>
