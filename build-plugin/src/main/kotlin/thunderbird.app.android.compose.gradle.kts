@@ -1,8 +1,8 @@
 plugins {
     id("thunderbird.app.android")
     id("org.jetbrains.kotlin.plugin.compose")
-    id("thunderbird.quality.detekt.typed")
     id("net.thunderbird.gradle.plugin.quality.coverage")
+    id("net.thunderbird.gradle.plugin.quality.detekt")
     id("thunderbird.quality.spotless")
 }
 
