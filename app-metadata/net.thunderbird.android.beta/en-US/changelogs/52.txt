@@ -1,0 +1,11 @@
+Thunderbird version 20.0b1
+
+Changed:
+- Only show message notification config actions above the cutoff
+
+Fixed:
+- Account drawer stayed open after account switch despite auto-select Inbox setting
+- Imported settings could incorrectly show 'XX' avatar monogram
+- Printed emails omitted message headers and used minimal margins
+- Compose button did not work in tablet split-screen message view
+- New mail notifications showed avatars when contact pictures were disabled
