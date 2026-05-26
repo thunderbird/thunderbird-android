@@ -93,7 +93,7 @@ kotlinBom = "2.3.21"
 # version conflicts with the Gradle Kotlin plugin.
 kotlinGradleBom = "2.3.20"
 kotlinKsp = "2.3.7"
-kotlinxCoroutines = "1.10.2"
+kotlinxCoroutines = "1.11.0"
 kotlinxCollectionsImmutable = "0.4.0"
 kotlinxDateTime = "0.7.1"
 kotlinxIoCore = "0.9.0"
