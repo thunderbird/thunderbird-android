@@ -9,7 +9,7 @@ internal fun KoverReportFiltersConfig.composeFilter() {
         classes(
             // Compose Resources
             "*.Res",
-            "*.ActualResourceCollectorsKt"
+            "*.ActualResourceCollectorsKt",
         )
 
         annotatedBy(

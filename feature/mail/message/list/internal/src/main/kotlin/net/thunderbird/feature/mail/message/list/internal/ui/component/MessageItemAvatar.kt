@@ -60,6 +60,7 @@ fun MessageItemAvatar(
                 )
 
                 is Avatar.Monogram -> TextTitleSmall(text = avatar.value)
+
                 null -> Unit
             }
         }

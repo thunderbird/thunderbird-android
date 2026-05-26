@@ -60,7 +60,9 @@ internal class ThundermailOAuthViewModel(
                                 ThundermailContract.Error.BrowserNotAvailable
 
                             AccountOAuthContract.Error.Canceled -> ThundermailContract.Error.Canceled
+
                             is AccountOAuthContract.Error.Unknown -> ThundermailContract.Error.Unknown(error.error)
+
                             else -> null
                         },
                     )
@@ -78,6 +80,7 @@ internal class ThundermailOAuthViewModel(
                     )
 
                     AccountOAuthContract.Effect.NavigateBack -> Unit
+
                     is AccountOAuthContract.Effect.NavigateNext -> handleNavigateNext(effect)
                 }
             }

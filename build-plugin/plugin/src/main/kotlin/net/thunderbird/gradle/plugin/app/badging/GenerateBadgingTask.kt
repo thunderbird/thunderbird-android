@@ -15,7 +15,7 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecOperations
 
 @CacheableTask
-abstract class GenerateBadgingTask : DefaultTask()  {
+abstract class GenerateBadgingTask : DefaultTask() {
     @get:OutputFile
     abstract val badging: RegularFileProperty
 

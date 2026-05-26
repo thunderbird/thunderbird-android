@@ -40,6 +40,7 @@ internal class SearchSettingsViewModel(
     override fun event(event: SearchSettingsContract.Event) {
         when (event) {
             is SearchSettingsContract.Event.OnBackPressed -> emitEffect(SearchSettingsContract.Effect.NavigateBack)
+
             is SearchSettingsContract.Event.OnServerSearchLimitChange -> {
                 viewModelScope.launch(dispatcher) {
                     updateSearchSettings(

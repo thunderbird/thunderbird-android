@@ -78,6 +78,7 @@ fun MessageItemUi.withState(state: MessageItemUi.State): MessageItemUi {
     val styles = buildList {
         when (val separatorIndex = senders.displayName.indexOf(',')) {
             -1 if state != MessageItemUi.State.Read -> add(ComposedAddressStyle.Bold(start = 0))
+
             in 0..Int.MAX_VALUE if state != MessageItemUi.State.Read -> {
                 add(ComposedAddressStyle.Bold(start = 0, end = separatorIndex))
                 add(ComposedAddressStyle.Regular(start = separatorIndex))

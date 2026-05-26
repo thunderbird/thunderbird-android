@@ -99,6 +99,7 @@ private fun IconWithPermissionStateOverlay(
 
         when (permissionState) {
             UiPermissionState.Unknown -> Unit
+
             UiPermissionState.Granted -> {
                 Icon(
                     imageVector = Icons.Filled.CheckCircle,

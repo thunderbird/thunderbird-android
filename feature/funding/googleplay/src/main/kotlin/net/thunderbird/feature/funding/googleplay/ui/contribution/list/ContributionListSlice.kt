@@ -31,9 +31,7 @@ internal class ContributionListSlice(
 
     override fun event(event: Event) = when (event) {
         is Event.TypeClicked -> onTypeClicked(event.type)
-
         is Event.ItemClicked -> onItemClicked(event.contributionId)
-
         Event.RetryClicked -> onRetryClicked()
     }
 

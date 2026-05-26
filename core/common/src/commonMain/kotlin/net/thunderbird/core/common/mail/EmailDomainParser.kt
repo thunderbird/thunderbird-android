@@ -69,10 +69,12 @@ internal class EmailDomainParser(
                     requireLetDig = true
                     expect(HYPHEN)
                 }
+
                 character.isLetDig -> {
                     requireLetDig = false
                     expectLetDig()
                 }
+
                 else -> break
             }
         }

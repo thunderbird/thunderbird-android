@@ -92,15 +92,22 @@ private fun rememberSwipeActionColorRoles(action: SwipeAction, toggled: Boolean)
         // TODO: move these colours to use the design system whenever we have them available.
         val actionAttrColor = when (action) {
             SwipeAction.None -> return@remember null
+
             SwipeAction.ToggleSelection -> R.attr.messageListSwipeSelectColor
+
             SwipeAction.ToggleRead -> R.attr.messageListSwipeToggleReadColor
+
             SwipeAction.ToggleStar -> R.attr.messageListSwipeToggleStarColor
+
             SwipeAction.Archive -> R.attr.messageListSwipeArchiveColor
+
             SwipeAction.ArchiveDisabled, SwipeAction.ArchiveSetupArchiveFolder ->
                 null
 
             SwipeAction.Delete -> R.attr.messageListSwipeDeleteColor
+
             SwipeAction.Spam -> R.attr.messageListSwipeSpamColor
+
             SwipeAction.Move -> R.attr.messageListSwipeMoveColor
         }
         val targetColor = if (actionAttrColor != null) {

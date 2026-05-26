@@ -94,7 +94,9 @@ internal fun SetupArchiveFolderDialog(
         BasicDialog(
             headlineText = when (state) {
                 is State.ChooseArchiveFolder -> stringResource(R.string.setup_archive_folder_dialog_set_archive_folder)
+
                 is State.CreateArchiveFolder -> stringResource(R.string.setup_archive_folder_dialog_create_new_folder)
+
                 is State.EmailCantBeArchived ->
                     stringResource(R.string.setup_archive_folder_dialog_email_can_not_be_archived)
             },

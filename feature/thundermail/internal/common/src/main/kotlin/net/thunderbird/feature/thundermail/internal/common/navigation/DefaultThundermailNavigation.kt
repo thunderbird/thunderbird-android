@@ -51,6 +51,7 @@ class DefaultThundermailNavigation : ThundermailNavigation {
                             )
 
                             AccountSetupRoute.ThundermailScanQrCode -> onFinish(ThundermailRoute.ScanQrCode)
+
                             AccountSetupRoute.ThundermailSignIn -> onFinish(ThundermailRoute.SignInWithThundermail)
                         }
                     },

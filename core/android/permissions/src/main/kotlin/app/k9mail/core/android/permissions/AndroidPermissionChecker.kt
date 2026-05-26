@@ -18,6 +18,7 @@ class AndroidPermissionChecker(
             Permission.Contacts -> {
                 checkSelfPermission(Manifest.permission.READ_CONTACTS)
             }
+
             Permission.Notifications -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)

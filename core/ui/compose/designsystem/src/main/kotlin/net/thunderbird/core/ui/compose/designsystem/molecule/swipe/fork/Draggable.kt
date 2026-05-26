@@ -428,7 +428,7 @@ internal class DraggableNode(
             channel = Channel(capacity = Channel.UNLIMITED)
         }
 
-        /**
+        /*
          * To preserve the original behavior we had (before the Modifier.Node migration) we need to
          * scope the DragStopped and DragCancel methods to the node's coroutine scope instead of
          * using the one provided by the pointer input modifier, this is to ensure that even when
