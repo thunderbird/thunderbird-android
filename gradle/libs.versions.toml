@@ -150,6 +150,7 @@ tb-app-badging = { id = "net.thunderbird.gradle.plugin.app.badging" }
 tb-app-versioning = { id = "net.thunderbird.gradle.plugin.app.versioning" }
 tb-quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
 tb-quality-detekt = { id = "net.thunderbird.gradle.plugin.quality.detekt" }
+tb-quality-spotless = { id = "net.thunderbird.gradle.plugin.quality.spotless" }
 
 [libraries]
 android-billing = { module = "com.android.billingclient:billing", version.ref = "androidBilling" }

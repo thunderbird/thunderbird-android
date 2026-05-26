@@ -71,6 +71,10 @@ gradlePlugin {
             id = "net.thunderbird.gradle.plugin.quality.detekt"
             implementationClass = "net.thunderbird.gradle.plugin.quality.detekt.DetektPlugin"
         }
+        register("QualitySpotless") {
+            id = "net.thunderbird.gradle.plugin.quality.spotless"
+            implementationClass = "net.thunderbird.gradle.plugin.quality.spotless.SpotlessPlugin"
+        }
     }
 }
 
