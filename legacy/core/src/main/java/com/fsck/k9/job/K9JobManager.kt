@@ -11,6 +11,7 @@ class K9JobManager(
     private val workManager: WorkManager,
     private val accountManager: LegacyAccountDtoManager,
     private val mailSyncWorkerManager: MailSyncWorkerManager,
+    private val attachmentCleanupWorkerManager: AttachmentCleanupWorkerManager,
     private val syncDebugFileLogManager: FileLogLimitWorkManager,
 ) {
     fun scheduleDebugLogLimit(contentUriString: String): Flow<WorkInfo?> {
@@ -24,11 +25,17 @@ class K9JobManager(
     fun scheduleAllMailJobs() {
         Log.v("scheduling all jobs")
         scheduleMailSync()
+        scheduleAttachmentCleanup()
     }
 
     fun scheduleMailSync(account: LegacyAccountDto) {
         mailSyncWorkerManager.cancelMailSync(account)
         mailSyncWorkerManager.scheduleMailSync(account)
+    }
+
+    fun scheduleAttachmentCleanup(account: LegacyAccountDto) {
+        attachmentCleanupWorkerManager.scheduleAttachmentCleanup(account)
+        attachmentCleanupWorkerManager.scheduleAttachmentCleanupNow(account)
     }
 
     private fun scheduleMailSync() {
@@ -42,5 +49,13 @@ class K9JobManager(
     private fun cancelAllMailSyncJobs() {
         Log.v("canceling mail sync job")
         workManager.cancelAllWorkByTag(MailSyncWorkerManager.MAIL_SYNC_TAG)
+    }
+
+    private fun scheduleAttachmentCleanup() {
+        attachmentCleanupWorkerManager.cancelAllAttachmentCleanup()
+
+        accountManager.getAccounts().forEach { account ->
+            attachmentCleanupWorkerManager.scheduleAttachmentCleanup(account)
+        }
     }
 }

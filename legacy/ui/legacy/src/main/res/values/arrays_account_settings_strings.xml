@@ -60,6 +60,13 @@
         <item>@string/account_settings_autodownload_message_size_any</item>
     </string-array>
 
+    <string-array name="attachment_cleanup_entries">
+        <item>@string/account_settings_attachment_cleanup_never</item>
+        <item>@string/account_settings_attachment_cleanup_30</item>
+        <item>@string/account_settings_attachment_cleanup_90</item>
+        <item>@string/account_settings_attachment_cleanup_365</item>
+    </string-array>
+
     <string-array name="show_pictures_entries">
         <item>@string/account_settings_show_pictures_never</item>
         <item>@string/account_settings_show_pictures_only_from_contacts</item>

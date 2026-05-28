@@ -39,6 +39,7 @@ import net.thunderbird.feature.account.storage.profile.AvatarTypeDto;
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection;
 import net.thunderbird.feature.notification.NotificationLight;
 import static com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53.FOLDER_NONE;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_ATTACHMENT_CLEANUP_DAYS;
 import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_MESSAGE_FORMAT_AUTO;
 import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_MESSAGE_READ_RECEIPT;
 import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_QUOTED_TEXT_SHOWN;
@@ -141,6 +142,9 @@ class AccountSettingsDescriptions {
         s.put("maximumAutoDownloadMessageSize", Settings.versions(
                 new V(1, new IntegerResourceSetting(32768, R.array.autodownload_message_size_values)),
                 new V(93, new IntegerResourceSetting(131072, R.array.autodownload_message_size_values))
+        ));
+        s.put("attachmentCleanupDays", Settings.versions(
+                new V(111, new IntegerResourceSetting(DEFAULT_ATTACHMENT_CLEANUP_DAYS, R.array.attachment_cleanup_values))
         ));
         s.put("maximumPolledMessageAge", Settings.versions(
                 new V(1, new IntegerResourceSetting(-1, R.array.message_age_values))

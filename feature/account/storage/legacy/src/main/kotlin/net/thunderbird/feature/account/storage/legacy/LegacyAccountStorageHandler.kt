@@ -135,6 +135,10 @@ class LegacyAccountStorageHandler(
                 keyGen.create("maximumAutoDownloadMessageSize"),
                 AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE,
             )
+            attachmentCleanupDays = storage.getInt(
+                keyGen.create("attachmentCleanupDays"),
+                AccountDefaultsProvider.Companion.DEFAULT_ATTACHMENT_CLEANUP_DAYS,
+            )
             messageFormat = getEnumStringPref(
                 storage,
                 keyGen.create("messageFormat"),
@@ -374,6 +378,7 @@ class LegacyAccountStorageHandler(
             editor.putBoolean(keyGen.create("subscribedFoldersOnly"), isSubscribedFoldersOnly)
             editor.putInt(keyGen.create("maximumPolledMessageAge"), maximumPolledMessageAge)
             editor.putInt(keyGen.create("maximumAutoDownloadMessageSize"), maximumAutoDownloadMessageSize)
+            editor.putInt(keyGen.create("attachmentCleanupDays"), attachmentCleanupDays)
             val messageFormatAuto = if (MessageFormat.AUTO == messageFormat) {
                 // saving MessageFormat.AUTO as is to the database will cause downgrades to crash on
                 // startup, so we save as MessageFormat.TEXT instead with a separate flag for auto.
@@ -492,6 +497,7 @@ class LegacyAccountStorageHandler(
         editor.remove(keyGen.create("subscribedFoldersOnly"))
         editor.remove(keyGen.create("maximumPolledMessageAge"))
         editor.remove(keyGen.create("maximumAutoDownloadMessageSize"))
+        editor.remove(keyGen.create("attachmentCleanupDays"))
         editor.remove(keyGen.create("messageFormatAuto"))
         editor.remove(keyGen.create("quoteStyle"))
         editor.remove(keyGen.create("quotePrefix"))

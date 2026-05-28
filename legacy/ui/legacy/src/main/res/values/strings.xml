@@ -525,6 +525,12 @@
     <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
     <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
     <string name="account_settings_autodownload_message_size_any">any size (no limit)</string>
+    <string name="account_settings_attachment_cleanup_label">Remove old downloaded attachments</string>
+    <string name="account_settings_attachment_cleanup_summary">Deletes local copies of downloaded attachments older than the selected age. Messages stay on this device and attachments can be downloaded again.</string>
+    <string name="account_settings_attachment_cleanup_never">never</string>
+    <string name="account_settings_attachment_cleanup_30">after 30 days</string>
+    <string name="account_settings_attachment_cleanup_90">after 90 days</string>
+    <string name="account_settings_attachment_cleanup_365">after 1 year</string>
 
     <string name="account_settings_message_age_label">Sync messages from</string>
     <string name="account_settings_message_age_any">any time (no limit)</string>

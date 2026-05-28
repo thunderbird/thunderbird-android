@@ -169,6 +169,15 @@ interface MessageStore {
     fun getSize(): Long
 
     /**
+     * Remove locally cached downloaded attachment bodies for messages older than [cutoffTime].
+     *
+     * Message metadata and attachment metadata are kept so attachments can be downloaded again from the server.
+     *
+     * @return The number of attachment parts changed.
+     */
+    fun removeOldDownloadedAttachments(cutoffTime: Long): Int
+
+    /**
      * Remove messages from the store.
      */
     fun destroyMessages(folderId: Long, messageServerIds: Collection<String>)

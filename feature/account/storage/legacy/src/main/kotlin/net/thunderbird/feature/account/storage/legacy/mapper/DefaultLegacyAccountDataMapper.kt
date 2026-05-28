@@ -71,6 +71,7 @@ internal class DefaultLegacyAccountDataMapper : LegacyAccountDataMapper {
             isSubscribedFoldersOnly = dto.isSubscribedFoldersOnly,
             maximumPolledMessageAge = dto.maximumPolledMessageAge,
             maximumAutoDownloadMessageSize = dto.maximumAutoDownloadMessageSize,
+            attachmentCleanupDays = dto.attachmentCleanupDays,
             messageFormat = dto.messageFormat,
             isMessageFormatAuto = dto.isMessageFormatAuto,
             isMessageReadReceipt = dto.isMessageReadReceipt,
@@ -177,6 +178,7 @@ internal class DefaultLegacyAccountDataMapper : LegacyAccountDataMapper {
             isSubscribedFoldersOnly = domain.isSubscribedFoldersOnly
             maximumPolledMessageAge = domain.maximumPolledMessageAge
             maximumAutoDownloadMessageSize = domain.maximumAutoDownloadMessageSize
+            attachmentCleanupDays = domain.attachmentCleanupDays
             messageFormat = domain.messageFormat
             isMessageFormatAuto = domain.isMessageFormatAuto
             isMessageReadReceipt = domain.isMessageReadReceipt

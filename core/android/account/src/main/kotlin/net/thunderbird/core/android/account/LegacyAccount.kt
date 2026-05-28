@@ -1,6 +1,7 @@
 package net.thunderbird.core.android.account
 
 import com.fsck.k9.mail.ServerSettings
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_ATTACHMENT_CLEANUP_DAYS
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.Account
@@ -76,6 +77,7 @@ data class LegacyAccount(
     val isSubscribedFoldersOnly: Boolean = false,
     val maximumPolledMessageAge: Int = 0,
     val maximumAutoDownloadMessageSize: Int = 0,
+    val attachmentCleanupDays: Int = DEFAULT_ATTACHMENT_CLEANUP_DAYS,
     val messageFormat: MessageFormat = MessageFormat.HTML,
     val isMessageFormatAuto: Boolean = false,
     val isMessageReadReceipt: Boolean = false,

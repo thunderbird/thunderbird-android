@@ -51,6 +51,7 @@ class K9MessageStore(
     private val retrieveMessageOperations = RetrieveMessageOperations(database)
     private val retrieveMessageListOperations = RetrieveMessageListOperations(database)
     private val deleteMessageOperations = DeleteMessageOperations(database, attachmentFileManager)
+    private val attachmentCleanupOperations = AttachmentCleanupOperations(database, attachmentFileManager)
     private val createFolderOperations = CreateFolderOperations(database, accountId)
     private val retrieveFolderOperations = RetrieveFolderOperations(database)
     private val checkFolderOperations = CheckFolderOperations(database)
@@ -207,6 +208,10 @@ class K9MessageStore(
 
     override fun getSize(): Long {
         return databaseOperations.getSize()
+    }
+
+    override fun removeOldDownloadedAttachments(cutoffTime: Long): Int {
+        return attachmentCleanupOperations.removeOldDownloadedAttachments(cutoffTime)
     }
 
     override fun changeFolder(folderServerId: String, name: String, type: FolderType) {
