@@ -30,6 +30,7 @@ feature-onboarding-migration-thunderbird # ID: 49051
 feature-onboarding-permissions # ID: 49050
 feature-onboarding-welcome # ID: 49049
 feature-settings-import # ID: 49037
+feature-thundermail-internal-common # ID: 51568
 feature-widget-message-list # ID: 49039
 feature-widget-message-list-glance # ID: 49040
 feature-widget-shortcut # ID: 49038
