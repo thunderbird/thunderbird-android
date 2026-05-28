@@ -11,6 +11,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangeSubscriber
+import net.thunderbird.core.preference.PreferenceScope
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
@@ -23,7 +26,12 @@ class DefaultPrivacySettingsPreferenceManager(
     private val storageEditor: StorageEditor,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
-) : PrivacySettingsPreferenceManager {
+    preferenceChangeBroker: PreferenceChangeBroker,
+) : PrivacySettingsPreferenceManager, PreferenceChangeSubscriber {
+
+    init {
+        preferenceChangeBroker.subscribe(this)
+    }
     private val configState: MutableStateFlow<PrivacySettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
     private val storage: Storage
@@ -40,11 +48,11 @@ class DefaultPrivacySettingsPreferenceManager(
 
     private fun loadConfig(): PrivacySettings = PrivacySettings(
         isHideTimeZone = storage.getBoolean(
-            key = KEY_HIDE_TIME_ZONE,
+            key = PrivacySettingKey.HideTimeZone.value,
             defValue = PRIVACY_SETTINGS_DEFAULT_HIDE_TIME_ZONE,
         ),
         isHideUserAgent = storage.getBoolean(
-            key = KEY_HIDE_USER_AGENT,
+            key = PrivacySettingKey.HideUserAgent.value,
             defValue = PRIVACY_SETTINGS_DEFAULT_HIDE_USER_AGENT,
         ),
     )
@@ -53,12 +61,18 @@ class DefaultPrivacySettingsPreferenceManager(
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
-                storageEditor.putBoolean(KEY_HIDE_TIME_ZONE, config.isHideTimeZone)
-                storageEditor.putBoolean(KEY_HIDE_USER_AGENT, config.isHideUserAgent)
+                storageEditor.putBoolean(PrivacySettingKey.HideTimeZone.value, config.isHideTimeZone)
+                storageEditor.putBoolean(PrivacySettingKey.HideUserAgent.value, config.isHideUserAgent)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
             }
+        }
+    }
+
+    override fun receive(scope: PreferenceScope) {
+        if (scope == PreferenceScope.ALL || scope == PreferenceScope.PRIVACY) {
+            configState.update { loadConfig() }
         }
     }
 }

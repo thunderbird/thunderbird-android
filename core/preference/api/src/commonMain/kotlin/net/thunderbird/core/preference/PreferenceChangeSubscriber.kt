@@ -6,7 +6,9 @@ package net.thunderbird.core.preference
 fun interface PreferenceChangeSubscriber {
 
     /**
-     * Called when preferences change.
+     * Called when preferences within a given scope have changed.
+     * @param scope The [PreferenceScope] indicating which category of preferences
+     * has been updated.
      */
-    fun receive()
+    fun receive(scope: PreferenceScope)
 }
