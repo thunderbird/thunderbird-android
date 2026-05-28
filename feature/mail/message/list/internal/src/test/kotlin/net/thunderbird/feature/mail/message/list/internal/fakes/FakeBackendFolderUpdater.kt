@@ -12,7 +12,9 @@ internal open class FakeBackendFolderUpdater(
     override fun createFolders(folders: List<FolderInfo>): Set<Long> {
         return when {
             exception != null -> throw exception
+
             returnEmptySetWhenCreatingFolders -> emptySet()
+
             else -> ids.apply {
                 var last = ids.lastOrNull() ?: 0
                 addAll(folders.map { ++last })

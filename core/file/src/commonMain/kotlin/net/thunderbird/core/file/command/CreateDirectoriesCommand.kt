@@ -1,6 +1,7 @@
 package net.thunderbird.core.file.command
 
 import com.eygraber.uri.Uri
+import kotlinx.io.IOException
 import net.thunderbird.core.file.FileOperationError
 import net.thunderbird.core.file.FileSystemManager
 import net.thunderbird.core.outcome.Outcome
@@ -15,7 +16,7 @@ internal class CreateDirectoriesCommand(
         return try {
             fs.createDirectories(dirUri)
             Outcome.Success(Unit)
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             Outcome.Failure(
                 error = FileOperationError.Unavailable(dirUri, e.message ?: "Unable to create directory: $dirUri"),
                 cause = e,

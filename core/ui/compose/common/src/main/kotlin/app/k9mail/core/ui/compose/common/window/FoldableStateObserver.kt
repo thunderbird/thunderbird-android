@@ -96,14 +96,17 @@ class FoldableStateObserver(
                 // No folding feature means either not a foldable device or unable to detect
                 FoldableState.UNKNOWN
             }
+
             foldingFeature.state == FoldingFeature.State.HALF_OPENED -> {
                 // Half-opened state (like a laptop mode) - treat as unfolded for split view
                 FoldableState.UNFOLDED
             }
+
             foldingFeature.state == FoldingFeature.State.FLAT -> {
                 // Flat state means fully unfolded
                 FoldableState.UNFOLDED
             }
+
             else -> {
                 // Unknown or other states - default to unknown
                 FoldableState.UNKNOWN

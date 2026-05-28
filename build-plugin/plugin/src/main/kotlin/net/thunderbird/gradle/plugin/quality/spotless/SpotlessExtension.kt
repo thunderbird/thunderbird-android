@@ -1,3 +1,4 @@
+package net.thunderbird.gradle.plugin.quality.spotless
 
 val kotlinEditorConfigOverride = mapOf(
     "ktlint_code_style" to "intellij_idea",

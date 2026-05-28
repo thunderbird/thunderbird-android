@@ -12,7 +12,6 @@ class ValidatePassword : UseCase.ValidatePassword {
     override fun execute(password: String): ValidationOutcome {
         return when {
             password.isBlank() -> Outcome.Failure(ValidatePasswordError.EmptyPassword)
-
             else -> ValidationSuccess
         }
     }

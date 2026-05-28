@@ -16,7 +16,6 @@ fun IncomingServerSettings.toServerSettings(password: String?): ServerSettings {
     return when (this) {
         is ImapServerSettings -> this.toImapServerSettings(password)
         is DemoServerSettings -> this.serverSettings
-
         else -> throw IllegalArgumentException("Unknown server settings type: $this")
     }
 }
@@ -49,7 +48,6 @@ fun OutgoingServerSettings.toServerSettings(password: String?): ServerSettings {
     return when (this) {
         is SmtpServerSettings -> this.toSmtpServerSettings(password)
         is DemoServerSettings -> this.serverSettings
-
         else -> throw IllegalArgumentException("Unknown server settings type: $this")
     }
 }

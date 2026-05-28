@@ -74,6 +74,7 @@ class DefaultThundermailNavigation : ThundermailNavigation {
                             )
 
                             AccountSetupRoute.ThundermailScanQrCode -> onFinish(ThundermailRoute.ScanQrCode)
+
                             AccountSetupRoute.ThundermailSignIn -> onFinish(ThundermailRoute.SignInWithThundermail)
                         }
                     },
@@ -109,6 +110,7 @@ private fun ThundermailOAuthRedirectScreen(
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
             is ThundermailContract.Effect.LaunchOAuth -> oAuthLauncher.launch(effect.intent)
+
             is ThundermailContract.Effect.NavigateToIncomingServerSettings ->
                 onFinish(ThundermailRoute.IncomingSettings)
         }

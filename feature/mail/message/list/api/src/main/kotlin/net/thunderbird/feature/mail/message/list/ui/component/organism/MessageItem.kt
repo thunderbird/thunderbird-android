@@ -210,9 +210,7 @@ private fun LeadingElements(
     ) {
         when (configuration.badgeStyle) {
             MessageBadgeStyle.New -> NewMessageBadge()
-
             MessageBadgeStyle.Unread -> UnreadMessageBadge()
-
             null -> Spacer(Modifier.width(MESSAGE_BADGE_SIZE.dp))
         }
         AnimatedContent(targetState = selected) { selected ->

@@ -66,6 +66,7 @@ private class ClientConfigParser(
                     "clientConfig" -> {
                         result = parseClientConfig()
                     }
+
                     else -> skipElement()
                 }
             }
@@ -87,6 +88,7 @@ private class ClientConfigParser(
                     "emailProvider" -> {
                         result = parseEmailProvider()
                     }
+
                     else -> skipElement()
                 }
             }
@@ -117,16 +119,19 @@ private class ClientConfigParser(
                             domainFound = true
                         }
                     }
+
                     "incomingServer" -> {
                         parseServer("imap", ::createImapServerSettings)?.let { serverSettings ->
                             incomingServerSettings.add(serverSettings)
                         }
                     }
+
                     "outgoingServer" -> {
                         parseServer("smtp", ::createSmtpServerSettings)?.let { serverSettings ->
                             outgoingServerSettings.add(serverSettings)
                         }
                     }
+
                     else -> {
                         skipElement()
                     }
@@ -226,8 +231,11 @@ private class ClientConfigParser(
     private fun String.toAuthenticationType(): AuthenticationType? {
         return when (this) {
             "OAuth2" -> OAuth2
+
             "password-cleartext" -> PasswordCleartext
+
             "password-encrypted" -> PasswordEncrypted
+
             else -> {
                 Log.d("Ignoring unknown 'authentication' value '$this'")
                 null
@@ -253,9 +261,11 @@ private class ClientConfigParser(
                 XmlPullParser.END_DOCUMENT -> {
                     parserError("End of document reached while reading element '$tagName'")
                 }
+
                 XmlPullParser.END_TAG -> {
                     if (pullParser.name == tagName && pullParser.depth == depth) return
                 }
+
                 else -> {
                     block(eventType)
                 }
@@ -270,6 +280,7 @@ private class ClientConfigParser(
                 XmlPullParser.TEXT -> {
                     text = pullParser.text
                 }
+
                 else -> {
                     parserError("Expected text, but got ${XmlPullParser.TYPES[eventType]}")
                 }

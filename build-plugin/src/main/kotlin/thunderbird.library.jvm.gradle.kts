@@ -3,9 +3,9 @@ import org.gradle.jvm.tasks.Jar
 plugins {
     `java-library`
     id("org.jetbrains.kotlin.jvm")
-    id("thunderbird.quality.detekt.typed")
     id("net.thunderbird.gradle.plugin.quality.coverage")
-    id("thunderbird.quality.spotless")
+    id("net.thunderbird.gradle.plugin.quality.detekt")
+    id("net.thunderbird.gradle.plugin.quality.spotless")
 }
 
 java {
