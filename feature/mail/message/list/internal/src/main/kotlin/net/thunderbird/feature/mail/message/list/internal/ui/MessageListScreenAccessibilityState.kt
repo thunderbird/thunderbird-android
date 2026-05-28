@@ -30,7 +30,7 @@ import net.thunderbird.feature.mail.message.list.R as ApiR
  *  swipe actions are available.
  */
 @Stable
-class MessageListScreenAccessibilityState(
+internal class MessageListScreenAccessibilityState(
     private val stateDescription: Map<MessageListStateDescription, String>,
     val swipeDirectionAccessibilityAction: ImmutableList<SwipeDirectionAccessibilityAction> = persistentListOf(),
 ) {
@@ -97,7 +97,9 @@ enum class MessageListStateDescription {
  *  description strings or swipe actions change.
  */
 @Composable
-fun rememberMessageListScreenAccessibilityState(swipeActions: SwipeActions?): MessageListScreenAccessibilityState {
+internal fun rememberMessageListScreenAccessibilityState(
+    swipeActions: SwipeActions?,
+): MessageListScreenAccessibilityState {
     val stateDescription = mapOf(
         MessageListStateDescription.NewMessage to stringResource(
             id = R.string.message_list_state_new_message_description,

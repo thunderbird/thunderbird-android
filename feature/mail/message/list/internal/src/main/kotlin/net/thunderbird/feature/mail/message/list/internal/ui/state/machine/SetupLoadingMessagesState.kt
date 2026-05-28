@@ -14,10 +14,15 @@ import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
  *   if the loading progress has reached 100% (`progress == 1f`). This ensures a smooth transition
  *   after the loading animation completes.
  */
-internal fun StateMachineBuilder<MessageListState, MessageListEvent>.loadingMessagesState() {
+internal fun StateMachineBuilder<MessageListState, MessageListEvent>.loadingMessagesState(
+    dispatch: (MessageListEvent) -> Unit,
+) {
     state<MessageListState.LoadingMessages> {
         transition<MessageListEvent.UpdateLoadingProgress> { state, event ->
-            state.copy(progress = event.progress)
+            if (event.progress == 1f) {
+                dispatch(MessageListEvent.MessagesLoaded(event.messages))
+            }
+            state.copy(progress = event.progress, messages = event.messages.toPersistentList())
         }
         transition<MessageListEvent.MessagesLoaded>(
             guard = { state, _ -> state.progress == 1f },

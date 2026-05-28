@@ -7,6 +7,10 @@ import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.Lo
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadPreferencesSideEffect
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSortCriteriaStateSideEffectHandler
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.LoadSwipeActionsStateSideEffectHandler
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.legacy.LoadMessagesLegacySideEffect
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ui.OpenMessageSideEffect
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ui.SetMessageActiveSideEffect
+import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ui.ToggleMessageSideEffect
 import net.thunderbird.feature.mail.message.list.ui.MessageListContract
 import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandlerFactory
 import org.koin.dsl.module
@@ -53,5 +57,12 @@ internal val messageListSideEffectsModule = module {
             )
         },
         { AllConfigurationsReadySideEffect.Factory(logger = get()) },
+        { parameters ->
+            val args = parameters.get<MessageListContract.ViewModel.Args>()
+            LoadMessagesLegacySideEffect.Factory(logger = get(), legacyBridge = args.legacyMessageListBridge)
+        },
+        { OpenMessageSideEffect.Factory(logger = get()) },
+        { ToggleMessageSideEffect.Factory(logger = get()) },
+        { SetMessageActiveSideEffect.Factory(logger = get()) },
     )
 }
