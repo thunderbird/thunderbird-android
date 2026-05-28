@@ -1,10 +1,12 @@
 package app.k9mail.feature.account.oauth.ui
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
+import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract.UseCase
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Effect
@@ -161,6 +163,24 @@ class AccountOAuthViewModelTest {
     }
 
     @Test
+    fun `should set error state when onOAuthResult received with BrowserNotAvailable`() = runMviTest {
+        val initialState = defaultState
+        val testSubject = createTestSubject(
+            getOAuthRequestIntent = { _, _ -> throw ActivityNotFoundException("browser not available") },
+            initialState = initialState,
+        )
+        val turbines = turbinesWithInitialStateCheck(testSubject, initialState)
+
+        testSubject.event(Event.SignInClicked)
+
+        assertThat(turbines.stateTurbine.awaitItem()).isEqualTo(
+            initialState.copy(
+                error = Error.BrowserNotAvailable,
+            ),
+        )
+    }
+
+    @Test
     fun `should finish OAuth sign in when onOAuthResult received with success but authorization result is cancelled`() =
         runMviTest {
             val initialState = defaultState
@@ -232,10 +252,20 @@ class AccountOAuthViewModelTest {
             authorizationResult: AuthorizationResult = AuthorizationResult.Success(AuthorizationState()),
             isGoogleSignIn: Boolean = false,
             initialState: State = State(),
+        ) = createTestSubject(
+            getOAuthRequestIntent = { _, _ -> authorizationIntentResult },
+            authorizationResult = authorizationResult,
+            isGoogleSignIn = isGoogleSignIn,
+            initialState = initialState,
+        )
+
+        fun createTestSubject(
+            getOAuthRequestIntent: UseCase.GetOAuthRequestIntent,
+            authorizationResult: AuthorizationResult = AuthorizationResult.Success(AuthorizationState()),
+            isGoogleSignIn: Boolean = false,
+            initialState: State = State(),
         ) = AccountOAuthViewModel(
-            getOAuthRequestIntent = { _, _ ->
-                authorizationIntentResult
-            },
+            getOAuthRequestIntent = getOAuthRequestIntent,
             finishOAuthSignIn = { _ ->
                 delay(50)
                 authorizationResult
