@@ -41,6 +41,7 @@ dependencies {
     compileOnly(projects.mail.protocols.imap)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
+    implementation(projects.plugins.smimeApi.smimeApi)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.preference)

@@ -127,18 +127,65 @@
             tools:text="Sep 19"
             />
 
-        <ImageView
-            android:id="@+id/crypto_status_icon"
-            android:layout_width="18sp"
-            android:layout_height="18sp"
+        <LinearLayout
+            android:id="@+id/crypto_status_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/recipients"
             app:layout_constraintStart_toEndOf="@id/contact_picture"
-            app:srcCompat="@drawable/ic_no_encryption"
-            app:tint="?attr/openpgp_grey"
             tools:visibility="visible"
-            />
+            >
+
+            <ImageView
+                android:id="@+id/crypto_status_icon"
+                android:layout_width="18sp"
+                android:layout_height="18sp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_no_encryption"
+                app:tint="?attr/openpgp_grey"
+                tools:visibility="visible"
+                />
+
+            <ImageView
+                android:id="@+id/smime_encrypted_icon"
+                android:layout_width="18sp"
+                android:layout_height="18sp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/status_lock_dots_3"
+                app:tint="?attr/openpgp_green"
+                tools:visibility="visible"
+                />
+
+            <ImageView
+                android:id="@+id/smime_signed_icon"
+                android:layout_width="18sp"
+                android:layout_height="18sp"
+                android:layout_marginStart="6dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/status_signature_dots_3"
+                app:tint="?attr/openpgp_green"
+                tools:visibility="visible"
+                />
+
+            <ImageView
+                android:id="@+id/open_in_ciphermail_icon"
+                android:layout_width="24sp"
+                android:layout_height="24sp"
+                android:layout_marginStart="4dp"
+                android:padding="2dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/smime_open_in_provider_action"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_open_in_ciphermail"
+                app:tint="?attr/openpgp_green"
+                tools:visibility="visible"
+                />
+
+        </LinearLayout>
 
         <com.fsck.k9.ui.messageview.RecipientNamesView
             android:id="@+id/recipients"
@@ -149,7 +196,7 @@
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/menu_primary_action"
-            app:layout_constraintStart_toEndOf="@id/crypto_status_icon"
+            app:layout_constraintStart_toEndOf="@id/crypto_status_bar"
             app:layout_constraintTop_toBottomOf="@+id/from"
             app:layout_constraintVertical_bias="0.0"
             app:layout_goneMarginStart="16dp"

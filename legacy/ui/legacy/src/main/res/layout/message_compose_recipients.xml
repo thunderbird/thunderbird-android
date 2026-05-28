@@ -208,6 +208,46 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/smime_crypto_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:minHeight="48dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        >
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="50dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="0dp"
+            android:text="@string/smime_crypto_bar_label"
+            style="@style/ComposeTextLabel"
+            />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/smime_sign_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/smime_sign_checkbox_label"
+            />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/smime_encrypt_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/smime_encrypt_checkbox_label"
+            />
+
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

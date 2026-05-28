@@ -263,6 +263,7 @@
             android:name="com.fsck.k9.provider.RawMessageProvider"
             android:authorities="${applicationId}.rawmessageprovider"
             android:exported="false"
+            android:grantUriPermissions="true"
             >
 
             <meta-data

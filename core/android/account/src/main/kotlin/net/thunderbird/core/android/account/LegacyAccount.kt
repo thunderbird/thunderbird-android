@@ -86,6 +86,19 @@ data class LegacyAccount(
     val isStripSignature: Boolean = false,
     val isSyncRemoteDeletions: Boolean = false,
     val openPgpProvider: String? = null,
+    /**
+     * Package name of the installed S/MIME provider app (e.g.
+     * `"com.ciphermail.android"`) selected for this account, or `null` if
+     * S/MIME is not enabled. Used to target `ISmimeService` binds with an
+     * explicit `setPackage()`, avoiding intent-filter ambiguity when more
+     * than one provider is installed.
+     */
+    val smimeProvider: String? = null,
+    /** Whether S/MIME is turned on for this account; see LegacyAccountDto.smimeEnabled. */
+    val smimeEnabled: Boolean = false,
+    /** Last S/MIME sign/encrypt choice in the composer; see LegacyAccountDto. */
+    val smimeSign: Boolean = true,
+    val smimeEncrypt: Boolean = true,
     val openPgpKey: Long = 0,
     val autocryptPreferEncryptMutual: Boolean = false,
     val isOpenPgpHideSignOnly: Boolean = false,

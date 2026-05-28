@@ -36,6 +36,11 @@ public class MessageCryptoStructureDetector {
     // APPLICATION/PGP is a special case which occurs from mutt. see http://www.mutt.org/doc/PGP-Notes.txt
     private static final String APPLICATION_PGP = "application/pgp";
 
+    private static final String APPLICATION_PKCS7_MIME = "application/pkcs7-mime";
+    private static final String APPLICATION_X_PKCS7_MIME = "application/x-pkcs7-mime";
+    private static final String APPLICATION_PKCS7_SIGNATURE = "application/pkcs7-signature";
+    private static final String APPLICATION_X_PKCS7_SIGNATURE = "application/x-pkcs7-signature";
+
     private static final String PGP_INLINE_START_MARKER = "-----BEGIN PGP MESSAGE-----";
     private static final String PGP_INLINE_SIGNED_START_MARKER = "-----BEGIN PGP SIGNED MESSAGE-----";
     private static final int TEXT_LENGTH_FOR_INLINE_CHECK = 36;
@@ -211,7 +216,43 @@ public class MessageCryptoStructureDetector {
     }
 
     private static boolean isPartEncryptedOrSigned(Part part) {
-        return isPartMultipartEncrypted(part) || isPartMultipartSigned(part) || isPartPgpInlineEncryptedOrSigned(part);
+        return isPartMultipartEncrypted(part) || isPartMultipartSigned(part) ||
+               isPartPgpInlineEncryptedOrSigned(part) || isSmimePart(part);
+    }
+
+    /**
+     * @return true if {@code part} is an S/MIME part — either an opaque
+     *         {@code application/pkcs7-mime} blob (encrypted, or
+     *         CMS-wrapped signed data) or a {@code multipart/signed} part
+     *         declaring the PKCS#7 detached-signature protocol.
+     */
+    public static boolean isSmimePart(Part part) {
+        return isSmimeEncryptedOrSignedData(part) || isSmimeSignedMultipart(part);
+    }
+
+    /**
+     * @return true for {@code application/pkcs7-mime} (RFC 8551) or its
+     *         legacy {@code x-pkcs7-mime} alias. Covers both encrypted
+     *         envelopedData and signed CMS data.
+     */
+    public static boolean isSmimeEncryptedOrSignedData(Part part) {
+        return isSameMimeType(part.getMimeType(), APPLICATION_PKCS7_MIME) ||
+               isSameMimeType(part.getMimeType(), APPLICATION_X_PKCS7_MIME);
+    }
+
+    /**
+     * @return true for a {@code multipart/signed} part whose
+     *         {@code protocol} parameter is
+     *         {@code application/pkcs7-signature} (or its {@code x-} alias),
+     *         i.e. an S/MIME detached signature.
+     */
+    public static boolean isSmimeSignedMultipart(Part part) {
+        if (!isSameMimeType(part.getMimeType(), MULTIPART_SIGNED)) {
+            return false;
+        }
+        String protocol = MimeUtility.getHeaderParameter(part.getContentType(), PROTOCOL_PARAMETER);
+        return isSameMimeType(protocol, APPLICATION_PKCS7_SIGNATURE) ||
+               isSameMimeType(protocol, APPLICATION_X_PKCS7_SIGNATURE);
     }
 
     private static boolean isPartMultipartSigned(Part part) {

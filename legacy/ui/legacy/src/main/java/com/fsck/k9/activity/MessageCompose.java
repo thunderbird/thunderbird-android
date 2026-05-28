@@ -40,6 +40,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewStub;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -116,6 +118,7 @@ import com.fsck.k9.message.IdentityHeaderParser;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
+import com.fsck.k9.message.SmimeMessageBuilder;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.ui.R;
@@ -166,6 +169,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
+
+    /** Play Store package of the CipherMail S/MIME provider app. */
+    private static final String CIPHERMAIL_PACKAGE = "com.ciphermail.android.application";
 
     private final DatabaseUpgradeInterceptor databaseUpgradeInterceptor = DI.get(DatabaseUpgradeInterceptor.class);
     private static final int DIALOG_CHOOSE_IDENTITY = 3;
@@ -270,6 +276,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     private RecipientPresenter recipientPresenter;
     private MessageBuilder currentMessageBuilder;
+    private View smimeCryptoBar;
+    private CheckBox smimeSignCheckbox;
+    private CheckBox smimeEncryptCheckbox;
     private ReplyToPresenter replyToPresenter;
     private boolean finishAfterDraftSaved;
     private boolean alreadyNotifiedUserOfEmptySubject = false;
@@ -298,6 +307,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private boolean navigateUp;
 
     private boolean sendMessageHasBeenTriggered = false;
+    /** Guards the onMessageBuildException rescue-save so a failing rescue can't recurse. */
+    private boolean draftSavedAfterSendFailure = false;
     private boolean ignoreSentFolderNotAssigned = false;
 
     @Override
@@ -366,6 +377,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 DI.get(AutocryptDraftStateHeaderParser.class));
         recipientPresenter.asyncUpdateCryptoStatus();
 
+        setupSmimeCryptoBar();
 
         subjectView = findViewById(R.id.subject);
         subjectView.getInputExtras(true).putBoolean("allowEmoji", true);
@@ -776,8 +788,24 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             return null;
         }
 
+        boolean smimeEncrypt = smimeEncryptCheckbox.isChecked();
+        // Encrypt implies sign — never encrypt without signing (defensive against
+        // stale persisted state; the UI also enforces this).
+        boolean smimeSign = smimeSignCheckbox.isChecked() || smimeEncrypt;
+        // Use the S/MIME builder only when S/MIME is enabled AND the user wants
+        // signing and/or encryption. With neither checked, fall through to a plain
+        // message (no provider involved).
+        boolean shouldUseSmimeMessageBuilder =
+                account.isSmimeProviderConfigured() && (smimeSign || smimeEncrypt);
         boolean shouldUsePgpMessageBuilder = cryptoStatus.isOpenPgpConfigured();
-        if (shouldUsePgpMessageBuilder) {
+        if (shouldUseSmimeMessageBuilder) {
+            SmimeMessageBuilder smimeBuilder = SmimeMessageBuilder.newInstance(this);
+            smimeBuilder.setSmimeProvider(account.getSmimeProvider());
+            smimeBuilder.setShouldSign(smimeSign);
+            smimeBuilder.setShouldEncrypt(smimeEncrypt);
+            recipientPresenter.builderSetProperties(smimeBuilder);
+            builder = smimeBuilder;
+        } else if (shouldUsePgpMessageBuilder) {
             SendErrorState maybeSendErrorState = cryptoStatus.getSendErrorStateOrNull();
             if (maybeSendErrorState != null) {
                 recipientPresenter.showPgpSendError(maybeSendErrorState);
@@ -837,7 +865,136 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             return;
         }
 
+        // Only block on a missing provider if the user actually asked for S/MIME
+        // crypto. With both Sign and Encrypt unchecked the message is sent plain
+        // and needs no provider.
+        if (account.isSmimeProviderConfigured() && isSmimeCryptoRequested()
+                && !isSmimeProviderInstalled()) {
+            handleSmimeProviderMissing();
+            return;
+        }
+
         performSendAfterChecks();
+    }
+
+    /**
+     * Wire up the inline S/MIME Sign/Encrypt checkboxes. The bar is only shown for
+     * S/MIME-enabled accounts. The two flags are persisted per account so the user's
+     * last choice is pre-selected on the next message.
+     */
+    private void setupSmimeCryptoBar() {
+        smimeCryptoBar = findViewById(R.id.smime_crypto_bar);
+        smimeSignCheckbox = findViewById(R.id.smime_sign_checkbox);
+        smimeEncryptCheckbox = findViewById(R.id.smime_encrypt_checkbox);
+
+        smimeCryptoBar.setVisibility(account.isSmimeProviderConfigured() ? View.VISIBLE : View.GONE);
+        // Invariant: encrypt implies sign (you can't encrypt without signing).
+        smimeSignCheckbox.setChecked(account.getSmimeSign() || account.getSmimeEncrypt());
+        smimeEncryptCheckbox.setChecked(account.getSmimeEncrypt());
+
+        CompoundButton.OnCheckedChangeListener listener = (button, checked) -> {
+            // Keep the encrypt-implies-sign invariant: turning Encrypt on forces
+            // Sign on; turning Sign off forces Encrypt off. (Setting an already-
+            // correct checkbox is a no-op, so this converges without looping.)
+            if (button == smimeEncryptCheckbox && checked) {
+                smimeSignCheckbox.setChecked(true);
+            } else if (button == smimeSignCheckbox && !checked) {
+                smimeEncryptCheckbox.setChecked(false);
+            }
+            account.setSmimeSign(smimeSignCheckbox.isChecked());
+            account.setSmimeEncrypt(smimeEncryptCheckbox.isChecked());
+            preferences.saveAccount(account);
+        };
+        smimeSignCheckbox.setOnCheckedChangeListener(listener);
+        smimeEncryptCheckbox.setOnCheckedChangeListener(listener);
+    }
+
+    /** @return whether the user wants this S/MIME message signed and/or encrypted. */
+    private boolean isSmimeCryptoRequested() {
+        return smimeSignCheckbox.isChecked() || smimeEncryptCheckbox.isChecked();
+    }
+
+    /**
+     * @return {@code true} if the account's configured S/MIME provider package is installed.
+     *         A message on an S/MIME account can't be signed/encrypted without it, so sending
+     *         is blocked (the message is saved to Drafts instead) when this returns {@code false}.
+     */
+    private boolean isSmimeProviderInstalled() {
+        String providerPackage = account.getSmimeProvider();
+        if (providerPackage == null) {
+            return false;
+        }
+        try {
+            getPackageManager().getPackageInfo(providerPackage, 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Handle a send attempt blocked because S/MIME is enabled for the account but its provider
+     * app (CipherMail) is not installed. Never send silently unencrypted: present the user a
+     * clear choice — install the provider, turn S/MIME off and send in the clear, or keep the
+     * message (save to Drafts, or assign a Drafts folder if none is configured). Back/outside
+     * tap leaves the composer untouched with the text intact.
+     */
+    private void handleSmimeProviderMissing() {
+        boolean hasDrafts = account.hasDraftsFolder();
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.smime_provider_missing_title)
+                .setMessage(hasDrafts
+                        ? R.string.smime_provider_missing_message
+                        : R.string.smime_provider_missing_no_drafts_message)
+                .setPositiveButton(R.string.smime_install_provider_action,
+                        (dialog, which) -> openCipherMailInPlayStore())
+                .setNegativeButton(R.string.smime_disable_and_send_action, (dialog, which) -> {
+                    disableSmimeForAccount();
+                    Toast.makeText(this, R.string.smime_disabled_toast, Toast.LENGTH_LONG).show();
+                    performSendAfterChecks();
+                })
+                .setNeutralButton(hasDrafts
+                                ? R.string.save_draft_action
+                                : R.string.assign_drafts_folder_action,
+                        (dialog, which) -> {
+                            if (hasDrafts) {
+                                // Race-free: finish() happens inside onMessageBuildSuccess
+                                // right after SaveMessageTask is started.
+                                checkToSaveDraftAndSave();
+                            } else {
+                                openFolderSettingsToAssignDraftsFolder();
+                            }
+                        })
+                .show();
+    }
+
+    /** Turn S/MIME off for this account and forget the provider binding, then persist. */
+    private void disableSmimeForAccount() {
+        account.setSmimeEnabled(false);
+        account.setSmimeProvider(null);
+        preferences.saveAccount(account);
+    }
+
+    /** Open the CipherMail listing in Google Play (browser fallback if Play is absent). */
+    private void openCipherMailInPlayStore() {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=" + CIPHERMAIL_PACKAGE)));
+        } catch (android.content.ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+                    "https://play.google.com/store/apps/details?id=" + CIPHERMAIL_PACKAGE)));
+        }
+    }
+
+    /**
+     * Open this account's folder settings so the user can assign a Drafts folder. Used when a
+     * message can't be saved because no Drafts folder is configured. Mirrors the
+     * Sent-folder-not-found flow (see {@link #setupSentFolderNotFoundDialogResults()}). The
+     * composer stays in the back stack with its content intact, so the user can return and
+     * save once a folder is assigned.
+     */
+    private void openFolderSettingsToAssignDraftsFolder() {
+        AccountSettingsActivity.start(this, account.getUuid(), AccountSettingsFragment.PREFERENCE_FOLDERS);
     }
 
     private void checkToSaveDraftAndSave() {
@@ -893,6 +1050,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         currentMessageBuilder = createMessageBuilder(false);
         if (currentMessageBuilder != null) {
             sendMessageHasBeenTriggered = true;
+            draftSavedAfterSendFailure = false;
             changesMadeSinceLastSave = false;
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.buildAsync(this);
@@ -1308,11 +1466,18 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             case DIALOG_CONFIRM_DISCARD_ON_BACK:
                 return new MaterialAlertDialogBuilder(this)
                         .setTitle(R.string.confirm_discard_draft_message_title)
-                        .setMessage(R.string.confirm_discard_draft_message)
+                        .setMessage(R.string.confirm_discard_draft_no_drafts_folder)
                         .setPositiveButton(com.fsck.k9.ui.base.R.string.cancel_action, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
+                            }
+                        })
+                        .setNeutralButton(R.string.assign_drafts_folder_action, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dismissDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
+                                openFolderSettingsToAssignDraftsFolder();
                             }
                         })
                         .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
@@ -1754,11 +1919,37 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     @Override
     public void onMessageBuildException(MessagingException me) {
         Log.e(me, "Error sending message");
-        Toast.makeText(MessageCompose.this,
-                getString(R.string.send_failed_reason, me.getLocalizedMessage()), Toast.LENGTH_LONG).show();
+        boolean wasSendAttempt = sendMessageHasBeenTriggered;
         sendMessageHasBeenTriggered = false;
         currentMessageBuilder = null;
         setProgressBarIndeterminateVisibility(false);
+
+        if (wasSendAttempt && !draftSavedAfterSendFailure && account.hasDraftsFolder()) {
+            // The send build failed (provider error, locked keystore cancelled, serialization
+            // failure, ...). Don't lose the user's message: persist it to Drafts before
+            // reporting the failure. The guard flag prevents a failing rescue save from
+            // recursing back into this handler. The composer stays open so the user can
+            // retry once the underlying problem is resolved.
+            draftSavedAfterSendFailure = true;
+            showSendFailedDialog(getString(R.string.send_failed_message_saved_to_drafts, me.getLocalizedMessage()));
+            finishAfterDraftSaved = false;
+            performSaveAfterChecks();
+        } else {
+            showSendFailedDialog(getString(R.string.send_failed_reason, me.getLocalizedMessage()));
+        }
+    }
+
+    /**
+     * Report a send-build failure with a dismissible dialog rather than a Toast. A Toast vanishes
+     * after a few seconds and is easily missed if the user looks away; the failure (e.g. no S/MIME
+     * signing certificate for the From address) needs an explicit acknowledgement.
+     */
+    private void showSendFailedDialog(String message) {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.send_failed_title)
+                .setMessage(message)
+                .setPositiveButton(com.fsck.k9.ui.base.R.string.okay_action, null)
+                .show();
     }
 
     @Override

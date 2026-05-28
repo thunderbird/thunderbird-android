@@ -1087,6 +1087,25 @@ class MessageViewFragment :
         override fun showCryptoConfigDialog() {
             AccountSettingsActivity.startCryptoSettings(requireActivity(), account.uuid)
         }
+
+        override fun onClickOpenMessageInSmimeProvider(providerPackage: String) {
+            val rawMessageUri = RawMessageProvider.getRawMessageUri(messageReference)
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(rawMessageUri, "application/eml")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                setPackage(providerPackage)
+            }
+            try {
+                startActivity(intent)
+            } catch (e: android.content.ActivityNotFoundException) {
+                Log.e(e, "S/MIME provider cannot open the message")
+                Toast.makeText(
+                    requireContext(),
+                    R.string.smime_open_in_provider_failed,
+                    Toast.LENGTH_LONG,
+                ).show()
+            }
+        }
     }
 
     interface MessageViewFragmentListener {

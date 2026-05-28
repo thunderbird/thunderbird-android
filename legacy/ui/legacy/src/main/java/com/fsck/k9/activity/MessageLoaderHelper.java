@@ -31,6 +31,7 @@ import com.fsck.k9.mailstore.MessageViewInfoExtractor;
 import com.fsck.k9.ui.crypto.MessageCryptoCallback;
 import com.fsck.k9.ui.crypto.MessageCryptoHelper;
 import com.fsck.k9.ui.crypto.OpenPgpApiFactory;
+import com.fsck.k9.ui.crypto.SmimeCryptoHelper;
 import com.fsck.k9.ui.message.LocalMessageExtractorLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
 import net.thunderbird.core.android.account.LegacyAccountDto;
@@ -96,6 +97,7 @@ public class MessageLoaderHelper {
     private OpenPgpDecryptionResult cachedDecryptionResult;
 
     private MessageCryptoHelper messageCryptoHelper;
+    private SmimeCryptoHelper smimeCryptoHelper;
 
 
     public MessageLoaderHelper(Context context, LoaderManager loaderManager, FragmentManager fragmentManager,
@@ -144,6 +146,8 @@ public class MessageLoaderHelper {
     public void resumeCryptoOperationIfNecessary() {
         if (messageCryptoHelper != null) {
             messageCryptoHelper.resumeCryptoOperationIfNecessary();
+        } else if (smimeCryptoHelper != null) {
+            smimeCryptoHelper.resumeCryptoOperationIfNecessary();
         }
     }
 
@@ -155,9 +159,14 @@ public class MessageLoaderHelper {
         String openPgpProvider = account.getOpenPgpProvider();
         if (openPgpProvider != null) {
             startOrResumeCryptoOperation(openPgpProvider);
-        } else {
-            startOrResumeDecodeMessage();
+            return;
         }
+        String smimeProvider = account.getSmimeProvider();
+        if (smimeProvider != null) {
+            startOrResumeSmimeCryptoOperation(smimeProvider);
+            return;
+        }
+        startOrResumeDecodeMessage();
     }
 
     /** Cancels all loading processes, prevents future callbacks, and destroys all loading state. */
@@ -165,6 +174,9 @@ public class MessageLoaderHelper {
     public void onDestroy() {
         if (messageCryptoHelper != null) {
             messageCryptoHelper.cancelIfRunning();
+        }
+        if (smimeCryptoHelper != null) {
+            smimeCryptoHelper.cancelIfRunning();
         }
 
         callback = null;
@@ -182,6 +194,9 @@ public class MessageLoaderHelper {
         if (messageCryptoHelper != null) {
             messageCryptoHelper.detachCallback();
         }
+        if (smimeCryptoHelper != null) {
+            smimeCryptoHelper.detachCallback();
+        }
 
         callback = null;
         context = null;
@@ -196,7 +211,11 @@ public class MessageLoaderHelper {
 
     @UiThread
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        messageCryptoHelper.onActivityResult(requestCode, resultCode, data);
+        if (messageCryptoHelper != null) {
+            messageCryptoHelper.onActivityResult(requestCode, resultCode, data);
+        } else if (smimeCryptoHelper != null) {
+            smimeCryptoHelper.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 
@@ -243,6 +262,12 @@ public class MessageLoaderHelper {
         String openPgpProvider = account.getOpenPgpProvider();
         if (openPgpProvider != null) {
             startOrResumeCryptoOperation(openPgpProvider);
+            return;
+        }
+
+        String smimeProvider = account.getSmimeProvider();
+        if (smimeProvider != null) {
+            startOrResumeSmimeCryptoOperation(smimeProvider);
             return;
         }
 
@@ -315,6 +340,18 @@ public class MessageLoaderHelper {
                 localMessage, messageCryptoCallback, cachedDecryptionResult, !account.isOpenPgpHideSignOnly());
     }
 
+    private void startOrResumeSmimeCryptoOperation(String smimeProvider) {
+        RetainFragment<SmimeCryptoHelper> retainFragment = getSmimeCryptoHelperRetainFragment(true);
+        if (retainFragment.hasData()) {
+            smimeCryptoHelper = retainFragment.getData();
+        }
+        if (smimeCryptoHelper == null || !smimeCryptoHelper.isConfiguredForSmimeProvider(smimeProvider)) {
+            smimeCryptoHelper = new SmimeCryptoHelper(context, smimeProvider);
+            retainFragment.setData(smimeCryptoHelper);
+        }
+        smimeCryptoHelper.asyncStartOrResumeProcessingMessage(localMessage, messageCryptoCallback);
+    }
+
     private void cancelAndClearCryptoOperation() {
         RetainFragment<MessageCryptoHelper> retainCryptoHelperFragment = getMessageCryptoHelperRetainFragment(false);
         if (retainCryptoHelperFragment != null) {
@@ -325,6 +362,16 @@ public class MessageLoaderHelper {
             }
             retainCryptoHelperFragment.clearAndRemove(fragmentManager);
         }
+
+        RetainFragment<SmimeCryptoHelper> smimeRetainFragment = getSmimeCryptoHelperRetainFragment(false);
+        if (smimeRetainFragment != null) {
+            if (smimeRetainFragment.hasData()) {
+                smimeCryptoHelper = smimeRetainFragment.getData();
+                smimeCryptoHelper.cancelIfRunning();
+                smimeCryptoHelper = null;
+            }
+            smimeRetainFragment.clearAndRemove(fragmentManager);
+        }
     }
 
     private RetainFragment<MessageCryptoHelper> getMessageCryptoHelperRetainFragment(boolean createIfNotExists) {
@@ -332,6 +379,14 @@ public class MessageLoaderHelper {
             return RetainFragment.findOrCreate(fragmentManager, "crypto_helper_" + messageReference.hashCode());
         } else {
             return RetainFragment.findOrNull(fragmentManager, "crypto_helper_" + messageReference.hashCode());
+        }
+    }
+
+    private RetainFragment<SmimeCryptoHelper> getSmimeCryptoHelperRetainFragment(boolean createIfNotExists) {
+        if (createIfNotExists) {
+            return RetainFragment.findOrCreate(fragmentManager, "smime_crypto_helper_" + messageReference.hashCode());
+        } else {
+            return RetainFragment.findOrNull(fragmentManager, "smime_crypto_helper_" + messageReference.hashCode());
         }
     }
 

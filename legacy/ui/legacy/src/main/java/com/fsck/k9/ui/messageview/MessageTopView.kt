@@ -210,9 +210,9 @@ class MessageTopView(
         val view = layoutInflater.inflate(R.layout.message_content_crypto_error, containerView, false)
         setCryptoProviderIcon(providerIcon, view)
         val cryptoErrorText = view.findViewById<MaterialTextView>(R.id.crypto_error_text)
-        val openPgpError = messageViewInfo.cryptoResultAnnotation.openPgpError
-        if (openPgpError != null) {
-            val errorText = openPgpError.message
+        val annotation = messageViewInfo.cryptoResultAnnotation
+        val errorText = annotation.openPgpError?.message ?: annotation.smimeError?.message
+        if (errorText != null) {
             cryptoErrorText.text = errorText
         }
 
