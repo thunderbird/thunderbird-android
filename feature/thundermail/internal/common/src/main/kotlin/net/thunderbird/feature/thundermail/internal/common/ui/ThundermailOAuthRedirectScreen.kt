@@ -134,7 +134,7 @@ private fun RedirectingUserContent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ErrorDetails(error: ThundermailContract.Error, modifier: Modifier = Modifier) {
+private fun ErrorDetails(error: ThundermailContract.Error, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
