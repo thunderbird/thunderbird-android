@@ -95,7 +95,7 @@ internal fun ThundermailOAuthRedirectScreen(
                 modifier = Modifier.align(Alignment.Center),
             ) { error ->
                 if (error == null) {
-                    RedirectingUserContent()
+                    RedirectingUserContent(modifier = Modifier.fillMaxWidth())
                 } else {
                     ErrorDetails(error, modifier = Modifier.fillMaxWidth())
                 }
