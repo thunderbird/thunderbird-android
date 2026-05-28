@@ -29,6 +29,7 @@ dependencies {
     implementation(projects.feature.notification.api)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
+    implementation(projects.plugins.smimeApi.smimeApi)
     implementation(projects.feature.telemetry.api)
     implementation(projects.core.featureflag)
     implementation(projects.core.logging.implComposite)

@@ -39,11 +39,13 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
       - [0006 - White Label Architecture](architecture/adr/0006-white-label-architecture.md)
       - [0007 - Project Structure](architecture/adr/0007-project-structure.md)
       - [0008 - Change Shared Module package to `net.thunderbird`](architecture/adr/0008-change-shared-modules-package-name.md)
+      - [0009 - Use a Companion App + AIDL Service for S/MIME](architecture/adr/0009-smime-companion-app-architecture.md)
     - [Proposed]()
     - [Rejected]()
 - [User Guide]()
   - [Setup]()
     - [Installing ADB](user-guide/setup/installing-adb.md)
+    - [Enabling S/MIME via CipherMail](user-guide/setup/enabling-smime.md)
   - [Troubleshooting]()
     - [Collecting Debug Logs](user-guide/troubleshooting/collecting-debug-logs.md)
     - [Find your app version](user-guide/troubleshooting/find-your-app-version.md)
@@ -51,6 +53,7 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
   - [Database Migration Checklist](developer/db-migration-checklist.md)
   - [Foldable Device Support](developer/foldable-device-support.md)
   - [Preference Migration Guide](developer/preference-migration-guide.md)
+  - [Writing an S/MIME Provider](developer/writing-smime-provider.md)
 - [Release]()
   - [Release Process](release/RELEASE.md)
   - [Release Automation](release/AUTOMATION.md)
@@ -59,6 +62,7 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
   - [Manual Release (historical)](release/HISTORICAL_RELEASE.md)
 - [Security]()
   - [Threat Modeling Guide](security/threat-modeling-guide.md)
+  - [S/MIME Companion Threat Model](security/smime-companion-threat-model.md)
 
 ---
 

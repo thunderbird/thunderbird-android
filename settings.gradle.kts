@@ -248,6 +248,7 @@ include(
 )
 
 include(":plugins:openpgp-api-lib:openpgp-api")
+include(":plugins:smime-api:smime-api")
 
 include(
     ":cli:autodiscovery-cli",

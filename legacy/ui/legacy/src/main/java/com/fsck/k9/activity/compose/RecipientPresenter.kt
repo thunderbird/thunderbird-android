@@ -9,11 +9,17 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.view.Menu
+import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import androidx.loader.app.LoaderManager
+import com.ciphermail.smime.api.ISmimeService
+import com.ciphermail.smime.api.SmimeCertificateInfo
+import com.ciphermail.smime.api.util.SmimeApi
+import com.ciphermail.smime.api.util.SmimeServiceConnection
 import com.fsck.k9.K9
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState
+import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType
 import com.fsck.k9.autocrypt.AutocryptDraftStateHeader
 import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser
 import com.fsck.k9.helper.MailTo
@@ -27,6 +33,7 @@ import com.fsck.k9.message.ComposePgpEnableByDefaultDecider
 import com.fsck.k9.message.ComposePgpInlineDecider
 import com.fsck.k9.message.MessageBuilder
 import com.fsck.k9.message.PgpMessageBuilder
+import com.fsck.k9.message.SmimeMessageBuilder
 import com.fsck.k9.ui.R
 import com.fsck.k9.view.RecipientSelectView.Recipient
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
@@ -81,6 +88,9 @@ class RecipientPresenter(
 
     var currentCachedCryptoStatus: ComposeCryptoStatus? = null
         private set
+
+    private var smimeCertCheckConnection: SmimeServiceConnection? = null
+    private var smimeAllCertsPresent: Boolean = false
 
     val toAddresses: List<Address>
         get() = recipientMvpView.toAddresses
@@ -418,6 +428,7 @@ class RecipientPresenter(
         if (openPgpProviderState != OpenPgpProviderState.OK) {
             currentCachedCryptoStatus = composeCryptoStatus
             redrawCachedCryptoStatusIcon()
+            if (account.isSmimeProviderConfigured) asyncUpdateSmimeCertStatus()
             return
         }
 
@@ -436,6 +447,7 @@ class RecipientPresenter(
                 }
 
                 redrawCachedCryptoStatusIcon()
+                if (account.isSmimeProviderConfigured) asyncUpdateSmimeCertStatus()
             }
         }.execute()
     }
@@ -444,8 +456,78 @@ class RecipientPresenter(
         val cryptoStatus = checkNotNull(currentCachedCryptoStatus) { "must have cached crypto status to redraw it!" }
 
         recipientMvpView.setRecipientTokensShowCryptoEnabled(cryptoStatus.isEncryptionEnabled)
-        recipientMvpView.showCryptoStatus(cryptoStatus.displayType)
+        // When S/MIME is active the cert check manages the crypto_status view independently.
+        if (!account.isSmimeProviderConfigured) {
+            recipientMvpView.showCryptoStatus(cryptoStatus.displayType)
+        }
         recipientMvpView.showCryptoSpecialMode(cryptoStatus.specialModeDisplayType)
+    }
+
+    /**
+     * Refresh the compose-screen lock icon for S/MIME by asking the
+     * configured provider whether every current recipient has a usable
+     * certificate.
+     *
+     * Calls `ACTION_GET_CERTIFICATES` off the UI thread; the result drives
+     * `CryptoStatusDisplayType` (green = all certs present and we'll encrypt,
+     * red = at least one missing). Cancels any prior in-flight bind to avoid
+     * racing service connections when recipients are typed quickly.
+     *
+     * No-op when the account has no `smimeProvider` configured.
+     */
+    private fun asyncUpdateSmimeCertStatus() {
+        smimeCertCheckConnection?.unbindFromService()
+        smimeCertCheckConnection = null
+
+        val smimeProvider = account.smimeProvider ?: return
+
+        val recipientEmails = (toAddresses + ccAddresses + bccAddresses)
+            .map { it.address }.toTypedArray()
+
+        if (recipientEmails.isEmpty()) {
+            recipientMvpView.showCryptoStatus(CryptoStatusDisplayType.AVAILABLE)
+            return
+        }
+
+        smimeCertCheckConnection = SmimeServiceConnection(
+            context,
+            smimeProvider,
+            object : SmimeServiceConnection.OnBound {
+                override fun onBound(service: ISmimeService) {
+                    val intent = Intent(SmimeApi.ACTION_GET_CERTIFICATES).apply {
+                        putExtra(SmimeApi.EXTRA_API_VERSION, SmimeApi.API_VERSION)
+                        putExtra(SmimeApi.EXTRA_USER_IDS, recipientEmails)
+                    }
+                    SmimeApi(service).executeApiAsync(intent, null, null) { result ->
+                        smimeCertCheckConnection?.unbindFromService()
+                        smimeCertCheckConnection = null
+                        onSmimeCertCheckResult(result)
+                    }
+                }
+
+                override fun onError(e: Exception) {
+                    smimeCertCheckConnection = null
+                    recipientMvpView.showCryptoStatus(CryptoStatusDisplayType.ENABLED_ERROR)
+                }
+            },
+        )
+        smimeCertCheckConnection!!.bindToService()
+    }
+
+    @VisibleForTesting
+    internal fun onSmimeCertCheckResult(result: Intent) {
+        result.setExtrasClassLoader(SmimeCertificateInfo::class.java.classLoader)
+        val resultCode = result.getIntExtra(SmimeApi.RESULT_CODE, SmimeApi.RESULT_CODE_ERROR)
+        val allPresent = if (resultCode == SmimeApi.RESULT_CODE_SUCCESS) {
+            val certs = result.getParcelableArrayExtra(SmimeApi.RESULT_CERTIFICATES)
+            certs != null && certs.all { (it as SmimeCertificateInfo).hasValidCertificate }
+        } else {
+            false
+        }
+        smimeAllCertsPresent = allPresent
+        recipientMvpView.showCryptoStatus(
+            if (allPresent) CryptoStatusDisplayType.ENABLED_TRUSTED else CryptoStatusDisplayType.ENABLED_ERROR,
+        )
     }
 
     fun onToTokenAdded() {
@@ -565,6 +647,10 @@ class RecipientPresenter(
     }
 
     fun onClickCryptoStatus() {
+        if (account.isSmimeProviderConfigured) {
+            recipientMvpView.showSmimeStatusInfo(smimeAllCertsPresent)
+            return
+        }
         when (openPgpApiManager.openPgpProviderState) {
             OpenPgpProviderState.UNCONFIGURED -> {
                 Log.e("click on crypto status while unconfigured - this should not really happen?!")
@@ -665,10 +751,19 @@ class RecipientPresenter(
         require(messageBuilder !is PgpMessageBuilder) {
             "PpgMessageBuilder must be called with ComposeCryptoStatus argument!"
         }
+        require(messageBuilder !is SmimeMessageBuilder) {
+            "SmimeMessageBuilder must be called with smime-specific builderSetProperties!"
+        }
 
         messageBuilder.setTo(toAddresses)
         messageBuilder.setCc(ccAddresses)
         messageBuilder.setBcc(bccAddresses)
+    }
+
+    fun builderSetProperties(smimeMessageBuilder: SmimeMessageBuilder) {
+        smimeMessageBuilder.setTo(toAddresses)
+        smimeMessageBuilder.setCc(ccAddresses)
+        smimeMessageBuilder.setBcc(bccAddresses)
     }
 
     fun builderSetProperties(pgpMessageBuilder: PgpMessageBuilder, cryptoStatus: ComposeCryptoStatus) {

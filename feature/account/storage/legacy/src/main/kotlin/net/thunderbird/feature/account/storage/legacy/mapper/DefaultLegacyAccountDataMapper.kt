@@ -81,6 +81,10 @@ internal class DefaultLegacyAccountDataMapper : LegacyAccountDataMapper {
             isStripSignature = dto.isStripSignature,
             isSyncRemoteDeletions = dto.isSyncRemoteDeletions,
             openPgpProvider = dto.openPgpProvider,
+            smimeProvider = dto.smimeProvider,
+            smimeEnabled = dto.smimeEnabled,
+            smimeSign = dto.smimeSign,
+            smimeEncrypt = dto.smimeEncrypt,
             openPgpKey = dto.openPgpKey,
             autocryptPreferEncryptMutual = dto.autocryptPreferEncryptMutual,
             isOpenPgpHideSignOnly = dto.isOpenPgpHideSignOnly,
@@ -187,6 +191,10 @@ internal class DefaultLegacyAccountDataMapper : LegacyAccountDataMapper {
             isStripSignature = domain.isStripSignature
             isSyncRemoteDeletions = domain.isSyncRemoteDeletions
             openPgpProvider = domain.openPgpProvider
+            smimeProvider = domain.smimeProvider
+            smimeEnabled = domain.smimeEnabled
+            smimeSign = domain.smimeSign
+            smimeEncrypt = domain.smimeEncrypt
             openPgpKey = domain.openPgpKey
             autocryptPreferEncryptMutual = domain.autocryptPreferEncryptMutual
             isOpenPgpHideSignOnly = domain.isOpenPgpHideSignOnly

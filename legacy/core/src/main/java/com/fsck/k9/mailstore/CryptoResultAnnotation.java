@@ -5,6 +5,9 @@ import android.app.PendingIntent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.ciphermail.smime.api.SmimeDecryptionResult;
+import com.ciphermail.smime.api.SmimeError;
+import com.ciphermail.smime.api.SmimeSignatureResult;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 
 import org.openintents.openpgp.OpenPgpDecryptionResult;
@@ -22,6 +25,11 @@ public final class CryptoResultAnnotation {
     private final PendingIntent openPgpPendingIntent;
     private final PendingIntent openPgpInsecureWarningPendingIntent;
     private final boolean overrideCryptoWarning;
+
+    @Nullable private final SmimeDecryptionResult smimeDecryptionResult;
+    @Nullable private final SmimeSignatureResult smimeSignatureResult;
+    @Nullable private final SmimeError smimeError;
+    @Nullable private final PendingIntent smimePendingIntent;
 
     private final CryptoResultAnnotation encapsulatedResult;
 
@@ -42,6 +50,33 @@ public final class CryptoResultAnnotation {
         this.openPgpInsecureWarningPendingIntent = openPgpInsecureWarningPendingIntent;
         this.overrideCryptoWarning = overrideCryptoWarning;
 
+        this.smimeDecryptionResult = null;
+        this.smimeSignatureResult = null;
+        this.smimeError = null;
+        this.smimePendingIntent = null;
+        this.encapsulatedResult = null;
+    }
+
+    private CryptoResultAnnotation(@NonNull CryptoError errorType, MimeBodyPart replacementData,
+            SmimeDecryptionResult smimeDecryptionResult,
+            SmimeSignatureResult smimeSignatureResult,
+            PendingIntent smimePendingIntent,
+            SmimeError smimeError,
+            boolean overrideCryptoWarning) {
+        this.errorType = errorType;
+        this.replacementData = replacementData;
+
+        this.smimeDecryptionResult = smimeDecryptionResult;
+        this.smimeSignatureResult = smimeSignatureResult;
+        this.smimePendingIntent = smimePendingIntent;
+        this.smimeError = smimeError;
+        this.overrideCryptoWarning = overrideCryptoWarning;
+
+        this.openPgpDecryptionResult = null;
+        this.openPgpSignatureResult = null;
+        this.openPgpPendingIntent = null;
+        this.openPgpInsecureWarningPendingIntent = null;
+        this.openPgpError = null;
         this.encapsulatedResult = null;
     }
 
@@ -59,6 +94,11 @@ public final class CryptoResultAnnotation {
         this.openPgpInsecureWarningPendingIntent = annotation.openPgpInsecureWarningPendingIntent;
         this.openPgpError = annotation.openPgpError;
         this.overrideCryptoWarning = annotation.overrideCryptoWarning;
+
+        this.smimeDecryptionResult = annotation.smimeDecryptionResult;
+        this.smimeSignatureResult = annotation.smimeSignatureResult;
+        this.smimePendingIntent = annotation.smimePendingIntent;
+        this.smimeError = annotation.smimeError;
 
         this.encapsulatedResult = encapsulatedResult;
     }
@@ -93,6 +133,53 @@ public final class CryptoResultAnnotation {
     public static CryptoResultAnnotation createOpenPgpEncryptionErrorAnnotation(OpenPgpError error) {
         return new CryptoResultAnnotation(
                 CryptoError.OPENPGP_ENCRYPTED_API_ERROR, null, null, null, null, null, error, false);
+    }
+
+    /**
+     * Build a success annotation for an S/MIME decrypt/verify operation.
+     *
+     * @param smimeDecryptionResult outcome of decryption (may indicate the
+     *                              part was signed-only or plain).
+     * @param smimeSignatureResult  outcome of signature verification.
+     * @param smimePendingIntent    follow-up interaction (e.g. view signer
+     *                              certificate); nullable.
+     * @param replacementData       the decrypted inner MIME part to
+     *                              substitute for the wrapped one; nullable
+     *                              for sign-only inputs.
+     * @param overrideCryptoWarning {@code true} to suppress the "encrypted
+     *                              content not verified" badge.
+     */
+    public static CryptoResultAnnotation createSmimeResultAnnotation(
+            SmimeDecryptionResult smimeDecryptionResult,
+            SmimeSignatureResult smimeSignatureResult,
+            @Nullable PendingIntent smimePendingIntent,
+            @Nullable MimeBodyPart replacementData,
+            boolean overrideCryptoWarning) {
+        return new CryptoResultAnnotation(CryptoError.SMIME_OK, replacementData,
+                smimeDecryptionResult, smimeSignatureResult, smimePendingIntent, null,
+                overrideCryptoWarning);
+    }
+
+    /**
+     * Build an error annotation for a failed S/MIME decryption. The
+     * message view will show an "encrypted content unavailable" badge with
+     * the {@link SmimeError} as the cause.
+     */
+    public static CryptoResultAnnotation createSmimeEncryptionErrorAnnotation(SmimeError error) {
+        return new CryptoResultAnnotation(CryptoError.SMIME_ENCRYPTED_API_ERROR, null,
+                (SmimeDecryptionResult) null, null, null, error, false);
+    }
+
+    /**
+     * Build an error annotation for a failed S/MIME signature verification.
+     * Unlike encryption errors, {@code replacementData} can still carry the
+     * inner MIME body so the user can read the (now-untrusted) message
+     * content alongside the signature-error badge.
+     */
+    public static CryptoResultAnnotation createSmimeSignatureErrorAnnotation(
+            SmimeError error, @Nullable MimeBodyPart replacementData) {
+        return new CryptoResultAnnotation(CryptoError.SMIME_SIGNED_API_ERROR, replacementData,
+                (SmimeDecryptionResult) null, null, null, error, false);
     }
 
     public boolean isOpenPgpResult() {
@@ -162,6 +249,30 @@ public final class CryptoResultAnnotation {
         return replacementData;
     }
 
+    public boolean isSmimeResult() {
+        return smimeDecryptionResult != null && smimeSignatureResult != null;
+    }
+
+    @Nullable
+    public SmimeDecryptionResult getSmimeDecryptionResult() {
+        return smimeDecryptionResult;
+    }
+
+    @Nullable
+    public SmimeSignatureResult getSmimeSignatureResult() {
+        return smimeSignatureResult;
+    }
+
+    @Nullable
+    public SmimeError getSmimeError() {
+        return smimeError;
+    }
+
+    @Nullable
+    public PendingIntent getSmimePendingIntent() {
+        return smimePendingIntent;
+    }
+
     public boolean isOverrideSecurityWarning() {
         return overrideCryptoWarning;
     }
@@ -189,5 +300,9 @@ public final class CryptoResultAnnotation {
         SIGNED_BUT_UNSUPPORTED,
         ENCRYPTED_BUT_UNSUPPORTED,
         OPENPGP_ENCRYPTED_NO_PROVIDER,
+        SMIME_OK,
+        SMIME_SIGNED_API_ERROR,
+        SMIME_ENCRYPTED_API_ERROR,
+        SMIME_ENCRYPTED_NO_PROVIDER,
     }
 }

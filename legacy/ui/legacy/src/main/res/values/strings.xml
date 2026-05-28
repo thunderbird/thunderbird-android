@@ -545,6 +545,37 @@
 
     <string name="account_settings_openpgp_missing">Missing OpenPGP app - was it uninstalled?</string>
 
+    <string name="account_settings_smime">S/MIME</string>
+    <string name="account_settings_smime_app">Enable S/MIME support</string>
+    <string name="account_settings_smime_app_select_title">Select S/MIME app</string>
+    <string name="account_settings_smime_summary_off">No S/MIME app configured</string>
+    <string name="account_settings_smime_summary_on">Connected to %s</string>
+    <string name="account_settings_smime_summary_config">Configuring…</string>
+    <string name="account_settings_smime_summary_missing_provider">On, but CipherMail isn\'t installed — messages can\'t be sent until it is</string>
+    <string name="account_settings_smime_sign_default_title">Sign by default</string>
+    <string name="account_settings_smime_sign_default_summary">Pre-select \"Sign\" for new messages</string>
+    <string name="account_settings_smime_encrypt_default_title">Encrypt by default</string>
+    <string name="account_settings_smime_encrypt_default_summary">Pre-select \"Encrypt\" for new messages</string>
+    <string name="account_settings_smime_missing">Missing S/MIME app - was it uninstalled?</string>
+    <string name="account_settings_smime_no_provider_title">No S/MIME app found</string>
+    <string name="account_settings_smime_no_provider_msg">No S/MIME provider app is installed. Please install CipherMail to enable S/MIME support.</string>
+    <string name="smime_open_in_provider_action">Open in CipherMail</string>
+    <string name="smime_open_in_provider_failed">Couldn\'t open the message in CipherMail.</string>
+    <string name="smime_crypto_bar_label">S/MIME</string>
+    <string name="smime_sign_checkbox_label">Sign</string>
+    <string name="smime_encrypt_checkbox_label">Encrypt</string>
+    <string name="smime_status_active">S/MIME: signing and encrypting</string>
+    <string name="smime_status_missing_certs">S/MIME: missing certificates for some recipients</string>
+    <string name="smime_provider_missing_title">Can\'t sign or encrypt</string>
+    <string name="smime_provider_missing_message">This account uses an S/MIME app to sign and encrypt mail, but that app is not installed. Your message has been saved to Drafts. Reinstall the S/MIME app, then open the draft and send it again.</string>
+    <string name="smime_provider_missing_no_drafts_message">This account uses an S/MIME app to sign and encrypt mail, but that app is not installed. Your message can\'t be saved because this account has no Drafts folder. Assign a Drafts folder to keep it, then reinstall the S/MIME app and send again.</string>
+    <string name="send_failed_message_saved_to_drafts">Send failed: %s\nYour message was saved to Drafts.</string>
+    <string name="assign_drafts_folder_action">Assign Drafts folder…</string>
+    <string name="smime_install_provider_action">Install CipherMail</string>
+    <string name="smime_disable_and_send_action">Turn off S/MIME and send</string>
+    <string name="smime_disabled_toast">S/MIME turned off for this account.</string>
+    <string name="confirm_discard_draft_no_drafts_folder">This account has no Drafts folder, so this message can\'t be saved. Assign a Drafts folder to keep it.</string>
+
     <string name="folder_settings_title">Folder settings</string>
 
     <string name="folder_settings_in_top_group_label">Show in top group</string>
@@ -754,6 +785,7 @@
 
     <string name="error_activity_not_found">No suitable application for this action found.</string>
     <string name="send_failed_reason">Send failed: %s</string>
+    <string name="send_failed_title">Send failed</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Save or Discard this message?</string>

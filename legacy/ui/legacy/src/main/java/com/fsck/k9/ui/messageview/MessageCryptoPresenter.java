@@ -6,14 +6,22 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import java.util.List;
+import com.ciphermail.smime.api.SmimeDecryptionResult;
+import com.ciphermail.smime.api.SmimeSignatureResult;
+import com.ciphermail.smime.api.util.SmimeApi;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
+import com.fsck.k9.view.MessageHeader;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.logging.legacy.Log;
 
@@ -57,7 +65,12 @@ public class MessageCryptoPresenter {
             return false;
         }
 
-        messageView.getMessageHeaderView().setCryptoStatus(displayStatus);
+        CryptoResultAnnotation annotation = messageViewInfo.cryptoResultAnnotation;
+        if (annotation != null && annotation.isSmimeResult()) {
+            showSmimeHeaderStatus(messageView, account, annotation);
+        } else {
+            messageView.getMessageHeaderView().setCryptoStatus(displayStatus);
+        }
 
         switch (displayStatus) {
             case CANCELLED: {
@@ -74,7 +87,7 @@ public class MessageCryptoPresenter {
 
             case ENCRYPTED_ERROR:
             case UNSUPPORTED_ENCRYPTED: {
-                Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext(), account.getOpenPgpProvider());
+                Drawable providerIcon = getCryptoProviderIcon(messageView.getContext(), account, messageViewInfo.cryptoResultAnnotation);
                 messageView.showMessageCryptoErrorView(messageViewInfo, providerIcon);
                 break;
             }
@@ -97,6 +110,83 @@ public class MessageCryptoPresenter {
         }
 
         return true;
+    }
+
+    /**
+     * Render the S/MIME-specific header indicators: separate encrypted/signed icons plus an
+     * "open in CipherMail" action when the provider is installed. Replaces the single combined
+     * badge for S/MIME messages so the user can tell encryption and signing apart.
+     */
+    private void showSmimeHeaderStatus(MessageTopView messageView, LegacyAccountDto account,
+            CryptoResultAnnotation annotation) {
+        SmimeDecryptionResult decryptionResult = annotation.getSmimeDecryptionResult();
+        SmimeSignatureResult signatureResult = annotation.getSmimeSignatureResult();
+
+        boolean encrypted = decryptionResult != null
+                && decryptionResult.getResult() == SmimeDecryptionResult.RESULT_ENCRYPTED;
+
+        int signedIconRes = 0;
+        int signedColorAttr = 0;
+        if (signatureResult != null) {
+            switch (signatureResult.getResult()) {
+                case SmimeSignatureResult.RESULT_VALID_TRUSTED:
+                    signedIconRes = R.drawable.status_signature_dots_3;
+                    signedColorAttr = R.attr.openpgp_green;
+                    break;
+                case SmimeSignatureResult.RESULT_VALID_UNTRUSTED:
+                case SmimeSignatureResult.RESULT_CERT_MISSING:
+                    signedIconRes = R.drawable.status_signature_dots_3;
+                    signedColorAttr = R.attr.openpgp_orange;
+                    break;
+                case SmimeSignatureResult.RESULT_INVALID_SIGNATURE:
+                case SmimeSignatureResult.RESULT_CERT_EXPIRED:
+                case SmimeSignatureResult.RESULT_CERT_REVOKED:
+                    signedIconRes = R.drawable.status_lock_error;
+                    signedColorAttr = R.attr.openpgp_grey;
+                    break;
+                default: // RESULT_NO_SIGNATURE and anything else: no signature icon
+                    break;
+            }
+        }
+
+        String providerPackage = resolveSmimeProviderPackage(messageView.getContext(), account);
+
+        MessageHeader header = messageView.getMessageHeaderView();
+        header.setSmimeCryptoStatus(encrypted, signedIconRes, signedColorAttr, providerPackage != null);
+        if (providerPackage != null) {
+            header.setOpenInSmimeProviderClickListener(
+                    v -> messageCryptoMvpView.onClickOpenMessageInSmimeProvider(providerPackage));
+        }
+    }
+
+    /**
+     * Resolve the installed S/MIME provider package. Prefers the account's configured
+     * provider, but falls back to any installed app exposing the S/MIME service — the
+     * account's {@code smimeProvider} can be null even when S/MIME works and CipherMail
+     * is installed (S/MIME-enabled is tracked independently of the resolved provider).
+     */
+    @Nullable
+    private String resolveSmimeProviderPackage(Context context, LegacyAccountDto account) {
+        PackageManager packageManager = context.getPackageManager();
+
+        String providerPackage = account.getSmimeProvider();
+        if (providerPackage != null) {
+            try {
+                packageManager.getPackageInfo(providerPackage, 0);
+                return providerPackage;
+            } catch (PackageManager.NameNotFoundException e) {
+                // configured provider is gone; fall back to discovery below
+            }
+        }
+
+        Intent serviceIntent = new Intent(SmimeApi.SERVICE_INTENT);
+        List<ResolveInfo> services = packageManager.queryIntentServices(serviceIntent, 0);
+        for (ResolveInfo resolveInfo : services) {
+            if (resolveInfo.serviceInfo != null) {
+                return resolveInfo.serviceInfo.packageName;
+            }
+        }
+        return null;
     }
 
     @SuppressWarnings("UnusedParameters") // for consistency with Activity.onActivityResult
@@ -161,6 +251,30 @@ public class MessageCryptoPresenter {
         }
     }
 
+    @Nullable
+    private static Drawable getCryptoProviderIcon(Context context, LegacyAccountDto account,
+            CryptoResultAnnotation annotation) {
+        String providerPackage;
+        if (annotation != null && isSmimeCryptoError(annotation)) {
+            providerPackage = account.getSmimeProvider();
+        } else {
+            providerPackage = account.getOpenPgpProvider();
+        }
+        return getOpenPgpApiProviderIcon(context, providerPackage);
+    }
+
+    private static boolean isSmimeCryptoError(CryptoResultAnnotation annotation) {
+        switch (annotation.getErrorType()) {
+            case SMIME_OK:
+            case SMIME_SIGNED_API_ERROR:
+            case SMIME_ENCRYPTED_API_ERROR:
+            case SMIME_ENCRYPTED_NO_PROVIDER:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     public void onClickConfigureProvider() {
         reloadOnResumeWithoutRecreateFlag = true;
         messageCryptoMvpView.showCryptoConfigDialog();
@@ -174,5 +288,8 @@ public class MessageCryptoPresenter {
             throws IntentSender.SendIntentException;
 
         void showCryptoConfigDialog();
+
+        /** Hand the raw message to the given S/MIME provider package for inspection. */
+        void onClickOpenMessageInSmimeProvider(String providerPackage);
     }
 }

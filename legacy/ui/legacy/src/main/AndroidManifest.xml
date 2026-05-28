@@ -48,6 +48,11 @@
             <!-- Used by OpenPgpAppSelectDialog -->
             <action android:name="org.openintents.openpgp.IOpenPgpService" />
         </intent>
+
+        <intent>
+            <!-- Used by SmimeAppSelectDialog -->
+            <action android:name="com.ciphermail.smime.api.ISmimeService" />
+        </intent>
     </queries>
 
 </manifest>

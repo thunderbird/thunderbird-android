@@ -320,6 +320,53 @@ open class LegacyAccountDto(
             field = value?.takeIf { it.isNotEmpty() }
         }
 
+    /**
+     * Package name of the S/MIME provider app this account uses (e.g.
+     * `"com.ciphermail.android"`), or `null` if S/MIME is not enabled.
+     *
+     * Setting an empty string is normalised to `null` so callers can
+     * unset the provider by writing the result of a possibly-empty
+     * EditText without first checking for emptiness.
+     */
+    @get:Synchronized
+    @set:Synchronized
+    var smimeProvider: String? = null
+        set(value) {
+            field = value?.takeIf { it.isNotEmpty() }
+        }
+
+    /**
+     * Whether the user has turned S/MIME on for this account. Independent of
+     * [smimeProvider]: S/MIME can be enabled while no provider app is installed
+     * (provider unresolved). In that state outgoing mail is blocked at send
+     * time rather than silently sent unencrypted.
+     */
+    @get:Synchronized
+    @set:Synchronized
+    var smimeEnabled: Boolean = false
+
+    /**
+     * Per-account memory of the user's last S/MIME sign / encrypt choice in the
+     * composer. Defaults to true (sign and encrypt). When both are false an
+     * S/MIME-enabled account sends a plain message.
+     */
+    @get:Synchronized
+    @set:Synchronized
+    var smimeSign: Boolean = true
+
+    @get:Synchronized
+    @set:Synchronized
+    var smimeEncrypt: Boolean = true
+
+    /**
+     * True iff S/MIME is turned on for this account (see [smimeEnabled]).
+     * Note: enabled does not imply a provider is installed/resolved — callers
+     * that actually perform crypto must additionally check [smimeProvider] and
+     * that its package is installed.
+     */
+    val isSmimeProviderConfigured: Boolean
+        get() = smimeEnabled
+
     @get:Synchronized
     @set:Synchronized
     var openPgpKey: Long = 0

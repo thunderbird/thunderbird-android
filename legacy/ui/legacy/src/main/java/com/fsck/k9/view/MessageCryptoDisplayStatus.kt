@@ -4,6 +4,8 @@ import androidx.annotation.AttrRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
+import com.ciphermail.smime.api.SmimeDecryptionResult
+import com.ciphermail.smime.api.SmimeSignatureResult
 import com.fsck.k9.mailstore.CryptoResultAnnotation
 import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError
 import com.fsck.k9.ui.R
@@ -230,6 +232,7 @@ enum class MessageCryptoDisplayStatus(
 
     companion object {
         @JvmStatic
+        @Suppress("CyclomaticComplexMethod") // flat 1:1 enum dispatch; complexity is the enum's
         fun fromResultAnnotation(
             cryptoResult: CryptoResultAnnotation?,
         ): MessageCryptoDisplayStatus {
@@ -244,6 +247,10 @@ enum class MessageCryptoDisplayStatus(
                 CryptoError.OPENPGP_SIGNED_API_ERROR -> UNENCRYPTED_SIGN_ERROR
                 CryptoError.OPENPGP_ENCRYPTED_API_ERROR -> ENCRYPTED_ERROR
                 CryptoError.OPENPGP_ENCRYPTED_NO_PROVIDER -> ENCRYPTED_NO_PROVIDER
+                CryptoError.SMIME_OK -> getDisplayStatusForSmimeResult(cryptoResult)
+                CryptoError.SMIME_SIGNED_API_ERROR -> UNENCRYPTED_SIGN_ERROR
+                CryptoError.SMIME_ENCRYPTED_API_ERROR -> ENCRYPTED_ERROR
+                CryptoError.SMIME_ENCRYPTED_NO_PROVIDER -> ENCRYPTED_NO_PROVIDER
             }
         }
 
@@ -332,6 +339,67 @@ enum class MessageCryptoDisplayStatus(
                 USER_ID_UNCONFIRMED -> UNENCRYPTED_SIGN_UNVERIFIED
                 USER_ID_MISSING -> UNENCRYPTED_SIGN_MISMATCH
                 UNKNOWN -> UNENCRYPTED_SIGN_UNVERIFIED
+            }
+        }
+
+        /**
+         * Translate an S/MIME result annotation into the corresponding
+         * display status for the message-view badge. Branches on whether
+         * the message was encrypted, then defers to the signature mapper.
+         * Mirrors the OpenPGP equivalent above.
+         */
+        private fun getDisplayStatusForSmimeResult(
+            cryptoResult: CryptoResultAnnotation,
+        ): MessageCryptoDisplayStatus {
+            val decryptionResult = cryptoResult.smimeDecryptionResult
+            val signatureResult = cryptoResult.smimeSignatureResult
+            if (decryptionResult == null || signatureResult == null) {
+                throw AssertionError("Both S/MIME results must be non-null at this point!")
+            }
+            return when (decryptionResult.result) {
+                SmimeDecryptionResult.RESULT_ENCRYPTED -> getStatusForSmimeEncryptedResult(signatureResult)
+                SmimeDecryptionResult.RESULT_NOT_ENCRYPTED -> getStatusForSmimeUnencryptedResult(signatureResult)
+                else -> throw AssertionError("Unhandled S/MIME decryption result: ${decryptionResult.result}")
+            }
+        }
+
+        /**
+         * Map a signature result onto the encrypted-message badge set.
+         * Unknown codes fall back to `ENCRYPTED_SIGN_ERROR` (fail closed).
+         */
+        private fun getStatusForSmimeEncryptedResult(
+            signatureResult: SmimeSignatureResult,
+        ): MessageCryptoDisplayStatus {
+            return when (signatureResult.result) {
+                SmimeSignatureResult.RESULT_NO_SIGNATURE -> ENCRYPTED_UNSIGNED
+                SmimeSignatureResult.RESULT_VALID_TRUSTED -> ENCRYPTED_SIGN_VERIFIED
+                SmimeSignatureResult.RESULT_VALID_UNTRUSTED -> ENCRYPTED_SIGN_UNVERIFIED
+                SmimeSignatureResult.RESULT_CERT_MISSING -> ENCRYPTED_SIGN_UNKNOWN
+                SmimeSignatureResult.RESULT_INVALID_SIGNATURE -> ENCRYPTED_SIGN_ERROR
+                SmimeSignatureResult.RESULT_CERT_EXPIRED -> ENCRYPTED_SIGN_EXPIRED
+                SmimeSignatureResult.RESULT_CERT_REVOKED -> ENCRYPTED_SIGN_REVOKED
+                else -> ENCRYPTED_SIGN_ERROR
+            }
+        }
+
+        /**
+         * Map a signature result onto the unencrypted-message badge set
+         * (used for signed-only S/MIME parts). `RESULT_NO_SIGNATURE`
+         * collapses to `DISABLED` — the message is plaintext with no
+         * crypto annotation to show.
+         */
+        private fun getStatusForSmimeUnencryptedResult(
+            signatureResult: SmimeSignatureResult,
+        ): MessageCryptoDisplayStatus {
+            return when (signatureResult.result) {
+                SmimeSignatureResult.RESULT_NO_SIGNATURE -> DISABLED
+                SmimeSignatureResult.RESULT_VALID_TRUSTED -> UNENCRYPTED_SIGN_VERIFIED
+                SmimeSignatureResult.RESULT_VALID_UNTRUSTED -> UNENCRYPTED_SIGN_UNVERIFIED
+                SmimeSignatureResult.RESULT_CERT_MISSING -> UNENCRYPTED_SIGN_UNKNOWN
+                SmimeSignatureResult.RESULT_INVALID_SIGNATURE -> UNENCRYPTED_SIGN_ERROR
+                SmimeSignatureResult.RESULT_CERT_EXPIRED -> UNENCRYPTED_SIGN_EXPIRED
+                SmimeSignatureResult.RESULT_CERT_REVOKED -> UNENCRYPTED_SIGN_REVOKED
+                else -> UNENCRYPTED_SIGN_ERROR
             }
         }
     }

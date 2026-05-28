@@ -3,6 +3,7 @@ package com.fsck.k9.ui.settings.account
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -16,12 +17,14 @@ import androidx.core.net.toUri
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
+import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.SwitchPreference
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
+import com.ciphermail.smime.api.util.SmimeApi
 import com.fsck.k9.activity.ManageIdentities
 import com.fsck.k9.activity.setup.AccountSetupComposition
 import com.fsck.k9.controller.MessagingController
@@ -38,11 +41,13 @@ import com.fsck.k9.ui.settings.onClick
 import com.fsck.k9.ui.settings.oneTimeClickListener
 import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.removeEntry
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.common.provider.AppNameProvider
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.account.settings.api.BackgroundAccountRemover
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
@@ -107,6 +112,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         initializeMessageAge(account)
         initializeAdvancedPushSettings(account)
         initializeCryptoSettings(account)
+        initializeSmimeSettings(account)
         initializeFolderSettings(account)
         initializeNotifications(account)
     }
@@ -414,6 +420,154 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
+    private fun initializeSmimeSettings(account: LegacyAccountDto) {
+        findPreference<Preference>(PREFERENCE_SMIME)?.let {
+            configureSmimePreferences(account)
+        }
+    }
+
+    private fun configureSmimePreferences(account: LegacyAccountDto) {
+        // S/MIME stays enabled even when the provider package is missing (so outgoing
+        // mail is blocked at send time instead of being silently sent unencrypted).
+        // If it's enabled but the bound provider is gone/unset and exactly one
+        // provider is now installed, adopt it automatically (handles the
+        // install-later and debug/release-package-swap cases).
+        if (account.smimeEnabled && getSmimeProviderName(account.smimeProvider) == null) {
+            val installed = getSmimeProviderPackages()
+            if (installed.size == 1 && installed[0] != account.smimeProvider) {
+                setSmimeProvider(account, installed[0])
+                configureSmimePreferences(account)
+                return
+            }
+        }
+
+        configureEnableSmimeSupport(account)
+        configureSmimeDefaults(account)
+    }
+
+    /**
+     * Default Sign / Encrypt checkboxes, shown only while S/MIME is on. These are the
+     * per-account defaults pre-selected for each new message (the composer also writes
+     * the user's last choice back here).
+     */
+    private fun configureSmimeDefaults(account: LegacyAccountDto) {
+        val signPref = findPreference<CheckBoxPreference>(PREFERENCE_SMIME_SIGN_DEFAULT)
+        val encryptPref = findPreference<CheckBoxPreference>(PREFERENCE_SMIME_ENCRYPT_DEFAULT)
+
+        signPref?.apply {
+            isVisible = account.smimeEnabled
+            // Invariant: encrypt implies sign (you can't encrypt without signing).
+            isChecked = account.smimeSign || account.smimeEncrypt
+            setOnPreferenceChangeListener { _, newValue ->
+                val sign = newValue as Boolean
+                account.smimeSign = sign
+                if (!sign && account.smimeEncrypt) {
+                    account.smimeEncrypt = false
+                    encryptPref?.isChecked = false
+                }
+                dataStore.saveSettingsInBackground()
+                true
+            }
+        }
+        encryptPref?.apply {
+            isVisible = account.smimeEnabled
+            isChecked = account.smimeEncrypt
+            setOnPreferenceChangeListener { _, newValue ->
+                val encrypt = newValue as Boolean
+                account.smimeEncrypt = encrypt
+                if (encrypt && !account.smimeSign) {
+                    account.smimeSign = true
+                    signPref?.isChecked = true
+                }
+                dataStore.saveSettingsInBackground()
+                true
+            }
+        }
+    }
+
+    private fun getSmimeProviderName(smimeProvider: String?): String? {
+        if (smimeProvider == null) return null
+        return try {
+            requireActivity().packageManager
+                .getApplicationInfo(smimeProvider, 0)
+                .loadLabel(requireActivity().packageManager)
+                .toString()
+        } catch (e: PackageManager.NameNotFoundException) {
+            Log.d(e, "S/MIME provider package not installed: %s", smimeProvider)
+            null
+        }
+    }
+
+    private fun configureEnableSmimeSupport(account: LegacyAccountDto) {
+        val providerName = getSmimeProviderName(account.smimeProvider)
+        (findPreference<Preference>(PREFERENCE_SMIME_ENABLE) as SwitchPreference).apply {
+            if (!account.smimeEnabled) {
+                isChecked = false
+                setSummary(R.string.account_settings_smime_summary_off)
+                oneTimeClickListener(clickHandled = false) {
+                    val smimeProviders = getSmimeProviderPackages()
+                    when {
+                        smimeProviders.size == 1 -> {
+                            setSmimeProvider(account, smimeProviders[0])
+                            setSmimeEnabled(account, true)
+                            configureSmimePreferences(account)
+                        }
+                        smimeProviders.size > 1 -> {
+                            setSmimeEnabled(account, true)
+                            summary = getString(R.string.account_settings_smime_summary_config)
+                            SmimeAppSelectDialog.startSmimeChooserActivity(requireActivity(), account)
+                        }
+                        else -> {
+                            // No provider installed: still turn S/MIME on so outgoing
+                            // mail is blocked at send time (never silently unencrypted).
+                            // Stay on this screen; just warn.
+                            setSmimeEnabled(account, true)
+                            configureSmimePreferences(account)
+                            MaterialAlertDialogBuilder(requireContext())
+                                .setTitle(R.string.account_settings_smime_no_provider_title)
+                                .setMessage(R.string.account_settings_smime_no_provider_msg)
+                                .setPositiveButton(android.R.string.ok, null)
+                                .show()
+                        }
+                    }
+                }
+            } else {
+                isChecked = true
+                summary = if (providerName != null) {
+                    getString(R.string.account_settings_smime_summary_on, providerName)
+                } else {
+                    getString(R.string.account_settings_smime_summary_missing_provider)
+                }
+                oneTimeClickListener {
+                    setSmimeEnabled(account, false)
+                    removeSmimeProvider(account)
+                    configureSmimePreferences(account)
+                }
+            }
+        }
+    }
+
+    private fun getSmimeProviderPackages(): List<String> {
+        val intent = android.content.Intent(SmimeApi.SERVICE_INTENT)
+        val resInfo = requireActivity().packageManager.queryIntentServices(intent, 0)
+        return resInfo.mapNotNull { it.serviceInfo?.packageName }
+    }
+
+    private fun setSmimeProvider(account: LegacyAccountDto, smimeProviderPackage: String) {
+        account.smimeProvider = smimeProviderPackage
+        dataStore.saveSettingsInBackground()
+    }
+
+    private fun removeSmimeProvider(account: LegacyAccountDto) {
+        account.smimeProvider = null
+        dataStore.saveSettingsInBackground()
+    }
+
+    private fun setSmimeEnabled(account: LegacyAccountDto, enabled: Boolean) {
+        account.smimeEnabled = enabled
+        dataStore.saveSettingsInBackground()
+    }
+
     private fun initializeFolderSettings(account: LegacyAccountDto) {
         findPreference<Preference>(PREFERENCE_FOLDERS)?.let {
             if (!messagingController.supportsFolderSubscriptions(account)) {
@@ -525,6 +679,10 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_OPENPGP_ENABLE = "openpgp_provider"
         private const val PREFERENCE_OPENPGP_KEY = "openpgp_key"
         private const val PREFERENCE_AUTOCRYPT_TRANSFER = "autocrypt_transfer"
+        private const val PREFERENCE_SMIME = "smime"
+        private const val PREFERENCE_SMIME_ENABLE = "smime_provider"
+        private const val PREFERENCE_SMIME_SIGN_DEFAULT = "smime_sign_default"
+        private const val PREFERENCE_SMIME_ENCRYPT_DEFAULT = "smime_encrypt_default"
         internal const val PREFERENCE_FOLDERS = "folders"
         private const val PREFERENCE_AUTO_SELECT_FOLDER = "auto_select_folder"
         private const val PREFERENCE_SUBSCRIBED_FOLDERS_ONLY = "subscribed_folders_only"

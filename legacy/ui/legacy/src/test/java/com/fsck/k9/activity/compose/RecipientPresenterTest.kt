@@ -1,11 +1,14 @@
 package com.fsck.k9.activity.compose
 
+import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
+import com.ciphermail.smime.api.SmimeCertificateInfo
+import com.ciphermail.smime.api.util.SmimeApi
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType
@@ -286,6 +289,64 @@ class RecipientPresenterTest : K9RobolectricTest() {
             assertThat(status.isProviderStateOk()).isTrue()
             assertThat(status.isPgpInlineModeEnabled).isTrue()
         }
+    }
+
+    @Test
+    fun onSmimeCertCheckResult_successAllCertsValid_showsEnabledTrusted() {
+        val result = Intent().apply {
+            putExtra(SmimeApi.RESULT_CODE, SmimeApi.RESULT_CODE_SUCCESS)
+            putExtra(
+                SmimeApi.RESULT_CERTIFICATES,
+                arrayOf(
+                    SmimeCertificateInfo("a@example.com", true, "CN=A"),
+                    SmimeCertificateInfo("b@example.com", true, "CN=B"),
+                ),
+            )
+        }
+
+        recipientPresenter.onSmimeCertCheckResult(result)
+
+        verify(recipientMvpView).showCryptoStatus(CryptoStatusDisplayType.ENABLED_TRUSTED)
+    }
+
+    @Test
+    fun onSmimeCertCheckResult_successOneCertInvalid_showsEnabledError() {
+        val result = Intent().apply {
+            putExtra(SmimeApi.RESULT_CODE, SmimeApi.RESULT_CODE_SUCCESS)
+            putExtra(
+                SmimeApi.RESULT_CERTIFICATES,
+                arrayOf(
+                    SmimeCertificateInfo("a@example.com", true, "CN=A"),
+                    SmimeCertificateInfo("b@example.com", false, null),
+                ),
+            )
+        }
+
+        recipientPresenter.onSmimeCertCheckResult(result)
+
+        verify(recipientMvpView).showCryptoStatus(CryptoStatusDisplayType.ENABLED_ERROR)
+    }
+
+    @Test
+    fun onSmimeCertCheckResult_successMissingCertsExtra_showsEnabledError() {
+        val result = Intent().apply {
+            putExtra(SmimeApi.RESULT_CODE, SmimeApi.RESULT_CODE_SUCCESS)
+        }
+
+        recipientPresenter.onSmimeCertCheckResult(result)
+
+        verify(recipientMvpView).showCryptoStatus(CryptoStatusDisplayType.ENABLED_ERROR)
+    }
+
+    @Test
+    fun onSmimeCertCheckResult_errorResultCode_showsEnabledError() {
+        val result = Intent().apply {
+            putExtra(SmimeApi.RESULT_CODE, SmimeApi.RESULT_CODE_ERROR)
+        }
+
+        recipientPresenter.onSmimeCertCheckResult(result)
+
+        verify(recipientMvpView).showCryptoStatus(CryptoStatusDisplayType.ENABLED_ERROR)
     }
 
     private fun runBackgroundTask() {

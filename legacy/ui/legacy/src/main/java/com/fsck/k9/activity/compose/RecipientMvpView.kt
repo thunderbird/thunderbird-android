@@ -367,6 +367,11 @@ class RecipientMvpView(private val activity: MessageCompose) : View.OnFocusChang
         Toast.makeText(activity, R.string.error_crypto_inline_attach, Toast.LENGTH_LONG).show()
     }
 
+    fun showSmimeStatusInfo(allCertsPresent: Boolean) {
+        val msgRes = if (allCertsPresent) R.string.smime_status_active else R.string.smime_status_missing_certs
+        Toast.makeText(activity, msgRes, Toast.LENGTH_SHORT).show()
+    }
+
     override fun onFocusChange(view: View, hasFocus: Boolean) {
         if (!hasFocus) return
 

@@ -415,4 +415,29 @@
 
     </PreferenceScreen>
 
+    <PreferenceScreen
+        android:icon="@drawable/ic_lock"
+        android:key="smime"
+        android:title="@string/account_settings_smime"
+        >
+
+        <SwitchPreference
+            android:key="smime_provider"
+            android:title="@string/account_settings_smime_app"
+            />
+
+        <CheckBoxPreference
+            android:key="smime_sign_default"
+            android:title="@string/account_settings_smime_sign_default_title"
+            android:summary="@string/account_settings_smime_sign_default_summary"
+            />
+
+        <CheckBoxPreference
+            android:key="smime_encrypt_default"
+            android:title="@string/account_settings_smime_encrypt_default_title"
+            android:summary="@string/account_settings_smime_encrypt_default_summary"
+            />
+
+    </PreferenceScreen>
+
 </PreferenceScreen>

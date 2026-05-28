@@ -20,6 +20,12 @@
             />
 
         <activity
+            android:name="com.fsck.k9.ui.settings.account.SmimeAppSelectDialog"
+            android:configChanges="locale"
+            android:theme="@style/Theme.K9.DayNight.Dialog.Translucent"
+            />
+
+        <activity
             android:name="com.fsck.k9.ui.notification.DeleteConfirmationActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTop"

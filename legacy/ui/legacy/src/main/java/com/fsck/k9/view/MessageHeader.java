@@ -60,7 +60,11 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private ImageView starView;
     private ImageView contactPictureView;
     private MaterialTextView fromView;
+    private View cryptoStatusBar;
     private ImageView cryptoStatusIcon;
+    private ImageView smimeEncryptedIcon;
+    private ImageView smimeSignedIcon;
+    private ImageView openInCipherMailIcon;
     private RecipientNamesView recipientNamesView;
     private MaterialTextView dateView;
     private ImageView menuPrimaryActionView;
@@ -91,7 +95,11 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         starView = findViewById(R.id.flagged);
         contactPictureView = findViewById(R.id.contact_picture);
         fromView = findViewById(R.id.from);
+        cryptoStatusBar = findViewById(R.id.crypto_status_bar);
         cryptoStatusIcon = findViewById(R.id.crypto_status_icon);
+        smimeEncryptedIcon = findViewById(R.id.smime_encrypted_icon);
+        smimeSignedIcon = findViewById(R.id.smime_signed_icon);
+        openInCipherMailIcon = findViewById(R.id.open_in_ciphermail_icon);
         recipientNamesView = findViewById(R.id.recipients);
         dateView = findViewById(R.id.date);
 
@@ -340,6 +348,41 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     public void hideCryptoStatus() {
         cryptoStatusIcon.setVisibility(View.GONE);
+        smimeEncryptedIcon.setVisibility(View.GONE);
+        smimeSignedIcon.setVisibility(View.GONE);
+        openInCipherMailIcon.setVisibility(View.GONE);
+        cryptoStatusBar.setVisibility(View.GONE);
+    }
+
+    /**
+     * Show the S/MIME-specific header indicators: a separate "encrypted" icon and "signed"
+     * icon (the latter coloured by trust), plus an optional "open in CipherMail" action.
+     * Used instead of the single combined badge for S/MIME messages.
+     *
+     * @param signedIconRes drawable for the signature icon, or 0 to hide it
+     */
+    public void setSmimeCryptoStatus(boolean encrypted, int signedIconRes, int signedColorAttr,
+            boolean showOpenInProvider) {
+        cryptoStatusIcon.setVisibility(View.GONE);
+
+        smimeEncryptedIcon.setVisibility(encrypted ? View.VISIBLE : View.GONE);
+
+        if (signedIconRes != 0) {
+            smimeSignedIcon.setImageResource(signedIconRes);
+            smimeSignedIcon.setColorFilter(ThemeUtils.getStyledColor(getContext(), signedColorAttr));
+            smimeSignedIcon.setVisibility(View.VISIBLE);
+        } else {
+            smimeSignedIcon.setVisibility(View.GONE);
+        }
+
+        openInCipherMailIcon.setVisibility(showOpenInProvider ? View.VISIBLE : View.GONE);
+
+        boolean anyVisible = encrypted || signedIconRes != 0 || showOpenInProvider;
+        cryptoStatusBar.setVisibility(anyVisible ? View.VISIBLE : View.GONE);
+    }
+
+    public void setOpenInSmimeProviderClickListener(OnClickListener listener) {
+        openInCipherMailIcon.setOnClickListener(listener);
     }
 
     public void setCryptoStatusLoading() {
@@ -356,10 +399,15 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     private void setCryptoDisplayStatus(MessageCryptoDisplayStatus displayStatus) {
         int color = ThemeUtils.getStyledColor(getContext(), displayStatus.getColorAttr());
+        // Combined PGP/legacy badge: hide the S/MIME-specific icons.
+        smimeEncryptedIcon.setVisibility(View.GONE);
+        smimeSignedIcon.setVisibility(View.GONE);
+        openInCipherMailIcon.setVisibility(View.GONE);
         cryptoStatusIcon.setEnabled(displayStatus.isEnabled());
         cryptoStatusIcon.setVisibility(View.VISIBLE);
         cryptoStatusIcon.setImageResource(displayStatus.getStatusIconRes());
         cryptoStatusIcon.setColorFilter(color);
+        cryptoStatusBar.setVisibility(View.VISIBLE);
     }
 
     public void setMessageHeaderClickListener(MessageHeaderClickListener messageHeaderClickListener) {

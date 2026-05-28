@@ -63,6 +63,12 @@ public class MessageViewInfoExtractor {
     @WorkerThread
     public MessageViewInfo extractMessageForView(Message message, @Nullable MessageCryptoAnnotations cryptoAnnotations,
             boolean openPgpProviderConfigured) throws MessagingException {
+        return extractMessageForView(message, cryptoAnnotations, openPgpProviderConfigured, false);
+    }
+
+    @WorkerThread
+    public MessageViewInfo extractMessageForView(Message message, @Nullable MessageCryptoAnnotations cryptoAnnotations,
+            boolean openPgpProviderConfigured, boolean smimeProviderConfigured) throws MessagingException {
         ArrayList<Part> extraParts = new ArrayList<>();
         Part cryptoContentPart = MessageCryptoStructureDetector.findPrimaryEncryptedOrSignedPart(message, extraParts);
 
@@ -80,6 +86,14 @@ public class MessageViewInfoExtractor {
         if (!openPgpProviderConfigured && isOpenPgpEncrypted) {
             CryptoResultAnnotation noProviderAnnotation = CryptoResultAnnotation.createErrorAnnotation(
                     CryptoError.OPENPGP_ENCRYPTED_NO_PROVIDER, null);
+            return MessageViewInfo.createWithErrorState(message, false)
+                    .withCryptoData(noProviderAnnotation, null, null);
+        }
+
+        boolean isSmimeEncrypted = MessageCryptoStructureDetector.isSmimeEncryptedOrSignedData(cryptoContentPart);
+        if (!smimeProviderConfigured && isSmimeEncrypted) {
+            CryptoResultAnnotation noProviderAnnotation = CryptoResultAnnotation.createErrorAnnotation(
+                    CryptoError.SMIME_ENCRYPTED_NO_PROVIDER, null);
             return MessageViewInfo.createWithErrorState(message, false)
                     .withCryptoData(noProviderAnnotation, null, null);
         }
