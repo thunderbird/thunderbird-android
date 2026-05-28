@@ -65,7 +65,6 @@ internal class ThundermailOAuthViewModel(
                         },
                     )
                 }
-                logger.verbose(TAG) { "accountOAuthViewModel.state() called with: state = $state" }
             }
             .launchIn(viewModelScope)
 
