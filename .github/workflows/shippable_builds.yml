@@ -931,6 +931,23 @@ jobs:
           destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
           gzip: false
 
+      - name: Set up Cloud SDK for pruning
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily' }}
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3.0.1
+
+      - name: Prune FTP Nightly Latest
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily' }}
+        shell: bash
+        env:
+          FTP_DESTINATION_NIGHTLY_LATEST: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
+          PKG_FILE: ${{ steps.rename.outputs.PKG_FILE }}
+          FTP_TAR_FILENAME: ${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
+        run: |
+          gcloud storage ls "gs://${FTP_DESTINATION_NIGHTLY_LATEST}/" \
+            | grep -vF "${PKG_FILE}" \
+            | grep -vF "${FTP_TAR_FILENAME}" \
+            | xargs -r gcloud storage rm
+
       - name: Summary
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         id: summary
