@@ -70,7 +70,7 @@ fun FeatureLauncherNavHost(
 
         thundermailNavigation.registerRoutes(
             navGraphBuilder = this,
-            onBack = onBack,
+            onBack = { navController.popBackStack() },
             onFinish = { route ->
                 when (route) {
                     is ThundermailRoute.IncomingSettings ->
