@@ -11,6 +11,8 @@ rationale behind a proposal before implementation begins.
 Architecture Decision Records (ADRs) continue to record durable architectural decisions. Technical designs capture
 implementation details that are too large or too specific for an RFC.
 
+If the implementation details are too large for an RFC, link to a technical design document from the RFC.
+
 ## Format of an RFC
 
 Each RFC document should contain:

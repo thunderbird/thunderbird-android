@@ -29,7 +29,7 @@ ADRs are useful for:
 - Decisions that future contributors need to understand.
 - Explaining why one approach was chosen over another.
 
-An ADR may come from an accepted RFC, but not every RFC needs an ADR.
+An ADR may come from an accepted RFC, but not every RFC needs an ADR. And not every ADR needs an RFC.
 
 ### Technical Design
 
