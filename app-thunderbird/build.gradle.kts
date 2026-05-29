@@ -270,6 +270,7 @@ dependencies {
     testImplementation(projects.feature.thundermail.internal.common)
     testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
     testImplementation(libs.appauth)
+    testImplementation(projects.feature.changelog.internal)
 }
 
 dependencyGuard {

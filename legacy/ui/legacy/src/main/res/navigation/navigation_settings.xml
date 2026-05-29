@@ -45,11 +45,6 @@
         android:name="com.fsck.k9.ui.settings.AboutFragment"
         android:label="@string/about_action"
         >
-
-        <action
-            android:id="@+id/action_aboutScreen_to_changelogScreen"
-            app:destination="@id/changelogScreen"
-            />
     </fragment>
 
     <activity
@@ -79,30 +74,5 @@
         tools:layout="@layout/fragment_settings_import"
         />
 
-    <fragment
-        android:id="@+id/changelogScreen"
-        android:name="com.fsck.k9.ui.changelog.ChangelogFragment"
-        android:label="@string/changelog_title"
-        >
-
-        <argument
-            android:name="mode"
-            app:argType="com.fsck.k9.ui.changelog.ChangeLogMode"
-            android:defaultValue="CHANGE_LOG"
-            />
-    </fragment>
-
-    <fragment
-        android:id="@+id/recentChangesScreen"
-        android:name="com.fsck.k9.ui.changelog.ChangelogFragment"
-        android:label="@string/changelog_recent_changes_title"
-        >
-
-        <argument
-            android:name="mode"
-            app:argType="com.fsck.k9.ui.changelog.ChangeLogMode"
-            android:defaultValue="RECENT_CHANGES"
-            />
-    </fragment>
 
 </navigation>

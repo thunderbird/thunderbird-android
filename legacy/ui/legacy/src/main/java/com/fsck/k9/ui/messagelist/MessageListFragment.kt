@@ -93,8 +93,6 @@ import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.search.getLegacyAccounts
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.changelog.RecentChangesActivity
-import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.ARG_IS_THREAD_DISPLAY
@@ -148,6 +146,7 @@ import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.UnifiedAccountId
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.changelog.internal.RecentChangesViewModel
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
 import net.thunderbird.feature.mail.message.list.domain.model.SortType
@@ -162,6 +161,7 @@ import net.thunderbird.feature.mail.message.list.ui.legacy.LegacyMessageListBrid
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListMetadata
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
+import net.thunderbird.feature.navigation.changelog.api.ChangeLogMode
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.SentFolderNotFoundNotification
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
@@ -581,9 +581,10 @@ class MessageListFragment :
 
     private fun launchRecentChangesActivity() {
         recentChangesViewModel.shouldShowRecentChangesHint.removeObserver(shouldShowRecentChangesHintObserver)
-
-        val intent = Intent(requireActivity(), RecentChangesActivity::class.java)
-        startActivity(intent)
+        FeatureLauncherActivity.launch(
+            context = requireContext(),
+            target = FeatureLauncherTarget.Changelog(changeLogMode = ChangeLogMode.RECENT_CHANGES),
+        )
     }
 
     private fun initializeSortSettings() {

@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.changelog
+package net.thunderbird.feature.changelog.internal
 
 import androidx.compose.runtime.Stable
 import kotlinx.collections.immutable.ImmutableList

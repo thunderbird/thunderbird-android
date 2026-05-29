@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    api(projects.feature.changelog.api)
     api(projects.legacy.ui.base)
     api(projects.core.ui.account)
     api(projects.legacy.ui.folder)
@@ -14,6 +15,7 @@ dependencies {
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
     implementation(projects.core.android.contact)
+    implementation(projects.feature.changelog.internal)
 
     implementation(projects.core.featureflag)
     implementation(projects.core.logging.api)

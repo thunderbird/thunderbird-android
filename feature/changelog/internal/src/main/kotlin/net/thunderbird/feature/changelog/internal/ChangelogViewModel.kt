@@ -1,9 +1,6 @@
-package com.fsck.k9.ui.changelog
+package net.thunderbird.feature.changelog.internal
 
 import androidx.lifecycle.viewModelScope
-import com.fsck.k9.ui.changelog.ChangelogContract.Effect
-import com.fsck.k9.ui.changelog.ChangelogContract.Event
-import com.fsck.k9.ui.changelog.ChangelogContract.State
 import de.cketti.changelog.ReleaseItem
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -12,6 +9,10 @@ import kotlinx.coroutines.launch
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.update
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.feature.changelog.internal.ChangelogContract.Effect
+import net.thunderbird.feature.changelog.internal.ChangelogContract.Event
+import net.thunderbird.feature.changelog.internal.ChangelogContract.State
+import net.thunderbird.feature.navigation.changelog.api.ChangeLogMode
 
 class ChangelogViewModel(
     private val generalSettingsManager: GeneralSettingsManager,
@@ -71,11 +72,6 @@ class ChangelogViewModel(
     override fun onCleared() {
         changeLogManager.writeCurrentVersion()
     }
-}
-
-enum class ChangeLogMode {
-    CHANGE_LOG,
-    RECENT_CHANGES,
 }
 
 enum class ChangeType {
