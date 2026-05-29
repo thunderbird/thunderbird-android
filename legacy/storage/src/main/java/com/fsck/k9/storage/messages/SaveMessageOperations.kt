@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import app.k9mail.legacy.mailstore.SaveMessageData
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
-import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.BoundaryGenerator
@@ -31,6 +30,7 @@ import java.util.Stack
 import java.util.UUID
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import org.apache.commons.io.IOUtils
 import org.apache.james.mime4j.codec.Base64InputStream
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream
@@ -44,6 +44,7 @@ internal class SaveMessageOperations(
     private val partInfoExtractor: BasicPartInfoExtractor,
     private val threadMessageOperations: ThreadMessageOperations,
     private val accountId: AccountId,
+    private val localMessageUidPrefixProvider: LocalMessageUidPrefixProvider,
 ) {
     fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData) {
         saveMessage(folderId, messageServerId, messageData)
@@ -58,7 +59,7 @@ internal class SaveMessageOperations(
     }
 
     private fun saveLocalMessage(folderId: Long, messageData: SaveMessageData): Long {
-        val fakeServerId = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString()
+        val fakeServerId = localMessageUidPrefixProvider.get() + UUID.randomUUID().toString()
         return saveMessage(folderId, fakeServerId, messageData)
     }
 
