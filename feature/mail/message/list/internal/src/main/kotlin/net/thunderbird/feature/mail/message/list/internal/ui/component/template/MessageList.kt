@@ -1,5 +1,7 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.component.template
 
+import androidx.compose.animation.core.snap
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -20,6 +22,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageListItem
 import net.thunderbird.feature.mail.message.list.internal.ui.component.organism.MessageListFooter
 import net.thunderbird.feature.mail.message.list.internal.ui.component.organism.MessageListSwipeableItem
@@ -49,6 +52,7 @@ internal fun MessageListScope.MessageList(
     LazyColumn(
         modifier = modifier.testTagAsResourceId(TEST_TAG_MESSAGE_LIST_ROOT),
         state = listState,
+        contentPadding = PaddingValues(bottom = MainTheme.sizes.large),
     ) {
         items(
             items = state.messages,
@@ -81,8 +85,11 @@ internal fun MessageListScope.MessageList(
                 )
             }
         }
-        item {
-            MessageListFooter(state, dispatchEvent, Modifier.animateItem())
+
+        if (state.metadata.footer.text.isNotBlank()) {
+            item {
+                MessageListFooter(state, dispatchEvent, Modifier.animateItem(placementSpec = snap()))
+            }
         }
     }
 }
