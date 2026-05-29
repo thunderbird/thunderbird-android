@@ -2166,7 +2166,17 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             }
 
             unsuppressMessages(account, messages);
+            for (MessagingListener l : getListeners()) {
+                for (LocalMessage message : messages) {
+                    String uid = message.getUid();
+                    if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                        String folderServerId = message.getFolder().getServerId();
+                        l.synchronizeMailboxRemovedMessage(account, folderServerId, uid);
+                    }
+                }
+            }
         } catch (MessagingException me) {
+
             throw new RuntimeException("Error deleting message from local store.", me);
         }
     }
