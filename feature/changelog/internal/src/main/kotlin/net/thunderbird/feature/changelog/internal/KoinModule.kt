@@ -1,6 +1,5 @@
-package com.fsck.k9.ui.changelog
+package net.thunderbird.feature.changelog.internal
 
-import com.fsck.k9.ui.settings.DefaultChangelogNavigation
 import net.thunderbird.feature.navigation.changelog.api.ChangeLogMode
 import net.thunderbird.feature.navigation.changelog.api.ChangelogNavigation
 import org.koin.core.module.dsl.viewModel

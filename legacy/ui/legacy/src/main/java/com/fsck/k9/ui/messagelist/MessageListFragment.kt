@@ -93,7 +93,6 @@ import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.search.getLegacyAccounts
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.Companion.ARG_IS_THREAD_DISPLAY
@@ -147,6 +146,7 @@ import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.UnifiedAccountId
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.changelog.internal.RecentChangesViewModel
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
 import net.thunderbird.feature.mail.message.list.domain.model.SortType

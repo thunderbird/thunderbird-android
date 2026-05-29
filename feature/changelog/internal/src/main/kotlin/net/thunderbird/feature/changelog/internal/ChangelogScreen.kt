@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.changelog
+package net.thunderbird.feature.changelog.internal
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -40,7 +40,6 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
-import com.fsck.k9.ui.R
 import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
@@ -164,7 +163,7 @@ private fun ReleaseComposable(
 }
 
 @Composable
-private fun ReleaseItemTimeline(
+fun ReleaseItemTimeline(
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -190,7 +189,7 @@ private fun ReleaseItemTimeline(
 
 @Suppress("MultipleEmitters")
 @Composable
-private fun ReleaseItemHeader(
+fun ReleaseItemHeader(
     release: String,
     isLatest: Boolean,
     date: String,

@@ -1,9 +1,12 @@
-package com.fsck.k9.ui.changelog
+package feature.changelog.internal
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.feature.changelog.internal.ChangeType
+import net.thunderbird.feature.changelog.internal.ChangelogScreen
+import net.thunderbird.feature.changelog.internal.ReleaseUiModel
 
 @Composable
 @PreviewLightDark

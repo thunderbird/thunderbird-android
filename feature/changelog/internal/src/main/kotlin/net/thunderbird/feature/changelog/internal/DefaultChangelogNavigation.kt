@@ -1,10 +1,7 @@
-package com.fsck.k9.ui.settings
+package net.thunderbird.feature.changelog.internal
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.toRoute
-import com.fsck.k9.ui.changelog.ChangelogContract
-import com.fsck.k9.ui.changelog.ChangelogScreen
-import com.fsck.k9.ui.changelog.ChangelogViewModel
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.navigation.deepLinkComposable
 import net.thunderbird.feature.navigation.changelog.api.ChangelogNavigation

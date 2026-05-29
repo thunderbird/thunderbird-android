@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.changelog
+package net.thunderbird.feature.changelog.internal
 
 import android.content.Context
 import de.cketti.changelog.ChangeLog
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * Manages a [ChangeLog] instance and notifies when its state changes.
+ * Manages a [de.cketti.changelog.ChangeLog] instance and notifies when its state changes.
  */
 class ChangeLogManager(
     private val context: Context,
