@@ -936,6 +936,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3.0.1
 
       - name: Prune FTP Nightly Latest
+        continue-on-error: true
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily' }}
         shell: bash
         env:
@@ -943,6 +944,7 @@ jobs:
           PKG_FILE: ${{ steps.rename.outputs.PKG_FILE }}
           FTP_TAR_FILENAME: ${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
         run: |
+          set -x
           gcloud storage ls "gs://${FTP_DESTINATION_NIGHTLY_LATEST}/" \
             | grep -vF "${PKG_FILE}" \
             | grep -vF "${FTP_TAR_FILENAME}" \
