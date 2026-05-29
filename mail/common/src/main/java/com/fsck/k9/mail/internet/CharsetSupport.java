@@ -6,6 +6,7 @@ import net.thunderbird.core.common.exception.MessagingException;
 
 import org.apache.commons.io.IOUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -25,7 +26,10 @@ public class CharsetSupport {
     private static final String[][] CHARSET_FALLBACK_MAP = new String[][] {
             // Some Android versions don't support KOI8-U
             {"koi8-u", "koi8-r"},
-            {"iso-2022-jp-[\\d]+", "iso-2022-jp"}
+            {"iso-2022-jp-[\\d]+", "iso-2022-jp"},
+            // EUC-JP aliases that some mailers use
+            {"x-euc-jp", "euc-jp"},
+            {"euc_jp", "euc-jp"},
     };
 
 
@@ -34,8 +38,11 @@ public class CharsetSupport {
             charset = DEFAULT_CHARSET;
 
         charset = charset.toLowerCase(Locale.US);
-        if (charset.equals("cp932"))
+        if (charset.equals("cp932") || charset.equals("shift-jis") || charset.equals("sjis") ||
+                charset.equals("ms932") || charset.equals("windows-31j") || charset.equals("x-sjis") ||
+                charset.equals("x-ms-cp932")) {
             charset = SHIFT_JIS;
+        }
 
         if (charset.equals(SHIFT_JIS) || charset.equals("iso-2022-jp")) {
             String variant = JisSupport.getJisVariantFromMessage(message);
@@ -54,6 +61,15 @@ public class CharsetSupport {
                 charset.endsWith("-iso-2022-jp-2007") && !Charset.isSupported(charset)) {
             in = new Iso2022JpToShiftJisInputStream(in);
             charset = "x-" + charset.substring(2, charset.length() - 17) + "-shift_jis-2007";
+        }
+
+        // Android's ICU4J ISO-2022-JP decoder is stricter than the JVM decoder and can silently fail on
+        // QP-decoded byte sequences, causing ESC bytes to appear as invisible control characters while
+        // $B and (B escape sequence remnants become visible literal text.
+        // Always use Iso2022JpToShiftJisInputStream for reliable decoding across all Android versions.
+        if (charset.equals("iso-2022-jp")) {
+            in = new Iso2022JpToShiftJisInputStream(in);
+            charset = SHIFT_JIS;
         }
 
         // shift_jis variants are supported by Eclair and later.
@@ -97,6 +113,21 @@ public class CharsetSupport {
             charset = DEFAULT_CHARSET;
         }
 
+        // When charset defaulted to US-ASCII (i.e., Content-Type had no charset parameter),
+        // auto-detect ISO-2022-JP by scanning for its 7-bit escape sequences (ESC$B or ESC$@).
+        // Japanese email clients (especially feature phones and carrier webmail) often omit the
+        // charset parameter for ISO-2022-JP bodies, causing garbled "$B..." output when decoded
+        // as US-ASCII.
+        if (charset.equalsIgnoreCase(DEFAULT_CHARSET)) {
+            byte[] bodyBytes = IOUtils.toByteArray(in);
+            if (hasIso2022JpEscapeSequence(bodyBytes)) {
+                in = new Iso2022JpToShiftJisInputStream(new ByteArrayInputStream(bodyBytes));
+                charset = SHIFT_JIS;
+            } else {
+                in = new ByteArrayInputStream(bodyBytes);
+            }
+        }
+
         /*
          * Convert and return as new String
          */
@@ -105,6 +136,25 @@ public class CharsetSupport {
         if (isIphoneString)
             str = importStringFromIphone(str);
         return str;
+    }
+
+    /**
+     * Returns true if the byte array contains an ISO-2022-JP character-set designation
+     * escape sequence: ESC $ B (JIS X 0208-1983) or ESC $ @ (JIS X 0208-1978).
+     *
+     * Japanese email clients — especially feature phones and carrier webmail — often omit the
+     * charset parameter from Content-Type and send a raw 7-bit ISO-2022-JP body.  Checking for
+     * these two sequences is sufficient to distinguish such content from ordinary US-ASCII text
+     * while keeping false-positive risk negligible.
+     */
+    static boolean hasIso2022JpEscapeSequence(byte[] data) {
+        for (int i = 0; i < data.length - 2; i++) {
+            if (data[i] == 0x1B && data[i + 1] == '$'
+                    && (data[i + 2] == 'B' || data[i + 2] == '@')) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static String importStringFromIphone(String str) {

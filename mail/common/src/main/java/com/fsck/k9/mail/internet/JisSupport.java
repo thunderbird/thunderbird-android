@@ -87,8 +87,33 @@ class JisSupport {
     }
 
     private static String getAddressFromReceivedHeader(String receivedHeader) {
-        // Not implemented yet!  Extract an address from the FOR clause of the given Received header.
-        return null;
+        // Extract an address from the FOR clause of the given Received header.
+        // Example: "... for <user@docomo.ne.jp>;" or "... for user@docomo.ne.jp;"
+        int forIndex = receivedHeader.toLowerCase(java.util.Locale.US).indexOf(" for ");
+        if (forIndex == -1) {
+            return null;
+        }
+        String afterFor = receivedHeader.substring(forIndex + 5).trim();
+        // Strip angle brackets if present
+        if (afterFor.startsWith("<")) {
+            int close = afterFor.indexOf('>');
+            if (close == -1) {
+                return null;
+            }
+            afterFor = afterFor.substring(1, close);
+        } else {
+            // Address ends at the first whitespace or semicolon
+            int end = afterFor.length();
+            for (int i = 0; i < afterFor.length(); i++) {
+                char c = afterFor.charAt(i);
+                if (c == ';' || c == ' ' || c == '\t' || c == '\r' || c == '\n') {
+                    end = i;
+                    break;
+                }
+            }
+            afterFor = afterFor.substring(0, end);
+        }
+        return afterFor.isEmpty() ? null : afterFor;
     }
 
     private static String getJisVariantFromFromHeaders(Message message) {
