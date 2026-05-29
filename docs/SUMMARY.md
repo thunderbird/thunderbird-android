@@ -59,6 +59,7 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
   - [Technical Designs](engineering/technical-designs/README.md)
     - [Template](engineering/technical-designs/0000-technical-design-template.md)
     - [Proposed]()
+      - [0001 - Changelog System Replacement](engineering/technical-designs/0001-changelog-system-replacement.md)
     - [Accepted]()
     - [Rejected]()
     - [Obsolete]()
