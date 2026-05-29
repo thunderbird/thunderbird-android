@@ -14,6 +14,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract.Contacts;
@@ -24,6 +25,8 @@ import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListPopupWindow;
 import android.widget.ListView;
@@ -97,6 +100,14 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         initView(context);
     }
 
+    @Override
+    public InputConnection onCreateInputConnection(@NonNull EditorInfo outAttrs) {
+        InputConnection ic = super.onCreateInputConnection(outAttrs);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            outAttrs.imeOptions |= EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING;
+        }
+        return ic;
+    }
     private void initView(Context context) {
         // TODO: validator?
 
