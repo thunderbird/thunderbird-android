@@ -144,4 +144,16 @@
         <item>@string/account_settings_remote_search_num_results_entries_all</item>
     </string-array>
 
+    <string-array name="archive_granularity_entries">
+        <item>@string/archive_granularity_single_folder</item>
+        <item>@string/archive_granularity_yearly_folders</item>
+        <item>@string/archive_granularity_monthly_folders</item>
+    </string-array>
+
+    <string-array name="archive_granularity_values" translatable="false">
+        <item>SINGLE_ARCHIVE_FOLDER</item>
+        <item>PER_YEAR_ARCHIVE_FOLDERS</item>
+        <item>PER_MONTH_ARCHIVE_FOLDERS</item>
+    </string-array>
+
 </resources>

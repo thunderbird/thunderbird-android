@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
+
+import net.thunderbird.backend.api.BackendStorageFactory;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
 import net.thunderbird.core.featureflag.FeatureFlagResult.Disabled;
@@ -94,6 +96,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Mock
     private SpecialLocalFoldersCreator specialLocalFoldersCreator;
     @Mock
+    private BackendStorageFactory backendStorageFactory;
+    @Mock
     private SimpleMessagingListener listener;
     @Mock
     private LocalFolder localFolder;
@@ -122,6 +126,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private Preferences preferences;
     private String accountUuid;
     private FeatureFlagProvider featureFlagProvider;
+    @Mock
+    private FolderIdResolver folderIdResolver;
 
     @Mock
     private Logger syncLogger;
@@ -159,7 +165,9 @@ public class MessagingControllerTest extends K9RobolectricTest {
             featureFlagProvider,
             syncLogger,
             notificationManager,
-            fakeOutboxFolderManager
+            fakeOutboxFolderManager,
+            backendStorageFactory,
+            folderIdResolver
         );
 
         configureAccount();

@@ -62,6 +62,7 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
+import net.thunderbird.backend.api.BackendStorageFactory;
 import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageDownloadState;
@@ -135,6 +136,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private final SaveMessageDataCreator saveMessageDataCreator;
     private final SpecialLocalFoldersCreator specialLocalFoldersCreator;
     private final LocalDeleteOperationDecider localDeleteOperationDecider;
+    private final BackendStorageFactory backendStorageFactory;
 
     private final Thread controllerThread;
 
@@ -150,6 +152,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private final OutboxFolderManager outboxFolderManager;
     private final NotificationSenderCompat notificationSender;
     private final NotificationDismisserCompat notificationDismisser;
+    private final FolderIdResolver folderIdResolver;
 
     private volatile boolean stopped = false;
 
@@ -174,7 +177,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         FeatureFlagProvider featureFlagProvider,
         Logger syncDebugLogger,
         NotificationManager notificationManager,
-        OutboxFolderManager outboxFolderManager
+        OutboxFolderManager outboxFolderManager,
+        BackendStorageFactory backendStorageFactory,
+        FolderIdResolver folderIdResolver
     ) {
         this.context = context;
         this.notificationController = notificationController;
@@ -191,6 +196,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         this.notificationSender = new NotificationSenderCompat(notificationManager);
         this.notificationDismisser = new NotificationDismisserCompat(notificationManager);
         this.outboxFolderManager = outboxFolderManager;
+        this.backendStorageFactory = backendStorageFactory;
+        this.folderIdResolver = folderIdResolver;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -206,7 +213,14 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         draftOperations = new DraftOperations(this, messageStoreManager, saveMessageDataCreator);
         notificationOperations = new NotificationOperations(notificationController, preferences, messageStoreManager);
-        archiveOperations = new ArchiveOperations(this, featureFlagProvider);
+        archiveOperations = new ArchiveOperations(
+            this,
+            featureFlagProvider,
+            new ArchiveFolderResolver(
+                folderIdResolver,
+                new BackendStorageArchiveFolderCreator(backendStorageFactory)
+            )
+        );
     }
 
     private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
@@ -306,9 +320,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
+    @NonNull
     private String getFolderServerId(LegacyAccountDto account, long folderId) {
-        MessageStore messageStore = messageStoreManager.getMessageStore(account);
-        String folderServerId = messageStore.getFolderServerId(folderId);
+        final String folderServerId = folderIdResolver.getFolderServerId(account, folderId);
         if (folderServerId == null) {
             throw new IllegalStateException("Folder not found (ID: " + folderId + ")");
         }
@@ -316,8 +330,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     private long getFolderId(LegacyAccountDto account, String folderServerId) {
-        MessageStore messageStore = messageStoreManager.getMessageStore(account);
-        Long folderId = messageStore.getFolderId(folderServerId);
+        final Long folderId = folderIdResolver.getFolderId(account, folderServerId);
         if (folderId == null) {
             throw new IllegalStateException("Folder not found (server ID: " + folderServerId + ")");
         }
