@@ -1,28 +1,19 @@
-# Descriptive Title in Title Case
+# ADR: Descriptive Title in Title Case
 
 - Issue: [#NNNN](https://github.com/thunderbird/thunderbird-android/issues/NNNN)
-- Pull Request: [#NNNN](https://github.com/thunderbird/thunderbird-android/pull/NNNN)
-
-<!-- optional in case there are follow-up issues
-- Tracking Issue: [#NNNN](https://github.com/thunderbird/thunderbird-android/issues/NNNN)
--->
-
-## Status
-
-<!-- [Status from the options: proposed, accepted, rejected, deprecated, superseded] -->
-- **Status**
+- Status: **Proposed**
 
 ## Context
 
-<!-- [Description of the context and problem statement that the decision is addressing. It should contain any relevant factors that influenced the decision.] -->
+Description of the context and problem statement that the decision is addressing. It should contain any relevant factors that influenced the decision.
 
 ## Decision
 
-<!-- [Description of the decision that was made. Detail the change that will be implemented.] -->
+Description of the decision that was made. Detail the change that will be implemented.
 
 ## Consequences
 
-<!-- [Explanation of the consequences of the decision. This includes both the positive and negative effects, and any potential risks.] -->
+Explanation of the consequences of the decision. This includes both the positive and negative effects, and any potential risks.
 
 ### Positive Consequences
 

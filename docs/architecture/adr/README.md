@@ -15,13 +15,11 @@ We adhere to Michael Nygard's [ADR format proposal](https://cognitect.com/blog/2
 where each ADR document should contain:
 
 1. **Title**: A short descriptive name for the decision.
-   1. **Link to Issue**: A link to the issue that prompted the decision.
-   2. **Link to Pull Request**: A link to the pull request that implements the ADR.
-   3. **Link to Tracking Issue**: A link to the tracking issue, if applicable.
-2. **Status**: The current status of the decision (proposed, accepted, rejected, deprecated, superseded)
-3. **Context**: The context that motivates this decision.
-4. **Decision**: The change that we're proposing and/or doing.
-5. **Consequences**: What becomes easier or more difficult to do and any risks introduced as a result of the decision.
+2. **Issue**: A link to the issue that prompted the decision.
+3. **Status**: The current status of the decision (proposed, accepted, rejected, superseded)
+4. **Context**: The context that motivates this decision.
+5. **Decision**: The change that we're proposing and/or doing.
+6. **Consequences**: What becomes easier or more difficult to do and any risks introduced as a result of the decision.
 
 ## Creating a new ADR
 
@@ -38,8 +36,8 @@ Once you are ready to propose your ADR, you should:
 
 ## Directory Structure
 
-The ADRs will be stored in a directory named `docs/adr`, and each ADR will be a file named `NNNN-title-with-dashes.md`
-where `NNNN` is a four-digit number that is increased by 1 for every new adr.
+The ADRs will be stored in `docs/architecture/adr`, and each ADR will be a file named `NNNN-title-with-dashes.md`
+where `NNNN` is a four-digit number that is increased by 1 for every new ADR.
 
 ## ADR Life Cycle
 
@@ -48,8 +46,7 @@ The life cycle of an ADR is as follows:
 1. **Proposed**: The ADR is under consideration.
 2. **Accepted**: The decision described in the ADR has been accepted and should be adhered to, unless it is superseded by another ADR.
 3. **Rejected**: The decision described in the ADR has been rejected.
-4. **Deprecated**: The decision described in the ADR is no longer relevant due to changes in system context.
-5. **Superseded**: The decision described in the ADR has been replaced by another decision.
+4. **Superseded**: The decision described in the ADR has been replaced by another decision.
 
 Each ADR will have a status indicating its current life-cycle stage. An ADR can be updated over time, either to change
 the status or to add more information.
