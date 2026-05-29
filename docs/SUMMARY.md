@@ -42,7 +42,7 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
       - [0008 - Change Shared Module package to `net.thunderbird`](architecture/adr/0008-change-shared-modules-package-name.md)
     - [Proposed]()
     - [Rejected]()
-- [Engineering]()
+- [Engineering](engineering/README.md)
   - [RFCs](engineering/rfcs/README.md)
     - [Template](engineering/rfcs/0000-rfc-template.md)
     - [Accepted]()
