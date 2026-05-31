@@ -9,6 +9,7 @@ import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.Preferences
 import java.util.concurrent.TimeUnit
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.MIN_ATTACHMENT_CLEANUP_DAYS
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -23,26 +24,41 @@ class AttachmentCleanupWorker(
 ) : Worker(context, parameters) {
 
     override fun doWork(): Result {
-        if (isBackgroundCleanupDisabled()) {
-            return Result.success()
+        val accountUuid = inputData.getString(EXTRA_ACCOUNT_UUID)
+        val result = when {
+            isBackgroundCleanupDisabled() -> Result.success()
+            accountUuid == null -> Result.failure()
+            else -> cleanUpAttachments(accountUuid)
         }
 
-        val accountUuid = inputData.getString(EXTRA_ACCOUNT_UUID) ?: return Result.failure()
-        val account = preferences.getAccount(accountUuid) ?: return Result.success()
-        val retentionDays = account.attachmentCleanupDays
+        return result
+    }
 
-        if (retentionDays < MIN_ATTACHMENT_CLEANUP_DAYS) {
-            return Result.success()
+    private fun cleanUpAttachments(accountUuid: String): Result {
+        val account = preferences.getAccount(accountUuid)
+
+        return when {
+            account == null -> Result.success()
+            account.attachmentCleanupDays < MIN_ATTACHMENT_CLEANUP_DAYS -> Result.success()
+            else -> performCleanup(accountUuid, account)
         }
+    }
 
+    @Suppress("TooGenericExceptionCaught")
+    private fun performCleanup(accountUuid: String, account: LegacyAccountDto): Result {
         return try {
+            val retentionDays = account.attachmentCleanupDays
             val cutoffTime = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(retentionDays.toLong())
             val result = messageStoreManager.getMessageStore(
                 account,
             ).removeOldDownloadedAttachments(cutoffTime, MAX_PARTS_PER_RUN)
 
             if (result.changedPartCount > 0) {
-                Log.d("Cleaned %d locally cached attachment parts for account %s", result.changedPartCount, accountUuid)
+                Log.d(
+                    "Cleaned %d locally cached attachment parts for account %s",
+                    result.changedPartCount,
+                    accountUuid,
+                )
             }
 
             Result.success()

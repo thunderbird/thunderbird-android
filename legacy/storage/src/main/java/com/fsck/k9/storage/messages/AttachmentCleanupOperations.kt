@@ -59,14 +59,14 @@ internal class AttachmentCleanupOperations(
         ).use { cursor ->
             val parts = buildList {
                 while (cursor.moveToNext()) {
-                    lastPartId = cursor.getLong(0)
-                    val header = cursor.getBlob(3)
+                    lastPartId = cursor.getLong(PART_ID_COLUMN_INDEX)
+                    val header = cursor.getBlob(HEADER_COLUMN_INDEX)
                     if (header.isExplicitAttachment()) {
                         add(
                             DownloadedAttachmentPart(
-                                messagePartId = cursor.getLong(0),
-                                dataLocation = cursor.getInt(1),
-                                messageId = cursor.getLong(2),
+                                messagePartId = cursor.getLong(PART_ID_COLUMN_INDEX),
+                                dataLocation = cursor.getInt(DATA_LOCATION_COLUMN_INDEX),
+                                messageId = cursor.getLong(MESSAGE_ID_COLUMN_INDEX),
                             ),
                         )
                     }
@@ -98,6 +98,10 @@ internal class AttachmentCleanupOperations(
 
     companion object {
         private const val CLEANUP_BATCH_SIZE = 500
+        private const val PART_ID_COLUMN_INDEX = 0
+        private const val DATA_LOCATION_COLUMN_INDEX = 1
+        private const val MESSAGE_ID_COLUMN_INDEX = 2
+        private const val HEADER_COLUMN_INDEX = 3
         private const val GET_DOWNLOADED_ATTACHMENT_PARTS_SQL = """
 SELECT message_parts.id, message_parts.data_location, messages.id, message_parts.header
 FROM message_parts
@@ -118,14 +122,11 @@ LIMIT ?
 }
 
 private fun ByteArray?.isExplicitAttachment(): Boolean {
-    if (this == null) return false
-
-    val contentDisposition = toString(Charsets.UTF_8)
-        .extractHeaderBody(MimeHeader.HEADER_CONTENT_DISPOSITION)
-        ?: return false
-    val dispositionType = MimeUtility.getHeaderParameter(MimeUtility.unfold(contentDisposition), null)
-
-    return dispositionType.equals("attachment", ignoreCase = true)
+    return this?.toString(Charsets.UTF_8)
+        ?.extractHeaderBody(MimeHeader.HEADER_CONTENT_DISPOSITION)
+        ?.let(MimeUtility::unfold)
+        ?.let { MimeUtility.getHeaderParameter(it, null).equals("attachment", ignoreCase = true) }
+        ?: false
 }
 
 private fun String.extractHeaderBody(headerName: String): String? {
