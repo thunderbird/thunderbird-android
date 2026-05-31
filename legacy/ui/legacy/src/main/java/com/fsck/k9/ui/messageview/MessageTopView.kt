@@ -33,6 +33,7 @@ import net.thunderbird.core.common.mail.EmailAddress
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.core.preference.BodyContentType
 import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsPreferenceManager
+import net.thunderbird.core.ui.animation.manager.AnimationManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -43,6 +44,7 @@ class MessageTopView(
 
     private val contactRepository: ContactRepository by inject()
     private val visualSettingsPrefManager: DisplayVisualSettingsPreferenceManager by inject()
+    private val animationManager: AnimationManager by inject()
 
     private lateinit var layoutInflater: LayoutInflater
 
@@ -73,7 +75,7 @@ class MessageTopView(
         layoutInflater = LayoutInflater.from(context)
 
         viewAnimator = findViewById(R.id.message_layout_animator)
-        if (!visualSettingsPrefManager.getConfig().isShowAnimations) {
+        if (!animationManager.shouldShowAnimations()) {
             viewAnimator.inAnimation = null
             viewAnimator.outAnimation = null
         }
