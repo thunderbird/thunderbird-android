@@ -2,6 +2,7 @@ package com.fsck.k9.storage.messages
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
+import app.k9mail.legacy.mailstore.AttachmentCleanupResult
 import com.fsck.k9.mail.internet.MimeHeader
 import com.fsck.k9.mail.internet.MimeUtility
 import com.fsck.k9.mailstore.LockableDatabase
@@ -11,26 +12,55 @@ internal class AttachmentCleanupOperations(
     private val lockableDatabase: LockableDatabase,
     private val attachmentFileManager: AttachmentFileManager,
 ) {
-    fun removeOldDownloadedAttachments(cutoffTime: Long): Int {
-        return lockableDatabase.execute(true) { database ->
-            val attachmentParts = database.getDownloadedAttachmentParts(cutoffTime)
-            if (attachmentParts.isEmpty()) return@execute 0
+    fun removeOldDownloadedAttachments(cutoffTime: Long, maxParts: Int): AttachmentCleanupResult {
+        require(maxParts > 0) { "maxParts must be greater than zero" }
 
-            attachmentParts
-                .filter { it.dataLocation == DataLocation.ON_DISK }
-                .forEach { attachmentFileManager.deleteFile(it.messagePartId) }
+        var removedPartCount = 0
+        var lastScannedPartId = 0L
+        var scannedBatchCount = 0
 
-            val changedPartIds = attachmentParts.map { it.messagePartId }
-            database.markPartsAsMissing(changedPartIds)
+        while (removedPartCount < maxParts && scannedBatchCount < MAX_BATCHES_PER_RUN) {
+            val batchSize = minOf(CLEANUP_BATCH_SIZE, maxParts - removedPartCount)
+            val batch = lockableDatabase.execute(true) { database ->
+                val attachmentParts = database.getDownloadedAttachmentParts(cutoffTime, lastScannedPartId, batchSize)
+                if (attachmentParts.parts.isNotEmpty()) {
+                    attachmentParts.parts
+                        .filter { it.dataLocation == DataLocation.ON_DISK }
+                        .forEach { attachmentFileManager.deleteFile(it.messagePartId) }
 
-            val changedMessageIds = attachmentParts.map { it.messageId }.distinct()
-            database.markMessagesAsPartiallyDownloaded(changedMessageIds)
+                    val changedPartIds = attachmentParts.parts.map { it.messagePartId }
+                    database.markPartsAsMissing(changedPartIds)
 
-            changedPartIds.size
+                    val changedMessageIds = attachmentParts.parts.map { it.messageId }.distinct()
+                    database.markMessagesAsPartiallyDownloaded(changedMessageIds)
+                }
+
+                AttachmentCleanupBatch(
+                    removedPartCount = attachmentParts.parts.size,
+                    lastScannedPartId = attachmentParts.lastScannedPartId,
+                )
+            }
+
+            scannedBatchCount += 1
+            removedPartCount += batch.removedPartCount
+            lastScannedPartId = batch.lastScannedPartId ?: break
         }
+
+        val hitRunBudget = removedPartCount >= maxParts || scannedBatchCount >= MAX_BATCHES_PER_RUN
+        return AttachmentCleanupResult(
+            removedPartCount = removedPartCount,
+            // A later worker run will cheaply discover if the budget landed exactly at the end.
+            hasMore = hitRunBudget && lastScannedPartId > 0,
+        )
     }
 
-    private fun SQLiteDatabase.getDownloadedAttachmentParts(cutoffTime: Long): List<DownloadedAttachmentPart> {
+    private fun SQLiteDatabase.getDownloadedAttachmentParts(
+        cutoffTime: Long,
+        lastScannedPartId: Long,
+        batchSize: Int,
+    ): DownloadedAttachmentParts {
+        var lastPartId: Long? = null
+
         return rawQuery(
             """
 SELECT message_parts.id, message_parts.data_location, messages.id, message_parts.header
@@ -42,13 +72,17 @@ WHERE folders.local_only = 0
   AND messages.empty = 0
   AND messages.encryption_type IS NULL
   AND COALESCE(NULLIF(messages.internal_date, 0), messages.date) < CAST(? AS INTEGER)
+  AND message_parts.id > CAST(? AS INTEGER)
   AND message_parts.data_location IN (${DataLocation.IN_DATABASE}, ${DataLocation.ON_DISK})
   AND lower(CAST(message_parts.header AS TEXT)) LIKE ?
+ORDER BY message_parts.id
+LIMIT ?
             """.trimIndent(),
-            arrayOf(cutoffTime.toString(), "%content-disposition%"),
+            arrayOf(cutoffTime.toString(), lastScannedPartId.toString(), "%content-disposition%", batchSize.toString()),
         ).use { cursor ->
-            buildList {
+            val parts = buildList {
                 while (cursor.moveToNext()) {
+                    lastPartId = cursor.getLong(0)
                     val header = cursor.getBlob(3)
                     if (header.isExplicitAttachment()) {
                         add(
@@ -61,6 +95,7 @@ WHERE folders.local_only = 0
                     }
                 }
             }
+            DownloadedAttachmentParts(parts = parts, lastScannedPartId = lastPartId)
         }
     }
 
@@ -108,6 +143,11 @@ WHERE folders.local_only = 0
             }
         }
     }
+
+    companion object {
+        private const val CLEANUP_BATCH_SIZE = 500
+        private const val MAX_BATCHES_PER_RUN = 10
+    }
 }
 
 private fun ByteArray?.isExplicitAttachment(): Boolean {
@@ -154,4 +194,14 @@ private data class DownloadedAttachmentPart(
     val messagePartId: Long,
     val dataLocation: Int,
     val messageId: Long,
+)
+
+private data class DownloadedAttachmentParts(
+    val parts: List<DownloadedAttachmentPart>,
+    val lastScannedPartId: Long?,
+)
+
+private data class AttachmentCleanupBatch(
+    val removedPartCount: Int,
+    val lastScannedPartId: Long?,
 )

@@ -36,11 +36,13 @@ class AttachmentCleanupWorker(
 
         return try {
             val cutoffTime = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(retentionDays.toLong())
-            val removedPartCount = messageStoreManager.getMessageStore(
+            val result = messageStoreManager.getMessageStore(
                 account,
-            ).removeOldDownloadedAttachments(cutoffTime)
-            Log.d("Removed %d locally cached attachment parts for account %s", removedPartCount, accountUuid)
-            Result.success()
+            ).removeOldDownloadedAttachments(cutoffTime, MAX_PARTS_PER_RUN)
+            Log.d("Removed %d locally cached attachment parts for account %s", result.removedPartCount, accountUuid)
+
+            // Successful partial progress: continue later through WorkManager backoff.
+            if (result.hasMore) Result.retry() else Result.success()
         } catch (e: Exception) {
             Log.e(e, "Failed to clean up old downloaded attachments")
             Result.retry()
@@ -57,5 +59,6 @@ class AttachmentCleanupWorker(
 
     companion object {
         const val EXTRA_ACCOUNT_UUID = "accountUuid"
+        private const val MAX_PARTS_PER_RUN = 2_000
     }
 }

@@ -173,9 +173,9 @@ interface MessageStore {
      *
      * Message metadata and attachment metadata are kept so attachments can be downloaded again from the server.
      *
-     * @return The number of attachment parts changed.
+     * @return Cleanup result containing the number of changed parts and whether more eligible parts remain.
      */
-    fun removeOldDownloadedAttachments(cutoffTime: Long): Int
+    fun removeOldDownloadedAttachments(cutoffTime: Long, maxParts: Int): AttachmentCleanupResult
 
     /**
      * Remove messages from the store.
