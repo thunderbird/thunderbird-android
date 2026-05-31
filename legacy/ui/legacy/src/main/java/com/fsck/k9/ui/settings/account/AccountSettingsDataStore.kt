@@ -7,6 +7,7 @@ import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationController
 import java.util.concurrent.ExecutorService
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.MIN_ATTACHMENT_CLEANUP_DAYS
 import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccountDto
@@ -28,6 +29,7 @@ class AccountSettingsDataStore(
 ) : PreferenceDataStore() {
     private var notificationSettingsChanged = false
     private var attachmentCleanupChanged = false
+    private var runAttachmentCleanupNow = false
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         return when (key) {
@@ -220,9 +222,10 @@ class AccountSettingsDataStore(
             notificationSettingsChanged = false
             saveSettings()
             if (attachmentCleanupChanged) {
-                jobManager.scheduleAttachmentCleanup(account)
+                jobManager.scheduleAttachmentCleanup(account, runNow = runAttachmentCleanupNow)
             }
             attachmentCleanupChanged = false
+            runAttachmentCleanupNow = false
         }
     }
 
@@ -235,10 +238,17 @@ class AccountSettingsDataStore(
     }
 
     private fun updateAttachmentCleanupDays(days: Int) {
-        if (account.attachmentCleanupDays != days) {
+        val previousDays = account.attachmentCleanupDays
+        if (previousDays != days) {
             account.attachmentCleanupDays = days
             attachmentCleanupChanged = true
+            runAttachmentCleanupNow = shouldRunAttachmentCleanupNow(previousDays, days)
         }
+    }
+
+    private fun shouldRunAttachmentCleanupNow(previousDays: Int, days: Int): Boolean {
+        return days >= MIN_ATTACHMENT_CLEANUP_DAYS &&
+            (previousDays < MIN_ATTACHMENT_CLEANUP_DAYS || days < previousDays)
     }
 
     private fun extractFolderId(preferenceValue: String): Long? {

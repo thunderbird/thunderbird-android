@@ -33,9 +33,11 @@ class K9JobManager(
         mailSyncWorkerManager.scheduleMailSync(account)
     }
 
-    fun scheduleAttachmentCleanup(account: LegacyAccountDto) {
+    fun scheduleAttachmentCleanup(account: LegacyAccountDto, runNow: Boolean = false) {
         attachmentCleanupWorkerManager.scheduleAttachmentCleanup(account)
-        attachmentCleanupWorkerManager.scheduleAttachmentCleanupNow(account)
+        if (runNow) {
+            attachmentCleanupWorkerManager.scheduleAttachmentCleanupNow(account)
+        }
     }
 
     private fun scheduleMailSync() {

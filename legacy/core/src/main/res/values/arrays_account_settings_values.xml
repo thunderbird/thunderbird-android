@@ -61,7 +61,7 @@
     </string-array>
 
     <string-array name="attachment_cleanup_values" translatable="false">
-        <item>0</item>
+        <item>-1</item>
         <item>30</item>
         <item>90</item>
         <item>365</item>

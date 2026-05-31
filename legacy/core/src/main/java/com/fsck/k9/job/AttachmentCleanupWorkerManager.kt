@@ -8,6 +8,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import java.util.concurrent.TimeUnit
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.MIN_ATTACHMENT_CLEANUP_DAYS
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.legacy.Log
@@ -61,7 +62,7 @@ class AttachmentCleanupWorkerManager(
     }
 
     private fun LegacyAccountDto.isAttachmentCleanupEnabled(): Boolean {
-        return attachmentCleanupDays > 0 && incomingServerSettings.type == Protocols.IMAP
+        return attachmentCleanupDays >= MIN_ATTACHMENT_CLEANUP_DAYS && incomingServerSettings.type == Protocols.IMAP
     }
 
     private fun createUniqueWorkName(accountUuid: String): String {
