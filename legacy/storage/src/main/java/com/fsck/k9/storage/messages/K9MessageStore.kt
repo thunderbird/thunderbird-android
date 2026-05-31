@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import app.k9mail.legacy.mailstore.AttachmentCleanupResult
 import app.k9mail.legacy.mailstore.CreateFolderInfo
 import app.k9mail.legacy.mailstore.FolderMapper
 import app.k9mail.legacy.mailstore.MessageMapper
@@ -51,6 +52,7 @@ class K9MessageStore(
     private val retrieveMessageOperations = RetrieveMessageOperations(database)
     private val retrieveMessageListOperations = RetrieveMessageListOperations(database)
     private val deleteMessageOperations = DeleteMessageOperations(database, attachmentFileManager)
+    private val attachmentCleanupOperations = AttachmentCleanupOperations(database, attachmentFileManager)
     private val createFolderOperations = CreateFolderOperations(database, accountId)
     private val retrieveFolderOperations = RetrieveFolderOperations(database)
     private val checkFolderOperations = CheckFolderOperations(database)
@@ -207,6 +209,10 @@ class K9MessageStore(
 
     override fun getSize(): Long {
         return databaseOperations.getSize()
+    }
+
+    override fun removeOldDownloadedAttachments(cutoffTime: Long, maxParts: Int): AttachmentCleanupResult {
+        return attachmentCleanupOperations.removeOldDownloadedAttachments(cutoffTime, maxParts)
     }
 
     override fun changeFolder(folderServerId: String, name: String, type: FolderType) {

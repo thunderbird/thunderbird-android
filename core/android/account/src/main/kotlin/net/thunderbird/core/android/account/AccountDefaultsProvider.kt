@@ -18,6 +18,8 @@ interface AccountDefaultsProvider {
     fun applyOverwrites(account: LegacyAccountDto, storage: Storage)
 
     companion object {
+        const val DEFAULT_ATTACHMENT_CLEANUP_DAYS = 0
+
         const val DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE = 131072
 
         @JvmStatic

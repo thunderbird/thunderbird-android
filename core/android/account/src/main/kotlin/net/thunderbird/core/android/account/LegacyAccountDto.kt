@@ -5,6 +5,7 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.ServerSettings
 import java.util.Calendar
 import java.util.Date
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_ATTACHMENT_CLEANUP_DAYS
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.feature.account.Account
 import net.thunderbird.feature.account.AccountId
@@ -276,6 +277,10 @@ open class LegacyAccountDto(
     @get:Synchronized
     @set:Synchronized
     var maximumAutoDownloadMessageSize = 0
+
+    @get:Synchronized
+    @set:Synchronized
+    var attachmentCleanupDays = DEFAULT_ATTACHMENT_CLEANUP_DAYS
 
     @get:Synchronized
     @set:Synchronized

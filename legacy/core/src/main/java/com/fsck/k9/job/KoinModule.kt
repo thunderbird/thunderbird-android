@@ -20,7 +20,13 @@ val jobModule = module {
             workManager = get(),
             accountManager = get(),
             mailSyncWorkerManager = get(),
+            attachmentCleanupWorkerManager = get(),
             syncDebugFileLogManager = get(),
+        )
+    }
+    factory {
+        AttachmentCleanupWorkerManager(
+            workManager = get(),
         )
     }
     factory {
@@ -38,6 +44,15 @@ val jobModule = module {
             preferences = get(),
             context = get(),
             generalSettingsManager = get(),
+            parameters = parameters,
+        )
+    }
+    factory { (parameters: WorkerParameters) ->
+        AttachmentCleanupWorker(
+            preferences = get(),
+            messageStoreManager = get(),
+            generalSettingsManager = get(),
+            context = get(),
             parameters = parameters,
         )
     }

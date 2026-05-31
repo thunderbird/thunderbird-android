@@ -27,6 +27,7 @@ class AccountSettingsDataStore(
     private val messagingController: MessagingController,
 ) : PreferenceDataStore() {
     private var notificationSettingsChanged = false
+    private var attachmentCleanupChanged = false
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         return when (key) {
@@ -119,6 +120,7 @@ class AccountSettingsDataStore(
             "account_display_count" -> account.displayCount.toString()
             "account_message_age" -> account.maximumPolledMessageAge.toString()
             "account_autodownload_size" -> account.maximumAutoDownloadMessageSize.toString()
+            "account_attachment_cleanup" -> account.attachmentCleanupDays.toString()
             "account_check_frequency" -> account.automaticCheckIntervalMinutes.toString()
             "delete_policy" -> account.deletePolicy.name
             "expunge_policy" -> account.expungePolicy.name
@@ -152,6 +154,7 @@ class AccountSettingsDataStore(
             "account_display_count" -> account.displayCount = value.toInt()
             "account_message_age" -> account.maximumPolledMessageAge = value.toInt()
             "account_autodownload_size" -> account.maximumAutoDownloadMessageSize = value.toInt()
+            "account_attachment_cleanup" -> updateAttachmentCleanupDays(value.toInt())
             "account_check_frequency" -> {
                 if (account.updateAutomaticCheckIntervalMinutes(value.toInt())) {
                     reschedulePoll()
@@ -216,6 +219,10 @@ class AccountSettingsDataStore(
 
             notificationSettingsChanged = false
             saveSettings()
+            if (attachmentCleanupChanged) {
+                jobManager.scheduleAttachmentCleanup(account)
+            }
+            attachmentCleanupChanged = false
         }
     }
 
@@ -225,6 +232,13 @@ class AccountSettingsDataStore(
 
     private fun reschedulePoll() {
         jobManager.scheduleMailSync(account)
+    }
+
+    private fun updateAttachmentCleanupDays(days: Int) {
+        if (account.attachmentCleanupDays != days) {
+            account.attachmentCleanupDays = days
+            attachmentCleanupChanged = true
+        }
     }
 
     private fun extractFolderId(preferenceValue: String): Long? {

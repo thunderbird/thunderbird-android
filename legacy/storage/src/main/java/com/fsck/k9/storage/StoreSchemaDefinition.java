@@ -12,7 +12,7 @@ import net.thunderbird.core.logging.legacy.Log;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 91;
+    static final int DB_VERSION = 92;
 
     private final MigrationsHelper migrationsHelper;
 
@@ -205,6 +205,7 @@ class StoreSchemaDefinition implements SchemaDefinition {
 
         db.execSQL("DROP INDEX IF EXISTS message_parts_root");
         db.execSQL("CREATE INDEX IF NOT EXISTS message_parts_root ON message_parts (root)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS message_parts_data_location_id ON message_parts (data_location, id)");
 
         db.execSQL("DROP TABLE IF EXISTS threads");
         db.execSQL("CREATE TABLE threads (" +
