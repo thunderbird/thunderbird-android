@@ -1,11 +1,8 @@
 package com.fsck.k9.storage.messages
 
 import android.content.ContentValues
-import android.database.sqlite.SQLiteDatabase
 import com.fsck.k9.mailstore.LockableDatabase
 import net.thunderbird.core.common.mail.Flag
-
-internal val SPECIAL_FLAGS = setOf(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED)
 
 internal class FlagMessageOperations(private val lockableDatabase: LockableDatabase) {
 
@@ -56,40 +53,12 @@ internal class FlagMessageOperations(private val lockableDatabase: LockableDatab
 
     private fun rebuildFlagsColumnValue(folderId: Long, messageServerId: String, flag: Flag, set: Boolean) {
         lockableDatabase.execute(true) { database ->
-            val oldFlags = database.readFlagsColumn(folderId, messageServerId)
-
-            val newFlags = if (set) oldFlags + flag else oldFlags - flag
-            val newFlagsString = newFlags.joinToString(separator = ",")
-
-            val values = ContentValues().apply {
-                put("flags", newFlagsString)
-            }
-
-            database.update(
-                "messages",
-                values,
-                "folder_id = ? AND uid = ?",
-                arrayOf(folderId.toString(), messageServerId),
-            )
-        }
-    }
-
-    private fun SQLiteDatabase.readFlagsColumn(folderId: Long, messageServerId: String): Set<Flag> {
-        return query(
-            "messages",
-            arrayOf("flags"),
-            "folder_id = ? AND uid = ?",
-            arrayOf(folderId.toString(), messageServerId),
-            null,
-            null,
-            null,
-        ).use { cursor ->
-            if (!cursor.moveToFirst()) error("Message not found $folderId:$messageServerId")
-
-            if (!cursor.isNull(0)) {
-                cursor.getString(0).split(',').map { flagString -> Flag.valueOf(flagString) }.toSet()
-            } else {
-                emptySet()
+            database.updateMessageFlagsByServerId(folderId, messageServerId) { oldFlags ->
+                if (set) {
+                    oldFlags + flag
+                } else {
+                    oldFlags - flag
+                }
             }
         }
     }

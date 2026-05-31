@@ -514,12 +514,6 @@ internal class SaveMessageOperations(
     }
 }
 
-private fun Set<Flag>.toDatabaseValue(): String {
-    return this
-        .filter { it !in SPECIAL_FLAGS }
-        .joinToString(separator = ",")
-}
-
 private fun Boolean.toDatabaseValue() = if (this) 1 else 0
 
 private fun PreviewType.toDatabaseValue(): String {

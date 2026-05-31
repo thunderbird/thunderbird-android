@@ -66,8 +66,7 @@ class AttachmentCleanupOperationsTest : RobolectricTest() {
 
         val attachmentPart = sqliteDatabase.readMessageParts().single { it.id == attachmentPartId }
         val message = sqliteDatabase.readMessages().single()
-        assertThat(result.removedPartCount).isEqualTo(1)
-        assertThat(result.hasMore).isFalse()
+        assertThat(result.changedPartCount).isEqualTo(1)
         assertThat(attachmentPart.dataLocation).isEqualTo(DataLocation.MISSING)
         assertThat(attachmentPart.data).isNull()
         assertThat(attachmentPart.displayName).isEqualTo("document.pdf")
@@ -100,8 +99,7 @@ class AttachmentCleanupOperationsTest : RobolectricTest() {
 
         val result = testSubject.removeOldDownloadedAttachments(cutoffTime = 200, maxParts = 2_000)
 
-        assertThat(result.removedPartCount).isEqualTo(1)
-        assertThat(result.hasMore).isFalse()
+        assertThat(result.changedPartCount).isEqualTo(1)
         assertThat(attachmentFile.exists()).isFalse()
     }
 
@@ -145,8 +143,7 @@ class AttachmentCleanupOperationsTest : RobolectricTest() {
         val result = testSubject.removeOldDownloadedAttachments(cutoffTime = 200, maxParts = 2_000)
 
         val messageParts = sqliteDatabase.readMessageParts().associateBy { it.id }
-        assertThat(result.removedPartCount).isEqualTo(0)
-        assertThat(result.hasMore).isFalse()
+        assertThat(result.changedPartCount).isEqualTo(0)
         assertThat(messageParts[inlinePartId]?.dataLocation).isEqualTo(DataLocation.IN_DATABASE)
         assertThat(messageParts[recentAttachmentPartId]?.dataLocation).isEqualTo(DataLocation.IN_DATABASE)
         assertThat(messageParts[inlinePartId]?.data?.isNotEmpty() == true).isTrue()
@@ -177,8 +174,7 @@ class AttachmentCleanupOperationsTest : RobolectricTest() {
         val result = testSubject.removeOldDownloadedAttachments(cutoffTime = 200, maxParts = 2_000)
 
         val attachmentPart = sqliteDatabase.readMessageParts().single { it.id == attachmentPartId }
-        assertThat(result.removedPartCount).isEqualTo(1)
-        assertThat(result.hasMore).isFalse()
+        assertThat(result.changedPartCount).isEqualTo(1)
         assertThat(attachmentPart.dataLocation).isEqualTo(DataLocation.MISSING)
         assertThat(attachmentPart.data).isNull()
     }
@@ -211,8 +207,7 @@ class AttachmentCleanupOperationsTest : RobolectricTest() {
         val result = testSubject.removeOldDownloadedAttachments(cutoffTime = 200, maxParts = 2_000)
 
         val attachmentParts = sqliteDatabase.readMessageParts().filter { it.id in attachmentPartIds }
-        assertThat(result.removedPartCount).isEqualTo(501)
-        assertThat(result.hasMore).isFalse()
+        assertThat(result.changedPartCount).isEqualTo(501)
         attachmentParts.forEach { attachmentPart ->
             assertThat(attachmentPart.dataLocation).isEqualTo(DataLocation.MISSING)
             assertThat(attachmentPart.data).isNull()
@@ -247,14 +242,12 @@ class AttachmentCleanupOperationsTest : RobolectricTest() {
         val firstResult = testSubject.removeOldDownloadedAttachments(cutoffTime = 200, maxParts = 2)
         val partsAfterFirstRun = sqliteDatabase.readMessageParts().filter { it.id in attachmentPartIds }
 
-        assertThat(firstResult.removedPartCount).isEqualTo(2)
-        assertThat(firstResult.hasMore).isTrue()
+        assertThat(firstResult.changedPartCount).isEqualTo(2)
         assertThat(partsAfterFirstRun.count { it.dataLocation == DataLocation.MISSING }).isEqualTo(2)
         assertThat(partsAfterFirstRun.count { it.dataLocation == DataLocation.IN_DATABASE }).isEqualTo(1)
 
         val secondResult = testSubject.removeOldDownloadedAttachments(cutoffTime = 200, maxParts = 2)
 
-        assertThat(secondResult.removedPartCount).isEqualTo(1)
-        assertThat(secondResult.hasMore).isFalse()
+        assertThat(secondResult.changedPartCount).isEqualTo(1)
     }
 }

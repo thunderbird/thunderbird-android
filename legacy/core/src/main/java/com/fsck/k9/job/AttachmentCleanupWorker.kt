@@ -41,8 +41,8 @@ class AttachmentCleanupWorker(
                 account,
             ).removeOldDownloadedAttachments(cutoffTime, MAX_PARTS_PER_RUN)
 
-            if (result.removedPartCount > 0 || result.hasMore) {
-                Log.d("Removed %d locally cached attachment parts for account %s", result.removedPartCount, accountUuid)
+            if (result.changedPartCount > 0) {
+                Log.d("Cleaned %d locally cached attachment parts for account %s", result.changedPartCount, accountUuid)
             }
 
             Result.success()
