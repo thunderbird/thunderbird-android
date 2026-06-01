@@ -136,6 +136,8 @@ it has.
 
 An ADR may come from an RFC, technical design, implementation PR, or stand on its own.
 
+ADRs are stored in the [**`docs/engineering/adr`**](adr/README.md) directory.
+
 ### Technical Design
 
 A technical design describes how an accepted direction will be implemented.

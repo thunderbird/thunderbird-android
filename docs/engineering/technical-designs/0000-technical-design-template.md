@@ -2,7 +2,7 @@
 
 - Issue: [#NNNN](https://github.com/thunderbird/thunderbird-android/issues/NNNN)
 - RFC: [RFC Title](../rfcs/NNNN-title.md)
-- ADR: [ADR Title](../../architecture/adr/NNNN-title.md)
+- ADR: [ADR Title](../adr/NNNN-title.md)
 - Status: **Proposed**
 
 ## Summary

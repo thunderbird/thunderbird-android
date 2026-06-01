@@ -9,7 +9,7 @@ An Architecture Decision Record (ADR) is a document that captures an important a
 with its context and consequences. ADRs record the decision making process and allow others to understand the
 rationale behind decisions, providing insight and facilitating future decision-making processes.
 
-ADRs are part of our broader [engineering process](../../engineering/README.md), which also includes [RFCs](../../engineering/rfcs/README.md) for technical direction and [Technical Designs](../../engineering/technical-designs/README.md) for implementation details.
+ADRs are part of our broader [engineering process](../README.md), which also includes [RFCs](../rfcs/README.md) for technical direction and [Technical Designs](../technical-designs/README.md) for implementation details.
 
 ## Format of an ADR
 
@@ -38,7 +38,7 @@ Once you are ready to propose your ADR, you should:
 
 ## Directory Structure
 
-The ADRs will be stored in `docs/architecture/adr`, and each ADR will be a file named `NNNN-title-with-dashes.md`
+The ADRs will be stored in `docs/engineering/adr`, and each ADR will be a file named `NNNN-title-with-dashes.md`
 where `NNNN` is a four-digit number that is increased by 1 for every new ADR.
 
 ## ADR Life Cycle
