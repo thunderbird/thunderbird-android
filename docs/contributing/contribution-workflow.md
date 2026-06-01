@@ -7,7 +7,7 @@ finding an issue to getting your pull request merged.
 
 ```markdown
 - [ ] Find an issue (or open a bug report)
-- [ ] Review [Engineering process](../engineering/README.md) for RFC/Technical Design requirements
+- [ ] Review [Engineering process](../engineering/README.md) for user journey, RFC, ADR, or Technical Design requirements
 - [ ] Fork → clone → add upstream remote
 - [ ] Create a descriptive branch from `main`
 - [ ] Make focused changes + update docs/tests
@@ -49,8 +49,16 @@ If you’ve found a bug that’s not yet tracked:
 Before coding:
 1. Comment on the GitHub issue you want to work on.
 2. Explain your intended approach.
-3. For non-trivial changes, you may be asked to create an **[RFC](../engineering/rfcs/README.md)** and a **[Technical Design](../engineering/technical-designs/README.md)** to reach consensus before implementation.
+3. For non-trivial changes, you may be asked to create a **[User Journey](../engineering/user-journeys/README.md)**, **[RFC](../engineering/rfcs/README.md)**, **[ADR](../engineering/adr/README.md)**, or **[Technical Design](../engineering/technical-designs/README.md)** to reach consensus before implementation.
 4. Wait for maintainer feedback to ensure alignment and avoid duplicate work.
+
+If the work appears larger than a single issue or pull request, or needs coordination across multiple features, tasks,
+or contributors, ask maintainers whether it should be organized as a GitHub milestone issue. Milestone issues are
+created by core maintainers. See the [Engineering Delivery Planning guide](../engineering/delivery-planning.md) for
+milestone, feature, and task issue structure.
+
+If the work does not match a dedicated milestone issue, maintainers may link it to a quarterly catch-all milestone issue
+for community contributions or Android foundations work.
 
 ## 🍴 Forking and Cloning
 
