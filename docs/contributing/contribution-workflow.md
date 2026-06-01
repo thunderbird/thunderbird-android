@@ -7,6 +7,7 @@ finding an issue to getting your pull request merged.
 
 ```markdown
 - [ ] Find an issue (or open a bug report)
+- [ ] Review [Engineering process](../engineering/README.md) for RFC/Technical Design requirements
 - [ ] Fork → clone → add upstream remote
 - [ ] Create a descriptive branch from `main`
 - [ ] Make focused changes + update docs/tests
@@ -48,7 +49,8 @@ If you’ve found a bug that’s not yet tracked:
 Before coding:
 1. Comment on the GitHub issue you want to work on.
 2. Explain your intended approach.
-3. Wait for maintainer feedback to ensure alignment and avoid duplicate work.
+3. For non-trivial changes, you may be asked to create an **[RFC](../engineering/rfcs/README.md)** and a **[Technical Design](../engineering/technical-designs/README.md)** to reach consensus before implementation.
+4. Wait for maintainer feedback to ensure alignment and avoid duplicate work.
 
 ## 🍴 Forking and Cloning
 
@@ -191,21 +193,24 @@ Write a clear and concise description for your pull request:
 Example:
 
 ```markdown
-## Title
-fix(email): add validation for email input
+## Contribution Summary
 
-## Description
-Fixes #123
+Linked Issue/Ticket: #123
+RFC / Technical Design (if applicable):
+
+#### Description
 
 This PR adds email validation to the login form. It:
 - Implements regex-based validation for email inputs
 - Shows error messages for invalid emails
 - Adds unit tests for the validation logic
 
-## Screenshots
+#### Screen Shots
+
 [Screenshot of error message]
 
-## Testing
+#### Testing
+
 1. Enter an invalid email (e.g., "test@")
 2. Verify that an error message appears
 3. Enter a valid email

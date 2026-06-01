@@ -16,7 +16,7 @@ Paste this into your PR to self-check:
 - [ ] Security/privacy: inputs validated; no PII in logs; TLS; secure storage; permission changes documented
 - [ ] i18n: No new localizable strings unless justified; translations policy followed
 - [ ] Release train: feature flags set; uplift label + risk/impact (if applicable)
-- [ ] Docs/CHANGELOG updated; issues linked (Fixes #123); PR title/commits clear
+- [ ] Docs/CHANGELOG updated; issues linked (Fixes #123); Engineering process (RFC/TechDesign) followed; PR title/commits clear
 ```
 
 ## 🧑‍💻 For Code Authors (self‑review checklist)
@@ -63,6 +63,7 @@ Paste this into your PR to self-check:
 10. **Documentation & metadata**
     - Update relevant docs, CHANGELOG entries and add context as needed.
     - Link relevant issues using GitHub keywords so they auto-close on merge (`Fixes #123`, `Resolves #456`).
+    - Adhere to the [Engineering process](../engineering/README.md) (RFC/Technical Design/ADR) if applicable.
     - For commit format, see the [Git Commit Guide](git-commit-guide.md)
 11. **CI status**
     - Ensure CI is green
@@ -72,6 +73,7 @@ Paste this into your PR to self-check:
 
 1. **Correctness & requirements**
    - Does the change solve the stated problem? Any edge cases missed? Are invariants upheld?
+   - If non-trivial, does it align with the agreed [RFC or Technical Design](../engineering/README.md)?
 2. **Architecture & boundaries**
    - Adheres to module API/internal separation per [ADR-0009](../architecture/adr/0009-api-internal-split.md) and project architecture (UI: Compose/MVI, Domain, Data).
    - No cross‑module leaks (check for proper `internal` visibility in `:internal` modules); dependencies flow in the right direction.

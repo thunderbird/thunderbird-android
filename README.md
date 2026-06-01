@@ -64,6 +64,10 @@ We welcome contributions from everyone.
 - Thunderbird is supported solely by financial contributions from users like you. [Make a financial contribution today](https://www.thunderbird.net/donate/mobile/?form=tfa)!
 - Make sure to check out the [Mozilla Community Participation Guidelines](https://www.mozilla.org/about/governance/policies/participation/).
 
+### Engineering Process
+
+We use a structured engineering process to propose, decide, and deliver technical changes. This includes [RFCs](docs/engineering/rfcs/README.md) for technical direction and [Technical Designs](docs/engineering/technical-designs/README.md) for implementation details. You can find more information in the [`docs/engineering`](docs/engineering) directory.
+
 ### Architecture Decision Records (ADR)
 
 We use [Architecture Decision Records](https://adr.github.io/) to document the architectural decisions made in the

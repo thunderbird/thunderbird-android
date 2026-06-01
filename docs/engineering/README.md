@@ -1,6 +1,6 @@
 # Engineering
 
-Engineering documents help us propose, decide, and deliver technical changes.
+The Engineering section defines the processes and artifacts used to propose, decide, and deliver technical changes. It connects high-level roadmap planning with public delivery work through RFCs, Technical Designs, and Architecture Decision Records (ADRs).
 
 Use the smallest set of documents and issues that makes the work clear, reviewable, and maintainable.
 

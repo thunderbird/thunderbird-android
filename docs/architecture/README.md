@@ -20,6 +20,16 @@ The [Architecture Decision Records](adr/README.md) document the architectural de
 project, providing context and rationale for key technical choices. Reading through these decisions will improve your
 contributions and ensure long-term maintainability of the project.
 
+## 🏗️ Engineering Process
+
+We use a structured engineering process to propose, decide, and deliver technical changes. This includes:
+
+- **[RFCs](../engineering/rfcs/README.md)** for proposing technical direction and reaching consensus.
+- **[Technical Designs](../engineering/technical-designs/README.md)** for detailing implementation plans.
+- **[ADRs](adr/README.md)** for recording durable architectural decisions.
+
+For more details on how these artifacts work together, see the [Engineering](../engineering/README.md) documentation.
+
 ## 📦 Module Structure
 
 The application is organized into several module types:

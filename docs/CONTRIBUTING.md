@@ -60,6 +60,7 @@ development, testing, and review.
 
 ### 🏗️ Development Practices
 
+* **[Engineering](engineering/README.md)** – Process and artifacts for proposing, deciding, and delivering technical changes (RFCs, Technical Designs).
 * **[Architecture](architecture/README.md)** – System design: module types, UI/Domain/Data layers, offline-first.
 * **[Development Guidelines](contributing/development-guide.md)** – Project-specific conventions and quick “do’s & don’ts.”
 * **[Code Quality Guide](contributing/code-quality-guide.md)** – Style rules, static analysis tools, and security practices.
