@@ -69,17 +69,30 @@ Expected generated index files:
 
 ```text
 app-k9mail/src/release/res/raw/changelog_index.json
-app-k9mail/src/debug/res/raw/changelog_index.json
 app-thunderbird/src/release/res/raw/changelog_index.json
 app-thunderbird/src/beta/res/raw/changelog_index.json
 app-thunderbird/src/daily/res/raw/changelog_index.json
+```
+
+Expected debug dummy index files:
+
+```text
+app-k9mail/src/debug/res/raw/changelog_index.json
 app-thunderbird/src/debug/res/raw/changelog_index.json
+```
+
+Expected debug dummy release files:
+
+```text
+app-k9mail/src/debug/res/raw/changelog_release_dummy.json
+app-thunderbird/src/debug/res/raw/changelog_release_dummy.json
 ```
 
 Expected per-release file naming:
 
 ```text
 changelog_release_<version>.json
+changelog_release_<version>_<date>.json
 ```
 
 Example:
@@ -88,11 +101,14 @@ Example:
 app-thunderbird/src/release/res/raw/changelog_release_17_0.json
 app-thunderbird/src/beta/res/raw/changelog_release_10_0_b1.json
 app-thunderbird/src/beta/res/raw/changelog_release_10_0_b2.json
+app-thunderbird/src/daily/res/raw/changelog_release_21_0_a1_2026_05_29.json
 ```
 
-The release filename is derived from the release `version`. The generator must sanitize the version for Android raw
-resource naming by lowercasing it, separating trailing prerelease labels from the numeric version with `_`, and
-replacing characters outside `[a-z0-9_]` with `_`. For example, `10.0b1` becomes `10_0_b1`.
+The release filename is derived from the release `version`. Daily release filenames also append the `date` because daily
+builds keep the same `a1` version suffix throughout a release cycle. The generator must sanitize the version and date for
+Android raw resource naming by lowercasing them, separating trailing prerelease labels from the numeric version with `_`,
+and replacing characters outside `[a-z0-9_]` with `_`. For example, `10.0b1` becomes `10_0_b1` and `2026-05-29` becomes
+`2026_05_29`.
 
 K-9 Mail currently stores `changelog_master.xml` in `app-k9mail/src/main/res/raw`. The JSON replacement should change that
 structure to be consistent with Thunderbird for Android during migration and switch to:
@@ -161,7 +177,8 @@ Required release index fields:
 
 * `version`: non-empty string.
 * `date`: string matching `YYYY-MM-DD`.
-* `resourceName`: non-empty string matching the generated raw resource name for `version`.
+* `resourceName`: non-empty string matching the generated raw resource name for `version`, plus `date` for daily
+  entries.
 
 Optional release index fields:
 
@@ -202,8 +219,11 @@ The index and release file for the same release must agree on `version` and `dat
 Release ordering:
 
 * Releases sort by descending `date`.
-* Recent Changes matches the full current app version name to the release `version`.
+* Recent Changes matches the full current app version name to the release `version` for beta and release builds.
+* Recent Changes matches both the full current app version name and the current date for daily builds.
 * Per-release resource names are derived from the release `version`, matching `thunderbird-notes`.
+* Daily per-release resource names also include the `date` to avoid collisions while the daily version name suffix remains
+  `a1`.
 
 Note ordering:
 
@@ -357,10 +377,11 @@ Runtime requirements:
 * Add internal serializable models for schema v1.
 * Add a data source that reads `R.raw.changelog_index`.
 * Inject the app version provider and use the full app version name, including build-type suffixes, for Recent Changes
-  lookup.
+  lookup. Daily builds must also match the current date.
 * Resolve each `resourceName` from the index to the corresponding generated raw resource ID.
 * Load per-release JSON files on demand for the Changelog screen.
-* Load only the release file matching the current app version name for Recent Changes.
+* Load only the release file matching the current app version name for Recent Changes, and also matching the current date
+  for daily builds.
 * Replace `ChangeLogManager` internals without changing public navigation APIs.
 * Throw an exception in debug builds when the index or a required release file is missing, has an unsupported schema
   version, or contains invalid JSON.
@@ -478,6 +499,4 @@ Android tests should cover:
 
 ## Open Technical Questions
 
-* Which exact XML source files and branches should be migrated for Thunderbird release, beta, daily, debug, and K-9
-  release/debug assets?
-
+None.
