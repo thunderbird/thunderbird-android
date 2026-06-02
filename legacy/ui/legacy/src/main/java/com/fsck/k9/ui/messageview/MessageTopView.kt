@@ -17,6 +17,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import app.k9mail.core.android.common.contact.ContactRepository
 import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.Part
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.MessageViewInfo
 import com.fsck.k9.ui.R
@@ -34,6 +35,7 @@ import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.core.preference.BodyContentType
 import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsPreferenceManager
 import net.thunderbird.core.ui.animation.manager.AnimationManager
+import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -57,6 +59,7 @@ class MessageTopView(
     private lateinit var containerView: ViewGroup
     private lateinit var downloadRemainderButton: MaterialButton
     private lateinit var attachmentCallback: AttachmentViewCallback
+    private lateinit var messageReaderViewModel: MessageReaderViewContract.ViewModel<Part>
     private lateinit var extraHeaderContainer: View
     private lateinit var showPicturesButton: MaterialButton
 
@@ -147,6 +150,7 @@ class MessageTopView(
             loadPictures,
             hideUnsignedTextDivider,
             attachmentCallback,
+            messageReaderViewModel,
         )
 
         if (view.hasHiddenExternalImages && !showPicturesButtonClicked) {
@@ -282,6 +286,10 @@ class MessageTopView(
 
     fun setAttachmentCallback(callback: AttachmentViewCallback) {
         attachmentCallback = callback
+    }
+
+    fun setMessageReaderViewModel(viewModel: MessageReaderViewContract.ViewModel<Part>) {
+        this.messageReaderViewModel = viewModel
     }
 
     fun setMessageCryptoPresenter(messageCryptoPresenter: MessageCryptoPresenter?) {

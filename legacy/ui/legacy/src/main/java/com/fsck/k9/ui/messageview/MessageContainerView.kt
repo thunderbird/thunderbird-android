@@ -32,6 +32,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.app.ShareCompat.IntentBuilder
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -55,7 +56,6 @@ import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.mail.message.reader.api.domain.mapper.AttachmentViewInfoMapper
 import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract
 import net.thunderbird.feature.mail.message.reader.api.ui.component.organism.AttachmentCard
-import org.koin.androidx.compose.koinViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
@@ -437,6 +437,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         loadPictures: Boolean,
         hideUnsignedTextDivider: Boolean,
         attachmentCallback: AttachmentViewCallback?,
+        messageReaderViewModel: MessageReaderViewContract.ViewModel<Part>,
     ) {
         this.attachmentCallback = attachmentCallback
 
@@ -451,7 +452,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         // Register attachments so inline images (CIDs) can be resolved
         messageViewInfo.attachments?.forEach { attachments[it.internalUri] = it }
         messageViewInfo.extraAttachments?.forEach { attachments[it.internalUri] = it }
-        renderAttachments(messageViewInfo)
+        renderAttachments(messageReaderViewModel, messageViewInfo)
 
         if (messageText != null && !isShowingPictures && !renderPlainFormat) {
             if (Utility.hasExternalImages(messageText)) {
@@ -500,13 +501,14 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
     }
 
     private fun renderAttachments(
+        viewModel: MessageReaderViewContract.ViewModel<Part>,
         messageViewInfo: MessageViewInfo,
     ) {
         attachmentsContainer.addView(
             ComposeView(context).apply {
+                setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
                 setContent {
                     featureThemeProvider.WithTheme {
-                        val viewModel = koinViewModel<MessageReaderViewContract.ViewModel<Part>>()
                         val (stateHolder, dispatch) = viewModel.observeWithoutEffect()
                         val state by stateHolder
 
