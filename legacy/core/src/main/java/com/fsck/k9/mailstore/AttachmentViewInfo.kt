@@ -22,7 +22,7 @@ import net.thunderbird.feature.mail.message.reader.api.ui.attachment.AttachmentU
  */
 class AttachmentViewInfo(
     @JvmField val mimeType: String?,
-    @JvmField val displayName: String,
+    @JvmField val displayName: String?,
     @JvmField val size: Long,
     @JvmField val internalUri: Uri,
     @JvmField val inlineAttachment: Boolean,
@@ -34,7 +34,7 @@ class AttachmentViewInfo(
     }
 
     override val uri: String = internalUri.toString()
-    override val filename: String = displayName
+    override val filename: String? = displayName
 
     override val isSupportedImage: Boolean
         get() {
@@ -42,11 +42,14 @@ class AttachmentViewInfo(
                 return false
             }
 
-            return MimeTypeUtil.isSupportedImageType(mimeType) || (MimeTypeUtil.isSameMimeType(
-                MimeTypeUtil.DEFAULT_ATTACHMENT_MIME_TYPE,
-                mimeType,
-            ) &&
-                MimeTypeUtil.isSupportedImageExtension(displayName))
+            return MimeTypeUtil.isSupportedImageType(mimeType) ||
+                (
+                    MimeTypeUtil.isSameMimeType(
+                        MimeTypeUtil.DEFAULT_ATTACHMENT_MIME_TYPE,
+                        mimeType,
+                    ) &&
+                        MimeTypeUtil.isSupportedImageExtension(displayName)
+                    )
         }
 
     override fun getSize(): Long = size
@@ -63,7 +66,9 @@ class AttachmentViewInfo(
 class DefaultAttachmentViewInfoMapper(
     private val sizeFormatter: (Long) -> String,
 ) : AttachmentViewInfoMapper<Part> {
-    override fun AttachmentViewInfoMapper.AttachmentMetadata<Part>.toUiItem(): AttachmentUiItem<Part> {
+    override fun AttachmentViewInfoMapper.AttachmentMetadata<Part>.toUiItem(
+        encrypted: Boolean,
+    ): AttachmentUiItem<Part> {
         val size = getSize()
         val formattedSize = when (size) {
             AttachmentViewInfo.UNKNOWN_SIZE -> ""
@@ -79,6 +84,8 @@ class DefaultAttachmentViewInfoMapper(
                     size = size,
                     mimeType = getMimeType(),
                     part = getPart(),
+                    downloaded = isContentAvailable,
+                    encrypted = encrypted,
                 )
 
             isSupportedImage && isInlineAttachment() ->
@@ -90,6 +97,8 @@ class DefaultAttachmentViewInfoMapper(
                     size = size,
                     mimeType = getMimeType(),
                     part = getPart(),
+                    downloaded = isContentAvailable,
+                    encrypted = encrypted,
                 )
 
             isInlineAttachment() -> AttachmentUiItem.InlinedFile(
@@ -99,6 +108,8 @@ class DefaultAttachmentViewInfoMapper(
                 size = size,
                 mimeType = getMimeType(),
                 part = getPart(),
+                downloaded = isContentAvailable,
+                encrypted = encrypted,
             )
 
             else -> AttachmentUiItem.File(
@@ -108,17 +119,20 @@ class DefaultAttachmentViewInfoMapper(
                 size = size,
                 mimeType = getMimeType(),
                 part = getPart(),
+                downloaded = isContentAvailable,
+                encrypted = encrypted,
             )
         }
     }
 
-    override fun AttachmentUiItem<Part>.toDomainItem(): AttachmentViewInfoMapper.AttachmentMetadata<Part> = AttachmentViewInfo(
-        mimeType = mimeType,
-        displayName = filename,
-        size = size,
-        internalUri = id.uri.toUri(),
-        inlineAttachment = this is AttachmentUiItem.InlinedImage || this is AttachmentUiItem.InlinedFile,
-        part = part,
-        isContentAvailable = false,
-    )
+    override fun AttachmentUiItem<Part>.toDomainItem(): AttachmentViewInfoMapper.AttachmentMetadata<Part> =
+        AttachmentViewInfo(
+            mimeType = mimeType,
+            displayName = filename,
+            size = size,
+            internalUri = id.uri.toUri(),
+            inlineAttachment = this is AttachmentUiItem.InlinedImage || this is AttachmentUiItem.InlinedFile,
+            part = part,
+            isContentAvailable = downloaded,
+        )
 }

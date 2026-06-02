@@ -88,6 +88,7 @@ import net.thunderbird.feature.mail.message.export.MessageExporter
 import net.thunderbird.feature.mail.message.export.MessageFileNameSuggester
 import org.koin.android.ext.android.inject
 import org.openintents.openpgp.util.OpenPgpIntentStarter
+import net.thunderbird.feature.mail.message.reader.api.R as MessageReaderR
 
 @Suppress("LargeClass")
 class MessageViewFragment :
@@ -1184,8 +1185,10 @@ class MessageViewFragment :
         try {
             createDocumentLauncher.launch(
                 input = CreateDocumentResultContract.Input(
-                    title = attachment.displayName,
-                    mimeType = attachment.mimeType,
+                    title = attachment.displayName ?: getString(MessageReaderR.string.unnamed_attachment_title),
+                    mimeType = requireNotNull(attachment.mimeType) {
+                        "Invalid attachment type. The mimeType is null. Attachment = $attachment"
+                    },
                 ),
             )
         } catch (_: ActivityNotFoundException) {

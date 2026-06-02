@@ -916,7 +916,6 @@
     <string name="message_view_attachments_view">查看</string>
     <string name="message_view_attachments_title">附件</string>
     <string name="message_view_attachments_save_all">保存全部</string>
-    <string name="encrypted_attachment_title">加密的附件</string>
     <string name="no_network_message_will_be_sent_later_toast">离线。一旦网络连接可用将发送消息</string>
     <string name="notification_actions_settings_title">通知操作</string>
     <string name="notification_actions_settings_summary">选择要在电子邮件通知中显示的操作</string>

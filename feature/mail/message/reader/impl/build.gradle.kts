@@ -8,6 +8,7 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
+            implementation(libs.koin.core.viewmodel)
             implementation(projects.core.common)
             implementation(projects.core.featureflag)
             implementation(projects.core.preference.api)

@@ -22,12 +22,23 @@ import android.webkit.WebView
 import android.webkit.WebView.HitTestResult
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.app.ShareCompat.IntentBuilder
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.fsck.k9.helper.ClipboardManager
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.Address
+import com.fsck.k9.mail.Part
 import com.fsck.k9.mailstore.AttachmentResolver
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.MessageViewInfo
@@ -38,6 +49,13 @@ import com.fsck.k9.view.MessageWebView.OnPageFinishedListener
 import com.fsck.k9.view.WebViewConfigProvider
 import com.google.android.material.textview.MaterialTextView
 import net.thunderbird.core.android.contact.ContactIntentHelper
+import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.contract.mvi.observeWithoutEffect
+import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
+import net.thunderbird.feature.mail.message.reader.api.domain.mapper.AttachmentViewInfoMapper
+import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract
+import net.thunderbird.feature.mail.message.reader.api.ui.component.organism.AttachmentCard
+import org.koin.androidx.compose.koinViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
@@ -51,6 +69,8 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
     private val webViewConfigProvider: WebViewConfigProvider by inject()
     private val clipboardManager: ClipboardManager by inject()
     private val linkTextHandler: LinkTextHandler by inject()
+    private val featureThemeProvider: FeatureThemeProvider by inject()
+    private val attachmentViewInfoMapper: AttachmentViewInfoMapper<Part> by inject()
 
     private lateinit var layoutInflater: LayoutInflater
 
@@ -431,6 +451,7 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         // Register attachments so inline images (CIDs) can be resolved
         messageViewInfo.attachments?.forEach { attachments[it.internalUri] = it }
         messageViewInfo.extraAttachments?.forEach { attachments[it.internalUri] = it }
+        renderAttachments(messageViewInfo)
 
         if (messageText != null && !isShowingPictures && !renderPlainFormat) {
             if (Utility.hasExternalImages(messageText)) {
@@ -475,6 +496,60 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
             htmlText = htmlText,
             attachmentResolver = currentAttachmentResolver,
             onPageFinishedListener = null,
+        )
+    }
+
+    private fun renderAttachments(
+        messageViewInfo: MessageViewInfo,
+    ) {
+        attachmentsContainer.addView(
+            ComposeView(context).apply {
+                setContent {
+                    featureThemeProvider.WithTheme {
+                        val viewModel = koinViewModel<MessageReaderViewContract.ViewModel<Part>>()
+                        val (stateHolder, dispatch) = viewModel.observeWithoutEffect()
+                        val state by stateHolder
+
+                        LaunchedEffect(messageViewInfo) {
+                            dispatch(
+                                MessageReaderViewContract.Event.UpdateAttachments(
+                                    nonInlineAttachments = messageViewInfo.attachments,
+                                    extraNonInlineAttachments = messageViewInfo.extraAttachments,
+                                ),
+                            )
+                        }
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(MainTheme.spacings.double),
+                            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+                        ) {
+                            state.attachments
+                                .forEach { attachment ->
+                                    key(attachment.id) {
+                                        val info = remember(attachment, attachmentViewInfoMapper) {
+                                            with(attachmentViewInfoMapper) {
+                                                attachment.toDomainItem() as AttachmentViewInfo
+                                            }
+                                        }
+                                        AttachmentCard(
+                                            attachment = attachment,
+                                            onClick = { attachmentCallback?.onViewAttachment(info) },
+                                            onDownloadClick = {
+                                                if (attachment.encrypted) {
+                                                    attachmentCallback?.onViewAttachment(info)
+                                                } else {
+                                                    attachmentCallback?.onSaveAttachment(info)
+                                                }
+                                            },
+                                        )
+                                    }
+                                }
+                        }
+                    }
+                }
+            },
         )
     }
 

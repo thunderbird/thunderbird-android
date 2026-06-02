@@ -946,6 +946,5 @@
     <string name="message_view_attachments_save_all">שמור הכל</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
     <string name="sort_by_then_by">ואז לפי…</string>
-    <string name="encrypted_attachment_title">הצפן צרופה</string>
     <string name="no_network_message_will_be_sent_later_toast">לא מקוון. ההודעה תישלח כשיתאפשר חיבור</string>
 </resources>

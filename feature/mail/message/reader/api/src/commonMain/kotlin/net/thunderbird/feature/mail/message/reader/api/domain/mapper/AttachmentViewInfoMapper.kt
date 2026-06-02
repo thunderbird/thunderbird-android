@@ -18,7 +18,7 @@ interface AttachmentViewInfoMapper<TPart> {
      */
     interface AttachmentMetadata<TPart> {
         val uri: String
-        val filename: String
+        val filename: String?
         val isSupportedImage: Boolean
         val isContentAvailable: Boolean
 
@@ -48,7 +48,7 @@ interface AttachmentViewInfoMapper<TPart> {
      *
      * @return The UI layer representation of this attachment
      */
-    fun AttachmentMetadata<TPart>.toUiItem(): AttachmentUiItem<TPart>
+    fun AttachmentMetadata<TPart>.toUiItem(encrypted: Boolean): AttachmentUiItem<TPart>
 
     /**
      * Converts this UI attachment model to its domain representation.
