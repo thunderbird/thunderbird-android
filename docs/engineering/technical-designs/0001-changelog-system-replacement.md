@@ -1,6 +1,6 @@
 # Technical Design 0001: Changelog System Replacement
 
-* Issue: [#NNNN](https://github.com/thunderbird/thunderbird-android/issues/NNNN)
+* Issue: [#11079](https://github.com/thunderbird/thunderbird-android/issues/11079)
 * RFC: [Changelog System Replacement](../rfcs/0001-changelog-system-replacement.md)
 * Status: **Proposed**
 
