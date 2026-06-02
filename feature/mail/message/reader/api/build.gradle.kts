@@ -1,5 +1,5 @@
 plugins {
-    id(ThunderbirdPlugins.Library.kmp)
+    id(ThunderbirdPlugins.Library.kmpCompose)
 }
 
 kotlin {
@@ -9,7 +9,13 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.common)
+            implementation(projects.core.ui.contract)
             implementation(projects.core.featureflag)
+        }
+        androidMain.dependencies {
+            implementation(projects.core.ui.theme.api)
+            implementation(projects.core.ui.compose.designsystem)
+            implementation(libs.bundles.shared.jvm.android.compose.debug)
         }
     }
 }
