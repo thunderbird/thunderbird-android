@@ -53,12 +53,12 @@ Before coding:
 4. Wait for maintainer feedback to ensure alignment and avoid duplicate work.
 
 If the work appears larger than a single issue or pull request, or needs coordination across multiple features, tasks,
-or contributors, ask maintainers whether it should be organized as a GitHub milestone issue. Milestone issues are
+or contributors, ask maintainers whether it should be organized as a GitHub Milestone Issue. GitHub Milestone Issues are
 created by core maintainers. See the [Engineering Delivery Planning guide](../engineering/delivery-planning.md) for
-milestone, feature, and task issue structure.
+GitHub Milestone Issue, GitHub Feature Issue, and GitHub Task Issue structure.
 
-If the work does not match a dedicated milestone issue, maintainers may link it to a quarterly catch-all milestone issue
-for community contributions or Android foundations work.
+If the work does not match a dedicated GitHub Milestone Issue, maintainers may link it to a quarterly catch-all GitHub
+Milestone Issue for community contributions or Android foundations work.
 
 ## 🍴 Forking and Cloning
 
