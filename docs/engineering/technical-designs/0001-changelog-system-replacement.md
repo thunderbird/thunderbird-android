@@ -51,6 +51,79 @@ reader.
 
 ## Proposed Design
 
+At a high level, the packaged changelog resources move from one XML file per relevant source set to one generated index
+plus one generated JSON file per release:
+
+Before:
+
+```text
+app-k9mail/
+`-- src/
+    `-- main/
+        `-- res/
+            `-- raw/
+                `-- changelog_master.xml
+
+app-thunderbird/
+`-- src/
+    |-- daily/
+    |   `-- res/
+    |       `-- raw/
+    |           `-- changelog_master.xml
+    `-- debug/
+        `-- res/
+            `-- raw/
+                `-- changelog_master.xml
+```
+
+After:
+
+```text
+app-k9mail/
+`-- src/
+    |-- release/
+    |   `-- res/
+    |       `-- raw/
+    |           |-- changelog_index.json
+    |           |-- changelog_release_8_2.json
+    |           `-- changelog_release_8_1.json
+    `-- debug/
+        `-- res/
+            `-- raw/
+                |-- changelog_index.json
+                `-- changelog_release_dummy.json
+
+app-thunderbird/
+`-- src/
+    |-- release/
+    |   `-- res/
+    |       `-- raw/
+    |           |-- changelog_index.json
+    |           |-- changelog_release_21_0.json
+    |           `-- changelog_release_20_0.json
+    |-- beta/
+    |   `-- res/
+    |       `-- raw/
+    |           |-- changelog_index.json
+    |           `-- changelog_release_21_0_b1.json
+    |-- daily/
+    |   `-- res/
+    |       `-- raw/
+    |           |-- changelog_index.json
+    |           `-- changelog_release_21_0_a1_2026_05_29.json
+    `-- debug/
+        `-- res/
+            `-- raw/
+                |-- changelog_index.json
+                `-- changelog_release_dummy.json
+```
+
+The daily example includes the date because the daily version name suffix, `a1`, is constant. The generator should append
+the `date` to the sanitized daily release resource name so daily builds do not collide.
+Debug source sets package dummy changelog JSON files for testing the UI and do not mirror real release history.
+The dummy release file should contain representative changelog content only; it is not generated from release notes and
+must not be used for release, beta, or daily builds.
+
 ### Runtime Asset
 
 Each app target packages one generated changelog index raw resource:
