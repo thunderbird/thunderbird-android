@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thundermail_redirecting">Suunan edasi Thundermaili teenusesse…</string>
+    <string name="thundermail_something_went_wrong">Midagi läks valesti</string>
+    <string name="thundermail_browser_is_not_available">Veebibrauser pole saadaval. Palun vaata, kas sinu nutiseadme seadistused on korras</string>
+    <string name="thundermail_operation_was_canceled">Tegevus on katkestatud</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Tundmatu viga. Oleks kena, kui saad sellest meile teada anda.</string>
+</resources>

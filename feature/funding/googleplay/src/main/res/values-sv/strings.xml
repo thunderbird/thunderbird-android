@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_statement_point_1">Vi visar inga annonser.</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_2">Vi säljer inte din data.</string>
     <string name="funding_googleplay_contribution_reminder_claim">Vi finansieras enbart av användare som du.</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Bearbetar köp…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Avbryt</string>
 </resources>

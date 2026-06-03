@@ -20,14 +20,14 @@
     <string name="account_server_settings_incoming_imap_prefix_label">IMAP tee eesliide</string>
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
     <string name="account_server_settings_protocol_type_label">Protokoll</string>
-    <string name="account_server_settings_password_authentication_subtitle">Oma salasõna vaatamiseks eemalda lukustus</string>
+    <string name="account_server_settings_password_authentication_subtitle">Oma salasõna vaatamiseks ava lukustus</string>
     <string name="account_server_settings_username_label">Kasutajanimi</string>
     <string name="account_server_settings_validation_error_port_invalid">Port on vigane (peab olema vahemikus 1–65535).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">Kliendi sertifikaat</string>
     <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP\'i eesliide ei saa olla tühi.</string>
     <string name="account_server_settings_client_certificate_none_selected">Puudub</string>
-    <string name="account_server_settings_password_authentication_screen_lock_required">Kui soovid siin näha salasõna, siis lülita oma nutiseadmes sisse lukustuskuva kasutamine.</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Kui soovid siin näha salasõna, siis lülita oma nutiseadmes sisse lukustusvaate kasutamine.</string>
     <string name="account_server_settings_server_label">Server</string>
     <string name="account_server_settings_security_label">Turvalisus</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Vigane ip-aadress või serveri nimi</string>

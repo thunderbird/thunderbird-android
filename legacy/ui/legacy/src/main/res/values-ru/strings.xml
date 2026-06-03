@@ -473,7 +473,7 @@
     <string name="sort_unread_last">Прочитано – не прочитано</string>
     <string name="sort_attach_first">С вложениями – без вложений</string>
     <string name="sort_unattached_first">Без вложений – с вложениями</string>
-    <string name="sort_by">Сортировать по…</string>
+    <string name="sort_by">Сортировка…</string>
     <string name="sort_by_date">Дата</string>
     <string name="sort_by_arrival">Получено</string>
     <string name="sort_by_subject">Тема</string>
@@ -629,7 +629,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Ограничение поиска на сервере</string>
+    <string name="account_settings_remote_search_num_label">Ограничение поиска сервера</string>
     <string name="remote_search_sending_query">Отправка запроса на сервер</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Получение %d результата</item>
@@ -964,4 +964,10 @@
     <string name="accessibility_move_cutoff_down">Переместить границу отображаемых действий ниже</string>
     <string name="notification_actions_cutoff_description">Граница отображаемых действий</string>
     <string name="notification_action_star">Избранное</string>
+    <string name="changelog_type_new_text">ДОБАВЛЕНО</string>
+    <string name="changelog_type_changed_text">ИЗМЕНЕНО</string>
+    <string name="changelog_type_fixed_text">ИСПРАВЛЕНО</string>
+    <string name="notification_show_contact_picture_title">Показывать изображения контактов в уведомлениях</string>
+    <string name="notification_show_contact_picture_summary">Показывать аватары отправителей в уведомлениях о новых сообщениях</string>
+    <string name="changelog_latest_label_text">ПОСЛЕДНЕЕ</string>
 </resources>

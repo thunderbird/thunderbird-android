@@ -7,4 +7,7 @@
     <string name="designsystem_molecule_error_view_button_retry">Повторить</string>
     <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Провести от начала до конца, чтобы %s</string>
     <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Провести от конца к началу, чтобы %s</string>
+    <string name="designsystem_organism_thundermail_button_panel_scan_qr_code">Сканировать QR-код</string>
+    <string name="designsystem_organism_thundermail_button_panel_sign_in_or">или</string>
+    <string name="designsystem_organism_thundermail_button_panel_sign_in">Войти с Thundermail</string>
 </resources>

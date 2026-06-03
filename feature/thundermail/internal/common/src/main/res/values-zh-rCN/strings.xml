@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thundermail_redirecting">正在重定向到 Thundermail…</string>
+    <string name="thundermail_something_went_wrong">出了点问题</string>
+    <string name="thundermail_browser_is_not_available">浏览器不可用。请验证您的设备配置</string>
+    <string name="thundermail_operation_was_canceled">操作已取消</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">未知错误。请考虑提交报告。</string>
+</resources>

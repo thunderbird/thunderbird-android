@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Selecteren</string>
     <string name="swipe_action_deselect">Deselecteren</string>
@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">Ongewenst</string>
     <string name="swipe_action_move">Verplaatsen…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> geselecteerd</string>
+    <string name="sort_by">Sorteren op…</string>
+    <string name="sort_by_date_asc">Datum (oudste eerst)</string>
+    <string name="sort_by_date_desc">Datum (nieuwste eerst)</string>
+    <string name="sort_by_arrival_asc">Ontvangst (oudste eerst)</string>
+    <string name="sort_by_arrival_desc">Ontvangst (nieuwste eerst)</string>
+    <string name="sort_by_subject_asc">Onderwerp (A-Z)</string>
+    <string name="sort_by_subject_desc">Onderwerp (Z-A)</string>
+    <string name="sort_by_sender_asc">Afzender (A-Z)</string>
+    <string name="sort_by_sender_desc">Afzender (Z-A)</string>
+    <string name="sort_by_flag_asc">Met ster eerst</string>
+    <string name="sort_by_flag_desc">Zonder ster eerst</string>
+    <string name="sort_by_unread_asc">Ongelezen eerst</string>
+    <string name="sort_by_unread_desc">Gelezen eerst</string>
+    <string name="sort_by_attach_asc">Met bijlagen eerst</string>
+    <string name="sort_by_attach_desc">Zonder bijlagen eerst</string>
 </resources>

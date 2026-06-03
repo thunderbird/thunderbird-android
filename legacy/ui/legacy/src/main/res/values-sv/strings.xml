@@ -791,14 +791,14 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="generic_loading_error">Ett fel uppstod när data lästes in</string>
     <string name="push_notification_state_initializing">Initierar…</string>
     <string name="push_notification_state_listening">Väntar på nya e-postmeddelanden</string>
-    <string name="push_notification_state_wait_background_sync">Sover tills bakgrundssynkronisering är tillåten</string>
-    <string name="push_notification_state_wait_network">Sover tills nätverket är tillgängligt</string>
+    <string name="push_notification_state_wait_background_sync">Vilar tills bakgrundssynkronisering är tillåten</string>
+    <string name="push_notification_state_wait_network">Vilar tills nätverket är tillgängligt</string>
     <string name="push_notification_info">Tryck för att läsa mer.</string>
     <string name="push_info_title">Push-info</string>
-    <string name="push_info_configure_notification_text">Däremot ger Android också möjligheten att dölja den aviseringen.</string>
-    <string name="push_info_learn_more_text">Lär dig mer</string>
-    <string name="push_info_configure_notification_action">Anpassa avisering</string>
-    <string name="push_info_disable_push_text">Om du inte behöver omedelbara aviseringar om nya meddelanden bör du inaktivera Push och använda Polling. Polling kontrollerar regelbundet efter nya mejl och behöver inte en ständig avisering.</string>
+    <string name="push_info_configure_notification_text">Android låter dig dock också dölja aviseringen.</string>
+    <string name="push_info_learn_more_text">Läs mer</string>
+    <string name="push_info_configure_notification_action">Konfigurera avisering</string>
+    <string name="push_info_disable_push_text">Om du inte behöver omedelbara aviseringar om nya meddelanden bör du inaktivera Push och använda Polling. Polling kontrollerar regelbundet om det finns nya e-postmeddelanden och behöver inte aviseringen.</string>
     <string name="push_info_disable_push_action">Inaktivera Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
@@ -817,9 +817,9 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
     <string name="message_list_error_folder_not_found">Mappen hittades inte</string>
     <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
-    <string name="message_details_toolbar_title">Meddelande detaljer</string>
+    <string name="message_details_toolbar_title">Meddelandedetaljer</string>
     <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
-    <string name="message_details_missing_date">Rubriken \"Date\" saknas</string>
+    <string name="message_details_missing_date">Rubriken \"Datum\" saknas</string>
     <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
     <string name="message_details_from_section_title">Från</string>
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -833,7 +833,7 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
     <string name="message_details_bcc_section_title">Blindkopia</string>
     <!--Displayed when loading the message details has failed-->
-    <string name="message_details_loading_error">Ett fel uppstod när meddelande detaljerna lästes in.</string>
+    <string name="message_details_loading_error">Ett fel uppstod när meddelandeinformationen lästes in.</string>
     <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_add_to_contacts">Lägg till i kontakter</string>
     <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
@@ -857,8 +857,8 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="general_settings_post_mark_as_unread_action_stay">Stanna på nuvarande meddelande</string>
     <string name="general_settings_post_mark_as_unread_action_title">Efter att ha markerat ett meddelande som oläst</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Återgå till meddelandelistan</string>
-    <string name="push_notification_state_alarm_permission_missing">Saknar behörigheter för att schemalägga larm</string>
-    <string name="push_notification_grant_alarm_permission">Tryck för att ge behörigheter.</string>
+    <string name="push_notification_state_alarm_permission_missing">Saknar behörighet för att schemalägga larm</string>
+    <string name="push_notification_grant_alarm_permission">Tryck för att ge behörighet.</string>
     <string name="dialog_openkeychain_info_text">Appen OpenKeychain krävs för att möjliggöra stöd för end-to-end-kryptering.</string>
     <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%1$s</xliff:g>\" kommer att tas bort ifrån <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="about_title">Om <xliff:g id="app_name">%s</xliff:g></string>
@@ -872,7 +872,7 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="settings_ui_telemetry_description">Delar prestanda, användning, hårdvara och anpassningsdata om denna app med Mozilla för att hjälpa oss att göra Thunderbird bättre</string>
     <string name="folder_settings_visible_label">Visa mapp</string>
     <string name="settings_list_action_support">Stötta <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="push_info_notification_explanation_text">När Push-notiser används har <xliff:g id="app_name">%1$s</xliff:g> en kontinuerlig anslutning till mejlservern. Android kräver då att en ständig avisering visas medan appen är aktiv i bakgrunden. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">När Push används upprätthåller <xliff:g id="app_name">%1$s</xliff:g> en anslutning till e-postservern. Android kräver att en pågående avisering visas medan appen är aktiv i bakgrunden. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="volume_navigation_summary">Navigera mellan meddelanden med volymknapparna i meddelandevyn</string>
     <string name="volume_navigation_title_short">Volymknappsnavigering</string>
     <string name="save_attachment_action">Spara bilaga</string>
@@ -911,7 +911,7 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="global_settings_messageview_body_content_type_title">Innehållstyp för brödtext</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
     <string name="global_settings_messageview_body_content_type_text_plain">Oformaterad text (text/oformaterad)</string>
-    <string name="debug_feature_flags">FELSÖKNING: Funktionsflaggor</string>
+    <string name="debug_feature_flags">FELSÖK: Funktionsflaggor</string>
     <string name="print_message_action">Skriv ut</string>
     <string name="global_settings_splitview_when_unfolded">När enheten är utfälld</string>
     <string name="general_settings_message_list_date_time_format_title">Datum-/tidsformat</string>
@@ -950,4 +950,8 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="changelog_type_new_text">NY</string>
     <string name="changelog_type_changed_text">ÄNDRAD</string>
     <string name="changelog_type_fixed_text">FIXAT</string>
+    <string name="unknown_recipient">&lt;Okänd mottagare&gt;</string>
+    <string name="unknown_sender">&lt;Okänd avsändare&gt;</string>
+    <string name="notification_show_contact_picture_title">Visa kontaktbilder i aviseringar</string>
+    <string name="notification_show_contact_picture_summary">Visa avsändaravatarer i aviseringar om nya meddelanden</string>
 </resources>

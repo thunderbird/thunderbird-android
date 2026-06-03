@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Seleccionar</string>
     <string name="swipe_action_deselect">Deseleccionar</string>
@@ -13,4 +13,17 @@
     <string name="swipe_action_spam">Spam</string>
     <string name="swipe_action_move">Mover…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionados</string>
+    <string name="sort_by">Ordenar por…</string>
+    <string name="sort_by_date_asc">Fecha (más antiguos primero)</string>
+    <string name="sort_by_date_desc">Fecha (más recientes primero)</string>
+    <string name="sort_by_arrival_asc">Llegada (más antiguos primero)</string>
+    <string name="sort_by_arrival_desc">Llegada (más recientes primero)</string>
+    <string name="sort_by_subject_asc">Asunto (A-Z)</string>
+    <string name="sort_by_subject_desc">Asunto (Z-A)</string>
+    <string name="sort_by_sender_asc">Remitente (A-Z)</string>
+    <string name="sort_by_sender_desc">Remitente (Z-A)</string>
+    <string name="sort_by_unread_asc">No leídos primero</string>
+    <string name="sort_by_unread_desc">Leídos primero</string>
+    <string name="sort_by_attach_asc">Con ficheros adjuntos primero</string>
+    <string name="sort_by_attach_desc">Sin ficheros adjuntos primero</string>
 </resources>
