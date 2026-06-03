@@ -122,7 +122,7 @@
     <string name="notification_notify_error_title">Meldingsflater</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_text">Der is in flater bard wylst it meitsjen fan in systeemmelding foar in nij berjocht. De reden is wierskynlik in ûntbrekkend meldingslûd.\n\nTik om meldingsynstellingen te iepenjen.</string>
-    <string name="notification_bg_sync_ticker">Berjochten kontrolearje: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Op berjochten kontrolearje: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Berjochten kontrolearje</string>
     <string name="notification_bg_send_ticker">Berjochten ferstjoere: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">E-mailberjocht(en) ferstjoere</string>
@@ -611,7 +611,7 @@
     <string name="webview_contextmenu_email_save_action">Yn kontakten bewarje</string>
     <string name="webview_contextmenu_email_copy_action">Adres nei klamboerd kopiearje</string>
     <string name="webview_contextmenu_email_clipboard_label">E-mailadres</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Alles</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Alle</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -942,4 +942,10 @@
     <string name="accessibility_move_cutoff_up">Werjeftegrins aksjes omheech ferpleatse</string>
     <string name="accessibility_move_cutoff_down">Werjeftegrins aksjes omleech ferpleatse</string>
     <string name="notification_action_star">Stjer</string>
+    <string name="changelog_latest_label_text">LÊSTE</string>
+    <string name="changelog_type_new_text">NIJ</string>
+    <string name="changelog_type_changed_text">WIZIGE</string>
+    <string name="changelog_type_fixed_text">FIKST</string>
+    <string name="notification_show_contact_picture_title">Kontaktôfbyldingen yn notifikaasjes toane</string>
+    <string name="notification_show_contact_picture_summary">Ofstjoerderavatars yn nij-berjochtnotifikaasjes toane</string>
 </resources>

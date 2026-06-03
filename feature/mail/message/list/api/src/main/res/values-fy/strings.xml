@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Selektearje</string>
     <string name="swipe_action_deselect">Deselektearje</string>
@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">Net-winske</string>
     <string name="swipe_action_move">Ferpleatse…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selektearre</string>
+    <string name="sort_by">Sortearje op…</string>
+    <string name="sort_by_date_asc">Datum (âldste earst)</string>
+    <string name="sort_by_date_desc">Datum (nijste earst)</string>
+    <string name="sort_by_arrival_asc">Untfangst (âldste earst)</string>
+    <string name="sort_by_arrival_desc">Untfangst (nijste earst)</string>
+    <string name="sort_by_subject_asc">Underwerp (A-Z)</string>
+    <string name="sort_by_subject_desc">Underwerp (Z-A)</string>
+    <string name="sort_by_sender_asc">Ofstjoerder (A-Z)</string>
+    <string name="sort_by_sender_desc">Ofstjoerder (Z-A)</string>
+    <string name="sort_by_flag_asc">Mei stjer earst</string>
+    <string name="sort_by_flag_desc">Sûnder stjer earst</string>
+    <string name="sort_by_unread_asc">Net-lêzen earst</string>
+    <string name="sort_by_unread_desc">Lêzen earst</string>
+    <string name="sort_by_attach_asc">Mei bylagen earst</string>
+    <string name="sort_by_attach_desc">Sûnder bylagen earst</string>
 </resources>

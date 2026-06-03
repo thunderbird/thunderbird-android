@@ -472,7 +472,7 @@
     <string name="sort_unread_last">Przeczytane wiadomości jako pierwsze</string>
     <string name="sort_attach_first">Wiadomości z załącznikami jako pierwsze</string>
     <string name="sort_unattached_first">Wiadomości bez załączników jako pierwsze</string>
-    <string name="sort_by">Sortuj wg…</string>
+    <string name="sort_by">Sortowanie wg…</string>
     <string name="sort_by_date">Data</string>
     <string name="sort_by_arrival">Data otrzymania</string>
     <string name="sort_by_subject">Temat</string>
@@ -687,7 +687,7 @@
     <string name="compose_error_no_key_configured">Nie skonfigurowanego klucza dla tego konta! Sprawdź ustawienia.</string>
     <string name="error_crypto_provider_incompatible">Aplikacja szyfrująca w niezgodnej wersji. Sprawdź ustawienia!</string>
     <string name="error_crypto_provider_connect">Nie można połączyć się z dostawcą kryptografii, sprawdź ustawienia lub kliknij ikonę kryptografii, aby spróbować ponownie!</string>
-    <string name="error_crypto_provider_ui_required">Inicjalizacja szyfrowania typu „end-to-end” nie powiodła się. Sprawdź ustawienia.</string>
+    <string name="error_crypto_provider_ui_required">Inicjalizacja szyfrowania typu „end-to-end” się nie powiodła. Sprawdź ustawienia.</string>
     <string name="error_crypto_inline_attach">Tryb PGP/INLINE nie obsługuje załączników!</string>
     <string name="enable_inline_pgp">Włącz PGP/INLINE</string>
     <string name="disable_inline_pgp">Wyłącz PGP/INLINE</string>
@@ -955,4 +955,10 @@
     <string name="notification_action_star">Gwiazdka</string>
     <string name="accessibility_move_cutoff_up">Przesuń odcięcie wyświetlanych czynności w górę</string>
     <string name="accessibility_move_cutoff_down">Przesuń odcięcie wyświetlanych czynności w dół</string>
+    <string name="changelog_latest_label_text">NAJNOWSZE</string>
+    <string name="changelog_type_new_text">NOWE</string>
+    <string name="changelog_type_changed_text">ZMIENIONE</string>
+    <string name="changelog_type_fixed_text">NAPRAWIONE</string>
+    <string name="notification_show_contact_picture_title">Pokazuj zdjęcia kontaktów w powiadomieniach</string>
+    <string name="notification_show_contact_picture_summary">Wyświetlaj awatary nadawców w powiadomieniach o nowych wiadomościach</string>
 </resources>

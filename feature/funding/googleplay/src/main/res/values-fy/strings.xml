@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_claim">Wy wurde allinnich finansiere troch brûkers lykas jo.</string>
     <string name="funding_googleplay_contribution_header_thank_you">Us oprjochte tank oan jo!</string>
     <string name="funding_googleplay_contribution_reminder_statement">Thunderbird is fergees en iepen boarne.</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Oankeap ferwurkje…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Annulearje</string>
 </resources>

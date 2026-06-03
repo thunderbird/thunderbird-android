@@ -901,4 +901,10 @@
     <string name="accessibility_move_cutoff_up">Bog an gearradh suas de na gníomhartha a thaispeántar</string>
     <string name="accessibility_move_cutoff_down">Bog gearrthán na ngníomhartha a thaispeántar síos</string>
     <string name="notification_action_star">Réalta</string>
+    <string name="changelog_latest_label_text">IS DÉANAÍ</string>
+    <string name="changelog_type_new_text">NUA</string>
+    <string name="changelog_type_changed_text">ATHRAITHE</string>
+    <string name="changelog_type_fixed_text">SOCRAITHE</string>
+    <string name="notification_show_contact_picture_title">Taispeáin pictiúir teagmhála i bhfógraí</string>
+    <string name="notification_show_contact_picture_summary">Taispeáin abhatáranna an tseoltóra i bhfógraí teachtaireachtaí nua</string>
 </resources>

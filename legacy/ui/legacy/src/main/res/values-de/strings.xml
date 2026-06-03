@@ -315,8 +315,8 @@
     <string name="account_settings_mark_message_as_read_on_delete_label">Beim Löschen als gelesen markieren</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Nachricht als gelesen markieren, sobald sie gelöscht wird</string>
     <string name="account_settings_notification_channels_label">Benachrichtigungskategorien</string>
-    <string name="account_settings_open_notification_settings_messages_summary">Konfiguriere die Benachrichtigungen für neue Nachrichten</string>
-    <string name="account_settings_open_notification_settings_miscellaneous_summary">Konfiguriere Fehler- und Statusbenachrichtigungen</string>
+    <string name="account_settings_open_notification_settings_messages_summary">Benachrichtigungen für neue Nachrichten konfigurieren</string>
+    <string name="account_settings_open_notification_settings_miscellaneous_summary">Fehler- und Statusbenachrichtigungen konfigurieren</string>
     <string name="account_settings_show_pictures_label">Bilder immer anzeigen</string>
     <string name="account_settings_show_pictures_never">Nein</string>
     <string name="account_settings_show_pictures_only_from_contacts">Nur von Kontakten</string>
@@ -466,7 +466,7 @@
     <string name="sort_unread_last">Gelesene Nachrichten zuerst</string>
     <string name="sort_attach_first">Nachrichten mit Anhängen zuerst</string>
     <string name="sort_unattached_first">Nachrichten ohne Anhänge zuerst</string>
-    <string name="sort_by">Sortieren nach …</string>
+    <string name="sort_by">Sortieren nach…</string>
     <string name="sort_by_date">Datum</string>
     <string name="sort_by_arrival">Ankunftsdatum</string>
     <string name="sort_by_subject">Betreff</string>
@@ -618,7 +618,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Begrenzung der Serversuche</string>
+    <string name="account_settings_remote_search_num_label">Server-Suchlimit</string>
     <string name="remote_search_sending_query">Sende Anfrage an den Server</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">%d Resultat wird abgerufen</item>
@@ -946,4 +946,10 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="accessibility_move_cutoff_up">Anzeigegrenze nach oben verschieben</string>
     <string name="accessibility_move_cutoff_down">Anzeigegrenze nach unten verschieben</string>
     <string name="notification_action_star">Favorit</string>
+    <string name="changelog_type_fixed_text">BEHOBEN</string>
+    <string name="changelog_type_new_text">NEU</string>
+    <string name="changelog_latest_label_text">AKTUELL</string>
+    <string name="changelog_type_changed_text">GEÄNDERT</string>
+    <string name="notification_show_contact_picture_title">Kontaktbilder in Benachrichtigungen anzeigen</string>
+    <string name="notification_show_contact_picture_summary">Profilbild der Absender in Benachrichtigungen über neue Nachrichten anzeigen</string>
 </resources>

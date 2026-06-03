@@ -935,4 +935,10 @@
     <string name="accessibility_move_cutoff_up">将显示的操作分界线向上移动</string>
     <string name="accessibility_move_cutoff_down">将显示的操作分界线向下移动</string>
     <string name="notification_action_star">星标</string>
+    <string name="changelog_latest_label_text">最新</string>
+    <string name="changelog_type_new_text">新增</string>
+    <string name="changelog_type_changed_text">变更</string>
+    <string name="changelog_type_fixed_text">修复</string>
+    <string name="notification_show_contact_picture_title">在通知中显示联系人图片</string>
+    <string name="notification_show_contact_picture_summary">在新邮件通知中显示发件人头像</string>
 </resources>

@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_screen_title">Écran des paramètres de débogage du secret</string>
+    <string name="debug_settings_notifications_loading">Chargement…</string>
+    <string name="debug_settings_notifications_trigger_notification">Déclencher une notification</string>
+    <string name="debug_settings_notifications_single_mail_sender">Expéditeur</string>
+    <string name="debug_settings_notifications_single_mail_subject">Objet</string>
+    <string name="debug_settings_notifications_single_mail_summary">Résumé</string>
+    <string name="debug_settings_notifications_single_mail_preview">Aperçu</string>
+    <string name="debug_settings_notifications_common_notification_information">Renseignements généraux relatifs aux notifications</string>
+    <string name="debug_settings_notifications_in_app_notification">Notification dans l’appli</string>
+    <string name="debug_settings_notifications_title">Notifications</string>
+    <string name="debug_settings_notifications_system_notification">Notification système</string>
+    <string name="debug_settings_notifications_preparing_notification">Préparation de la notification %1$s</string>
+    <string name="debug_settings_notification_status_log">Journal de l’état des notifications</string>
+    <string name="debug_settings_notifications_status">"État : "</string>
+    <string name="debug_settings_notifications_clear_status_log">Effacer le journal des états</string>
+    <string name="debug_settings_feature_flag_title">Indicateurs de fonction</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Changements non enregistrés</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Des changements ne sont pas enregistrés. Voulez-vous vraiment quitter la page ?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Rester</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Quitter</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Rétablir les valeurs par défaut</string>
+    <string name="debug_settings_feature_flag_apply_changes">Appliquer les changements</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"remplacé ; "</string>
+    <string name="debug_settings_feature_flag_default_value">valeur par défaut : %1$b</string>
 </resources>

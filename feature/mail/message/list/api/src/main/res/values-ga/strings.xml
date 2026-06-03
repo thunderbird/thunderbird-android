@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Roghnaigh</string>
     <string name="swipe_action_deselect">Díroghnaigh</string>
@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">Turscar</string>
     <string name="swipe_action_move">Bog…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> roghnaithe</string>
+    <string name="sort_by">Sórtáil de réir…</string>
+    <string name="sort_by_date_asc">Dáta (an ceann is sine ar dtús)</string>
+    <string name="sort_by_date_desc">Dáta (an ceann is nuaí ar dtús)</string>
+    <string name="sort_by_arrival_asc">Teacht (an ceann is sine ar dtús)</string>
+    <string name="sort_by_arrival_desc">Teacht (an ceann is nuaí ar dtús)</string>
+    <string name="sort_by_subject_asc">Ábhar (A-Z)</string>
+    <string name="sort_by_subject_desc">Ábhar (Z-A)</string>
+    <string name="sort_by_sender_asc">Seoltóir (A-Z)</string>
+    <string name="sort_by_sender_desc">Seoltóir (Z-A)</string>
+    <string name="sort_by_flag_asc">Réalta curtha leis ar dtús</string>
+    <string name="sort_by_flag_desc">Dírithe ar dtús</string>
+    <string name="sort_by_unread_asc">Gan léamh ar dtús</string>
+    <string name="sort_by_unread_desc">Léigh ar dtús</string>
+    <string name="sort_by_attach_asc">Le ceangaltáin ar dtús</string>
+    <string name="sort_by_attach_desc">Gan cheangaltáin ar dtús</string>
 </resources>

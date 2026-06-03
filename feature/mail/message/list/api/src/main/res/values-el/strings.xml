@@ -1,15 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Επιλογή</string>
     <string name="swipe_action_deselect">Απο-επιλογή</string>
-    <string name="swipe_action_mark_as_read">Επισήμανση ως αναγνωσμένο</string>
+    <string name="swipe_action_mark_as_read">Σήμανση ως αναγνωσμένο</string>
     <string name="swipe_action_mark_as_unread">Σήμανση ως μη αναγνωσμένο</string>
     <string name="swipe_action_add_star">Προσθήκη αστεριού</string>
     <string name="swipe_action_remove_star">Αφαίρεση αστεριού</string>
     <string name="swipe_action_archive">Αρχειοθέτηση</string>
-    <string name="swipe_action_archive_folder_not_set">Ρυθμίστε το φάκελο αρχειοθέτησης</string>
+    <string name="swipe_action_archive_folder_not_set">Ρύθμιση φακέλου αρχειοθήκης</string>
     <string name="swipe_action_delete">Διαγραφή</string>
     <string name="swipe_action_spam">Ανεπιθύμητα</string>
     <string name="swipe_action_move">Μετακίνηση…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> επιλέχθηκαν</string>
+    <string name="sort_by">Ταξινόμηση κατά…</string>
+    <string name="sort_by_date_asc">Ημερομηνία (πρώτα τα παλαιότερα)</string>
+    <string name="sort_by_date_desc">Ημερομηνία (πρώτα τα νεότερα)</string>
+    <string name="sort_by_subject_asc">Θέμα (Α-Ω)</string>
+    <string name="sort_by_subject_desc">Θέμα (Ω-Α)</string>
+    <string name="sort_by_sender_asc">Αποστολέα (Α-Ω)</string>
+    <string name="sort_by_sender_desc">Αποστολέα (Ω-Α)</string>
+    <string name="swipe_action_change_swipe_gestures">Αλλαγή \nχειρονομιών ολίσθησης</string>
+    <string name="sort_by_attach_desc">Πρώτα χωρίς συνημμένα</string>
+    <string name="sort_by_attach_asc">Πρώτα με συνημμένα</string>
+    <string name="sort_by_unread_desc">Πρώτα τα αναγνωσμένα</string>
+    <string name="sort_by_unread_asc">Πρώτα τα μη αναγνωσμένα</string>
+    <string name="sort_by_flag_desc">Πρώτα χωρίς αστέρι</string>
+    <string name="sort_by_flag_asc">Πρώτα με αστέρι</string>
+    <string name="sort_by_arrival_asc">Άφιξη (πρώτα τα παλαιότερα)</string>
+    <string name="sort_by_arrival_desc">Άφιξη (πρώτα τα νεότερα)</string>
 </resources>

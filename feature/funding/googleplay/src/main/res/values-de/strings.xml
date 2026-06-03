@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_statement_point_2">Wir verkaufen deine Daten nicht.</string>
     <string name="funding_googleplay_contribution_reminder_claim">Wir werden ausschließlich von Nutzern wie dir finanziert.</string>
     <string name="funding_googleplay_contribution_reminder_statement">Thunderbird ist kostenlos und quelloffen.</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Kauf wird bearbeitet …</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Abbrechen</string>
 </resources>

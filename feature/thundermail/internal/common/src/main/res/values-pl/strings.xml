@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thundermail_redirecting">Przekierowywanie do usługi Thundermail...</string>
+    <string name="thundermail_something_went_wrong">Coś poszło nie tak</string>
+    <string name="thundermail_browser_is_not_available">Przeglądarka jest niedostępna. Sprawdź konfigurację swojego urządzenia</string>
+    <string name="thundermail_operation_was_canceled">Operacja została anulowana</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Nieznany błąd. Proszę rozważyć zgłoszenie.</string>
+</resources>

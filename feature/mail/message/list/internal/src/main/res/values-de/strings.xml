@@ -23,4 +23,13 @@
     <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Das Synchronisieren von „%1$s“ mit dem Remote-Ordner ist fehlgeschlagen. Meldung: %2$s</string>
     <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Der Ordnername darf nicht leer sein</string>
     <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Ungültiger Ordnername „%1$s“</string>
+    <string name="message_list_state_selected_unread_message_description">Ausgewählt, Ungelesen</string>
+    <string name="message_list_state_active_unread_message_description">Aktiv, Ungelesen</string>
+    <string name="message_list_state_selected_new_message_description">Ausgewählt, Neu</string>
+    <string name="message_list_state_selected_read_message_description">Ausgewählt, Gelesen</string>
+    <string name="message_list_state_new_message_description">Neu</string>
+    <string name="message_list_state_read_message_description">Gelesen</string>
+    <string name="message_list_state_unread_message_description">Ungelesen</string>
+    <string name="message_list_state_active_new_message_description">Aktiv, Neu</string>
+    <string name="message_list_state_active_read_message_description">Aktiv, Gelesen</string>
 </resources>

@@ -54,5 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_statement_point_1">Ní thaispeánaimid fógraí.</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_2">Ní dhíolaimid do shonraí.</string>
     <string name="funding_googleplay_contribution_reminder_claim">Tá muid maoinithe ag úsáideoirí cosúil leatsa amháin.</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Ceannach á phróiseáil…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Cealaigh</string>
 </resources>
-

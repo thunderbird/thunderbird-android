@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Vybrat</string>
     <string name="swipe_action_deselect">Zrušit výběr</string>
@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">Nevyžádaná</string>
     <string name="swipe_action_move">Přesunout…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vybraných</string>
+    <string name="sort_by">Seřadit podle…</string>
+    <string name="sort_by_subject_asc">Předmět (A-Z)</string>
+    <string name="sort_by_subject_desc">Předmět (Z-A)</string>
+    <string name="sort_by_sender_asc">Odesílatel (A-Z)</string>
+    <string name="sort_by_sender_desc">Odesílatel (Z-A)</string>
+    <string name="sort_by_date_asc">Datum (od nejstarších)</string>
+    <string name="sort_by_date_desc">Datum (od nejnovějších)</string>
+    <string name="sort_by_arrival_asc">Doručení (od nejstarších)</string>
+    <string name="sort_by_arrival_desc">Doručení (od nejnovějších)</string>
+    <string name="sort_by_flag_asc">Nejprve s hvězdičkou</string>
+    <string name="sort_by_flag_desc">Nejprve bez hvězdičky</string>
+    <string name="sort_by_unread_asc">Nejprve nepřečtené</string>
+    <string name="sort_by_unread_desc">Nejprve přečtené</string>
+    <string name="sort_by_attach_asc">Nejprve s přílohami</string>
+    <string name="sort_by_attach_desc">Nejprve bez příloh</string>
 </resources>

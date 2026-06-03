@@ -615,7 +615,7 @@
     <string name="webview_contextmenu_email_save_action">Enregistrer dans Contacts</string>
     <string name="webview_contextmenu_email_copy_action">Copier l’adresse dans le presse-papiers</string>
     <string name="webview_contextmenu_email_clipboard_label">Adresse courriel</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Tous</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Tout</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -913,7 +913,7 @@
     <string name="account_setup_auto_select_folder">Choix automatique du dossier</string>
     <string name="navigation_drawer_preferences">Menu latéral</string>
     <string name="expand_folders">Développer les dossiers</string>
-    <string name="debug_feature_flags">DÉBOGAGE : Drapeaux de fonction</string>
+    <string name="debug_feature_flags">DÉBOGAGE : Indicateurs de fonction</string>
     <string name="print_message_action">Imprimer</string>
     <string name="global_settings_splitview_when_unfolded">Quand l’appareil est déplié</string>
     <string name="general_settings_message_list_date_time_format_title">Format de la date et de l’heure</string>
@@ -949,4 +949,6 @@
     <string name="accessibility_move_cutoff_down">Déplacer la limite des actions affichées vers le bas</string>
     <string name="notification_actions_settings_summary">Choisissez les actions qui apparaissent dans les notifications par courriel</string>
     <string name="notification_actions_cutoff_description">Limite des actions affichées</string>
+    <string name="notification_show_contact_picture_title">Afficher la photo des contact dans les notifications</string>
+    <string name="notification_show_contact_picture_summary">Afficher l’avatar des expéditeurs dans les notifications de nouveaux messages</string>
 </resources>
