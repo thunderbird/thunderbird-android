@@ -33,10 +33,12 @@ import net.thunderbird.core.logging.testing.TestLogLevelManager
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import net.thunderbird.feature.mail.message.reader.api.css.CssStyleProvider
 import net.thunderbird.feature.mail.message.reader.api.css.CssVariableNameProvider
 import net.thunderbird.legacy.core.FakeAccountDefaultsProvider
+import net.thunderbird.legacy.core.mailstore.folder.FakeLocalMessageUidPrefixProvider
 import net.thunderbird.legacy.core.mailstore.folder.FakeOutboxFolderManager
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
@@ -113,6 +115,7 @@ val testModule = module {
     }
     factoryListOf<CssStyleProvider>()
     single<NotificationResourceProvider> { mock() }
+    single<LocalMessageUidPrefixProvider> { FakeLocalMessageUidPrefixProvider() }
 }
 
 class FakePlatformConfigProvider : PlatformConfigProvider {
