@@ -32,7 +32,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
                 FeatureFlag(MessageListFeatureFlags.EnableMessageListNewState, enabled = false),
                 FeatureFlag(MessageReaderFeatureFlags.UseComposeForMessageReader, enabled = false),
-                FeatureFlag(ThundermailFeatureFlags.ThundermailOnboardingEnabled, enabled = false),
+                FeatureFlag(ThundermailFeatureFlags.ThundermailOnboardingEnabled, enabled = true),
             ),
         )
     }
