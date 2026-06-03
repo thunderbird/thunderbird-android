@@ -5,6 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="19.1" versioncode="39037" date="2026-06-03">
+        <change>New: Enable easily discoverable way to configure and use Thundermail</change>
+    </release>
     <release version="19.0" versioncode="39036" date="2026-05-26">
         <change>New: Message notification actions can be configured</change>
         <change>New: Message font size scales with device preferences</change>

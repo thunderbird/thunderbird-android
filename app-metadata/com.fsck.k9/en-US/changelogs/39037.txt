@@ -1,0 +1,4 @@
+K-9 Mail version 19.1
+
+New:
+- Enable easily discoverable way to configure and use Thundermail
