@@ -58,13 +58,21 @@ private class ServerSettingsAdapter : JsonAdapter<ServerSettings>() {
         while (reader.hasNext()) {
             when (reader.selectName(JSON_KEYS)) {
                 0 -> type = reader.nextString()
+
                 1 -> host = reader.nextString()
+
                 2 -> port = reader.nextInt()
+
                 3 -> connectionSecurity = ConnectionSecurity.valueOf(reader.nextString())
+
                 4 -> authenticationType = AuthType.valueOf(reader.nextString())
+
                 5 -> username = reader.nextString()
+
                 6 -> password = reader.nextStringOrNull()
+
                 7 -> clientCertificateAlias = reader.nextStringOrNull()
+
                 else -> {
                     val key = reader.nextName()
                     val value = reader.nextStringOrNull()

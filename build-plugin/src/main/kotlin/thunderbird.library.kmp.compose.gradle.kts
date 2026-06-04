@@ -4,9 +4,9 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.kotlin.plugin.serialization")
-    id("thunderbird.quality.detekt.typed")
     id("net.thunderbird.gradle.plugin.quality.coverage")
-    id("thunderbird.quality.spotless")
+    id("net.thunderbird.gradle.plugin.quality.detekt")
+    id("net.thunderbird.gradle.plugin.quality.spotless")
 }
 
 kotlin {

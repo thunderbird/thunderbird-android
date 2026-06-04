@@ -24,6 +24,7 @@ class FakeFileManager : FileManager {
                     val path = requireNotNull(androidUri.path) { "File URI without path: $androidUri" }
                     File(path).readText(Charsets.UTF_8)
                 }
+
                 else -> error("Unsupported scheme for FakeFileManager source: ${androidUri.scheme}")
             }
             exportedContent = content

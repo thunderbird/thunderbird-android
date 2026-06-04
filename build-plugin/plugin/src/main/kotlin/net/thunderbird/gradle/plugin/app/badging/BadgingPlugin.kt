@@ -2,12 +2,12 @@ package net.thunderbird.gradle.plugin.app.badging
 
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.Aapt2
+import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.Copy
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
-import com.android.build.api.variant.ApplicationAndroidComponentsExtension
-import org.gradle.api.tasks.Copy
 import org.gradle.kotlin.dsl.register
 
 private val variantsToCheck = listOf("release", "beta", "daily")

@@ -48,6 +48,7 @@ internal fun ThundermailOAuthRedirectScreen(
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
             is ThundermailContract.Effect.LaunchOAuth -> oAuthLauncher.launch(effect.intent)
+
             is ThundermailContract.Effect.NavigateToIncomingServerSettings ->
                 onFinish(ThundermailRoute.IncomingSettings)
         }

@@ -57,6 +57,7 @@ internal class GeneralSettingsBuilder(
 
             when (val avatar = state.avatar) {
                 is Avatar.Monogram -> settings += avatarMonogram(monogram = avatar.value)
+
                 is Avatar.Image -> settings += avatarImage(
                     onSelectImageClick = { onEvent(Event.OnSelectAvatarImageClick) },
                 )

@@ -21,7 +21,7 @@ const val INTERACTION_SETTINGS_DEFAULT_CONFIRM_MARK_ALL_READ = true
 data class InteractionSettings(
     val useVolumeKeysForNavigation: Boolean = INTERACTION_SETTINGS_DEFAULT_USE_VOLUME_KEYS_NAVIGATION,
     val messageViewPostRemoveNavigation: String = INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_REMOVE_NAVIGATION,
-    var messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
+    val messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
         INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_MARK_AS_UNREAD_NAVIGATION,
     val swipeActions: SwipeActions = INTERACTION_SETTINGS_DEFAULT_SWIPE_ACTION,
     val isConfirmDelete: Boolean = INTERACTION_SETTINGS_DEFAULT_CONFIRM_DELETE,
