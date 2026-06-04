@@ -20,7 +20,7 @@ Each RFC document should contain:
 1. **Title**: A short descriptive name for the proposal.
 2. **Issue**: A link to the issue that prompted the proposal.
 3. **Technical Design**: A link to the related technical design, if one exists.
-4. **Status**: The current status of the RFC (proposed, accepted, rejected, superseded).
+4. **Status**: The current status of the RFC (proposed, accepted, rejected, obsolete).
 5. **Summary**: A brief explanation of the proposal.
 6. **Motivation**: The context and problem the proposal is addressing.
 7. **Proposal**: The change being proposed.
@@ -34,9 +34,9 @@ Each RFC document should contain:
 The life cycle of an RFC is as follows:
 
 1. **Proposed**: The RFC is under consideration.
-2. **Accepted**: The proposal described in the RFC has been accepted and can be implemented, unless it is superseded by another RFC or ADR.
+2. **Accepted**: The proposal described in the RFC has been accepted and can be implemented, unless it is obsoleted by another RFC or ADR.
 3. **Rejected**: The proposal described in the RFC has been rejected.
-4. **Superseded**: The RFC has been replaced by another RFC or ADR.
+4. **Obsolete**: The RFC has been replaced by another RFC or ADR, or is outdated because the underlying functionality or dependency no longer exists.
 
 Each RFC will have a status indicating its current life-cycle stage. An RFC can be updated over time, either to change
 the status or to add more information.

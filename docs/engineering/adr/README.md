@@ -18,12 +18,12 @@ where each ADR document should contain:
 
 1. **Title**: A short descriptive name for the decision.
 2. **Issue**: A link to the issue that prompted the decision.
-3. **Status**: The current status of the decision (proposed, accepted, rejected, superseded)
+3. **Status**: The current status of the decision (proposed, accepted, rejected, obsolete).
 4. **Context**: The context that motivates this decision.
 5. **Decision**: The change that we're proposing and/or doing.
 6. **Consequences**: What becomes easier or more difficult to do and any risks introduced as a result of the decision.
 
-## Creating a new ADR
+## Creating a New ADR
 
 When creating a new ADR, please follow the provided [ADR template file](0000-adr-template.md) and ensure that your
 document is clear and concise.
@@ -46,9 +46,9 @@ where `NNNN` is a four-digit number that is increased by 1 for every new ADR.
 The life cycle of an ADR is as follows:
 
 1. **Proposed**: The ADR is under consideration.
-2. **Accepted**: The decision described in the ADR has been accepted and should be adhered to, unless it is superseded by another ADR.
+2. **Accepted**: The decision described in the ADR has been accepted and should be adhered to, unless it is obsoleted by another ADR.
 3. **Rejected**: The decision described in the ADR has been rejected.
-4. **Superseded**: The decision described in the ADR has been replaced by another decision.
+4. **Obsolete**: The ADR has been replaced by another ADR or RFC, or is outdated because the underlying functionality or dependency no longer exists.
 
 Each ADR will have a status indicating its current life-cycle stage. An ADR can be updated over time, either to change
 the status or to add more information.

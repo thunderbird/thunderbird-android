@@ -19,7 +19,7 @@ Each technical design document should contain:
 2. **Issue**: A link to the issue that prompted the work, if applicable.
 3. **RFC**: A link to the related RFC, if applicable.
 4. **ADR**: A link to the related ADR, if applicable.
-5. **Status**: The current status of the design.
+5. **Status**: The current status of the design (proposed, accepted, rejected, obsolete).
 6. **Summary**: A brief explanation of what the design implements.
 7. **Current State**: The relevant current behavior or structure.
 8. **Proposed Design**: The target implementation design.
@@ -33,7 +33,8 @@ The life cycle of a technical design is as follows:
 
 1. **Proposed**: The technical design is being written or reviewed.
 2. **Accepted**: The design has been accepted as the implementation target.
-3. **Superseded**: The design has been replaced by another technical design, RFC, or ADR.
+3. **Rejected**: The design has been rejected.
+4. **Obsolete**: The design has been replaced by another technical design, RFC, or ADR, or is outdated because the underlying functionality or dependency no longer exists.
 
 Each technical design will have a status indicating its current life-cycle stage. A technical design can be updated
 over time, either to change the status or to add more information.

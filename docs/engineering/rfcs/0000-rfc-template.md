@@ -34,6 +34,6 @@ List unresolved questions that need reviewer input.
 
 ## Outcome
 
-Filled in when the RFC is accepted, rejected, or superseded.
+Filled in when the RFC is accepted, rejected, or obsolete.
 
 Summarize the final decision and link follow-up work.
