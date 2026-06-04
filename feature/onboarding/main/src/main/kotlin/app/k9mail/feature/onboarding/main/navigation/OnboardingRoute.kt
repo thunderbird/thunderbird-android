@@ -30,6 +30,12 @@ interface OnboardingRoute : Route {
         override fun route(): String = "$basePath/thundermail-scan-qr-code"
     }
 
+    data object ThundermailAddAccount : OnboardingRoute {
+        override val basePath: String = ONBOARDING_BASE_PATH
+
+        override fun route(): String = "${ThundermailScanQrCode.basePath}/thundermail-add-account"
+    }
+
     companion object {
         const val ONBOARDING_BASE_PATH = "app://onboarding"
     }

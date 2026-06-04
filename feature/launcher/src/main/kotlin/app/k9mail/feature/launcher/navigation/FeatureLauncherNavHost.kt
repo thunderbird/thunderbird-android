@@ -64,6 +64,9 @@ fun FeatureLauncherNavHost(
 
                     is OnboardingRoute.ThundermailSignIn ->
                         navController.navigate(ThundermailRoute.SignInWithThundermail)
+
+                    is OnboardingRoute.ThundermailAddAccount ->
+                        navController.navigate(ThundermailRoute.AddAccount)
                 }
             },
         )

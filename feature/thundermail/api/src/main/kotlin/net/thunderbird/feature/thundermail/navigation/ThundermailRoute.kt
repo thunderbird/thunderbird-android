@@ -7,12 +7,19 @@ import net.thunderbird.core.ui.navigation.Route
 sealed interface ThundermailRoute : Route {
     companion object {
         private const val BASE_PATH = "app://thundermail"
+        const val THUNDERMAIL_ADD_ACCOUNT_ROUTE = "$BASE_PATH/add-account"
         const val SIGN_IN_WITH_THUNDERMAIL_ROUTE = "$BASE_PATH/sign-in"
         const val SCAN_QR_CODE_ROUTE = "$BASE_PATH/scan-qr-code"
         const val INCOMING_SETTINGS_ROUTE = "$BASE_PATH/incoming-settings"
         const val ACCOUNT_ID_ROUTE_PARAM = "accountId"
         const val PERMISSIONS_ROUTE = "$BASE_PATH/permissions/{$ACCOUNT_ID_ROUTE_PARAM}"
         const val ONBOARD_COMPLETE_ROUTE = "$BASE_PATH/onboard-complete"
+    }
+
+    @Serializable
+    data object AddAccount : ThundermailRoute {
+        override val basePath: String = BASE_PATH
+        override fun route(): String = THUNDERMAIL_ADD_ACCOUNT_ROUTE
     }
 
     @Serializable

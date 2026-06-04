@@ -69,6 +69,12 @@ class DefaultThundermailNavigation : ThundermailNavigation {
                     onNext = { onFinish(ThundermailRoute.OnboardComplete(accountId)) },
                 )
             }
+
+            deepLinkComposable<ThundermailRoute.AddAccount>(
+                basePath = ThundermailRoute.THUNDERMAIL_ADD_ACCOUNT_ROUTE,
+            ) {
+
+            }
         }
     }
 }
