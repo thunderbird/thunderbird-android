@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="19.2" versioncode="25" date="2026-06-04">
+        <change>Fixed: K-9 Mail crashed when scanning Thundermail QR code</change>
+    </release>
     <release version="19.1" versioncode="24" date="2026-06-03">
         <change>New: Enable easily discoverable way to configure and use Thundermail</change>
     </release>

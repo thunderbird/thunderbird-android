@@ -1,0 +1,4 @@
+Thunderbird version 19.2
+
+Fixed:
+- K-9 Mail crashed when scanning Thundermail QR code
