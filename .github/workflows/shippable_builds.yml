@@ -4,6 +4,12 @@ on:
   workflow_call:
   workflow_dispatch:
     inputs:
+      pointRelease:
+        type: boolean
+        description: Bump minor versionName (e.g. 21.0 -> 21.1) for a point release
+      skipBetaBump:
+        type: boolean
+        description: Skip version bump (beta)
       skipThunderbird:
         type: boolean
         description: Skip building Thunderbird
@@ -13,9 +19,6 @@ on:
       skipTests:
         type: boolean
         description: Skip running tests
-      skipBetaBump:
-        type: boolean
-        description: Skip version bump (beta)
       skipGooglePlay:
         type: boolean
         description: Skip Google Play publish
@@ -73,10 +76,11 @@ jobs:
         env:
           matrixInclude: ${{ vars.MATRIX_INCLUDE }}
           releaseType: ${{ vars.RELEASE_TYPE }}
+          pointRelease: ${{ inputs.pointRelease }}
+          skipBetaBump: ${{ inputs.skipBetaBump }}
           skipThunderbird: ${{ inputs.skipThunderbird }}
           skipK9Mail: ${{ inputs.skipK9Mail }}
           skipTests: ${{ inputs.skipTests }}
-          skipBetaBump: ${{ inputs.skipBetaBump }}
           skipGooglePlay: ${{ inputs.skipGooglePlay }}
           draftGooglePlay: ${{ inputs.draftGooglePlay }}
           skipFtp: ${{ inputs.skipFtp }}
@@ -125,6 +129,12 @@ jobs:
               ])
               .write();
 
+              if (process.env.pointRelease == "true" && process.env.releaseType == "release") {
+                await core.summary.addList(["Point release: minor versionName will be bumped"]).write();
+              }
+              if (process.env.skipBetaBump == "true" && process.env.releaseType == "beta") {
+                await core.summary.addList(["Beta bump is being skipped"]).write();
+              }
               if (skipThunderbird) {
                 await core.summary.addList(["Thunderbird build is being skipped"]).write();
               }
@@ -133,9 +143,6 @@ jobs:
               }
               if (process.env.skipTests == "true") {
                 await core.summary.addList(["Tests are being skipped"]).write();
-              }
-              if (process.env.skipBetaBump == "true" && process.env.releaseType == "beta") {
-                await core.summary.addList(["Beta bump is being skipped"]).write();
               }
               if (process.env.skipGooglePlay == "true") {
                 await core.summary.addList(["Play Store upload is being skipped"]).write();
@@ -304,6 +311,24 @@ jobs:
 
           cat $GITHUB_OUTPUT
 
+      - name: Bump version name (point release)
+        id: bump_version_name
+        if: ${{ inputs.pointRelease && contains(matrix.releaseTarget, 'github') && vars.RELEASE_TYPE == 'release' }}
+        shell: bash
+        env:
+          APP_NAME: ${{ matrix.appName }}
+          OLD_VERSION_NAME: ${{ steps.appinfo.outputs.VERSION_NAME }}
+        run: |
+          NEW_VERSION_NAME=$(echo "$OLD_VERSION_NAME" | awk -F '.' '{print $1"."$2+1}')
+          sed "s/versionName = \"$OLD_VERSION_NAME\"/versionName = \"$NEW_VERSION_NAME\"/" app-${APP_NAME}/build.gradle.kts > tmp_gradle_kts
+
+          ! diff -u app-${APP_NAME}/build.gradle.kts tmp_gradle_kts # flip return value to force error if no bump
+          mv tmp_gradle_kts app-${APP_NAME}/build.gradle.kts
+
+          echo "VERSION_NAME=${NEW_VERSION_NAME}" >> $GITHUB_OUTPUT
+
+          cat $GITHUB_OUTPUT
+
       - name: Render Release Notes
         id: render_notes
         if: "${{ contains(matrix.releaseTarget, 'github') && contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
@@ -313,7 +338,7 @@ jobs:
           APPLICATION_ID: ${{ steps.appinfo.outputs.APPLICATION_ID }}
           APPLICATION_LABEL: ${{ steps.appinfo.outputs.APPLICATION_LABEL }}
           VERSION_CODE: ${{ steps.new_version_code.outputs.new_version_code }}
-          FULL_VERSION_NAME: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
+          FULL_VERSION_NAME: ${{ steps.bump_version_name.outputs.VERSION_NAME || steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
         run: |
           mkdir -p ./app-metadata/${APPLICATION_ID}/en-US/changelogs
           GITHUB_NOTES_FILE="$(mktemp -d)/long-notes.txt"
@@ -353,7 +378,7 @@ jobs:
           APPLICATION_LABEL: ${{ steps.appinfo.outputs.APPLICATION_LABEL }}
           APPLICATION_ID: ${{ steps.appinfo.outputs.APPLICATION_ID }}
           APP_NAME: ${{ matrix.appName }}
-          FULL_VERSION_NAME: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
+          FULL_VERSION_NAME: ${{ steps.bump_version_name.outputs.VERSION_NAME || steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
           RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
           APP_SLUG: ${{ steps.app-token.outputs.app-slug || 'github-actions'}}
           APP_USER_ID: ${{ vars.BOT_USER_ID || '41898282' }}
@@ -398,7 +423,7 @@ jobs:
           applicationId: ${{ steps.appinfo.outputs.APPLICATION_ID }}
           oldFullVersion: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
           oldVersionCode: ${{ steps.new_version_code.outputs.old_version_code }}
-          newFullVersion: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
+          newFullVersion: ${{ steps.bump_version_name.outputs.VERSION_NAME || steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
           newVersionCode: ${{ steps.new_version_code.outputs.new_version_code }}
           releaseType: ${{ vars.RELEASE_TYPE }}
         with:
