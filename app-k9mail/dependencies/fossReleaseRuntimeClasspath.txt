@@ -176,8 +176,8 @@ androidx.webkit:webkit:1.15.0
 androidx.window:window-core-android:1.5.1
 androidx.window:window-core:1.5.1
 androidx.window:window:1.5.1
-androidx.work:work-runtime-ktx:2.11.0
-androidx.work:work-runtime:2.11.0
+androidx.work:work-runtime-ktx:2.11.2
+androidx.work:work-runtime:2.11.2
 co.touchlab:stately-concurrency-jvm:2.1.0
 co.touchlab:stately-concurrency:2.1.0
 co.touchlab:stately-concurrent-collections-jvm:2.1.0
