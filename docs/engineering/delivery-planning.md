@@ -46,23 +46,21 @@ We use three GitHub issue types for planned delivery work:
 - **GitHub Task Issue**: Describes supporting work needed to complete the milestone, such as technical planning, refactoring,
   tests, build changes, documentation, or follow-up investigation.
 
-GitHub Milestone Issues are limited to core maintainers because creating and managing them depends on GitHub
-permissions and roadmap coordination. Contributors and non-maintainer developers can create GitHub Feature Issues and
-GitHub Task Issues when work needs to be split further, assigned, discussed, or reviewed.
+GitHub issues are limited to core maintainers because creating and managing them depends on GitHub
+permissions and roadmap coordination. Contributors and non-maintainer developers can discuss work through existing
+issues, but should not create new GitHub issues without prior approval.
 
 ## Contributor Path
 
 If you are not a core maintainer:
 
-1. Follow the [Contribution Workflow](../contributing/contribution-workflow.md) for finding an issue, reporting bugs,
-   and discussing your plan before coding.
+1. Follow the [Contribution Workflow](../contributing/contribution-workflow.md) for finding an issue and
+   discussing your plan before coding.
 2. If the work is already planned, contribute through the relevant GitHub Feature Issue or GitHub Task Issue.
-3. If the work needs public tracking but is not milestone-sized, create a GitHub Feature Issue or GitHub Task Issue.
-   If there is no direct GitHub Milestone Issue match, mention the likely quarterly catch-all milestone in the issue or
-   pull request. Maintainers link the issue to the milestone.
-4. If the work proposes a broad technical direction, create a GitHub Task Issue proposing an RFC. That GitHub Task Issue
-   is delivered by opening the pull request that adds the RFC.
-5. If the work appears milestone-sized, ask maintainers to create a GitHub Milestone Issue instead of creating one yourself.
+3. If you want to propose a **new feature**, start a discussion in [Mozilla Connect](https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android). Once accepted and planned, maintainers will create the corresponding GitHub issues.
+4. If the work is a **technical task** (not a feature) that needs public tracking but is not milestone-sized, discuss your plan in an existing issue. If approved, ask maintainers to create the GitHub Task Issue for you. If there is no direct GitHub Milestone Issue match, mention the likely quarterly catch-all milestone in the issue or pull request. Maintainers link the issue to the milestone.
+5. If the work proposes a broad technical direction, discuss your plan in an existing issue. If approved, ask maintainers to create a GitHub Task Issue proposing an RFC. That GitHub Task Issue is delivered by opening the pull request that adds the RFC.
+6. If the work appears milestone-sized, ask maintainers to create a GitHub Milestone Issue instead of creating one yourself.
    Use the [Matrix development channel](https://matrix.to/#/#tb-mobile-dev:mozilla.org) when you are unsure where to ask.
 
 GitHub Milestone Issues are maintainer-owned. GitHub Feature Issues, GitHub Task Issues, RFC pull requests, and
