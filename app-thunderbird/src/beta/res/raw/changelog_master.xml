@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="20.0b2" versioncode="53" date="2026-06-04">
+        <change>New: Enable easily discoverable way to configure and use Thundermail</change>
+        <change>Fixed: K-9 Mail crashed when scanning Thundermail QR code</change>
+    </release>
     <release version="20.0b1" versioncode="52" date="2026-05-26">
         <change>Changed: Only show message notification configuration actions above the cutoff</change>
         <change>Fixed: Account drawer stayed open after account switch despite auto-select Inbox setting</change>
