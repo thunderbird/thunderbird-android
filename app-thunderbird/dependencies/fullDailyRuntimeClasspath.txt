@@ -81,7 +81,7 @@ androidx.core:core-viewtree:1.0.0
 androidx.core:core:1.18.0
 androidx.cursoradapter:cursoradapter:1.0.0
 androidx.customview:customview-poolingcontainer:1.0.0
-androidx.customview:customview:1.1.0
+androidx.customview:customview:1.2.0
 androidx.datastore:datastore-android:1.2.1
 androidx.datastore:datastore-core-android:1.2.1
 androidx.datastore:datastore-core-okio-jvm:1.2.1
@@ -214,7 +214,7 @@ com.google.android.gms:play-services-basement:18.4.0
 com.google.android.gms:play-services-location:19.0.0
 com.google.android.gms:play-services-places-placereport:17.0.0
 com.google.android.gms:play-services-tasks:18.2.0
-com.google.android.material:material:1.13.0
+com.google.android.material:material:1.14.0
 com.google.auto.value:auto-value-annotations:1.6.3
 com.google.code.findbugs:jsr305:3.0.2
 com.google.dagger:dagger:2.59

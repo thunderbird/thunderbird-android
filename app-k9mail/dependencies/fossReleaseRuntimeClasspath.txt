@@ -78,7 +78,7 @@ androidx.core:core-viewtree:1.0.0
 androidx.core:core:1.18.0
 androidx.cursoradapter:cursoradapter:1.0.0
 androidx.customview:customview-poolingcontainer:1.0.0
-androidx.customview:customview:1.1.0
+androidx.customview:customview:1.2.0
 androidx.datastore:datastore-android:1.2.1
 androidx.datastore:datastore-core-android:1.2.1
 androidx.datastore:datastore-core-okio-jvm:1.2.1
@@ -197,7 +197,7 @@ com.github.skydoves:landscapist-coil3-android:2.9.8
 com.github.skydoves:landscapist-coil3:2.9.8
 com.github.skydoves:landscapist:2.9.8
 com.google.android.flexbox:flexbox:3.0.0
-com.google.android.material:material:1.13.0
+com.google.android.material:material:1.14.0
 com.google.auto.value:auto-value-annotations:1.6.3
 com.google.errorprone:error_prone_annotations:2.15.0
 com.google.guava:listenablefuture:1.0
