@@ -2,7 +2,6 @@ package com.fsck.k9.controller
 
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.mailstore.SaveMessageData
-import com.fsck.k9.K9
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend
 import com.fsck.k9.controller.MessagingControllerCommands.PendingReplace
@@ -15,12 +14,14 @@ import com.fsck.k9.mailstore.SaveMessageDataCreator
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import org.jetbrains.annotations.NotNull
 
 internal class DraftOperations(
     private val messagingController: @NotNull MessagingController,
     private val messageStoreManager: @NotNull MessageStoreManager,
     private val saveMessageDataCreator: SaveMessageDataCreator,
+    private val localMessageUidPrefixProvider: LocalMessageUidPrefixProvider,
 ) {
 
     fun saveDraft(
@@ -108,7 +109,7 @@ internal class DraftOperations(
         if (localMessage == null) {
             Log.w("Couldn't find local copy of message to upload [ID: %d]", uploadMessageId)
             return
-        } else if (!localMessage.uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+        } else if (!localMessage.uid.startsWith(localMessageUidPrefixProvider.get())) {
             Log.i("Message [ID: %d] to be uploaded already has a server ID set. Skipping upload.", uploadMessageId)
         } else {
             uploadMessage(backend, account, localFolder, localMessage)

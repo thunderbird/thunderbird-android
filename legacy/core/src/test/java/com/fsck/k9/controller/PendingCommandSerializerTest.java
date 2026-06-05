@@ -3,6 +3,7 @@ package com.fsck.k9.controller;
 
 import java.util.HashMap;
 
+import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingEmptyTrash;
@@ -13,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 
 
-public class PendingCommandSerializerTest {
+public class PendingCommandSerializerTest extends K9RobolectricTest {
     static final int DATABASE_ID = 123;
     static final String UID = "uid";
     static final long SOURCE_FOLDER_ID = 42;

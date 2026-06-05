@@ -9,7 +9,6 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.startsWith
-import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
@@ -33,6 +32,7 @@ import org.mockito.Mockito.mock
 class SaveMessageOperationsTest : RobolectricTest() {
 
     private val accountId = AccountIdFactory.create()
+    private var localMessageUidProvider = FakeLocalMessageUidPrefixProvider()
 
     private val messagePartDirectory = createRandomTempDirectory()
     private lateinit var sqliteDatabase: SQLiteDatabase
@@ -57,6 +57,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
             basicPartInfoExtractor,
             threadMessageOperations,
             accountId,
+            localMessageUidProvider,
         )
     }
 
@@ -400,7 +401,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
             assertThat(id).isEqualTo(newMessageId)
             assertThat(deleted).isEqualTo(0)
             assertThat(folderId).isEqualTo(1)
-            assertThat(uid).isNotNull().startsWith(K9.LOCAL_UID_PREFIX)
+            assertThat(uid).isNotNull().startsWith(localMessageUidProvider.get())
             assertThat(subject).isEqualTo("Provided subject")
             assertThat(date).isEqualTo(1618191720000L)
             assertThat(internalDate).isEqualTo(1618191720000L)

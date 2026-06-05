@@ -6,6 +6,7 @@ dependencies {
     api(libs.koin.core)
 
     implementation(projects.core.logging.api)
+    implementation(projects.feature.mail.message.list.api)
 
     implementation(projects.legacy.core)
     // Required for MigrationTo107
