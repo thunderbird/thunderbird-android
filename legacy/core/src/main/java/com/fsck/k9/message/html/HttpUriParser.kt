@@ -39,16 +39,36 @@ internal class HttpUriParser : UriParser {
             currentPos = matchUnreservedPCTEncodedSubDelimClassesGreedy(text, currentPos + 1, ":@/?")
         }
 
-        if (text.isEndOfSentence(currentPos - 1)) {
-            currentPos--
-        }
-
-        if (text[currentPos - 1] == skipChar) {
-            currentPos--
-        }
+        currentPos = text.trimTrailingPunctuation(startPos, currentPos, skipChar)
 
         val uri = text.subSequence(startPos, currentPos)
         return UriMatch(startPos, currentPos, uri)
+    }
+
+    private fun CharSequence.trimTrailingPunctuation(startPos: Int, endPos: Int, skipChar: Char?): Int {
+        var currentPos = endPos
+        var shouldKeepTrimming = true
+
+        while (shouldKeepTrimming && currentPos > startPos) {
+            val position = currentPos - 1
+
+            if (skipChar != null && this[position] == skipChar) {
+                currentPos--
+                shouldKeepTrimming = false
+            } else if (isTrailingPunctuation(position)) {
+                currentPos--
+            } else {
+                shouldKeepTrimming = false
+            }
+        }
+
+        return currentPos
+    }
+
+    private fun CharSequence.isTrailingPunctuation(position: Int): Boolean {
+        if (position < lastIndex && this[position + 1] == '>') return false
+
+        return this[position] in CLAUSE_PUNCTUATION || isEndOfSentence(position)
     }
 
     private fun getSkipChar(text: CharSequence, startPos: Int): Char? {
@@ -269,6 +289,7 @@ internal class HttpUriParser : UriParser {
     companion object {
         // This string represent character group sub-delim as described in RFC 3986
         private const val SUB_DELIM = "!$&'()*+,;="
+        private const val CLAUSE_PUNCTUATION = ",;:'\""
         private val SCHEME_REGEX = "(https?|rtsp)://".toRegex(RegexOption.IGNORE_CASE)
         private val DOMAIN_REGEX =
             "[\\da-z](?:[\\da-z-]*[\\da-z])*(?:\\.[\\da-z](?:[\\da-z-]*[\\da-z])*)*(?::(\\d{0,5}))?"

@@ -277,6 +277,24 @@ class HttpUriParserTest {
     }
 
     @Test
+    fun `URI wrapped in parentheses followed by a comma`() {
+        val input = "(https://discourse.llvm.org/t/rfc-clang-with-gcc2-c-abi/90825),"
+
+        val uriMatch = parser.parseUri(input, 1)
+
+        assertUriMatch("https://discourse.llvm.org/t/rfc-clang-with-gcc2-c-abi/90825", uriMatch, 1)
+    }
+
+    @Test
+    fun `URI wrapped in parentheses followed by an apostrophe`() {
+        val input = "(https://discourse.llvm.org/t/rfc-yet-another-strict-fp/90798)'"
+
+        val uriMatch = parser.parseUri(input, 1)
+
+        assertUriMatch("https://discourse.llvm.org/t/rfc-yet-another-strict-fp/90798", uriMatch, 1)
+    }
+
+    @Test
     fun `URI wrapped in parentheses followed by a question mark and some other text`() {
         val input = "URL: (https://domain.example/path)? Some other text"
 
