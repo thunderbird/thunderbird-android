@@ -5,10 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -18,29 +15,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
-import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.ui.testing.ComposeUiTestHarness
 
-@OptIn(ExperimentalCoroutinesApi::class)
-class UnidirectionalViewModelKtTest : ComposeUiTestHarness() {
-
-    private val mainDispatcher = MainDispatcherHelper(StandardTestDispatcher())
-
-    @BeforeTest
-    fun setUp() {
-        mainDispatcher.setUp()
-    }
-
-    @AfterTest
-    fun tearDown() {
-        mainDispatcher.tearDown()
-    }
+class UnidirectionalViewModelKtTest : ComposeUiTestHarness(
+    mainDispatcher = StandardTestDispatcher(),
+) {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun `observe should emit state changes, allow event dispatch and expose effects`() = runComposeTest(
-        effectContext = mainDispatcher.testDispatcher,
-    ) {
+    fun `observe should emit state changes, allow event dispatch and expose effects`() = runComposeTest {
         val viewModel = TestViewModel()
         val effects = mutableListOf<TestEffect>()
         lateinit var stateDispatch: StateDispatch<TestState, TestEvent>

@@ -15,6 +15,9 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            api(libs.kotlinx.coroutines.test)
+
+            implementation(projects.core.testing)
             implementation(libs.jetbrains.compose.ui.test)
         }
 

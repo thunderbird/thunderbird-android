@@ -4,9 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.test.SemanticsNodeInteraction
-import assertk.assertThat
-import assertk.assertions.isInstanceOf
 import kotlin.test.Test
 
 class ValidateComposeUiTestHarness : ComposeUiTestHarness() {

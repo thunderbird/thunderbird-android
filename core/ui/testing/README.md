@@ -36,7 +36,7 @@ fun runComposeTest(
 )
 ```
 
-The harness passes these values to Compose unchanged:
+The harness passes these values to Compose:
 
 - `effectContext` is used for composition, `LaunchedEffect`, `rememberCoroutineScope`, and the main test clock.
 - `runTestContext` is used for the test block.
@@ -44,6 +44,29 @@ The harness passes these values to Compose unchanged:
 
 Do not pass the same `TestDispatcher` or scheduler to both `effectContext` and `runTestContext`. Compose requires these
 contexts to not share a `TestCoroutineScheduler`.
+
+If the code under test uses `Dispatchers.Main`, `viewModelScope`, or lifecycle APIs that access
+`Dispatchers.Main.immediate`, configure a main dispatcher once on the test class. When `effectContext` is left as
+`EmptyCoroutineContext`, the harness uses that same dispatcher as Compose's effect context.
+
+```kotlin
+class ExampleTest : ComposeUiTestHarness(
+    mainDispatcher = StandardTestDispatcher(),
+) {
+
+    @Test
+    fun `event updates state`() = runComposeTest {
+        setContent {
+            Screen()
+        }
+
+        onNodeWithText("Submit").performClick()
+        waitForIdle()
+
+        onNodeWithText("Submitted").assertExists()
+    }
+}
+```
 
 ## Standard Dispatcher
 
@@ -65,6 +88,8 @@ fun `event updates state`() = runComposeTest(
     onNodeWithText("Submitted").assertExists()
 }
 ```
+
+If the harness already has a `mainDispatcher`, leave `effectContext` as its default to reuse the class-level dispatcher.
 
 ## Unconfined Dispatcher
 
