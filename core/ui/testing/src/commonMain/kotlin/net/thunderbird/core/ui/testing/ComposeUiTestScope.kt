@@ -55,4 +55,9 @@ public interface ComposeUiTestScope {
         substring: Boolean = false,
         useUnmergedTree: Boolean = false,
     ): SemanticsNodeInteraction
+
+    /**
+     * Waits for the Compose UI to be idle.
+     */
+    public fun waitForIdle()
 }

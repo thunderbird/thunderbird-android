@@ -36,4 +36,8 @@ internal class JvmComposeUiTestScope(
         substring: Boolean,
         useUnmergedTree: Boolean,
     ) = delegate.onNodeWithText(text, substring, true, useUnmergedTree)
+
+    override fun waitForIdle() {
+        delegate.waitForIdle()
+    }
 }
