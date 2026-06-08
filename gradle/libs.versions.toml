@@ -13,31 +13,31 @@
 [versions]
 androidBilling = "7.1.1"
 androidDesugar = "2.1.5"
-androidMaterial = "1.13.0"
+androidMaterial = "1.14.0"
 # AGP and tools should be updated together.
 # Also, make sure AGP version is compatible with both AS and IntelliJ IDEA.
-androidGradlePlugin = "9.1.0"
-androidTools = "32.1.0"
-androidxActivity = "1.12.2"
-androidxAnnotation = "1.9.1"
+androidGradlePlugin = "9.2.1"
+androidTools = "32.2.1"
+androidxActivity = "1.13.0"
+androidxAnnotation = "1.10.0"
 androidxAppCompat = "1.7.1"
 androidxAutofill = "1.3.0"
 androidxBiometric = "1.1.0"
-androidxCamera = "1.5.2"
+androidxCamera = "1.6.1"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-androidxComposeBom = "2026.01.00"
+androidxComposeBom = "2026.05.01"
 androidxConstraintLayout = "2.2.1"
 androidxCoordinatorLayout = "1.3.0"
-androidxCore = "1.17.0"
+androidxCore = "1.18.0"
 androidxCoreSplashscreen = "1.2.0"
-androidxDatastore = "1.2.0"
+androidxDatastore = "1.2.1"
 androidxFragment = "1.8.9"
 androidxGlance = "1.1.1"
 androidxGlanceMaterial3 = "1.1.1"
-androidxGraphicsPath = "1.1.0-alpha01"
+androidxGraphicsPath = "1.1.0"
 androidxLifecycle = "2.10.0"
 androidxLocalBroadcastManager = "1.1.0"
-androidxNavigation = "2.9.7"
+androidxNavigation = "2.9.8"
 androidxRecyclerView = "1.4.0"
 androidxPreference = "1.2.1"
 # Pinning on 1.1.0: The 1.2.0 caused the Message List RecyclerView
@@ -51,14 +51,14 @@ androidxTestExt = "1.3.0"
 androidxTestRules = "1.7.0"
 androidxTestRunner = "1.7.0"
 androidxWebkit = "1.15.0"
-androidxWindow = "1.3.0"
-androidxWork = "2.11.0"
+androidxWindow = "1.5.1"
+androidxWork = "2.11.2"
 apacheHttpclient5 = "5.6.1"
 appAuth = "0.11.1"
 assertk = "0.28.1"
 circleImageView = "3.1.0"
 ckchangelog = "2.0.0-beta02"
-clikt = "5.0.3"
+clikt = "5.1.0"
 commonsIo = "2.22.0"
 dependencyCheckPlugin = "0.54.0"
 dependencyGuardPlugin = "0.5.0"
@@ -73,7 +73,7 @@ icu4j = "78.3"
 javaDiffUtils = "4.17"
 jcipAnnotations = "1.0"
 jetbrainsAnnotations = "26.1.0"
-jetbrainsCompose = "1.11.0"
+jetbrainsCompose = "1.11.1"
 jetbrainsComposeLifecycle = "2.10.0"
 jetbrainsComposeMaterial3 = "1.9.0"
 jetbrainsComposeNavigation = "2.9.2"
@@ -87,11 +87,7 @@ jutf7 = "1.0.0"
 jzlib = "1.0.7"
 koinBom = "4.2.1"
 konsist = "0.17.3"
-kotlinBom = "2.3.21"
-# Needs to match the version used by Gradle, just check with `./gradlew --version`
-# In case Gradle has a newer version of Kotlin, we need to update kotlinBom to the same version of newer to avoid
-# version conflicts with the Gradle Kotlin plugin.
-kotlinGradleBom = "2.3.20"
+kotlinBom = "2.4.0"
 kotlinKsp = "2.3.9"
 kotlinxCoroutines = "1.11.0"
 kotlinxCollectionsImmutable = "0.4.0"
@@ -102,14 +98,14 @@ kover = "0.9.8"
 ktlint = "1.5.0"
 ktor = "3.5.0"
 kxml2 = "1.0"
-landscapist = "2.9.5"
+landscapist = "2.9.8"
 leakcanary = "2.14"
 logbackClassic = "1.5.33"
 mime4j = "0.8.14"
 minidns = "1.1.1"
 mockito = "5.23.0"
 mockitoKotlin = "6.3.0"
-mokkery = "3.3.0"
+mokkery = "3.4.0"
 moshi = "1.15.2"
 mozillaAndroidComponents = "145.0.1"
 okhttp = "5.3.2"
@@ -265,8 +261,9 @@ jutf7 = { module = "com.beetstra.jutf7:jutf7", version.ref = "jutf7" }
 jzlib = { module = "com.jcraft:jzlib", version.ref = "jzlib" }
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koinBom" }
 koin-core = { module = "io.insert-koin:koin-core" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
+koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-android = { module = "io.insert-koin:koin-android" }
-koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
 koin-test = { module = "io.insert-koin:koin-test" }
 koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4" }
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
@@ -336,7 +333,8 @@ shared-kmp-compose-common = [
   #  "jetbrains-compose-navigation-event",
 ]
 shared-kmp-compose-android = [
-  "koin-androidx-compose",
+  "koin-compose",
+  "koin-compose-viewmodel",
 ]
 shared-kmp-common-test = [
   "assertk",
@@ -371,7 +369,8 @@ shared-jvm-android-compose = [
   "androidx-lifecycle-runtime-compose",
   "androidx-lifecycle-viewmodel-compose",
   "androidx-navigation-compose",
-  "koin-androidx-compose",
+  "koin-compose",
+  "koin-compose-viewmodel",
   "kotlinx-collections-immutable",
   "kotlinx-serialization-json",
   "jetbrains-compose-components-resources"

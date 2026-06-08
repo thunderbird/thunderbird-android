@@ -16,7 +16,7 @@ import net.thunderbird.feature.mail.message.list.ui.legacy.LegacyMessageListBrid
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandlerFactory
 import net.thunderbird.feature.notification.api.content.InAppNotification
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * Defines the contract between the View and the ViewModel for the message list screen.

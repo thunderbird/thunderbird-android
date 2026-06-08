@@ -30,7 +30,7 @@ import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.feature.thundermail.internal.common.R
 import net.thunderbird.feature.thundermail.navigation.ThundermailRoute
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun ThundermailOAuthRedirectScreen(
