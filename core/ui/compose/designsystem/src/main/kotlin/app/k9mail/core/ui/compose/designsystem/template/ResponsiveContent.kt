@@ -77,7 +77,9 @@ private fun ExpandedContent(
 
     when (windowSizeInfo.sizeClass.heightSizeClass) {
         WindowHeightSizeClass.Small -> CompactContent(modifier, content)
+
         WindowHeightSizeClass.Compact -> MediumContent(modifier, content)
+
         WindowHeightSizeClass.Medium -> {
             Box(
                 modifier = Modifier

@@ -10,9 +10,11 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemeLightDark
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
-import net.thunderbird.core.ui.common.window.WindowSizeClass
+import net.thunderbird.core.ui.common.window.WindowWidthSizeClass
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemAccountIndicator
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemConfiguration
@@ -21,14 +23,14 @@ private class AdaptiveMessageItemHeaderRowPreviewData(
     val previewName: String,
     val configuration: MessageItemConfiguration,
     val receivedAt: String,
-    val screenWidth: Int,
+    val screenWidth: Dp,
 )
 
 private val screenWidths = listOf(
-    "Small" to (WindowSizeClass.SMALL_MAX_WIDTH - 1),
-    "Compact" to (WindowSizeClass.COMPACT_MAX_WIDTH - 1),
-    "Medium" to (WindowSizeClass.MEDIUM_MAX_WIDTH - 1),
-    "Expanded" to WindowSizeClass.MEDIUM_MAX_WIDTH,
+    "Small" to (WindowWidthSizeClass.BREAKPOINT_SMALL - 1.dp),
+    "Compact" to (WindowWidthSizeClass.BREAKPOINT_COMPACT - 1.dp),
+    "Medium" to (WindowWidthSizeClass.BREAKPOINT_MEDIUM - 1.dp),
+    "Expanded" to WindowWidthSizeClass.BREAKPOINT_MEDIUM, // FIXME
 )
 
 private class AdaptiveMessageItemHeaderRowProvider :
@@ -91,7 +93,7 @@ private fun AdaptiveMessageItemHeaderRowPreview(
     PreviewWithThemeLightDark {
         CompositionLocalProvider(
             LocalConfiguration provides Configuration().apply {
-                screenWidthDp = data.screenWidth
+                screenWidthDp = data.screenWidth.value.toInt()
             },
         ) {
             AdaptiveMessageItemHeaderRow(

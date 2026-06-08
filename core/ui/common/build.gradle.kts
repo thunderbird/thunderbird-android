@@ -8,6 +8,12 @@ kotlin {
     android {
         namespace = "net.thunderbird.core.ui.common"
     }
+
+    sourceSets {
+        commonTest.dependencies {
+            implementation(projects.core.ui.testing)
+        }
+    }
 }
 
 codeCoverage {
