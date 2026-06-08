@@ -22,7 +22,7 @@ dependencies {
     implementation(projects.feature.account.common)
 
     implementation(libs.appauth)
-    implementation(libs.androidx.compose.material3)
+    implementation(libs.jetbrains.compose.material3)
 
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)

@@ -33,8 +33,8 @@ dependencies {
 
     implementation(projects.core.ui.compose.theme2)
 
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.jetbrains.compose.material3)
+    implementation(libs.jetbrains.compose.material.icons.extended)
 
     implementation(libs.kotlin.reflect)
 }

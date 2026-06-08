@@ -19,11 +19,11 @@ dependencies {
     api(projects.core.ui.compose.theme2)
 
     implementation(libs.androidx.autofill)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material3.adaptive)
-    implementation(libs.androidx.compose.material3.adaptive.layout)
-    implementation(libs.androidx.compose.material3.adaptive.navigation)
-    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.jetbrains.compose.material3)
+    implementation(libs.jetbrains.compose.material3.adaptive)
+    implementation(libs.jetbrains.compose.material3.adaptive.layout)
+    implementation(libs.jetbrains.compose.material3.adaptive.navigation)
+    implementation(libs.jetbrains.compose.material.icons.extended)
 
     // Landscapist imports a lot of dependencies that we don't need. We exclude them here.
     implementation(libs.lanscapist.coil) {
