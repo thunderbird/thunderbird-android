@@ -363,7 +363,7 @@
     <string name="webview_contextmenu_email_save_action">Lagra som kontakt</string>
     <string name="webview_contextmenu_email_copy_action">Kopier adresse til utklippstavla</string>
     <string name="webview_contextmenu_email_clipboard_label">E-postadresse</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Alt</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Alle</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -371,7 +371,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Søkegrense på tenar</string>
+    <string name="account_settings_remote_search_num_label">Søkjegrense på tenaren</string>
     <string name="remote_search_sending_query">Sender førespurnad til tenaren</string>
     <string name="remote_search_error">Fjernsøket vart mislukka</string>
     <string name="account_settings_search">Søk</string>

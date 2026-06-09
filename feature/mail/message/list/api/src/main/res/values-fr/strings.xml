@@ -24,4 +24,8 @@
     <string name="sort_by_sender_desc">Expéditeur (Z à A)</string>
     <string name="sort_by_flag_asc">Étoilés en premier</string>
     <string name="sort_by_flag_desc">Sans étoile en premier</string>
+    <string name="sort_by_unread_asc">Non lus en premier</string>
+    <string name="sort_by_unread_desc">Lus en premier</string>
+    <string name="sort_by_attach_asc">Avec fichiers joints en premier</string>
+    <string name="sort_by_attach_desc">Sans fichiers joints en premier</string>
 </resources>

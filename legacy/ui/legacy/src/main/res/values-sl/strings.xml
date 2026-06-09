@@ -660,8 +660,8 @@
     <string name="global_settings_colorize_missing_contact_pictures_summary">Uporabi barvo na mestu manjkajočih slik stikov</string>
     <string name="global_settings_messageview_visible_refile_actions_title">Pokaži možna dejanja za sporočila</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Pokazane so možnosti dejanj v meniju pogleda sporočil</string>
-    <string name="loading_attachment">Poteka nalaganje priloge …</string>
-    <string name="fetching_attachment_dialog_title_send">Pošljanje sporočila</string>
+    <string name="loading_attachment">Nalaganje priloge …</string>
+    <string name="fetching_attachment_dialog_title_send">Pošiljanje sporočila</string>
     <string name="fetching_attachment_dialog_title_save">Shranjevanje osnutka</string>
     <string name="fetching_attachment_dialog_message">Pridobivanje priloge …</string>
     <!--Note: This references message_view_download_remainder-->
@@ -692,7 +692,7 @@
     <string name="openpgp_inline_text">Sporočilo se pošilja v obliki PGP/INLINE\nUporabite to obliko le zaradi združljivosti:</string>
     <string name="openpgp_inline_plus_compat">Nekateri odjemalci podpirajo le ta zapis</string>
     <string name="openpgp_inline_minus_transit">Med prenosom se podpisi lahko okvarijo</string>
-    <string name="openpgp_inline_minus_attach">Dodajanje prilog ni podprto</string>
+    <string name="openpgp_inline_minus_attach">Dodajanje prilog ni podprto.</string>
     <string name="openpgp_inline_ok">Razumem!</string>
     <string name="openpgp_inline_disable">Onemogoči</string>
     <string name="openpgp_inline_keep_enabled">Pusti omogočeno</string>
@@ -925,4 +925,46 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="print_message_action">Natisni</string>
     <string name="account_setup_auto_select_folder">Samodejno izberi mapo</string>
     <string name="debug_feature_flags">RAZHROŠČ.: zastavice značilnosti</string>
+    <string name="changelog_latest_label_text">ZADNJE</string>
+    <string name="changelog_type_new_text">NOVO</string>
+    <string name="changelog_type_changed_text">SPREMENJENO</string>
+    <string name="changelog_type_fixed_text">POPRAVLJENO</string>
+    <string name="notification_actions_settings_title">Dejanja obvestil</string>
+    <string name="notification_actions_settings_summary">Izberite, katera dejanja naj se pojavijo v obvestilih o e-pošti.</string>
+    <string name="notification_actions_cutoff_description">Omejitev prikazanih dejanj</string>
+    <string name="notification_actions_cutoff_state">Dejanja nad to črto bodo prikazana v obvestilih.</string>
+    <string name="notification_actions_shown_state">Prikazano v obvestilih</string>
+    <string name="notification_actions_hidden_state">Ni prikazano v obvestilih</string>
+    <string name="accessibility_move_up">Premakni gor</string>
+    <string name="accessibility_move_down">Premakni dol</string>
+    <string name="accessibility_move_item_up">Premakni <xliff:g id="item">%1$s</xliff:g> gor</string>
+    <string name="accessibility_move_item_down">Premakni <xliff:g id="item">%1$s</xliff:g> dol</string>
+    <string name="accessibility_move_cutoff_up">Premakni omejitev prikazanih dejanj gor</string>
+    <string name="accessibility_move_cutoff_down">Premakni omejitev prikazanih dejanj dol</string>
+    <string name="notification_action_star">Zvezdica</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> priloga (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="two"><xliff:g id="count">%1$d</xliff:g> prilogi (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="few"><xliff:g id="count">%1$d</xliff:g> priloge (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> prilog (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Pokaži vse</string>
+    <string name="message_view_attachments_view">Pokaži</string>
+    <string name="message_view_attachments_title">Priloge</string>
+    <string name="message_view_attachments_save_all">Shrani vse</string>
+    <string name="encrypted_attachment_title">Šifrirane priloge</string>
+    <string name="notification_summary_delete_title">Prikaži \"Izbriši\" v obvestilih za več sporočil</string>
+    <string name="notification_summary_delete_summary">Obvestilom, ki povzemajo več novih sporočil, doda dejanje \"Izbriši\".</string>
+    <string name="notification_show_contact_picture_title">V obvestilih prikaži slike stikov</string>
+    <string name="notification_show_contact_picture_summary">V obvestilih o novih sporočilih prikaže podobo pošiljatelja.</string>
+    <string name="notification_actions_settings_description">Preuredi dejanja v obvestilih.</string>
+    <string name="global_settings_messageview_body_content_type_title">Vrsta vsebine telesa</string>
+    <string name="general_settings_message_list_date_time_format_title">Naziv oblike datuma/časa na seznamu sporočil</string>
+    <string name="general_settings_message_list_date_time_format_contextual">Privzeta nastavitev oblike datuma/časa na seznamu sporočil: vsebinsko</string>
+    <string name="general_settings_message_list_date_time_format_full">Nastavitev oblike datuma/časa na seznamu sporočil: polno</string>
+    <string name="general_settings_message_list_date_time_format_iso">Nastavitev oblike datuma/časa na seznamu sporočil: ISO</string>
+    <string name="sort_by_then_by">Nato po …</string>
+    <string name="global_settings_splitview_when_unfolded">Ko je naprava odprta</string>
+    <string name="no_network_message_will_be_sent_later_toast">Ni povezave. Sporočilo bo poslano, ko bo povezava spet vzpostavljena.</string>
 </resources>

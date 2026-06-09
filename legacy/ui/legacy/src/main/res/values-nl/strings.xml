@@ -17,7 +17,7 @@
     <string name="changelog_loading_error">Het laden van het wijzigingslogboek is mislukt.</string>
     <string name="changelog_version_title">Versie %s</string>
     <string name="changelog_recent_changes_title">Wat is er nieuw</string>
-    <string name="changelog_show_recent_changes">Laat wijzigingen zien als de app recent is bijgewerkt</string>
+    <string name="changelog_show_recent_changes">Laat wijzigingen zien als de app recentelijk is bijgewerkt</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <string name="changelog_snackbar_text">Ontdek wat er nieuw is in deze versie</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->

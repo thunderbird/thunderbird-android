@@ -306,7 +306,7 @@
     <string name="account_settings_ignore_chat_messages_label">Anwybyddu ceisiadau i sgwrsio</string>
     <string name="account_settings_ignore_chat_messages_summary">Peidio â dangos hysbysiadau am negeseuon sy\'n perthyn i sgwrs e-bost</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Marcio fel wedi ei darllen wrth ei hagor</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Marcio neges fel ei bod wedi ei darllen wrth ei hagor i\'w darllen</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marcio neges fel wedi\'i darllen pan fydd wedi\'i hagor i\'w gweld</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Nodi wedi\'i darllen ar ôl ei dileu</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Nodi neges wedi\'i darllen wrth ei dileu</string>
     <string name="account_settings_notification_channels_label">Categorïau hysbysiadau</string>
@@ -612,7 +612,7 @@
     <string name="webview_contextmenu_email_save_action">Cadw i\'r Cysylltiadau</string>
     <string name="webview_contextmenu_email_copy_action">Copïo\'r cyfeiriad i\'r clipfwrdd</string>
     <string name="webview_contextmenu_email_clipboard_label">Cyfeiriad e-bost</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Y Cyfan</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Popeth</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
