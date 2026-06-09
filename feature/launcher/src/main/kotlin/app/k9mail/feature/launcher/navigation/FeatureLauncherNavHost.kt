@@ -87,6 +87,12 @@ fun FeatureLauncherNavHost(
                         activity.finish()
                     }
 
+                    is ThundermailRoute.AddAccount ->
+                        navController.navigate(ThundermailRoute.AddAccount)
+
+                    is ThundermailRoute.SignInWithThundermail ->
+                        navController.navigate(ThundermailRoute.SignInWithThundermail)
+
                     else -> Unit
                 }
             },
