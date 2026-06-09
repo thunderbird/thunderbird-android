@@ -17,7 +17,7 @@
     <string name="changelog_loading_error">It laden fan it wizigingslochboek is mislearre.</string>
     <string name="changelog_version_title">Ferzje %s</string>
     <string name="changelog_recent_changes_title">Wat is der nij</string>
-    <string name="changelog_show_recent_changes">Lit wizigingen sjen as de app resint bywurke is</string>
+    <string name="changelog_show_recent_changes">Lit wizigingen sjen as de app resintlik bywurke is</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <string name="changelog_snackbar_text">Untdek wat der nij is yn dizze ferzje</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->

@@ -13,7 +13,7 @@
     <string name="debug_settings_notifications_system_notification">Notification système</string>
     <string name="debug_settings_notifications_preparing_notification">Préparation de la notification %1$s</string>
     <string name="debug_settings_notification_status_log">Journal de l’état des notifications</string>
-    <string name="debug_settings_notifications_status">"État : "</string>
+    <string name="debug_settings_notifications_status">"État : "</string>
     <string name="debug_settings_notifications_clear_status_log">Effacer le journal des états</string>
     <string name="debug_settings_feature_flag_title">Indicateurs de fonction</string>
     <string name="debug_settings_feature_flag_unsaved_changes">Changements non enregistrés</string>
