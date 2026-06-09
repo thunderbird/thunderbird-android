@@ -517,7 +517,6 @@
     <string name="account_setup_push_limit_500">500 map</string>
     <string name="account_setup_push_limit_1000">1000 map</string>
     <string name="animations_title">Pokaži animirane učinke vmesnika</string>
-    <string name="animations_summary">Prehodi dejanj in različni učinki delovanja vmesnika so animirani</string>
     <string name="show_unified_inbox_title">Pokaži skupno mapo prejetih sporočil</string>
     <string name="show_starred_count_title">Pokaži število označb z zvezdico</string>
     <string name="integrated_inbox_title">Skupna mapa prejetih sporočil</string>

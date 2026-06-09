@@ -517,7 +517,6 @@
     <string name="account_setup_push_limit_500">500 mappa</string>
     <string name="account_setup_push_limit_1000">1000 mappa</string>
     <string name="animations_title">Animációk</string>
-    <string name="animations_summary">Rikító látható hatások használata</string>
     <string name="show_unified_inbox_title">Beérkezett üzenetek egyesített megjelenítése</string>
     <string name="show_starred_count_title">Csillagszámláló megjelenítése</string>
     <string name="integrated_inbox_title">Egyesített beérkezett üzenetek</string>

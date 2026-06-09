@@ -514,7 +514,6 @@
     <string name="account_setup_push_limit_500">500 mapper</string>
     <string name="account_setup_push_limit_1000">1000 mapper</string>
     <string name="animations_title">Animation</string>
-    <string name="animations_summary">Anvend visuelle effekter</string>
     <string name="show_unified_inbox_title">Vis Fælles Indbakke</string>
     <string name="show_starred_count_title">Vis antal af stjernemarkeret</string>
     <string name="integrated_inbox_title">Fælles indbakke</string>

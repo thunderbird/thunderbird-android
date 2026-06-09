@@ -699,7 +699,6 @@
     <string name="sort_flagged_last">Usternemerka meldingar fyrst</string>
     <string name="sort_unread_first">Uleste meldingar fyrst</string>
     <string name="account_setup_push_limit_label">Maks antal mapper å sjekke med dytting</string>
-    <string name="animations_summary">Bruk glorete visuelle effektar</string>
     <string name="animations_title">Animasjon</string>
     <string name="integrated_inbox_title">Samla innboks</string>
     <string name="integrated_inbox_detail">Alle meldingar i samla mapper</string>

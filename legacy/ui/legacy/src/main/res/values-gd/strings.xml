@@ -451,7 +451,6 @@
     <string name="account_setup_push_limit_500">500 pasgan</string>
     <string name="account_setup_push_limit_1000">1,000 pasgan</string>
     <string name="animations_title">Beòthachadh</string>
-    <string name="animations_summary">Cleachd èifeachdan lèirsinneach leòmach</string>
     <string name="show_unified_inbox_title">Seall an t-oll-bhogsa</string>
     <string name="integrated_inbox_title">An t-oll-bhogsa</string>
     <string name="integrated_inbox_detail">Na h-uile teachdaireachd ann am pasganan co-aonaichte</string>

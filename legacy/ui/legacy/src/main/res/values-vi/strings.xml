@@ -572,7 +572,6 @@
     <string name="account_setup_push_limit_25">25 thư mục</string>
     <string name="account_setup_push_limit_500">500 thư mục</string>
     <string name="animations_title">Hình ảnh động</string>
-    <string name="animations_summary">Sử dụng hiệu ứng hoa mỹ</string>
     <string name="show_unified_inbox_title">Hiển thị hộp thư đồng nhất</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Đồng nhất</string>
     <string name="font_size_settings_description">Phông chữ có thể tùy chỉnh</string>
