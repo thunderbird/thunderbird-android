@@ -21,6 +21,7 @@ import com.fsck.k9.message.html.DisplayHtmlFactory
 import com.fsck.k9.ui.helper.DisplayHtmlUiFactory
 import com.fsck.k9.view.K9WebViewClient
 import com.fsck.k9.view.MessageWebView
+import kotlin.test.Test
 import net.openid.appauth.AppAuthConfiguration
 import net.thunderbird.core.common.mail.html.HtmlSettings
 import net.thunderbird.core.preference.storage.Storage
@@ -30,7 +31,6 @@ import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDia
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import net.thunderbird.feature.navigation.changelog.api.ChangeLogMode
 import net.thunderbird.feature.thundermail.internal.common.ui.ThundermailContract
-import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.verify.definition
 import org.koin.test.verify.injectedParameters

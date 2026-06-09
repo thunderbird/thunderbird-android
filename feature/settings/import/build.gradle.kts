@@ -25,6 +25,7 @@ dependencies {
     implementation(libs.fastadapter)
 
     testImplementation(projects.core.logging.testing)
+    testImplementation(libs.mockito.kotlin)
 }
 
 codeCoverage {

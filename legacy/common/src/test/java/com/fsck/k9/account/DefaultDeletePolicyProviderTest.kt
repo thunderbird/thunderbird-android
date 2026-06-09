@@ -4,9 +4,9 @@ import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import kotlin.test.Test
 import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.common.mail.Protocols
-import org.junit.Test
 
 class DefaultDeletePolicyProviderTest {
     private val deletePolicyProvider = DefaultDeletePolicyProvider()

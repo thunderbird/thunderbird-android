@@ -2,11 +2,11 @@ package app.k9mail.core.ui.compose.designsystem.organism
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.test.performClick
-import androidx.test.espresso.Espresso
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.onNodeWithText
 import app.k9mail.core.ui.compose.testing.onNodeWithTextIgnoreCase
+import app.k9mail.core.ui.compose.testing.pressBack
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import assertk.assertThat
 import assertk.assertions.isTrue
@@ -88,7 +88,7 @@ class AlertDialogKtTest : ComposeTest() {
             }
         }
 
-        Espresso.pressBack()
+        pressBack()
 
         assertThat(dismissed).isTrue()
     }

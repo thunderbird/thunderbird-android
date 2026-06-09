@@ -1,0 +1,43 @@
+package net.thunderbird.core.ui.testing
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.test.ComposeUiTest
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+
+/**
+ * A scope for Compose UI tests on JVM.
+ *
+ * It delegates scope calls to the ComposeUiTest instance.
+ *
+ * @param delegate the ComposeUiTest instance to delegate to
+ */
+@OptIn(ExperimentalTestApi::class)
+internal class JvmComposeUiTestScope(
+    private val delegate: ComposeUiTest,
+) : ComposeUiTestScope {
+    override fun setContent(content: @Composable (() -> Unit)) {
+        delegate.setContent(content)
+    }
+
+    override fun onNodeWithTag(tag: String, useUnmergedTree: Boolean) =
+        delegate.onNodeWithTag(tag, useUnmergedTree)
+
+    override fun onNodeWithText(
+        text: String,
+        substring: Boolean,
+        ignoreCase: Boolean,
+        useUnmergedTree: Boolean,
+    ) = delegate.onNodeWithText(text, substring, ignoreCase, useUnmergedTree)
+
+    override fun onNodeWithTextIgnoreCase(
+        text: String,
+        substring: Boolean,
+        useUnmergedTree: Boolean,
+    ) = delegate.onNodeWithText(text, substring, true, useUnmergedTree)
+
+    override fun waitForIdle() {
+        delegate.waitForIdle()
+    }
+}
