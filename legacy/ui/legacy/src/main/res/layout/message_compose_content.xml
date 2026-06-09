@@ -84,6 +84,13 @@ the 'composer theme' setting).
             android:textAppearance="?attr/textAppearanceBodyLarge"
             />
 
+        <com.fsck.k9.view.MessageWebView
+            android:id="@+id/upper_signature_html_preview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/quoted_text_show"
             android:text="@string/message_compose_show_quoted_text_action"
@@ -158,6 +165,13 @@ the 'composer theme' setting).
             android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
             android:imeOptions="flagNoExtractUi"
             android:textAppearance="?attr/textAppearanceBodyLarge"
+            />
+
+        <com.fsck.k9.view.MessageWebView
+            android:id="@+id/lower_signature_html_preview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
             />
 
         <!--

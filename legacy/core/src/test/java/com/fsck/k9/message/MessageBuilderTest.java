@@ -523,6 +523,7 @@ public class MessageBuilderTest extends RobolectricTest {
                 TEST_IDENTITY_ADDRESS.getAddress(),
                 null,
                 false,
+                false,
                 null
         );
     }

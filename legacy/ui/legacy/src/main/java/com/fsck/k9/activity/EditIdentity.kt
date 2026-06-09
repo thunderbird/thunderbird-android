@@ -30,6 +30,7 @@ class EditIdentity : BaseActivity() {
     private lateinit var replyTo: EditText
     private lateinit var signatureUse: MaterialCheckBox
     private lateinit var signature: EditText
+    private lateinit var signatureIsHtml: MaterialCheckBox
     private lateinit var signatureLayout: View
 
     private var identityIndex: Int = 0
@@ -65,6 +66,7 @@ class EditIdentity : BaseActivity() {
         replyTo = findViewById(R.id.reply_to)
         signatureUse = findViewById(R.id.signature_use)
         signature = findViewById(R.id.signature)
+        signatureIsHtml = findViewById(R.id.signature_is_html)
         signatureLayout = findViewById(R.id.signature_layout)
 
         description.setText(identity.description)
@@ -87,6 +89,8 @@ class EditIdentity : BaseActivity() {
         } else {
             signatureLayout.isVisible = false
         }
+
+        signatureIsHtml.isChecked = identity.signatureIsHtml
 
         setTextChangedListeners()
         validateFields()
@@ -119,6 +123,7 @@ class EditIdentity : BaseActivity() {
             name = name.text.toString().takeUnless { it.isBlank() },
             signatureUse = signatureUse.isChecked,
             signature = signature.text.toString(),
+            signatureIsHtml = signatureIsHtml.isChecked,
             replyTo = replyTo.text.toString().trim().takeUnless { it.isBlank() },
         )
 

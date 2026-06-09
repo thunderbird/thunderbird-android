@@ -351,6 +351,7 @@ public abstract class MessageBuilder {
         if (useSignature) {
             textBodyBuilder.setAppendSignature(true);
             textBodyBuilder.setSignature(signature);
+            textBodyBuilder.setSignatureIsHtml(identity.getSignatureIsHtml());
             textBodyBuilder.setSignatureBeforeQuotedText(isSignatureBeforeQuotedText);
         } else {
             textBodyBuilder.setAppendSignature(false);

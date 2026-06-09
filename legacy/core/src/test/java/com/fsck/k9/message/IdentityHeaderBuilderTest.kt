@@ -70,7 +70,14 @@ class IdentityHeaderBuilderTest : RobolectricTest() {
         signatureUse: Boolean = false,
         replyTo: String? = null,
     ): Identity {
-        return Identity(description, name, email, signature, signatureUse, replyTo)
+        return Identity(
+            description = description,
+            name = name,
+            email = email,
+            signature = signature,
+            signatureUse = signatureUse,
+            replyTo = replyTo,
+        )
     }
 }
 
