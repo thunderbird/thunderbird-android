@@ -515,7 +515,6 @@
     <string name="account_setup_push_limit_500">500 dosje</string>
     <string name="account_setup_push_limit_1000">1000 dosje</string>
     <string name="animations_title">Animacion</string>
-    <string name="animations_summary">Përdor efekte pamore Gaudy</string>
     <string name="show_unified_inbox_title">Shfaq Kuti Poste të Njësuar</string>
     <string name="show_starred_count_title">Shfaq llogari me yll</string>
     <string name="integrated_inbox_title">Kuti Poste e Njësuar</string>

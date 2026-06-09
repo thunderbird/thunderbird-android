@@ -567,7 +567,6 @@
     <string name="account_setup_push_limit_500">500 fillteán</string>
     <string name="account_setup_push_limit_1000">1000 fillteán</string>
     <string name="animations_title">Beochan</string>
-    <string name="animations_summary">Bain úsáid as maisíochtaí amhairc gaudy</string>
     <string name="show_unified_inbox_title">Taispeáin Bosca Isteach Aontaithe</string>
     <string name="show_starred_count_title">Taispeáin líon na réalta</string>
     <string name="integrated_inbox_title">Bosca Isteach Aontaithe</string>

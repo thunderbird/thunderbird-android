@@ -523,7 +523,6 @@
     <string name="account_setup_push_limit_500">500 složek</string>
     <string name="account_setup_push_limit_1000">1000 složek</string>
     <string name="animations_title">Animace</string>
-    <string name="animations_summary">Používat okázalé vizuální efekty</string>
     <string name="show_unified_inbox_title">Ukázat sjednocený pohled na doručenou poštu</string>
     <string name="show_starred_count_title">Zobrazit počet označených hvězdičkou</string>
     <string name="integrated_inbox_title">Jednotná schránka</string>

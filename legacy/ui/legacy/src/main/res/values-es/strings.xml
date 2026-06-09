@@ -519,7 +519,6 @@
     <string name="account_setup_push_limit_500">500 carpetas</string>
     <string name="account_setup_push_limit_1000">1000 carpetas</string>
     <string name="animations_title">Animaciones</string>
-    <string name="animations_summary">Utilizar animaciones y otros efectos en la interfaz</string>
     <string name="show_unified_inbox_title">Ver bandeja de entrada unificada</string>
     <string name="show_starred_count_title">Ver número de correos destacados</string>
     <string name="integrated_inbox_title">Entrada unificada</string>

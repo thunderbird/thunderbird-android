@@ -216,7 +216,6 @@
     <string name="folder_settings_include_in_integrated_inbox_label">Unify</string>
     <string name="dialog_confirm_delete_confirm_button">Yes</string>
     <string name="account_settings_notify_sync_summary">Notify in status bar while mail is checked</string>
-    <string name="animations_summary">Use gaudy visual effects</string>
     <string name="settings_export_success_generic">Settings successfully exported</string>
     <string name="account_setup_push_limit_label">Max folders to check with push</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> more on <xliff:g id="account">%2$s</xliff:g></string>

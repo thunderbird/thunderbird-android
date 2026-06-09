@@ -511,7 +511,6 @@
     <string name="account_setup_push_limit_500">500 ffolder</string>
     <string name="account_setup_push_limit_1000">1000 ffolder</string>
     <string name="animations_title">Animeiddiad</string>
-    <string name="animations_summary">Defnyddio effeithiau gweledol lliwgar</string>
     <string name="show_unified_inbox_title">Dangos Blwch Derbyn Cyfun</string>
     <string name="show_starred_count_title">Dangos cyfrif serennog</string>
     <string name="integrated_inbox_title">Blwch Derbyn Cyfun</string>

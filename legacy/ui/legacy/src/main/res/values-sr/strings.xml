@@ -462,7 +462,6 @@
     <string name="account_setup_push_limit_500">500 фолдера</string>
     <string name="account_setup_push_limit_1000">1000 фолдера</string>
     <string name="animations_title">Анимација</string>
-    <string name="animations_summary">Коришћење сјајних визуелних ефеката</string>
     <string name="show_unified_inbox_title">Прикажи обједињено сандуче</string>
     <string name="integrated_inbox_title">Обједињено сандуче</string>
     <string name="integrated_inbox_detail">Све поруке у обједињеним фолдерима</string>

@@ -519,7 +519,6 @@
     <string name="account_setup_push_limit_500">500 de dosare</string>
     <string name="account_setup_push_limit_1000">1000 de dosare</string>
     <string name="animations_title">Animații</string>
-    <string name="animations_summary">Folosește efecte vizuale gaudi</string>
     <string name="show_unified_inbox_title">Afișează Cutia poștală de intrare unificată</string>
     <string name="show_starred_count_title">Afișează numărul de stele</string>
     <string name="integrated_inbox_title">Căsuță poștală unificată</string>

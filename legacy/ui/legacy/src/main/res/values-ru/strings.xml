@@ -523,7 +523,6 @@
     <string name="account_setup_push_limit_500">500 папок</string>
     <string name="account_setup_push_limit_1000">1000 папок</string>
     <string name="animations_title">Анимация</string>
-    <string name="animations_summary">Анимация интерфейса</string>
     <string name="show_unified_inbox_title">Показывать общий ящик для входящих</string>
     <string name="show_starred_count_title">Счётчик важных</string>
     <string name="integrated_inbox_title">Общие входящие</string>

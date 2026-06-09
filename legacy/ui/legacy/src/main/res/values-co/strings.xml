@@ -488,7 +488,6 @@
     <string name="account_setup_push_limit_500">500 cartulari</string>
     <string name="account_setup_push_limit_1000">1000 cartulari</string>
     <string name="animations_title">Animazione</string>
-    <string name="animations_summary">Impiegà l’effetti visuali esagerati</string>
     <string name="show_unified_inbox_title">Affissà a scatula di ricezzione cuncolta</string>
     <string name="show_starred_count_title">Affissà u numaru di stellati</string>
     <string name="integrated_inbox_detail">Tutti i messaghji in i cartulari cuncolti</string>

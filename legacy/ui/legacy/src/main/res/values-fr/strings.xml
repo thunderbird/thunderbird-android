@@ -519,7 +519,6 @@
     <string name="account_setup_push_limit_500">500 dossiers</string>
     <string name="account_setup_push_limit_1000">1 000 dossiers</string>
     <string name="animations_title">Animation</string>
-    <string name="animations_summary">Utiliser des effets visuels voyants</string>
     <string name="show_unified_inbox_title">Afficher la boîte de réception unifiée</string>
     <string name="show_starred_count_title">Afficher le compte d’étoilés</string>
     <string name="integrated_inbox_title">Boîte de réception unifiée</string>

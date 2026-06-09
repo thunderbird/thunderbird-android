@@ -522,7 +522,6 @@
     <string name="account_setup_push_limit_500">Do 500 folderów</string>
     <string name="account_setup_push_limit_1000">Do 1000 folderów</string>
     <string name="animations_title">Animacje</string>
-    <string name="animations_summary">Używaj efektów wizualnych</string>
     <string name="show_unified_inbox_title">Pokaż zintegrowaną skrzynkę odbiorczą</string>
     <string name="show_starred_count_title">Pokaż liczbę oznaczonych gwiazdką</string>
     <string name="integrated_inbox_title">Zintegrowana odbiorcza</string>

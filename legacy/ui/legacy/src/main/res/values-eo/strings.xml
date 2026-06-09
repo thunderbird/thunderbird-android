@@ -475,7 +475,6 @@
     <string name="account_setup_push_limit_500">Maksimume 500 mesaĝujoj</string>
     <string name="account_setup_push_limit_1000">Maksimume 1000 mesaĝujoj</string>
     <string name="animations_title">Movbildoj</string>
-    <string name="animations_summary">Uzas afablajn vidajn efektojn</string>
     <string name="show_unified_inbox_title">Montri unuigitan ricevujon</string>
     <string name="show_starred_count_title">Montri nombron da steletoj</string>
     <string name="integrated_inbox_title">Unuigita ricevujo</string>
