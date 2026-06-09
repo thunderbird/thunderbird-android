@@ -39,36 +39,10 @@ internal class HttpUriParser : UriParser {
             currentPos = matchUnreservedPCTEncodedSubDelimClassesGreedy(text, currentPos + 1, ":@/?")
         }
 
-        currentPos = text.trimTrailingPunctuation(startPos, currentPos, skipChar)
+        currentPos = text.endIndexWithoutTrailingPunctuation(startPos, currentPos, skipChar)
 
         val uri = text.subSequence(startPos, currentPos)
         return UriMatch(startPos, currentPos, uri)
-    }
-
-    private fun CharSequence.trimTrailingPunctuation(startPos: Int, endPos: Int, skipChar: Char?): Int {
-        var currentPos = endPos
-        var shouldKeepTrimming = true
-
-        while (shouldKeepTrimming && currentPos > startPos) {
-            val position = currentPos - 1
-
-            if (skipChar != null && this[position] == skipChar) {
-                currentPos--
-                shouldKeepTrimming = false
-            } else if (isTrailingPunctuation(position)) {
-                currentPos--
-            } else {
-                shouldKeepTrimming = false
-            }
-        }
-
-        return currentPos
-    }
-
-    private fun CharSequence.isTrailingPunctuation(position: Int): Boolean {
-        if (position < lastIndex && this[position + 1] == '>') return false
-
-        return this[position] in CLAUSE_PUNCTUATION || isEndOfSentence(position)
     }
 
     private fun getSkipChar(text: CharSequence, startPos: Int): Char? {
@@ -274,6 +248,31 @@ internal class HttpUriParser : UriParser {
 
     private fun isHexDigit(c: Char): Boolean {
         return c in 'a'..'z' || c in 'A'..'Z' || c in '0'..'9'
+    }
+
+    private fun CharSequence.endIndexWithoutTrailingPunctuation(startPos: Int, endPos: Int, skipChar: Char?): Int {
+        var currentPos = endPos
+
+        while (currentPos > startPos) {
+            val position = currentPos - 1
+
+            if (skipChar != null && this[position] == skipChar) {
+                currentPos--
+                break
+            } else if (isTrailingPunctuation(position)) {
+                currentPos--
+            } else {
+                break
+            }
+        }
+
+        return currentPos
+    }
+
+    private fun CharSequence.isTrailingPunctuation(position: Int): Boolean {
+        if (position < lastIndex && this[position + 1] == '>') return false
+
+        return this[position] in CLAUSE_PUNCTUATION || isEndOfSentence(position)
     }
 
     // This checks if the URL ends in a character that should be ignored because it most likely indicates the end of

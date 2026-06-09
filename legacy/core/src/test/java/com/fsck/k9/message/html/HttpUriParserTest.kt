@@ -241,6 +241,15 @@ class HttpUriParserTest {
     }
 
     @Test
+    fun `URI ending in multiple trailing punctuation characters`() {
+        val input = "URL: https://domain.example/path,;"
+
+        val uriMatch = parser.parseUri(input, 5)
+
+        assertUriMatch("https://domain.example/path", uriMatch, 5)
+    }
+
+    @Test
     fun `URI wrapped in angle brackets ending in dot`() {
         val input = "URL: <https://domain.example/path.>"
 
