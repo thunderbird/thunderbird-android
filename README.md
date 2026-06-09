@@ -67,11 +67,14 @@ We welcome contributions from everyone.
 ### Engineering Process
 
 We use a structured engineering process to propose, decide, and deliver technical changes. This includes:
-- [RFCs](docs/engineering/rfcs/README.md) for technical direction.
+- [Requests for Comments (RFCs)](docs/engineering/rfcs/README.md) for technical direction.
 - [Technical Designs](docs/engineering/technical-designs/README.md) for implementation details.
 - [Architecture Decision Records (ADRs)](docs/engineering/adr/README.md) for durable architectural decisions.
 
 You can find more information in the [`docs/engineering`](docs/engineering) directory.
+
+We encourage team members and contributors to read through our engineering documentation to understand the
+processes and decisions that have shaped this project so far.
 
 ## K-9 Mail
 

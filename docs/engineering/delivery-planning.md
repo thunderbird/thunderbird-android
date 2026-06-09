@@ -97,8 +97,7 @@ without a direct milestone match.
 When creating a GitHub Milestone Issue, core maintainers should:
 
 1. Define the objective and success criteria.
-2. Add links to relevant resources, such as GitHub issues, user journey documents, Figma files, Notion pages, RFCs, and
-   technical designs.
+2. Add links to relevant resources, such as GitHub issues, user journey documents, RFCs, and technical designs.
 3. Define what is in scope and out of scope.
 4. Capture technical and business requirements that are known at the time.
 5. Create or link the GitHub Feature Issues and GitHub Task Issues needed to deliver the milestone as subissues.
