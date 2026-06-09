@@ -6,6 +6,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
@@ -28,7 +29,6 @@ import kotlin.test.Test
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.host.rememberInAppNotificationHostStateHolder
 import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
@@ -59,7 +59,7 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
                     onClick = {
                         state.showInAppNotification(notification)
                     },
-                    modifier = Modifier.testTagAsResourceId(BUTTON_NOTIFICATION_TEST_TAG),
+                    modifier = Modifier.testTag(BUTTON_NOTIFICATION_TEST_TAG),
                 )
                 BannerInlineNotificationListHost(
                     hostStateHolder = state,
@@ -306,7 +306,7 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
                 onClick = {
                     notifications.forEach { state.showInAppNotification(it) }
                 },
-                modifier = Modifier.testTagAsResourceId(BUTTON_NOTIFICATION_TEST_TAG),
+                modifier = Modifier.testTag(BUTTON_NOTIFICATION_TEST_TAG),
             )
             BannerInlineNotificationListHost(
                 hostStateHolder = state,

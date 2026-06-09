@@ -19,6 +19,7 @@ dependencies {
 
     implementation(projects.core.featureflag)
     implementation(projects.core.logging.api)
+    implementation(projects.core.ui.compose.common)
     implementation(projects.core.ui.theme.api)
     implementation(projects.feature.launcher)
     implementation(projects.feature.account.settings.api)
@@ -90,12 +91,10 @@ dependencies {
     testImplementation(projects.mail.testing)
     testImplementation(projects.legacy.storage)
     testImplementation(projects.feature.telemetry.noop)
-    testImplementation(libs.robolectric)
+
     testImplementation(libs.androidx.test.core)
-    testImplementation(libs.kotlin.test)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.turbine)
     testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.robolectric)
 }
 
 android {

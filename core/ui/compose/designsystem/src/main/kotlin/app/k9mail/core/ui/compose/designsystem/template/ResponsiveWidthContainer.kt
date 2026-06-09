@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.common.padding.calculateResponsiveWidthPadding
+import net.thunderbird.core.ui.common.padding.calculateResponsiveWidthPadding
 
 /**
  * A container that adjusts its width depending on the screen size.

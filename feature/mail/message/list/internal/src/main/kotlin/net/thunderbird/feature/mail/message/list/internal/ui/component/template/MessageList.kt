@@ -15,13 +15,13 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.lifecycle.compose.LifecycleStartEffect
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageListItem
 import net.thunderbird.feature.mail.message.list.internal.ui.component.organism.MessageListFooter
@@ -50,7 +50,7 @@ internal fun MessageListScope.MessageList(
     ScrollEventEffect(state.messages, listState)
 
     LazyColumn(
-        modifier = modifier.testTagAsResourceId(TEST_TAG_MESSAGE_LIST_ROOT),
+        modifier = modifier.testTag(TEST_TAG_MESSAGE_LIST_ROOT),
         state = listState,
         contentPadding = PaddingValues(bottom = MainTheme.sizes.large),
     ) {

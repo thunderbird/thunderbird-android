@@ -8,7 +8,6 @@ dependencies {
     implementation(projects.core.common)
 
     implementation(libs.okio)
-    implementation(libs.junit)
     implementation(libs.assertk)
 }
 

@@ -25,6 +25,8 @@ dependencies {
     implementation(libs.fastadapter)
 
     testImplementation(projects.core.logging.testing)
+
+    testImplementation(libs.androidx.test.core)
     testImplementation(libs.mockito.kotlin)
 }
 

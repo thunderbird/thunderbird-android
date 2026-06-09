@@ -9,13 +9,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.feature.migration.qrcode.R
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @Composable
@@ -23,7 +23,7 @@ internal fun PermissionDeniedContent(
     onGoToSettingsClick: () -> Unit,
 ) {
     ResponsiveContent(
-        modifier = Modifier.testTagAsResourceId("PermissionDeniedContent"),
+        modifier = Modifier.testTag("PermissionDeniedContent"),
     ) { contentPadding ->
         Column(
             verticalArrangement = Arrangement.Center,
@@ -43,7 +43,7 @@ internal fun PermissionDeniedContent(
                 onClick = onGoToSettingsClick,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .testTagAsResourceId("GoToSettingsButton"),
+                    .testTag("GoToSettingsButton"),
             )
         }
     }

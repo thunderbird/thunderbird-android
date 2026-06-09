@@ -15,6 +15,9 @@ kotlin {
     android {
         compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
         minSdk = ThunderbirdProjectConfig.Android.sdkMin
+
+        withHostTest { }
+
         compilerOptions {
             jvmTarget.set(ThunderbirdProjectConfig.Compiler.jvmTarget)
         }
@@ -39,6 +42,18 @@ kotlin {
 
         androidMain.dependencies {
             implementation(libs.bundles.shared.kmp.android)
+        }
+
+        androidHostTest.dependencies {
+            implementation(libs.bundles.shared.kmp.android.test)
+        }
+
+        jvmMain.dependencies {
+            implementation(libs.bundles.shared.kmp.jvm)
+        }
+
+        jvmTest.dependencies {
+            implementation(libs.bundles.shared.kmp.jvm.test)
         }
     }
 }

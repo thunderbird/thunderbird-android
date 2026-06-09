@@ -2,10 +2,10 @@ package app.k9mail.feature.account.setup.ui.specialfolders
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.setup.ui.fake.FakeBrandNameProvider
 import app.k9mail.feature.account.setup.ui.specialfolders.fake.FakeSpecialFoldersViewModel
+import net.thunderbird.core.ui.common.annotation.PreviewDevices
 
 @Composable
 @PreviewDevices

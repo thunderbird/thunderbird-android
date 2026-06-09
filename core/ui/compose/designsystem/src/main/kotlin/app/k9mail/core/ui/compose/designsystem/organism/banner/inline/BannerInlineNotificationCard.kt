@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextOverflow
@@ -22,7 +23,6 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.designsystem.organism.banner.BannerNotificationCardDefaults
 import app.k9mail.core.ui.compose.designsystem.organism.banner.BannerNotificationCardDefaults.TEST_TAG_BANNER_INLINE_CARD_ACTION_ROW
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.LocalContentColor
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 
@@ -142,7 +142,7 @@ internal fun BannerInlineNotificationCard(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .testTagAsResourceId(TEST_TAG_BANNER_INLINE_CARD_ACTION_ROW),
+                    .testTag(TEST_TAG_BANNER_INLINE_CARD_ACTION_ROW),
             ) {
                 CompositionLocalProvider(LocalContentColor provides colors.contentColor) {
                     actions()

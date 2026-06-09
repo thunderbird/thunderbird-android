@@ -7,10 +7,6 @@ kotlin {
 
     android {
         namespace = "net.thunderbird.core.ui.testing"
-
-        withHostTest {
-            isIncludeAndroidResources = true
-        }
     }
 
     sourceSets {
@@ -25,10 +21,6 @@ kotlin {
             implementation(libs.kotlin.test.junit)
             implementation(libs.robolectric)
             implementation(libs.androidx.compose.ui.test.manifest)
-        }
-
-        jvmTest.dependencies {
-            implementation(compose.desktop.currentOs)
         }
     }
 }

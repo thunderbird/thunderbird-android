@@ -8,13 +8,17 @@ android {
 
 dependencies {
     api(projects.core.testing)
-    api(libs.turbine)
-    api(libs.assertk)
+    api(libs.androidx.compose.ui.test.junit4)
 
     implementation(projects.core.ui.contract)
     implementation(projects.core.ui.compose.theme2)
 
-    implementation(libs.bundles.shared.jvm.test.compose)
+    implementation(libs.androidx.test.espresso.core)
+    implementation(libs.assertk)
+    implementation(libs.jetbrains.compose.ui.test)
+    implementation(libs.kotlinx.coroutines.test)
+    implementation(libs.robolectric)
+    implementation(libs.turbine)
 }
 
 codeCoverage {

@@ -6,12 +6,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.feature.account.common.R
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @Composable
@@ -45,7 +45,7 @@ fun WizardNavigationBar(
                     text = backButtonText,
                     onClick = onBackClick,
                     enabled = state.isBackEnabled,
-                    modifier = Modifier.testTagAsResourceId("account_setup_back_button"),
+                    modifier = Modifier.testTag("account_setup_back_button"),
                 )
             }
             if (state.showNext) {
@@ -53,7 +53,7 @@ fun WizardNavigationBar(
                     text = nextButtonText,
                     onClick = onNextClick,
                     enabled = state.isNextEnabled,
-                    modifier = Modifier.testTagAsResourceId("account_setup_next_button"),
+                    modifier = Modifier.testTag("account_setup_next_button"),
                 )
             }
         }

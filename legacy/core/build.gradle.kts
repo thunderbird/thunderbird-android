@@ -37,7 +37,6 @@ dependencies {
 
     implementation(libs.okio)
     implementation(libs.commons.io)
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.localbroadcastmanager)
@@ -60,7 +59,7 @@ dependencies {
     testImplementation(projects.mail.protocols.smtp)
     testImplementation(projects.legacy.storage)
     testImplementation(projects.core.android.common)
-    testImplementation(libs.kotlin.test)
+
     testImplementation(libs.kotlin.reflect)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)

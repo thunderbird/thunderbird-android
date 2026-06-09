@@ -12,6 +12,8 @@ dependencies {
     implementation(libs.ckchangelog.core)
     api(projects.core.ui.contract)
     implementation(projects.feature.changelog.api)
+    implementation(projects.core.ui.common)
+    implementation(projects.core.ui.compose.common)
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.preference.api)
 }
