@@ -22,14 +22,17 @@ organized into categories of _atoms_, _molecules_, and _organisms_. We also defi
 that can be flexibly combined to construct _pages_. These components collectively form the building blocks that we are
 using to construct our application's UI.
 
-## Consequences
+## Outcomes
 
-- **Positive Consequences**
-  - Increased reusability of components across the application, reducing code duplication.
-  - More consistent UI and uniform styling across the entire application.
-  - Improved maintainability, as changes to a component only need to be made in one place.
-- **Negative Consequences**
-  - Initial effort and time investment needed to implement the atomic design system.
-  - Developers need to adapt to the new system and learn how to use it effectively.
-  - Potential for over-complication if simple components are excessively broken down into atomic parts.
+### Positive Outcomes
+
+- Increased reusability of components across the application, reducing code duplication.
+- More consistent UI and uniform styling across the entire application.
+- Improved maintainability, as changes to a component only need to be made in one place.
+
+### Negative Outcomes
+
+- Initial effort and time investment needed to implement the atomic design system.
+- Developers need to adapt to the new system and learn how to use it effectively.
+- Potential for over-complication if simple components are excessively broken down into atomic parts.
 

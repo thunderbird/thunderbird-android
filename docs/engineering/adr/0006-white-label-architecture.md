@@ -23,14 +23,14 @@ There will be 2 separate modules for each of the two applications: **Thunderbird
 
 A central module named `app-common` acts as the central integration point for shared code among the applications. This module contains the core functionality, shared resources, and configurations that are common to both apps. It should be kept as lean as possible to avoid unnecessary dependencies and ensure that it remains focused on shared functionality.
 
-## Consequences
+## Outcomes
 
-### Positive Consequences
+### Positive Outcomes
 
 - Enhanced maintainability due to a shared codebase for common functionalities, reducing code duplication.
 - Increased agility in developing and deploying new features across both applications, as common enhancements need to be implemented only once.
 
-## Negative Consequences
+### Negative Outcomes
 
 - Potential for configuration complexities as differentiations increase between the two applications.
 - Higher initial setup time and learning curve for new developers due to the modular and decoupled architecture.

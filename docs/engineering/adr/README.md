@@ -6,7 +6,7 @@ course of the project.
 ## What is an ADR?
 
 An Architecture Decision Record (ADR) is a document that captures an important architectural decision made along
-with its context and consequences. ADRs record the decision making process and allow others to understand the
+with its context and outcomes. ADRs record the decision making process and allow others to understand the
 rationale behind decisions, providing insight and facilitating future decision-making processes.
 
 ADRs are part of our broader [engineering process](../README.md), which also includes [RFCs](../rfcs/README.md) for technical direction and [Technical Designs](../technical-designs/README.md) for implementation details.
@@ -21,7 +21,7 @@ where each ADR document should contain:
 3. **Status**: The current status of the decision (proposed, accepted, rejected, obsolete).
 4. **Context**: The context that motivates this decision.
 5. **Decision**: The change that we're proposing and/or doing.
-6. **Consequences**: What becomes easier or more difficult to do and any risks introduced as a result of the decision.
+6. **Outcomes**: What becomes easier or more difficult to do and any risks introduced as a result of the decision.
 
 ## Creating a New ADR
 

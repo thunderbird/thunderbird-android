@@ -11,17 +11,17 @@ Description of the context and problem statement that the decision is addressing
 
 Description of the decision that was made. Detail the change that will be implemented.
 
-## Consequences
+## Outcomes
 
-Explanation of the consequences of the decision. This includes both the positive and negative effects, and any potential risks.
+Explanation of the outcomes of the decision. This includes both the positive and negative effects, and any potential risks.
 
-### Positive Consequences
+### Positive Outcomes
 
-- consequence 1
-- consequence 2
+- outcome 1
+- outcome 2
 
-### Negative Consequences
+### Negative Outcomes
 
-- consequence 1
-- consequence 2
+- outcome 1
+- outcome 2
 

@@ -33,16 +33,16 @@ Specifically:
 This change will establish a clearer identity for the shared code, align with Thunderbird's branding, and prepare the
 project for cross-platform development.
 
-## Consequences
+## Outcomes
 
-## Positive Consequences
+### Positive Outcomes
 
 - Shared code reflects Thunderbird branding and identity
 - Reduces confusion when navigating codebase shared by both apps
 - Sets the foundation for cross-platform compatibility and future modularization
 - Helps reinforce long-term direction of the project toward Thunderbird
 
-## Negative Consequences
+### Negative Outcomes
 
 - Large-scale refactoring required across multiple modules
 - Risk of introducing regressions during package renaming

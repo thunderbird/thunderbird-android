@@ -33,11 +33,14 @@ We'll be using the following guidelines for naming interfaces and their implemen
 6. **Flexibility:** If no brief descriptive name fits and there is only one production implementation, use the prefix
    `Default`, like `DefaultImapFolder`.
 
-## Consequences
+## Outcomes
 
-- **Positive Consequences**
-  - Improved code readability and maintainability through consistent naming.
-  - Reduced confusion and misunderstandings by using clear and descriptive names.
-- **Negative Consequences**
-  - Initial effort is required to rename existing classes that do not follow these naming conventions.
+### Positive Outcomes
+
+- Improved code readability and maintainability through consistent naming.
+- Reduced confusion and misunderstandings by using clear and descriptive names.
+
+### Negative Outcomes
+
+- Initial effort is required to rename existing classes that do not follow these naming conventions.
 
