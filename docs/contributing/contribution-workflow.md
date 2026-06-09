@@ -26,16 +26,51 @@ finding an issue to getting your pull request merged.
 Before starting work, find an appropriate issue to work on:
 
 - Browse the [GitHub Issues](https://github.com/thunderbird/thunderbird-android/issues) for open issues
-- Look for issues labeled [good first issue](https://github.com/thunderbird/thunderbird-android/labels/good%20first%20issue) if you're new to the project
+- Prefer issues labeled [status: help wanted](https://github.com/thunderbird/thunderbird-android/labels/status%3A%20help%20wanted)
+  or [good first issue](https://github.com/thunderbird/thunderbird-android/labels/good%20first%20issue) if you're new
+  to the project
+- Do not take issues labeled [tb-team](https://github.com/thunderbird/thunderbird-android/labels/tb-team); they are reserved
+  for maintainers
 - Avoid issues labeled [unconfirmed](https://github.com/thunderbird/thunderbird-android/labels/unconfirmed) as they are not yet ready for contributions
 
 ### Requesting New Features / Ideas
 
-We don’t track new ideas or feature requests in GitHub Issues. Mozilla connect is where feature proposals, product
+We don’t track new ideas or feature requests in GitHub Issues. Mozilla Connect is where feature proposals, product
 decisions, and larger design conversations happen.
 
 - Start a discussion in [Mozilla Connect - Ideas](https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android)
 - Once a feature is accepted and work is planned, maintainers will create the corresponding GitHub issue(s).
+
+### Working From GitHub Issues
+
+GitHub Bug Issues track confirmed defects. GitHub Feature Issues and GitHub Task Issues track work that maintainers have
+accepted and planned. New feature proposals still start in Mozilla Connect; maintainers create GitHub issues after a
+proposal is accepted and scheduled.
+
+External contributors should start from existing confirmed or planned issues:
+
+- Use GitHub Bug Issues for confirmed defects.
+- Use GitHub Feature Issues for accepted user-visible work.
+- Use GitHub Task Issues for accepted supporting engineering work, such as refactoring, test infrastructure,
+  documentation, investigation, or technical planning.
+- Prefer issues labeled `status: help wanted` or `good first issue`.
+- Do not work on bug issues labeled `unconfirmed`; they still need maintainer triage.
+- Do not take issues labeled `tb-team`; they are reserved for maintainers.
+- Comment on the issue before coding and explain the part you want to work on.
+- Wait until a maintainer assigns the issue to you before starting work.
+- Do not open pull requests for large, cross-cutting, or unclear work without maintainer assignment and alignment in the
+  relevant issue.
+
+If there is no matching issue:
+
+- New feature ideas belong in [Mozilla Connect - Ideas](https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android), not GitHub Issues.
+- Bugs should be reported with the GitHub bug template.
+- For technical work related to an existing issue, ask in that issue whether the contribution fits the current scope.
+- If there is no related issue and the work is not a bug or Mozilla Connect feature idea, use the
+  [Matrix development channel](https://matrix.to/#/#tb-mobile-dev:mozilla.org) to ask where the work belongs before
+  starting.
+
+Maintainers decide whether new GitHub Feature Issues, GitHub Task Issues, or GitHub Milestone Issues are needed.
 
 ### Reporting Bugs
 
@@ -50,15 +85,7 @@ Before coding:
 1. Comment on the GitHub issue you want to work on.
 2. Explain your intended approach.
 3. For non-trivial changes, you may be asked to create a **[User Journey](../engineering/user-journeys/README.md)**, **[RFC](../engineering/rfcs/README.md)**, **[ADR](../engineering/adr/README.md)**, or **[Technical Design](../engineering/technical-designs/README.md)** to reach consensus before implementation.
-4. Wait for maintainer feedback to ensure alignment and avoid duplicate work.
-
-If the work appears larger than a single issue or pull request, or needs coordination across multiple features, tasks,
-or contributors, ask maintainers whether it should be organized as a GitHub Milestone Issue. GitHub Milestone Issues are
-created by core maintainers. See the [Engineering Delivery Planning guide](../engineering/delivery-planning.md) for
-GitHub Milestone Issue, GitHub Feature Issue, and GitHub Task Issue structure.
-
-If the work does not match a dedicated GitHub Milestone Issue, maintainers may link it to a quarterly catch-all GitHub
-Milestone Issue for community contributions or Android foundations work.
+4. Wait for a maintainer to assign the issue to you before starting work.
 
 ## 🍴 Forking and Cloning
 

@@ -125,7 +125,8 @@ coordination. See [Delivery Planning](delivery-planning.md) for the GitHub Miles
 milestones into GitHub Feature Issues and GitHub Task Issues.
 
 External contributors usually start from existing GitHub Feature Issues or GitHub Task Issues. If work appears large
-enough to need a GitHub Milestone Issue, ask maintainers to create one.
+enough to need a GitHub Milestone Issue, discuss scope with maintainers before starting. Follow the
+[Contributor Path](delivery-planning.md#contributor-path) when existing issues do not clearly cover the work.
 
 #### GitHub Feature or Task Issue
 

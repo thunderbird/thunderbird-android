@@ -41,6 +41,18 @@ We don’t track new ideas or feature requests in GitHub Issues.
 - Start a discussion in [Mozilla Connect – Ideas](https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android)
 - Once a feature is accepted and work is planned, maintainers will create the corresponding GitHub issue(s).
 
+**GitHub Work:**
+
+GitHub Bug Issues track confirmed defects. GitHub Feature Issues and GitHub Task Issues track work that maintainers have
+accepted and planned. New feature proposals still start in Mozilla Connect; maintainers create GitHub issues after a
+proposal is accepted and scheduled.
+
+- External contributors should start from an existing GitHub Bug Issue, GitHub Feature Issue, or GitHub Task Issue.
+- Bug issues labeled `unconfirmed` are not ready for contributions.
+- Issues labeled `tb-team` are reserved for maintainers.
+- If you are unsure whether an existing issue is ready for your contribution, follow
+  [Working From GitHub Issues](contributing/contribution-workflow.md#working-from-github-issues).
+
 ## 🌐 Translations
 
 If you'd like to help to translate Thunderbird for Android, please visit:
