@@ -223,6 +223,52 @@ class PreviewTextExtractorTest {
     }
 
     @Test
+    fun extractPreview_forwardedMessage() {
+        val text =
+            """
+            |Here is the forwarded message:
+            |
+            |-----Original Message-----
+            |From: alice@example.com
+            |Sent: Monday, January 1, 2024 10:00 AM
+            |To: bob@example.com
+            |Subject: Hello
+            |
+            |This is the original content.
+            """.trimMargin()
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Here is the forwarded message: […] This is the original content.")
+    }
+
+    @Test
+    fun extractPreview_withHtmlForwardedMessageAsTextPlain() {
+        val text =
+            """
+            |<html>
+            |<body>
+            |Here is the forwarded message:<br>
+            |<br>
+            |-----Original Message-----<br>
+            |From: alice@example.com<br>
+            |Sent: Monday, January 1, 2024 10:00 AM<br>
+            |To: bob@example.com<br>
+            |Subject: Hello<br>
+            |<br>
+            |This is the original content.
+            |</body>
+            |</html>
+            """.trimMargin()
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Here is the forwarded message: […] This is the original content.")
+    }
+
+    @Test
     fun extractPreview_shouldCollapseAndTrimWhitespace() {
         val text = " whitespace     is\t\tfun  "
         val part = MessageCreationHelper.createTextPart("text/plain", text)
