@@ -69,10 +69,10 @@ class PreviewTextExtractorTest {
     fun extractPreview_shouldStripSignature() {
         val text =
             """
-            Some text
-            -- 
-            Signature
-            """.trimIndent()
+            |Some text
+            |$SIGNATURE_DELIMITER
+            |Signature
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -84,10 +84,10 @@ class PreviewTextExtractorTest {
     fun extractPreview_shouldStripHorizontalLine() {
         val text =
             """
-            line 1
-            ----
-            line 2
-            """.trimIndent()
+            |line 1
+            |----
+            |line 2
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -99,12 +99,12 @@ class PreviewTextExtractorTest {
     fun extractPreview_shouldStripQuoteHeaderAndQuotedText() {
         val text =
             """
-            some text
-            
-            On 01/02/03 someone wrote:
-            > some quoted text
-            > some other quoted text
-            """.trimIndent()
+            |some text
+            |
+            |On 01/02/03 someone wrote:
+            |> some quoted text
+            |> some other quoted text
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -116,11 +116,11 @@ class PreviewTextExtractorTest {
     fun extractPreview_shouldStripGenericQuoteHeader() {
         val text =
             """
-            Am 13.12.2015 um 23:42 schrieb Hans:
-            > hallo
-            hi there
-            
-            """.trimIndent()
+            |Am 13.12.2015 um 23:42 schrieb Hans:
+            |> hallo
+            |hi there
+            |
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -132,9 +132,9 @@ class PreviewTextExtractorTest {
     fun extractPreview_shouldStripHorizontalRules() {
         val text =
             """
-            line 1------------------------------
-            line 2
-            """.trimIndent()
+            |line 1------------------------------
+            |line 2
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -166,10 +166,10 @@ class PreviewTextExtractorTest {
     fun extractPreview_lineEndingWithColon() {
         val text =
             """
-            Here's a list:
-            - item 1
-            - item 2
-            """.trimIndent()
+            |Here's a list:
+            |- item 1
+            |- item 2
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -181,16 +181,16 @@ class PreviewTextExtractorTest {
     fun extractPreview_inlineReplies() {
         val text =
             """
-            On 2020-09-30 at 03:12 Bob wrote:
-            > Hi Alice
-            Hi Bob
-            
-            > How are you?
-            I'm fine. Thanks for asking.
-            
-            > Bye
-            See you tomorrow
-            """.trimIndent()
+            |On 2020-09-30 at 03:12 Bob wrote:
+            |> Hi Alice
+            |Hi Bob
+            |
+            |> How are you?
+            |I'm fine. Thanks for asking.
+            |
+            |> Bye
+            |See you tomorrow
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -202,12 +202,12 @@ class PreviewTextExtractorTest {
     fun extractPreview_quoteHeaderContainingLineBreak() {
         val text =
             """
-            Reply text
-            
-            On 2020-09-30 at 03:12
-            Bob wrote:
-            > Quoted text
-            """.trimIndent()
+            |Reply text
+            |
+            |On 2020-09-30 at 03:12
+            |Bob wrote:
+            |> Quoted text
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -223,5 +223,9 @@ class PreviewTextExtractorTest {
         val preview = previewTextExtractor.extractPreview(part)
 
         assertThat(preview).isEqualTo("")
+    }
+
+    private companion object {
+        const val SIGNATURE_DELIMITER = "-- "
     }
 }
