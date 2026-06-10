@@ -14,19 +14,19 @@ internal class PreviewTextExtractor {
         val text = MessageExtractor.getTextFromPart(textPart, MAX_CHARACTERS_CHECKED_FOR_PREVIEW)
             ?: throw PreviewExtractionException("Couldn't get text from part")
 
-        val plainText = convertFromHtmlIfNecessary(textPart, text)
-        return stripTextForPreview(plainText)
+        val (plainText, parsePlainTextAsHtml) = convertFromHtmlIfNecessary(textPart, text)
+        return stripTextForPreview(plainText, parsePlainTextAsHtml)
     }
 
-    private fun convertFromHtmlIfNecessary(textPart: Part, text: String): String {
+    private fun convertFromHtmlIfNecessary(textPart: Part, text: String): Pair<String, Boolean> {
         return if (isSameMimeType(textPart.mimeType, "text/html")) {
-            HtmlConverter.htmlToText(text)
+            HtmlConverter.htmlToText(text) to false
         } else {
-            text
+            text to true
         }
     }
 
-    private fun stripTextForPreview(text: String): String {
+    private fun stripTextForPreview(text: String, parsePlainTextAsHtml: Boolean): String {
         var intermediateText = text
 
         intermediateText = normalizeLineBreaks(intermediateText)
@@ -35,9 +35,11 @@ internal class PreviewTextExtractor {
 
         // Run line-based cleanup before HTML normalization, so that we don't remove line breaks in HTML
         intermediateText = stripLineBasedArtifacts(intermediateText)
-        // Always parse the text as HTML, independently of the mimetype
-        intermediateText = HtmlConverter.htmlToText(intermediateText)
-        intermediateText = stripLineBasedArtifacts(intermediateText)
+        // Always parse the text as HTML if it's plaintext, independently of the mimetype
+        if (parsePlainTextAsHtml) {
+            intermediateText = HtmlConverter.htmlToText(intermediateText)
+            intermediateText = stripLineBasedArtifacts(intermediateText)
+        }
         intermediateText = removeParsedHtmlUrls(intermediateText)
         intermediateText = removeInvisibleFormattingCharacters(intermediateText)
 
