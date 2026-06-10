@@ -42,6 +42,9 @@ internal class PreviewTextExtractor {
         // Remove parsed HTML links/images "<url>", "( url )", "(url)", etc.
         intermediateText = intermediateText.replace("[(<]\\s?https?://\\S+[^)>]\\s?[>)]".toRegex(), " ")
 
+        // Remove invisible formatting characters that can otherwise dominate previews.
+        intermediateText = intermediateText.replace("[\\u034F\\u200B-\\u200D\\uFEFF]".toRegex(), "")
+
         // URLs in the preview should just be shown as "..." - They're not
         // clickable and they usually overwhelm the preview
         intermediateText = intermediateText.replace("https?://\\S+".toRegex(), "...")

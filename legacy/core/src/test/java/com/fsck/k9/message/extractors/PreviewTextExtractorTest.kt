@@ -183,6 +183,26 @@ class PreviewTextExtractorTest {
     }
 
     @Test
+    fun extractPreview_withZeroWidthCharacters_shouldRemoveThem() {
+        val text = "Actual\u034F\u200C\u200C\u200C preview text"
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Actual preview text")
+    }
+
+    @Test
+    fun extractPreview_withZeroWidthHtmlEntities_shouldRemoveThem() {
+        val text = "Actual &#847;&#847; preview text"
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Actual preview text")
+    }
+
+    @Test
     fun extractPreview_withParsedHtmlLink_shouldRemoveUrl() {
         val text = """read <a href="https://thunderbird.net/">Thunderbird</a>"""
         val part = MessageCreationHelper.createTextPart("text/plain", text)
