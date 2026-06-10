@@ -144,12 +144,62 @@ class PreviewTextExtractorTest {
 
     @Test
     fun extractPreview_shouldReplaceUrl() {
-        val text = "some url: https://k9mail.org/"
+        val text = "some url: https://thunderbird.net/"
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
 
         assertThat(preview).isEqualTo("some url: ...")
+    }
+
+    @Test
+    fun extractPreview_withTextPlain_shouldParseHtml() {
+        val text = "some <b>HTML</b> text"
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("some HTML text")
+    }
+
+    @Test
+    fun extractPreview_withTextPlainContainingAngleBracketContent_shouldTreatItAsHtml() {
+        val text = "Contact Alice <alice@example.com>"
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Contact Alice")
+    }
+
+    @Test
+    fun extractPreview_withTextPlain_shouldDecodeHtmlEntities() {
+        val text = "Tom &amp; Jerry&nbsp;are friends"
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Tom & Jerry are friends")
+    }
+
+    @Test
+    fun extractPreview_withParsedHtmlLink_shouldRemoveUrl() {
+        val text = """read <a href="https://thunderbird.net/">Thunderbird</a>"""
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("read Thunderbird")
+    }
+
+    @Test
+    fun extractPreview_withParenthesizedUrl_shouldRemoveUrl() {
+        val text = "some image: ( https://thunderbird.net/logo.png )"
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("some image:")
     }
 
     @Test
