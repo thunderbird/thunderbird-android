@@ -3,12 +3,11 @@ package com.fsck.k9.ui.messageview
 import android.content.Context
 import android.print.PrintAttributes
 import android.print.PrintManager
+import android.text.format.DateFormat
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.MessageViewInfo
 import com.fsck.k9.view.MessageWebView
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class MessagePrinter(
     private val context: Context,
@@ -78,8 +77,11 @@ class MessagePrinter(
             ?.joinToString(", ") { it.toDisplayString() }
             ?: ""
 
-        val date = message.sentDate?.let {
-            SimpleDateFormat("M/d/yyyy, h:mm a", Locale.getDefault()).format(it)
+        val date = message.sentDate?.let { sentDate ->
+            val dateFormat = DateFormat.getDateFormat(context)
+            val timeFormat = DateFormat.getTimeFormat(context)
+
+            "${dateFormat.format(sentDate)}, ${timeFormat.format(sentDate)}"
         } ?: ""
 
         return """
