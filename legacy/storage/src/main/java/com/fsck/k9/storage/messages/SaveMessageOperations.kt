@@ -427,8 +427,7 @@ internal class SaveMessageOperations(
         }
 
         return if (replaceMessageId != null) {
-            values.put("id", replaceMessageId)
-            database.replace("messages", null, values)
+            database.update("messages", values, "id = ?", arrayOf(replaceMessageId.toString()))
             replaceMessageId
         } else {
             database.insert("messages", null, values)

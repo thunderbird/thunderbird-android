@@ -381,6 +381,46 @@ class SaveMessageOperationsTest : RobolectricTest() {
     }
 
     @Test
+    fun `replace envelope message with full message should preserve thread entry`() {
+        // Arrange: simulate remote search saving a message as ENVELOPE (no body)
+        val envelopeMessageData = buildMessage {
+            header("Message-ID", "<msg0001@domain.example>")
+            header("Subject", "Search Result")
+        }.toSaveMessageData(
+            downloadState = MessageDownloadState.ENVELOPE,
+        )
+        saveMessageOperations.saveRemoteMessage(folderId = 1, messageServerId = "uid1", envelopeMessageData)
+
+        val threadsBeforeReplace = sqliteDatabase.readThreads()
+        assertThat(threadsBeforeReplace).hasSize(1)
+        val threadBeforeReplace = threadsBeforeReplace.first()
+
+        // Act: simulate sync re-downloading the same message as FULL
+        val fullMessageData = buildMessage {
+            header("Message-ID", "<msg0001@domain.example>")
+            header("Subject", "Search Result")
+            textBody("Full body content")
+        }.toSaveMessageData(
+            downloadState = MessageDownloadState.FULL,
+        )
+        saveMessageOperations.saveRemoteMessage(folderId = 1, messageServerId = "uid1", fullMessageData)
+
+        // Assert: thread entry must still exist and point to the same message
+        val messages = sqliteDatabase.readMessages()
+        assertThat(messages).hasSize(1)
+        val message = messages.first()
+        assertThat(message.flags).isEqualTo("X_DOWNLOADED_FULL")
+
+        val threads = sqliteDatabase.readThreads()
+        assertThat(threads).hasSize(1)
+        val thread = threads.first()
+        assertThat(thread.id).isEqualTo(threadBeforeReplace.id)
+        assertThat(thread.messageId).isEqualTo(message.id)
+        assertThat(thread.root).isEqualTo(thread.id)
+        assertThat(thread.parent).isNull()
+    }
+
+    @Test
     fun `save local message`() {
         val messageData = buildMessage {
             textBody("local")
