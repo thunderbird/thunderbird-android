@@ -88,8 +88,15 @@ class HttpUriParserTest {
     }
 
     @Test
-    fun `IPv4 address with empty port`() {
-        assertValidUri("http://127.0.0.1:")
+    fun `IPv4 address with empty port treats trailing colon as punctuation`() {
+        // A bare trailing colon after a host is far more likely to be prose
+        // punctuation ("see http://127.0.0.1:") than an empty port, which is
+        // not a fetchable URI anyway. The colon is excluded from the match.
+        val input = "http://127.0.0.1:"
+
+        val uriMatch = parser.parseUri(input, 0)
+
+        assertUriMatch("http://127.0.0.1", uriMatch)
     }
 
     @Test
