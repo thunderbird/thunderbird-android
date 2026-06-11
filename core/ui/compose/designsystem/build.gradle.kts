@@ -24,6 +24,7 @@ kotlin {
             implementationWithExcludes(libs.landscapist.coil) {
                 exclude(group = "io.coil-kt.coil3", module = "coil-network-ktor3")
                 exclude(group = "io.ktor")
+                exclude(group = "org.jetbrains.skiko")
             }
         }
 
