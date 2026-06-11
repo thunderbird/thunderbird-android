@@ -38,6 +38,7 @@ androidxGraphicsPath = "1.1.0"
 androidxLifecycle = "2.10.0"
 androidxLocalBroadcastManager = "1.1.0"
 androidxNavigation = "2.9.8"
+androidxNavigationEvent = "1.0.1"
 androidxRecyclerView = "1.4.0"
 androidxPreference = "1.2.1"
 # Pinning on 1.1.0: The 1.2.0 caused the Message List RecyclerView
@@ -194,6 +195,7 @@ androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmode
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
 androidx-localbroadcastmanager = { module = "androidx.localbroadcastmanager:localbroadcastmanager", version.ref = "androidxLocalBroadcastManager" }
+androidx-navigationevent = { module = "androidx.navigationevent:navigationevent", version.ref = "androidxNavigationEvent" }
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "androidxNavigation" }
 androidx-navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "androidxNavigation" }
 androidx-preference = { module = "androidx.preference:preference", version.ref = "androidxPreference" }

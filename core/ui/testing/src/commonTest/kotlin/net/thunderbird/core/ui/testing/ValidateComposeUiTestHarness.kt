@@ -6,6 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import kotlin.test.Test
@@ -59,6 +61,42 @@ class ValidateComposeUiTestHarness : ComposeUiTestHarness() {
     }
 
     @Test
+    fun `onNodeWithContentDescription should find node by exact content description`() = runComposeTest {
+        setContentWithContentDescription()
+
+        onNodeWithContentDescription("Greeting label").assertExists()
+    }
+
+    @Test
+    fun `onNodeWithContentDescription should find node by content description substring`() = runComposeTest {
+        setContentWithContentDescription()
+
+        onNodeWithContentDescription("Greeting", substring = true).assertExists()
+    }
+
+    @Test
+    fun `onNodeWithContentDescription should find node by content description ignoring case`() = runComposeTest {
+        setContentWithContentDescription()
+
+        onNodeWithContentDescription("GREETING LABEL", ignoreCase = true).assertExists()
+    }
+
+    @Test
+    fun `onNodeWithContentDescription should find node by content description substring ignoring case`() =
+        runComposeTest {
+            setContentWithContentDescription()
+
+            onNodeWithContentDescription("GREETING", substring = true, ignoreCase = true).assertExists()
+        }
+
+    @Test
+    fun `onNodeWithContentDescription should find node by content description in unmerged tree`() = runComposeTest {
+        setContentWithContentDescription()
+
+        onNodeWithContentDescription("Greeting label", useUnmergedTree = true).assertExists()
+    }
+
+    @Test
     fun `setContentWithWindowSize should set local window info`() = runComposeTest {
         setContentWithWindowSize(windowSize = DpSize(width = 456.dp, height = 789.dp)) {
             val density = LocalDensity.current
@@ -80,5 +118,16 @@ class ValidateComposeUiTestHarness : ComposeUiTestHarness() {
         }
 
         onNodeWithText("Window size matches").assertExists()
+    }
+
+    private fun ComposeUiTestScope.setContentWithContentDescription() {
+        setContent {
+            BasicText(
+                text = "Hello, Compose!",
+                modifier = Modifier.semantics {
+                    contentDescription = "Greeting label"
+                },
+            )
+        }
     }
 }
