@@ -25,11 +25,10 @@ dependencies {
     implementation(libs.jetbrains.compose.material3.adaptive.layout)
     implementation(libs.jetbrains.compose.material3.adaptive.navigation)
     implementation(libs.jetbrains.compose.material.icons.extended)
+    implementation(libs.jetbrains.compose.navigation.event)
 
     // Landscapist imports a lot of dependencies that we don't need. We exclude them here.
-    implementation(libs.lanscapist.coil) {
-        exclude(group = "io.coil-kt", module = "coil-gif")
-        exclude(group = "io.coil-kt", module = "coil-video")
+    implementation(libs.landscapist.coil) {
         exclude(group = "io.coil-kt.coil3", module = "coil-network-ktor3")
         exclude(group = "io.ktor")
     }

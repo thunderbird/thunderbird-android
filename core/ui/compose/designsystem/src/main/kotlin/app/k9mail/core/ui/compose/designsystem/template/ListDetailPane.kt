@@ -1,7 +1,6 @@
 package app.k9mail.core.ui.compose.designsystem.template
 
 import android.os.Parcelable
-import androidx.activity.compose.BackHandler
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
@@ -15,6 +14,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
 import kotlinx.coroutines.launch
 
 /**
@@ -43,7 +45,10 @@ fun <T : Parcelable> ListDetailPane(
         )
     }
 
-    BackHandler(navigator.canNavigateBack()) {
+    NavigationBackHandler(
+        state = rememberNavigationEventState(NavigationEventInfo.None),
+        isBackEnabled = navigator.canNavigateBack(),
+    ) {
         coroutineScope.launch {
             navigator.navigateBack()
         }
