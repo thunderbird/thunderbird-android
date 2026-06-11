@@ -79,10 +79,42 @@ class DefaultThundermailNavigation(
             ) {
                 ThundermailAddAccountScreen(
                     appTitle = brandNameProvider.brandName,
-                    onAddAccountClick = { TODO("not implemented yet") },
+                    onAddAccountClick = { onFinish(ThundermailRoute.AccountSetup()) },
                     onSignInWithThundermail = { onFinish(ThundermailRoute.SignInWithThundermail) },
                 )
             }
+
+            registerAccountSetupRoute(onBack, onFinish)
+        }
+    }
+
+    private fun NavGraphBuilder.registerAccountSetupRoute(
+        onBack: () -> Unit,
+        onFinish: (ThundermailRoute) -> Unit,
+    ) {
+        deepLinkComposable<ThundermailRoute.AccountSetup>(
+            basePath = ThundermailRoute.ACCOUNT_SETUP_ROUTE,
+        ) {
+            AccountSetupNavHost(
+                onBack = onBack,
+                onFinish = { route: AccountSetupRoute ->
+                    when (route) {
+                        is AccountSetupRoute.AccountSetup -> onFinish(
+                            ThundermailRoute.Permissions(
+                                accountId = requireNotNull(route.accountId) {
+                                    "Something went wrong. We should have an account-id at this point. " +
+                                        "Please report."
+                                },
+                            ),
+                        )
+
+                        AccountSetupRoute.ThundermailScanQrCode -> onFinish(ThundermailRoute.ScanQrCode)
+
+                        AccountSetupRoute.ThundermailSignIn -> onFinish(ThundermailRoute.SignInWithThundermail)
+                    }
+                },
+                skipToIncomingValidation = false,
+            )
         }
     }
 }

@@ -11,6 +11,7 @@ sealed interface ThundermailRoute : Route {
         const val SIGN_IN_WITH_THUNDERMAIL_ROUTE = "$BASE_PATH/sign-in"
         const val SCAN_QR_CODE_ROUTE = "$BASE_PATH/scan-qr-code"
         const val INCOMING_SETTINGS_ROUTE = "$BASE_PATH/incoming-settings"
+        const val ACCOUNT_SETUP_ROUTE = "$BASE_PATH/account-setup"
         const val ACCOUNT_ID_ROUTE_PARAM = "accountId"
         const val PERMISSIONS_ROUTE = "$BASE_PATH/permissions/{$ACCOUNT_ID_ROUTE_PARAM}"
         const val ONBOARD_COMPLETE_ROUTE = "$BASE_PATH/onboard-complete"

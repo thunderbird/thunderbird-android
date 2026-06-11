@@ -98,7 +98,7 @@ private fun ButtonsPanel(
         TextTitleSmall(
             text = buildAnnotatedString {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append("– or –")
+                    append(stringResource(R.string.thundermail_or_divider))
                 }
             },
         )

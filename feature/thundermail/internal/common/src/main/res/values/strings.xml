@@ -8,4 +8,5 @@
     <string name="thundermail_add_account">Add Account</string>
     <string name="thundermail_add_an_email_account">Add an email account</string>
     <string name="thundermail_what_is_thundermail">What is Thundermail?</string>
+    <string name="thundermail_or_divider">– or –</string>
 </resources>
