@@ -1,6 +1,5 @@
 package app.k9mail.core.ui.compose.designsystem.template
 
-import android.os.Parcelable
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +14,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import kotlinx.coroutines.launch
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 import net.thunderbird.core.ui.common.annotation.PreviewDevices
 
 @Composable
@@ -33,7 +32,7 @@ internal fun ListDetailPanePreview() {
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     LazyColumn {
-                        itemsIndexed(createItems()) { index, item ->
+                        itemsIndexed(createItems()) { _, item ->
                             ListItem(
                                 item = item,
                                 onClick = {
@@ -78,11 +77,11 @@ private fun ListItem(
     }
 }
 
-@Parcelize
+@Serializable
 internal data class ListItem(
     val id: String,
     val title: String,
-) : Parcelable
+)
 
 private fun createItems(): List<ListItem> {
     return listOf(

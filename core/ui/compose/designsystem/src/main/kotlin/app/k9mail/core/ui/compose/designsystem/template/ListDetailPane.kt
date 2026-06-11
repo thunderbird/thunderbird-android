@@ -1,6 +1,5 @@
 package app.k9mail.core.ui.compose.designsystem.template
 
-import android.os.Parcelable
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
@@ -30,7 +29,7 @@ import kotlinx.coroutines.launch
  */
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-fun <T : Parcelable> ListDetailPane(
+fun <T> ListDetailPane(
     navigationController: MutableState<ListDetailNavigationController<T>>,
     listPane: @Composable () -> Unit,
     detailPane: @Composable (T) -> Unit,
@@ -78,7 +77,7 @@ fun <T : Parcelable> ListDetailPane(
  * detail panes in a [ListDetailPane].
  */
 @Composable
-fun <T : Parcelable> rememberListDetailNavigationController(): MutableState<ListDetailNavigationController<T>> {
+fun <T> rememberListDetailNavigationController(): MutableState<ListDetailNavigationController<T>> {
     val defaultController = remember { NoOpListDetailNavigationController<T>() }
     return remember { mutableStateOf(defaultController) }
 }
@@ -90,7 +89,7 @@ fun <T : Parcelable> rememberListDetailNavigationController(): MutableState<List
  *
  * @see rememberListDetailNavigationController
  */
-interface ListDetailNavigationController<T : Parcelable> {
+interface ListDetailNavigationController<T> {
     fun canNavigateBack(): Boolean
     suspend fun navigateBack(): Boolean
     suspend fun navigateToDetail(item: T)
@@ -101,7 +100,7 @@ interface ListDetailNavigationController<T : Parcelable> {
 /**
  * A [ListDetailNavigationController] that does nothing.
  */
-internal class NoOpListDetailNavigationController<T : Parcelable> : ListDetailNavigationController<T> {
+internal class NoOpListDetailNavigationController<T> : ListDetailNavigationController<T> {
     override fun canNavigateBack() = false
     override suspend fun navigateBack() = false
     override suspend fun navigateToDetail(item: T) = Unit
@@ -114,7 +113,7 @@ internal class NoOpListDetailNavigationController<T : Parcelable> : ListDetailNa
  * between list and detail panes.
  */
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
-internal class DefaultListDetailNavigationController<T : Parcelable>(
+internal class DefaultListDetailNavigationController<T>(
     private val navigator: ThreePaneScaffoldNavigator<T>,
 ) : ListDetailNavigationController<T> {
     override fun canNavigateBack() = navigator.canNavigateBack()

@@ -1,6 +1,5 @@
 plugins {
     id(ThunderbirdPlugins.Library.androidCompose)
-    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
