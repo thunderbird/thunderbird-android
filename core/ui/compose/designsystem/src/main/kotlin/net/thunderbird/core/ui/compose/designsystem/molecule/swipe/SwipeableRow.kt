@@ -11,15 +11,14 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
@@ -161,23 +160,20 @@ private fun rememberAccessibilityActions(
     onSwipeEnd: (SwipeDirection) -> Unit,
 ): List<CustomAccessibilityAction> {
     if (!gesturesEnabled) return emptyList()
-    val resources = LocalResources.current
     val actions = state.accessibilityActions
-    return remember(resources, actions, state.enableSwipeFromStartToEnd, state.enableSwipeFromEndToStart) {
-        actions.mapNotNull { action ->
-            val direction = when (action) {
-                is EndToStartAccessibilityAction if state.enableSwipeFromEndToStart -> EndToStart
-                is StartToEndAccessibilityAction if state.enableSwipeFromStartToEnd -> StartToEnd
-                else -> null
-            }
-            direction?.let { direction ->
-                val actionName = resources.getString(action.actionStringRes)
-                val label = resources.getString(action.descriptionStringRes, actionName)
 
-                CustomAccessibilityAction(label = label) {
-                    onSwipeEnd(direction)
-                    true
-                }
+    return actions.mapNotNull { action ->
+        val direction = when (action) {
+            is EndToStartAccessibilityAction if state.enableSwipeFromEndToStart -> EndToStart
+            is StartToEndAccessibilityAction if state.enableSwipeFromStartToEnd -> StartToEnd
+            else -> null
+        }
+        direction?.let { direction ->
+            val label = stringResource(action.descriptionStringRes, action.actionLabel())
+
+            CustomAccessibilityAction(label = label) {
+                onSwipeEnd(direction)
+                true
             }
         }
     }

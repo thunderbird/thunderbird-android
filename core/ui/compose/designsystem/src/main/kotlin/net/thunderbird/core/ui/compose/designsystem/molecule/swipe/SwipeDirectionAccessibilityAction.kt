@@ -1,5 +1,6 @@
 package net.thunderbird.core.ui.compose.designsystem.molecule.swipe
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import app.k9mail.core.ui.compose.designsystem.R
 import net.thunderbird.core.common.resources.StringRes
@@ -10,12 +11,11 @@ import net.thunderbird.core.common.resources.StringRes
 @Immutable
 sealed interface SwipeDirectionAccessibilityAction {
     /**
-     * The string resource ID for the accessibility action label (e.g., "Delete").
+     * Resolves the localized accessibility action label (e.g., "Delete").
      *
      * This label is used to identify the specific action performed by the swipe gesture
      */
-    @get:StringRes
-    val actionStringRes: Int
+    val actionLabel: @Composable () -> String
 
     /**
      * String resource ID for the format string used to describe this swipe action.
@@ -36,17 +36,17 @@ sealed interface SwipeDirectionAccessibilityAction {
      * <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">
      *     Swipe from start to end to %s
      * </string>
-     * <string name="swipe_delete_item">delete this item</string>
      * ```
      * ```kotlin
-     * val startToEndAccessibility = StartToEndAccessibilityAction(actionStringRes = R.string.swipe_delete_item)
+     * val startToEndAccessibility = StartToEndAccessibilityAction(actionLabel = { "delete this item" })
      * // composed description: "Swipe from start to end to delete this item."
      * ```
      *
-     * @property actionStringRes Resource ID for the action label that identifies this
-     *  swipe action to accessibility services
+     * @property actionLabel Resolver for the label that identifies this swipe action to accessibility services.
      */
-    data class StartToEndAccessibilityAction(override val actionStringRes: Int) : SwipeDirectionAccessibilityAction {
+    data class StartToEndAccessibilityAction(
+        override val actionLabel: @Composable () -> String,
+    ) : SwipeDirectionAccessibilityAction {
         override val descriptionStringRes =
             R.string.designsystem_molecule_swipeable_row_start_to_end_accessibility_description
     }
@@ -62,17 +62,18 @@ sealed interface SwipeDirectionAccessibilityAction {
      * <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">
      *     Swipe from end to start to %s
      * </string>
-     * <string name="swipe_delete_item">delete this item</string>
      * ```
      * ```kotlin
-     * val endToStartAccessibility = EndToStartAccessibilityAction(actionStringRes = R.string.swipe_delete_item)
+     * val endToStartAccessibility = EndToStartAccessibilityAction(actionLabel = { "delete this item" })
      * // composed description: "Swipe from end to start to delete this item."
      * ```
      *
-     * @property actionStringRes The string resource ID for the action label that will be announced
-     * by accessibility services when presenting available actions to the user.
+     * @property actionLabel Resolver for the label that will be announced by accessibility services when presenting
+     * available actions to the user.
      */
-    data class EndToStartAccessibilityAction(override val actionStringRes: Int) : SwipeDirectionAccessibilityAction {
+    data class EndToStartAccessibilityAction(
+        override val actionLabel: @Composable () -> String,
+    ) : SwipeDirectionAccessibilityAction {
         override val descriptionStringRes =
             R.string.designsystem_molecule_swipeable_row_end_to_start_accessibility_description
     }

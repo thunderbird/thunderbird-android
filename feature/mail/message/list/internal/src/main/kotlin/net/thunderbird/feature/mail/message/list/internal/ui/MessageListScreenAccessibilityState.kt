@@ -10,6 +10,7 @@ import kotlinx.collections.immutable.toPersistentList
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectionAccessibilityAction
+import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectionAccessibilityAction.EndToStartAccessibilityAction
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectionAccessibilityAction.StartToEndAccessibilityAction
 import net.thunderbird.feature.mail.message.list.internal.R
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
@@ -133,11 +134,19 @@ internal fun rememberMessageListScreenAccessibilityState(
         buildList {
             val rightAction = swipeActions?.rightAction?.toAccessibilityStringRes()
             if (rightAction != null) {
-                add(StartToEndAccessibilityAction(actionStringRes = rightAction))
+                add(
+                    StartToEndAccessibilityAction(
+                        actionLabel = { stringResource(id = rightAction) },
+                    ),
+                )
             }
             val leftAction = swipeActions?.leftAction?.toAccessibilityStringRes()
             if (leftAction != null) {
-                add(StartToEndAccessibilityAction(actionStringRes = leftAction))
+                add(
+                    EndToStartAccessibilityAction(
+                        actionLabel = { stringResource(id = leftAction) },
+                    ),
+                )
             }
         }
     }

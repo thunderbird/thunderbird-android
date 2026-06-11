@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
@@ -171,10 +172,10 @@ class SwipeableRowTest : ComposeTest() {
             TestSwipeableRow(
                 accessibilityActions = persistentListOf(
                     StartToEndAccessibilityAction(
-                        actionStringRes = R.string.designsystem_molecule_error_view_button_retry,
+                        actionLabel = { stringResource(R.string.designsystem_molecule_error_view_button_retry) },
                     ),
                     EndToStartAccessibilityAction(
-                        actionStringRes = R.string.designsystem_molecule_error_view_button_retry,
+                        actionLabel = { stringResource(R.string.designsystem_molecule_error_view_button_retry) },
                     ),
                 ),
             )
@@ -206,10 +207,10 @@ class SwipeableRowTest : ComposeTest() {
                 gesturesEnabled = false,
                 accessibilityActions = persistentListOf(
                     StartToEndAccessibilityAction(
-                        actionStringRes = R.string.designsystem_molecule_error_view_button_retry,
+                        actionLabel = { stringResource(R.string.designsystem_molecule_error_view_button_retry) },
                     ),
                     EndToStartAccessibilityAction(
-                        actionStringRes = R.string.designsystem_molecule_error_view_button_retry,
+                        actionLabel = { stringResource(R.string.designsystem_molecule_error_view_button_retry) },
                     ),
                 ),
             )
@@ -233,10 +234,10 @@ class SwipeableRowTest : ComposeTest() {
                     startToEndBehaviour = SwipeBehaviour.Disabled,
                     accessibilityActions = persistentListOf(
                         StartToEndAccessibilityAction(
-                            actionStringRes = R.string.designsystem_molecule_error_view_button_retry,
+                            actionLabel = { stringResource(R.string.designsystem_molecule_error_view_button_retry) },
                         ),
                         EndToStartAccessibilityAction(
-                            actionStringRes = R.string.designsystem_molecule_error_view_button_retry,
+                            actionLabel = { stringResource(R.string.designsystem_molecule_error_view_button_retry) },
                         ),
                     ),
                 )
@@ -263,10 +264,10 @@ class SwipeableRowTest : ComposeTest() {
                     endToStartBehaviour = SwipeBehaviour.Disabled,
                     accessibilityActions = persistentListOf(
                         StartToEndAccessibilityAction(
-                            actionStringRes = R.string.designsystem_molecule_error_view_button_retry,
+                            actionLabel = { stringResource(R.string.designsystem_molecule_error_view_button_retry) },
                         ),
                         EndToStartAccessibilityAction(
-                            actionStringRes = R.string.designsystem_molecule_error_view_button_retry,
+                            actionLabel = { stringResource(R.string.designsystem_molecule_error_view_button_retry) },
                         ),
                     ),
                 )
@@ -293,7 +294,7 @@ class SwipeableRowTest : ComposeTest() {
             TestSwipeableRow(
                 accessibilityActions = persistentListOf(
                     StartToEndAccessibilityAction(
-                        actionStringRes = R.string.designsystem_molecule_error_view_button_retry,
+                        actionLabel = { stringResource(R.string.designsystem_molecule_error_view_button_retry) },
                     ),
                 ),
                 onSwipeEnd = { swipeEndDirections.add(it) },
@@ -320,7 +321,7 @@ class SwipeableRowTest : ComposeTest() {
             TestSwipeableRow(
                 accessibilityActions = persistentListOf(
                     EndToStartAccessibilityAction(
-                        actionStringRes = R.string.designsystem_molecule_error_view_button_retry,
+                        actionLabel = { stringResource(R.string.designsystem_molecule_error_view_button_retry) },
                     ),
                 ),
                 onSwipeEnd = { swipeEndDirections.add(it) },
