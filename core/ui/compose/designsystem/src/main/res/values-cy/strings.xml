@@ -7,7 +7,4 @@
     <string name="designsystem_molecule_error_view_button_retry">Ceisio eto</string>
     <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">De: %s</string>
     <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Chwith: %s</string>
-    <string name="designsystem_organism_thundermail_button_panel_sign_in">Mewngofnodi gyda Thundermail</string>
-    <string name="designsystem_organism_thundermail_button_panel_scan_qr_code">Sganiwch y cod QR</string>
-    <string name="designsystem_organism_thundermail_button_panel_sign_in_or">neu</string>
 </resources>
