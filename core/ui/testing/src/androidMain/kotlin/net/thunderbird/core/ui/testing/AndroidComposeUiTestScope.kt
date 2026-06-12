@@ -3,8 +3,10 @@ package net.thunderbird.core.ui.testing
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.test.espresso.Espresso
 
 /**
  * A scope for Compose UI tests on Android.
@@ -37,7 +39,16 @@ internal class AndroidComposeUiTestScope(
         useUnmergedTree: Boolean,
     ) = delegate.onNodeWithText(text, substring, true, useUnmergedTree)
 
+    override fun onNodeWithContentDescription(
+        label: String,
+        substring: Boolean,
+        ignoreCase: Boolean,
+        useUnmergedTree: Boolean,
+    ) = delegate.onNodeWithContentDescription(label, substring, ignoreCase, useUnmergedTree)
+
     override fun waitForIdle() {
         delegate.waitForIdle()
     }
+
+    override fun pressBack() = Espresso.pressBack()
 }

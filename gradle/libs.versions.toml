@@ -38,6 +38,7 @@ androidxGraphicsPath = "1.1.0"
 androidxLifecycle = "2.10.0"
 androidxLocalBroadcastManager = "1.1.0"
 androidxNavigation = "2.9.8"
+androidxNavigationEvent = "1.0.1"
 androidxRecyclerView = "1.4.0"
 androidxPreference = "1.2.1"
 # Pinning on 1.1.0: The 1.2.0 caused the Message List RecyclerView
@@ -168,6 +169,7 @@ androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.r
 androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "androidxCamera" }
 androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "androidxCamera" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidxComposeBom" }
+androidx-compose-foundation = { module = "androidx.compose.foundation:foundation" }
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidxConstraintLayout" }
@@ -193,6 +195,7 @@ androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmode
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
 androidx-localbroadcastmanager = { module = "androidx.localbroadcastmanager:localbroadcastmanager", version.ref = "androidxLocalBroadcastManager" }
+androidx-navigationevent = { module = "androidx.navigationevent:navigationevent", version.ref = "androidxNavigationEvent" }
 androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "androidxNavigation" }
 androidx-navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "androidxNavigation" }
 androidx-preference = { module = "androidx.preference:preference", version.ref = "androidxPreference" }
@@ -277,7 +280,7 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 kxml2 = { module = "com.github.cketti:kxml2-extracted-from-android", version.ref = "kxml2" }
-lanscapist-coil = { module = "com.github.skydoves:landscapist-coil3", version.ref = "landscapist" }
+landscapist-coil = { module = "com.github.skydoves:landscapist-coil3", version.ref = "landscapist" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassic" }
 mime4j-core = { module = "org.apache.james:apache-mime4j-core", version.ref = "mime4j" }
@@ -409,6 +412,7 @@ shared-android-app-compose = [
   "koin-compose",
   "koin-compose-viewmodel",
   "kotlinx-collections-immutable",
+  "androidx-compose-foundation",
   "jetbrains-compose-components-resources"
 ]
 shared-android-app-compose-debug = [

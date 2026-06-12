@@ -146,10 +146,10 @@ androidx.navigation:navigation-fragment:2.9.8
 androidx.navigation:navigation-runtime-android:2.9.8
 androidx.navigation:navigation-runtime:2.9.8
 androidx.navigation:navigation-ui:2.9.8
-androidx.navigationevent:navigationevent-android:1.0.0
-androidx.navigationevent:navigationevent-compose-android:1.0.0
-androidx.navigationevent:navigationevent-compose:1.0.0
-androidx.navigationevent:navigationevent:1.0.0
+androidx.navigationevent:navigationevent-android:1.1.1
+androidx.navigationevent:navigationevent-compose-android:1.1.1
+androidx.navigationevent:navigationevent-compose:1.1.1
+androidx.navigationevent:navigationevent:1.1.1
 androidx.preference:preference:1.2.1
 androidx.profileinstaller:profileinstaller:1.4.1
 androidx.recyclerview:recyclerview:1.4.0
@@ -276,6 +276,7 @@ org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:2.10.0
 org.jetbrains.androidx.navigation:navigation-common:2.9.2
 org.jetbrains.androidx.navigation:navigation-compose:2.9.2
 org.jetbrains.androidx.navigation:navigation-runtime:2.9.2
+org.jetbrains.androidx.navigationevent:navigationevent-compose:1.1.0
 org.jetbrains.androidx.savedstate:savedstate-compose:1.3.6
 org.jetbrains.androidx.savedstate:savedstate:1.3.6
 org.jetbrains.androidx.window:window-core:1.4.0

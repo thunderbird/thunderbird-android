@@ -57,7 +57,28 @@ public interface ComposeUiTestScope {
     ): SemanticsNodeInteraction
 
     /**
+     * Find a node with the given [label].
+     *
+     * @param label The content description of the node to find.
+     * @param substring Whether to search for a substring of the content description.
+     * @param ignoreCase Whether to ignore case when searching for the content description.
+     * @param useUnmergedTree Whether to use the unmerged tree.
+     * @return A [SemanticsNodeInteraction] containing the found node.
+     */
+    public fun onNodeWithContentDescription(
+        label: String,
+        substring: Boolean = false,
+        ignoreCase: Boolean = false,
+        useUnmergedTree: Boolean = false,
+    ): SemanticsNodeInteraction
+
+    /**
      * Waits for the Compose UI to be idle.
      */
     public fun waitForIdle()
+
+    /**
+     *  Presses the back button.
+     */
+    public fun pressBack()
 }
