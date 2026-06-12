@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.legacy.Log.e
+import net.thunderbird.core.logging.Logger
 import org.apache.commons.io.IOUtils
 
 class AttachmentController internal constructor(
@@ -33,6 +33,7 @@ class AttachmentController internal constructor(
     private val messageViewFragment: MessageViewFragment,
     private val attachment: AttachmentViewInfo,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val logger: Logger
 ) {
     private val viewIntentFinder: ViewIntentFinder = ViewIntentFinder(context)
 
@@ -72,7 +73,7 @@ class AttachmentController internal constructor(
                 writeAttachment(documentUri)
                 true
             } catch (e: IOException) {
-                e(e, "Error saving attachment")
+                logger.error(throwable = e) { "Error saving attachment" }
                 false
             }
         }
@@ -111,7 +112,7 @@ class AttachmentController internal constructor(
     }
 
     private suspend fun viewLocalAttachment() {
-        val intent = withContext(Dispatchers.IO) { getBestViewIntent() }
+        val intent = withContext(ioDispatcher) { getBestViewIntent() }
         if (intent != null) {
             try {
                 context.startActivity(intent)
@@ -143,9 +144,9 @@ class AttachmentController internal constructor(
                 attachment.internalUri,
                 attachment.displayName,
             )
-            viewIntentFinder.getBestViewIntent(intentDataUri, attachment.displayName, attachment.mimeType)
+            attachment.mimeType?.let { viewIntentFinder.getBestViewIntent(intentDataUri, attachment.displayName, it) }
         } catch (e: IOException) {
-            e(e, "Error creating temp file for attachment!")
+            logger.error(throwable = e) { "Error creating temp file for attachment!" }
             return null
         }
     }

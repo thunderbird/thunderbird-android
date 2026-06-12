@@ -111,6 +111,7 @@ class MessageViewFragment :
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val appNameProvider: AppNameProvider by inject()
     private val messageReaderViewModel: MessageReaderViewContract.ViewModel<Part> by viewModel()
+    private val logger: Logger by inject()
 
     private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
         registerForActivityResult(CreateDocumentResultContract()) { documentUri ->
@@ -1210,6 +1211,7 @@ class MessageViewFragment :
             controller = messagingController,
             messageViewFragment = this,
             attachment = attachment,
+            logger = logger
         )
     }
 
