@@ -17,14 +17,12 @@ plugins {
     id("net.thunderbird.gradle.plugin.quality.spotless")
 }
 
-allprojects {
-    tasks.withType<Test> {
-        testLogging {
-            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-            showCauses = true
-            showExceptions = true
-            showStackTraces = true
-        }
+tasks.withType<Test>().configureEach {
+    testLogging {
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        showCauses = true
+        showExceptions = true
+        showStackTraces = true
     }
 }
 
