@@ -13,7 +13,6 @@ internal fun WelcomeContentThunderbirdPreview() {
             onStartClick = {},
             onImportClick = {},
             appName = "Thunderbird Beta",
-            showImportButton = false,
         )
     }
 }
@@ -26,7 +25,6 @@ internal fun WelcomeContentK9MailPreview() {
             onStartClick = {},
             onImportClick = {},
             appName = "K-9 Mail",
-            showImportButton = true,
         )
     }
 }

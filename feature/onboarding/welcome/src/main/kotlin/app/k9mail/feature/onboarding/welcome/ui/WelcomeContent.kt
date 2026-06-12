@@ -41,7 +41,6 @@ internal fun WelcomeContent(
     onStartClick: () -> Unit,
     onImportClick: () -> Unit,
     appName: String,
-    showImportButton: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -57,7 +56,6 @@ internal fun WelcomeContent(
                 },
                 footer = {
                     WelcomeFooterSection(
-                        showImportButton = showImportButton,
                         onStartClick = onStartClick,
                         onImportClick = onImportClick,
                     )
@@ -176,7 +174,6 @@ private fun WelcomeMessage(
 
 @Composable
 private fun WelcomeFooterSection(
-    showImportButton: Boolean,
     onStartClick: () -> Unit,
     onImportClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -187,7 +184,6 @@ private fun WelcomeFooterSection(
             .padding(top = MainTheme.spacings.quadruple),
     ) {
         WelcomeFooter(
-            showImportButton = showImportButton,
             onStartClick = onStartClick,
             onImportClick = onImportClick,
             modifier = Modifier
@@ -199,7 +195,6 @@ private fun WelcomeFooterSection(
 
 @Composable
 private fun WelcomeFooter(
-    showImportButton: Boolean,
     onStartClick: () -> Unit,
     onImportClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -214,12 +209,10 @@ private fun WelcomeFooter(
             onClick = onStartClick,
             modifier = Modifier.testTag("onboarding_welcome_start_button"),
         )
-        if (showImportButton) {
-            ButtonText(
-                text = stringResource(id = R.string.onboarding_welcome_import_button),
-                onClick = onImportClick,
-            )
-        }
+        ButtonText(
+            text = stringResource(id = R.string.onboarding_welcome_import_button),
+            onClick = onImportClick,
+        )
 
         TextBodySmall(
             text = stringResource(R.string.onboarding_welcome_developed_by),
