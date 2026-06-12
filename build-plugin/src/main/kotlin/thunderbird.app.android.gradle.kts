@@ -35,7 +35,8 @@ android {
         warningsAsErrors = false
         abortOnError = true
         checkDependencies = true
-        lintConfig = project.file("${project.rootProject.projectDir}/config/lint/lint.xml")
+        @Suppress("UnstableApiUsage")
+        lintConfig = isolated.rootProject.projectDirectory.file("config/lint/lint.xml").asFile
         checkReleaseBuilds = System.getenv("CI_CHECK_RELEASE_BUILDS")?.toBoolean() ?: true
     }
 

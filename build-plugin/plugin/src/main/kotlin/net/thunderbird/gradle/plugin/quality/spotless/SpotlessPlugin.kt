@@ -22,6 +22,7 @@ class SpotlessPlugin : Plugin<Project> {
         }
     }
 
+    @Suppress("UnstableApiUsage")
     private fun Project.configureSpotless() {
         extensions.configure<SpotlessExtension> {
             kotlin {
@@ -31,7 +32,7 @@ class SpotlessPlugin : Plugin<Project> {
                 )
 
                 ktlint()
-                    .setEditorConfigPath("${rootProject.projectDir}/.editorconfig")
+                    .setEditorConfigPath("${isolated.rootProject.projectDirectory}/.editorconfig")
                     .editorConfigOverride(kotlinEditorConfigOverride)
             }
 
@@ -41,7 +42,7 @@ class SpotlessPlugin : Plugin<Project> {
                 )
 
                 ktlint()
-                    .setEditorConfigPath("${rootProject.projectDir}/.editorconfig")
+                    .setEditorConfigPath("${isolated.rootProject.projectDirectory}/.editorconfig")
                     .editorConfigOverride(
                         mapOf(
                             "ktlint_code_style" to "intellij_idea",
@@ -65,6 +66,7 @@ class SpotlessPlugin : Plugin<Project> {
         }
     }
 
+    @Suppress("UnstableApiUsage")
     private fun Project.configureSpotlessRoot() {
         extensions.configure<SpotlessExtension> {
             kotlin {
@@ -73,7 +75,7 @@ class SpotlessPlugin : Plugin<Project> {
                     "build-plugin/plugin/src/*/kotlin/**/*.kt",
                 )
                 ktlint()
-                    .setEditorConfigPath("${project.rootProject.projectDir}/.editorconfig")
+                    .setEditorConfigPath("${isolated.rootProject.projectDirectory}/.editorconfig")
                     .editorConfigOverride(kotlinEditorConfigOverride)
             }
 
@@ -85,7 +87,7 @@ class SpotlessPlugin : Plugin<Project> {
                 )
 
                 ktlint()
-                    .setEditorConfigPath("${project.rootProject.projectDir}/.editorconfig")
+                    .setEditorConfigPath("${isolated.rootProject.projectDirectory}/.editorconfig")
                     .editorConfigOverride(
                         mapOf(
                             "ktlint_code_style" to "intellij_idea",

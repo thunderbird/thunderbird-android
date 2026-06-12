@@ -57,11 +57,16 @@ fun NamedDomainObjectContainer<out ApkSigningConfig>.getByType(signingType: Sign
     return findByName(signingType.type)
 }
 
+@Suppress("UnstableApiUsage")
 private fun Project.readSigningProperties(signingType: SigningType, isUpload: Boolean) = Properties().apply {
     val signingPropertiesFile = if (isUpload) {
-        rootProject.file("$SIGNING_FOLDER/${signingType.id}$UPLOAD_FILE_ENDING")
+        isolated.rootProject.projectDirectory
+            .file("$SIGNING_FOLDER/${signingType.id}$UPLOAD_FILE_ENDING")
+            .asFile
     } else {
-        rootProject.file("$SIGNING_FOLDER/${signingType.id}$SIGNING_FILE_ENDING")
+        isolated.rootProject.projectDirectory
+            .file("$SIGNING_FOLDER/${signingType.id}$SIGNING_FILE_ENDING")
+            .asFile
     }
 
     if (signingPropertiesFile.exists()) {
