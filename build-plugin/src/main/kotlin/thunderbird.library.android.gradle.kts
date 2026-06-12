@@ -85,3 +85,11 @@ dependencies {
 
     testImplementation(libs.bundles.shared.android.test)
 }
+
+tasks.register("testsOnCi") {
+    dependsOn(
+        tasks.withType<Test>().matching {
+            it.name != "testReleaseUnitTest"
+        }
+    )
+}
