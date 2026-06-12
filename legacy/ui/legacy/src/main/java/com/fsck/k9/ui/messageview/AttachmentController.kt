@@ -1,196 +1,161 @@
-package com.fsck.k9.ui.messageview;
+package com.fsck.k9.ui.messageview
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
+import androidx.annotation.WorkerThread
+import app.k9mail.legacy.message.controller.SimpleMessagingListener
+import com.fsck.k9.Preferences.Companion.getPreferences
+import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.Part
+import com.fsck.k9.mailstore.AttachmentViewInfo
+import com.fsck.k9.mailstore.LocalPart
+import com.fsck.k9.provider.AttachmentTempFileProvider
+import com.fsck.k9.ui.R
+import java.io.IOException
+import kotlin.coroutines.resume
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
+import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.logging.legacy.Log.e
+import org.apache.commons.io.IOUtils
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+class AttachmentController internal constructor(
+    private val context: Context,
+    private val controller: MessagingController,
+    private val messageViewFragment: MessageViewFragment,
+    private val attachment: AttachmentViewInfo,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+) {
+    private val viewIntentFinder: ViewIntentFinder = ViewIntentFinder(context)
 
-import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.widget.Toast;
-
-import androidx.annotation.WorkerThread;
-import net.thunderbird.core.android.account.LegacyAccountDto;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.controller.MessagingController;
-import app.k9mail.legacy.message.controller.SimpleMessagingListener;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mailstore.AttachmentViewInfo;
-import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.mailstore.LocalPart;
-import com.fsck.k9.provider.AttachmentTempFileProvider;
-import com.fsck.k9.ui.R;
-import org.apache.commons.io.IOUtils;
-import net.thunderbird.core.logging.legacy.Log;
-
-
-public class AttachmentController {
-    private final Context context;
-    private final MessagingController controller;
-    private final MessageViewFragment messageViewFragment;
-    private final AttachmentViewInfo attachment;
-    private final ViewIntentFinder viewIntentFinder;
-
-
-    AttachmentController(Context context, MessagingController controller, MessageViewFragment messageViewFragment,
-            AttachmentViewInfo attachment) {
-        this.context = context;
-        this.controller = controller;
-        this.messageViewFragment = messageViewFragment;
-        this.attachment = attachment;
-        viewIntentFinder = new ViewIntentFinder(context);
-    }
-
-    public void viewAttachment() {
-        if (!attachment.isContentAvailable()) {
-            downloadAndViewAttachment((LocalPart) attachment.part);
-        } else {
-            viewLocalAttachment();
+    fun viewAttachment(scope: CoroutineScope) {
+        scope.launch {
+            if (!attachment.isContentAvailable) {
+                val success = downloadAttachment()
+                if (success) {
+                    messageViewFragment.refreshAttachmentThumbnail(attachment)
+                    viewLocalAttachment()
+                }
+            } else {
+                viewLocalAttachment()
+            }
         }
     }
 
-    public void saveAttachmentTo(Uri documentUri) {
-        if (!attachment.isContentAvailable()) {
-            downloadAndSaveAttachmentTo((LocalPart) attachment.part, documentUri);
-        } else {
-            saveLocalAttachmentTo(documentUri);
+    fun saveAttachmentTo(scope: CoroutineScope, documentUri: Uri?) {
+        if (documentUri == null) return
+
+        scope.launch {
+            if (!attachment.isContentAvailable) {
+                val success = downloadAttachment()
+                if (success) {
+                    messageViewFragment.refreshAttachmentThumbnail(attachment)
+                    saveLocalAttachmentTo(documentUri)
+                }
+            } else {
+                saveLocalAttachmentTo(documentUri)
+            }
         }
     }
 
-    private void downloadAndViewAttachment(LocalPart localPart) {
-        downloadAttachment(localPart, new Runnable() {
-            @Override
-            public void run() {
-                messageViewFragment.refreshAttachmentThumbnail(attachment);
-                viewLocalAttachment();
-            }
-        });
-    }
-
-    private void downloadAndSaveAttachmentTo(LocalPart localPart, final Uri documentUri) {
-        downloadAttachment(localPart, new Runnable() {
-            @Override
-            public void run() {
-                messageViewFragment.refreshAttachmentThumbnail(attachment);
-                saveLocalAttachmentTo(documentUri);
-            }
-        });
-    }
-
-    private void downloadAttachment(LocalPart localPart, final Runnable attachmentDownloadedCallback) {
-        String accountUuid = localPart.getAccountUuid();
-        LegacyAccountDto account = Preferences.getPreferences().getAccount(accountUuid);
-        LocalMessage message = localPart.getMessage();
-
-        messageViewFragment.showAttachmentLoadingDialog();
-        controller.loadAttachment(account, message, attachment.part, new SimpleMessagingListener() {
-            @Override
-            public void loadAttachmentFinished(LegacyAccountDto account, Message message, Part part) {
-                attachment.setContentAvailable();
-                messageViewFragment.hideAttachmentLoadingDialogOnMainThread();
-                messageViewFragment.runOnMainThread(attachmentDownloadedCallback);
-            }
-
-            @Override
-            public void loadAttachmentFailed(LegacyAccountDto account, Message message, Part part, String reason) {
-                messageViewFragment.hideAttachmentLoadingDialogOnMainThread();
-            }
-        });
-    }
-
-    private void viewLocalAttachment() {
-        new ViewAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
-
-    private void saveLocalAttachmentTo(Uri documentUri) {
-        new SaveAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, documentUri);
-    }
-
-    private void writeAttachment(Uri documentUri) throws IOException {
-        ContentResolver contentResolver = context.getContentResolver();
-        InputStream in = contentResolver.openInputStream(attachment.internalUri);
-        try {
-            OutputStream out = contentResolver.openOutputStream(documentUri, "wt");
+    private suspend fun saveLocalAttachmentTo(documentUri: Uri) {
+        val success = withContext(ioDispatcher) {
             try {
-                IOUtils.copy(in, out);
-                out.flush();
-            } finally {
-                out.close();
+                writeAttachment(documentUri)
+                true
+            } catch (e: IOException) {
+                e(e, "Error saving attachment")
+                false
             }
-        } finally {
-            in.close();
+        }
+        if (!success) displayAttachmentNotSavedMessage()
+    }
+
+    private suspend fun downloadAttachment(): Boolean = suspendCancellableCoroutine { continuation ->
+        val localPart = attachment.part as LocalPart
+        val account = getPreferences().getAccount(localPart.accountUuid)
+
+        messageViewFragment.showAttachmentLoadingDialog()
+        controller.loadAttachment(
+            account, localPart.message, attachment.part,
+            object : SimpleMessagingListener() {
+                override fun loadAttachmentFinished(account: LegacyAccountDto?, message: Message?, part: Part?) {
+                    attachment.setContentAvailable()
+                    messageViewFragment.hideAttachmentLoadingDialogOnMainThread()
+                    if (continuation.isActive) {
+                        continuation.resume(true)
+                    }
+                }
+
+                override fun loadAttachmentFailed(
+                    account: LegacyAccountDto?,
+                    message: Message?,
+                    part: Part?,
+                    reason: String?,
+                ) {
+                    messageViewFragment.hideAttachmentLoadingDialogOnMainThread()
+                    if (continuation.isActive) {
+                        continuation.resume(false)
+                    }
+                }
+            },
+        )
+    }
+
+    private suspend fun viewLocalAttachment() {
+        val intent = withContext(Dispatchers.IO) { getBestViewIntent() }
+        if (intent != null) {
+            try {
+                context.startActivity(intent)
+            } catch (_: ActivityNotFoundException) {
+                val errorMsg = context.getString(R.string.message_view_no_viewer, attachment.mimeType)
+                displayMessageToUser(errorMsg)
+            }
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun writeAttachment(documentUri: Uri) {
+        val contentResolver = context.contentResolver
+        contentResolver.openInputStream(attachment.internalUri).use { inputStream ->
+            contentResolver.openOutputStream(documentUri, "wt").use { outputStream ->
+                if (inputStream != null && outputStream != null) {
+                    IOUtils.copy(inputStream, outputStream)
+                    outputStream.flush()
+                }
+            }
         }
     }
 
     @WorkerThread
-    private Intent getBestViewIntent() {
-        try {
-            Uri intentDataUri = AttachmentTempFileProvider.createTempUriForContentUri(context, attachment.internalUri, attachment.displayName);
-
-            return viewIntentFinder.getBestViewIntent(intentDataUri, attachment.displayName, attachment.mimeType);
-        } catch (IOException e) {
-            Log.e(e, "Error creating temp file for attachment!");
-            return null;
+    private fun getBestViewIntent(): Intent? {
+        return try {
+            val intentDataUri = AttachmentTempFileProvider.createTempUriForContentUri(
+                context,
+                attachment.internalUri,
+                attachment.displayName,
+            )
+            viewIntentFinder.getBestViewIntent(intentDataUri, attachment.displayName, attachment.mimeType)
+        } catch (e: IOException) {
+            e(e, "Error creating temp file for attachment!")
+            return null
         }
     }
 
-    private void displayAttachmentNotSavedMessage() {
-        String message = context.getString(R.string.message_view_status_attachment_not_saved);
-        displayMessageToUser(message);
+    private fun displayAttachmentNotSavedMessage() {
+        val message = context.getString(R.string.message_view_status_attachment_not_saved)
+        displayMessageToUser(message)
     }
 
-    private void displayMessageToUser(String message) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-    }
-
-    private class ViewAttachmentAsyncTask extends AsyncTask<Void, Void, Intent> {
-
-        @Override
-        protected Intent doInBackground(Void... params) {
-            return getBestViewIntent();
-        }
-
-        @Override
-        protected void onPostExecute(Intent intent) {
-            viewAttachment(intent);
-        }
-
-        private void viewAttachment(Intent intent) {
-            try {
-                context.startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                Log.e(e, "Could not display attachment of type %s", attachment.mimeType);
-
-                String message = context.getString(R.string.message_view_no_viewer, attachment.mimeType);
-                displayMessageToUser(message);
-            }
-        }
-    }
-
-    private class SaveAttachmentAsyncTask extends AsyncTask<Uri, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Uri... params) {
-            try {
-                Uri documentUri = params[0];
-                writeAttachment(documentUri);
-                return true;
-            } catch (IOException e) {
-                Log.e(e, "Error saving attachment");
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            if (!success) {
-                displayAttachmentNotSavedMessage();
-            }
-        }
+    private fun displayMessageToUser(message: String?) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }
