@@ -5,7 +5,9 @@ plugins {
     alias(libs.plugins.tb.app.versioning)
 }
 
-val testCoverageEnabled = hasProperty("testCoverageEnabled")
+val testCoverageEnabled = providers
+    .gradleProperty("testCoverageEnabled")
+    .isPresent
 
 android {
     namespace = "net.thunderbird.android"
@@ -88,12 +90,14 @@ android {
     }
 
     buildTypes {
-        val isCI = project.findProperty("ci") == "true"
+        val isCI = providers.gradleProperty("ci")
+            .map(String::toBoolean)
+            .orElse(false)
         release {
             signingConfig = signingConfigs.getByType(SigningType.TB_RELEASE)
 
-            isMinifyEnabled = !isCI
-            isShrinkResources = !isCI
+            isMinifyEnabled = !isCI.get()
+            isShrinkResources = !isCI.get()
             isDebuggable = false
 
             proguardFiles(
@@ -112,8 +116,8 @@ android {
             applicationIdSuffix = ".beta"
             versionNameSuffix = "b0"
 
-            isMinifyEnabled = !isCI
-            isShrinkResources = !isCI
+            isMinifyEnabled = isCI.get()
+            isShrinkResources = isCI.get()
             isDebuggable = false
 
             matchingFallbacks += listOf("release")
@@ -134,8 +138,8 @@ android {
             applicationIdSuffix = ".daily"
             versionNameSuffix = "a1"
 
-            isMinifyEnabled = !isCI
-            isShrinkResources = !isCI
+            isMinifyEnabled = isCI.get()
+            isShrinkResources = isCI.get()
             isDebuggable = false
 
             matchingFallbacks += listOf("release")
