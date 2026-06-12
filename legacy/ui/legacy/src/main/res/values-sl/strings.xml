@@ -952,7 +952,6 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="message_view_attachments_view">Pokaži</string>
     <string name="message_view_attachments_title">Priloge</string>
     <string name="message_view_attachments_save_all">Shrani vse</string>
-    <string name="encrypted_attachment_title">Šifrirane priloge</string>
     <string name="notification_summary_delete_title">Prikaži \"Izbriši\" v obvestilih za več sporočil</string>
     <string name="notification_summary_delete_summary">Obvestilom, ki povzemajo več novih sporočil, doda dejanje \"Izbriši\".</string>
     <string name="notification_show_contact_picture_title">V obvestilih prikaži slike stikov</string>

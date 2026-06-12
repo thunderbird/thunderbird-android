@@ -874,7 +874,6 @@
     <string name="dialog_confirm_empty_spam_message">스팸 폴더를 비우시겠습니까?</string>
     <string name="global_settings_splitview_when_unfolded">기기를 펼쳤을 때</string>
     <string name="expand_content_description">펼치기</string>
-    <string name="encrypted_attachment_title">암호화된 첨부 파일</string>
     <string name="ac_transfer_intro">Autocrypt 설정 메시지는 종단간 설정을 다른 기기와 안전하게 공유합니다.</string>
     <string name="action_copy_email_address">이메일 주소 복사</string>
     <string name="action_copy_name_and_email_address">이름과 이메일 주소 복사</string>

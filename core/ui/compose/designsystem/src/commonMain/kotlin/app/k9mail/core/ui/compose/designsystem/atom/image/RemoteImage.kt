@@ -1,5 +1,6 @@
 package app.k9mail.core.ui.compose.designsystem.atom.image
 
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,7 +36,7 @@ import com.skydoves.landscapist.coil3.CoilImage
 fun RemoteImage(
     url: String,
     modifier: Modifier = Modifier,
-    placeholder: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (BoxScope.() -> Unit)? = null,
     alignment: Alignment = Alignment.Center,
     contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.Crop,
@@ -49,10 +50,10 @@ fun RemoteImage(
             contentScale = contentScale,
         ),
         failure = {
-            placeholder?.invoke()
+            placeholder?.invoke(this)
         },
         loading = {
-            placeholder?.invoke()
+            placeholder?.invoke(this)
         },
         modifier = modifier,
         previewPlaceholder = previewPlaceholder,
