@@ -169,10 +169,7 @@ private fun rememberAccessibilityActions(
             else -> null
         }
         direction?.let { direction ->
-            val label = formatAccessibilityActionLabel(
-                template = stringResource(action.descriptionStringRes),
-                actionLabel = action.actionLabel(),
-            )
+            val label = stringResource(action.descriptionStringRes, action.actionLabel())
 
             CustomAccessibilityAction(label = label) {
                 onSwipeEnd(direction)
@@ -180,15 +177,6 @@ private fun rememberAccessibilityActions(
             }
         }
     }
-}
-
-private fun formatAccessibilityActionLabel(
-    template: String,
-    actionLabel: String,
-): String {
-    return template
-        .replace("%1\$s", actionLabel)
-        .replace("%s", actionLabel)
 }
 
 object SwipeableRowDefaults {

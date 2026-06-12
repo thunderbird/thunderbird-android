@@ -5,6 +5,6 @@
     <string name="designsystem_molecule_email_address_input_label">E-poštni naslov</string>
     <string name="designsystem_molecule_password_input_label">Geslo</string>
     <string name="designsystem_molecule_error_view_button_retry">Poskusi znova</string>
-    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Desno: %s</string>
-    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Levo: %s</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Desno: %1$s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Levo: %1$s</string>
 </resources>

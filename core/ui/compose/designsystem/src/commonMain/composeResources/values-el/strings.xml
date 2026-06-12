@@ -5,6 +5,6 @@
     <string name="designsystem_atom_password_textfield_show_password">Εμφάνιση κωδικού πρόσβασης</string>
     <string name="designsystem_molecule_error_view_button_retry">Επανάληψη</string>
     <string name="designsystem_molecule_password_input_label">Κωδικός πρόσβασης</string>
-    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Δεξιά: %s</string>
-    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Αριστερά: %s</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Δεξιά: %1$s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Αριστερά: %1$s</string>
 </resources>

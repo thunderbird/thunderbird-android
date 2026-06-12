@@ -5,6 +5,6 @@
     <string name="designsystem_molecule_email_address_input_label">Cyfeiriad e-bost</string>
     <string name="designsystem_molecule_password_input_label">Cyfrinair</string>
     <string name="designsystem_molecule_error_view_button_retry">Ceisio eto</string>
-    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">De: %s</string>
-    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Chwith: %s</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">De: %1$s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Chwith: %1$s</string>
 </resources>
