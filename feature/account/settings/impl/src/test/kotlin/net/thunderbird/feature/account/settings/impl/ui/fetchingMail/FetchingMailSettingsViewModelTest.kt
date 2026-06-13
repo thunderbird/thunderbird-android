@@ -44,6 +44,8 @@ internal class FetchingMailSettingsViewModelTest {
         }
     }
 
+    private val fetchingMailSettingsOptionsMapper = FetchingMailSettingsOptionsMapper(resources)
+
     private fun defaultState() = FetchingMailSettingsContract.State(
         subtitle = null,
         localFolderSize = SelectOption("10") { "" },
@@ -133,11 +135,11 @@ internal class FetchingMailSettingsViewModelTest {
     ) = FetchingMailSettingsViewModel(
         accountId = accountId,
         logger = TestLogger(),
-        resources = resources,
         getAccountName = { flowOf(Outcome.success("Subtitle")) },
         getLegacyAccount = getLegacyAccount,
         updateFetchingMailSettings = updateFetchingMailSettings,
         initialState = initialState,
+        fetchingMailSettingsOptionsMapper = fetchingMailSettingsOptionsMapper,
     )
 
     @Test
@@ -243,7 +245,6 @@ internal class FetchingMailSettingsViewModelTest {
         val vm = FetchingMailSettingsViewModel(
             accountId = accountId,
             logger = TestLogger(),
-            resources = resources,
             getAccountName = {
                 flowOf(Outcome.success("My Account"))
             },
@@ -254,6 +255,7 @@ internal class FetchingMailSettingsViewModelTest {
                 Outcome.success(Unit)
             },
             initialState = defaultState(),
+            fetchingMailSettingsOptionsMapper = fetchingMailSettingsOptionsMapper,
         )
 
         advanceUntilIdle()

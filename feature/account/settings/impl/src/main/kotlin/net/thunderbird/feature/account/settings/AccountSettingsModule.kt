@@ -17,6 +17,7 @@ import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAcco
 import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAvatarMonogram
 import net.thunderbird.feature.account.settings.impl.ui.fetchingMail.FetchingMailSettingsBuilder
 import net.thunderbird.feature.account.settings.impl.ui.fetchingMail.FetchingMailSettingsContract
+import net.thunderbird.feature.account.settings.impl.ui.fetchingMail.FetchingMailSettingsOptionsMapper
 import net.thunderbird.feature.account.settings.impl.ui.fetchingMail.FetchingMailSettingsViewModel
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsBuilder
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract
@@ -119,9 +120,16 @@ val featureAccountSettingsModule = module {
         )
     }
 
+    factory<FetchingMailSettingsOptionsMapper> {
+        FetchingMailSettingsOptionsMapper(
+            resources = get<StringsResourceManager>(),
+        )
+    }
+
     factory<FetchingMailSettingsContract.SettingsBuilder> {
         FetchingMailSettingsBuilder(
             resources = get<StringsResourceManager>(),
+            fetchingMailSettingsOptionsMapper = get<FetchingMailSettingsOptionsMapper>(),
         )
     }
 
@@ -145,11 +153,11 @@ val featureAccountSettingsModule = module {
     viewModel { params ->
         FetchingMailSettingsViewModel(
             accountId = params.get(),
-            resources = get(),
             logger = get(),
             getAccountName = get(),
             getLegacyAccount = get(),
             updateFetchingMailSettings = get(),
+            fetchingMailSettingsOptionsMapper = get(),
         )
     }
 

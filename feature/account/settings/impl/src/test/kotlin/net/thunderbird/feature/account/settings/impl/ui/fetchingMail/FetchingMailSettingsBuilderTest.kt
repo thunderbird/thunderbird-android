@@ -26,7 +26,9 @@ internal class FetchingMailSettingsBuilderTest {
             stringResource(resourceId)
     }
 
-    private val builder = FetchingMailSettingsBuilder(resources)
+    private val fetchingMailSettingsOptionsMapper = FetchingMailSettingsOptionsMapper(resources)
+
+    private val builder = FetchingMailSettingsBuilder(resources, fetchingMailSettingsOptionsMapper)
 
     private fun createState(
         localFolderSize: String = "10",

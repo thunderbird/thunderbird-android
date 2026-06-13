@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.viewinterop.NoOpUpdate
-import kotlin.uuid.ExperimentalUuidApi
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.setting.SettingViewProvider
 import net.thunderbird.feature.account.AccountId
@@ -15,7 +14,6 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-@OptIn(ExperimentalUuidApi::class)
 @SuppressLint("ContextCastToActivity")
 @Composable
 internal fun AdvancedFetchingMailSettingsScreen(

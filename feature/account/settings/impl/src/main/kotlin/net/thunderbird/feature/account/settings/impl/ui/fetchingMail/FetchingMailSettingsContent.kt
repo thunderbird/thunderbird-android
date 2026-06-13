@@ -102,40 +102,51 @@ private fun handleSettingChange(
                 FetchingMailSettingsId.SYNC_SERVER_DELETIONS -> onEvent(
                     Event.OnSyncServerDeletionsToggle(setting.value),
                 )
+
                 FetchingMailSettingsId.MARK_AS_READ_WHEN_DELETED -> onEvent(
                     Event.OnMarkAsReadWhenDeletedToggle(setting.value),
                 )
+
                 else -> Unit
             }
         }
+
         is SettingValue.Select -> {
             when (setting.id) {
                 FetchingMailSettingsId.LOCAL_FOLDER_SIZE -> {
                     onEvent(Event.OnLocalFolderSizeChange(setting.value))
                 }
+
                 FetchingMailSettingsId.SYNC_MESSAGE_FROM -> {
                     onEvent(Event.OnSyncMessageFromChange(setting.value))
                 }
+
                 FetchingMailSettingsId.FOLDER_POLL_FREQUENCY -> {
                     onEvent(Event.OnFolderPollFrequencyChange(setting.value))
                 }
+
                 FetchingMailSettingsId.WHEN_I_DELETE_A_MESSAGE -> {
                     onEvent(Event.OnWhenIDeleteAMessageChange(setting.value))
                 }
+
                 FetchingMailSettingsId.ERASE_DELETED_MESSAGE_ON_SERVER -> {
                     onEvent(Event.OnEraseDeletedMessageOnServerChange(setting.value))
                 }
+
                 FetchingMailSettingsId.FETCH_MESSAGE_UP_TO -> {
                     onEvent(Event.OnFetchMessageUpToChange(setting.value))
                 }
+
                 else -> Unit
             }
         }
+
         is SettingValue.Text -> {
             when (setting.id) {
                 FetchingMailSettingsId.IN_COMING_SERVER -> {
                     onEvent(Event.OnInComingServerClick)
                 }
+
                 else -> Unit
             }
         }
