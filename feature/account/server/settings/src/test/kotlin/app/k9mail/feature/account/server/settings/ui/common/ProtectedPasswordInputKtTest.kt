@@ -14,7 +14,7 @@ import net.thunderbird.core.ui.designsystem.resources.designsystem_molecule_pass
 import net.thunderbird.feature.account.server.settings.ui.common.AuthenticationError
 import net.thunderbird.feature.account.server.settings.ui.common.Authenticator
 import org.junit.Test
-import net.thunderbird.core.ui.testing.getString as getComposeString
+import net.thunderbird.core.ui.testing.resource.getString as getComposeString
 
 class ProtectedPasswordInputKtTest : ComposeTest() {
 
