@@ -14,6 +14,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.ui.contract)
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.common)
     implementation(projects.core.validation)

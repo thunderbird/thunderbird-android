@@ -31,6 +31,7 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.legacy.designsystem)
 
+    implementation(projects.core.ui.contract)
     implementation(projects.core.ui.compose.theme2)
 
     implementation(libs.jetbrains.compose.material3)

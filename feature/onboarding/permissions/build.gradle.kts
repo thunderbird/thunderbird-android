@@ -10,6 +10,7 @@ android {
 dependencies {
     implementation(projects.core.common)
     implementation(projects.core.android.permissions)
+    implementation(projects.core.ui.contract)
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.feature.account.common)
 }
