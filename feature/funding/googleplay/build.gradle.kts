@@ -29,6 +29,7 @@ dependencies {
 
     testImplementation(projects.core.testing)
     testImplementation(projects.core.logging.testing)
+    testImplementation(projects.core.ui.testing)
     testImplementation(projects.core.ui.compose.testing)
 
     testImplementation(libs.androidx.lifecycle.runtime.testing)

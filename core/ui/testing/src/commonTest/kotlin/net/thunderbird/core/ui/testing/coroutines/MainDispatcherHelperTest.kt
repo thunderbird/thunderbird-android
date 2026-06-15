@@ -1,4 +1,4 @@
-package net.thunderbird.core.testing.coroutines
+package net.thunderbird.core.ui.testing.coroutines
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -51,7 +51,7 @@ class MainDispatcherHelperTest {
             var after: CoroutineDispatcher? = null
             runTest {
                 withContext(Dispatchers.Main) {
-                    after = coroutineContext[ContinuationInterceptor] as CoroutineDispatcher
+                    after = coroutineContext[ContinuationInterceptor.Key] as CoroutineDispatcher
                 }
             }
             after

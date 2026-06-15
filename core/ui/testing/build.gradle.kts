@@ -14,7 +14,6 @@ kotlin {
             api(libs.kotlinx.coroutines.test)
             api(libs.jetbrains.compose.components.resources)
 
-            implementation(projects.core.testing)
             implementation(libs.jetbrains.compose.ui.test)
         }
 

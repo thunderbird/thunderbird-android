@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
+import net.thunderbird.core.ui.testing.coroutines.MainDispatcherHelper
 
 class BaseUnidirectionalSliceTest {
 

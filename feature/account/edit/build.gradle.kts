@@ -28,6 +28,7 @@ dependencies {
     implementation(projects.feature.account.server.certificate)
     implementation(projects.feature.account.server.validation)
 
+    testImplementation(projects.core.ui.testing)
     testImplementation(projects.core.ui.compose.testing)
     testImplementation(projects.mail.protocols.imap)
 }

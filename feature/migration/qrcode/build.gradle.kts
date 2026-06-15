@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.zxing)
 
     testImplementation(projects.core.logging.testing)
+    testImplementation(projects.core.ui.testing)
     testImplementation(projects.core.ui.compose.testing)
 }
 

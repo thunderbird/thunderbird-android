@@ -5,7 +5,7 @@ import androidx.compose.ui.test.v2.runComposeUiTest
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
 import kotlinx.coroutines.test.TestDispatcher
-import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
+import net.thunderbird.core.ui.testing.coroutines.MainDispatcherHelper
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 

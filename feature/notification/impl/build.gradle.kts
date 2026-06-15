@@ -16,6 +16,7 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(projects.core.testing)
+            implementation(projects.core.ui.testing)
             implementation(projects.core.logging.testing)
             implementation(projects.feature.notification.testing)
         }
