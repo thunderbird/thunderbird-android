@@ -10,7 +10,6 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.ui.bolt.common)
             api(projects.ui.bolt.theme)
 
             implementation(libs.jetbrains.compose.material3)
@@ -28,7 +27,7 @@ kotlin {
         }
 
         commonTest.dependencies {
-            implementation(libs.tb.mobile.components.ui.testing)
+            implementation(projects.ui.testing)
         }
 
         androidMain.dependencies {

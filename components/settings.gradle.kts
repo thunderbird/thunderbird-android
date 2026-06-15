@@ -42,7 +42,6 @@ dependencyResolutionManagement {
 }
 
 include(
-    ":ui:bolt:common",
     ":ui:bolt:designsystem",
     ":ui:bolt:theme",
 )
