@@ -882,6 +882,7 @@
     <string name="message_view_attachments_title">Ceangaltáin</string>
     <string name="message_view_attachments_save_all">Sábháil gach rud</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Ceangaltán criptithe</string>
     <string name="no_network_message_will_be_sent_later_toast">As líne. Seolfar teachtaireacht a luaithe a bheidh nasc ar fáil</string>
     <string name="notification_actions_settings_title">Gníomhartha fógra</string>
     <string name="notification_actions_settings_summary">Roghnaigh cé na gníomhartha a thaispeánfar i bhfógraí ríomhphoist</string>

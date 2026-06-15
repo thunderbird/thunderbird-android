@@ -930,6 +930,7 @@
     <string name="message_view_attachments_title">Fichiers joints</string>
     <string name="message_view_attachments_save_all">Tout enregistrer</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Fichier joint chiffré</string>
     <string name="no_network_message_will_be_sent_later_toast">Hors ligne. Le courriel sera envoyé dès que la connexion sera accessible</string>
     <string name="notification_action_star">Étoiler</string>
     <string name="notification_actions_settings_title">Actions de notification</string>
