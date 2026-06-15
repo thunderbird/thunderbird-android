@@ -27,7 +27,6 @@ dependencies {
     implementation(libs.androidx.biometric)
 
     testImplementation(projects.core.ui.compose.testing)
-    testImplementation(projects.core.ui.testing)
 }
 
 codeCoverage {

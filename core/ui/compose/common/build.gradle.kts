@@ -23,7 +23,6 @@ dependencies {
     implementation(libs.androidx.window)
 
     testImplementation(projects.core.logging.testing)
-    testImplementation(projects.core.ui.testing)
     testImplementation(projects.core.ui.compose.testing)
     testImplementation(projects.core.ui.compose.common)
     testImplementation(projects.core.ui.compose.designsystem)

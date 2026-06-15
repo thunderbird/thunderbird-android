@@ -26,7 +26,6 @@ dependencies {
     implementation(libs.jetbrains.compose.material3)
 
     testImplementation(projects.core.logging.testing)
-    testImplementation(projects.core.ui.testing)
     testImplementation(projects.core.ui.compose.testing)
 
     testImplementation(libs.mockito.kotlin)

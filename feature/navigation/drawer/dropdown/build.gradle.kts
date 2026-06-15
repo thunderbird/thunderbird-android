@@ -31,8 +31,6 @@ dependencies {
     implementation(projects.legacy.message)
     implementation(projects.legacy.ui.folder)
     implementation(projects.core.featureflag)
-
-    testImplementation(projects.core.ui.testing)
     testImplementation(projects.core.ui.compose.testing)
     testImplementation(projects.core.logging.testing)
 

@@ -1,4 +1,4 @@
-# Core UI Testing
+# UI Testing
 
 This module provides shared test utilities for Compose UI tests.
 
@@ -116,6 +116,5 @@ fun `event updates state eagerly`() = runComposeTest(
 Run the narrow module checks after changing this module:
 
 ```shell
-./gradlew :core:ui:testing:jvmTest :core:ui:testing:testAndroidHostTest
+./gradlew -p components :ui:testing:jvmTest :ui:testing:testAndroidHostTest
 ```
-

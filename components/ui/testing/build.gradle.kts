@@ -1,12 +1,12 @@
 plugins {
-    id(ThunderbirdPlugins.Library.kmpCompose)
+    id("thunderbird.library.kmp.compose")
 }
 
 kotlin {
     explicitApi()
 
     android {
-        namespace = "net.thunderbird.core.ui.testing"
+        namespace = "net.thunderbird.components.ui.testing"
     }
 
     sourceSets {

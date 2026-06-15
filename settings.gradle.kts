@@ -47,6 +47,12 @@ dependencyResolutionManagement {
     }
 }
 
+includeBuild("components") {
+    dependencySubstitution {
+        substitute(module("net.thunderbird.components.ui:testing")).using(project(":ui:testing"))
+    }
+}
+
 include(
     ":app-k9mail",
     ":app-thunderbird",
@@ -196,7 +202,6 @@ include(
     ":core:ui:setting:api",
     ":core:ui:setting:component",
     ":core:ui:setting:impl-dialog",
-    ":core:ui:testing",
 )
 
 include(

@@ -11,7 +11,7 @@ kotlin {
 
     sourceSets {
         commonTest.dependencies {
-            implementation(projects.core.ui.testing)
+            implementation(libs.tb.mobile.components.ui.testing)
         }
     }
 }
