@@ -105,11 +105,11 @@ Every notification **must** define a `NotificationSeverity` to drive user intrus
 
 | Severity        | When to use                | Expected user action     | SystemNotification behavior | InApp (BannerGlobal) color cue                                                                                                                                                                          |
 |-----------------|----------------------------|--------------------------|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Fatal**       | Blocks essential tasks     | Immediate resolution     | Not dismissable             | [Error colours](../../components/ui/bolt/theme/src/commonMain/kotlin/net/thunderbird/core/ui/compose/theme2/thunderbird/ThemeColors.kt#L22)       |
-| **Critical**    | Disrupts core flows        | Usually requires action  | Not dismissable             | [Error colours](../../components/ui/bolt/theme/src/commonMain/kotlin/net/thunderbird/core/ui/compose/theme2/thunderbird/ThemeColors.kt#L22)       |
-| **Warning**     | Potential issue/limitation | Often recommended        | Dismissable                 | [Warning colours](../../components/ui/bolt/theme/src/commonMain/kotlin/net/thunderbird/core/ui/compose/theme2/thunderbird/ThemeColors.kt#L58)     |
-| **Temporary**   | Temporary disruption/delay | May self-resolve; inform | Dismissable                 | [Information colours](../../components/ui/bolt/theme/src/commonMain/kotlin/net/thunderbird/core/ui/compose/theme2/thunderbird/ThemeColors.kt#L48) |
-| **Information** | Status/context only        | None required            | Dismissable                 | [Information colours](../../components/ui/bolt/theme/src/commonMain/kotlin/net/thunderbird/core/ui/compose/theme2/thunderbird/ThemeColors.kt#L48) |
+| **Fatal**       | Blocks essential tasks     | Immediate resolution     | Not dismissable             | [Error colours](../../components/ui/bolt/src/commonMain/kotlin/net/thunderbird/core/ui/compose/theme2/thunderbird/ThemeColors.kt#L22)       |
+| **Critical**    | Disrupts core flows        | Usually requires action  | Not dismissable             | [Error colours](../../components/ui/bolt/src/commonMain/kotlin/net/thunderbird/core/ui/compose/theme2/thunderbird/ThemeColors.kt#L22)       |
+| **Warning**     | Potential issue/limitation | Often recommended        | Dismissable                 | [Warning colours](../../components/ui/bolt/src/commonMain/kotlin/net/thunderbird/core/ui/compose/theme2/thunderbird/ThemeColors.kt#L58)     |
+| **Temporary**   | Temporary disruption/delay | May self-resolve; inform | Dismissable                 | [Information colours](../../components/ui/bolt/src/commonMain/kotlin/net/thunderbird/core/ui/compose/theme2/thunderbird/ThemeColors.kt#L48) |
+| **Information** | Status/context only        | None required            | Dismissable                 | [Information colours](../../components/ui/bolt/src/commonMain/kotlin/net/thunderbird/core/ui/compose/theme2/thunderbird/ThemeColors.kt#L48) |
 
 Examples:
 

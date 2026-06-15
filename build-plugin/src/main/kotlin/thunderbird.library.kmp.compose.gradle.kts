@@ -36,6 +36,8 @@ kotlin {
     }
 
     sourceSets {
+        val isComponentsBuild = rootProject.name == "components"
+
         commonMain.dependencies {
             implementation(project.dependencies.platform(libs.kotlin.bom))
             implementation(project.dependencies.platform(libs.koin.bom))
@@ -47,11 +49,19 @@ kotlin {
             implementation(libs.jetbrains.compose.ui)
             implementation(libs.jetbrains.compose.components.resources)
             implementation(libs.jetbrains.compose.components.ui.preview)
+
+            if (!isComponentsBuild) {
+                implementation(libs.tb.mobile.components.ui.bolt)
+            }
         }
 
         commonTest.dependencies {
             implementation(libs.bundles.shared.kmp.common.test)
             implementation(libs.bundles.shared.kmp.compose.common.test)
+
+            if (!isComponentsBuild) {
+                implementation(libs.tb.mobile.components.ui.testing)
+            }
         }
 
         androidMain.dependencies {

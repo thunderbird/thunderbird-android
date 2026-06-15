@@ -17,7 +17,6 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.core.validation)
     implementation(projects.core.ui.contract)
-    implementation(libs.tb.mobile.components.ui.bolt.theme)
     implementation(projects.core.ui.navigation)
 
     implementation(projects.mail.common)

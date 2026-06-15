@@ -144,7 +144,6 @@ android {
 dependencies {
     implementation(projects.appCommon)
     implementation(projects.core.ui.compose.common)
-    implementation(libs.tb.mobile.components.ui.bolt.theme)
     implementation(projects.core.ui.legacy.theme2.k9mail)
     implementation(projects.feature.launcher)
     implementation(projects.feature.mail.message.list.api)

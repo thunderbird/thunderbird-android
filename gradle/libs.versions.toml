@@ -301,8 +301,7 @@ preferencex-datetimepicker = { module = "com.takisoft.preferencex:preferencex-da
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 safeContentResolver = { module = "de.cketti.safecontentresolver:safe-content-resolver-v21", version.ref = "safeContentResolver" }
 searchPreference = { module = "com.github.ByteHamster:SearchPreference", version.ref = "searchPreference" }
-tb-mobile-components-ui-bolt-designsystem = { module = "net.thunderbird.components.ui.bolt:designsystem", version.ref = "tbMobileComponents" }
-tb-mobile-components-ui-bolt-theme = { module = "net.thunderbird.components.ui.bolt:theme", version.ref = "tbMobileComponents" }
+tb-mobile-components-ui-bolt = { module = "net.thunderbird.components.ui:bolt", version.ref = "tbMobileComponents" }
 tb-mobile-components-ui-testing = { module = "net.thunderbird.components.ui:testing", version.ref = "tbMobileComponents" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
@@ -359,7 +358,6 @@ shared-kmp-compose-jvm = [
 
 shared-kmp-compose-common-test = [
   "jetbrains-compose-ui-test",
-  "tb-mobile-components-ui-testing"
 ]
 shared-kmp-compose-android-test = [
   "androidx-compose-ui-test-junit4",
@@ -386,7 +384,6 @@ shared-android-compose = [
   "koin-compose-viewmodel",
   "kotlinx-collections-immutable",
   "jetbrains-compose-components-resources",
-  "tb-mobile-components-ui-bolt-designsystem",
 ]
 shared-android-compose-debug = [
   "jetbrains-compose-ui-tooling"
@@ -405,7 +402,6 @@ shared-android-compose-test = [
   "androidx-compose-ui-test-manifest",
   "jetbrains-compose-ui-test",
   "robolectric",
-  "tb-mobile-components-ui-testing",
 ]
 shared-android-compose-androidTest = [
 ]

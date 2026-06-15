@@ -10,8 +10,6 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.ui.bolt.theme)
-
             implementation(libs.jetbrains.compose.material3)
             implementation(libs.jetbrains.compose.material3.adaptive)
             implementation(libs.jetbrains.compose.material3.adaptive.layout)
@@ -31,6 +29,7 @@ kotlin {
         }
 
         androidMain.dependencies {
+            implementation(libs.android.material)
             implementation(libs.androidx.autofill)
         }
     }

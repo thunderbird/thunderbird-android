@@ -58,7 +58,7 @@ Adding a new setting typically involves the following steps:
 > [!IMPORTANT]
 > When incrementing `Settings.VERSION`, ensure you update all relevant `AccountSettingsDescriptions`, `IdentitySettingsDescriptions`, and tests.
 
-4. **Update UI**: Implement the UI component in the relevant settings screen using Jetpack Compose and the Atomic Design system. Ensure you use components from `:components:ui:bolt:designsystem`.
+4. **Update UI**: Implement the UI component in the relevant settings screen using Jetpack Compose and the Atomic Design system. Ensure you use components from `:components:ui:bolt`.
 
 Example entry in `AccountSettingsDescriptions`:
 

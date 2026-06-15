@@ -41,9 +41,6 @@ dependencyResolutionManagement {
     }
 }
 
-include(
-    ":ui:bolt:designsystem",
-    ":ui:bolt:theme",
-)
+include(":ui:bolt")
 
 include(":ui:testing")

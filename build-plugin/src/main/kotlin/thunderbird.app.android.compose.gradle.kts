@@ -30,6 +30,7 @@ android {
 }
 
 dependencies {
+    val isComponentsBuild = rootProject.name == "components"
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
     androidTestImplementation(composeBom)
@@ -45,4 +46,9 @@ dependencies {
     androidTestImplementation(libs.bundles.shared.android.app.compose.androidTest)
 
     implementation(libs.androidx.activity.compose)
+
+    if (!isComponentsBuild) {
+        implementation(libs.tb.mobile.components.ui.bolt)
+        testImplementation(libs.tb.mobile.components.ui.testing)
+    }
 }

@@ -27,12 +27,9 @@ android {
 
 dependencies {
     implementation(projects.core.ui.navigation)
-
-    implementation(libs.tb.mobile.components.ui.bolt.designsystem)
     implementation(projects.core.ui.legacy.designsystem)
 
     implementation(projects.core.ui.contract)
-    implementation(libs.tb.mobile.components.ui.bolt.theme)
 
     implementation(libs.jetbrains.compose.material3)
     implementation(libs.jetbrains.compose.material.icons.extended)

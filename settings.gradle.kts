@@ -49,8 +49,7 @@ dependencyResolutionManagement {
 
 includeBuild("components") {
     dependencySubstitution {
-        substitute(module("net.thunderbird.components.ui.bolt:designsystem")).using(project(":ui:bolt:designsystem"))
-        substitute(module("net.thunderbird.components.ui.bolt:theme")).using(project(":ui:bolt:theme"))
+        substitute(module("net.thunderbird.components.ui:bolt")).using(project(":ui:bolt"))
         substitute(module("net.thunderbird.components.ui:testing")).using(project(":ui:testing"))
     }
 }

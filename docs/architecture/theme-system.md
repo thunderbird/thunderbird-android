@@ -64,7 +64,7 @@ graph TD
 
 The theme system consists of three main layers:
 
-1. **App-Specific Themes**: The `:components:ui:bolt:theme` module contains theme implementations for specific applications (ThunderbirdTheme2, K9MailTheme2). Each app theme:
+1. **App-Specific Themes**: The `:components:ui:bolt` module contains theme implementations for specific applications (ThunderbirdTheme2, K9MailTheme2). Each app theme:
    - Defines its own brand colors, logos, and other app-specific visual elements
    - Creates a ThemeConfig with these customizations
    - Uses the MainTheme as its foundation
