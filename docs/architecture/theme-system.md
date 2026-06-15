@@ -490,7 +490,7 @@ fun ThunderbirdTheme2(
     content: @Composable () -> Unit,
 ) {
     val images = ThemeImages(
-        logo = R.drawable.core_ui_theme2_thunderbird_logo,
+        logo = R.drawable.bolt_thunderbird_logo,
     )
 
     val themeConfig = ThemeConfig(
@@ -528,7 +528,7 @@ fun K9MailTheme2(
     content: @Composable () -> Unit,
 ) {
     val images = ThemeImages(
-        logo = R.drawable.core_ui_theme2_k9mail_logo,
+        logo = R.drawable.bolt_k9mail_logo,
     )
 
     val themeConfig = ThemeConfig(

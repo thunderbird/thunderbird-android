@@ -14,8 +14,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
-import net.thunderbird.core.ui.designsystem.resources.Res
-import net.thunderbird.core.ui.designsystem.resources.designsystem_organism_subtitle_top_app_bar_up_description
+import net.thunderbird.components.ui.bolt.resources.Res
+import net.thunderbird.components.ui.bolt.resources.bolt_organism_subtitle_top_app_bar_up_description
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.material3.TopAppBar as Material3TopAppBar
 
@@ -102,7 +102,7 @@ fun SubtitleTopAppBarWithBackButton(
                 imageVector = Icons.Outlined.ArrowBack,
                 modifier = Modifier.testTag("SubtitleTopAppBarBackButton"),
                 contentDescription = stringResource(
-                    Res.string.designsystem_organism_subtitle_top_app_bar_up_description,
+                    Res.string.bolt_organism_subtitle_top_app_bar_up_description,
                 ),
             )
         },

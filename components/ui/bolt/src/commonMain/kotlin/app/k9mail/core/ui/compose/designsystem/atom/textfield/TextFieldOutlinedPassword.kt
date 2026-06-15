@@ -12,9 +12,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.designsystem.atom.textfield.applyPasswordSemantics
-import net.thunderbird.core.ui.designsystem.resources.Res
-import net.thunderbird.core.ui.designsystem.resources.designsystem_atom_password_textfield_hide_password
-import net.thunderbird.core.ui.designsystem.resources.designsystem_atom_password_textfield_show_password
+import net.thunderbird.components.ui.bolt.resources.Res
+import net.thunderbird.components.ui.bolt.resources.bolt_atom_password_textfield_hide_password
+import net.thunderbird.components.ui.bolt.resources.bolt_atom_password_textfield_show_password
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.material3.Icon as Material3Icon
 import androidx.compose.material3.IconButton as Material3IconButton
@@ -106,9 +106,9 @@ private fun selectTrailingIcon(
             }
 
             val description = if (isShowPasswordAllowed(isEnabled, isPasswordVisible)) {
-                stringResource(Res.string.designsystem_atom_password_textfield_hide_password)
+                stringResource(Res.string.bolt_atom_password_textfield_hide_password)
             } else {
-                stringResource(Res.string.designsystem_atom_password_textfield_show_password)
+                stringResource(Res.string.bolt_atom_password_textfield_show_password)
             }
 
             Material3IconButton(onClick = onClick) {

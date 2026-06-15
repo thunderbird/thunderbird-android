@@ -37,7 +37,7 @@ kotlin {
 
 compose.resources {
     publicResClass = true
-    packageOfResClass = "net.thunderbird.core.ui.designsystem.resources"
+    packageOfResClass = "net.thunderbird.components.ui.bolt.resources"
     generateResClass = always
 }
 

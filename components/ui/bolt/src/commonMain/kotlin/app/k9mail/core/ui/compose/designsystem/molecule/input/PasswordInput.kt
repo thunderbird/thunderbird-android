@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedPassword
-import net.thunderbird.core.ui.designsystem.resources.Res
-import net.thunderbird.core.ui.designsystem.resources.designsystem_molecule_password_input_label
+import net.thunderbird.components.ui.bolt.resources.Res
+import net.thunderbird.components.ui.bolt.resources.bolt_molecule_password_input_label
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -26,7 +26,7 @@ fun PasswordInput(
         TextFieldOutlinedPassword(
             value = password,
             onValueChange = onPasswordChange,
-            label = stringResource(Res.string.designsystem_molecule_password_input_label),
+            label = stringResource(Res.string.bolt_molecule_password_input_label),
             isRequired = isRequired,
             hasError = errorMessage != null,
             modifier = Modifier.fillMaxWidth(),

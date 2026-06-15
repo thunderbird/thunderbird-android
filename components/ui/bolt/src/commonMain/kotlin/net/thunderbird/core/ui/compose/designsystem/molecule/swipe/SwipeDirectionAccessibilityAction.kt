@@ -2,9 +2,9 @@ package net.thunderbird.core.ui.compose.designsystem.molecule.swipe
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import net.thunderbird.core.ui.designsystem.resources.Res
-import net.thunderbird.core.ui.designsystem.resources.designsystem_molecule_swipeable_row_end_to_start_accessibility_description
-import net.thunderbird.core.ui.designsystem.resources.designsystem_molecule_swipeable_row_start_to_end_accessibility_description
+import net.thunderbird.components.ui.bolt.resources.Res
+import net.thunderbird.components.ui.bolt.resources.bolt_molecule_swipeable_row_end_to_start_accessibility_description
+import net.thunderbird.components.ui.bolt.resources.bolt_molecule_swipeable_row_start_to_end_accessibility_description
 import org.jetbrains.compose.resources.StringResource
 
 /**
@@ -34,7 +34,7 @@ sealed interface SwipeDirectionAccessibilityAction {
      *
      * Example:
      * ```xml
-     * <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">
+     * <string name="bolt_molecule_swipeable_row_start_to_end_accessibility_description">
      *     Swipe from start to end to %s
      * </string>
      * ```
@@ -49,7 +49,7 @@ sealed interface SwipeDirectionAccessibilityAction {
         override val actionLabel: @Composable () -> String,
     ) : SwipeDirectionAccessibilityAction {
         override val descriptionStringRes =
-            Res.string.designsystem_molecule_swipeable_row_start_to_end_accessibility_description
+            Res.string.bolt_molecule_swipeable_row_start_to_end_accessibility_description
     }
 
     /**
@@ -60,7 +60,7 @@ sealed interface SwipeDirectionAccessibilityAction {
      *
      * Example:
      * ```xml
-     * <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">
+     * <string name="bolt_molecule_swipeable_row_end_to_start_accessibility_description">
      *     Swipe from end to start to %s
      * </string>
      * ```
@@ -76,6 +76,6 @@ sealed interface SwipeDirectionAccessibilityAction {
         override val actionLabel: @Composable () -> String,
     ) : SwipeDirectionAccessibilityAction {
         override val descriptionStringRes =
-            Res.string.designsystem_molecule_swipeable_row_end_to_start_accessibility_description
+            Res.string.bolt_molecule_swipeable_row_end_to_start_accessibility_description
     }
 }

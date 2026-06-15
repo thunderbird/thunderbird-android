@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedEmailAddress
-import net.thunderbird.core.ui.designsystem.resources.Res
-import net.thunderbird.core.ui.designsystem.resources.designsystem_molecule_email_address_input_label
+import net.thunderbird.components.ui.bolt.resources.Res
+import net.thunderbird.components.ui.bolt.resources.bolt_molecule_email_address_input_label
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -26,7 +26,7 @@ fun EmailAddressInput(
         TextFieldOutlinedEmailAddress(
             value = emailAddress,
             onValueChange = onEmailAddressChange,
-            label = stringResource(Res.string.designsystem_molecule_email_address_input_label),
+            label = stringResource(Res.string.bolt_molecule_email_address_input_label),
             isEnabled = isEnabled,
             hasError = errorMessage != null,
             modifier = Modifier.fillMaxWidth(),

@@ -18,8 +18,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineSmall
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.theme2.MainTheme
-import net.thunderbird.core.ui.designsystem.resources.Res
-import net.thunderbird.core.ui.designsystem.resources.designsystem_molecule_error_view_button_retry
+import net.thunderbird.components.ui.bolt.resources.Res
+import net.thunderbird.components.ui.bolt.resources.bolt_molecule_error_view_button_retry
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -70,7 +70,7 @@ fun ErrorView(
                     horizontalArrangement = Arrangement.End,
                 ) {
                     ButtonText(
-                        text = stringResource(Res.string.designsystem_molecule_error_view_button_retry),
+                        text = stringResource(Res.string.bolt_molecule_error_view_button_retry),
                         onClick = onRetry,
                     )
                 }

@@ -12,8 +12,8 @@ import net.thunderbird.core.ui.compose.theme2.default.defaultThemeShapes
 import net.thunderbird.core.ui.compose.theme2.default.defaultThemeSizes
 import net.thunderbird.core.ui.compose.theme2.default.defaultThemeSpacings
 import net.thunderbird.core.ui.compose.theme2.default.defaultTypography
-import net.thunderbird.core.ui.designsystem.resources.Res
-import net.thunderbird.core.ui.designsystem.resources.core_ui_theme2_k9mail_logo
+import net.thunderbird.components.ui.bolt.resources.Res
+import net.thunderbird.components.ui.bolt.resources.bolt_k9mail_logo
 
 @Composable
 fun K9MailTheme2(
@@ -21,7 +21,7 @@ fun K9MailTheme2(
     content: @Composable () -> Unit,
 ) {
     val images = ThemeImages(
-        logo = Res.drawable.core_ui_theme2_k9mail_logo,
+        logo = Res.drawable.bolt_k9mail_logo,
     )
 
     val themeConfig = ThemeConfig(
