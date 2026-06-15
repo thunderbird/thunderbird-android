@@ -28,11 +28,11 @@ android {
 dependencies {
     implementation(projects.core.ui.navigation)
 
-    implementation(projects.core.ui.compose.designsystem)
+    implementation(libs.tb.mobile.components.ui.bolt.designsystem)
     implementation(projects.core.ui.legacy.designsystem)
 
     implementation(projects.core.ui.contract)
-    implementation(projects.core.ui.compose.theme2)
+    implementation(libs.tb.mobile.components.ui.bolt.theme)
 
     implementation(libs.jetbrains.compose.material3)
     implementation(libs.jetbrains.compose.material.icons.extended)

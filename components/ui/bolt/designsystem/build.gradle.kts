@@ -1,5 +1,5 @@
 plugins {
-    id(ThunderbirdPlugins.Library.kmpCompose)
+    id("thunderbird.library.kmp.compose")
 }
 
 kotlin {
@@ -10,8 +10,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.core.ui.common)
-            api(projects.core.ui.compose.theme2)
+            api(projects.ui.bolt.common)
+            api(projects.ui.bolt.theme)
 
             implementation(libs.jetbrains.compose.material3)
             implementation(libs.jetbrains.compose.material3.adaptive)

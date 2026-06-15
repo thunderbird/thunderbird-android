@@ -13,7 +13,7 @@ android {
 
 dependencies {
     implementation(projects.feature.thundermail.api)
-    implementation(projects.core.ui.compose.theme2)
+    implementation(libs.tb.mobile.components.ui.bolt.theme)
 }
 
 codeCoverage {

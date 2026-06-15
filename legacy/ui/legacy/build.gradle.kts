@@ -24,7 +24,6 @@ dependencies {
     implementation(projects.feature.launcher)
     implementation(projects.feature.account.settings.api)
     implementation(projects.core.common)
-    implementation(projects.core.ui.compose.designsystem)
     implementation(projects.feature.navigation.drawer.api)
     implementation(projects.feature.navigation.drawer.dropdown)
     implementation(projects.feature.notification.api)

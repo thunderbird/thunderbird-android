@@ -18,8 +18,8 @@ kotlin {
         }
         androidMain.dependencies {
             implementation(projects.core.ui.compose.common)
-            implementation(projects.core.ui.compose.designsystem)
-            implementation(projects.core.ui.compose.theme2)
+            implementation(libs.tb.mobile.components.ui.bolt.designsystem)
+            implementation(libs.tb.mobile.components.ui.bolt.theme)
         }
         androidHostTest.dependencies {
             implementation(projects.core.ui.compose.testing)

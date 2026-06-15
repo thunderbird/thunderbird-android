@@ -1,5 +1,5 @@
 plugins {
-    id(ThunderbirdPlugins.Library.kmpCompose)
+    id("thunderbird.library.kmp.compose")
 }
 
 kotlin {

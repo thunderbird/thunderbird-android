@@ -19,7 +19,6 @@ dependencies {
     implementation(projects.core.android.account)
     implementation(projects.core.ui.contract)
     implementation(projects.core.ui.theme.api)
-    implementation(projects.core.ui.compose.designsystem)
 
     implementation(projects.feature.account.avatar.impl)
     implementation(projects.feature.mail.account.api)

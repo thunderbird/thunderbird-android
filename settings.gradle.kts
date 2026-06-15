@@ -49,6 +49,9 @@ dependencyResolutionManagement {
 
 includeBuild("components") {
     dependencySubstitution {
+        substitute(module("net.thunderbird.components.ui.bolt:common")).using(project(":ui:bolt:common"))
+        substitute(module("net.thunderbird.components.ui.bolt:designsystem")).using(project(":ui:bolt:designsystem"))
+        substitute(module("net.thunderbird.components.ui.bolt:theme")).using(project(":ui:bolt:theme"))
         substitute(module("net.thunderbird.components.ui:testing")).using(project(":ui:testing"))
     }
 }
@@ -197,7 +200,6 @@ include(
 )
 
 include(
-    ":core:ui:common",
     ":core:ui:contract",
     ":core:ui:setting:api",
     ":core:ui:setting:component",
@@ -208,9 +210,7 @@ include(
     ":core:ui:account",
     ":core:ui:animation:manager",
     ":core:ui:compose:common",
-    ":core:ui:compose:designsystem",
     ":core:ui:compose:testing",
-    ":core:ui:compose:theme2",
     ":core:ui:legacy:designsystem",
     ":core:ui:legacy:theme2:common",
     ":core:ui:legacy:theme2:k9mail",

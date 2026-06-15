@@ -12,7 +12,6 @@ android {
 dependencies {
     implementation(projects.legacy.core)
     implementation(projects.legacy.ui.base)
-    implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.legacy.designsystem)
 
     implementation(projects.feature.migration.launcher.api)

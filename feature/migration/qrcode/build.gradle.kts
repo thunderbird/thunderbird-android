@@ -19,7 +19,6 @@ dependencies {
     implementation(projects.legacy.common)
     implementation(projects.legacy.ui.base)
     implementation(projects.core.ui.contract)
-    implementation(projects.core.ui.compose.designsystem)
 
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.camera2)

@@ -21,7 +21,6 @@ dependencies {
     implementation(projects.core.outcome)
     implementation(projects.core.preference.api)
     implementation(projects.core.ui.compose.common)
-    implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.theme.api)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.folder.api)

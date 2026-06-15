@@ -1,6 +1,6 @@
 # Thunderbird UI Catalog
 
-Uses [`:core:ui:compose:designsystem`](../core/ui/compose/designsystem/README.md)
+Uses [`:components:ui:bolt:designsystem`](../components/ui/bolt/designsystem/README.md)
 
 This is a catalog of all the components in the Thunderbird design system.
 
