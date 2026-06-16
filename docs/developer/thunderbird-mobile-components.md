@@ -14,7 +14,7 @@ support used by Thunderbird for Android.
 
 Dependency aliases are declared in `gradle/libs.versions.toml`:
 
-- `libs.tb.mobile.components.ui.bolt` -> `net.thunderbird.components.ui:bolt`
+- `libs.tb.mobile.components.ui.bolt` -> `net.thunderbird.components.ui.bolt:bolt`
 
 Common UI support, design-system components, and theme support are packaged as part of the Bolt artifact.
 
@@ -33,7 +33,7 @@ The Bolt component version is managed by `libs.versions.tbMobileComponents`.
 The root `settings.gradle.kts` includes the local `components/` build and substitutes the tracked Bolt coordinates by
 default:
 
-- `net.thunderbird.components.ui:bolt` -> `:components:ui:bolt`
+- `net.thunderbird.components.ui.bolt:bolt` -> `:components:ui:bolt`
 - `net.thunderbird.components.ui:testing` -> `:components:ui:testing`
 
 Disable local component substitution when testing released artifacts with:

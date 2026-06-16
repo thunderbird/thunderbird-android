@@ -2,6 +2,9 @@ plugins {
     id("thunderbird.library.kmp.compose")
 }
 
+group = "net.thunderbird.components.ui"
+version = libs.versions.tbMobileComponents.get()
+
 kotlin {
     explicitApi()
 

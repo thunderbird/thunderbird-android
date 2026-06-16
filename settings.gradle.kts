@@ -59,7 +59,7 @@ if (useLocalComponents || useLocalBolt) {
     includeBuild("components") {
         dependencySubstitution {
             if (useLocalBolt) {
-                substitute(module("net.thunderbird.components.ui:bolt")).using(project(":ui:bolt"))
+                substitute(module("net.thunderbird.components.ui.bolt:bolt")).using(project(":ui:bolt"))
             }
 
             if (useLocalComponents) {

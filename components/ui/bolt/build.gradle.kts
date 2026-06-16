@@ -2,6 +2,9 @@ plugins {
     id("thunderbird.library.kmp.compose")
 }
 
+group = "net.thunderbird.components.ui.bolt"
+version = libs.versions.tbMobileComponents.get()
+
 kotlin {
     android {
         namespace = "app.k9mail.core.ui.compose.designsystem"

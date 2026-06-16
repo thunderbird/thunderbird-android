@@ -7,10 +7,3 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.kover) apply false
 }
-
-val tbMobileComponentsVersion = libs.versions.tbMobileComponents.get()
-
-subprojects {
-    group = "net.thunderbird.components.ui"
-    version = tbMobileComponentsVersion
-}
