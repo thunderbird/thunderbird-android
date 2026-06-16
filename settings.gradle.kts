@@ -47,10 +47,25 @@ dependencyResolutionManagement {
     }
 }
 
-includeBuild("components") {
-    dependencySubstitution {
-        substitute(module("net.thunderbird.components.ui:bolt")).using(project(":ui:bolt"))
-        substitute(module("net.thunderbird.components.ui:testing")).using(project(":ui:testing"))
+val useLocalComponents = providers.gradleProperty("tb.components.local")
+    .map(String::toBoolean)
+    .getOrElse(true)
+
+val useLocalBolt = providers.gradleProperty("tb.components.local.bolt")
+    .map(String::toBoolean)
+    .getOrElse(useLocalComponents)
+
+if (useLocalComponents || useLocalBolt) {
+    includeBuild("components") {
+        dependencySubstitution {
+            if (useLocalBolt) {
+                substitute(module("net.thunderbird.components.ui:bolt")).using(project(":ui:bolt"))
+            }
+
+            if (useLocalComponents) {
+                substitute(module("net.thunderbird.components.ui:testing")).using(project(":ui:testing"))
+            }
+        }
     }
 }
 
