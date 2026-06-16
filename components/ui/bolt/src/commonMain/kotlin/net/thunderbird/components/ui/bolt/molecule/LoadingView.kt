@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.CircularProgressIndicator
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 import net.thunderbird.components.ui.bolt.theme.MainTheme
@@ -47,5 +49,23 @@ fun LoadingView(
                 CircularProgressIndicator()
             }
         }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun LoadingViewPreview() {
+    PreviewWithThemes {
+        LoadingView()
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun LoadingViewWithMessagePreview() {
+    PreviewWithThemes {
+        LoadingView(
+            message = "Loading ...",
+        )
     }
 }

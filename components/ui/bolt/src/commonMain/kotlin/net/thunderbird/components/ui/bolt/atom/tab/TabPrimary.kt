@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab as Material3Tab
+import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -14,9 +17,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
+import net.thunderbird.components.ui.bolt.PreviewWithThemeLightDark
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
 import net.thunderbird.components.ui.bolt.theme.LocalContentColor
 import net.thunderbird.components.ui.bolt.theme.MainTheme
-import androidx.compose.material3.Tab as Material3Tab
 
 /**
  * UI atom for a single tab within a tab. This is a wrapper around the Material 3 [androidx.compose.material3.Tab]
@@ -81,3 +91,85 @@ private fun TabIcon(
         }
     }
 }
+
+@PreviewLightDark
+@Composable
+private fun TabPrimaryPreview(
+    @PreviewParameter(TabPrimaryPreviewParamCol::class) param: TabPrimaryPreviewParam,
+) {
+    PreviewWithThemeLightDark {
+        Surface {
+            TabPrimary(
+                selected = param.active,
+                title = { Text(text = param.title) },
+                onClick = { },
+                enabled = param.enabled,
+                icon = param.icon?.let {
+                    { Icon(imageVector = param.icon) }
+                },
+                badge = param.badgeCount?.let {
+                    {
+                        TextLabelSmall(
+                            text = param.badgeCount.toString(),
+                            modifier = Modifier.align(Alignment.Center),
+                        )
+                    }
+                },
+                badgeColor = MainTheme.colors.info,
+            )
+        }
+    }
+}
+
+private class TabPrimaryPreviewParamCol : CollectionPreviewParameterProvider<TabPrimaryPreviewParam>(
+    buildSet {
+        addAll(createTabPrimaryPreviewParam(icon = null, badgeCount = null))
+        addAll(createTabPrimaryPreviewParam(icon = Icons.Outlined.AllInbox, badgeCount = null))
+        addAll(createTabPrimaryPreviewParam(icon = Icons.Outlined.AllInbox, badgeCount = 1))
+        addAll(createTabPrimaryPreviewParam(icon = Icons.Outlined.AllInbox, badgeCount = 10))
+        addAll(createTabPrimaryPreviewParam(icon = Icons.Outlined.AllInbox, badgeCount = 100))
+        addAll(createTabPrimaryPreviewParam(icon = Icons.Outlined.AllInbox, badgeCount = 1000))
+    },
+)
+
+private fun createTabPrimaryPreviewParam(
+    icon: ImageVector?,
+    badgeCount: Int?,
+): Set<TabPrimaryPreviewParam> = setOf(
+    TabPrimaryPreviewParam(
+        active = true,
+        title = "Active TabPrimary",
+        enabled = true,
+        icon = icon,
+        badgeCount = badgeCount,
+    ),
+    TabPrimaryPreviewParam(
+        active = false,
+        title = "Inactive TabPrimary",
+        enabled = true,
+        icon = icon,
+        badgeCount = badgeCount,
+    ),
+    TabPrimaryPreviewParam(
+        active = true,
+        title = "Disabled TabPrimary",
+        enabled = false,
+        icon = icon,
+        badgeCount = badgeCount,
+    ),
+    TabPrimaryPreviewParam(
+        active = false,
+        title = "Active TabPrimary",
+        enabled = false,
+        icon = icon,
+        badgeCount = badgeCount,
+    ),
+)
+
+private data class TabPrimaryPreviewParam(
+    val active: Boolean,
+    val title: String,
+    val enabled: Boolean,
+    val icon: ImageVector?,
+    val badgeCount: Int?,
+)

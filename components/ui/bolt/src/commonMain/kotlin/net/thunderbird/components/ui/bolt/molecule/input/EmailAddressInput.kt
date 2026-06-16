@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.textfield.TextFieldOutlinedEmailAddress
 import net.thunderbird.components.ui.bolt.resources.Res
 import net.thunderbird.components.ui.bolt.resources.bolt_molecule_email_address_input_label
@@ -30,6 +32,27 @@ fun EmailAddressInput(
             isEnabled = isEnabled,
             hasError = errorMessage != null,
             modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun EmailAddressInputPreview() {
+    PreviewWithThemes {
+        EmailAddressInput(
+            onEmailAddressChange = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun EmailAddressInputWithErrorPreview() {
+    PreviewWithThemes {
+        EmailAddressInput(
+            onEmailAddressChange = {},
+            errorMessage = "Email address error",
         )
     }
 }

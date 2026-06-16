@@ -12,14 +12,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.button.ButtonText
-import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
-import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineSmall
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineSmall
 import net.thunderbird.components.ui.bolt.resources.Res
 import net.thunderbird.components.ui.bolt.resources.bolt_molecule_error_view_button_retry
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -76,5 +78,49 @@ fun ErrorView(
                 }
             }
         }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ErrorViewPreview() {
+    PreviewWithThemes {
+        ErrorView(
+            title = "Error",
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ErrorViewWithMessagePreview() {
+    PreviewWithThemes {
+        ErrorView(
+            title = "Error",
+            message = "Something went wrong.",
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ErrorViewWithRetryPreview() {
+    PreviewWithThemes {
+        ErrorView(
+            title = "Error",
+            onRetry = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ErrorViewWithRetryAndMessagePreview() {
+    PreviewWithThemes {
+        ErrorView(
+            title = "Error",
+            message = "Something went wrong.",
+            onRetry = {},
+        )
     }
 }

@@ -1,10 +1,17 @@
 package net.thunderbird.components.ui.bolt.molecule
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 
 /**
  * A container view that can animate between a loading view, an error view, and a content view.
@@ -80,4 +87,84 @@ sealed class ContentLoadingErrorState private constructor(
     data object Loading : ContentLoadingErrorState(isLoading = true, error = null)
     data object Content : ContentLoadingErrorState(isLoading = false, error = null)
     data object Error : ContentLoadingErrorState(isLoading = false, error = Unit)
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContentLoadingErrorViewContentPreview() {
+    PreviewWithThemes {
+        DefaultContentLoadingErrorView(
+            state = ContentLoadingErrorState.Content,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContentLoadingErrorViewLoadingPreview() {
+    PreviewWithThemes {
+        DefaultContentLoadingErrorView(
+            state = ContentLoadingErrorState.Loading,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContentLoadingErrorViewErrorPreview() {
+    PreviewWithThemes {
+        DefaultContentLoadingErrorView(
+            state = ContentLoadingErrorState.Error,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContentLoadingErrorViewInteractivePreview() {
+    PreviewWithThemes {
+        val state = remember {
+            mutableStateOf<ContentLoadingErrorState>(ContentLoadingErrorState.Loading)
+        }
+
+        DefaultContentLoadingErrorView(
+            state = state.value,
+            modifier = Modifier
+                .clickable {
+                    when (state.value) {
+                        ContentLoadingErrorState.Loading -> {
+                            state.value = ContentLoadingErrorState.Content
+                        }
+
+                        ContentLoadingErrorState.Content -> {
+                            state.value = ContentLoadingErrorState.Error
+                        }
+
+                        ContentLoadingErrorState.Error -> {
+                            state.value = ContentLoadingErrorState.Loading
+                        }
+                    }
+                },
+        )
+    }
+}
+
+@Composable
+private fun DefaultContentLoadingErrorView(
+    state: ContentLoadingErrorState,
+    modifier: Modifier = Modifier,
+) {
+    ContentLoadingErrorView(
+        state = state,
+        error = {
+            TextTitleMedium(text = "Error")
+        },
+        loading = {
+            TextTitleMedium(text = "Loading...")
+        },
+        content = {
+            TextTitleMedium(text = "Content")
+        },
+        modifier = modifier.fillMaxSize(),
+    )
 }

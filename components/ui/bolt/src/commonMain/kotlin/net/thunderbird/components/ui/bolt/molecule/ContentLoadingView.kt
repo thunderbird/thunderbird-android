@@ -1,10 +1,17 @@
 package net.thunderbird.components.ui.bolt.molecule
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 
 /**
  * A container view that can animate between a loading view and a content view.
@@ -66,3 +73,71 @@ sealed class ContentLoadingState private constructor(
     data object Loading : ContentLoadingState(isLoading = true)
     data object Content : ContentLoadingState(isLoading = false)
 }
+
+@Composable
+@Preview(showBackground = true)
+fun ContentLoadingViewPreview() {
+    PreviewWithThemes {
+        DefaultContentLoadingView(
+            state = ContentLoadingState.Content,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContentLoadingViewLoadingPreview() {
+    PreviewWithThemes {
+        DefaultContentLoadingView(
+            state = ContentLoadingState.Loading,
+        )
+    }
+}
+
+@Composable
+private fun DefaultContentLoadingView(
+    state: ContentLoadingState,
+    modifier: Modifier = Modifier,
+) {
+    ContentLoadingView(
+        state = state,
+        loading = {
+            TextTitleMedium(text = "Loading...")
+        },
+        content = {
+            TextTitleMedium(text = "Content")
+        },
+        modifier = modifier.fillMaxSize(),
+    )
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContentLoadingViewInteractivePreview() {
+    PreviewWithThemes {
+        val state = remember {
+            mutableStateOf(State(isLoading = true, content = "Hello world"))
+        }
+
+        ContentLoadingView(
+            state = state.value,
+            loading = {
+                TextTitleMedium(text = "Loading...")
+            },
+            content = { targetState ->
+                TextTitleMedium(text = targetState.content)
+            },
+            modifier = Modifier
+                .clickable {
+                    val currentValue = state.value
+                    state.value = currentValue.copy(isLoading = currentValue.isLoading.not())
+                }
+                .fillMaxSize(),
+        )
+    }
+}
+
+private data class State(
+    override val isLoading: Boolean,
+    val content: String,
+) : LoadingState

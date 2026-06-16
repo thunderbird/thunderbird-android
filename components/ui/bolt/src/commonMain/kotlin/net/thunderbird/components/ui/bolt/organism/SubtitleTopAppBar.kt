@@ -4,20 +4,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBar as Material3TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
-import net.thunderbird.components.ui.bolt.atom.icon.Icons
-import net.thunderbird.components.ui.bolt.theme.MainTheme
 import net.thunderbird.components.ui.bolt.resources.Res
 import net.thunderbird.components.ui.bolt.resources.bolt_organism_subtitle_top_app_bar_up_description
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 import org.jetbrains.compose.resources.stringResource
-import androidx.compose.material3.TopAppBar as Material3TopAppBar
 
 /**
  * A top app bar with a title, subtitle, navigation icon, and actions.
@@ -108,4 +110,76 @@ fun SubtitleTopAppBarWithBackButton(
         },
         actions = actions,
     )
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun SubtitleTopAppBarPreview() {
+    PreviewWithThemes {
+        SubtitleTopAppBar(
+            title = "Title",
+            subtitle = "Subtitle",
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun SubtitleTopAppBarWithLongSubtitlePreview() {
+    PreviewWithThemes {
+        SubtitleTopAppBar(
+            title = "Title",
+            subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+                "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun SubtitleTopAppBarWithActionsPreview() {
+    PreviewWithThemes {
+        SubtitleTopAppBar(
+            title = "Title",
+            subtitle = "Subtitle",
+            actions = {
+                ButtonIcon(
+                    onClick = {},
+                    imageVector = Icons.Outlined.Info,
+                )
+                ButtonIcon(
+                    onClick = {},
+                    imageVector = Icons.Outlined.Check,
+                )
+                ButtonIcon(
+                    onClick = {},
+                    imageVector = Icons.Outlined.Visibility,
+                )
+            },
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun SubtitleTopAppBarWithMenuButtonPreview() {
+    PreviewWithThemes {
+        SubtitleTopAppBarWithMenuButton(
+            title = "Title",
+            subtitle = "Subtitle",
+            onMenuClick = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun SubtitleTopAppBarWithBackButtonPreview() {
+    PreviewWithThemes {
+        SubtitleTopAppBarWithBackButton(
+            title = "Title",
+            subtitle = "Subtitle",
+            onBackClick = {},
+        )
+    }
 }

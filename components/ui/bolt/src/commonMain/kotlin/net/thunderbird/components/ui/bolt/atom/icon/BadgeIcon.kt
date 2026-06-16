@@ -1,13 +1,14 @@
 package net.thunderbird.components.ui.bolt.atom.icon
 
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon as Material3Icon
+import androidx.compose.material3.LocalContentColor as Material3LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import net.thunderbird.components.ui.bolt.theme.MainTheme
-import androidx.compose.material3.Icon as Material3Icon
-import androidx.compose.material3.LocalContentColor as Material3LocalContentColor
 
 /**
  * Badge icon composable to display an badge icon.
@@ -29,5 +30,24 @@ fun BadgeIcon(
         contentDescription = contentDescription,
         modifier = modifier.size(MainTheme.sizes.badge),
         tint = tint ?: Material3LocalContentColor.current,
+    )
+}
+
+@Composable
+@PreviewLightDark
+internal fun BadgeIconPreview() {
+    BadgeIcon(
+        imageVector = BadgeIcons.Filled.NewMail,
+        contentDescription = "NewMail Badge",
+    )
+}
+
+@Composable
+@PreviewLightDark
+internal fun BadgeIconWithTintPreview() {
+    BadgeIcon(
+        imageVector = BadgeIcons.Filled.NewMail,
+        tint = Color.Red,
+        contentDescription = "NewMail Badge",
     )
 }

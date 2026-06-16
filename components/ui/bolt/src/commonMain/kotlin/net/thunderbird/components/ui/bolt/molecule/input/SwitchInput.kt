@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.Switch
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.theme.MainTheme
@@ -39,5 +41,42 @@ fun SwitchInput(
             )
             TextBodyLarge(text = text)
         }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun SwitchInputPreview() {
+    PreviewWithThemes {
+        SwitchInput(
+            text = "SwitchInput",
+            checked = false,
+            onCheckedChange = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun SwitchInputWithErrorPreview() {
+    PreviewWithThemes {
+        SwitchInput(
+            text = "SwitchInput",
+            checked = false,
+            onCheckedChange = {},
+            errorMessage = "Error message",
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun SwitchInputCheckedPreview() {
+    PreviewWithThemes {
+        SwitchInput(
+            text = "SwitchInput",
+            checked = true,
+            onCheckedChange = {},
+        )
     }
 }

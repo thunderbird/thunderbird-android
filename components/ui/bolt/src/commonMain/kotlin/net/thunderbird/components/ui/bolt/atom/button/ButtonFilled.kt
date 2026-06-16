@@ -2,14 +2,16 @@ package net.thunderbird.components.ui.bolt.atom.button
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button as Material3Button
+import androidx.compose.material3.Text as Material3Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.theme.MainTheme
-import androidx.compose.material3.Button as Material3Button
-import androidx.compose.material3.Text as Material3Text
 
 @Composable
 fun ButtonFilled(
@@ -44,6 +46,40 @@ fun ButtonFilled(
         Material3Text(
             text = text,
             textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ButtonFilledPreview() {
+    PreviewWithThemes {
+        ButtonFilled(
+            text = "Button Filled",
+            onClick = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ButtonFilledDisabledPreview() {
+    PreviewWithThemes {
+        ButtonFilled(
+            text = "Button Filled Disabled",
+            onClick = {},
+            enabled = false,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ButtonFilledMultiLinePreview() {
+    PreviewWithThemes {
+        ButtonFilled(
+            text = "First\nSecond line",
+            onClick = {},
         )
     }
 }

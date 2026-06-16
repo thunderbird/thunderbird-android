@@ -1,16 +1,20 @@
 package net.thunderbird.components.ui.bolt.atom
 
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.material3.Surface as Material3Surface
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.theme.MainTheme
 import net.thunderbird.components.ui.bolt.theme.ThemeColorScheme
 import net.thunderbird.components.ui.bolt.theme.ThemeElevations
-import androidx.compose.material3.Surface as Material3Surface
 
 /**
  * UI atom for a surface with customizable shape, color, and elevation. This is a convenience wrapper
@@ -55,4 +59,32 @@ fun Surface(
         color = color,
         contentColor = contentColor,
     )
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun SurfacePreview() {
+    PreviewWithThemes {
+        Surface(
+            modifier = Modifier
+                .requiredHeight(MainTheme.sizes.larger)
+                .requiredWidth(MainTheme.sizes.larger),
+            content = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun SurfaceWithShapePreview() {
+    PreviewWithThemes {
+        Surface(
+            modifier = Modifier
+                .requiredHeight(MainTheme.sizes.larger)
+                .requiredWidth(MainTheme.sizes.larger),
+            shape = MainTheme.shapes.small,
+            color = MainTheme.colors.primary,
+            content = {},
+        )
+    }
 }

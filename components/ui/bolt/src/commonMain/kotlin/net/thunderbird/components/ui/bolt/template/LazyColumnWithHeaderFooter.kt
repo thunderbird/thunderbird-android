@@ -2,6 +2,7 @@ package net.thunderbird.components.ui.bolt.template
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
@@ -10,8 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 
 /**
  * The [LazyColumnWithHeaderFooter] composable creates a [LazyColumn] with header and footer items.
@@ -72,6 +79,25 @@ private fun verticalArrangementWithHeaderFooter(verticalArrangement: Arrangement
             innerOutPositions.forEachIndexed { index, position -> outPositions[index + 1] = position + headerSize }
             outPositions[0] = 0
             outPositions[outPositions.lastIndex] = totalSize - footerSize
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun LazyColumnWithHeaderFooterPreview() {
+    PreviewWithTheme {
+        Surface {
+            LazyColumnWithHeaderFooter(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double, Alignment.CenterVertically),
+                header = { TextTitleMedium(text = "Header") },
+                footer = { TextTitleMedium(text = "Footer") },
+            ) {
+                items(10) {
+                    TextBodyLarge(text = "Item $it")
+                }
+            }
         }
     }
 }

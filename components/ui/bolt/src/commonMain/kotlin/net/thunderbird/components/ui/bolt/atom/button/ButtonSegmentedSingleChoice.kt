@@ -5,8 +5,11 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
+import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
 
 /**
  * A segmented button group that allows the user to select a single option from a list of options.
@@ -49,5 +52,53 @@ fun <T> ButtonSegmentedSingleChoice(
                 },
             )
         }
+    }
+}
+
+private val options = persistentListOf<String>(
+    "Option 1",
+    "Option 2",
+    "Option 3",
+)
+
+@Composable
+@Preview(showBackground = true)
+internal fun ButtonSegmentedSingleChoicePreview() {
+    PreviewWithThemes {
+        ButtonSegmentedSingleChoice(
+            modifier = Modifier,
+            onClick = {},
+            options = options,
+            optionTitle = { it },
+            selectedOption = null,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ButtonSegmentedSingleChoiceWithSelectionPreview() {
+    PreviewWithThemes {
+        ButtonSegmentedSingleChoice(
+            modifier = Modifier,
+            onClick = {},
+            options = options,
+            optionTitle = { it },
+            selectedOption = options[1],
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ButtonSegmentedSingleChoiceEmptyPreview() {
+    PreviewWithThemes {
+        ButtonSegmentedSingleChoice(
+            modifier = Modifier,
+            onClick = {},
+            options = persistentListOf<String>(),
+            optionTitle = { it },
+            selectedOption = null,
+        )
     }
 }

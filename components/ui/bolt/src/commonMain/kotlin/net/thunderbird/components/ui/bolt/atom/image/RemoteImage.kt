@@ -1,6 +1,7 @@
 package net.thunderbird.components.ui.bolt.atom.image
 
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -16,9 +17,13 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil3.CoilImage
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 
 /**
  * A composable that displays an image from a remote URL using Coil.
@@ -101,5 +106,18 @@ fun rememberPreviewPlaceholder(
                 }
             }
         }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun RemoteImagePreview() {
+    PreviewWithTheme {
+        val painter = rememberVectorPainter(Icons.Outlined.AccountCircle)
+        RemoteImage(
+            url = "",
+            modifier = Modifier.size(MainTheme.sizes.large),
+            previewPlaceholder = painter,
+        )
     }
 }

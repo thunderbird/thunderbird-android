@@ -11,7 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.atom.textfield.TextFieldOutlined
 import net.thunderbird.components.ui.bolt.theme.MainTheme
 
 /**
@@ -76,4 +79,38 @@ private sealed interface MessageState {
 
     data class Error(override val text: String) : MessageState
     data class Warning(override val text: String) : MessageState
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun InputLayoutPreview() {
+    PreviewWithThemes {
+        InputLayout {
+            TextFieldOutlined(value = "InputLayout", onValueChange = {})
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun InputLayoutWithErrorPreview() {
+    PreviewWithThemes {
+        InputLayout(
+            errorMessage = "Error message",
+        ) {
+            TextFieldOutlined(value = "InputLayout", onValueChange = {})
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun InputLayoutWithWarningPreview() {
+    PreviewWithThemes {
+        InputLayout(
+            warningMessage = "Warning message",
+        ) {
+            TextFieldOutlined(value = "InputLayout", onValueChange = {})
+        }
+    }
 }

@@ -7,8 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
+import androidx.compose.ui.tooling.preview.Preview
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
 import net.thunderbird.components.ui.bolt.theme.MainTheme
 
 /**
@@ -38,5 +41,26 @@ fun NavigationDrawerItemBadge(
                     .padding(start = MainTheme.spacings.quarter),
             )
         }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun NavigationDrawerItemBadgePreview() {
+    PreviewWithThemes {
+        NavigationDrawerItemBadge(
+            label = "99+",
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun NavigationDrawerItemBadgeWithIconPreview() {
+    PreviewWithThemes {
+        NavigationDrawerItemBadge(
+            label = "99+",
+            imageVector = Icons.Outlined.Info,
+        )
     }
 }

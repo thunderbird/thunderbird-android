@@ -2,9 +2,14 @@ package net.thunderbird.components.ui.bolt.atom.textfield
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.DropdownMenu as Material3DropdownMenu
+import androidx.compose.material3.DropdownMenuItem as Material3DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
+import androidx.compose.material3.ExposedDropdownMenuBox as Material3ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.OutlinedTextField as Material3OutlinedTextField
+import androidx.compose.material3.Text as Material3Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,12 +21,10 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.ImmutableList
-import androidx.compose.material3.DropdownMenu as Material3DropdownMenu
-import androidx.compose.material3.DropdownMenuItem as Material3DropdownMenuItem
-import androidx.compose.material3.ExposedDropdownMenuBox as Material3ExposedDropdownMenuBox
-import androidx.compose.material3.OutlinedTextField as Material3OutlinedTextField
-import androidx.compose.material3.Text as Material3Text
+import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("LongParameterList", "LongMethod")
@@ -114,5 +117,30 @@ private fun <T> transformOptionWithSelectionHighlight(
         } else {
             append(optionString)
         }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun TextFieldOutlinedSelectPreview() {
+    PreviewWithThemes {
+        TextFieldOutlinedSelect(
+            options = persistentListOf("Option 1", "Option 2", "Option 3"),
+            selectedOption = "Option 1",
+            onValueChange = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun TextFieldOutlinedSelectPreviewWithLabel() {
+    PreviewWithThemes {
+        TextFieldOutlinedSelect(
+            options = persistentListOf("Option 1", "Option 2", "Option 3"),
+            selectedOption = "Option 1",
+            onValueChange = {},
+            label = "Label",
+        )
     }
 }

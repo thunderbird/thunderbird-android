@@ -8,6 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.semantics.contentType
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.textfield.TextFieldOutlined
 
 @Suppress("LongParameterList")
@@ -46,6 +48,39 @@ fun TextInput(
             isSingleLine = isSingleLine,
             modifier = textFieldModifier.fillMaxWidth(),
             keyboardOptions = keyboardOptions,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun TextInputPreview() {
+    PreviewWithThemes {
+        TextInput(
+            onTextChange = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun TextInputIsRequiredPreview() {
+    PreviewWithThemes {
+        TextInput(
+            onTextChange = {},
+            label = "Text input is required",
+            isRequired = true,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun TextInputWithErrorPreview() {
+    PreviewWithThemes {
+        TextInput(
+            onTextChange = {},
+            errorMessage = "Text input error",
         )
     }
 }

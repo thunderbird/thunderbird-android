@@ -1,5 +1,10 @@
 package net.thunderbird.components.ui.bolt.template
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
@@ -13,10 +18,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevices
 
 /**
  * A list and detail pane layout that can be used to display a list of items and a detail view.
@@ -121,4 +133,87 @@ internal class DefaultListDetailNavigationController<T>(
     override suspend fun navigateToDetail(item: T) = navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, item)
 
     override fun paneCount(): Int = navigator.scaffoldDirective.maxHorizontalPartitions
+}
+
+@Composable
+@PreviewDevices
+internal fun ListDetailPanePreview() {
+    PreviewWithTheme {
+        val navigationController = rememberListDetailNavigationController<ListItem>()
+        val coroutineScope = rememberCoroutineScope()
+
+        ListDetailPane(
+            navigationController = navigationController,
+            listPane = {
+                Surface(
+                    color = Color.Yellow,
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    LazyColumn {
+                        itemsIndexed(createItems()) { _, item ->
+                            ListItem(
+                                item = item,
+                                onClick = {
+                                    coroutineScope.launch {
+                                        navigationController.value.navigateToDetail(item)
+                                    }
+                                },
+                            )
+                        }
+                    }
+                }
+            },
+            detailPane = { item ->
+                Surface(
+                    color = Color.Red,
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    ListItem(
+                        item = item,
+                        onClick = {
+                            coroutineScope.launch {
+                                navigationController.value.navigateBack()
+                            }
+                        },
+                    )
+                }
+            },
+        )
+    }
+}
+
+@Composable
+private fun ListItem(
+    item: ListItem,
+    onClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.clickable(onClick = onClick),
+    ) {
+        TextTitleMedium(item.id)
+        TextBodyMedium(item.title)
+    }
+}
+
+@Serializable
+internal data class ListItem(
+    val id: String,
+    val title: String,
+)
+
+private fun createItems(): List<ListItem> {
+    return listOf(
+        ListItem(
+            id = "1",
+            title = "Item 1",
+        ),
+        ListItem(
+            id = "2",
+            title = "Item 2",
+        ),
+        ListItem(
+            id = "3",
+            title = "Item 3",
+        ),
+    )
 }

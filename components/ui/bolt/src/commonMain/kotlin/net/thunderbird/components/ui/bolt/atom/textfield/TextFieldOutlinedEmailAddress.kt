@@ -1,13 +1,15 @@
 package net.thunderbird.components.ui.bolt.atom.textfield
 
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.OutlinedTextField as Material3OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.semantics.contentType
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.material3.OutlinedTextField as Material3OutlinedTextField
+import androidx.compose.ui.tooling.preview.Preview
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
 
 @Suppress("LongParameterList")
 @Composable
@@ -35,4 +37,51 @@ fun TextFieldOutlinedEmailAddress(
         ),
         singleLine = true,
     )
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun TextFieldOutlinedEmailAddressPreview() {
+    PreviewWithThemes {
+        TextFieldOutlinedEmailAddress(
+            value = "Input text",
+            onValueChange = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun TextFieldOutlinedEmailAddressWithLabelPreview() {
+    PreviewWithThemes {
+        TextFieldOutlinedEmailAddress(
+            value = "Input text",
+            label = "Label",
+            onValueChange = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun TextFieldOutlinedEmailDisabledPreview() {
+    PreviewWithThemes {
+        TextFieldOutlinedEmailAddress(
+            value = "Input text",
+            onValueChange = {},
+            isEnabled = false,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun TextFieldOutlinedEmailErrorPreview() {
+    PreviewWithThemes {
+        TextFieldOutlinedEmailAddress(
+            value = "Input text",
+            onValueChange = {},
+            hasError = true,
+        )
+    }
 }

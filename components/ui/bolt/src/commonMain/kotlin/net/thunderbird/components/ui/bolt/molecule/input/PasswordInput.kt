@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.textfield.TextFieldOutlinedPassword
 import net.thunderbird.components.ui.bolt.resources.Res
 import net.thunderbird.components.ui.bolt.resources.bolt_molecule_password_input_label
@@ -30,6 +32,27 @@ fun PasswordInput(
             isRequired = isRequired,
             hasError = errorMessage != null,
             modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun PasswordInputPreview() {
+    PreviewWithThemes {
+        PasswordInput(
+            onPasswordChange = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun PasswordInputWithErrorPreview() {
+    PreviewWithThemes {
+        PasswordInput(
+            onPasswordChange = {},
+            errorMessage = "Password error",
         )
     }
 }
