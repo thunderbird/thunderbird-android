@@ -82,7 +82,10 @@ android {
     }
 
     signingConfigs {
-        val useUploadKey = properties.getOrDefault("tb.useUploadKey", "true") == "true"
+        val useUploadKey = providers.gradleProperty("tb.useUploadKey")
+            .map(String::toBoolean)
+            .orElse(true)
+            .get()
 
         createSigningConfig(project, SigningType.TB_RELEASE, isUpload = useUploadKey)
         createSigningConfig(project, SigningType.TB_BETA, isUpload = useUploadKey)
