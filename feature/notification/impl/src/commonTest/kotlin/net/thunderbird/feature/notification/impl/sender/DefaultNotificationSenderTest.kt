@@ -3,15 +3,13 @@ package net.thunderbird.feature.notification.impl.sender
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.containsExactly
 import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNull
 import assertk.assertions.prop
-import dev.mokkery.matcher.any
-import dev.mokkery.spy
-import dev.mokkery.verify.VerifyMode.Companion.exactly
-import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
@@ -43,8 +41,8 @@ class DefaultNotificationSenderTest {
     @Test
     fun `send should emit Success and call system notifier for SystemNotification`() = runTest {
         // Arrange
-        val systemNotifier = spy(FakeSystemNotificationNotifier())
-        val inAppNotifier = spy(FakeInAppNotificationNotifier())
+        val systemNotifier = FakeSystemNotificationNotifier()
+        val inAppNotifier = FakeInAppNotificationNotifier()
         val testSubject = createTestSubject(
             systemNotificationNotifier = systemNotifier,
             inAppNotificationNotifier = inAppNotifier,
@@ -61,16 +59,16 @@ class DefaultNotificationSenderTest {
             .prop(Success.Executed<Notification>::command)
             .isInstanceOf<DisplaySystemNotificationCommand>()
 
-        verifySuspend(exactly(1)) { systemNotifier.show(notification = any()) }
+        assertThat(systemNotifier.shownNotifications).containsExactly(notification)
         // Ensure in-app notifier wasn't called
-        verifySuspend(exactly(0)) { inAppNotifier.show(notification = any()) }
+        assertThat(inAppNotifier.shownNotifications).isEmpty()
     }
 
     @Test
     fun `send should emit Successes and call both notifiers when notification qualifies for both`() = runTest {
         // Arrange: Make system command succeed by using a Critical severity (always show)
-        val systemNotifier = spy(FakeSystemNotificationNotifier())
-        val inAppNotifier = spy(FakeInAppNotificationNotifier())
+        val systemNotifier = FakeSystemNotificationNotifier()
+        val inAppNotifier = FakeInAppNotificationNotifier()
         val testSubject = createTestSubject(
             systemNotificationNotifier = systemNotifier,
             inAppNotificationNotifier = inAppNotifier,
@@ -95,15 +93,15 @@ class DefaultNotificationSenderTest {
             .prop(Success.Executed<Notification>::command)
             .isInstanceOf<DisplayInAppNotificationCommand>()
 
-        verifySuspend(exactly(1)) { systemNotifier.show(notification) }
-        verifySuspend(exactly(1)) { inAppNotifier.show(notification) }
+        assertThat(systemNotifier.shownNotifications).containsExactly(notification)
+        assertThat(inAppNotifier.shownNotifications).containsExactly(notification)
     }
 
     @Test
     fun `send should emit Success and call in-app notifier for InAppNotification`() = runTest {
         // Arrange
-        val systemNotifier = spy(FakeSystemNotificationNotifier())
-        val inAppNotifier = spy(FakeInAppNotificationNotifier())
+        val systemNotifier = FakeSystemNotificationNotifier()
+        val inAppNotifier = FakeInAppNotificationNotifier()
         val testSubject = createTestSubject(
             systemNotificationNotifier = systemNotifier,
             inAppNotificationNotifier = inAppNotifier,
@@ -120,15 +118,15 @@ class DefaultNotificationSenderTest {
             .prop(Success.Executed<Notification>::command)
             .isInstanceOf<DisplayInAppNotificationCommand>()
 
-        verifySuspend(exactly(1)) { inAppNotifier.show(notification = any()) }
-        verifySuspend(exactly(0)) { systemNotifier.show(notification = any()) }
+        assertThat(inAppNotifier.shownNotifications).containsExactly(notification)
+        assertThat(systemNotifier.shownNotifications).isEmpty()
     }
 
     @Test
     fun `send should emit Failure when no commands can be executed`() = runTest {
         // Arrange
-        val systemNotifier = spy(FakeSystemNotificationNotifier())
-        val inAppNotifier = spy(FakeInAppNotificationNotifier())
+        val systemNotifier = FakeSystemNotificationNotifier()
+        val inAppNotifier = FakeInAppNotificationNotifier()
         val logger = TestLogger()
         val testSubject = createTestSubject(
             logger = logger,
