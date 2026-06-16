@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import kotlin.reflect.full.declaredMemberProperties
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcons
@@ -20,8 +19,6 @@ import net.thunderbird.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionSubtitleItem
-import androidx.compose.material3.Icon as Material3Icon
-import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons as LegacyIcons
 
 fun LazyGridScope.iconItems() {
     sectionHeaderItem(
@@ -59,12 +56,6 @@ fun LazyGridScope.iconItems() {
     sectionHeaderItem(text = "Badge Icons")
     sectionSubtitleItem(text = "Filled")
     getIconsFor(BadgeIcons.Filled)
-
-    sectionHeaderItem(text = "Legacy Icons")
-    sectionSubtitleItem(text = "Filled")
-    getLegacyIconsFor(LegacyIcons.Filled)
-    sectionSubtitleItem(text = "Outlined")
-    getLegacyIconsFor(LegacyIcons.Outlined)
 }
 
 private inline fun <reified T : Any> LazyGridScope.getIconsFor(icons: T) {
@@ -77,23 +68,6 @@ private inline fun <reified T : Any> LazyGridScope.getIconsFor(icons: T) {
                 IconItem(
                     name = property.name,
                     imageVector = imageVector,
-                )
-            }
-        }
-    }
-}
-
-private inline fun <reified T> LazyGridScope.getLegacyIconsFor(icons: T) {
-    for (method in T::class.java.methods) {
-        if (exclusions.contains(method.name)) {
-            continue
-        } else if (method.name.startsWith("get")) {
-            defaultItem {
-                method.isAccessible = true
-                val drawableResId = method.invoke(icons) as Int
-                LegacyIconItem(
-                    name = method.name.replaceFirst(oldValue = "get", newValue = ""),
-                    drawableResId = drawableResId,
                 )
             }
         }
@@ -117,27 +91,6 @@ private fun IconItem(
         Icon(
             imageVector = imageVector,
             modifier = modifier,
-        )
-        TextBodySmall(text = name)
-    }
-}
-
-@Composable
-private fun LegacyIconItem(
-    name: String,
-    drawableResId: Int,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = Modifier
-            .padding(defaultItemPadding())
-            .then(modifier),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
-    ) {
-        Material3Icon(
-            painter = painterResource(id = drawableResId),
-            contentDescription = null,
         )
         TextBodySmall(text = name)
     }

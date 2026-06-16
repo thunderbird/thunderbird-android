@@ -27,7 +27,6 @@ android {
 
 dependencies {
     implementation(projects.core.ui.navigation)
-    implementation(projects.core.ui.legacy.designsystem)
 
     implementation(projects.core.ui.contract)
 
