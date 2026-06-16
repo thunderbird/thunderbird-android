@@ -46,22 +46,18 @@ fun MessageItemAvatarCircle(
     enabled: Boolean = true,
 ) {
     // Intentionally set the `combinedClickable` modifier is after `clip(CircleShape)`
-    // and before `padding`.
+    // and before the `size` and the `padding`.
     //
     // This ensures that the ripple effect covers the entire touch target rather than
     // just the avatar icon itself.
-    //
-    // While Detekt may issue a warning regarding the order of modifiers, this specific
-    // arrangement is intentional.
-    @Suppress("ModifierClickableOrder")
     Box(
         modifier = modifier
             .clip(CircleShape)
             .combinedClickable(enabled = enabled, onClick = onClick)
+            .size(MainTheme.sizes.iconAvatar)
             .padding(MainTheme.spacings.half)
             .background(color = colors.containerColor, shape = CircleShape)
-            .border(width = 1.dp, color = colors.borderColor, shape = CircleShape)
-            .size(MainTheme.sizes.iconAvatar),
+            .border(width = 1.dp, color = colors.borderColor, shape = CircleShape),
         contentAlignment = Alignment.Center,
     ) {
         when (avatar) {

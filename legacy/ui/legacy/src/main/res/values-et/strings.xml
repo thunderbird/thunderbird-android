@@ -113,7 +113,7 @@
     <string name="notification_action_delete_all">Kustuta kõik</string>
     <string name="notification_action_archive">Arhiveeri</string>
     <string name="notification_action_archive_all">Arhiveeri kõik</string>
-    <string name="notification_action_spam">Rämps</string>
+    <string name="notification_action_spam">Rämpspost</string>
     <string name="notification_certificate_error_public">Sertifikaadiviga</string>
     <string name="notification_certificate_error_title">Sertifikaadi viga kontol <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Kontrolli serveri seadistusi</string>
@@ -123,7 +123,7 @@
     <string name="notification_notify_error_title">Viga teavitusel</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_text">Uue saabunud sõnumi kohta süsteemise teavituse loomisel tekkis viga. Üks võimalik põhjus on teavitusele määratud heli puudumine.\n\nAva teavituste seadistused.</string>
-    <string name="notification_bg_sync_ticker">Kontrollib e-kirju: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">E-kirjade kontroll: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Kontrollib e-kirju</string>
     <string name="notification_bg_send_ticker">Saadab e-kirja: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Saadab e-kirja</string>
@@ -468,7 +468,7 @@
     <string name="sort_unread_last">Loetud kirjad esimesena</string>
     <string name="sort_attach_first">Manustega kirjad esimestena</string>
     <string name="sort_unattached_first">Manusteta kirjad esimestena</string>
-    <string name="sort_by">Järjesta kasutades…</string>
+    <string name="sort_by">Järjesta…</string>
     <string name="sort_by_date">Kuupäev</string>
     <string name="sort_by_arrival">Saabumine</string>
     <string name="sort_by_subject">Teema</string>
@@ -934,4 +934,22 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="no_network_message_will_be_sent_later_toast">Võrguühendus puudub. Kiri saadetakse selle taastumisel</string>
     <string name="notification_actions_settings_title">Toimingud teavitustes</string>
     <string name="notification_actions_settings_summary">Saad valida tegevused, mis kuvatakse e-kirjade teavitustes</string>
+    <string name="changelog_latest_label_text">VIIMASED</string>
+    <string name="changelog_type_new_text">UUS</string>
+    <string name="changelog_type_changed_text">MUUTUNUD</string>
+    <string name="changelog_type_fixed_text">PARANDATUD</string>
+    <string name="notification_summary_delete_title">Näita mitme kirja teavituses kustutusnuppu</string>
+    <string name="notification_summary_delete_summary">Lisab kustutusnupu teavitustele, mis ühendavad teabe mitme kirja kohta</string>
+    <string name="accessibility_move_item_down">Tõsta <xliff:g id="item">%1$s</xliff:g> allapoole</string>
+    <string name="accessibility_move_item_up">Tõsta <xliff:g id="item">%1$s</xliff:g> ülespoole</string>
+    <string name="accessibility_move_down">Tõsta allapoole</string>
+    <string name="accessibility_move_up">Tõsta ülespoole</string>
+    <string name="notification_actions_hidden_state">Pole teavituses näidatud</string>
+    <string name="notification_actions_shown_state">On teavituses näidatud</string>
+    <string name="notification_actions_cutoff_state">Sellest joonest ülalpool olev sisu on näidatud teavituses</string>
+    <string name="notification_actions_cutoff_description">Näidatud tegevuste vaheltlõige</string>
+    <string name="notification_actions_settings_description">Muuda teavituste toimingute järjestust.</string>
+    <string name="accessibility_move_cutoff_up">Tõsta näidatud tegevuste vaheltlõige ülespoole</string>
+    <string name="accessibility_move_cutoff_down">Tõsta näidatud tegevuste vaheltlõige allapoole</string>
+    <string name="notification_action_star">Märgi tähega</string>
 </resources>

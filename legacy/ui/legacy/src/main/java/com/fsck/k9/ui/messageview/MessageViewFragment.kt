@@ -10,8 +10,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.os.SystemClock
-import android.print.PrintAttributes
-import android.print.PrintManager
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.Menu
@@ -20,7 +18,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.webkit.WebView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.collectAsState
@@ -44,6 +41,7 @@ import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageLoaderHelper
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks
 import com.fsck.k9.activity.MessageLoaderHelperFactory
+import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment
@@ -470,6 +468,7 @@ class MessageViewFragment :
 
             R.id.set_format_plain -> onDisplayPlainText()
             R.id.set_format_html -> onDisplayHTML()
+            R.id.view_compose -> MessageActions.actionCompose(requireActivity(), account)
             else -> return false
         }
 
@@ -477,20 +476,12 @@ class MessageViewFragment :
     }
 
     private fun printMessage() {
-        val context = context
-        val webView = view?.findViewById<WebView>(R.id.message_content)
-        val printManager = context?.getSystemService(Context.PRINT_SERVICE) as? PrintManager
-        if (context == null || webView == null || printManager == null) return
-
-        val subject = mMessageViewInfo?.subject ?: getString(R.string.general_no_subject)
-        val jobName = appNameProvider.appName + ": " + subject
-        val printAdapter = webView.createPrintDocumentAdapter(jobName)
-
-        printManager.print(
-            jobName,
-            printAdapter,
-            PrintAttributes.Builder().build(),
-        )
+        val messageViewInfo = mMessageViewInfo ?: return
+        MessagePrinter(
+            context = requireContext(),
+            appName = appNameProvider.appName,
+            noSubjectText = getString(R.string.general_no_subject),
+        ).print(messageViewInfo)
     }
 
     private fun onShowHeaders() {

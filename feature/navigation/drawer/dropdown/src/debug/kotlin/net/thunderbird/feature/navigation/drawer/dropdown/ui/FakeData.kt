@@ -55,6 +55,7 @@ internal object FakeData {
         unreadMessageCount = 0,
         starredMessageCount = 0,
         hasError = false,
+        hasAutoExpandFolder = false,
     )
 
     val FOLDER = Folder(
@@ -162,6 +163,7 @@ internal object FakeData {
                 unreadMessageCount = 2,
                 starredMessageCount = 0,
                 hasError = false,
+                hasAutoExpandFolder = false,
             ),
             MailDisplayAccount(
                 id = "account2",
@@ -172,6 +174,7 @@ internal object FakeData {
                 unreadMessageCount = 12,
                 starredMessageCount = 0,
                 hasError = false,
+                hasAutoExpandFolder = false,
             ),
             MailDisplayAccount(
                 id = "account3",
@@ -182,6 +185,7 @@ internal object FakeData {
                 unreadMessageCount = 0,
                 starredMessageCount = 0,
                 hasError = false,
+                hasAutoExpandFolder = false,
             ),
         )
     }

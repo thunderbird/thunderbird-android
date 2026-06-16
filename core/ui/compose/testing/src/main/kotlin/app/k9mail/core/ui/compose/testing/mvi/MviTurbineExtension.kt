@@ -12,6 +12,7 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
+import net.thunderbird.core.ui.contract.udf.UnidirectionalSlice
 
 /**
  * The `runMviTest` function is a wrapper around `runTest` and `turbineScope`
@@ -59,6 +60,20 @@ inline fun <reified STATE, EVENT, EFFECT> MviContext.turbines(
         return MviTurbines(
             stateTurbine = viewModel.state.testIn(testScope.backgroundScope),
             effectTurbine = viewModel.effect.testIn(testScope.backgroundScope),
+        )
+    }
+}
+
+/**
+ * The `turbines` extension function creates a MviTurbines instance for the given MVI Slice.
+ */
+inline fun <reified STATE, EVENT, EFFECT> MviContext.turbines(
+    slice: UnidirectionalSlice<STATE, EVENT, EFFECT>,
+): MviTurbines<STATE, EFFECT> {
+    with(turbineContext) {
+        return MviTurbines(
+            stateTurbine = slice.state.testIn(testScope.backgroundScope),
+            effectTurbine = slice.effect.testIn(testScope.backgroundScope),
         )
     }
 }

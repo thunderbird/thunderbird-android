@@ -505,6 +505,12 @@
             android:summary="@string/notification_summary_delete_summary"
             />
 
+        <SwitchPreferenceCompat
+            android:key="notification_show_contact_picture"
+            android:title="@string/notification_show_contact_picture_title"
+            android:summary="@string/notification_show_contact_picture_summary"
+            />
+
     </PreferenceScreen>
 
     <PreferenceScreen

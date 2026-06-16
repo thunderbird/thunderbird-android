@@ -165,7 +165,7 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
                     }
                     .firstNotNullOfOrNull { it.value }
             if (transition == null) {
-                verbose { "Found no transition for $currentState -> $event" }
+                verbose { "Found no transition for $event in ${currentState::class.simpleName} state." }
             }
 
             return when {

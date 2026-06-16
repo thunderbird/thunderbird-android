@@ -7,12 +7,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithBackButton
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.feature.funding.googleplay.R
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
+import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Effect
+import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Event
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ViewModel
 import org.koin.androidx.compose.koinViewModel
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract.Event as PurchaseEvent
 
 @Composable
 internal fun ContributionScreen(
@@ -22,25 +28,30 @@ internal fun ContributionScreen(
 ) {
     val context = LocalContext.current
 
+    val listState = viewModel.listState.collectAsStateWithLifecycle()
+    val purchaseState = viewModel.purchaseState.collectAsStateWithLifecycle()
+
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
-            is ContributionContract.Effect.ManageSubscription -> {
+            is Effect.ManageSubscription -> {
                 context.startActivity(
                     getManageSubscriptionIntent(
-                        productId = effect.productId,
+                        contributionId = effect.contributionId,
                         packageName = context.packageName,
                     ),
                 )
-            }
-
-            is ContributionContract.Effect.PurchaseContribution -> {
-                effect.startPurchaseFlow()
             }
         }
     }
 
     BackHandler {
         onBack()
+    }
+
+    LifecycleResumeEffect(viewModel) {
+        viewModel.event(Event.Purchase(PurchaseEvent.RefreshPurchase))
+
+        onPauseOrDispose { }
     }
 
     Scaffold(
@@ -54,6 +65,8 @@ internal fun ContributionScreen(
     ) { innerPadding ->
         ContributionContent(
             state = state.value,
+            listState = listState.value,
+            purchaseState = purchaseState.value,
             onEvent = { dispatch(it) },
             contentPadding = innerPadding,
         )
@@ -63,12 +76,12 @@ internal fun ContributionScreen(
 private const val SUBSCRIPTION_URL = "https://play.google.com/store/account/subscriptions"
 
 private fun getManageSubscriptionIntent(
-    productId: String,
+    contributionId: ContributionId,
     packageName: String,
 ): Intent {
     val uri = SUBSCRIPTION_URL.toUri()
         .buildUpon()
-        .appendQueryParameter("sku", productId)
+        .appendQueryParameter("sku", contributionId.value)
         .appendQueryParameter("package", packageName)
         .build()
 

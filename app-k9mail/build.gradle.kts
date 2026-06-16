@@ -15,7 +15,7 @@ android {
         testApplicationId = "com.fsck.k9.tests"
 
         versionCode = 39038
-        versionName = "19.2"
+        versionName = "20.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"K-9 Mail\"")
     }
@@ -139,7 +139,7 @@ android {
 dependencies {
     implementation(projects.appCommon)
     implementation(projects.core.ui.compose.common)
-    implementation(projects.core.ui.compose.theme2.k9mail)
+    implementation(projects.core.ui.compose.theme2)
     implementation(projects.core.ui.legacy.theme2.k9mail)
     implementation(projects.feature.launcher)
     implementation(projects.feature.mail.message.list.api)

@@ -5,6 +5,7 @@ import app.k9mail.legacy.mailstore.FolderTypeMapper
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
+import java.text.Collator
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -34,7 +35,12 @@ class DefaultDisplayFolderRepository(
             .thenByDescending { it.folder.type == FolderType.OUTBOX }
             .thenByDescending { it.folder.type != FolderType.REGULAR }
             .thenByDescending { it.isInTopGroup }
-            .thenBy(String.CASE_INSENSITIVE_ORDER) { it.folder.name }
+            .thenBy(
+                // #10718 use locale-sensitive ordering for folders
+                Collator.getInstance().apply {
+                    decomposition = Collator.CANONICAL_DECOMPOSITION
+                },
+            ) { it.folder.name }
 
     private fun getDisplayFolders(
         account: LegacyAccountDto,
