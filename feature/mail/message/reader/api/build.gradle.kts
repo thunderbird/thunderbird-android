@@ -17,7 +17,6 @@ kotlin {
         }
         androidMain.dependencies {
             implementation(projects.core.ui.theme.api)
-            implementation(projects.core.ui.compose.designsystem)
         }
     }
 }
