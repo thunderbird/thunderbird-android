@@ -108,7 +108,6 @@ mime4j = "0.8.14"
 minidns = "1.1.1"
 mockito = "5.23.0"
 mockitoKotlin = "6.3.0"
-mokkery = "3.4.0"
 moshi = "1.15.2"
 mozillaAndroidComponents = "145.0.1"
 okhttp = "5.4.0"
@@ -142,7 +141,6 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
-dev-mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
 
 # Build plugins
 tb-app-badging = { id = "net.thunderbird.gradle.plugin.app.badging" }
