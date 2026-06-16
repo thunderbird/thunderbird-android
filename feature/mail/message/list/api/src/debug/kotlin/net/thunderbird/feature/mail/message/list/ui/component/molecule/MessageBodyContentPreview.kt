@@ -9,10 +9,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import kotlinx.collections.immutable.persistentListOf
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemConfiguration
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageSublineConfiguration
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageSublineLeadingIndicator

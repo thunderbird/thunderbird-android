@@ -8,15 +8,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarDuration
-import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarHost
-import app.k9mail.core.ui.compose.designsystem.organism.snackbar.rememberSnackbarHostState
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
+import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.organism.snackbar.SnackbarDuration
+import net.thunderbird.components.ui.bolt.organism.snackbar.SnackbarHost
+import net.thunderbird.components.ui.bolt.organism.snackbar.rememberSnackbarHostState
+import net.thunderbird.components.ui.bolt.template.Scaffold
 import kotlinx.coroutines.launch
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 
 @Composable
 fun SnackbarItems(modifier: Modifier = Modifier) {

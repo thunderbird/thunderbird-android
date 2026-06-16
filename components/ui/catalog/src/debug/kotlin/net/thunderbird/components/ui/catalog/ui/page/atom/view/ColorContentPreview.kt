@@ -2,9 +2,9 @@ package net.thunderbird.components.ui.catalog.ui.page.atom.view
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
-import net.thunderbird.core.ui.common.annotation.PreviewDevices
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevices
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 
 @Composable
 @Preview(showBackground = true)

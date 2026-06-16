@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplaySmall
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineSmall
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
+import net.thunderbird.components.ui.bolt.atom.text.TextDisplaySmall
+import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineSmall
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 
 @PreviewLightDark
 @Composable

@@ -1,7 +1,7 @@
 package net.thunderbird.android.provider
 
 import androidx.compose.runtime.Composable
-import net.thunderbird.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
+import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdTheme2
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 
 internal class TbFeatureThemeProvider : FeatureThemeProvider {

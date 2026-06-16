@@ -9,8 +9,8 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
-import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 /**
  * Contains the default values used by all [MessageItem] types.

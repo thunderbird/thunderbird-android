@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.card.CardElevated
-import app.k9mail.core.ui.compose.designsystem.atom.card.CardFilled
-import app.k9mail.core.ui.compose.designsystem.atom.card.CardOutlined
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.card.CardElevated
+import net.thunderbird.components.ui.bolt.atom.card.CardFilled
+import net.thunderbird.components.ui.bolt.atom.card.CardOutlined
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionHeaderItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.wideItem
 

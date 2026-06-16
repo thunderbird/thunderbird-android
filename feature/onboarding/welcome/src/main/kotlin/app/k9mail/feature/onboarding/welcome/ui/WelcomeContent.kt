@@ -19,19 +19,19 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMediumAutoResize
-import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.feature.onboarding.welcome.R
-import net.thunderbird.core.ui.common.window.WindowSizeClass
-import net.thunderbird.core.ui.common.window.WindowWidthSizeClass
-import net.thunderbird.core.ui.common.window.calculateWindowSizeInfo
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.atom.text.TextDisplayMediumAutoResize
+import net.thunderbird.components.ui.bolt.common.window.WindowSizeClass
+import net.thunderbird.components.ui.bolt.common.window.WindowWidthSizeClass
+import net.thunderbird.components.ui.bolt.common.window.calculateWindowSizeInfo
+import net.thunderbird.components.ui.bolt.template.LazyColumnWithHeaderFooter
+import net.thunderbird.components.ui.bolt.template.ResponsiveContent
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 import org.jetbrains.compose.resources.painterResource
 
 private const val CIRCLE_COLOR = 0xFFEEEEEE

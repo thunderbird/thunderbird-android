@@ -1,0 +1,55 @@
+package net.thunderbird.components.ui.bolt.atom.text
+
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentMapOf
+import net.thunderbird.components.ui.bolt.theme.MainTheme
+import androidx.compose.material3.Text as Material3Text
+
+@Composable
+fun TextLabelLarge(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    textAlign: TextAlign? = null,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
+) {
+    Material3Text(
+        text = text,
+        modifier = modifier,
+        color = color,
+        textAlign = textAlign,
+        overflow = overflow,
+        maxLines = maxLines,
+        style = MainTheme.typography.labelLarge,
+    )
+}
+
+@Composable
+fun TextLabelLarge(
+    text: AnnotatedString,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    textAlign: TextAlign? = null,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
+    inlineContent: ImmutableMap<String, InlineTextContent> = persistentMapOf(),
+) {
+    Material3Text(
+        text = text,
+        modifier = modifier,
+        color = color,
+        textAlign = textAlign,
+        overflow = overflow,
+        maxLines = maxLines,
+        style = MainTheme.typography.labelLarge,
+        inlineContent = inlineContent,
+    )
+}

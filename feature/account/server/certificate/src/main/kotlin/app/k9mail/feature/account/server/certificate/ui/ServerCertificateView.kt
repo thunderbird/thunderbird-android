@@ -8,13 +8,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.feature.account.server.certificate.R
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateProperties
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleSmall
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 import okio.ByteString
 import org.koin.compose.koinInject
 

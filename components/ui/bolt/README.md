@@ -1,6 +1,4 @@
-## Core - UI - Compose - Design system
-
-Uses [`:core:ui:compose:theme`](../theme/README.md)
+## Bolt
 
 ## Background
 
@@ -36,4 +34,3 @@ This can save time and improve the overall quality, as well as facilitate collab
 
 - [Atomic Design Methodology | Atomic Design by Brad Frost](https://atomicdesign.bradfrost.com/chapter-2/)
 - [Atomic Design: Getting Started | Blog | We Are Mobile First](https://www.wearemobilefirst.com/blog/atomic-design)
-

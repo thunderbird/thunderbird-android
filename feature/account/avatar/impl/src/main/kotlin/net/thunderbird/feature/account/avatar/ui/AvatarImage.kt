@@ -5,11 +5,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import app.k9mail.core.ui.compose.designsystem.atom.image.RemoteImage
-import app.k9mail.core.ui.compose.designsystem.atom.image.rememberPreviewPlaceholder
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.image.RemoteImage
+import net.thunderbird.components.ui.bolt.atom.image.rememberPreviewPlaceholder
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 
 /**
  * Displays an avatar image from a remote URL.

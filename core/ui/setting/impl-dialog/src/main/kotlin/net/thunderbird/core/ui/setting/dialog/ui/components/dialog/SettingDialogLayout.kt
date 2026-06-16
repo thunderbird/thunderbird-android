@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.organism.AlertDialog
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.organism.AlertDialog
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 import net.thunderbird.core.ui.setting.dialog.R
 
 @Composable

@@ -11,10 +11,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.molecule.input.InputLayout
-import app.k9mail.core.ui.compose.designsystem.molecule.input.inputContentPadding
 import app.k9mail.feature.account.server.settings.R
 import kotlinx.coroutines.delay
+import net.thunderbird.components.ui.bolt.molecule.input.InputLayout
+import net.thunderbird.components.ui.bolt.molecule.input.inputContentPadding
 import net.thunderbird.feature.account.server.settings.ui.common.AuthenticationError
 import net.thunderbird.feature.account.server.settings.ui.common.Authenticator
 import net.thunderbird.feature.account.server.settings.ui.common.rememberBiometricAuthenticator

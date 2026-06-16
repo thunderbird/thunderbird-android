@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlin.math.ceil
 import kotlinx.collections.immutable.ImmutableList
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 
 /**
  * A lazy vertical grid that automatically calculates its height to fit all items,

@@ -9,8 +9,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithBackButton
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
+import net.thunderbird.components.ui.bolt.organism.TopAppBarWithBackButton
+import net.thunderbird.components.ui.bolt.template.Scaffold
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.feature.funding.googleplay.R
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId

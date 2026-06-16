@@ -18,9 +18,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
-import app.k9mail.core.ui.compose.designsystem.organism.BasicDialog
-import app.k9mail.core.ui.compose.designsystem.organism.BasicDialogDefaults
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.organism.BasicDialog
+import net.thunderbird.components.ui.bolt.organism.BasicDialogDefaults
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.RemoteFolder

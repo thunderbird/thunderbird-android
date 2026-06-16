@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import app.k9mail.feature.migration.qrcode.R
 import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.DisplayText
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 
 @Composable
 internal fun QrCodeScannerView(

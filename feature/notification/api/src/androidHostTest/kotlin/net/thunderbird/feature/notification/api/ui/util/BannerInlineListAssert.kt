@@ -9,9 +9,9 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasTextExactly
 import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.onChildren
-import app.k9mail.core.ui.compose.designsystem.organism.banner.BannerNotificationCardDefaults.TEST_TAG_BANNER_INLINE_CARD_ACTION_ROW
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.onNodeWithTag
+import net.thunderbird.components.ui.bolt.organism.banner.BannerNotificationCardDefaults.TEST_TAG_BANNER_INLINE_CARD_ACTION_ROW
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults
 
 internal fun ComposeTest.assertBannerInlineList(

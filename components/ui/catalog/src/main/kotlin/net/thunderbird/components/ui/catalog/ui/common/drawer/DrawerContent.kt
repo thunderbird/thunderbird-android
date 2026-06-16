@@ -6,10 +6,10 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import app.k9mail.core.ui.compose.designsystem.organism.drawer.ModalDrawerSheet
-import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerDivider
-import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerHeadline
-import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItem
+import net.thunderbird.components.ui.bolt.organism.drawer.ModalDrawerSheet
+import net.thunderbird.components.ui.bolt.organism.drawer.NavigationDrawerDivider
+import net.thunderbird.components.ui.bolt.organism.drawer.NavigationDrawerHeadline
+import net.thunderbird.components.ui.bolt.organism.drawer.NavigationDrawerItem
 import net.thunderbird.components.ui.catalog.ui.CatalogContract.Theme
 import net.thunderbird.components.ui.catalog.ui.CatalogContract.ThemeVariant
 import net.thunderbird.components.ui.catalog.ui.next

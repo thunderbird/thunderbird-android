@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.thunderbird.core.ui.compose.designsystem.atom.chip.ColorChip
+import net.thunderbird.components.ui.bolt.atom.chip.ColorChip
 
 @Composable
 fun AccountIndicatorIcon(

@@ -22,7 +22,7 @@ import androidx.lifecycle.compose.LifecycleStartEffect
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.MainTheme
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageListItem
 import net.thunderbird.feature.mail.message.list.internal.ui.component.organism.MessageListFooter
 import net.thunderbird.feature.mail.message.list.internal.ui.component.organism.MessageListSwipeableItem

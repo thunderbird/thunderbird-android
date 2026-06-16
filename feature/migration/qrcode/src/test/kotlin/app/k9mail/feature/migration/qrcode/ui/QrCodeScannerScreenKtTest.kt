@@ -19,7 +19,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import kotlin.test.Ignore
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.ui.compose.theme2.k9mail.K9MailTheme2
+import net.thunderbird.components.ui.bolt.theme.k9mail.K9MailTheme2
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

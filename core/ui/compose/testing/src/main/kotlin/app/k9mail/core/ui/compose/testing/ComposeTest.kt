@@ -17,7 +17,7 @@ import androidx.test.espresso.Espresso
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
+import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdTheme2
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.koin.compose.KoinApplicationPreview
