@@ -44,7 +44,7 @@
     <string name="spam_action">Spam</string>
     <string name="forward_action">Videresend</string>
     <string name="forward_as_attachment_action">Videresend som vedhæftet fil</string>
-    <string name="edit_as_new_message_action">Rediger som ny besked besked</string>
+    <string name="edit_as_new_message_action">Rediger som ny meddelelse</string>
     <string name="move_action">Flyt</string>
     <string name="move_to_drafts_action">Flyt til kladder</string>
     <string name="refile_action">Genarkivering…</string>
@@ -322,9 +322,9 @@
     <string name="account_settings_show_pictures_always">Fra alle</string>
     <string name="account_settings_composition">Skriv mail</string>
     <string name="account_settings_default_quoted_text_shown_label">Medtag den originale meddelelse i svar</string>
-    <string name="account_settings_default_quoted_text_shown_summary">Når du sender svar på mail, vil den oprindelige tekst blive medtaget</string>
+    <string name="account_settings_default_quoted_text_shown_summary">Når du sender svar på mail, vil den oprindelige tekst blive medtaget.</string>
     <string name="account_settings_reply_after_quote_label">Svar placeres efter citeret tekst</string>
-    <string name="account_settings_reply_after_quote_summary">Når du sender svar på mail, vil den oprindelige tekst blive placeret oven over dit svar</string>
+    <string name="account_settings_reply_after_quote_summary">Når du sender svar på mail, vil den oprindelige tekst blive placeret oven over dit svar.</string>
     <string name="account_settings_strip_signature_label">Fjern signatur fra citeret svar</string>
     <string name="account_settings_strip_signature_summary">Når du sender svar på mail, vil evt. signatur i citeret tekst blive fjernet</string>
     <string name="account_settings_message_format_label">Meddelelses format</string>
@@ -513,7 +513,7 @@
     <string name="account_setup_push_limit_250">250 mapper</string>
     <string name="account_setup_push_limit_500">500 mapper</string>
     <string name="account_setup_push_limit_1000">1000 mapper</string>
-    <string name="animations_title">Animation</string>
+    <string name="animations_title">Animation af Animation</string>
     <string name="show_unified_inbox_title">Vis Fælles Indbakke</string>
     <string name="show_starred_count_title">Vis antal af stjernemarkeret</string>
     <string name="integrated_inbox_title">Fælles indbakke</string>
@@ -553,7 +553,7 @@
     <string name="save_or_discard_draft_message_changes">Gem eller Kassér ændringer?</string>
     <string name="confirm_discard_draft_message_title">Annuller meddelelse?</string>
     <string name="confirm_discard_draft_message">Er du sikker på at du ønsker at annullere denne meddelelse?</string>
-    <string name="dialog_confirm_clear_local_folder_title">Ryd lokale beskeder</string>
+    <string name="dialog_confirm_clear_local_folder_title">Ryd lokale beskeder?</string>
     <string name="dialog_confirm_clear_local_folder_message">Dette vil slette alle lokale beskeder fra mappen. Ingen beskeder slettes fra serveren.</string>
     <string name="dialog_confirm_clear_local_folder_action">Rens beskeder</string>
     <string name="dialog_confirm_delete_title">Bekræft sletning</string>
@@ -615,7 +615,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Server søge begrænsning</string>
+    <string name="account_settings_remote_search_num_label">Server søgebegrænsning</string>
     <string name="remote_search_sending_query">Sender forspørgsel til server</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Henter %d svar</item>
@@ -668,7 +668,7 @@
     <string name="address_type_mobile">Mobil</string>
     <string name="compose_error_no_draft_folder">Ingen kladde-mappe konfigureret for denne konto!</string>
     <string name="compose_error_no_key_configured">Ingen nøgle er konfigureret til denne konto! Tjek dine indstillinger.</string>
-    <string name="error_crypto_provider_incompatible">Kryptoleverandør bruger inkompatibel version. Kontroller dine indstillinger.</string>
+    <string name="error_crypto_provider_incompatible">Kryptoleverandør bruger inkompatibel version. Kontroller dine indstillinger!</string>
     <string name="error_crypto_provider_connect">Kan ikke forbinde til krypterings-udbyderen, kontroller indstillingerne eller klik krypteringsikonet for at prøve igen!</string>
     <string name="error_crypto_provider_ui_required">Ende-til-ende kryptering mislykkes initialisering, kontrollere indstillinger</string>
     <string name="error_crypto_inline_attach">PGP/INLINE-metoden understøtter ikke vedhæftninger!</string>
@@ -692,7 +692,7 @@
     <string name="openpgp_dialog_sign_only_plus_verified">Dette krypterer ikke meddelelsen, men gør det muligt at verificere at den blev afsendt ved brug af din nøgle.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Signaturer kan blive ødelagt ved afsendelse til postlister.</string>
     <string name="openpgp_dialog_sign_only_minus_attach">Signaturer bliver måske vist som \'signature.asc\'-vedhæftninger i nogen klienter.</string>
-    <string name="openpgp_dialog_sign_only_neutral_encsigned">Krypterede meddelelser inkluderer altid en signatur</string>
+    <string name="openpgp_dialog_sign_only_neutral_encsigned">Krypterede meddelelser inkluderer altid en signatur.</string>
     <string name="crypto_msg_title_plaintext">Simpel tekst</string>
     <string name="crypto_msg_unencrypted_sign_error">end-to-end signatur indeholder en fejl</string>
     <string name="crypto_msg_incomplete_signed">En komplet hentning af  beskeden er nødvendig for at behandle signaturen</string>

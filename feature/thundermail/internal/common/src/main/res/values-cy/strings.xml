@@ -2,6 +2,7 @@
 <resources>
     <string name="thundermail_redirecting">Yn ailgyfeirio i Thundermail...</string>
     <string name="thundermail_something_went_wrong">Aeth rhywbeth o\'i le</string>
-    <string name="thundermail_browser_is_not_available">Dyw\'r porwr ddim ar gael. Gwiriwch ffurfweddiad eich dyfais.</string>
+    <string name="thundermail_browser_is_not_available">Dyw\'r porwr ddim ar gael. Gwiriwch ffurfweddiad eich dyfais</string>
     <string name="thundermail_operation_was_canceled">Diddymwyd y weithred</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Gwall anhysbys. Ystyriwch adrodd amdano.</string>
 </resources>

@@ -950,4 +950,7 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="changelog_type_changed_text">GEÄNDERT</string>
     <string name="notification_show_contact_picture_title">Kontaktbilder in Benachrichtigungen anzeigen</string>
     <string name="notification_show_contact_picture_summary">Profilbild der Absender in Benachrichtigungen über neue Nachrichten anzeigen</string>
+    <string name="animation_setting_on">Ein</string>
+    <string name="animation_setting_off">Aus</string>
+    <string name="animation_setting_follow_system">Systemstandard verwenden</string>
 </resources>

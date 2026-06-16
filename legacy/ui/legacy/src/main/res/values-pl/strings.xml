@@ -959,4 +959,7 @@
     <string name="changelog_type_fixed_text">NAPRAWIONE</string>
     <string name="notification_show_contact_picture_title">Pokazuj zdjęcia kontaktów w powiadomieniach</string>
     <string name="notification_show_contact_picture_summary">Wyświetlaj awatary nadawców w powiadomieniach o nowych wiadomościach</string>
+    <string name="animation_setting_on">Włącz</string>
+    <string name="animation_setting_off">Wyłącz</string>
+    <string name="animation_setting_follow_system">Użyj domyślnych systemu</string>
 </resources>

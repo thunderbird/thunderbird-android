@@ -952,4 +952,7 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="unknown_sender">&lt;Okänd avsändare&gt;</string>
     <string name="notification_show_contact_picture_title">Visa kontaktbilder i aviseringar</string>
     <string name="notification_show_contact_picture_summary">Visa avsändaravatarer i aviseringar om nya meddelanden</string>
+    <string name="animation_setting_on">På</string>
+    <string name="animation_setting_off">Av</string>
+    <string name="animation_setting_follow_system">Använd systemstandard</string>
 </resources>

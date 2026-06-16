@@ -952,4 +952,7 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="notification_action_star">Märgi tähega</string>
     <string name="notification_show_contact_picture_title">Näita teavitustes kontaktide pilte</string>
     <string name="notification_show_contact_picture_summary">Näita uute kirjade teavitustes kontaktide tunnuspilte</string>
+    <string name="animation_setting_on">Sisselülitatud</string>
+    <string name="animation_setting_off">Väljalülitatud</string>
+    <string name="animation_setting_follow_system">Kasuta süsteemi vaikimisi eelistust</string>
 </resources>

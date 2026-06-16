@@ -946,4 +946,7 @@
     <string name="changelog_type_fixed_text">GEFIXT</string>
     <string name="notification_show_contact_picture_title">Contactafbeeldingen in notificaties tonen</string>
     <string name="notification_show_contact_picture_summary">Afzenderavatars in nieuw-berichtnotificaties tonen</string>
+    <string name="animation_setting_on">Aan</string>
+    <string name="animation_setting_off">Uit</string>
+    <string name="animation_setting_follow_system">Systeemstandaard gebruiken</string>
 </resources>

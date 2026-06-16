@@ -968,4 +968,7 @@
     <string name="notification_show_contact_picture_title">Показывать изображения контактов в уведомлениях</string>
     <string name="notification_show_contact_picture_summary">Показывать аватары отправителей в уведомлениях о новых сообщениях</string>
     <string name="changelog_latest_label_text">ПОСЛЕДНЕЕ</string>
+    <string name="animation_setting_on">Включена</string>
+    <string name="animation_setting_off">Отключена</string>
+    <string name="animation_setting_follow_system">Как в системе</string>
 </resources>

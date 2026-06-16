@@ -939,4 +939,7 @@
     <string name="changelog_type_fixed_text">修复</string>
     <string name="notification_show_contact_picture_title">在通知中显示联系人图片</string>
     <string name="notification_show_contact_picture_summary">在新邮件通知中显示发件人头像</string>
+    <string name="animation_setting_follow_system">使用系统默认</string>
+    <string name="animation_setting_on">开</string>
+    <string name="animation_setting_off">关</string>
 </resources>

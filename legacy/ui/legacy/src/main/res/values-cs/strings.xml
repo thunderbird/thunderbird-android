@@ -968,4 +968,7 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="changelog_type_changed_text">ZMĚNY</string>
     <string name="notification_show_contact_picture_title">Zobrazit obrázky kontaktů v oznámeních</string>
     <string name="notification_show_contact_picture_summary">Zobrazit avatary odesílatelů v oznámeních o nových zprávách</string>
+    <string name="animation_setting_on">Zapnuty</string>
+    <string name="animation_setting_off">Vypnuty</string>
+    <string name="animation_setting_follow_system">Podle systému</string>
 </resources>

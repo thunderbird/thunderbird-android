@@ -24,4 +24,5 @@
     <string name="debug_settings_feature_flag_apply_changes">Gosod y newidiadau</string>
     <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
     <string name="debug_settings_feature_flag_default_value">gwerth rhagosodedig: %1$b</string>
+    <string name="debug_settings_feature_flag_overridden">"diystyrwyd; "</string>
 </resources>

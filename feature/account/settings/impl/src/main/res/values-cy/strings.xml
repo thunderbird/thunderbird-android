@@ -44,4 +44,5 @@
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">Terfyn chwilio gweinydd</string>
+    <string name="account_settings_remote_search_num_results_entries_10">10</string>
 </resources>

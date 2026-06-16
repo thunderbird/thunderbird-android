@@ -946,4 +946,7 @@
     <string name="changelog_type_fixed_text">FIKST</string>
     <string name="notification_show_contact_picture_title">Kontaktôfbyldingen yn notifikaasjes toane</string>
     <string name="notification_show_contact_picture_summary">Ofstjoerderavatars yn nij-berjochtnotifikaasjes toane</string>
+    <string name="animation_setting_on">Oan</string>
+    <string name="animation_setting_off">Ut</string>
+    <string name="animation_setting_follow_system">Systeemstandert brûke</string>
 </resources>
