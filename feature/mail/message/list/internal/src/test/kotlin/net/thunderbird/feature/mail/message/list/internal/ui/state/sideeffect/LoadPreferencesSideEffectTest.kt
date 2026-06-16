@@ -1,11 +1,9 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 
 import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
-import dev.mokkery.matcher.any
-import dev.mokkery.spy
-import dev.mokkery.verify
-import dev.mokkery.verify.VerifyMode
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +14,7 @@ import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.feature.mail.message.list.domain.DomainContract.UseCase.GetMessageListPreferences
+import net.thunderbird.feature.mail.message.list.internal.fakes.RecordingFunction
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
@@ -68,11 +67,11 @@ class LoadPreferencesSideEffectTest : BaseSideEffectHandlerTest() {
     fun `handle() should start getMessageListPreferences flow and dispatch UpdatePreferences event`() =
         runTest(UnconfinedTestDispatcher()) {
             // Arrange
-            val dispatch = spy<(MessageListEvent) -> Unit>(obj = {})
+            val dispatch = RecordingFunction<MessageListEvent>()
             val initialPreferences = createMessageListPreferences(density = UiDensity.Compact)
             val fakeGetMessageListPreferences = FakeGetMessageListPreferences(initialPreferences)
             val testSubject = LoadPreferencesSideEffect(
-                dispatch = dispatch,
+                dispatch = dispatch.function,
                 scope = backgroundScope,
                 logger = TestLogger(),
                 getMessageListPreferences = fakeGetMessageListPreferences,
@@ -84,9 +83,7 @@ class LoadPreferencesSideEffectTest : BaseSideEffectHandlerTest() {
             testSubject.handle(event = MessageListEvent.LoadConfigurations, oldState = oldState, newState = newState)
 
             // Assert
-            verify(mode = VerifyMode.exactly(1)) {
-                dispatch(MessageListEvent.UpdatePreferences(initialPreferences))
-            }
+            assertThat(dispatch.calls).containsExactly(MessageListEvent.UpdatePreferences(initialPreferences))
         }
 
     @Test
@@ -94,11 +91,11 @@ class LoadPreferencesSideEffectTest : BaseSideEffectHandlerTest() {
     fun `getMessageListPreferences() should dispatch UpdatePreferences event whenever a new preferences is emitted`() =
         runTest(UnconfinedTestDispatcher()) {
             // Arrange
-            val dispatch = spy<(MessageListEvent) -> Unit>(obj = {})
+            val dispatch = RecordingFunction<MessageListEvent>()
             val initialPreferences = createMessageListPreferences(density = UiDensity.Compact)
             val fakeGetMessageListPreferences = FakeGetMessageListPreferences(initialPreferences)
             val testSubject = LoadPreferencesSideEffect(
-                dispatch = dispatch,
+                dispatch = dispatch.function,
                 scope = backgroundScope,
                 logger = TestLogger(),
                 getMessageListPreferences = fakeGetMessageListPreferences,
@@ -121,9 +118,7 @@ class LoadPreferencesSideEffectTest : BaseSideEffectHandlerTest() {
             }
 
             // Assert
-            verify(mode = VerifyMode.exactly(11)) {
-                dispatch(any())
-            }
+            assertThat(dispatch.calls).hasSize(11)
         }
 
     private inner class FakeGetMessageListPreferences(

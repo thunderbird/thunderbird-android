@@ -2,8 +2,6 @@ package net.thunderbird.feature.mail.message.list.internal.domain.usecase
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import dev.mokkery.spy
-import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -24,9 +22,7 @@ class GetSortCriteriaPerAccountTest {
     fun `invoke should return default sort type when accounts are empty`() = runTest {
         // Arrange
         val defaultSortCriteria = SortCriteria(primary = SortType.DateDesc)
-        val getDefaultSortCriteria = spy(
-            obj = DomainContract.UseCase.GetDefaultSortCriteria { defaultSortCriteria },
-        )
+        val getDefaultSortCriteria = FakeGetDefaultSortCriteria(defaultSortCriteria)
         val useCase = createTestSubject(
             accounts = emptyList(),
             getDefaultSortCriteria = getDefaultSortCriteria,
@@ -38,7 +34,7 @@ class GetSortCriteriaPerAccountTest {
         // Assert
         val expected = mapOf(null to defaultSortCriteria)
         assertThat(result).isEqualTo(expected)
-        verifySuspend { getDefaultSortCriteria() }
+        getDefaultSortCriteria.assertWasCalledOnce()
     }
 
     @Test
@@ -60,9 +56,7 @@ class GetSortCriteriaPerAccountTest {
             sortAscending = mapOf(DomainSortType.SORT_DATE to false),
         )
 
-        val getDefaultSortCriteria = spy(
-            obj = DomainContract.UseCase.GetDefaultSortCriteria { defaultSortCriteria },
-        )
+        val getDefaultSortCriteria = FakeGetDefaultSortCriteria(defaultSortCriteria)
         val useCase = createTestSubject(
             accounts = listOf(account1, account2),
             getDefaultSortCriteria = getDefaultSortCriteria,
@@ -78,7 +72,7 @@ class GetSortCriteriaPerAccountTest {
             accountId2 to SortCriteria(primary = SortType.DateDesc),
         )
         assertThat(result).isEqualTo(expected)
-        verifySuspend { getDefaultSortCriteria() }
+        getDefaultSortCriteria.assertWasCalledOnce()
     }
 
     @Test
@@ -92,9 +86,7 @@ class GetSortCriteriaPerAccountTest {
             sortAscending = emptyMap(),
         )
 
-        val getDefaultSortCriteria = spy(
-            obj = DomainContract.UseCase.GetDefaultSortCriteria { defaultSortCriteria },
-        )
+        val getDefaultSortCriteria = FakeGetDefaultSortCriteria(defaultSortCriteria)
         val useCase = createTestSubject(
             accounts = listOf(account),
             getDefaultSortCriteria = getDefaultSortCriteria,
@@ -109,7 +101,7 @@ class GetSortCriteriaPerAccountTest {
             accountId to SortCriteria(primary = SortType.ArrivalDesc),
         )
         assertThat(result).isEqualTo(expected)
-        verifySuspend { getDefaultSortCriteria() }
+        getDefaultSortCriteria.assertWasCalledOnce()
     }
 
     private fun createTestSubject(
@@ -120,4 +112,19 @@ class GetSortCriteriaPerAccountTest {
         getDefaultSortCriteria = getDefaultSortCriteria,
         ioDispatcher = UnconfinedTestDispatcher(),
     )
+
+    private class FakeGetDefaultSortCriteria(
+        private val sortCriteria: SortCriteria,
+    ) : DomainContract.UseCase.GetDefaultSortCriteria {
+        private var callCount = 0
+
+        override suspend fun invoke(): SortCriteria {
+            callCount += 1
+            return sortCriteria
+        }
+
+        fun assertWasCalledOnce() {
+            assertThat(callCount).isEqualTo(1)
+        }
+    }
 }

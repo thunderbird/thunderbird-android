@@ -1,15 +1,15 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
-import dev.mokkery.spy
-import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.mail.message.list.internal.fakes.RecordingSuspendFunction
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 
@@ -87,8 +87,8 @@ class AllConfigurationsReadySideEffectTest : BaseSideEffectHandlerTest() {
     @Test
     fun `handle() should dispatch AllConfigsReady event`() = runTest {
         // Arrange
-        val dispatch = spy<suspend (MessageListEvent) -> Unit>(obj = {})
-        val testSubject = createTestSubject(dispatch = dispatch)
+        val dispatch = RecordingSuspendFunction<MessageListEvent>()
+        val testSubject = createTestSubject(dispatch = dispatch.function)
         val state = createReadyWarmingUpState()
 
         // Act
@@ -99,7 +99,7 @@ class AllConfigurationsReadySideEffectTest : BaseSideEffectHandlerTest() {
         )
 
         // Assert
-        verifySuspend { dispatch(MessageListEvent.AllConfigsReady) }
+        assertThat(dispatch.calls).containsExactly(MessageListEvent.AllConfigsReady)
     }
 
     @Test

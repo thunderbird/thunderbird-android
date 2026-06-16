@@ -1,14 +1,14 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
-import dev.mokkery.spy
-import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.mail.message.list.internal.fakes.RecordingSuspendFunction
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ui.ToggleMessageSideEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
@@ -87,8 +87,8 @@ class ToggleMessageSideEffectTest : BaseSideEffectHandlerTest() {
     fun `handle() should dispatch ToggleSelectMessages with clicked message`() = runTest {
         // Arrange
         val message = createMessageItemUi()
-        val dispatch = spy<suspend (MessageListEvent) -> Unit>(obj = {})
-        val testSubject = createTestSubject(dispatch = dispatch)
+        val dispatch = RecordingSuspendFunction<MessageListEvent>()
+        val testSubject = createTestSubject(dispatch = dispatch.function)
 
         // Act
         testSubject.handle(
@@ -98,7 +98,7 @@ class ToggleMessageSideEffectTest : BaseSideEffectHandlerTest() {
         )
 
         // Assert
-        verifySuspend { dispatch(MessageItemEvent.ToggleSelectMessages(message)) }
+        assertThat(dispatch.calls).containsExactly(MessageItemEvent.ToggleSelectMessages(message))
     }
 
     @Test

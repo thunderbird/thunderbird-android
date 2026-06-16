@@ -2,17 +2,14 @@ package net.thunderbird.feature.mail.message.list.internal.domain.usecase
 
 import app.cash.turbine.test
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.hasMessage
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.folders.FolderServerId
-import dev.mokkery.matcher.any
-import dev.mokkery.spy
-import dev.mokkery.verify
-import dev.mokkery.verify.VerifyMode.Companion.exactly
-import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -44,7 +41,7 @@ class CreateArchiveFolderTest {
         // Arrange
         val accountUuid = Uuid.random().toHexString()
         val accounts = createAccountList(accountUuid = accountUuid)
-        val accountManager = spy(FakeLegacyAccountManager(accounts))
+        val accountManager = FakeLegacyAccountManager(accounts)
         val testSubject = createTestSubject(accountManager = accountManager)
         val folderName = ""
 
@@ -59,7 +56,7 @@ class CreateArchiveFolderTest {
                 .prop("folderName") { it.folderName }
                 .isEqualTo(folderName)
 
-            verify(exactly(0)) { accountManager.getById(id = any()) }
+            assertThat(accountManager.getByIdCalls).isEmpty()
 
             awaitComplete()
         }
@@ -71,7 +68,7 @@ class CreateArchiveFolderTest {
             // Arrange
             val accountUuid = Uuid.random().toHexString()
             val accounts = createAccountList()
-            val accountManager = spy(FakeLegacyAccountManager(accounts))
+            val accountManager = FakeLegacyAccountManager(accounts)
             val testSubject = createTestSubject(accountManager = accountManager)
             val folderName = "TheFolder"
 
@@ -84,7 +81,7 @@ class CreateArchiveFolderTest {
                     .prop("error") { it.error }
                     .isEqualTo(CreateArchiveFolderOutcome.Error.AccountNotFound)
 
-                verify(exactly(1)) { accountManager.getById(AccountIdFactory.of(accountUuid)) }
+                assertThat(accountManager.getByIdCalls).containsExactly(AccountIdFactory.of(accountUuid))
                 awaitComplete()
             }
         }
@@ -97,7 +94,7 @@ class CreateArchiveFolderTest {
             val accounts = createAccountList(accountUuid)
             val exception = MessagingException("this is an error")
             val backendFolderUpdater = FakeBackendFolderUpdater(exception)
-            val remoteFolderCreatorFactory = spy(FakeRemoteFolderCreatorFactory(outcome = null))
+            val remoteFolderCreatorFactory = FakeRemoteFolderCreatorFactory(outcome = null)
             val testSubject = createTestSubject(
                 accounts = accounts,
                 backendStorageFactory = FakeBackendStorageFactory(backendFolderUpdater),
@@ -116,9 +113,7 @@ class CreateArchiveFolderTest {
                     .prop("throwable") { it.throwable }
                     .hasMessage(exception.message)
 
-                verifySuspend(exactly(0)) {
-                    remoteFolderCreatorFactory.create(accountId = any())
-                }
+                assertThat(remoteFolderCreatorFactory.createCalls).isEmpty()
 
                 awaitComplete()
             }
@@ -135,7 +130,7 @@ class CreateArchiveFolderTest {
                     returnEmptySetWhenCreatingFolders = true,
                 ),
             )
-            val remoteFolderCreatorFactory = spy(FakeRemoteFolderCreatorFactory(outcome = null))
+            val remoteFolderCreatorFactory = FakeRemoteFolderCreatorFactory(outcome = null)
             val testSubject = createTestSubject(
                 accounts = accounts,
                 backendStorageFactory = backendStorageFactory,
@@ -153,22 +148,9 @@ class CreateArchiveFolderTest {
                     .prop("folderName") { it.folderName }
                     .isEqualTo(folderName)
 
-                verify(exactly(1)) {
-                    // verify doesn't support verifying the extension function `createFolder`,
-                    // thus we verify the call of `createFolders(list)` instead.
-                    backendStorageFactory.backendFolderUpdater.createFolders(
-                        listOf(
-                            FolderInfo(
-                                serverId = folderName,
-                                name = folderName,
-                                type = LegacyFolderType.ARCHIVE,
-                            ),
-                        ),
-                    )
-                }
-                verifySuspend(exactly(0)) {
-                    remoteFolderCreatorFactory.create(accountId = any())
-                }
+                assertThat(backendStorageFactory.backendFolderUpdater.createFoldersCalls)
+                    .containsExactly(createExpectedFolderInfo(folderName))
+                assertThat(remoteFolderCreatorFactory.createCalls).isEmpty()
                 awaitComplete()
             }
         }
@@ -197,19 +179,8 @@ class CreateArchiveFolderTest {
                 .prop("data") { it.data }
                 .isEqualTo(CreateArchiveFolderOutcome.Success.LocalFolderCreated)
 
-            verify(exactly(1)) {
-                // verify doesn't support verifying the extension function `createFolder`,
-                // thus we verify the call of `createFolders(list)` instead.
-                backendStorageFactory.backendFolderUpdater.createFolders(
-                    listOf(
-                        FolderInfo(
-                            serverId = folderName,
-                            name = folderName,
-                            type = LegacyFolderType.ARCHIVE,
-                        ),
-                    ),
-                )
-            }
+            assertThat(backendStorageFactory.backendFolderUpdater.createFoldersCalls)
+                .containsExactly(createExpectedFolderInfo(folderName))
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -242,19 +213,8 @@ class CreateArchiveFolderTest {
                 .prop("serverId") { it.serverId }
                 .isEqualTo(FolderServerId(folderName))
 
-            verify(exactly(1)) {
-                // verify doesn't support verifying the extension function `createFolder`,
-                // thus we verify the call of `createFolders(list)` instead.
-                backendStorageFactory.backendFolderUpdater.createFolders(
-                    listOf(
-                        FolderInfo(
-                            serverId = folderName,
-                            name = folderName,
-                            type = LegacyFolderType.ARCHIVE,
-                        ),
-                    ),
-                )
-            }
+            assertThat(backendStorageFactory.backendFolderUpdater.createFoldersCalls)
+                .containsExactly(createExpectedFolderInfo(folderName))
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -293,19 +253,8 @@ class CreateArchiveFolderTest {
                     ),
                 )
 
-            verify(exactly(1)) {
-                // verify doesn't support verifying the extension function `createFolder`,
-                // thus we verify the call of `createFolders(list)` instead.
-                backendStorageFactory.backendFolderUpdater.createFolders(
-                    listOf(
-                        FolderInfo(
-                            serverId = folderName,
-                            name = folderName,
-                            type = LegacyFolderType.ARCHIVE,
-                        ),
-                    ),
-                )
-            }
+            assertThat(backendStorageFactory.backendFolderUpdater.createFoldersCalls)
+                .containsExactly(createExpectedFolderInfo(folderName))
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -317,7 +266,7 @@ class CreateArchiveFolderTest {
         // Arrange
         val accountUuid = Uuid.random().toHexString()
         val accounts = createAccountList(accountUuid)
-        val accountManager = spy(FakeLegacyAccountManager(accounts))
+        val accountManager = FakeLegacyAccountManager(accounts)
         val backendStorageFactory = FakeBackendStorageFactory(
             FakeBackendFolderUpdater(),
         )
@@ -349,44 +298,26 @@ class CreateArchiveFolderTest {
                 .prop("data") { it.data }
                 .isEqualTo(CreateArchiveFolderOutcome.Success.Created)
 
-            verify(exactly(1)) { accountManager.getById(AccountIdFactory.of(accountUuid)) }
-            verify(exactly(1)) {
-                // verify doesn't support verifying the extension function `createFolder`,
-                // thus we verify the call of `createFolders(list)` instead.
-                backendStorageFactory.backendFolderUpdater.createFolders(
-                    listOf(
-                        FolderInfo(
-                            serverId = folderName,
-                            name = folderName,
-                            type = LegacyFolderType.ARCHIVE,
-                        ),
+            assertThat(accountManager.getByIdCalls).containsExactly(AccountIdFactory.of(accountUuid))
+            assertThat(backendStorageFactory.backendFolderUpdater.createFoldersCalls)
+                .containsExactly(createExpectedFolderInfo(folderName))
+
+            assertThat(remoteFolderCreatorFactory.instance.createCalls)
+                .containsExactly(
+                    FakeRemoteFolderCreatorFactory.CreateCall(
+                        folderServerId = FolderServerId(folderName),
+                        mustCreate = false,
+                        folderType = LegacyFolderType.ARCHIVE,
                     ),
                 )
-            }
 
-            verifySuspend(exactly(1)) {
-                remoteFolderCreatorFactory.instance.create(
-                    folderServerId = FolderServerId(folderName),
-                    mustCreate = false,
-                    folderType = LegacyFolderType.ARCHIVE,
-                )
-            }
+            assertThat(specialFolderUpdaterFactory.specialFolderUpdater.setSpecialFolderCalls)
+                .transform { calls -> calls.map { it.type to it.selection } }
+                .containsExactly(FolderType.ARCHIVE to SpecialFolderSelection.MANUAL)
 
-            verify(exactly(1)) {
-                specialFolderUpdaterFactory.specialFolderUpdater.setSpecialFolder(
-                    type = FolderType.ARCHIVE,
-                    folderId = any(),
-                    selection = SpecialFolderSelection.MANUAL,
-                )
-            }
+            assertThat(specialFolderUpdaterFactory.specialFolderUpdater.updateSpecialFoldersCalls).isEqualTo(1)
 
-            verify(exactly(1)) {
-                specialFolderUpdaterFactory.specialFolderUpdater.updateSpecialFolders()
-            }
-
-            verify(exactly(1)) {
-                accountManager.saveAccount(account = any())
-            }
+            assertThat(accountManager.savedAccounts.map { it.id }).containsExactly(AccountIdFactory.of(accountUuid))
 
             awaitComplete()
         }
@@ -421,22 +352,47 @@ class CreateArchiveFolderTest {
         val id = if (it == 0) AccountIdFactory.of(accountUuid) else AccountIdFactory.create()
         FakeLegacyAccount(id = id)
     }
+
+    private fun createExpectedFolderInfo(folderName: String) = listOf(
+        FolderInfo(
+            serverId = folderName,
+            name = folderName,
+            type = LegacyFolderType.ARCHIVE,
+        ),
+    )
 }
 
-private open class FakeRemoteFolderCreatorFactory(
-    protected open val outcome: Outcome<RemoteFolderCreationOutcome.Success, RemoteFolderCreationOutcome.Error>?,
+private class FakeRemoteFolderCreatorFactory(
+    private val outcome: Outcome<RemoteFolderCreationOutcome.Success, RemoteFolderCreationOutcome.Error>?,
 ) : RemoteFolderCreator.Factory {
-    open var instance: RemoteFolderCreator = spy<RemoteFolderCreator>(FakeRemoteFolderCreator())
-        protected set
+    val createCalls = mutableListOf<AccountId>()
+    val instance = FakeRemoteFolderCreator()
 
-    override suspend fun create(accountId: AccountId): RemoteFolderCreator = instance
+    override suspend fun create(accountId: AccountId): RemoteFolderCreator {
+        createCalls += accountId
+        return instance
+    }
 
-    private open inner class FakeRemoteFolderCreator : RemoteFolderCreator {
+    data class CreateCall(
+        val folderServerId: FolderServerId,
+        val mustCreate: Boolean,
+        val folderType: LegacyFolderType,
+    )
+
+    inner class FakeRemoteFolderCreator : RemoteFolderCreator {
+        val createCalls = mutableListOf<CreateCall>()
+
         override suspend fun create(
             folderServerId: FolderServerId,
             mustCreate: Boolean,
             folderType: LegacyFolderType,
-        ): Outcome<RemoteFolderCreationOutcome.Success, RemoteFolderCreationOutcome.Error> =
-            outcome ?: error("Not expected to be called in this context.")
+        ): Outcome<RemoteFolderCreationOutcome.Success, RemoteFolderCreationOutcome.Error> {
+            createCalls += CreateCall(
+                folderServerId = folderServerId,
+                mustCreate = mustCreate,
+                folderType = folderType,
+            )
+            return outcome ?: error("Not expected to be called in this context.")
+        }
     }
 }
