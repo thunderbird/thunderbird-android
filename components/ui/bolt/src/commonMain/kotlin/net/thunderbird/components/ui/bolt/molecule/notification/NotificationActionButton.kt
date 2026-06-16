@@ -15,7 +15,7 @@ import net.thunderbird.components.ui.bolt.atom.button.ButtonText
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.theme.LocalContentColor
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun NotificationActionButton(
@@ -29,9 +29,9 @@ fun NotificationActionButton(
             movableContentOf {
                 Icon(
                     imageVector = Icons.Outlined.OpenInNew,
-                    modifier = Modifier.size(MainTheme.sizes.iconSmall),
+                    modifier = Modifier.size(BoltTheme.sizes.iconSmall),
                 )
-                Spacer(modifier = Modifier.width(MainTheme.spacings.default))
+                Spacer(modifier = Modifier.width(BoltTheme.spacings.default))
             }
         } else {
             null
@@ -51,7 +51,7 @@ fun NotificationActionButton(
 private fun NotificationActionButtonPreview() {
     PreviewWithThemesLightDark {
         Column(
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         ) {
             NotificationActionButton(
                 onClick = {},

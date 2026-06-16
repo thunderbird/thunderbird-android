@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +54,7 @@ internal fun PullToRefreshBoxPreview() {
             isRefreshing = false,
             onRefresh = {},
             modifier = Modifier.fillMaxWidth()
-                .height(MainTheme.sizes.medium),
+                .height(BoltTheme.sizes.medium),
         ) {
             Surface {
                 TextBodyLarge("Pull to refresh")
@@ -71,7 +71,7 @@ internal fun PullToRefreshBoxRefreshingPreview() {
             isRefreshing = true,
             onRefresh = {},
             modifier = Modifier.fillMaxWidth()
-                .height(MainTheme.sizes.medium),
+                .height(BoltTheme.sizes.medium),
         ) {
             Surface {
                 TextBodyLarge("Refreshing ...")

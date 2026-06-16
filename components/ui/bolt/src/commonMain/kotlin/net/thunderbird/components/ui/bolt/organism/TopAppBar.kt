@@ -12,7 +12,7 @@ import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * A top app bar with a title, subtitle, navigation icon, and actions.
@@ -36,7 +36,7 @@ fun TopAppBar(
         navigationIcon = navigationIcon,
         actions = actions,
         colors = topAppBarColors(
-            containerColor = MainTheme.colors.surfaceContainer,
+            containerColor = BoltTheme.colors.surfaceContainer,
         ),
     )
 }

@@ -15,7 +15,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.molecule.notification.NotificationActionButton
 import net.thunderbird.components.ui.bolt.organism.banner.BannerNotificationCardDefaults
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * Displays an error banner global notification card.
@@ -54,7 +54,7 @@ private fun ErrorBannerGlobalNotificationCardStringTitlePreview() {
                         onClick = {},
                     )
                 },
-                modifier = Modifier.padding(top = MainTheme.spacings.quadruple),
+                modifier = Modifier.padding(top = BoltTheme.spacings.quadruple),
             )
         }
     }
@@ -80,7 +80,7 @@ private fun ErrorBannerGlobalNotificationCardAnnotatedStringTitlePreview() {
                         onClick = {},
                     )
                 },
-                modifier = Modifier.padding(top = MainTheme.spacings.quadruple),
+                modifier = Modifier.padding(top = BoltTheme.spacings.quadruple),
             )
         }
     }

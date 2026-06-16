@@ -17,7 +17,7 @@ import net.thunderbird.components.ui.bolt.PreviewWithThemeLightDark
 import net.thunderbird.components.ui.bolt.atom.tab.TabSecondary
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * A molecule component that displays a scrollable row of secondary tabs.
@@ -49,7 +49,7 @@ fun TabRowSecondary(
     SecondaryScrollableTabRow(
         selectedTabIndex = selectedTabIndex,
         edgePadding = edgePadding,
-        contentColor = MainTheme.colors.onSurfaceVariant,
+        contentColor = BoltTheme.colors.onSurfaceVariant,
         indicator = {
             TabRowDefaults.SecondaryIndicator(
                 modifier = Modifier.tabIndicatorOffset(selectedTabIndex, matchContentSize = false),
@@ -63,7 +63,7 @@ fun TabRowSecondary(
 
 object TabRowSecondaryDefaults {
     val EdgePadding = TabRowDefaults.ScrollableTabRowEdgeStartPadding
-    val IndicatorColor @Composable get() = MainTheme.colors.outline
+    val IndicatorColor @Composable get() = BoltTheme.colors.outline
 }
 
 @PreviewLightDark
@@ -99,7 +99,7 @@ private fun TabRowSecondaryIndicatorChangesPreview() {
         TabRowSecondary(
             selectedTabIndex = selectedTab,
             modifier = Modifier.fillMaxWidth(),
-            indicatorColor = MainTheme.colors.tertiary,
+            indicatorColor = BoltTheme.colors.tertiary,
         ) {
             tabs.forEachIndexed { index, tab ->
                 TabSecondary(
@@ -127,7 +127,7 @@ private fun TabRowSecondaryEdgePaddingPreview() {
         TabRowSecondary(
             selectedTabIndex = selectedTab,
             modifier = Modifier.fillMaxWidth(),
-            edgePadding = MainTheme.spacings.zero,
+            edgePadding = BoltTheme.spacings.zero,
         ) {
             tabs.forEachIndexed { index, tab ->
                 TabSecondary(

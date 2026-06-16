@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun TextLabelLarge(
@@ -34,7 +34,7 @@ fun TextLabelLarge(
         textAlign = textAlign,
         overflow = overflow,
         maxLines = maxLines,
-        style = MainTheme.typography.labelLarge,
+        style = BoltTheme.typography.labelLarge,
     )
 }
 
@@ -55,7 +55,7 @@ fun TextLabelLarge(
         textAlign = textAlign,
         overflow = overflow,
         maxLines = maxLines,
-        style = MainTheme.typography.labelLarge,
+        style = BoltTheme.typography.labelLarge,
         inlineContent = inlineContent,
     )
 }
@@ -91,7 +91,7 @@ internal fun TextLabelLargeWithColorPreview() {
     PreviewWithThemes {
         TextLabelLarge(
             text = "Text Label Large with color",
-            color = MainTheme.colors.primary,
+            color = BoltTheme.colors.primary,
         )
     }
 }

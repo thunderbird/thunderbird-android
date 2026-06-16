@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * Badge icon composable to display an badge icon.
@@ -28,7 +28,7 @@ fun BadgeIcon(
     Material3Icon(
         imageVector = imageVector,
         contentDescription = contentDescription,
-        modifier = modifier.size(MainTheme.sizes.badge),
+        modifier = modifier.size(BoltTheme.sizes.badge),
         tint = tint ?: Material3LocalContentColor.current,
     )
 }

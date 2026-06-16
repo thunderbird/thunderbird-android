@@ -41,7 +41,7 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import kotlinx.collections.immutable.PersistentList
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import org.koin.android.ext.android.inject
@@ -139,7 +139,7 @@ fun AccountSetupCompositionScreen(
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
             ) {
                 TextInput(
                     text = senderName,
@@ -152,7 +152,7 @@ fun AccountSetupCompositionScreen(
                     onValueChange = { onEvent(Event.SenderEmailChange(it)) },
                     label = stringResource(id = R.string.account_settings_email_label),
                     modifier = Modifier
-                        .padding(horizontal = MainTheme.spacings.double)
+                        .padding(horizontal = BoltTheme.spacings.double)
                         .fillMaxWidth(),
                 )
                 TextFieldOutlinedEmailAddress(
@@ -160,7 +160,7 @@ fun AccountSetupCompositionScreen(
                     onValueChange = { onEvent(Event.BccEmailChange(it)) },
                     label = stringResource(id = R.string.account_settings_always_bcc_label),
                     modifier = Modifier
-                        .padding(horizontal = MainTheme.spacings.double)
+                        .padding(horizontal = BoltTheme.spacings.double)
                         .fillMaxWidth(),
                 )
                 Row(
@@ -183,13 +183,13 @@ fun AccountSetupCompositionScreen(
                         value = signature,
                         onValueChange = { onEvent(Event.SignatureChange(it)) },
                         modifier = Modifier
-                            .padding(horizontal = MainTheme.spacings.double)
+                            .padding(horizontal = BoltTheme.spacings.double)
                             .fillMaxWidth(),
                     )
-                    Spacer(modifier = Modifier.height(MainTheme.spacings.half))
+                    Spacer(modifier = Modifier.height(BoltTheme.spacings.half))
                     TextBodyLarge(
                         text = stringResource(R.string.account_settings_signature__location_label),
-                        modifier = Modifier.padding(horizontal = MainTheme.spacings.double),
+                        modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
                     )
 
                     RadioGroup(
@@ -197,7 +197,7 @@ fun AccountSetupCompositionScreen(
                         options = signatureLocations,
                         optionTitle = { it.second },
                         selectedOption = selectedSignatureLocations,
-                        modifier = Modifier.padding(horizontal = MainTheme.spacings.default),
+                        modifier = Modifier.padding(horizontal = BoltTheme.spacings.default),
                     )
                 }
             }

@@ -28,7 +28,7 @@ import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
 import net.thunderbird.components.ui.bolt.atom.button.ButtonOutlined
 import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
 import net.thunderbird.components.ui.bolt.template.Scaffold
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.contract.mvi.observe
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -90,10 +90,10 @@ private fun ButtonBar(
         ResponsiveWidthContainer(
             modifier = Modifier
                 .padding(
-                    start = MainTheme.spacings.double,
-                    end = MainTheme.spacings.double,
-                    top = MainTheme.spacings.half,
-                    bottom = MainTheme.spacings.half,
+                    start = BoltTheme.spacings.double,
+                    end = BoltTheme.spacings.double,
+                    top = BoltTheme.spacings.half,
+                    bottom = BoltTheme.spacings.half,
                 ),
         ) { contentPadding ->
             Column(modifier = Modifier.animateContentSize().padding(contentPadding)) {

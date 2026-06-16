@@ -18,7 +18,7 @@ import net.thunderbird.components.ui.bolt.atom.tab.TabPrimary
 import net.thunderbird.components.ui.bolt.atom.tab.TabSecondary
 import net.thunderbird.components.ui.bolt.molecule.tab.TabRowPrimary
 import net.thunderbird.components.ui.bolt.molecule.tab.TabRowSecondary
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.fullSpanItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionHeaderItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionSubtitleItem
@@ -58,8 +58,8 @@ private fun LazyGridScope.primaryTabRow() {
         TabRowPrimary(
             selectedTabIndex = selectedTab,
             modifier = Modifier.fillMaxWidth(),
-            indicatorColor = MainTheme.colors.tertiary,
-            indicatorWidth = MainTheme.sizes.medium,
+            indicatorColor = BoltTheme.colors.tertiary,
+            indicatorWidth = BoltTheme.sizes.medium,
         ) {
             tabs.forEachIndexed { index, tab ->
                 TabPrimary(
@@ -83,7 +83,7 @@ private fun LazyGridScope.primaryTabRow() {
         TabRowPrimary(
             selectedTabIndex = selectedTab,
             modifier = Modifier.fillMaxWidth(),
-            edgePadding = MainTheme.spacings.zero,
+            edgePadding = BoltTheme.spacings.zero,
         ) {
             tabs.forEachIndexed { index, tab ->
                 TabPrimary(
@@ -133,7 +133,7 @@ private fun TabRowPrimaryWithIconAndMaybeBadge(showBadge: Boolean) {
     TabRowPrimary(
         selectedTabIndex = selectedTab,
         modifier = Modifier.fillMaxWidth(),
-        edgePadding = MainTheme.spacings.zero,
+        edgePadding = BoltTheme.spacings.zero,
     ) {
         tabs.forEachIndexed { index, tab ->
             TabPrimary(
@@ -187,7 +187,7 @@ private fun LazyGridScope.secondaryTabRow() {
         TabRowSecondary(
             selectedTabIndex = selectedTab,
             modifier = Modifier.fillMaxWidth(),
-            indicatorColor = MainTheme.colors.tertiary,
+            indicatorColor = BoltTheme.colors.tertiary,
         ) {
             tabs.forEachIndexed { index, tab ->
                 TabSecondary(
@@ -211,7 +211,7 @@ private fun LazyGridScope.secondaryTabRow() {
         TabRowSecondary(
             selectedTabIndex = selectedTab,
             modifier = Modifier.fillMaxWidth(),
-            edgePadding = MainTheme.spacings.zero,
+            edgePadding = BoltTheme.spacings.zero,
         ) {
             tabs.forEachIndexed { index, tab ->
                 TabSecondary(

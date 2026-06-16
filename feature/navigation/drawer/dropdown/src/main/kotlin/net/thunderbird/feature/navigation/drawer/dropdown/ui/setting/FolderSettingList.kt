@@ -9,7 +9,7 @@ import androidx.compose.ui.res.stringResource
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.common.window.WindowHeightSizeClass
 import net.thunderbird.components.ui.bolt.common.window.calculateWindowSizeInfo
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 
 @Composable
@@ -29,7 +29,7 @@ internal fun FolderSettingList(
 
     SettingList(
         modifier = modifier
-            .padding(vertical = MainTheme.spacings.default)
+            .padding(vertical = BoltTheme.spacings.default)
             .fillMaxWidth(),
     ) {
         if (isUnifiedAccount.not()) {

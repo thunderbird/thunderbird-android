@@ -17,7 +17,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.molecule.notification.NotificationActionButton
 import net.thunderbird.components.ui.bolt.organism.banner.BannerNotificationCardDefaults
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * Displays a warning banner global notification card.
@@ -56,7 +56,7 @@ private fun WarningBannerGlobalNotificationCardStringTitlePreview() {
                         onClick = {},
                     )
                 },
-                modifier = Modifier.padding(top = MainTheme.spacings.quadruple),
+                modifier = Modifier.padding(top = BoltTheme.spacings.quadruple),
             )
         }
     }
@@ -71,7 +71,7 @@ private fun WarningBannerGlobalNotificationCardNoActionPreview() {
         ) {
             WarningBannerGlobalNotificationCard(
                 text = "Offline. No internet connection found.",
-                modifier = Modifier.padding(top = MainTheme.spacings.quadruple),
+                modifier = Modifier.padding(top = BoltTheme.spacings.quadruple),
             )
         }
     }
@@ -94,7 +94,7 @@ private fun WarningBannerGlobalNotificationCardLongTextPreview(
                         onClick = {},
                     )
                 },
-                modifier = Modifier.padding(top = MainTheme.spacings.quadruple),
+                modifier = Modifier.padding(top = BoltTheme.spacings.quadruple),
             )
         }
     }
@@ -111,7 +111,7 @@ private fun WarningBannerGlobalNotificationCardLongNoActionTextPreview(
         ) {
             WarningBannerGlobalNotificationCard(
                 text = text,
-                modifier = Modifier.padding(top = MainTheme.spacings.quadruple),
+                modifier = Modifier.padding(top = BoltTheme.spacings.quadruple),
             )
         }
     }
@@ -137,7 +137,7 @@ private fun WarningBannerGlobalNotificationCardAnnotatedStringTitlePreview() {
                         onClick = {},
                     )
                 },
-                modifier = Modifier.padding(top = MainTheme.spacings.quadruple),
+                modifier = Modifier.padding(top = BoltTheme.spacings.quadruple),
             )
         }
     }

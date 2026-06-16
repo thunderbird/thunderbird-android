@@ -17,7 +17,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.organism.TopAppBar
 import net.thunderbird.components.ui.bolt.organism.banner.inline.BannerInlineNotificationCardBehaviour
 import net.thunderbird.components.ui.bolt.organism.banner.inline.ErrorBannerInlineNotificationCard
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.action.ResolvedNotificationActionButton
 import net.thunderbird.feature.notification.api.ui.host.visual.BannerInlineVisual
@@ -62,12 +62,12 @@ private fun ErrorNotificationsDialogContent(
                 },
             )
             LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
                 contentPadding = PaddingValues(
-                    top = MainTheme.spacings.default,
-                    start = MainTheme.spacings.double,
-                    end = MainTheme.spacings.double,
-                    bottom = MainTheme.spacings.double,
+                    top = BoltTheme.spacings.default,
+                    start = BoltTheme.spacings.double,
+                    end = BoltTheme.spacings.double,
+                    bottom = BoltTheme.spacings.double,
                 ),
             ) {
                 items(

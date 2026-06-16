@@ -13,7 +13,7 @@ import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * A Composable function that displays a preview of the content in both Thunderbird and K-9 Mail themes.
@@ -24,11 +24,11 @@ import net.thunderbird.components.ui.bolt.theme.MainTheme
  * @param useRow Whether to display the previews in a row or column. Defaults to `false` (column).
  * @param useScrim Whether to display a scrim behind the content. Defaults to `false`.
  * @param scrimAlpha The alpha value for the scrim. Defaults to `0.8f`.
- * @param scrimPadding The padding for the scrim. Defaults to `MainTheme.spacings.triple`.
- * @param arrangement The arrangement for the previews. Defaults to `Arrangement.spacedBy(MainTheme.spacings.triple)`.
+ * @param scrimPadding The padding for the scrim. Defaults to `BoltTheme.spacings.triple`.
+ * @param arrangement The arrangement for the previews. Defaults to `Arrangement.spacedBy(BoltTheme.spacings.triple)`.
  * @param content The content to be displayed in the previews.
  *
- * @see net.thunderbird.components.ui.bolt.theme.default.defaultThemeSpacings for MainTheme.spacings
+ * @see net.thunderbird.components.ui.bolt.theme.default.defaultThemeSpacings for BoltTheme.spacings
  */
 @Composable
 fun PreviewWithThemesLightDark(
@@ -94,7 +94,7 @@ fun PreviewWithThemeLightDark(
             if (useScrim) {
                 Box(
                     modifier = Modifier
-                        .background(MainTheme.colors.scrim.copy(alpha = scrimAlpha))
+                        .background(BoltTheme.colors.scrim.copy(alpha = scrimAlpha))
                         .padding(scrimPadding),
                 ) {
                     movableContent()

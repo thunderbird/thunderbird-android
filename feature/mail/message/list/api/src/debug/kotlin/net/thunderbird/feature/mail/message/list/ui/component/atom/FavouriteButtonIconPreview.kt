@@ -10,22 +10,22 @@ import androidx.compose.ui.Modifier
 import net.thunderbird.components.ui.bolt.PreviewLightDarkLandscape
 import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
 import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @PreviewLightDarkLandscape
 @Composable
 private fun FavouriteButtonIconPreview() {
     PreviewWithThemesLightDark(useRow = true) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
             modifier = Modifier.padding(
-                vertical = MainTheme.spacings.quadruple,
-                horizontal = MainTheme.spacings.default,
+                vertical = BoltTheme.spacings.quadruple,
+                horizontal = BoltTheme.spacings.default,
             ),
         ) {
             TextLabelLarge(text = "Favourite = false")
             FavouriteButtonIcon(favourite = false, onFavouriteChange = {})
-            Spacer(modifier = Modifier.height(MainTheme.spacings.default))
+            Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
             TextLabelLarge(text = "Favourite = true")
             FavouriteButtonIcon(favourite = true, onFavouriteChange = {})
         }

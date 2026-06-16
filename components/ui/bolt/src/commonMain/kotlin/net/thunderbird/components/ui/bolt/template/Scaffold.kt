@@ -15,7 +15,7 @@ import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevices
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Suppress("LongParameterList")
 @Composable
@@ -62,23 +62,23 @@ internal fun ScaffoldPreview() {
         Scaffold(
             topBar = {
                 Surface(
-                    color = MainTheme.colors.error,
+                    color = BoltTheme.colors.error,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(MainTheme.sizes.topBarHeight),
+                        .height(BoltTheme.sizes.topBarHeight),
                 ) {}
             },
             bottomBar = {
                 Surface(
-                    color = MainTheme.colors.warning,
+                    color = BoltTheme.colors.warning,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(MainTheme.sizes.bottomBarHeight),
+                        .height(BoltTheme.sizes.bottomBarHeight),
                 ) {}
             },
         ) { contentPadding ->
             Surface(
-                color = MainTheme.colors.info,
+                color = BoltTheme.colors.info,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(contentPadding),
@@ -94,18 +94,18 @@ internal fun ScaffoldWitFabPreview() {
         Scaffold(
             topBar = {
                 Surface(
-                    color = MainTheme.colors.error,
+                    color = BoltTheme.colors.error,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(MainTheme.sizes.topBarHeight),
+                        .height(BoltTheme.sizes.topBarHeight),
                 ) {}
             },
             bottomBar = {
                 Surface(
-                    color = MainTheme.colors.warning,
+                    color = BoltTheme.colors.warning,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(MainTheme.sizes.bottomBarHeight),
+                        .height(BoltTheme.sizes.bottomBarHeight),
                 ) {}
             },
             floatingActionButton = {
@@ -116,7 +116,7 @@ internal fun ScaffoldWitFabPreview() {
             },
         ) { contentPadding ->
             Surface(
-                color = MainTheme.colors.surface,
+                color = BoltTheme.colors.surface,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(contentPadding),

@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlin.math.ceil
 import kotlinx.collections.immutable.ImmutableList
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * A lazy vertical grid that automatically calculates its height to fit all items,
@@ -37,8 +37,8 @@ internal fun <T> AutoHeightLazyVerticalGrid(
     items: ImmutableList<T>,
     itemSize: Dp,
     modifier: Modifier = Modifier,
-    horizontalSpacing: Dp = MainTheme.spacings.default,
-    verticalSpacing: Dp = MainTheme.spacings.default,
+    horizontalSpacing: Dp = BoltTheme.spacings.default,
+    verticalSpacing: Dp = BoltTheme.spacings.default,
     itemContent: @Composable (T) -> Unit,
 ) {
     val state = rememberLazyGridState()

@@ -32,7 +32,7 @@ import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
 import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineSmall
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun BasicDialog(
@@ -87,7 +87,7 @@ fun BasicDialog(
             @Composable {
                 TextBodyMedium(
                     text = supportingText,
-                    color = MainTheme.colors.onSurfaceVariant,
+                    color = BoltTheme.colors.onSurfaceVariant,
                 )
             }
         },
@@ -111,17 +111,17 @@ internal fun BasicDialogContent(
 ) {
     Surface(
         modifier = modifier,
-        shape = MainTheme.shapes.extraLarge,
+        shape = BoltTheme.shapes.extraLarge,
     ) {
         Column {
             Column(
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
                 modifier = Modifier
                     .padding(
-                        start = MainTheme.spacings.triple,
-                        end = MainTheme.spacings.triple,
-                        top = MainTheme.spacings.triple,
-                        bottom = MainTheme.spacings.double,
+                        start = BoltTheme.spacings.triple,
+                        end = BoltTheme.spacings.triple,
+                        top = BoltTheme.spacings.triple,
+                        bottom = BoltTheme.spacings.double,
                     ),
             ) {
                 headline?.invoke(this)
@@ -152,9 +152,9 @@ internal fun BasicDialogContent(
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(
-                        start = MainTheme.spacings.triple,
-                        end = MainTheme.spacings.triple,
-                        bottom = MainTheme.spacings.triple,
+                        start = BoltTheme.spacings.triple,
+                        end = BoltTheme.spacings.triple,
+                        bottom = BoltTheme.spacings.triple,
                     ),
             ) {
                 Row { buttons() }
@@ -167,12 +167,12 @@ object BasicDialogDefaults {
     val showDividers: Boolean get() = false
     val dividerColor: Color
         @Composable
-        get() = MainTheme.colors.outlineVariant
+        get() = BoltTheme.colors.outlineVariant
     val contentPadding: PaddingValues
         @Composable
         get() = PaddingValues(
-            top = MainTheme.spacings.oneHalf,
-            bottom = MainTheme.spacings.double,
+            top = BoltTheme.spacings.oneHalf,
+            bottom = BoltTheme.spacings.double,
         )
 }
 
@@ -189,7 +189,7 @@ private fun BasicDialogPreview() {
             headline = {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                    verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
@@ -200,49 +200,49 @@ private fun BasicDialogPreview() {
                 TextBodyMedium(
                     text = "This will reset your app preferences back to their default settings. " +
                         "The following accounts will also be signed out:",
-                    color = MainTheme.colors.onSurfaceVariant,
+                    color = BoltTheme.colors.onSurfaceVariant,
                 )
             },
             content = {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                    verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = MainTheme.spacings.triple,
-                            end = MainTheme.spacings.triple,
+                            start = BoltTheme.spacings.triple,
+                            end = BoltTheme.spacings.triple,
                         ),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                        horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(MainTheme.sizes.iconAvatar)
-                                .background(color = MainTheme.colors.primary, shape = CircleShape),
+                                .size(BoltTheme.sizes.iconAvatar)
+                                .background(color = BoltTheme.colors.primary, shape = CircleShape),
                         )
                         Text(text = "Account 1")
                     }
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                        horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(MainTheme.sizes.iconAvatar)
-                                .background(color = MainTheme.colors.primary, shape = CircleShape),
+                                .size(BoltTheme.sizes.iconAvatar)
+                                .background(color = BoltTheme.colors.primary, shape = CircleShape),
                         )
                         Text(text = "Account 2")
                     }
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                        horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(MainTheme.sizes.iconAvatar)
-                                .background(color = MainTheme.colors.primary, shape = CircleShape),
+                                .size(BoltTheme.sizes.iconAvatar)
+                                .background(color = BoltTheme.colors.primary, shape = CircleShape),
                         )
                         Text(text = "Account 3")
                     }
@@ -278,7 +278,7 @@ private fun PreviewOnlySupportingText() {
             supportingText = {
                 TextBodyMedium(
                     text = "Configure archive folder now",
-                    color = MainTheme.colors.onSurfaceVariant,
+                    color = BoltTheme.colors.onSurfaceVariant,
                 )
             },
             content = null,

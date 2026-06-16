@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.CircularProgressIndicator
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun LoadingView(
@@ -32,7 +32,7 @@ fun LoadingView(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MainTheme.spacings.triple),
+                .padding(BoltTheme.spacings.triple),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -43,7 +43,7 @@ fun LoadingView(
                 )
             }
             Row(
-                modifier = Modifier.height(MainTheme.sizes.larger),
+                modifier = Modifier.height(BoltTheme.sizes.larger),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 CircularProgressIndicator()

@@ -23,7 +23,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.helper.WithRememberedState
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.components.ui.catalog.ui.page.common.list.fullSpanItem
@@ -82,8 +82,8 @@ fun <T> TextFieldDemo(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top = MainTheme.spacings.double,
-                            start = MainTheme.spacings.default,
+                            top = BoltTheme.spacings.double,
+                            start = BoltTheme.spacings.default,
                         ),
                 ) {
                     TextTitleMedium(text = "Configuration:")

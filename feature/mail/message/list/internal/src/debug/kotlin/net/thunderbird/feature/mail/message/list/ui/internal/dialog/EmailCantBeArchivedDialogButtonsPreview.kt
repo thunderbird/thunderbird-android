@@ -18,7 +18,7 @@ import net.thunderbird.components.ui.bolt.PreviewLightDarkLandscape
 import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
 import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.internal.R
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.EmailCantBeArchivedDialogButtons
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
@@ -33,7 +33,7 @@ private fun EmailCantBeArchivedDialogButtonsPreview() {
         arrangement = Arrangement.spacedBy(24.dp),
     ) {
         Surface(
-            shape = MainTheme.shapes.extraLarge,
+            shape = BoltTheme.shapes.extraLarge,
             modifier = Modifier.width(300.dp),
         ) {
             val state by remember {
@@ -44,7 +44,7 @@ private fun EmailCantBeArchivedDialogButtonsPreview() {
                 )
             }
             Column(
-                modifier = Modifier.padding(MainTheme.spacings.triple),
+                modifier = Modifier.padding(BoltTheme.spacings.triple),
             ) {
                 TextBodyMedium(text = stringResource(R.string.setup_archive_folder_dialog_configure_archive_folder))
                 Row(

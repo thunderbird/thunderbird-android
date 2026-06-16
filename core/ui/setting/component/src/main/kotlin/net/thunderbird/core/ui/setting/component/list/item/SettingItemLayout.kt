@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun SettingItemLayout(
@@ -32,10 +32,10 @@ fun SettingItemLayout(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
             modifier = Modifier.padding(
-                horizontal = MainTheme.spacings.double,
-                vertical = MainTheme.spacings.oneHalf,
+                horizontal = BoltTheme.spacings.double,
+                vertical = BoltTheme.spacings.oneHalf,
             ),
         ) {
             icon?.let {
@@ -49,7 +49,7 @@ fun SettingItemLayout(
             }
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
             ) {
                 content()
             }

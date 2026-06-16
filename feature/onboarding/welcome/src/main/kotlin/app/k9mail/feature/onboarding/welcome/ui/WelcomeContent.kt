@@ -31,7 +31,7 @@ import net.thunderbird.components.ui.bolt.common.window.WindowWidthSizeClass
 import net.thunderbird.components.ui.bolt.common.window.calculateWindowSizeInfo
 import net.thunderbird.components.ui.bolt.template.LazyColumnWithHeaderFooter
 import net.thunderbird.components.ui.bolt.template.ResponsiveContent
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import org.jetbrains.compose.resources.painterResource
 
 private const val CIRCLE_COLOR = 0xFFEEEEEE
@@ -81,8 +81,8 @@ private fun WelcomeHeaderSection(
         modifier = modifier
             .fillMaxWidth()
             .defaultItemModifier()
-            .padding(top = MainTheme.spacings.quadruple),
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+            .padding(top = BoltTheme.spacings.quadruple),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         WelcomeLogo()
@@ -118,7 +118,7 @@ private fun WelcomeLogo(
                 .size(circleSize.dp),
         ) {
             Image(
-                painter = painterResource(MainTheme.images.logo),
+                painter = painterResource(BoltTheme.images.logo),
                 contentDescription = null,
                 modifier = Modifier
                     .size(logoSize.dp)
@@ -149,7 +149,7 @@ private fun WelcomeTitle(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(horizontal = MainTheme.spacings.quadruple),
+        modifier = modifier.padding(horizontal = BoltTheme.spacings.quadruple),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextDisplayMediumAutoResize(
@@ -178,7 +178,7 @@ private fun WelcomeMessage(
 ) {
     Column(
         modifier = Modifier
-            .padding(horizontal = MainTheme.spacings.quadruple)
+            .padding(horizontal = BoltTheme.spacings.quadruple)
             .then(modifier),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -198,14 +198,14 @@ private fun WelcomeFooterSection(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = MainTheme.spacings.quadruple),
+            .padding(top = BoltTheme.spacings.quadruple),
     ) {
         WelcomeFooter(
             onStartClick = onStartClick,
             onImportClick = onImportClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = MainTheme.spacings.quadruple),
+                .padding(top = BoltTheme.spacings.quadruple),
         )
     }
 }
@@ -217,8 +217,8 @@ private fun WelcomeFooter(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(bottom = MainTheme.spacings.double),
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.quarter),
+        modifier = modifier.padding(bottom = BoltTheme.spacings.double),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.quarter),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ButtonFilled(
@@ -234,8 +234,8 @@ private fun WelcomeFooter(
         TextBodySmall(
             text = stringResource(R.string.onboarding_welcome_developed_by),
             modifier = Modifier
-                .padding(top = MainTheme.spacings.quadruple)
-                .padding(horizontal = MainTheme.spacings.double),
+                .padding(top = BoltTheme.spacings.quadruple)
+                .padding(horizontal = BoltTheme.spacings.double),
         )
     }
 }
@@ -243,4 +243,4 @@ private fun WelcomeFooter(
 @Composable
 private fun Modifier.defaultItemModifier() = this
     .fillMaxWidth()
-    .padding(MainTheme.spacings.default)
+    .padding(BoltTheme.spacings.default)

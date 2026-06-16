@@ -32,7 +32,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.LayoutDirection
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
@@ -65,8 +65,8 @@ internal fun AccountView(
         AnimatedExpandIcon(
             isExpanded = showAccountSelection,
             isShowAnimations = isShowAnimations,
-            modifier = Modifier.padding(end = MainTheme.spacings.double),
-            tint = MainTheme.colors.onSurfaceVariant,
+            modifier = Modifier.padding(end = BoltTheme.spacings.double),
+            tint = BoltTheme.colors.onSurfaceVariant,
         )
     }
 }
@@ -96,7 +96,7 @@ private fun RowScope.AccountSelectedView(
     ) { targetAccount ->
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         ) {
             AccountAvatar(
                 account = targetAccount,
@@ -105,7 +105,7 @@ private fun RowScope.AccountSelectedView(
             )
 
             Column(
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
@@ -152,18 +152,18 @@ private fun AccountLayout(
         modifier = modifier
             .clickable(onClick = onClick)
             .padding(
-                top = MainTheme.spacings.default,
-                start = MainTheme.spacings.triple,
-                end = MainTheme.spacings.double,
-                bottom = MainTheme.spacings.default,
+                top = BoltTheme.spacings.default,
+                start = BoltTheme.spacings.triple,
+                end = BoltTheme.spacings.double,
+                bottom = BoltTheme.spacings.default,
             ),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(MainTheme.sizes.large),
+                .height(BoltTheme.sizes.large),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         ) {
             content()
         }

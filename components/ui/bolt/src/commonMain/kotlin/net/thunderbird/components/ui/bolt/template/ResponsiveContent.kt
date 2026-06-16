@@ -16,7 +16,7 @@ import net.thunderbird.components.ui.bolt.common.window.WindowHeightSizeClass
 import net.thunderbird.components.ui.bolt.common.window.WindowSizeClass
 import net.thunderbird.components.ui.bolt.common.window.WindowWidthSizeClass
 import net.thunderbird.components.ui.bolt.common.window.calculateWindowSizeInfo
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * The [ResponsiveContent] composable automatically adapts its child content to different screen sizes and resolutions,
@@ -91,7 +91,7 @@ private fun ExpandedContent(
                 contentAlignment = Alignment.TopCenter,
             ) {
                 Surface(
-                    tonalElevation = MainTheme.elevations.level1,
+                    tonalElevation = BoltTheme.elevations.level1,
                 ) {
                     content(calculateResponsiveWidthPadding())
                 }
@@ -108,7 +108,7 @@ private fun ExpandedContent(
                 Surface(
                     modifier = Modifier
                         .requiredHeight(WindowHeightSizeClass.BREAKPOINT_MEDIUM),
-                    tonalElevation = MainTheme.elevations.level1,
+                    tonalElevation = BoltTheme.elevations.level1,
                 ) {
                     content(calculateResponsiveWidthPadding())
                 }
@@ -124,7 +124,7 @@ internal fun ResponsiveContentPreview() {
         Surface {
             ResponsiveContent { contentPadding ->
                 Surface(
-                    color = MainTheme.colors.info,
+                    color = BoltTheme.colors.info,
                     modifier = Modifier.fillMaxSize().padding(contentPadding),
                 ) {}
             }

@@ -14,7 +14,7 @@ import androidx.compose.ui.semantics.Role
 import net.thunderbird.components.ui.bolt.atom.Checkbox
 import net.thunderbird.components.ui.bolt.atom.button.ButtonText
 import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.internal.R
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.State
 
@@ -28,7 +28,7 @@ internal fun EmailCantBeArchivedDialogButtons(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.oneHalf),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.oneHalf),
     ) {
         Box(
             modifier = Modifier.align(Alignment.End),
@@ -53,7 +53,7 @@ internal fun EmailCantBeArchivedDialogButtons(
                     onValueChange = { onDoNotShowAgainChange(!state.isDoNotShowDialogAgainChecked) },
                 ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
         ) {
             Checkbox(
                 checked = state.isDoNotShowDialogAgainChecked,

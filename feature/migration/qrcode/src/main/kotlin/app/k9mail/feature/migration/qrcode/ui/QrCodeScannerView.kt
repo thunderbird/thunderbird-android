@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import app.k9mail.feature.migration.qrcode.R
 import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.DisplayText
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun QrCodeScannerView(
@@ -25,9 +25,9 @@ internal fun QrCodeScannerView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = MainTheme.spacings.double,
-                    start = MainTheme.spacings.double,
-                    end = MainTheme.spacings.double,
+                    top = BoltTheme.spacings.double,
+                    start = BoltTheme.spacings.double,
+                    end = BoltTheme.spacings.double,
                 )
                 .weight(1f),
         )

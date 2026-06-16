@@ -12,7 +12,7 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import kotlinx.collections.immutable.toPersistentList
 import net.thunderbird.components.ui.bolt.PreviewWithThemeLightDark
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.notification.api.content.MailNotification
 
@@ -40,7 +40,7 @@ private fun DebugNotificationSectionPreview() {
         }
         DebugNotificationSection(
             state = state,
-            modifier = Modifier.padding(MainTheme.spacings.triple),
+            modifier = Modifier.padding(BoltTheme.spacings.triple),
             onAccountSelect = { state = state.copy(selectedAccount = it) },
         )
     }
@@ -71,7 +71,7 @@ private fun PreviewSingleMailNotification() {
         }
         DebugNotificationSection(
             state = state,
-            modifier = Modifier.padding(MainTheme.spacings.triple),
+            modifier = Modifier.padding(BoltTheme.spacings.triple),
             onAccountSelect = { state = state.copy(selectedAccount = it) },
         )
     }

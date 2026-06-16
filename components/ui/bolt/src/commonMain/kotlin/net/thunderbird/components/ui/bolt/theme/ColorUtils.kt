@@ -15,5 +15,5 @@ import androidx.compose.ui.graphics.compositeOver
 @Composable
 fun Color.toSurfaceContainer(alpha: Float): Color {
     val color = copy(alpha = alpha)
-    return color.compositeOver(MainTheme.colors.surfaceContainer)
+    return color.compositeOver(BoltTheme.colors.surfaceContainer)
 }

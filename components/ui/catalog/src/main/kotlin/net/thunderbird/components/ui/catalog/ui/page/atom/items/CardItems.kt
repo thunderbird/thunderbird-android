@@ -8,7 +8,7 @@ import net.thunderbird.components.ui.bolt.atom.card.CardElevated
 import net.thunderbird.components.ui.bolt.atom.card.CardFilled
 import net.thunderbird.components.ui.bolt.atom.card.CardOutlined
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionHeaderItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.wideItem
 
@@ -22,10 +22,10 @@ fun LazyGridScope.sectionCardElevated() {
     sectionHeaderItem(text = "Card - Elevated")
     wideItem {
         CardElevated(
-            modifier = Modifier.padding(horizontal = MainTheme.spacings.triple),
+            modifier = Modifier.padding(horizontal = BoltTheme.spacings.triple),
         ) {
             Box(
-                modifier = Modifier.padding(MainTheme.spacings.triple),
+                modifier = Modifier.padding(BoltTheme.spacings.triple),
             ) {
                 TextBodyLarge(text = "Inside a CardElevated")
             }
@@ -37,10 +37,10 @@ fun LazyGridScope.sectionCardFilled() {
     sectionHeaderItem(text = "Card - Filled")
     wideItem {
         CardFilled(
-            modifier = Modifier.padding(horizontal = MainTheme.spacings.triple),
+            modifier = Modifier.padding(horizontal = BoltTheme.spacings.triple),
         ) {
             Box(
-                modifier = Modifier.padding(MainTheme.spacings.triple),
+                modifier = Modifier.padding(BoltTheme.spacings.triple),
             ) {
                 TextBodyLarge(text = "Inside a CardFilled")
             }
@@ -52,10 +52,10 @@ fun LazyGridScope.sectionCardOutlined() {
     sectionHeaderItem(text = "Card - Outlined")
     wideItem {
         CardOutlined(
-            modifier = Modifier.padding(horizontal = MainTheme.spacings.triple),
+            modifier = Modifier.padding(horizontal = BoltTheme.spacings.triple),
         ) {
             Box(
-                modifier = Modifier.padding(MainTheme.spacings.triple),
+                modifier = Modifier.padding(BoltTheme.spacings.triple),
             ) {
                 TextBodyLarge(text = "Inside a CardOutlined")
             }

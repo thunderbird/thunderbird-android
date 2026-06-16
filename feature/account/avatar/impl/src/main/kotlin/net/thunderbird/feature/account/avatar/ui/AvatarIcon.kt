@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.account.avatar.AvatarIcon
 import net.thunderbird.feature.account.avatar.AvatarIconCatalog
 import org.koin.compose.koinInject
@@ -35,7 +35,7 @@ internal fun AvatarIcon(
     Icon(
         imageVector = avatarIcon.icon,
         contentDescription = null,
-        tint = MainTheme.colors.onSecondary,
+        tint = BoltTheme.colors.onSecondary,
         modifier = modifier.size(iconSize),
     )
 }
@@ -43,7 +43,7 @@ internal fun AvatarIcon(
 @Composable
 private fun getIconSize(size: AvatarSize): Dp {
     return when (size) {
-        AvatarSize.MEDIUM -> MainTheme.sizes.iconLarge
-        AvatarSize.LARGE -> MainTheme.sizes.iconAvatar
+        AvatarSize.MEDIUM -> BoltTheme.sizes.iconLarge
+        AvatarSize.LARGE -> BoltTheme.sizes.iconAvatar
     }
 }

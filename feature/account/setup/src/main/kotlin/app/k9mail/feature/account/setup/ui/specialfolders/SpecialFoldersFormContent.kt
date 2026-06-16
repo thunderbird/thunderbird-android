@@ -19,7 +19,7 @@ import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
 import net.thunderbird.components.ui.bolt.molecule.input.SelectInput
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Suppress("LongMethod")
 @Composable
@@ -35,10 +35,10 @@ fun SpecialFoldersFormContent(
             .imePadding()
             .then(modifier),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
     ) {
         item {
-            Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
+            Spacer(modifier = Modifier.requiredHeight(BoltTheme.sizes.smaller))
         }
 
         item {

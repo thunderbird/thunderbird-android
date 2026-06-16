@@ -12,7 +12,7 @@ import app.k9mail.feature.account.common.R
 import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
 import net.thunderbird.components.ui.bolt.atom.button.ButtonOutlined
 import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun WizardNavigationBar(
@@ -31,10 +31,10 @@ fun WizardNavigationBar(
         Row(
             modifier = Modifier
                 .padding(
-                    start = MainTheme.spacings.quadruple,
-                    top = MainTheme.spacings.default,
-                    end = MainTheme.spacings.quadruple,
-                    bottom = MainTheme.spacings.double,
+                    start = BoltTheme.spacings.quadruple,
+                    top = BoltTheme.spacings.default,
+                    end = BoltTheme.spacings.quadruple,
+                    bottom = BoltTheme.spacings.double,
                 )
                 .padding(contentPadding)
                 .fillMaxWidth(),

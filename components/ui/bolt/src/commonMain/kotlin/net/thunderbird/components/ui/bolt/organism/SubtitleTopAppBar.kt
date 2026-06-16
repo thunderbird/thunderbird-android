@@ -18,7 +18,7 @@ import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 import net.thunderbird.components.ui.bolt.resources.Res
 import net.thunderbird.components.ui.bolt.resources.bolt_organism_subtitle_top_app_bar_up_description
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import org.jetbrains.compose.resources.stringResource
 
 /**
@@ -42,7 +42,7 @@ fun SubtitleTopAppBar(
     Material3TopAppBar(
         title = {
             Column(
-                modifier = Modifier.padding(end = MainTheme.spacings.double),
+                modifier = Modifier.padding(end = BoltTheme.spacings.double),
             ) {
                 TextTitleMedium(text = title)
                 TextBodyMedium(
@@ -56,7 +56,7 @@ fun SubtitleTopAppBar(
         navigationIcon = navigationIcon,
         actions = actions,
         colors = topAppBarColors(
-            containerColor = MainTheme.colors.surfaceContainer,
+            containerColor = BoltTheme.colors.surfaceContainer,
         ),
     )
 }

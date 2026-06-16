@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import net.thunderbird.components.ui.bolt.PreviewWithThemeLightDark
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleSmall
 import net.thunderbird.components.ui.bolt.common.window.WindowWidthSizeClass
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemAccountIndicator
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemConfiguration
 
@@ -101,8 +101,8 @@ private fun AdaptiveMessageItemHeaderRowPreview(
                 receivedAt = data.receivedAt,
                 firstLine = { TextTitleSmall(data.previewName) },
                 modifier = Modifier.padding(
-                    horizontal = MainTheme.spacings.default,
-                    vertical = MainTheme.spacings.quadruple,
+                    horizontal = BoltTheme.spacings.default,
+                    vertical = BoltTheme.spacings.quadruple,
                 ),
             )
         }

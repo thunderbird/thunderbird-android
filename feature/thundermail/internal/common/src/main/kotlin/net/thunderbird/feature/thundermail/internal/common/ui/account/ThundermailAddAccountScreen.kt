@@ -31,7 +31,7 @@ import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleSmall
 import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
 import net.thunderbird.components.ui.bolt.template.Scaffold
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.thundermail.internal.common.R
 import net.thunderbird.feature.thundermail.R as ThundermailApiR
 
@@ -57,17 +57,17 @@ fun ThundermailAddAccountScreen(
                 // doubling up the insets and collapsing the header on very wide windows (e.g. tablet,
                 // desktop, etc).
                 AppTitleTopHeader(title = appTitle) {
-                    Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
+                    Spacer(modifier = Modifier.height(BoltTheme.spacings.triple))
                     TextTitleLarge(
                         text = stringResource(R.string.thundermail_add_account),
-                        color = MainTheme.colors.primary,
+                        color = BoltTheme.colors.primary,
                         modifier = Modifier.padding(
-                            start = MainTheme.spacings.default,
-                            end = MainTheme.spacings.quadruple,
+                            start = BoltTheme.spacings.default,
+                            end = BoltTheme.spacings.quadruple,
                         ),
                     )
                 }
-                Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple + MainTheme.spacings.double))
+                Spacer(modifier = Modifier.height(BoltTheme.spacings.quadruple + BoltTheme.spacings.double))
                 ButtonsPanel(
                     onAddAccountClick = onAddAccountClick,
                     onSignInWithThundermail = onSignInWithThundermail,
@@ -87,7 +87,7 @@ private fun ButtonsPanel(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
     ) {
@@ -107,8 +107,8 @@ private fun ButtonsPanel(
             onClick = onSignInWithThundermail,
             icon = Icons.Filled.Thundermail,
             colors = ButtonDefaults.outlinedButtonColors(
-                iconColor = MainTheme.colors.primary,
-                contentColor = MainTheme.colors.primary,
+                iconColor = BoltTheme.colors.primary,
+                contentColor = BoltTheme.colors.primary,
             ),
         )
         TextBodySmall(

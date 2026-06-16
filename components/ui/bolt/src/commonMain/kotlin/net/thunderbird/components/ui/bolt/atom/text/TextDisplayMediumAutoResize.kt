@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import androidx.compose.material3.Text as Material3Text
 
 @Composable
@@ -18,7 +18,7 @@ fun TextDisplayMediumAutoResize(
     color: Color = Color.Unspecified,
     textAlign: TextAlign? = null,
 ) {
-    val style: TextStyle = MainTheme.typography.displayMedium
+    val style: TextStyle = BoltTheme.typography.displayMedium
     Material3Text(
         text = text,
         modifier = modifier,
@@ -29,7 +29,7 @@ fun TextDisplayMediumAutoResize(
         softWrap = false,
         autoSize = TextAutoSize.StepBased(
             minFontSize = style.fontSize * 0.35f,
-            maxFontSize = MainTheme.typography.displayMedium.fontSize,
+            maxFontSize = BoltTheme.typography.displayMedium.fontSize,
             stepSize = 0.5.sp,
         ),
     )

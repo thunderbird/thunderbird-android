@@ -11,7 +11,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.components.ui.bolt.PreviewLightDarkLandscape
-import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdTheme2
+import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdBoltTheme
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenPreviewParams
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenPreviewParamsProvider
 import net.thunderbird.feature.mail.message.list.internal.ui.MessageListScreenRenderer
@@ -83,7 +83,7 @@ private fun MessageListScreenSearchingMessagesStatePreview(
             }
         }
     } WithContent {
-        ThunderbirdTheme2 {
+        ThunderbirdBoltTheme {
             val scope = rememberMessageListScope()
             with(renderer) {
                 scope.Render(

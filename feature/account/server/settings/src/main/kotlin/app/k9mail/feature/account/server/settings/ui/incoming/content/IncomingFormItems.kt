@@ -23,7 +23,7 @@ import app.k9mail.feature.account.server.settings.ui.incoming.isPasswordFieldVis
 import net.thunderbird.components.ui.bolt.molecule.input.NumberInput
 import net.thunderbird.components.ui.bolt.molecule.input.SelectInput
 import net.thunderbird.components.ui.bolt.molecule.input.TextInput
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Suppress("LongMethod")
 internal fun LazyListScope.incomingFormItems(
@@ -33,7 +33,7 @@ internal fun LazyListScope.incomingFormItems(
     resources: Resources,
 ) {
     item {
-        Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
+        Spacer(modifier = Modifier.requiredHeight(BoltTheme.sizes.smaller))
     }
 
     if (mode == InteractionMode.Create) {
@@ -129,6 +129,6 @@ internal fun LazyListScope.incomingFormItems(
     }
 
     item {
-        Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
+        Spacer(modifier = Modifier.requiredHeight(BoltTheme.sizes.smaller))
     }
 }

@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.tab.TabPrimary
 import net.thunderbird.components.ui.bolt.molecule.tab.TabRowPrimary
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * A Composable that displays a horizontal pager with a tab row.
@@ -114,7 +114,7 @@ fun <T> HorizontalTabPagerPrimary(
 
         HorizontalPager(
             state = state,
-            contentPadding = PaddingValues(all = MainTheme.spacings.default),
+            contentPadding = PaddingValues(all = BoltTheme.spacings.default),
         ) { index ->
             val page = scope.pages[index]
             page.content(scope, page.value)

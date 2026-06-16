@@ -13,7 +13,7 @@ import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevices
 import net.thunderbird.components.ui.bolt.common.padding.calculateResponsiveWidthPadding
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * A container that adjusts its width depending on the screen size.
@@ -56,7 +56,7 @@ internal fun ResponsiveWidthContainerPreview() {
         Surface {
             ResponsiveWidthContainer { contentPadding ->
                 Surface(
-                    color = MainTheme.colors.error,
+                    color = BoltTheme.colors.error,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(contentPadding),

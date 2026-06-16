@@ -25,7 +25,7 @@ import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineMedium
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import org.koin.compose.koinInject
 
 @Composable
@@ -57,12 +57,12 @@ internal fun ServerCertificateErrorContent(
 @Composable
 private fun CertificateErrorOverview(state: State) {
     Column(
-        modifier = Modifier.padding(all = MainTheme.spacings.double),
+        modifier = Modifier.padding(all = BoltTheme.spacings.double),
     ) {
         WarningTitle()
         TextTitleMedium(stringResource(R.string.account_server_certificate_unknown_error_subtitle))
 
-        Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.quadruple))
 
         state.certificateError?.let { certificateError ->
             CertificateErrorDescription(certificateError)
@@ -77,10 +77,10 @@ private fun WarningTitle() {
     ) {
         Icon(
             imageVector = Icons.Filled.Warning,
-            tint = MainTheme.colors.warning,
+            tint = BoltTheme.colors.warning,
             modifier = Modifier
-                .padding(end = MainTheme.spacings.default)
-                .requiredSize(MainTheme.sizes.icon),
+                .padding(end = BoltTheme.spacings.default)
+                .requiredSize(BoltTheme.sizes.icon),
         )
         TextHeadlineMedium(
             text = stringResource(R.string.account_server_certificate_warning_title),

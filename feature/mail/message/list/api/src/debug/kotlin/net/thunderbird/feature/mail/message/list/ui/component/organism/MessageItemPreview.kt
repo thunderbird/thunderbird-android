@@ -16,7 +16,7 @@ import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleSmall
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageBadgeStyle
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemAccountIndicator
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemConfiguration
@@ -215,7 +215,7 @@ private fun PreviewDefault(
             onLongClick = { },
             onAvatarClick = { },
             onTrailingClick = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
             selected = params.selected,
             colors = MessageItemDefaults.newMessageItemColors(),
             contentPadding = MessageItemDefaults.defaultContentPadding,
@@ -288,7 +288,7 @@ private fun PreviewCompact(
             onLongClick = { },
             onAvatarClick = { },
             onTrailingClick = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
             selected = params.selected,
             colors = MessageItemDefaults.newMessageItemColors(),
             contentPadding = MessageItemDefaults.compactContentPadding,
@@ -361,7 +361,7 @@ private fun PreviewRelaxed(
             onLongClick = { },
             onAvatarClick = { },
             onTrailingClick = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
             selected = params.selected,
             colors = MessageItemDefaults.newMessageItemColors(),
             contentPadding = MessageItemDefaults.relaxedContentPadding,
@@ -434,7 +434,7 @@ private fun PreviewDefaultWithoutAccountIndicator(
             onLongClick = { },
             onAvatarClick = { },
             onTrailingClick = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
             selected = params.selected,
             colors = MessageItemDefaults.newMessageItemColors(),
         )

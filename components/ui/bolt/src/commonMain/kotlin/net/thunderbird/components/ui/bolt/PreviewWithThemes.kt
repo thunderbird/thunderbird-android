@@ -7,9 +7,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import net.thunderbird.components.ui.bolt.theme.MainTheme
-import net.thunderbird.components.ui.bolt.theme.k9mail.K9MailTheme2
-import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdTheme2
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.components.ui.bolt.theme.k9mail.K9MailBoltTheme
+import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdBoltTheme
 
 @Composable
 fun PreviewWithThemes(
@@ -19,7 +19,7 @@ fun PreviewWithThemes(
     Column(
         modifier = modifier,
     ) {
-        K9MailTheme2 {
+        K9MailBoltTheme {
             PreviewSurface {
                 Column {
                     PreviewHeader(themeName = "K9Theme Light")
@@ -27,7 +27,7 @@ fun PreviewWithThemes(
                 }
             }
         }
-        K9MailTheme2(darkTheme = true) {
+        K9MailBoltTheme(darkTheme = true) {
             PreviewSurface {
                 Column {
                     PreviewHeader(themeName = "K9Theme Dark")
@@ -35,7 +35,7 @@ fun PreviewWithThemes(
                 }
             }
         }
-        ThunderbirdTheme2 {
+        ThunderbirdBoltTheme {
             PreviewSurface {
                 Column {
                     PreviewHeader(themeName = "ThunderbirdTheme Light")
@@ -43,7 +43,7 @@ fun PreviewWithThemes(
                 }
             }
         }
-        ThunderbirdTheme2(darkTheme = true) {
+        ThunderbirdBoltTheme(darkTheme = true) {
             PreviewSurface {
                 Column {
                     PreviewHeader(themeName = "ThunderbirdTheme Dark")
@@ -81,7 +81,7 @@ private fun PreviewWithK9MailTheme(
     isDarkTheme: Boolean,
     content: @Composable () -> Unit,
 ) {
-    K9MailTheme2(
+    K9MailBoltTheme(
         darkTheme = isDarkTheme,
         content = content,
     )
@@ -92,7 +92,7 @@ private fun PreviewWithThunderbirdTheme(
     isDarkTheme: Boolean,
     content: @Composable () -> Unit,
 ) {
-    ThunderbirdTheme2(
+    ThunderbirdBoltTheme(
         darkTheme = isDarkTheme,
         content = content,
     )
@@ -103,14 +103,14 @@ internal fun PreviewHeader(
     themeName: String,
 ) {
     Surface(
-        color = MainTheme.colors.primary,
+        color = BoltTheme.colors.primary,
     ) {
         Text(
             text = themeName,
             fontSize = 4.sp,
             modifier = Modifier.padding(
-                start = MainTheme.spacings.half,
-                end = MainTheme.spacings.half,
+                start = BoltTheme.spacings.half,
+                end = BoltTheme.spacings.half,
             ),
         )
     }
@@ -121,7 +121,7 @@ internal fun PreviewSurface(
     content: @Composable () -> Unit,
 ) {
     Surface(
-        color = MainTheme.colors.surface,
+        color = BoltTheme.colors.surface,
         content = content,
     )
 }

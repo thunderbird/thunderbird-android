@@ -1,8 +1,8 @@
 package net.thunderbird.components.ui.catalog.ui.common.theme
 
 import androidx.compose.runtime.Composable
-import net.thunderbird.components.ui.bolt.theme.k9mail.K9MailTheme2
-import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdTheme2
+import net.thunderbird.components.ui.bolt.theme.k9mail.K9MailBoltTheme
+import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdBoltTheme
 import net.thunderbird.components.ui.catalog.ui.CatalogContract.Theme
 import net.thunderbird.components.ui.catalog.ui.CatalogContract.ThemeVariant
 
@@ -31,12 +31,12 @@ private fun K9Theme2Switch(
     content: @Composable () -> Unit,
 ) {
     when (themeVariant) {
-        ThemeVariant.LIGHT -> K9MailTheme2(
+        ThemeVariant.LIGHT -> K9MailBoltTheme(
             darkTheme = false,
             content = content,
         )
 
-        ThemeVariant.DARK -> K9MailTheme2(
+        ThemeVariant.DARK -> K9MailBoltTheme(
             darkTheme = true,
             content = content,
         )
@@ -49,12 +49,12 @@ private fun ThunderbirdTheme2Switch(
     content: @Composable () -> Unit,
 ) {
     when (themeVariant) {
-        ThemeVariant.LIGHT -> ThunderbirdTheme2(
+        ThemeVariant.LIGHT -> ThunderbirdBoltTheme(
             darkTheme = false,
             content = content,
         )
 
-        ThemeVariant.DARK -> ThunderbirdTheme2(
+        ThemeVariant.DARK -> ThunderbirdBoltTheme(
             darkTheme = true,
             content = content,
         )

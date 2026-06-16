@@ -6,13 +6,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import androidx.compose.material3.Surface as Material3Surface
 
 /**
  * A UI atom for a Surface with a click listener.
  *
- * This is a convenience wrapper around [Material3Surface] that provides default values from [MainTheme].
+ * This is a convenience wrapper around [Material3Surface] that provides default values from [BoltTheme].
  *
  * @param onClick The lambda to be executed when the surface is clicked.
  * @param modifier The modifier to be applied to the surface.
@@ -26,8 +26,8 @@ fun ClickableSurface(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = RectangleShape,
-    color: Color = MainTheme.colors.surface,
-    tonalElevation: Dp = MainTheme.elevations.level0,
+    color: Color = BoltTheme.colors.surface,
+    tonalElevation: Dp = BoltTheme.elevations.level0,
     content: @Composable () -> Unit,
 ) {
     Material3Surface(

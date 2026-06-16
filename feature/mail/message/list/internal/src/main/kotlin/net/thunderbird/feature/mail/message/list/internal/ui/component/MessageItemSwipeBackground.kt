@@ -21,8 +21,8 @@ import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.bolt.theme.ColorRoles
-import net.thunderbird.components.ui.bolt.theme.MainTheme
 import net.thunderbird.components.ui.bolt.theme.toColorRoles
 import net.thunderbird.components.ui.bolt.theme.toHarmonizedColor
 import net.thunderbird.core.common.action.SwipeAction
@@ -60,7 +60,7 @@ fun MessageItemSwipeBackground(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = MainTheme.spacings.triple),
+                .padding(horizontal = BoltTheme.spacings.triple),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = arrangement,
         ) {
@@ -71,11 +71,11 @@ fun MessageItemSwipeBackground(
             }
             if (arrangement == Arrangement.Start) {
                 movableIcon()
-                Spacer(modifier = Modifier.width(MainTheme.spacings.default))
+                Spacer(modifier = Modifier.width(BoltTheme.spacings.default))
             }
             TextLabelLarge(stringResource(actionNameId))
             if (arrangement == Arrangement.End) {
-                Spacer(modifier = Modifier.width(MainTheme.spacings.default))
+                Spacer(modifier = Modifier.width(BoltTheme.spacings.default))
                 movableIcon()
             }
         }
@@ -86,8 +86,8 @@ fun MessageItemSwipeBackground(
 private fun rememberSwipeActionColorRoles(action: SwipeAction, toggled: Boolean): ColorRoles? {
     val context = LocalContext.current
     val resources = LocalResources.current
-    val primaryColor = MainTheme.colors.primary
-    val surfaceContainerLowest = MainTheme.colors.surfaceContainerLowest
+    val primaryColor = BoltTheme.colors.primary
+    val surfaceContainerLowest = BoltTheme.colors.surfaceContainerLowest
     return remember(action, toggled, primaryColor, surfaceContainerLowest) {
         // TODO: move these colours to use the design system whenever we have them available.
         val actionAttrColor = when (action) {

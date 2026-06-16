@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import androidx.compose.material3.CardDefaults as Material3CardDefaults
 
 /**
@@ -44,12 +44,12 @@ object CardDefaults {
      */
     @Composable
     fun cardElevation(
-        defaultElevation: Dp = MainTheme.elevations.level0,
-        pressedElevation: Dp = MainTheme.elevations.level0,
-        focusedElevation: Dp = MainTheme.elevations.level0,
-        hoveredElevation: Dp = MainTheme.elevations.level1,
-        draggedElevation: Dp = MainTheme.elevations.level3,
-        disabledElevation: Dp = MainTheme.elevations.level0,
+        defaultElevation: Dp = BoltTheme.elevations.level0,
+        pressedElevation: Dp = BoltTheme.elevations.level0,
+        focusedElevation: Dp = BoltTheme.elevations.level0,
+        hoveredElevation: Dp = BoltTheme.elevations.level1,
+        draggedElevation: Dp = BoltTheme.elevations.level3,
+        disabledElevation: Dp = BoltTheme.elevations.level0,
     ): CardElevation = CardElevation.FilledCardElevation(
         defaultElevation = defaultElevation,
         pressedElevation = pressedElevation,
@@ -72,12 +72,12 @@ object CardDefaults {
      */
     @Composable
     fun elevatedCardElevation(
-        defaultElevation: Dp = MainTheme.elevations.level1,
-        pressedElevation: Dp = MainTheme.elevations.level1,
-        focusedElevation: Dp = MainTheme.elevations.level1,
-        hoveredElevation: Dp = MainTheme.elevations.level2,
-        draggedElevation: Dp = MainTheme.elevations.level4,
-        disabledElevation: Dp = MainTheme.elevations.level1,
+        defaultElevation: Dp = BoltTheme.elevations.level1,
+        pressedElevation: Dp = BoltTheme.elevations.level1,
+        focusedElevation: Dp = BoltTheme.elevations.level1,
+        hoveredElevation: Dp = BoltTheme.elevations.level2,
+        draggedElevation: Dp = BoltTheme.elevations.level4,
+        disabledElevation: Dp = BoltTheme.elevations.level1,
     ): CardElevation = CardElevation.ElevatedCardElevation(
         defaultElevation = defaultElevation,
         pressedElevation = pressedElevation,
@@ -100,12 +100,12 @@ object CardDefaults {
      */
     @Composable
     fun outlinedCardElevation(
-        defaultElevation: Dp = MainTheme.elevations.level0,
+        defaultElevation: Dp = BoltTheme.elevations.level0,
         pressedElevation: Dp = defaultElevation,
         focusedElevation: Dp = defaultElevation,
         hoveredElevation: Dp = defaultElevation,
-        draggedElevation: Dp = MainTheme.elevations.level3,
-        disabledElevation: Dp = MainTheme.elevations.level0,
+        draggedElevation: Dp = BoltTheme.elevations.level3,
+        disabledElevation: Dp = BoltTheme.elevations.level0,
     ): CardElevation = CardElevation.OutlinedCardElevation(
         defaultElevation = defaultElevation,
         pressedElevation = pressedElevation,

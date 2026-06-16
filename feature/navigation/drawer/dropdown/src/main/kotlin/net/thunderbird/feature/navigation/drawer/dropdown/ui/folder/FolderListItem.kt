@@ -24,7 +24,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
 import net.thunderbird.components.ui.bolt.organism.drawer.NavigationDrawerItem
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
@@ -102,7 +102,7 @@ internal fun FolderListItem(
                 folderNameFormatter = folderNameFormatter,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = MainTheme.spacings.double * indentationLevel),
+                    .padding(start = BoltTheme.spacings.double * indentationLevel),
                 treeFolder = child,
                 parentPrefix = if (displayParent is MailDisplayFolder) displayParent.folder.name else null,
                 indentationLevel = indentationLevel + 1,
@@ -132,10 +132,10 @@ private fun NavigationDrawerLabel(
         if (expandableState?.value != null) {
             Box(
                 modifier = Modifier
-                    .size(MainTheme.sizes.iconAvatar)
+                    .size(BoltTheme.sizes.iconAvatar)
                     .padding(
-                        start = MainTheme.spacings.quarter,
-                        end = MainTheme.spacings.quarter,
+                        start = BoltTheme.spacings.quarter,
+                        end = BoltTheme.spacings.quarter,
                     )
                     .clip(CircleShape)
                     .clickable(onClick = { expandableState.value = !expandableState.value }),

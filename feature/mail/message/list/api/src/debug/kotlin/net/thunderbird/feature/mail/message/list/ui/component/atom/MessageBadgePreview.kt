@@ -8,19 +8,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @PreviewLightDark
 @Composable
 private fun MessageBadgePreview() {
     PreviewWithThemesLightDark {
         Column(
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
-            modifier = Modifier.padding(MainTheme.spacings.quadruple),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.quadruple),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            NewMessageBadge(modifier = Modifier.padding(MainTheme.spacings.double))
-            UnreadMessageBadge(modifier = Modifier.padding(MainTheme.spacings.double))
+            NewMessageBadge(modifier = Modifier.padding(BoltTheme.spacings.double))
+            UnreadMessageBadge(modifier = Modifier.padding(BoltTheme.spacings.double))
         }
     }
 }

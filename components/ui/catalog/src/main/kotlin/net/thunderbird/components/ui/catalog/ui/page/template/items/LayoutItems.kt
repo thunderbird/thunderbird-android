@@ -22,7 +22,7 @@ import net.thunderbird.components.ui.bolt.template.ListDetailPane
 import net.thunderbird.components.ui.bolt.template.rememberListDetailNavigationController
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionHeaderItem
 
@@ -41,22 +41,22 @@ private fun ListDetailPaneItem() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(MainTheme.sizes.huger)
-            .padding(MainTheme.spacings.double),
+            .height(BoltTheme.sizes.huger)
+            .padding(BoltTheme.spacings.double),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ListDetailPane(
             navigationController = navigationController,
             listPane = {
                 Surface(
-                    color = MainTheme.colors.primaryContainer,
+                    color = BoltTheme.colors.primaryContainer,
                 ) {
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
                     ) {
                         TextTitleMedium("List pane")
                         LazyColumn(
-                            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+                            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
                         ) {
                             itemsIndexed(createItems()) { index, item ->
                                 ListItem(
@@ -74,7 +74,7 @@ private fun ListDetailPaneItem() {
             },
             detailPane = { item ->
                 Surface(
-                    color = MainTheme.colors.secondaryContainer,
+                    color = BoltTheme.colors.secondaryContainer,
                 ) {
                     ListDetail(
                         item = item,
@@ -99,7 +99,7 @@ private fun ListItem(
         modifier = Modifier
             .clickable(onClick = onClick)
             .fillMaxWidth()
-            .padding(MainTheme.spacings.default),
+            .padding(BoltTheme.spacings.default),
     ) {
         TextBodyLarge(item.title)
     }
@@ -114,10 +114,10 @@ private fun ListDetail(
         modifier = Modifier
             .clickable(onClick = onClick)
             .fillMaxWidth()
-            .padding(MainTheme.spacings.default),
+            .padding(BoltTheme.spacings.default),
     ) {
         TextTitleMedium("Detail pane")
-        Spacer(modifier = Modifier.height(MainTheme.spacings.default))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
         TextBodyLarge(item.title)
     }
 }

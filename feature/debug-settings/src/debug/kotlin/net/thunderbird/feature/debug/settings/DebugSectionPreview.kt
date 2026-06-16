@@ -7,13 +7,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @PreviewLightDark
 @Composable
 private fun DebugSectionPreview() {
     PreviewWithThemesLightDark {
-        Box(modifier = Modifier.padding(MainTheme.spacings.triple)) {
+        Box(modifier = Modifier.padding(BoltTheme.spacings.triple)) {
             DebugSection(
                 title = "Debug section",
             ) {

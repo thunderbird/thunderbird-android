@@ -20,7 +20,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.image.RemoteImage
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleSmall
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.bolt.theme.contentColorFor
 import net.thunderbird.feature.mail.message.list.ui.state.Avatar
 
@@ -48,8 +48,8 @@ fun MessageItemAvatarCircle(
     Box(
         modifier = modifier
             .clip(CircleShape)
-            .size(MainTheme.sizes.iconAvatar)
-            .padding(MainTheme.spacings.half)
+            .size(BoltTheme.sizes.iconAvatar)
+            .padding(BoltTheme.spacings.half)
             .background(color = colors.containerColor, shape = CircleShape)
             .border(width = 1.dp, color = colors.borderColor, shape = CircleShape)
             .combinedClickable(enabled = enabled, onClick = onClick),
@@ -58,7 +58,7 @@ fun MessageItemAvatarCircle(
         when (avatar) {
             is Avatar.Icon -> Icon(
                 imageVector = avatar.imageVector,
-                modifier = Modifier.size(MainTheme.sizes.iconSmall),
+                modifier = Modifier.size(BoltTheme.sizes.iconSmall),
             )
 
             is Avatar.Monogram -> TextTitleSmall(text = avatar.value)

@@ -9,7 +9,7 @@ import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
@@ -195,7 +195,7 @@ private fun PreviewDefault(
             onLongClick = { },
             onAvatarClick = { },
             onFavouriteChange = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -244,7 +244,7 @@ private fun PreviewCompact(
             onLongClick = { },
             onAvatarClick = { },
             onFavouriteChange = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -293,7 +293,7 @@ private fun PreviewRelaxed(
             onLongClick = { },
             onAvatarClick = { },
             onFavouriteChange = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -342,7 +342,7 @@ private fun PreviewDefaultWithoutAccountIndicator(
             onLongClick = { },
             onAvatarClick = { },
             onFavouriteChange = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }

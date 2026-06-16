@@ -29,7 +29,7 @@ import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirectionAccessibilityAction.EndToStartAccessibilityAction
 import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirectionAccessibilityAction.StartToEndAccessibilityAction
 import net.thunderbird.components.ui.bolt.setContentWithTheme
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.testing.ComposeUiTestHarness
 import org.junit.Test
 
@@ -728,8 +728,8 @@ private fun TestSwipeableRow(
         state = state,
         backgroundContent = {
             Surface(
-                color = MainTheme.colors.primaryContainer,
-                contentColor = MainTheme.colors.onPrimaryContainer,
+                color = BoltTheme.colors.primaryContainer,
+                contentColor = BoltTheme.colors.onPrimaryContainer,
                 modifier = Modifier
                     .fillMaxSize()
                     .testTag("backgroundContent"),
@@ -739,7 +739,7 @@ private fun TestSwipeableRow(
                         text = "Background Element",
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = MainTheme.spacings.quadruple, horizontal = MainTheme.spacings.double),
+                            .padding(vertical = BoltTheme.spacings.quadruple, horizontal = BoltTheme.spacings.double),
                     )
                 }
             }
@@ -752,13 +752,13 @@ private fun TestSwipeableRow(
         onSwipeChange = onSwipeChange,
     ) {
         Surface(
-            color = MainTheme.colors.surfaceContainer,
+            color = BoltTheme.colors.surfaceContainer,
         ) {
             TextBodyLarge(
                 text = "Foreground Element",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(MainTheme.spacings.quadruple),
+                    .padding(BoltTheme.spacings.quadruple),
             )
         }
     }

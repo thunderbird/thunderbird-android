@@ -143,7 +143,7 @@ fun PrimaryButton(
 - Provides consistent visual appearance across the application
 - Implemented using Material Design 3 theming system
 - Located in the `:components:ui:bolt` module for reuse across features
-- Provides a `ThunderbirdTheme2` and a `K9MailTheme2` composable that wraps the MaterialTheme with custom color schemes, typography, and shapes
+- Provides a `ThunderbirdBoltTheme` and a `K9MailBoltTheme` composable that wraps the MaterialTheme with custom color schemes, typography, and shapes
 - Uses Jetpack Compose's `CompositionLocalProvider` as a theme provider to make theme components available throughout the app
 
 For a more detailed explanation of the theming system, including the theme provider implementation, see

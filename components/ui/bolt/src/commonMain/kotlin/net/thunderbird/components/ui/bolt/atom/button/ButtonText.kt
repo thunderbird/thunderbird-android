@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun ButtonText(
@@ -24,7 +24,7 @@ fun ButtonText(
         modifier = modifier,
         enabled = enabled,
         colors = ButtonDefaults.textButtonColors(
-            contentColor = color ?: MainTheme.colors.primary,
+            contentColor = color ?: BoltTheme.colors.primary,
         ).toMaterial3Colors(),
     ) {
         leadingIcon?.invoke()

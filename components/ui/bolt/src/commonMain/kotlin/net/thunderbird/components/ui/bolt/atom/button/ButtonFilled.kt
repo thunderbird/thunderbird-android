@@ -11,7 +11,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun ButtonFilled(
@@ -39,7 +39,7 @@ fun ButtonFilled(
                 contentDescription = null,
                 modifier = Modifier
                     .alignByBaseline()
-                    .padding(end = MainTheme.spacings.default),
+                    .padding(end = BoltTheme.spacings.default),
                 tint = colors.iconColor,
             )
         }

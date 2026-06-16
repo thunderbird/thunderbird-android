@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.IntOffset
 import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
 import net.thunderbird.components.ui.bolt.atom.Surface
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
@@ -80,7 +80,7 @@ internal fun DrawerContent(
             .width(DRAWER_WIDTH + additionalWidth)
             .fillMaxHeight()
             .testTag("DrawerContent"),
-        color = MainTheme.colors.surfaceContainerLow,
+        color = BoltTheme.colors.surfaceContainerLow,
     ) {
         val selectedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId }
 
@@ -127,7 +127,7 @@ private fun AccountContent(
     selectedAccount: DisplayAccount?,
 ) {
     Surface(
-        color = MainTheme.colors.surfaceContainerLow,
+        color = BoltTheme.colors.surfaceContainerLow,
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -158,7 +158,7 @@ private fun FolderContent(
     val isUnifiedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId } is UnifiedDisplayAccount
 
     Surface(
-        color = MainTheme.colors.surfaceContainerLow,
+        color = BoltTheme.colors.surfaceContainerLow,
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),

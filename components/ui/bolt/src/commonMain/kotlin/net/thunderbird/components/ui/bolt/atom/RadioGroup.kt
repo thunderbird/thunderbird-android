@@ -13,7 +13,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.button.RadioButton
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun <T> RadioGroup(
@@ -55,7 +55,7 @@ internal fun RadioGroupSelectedPreview() {
             options = choice,
             optionTitle = { it.second },
             selectedOption = selectedOption,
-            modifier = Modifier.padding(MainTheme.spacings.default),
+            modifier = Modifier.padding(BoltTheme.spacings.default),
         )
     }
 }
@@ -68,7 +68,7 @@ internal fun RadioGroupUnSelectedPreview() {
             onClick = {},
             options = choice,
             optionTitle = { it.second },
-            modifier = Modifier.padding(MainTheme.spacings.default),
+            modifier = Modifier.padding(BoltTheme.spacings.default),
         )
     }
 }

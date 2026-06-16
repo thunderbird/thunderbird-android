@@ -14,7 +14,7 @@ import net.thunderbird.components.ui.bolt.atom.card.CardDefaults
 import net.thunderbird.components.ui.bolt.organism.banner.global.BannerGlobalNotificationCard
 import net.thunderbird.components.ui.bolt.organism.banner.inline.BannerInlineNotificationCard
 import net.thunderbird.components.ui.bolt.organism.banner.inline.BannerInlineNotificationCardBehaviour
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * Contains the default values used by [BannerInlineNotificationCard] and [BannerGlobalNotificationCard] types
@@ -46,8 +46,8 @@ object BannerNotificationCardDefaults {
      */
     @Composable
     fun errorCardColors(
-        containerColor: Color = MainTheme.colors.errorContainer,
-        contentColor: Color = MainTheme.colors.onErrorContainer,
+        containerColor: Color = BoltTheme.colors.errorContainer,
+        contentColor: Color = BoltTheme.colors.onErrorContainer,
     ): CardColors = CardDefaults.outlinedCardColors(
         containerColor = containerColor,
         contentColor = contentColor,
@@ -63,8 +63,8 @@ object BannerNotificationCardDefaults {
      */
     @Composable
     fun infoCardColors(
-        containerColor: Color = MainTheme.colors.infoContainer,
-        contentColor: Color = MainTheme.colors.onInfoContainer,
+        containerColor: Color = BoltTheme.colors.infoContainer,
+        contentColor: Color = BoltTheme.colors.onInfoContainer,
     ): CardColors = CardDefaults.outlinedCardColors(
         containerColor = containerColor,
         contentColor = contentColor,
@@ -80,8 +80,8 @@ object BannerNotificationCardDefaults {
      */
     @Composable
     fun warningCardColors(
-        containerColor: Color = MainTheme.colors.warningContainer,
-        contentColor: Color = MainTheme.colors.onWarningContainer,
+        containerColor: Color = BoltTheme.colors.warningContainer,
+        contentColor: Color = BoltTheme.colors.onWarningContainer,
     ): CardColors = CardDefaults.outlinedCardColors(
         containerColor = containerColor,
         contentColor = contentColor,
@@ -97,8 +97,8 @@ object BannerNotificationCardDefaults {
      */
     @Composable
     fun successCardColors(
-        containerColor: Color = MainTheme.colors.successContainer,
-        contentColor: Color = MainTheme.colors.onSuccessContainer,
+        containerColor: Color = BoltTheme.colors.successContainer,
+        contentColor: Color = BoltTheme.colors.onSuccessContainer,
     ): CardColors = CardDefaults.outlinedCardColors(
         containerColor = containerColor,
         contentColor = contentColor,
@@ -110,7 +110,7 @@ object BannerNotificationCardDefaults {
      * @return The [BorderStroke] for the error banner inline notification card.
      */
     @Composable
-    fun errorCardBorder(): BorderStroke = defaultCardBorder(color = MainTheme.colors.onErrorContainer)
+    fun errorCardBorder(): BorderStroke = defaultCardBorder(color = BoltTheme.colors.onErrorContainer)
 
     /**
      * Creates a [BorderStroke] for the info banner inline notification card.
@@ -118,7 +118,7 @@ object BannerNotificationCardDefaults {
      * @return The [BorderStroke] for the info banner inline notification card.
      */
     @Composable
-    fun infoCardBorder(): BorderStroke = defaultCardBorder(color = MainTheme.colors.onInfoContainer)
+    fun infoCardBorder(): BorderStroke = defaultCardBorder(color = BoltTheme.colors.onInfoContainer)
 
     /**
      * Creates a [BorderStroke] for the warning banner inline notification card.
@@ -126,7 +126,7 @@ object BannerNotificationCardDefaults {
      * @return The [BorderStroke] for the warning banner inline notification card.
      */
     @Composable
-    fun warningCardBorder(): BorderStroke = defaultCardBorder(color = MainTheme.colors.onWarningContainer)
+    fun warningCardBorder(): BorderStroke = defaultCardBorder(color = BoltTheme.colors.onWarningContainer)
 
     /**
      * Creates a [BorderStroke] for the success banner inline notification card.
@@ -134,7 +134,7 @@ object BannerNotificationCardDefaults {
      * @return The [BorderStroke] for the success banner inline notification card.
      */
     @Composable
-    fun successCardBorder(): BorderStroke = defaultCardBorder(color = MainTheme.colors.onSuccessContainer)
+    fun successCardBorder(): BorderStroke = defaultCardBorder(color = BoltTheme.colors.onSuccessContainer)
 
     private fun defaultCardBorder(color: Color): BorderStroke = BorderStroke(
         width = 1.dp,

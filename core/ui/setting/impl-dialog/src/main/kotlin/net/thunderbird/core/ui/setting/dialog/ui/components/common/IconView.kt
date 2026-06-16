@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.setting.SettingValue.IconList.IconOption
 
 @Composable
@@ -21,7 +21,7 @@ internal fun IconView(
     onClick: ((IconOption) -> Unit)?,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
-    size: Dp = MainTheme.sizes.icon,
+    size: Dp = BoltTheme.sizes.icon,
 ) {
     Surface(
         color = if (isSelected) color else Color.Unspecified,
@@ -34,9 +34,9 @@ internal fun IconView(
             ),
     ) {
         Icon(
-            tint = if (isSelected) MainTheme.colors.onSecondary else MainTheme.colors.onSurface,
+            tint = if (isSelected) BoltTheme.colors.onSecondary else BoltTheme.colors.onSurface,
             imageVector = icon.icon(),
-            modifier = Modifier.size(size).padding(MainTheme.spacings.default),
+            modifier = Modifier.size(size).padding(BoltTheme.spacings.default),
         )
     }
 }

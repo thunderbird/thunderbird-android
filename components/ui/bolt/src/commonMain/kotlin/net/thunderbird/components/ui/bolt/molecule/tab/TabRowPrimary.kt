@@ -17,7 +17,7 @@ import net.thunderbird.components.ui.bolt.PreviewWithThemeLightDark
 import net.thunderbird.components.ui.bolt.atom.tab.TabPrimary
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * A molecule component that displays a scrollable row of primary tabs.
@@ -51,7 +51,7 @@ fun TabRowPrimary(
     PrimaryScrollableTabRow(
         selectedTabIndex = selectedTabIndex,
         edgePadding = edgePadding,
-        contentColor = MainTheme.colors.onSurfaceVariant,
+        contentColor = BoltTheme.colors.onSurfaceVariant,
         indicator = {
             TabRowDefaults.PrimaryIndicator(
                 modifier = Modifier.tabIndicatorOffset(selectedTabIndex, matchContentSize = false),
@@ -69,7 +69,7 @@ object TabRowPrimaryDefaults {
     val IndicatorWidth = Dp.Unspecified
     val IndicatorColor
         @Composable
-        get() = MainTheme.colors.outline
+        get() = BoltTheme.colors.outline
 }
 
 @PreviewLightDark
@@ -105,8 +105,8 @@ private fun TabRowPrimaryIndicatorChangesPreview() {
         TabRowPrimary(
             selectedTabIndex = selectedTab,
             modifier = Modifier.fillMaxWidth(),
-            indicatorColor = MainTheme.colors.tertiary,
-            indicatorWidth = MainTheme.sizes.medium,
+            indicatorColor = BoltTheme.colors.tertiary,
+            indicatorWidth = BoltTheme.sizes.medium,
         ) {
             tabs.forEachIndexed { index, tab ->
                 TabPrimary(
@@ -134,7 +134,7 @@ private fun TabRowPrimaryEdgePaddingPreview() {
         TabRowPrimary(
             selectedTabIndex = selectedTab,
             modifier = Modifier.fillMaxWidth(),
-            edgePadding = MainTheme.spacings.zero,
+            edgePadding = BoltTheme.spacings.zero,
         ) {
             tabs.forEachIndexed { index, tab ->
                 TabPrimary(

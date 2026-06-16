@@ -17,7 +17,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.molecule.notification.NotificationActionButton
 import net.thunderbird.components.ui.bolt.organism.banner.BannerNotificationCardDefaults
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * Displays an info banner global notification card.
@@ -56,7 +56,7 @@ private fun InfoBannerGlobalNotificationCardStringTitlePreview() {
                         onClick = {},
                     )
                 },
-                modifier = Modifier.padding(top = MainTheme.spacings.quadruple),
+                modifier = Modifier.padding(top = BoltTheme.spacings.quadruple),
             )
         }
     }
@@ -71,7 +71,7 @@ private fun InfoBannerGlobalNotificationCardNoActionPreview() {
         ) {
             InfoBannerGlobalNotificationCard(
                 text = "Offline. No internet connection found.",
-                modifier = Modifier.padding(top = MainTheme.spacings.quadruple),
+                modifier = Modifier.padding(top = BoltTheme.spacings.quadruple),
             )
         }
     }
@@ -94,7 +94,7 @@ private fun InfoBannerGlobalNotificationCardLongTextPreview(
                         onClick = {},
                     )
                 },
-                modifier = Modifier.padding(top = MainTheme.spacings.quadruple),
+                modifier = Modifier.padding(top = BoltTheme.spacings.quadruple),
             )
         }
     }
@@ -111,7 +111,7 @@ private fun InfoBannerGlobalNotificationCardLongNoActionTextPreview(
         ) {
             InfoBannerGlobalNotificationCard(
                 text = text,
-                modifier = Modifier.padding(top = MainTheme.spacings.quadruple),
+                modifier = Modifier.padding(top = BoltTheme.spacings.quadruple),
             )
         }
     }
@@ -137,7 +137,7 @@ private fun InfoBannerGlobalNotificationCardAnnotatedStringTitlePreview() {
                         onClick = {},
                     )
                 },
-                modifier = Modifier.padding(top = MainTheme.spacings.quadruple),
+                modifier = Modifier.padding(top = BoltTheme.spacings.quadruple),
             )
         }
     }

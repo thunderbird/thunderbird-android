@@ -8,7 +8,7 @@ import net.thunderbird.components.ui.bolt.organism.banner.global.ErrorBannerGlob
 import net.thunderbird.components.ui.bolt.organism.banner.global.InfoBannerGlobalNotificationCard
 import net.thunderbird.components.ui.bolt.organism.banner.global.SuccessBannerGlobalNotificationCard
 import net.thunderbird.components.ui.bolt.organism.banner.global.WarningBannerGlobalNotificationCard
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.fullSpanItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionHeaderItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionSubtitleItem
@@ -29,7 +29,7 @@ fun LazyGridScope.errorBannerGlobal() {
             action = {
                 NotificationActionButton(text = "Action 1", onClick = {})
             },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -42,7 +42,7 @@ fun LazyGridScope.infoBannerGlobal() {
             action = {
                 NotificationActionButton(text = "Action 1", onClick = {})
             },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -55,7 +55,7 @@ fun LazyGridScope.warningBannerGlobal() {
             action = {
                 NotificationActionButton(text = "Action 1", onClick = {})
             },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -68,7 +68,7 @@ fun LazyGridScope.successBannerGlobal() {
             action = {
                 NotificationActionButton(text = "Action 1", onClick = {})
             },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }

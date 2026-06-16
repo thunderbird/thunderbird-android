@@ -12,7 +12,7 @@ import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * A badge for a navigation drawer item with an optional icon.
@@ -37,8 +37,8 @@ fun NavigationDrawerItemBadge(
         if (imageVector != null) {
             Icon(
                 imageVector = imageVector,
-                modifier = Modifier.size(MainTheme.sizes.iconSmall)
-                    .padding(start = MainTheme.spacings.quarter),
+                modifier = Modifier.size(BoltTheme.sizes.iconSmall)
+                    .padding(start = BoltTheme.spacings.quarter),
             )
         }
     }

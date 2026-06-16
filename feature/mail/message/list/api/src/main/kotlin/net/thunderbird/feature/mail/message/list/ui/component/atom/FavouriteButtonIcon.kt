@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.Dp
 import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
 import net.thunderbird.components.ui.bolt.atom.button.ButtonIconDefaults
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 private val FAVOURITE_ICON_COLOR = Color(color = 0xFFF4C430)
 
@@ -22,13 +22,13 @@ fun FavouriteButtonIcon(
     favourite: Boolean,
     onFavouriteChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    size: Dp = MainTheme.sizes.icon,
+    size: Dp = BoltTheme.sizes.icon,
 ) {
     ButtonIcon(
         onClick = { onFavouriteChange(!favourite) },
         imageVector = if (favourite) Icons.Filled.Star else Icons.Outlined.Star,
         colors = ButtonIconDefaults.buttonIconColors(
-            contentColor = if (favourite) FAVOURITE_ICON_COLOR else MainTheme.colors.onSurface,
+            contentColor = if (favourite) FAVOURITE_ICON_COLOR else BoltTheme.colors.onSurface,
         ),
         modifier = modifier
             .size(size)

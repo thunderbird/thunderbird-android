@@ -16,7 +16,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.organism.drawer.NavigationDrawerItem
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.account.avatar.ui.Avatar
 import net.thunderbird.feature.account.avatar.ui.AvatarSize
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
@@ -42,7 +42,7 @@ internal fun AccountListItem(
         onClick = { onClick(account) },
         modifier = modifier
             .fillMaxWidth()
-            .height(MainTheme.sizes.large),
+            .height(BoltTheme.sizes.large),
         icon = {
             Avatar(
                 avatar = avatar,
@@ -56,9 +56,9 @@ internal fun AccountListItem(
                     Icon(
                         imageVector = Icons.DualTone.Warning,
                         tint = if (selected) {
-                            MainTheme.colors.onSecondaryContainer
+                            BoltTheme.colors.onSecondaryContainer
                         } else {
-                            MainTheme.colors.error
+                            BoltTheme.colors.error
                         },
                     )
                 } else {
@@ -81,7 +81,7 @@ private fun AccountLabel(
     val name = getDisplayAccountName(account)
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
         modifier = modifier.fillMaxWidth(),
     ) {
         TextBodyLarge(

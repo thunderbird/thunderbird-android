@@ -14,7 +14,7 @@ import net.thunderbird.components.ui.bolt.template.ResponsiveContentWithSurface
 import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.components.ui.bolt.template.pager.HorizontalTabPagerPrimary
 import net.thunderbird.components.ui.bolt.template.pager.TabPrimaryConfig
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.CatalogPageContract
 import net.thunderbird.components.ui.catalog.ui.page.CatalogPageContract.CatalogPage
 import net.thunderbird.components.ui.catalog.ui.page.common.list.fullSpanItem
@@ -47,15 +47,15 @@ fun <T : CatalogPage> PagedContent(
                     onRenderFullScreenPage(page)
                 } else {
                     LazyVerticalGrid(
-                        columns = GridCells.Adaptive(MainTheme.sizes.larger),
+                        columns = GridCells.Adaptive(BoltTheme.sizes.larger),
                         modifier = Modifier
                             .fillMaxSize()
                             .imePadding(),
-                        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
-                        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                        horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
+                        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
                     ) {
                         onRenderPage(page)
-                        fullSpanItem { Spacer(modifier = Modifier.height(MainTheme.sizes.smaller)) }
+                        fullSpanItem { Spacer(modifier = Modifier.height(BoltTheme.sizes.smaller)) }
                     }
                 }
             }

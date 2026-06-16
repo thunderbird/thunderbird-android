@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun ContributionListItem(
@@ -23,8 +23,8 @@ internal fun ContributionListItem(
         modifier = modifier
             .border(
                 width = if (isSelected) 2.dp else 1.dp,
-                color = if (isSelected) MainTheme.colors.primary else MainTheme.colors.outlineVariant,
-                shape = MainTheme.shapes.small,
+                color = if (isSelected) BoltTheme.colors.primary else BoltTheme.colors.outlineVariant,
+                shape = BoltTheme.shapes.small,
             )
             .selectable(
                 selected = isSelected,
@@ -36,8 +36,8 @@ internal fun ContributionListItem(
         TextBodyMedium(
             text = text,
             modifier = Modifier.padding(
-                horizontal = MainTheme.spacings.triple,
-                vertical = MainTheme.spacings.oneHalf,
+                horizontal = BoltTheme.spacings.triple,
+                vertical = BoltTheme.spacings.oneHalf,
             ),
         )
     }

@@ -13,7 +13,7 @@ import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 import net.thunderbird.components.ui.bolt.molecule.PullToRefreshBox
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Suppress("MagicNumber")
 @Composable
@@ -37,7 +37,7 @@ fun PullToRefresh(
         modifier = modifier.fillMaxWidth(),
     ) {
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         ) {
             items(10) {
                 TextTitleMedium(text = "Item $it")

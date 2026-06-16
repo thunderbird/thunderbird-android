@@ -43,7 +43,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineSmall
 import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
 import net.thunderbird.components.ui.bolt.template.Scaffold
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import app.k9mail.feature.account.common.R as CommonR
 
 private const val LOADING_INDICATOR_DELAY = 500L
@@ -82,7 +82,7 @@ internal fun PermissionsContent(
 
                 // This provides some bottom padding but is also necessary to make the vertical arrangement have the
                 // desired effect of putting ContentArea() in the middle.
-                Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+                Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
             }
         }
     }
@@ -101,10 +101,10 @@ private fun HeaderArea(
 
         TextHeadlineSmall(
             text = stringResource(R.string.onboarding_permissions_screen_title),
-            modifier = Modifier.padding(horizontal = MainTheme.spacings.double),
+            modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
         )
 
-        Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
     }
 }
 
@@ -114,7 +114,7 @@ private fun ContentArea(state: State, onEvent: (Event) -> Unit) {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxHeight()
-            .padding(MainTheme.spacings.double),
+            .padding(BoltTheme.spacings.double),
     ) {
         if (state.isLoading) {
             DelayedCircularProgressIndicator()
@@ -138,7 +138,7 @@ private fun PermissionBoxes(
     )
 
     if (state.isNotificationsPermissionVisible) {
-        Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.quadruple))
 
         PermissionBox(
             icon = Icons.Filled.Notifications,
@@ -171,10 +171,10 @@ private fun BottomBar(
             Row(
                 modifier = Modifier
                     .padding(
-                        start = MainTheme.spacings.quadruple,
-                        end = MainTheme.spacings.quadruple,
-                        top = MainTheme.spacings.default,
-                        bottom = MainTheme.spacings.double,
+                        start = BoltTheme.spacings.quadruple,
+                        end = BoltTheme.spacings.quadruple,
+                        top = BoltTheme.spacings.default,
+                        bottom = BoltTheme.spacings.double,
                     )
                     .fillMaxWidth()
                     .padding(contentPadding),

@@ -28,7 +28,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleSmall
 import net.thunderbird.components.ui.bolt.organism.banner.BannerNotificationCardDefaults
 import net.thunderbird.components.ui.bolt.theme.LocalContentColor
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * Used to maintain the user’s awareness of a persistent irregular state of the application,
@@ -109,10 +109,10 @@ private fun BannerGlobalNotificationCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = MainTheme.sizes.bannerGlobalHeight)
-                .padding(horizontal = MainTheme.spacings.default),
+                .heightIn(min = BoltTheme.sizes.bannerGlobalHeight)
+                .padding(horizontal = BoltTheme.spacings.default),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         ) {
             icon()
             Box(
@@ -143,7 +143,7 @@ private fun BannerGlobalNotificationCardStringTitlePreview() {
                         onClick = {},
                     )
                 },
-                modifier = Modifier.padding(top = MainTheme.spacings.quadruple),
+                modifier = Modifier.padding(top = BoltTheme.spacings.quadruple),
             )
         }
     }
@@ -170,7 +170,7 @@ private fun BannerGlobalNotificationCardAnnotatedStringTitlePreview() {
                         onClick = {},
                     )
                 },
-                modifier = Modifier.padding(top = MainTheme.spacings.quadruple),
+                modifier = Modifier.padding(top = BoltTheme.spacings.quadruple),
             )
         }
     }

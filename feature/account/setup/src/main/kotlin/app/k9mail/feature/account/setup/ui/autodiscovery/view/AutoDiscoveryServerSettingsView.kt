@@ -21,7 +21,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.common.net.Hostname
 import net.thunderbird.core.common.net.isIpAddress
 
@@ -37,7 +37,7 @@ internal fun AutoDiscoveryServerSettingsView(
 ) {
     val resources = LocalResources.current
     Column(
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         modifier = modifier,
     ) {
         TextBodyLarge(
@@ -105,7 +105,7 @@ private fun ServerSettingRow(
         if (showIcon) {
             Icon(
                 imageVector = icon,
-                modifier = Modifier.padding(end = MainTheme.spacings.default),
+                modifier = Modifier.padding(end = BoltTheme.spacings.default),
             )
         }
         TextBodyMedium(

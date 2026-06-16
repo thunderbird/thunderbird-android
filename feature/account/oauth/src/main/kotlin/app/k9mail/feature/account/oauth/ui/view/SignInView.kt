@@ -10,7 +10,7 @@ import androidx.compose.ui.text.style.TextAlign
 import app.k9mail.feature.account.oauth.R
 import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
 import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun SignInView(
@@ -21,7 +21,7 @@ internal fun SignInView(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         modifier = modifier,
     ) {
         TextBodySmall(

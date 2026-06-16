@@ -44,7 +44,7 @@ import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
 import net.thunderbird.components.ui.bolt.template.Scaffold
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.common.provider.BrandNameProvider
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.thundermail.ui.component.ThundermailButtonPanel
@@ -81,19 +81,19 @@ internal fun TbOnboardingMigrationScreen(
 
                 Spacer(
                     modifier = Modifier
-                        .height(MainTheme.spacings.double)
+                        .height(BoltTheme.spacings.double)
                         .weight(1f),
                 )
 
                 ThundermailButtonPanel(
                     onThundermailClick = onThundermailClick,
                     onScanQrCodeClick = onQrCodeScan,
-                    modifier = Modifier.padding(bottom = MainTheme.spacings.quadruple),
+                    modifier = Modifier.padding(bottom = BoltTheme.spacings.quadruple),
                 )
 
                 AlreadyUsingThunderbirdCard(onQrCodeScan)
 
-                Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
+                Spacer(modifier = Modifier.height(BoltTheme.spacings.triple))
 
                 TextGroup(title = stringResource(R.string.onboarding_migration_thunderbird_new_account_title)) {
                     ButtonOutlined(
@@ -113,7 +113,7 @@ internal fun TbOnboardingMigrationScreen(
 
                 Spacer(
                     modifier = Modifier
-                        .height(MainTheme.spacings.double)
+                        .height(BoltTheme.spacings.double)
                         .weight(1f),
                 )
             }
@@ -127,7 +127,7 @@ private fun AlreadyUsingThunderbirdCard(onQrCodeScan: () -> Unit) {
         TextBodyMedium(
             text = stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_text),
             modifier = Modifier
-                .padding(bottom = MainTheme.spacings.double),
+                .padding(bottom = BoltTheme.spacings.double),
         )
 
         TextBodyMedium(
@@ -141,8 +141,8 @@ private fun AlreadyUsingThunderbirdCard(onQrCodeScan: () -> Unit) {
             ),
             modifier = Modifier
                 .padding(
-                    top = MainTheme.spacings.half,
-                    bottom = MainTheme.spacings.double,
+                    top = BoltTheme.spacings.half,
+                    bottom = BoltTheme.spacings.double,
                 ),
         )
 
@@ -156,7 +156,7 @@ private fun AlreadyUsingThunderbirdCard(onQrCodeScan: () -> Unit) {
         ThunderbirdVersionNote(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(top = MainTheme.spacings.half),
+                .padding(top = BoltTheme.spacings.half),
         )
     }
 }
@@ -177,10 +177,10 @@ private fun ThunderbirdVersionNote(
 
     Box(
         modifier = modifier
-            .clip(MainTheme.shapes.small)
+            .clip(BoltTheme.shapes.small)
             .clickable { context.launchLearnHowToUpdateThunderbird() }
             .semantics { role = Role.Button }
-            .padding(MainTheme.spacings.double),
+            .padding(BoltTheme.spacings.double),
     ) {
         check("%s" in formatString) { "Placeholder needs to be exactly %s" }
 
@@ -193,7 +193,7 @@ private fun ThunderbirdVersionNote(
                     R.string.onboarding_migration_thunderbird_qr_code_import_instructions_learn_update,
                 ),
                 spanStyle = SpanStyle(
-                    color = MainTheme.colors.primary,
+                    color = BoltTheme.colors.primary,
                     textDecoration = TextDecoration.Underline,
                 ),
             )
@@ -215,18 +215,18 @@ private fun TextCard(
     CardFilled(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = MainTheme.spacings.quadruple),
+            .padding(horizontal = BoltTheme.spacings.quadruple),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MainTheme.spacings.double),
+                .padding(BoltTheme.spacings.double),
         ) {
             TextTitleMedium(
                 text = title,
-                color = MainTheme.colors.primary,
+                color = BoltTheme.colors.primary,
                 modifier = Modifier
-                    .padding(bottom = MainTheme.spacings.double),
+                    .padding(bottom = BoltTheme.spacings.double),
             )
 
             content()
@@ -243,13 +243,13 @@ private fun TextGroup(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(MainTheme.spacings.double),
+            .padding(BoltTheme.spacings.double),
     ) {
         TextTitleMedium(
             text = title,
-            color = MainTheme.colors.primary,
+            color = BoltTheme.colors.primary,
             modifier = Modifier
-                .padding(bottom = MainTheme.spacings.default),
+                .padding(bottom = BoltTheme.spacings.default),
         )
 
         content()
@@ -263,7 +263,7 @@ private fun BulletList(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
     ) {
         for (item in items) {
             Row {

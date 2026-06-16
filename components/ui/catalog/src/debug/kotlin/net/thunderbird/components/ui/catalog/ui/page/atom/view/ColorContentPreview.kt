@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithTheme
 import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevices
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 @Preview(showBackground = true)
@@ -13,8 +13,8 @@ internal fun ColorContentPreview() {
     PreviewWithTheme {
         ColorContent(
             text = "Primary",
-            color = MainTheme.colors.primary,
-            textColor = MainTheme.colors.onPrimary,
+            color = BoltTheme.colors.primary,
+            textColor = BoltTheme.colors.onPrimary,
         )
     }
 }

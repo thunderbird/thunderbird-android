@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun TextBodyMedium(
@@ -33,7 +33,7 @@ fun TextBodyMedium(
         textAlign = textAlign,
         overflow = overflow,
         maxLines = maxLines,
-        style = MainTheme.typography.bodyMedium,
+        style = BoltTheme.typography.bodyMedium,
         onTextLayout = onTextLayout,
     )
 }
@@ -55,7 +55,7 @@ fun TextBodyMedium(
         textAlign = textAlign,
         overflow = overflow,
         maxLines = maxLines,
-        style = MainTheme.typography.bodyMedium,
+        style = BoltTheme.typography.bodyMedium,
         onTextLayout = onTextLayout,
     )
 }
@@ -91,7 +91,7 @@ internal fun TextBodyMediumWithColorPreview() {
     PreviewWithThemes {
         TextBodyMedium(
             text = "Text Body Medium with color",
-            color = MainTheme.colors.primary,
+            color = BoltTheme.colors.primary,
         )
     }
 }

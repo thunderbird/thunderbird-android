@@ -17,7 +17,7 @@ import net.thunderbird.components.ui.bolt.molecule.ContentLoadingErrorView
 import net.thunderbird.components.ui.bolt.molecule.ErrorView
 import net.thunderbird.components.ui.bolt.molecule.LoadingView
 import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import app.k9mail.feature.account.common.R as CommonR
 
 @Composable
@@ -58,7 +58,7 @@ fun SpecialFoldersContent(
                 if (state.isSuccess) {
                     LoadingView(
                         message = stringResource(id = R.string.account_setup_special_folders_success_message),
-                        modifier = Modifier.padding(horizontal = MainTheme.spacings.double),
+                        modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
                     )
                 } else {
                     SpecialFoldersFormContent(
@@ -91,6 +91,6 @@ private fun SpecialFoldersErrorView(
         onRetry = onRetry,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(MainTheme.spacings.double),
+            .padding(BoltTheme.spacings.double),
     )
 }

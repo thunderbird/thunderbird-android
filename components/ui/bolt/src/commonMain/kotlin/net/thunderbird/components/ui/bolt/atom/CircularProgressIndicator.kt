@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun CircularProgressIndicator(
@@ -49,7 +49,7 @@ internal fun CircularProgressIndicatorColoredPreview() {
     PreviewWithThemes {
         CircularProgressIndicator(
             progress = { 0.75f },
-            color = MainTheme.colors.secondary,
+            color = BoltTheme.colors.secondary,
         )
     }
 }

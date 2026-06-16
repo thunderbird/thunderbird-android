@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.Switch
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun SwitchInput(
@@ -33,7 +33,7 @@ fun SwitchInput(
                 .fillMaxWidth()
                 .clickable { onCheckedChange(!checked) },
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         ) {
             Switch(
                 checked = checked,

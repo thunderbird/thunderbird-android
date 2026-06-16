@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.component.list.item.SettingItemLayout
 import net.thunderbird.core.ui.setting.dialog.ui.components.common.ColorView
@@ -23,8 +23,8 @@ internal fun ColorItem(
             ColorView(
                 color = setting.value,
                 onClick = null,
-                size = MainTheme.sizes.iconLarge,
-                modifier = Modifier.padding(start = MainTheme.spacings.default),
+                size = BoltTheme.sizes.iconLarge,
+                modifier = Modifier.padding(start = BoltTheme.spacings.default),
             )
         },
         modifier = modifier,

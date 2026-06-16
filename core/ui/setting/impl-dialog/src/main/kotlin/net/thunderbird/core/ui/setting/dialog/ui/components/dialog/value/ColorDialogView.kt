@@ -15,7 +15,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.dialog.ui.components.common.ColorView
 import net.thunderbird.core.ui.setting.dialog.ui.components.dialog.SettingDialogLayout
@@ -42,10 +42,10 @@ internal fun ColorDialogView(
         setting.description()?.let {
             TextBodyMedium(text = it)
 
-            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+            Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
         }
 
-        val gap = MainTheme.spacings.default
+        val gap = BoltTheme.spacings.default
         FlexBox(
             config = {
                 direction(FlexDirection.Row)
@@ -64,7 +64,7 @@ internal fun ColorDialogView(
                             currentColor.intValue = newColor
                         },
                         isSelected = color == currentColor.intValue,
-                        modifier = Modifier.size(MainTheme.sizes.iconAvatar),
+                        modifier = Modifier.size(BoltTheme.sizes.iconAvatar),
                     )
                 }
             }

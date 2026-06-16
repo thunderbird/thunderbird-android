@@ -28,7 +28,7 @@ import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
 import net.thunderbird.components.ui.bolt.molecule.input.SelectInput
 import net.thunderbird.components.ui.bolt.molecule.input.SwitchInput
 import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Suppress("LongMethod")
 @Composable
@@ -54,7 +54,7 @@ internal fun SyncOptionsContent(
                 .imePadding(),
             contentPadding = contentPadding,
             horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         ) {
             item {
                 AppTitleTopHeader(
@@ -103,7 +103,7 @@ internal fun SyncOptionsContent(
             }
 
             item {
-                Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
+                Spacer(modifier = Modifier.requiredHeight(BoltTheme.sizes.smaller))
             }
         }
     }

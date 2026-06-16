@@ -21,7 +21,7 @@ import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineSmall
 import net.thunderbird.components.ui.bolt.resources.Res
 import net.thunderbird.components.ui.bolt.resources.bolt_molecule_error_view_button_retry
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -41,7 +41,7 @@ fun ErrorView(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MainTheme.spacings.triple),
+                .padding(BoltTheme.spacings.triple),
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -49,9 +49,9 @@ fun ErrorView(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.ErrorOutline,
-                    tint = MainTheme.colors.error,
+                    tint = BoltTheme.colors.error,
                 )
-                Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+                Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
                 TextHeadlineSmall(
                     text = title,
                     textAlign = TextAlign.Center,
@@ -59,14 +59,14 @@ fun ErrorView(
             }
 
             if (message != null) {
-                Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+                Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
                 TextBodyMedium(
                     text = message,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
             if (onRetry != null) {
-                Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
+                Spacer(modifier = Modifier.height(BoltTheme.spacings.triple))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,

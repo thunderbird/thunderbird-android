@@ -35,7 +35,7 @@ import net.thunderbird.components.ui.bolt.molecule.notification.NotificationActi
 import net.thunderbird.components.ui.bolt.organism.banner.BannerNotificationCardDefaults
 import net.thunderbird.components.ui.bolt.organism.banner.BannerNotificationCardDefaults.TEST_TAG_BANNER_INLINE_CARD_ACTION_ROW
 import net.thunderbird.components.ui.bolt.theme.LocalContentColor
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 private const val MAX_TITLE_LENGTH = 100
 private const val MAX_SUPPORTING_TEXT_LENGTH = 200
@@ -131,15 +131,15 @@ internal fun BannerInlineNotificationCard(
         shape = shape,
     ) {
         Column(
-            modifier = Modifier.padding(MainTheme.spacings.oneHalf),
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            modifier = Modifier.padding(BoltTheme.spacings.oneHalf),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+                horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
             ) {
                 CompositionLocalProvider(LocalContentColor provides colors.contentColor) {
                     icon()
-                    Column(verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.quarter)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.quarter)) {
                         title()
                         supportingText()
                     }
@@ -147,7 +147,7 @@ internal fun BannerInlineNotificationCard(
             }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(
-                    space = MainTheme.spacings.default,
+                    space = BoltTheme.spacings.default,
                     alignment = Alignment.End,
                 ),
                 verticalAlignment = Alignment.CenterVertically,
@@ -253,7 +253,7 @@ private fun BannerInlineNotificationSupportingText(
 @Composable
 private fun BannerInlineNotificationCardCustomTitleAndDescriptionPreview() {
     PreviewWithThemesLightDark {
-        Surface(modifier = Modifier.padding(MainTheme.spacings.triple)) {
+        Surface(modifier = Modifier.padding(BoltTheme.spacings.triple)) {
             BannerInlineNotificationCard(
                 icon = { Icon(imageVector = Icons.Outlined.Report) },
                 title = {
@@ -267,8 +267,8 @@ private fun BannerInlineNotificationCardCustomTitleAndDescriptionPreview() {
                     NotificationActionButton(text = "Sign in", onClick = {})
                 },
                 modifier = Modifier.padding(
-                    vertical = MainTheme.spacings.quadruple,
-                    horizontal = MainTheme.spacings.default,
+                    vertical = BoltTheme.spacings.quadruple,
+                    horizontal = BoltTheme.spacings.default,
                 ),
             )
         }
@@ -279,7 +279,7 @@ private fun BannerInlineNotificationCardCustomTitleAndDescriptionPreview() {
 @Composable
 private fun BannerInlineNotificationCardTextPreview() {
     PreviewWithThemesLightDark {
-        Surface(modifier = Modifier.padding(MainTheme.spacings.triple)) {
+        Surface(modifier = Modifier.padding(BoltTheme.spacings.triple)) {
             BannerInlineNotificationCard(
                 icon = { Icon(imageVector = Icons.Outlined.Report) },
                 title = "Missing encryption key",
@@ -290,8 +290,8 @@ private fun BannerInlineNotificationCardTextPreview() {
                     NotificationActionButton(text = "Disable encryption", onClick = {})
                 },
                 modifier = Modifier.padding(
-                    vertical = MainTheme.spacings.quadruple,
-                    horizontal = MainTheme.spacings.default,
+                    vertical = BoltTheme.spacings.quadruple,
+                    horizontal = BoltTheme.spacings.default,
                 ),
             )
         }
@@ -302,11 +302,11 @@ private fun BannerInlineNotificationCardTextPreview() {
 @Composable
 private fun BannerInlineNotificationCardAnnotatedStringPreview() {
     PreviewWithThemesLightDark {
-        Surface(modifier = Modifier.padding(MainTheme.spacings.triple)) {
+        Surface(modifier = Modifier.padding(BoltTheme.spacings.triple)) {
             BannerInlineNotificationCard(
                 icon = { Icon(imageVector = Icons.Outlined.Report) },
                 title = buildAnnotatedString {
-                    withStyle(style = SpanStyle(color = MainTheme.colors.tertiaryContainer)) {
+                    withStyle(style = SpanStyle(color = BoltTheme.colors.tertiaryContainer)) {
                         append("Missing encryption key")
                     }
                 },
@@ -322,8 +322,8 @@ private fun BannerInlineNotificationCardAnnotatedStringPreview() {
                     NotificationActionButton(text = "Disable encryption", onClick = {})
                 },
                 modifier = Modifier.padding(
-                    vertical = MainTheme.spacings.quadruple,
-                    horizontal = MainTheme.spacings.default,
+                    vertical = BoltTheme.spacings.quadruple,
+                    horizontal = BoltTheme.spacings.default,
                 ),
             )
         }
@@ -334,7 +334,7 @@ private fun BannerInlineNotificationCardAnnotatedStringPreview() {
 @Composable
 private fun BannerInlineNotificationClippedCardTextPreview() {
     PreviewWithThemesLightDark {
-        Surface(modifier = Modifier.padding(MainTheme.spacings.triple)) {
+        Surface(modifier = Modifier.padding(BoltTheme.spacings.triple)) {
             BannerInlineNotificationCard(
                 icon = { Icon(imageVector = Icons.Outlined.Report) },
                 title = "Vestibulum tempor sed massa eget fermentum. Vivamus ut vitae aliquam e augue. " +
@@ -347,8 +347,8 @@ private fun BannerInlineNotificationClippedCardTextPreview() {
                     NotificationActionButton(text = "Disable encryption", onClick = {})
                 },
                 modifier = Modifier.padding(
-                    vertical = MainTheme.spacings.quadruple,
-                    horizontal = MainTheme.spacings.default,
+                    vertical = BoltTheme.spacings.quadruple,
+                    horizontal = BoltTheme.spacings.default,
                 ),
                 behaviour = BannerInlineNotificationCardBehaviour.Clipped,
             )
@@ -360,7 +360,7 @@ private fun BannerInlineNotificationClippedCardTextPreview() {
 @Composable
 private fun BannerInlineNotificationExpandedCardTextPreview() {
     PreviewWithThemesLightDark {
-        Surface(modifier = Modifier.padding(MainTheme.spacings.triple)) {
+        Surface(modifier = Modifier.padding(BoltTheme.spacings.triple)) {
             BannerInlineNotificationCard(
                 icon = { Icon(imageVector = Icons.Outlined.Report) },
                 title = "Vestibulum tempor sed massa eget fermentum. Vivamus ut vitae aliquam e augue. " +
@@ -373,8 +373,8 @@ private fun BannerInlineNotificationExpandedCardTextPreview() {
                     NotificationActionButton(text = "Disable encryption", onClick = {})
                 },
                 modifier = Modifier.padding(
-                    vertical = MainTheme.spacings.quadruple,
-                    horizontal = MainTheme.spacings.default,
+                    vertical = BoltTheme.spacings.quadruple,
+                    horizontal = BoltTheme.spacings.default,
                 ),
                 behaviour = BannerInlineNotificationCardBehaviour.Expanded,
             )

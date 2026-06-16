@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.bolt.theme.toSurfaceContainer
 import net.thunderbird.feature.account.avatar.Avatar
 
@@ -83,7 +83,7 @@ fun Avatar(
                 color = color,
                 shape = CircleShape,
                 modifier = Modifier
-                    .size(MainTheme.sizes.iconSmall),
+                    .size(BoltTheme.sizes.iconSmall),
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Check,

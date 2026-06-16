@@ -14,7 +14,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineSmall
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun AlertDialog(
@@ -151,7 +151,7 @@ internal fun AlertDialogWithCustomContentPreview() {
             onDismissRequest = {},
         ) {
             Column(
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
             ) {
                 TextBodyMedium("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                 TextBodyMedium("Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")

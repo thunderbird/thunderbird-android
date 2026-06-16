@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.organism.drawer.NavigationDrawerItemBadge
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.labelForCount
 
 @Composable
@@ -51,7 +51,7 @@ private fun AccountCountAndStarredBadge(
         }
 
         if (showStarredCount && starredCount > 0) {
-            Spacer(modifier = Modifier.Companion.width(MainTheme.spacings.half))
+            Spacer(modifier = Modifier.Companion.width(BoltTheme.spacings.half))
             NavigationDrawerItemBadge(
                 label = labelForCount(
                     count = starredCount,

@@ -17,7 +17,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.organism.TopAppBar
 import net.thunderbird.components.ui.bolt.template.pager.HorizontalTabPagerSecondary
 import net.thunderbird.components.ui.bolt.template.pager.TabSecondaryConfig
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSection
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSection
@@ -68,7 +68,7 @@ fun SecretDebugSettingsScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .verticalScroll(state = rememberScrollState())
-                            .padding(MainTheme.spacings.double),
+                            .padding(BoltTheme.spacings.double),
                     )
 
                     SecretDebugSettingsRoute.Tab.FeatureFlag -> DebugFeatureFlagSection(

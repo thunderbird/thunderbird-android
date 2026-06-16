@@ -13,7 +13,7 @@ import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 import net.thunderbird.components.ui.bolt.organism.ModalBottomSheet
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionHeaderItem
@@ -40,17 +40,17 @@ private fun LazyGridScope.modalBottomSheetSimpleItem() {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(all = MainTheme.spacings.double),
+                        .padding(all = BoltTheme.spacings.double),
                 ) {
                     TextTitleMedium(text = "Modal bottom sheet")
                     TextBodyMedium(
                         text = "This is a simple preview of the design-system ModalBottomSheet.",
-                        modifier = Modifier.padding(top = MainTheme.spacings.default),
+                        modifier = Modifier.padding(top = BoltTheme.spacings.default),
                     )
                     ButtonFilled(
                         text = "Dismiss",
                         onClick = { showSheet = false },
-                        modifier = Modifier.padding(top = MainTheme.spacings.double),
+                        modifier = Modifier.padding(top = BoltTheme.spacings.double),
                     )
                 }
             }

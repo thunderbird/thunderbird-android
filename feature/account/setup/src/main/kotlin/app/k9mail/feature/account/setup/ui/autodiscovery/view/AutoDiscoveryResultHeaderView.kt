@@ -14,7 +14,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Suppress("LongMethod")
 @Composable
@@ -33,16 +33,16 @@ internal fun AutoDiscoveryResultHeaderView(
             imageVector = state.icon,
             tint = selectColor(state),
             modifier = Modifier
-                .padding(MainTheme.spacings.default)
-                .requiredSize(MainTheme.sizes.medium),
+                .padding(BoltTheme.spacings.default)
+                .requiredSize(BoltTheme.sizes.medium),
         )
         Column(
             modifier = Modifier
                 .weight(1f)
                 .padding(
-                    start = MainTheme.spacings.default,
-                    top = MainTheme.spacings.half,
-                    bottom = MainTheme.spacings.half,
+                    start = BoltTheme.spacings.default,
+                    top = BoltTheme.spacings.half,
+                    bottom = BoltTheme.spacings.half,
                 ),
         ) {
             TextTitleLarge(
@@ -55,7 +55,7 @@ internal fun AutoDiscoveryResultHeaderView(
         if (state.isExpandable) {
             Icon(
                 imageVector = if (isExpanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
-                modifier = Modifier.padding(MainTheme.spacings.default),
+                modifier = Modifier.padding(BoltTheme.spacings.default),
             )
         }
     }
@@ -64,8 +64,8 @@ internal fun AutoDiscoveryResultHeaderView(
 @Composable
 private fun selectColor(state: AutoDiscoveryResultHeaderState): Color {
     return when (state) {
-        AutoDiscoveryResultHeaderState.NoSettings -> MainTheme.colors.primary
-        AutoDiscoveryResultHeaderState.Trusted -> MainTheme.colors.success
-        AutoDiscoveryResultHeaderState.Untrusted -> MainTheme.colors.warning
+        AutoDiscoveryResultHeaderState.NoSettings -> BoltTheme.colors.primary
+        AutoDiscoveryResultHeaderState.Trusted -> BoltTheme.colors.success
+        AutoDiscoveryResultHeaderState.Untrusted -> BoltTheme.colors.warning
     }
 }

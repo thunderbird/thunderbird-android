@@ -23,7 +23,7 @@ import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil3.CoilImage
 import net.thunderbird.components.ui.bolt.PreviewWithTheme
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * A composable that displays an image from a remote URL using Coil.
@@ -116,7 +116,7 @@ fun RemoteImagePreview() {
         val painter = rememberVectorPainter(Icons.Outlined.AccountCircle)
         RemoteImage(
             url = "",
-            modifier = Modifier.size(MainTheme.sizes.large),
+            modifier = Modifier.size(BoltTheme.sizes.large),
             previewPlaceholder = painter,
         )
     }

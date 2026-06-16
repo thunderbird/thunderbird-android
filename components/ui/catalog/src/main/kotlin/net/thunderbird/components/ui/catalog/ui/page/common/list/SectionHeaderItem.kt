@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.ui.Modifier
 import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 fun LazyGridScope.sectionHeaderItem(
     text: String,
@@ -17,9 +17,9 @@ fun LazyGridScope.sectionHeaderItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    start = MainTheme.spacings.double,
-                    top = MainTheme.spacings.double,
-                    end = MainTheme.spacings.double,
+                    start = BoltTheme.spacings.double,
+                    top = BoltTheme.spacings.double,
+                    end = BoltTheme.spacings.double,
                 ),
         ) {
             TextTitleLarge(

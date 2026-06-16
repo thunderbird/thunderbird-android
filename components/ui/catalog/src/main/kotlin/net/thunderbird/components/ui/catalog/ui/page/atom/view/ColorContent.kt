@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.toArgb
 import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItemPadding
 
 @Composable
@@ -30,10 +30,10 @@ internal fun ColorContent(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         ) {
             Column(
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
             ) {
                 TextBodyLarge(
                     text = text,

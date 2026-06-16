@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.Checkbox
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun CheckboxInput(
@@ -38,7 +38,7 @@ fun CheckboxInput(
                     onValueChange = { onCheckedChange(!checked) },
                 ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
         ) {
             Checkbox(
                 checked = checked,

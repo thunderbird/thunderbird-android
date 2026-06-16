@@ -8,7 +8,7 @@ import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.components.ui.bolt.atom.card.CardElevated
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.setting.SettingDecoration
 import net.thunderbird.core.ui.setting.SettingValue
 
@@ -41,12 +41,12 @@ object FakeSettingData {
             CardElevated(
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(MainTheme.spacings.double),
+                    .padding(BoltTheme.spacings.double),
             ) {
                 TextBodyLarge(
                     text = "Custom UI",
                     modifier = Modifier
-                        .padding(MainTheme.spacings.default)
+                        .padding(BoltTheme.spacings.default)
                         .fillMaxWidth(),
                 )
             }

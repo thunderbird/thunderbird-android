@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.FixedScale
 import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithTheme
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -73,11 +73,11 @@ internal fun FixedScaleImageBottomCenterPreview() {
     PreviewWithTheme {
         Box(
             modifier = Modifier
-                .width(MainTheme.sizes.huge)
-                .height(MainTheme.sizes.huge),
+                .width(BoltTheme.sizes.huge)
+                .height(BoltTheme.sizes.huge),
         ) {
             FixedScaleImage(
-                resource = MainTheme.images.logo,
+                resource = BoltTheme.images.logo,
                 alignment = Alignment.BottomCenter,
             )
         }
@@ -90,11 +90,11 @@ internal fun FixedScaleImageCroppedPreview() {
     PreviewWithTheme {
         Box(
             modifier = Modifier
-                .width(MainTheme.sizes.medium)
-                .height(MainTheme.sizes.medium),
+                .width(BoltTheme.sizes.medium)
+                .height(BoltTheme.sizes.medium),
         ) {
             FixedScaleImage(
-                resource = MainTheme.images.logo,
+                resource = BoltTheme.images.logo,
             )
         }
     }
@@ -106,11 +106,11 @@ internal fun FixedScaleImageHorizontallyCroppedPreview() {
     PreviewWithTheme {
         Box(
             modifier = Modifier
-                .width(MainTheme.sizes.huge)
-                .height(MainTheme.sizes.medium),
+                .width(BoltTheme.sizes.huge)
+                .height(BoltTheme.sizes.medium),
         ) {
             FixedScaleImage(
-                resource = MainTheme.images.logo,
+                resource = BoltTheme.images.logo,
             )
         }
     }
@@ -122,11 +122,11 @@ internal fun FixedScaleImageVerticallyCroppedPreview() {
     PreviewWithTheme {
         Box(
             modifier = Modifier
-                .width(MainTheme.sizes.medium)
-                .height(MainTheme.sizes.huge),
+                .width(BoltTheme.sizes.medium)
+                .height(BoltTheme.sizes.huge),
         ) {
             FixedScaleImage(
-                resource = MainTheme.images.logo,
+                resource = BoltTheme.images.logo,
             )
         }
     }

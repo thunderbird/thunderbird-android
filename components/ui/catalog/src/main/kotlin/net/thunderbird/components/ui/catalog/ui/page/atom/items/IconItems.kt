@@ -14,7 +14,7 @@ import kotlin.reflect.full.declaredMemberProperties
 import net.thunderbird.components.ui.bolt.atom.icon.BadgeIcons
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionHeaderItem
@@ -29,21 +29,21 @@ fun LazyGridScope.iconItems() {
         IconItem(
             name = "Small",
             imageVector = Icons.Outlined.Info,
-            modifier = Modifier.size(MainTheme.sizes.iconSmall),
+            modifier = Modifier.size(BoltTheme.sizes.iconSmall),
         )
     }
     defaultItem {
         IconItem(
             name = "Default",
             imageVector = Icons.Outlined.Info,
-            modifier = Modifier.size(MainTheme.sizes.icon),
+            modifier = Modifier.size(BoltTheme.sizes.icon),
         )
     }
     defaultItem {
         IconItem(
             name = "Large",
             imageVector = Icons.Outlined.Info,
-            modifier = Modifier.size(MainTheme.sizes.iconLarge),
+            modifier = Modifier.size(BoltTheme.sizes.iconLarge),
         )
     }
     sectionSubtitleItem(text = "DualTone")
@@ -86,7 +86,7 @@ private fun IconItem(
         modifier = Modifier
             .padding(defaultItemPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
     ) {
         Icon(
             imageVector = imageVector,

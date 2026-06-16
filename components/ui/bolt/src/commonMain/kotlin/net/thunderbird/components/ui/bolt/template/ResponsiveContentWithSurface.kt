@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import net.thunderbird.components.ui.bolt.PreviewWithTheme
 import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevices
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * The [ResponsiveContentWithSurface] composable embeds its content in [ResponsiveContent] with [Surface].
@@ -23,7 +23,7 @@ fun ResponsiveContentWithSurface(
     ResponsiveContent { contentPadding ->
         Surface(
             modifier = modifier.padding(contentPadding),
-            color = MainTheme.colors.surface,
+            color = BoltTheme.colors.surface,
         ) {
             content()
         }
@@ -36,10 +36,10 @@ internal fun ResponsiveContentWithBackgroundPreview() {
     PreviewWithTheme {
         ResponsiveContentWithSurface {
             Surface(
-                color = MainTheme.colors.info,
+                color = BoltTheme.colors.info,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(MainTheme.spacings.double),
+                    .padding(BoltTheme.spacings.double),
                 content = {},
             )
         }

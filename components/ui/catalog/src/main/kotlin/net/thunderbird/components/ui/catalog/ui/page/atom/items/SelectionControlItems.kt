@@ -22,7 +22,7 @@ import net.thunderbird.components.ui.bolt.atom.Switch
 import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 import kotlinx.collections.immutable.persistentListOf
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionHeaderItem
@@ -71,7 +71,7 @@ fun LazyGridScope.selectionControlItems() {
                 optionTitle = { it.second },
                 selectedOption = radioGroupChoice[0],
                 modifier = Modifier
-                    .padding(MainTheme.spacings.default)
+                    .padding(BoltTheme.spacings.default)
                     .fillMaxWidth(),
             )
         }
@@ -89,7 +89,7 @@ fun LazyGridScope.selectionControlItems() {
                 options = radioGroupChoice,
                 optionTitle = { it.second },
                 modifier = Modifier
-                    .padding(MainTheme.spacings.default)
+                    .padding(BoltTheme.spacings.default)
                     .fillMaxWidth(),
             )
         }

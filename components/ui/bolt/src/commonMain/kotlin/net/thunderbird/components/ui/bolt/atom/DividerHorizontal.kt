@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun DividerHorizontal(
@@ -33,7 +33,7 @@ internal fun DividerHorizontalPreview() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(MainTheme.spacings.double),
+                .padding(BoltTheme.spacings.double),
         ) {
             DividerHorizontal(
                 modifier = Modifier.fillMaxWidth(),

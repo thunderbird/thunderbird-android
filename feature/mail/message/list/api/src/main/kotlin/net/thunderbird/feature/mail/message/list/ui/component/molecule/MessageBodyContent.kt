@@ -23,7 +23,7 @@ import kotlinx.collections.immutable.toImmutableMap
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemConfiguration
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageSublineConfiguration
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageSublineLeadingIndicator
@@ -56,7 +56,7 @@ internal fun MessageBodyContent(
     Column(modifier = modifier) {
         val (prefixAnnotatedString, inlineContent) = secondaryLineContent(configuration)
         subject(prefixAnnotatedString, inlineContent)
-        Spacer(modifier = Modifier.height(MainTheme.spacings.half))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.half))
         if (configuration.maxExcerptLines > 0) {
             val inlineContent = rememberInlineContent(configuration.excerptLineConfiguration)
             val prefixAnnotatedString = rememberPrefixAnnotatedString(configuration.excerptLineConfiguration)
@@ -147,7 +147,7 @@ private fun rememberInlineContent(configuration: MessageSublineConfiguration): I
 
 @Composable
 private fun calculateBadgeHeight(): TextUnit {
-    val fontSize = MainTheme.typography.bodySmall.fontSize
+    val fontSize = BoltTheme.typography.bodySmall.fontSize
     val badgeHeight = with(LocalDensity.current) {
         (fontSize.toDp() + (MESSAGE_CONVERSATION_COUNTER_BADGE_PADDING.dp * 2)).toSp()
     }

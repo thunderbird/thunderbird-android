@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
 import net.thunderbird.components.ui.bolt.molecule.input.TextInput
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.internal.R
 
 @Composable
@@ -23,7 +23,7 @@ internal fun CreateNewArchiveFolderDialogContent(
 ) {
     Column(
         modifier = modifier
-            .padding(horizontal = MainTheme.spacings.oneHalf),
+            .padding(horizontal = BoltTheme.spacings.oneHalf),
     ) {
         TextInput(
             onTextChange = onFolderNameChange,
@@ -35,13 +35,13 @@ internal fun CreateNewArchiveFolderDialogContent(
 
         AnimatedVisibility(
             visible = syncingMessage != null,
-            modifier = Modifier.padding(horizontal = MainTheme.spacings.quadruple),
+            modifier = Modifier.padding(horizontal = BoltTheme.spacings.quadruple),
         ) {
             syncingMessage?.let { message ->
-                Spacer(modifier = Modifier.height(MainTheme.spacings.oneHalf))
+                Spacer(modifier = Modifier.height(BoltTheme.spacings.oneHalf))
                 TextBodySmall(
                     text = message,
-                    color = MainTheme.colors.onSurfaceVariant,
+                    color = BoltTheme.colors.onSurfaceVariant,
                 )
             }
         }

@@ -9,7 +9,7 @@ import net.thunderbird.components.ui.bolt.atom.button.ButtonText
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.organism.BasicDialog
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.composer.R
 
 @Composable
@@ -32,7 +32,7 @@ fun SentFolderNotFoundConfirmationDialog(
                         Icon(
                             imageVector = Icons.Outlined.Folder,
                             contentDescription = null,
-                            modifier = Modifier.padding(end = MainTheme.spacings.half),
+                            modifier = Modifier.padding(end = BoltTheme.spacings.half),
                         )
                     },
                 )
@@ -45,11 +45,11 @@ fun SentFolderNotFoundConfirmationDialog(
                 ButtonText(
                     text = stringResource(R.string.sent_folder_not_found_dialog_send_and_delete_action),
                     onClick = onSendAndDeleteClick,
-                    color = MainTheme.colors.error,
+                    color = BoltTheme.colors.error,
                 )
             },
             onDismissRequest = onDismiss,
-            contentPadding = PaddingValues(horizontal = MainTheme.spacings.default),
+            contentPadding = PaddingValues(horizontal = BoltTheme.spacings.default),
             modifier = modifier,
         )
     }

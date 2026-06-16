@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
 import net.thunderbird.components.ui.bolt.atom.textfield.TextFieldOutlined
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * Layout for input fields that displays an optional error or warning message below the input.
@@ -60,13 +60,13 @@ fun InputLayout(
         ) { message ->
             if (message != null) {
                 val color = when (message) {
-                    is MessageState.Error -> MainTheme.colors.error
-                    is MessageState.Warning -> MainTheme.colors.warning
+                    is MessageState.Error -> BoltTheme.colors.error
+                    is MessageState.Warning -> BoltTheme.colors.warning
                 }
 
                 TextBodySmall(
                     text = message.text,
-                    modifier = Modifier.padding(start = MainTheme.spacings.double, top = MainTheme.spacings.half),
+                    modifier = Modifier.padding(start = BoltTheme.spacings.double, top = BoltTheme.spacings.half),
                     color = color,
                 )
             }

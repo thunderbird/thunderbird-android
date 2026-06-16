@@ -33,7 +33,7 @@ import net.thunderbird.components.ui.bolt.atom.button.ButtonText
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
 import net.thunderbird.components.ui.bolt.organism.AlertDialog
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.ui.contract.mvi.observe
@@ -119,11 +119,11 @@ internal fun DebugFeatureFlagSection(
 
         val flags = remember(state.defaults) { state.defaults.toList() }
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
             contentPadding = PaddingValues(
-                start = MainTheme.spacings.default,
-                end = MainTheme.spacings.default,
-                bottom = MainTheme.spacings.triple,
+                start = BoltTheme.spacings.default,
+                end = BoltTheme.spacings.default,
+                bottom = BoltTheme.spacings.triple,
             ),
         ) {
             itemsIndexed(items = flags) { index, (key, flag) ->
@@ -198,25 +198,25 @@ private fun FeatureFlagItem(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         if (showDivider) {
-            DividerHorizontal(modifier = Modifier.padding(bottom = MainTheme.spacings.default))
+            DividerHorizontal(modifier = Modifier.padding(bottom = BoltTheme.spacings.default))
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable(role = Role.Switch, onClick = { onToggleFlagChange(flag) })
-                .padding(start = MainTheme.spacings.default),
+                .padding(start = BoltTheme.spacings.default),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
             ) {
                 val modifiedIndicator = stringResource(R.string.debug_settings_feature_flag_modified_indicator)
                 TextBodyLarge(
                     text = buildAnnotatedString {
                         if (state.pendingOverrides.containsKey(key)) {
-                            withStyle(SpanStyle(color = MainTheme.colors.error)) {
+                            withStyle(SpanStyle(color = BoltTheme.colors.error)) {
                                 append(modifiedIndicator)
                             }
                         }
@@ -229,7 +229,7 @@ private fun FeatureFlagItem(
                             append(
                                 stringResource(R.string.debug_settings_feature_flag_overridden),
                             )
-                            withStyle(SpanStyle(color = MainTheme.colors.info)) {
+                            withStyle(SpanStyle(color = BoltTheme.colors.info)) {
                                 append(
                                     stringResource(
                                         R.string.debug_settings_feature_flag_default_value,
@@ -241,11 +241,11 @@ private fun FeatureFlagItem(
                     )
                 }
             }
-            Spacer(modifier = Modifier.width(MainTheme.spacings.double))
+            Spacer(modifier = Modifier.width(BoltTheme.spacings.double))
             Switch(
                 checked = state.pendingOverrides[key] ?: state.overrides[key] ?: flag.enabled,
                 onCheckedChange = { onToggleFlagChange(flag) },
-                modifier = Modifier.padding(end = MainTheme.spacings.default),
+                modifier = Modifier.padding(end = BoltTheme.spacings.default),
             )
         }
     }

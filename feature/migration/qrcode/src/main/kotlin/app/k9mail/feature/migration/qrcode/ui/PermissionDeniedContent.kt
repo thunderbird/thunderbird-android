@@ -16,7 +16,7 @@ import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
 import net.thunderbird.components.ui.bolt.template.ResponsiveContent
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun PermissionDeniedContent(
@@ -29,14 +29,14 @@ internal fun PermissionDeniedContent(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(MainTheme.spacings.double)
+                .padding(BoltTheme.spacings.double)
                 .padding(contentPadding),
         ) {
             TextTitleLarge(text = stringResource(R.string.migration_qrcode_permission_denied_title))
-            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+            Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
 
             TextBodyLarge(text = stringResource(R.string.migration_qrcode_permission_denied_message))
-            Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
+            Spacer(modifier = Modifier.height(BoltTheme.spacings.triple))
 
             ButtonFilled(
                 text = stringResource(R.string.migration_qrcode_go_to_settings_button_text),

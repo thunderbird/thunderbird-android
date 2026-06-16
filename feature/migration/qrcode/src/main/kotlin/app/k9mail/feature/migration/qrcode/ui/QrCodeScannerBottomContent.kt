@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import app.k9mail.feature.migration.qrcode.R
 import net.thunderbird.components.ui.bolt.atom.button.ButtonOutlined
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun QrCodeScannerBottomContent(
@@ -26,8 +26,8 @@ internal fun QrCodeScannerBottomContent(
             text = text,
             modifier = Modifier
                 .testTag("ScannedStatus")
-                .padding(vertical = MainTheme.spacings.double)
-                .padding(start = MainTheme.spacings.double)
+                .padding(vertical = BoltTheme.spacings.double)
+                .padding(start = BoltTheme.spacings.double)
                 .weight(1f),
         )
 
@@ -36,7 +36,7 @@ internal fun QrCodeScannerBottomContent(
             onClick = onDoneClick,
             modifier = Modifier
                 .testTag("DoneButton")
-                .padding(MainTheme.spacings.double),
+                .padding(BoltTheme.spacings.double),
         )
     }
 }

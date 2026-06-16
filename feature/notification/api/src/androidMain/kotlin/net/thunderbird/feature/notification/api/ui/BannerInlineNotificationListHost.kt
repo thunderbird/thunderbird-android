@@ -18,7 +18,7 @@ import kotlinx.collections.immutable.ImmutableSet
 import net.thunderbird.components.ui.bolt.molecule.notification.NotificationActionButton
 import net.thunderbird.components.ui.bolt.organism.banner.inline.BannerInlineNotificationCardBehaviour
 import net.thunderbird.components.ui.bolt.organism.banner.inline.ErrorBannerInlineNotificationCard
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_BANNER_INLINE_LIST
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_CHECK_ERROR_NOTIFICATIONS
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_CHECK_ERROR_NOTIFICATIONS_ACTION
@@ -104,9 +104,9 @@ private fun BannerInlineNotificationListHostLayout(
     val leftOver = remember(visuals) { visuals.size - MAX_VISIBLE_NOTIFICATIONS }
     Column(
         modifier = modifier
-            .padding(vertical = MainTheme.spacings.half, horizontal = MainTheme.spacings.double)
+            .padding(vertical = BoltTheme.spacings.half, horizontal = BoltTheme.spacings.double)
             .testTag(TEST_TAG_BANNER_INLINE_LIST),
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
     ) {
         displayableNotifications.forEachIndexed { index, banner ->
             BannerInlineItem(

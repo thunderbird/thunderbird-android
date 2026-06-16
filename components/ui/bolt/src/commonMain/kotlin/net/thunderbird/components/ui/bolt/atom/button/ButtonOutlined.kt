@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * Outlined button component.
@@ -50,7 +50,7 @@ fun ButtonOutlined(
                 contentDescription = null,
                 modifier = Modifier
                     .alignByBaseline()
-                    .padding(end = MainTheme.spacings.default),
+                    .padding(end = BoltTheme.spacings.default),
             )
         }
         Material3Text(

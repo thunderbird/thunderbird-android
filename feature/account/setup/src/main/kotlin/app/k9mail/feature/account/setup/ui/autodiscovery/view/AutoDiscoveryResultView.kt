@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import net.thunderbird.components.ui.bolt.atom.Surface
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun AutoDiscoveryResultView(
@@ -37,12 +37,12 @@ internal fun AutoDiscoveryResultView(
         modifier = modifier,
     ) {
         Surface(
-            shape = MainTheme.shapes.small,
+            shape = BoltTheme.shapes.small,
             modifier = Modifier
                 .border(
                     width = 1.dp,
                     color = Color.Gray.copy(alpha = 0.5f),
-                    shape = MainTheme.shapes.small,
+                    shape = BoltTheme.shapes.small,
                 ).let {
                     if (discoveryResultHeaderState.isExpandable) {
                         it.clickable(enabled = true) { expanded.value = !expanded.value }
@@ -54,7 +54,7 @@ internal fun AutoDiscoveryResultView(
                 },
         ) {
             Column(
-                modifier = Modifier.padding(MainTheme.spacings.default),
+                modifier = Modifier.padding(BoltTheme.spacings.default),
             ) {
                 AutoDiscoveryResultHeaderView(
                     state = discoveryResultHeaderState,

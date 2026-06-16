@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.autodiscovery.toAutoDiscoveryValidationErrorString
 import net.thunderbird.components.ui.bolt.molecule.input.CheckboxInput
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.validation.input.BooleanInputField
 
 @Composable
@@ -20,7 +20,7 @@ internal fun AutoDiscoveryResultApprovalView(
 ) {
     val resources = LocalResources.current
 
-    Spacer(modifier = Modifier.height(MainTheme.spacings.default))
+    Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
 
     CheckboxInput(
         text = stringResource(

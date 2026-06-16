@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun TextTitleSmall(
@@ -31,7 +31,7 @@ fun TextTitleSmall(
         textAlign = textAlign,
         overflow = overflow,
         maxLines = maxLines,
-        style = MainTheme.typography.titleSmall,
+        style = BoltTheme.typography.titleSmall,
     )
 }
 
@@ -51,7 +51,7 @@ fun TextTitleSmall(
         textAlign = textAlign,
         overflow = overflow,
         maxLines = maxLines,
-        style = MainTheme.typography.titleSmall,
+        style = BoltTheme.typography.titleSmall,
     )
 }
 
@@ -86,7 +86,7 @@ internal fun TextTitleSmallWithColorPreview() {
     PreviewWithThemes {
         TextTitleSmall(
             text = "Text Title Small with color",
-            color = MainTheme.colors.primary,
+            color = BoltTheme.colors.primary,
         )
     }
 }

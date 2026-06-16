@@ -1,8 +1,8 @@
-package net.thunderbird.components.ui.bolt.theme.thunderbird
+package net.thunderbird.components.ui.bolt.theme.k9mail
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.bolt.theme.ThemeColorSchemeVariants
 import net.thunderbird.components.ui.bolt.theme.ThemeConfig
 import net.thunderbird.components.ui.bolt.theme.ThemeImageVariants
@@ -13,15 +13,15 @@ import net.thunderbird.components.ui.bolt.theme.default.defaultThemeSizes
 import net.thunderbird.components.ui.bolt.theme.default.defaultThemeSpacings
 import net.thunderbird.components.ui.bolt.theme.default.defaultTypography
 import net.thunderbird.components.ui.bolt.resources.Res
-import net.thunderbird.components.ui.bolt.resources.bolt_thunderbird_logo
+import net.thunderbird.components.ui.bolt.resources.bolt_k9mail_logo
 
 @Composable
-fun ThunderbirdTheme2(
+fun K9MailBoltTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
     val images = ThemeImages(
-        logo = Res.drawable.bolt_thunderbird_logo,
+        logo = Res.drawable.bolt_k9mail_logo,
     )
 
     val themeConfig = ThemeConfig(
@@ -40,7 +40,7 @@ fun ThunderbirdTheme2(
         typography = defaultTypography,
     )
 
-    MainTheme(
+    BoltTheme(
         themeConfig = themeConfig,
         darkTheme = darkTheme,
         content = content,

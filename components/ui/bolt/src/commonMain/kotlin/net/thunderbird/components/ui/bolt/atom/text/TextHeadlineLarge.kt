@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun TextHeadlineLarge(
@@ -31,7 +31,7 @@ fun TextHeadlineLarge(
         textAlign = textAlign,
         overflow = overflow,
         maxLines = maxLines,
-        style = MainTheme.typography.headlineLarge,
+        style = BoltTheme.typography.headlineLarge,
     )
 }
 
@@ -51,7 +51,7 @@ fun TextHeadlineLarge(
         textAlign = textAlign,
         overflow = overflow,
         maxLines = maxLines,
-        style = MainTheme.typography.headlineLarge,
+        style = BoltTheme.typography.headlineLarge,
     )
 }
 
@@ -86,7 +86,7 @@ internal fun TextHeadlineLargeWithColorPreview() {
     PreviewWithThemes {
         TextHeadlineLarge(
             text = "Text Headline Large with color",
-            color = MainTheme.colors.primary,
+            color = BoltTheme.colors.primary,
         )
     }
 }

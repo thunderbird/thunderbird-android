@@ -18,7 +18,7 @@ import net.thunderbird.components.ui.bolt.PreviewWithTheme
 import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * The [LazyColumnWithHeaderFooter] composable creates a [LazyColumn] with header and footer items.
@@ -90,7 +90,7 @@ internal fun LazyColumnWithHeaderFooterPreview() {
         Surface {
             LazyColumnWithHeaderFooter(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double, Alignment.CenterVertically),
                 header = { TextTitleMedium(text = "Header") },
                 footer = { TextTitleMedium(text = "Footer") },
             ) {

@@ -1,7 +1,7 @@
 package net.thunderbird.components.ui.bolt
 
 import androidx.compose.runtime.Composable
-import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdTheme2
+import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdBoltTheme
 import net.thunderbird.components.ui.testing.ComposeUiTestScope
 
 /**
@@ -13,7 +13,7 @@ fun ComposeUiTestScope.setContentWithTheme(
     content: @Composable () -> Unit,
 ) {
     setContent {
-        ThunderbirdTheme2 {
+        ThunderbirdBoltTheme {
             content()
         }
     }

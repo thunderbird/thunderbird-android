@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import net.thunderbird.components.ui.bolt.organism.AlertDialog
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.setting.dialog.R
 
 @Composable
@@ -37,7 +37,7 @@ internal fun SettingDialogLayout(
         modifier = modifier,
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(state = rememberScrollState()),

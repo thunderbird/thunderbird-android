@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
 import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun CardOutlined(
@@ -50,9 +50,9 @@ fun CardOutlined(
 @Composable
 private fun CardOutlinedPreview() {
     PreviewWithThemesLightDark {
-        Surface(modifier = Modifier.padding(MainTheme.spacings.quadruple)) {
+        Surface(modifier = Modifier.padding(BoltTheme.spacings.quadruple)) {
             CardOutlined {
-                Box(modifier = Modifier.padding(MainTheme.spacings.double)) {
+                Box(modifier = Modifier.padding(BoltTheme.spacings.double)) {
                     TextBodyMedium("Text in card")
                 }
             }

@@ -5,7 +5,7 @@ import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleSmall
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun NavigationDrawerHeadline(
@@ -17,12 +17,12 @@ fun NavigationDrawerHeadline(
     ) {
         TextTitleSmall(
             text = title,
-            color = MainTheme.colors.primary,
+            color = BoltTheme.colors.primary,
             modifier = Modifier
                 .padding(NavigationDrawerItemDefaults.ItemPadding)
                 .padding(
-                    top = MainTheme.spacings.triple,
-                    bottom = MainTheme.spacings.double,
+                    top = BoltTheme.spacings.triple,
+                    bottom = BoltTheme.spacings.double,
                 )
                 .then(modifier),
         )

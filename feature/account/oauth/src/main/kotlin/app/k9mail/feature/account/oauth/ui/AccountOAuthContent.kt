@@ -15,7 +15,7 @@ import app.k9mail.feature.account.oauth.ui.view.GoogleSignInSupportText
 import app.k9mail.feature.account.oauth.ui.view.SignInView
 import net.thunderbird.components.ui.bolt.molecule.ErrorView
 import net.thunderbird.components.ui.bolt.molecule.LoadingView
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun AccountOAuthContent(
@@ -29,7 +29,7 @@ internal fun AccountOAuthContent(
     Column(
         modifier = Modifier.testTag("AccountOAuthContent")
             .then(modifier),
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double, Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double, Alignment.CenterVertically),
     ) {
         if (state.isLoading) {
             LoadingView(

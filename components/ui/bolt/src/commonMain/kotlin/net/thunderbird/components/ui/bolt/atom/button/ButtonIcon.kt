@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun ButtonIcon(
@@ -32,7 +32,7 @@ fun ButtonIcon(
         colors = colors.toMaterial3Colors(),
     ) {
         Material3Icon(
-            modifier = Modifier.size(MainTheme.sizes.icon),
+            modifier = Modifier.size(BoltTheme.sizes.icon),
             imageVector = imageVector,
             contentDescription = contentDescription,
         )

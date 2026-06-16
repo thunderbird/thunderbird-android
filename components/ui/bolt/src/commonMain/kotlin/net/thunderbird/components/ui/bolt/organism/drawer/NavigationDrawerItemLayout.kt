@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun NavigationDrawerItemLayout(
@@ -16,8 +16,8 @@ fun NavigationDrawerItemLayout(
         modifier = Modifier
             .then(modifier)
             .padding(
-                start = MainTheme.spacings.double,
-                end = MainTheme.spacings.triple,
+                start = BoltTheme.spacings.double,
+                end = BoltTheme.spacings.triple,
             ),
     ) {
         content(defaultInnerPaddingValues())
@@ -27,6 +27,6 @@ fun NavigationDrawerItemLayout(
 @Composable
 private fun defaultInnerPaddingValues(): PaddingValues {
     return PaddingValues(
-        horizontal = MainTheme.spacings.oneHalf,
+        horizontal = BoltTheme.spacings.oneHalf,
     )
 }

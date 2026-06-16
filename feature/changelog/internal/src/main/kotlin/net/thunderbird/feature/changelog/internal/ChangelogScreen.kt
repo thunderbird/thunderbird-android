@@ -43,7 +43,7 @@ import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
 import net.thunderbird.components.ui.bolt.organism.TopAppBar
 import net.thunderbird.components.ui.bolt.template.Scaffold
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun ChangelogScreen(
@@ -81,7 +81,7 @@ internal fun ChangelogScreen(
                         items = releaseItems,
                         key = { it.version },
                     ) { releaseItem ->
-                        Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
+                        Spacer(modifier = Modifier.height(BoltTheme.spacings.triple))
                         ReleaseComposable(
                             releaseItem = releaseItem,
                         )
@@ -120,7 +120,7 @@ private fun ReleaseComposable(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = MainTheme.spacings.double)
+            .padding(horizontal = BoltTheme.spacings.double)
             .height(IntrinsicSize.Min),
     ) {
         ReleaseItemTimeline()
@@ -132,30 +132,30 @@ private fun ReleaseComposable(
                 date = releaseItem.date ?: "",
             )
             CardFilled {
-                Column(modifier = Modifier.padding(horizontal = MainTheme.spacings.double)) {
+                Column(modifier = Modifier.padding(horizontal = BoltTheme.spacings.double)) {
                     releaseItem.changes.forEach { changeGroup ->
                         val color = when (changeGroup.key) {
-                            ChangeType.NEW.name -> MainTheme.colors.onSuccessContainer
-                            ChangeType.FIXED.name -> MainTheme.colors.onWarningContainer
-                            else -> MainTheme.colors.onInfoContainer
+                            ChangeType.NEW.name -> BoltTheme.colors.onSuccessContainer
+                            ChangeType.FIXED.name -> BoltTheme.colors.onWarningContainer
+                            else -> BoltTheme.colors.onInfoContainer
                         }
                         val backgroundColor = when (changeGroup.key) {
-                            ChangeType.NEW.name -> MainTheme.colors.successContainer
-                            ChangeType.FIXED.name -> MainTheme.colors.warningContainer
-                            else -> MainTheme.colors.infoContainer
+                            ChangeType.NEW.name -> BoltTheme.colors.successContainer
+                            ChangeType.FIXED.name -> BoltTheme.colors.warningContainer
+                            else -> BoltTheme.colors.infoContainer
                         }
 
                         ChangeGroupHeader(changeGroup = changeGroup, color = color, backgroundColor = backgroundColor)
 
-                        Spacer(modifier = Modifier.height(MainTheme.spacings.half))
+                        Spacer(modifier = Modifier.height(BoltTheme.spacings.half))
 
                         changeGroup.value.forEach { change ->
                             Change(change = change, color = color)
-                            Spacer(modifier = Modifier.height(MainTheme.spacings.default))
+                            Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
                         }
-                        Spacer(modifier = Modifier.height(MainTheme.spacings.default))
+                        Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
                     }
-                    Spacer(modifier = Modifier.height(MainTheme.spacings.default))
+                    Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
                 }
             }
         }
@@ -168,21 +168,21 @@ fun ReleaseItemTimeline(
 ) {
     Column(
         modifier = modifier
-            .width(MainTheme.spacings.triple)
+            .width(BoltTheme.spacings.triple)
             .fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.height(MainTheme.spacings.default))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
         TimelineDot(
-            color = MainTheme.colors.outlineVariant,
-            size = MainTheme.spacings.oneHalf,
+            color = BoltTheme.colors.outlineVariant,
+            size = BoltTheme.spacings.oneHalf,
         )
-        Spacer(modifier = Modifier.height(MainTheme.spacings.default))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
         DividerVertical(
             modifier = Modifier
-                .padding(horizontal = MainTheme.spacings.default)
+                .padding(horizontal = BoltTheme.spacings.default)
                 .weight(1.0f),
-            thickness = MainTheme.spacings.quarter,
+            thickness = BoltTheme.spacings.quarter,
         )
     }
 }
@@ -197,34 +197,34 @@ fun ReleaseItemHeader(
 ) {
     Row(
         modifier = modifier.padding(
-            end = MainTheme.spacings.default,
-            bottom = MainTheme.spacings.half,
+            end = BoltTheme.spacings.default,
+            bottom = BoltTheme.spacings.half,
         ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         TextTitleLarge(
             text = release.bold(),
-            color = MainTheme.colors.onSurface,
+            color = BoltTheme.colors.onSurface,
         )
         if (isLatest) {
-            Spacer(Modifier.width(MainTheme.spacings.default))
+            Spacer(Modifier.width(BoltTheme.spacings.default))
             Box(
                 modifier = Modifier
                     .background(
-                        color = MainTheme.colors.outlineVariant.copy(alpha = 0.1f),
-                        shape = MainTheme.shapes.extraSmall,
+                        color = BoltTheme.colors.outlineVariant.copy(alpha = 0.1f),
+                        shape = BoltTheme.shapes.extraSmall,
                     )
                     .border(
                         width = 1.dp,
-                        color = MainTheme.colors.outlineVariant,
-                        shape = MainTheme.shapes.extraSmall,
+                        color = BoltTheme.colors.outlineVariant,
+                        shape = BoltTheme.shapes.extraSmall,
                     ),
             ) {
                 TextLabelSmall(
                     text = stringResource(R.string.changelog_latest_label_text),
                     modifier = Modifier.padding(
-                        horizontal = MainTheme.spacings.double,
-                        vertical = MainTheme.spacings.half,
+                        horizontal = BoltTheme.spacings.double,
+                        vertical = BoltTheme.spacings.half,
                     ),
                 )
             }
@@ -232,9 +232,9 @@ fun ReleaseItemHeader(
     }
 
     TextLabelMedium(
-        modifier = Modifier.padding(bottom = MainTheme.spacings.double),
+        modifier = Modifier.padding(bottom = BoltTheme.spacings.double),
         text = date,
-        color = MainTheme.colors.onSurfaceVariant,
+        color = BoltTheme.colors.onSurfaceVariant,
     )
 }
 
@@ -248,8 +248,8 @@ private fun ChangeGroupHeader(
     Row(
         modifier = modifier
             .padding(
-                top = MainTheme.spacings.double,
-                bottom = MainTheme.spacings.default,
+                top = BoltTheme.spacings.double,
+                bottom = BoltTheme.spacings.default,
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -257,7 +257,7 @@ private fun ChangeGroupHeader(
             modifier = Modifier
                 .background(
                     color = backgroundColor,
-                    shape = MainTheme.shapes.extraSmall,
+                    shape = BoltTheme.shapes.extraSmall,
                 )
                 .border(
                     color = color.copy(alpha = 0.5f),
@@ -268,16 +268,16 @@ private fun ChangeGroupHeader(
                 text = changeGroup.key.toLocalizedText().bold(),
                 color = color,
                 modifier = Modifier.padding(
-                    horizontal = MainTheme.spacings.double,
-                    vertical = MainTheme.spacings.half,
+                    horizontal = BoltTheme.spacings.double,
+                    vertical = BoltTheme.spacings.half,
                 ),
             )
         }
         DividerHorizontal(
             modifier = Modifier
-                .padding(horizontal = MainTheme.spacings.default)
+                .padding(horizontal = BoltTheme.spacings.default)
                 .weight(1.0f),
-            thickness = MainTheme.spacings.quarter,
+            thickness = BoltTheme.spacings.quarter,
         )
     }
 }
@@ -292,10 +292,10 @@ private fun Change(
         ChangeDot(
             color = color,
         )
-        Spacer(modifier = Modifier.width(MainTheme.spacings.default))
+        Spacer(modifier = Modifier.width(BoltTheme.spacings.default))
         TextBodyMedium(
             text = change,
-            color = MainTheme.colors.onSurfaceVariant,
+            color = BoltTheme.colors.onSurfaceVariant,
         )
     }
 }
@@ -304,7 +304,7 @@ private fun Change(
 private fun TimelineDot(
     color: Color,
     modifier: Modifier = Modifier,
-    size: Dp = MainTheme.sizes.smaller,
+    size: Dp = BoltTheme.sizes.smaller,
 ) {
     Box(
         modifier = modifier
@@ -320,14 +320,14 @@ private fun ChangeDot(
 ) {
     Box(
         modifier = modifier
-            .padding(top = MainTheme.spacings.half),
+            .padding(top = BoltTheme.spacings.half),
         contentAlignment = Alignment.Center,
     ) {
         Icon(
             imageVector = Icons.Filled.Dot,
             contentDescription = null,
             tint = color,
-            modifier = Modifier.size(MainTheme.sizes.smaller),
+            modifier = Modifier.size(BoltTheme.sizes.smaller),
         )
     }
 }

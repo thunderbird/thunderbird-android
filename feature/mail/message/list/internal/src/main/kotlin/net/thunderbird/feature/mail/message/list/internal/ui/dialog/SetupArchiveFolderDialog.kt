@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import net.thunderbird.components.ui.bolt.organism.BasicDialog
 import net.thunderbird.components.ui.bolt.organism.BasicDialogDefaults
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
@@ -172,7 +172,7 @@ private fun SetupArchiveFolderDialogContent(
                 onFolderNameChange = onFolderNameChange,
             )
 
-            else -> Spacer(modifier = Modifier.height(MainTheme.spacings.half))
+            else -> Spacer(modifier = Modifier.height(BoltTheme.spacings.half))
         }
     }
 }

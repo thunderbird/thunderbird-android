@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import net.thunderbird.components.ui.bolt.PreviewWithThemes
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.bolt.theme.ThemeColorScheme
 import net.thunderbird.components.ui.bolt.theme.ThemeElevations
 
@@ -25,7 +25,7 @@ import net.thunderbird.components.ui.bolt.theme.ThemeElevations
  * Surface(
  *     modifier = Modifier.fillMaxWidth(),
  *     shape = RoundedCornerShape(8.dp),
- *     tonalElevation = MainTheme.elevations.level1,
+ *     tonalElevation = BoltTheme.elevations.level1,
  * ) {
  *     Text("Content inside Surface")
  * }
@@ -34,11 +34,11 @@ import net.thunderbird.components.ui.bolt.theme.ThemeElevations
  * @param modifier [Modifier] to be applied to the Surface.
  * @param shape [Shape] of the Surface. Defaults to [RectangleShape].
  * @param color [Color] of the Surface background. Defaults to
- *  [MainTheme.colors.surface][ThemeColorScheme.surface].
+ *  [BoltTheme.colors.surface][ThemeColorScheme.surface].
  * @param contentColor Preferred [Color] for content inside this Surface. Defaults to a color
  * that provides appropriate contrast with [color] via [contentColorFor].
  * @param tonalElevation Tonal elevation of the Surface. Defaults to
- *  [MainTheme.elevations.level0][ThemeElevations.level0].This affects the background color
+ *  [BoltTheme.elevations.level0][ThemeElevations.level0].This affects the background color
  *  based on the elevation overlay.
  * @param content Composable content to be displayed on the Surface.
  */
@@ -46,9 +46,9 @@ import net.thunderbird.components.ui.bolt.theme.ThemeElevations
 fun Surface(
     modifier: Modifier = Modifier,
     shape: Shape = RectangleShape,
-    color: Color = MainTheme.colors.surface,
+    color: Color = BoltTheme.colors.surface,
     contentColor: Color = contentColorFor(color),
-    tonalElevation: Dp = MainTheme.elevations.level0,
+    tonalElevation: Dp = BoltTheme.elevations.level0,
     content: @Composable () -> Unit,
 ) {
     Material3Surface(
@@ -67,8 +67,8 @@ internal fun SurfacePreview() {
     PreviewWithThemes {
         Surface(
             modifier = Modifier
-                .requiredHeight(MainTheme.sizes.larger)
-                .requiredWidth(MainTheme.sizes.larger),
+                .requiredHeight(BoltTheme.sizes.larger)
+                .requiredWidth(BoltTheme.sizes.larger),
             content = {},
         )
     }
@@ -80,10 +80,10 @@ internal fun SurfaceWithShapePreview() {
     PreviewWithThemes {
         Surface(
             modifier = Modifier
-                .requiredHeight(MainTheme.sizes.larger)
-                .requiredWidth(MainTheme.sizes.larger),
-            shape = MainTheme.shapes.small,
-            color = MainTheme.colors.primary,
+                .requiredHeight(BoltTheme.sizes.larger)
+                .requiredWidth(BoltTheme.sizes.larger),
+            shape = BoltTheme.shapes.small,
+            color = BoltTheme.colors.primary,
             content = {},
         )
     }

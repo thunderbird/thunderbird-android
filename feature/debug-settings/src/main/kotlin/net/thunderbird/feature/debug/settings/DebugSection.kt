@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun DebugSection(
@@ -43,7 +43,7 @@ internal fun DebugSection(
 ) {
     Column(modifier = modifier) {
         title()
-        DividerHorizontal(modifier = Modifier.padding(vertical = MainTheme.spacings.double))
+        DividerHorizontal(modifier = Modifier.padding(vertical = BoltTheme.spacings.double))
         content()
     }
 }

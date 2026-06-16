@@ -48,7 +48,7 @@ import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirection
 import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirectionAccessibilityAction
 import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeableRow
 import net.thunderbird.components.ui.bolt.molecule.swipe.rememberSwipeableRowState
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.R
 
 @Composable
@@ -79,22 +79,22 @@ fun SwipeableRowItems(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
-                .padding(MainTheme.spacings.triple),
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                .padding(BoltTheme.spacings.triple),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         ) {
             TextTitleLarge(text = "Swipeable Row Items")
             DividerHorizontal()
 
             var threshold by remember { mutableFloatStateOf(value = 150f) }
             val thresholdDp = threshold.dp
-            Column(verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default)) {
+            Column(verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default)) {
                 TextLabelLarge(text = "Control the threshold to trigger the swipe: ")
                 Slider(
                     value = threshold,
                     onValueChange = { threshold = it },
                     valueRange = 100f..350f,
                     steps = 9,
-                    modifier = Modifier.padding(horizontal = MainTheme.spacings.triple),
+                    modifier = Modifier.padding(horizontal = BoltTheme.spacings.triple),
                 )
                 val thresholdPx = with(LocalDensity.current) { thresholdDp.toPx() }
                 TextLabelSmall(text = "Current selected: ${threshold}dp (${thresholdPx}px).")
@@ -131,7 +131,7 @@ private fun SwipeSection(
     TextTitleMedium(text = subtitle)
     DividerHorizontal()
     Column(
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
     ) {
         val behaviour = behaviourFactory(threshold)
         SwipeableRowBothDirections(behaviour, onSwipeEnd)
@@ -214,17 +214,17 @@ private fun SwipeableRowCustomBackground(behaviour: SwipeBehaviour, onSwipeEnd: 
             onSwipeEnd = onSwipeEnd,
         ) { swipeProgress, direction ->
             val backgroundColor = if (direction == SwipeDirection.StartToEnd) {
-                MainTheme.colors.error
+                BoltTheme.colors.error
             } else {
-                MainTheme.colors.success
+                BoltTheme.colors.success
             }
             Surface(
                 color = lerp(
-                    start = MainTheme.colors.surfaceContainer,
+                    start = BoltTheme.colors.surfaceContainer,
                     stop = backgroundColor,
                     fraction = swipeProgress,
                 ),
-                contentColor = MainTheme.colors.onPrimary,
+                contentColor = BoltTheme.colors.onPrimary,
             ) {
                 TextBodyLarge(
                     text = "Swiped from ${direction.name.lowercase()}.",
@@ -253,11 +253,11 @@ private fun SwipeableRowItems(
     backgroundContent: @Composable RowScope.(Float, SwipeDirection) -> Unit = { swipeProgress, direction ->
         Surface(
             color = lerp(
-                start = MainTheme.colors.surfaceContainer,
-                stop = MainTheme.colors.primaryContainer,
+                start = BoltTheme.colors.surfaceContainer,
+                stop = BoltTheme.colors.primaryContainer,
                 fraction = swipeProgress,
             ),
-            contentColor = MainTheme.colors.onPrimaryContainer,
+            contentColor = BoltTheme.colors.onPrimaryContainer,
             modifier = Modifier.fillMaxSize(),
         ) {
             Row(
@@ -307,8 +307,8 @@ private fun SwipeableRowItems(
         },
     )
     Column(
-        modifier = modifier.padding(MainTheme.spacings.double),
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        modifier = modifier.padding(BoltTheme.spacings.double),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
     ) {
         SwipeableRow(
             state = swipeableRowState,
@@ -321,7 +321,7 @@ private fun SwipeableRowItems(
             onSwipeChange = { swipeDirection = it },
         ) {
             Surface(
-                color = MainTheme.colors.surfaceContainer,
+                color = BoltTheme.colors.surfaceContainer,
             ) {
                 TextBodyLarge(
                     text = foregroundItemText,
@@ -371,4 +371,4 @@ private val SwipeBehaviour.actionId: Int
 
 @Composable
 private fun Modifier.swipeableCommonTextPadding() = this then
-    Modifier.padding(vertical = MainTheme.spacings.triple, horizontal = MainTheme.spacings.default)
+    Modifier.padding(vertical = BoltTheme.spacings.triple, horizontal = BoltTheme.spacings.default)

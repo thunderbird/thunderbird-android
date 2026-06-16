@@ -26,7 +26,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
 import net.thunderbird.components.ui.bolt.theme.LocalContentColor
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * UI atom for a single tab within a tab. This is a wrapper around the Material 3 [androidx.compose.material3.Tab]
@@ -50,7 +50,7 @@ fun TabPrimary(
     modifier: Modifier = Modifier,
     icon: (@Composable () -> Unit)? = null,
     badge: (@Composable BoxScope.() -> Unit)? = null,
-    badgeColor: Color = MainTheme.colors.primaryContainer,
+    badgeColor: Color = BoltTheme.colors.primaryContainer,
     enabled: Boolean = true,
 ) {
     Material3Tab(
@@ -78,11 +78,11 @@ private fun TabIcon(
             Box(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .offset(x = MainTheme.spacings.default, y = -MainTheme.spacings.half)
+                    .offset(x = BoltTheme.spacings.default, y = -BoltTheme.spacings.half)
                     .clip(CircleShape)
                     .background(color = badgeColor, shape = CircleShape)
-                    .padding(MainTheme.spacings.quarter)
-                    .widthIn(min = MainTheme.sizes.badge),
+                    .padding(BoltTheme.spacings.quarter)
+                    .widthIn(min = BoltTheme.sizes.badge),
             ) {
                 CompositionLocalProvider(LocalContentColor provides contentColorFor(badgeColor)) {
                     badge()
@@ -115,7 +115,7 @@ private fun TabPrimaryPreview(
                         )
                     }
                 },
-                badgeColor = MainTheme.colors.info,
+                badgeColor = BoltTheme.colors.info,
             )
         }
     }

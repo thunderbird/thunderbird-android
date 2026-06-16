@@ -41,7 +41,7 @@ import kotlin.test.Test
 import kotlinx.collections.immutable.persistentSetOf
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
@@ -91,7 +91,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                         .verticalScroll(rememberScrollState())
                         .padding(paddingValues)
                         .testTag(contentTag),
-                    verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                    verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
                 ) {
                     repeat(size) { index ->
                         TextBodyLarge(
@@ -137,7 +137,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                         .fillMaxSize()
                         .padding(paddingValues)
                         .testTag(contentTag),
-                    verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                    verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
                 ) {
                     items(size) { index ->
                         TextBodyLarge(

@@ -9,7 +9,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.image.RemoteImage
 import net.thunderbird.components.ui.bolt.atom.image.rememberPreviewPlaceholder
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * Displays an avatar image from a remote URL.
@@ -41,7 +41,7 @@ internal fun AvatarImage(
         },
         previewPlaceholder = rememberPreviewPlaceholder(
             image = Icons.Outlined.Image,
-            tint = MainTheme.colors.onSecondary,
+            tint = BoltTheme.colors.onSecondary,
             padding = iconPadding,
         ),
     )
@@ -54,7 +54,7 @@ private fun Placeholder(
     Icon(
         imageVector = Icons.Outlined.Image,
         contentDescription = null,
-        tint = MainTheme.colors.onSecondary,
+        tint = BoltTheme.colors.onSecondary,
         modifier = modifier,
     )
 }
@@ -62,7 +62,7 @@ private fun Placeholder(
 @Composable
 private fun getIconPadding(size: AvatarSize): Dp {
     return when (size) {
-        AvatarSize.MEDIUM -> MainTheme.spacings.half
-        AvatarSize.LARGE -> MainTheme.spacings.default
+        AvatarSize.MEDIUM -> BoltTheme.spacings.half
+        AvatarSize.LARGE -> BoltTheme.spacings.default
     }
 }

@@ -28,7 +28,7 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 private val MAX_WIDTH = 500.dp
 
@@ -43,14 +43,14 @@ internal fun PermissionBox(
     Column(
         modifier = Modifier
             .width(MAX_WIDTH)
-            .padding(horizontal = MainTheme.spacings.double),
+            .padding(horizontal = BoltTheme.spacings.double),
     ) {
         Row {
             Box(
                 modifier = Modifier.padding(
-                    end = MainTheme.spacings.double,
-                    top = MainTheme.spacings.default,
-                    bottom = MainTheme.spacings.default,
+                    end = BoltTheme.spacings.double,
+                    top = BoltTheme.spacings.default,
+                    bottom = BoltTheme.spacings.default,
                 ),
             ) {
                 IconWithPermissionStateOverlay(icon, permissionState)
@@ -70,7 +70,7 @@ internal fun PermissionBox(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.End,
         ) {
-            Spacer(modifier = Modifier.height(MainTheme.spacings.default))
+            Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
 
             ButtonFilled(
                 text = stringResource(R.string.onboarding_permissions_allow_button),
@@ -91,7 +91,7 @@ private fun IconWithPermissionStateOverlay(
     ) {
         Icon(
             imageVector = icon,
-            modifier = Modifier.size(MainTheme.sizes.iconLarge),
+            modifier = Modifier.size(BoltTheme.sizes.iconLarge),
         )
 
         when (permissionState) {
@@ -100,14 +100,14 @@ private fun IconWithPermissionStateOverlay(
             UiPermissionState.Granted -> {
                 OverlayIcon(
                     imageVector = Icons.Filled.CheckCircle,
-                    tint = MainTheme.colors.success,
+                    tint = BoltTheme.colors.success,
                 )
             }
 
             UiPermissionState.Denied -> {
                 OverlayIcon(
                     imageVector = Icons.Filled.Cancel,
-                    tint = MainTheme.colors.warning,
+                    tint = BoltTheme.colors.warning,
                 )
             }
         }
@@ -121,14 +121,14 @@ private fun OverlayIcon(
     modifier: Modifier = Modifier,
 ) {
     Surface(
-        color = MainTheme.colors.surface,
+        color = BoltTheme.colors.surface,
         shape = CircleShape,
         modifier = modifier,
     ) {
         Icon(
             imageVector = imageVector,
             tint = tint,
-            modifier = Modifier.size(MainTheme.sizes.iconSmall),
+            modifier = Modifier.size(BoltTheme.sizes.iconSmall),
         )
     }
 }

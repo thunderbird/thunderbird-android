@@ -21,7 +21,7 @@ import net.thunderbird.components.ui.bolt.atom.tab.TabSecondary
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 import net.thunderbird.components.ui.bolt.molecule.tab.TabRowSecondary
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 /**
  * A Composable that displays a horizontal pager with a tab row.
@@ -97,7 +97,7 @@ fun <T> HorizontalTabPagerSecondary(
 
         HorizontalPager(
             state = state,
-            contentPadding = PaddingValues(all = MainTheme.spacings.default),
+            contentPadding = PaddingValues(all = BoltTheme.spacings.default),
         ) { index ->
             val page = scope.pages[index]
             page.content(scope, page.value)

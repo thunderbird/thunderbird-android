@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import net.thunderbird.components.ui.bolt.atom.card.CardElevated
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineSmall
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.avatar.ui.Avatar
 import net.thunderbird.feature.account.avatar.ui.AvatarSize
@@ -30,14 +30,14 @@ internal fun GeneralSettingsProfileView(
 ) {
     Box(
         modifier = modifier
-            .padding(MainTheme.spacings.double),
+            .padding(BoltTheme.spacings.double),
         contentAlignment = Alignment.TopCenter,
     ) {
         ProfileCard(
             name = name,
             email = email,
             modifier = Modifier
-                .padding(top = MainTheme.spacings.quadruple)
+                .padding(top = BoltTheme.spacings.quadruple)
                 .fillMaxWidth(),
         )
         Avatar(
@@ -61,21 +61,21 @@ private fun ProfileCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = MainTheme.spacings.oneHalf,
-                    vertical = MainTheme.spacings.triple,
+                    horizontal = BoltTheme.spacings.oneHalf,
+                    vertical = BoltTheme.spacings.triple,
                 ),
         ) {
-            Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
+            Spacer(modifier = Modifier.height(BoltTheme.spacings.triple))
             TextHeadlineSmall(
                 text = name,
-                color = MainTheme.colors.primary,
+                color = BoltTheme.colors.primary,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
             email?.let {
-                Spacer(modifier = Modifier.height(MainTheme.spacings.default))
+                Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
                 TextBodyLarge(
                     text = it,
                     textAlign = TextAlign.Center,

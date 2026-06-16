@@ -31,7 +31,7 @@ import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableList
-import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdTheme2
+import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdBoltTheme
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
@@ -501,7 +501,7 @@ class MessageListScreenRendererTest : ComposeTest() {
     ) {
         val renderer = MessageListScreenRenderer()
         composeTestRule.setContent {
-            ThunderbirdTheme2 {
+            ThunderbirdBoltTheme {
                 koinPreview {
                     single<InAppNotificationStream> { FakeInAppNotificationStream() }
                 } WithContent {

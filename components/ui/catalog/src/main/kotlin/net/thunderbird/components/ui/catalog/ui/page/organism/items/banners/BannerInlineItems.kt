@@ -8,7 +8,7 @@ import net.thunderbird.components.ui.bolt.organism.banner.inline.ErrorBannerInli
 import net.thunderbird.components.ui.bolt.organism.banner.inline.InfoBannerInlineNotificationCard
 import net.thunderbird.components.ui.bolt.organism.banner.inline.SuccessBannerInlineNotificationCard
 import net.thunderbird.components.ui.bolt.organism.banner.inline.WarningBannerInlineNotificationCard
-import net.thunderbird.components.ui.bolt.theme.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.fullSpanItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionHeaderItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionSubtitleItem
@@ -31,7 +31,7 @@ fun LazyGridScope.errorBannerInline() {
                 NotificationActionButton(text = "View support article", onClick = {}, isExternalLink = true)
                 NotificationActionButton(text = "Action 1", onClick = {})
             },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -46,7 +46,7 @@ fun LazyGridScope.infoBannerInline() {
                 NotificationActionButton(text = "Action 2", onClick = {})
                 NotificationActionButton(text = "Action 1", onClick = {})
             },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -61,7 +61,7 @@ fun LazyGridScope.warningBannerInline() {
                 NotificationActionButton(text = "Action 2", onClick = {})
                 NotificationActionButton(text = "Action 1", onClick = {})
             },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -76,7 +76,7 @@ fun LazyGridScope.successBannerInline() {
                 NotificationActionButton(text = "Action 2", onClick = {})
                 NotificationActionButton(text = "Action 1", onClick = {})
             },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
