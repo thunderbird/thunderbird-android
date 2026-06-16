@@ -923,7 +923,6 @@
     <string name="message_view_attachments_title">Bijlagen</string>
     <string name="message_view_attachments_save_all">Alles opslaan</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
-    <string name="encrypted_attachment_title">Versleutelde bijlage</string>
     <string name="no_network_message_will_be_sent_later_toast">Offline. Bericht zal worden verzonden wanneer de verbinding beschikbaar is</string>
     <string name="notification_actions_settings_title">Meldingsacties</string>
     <string name="notification_actions_settings_summary">Kies welke acties in e-mailmeldingen verschijnen</string>

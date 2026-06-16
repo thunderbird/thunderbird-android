@@ -933,7 +933,6 @@
     <string name="message_view_attachments_title">Attachments</string>
     <string name="message_view_attachments_save_all">Save all</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
-    <string name="encrypted_attachment_title">Encrypted attachment</string>
     <string name="no_network_message_will_be_sent_later_toast">Offline. Message will be sent once connection is available</string>
     <string name="notification_actions_settings_title">Notification actions</string>
     <string name="notification_actions_settings_summary">Choose which actions appear in email notifications</string>
