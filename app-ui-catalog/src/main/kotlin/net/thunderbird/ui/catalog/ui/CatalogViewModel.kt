@@ -1,11 +1,11 @@
 package net.thunderbird.ui.catalog.ui
 
-import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.ui.catalog.ui.CatalogContract.Event
 import net.thunderbird.ui.catalog.ui.CatalogContract.Event.OnThemeChanged
 import net.thunderbird.ui.catalog.ui.CatalogContract.Event.OnThemeVariantChanged
 import net.thunderbird.ui.catalog.ui.CatalogContract.State
 import net.thunderbird.ui.catalog.ui.CatalogContract.ViewModel
+import net.thunderbird.ui.catalog.ui.mvi.BaseViewModel
 
 class CatalogViewModel(
     initialState: State = State(),

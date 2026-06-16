@@ -1,6 +1,6 @@
 package net.thunderbird.ui.catalog.ui.page
 
-import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
+import net.thunderbird.ui.catalog.ui.mvi.UnidirectionalViewModel
 import net.thunderbird.ui.catalog.ui.page.atom.CatalogAtomPage
 
 interface CatalogPageContract {
