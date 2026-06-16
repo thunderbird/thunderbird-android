@@ -2,9 +2,9 @@
 
 The design system is a collection of guidelines, principles, and tools that help teams create consistent and cohesive visual designs and user experiences. It is built using the Atomic Design Methodology.
 
-The Compose design system is named **Bolt** and lives in the local `components/` included build while we exercise Gradle
-isolated/composite build behavior. Thunderbird for Android consumes only the Bolt component groups it needs, starting
-with the design system and theme. See
+The Compose design system is named [**Bolt**](https://bolt.thunderbird.net/) and lives in the local `components/`
+included build while we exercise Gradle isolated/composite build behavior. Thunderbird for Android consumes only the
+Bolt component groups it needs, starting with the design system and theme. See
 [Thunderbird Mobile Components](../developer/thunderbird-mobile-components.md).
 
 ## 📚 Background

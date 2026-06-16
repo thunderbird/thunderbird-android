@@ -1,5 +1,7 @@
 ## Bolt
 
+[Bolt](https://bolt.thunderbird.net/) is the Thunderbird Compose design system.
+
 ## Background
 
 [Jetpack Compose](https://developer.android.com/jetpack/compose) is a declarative UI toolkit for Android that provides a modern and efficient way to build UIs for Android apps. In this context, design systems and atomic design can help designers and developers create more scalable, maintainable, and reusable UIs.
