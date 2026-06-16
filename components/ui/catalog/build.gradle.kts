@@ -5,10 +5,10 @@ plugins {
 }
 
 android {
-    namespace = "net.thunderbird.ui.catalog"
+    namespace = "net.thunderbird.components.ui.catalog"
 
     defaultConfig {
-        applicationId = "net.thunderbird.ui.catalog"
+        applicationId = "net.thunderbird.components.ui.catalog"
         versionCode = 1
         versionName = "1.0"
     }
