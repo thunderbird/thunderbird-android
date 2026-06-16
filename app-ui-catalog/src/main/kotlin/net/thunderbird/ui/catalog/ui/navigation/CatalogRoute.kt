@@ -1,7 +1,6 @@
 package net.thunderbird.ui.catalog.ui.navigation
 
 import kotlinx.serialization.Serializable
-import net.thunderbird.core.ui.navigation.Route
 
 sealed interface CatalogRoute : Route {
 

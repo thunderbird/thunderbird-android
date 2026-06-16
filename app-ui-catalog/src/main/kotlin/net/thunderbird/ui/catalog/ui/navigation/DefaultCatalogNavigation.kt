@@ -1,7 +1,6 @@
 package net.thunderbird.ui.catalog.ui.navigation
 
 import androidx.navigation.NavGraphBuilder
-import net.thunderbird.core.ui.navigation.deepLinkComposable
 import net.thunderbird.ui.catalog.ui.page.atom.CatalogAtomScreen
 import net.thunderbird.ui.catalog.ui.page.molecule.CatalogMoleculeScreen
 import net.thunderbird.ui.catalog.ui.page.organism.CatalogOrganismScreen

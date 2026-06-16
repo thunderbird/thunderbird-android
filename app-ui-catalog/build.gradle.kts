@@ -26,8 +26,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.ui.navigation)
-
+    implementation(libs.jetbrains.compose.navigation)
     implementation(libs.jetbrains.compose.material3)
     implementation(libs.jetbrains.compose.material.icons.extended)
 
