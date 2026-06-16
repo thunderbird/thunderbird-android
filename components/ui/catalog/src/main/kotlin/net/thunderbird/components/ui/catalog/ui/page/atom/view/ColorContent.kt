@@ -9,9 +9,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
 import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevicesWithBackground
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItemPadding
 
@@ -50,4 +52,16 @@ internal fun ColorContent(
 
 private fun Color.toHex(): String {
     return "#${Integer.toHexString(toArgb()).uppercase()}"
+}
+
+@Composable
+@PreviewDevicesWithBackground
+internal fun ColorContentPreview() {
+    PreviewWithTheme {
+        ColorContent(
+            text = "Primary",
+            color = BoltTheme.colors.primary,
+            textColor = BoltTheme.colors.onPrimary,
+        )
+    }
 }
