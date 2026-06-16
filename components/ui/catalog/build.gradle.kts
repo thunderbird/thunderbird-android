@@ -1,7 +1,7 @@
 plugins {
-    id(ThunderbirdPlugins.App.androidCompose)
+    id("thunderbird.app.android.compose")
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.kotlin.parcelize)
+    id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
 android {
@@ -26,6 +26,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.ui.bolt)
+
     implementation(libs.jetbrains.compose.navigation)
     implementation(libs.jetbrains.compose.material3)
     implementation(libs.jetbrains.compose.material.icons.extended)

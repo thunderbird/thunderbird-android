@@ -72,7 +72,6 @@ if (useLocalComponents || useLocalBolt) {
 include(
     ":app-k9mail",
     ":app-thunderbird",
-    ":app-ui-catalog",
 )
 
 include(

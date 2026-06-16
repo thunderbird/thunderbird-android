@@ -38,7 +38,7 @@ The app currently consumes local component sources by default through dependency
 substitution with the `tb.components.local` Gradle property when testing released artifacts.
 
 ```shell
-./gradlew -Ptb.components.local=false :app-ui-catalog:assembleDebug
+./gradlew -p components :ui:catalog:assembleDebug
 ```
 
 Individual component groups can provide their own override property. Bolt substitution can be controlled with
