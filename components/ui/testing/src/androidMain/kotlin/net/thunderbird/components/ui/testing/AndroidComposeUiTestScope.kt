@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.testing
+package net.thunderbird.components.ui.testing
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.ComposeUiTest

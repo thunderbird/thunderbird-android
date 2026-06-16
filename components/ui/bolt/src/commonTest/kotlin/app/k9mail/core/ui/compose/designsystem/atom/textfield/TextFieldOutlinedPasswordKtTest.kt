@@ -13,8 +13,8 @@ import androidx.compose.ui.text.AnnotatedString
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue
-import net.thunderbird.core.ui.testing.ComposeUiTestHarness
-import net.thunderbird.core.ui.testing.ComposeUiTestScope
+import net.thunderbird.components.ui.testing.ComposeUiTestHarness
+import net.thunderbird.components.ui.testing.ComposeUiTestScope
 import org.junit.Test
 
 private const val PASSWORD = "Password input"

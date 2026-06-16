@@ -9,9 +9,9 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import net.thunderbird.core.ui.common.window.WindowWidthSizeClass
-import net.thunderbird.core.ui.testing.ComposeUiTestHarness
-import net.thunderbird.core.ui.testing.ComposeUiTestScope
-import net.thunderbird.core.ui.testing.setContentWithWindowSize
+import net.thunderbird.components.ui.testing.ComposeUiTestHarness
+import net.thunderbird.components.ui.testing.ComposeUiTestScope
+import net.thunderbird.components.ui.testing.setContentWithWindowSize
 
 class CalculateResponsivePaddingTest : ComposeUiTestHarness() {
 

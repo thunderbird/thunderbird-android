@@ -11,7 +11,7 @@ import androidx.compose.ui.test.performTextInput
 import assertk.assertFailure
 import kotlin.test.Test
 import kotlinx.collections.immutable.persistentListOf
-import net.thunderbird.core.ui.testing.ComposeUiTestHarness
+import net.thunderbird.components.ui.testing.ComposeUiTestHarness
 
 private const val LABEL = "Label"
 

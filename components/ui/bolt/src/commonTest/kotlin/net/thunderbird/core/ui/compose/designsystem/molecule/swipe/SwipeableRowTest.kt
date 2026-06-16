@@ -30,7 +30,7 @@ import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectio
 import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectionAccessibilityAction.StartToEndAccessibilityAction
 import net.thunderbird.core.ui.compose.designsystem.setContentWithTheme
 import net.thunderbird.core.ui.compose.theme2.MainTheme
-import net.thunderbird.core.ui.testing.ComposeUiTestHarness
+import net.thunderbird.components.ui.testing.ComposeUiTestHarness
 import org.junit.Test
 
 @Suppress("MaxLineLength")

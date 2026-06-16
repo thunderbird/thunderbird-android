@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.testing
+package net.thunderbird.components.ui.testing
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.BasicText

@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.testing.coroutines
+package net.thunderbird.components.ui.testing.coroutines
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo

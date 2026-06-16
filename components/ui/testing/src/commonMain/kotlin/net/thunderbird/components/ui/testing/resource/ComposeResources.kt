@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.testing.resource
+package net.thunderbird.components.ui.testing.resource
 
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.compose.resources.StringResource

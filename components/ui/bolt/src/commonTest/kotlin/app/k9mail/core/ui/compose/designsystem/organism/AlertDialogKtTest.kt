@@ -7,7 +7,7 @@ import assertk.assertThat
 import assertk.assertions.isTrue
 import kotlin.test.Test
 import net.thunderbird.core.ui.compose.designsystem.setContentWithTheme
-import net.thunderbird.core.ui.testing.ComposeUiTestHarness
+import net.thunderbird.components.ui.testing.ComposeUiTestHarness
 
 class AlertDialogKtTest : ComposeUiTestHarness() {
 

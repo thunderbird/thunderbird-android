@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.testing
+package net.thunderbird.components.ui.testing
 
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box

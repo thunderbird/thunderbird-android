@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.testing
+package net.thunderbird.components.ui.testing
 
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext

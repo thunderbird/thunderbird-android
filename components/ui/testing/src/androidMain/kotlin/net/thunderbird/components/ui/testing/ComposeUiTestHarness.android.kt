@@ -1,18 +1,21 @@
-package net.thunderbird.core.ui.testing
+package net.thunderbird.components.ui.testing
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.v2.runComposeUiTest
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
 import kotlinx.coroutines.test.TestDispatcher
-import net.thunderbird.core.ui.testing.coroutines.MainDispatcherHelper
+import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
 /**
- * JVM implementation of [ComposeUiTestHarness].
+ * Android implementation of [ComposeUiTestHarness].
  *
- * It runs Compose UI tests with JUnit.
+ * It runs Compose UI tests with Robolectric.
  */
 @OptIn(ExperimentalTestApi::class)
+@RunWith(RobolectricTestRunner::class)
 public actual abstract class ComposeUiTestHarness actual constructor(
     private val mainDispatcher: TestDispatcher?,
 ) {
@@ -36,7 +39,7 @@ public actual abstract class ComposeUiTestHarness actual constructor(
                 runTestContext = runTestContext,
                 testTimeout = testTimeout,
             ) {
-                JvmComposeUiTestScope(this).block()
+                AndroidComposeUiTestScope(this).block()
             }
         } finally {
             mainDispatcherHelper?.tearDown()

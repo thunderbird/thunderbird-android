@@ -31,7 +31,7 @@ import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.ui.testing.coroutines.MainDispatcherHelper
+import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
 
 class CreateAccountViewModelTest {
 

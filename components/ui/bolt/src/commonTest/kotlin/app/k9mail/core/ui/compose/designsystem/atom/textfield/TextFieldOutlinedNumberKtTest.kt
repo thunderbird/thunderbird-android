@@ -7,7 +7,7 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import net.thunderbird.core.ui.testing.ComposeUiTestHarness
+import net.thunderbird.components.ui.testing.ComposeUiTestHarness
 import org.junit.Test
 
 private const val TEST_TAG = "TextFieldOutlinedNumber"
