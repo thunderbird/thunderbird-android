@@ -3,7 +3,6 @@ package com.fsck.k9.view
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
-import android.os.Build
 import android.util.AttributeSet
 import android.webkit.WebView
 import com.fsck.k9.core.BuildConfig
@@ -36,14 +35,11 @@ class MessageWebView : WebView, KoinComponent {
         scrollBarStyle = SCROLLBARS_INSIDE_OVERLAY
         isLongClickable = true
 
-        configureDarkLightMode(this, config)
+        // Do not force a view-specific hardware layer. Long messages can make this WebView taller than the
+        // device's maximum GPU texture size, causing WebView to crash while creating the layer.
+        setLayerType(LAYER_TYPE_NONE, null)
 
-        // LAYER_TYPE_HARDWARE forces the WebView into a GPU texture.
-        // On API <= 26, BakedOpRenderer calls LOG_ALWAYS_FATAL on any GL error, aborting the process
-        // and fatally crashing the app. API 28+'s SkiaPipeline handles these errors gracefully.
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O_MR1 && isHardwareAccelerated) {
-            setLayerType(LAYER_TYPE_HARDWARE, null)
-        }
+        configureDarkLightMode(this, config)
 
         with(settings) {
             setSupportZoom(true)
