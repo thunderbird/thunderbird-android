@@ -30,6 +30,7 @@ class NotificationConfigurationConverter(
             ringtone = notificationConfiguration.sound?.toString(),
             light = light,
             vibration = vibration,
+            isContentHidden = account.notificationSettings.isContentHidden,
         )
     }
 }

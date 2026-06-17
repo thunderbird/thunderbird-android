@@ -50,6 +50,7 @@ internal class SummaryNotificationCreator(
         val newMessagesCount = baseNotificationData.newMessagesCount
         val title = resourceProvider.newMessagesTitle(newMessagesCount)
         val summary = buildInboxSummaryText(accountName, notificationData)
+        val hideContent = account.notificationSettings.isContentHidden
 
         val notification = notificationHelper.createNotificationBuilder(account, ChannelType.MESSAGES)
             .setCategory(NotificationCompat.CATEGORY_EMAIL)
@@ -60,10 +61,11 @@ internal class SummaryNotificationCreator(
             .setColor(baseNotificationData.color)
             .setWhen(notificationData.timestamp)
             .setNumber(notificationData.additionalMessagesCount)
-            .setTicker(notificationData.content.firstOrNull())
+            .setTicker(if (hideContent) title else notificationData.content.firstOrNull())
             .setContentTitle(title)
+            .setContentText(accountName)
             .setSubText(accountName)
-            .setInboxStyle(title, summary, notificationData.content)
+            .setInboxStyle(title, summary, notificationData.content, hideContent)
             .setContentIntent(createViewIntent(account, notificationData))
             .setDeleteIntent(actionCreator.createDismissAllMessagesPendingIntent(account))
             .setDeviceActions(account, notificationData)
@@ -88,7 +90,10 @@ internal class SummaryNotificationCreator(
         title: String,
         summary: String,
         contentLines: List<CharSequence>,
+        hideContent: Boolean,
     ) = apply {
+        if (hideContent) return@apply
+
         val style = NotificationCompat.InboxStyle()
             .setBigContentTitle(title)
             .setSummaryText(summary)

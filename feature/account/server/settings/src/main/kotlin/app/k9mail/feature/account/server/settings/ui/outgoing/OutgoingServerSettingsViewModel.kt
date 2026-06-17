@@ -51,6 +51,14 @@ open class OutgoingServerSettingsViewModel(
 
             is Event.ProxyDnsChanged -> updateState { it.copy(proxyDns = event.proxyDns) }
 
+            is Event.ProxyUsernameChanged -> updateState {
+                it.copy(proxyUsername = it.proxyUsername.updateValue(event.proxyUsername))
+            }
+
+            is Event.ProxyPasswordChanged -> updateState {
+                it.copy(proxyPassword = it.proxyPassword.updateValue(event.proxyPassword))
+            }
+
             Event.OnNextClicked -> onNext()
 
             Event.OnBackClicked -> onBack()

@@ -8,4 +8,5 @@ data class NotificationSettings(
     val ringtone: String? = null,
     val light: NotificationLight = NotificationLight.Disabled,
     val vibration: NotificationVibration = NotificationVibration.DEFAULT,
+    val isContentHidden: Boolean = false,
 )

@@ -14,10 +14,13 @@ fun PasswordInput(
     onPasswordChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     password: String = "",
+    label: String? = null,
     isRequired: Boolean = false,
     errorMessage: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
 ) {
+    val resolvedLabel = label ?: stringResource(Res.string.designsystem_molecule_password_input_label)
+
     InputLayout(
         modifier = modifier,
         contentPadding = contentPadding,
@@ -26,7 +29,7 @@ fun PasswordInput(
         TextFieldOutlinedPassword(
             value = password,
             onValueChange = onPasswordChange,
-            label = stringResource(Res.string.designsystem_molecule_password_input_label),
+            label = resolvedLabel,
             isRequired = isRequired,
             hasError = errorMessage != null,
             modifier = Modifier.fillMaxWidth(),

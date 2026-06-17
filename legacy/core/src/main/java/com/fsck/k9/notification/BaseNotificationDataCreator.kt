@@ -21,6 +21,16 @@ internal class BaseNotificationDataCreator {
     }
 
     private fun createLockScreenNotificationData(data: NotificationData): LockScreenNotificationData {
+        if (data.account.notificationSettings.isContentHidden) {
+            return when (data.lockScreenNotificationVisibility) {
+                LockScreenNotificationVisibility.NOTHING -> LockScreenNotificationData.None
+                LockScreenNotificationVisibility.APP_NAME -> LockScreenNotificationData.AppName
+                LockScreenNotificationVisibility.EVERYTHING,
+                LockScreenNotificationVisibility.MESSAGE_COUNT,
+                LockScreenNotificationVisibility.SENDERS -> LockScreenNotificationData.MessageCount
+            }
+        }
+
         return when (data.lockScreenNotificationVisibility) {
             LockScreenNotificationVisibility.NOTHING -> LockScreenNotificationData.None
             LockScreenNotificationVisibility.APP_NAME -> LockScreenNotificationData.AppName

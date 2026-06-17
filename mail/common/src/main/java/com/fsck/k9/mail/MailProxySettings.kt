@@ -4,11 +4,14 @@ private const val KEY_PROXY_TYPE = "proxy.type"
 private const val KEY_PROXY_HOST = "proxy.host"
 private const val KEY_PROXY_PORT = "proxy.port"
 private const val KEY_PROXY_DNS = "proxy.dns"
+private const val KEY_PROXY_USERNAME = "proxy.username"
+private const val KEY_PROXY_PASSWORD = "proxy.password"
 
 enum class MailProxyType {
     NONE,
     HTTP,
-    SOCKS,
+    SOCKS4,
+    SOCKS5,
 }
 
 data class MailProxySettings @JvmOverloads constructor(
@@ -16,15 +19,21 @@ data class MailProxySettings @JvmOverloads constructor(
     val host: String? = null,
     val port: Int = 0,
     val proxyDns: Boolean = true,
+    val username: String? = null,
+    val password: String? = null,
 ) {
     init {
         if (type == MailProxyType.NONE) {
             require(host.isNullOrBlank()) { "host must be blank when proxy is disabled" }
             require(port == 0) { "port must be 0 when proxy is disabled" }
+            require(username.isNullOrBlank()) { "username must be blank when proxy is disabled" }
+            require(password.isNullOrBlank()) { "password must be blank when proxy is disabled" }
         } else {
             require(!host.isNullOrBlank()) { "host must not be blank when proxy is enabled" }
             require(host.contains(LINE_BREAK).not()) { "host must not contain line break" }
             require(port in VALID_PORT_RANGE) { "port must be in range 1..65535" }
+            require(username?.contains(LINE_BREAK) != true) { "username must not contain line break" }
+            require(password?.contains(LINE_BREAK) != true) { "password must not contain line break" }
         }
     }
 
@@ -37,6 +46,8 @@ data class MailProxySettings @JvmOverloads constructor(
                 KEY_PROXY_HOST to host,
                 KEY_PROXY_PORT to port.toString(),
                 KEY_PROXY_DNS to proxyDns.toString(),
+                KEY_PROXY_USERNAME to username,
+                KEY_PROXY_PASSWORD to password,
             )
         }
     }
@@ -55,9 +66,7 @@ data class MailProxySettings @JvmOverloads constructor(
 
         @JvmStatic
         fun fromExtra(extra: Map<String, String?>): MailProxySettings {
-            val type = extra[KEY_PROXY_TYPE]?.let { proxyType ->
-                MailProxyType.valueOf(proxyType.uppercase())
-            } ?: MailProxyType.NONE
+            val type = parseProxyType(extra[KEY_PROXY_TYPE])
 
             if (type == MailProxyType.NONE) {
                 return NONE
@@ -66,8 +75,20 @@ data class MailProxySettings @JvmOverloads constructor(
             val host = extra[KEY_PROXY_HOST]
             val port = extra[KEY_PROXY_PORT]?.toIntOrNull() ?: 0
             val proxyDns = extra[KEY_PROXY_DNS]?.toBooleanStrictOrNull() ?: true
+            val username = extra[KEY_PROXY_USERNAME]
+            val password = extra[KEY_PROXY_PASSWORD]
 
-            return MailProxySettings(type, host, port, proxyDns)
+            return MailProxySettings(type, host, port, proxyDns, username, password)
+        }
+
+        private fun parseProxyType(value: String?): MailProxyType {
+            return when (value?.lowercase()) {
+                null, "", "none" -> MailProxyType.NONE
+                "http" -> MailProxyType.HTTP
+                "socks", "socks5" -> MailProxyType.SOCKS5
+                "socks4" -> MailProxyType.SOCKS4
+                else -> MailProxyType.valueOf(value.uppercase())
+            }
         }
     }
 }

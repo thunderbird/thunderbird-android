@@ -121,7 +121,7 @@ internal fun LazyListScope.outgoingFormItems(
         )
     }
 
-    proxyFormItems(state, onEvent, resources)
+    proxyFormItems(mode, state, onEvent, resources)
 
     item {
         Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
@@ -129,13 +129,19 @@ internal fun LazyListScope.outgoingFormItems(
 }
 
 private fun LazyListScope.proxyFormItems(
+    mode: InteractionMode,
     state: State,
     onEvent: (Event) -> Unit,
     resources: Resources,
 ) {
     item {
         SelectInput(
-            options = listOf(MailProxyType.NONE, MailProxyType.HTTP, MailProxyType.SOCKS).toImmutableList(),
+            options = listOf(
+                MailProxyType.NONE,
+                MailProxyType.HTTP,
+                MailProxyType.SOCKS4,
+                MailProxyType.SOCKS5,
+            ).toImmutableList(),
             optionToStringTransformation = { it.toResourceString(resources) },
             selectedOption = state.proxyType,
             onOptionChange = { onEvent(Event.ProxyTypeChanged(it)) },
@@ -169,12 +175,43 @@ private fun LazyListScope.proxyFormItems(
         }
 
         item {
-            CheckboxInput(
-                text = stringResource(id = R.string.account_server_settings_proxy_dns_label),
-                checked = state.proxyDns,
-                onCheckedChange = { onEvent(Event.ProxyDnsChanged(it)) },
+            TextInput(
+                text = state.proxyUsername.value,
+                errorMessage = state.proxyUsername.error?.toResourceString(resources),
+                onTextChange = { onEvent(Event.ProxyUsernameChanged(it)) },
+                label = stringResource(id = R.string.account_server_settings_proxy_username_label),
+                contentPadding = defaultItemPadding(),
+                keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
+                contentType = ContentType.Username,
+            )
+        }
+
+        item {
+            ServerSettingsPasswordInput(
+                mode = mode,
+                password = state.proxyPassword.value,
+                label = stringResource(id = R.string.account_server_settings_proxy_password_label),
+                errorMessage = state.proxyPassword.error?.toResourceString(resources),
+                onPasswordChange = { onEvent(Event.ProxyPasswordChanged(it)) },
                 contentPadding = defaultItemPadding(),
             )
         }
+
+        if (state.proxyType.supportsProxyDns) {
+            item {
+                CheckboxInput(
+                    text = stringResource(id = R.string.account_server_settings_proxy_dns_label),
+                    checked = state.proxyDns,
+                    onCheckedChange = { onEvent(Event.ProxyDnsChanged(it)) },
+                    contentPadding = defaultItemPadding(),
+                )
+            }
+        }
     }
 }
+
+private val MailProxyType.supportsProxyDns: Boolean
+    get() = when (this) {
+        MailProxyType.SOCKS4, MailProxyType.SOCKS5 -> true
+        MailProxyType.NONE, MailProxyType.HTTP -> false
+    }

@@ -16,7 +16,7 @@ class MailProxySettingsTest {
     }
 
     @Test
-    fun `fromExtra should parse SOCKS proxy settings`() {
+    fun `fromExtra should parse legacy SOCKS proxy settings as SOCKS5`() {
         val proxySettings = MailProxySettings.fromExtra(
             mapOf(
                 "proxy.type" to "socks",
@@ -28,7 +28,7 @@ class MailProxySettingsTest {
 
         assertThat(proxySettings).isEqualTo(
             MailProxySettings(
-                type = MailProxyType.SOCKS,
+                type = MailProxyType.SOCKS5,
                 host = "127.0.0.1",
                 port = 9050,
                 proxyDns = true,
@@ -51,6 +51,30 @@ class MailProxySettingsTest {
                 "proxy.host" to "proxy.example",
                 "proxy.port" to "8080",
                 "proxy.dns" to "false",
+                "proxy.username" to null,
+                "proxy.password" to null,
+            ),
+        )
+    }
+
+    @Test
+    fun `toExtra should serialize authenticated proxy settings`() {
+        val proxySettings = MailProxySettings(
+            type = MailProxyType.SOCKS5,
+            host = "proxy.example",
+            port = 1080,
+            username = "alice",
+            password = "secret",
+        )
+
+        assertThat(proxySettings.toExtra()).isEqualTo(
+            mapOf(
+                "proxy.type" to "socks5",
+                "proxy.host" to "proxy.example",
+                "proxy.port" to "1080",
+                "proxy.dns" to "true",
+                "proxy.username" to "alice",
+                "proxy.password" to "secret",
             ),
         )
     }
@@ -58,7 +82,7 @@ class MailProxySettingsTest {
     @Test
     fun `creating enabled proxy with blank host should throw`() {
         assertFailure {
-            MailProxySettings(type = MailProxyType.SOCKS, host = "", port = 9050)
+            MailProxySettings(type = MailProxyType.SOCKS5, host = "", port = 9050)
         }.isInstanceOf<IllegalArgumentException>()
             .hasMessage("host must not be blank when proxy is enabled")
     }
@@ -66,7 +90,7 @@ class MailProxySettingsTest {
     @Test
     fun `creating enabled proxy with invalid port should throw`() {
         assertFailure {
-            MailProxySettings(type = MailProxyType.SOCKS, host = "127.0.0.1", port = 0)
+            MailProxySettings(type = MailProxyType.SOCKS5, host = "127.0.0.1", port = 0)
         }.isInstanceOf<IllegalArgumentException>()
             .hasMessage("port must be in range 1..65535")
     }

@@ -22,11 +22,14 @@
 
     <string name="account_server_settings_proxy_type_label">Proxy</string>
     <string name="account_server_settings_proxy_type_none">No proxy</string>
-    <string name="account_server_settings_proxy_type_http">HTTP proxy</string>
-    <string name="account_server_settings_proxy_type_socks">SOCKS proxy</string>
+    <string name="account_server_settings_proxy_type_http">HTTP CONNECT proxy</string>
+    <string name="account_server_settings_proxy_type_socks4">SOCKS4 proxy</string>
+    <string name="account_server_settings_proxy_type_socks5">SOCKS5 proxy</string>
     <string name="account_server_settings_proxy_server_label">Proxy server</string>
     <string name="account_server_settings_proxy_port_label">Proxy port</string>
     <string name="account_server_settings_proxy_dns_label">Resolve mail server hostnames through proxy</string>
+    <string name="account_server_settings_proxy_username_label">Proxy username</string>
+    <string name="account_server_settings_proxy_password_label">Proxy password</string>
 
     <string name="account_server_settings_incoming_top_bar_title">Incoming server settings</string>
 

@@ -8,6 +8,7 @@ internal fun MailProxyType.toResourceString(resources: Resources): String {
     return when (this) {
         MailProxyType.NONE -> resources.getString(R.string.account_server_settings_proxy_type_none)
         MailProxyType.HTTP -> resources.getString(R.string.account_server_settings_proxy_type_http)
-        MailProxyType.SOCKS -> resources.getString(R.string.account_server_settings_proxy_type_socks)
+        MailProxyType.SOCKS4 -> resources.getString(R.string.account_server_settings_proxy_type_socks4)
+        MailProxyType.SOCKS5 -> resources.getString(R.string.account_server_settings_proxy_type_socks5)
     }
 }

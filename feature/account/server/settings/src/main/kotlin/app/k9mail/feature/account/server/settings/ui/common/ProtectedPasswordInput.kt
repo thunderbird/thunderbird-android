@@ -33,6 +33,7 @@ fun ProtectedPasswordInput(
     onPasswordChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     password: String = "",
+    label: String? = null,
     isRequired: Boolean = false,
     errorMessage: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
@@ -43,6 +44,7 @@ fun ProtectedPasswordInput(
 ) {
     var authenticationError by remember { mutableStateOf<AuthenticationError?>(value = null) }
     val authenticationWarning = authenticationError?.let { stringResource(it.mapToStringRes()) }
+    val resolvedLabel = label ?: composeStringResource(Res.string.designsystem_molecule_password_input_label)
 
     LaunchedEffect(key1 = authenticationError) {
         if (authenticationError != null) {
@@ -62,7 +64,7 @@ fun ProtectedPasswordInput(
             onValueChange = onPasswordChange,
             onWarningChange = { authenticationError = it },
             authenticator = authenticator,
-            label = composeStringResource(Res.string.designsystem_molecule_password_input_label),
+            label = resolvedLabel,
             isRequired = isRequired,
             hasError = errorMessage != null,
             modifier = Modifier.fillMaxWidth(),

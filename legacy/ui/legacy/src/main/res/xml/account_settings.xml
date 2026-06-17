@@ -197,6 +197,14 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:dependency="account_notify"
+            android:key="account_hide_notification_content"
+            android:summary="@string/account_settings_hide_notification_content_summary"
+            android:title="@string/account_settings_hide_notification_content_label"
+            />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="account_notify"
             android:key="ignore_chat_messages"
             android:summary="@string/account_settings_ignore_chat_messages_summary"
             android:title="@string/account_settings_ignore_chat_messages_label"

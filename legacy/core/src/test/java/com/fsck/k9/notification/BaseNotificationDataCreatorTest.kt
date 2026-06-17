@@ -165,6 +165,19 @@ class BaseNotificationDataCreatorTest {
     }
 
     @Test
+    fun `hide lock screen notification content when notification content is hidden`() {
+        account.updateNotificationSettings { it.copy(isContentHidden = true) }
+        val notificationData = createNotificationData(
+            senders = listOf("Sender One", "Sender Two"),
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.SENDERS,
+        )
+
+        val result = notificationDataCreator.createBaseNotificationData(notificationData)
+
+        assertThat(result.lockScreenNotificationData).isEqualTo(LockScreenNotificationData.MessageCount)
+    }
+
+    @Test
     fun ringtone() {
         account.updateNotificationSettings { it.copy(ringtone = "content://ringtone/1") }
         val notificationData = createNotificationData(

@@ -211,6 +211,7 @@ class LegacyAccountStorageHandler(
                         ),
                         repeatCount = storage.getInt(keyGen.create("vibrateTimes"), 5),
                     ),
+                    isContentHidden = storage.getBoolean(keyGen.create("hideNotificationContent"), false),
                 )
             }
 
@@ -409,6 +410,7 @@ class LegacyAccountStorageHandler(
             editor.putBoolean(keyGen.create("ring"), notificationSettings.isRingEnabled)
             editor.putString(keyGen.create("ringtone"), notificationSettings.ringtone)
             editor.putString(keyGen.create("notificationLight"), notificationSettings.light.name)
+            editor.putBoolean(keyGen.create("hideNotificationContent"), notificationSettings.isContentHidden)
             editor.putLong(keyGen.create("lastSyncTime"), lastSyncTime)
             editor.putLong(keyGen.create("lastFolderListRefreshTime"), lastFolderListRefreshTime)
             editor.putBoolean(keyGen.create("isFinishedSetup"), isFinishedSetup)
@@ -481,6 +483,7 @@ class LegacyAccountStorageHandler(
         editor.remove(keyGen.create("vibrateTimes"))
         editor.remove(keyGen.create("ring"))
         editor.remove(keyGen.create("ringtone"))
+        editor.remove(keyGen.create("hideNotificationContent"))
         editor.remove(keyGen.create("folderDisplayMode"))
         editor.remove(keyGen.create("folderSyncMode"))
         editor.remove(keyGen.create("folderPushMode"))

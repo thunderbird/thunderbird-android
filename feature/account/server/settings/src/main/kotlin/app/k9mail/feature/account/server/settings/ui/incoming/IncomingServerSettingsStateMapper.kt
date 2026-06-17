@@ -45,6 +45,8 @@ private fun ServerSettings.toIncomingServerSettingsState(): State {
         proxyServer = StringInputField(value = proxySettings.host ?: ""),
         proxyPort = NumberInputField(value = proxySettings.port.takeIf { it > 0 }?.toLong()),
         proxyDns = proxySettings.proxyDns,
+        proxyUsername = StringInputField(value = proxySettings.username ?: ""),
+        proxyPassword = StringInputField(value = proxySettings.password ?: ""),
     )
 }
 
@@ -86,6 +88,8 @@ private fun State.createProxySettings(): MailProxySettings {
             host = proxyServer.value.trim(),
             port = proxyPort.value!!.toInt(),
             proxyDns = proxyDns,
+            username = proxyUsername.value.trim().ifBlank { null },
+            password = proxyPassword.value.ifBlank { null },
         )
     }
 }

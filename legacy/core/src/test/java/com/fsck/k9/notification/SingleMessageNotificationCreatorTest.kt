@@ -27,6 +27,7 @@ import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 
 class SingleMessageNotificationCreatorTest : RobolectricTest() {
     private val mainDispatcher = MainDispatcherHelper(UnconfinedTestDispatcher())
@@ -78,6 +79,23 @@ class SingleMessageNotificationCreatorTest : RobolectricTest() {
             singleNotificationData = createSingleNotificationData(),
         ).join()
 
+        assertThat(resourceProvider.avatarCalls).isEqualTo(0)
+    }
+
+    @Test
+    fun `create notification hides sender subject preview and avatar when notification content is hidden`() = runTest {
+        val baseNotificationData = createBaseNotificationData().apply {
+            account.updateNotificationSettings { it.copy(isContentHidden = true) }
+        }
+
+        testSubject.createSingleNotification(
+            baseNotificationData = baseNotificationData,
+            singleNotificationData = createSingleNotificationData(),
+        ).join()
+
+        verify(builder).setContentTitle("1 new message")
+        verify(builder).setContentText("Account name")
+        verify(builder).setTicker("1 new message")
         assertThat(resourceProvider.avatarCalls).isEqualTo(0)
     }
 

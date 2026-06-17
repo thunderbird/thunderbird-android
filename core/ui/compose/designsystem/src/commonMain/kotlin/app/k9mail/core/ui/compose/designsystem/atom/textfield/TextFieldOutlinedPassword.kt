@@ -51,7 +51,7 @@ fun TextFieldOutlinedPassword(
             isEnabled = isEnabled,
             isPasswordVisible = passwordVisibilityState,
         ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, autoCorrectEnabled = false),
         singleLine = true,
     )
 }
@@ -86,7 +86,7 @@ fun TextFieldOutlinedPassword(
             isEnabled = isEnabled,
             isPasswordVisible = isPasswordVisible,
         ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, autoCorrectEnabled = false),
         singleLine = true,
     )
 }

@@ -170,6 +170,9 @@ class AccountSettingsDescriptions {
         s.put("notifySelfNewMail", Settings.versions(
                 new V(1, new BooleanSetting(true))
         ));
+        s.put("hideNotificationContent", Settings.versions(
+                new V(112, new BooleanSetting(false))
+        ));
         s.put("quotePrefix", Settings.versions(
                 new V(1, new StringSetting(DEFAULT_QUOTE_PREFIX))
         ));

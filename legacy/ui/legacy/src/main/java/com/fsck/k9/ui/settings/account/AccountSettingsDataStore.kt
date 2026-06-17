@@ -41,6 +41,7 @@ class AccountSettingsDataStore(
             "account_notify" -> account.isNotifyNewMail
             "account_notify_self" -> account.isNotifySelfNewMail
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly
+            "account_hide_notification_content" -> account.notificationSettings.isContentHidden
             "account_notify_sync" -> account.isNotifySync
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject
@@ -66,6 +67,7 @@ class AccountSettingsDataStore(
             "account_notify" -> account.isNotifyNewMail = value
             "account_notify_self" -> account.isNotifySelfNewMail = value
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly = value
+            "account_hide_notification_content" -> setHideNotificationContent(value)
             "account_notify_sync" -> account.isNotifySync = value
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly = value
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject = value
@@ -203,6 +205,13 @@ class AccountSettingsDataStore(
         val light = NotificationLight.valueOf(value)
         if (light != account.notificationSettings.light) {
             account.updateNotificationSettings { it.copy(light = light) }
+            notificationSettingsChanged = true
+        }
+    }
+
+    private fun setHideNotificationContent(value: Boolean) {
+        if (value != account.notificationSettings.isContentHidden) {
+            account.updateNotificationSettings { it.copy(isContentHidden = value) }
             notificationSettingsChanged = true
         }
     }

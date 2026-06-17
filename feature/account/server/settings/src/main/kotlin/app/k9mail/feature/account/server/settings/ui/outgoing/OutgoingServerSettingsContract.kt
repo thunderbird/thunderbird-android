@@ -26,6 +26,8 @@ interface OutgoingServerSettingsContract {
         val proxyServer: StringInputField = StringInputField(),
         val proxyPort: NumberInputField = NumberInputField(),
         val proxyDns: Boolean = true,
+        val proxyUsername: StringInputField = StringInputField(),
+        val proxyPassword: StringInputField = StringInputField(),
     )
 
     sealed interface Event {
@@ -40,6 +42,8 @@ interface OutgoingServerSettingsContract {
         data class ProxyServerChanged(val proxyServer: String) : Event
         data class ProxyPortChanged(val proxyPort: Long?) : Event
         data class ProxyDnsChanged(val proxyDns: Boolean) : Event
+        data class ProxyUsernameChanged(val proxyUsername: String) : Event
+        data class ProxyPasswordChanged(val proxyPassword: String) : Event
 
         data object LoadAccountState : Event
 

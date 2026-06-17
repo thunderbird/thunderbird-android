@@ -31,6 +31,11 @@ internal class SingleMessageNotificationCreator(
         val account = baseNotificationData.account
         val notificationId = singleNotificationData.notificationId
         val content = singleNotificationData.content
+        val hideContent = account.notificationSettings.isContentHidden
+        val contentTitle = if (hideContent) resourceProvider.newMessagesTitle(1) else content.sender.personal
+        val contentText = if (hideContent) baseNotificationData.accountName else content.subject
+        val expandedText = if (hideContent) contentText else content.preview
+        val tickerText = if (hideContent) contentTitle else content.summary
 
         val notification = notificationHelper.createNotificationBuilder(account, ChannelType.MESSAGES)
             .setCategory(NotificationCompat.CATEGORY_EMAIL)
@@ -38,14 +43,14 @@ internal class SingleMessageNotificationCreator(
             .setGroupSummary(isGroupSummary)
             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
             .setSmallIcon(resourceProvider.iconNewMail)
-            .setAvatar(singleNotificationData.content)
+            .setAvatar(singleNotificationData.content, hideContent)
             .setColor(baseNotificationData.color)
             .setWhen(singleNotificationData.timestamp)
-            .setTicker(content.summary)
-            .setContentTitle(content.sender.personal)
-            .setContentText(content.subject)
+            .setTicker(tickerText)
+            .setContentTitle(contentTitle)
+            .setContentText(contentText)
             .setSubText(baseNotificationData.accountName)
-            .setBigText(content.preview)
+            .setBigText(expandedText)
             .setContentIntent(actionCreator.createViewMessagePendingIntent(content.messageReference))
             .setDeleteIntent(actionCreator.createDismissMessagePendingIntent(content.messageReference))
             .setDeviceActions(singleNotificationData)
@@ -64,7 +69,8 @@ internal class SingleMessageNotificationCreator(
         notificationHelper.notify(account, notificationId, notification)
     }
 
-    private suspend fun NotificationBuilder.setAvatar(content: NotificationContent) = apply {
+    private suspend fun NotificationBuilder.setAvatar(content: NotificationContent, hideContent: Boolean) = apply {
+        if (hideContent) return@apply
         if (!notificationPreferenceManager.getConfig().isShowContactPictureInNotification) return@apply
 
         resourceProvider.avatar(content.sender)?.let {
