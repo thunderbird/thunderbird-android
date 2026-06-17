@@ -925,6 +925,7 @@
     <string name="notification_action_star">ستاره</string>
     <string name="message_view_attachments_view_all">دیدن همه</string>
     <string name="message_view_attachments_save_all">ذخیرهٔ همه</string>
+    <string name="encrypted_attachment_title">پیوست رمز شده</string>
     <string name="notification_actions_settings_title">کنش‌های آگاهی</string>
     <string name="accessibility_move_up">جابه‌جایی به بالا</string>
     <string name="accessibility_move_down">جابه‌جایی به پایین</string>
