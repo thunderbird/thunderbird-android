@@ -22,12 +22,13 @@ interface OutgoingServerSettingsContract {
         val username: StringInputField = StringInputField(),
         val password: StringInputField = StringInputField(),
         val clientCertificateAlias: String? = null,
-        val proxyType: MailProxyType = MailProxyType.NONE,
+        val proxyType: MailProxyType = MailProxyType.USE_GLOBAL,
         val proxyServer: StringInputField = StringInputField(),
         val proxyPort: NumberInputField = NumberInputField(),
         val proxyDns: Boolean = true,
         val proxyUsername: StringInputField = StringInputField(),
         val proxyPassword: StringInputField = StringInputField(),
+        val isPrivateKeyboardEnabled: Boolean = true,
     )
 
     sealed interface Event {

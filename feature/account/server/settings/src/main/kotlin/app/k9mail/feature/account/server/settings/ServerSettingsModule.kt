@@ -20,6 +20,7 @@ val featureAccountServerSettingsModule: Module = module {
             mode = InteractionMode.Create,
             validator = get(),
             accountStateRepository = get(),
+            generalSettingsManager = get(),
         )
     }
 
@@ -28,6 +29,7 @@ val featureAccountServerSettingsModule: Module = module {
             mode = InteractionMode.Create,
             validator = get(),
             accountStateRepository = get(),
+            generalSettingsManager = get(),
         )
     }
 }

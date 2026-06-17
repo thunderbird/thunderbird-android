@@ -6,6 +6,7 @@ import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.oauth.ui.AccountOAuthViewModel
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase.GetAutoDiscovery
 import app.k9mail.feature.account.setup.domain.toServerSettings
+import com.fsck.k9.mail.MailProxySettings
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
@@ -28,7 +29,7 @@ internal class ThundermailOAuthViewModel(
 ) : ThundermailContract.ViewModel(initialState = ThundermailContract.State()) {
 
     init {
-        flow { emit(getAutoDiscovery.execute(OAUTH_AUTO_DISCOVERY)) }
+        flow { emit(getAutoDiscovery.execute(OAUTH_AUTO_DISCOVERY, MailProxySettings.USE_GLOBAL)) }
             .flatMapConcat { result ->
                 when (result) {
                     is AutoDiscoveryResult.Settings -> {

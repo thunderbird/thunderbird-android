@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
@@ -31,6 +30,7 @@ fun TextFieldOutlinedPassword(
     isReadOnly: Boolean = false,
     isRequired: Boolean = false,
     hasError: Boolean = false,
+    usePrivateKeyboard: Boolean = true,
 ) {
     var passwordVisibilityState by rememberSaveable { mutableStateOf(false) }
 
@@ -51,7 +51,7 @@ fun TextFieldOutlinedPassword(
             isEnabled = isEnabled,
             isPasswordVisible = passwordVisibilityState,
         ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, autoCorrectEnabled = false),
+        keyboardOptions = sensitiveKeyboardOptions(usePrivateKeyboard),
         singleLine = true,
     )
 }
@@ -68,6 +68,7 @@ fun TextFieldOutlinedPassword(
     isReadOnly: Boolean = false,
     isRequired: Boolean = false,
     hasError: Boolean = false,
+    usePrivateKeyboard: Boolean = true,
 ) {
     Material3OutlinedTextField(
         value = value,
@@ -86,7 +87,7 @@ fun TextFieldOutlinedPassword(
             isEnabled = isEnabled,
             isPasswordVisible = isPasswordVisible,
         ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, autoCorrectEnabled = false),
+        keyboardOptions = sensitiveKeyboardOptions(usePrivateKeyboard),
         singleLine = true,
     )
 }

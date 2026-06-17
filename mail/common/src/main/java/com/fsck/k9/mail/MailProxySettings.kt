@@ -8,6 +8,7 @@ private const val KEY_PROXY_USERNAME = "proxy.username"
 private const val KEY_PROXY_PASSWORD = "proxy.password"
 
 enum class MailProxyType {
+    USE_GLOBAL,
     NONE,
     HTTP,
     SOCKS4,
@@ -23,7 +24,7 @@ data class MailProxySettings @JvmOverloads constructor(
     val password: String? = null,
 ) {
     init {
-        if (type == MailProxyType.NONE) {
+        if (type == MailProxyType.NONE || type == MailProxyType.USE_GLOBAL) {
             require(host.isNullOrBlank()) { "host must be blank when proxy is disabled" }
             require(port == 0) { "port must be 0 when proxy is disabled" }
             require(username.isNullOrBlank()) { "username must be blank when proxy is disabled" }
@@ -38,8 +39,8 @@ data class MailProxySettings @JvmOverloads constructor(
     }
 
     fun toExtra(): Map<String, String?> {
-        return if (type == MailProxyType.NONE) {
-            mapOf(KEY_PROXY_TYPE to MailProxyType.NONE.name.lowercase())
+        return if (type == MailProxyType.NONE || type == MailProxyType.USE_GLOBAL) {
+            mapOf(KEY_PROXY_TYPE to type.name.lowercase())
         } else {
             mapOf(
                 KEY_PROXY_TYPE to type.name.lowercase(),
@@ -56,6 +57,9 @@ data class MailProxySettings @JvmOverloads constructor(
         @JvmField
         val NONE = MailProxySettings(MailProxyType.NONE)
 
+        @JvmField
+        val USE_GLOBAL = MailProxySettings(MailProxyType.USE_GLOBAL)
+
         private val LINE_BREAK = "[\\r\\n]".toRegex()
         private val VALID_PORT_RANGE = 1..65535
 
@@ -68,8 +72,10 @@ data class MailProxySettings @JvmOverloads constructor(
         fun fromExtra(extra: Map<String, String?>): MailProxySettings {
             val type = parseProxyType(extra[KEY_PROXY_TYPE])
 
-            if (type == MailProxyType.NONE) {
-                return NONE
+            when (type) {
+                MailProxyType.USE_GLOBAL -> return USE_GLOBAL
+                MailProxyType.NONE -> return NONE
+                else -> Unit
             }
 
             val host = extra[KEY_PROXY_HOST]
@@ -83,7 +89,8 @@ data class MailProxySettings @JvmOverloads constructor(
 
         private fun parseProxyType(value: String?): MailProxyType {
             return when (value?.lowercase()) {
-                null, "", "none" -> MailProxyType.NONE
+                null, "", "use_global" -> MailProxyType.USE_GLOBAL
+                "none" -> MailProxyType.NONE
                 "http" -> MailProxyType.HTTP
                 "socks", "socks5" -> MailProxyType.SOCKS5
                 "socks4" -> MailProxyType.SOCKS4

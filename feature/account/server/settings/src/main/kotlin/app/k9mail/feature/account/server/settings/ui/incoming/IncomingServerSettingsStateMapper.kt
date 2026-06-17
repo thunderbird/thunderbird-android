@@ -23,6 +23,12 @@ fun AccountState.toIncomingServerSettingsState() = incomingServerSettings?.toInc
     ?: State(
         username = StringInputField(value = emailAddress ?: ""),
         server = StringInputField(value = emailAddress?.toInvalidEmailDomain() ?: ""),
+        proxyType = defaultProxySettings.type,
+        proxyServer = StringInputField(value = defaultProxySettings.host.orEmpty()),
+        proxyPort = NumberInputField(value = defaultProxySettings.port.takeIf { it > 0 }?.toLong()),
+        proxyDns = defaultProxySettings.proxyDns,
+        proxyUsername = StringInputField(value = defaultProxySettings.username.orEmpty()),
+        proxyPassword = StringInputField(value = defaultProxySettings.password.orEmpty()),
     )
 
 private fun ServerSettings.toIncomingServerSettingsState(): State {
@@ -80,10 +86,12 @@ private fun State.createExtras(): Map<String, String?> {
 }
 
 private fun State.createProxySettings(): MailProxySettings {
-    return if (proxyType == MailProxyType.NONE) {
-        MailProxySettings.NONE
-    } else {
-        MailProxySettings(
+    return when (proxyType) {
+        MailProxyType.USE_GLOBAL -> MailProxySettings.USE_GLOBAL
+
+        MailProxyType.NONE -> MailProxySettings.NONE
+
+        else -> MailProxySettings(
             type = proxyType,
             host = proxyServer.value.trim(),
             port = proxyPort.value!!.toInt(),

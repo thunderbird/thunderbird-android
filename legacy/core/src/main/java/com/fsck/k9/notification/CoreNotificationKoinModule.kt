@@ -98,7 +98,7 @@ val coreNotificationModule = module {
             messageListPreferencesManager = get(),
         )
     }
-    factory { BaseNotificationDataCreator() }
+    factory { BaseNotificationDataCreator(generalSettingsManager = get()) }
     factory { SingleMessageNotificationDataCreator(interactionPreferences = get(), notificationPreference = get()) }
     factory {
         SummaryNotificationDataCreator(
@@ -113,6 +113,7 @@ val coreNotificationModule = module {
             resourceProvider = get(),
             lockScreenNotificationCreator = get(),
             notificationPreferenceManager = get(),
+            generalSettingsManager = get(),
             application = androidApplication(),
         )
     }
@@ -123,6 +124,7 @@ val coreNotificationModule = module {
             lockScreenNotificationCreator = get(),
             singleMessageNotificationCreator = get(),
             resourceProvider = get(),
+            generalSettingsManager = get(),
         )
     }
     factory { LockScreenNotificationCreator(notificationHelper = get(), resourceProvider = get()) }

@@ -68,6 +68,9 @@ val featureAccountSetupModule: Module = module {
         GetAutoDiscovery(
             service = get(),
             oauthProvider = get(),
+            okHttpClient = get(),
+            generalSettingsManager = get(),
+            extraAutoDiscoveries = get(named("extraAutoDiscoveries")),
         )
     }
 
@@ -86,6 +89,7 @@ val featureAccountSetupModule: Module = module {
             getAutoDiscovery = get(),
             accountStateRepository = get(),
             oAuthViewModel = get(),
+            generalSettingsManager = get(),
         )
     }
 
@@ -103,6 +107,7 @@ val featureAccountSetupModule: Module = module {
             folderFetcher = get(),
             accountStateRepository = get(),
             authStateStorage = get(),
+            generalSettingsManager = get(),
         )
     }
 

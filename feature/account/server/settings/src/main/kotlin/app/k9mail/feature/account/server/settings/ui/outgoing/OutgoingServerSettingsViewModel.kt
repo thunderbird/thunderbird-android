@@ -11,6 +11,7 @@ import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSett
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.ViewModel
 import com.fsck.k9.mail.MailProxyType
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.core.validation.ValidationSuccess
 
@@ -19,7 +20,13 @@ open class OutgoingServerSettingsViewModel(
     override val mode: InteractionMode,
     private val validator: Validator,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
-) : BaseViewModel<State, Event, Effect>(initialState = initialState), ViewModel {
+    generalSettingsManager: GeneralSettingsManager? = null,
+) : BaseViewModel<State, Event, Effect>(
+    initialState = initialState.copy(
+        isPrivateKeyboardEnabled = generalSettingsManager?.getConfig()?.privacy?.isPrivateKeyboardEnabled ?: true,
+    ),
+),
+    ViewModel {
 
     override fun event(event: Event) {
         when (event) {
@@ -93,12 +100,12 @@ open class OutgoingServerSettingsViewModel(
         } else {
             Outcome.Success(Unit)
         }
-        val proxyServerResult = if (proxyType == MailProxyType.NONE) {
+        val proxyServerResult = if (proxyType.isProxyValidationRequired.not()) {
             ValidationSuccess
         } else {
             validator.validateServer(proxyServer.value)
         }
-        val proxyPortResult = if (proxyType == MailProxyType.NONE) {
+        val proxyPortResult = if (proxyType.isProxyValidationRequired.not()) {
             ValidationSuccess
         } else {
             validator.validatePort(proxyPort.value)
@@ -139,3 +146,6 @@ open class OutgoingServerSettingsViewModel(
 
     private fun navigateNext() = emitEffect(Effect.NavigateNext)
 }
+
+private val MailProxyType.isProxyValidationRequired: Boolean
+    get() = this != MailProxyType.USE_GLOBAL && this != MailProxyType.NONE

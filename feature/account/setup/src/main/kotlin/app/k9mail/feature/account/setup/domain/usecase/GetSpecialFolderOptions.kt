@@ -3,6 +3,7 @@ package app.k9mail.feature.account.setup.domain.usecase
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOptions
+import app.k9mail.feature.account.server.validation.domain.usecase.resolveInheritedProxySettings
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.folders.FolderFetcher
@@ -11,11 +12,13 @@ import com.fsck.k9.mail.oauth.AuthStateStorage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 class GetSpecialFolderOptions(
     private val folderFetcher: FolderFetcher,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     private val authStateStorage: AuthStateStorage,
+    private val generalSettingsManager: GeneralSettingsManager? = null,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : UseCase.GetSpecialFolderOptions {
     override suspend fun invoke(): SpecialFolderOptions {
@@ -23,7 +26,13 @@ class GetSpecialFolderOptions(
             val serverSettings = accountStateRepository.getState().incomingServerSettings
                 ?: error("No incoming server settings available")
 
-            val remoteFolders = folderFetcher.getFolders(serverSettings, authStateStorage)
+            val resolvedServerSettings = generalSettingsManager
+                ?.getConfig()
+                ?.network
+                ?.let(serverSettings::resolveInheritedProxySettings)
+                ?: serverSettings
+
+            val remoteFolders = folderFetcher.getFolders(resolvedServerSettings, authStateStorage)
                 .sortedWith(
                     compareByDescending<RemoteFolder> { it.type == FolderType.INBOX }
                         .thenBy(String.CASE_INSENSITIVE_ORDER) { it.displayName },

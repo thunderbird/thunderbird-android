@@ -39,6 +39,7 @@ val featureAccountServerValidationModule = module {
                 trustedSocketFactory = get(),
                 oAuth2TokenProviderFactory = get(),
             ),
+            generalSettingsManager = get(),
         )
     }
 

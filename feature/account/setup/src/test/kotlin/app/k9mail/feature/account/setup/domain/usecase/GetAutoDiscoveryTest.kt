@@ -11,6 +11,7 @@ import app.k9mail.autodiscovery.api.SmtpServerSettings
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import com.fsck.k9.mail.MailProxySettings
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.mail.EmailAddress
 import net.thunderbird.core.common.net.toHostname
@@ -28,7 +29,7 @@ class GetAutoDiscoveryTest {
             oauthProvider = FakeOAuthConfigurationProvider(OAUTH_CONFIGURATION),
         )
 
-        val result = useCase.execute("user@example.com")
+        val result = useCase.execute("user@example.com", MailProxySettings.USE_GLOBAL)
 
         assertThat(result)
             .isInstanceOf<AutoDiscoveryResult.Settings>()
@@ -42,7 +43,7 @@ class GetAutoDiscoveryTest {
             oauthProvider = FakeOAuthConfigurationProvider(),
         )
 
-        val result = useCase.execute("user@example.com")
+        val result = useCase.execute("user@example.com", MailProxySettings.USE_GLOBAL)
 
         assertThat(result)
             .isInstanceOf<AutoDiscoveryResult.NoUsableSettingsFound>()
@@ -55,7 +56,7 @@ class GetAutoDiscoveryTest {
             oauthProvider = FakeOAuthConfigurationProvider(),
         )
 
-        val result = useCase.execute("user@example.com")
+        val result = useCase.execute("user@example.com", MailProxySettings.USE_GLOBAL)
 
         assertThat(result)
             .isInstanceOf<AutoDiscoveryResult.NoUsableSettingsFound>()
@@ -68,7 +69,7 @@ class GetAutoDiscoveryTest {
             oauthProvider = FakeOAuthConfigurationProvider(),
         )
 
-        val result = useCase.execute("user@example.com")
+        val result = useCase.execute("user@example.com", MailProxySettings.USE_GLOBAL)
 
         assertThat(result)
             .isInstanceOf<AutoDiscoveryResult.NoUsableSettingsFound>()
@@ -82,7 +83,7 @@ class GetAutoDiscoveryTest {
             oauthProvider = FakeOAuthConfigurationProvider(),
         )
 
-        val result = useCase.execute("user@example.com")
+        val result = useCase.execute("user@example.com", MailProxySettings.USE_GLOBAL)
 
         assertThat(result)
             .isInstanceOf<AutoDiscoveryResult.UnexpectedException>()
@@ -96,7 +97,7 @@ class GetAutoDiscoveryTest {
             oauthProvider = FakeOAuthConfigurationProvider(OAUTH_CONFIGURATION),
         )
 
-        val result = useCase.execute("user@example.com")
+        val result = useCase.execute("user@example.com", MailProxySettings.USE_GLOBAL)
 
         assertThat(result)
             .isInstanceOf<AutoDiscoveryResult.Settings>()
@@ -110,7 +111,7 @@ class GetAutoDiscoveryTest {
             oauthProvider = FakeOAuthConfigurationProvider(),
         )
 
-        val result = useCase.execute("user@example.com")
+        val result = useCase.execute("user@example.com", MailProxySettings.USE_GLOBAL)
 
         assertThat(result)
             .isInstanceOf<AutoDiscoveryResult.Settings>()

@@ -30,12 +30,13 @@ interface IncomingServerSettingsContract {
         val imapPrefix: StringInputField = StringInputField(),
         val imapUseCompression: Boolean = true,
         val imapSendClientInfo: Boolean = true,
-        val proxyType: MailProxyType = MailProxyType.NONE,
+        val proxyType: MailProxyType = MailProxyType.USE_GLOBAL,
         val proxyServer: StringInputField = StringInputField(),
         val proxyPort: NumberInputField = NumberInputField(),
         val proxyDns: Boolean = true,
         val proxyUsername: StringInputField = StringInputField(),
         val proxyPassword: StringInputField = StringInputField(),
+        val isPrivateKeyboardEnabled: Boolean = true,
     )
 
     sealed interface Event {

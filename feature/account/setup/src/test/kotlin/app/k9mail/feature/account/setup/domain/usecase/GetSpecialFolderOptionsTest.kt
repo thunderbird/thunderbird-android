@@ -14,12 +14,20 @@ import assertk.assertions.isInstanceOf
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.FolderType
+import com.fsck.k9.mail.MailProxySettings
+import com.fsck.k9.mail.MailProxyType
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.folders.FolderFetcher
 import com.fsck.k9.mail.folders.FolderServerId
 import com.fsck.k9.mail.folders.RemoteFolder
 import com.fsck.k9.mail.oauth.AuthStateStorage
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.appConfig.PlatformConfigProvider
+import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.network.NetworkProxyType
+import net.thunderbird.core.preference.network.NetworkSettings
 import org.junit.Test
 
 class GetSpecialFolderOptionsTest {
@@ -155,6 +163,41 @@ class GetSpecialFolderOptionsTest {
     }
 
     @Test
+    fun `should resolve global proxy settings before fetching folders`() = runTest {
+        val folderFetcher = FakeFolderFetcher(folders = FOLDERS)
+        val testSubject = createTestSubject(
+            folderFetcher = folderFetcher,
+            accountStateRepository = InMemoryAccountStateRepository(
+                state = AccountState(
+                    incomingServerSettings = SERVER_SETTINGS.copy(
+                        extra = MailProxySettings.USE_GLOBAL.toExtra(),
+                    ),
+                ),
+            ),
+            generalSettingsManager = FakeGeneralSettingsManager(
+                GeneralSettings(
+                    network = NetworkSettings(
+                        isProxyEnabled = true,
+                        proxyType = NetworkProxyType.HTTP,
+                        proxyHost = "proxy.example.org",
+                        proxyPort = 8080,
+                    ),
+                    platformConfigProvider = FakePlatformConfigProvider(),
+                ),
+            ),
+        )
+
+        testSubject()
+
+        val resolvedProxySettings = MailProxySettings.fromServerSettings(
+            checkNotNull(folderFetcher.lastServerSettings),
+        )
+        assertThat(resolvedProxySettings.type).isEqualTo(MailProxyType.HTTP)
+        assertThat(resolvedProxySettings.host).isEqualTo("proxy.example.org")
+        assertThat(resolvedProxySettings.port).isEqualTo(8080)
+    }
+
+    @Test
     fun `should map remote folders to Folders when no special folder present`() = runTest {
         val testSubject = createTestSubject(
             folderFetcher = FakeFolderFetcher(
@@ -199,11 +242,13 @@ class GetSpecialFolderOptionsTest {
         fun createTestSubject(
             folderFetcher: FolderFetcher = FakeFolderFetcher(),
             accountStateRepository: AccountStateRepository = InMemoryAccountStateRepository(),
+            generalSettingsManager: GeneralSettingsManager? = null,
         ): UseCase.GetSpecialFolderOptions {
             return GetSpecialFolderOptions(
                 folderFetcher = folderFetcher,
                 accountStateRepository = accountStateRepository,
                 authStateStorage = accountStateRepository as AuthStateStorage,
+                generalSettingsManager = generalSettingsManager,
             )
         }
 
@@ -324,4 +369,26 @@ class GetSpecialFolderOptionsTest {
             authenticationType = AuthType.PLAIN,
         )
     }
+}
+
+private class FakeGeneralSettingsManager(
+    private var generalSettings: GeneralSettings,
+) : GeneralSettingsManager {
+    @Deprecated("Use PreferenceManager<GeneralSettings>.getConfig() instead")
+    override fun getSettings() = generalSettings
+
+    @Deprecated("Use PreferenceManager<GeneralSettings>.getConfigFlow() instead")
+    override fun getSettingsFlow(): Flow<GeneralSettings> = error("Not implemented")
+
+    override fun save(config: GeneralSettings) {
+        generalSettings = config
+    }
+
+    override fun getConfig() = generalSettings
+
+    override fun getConfigFlow(): Flow<GeneralSettings> = error("Not implemented")
+}
+
+private class FakePlatformConfigProvider : PlatformConfigProvider {
+    override val isDebug: Boolean = true
 }

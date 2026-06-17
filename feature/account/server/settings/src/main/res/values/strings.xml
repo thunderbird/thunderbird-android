@@ -21,10 +21,11 @@
     <string name="account_server_settings_client_certificate_label">Client certificate</string>
 
     <string name="account_server_settings_proxy_type_label">Proxy</string>
+    <string name="account_server_settings_proxy_type_use_global">Use global settings</string>
     <string name="account_server_settings_proxy_type_none">No proxy</string>
-    <string name="account_server_settings_proxy_type_http">HTTP CONNECT proxy</string>
-    <string name="account_server_settings_proxy_type_socks4">SOCKS4 proxy</string>
-    <string name="account_server_settings_proxy_type_socks5">SOCKS5 proxy</string>
+    <string name="account_server_settings_proxy_type_http">HTTP</string>
+    <string name="account_server_settings_proxy_type_socks4">SOCKS4</string>
+    <string name="account_server_settings_proxy_type_socks5">SOCKS5</string>
     <string name="account_server_settings_proxy_server_label">Proxy server</string>
     <string name="account_server_settings_proxy_port_label">Proxy port</string>
     <string name="account_server_settings_proxy_dns_label">Resolve mail server hostnames through proxy</string>

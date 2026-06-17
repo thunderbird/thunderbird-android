@@ -10,14 +10,23 @@ import app.k9mail.feature.account.setup.domain.entity.toConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toIncomingProtocolType
 import app.k9mail.feature.account.setup.domain.toServerSettings
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract
+import com.fsck.k9.mail.MailProxySettings
+import com.fsck.k9.mail.ServerSettings
 import net.thunderbird.core.validation.input.NumberInputField
 import net.thunderbird.core.validation.input.StringInputField
 
 internal fun AccountAutoDiscoveryContract.State.toAccountState(): AccountState {
+    val proxySettings = toProxySettings()
+
     return AccountState(
         emailAddress = emailAddress.value,
-        incomingServerSettings = autoDiscoverySettings?.incomingServerSettings?.toServerSettings(password.value),
-        outgoingServerSettings = autoDiscoverySettings?.outgoingServerSettings?.toServerSettings(password.value),
+        incomingServerSettings = autoDiscoverySettings?.incomingServerSettings
+            ?.toServerSettings(password.value)
+            ?.withProxySettings(proxySettings),
+        outgoingServerSettings = autoDiscoverySettings?.outgoingServerSettings
+            ?.toServerSettings(password.value)
+            ?.withProxySettings(proxySettings),
+        defaultProxySettings = proxySettings,
         authorizationState = authorizationState,
         displayOptions = null,
         syncOptions = null,
@@ -26,10 +35,17 @@ internal fun AccountAutoDiscoveryContract.State.toAccountState(): AccountState {
 
 internal fun AccountAutoDiscoveryContract.State.toIncomingConfigState(): IncomingServerSettingsContract.State {
     val incomingSettings = autoDiscoverySettings?.incomingServerSettings as? ImapServerSettings?
+    val proxySettings = toProxySettings()
     return if (incomingSettings == null) {
         IncomingServerSettingsContract.State(
             username = StringInputField(value = emailAddress.value),
             password = StringInputField(value = password.value),
+            proxyType = proxySettings.type,
+            proxyServer = StringInputField(value = proxySettings.host.orEmpty()),
+            proxyPort = NumberInputField(value = proxySettings.port.takeIf { it > 0 }?.toLong()),
+            proxyDns = proxySettings.proxyDns,
+            proxyUsername = StringInputField(value = proxySettings.username.orEmpty()),
+            proxyPassword = StringInputField(value = proxySettings.password.orEmpty()),
         )
     } else {
         IncomingServerSettingsContract.State(
@@ -50,10 +66,17 @@ internal fun AccountAutoDiscoveryContract.State.toIncomingConfigState(): Incomin
 
 internal fun AccountAutoDiscoveryContract.State.toOutgoingConfigState(): OutgoingServerSettingsContract.State {
     val outgoingSettings = autoDiscoverySettings?.outgoingServerSettings as? SmtpServerSettings?
+    val proxySettings = toProxySettings()
     return if (outgoingSettings == null) {
         OutgoingServerSettingsContract.State(
             username = StringInputField(value = emailAddress.value),
             password = StringInputField(value = password.value),
+            proxyType = proxySettings.type,
+            proxyServer = StringInputField(value = proxySettings.host.orEmpty()),
+            proxyPort = NumberInputField(value = proxySettings.port.takeIf { it > 0 }?.toLong()),
+            proxyDns = proxySettings.proxyDns,
+            proxyUsername = StringInputField(value = proxySettings.username.orEmpty()),
+            proxyPassword = StringInputField(value = proxySettings.password.orEmpty()),
         )
     } else {
         OutgoingServerSettingsContract.State(
@@ -65,6 +88,10 @@ internal fun AccountAutoDiscoveryContract.State.toOutgoingConfigState(): Outgoin
             password = StringInputField(value = password.value),
         )
     }
+}
+
+private fun ServerSettings.withProxySettings(proxySettings: MailProxySettings): ServerSettings {
+    return copy(extra = extra + proxySettings.toExtra())
 }
 
 internal fun AccountAutoDiscoveryContract.State.toOptionsState(): DisplayOptionsContract.State {

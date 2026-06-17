@@ -21,6 +21,7 @@ import com.fsck.k9.preferences.Settings.IntegerRangeSetting;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.PseudoEnumSetting;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
+import com.fsck.k9.preferences.Settings.StringSetting;
 import com.fsck.k9.preferences.Settings.V;
 import com.fsck.k9.preferences.Settings.WebFontSizeSetting;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo24;
@@ -30,6 +31,7 @@ import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo69;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo79;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo89;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo111;
+import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo113;
 import net.thunderbird.core.android.account.AccountDefaultsProvider;
 import net.thunderbird.core.android.account.SortType;
 import net.thunderbird.core.common.action.SwipeAction;
@@ -47,6 +49,7 @@ import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSetti
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat;
 import net.thunderbird.core.preference.interaction.PostMarkAsUnreadNavigation;
 import net.thunderbird.core.preference.interaction.PostRemoveNavigation;
+import net.thunderbird.core.preference.network.NetworkProxyType;
 import net.thunderbird.core.preference.network.NetworkSettingsKt;
 import net.thunderbird.core.preference.storage.Storage;
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity;
@@ -67,8 +70,16 @@ import static net.thunderbird.core.preference.display.visualSettings.DisplayVisu
 import static net.thunderbird.core.preference.notification.NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_IS_QUIET_TIME_ENABLED;
 import static net.thunderbird.core.preference.notification.NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_END;
 import static net.thunderbird.core.preference.notification.NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_STARTS;
+import static net.thunderbird.core.preference.privacy.PrivacySettingsKt.PRIVACY_SETTINGS_DEFAULT_HIDE_NOTIFICATION_CONTENT;
 import static net.thunderbird.core.preference.privacy.PrivacySettingsKt.PRIVACY_SETTINGS_DEFAULT_HIDE_TIME_ZONE;
 import static net.thunderbird.core.preference.privacy.PrivacySettingsKt.PRIVACY_SETTINGS_DEFAULT_HIDE_USER_AGENT;
+import static net.thunderbird.core.preference.privacy.PrivacySettingsKt.PRIVACY_SETTINGS_DEFAULT_PRIVATE_KEYBOARD_ENABLED;
+import static net.thunderbird.core.preference.network.NetworkSettingsKt.NETWORK_SETTINGS_DEFAULT_IS_PROXY_ENABLED;
+import static net.thunderbird.core.preference.network.NetworkSettingsKt.NETWORK_SETTINGS_DEFAULT_PROXY_DNS;
+import static net.thunderbird.core.preference.network.NetworkSettingsKt.NETWORK_SETTINGS_DEFAULT_PROXY_HOST;
+import static net.thunderbird.core.preference.network.NetworkSettingsKt.NETWORK_SETTINGS_DEFAULT_PROXY_PASSWORD;
+import static net.thunderbird.core.preference.network.NetworkSettingsKt.NETWORK_SETTINGS_DEFAULT_PROXY_PORT;
+import static net.thunderbird.core.preference.network.NetworkSettingsKt.NETWORK_SETTINGS_DEFAULT_PROXY_USERNAME;
 
 
 class GeneralSettingsDescriptions {
@@ -93,6 +104,30 @@ class GeneralSettingsDescriptions {
         s.put("backgroundOperations", Settings.versions(
             new V(1, new EnumSetting<>(BackgroundOps.class, BackgroundOps.WHEN_CHECKED_AUTO_SYNC)),
             new V(83, new EnumSetting<>(BackgroundOps.class, NetworkSettingsKt.getNETWORK_SETTINGS_DEFAULT_BACKGROUND_OPS()))
+        ));
+        s.put("defaultProxyType", Settings.versions(
+            new V(112, new EnumSetting<>(
+                NetworkProxyType.class,
+                NetworkSettingsKt.getNETWORK_SETTINGS_DEFAULT_PROXY_TYPE()
+            ))
+        ));
+        s.put("isProxyEnabled", Settings.versions(
+            new V(113, new BooleanSetting(NETWORK_SETTINGS_DEFAULT_IS_PROXY_ENABLED))
+        ));
+        s.put("defaultProxyHost", Settings.versions(
+            new V(112, new StringSetting(NETWORK_SETTINGS_DEFAULT_PROXY_HOST))
+        ));
+        s.put("defaultProxyPort", Settings.versions(
+            new V(112, new IntegerRangeSetting(0, 65535, NETWORK_SETTINGS_DEFAULT_PROXY_PORT))
+        ));
+        s.put("defaultProxyDns", Settings.versions(
+            new V(112, new BooleanSetting(NETWORK_SETTINGS_DEFAULT_PROXY_DNS))
+        ));
+        s.put("defaultProxyUsername", Settings.versions(
+            new V(112, new StringSetting(NETWORK_SETTINGS_DEFAULT_PROXY_USERNAME))
+        ));
+        s.put("defaultProxyPassword", Settings.versions(
+            new V(112, new StringSetting(NETWORK_SETTINGS_DEFAULT_PROXY_PASSWORD))
         ));
         s.put("changeRegisteredNameColor", Settings.versions(
             new V(1, new BooleanSetting(MESSAGE_LIST_SETTINGS_DEFAULT_IS_CHANGE_CONTACT_NAME_COLOR))
@@ -274,6 +309,12 @@ class GeneralSettingsDescriptions {
         s.put("hideTimeZone", Settings.versions(
             new V(32, new BooleanSetting(PRIVACY_SETTINGS_DEFAULT_HIDE_TIME_ZONE))
         ));
+        s.put("hideNotificationContent", Settings.versions(
+            new V(113, new BooleanSetting(PRIVACY_SETTINGS_DEFAULT_HIDE_NOTIFICATION_CONTENT))
+        ));
+        s.put("privateKeyboardEnabled", Settings.versions(
+            new V(113, new BooleanSetting(PRIVACY_SETTINGS_DEFAULT_PRIVATE_KEYBOARD_ENABLED))
+        ));
         s.put("lockScreenNotificationVisibility", Settings.versions(
             new V(37, new EnumSetting<>(LockScreenNotificationVisibility.class,
                 LockScreenNotificationVisibility.MESSAGE_COUNT))
@@ -365,6 +406,7 @@ class GeneralSettingsDescriptions {
         u.put(79, new GeneralSettingsUpgraderTo79());
         u.put(89, new GeneralSettingsUpgraderTo89());
         u.put(111, new GeneralSettingsUpgraderTo111());
+        u.put(113, new GeneralSettingsUpgraderTo113());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }

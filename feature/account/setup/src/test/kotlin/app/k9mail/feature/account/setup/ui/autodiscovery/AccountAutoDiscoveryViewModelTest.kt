@@ -19,6 +19,7 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.fsck.k9.mail.MailProxyType
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -29,6 +30,7 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.validation.ValidationError
 import net.thunderbird.core.validation.input.BooleanInputField
+import net.thunderbird.core.validation.input.NumberInputField
 import net.thunderbird.core.validation.input.StringInputField
 
 class AccountAutoDiscoveryViewModelTest {
@@ -101,7 +103,7 @@ class AccountAutoDiscoveryViewModelTest {
             )
             val testSubject = AccountAutoDiscoveryViewModel(
                 validator = FakeAccountAutoDiscoveryValidator(),
-                getAutoDiscovery = {
+                getAutoDiscovery = { _, _ ->
                     delay(50)
                     autoDiscoverySettings
                 },
@@ -119,6 +121,8 @@ class AccountAutoDiscoveryViewModelTest {
                     error = null,
                     isValid = true,
                 ),
+                proxyServer = StringInputField(value = "", error = null, isValid = true),
+                proxyPort = NumberInputField(value = null, error = null, isValid = true),
             )
             assertThat(turbines.stateTurbine.awaitItem()).isEqualTo(validatedState)
 
@@ -150,7 +154,7 @@ class AccountAutoDiscoveryViewModelTest {
             val discoveryError = Exception("discovery error")
             val testSubject = AccountAutoDiscoveryViewModel(
                 validator = FakeAccountAutoDiscoveryValidator(),
-                getAutoDiscovery = {
+                getAutoDiscovery = { _, _ ->
                     delay(50)
                     AutoDiscoveryResult.UnexpectedException(discoveryError)
                 },
@@ -168,6 +172,8 @@ class AccountAutoDiscoveryViewModelTest {
                     error = null,
                     isValid = true,
                 ),
+                proxyServer = StringInputField(value = "", error = null, isValid = true),
+                proxyPort = NumberInputField(value = null, error = null, isValid = true),
             )
             assertThat(turbines.stateTurbine.awaitItem()).isEqualTo(validatedState)
 
@@ -227,7 +233,7 @@ class AccountAutoDiscoveryViewModelTest {
                 validator = FakeAccountAutoDiscoveryValidator(
                     emailAddressAnswer = Outcome.Failure(TestError),
                 ),
-                getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
+                getAutoDiscovery = { _, _ -> AutoDiscoveryResult.NoUsableSettingsFound },
                 oAuthViewModel = FakeAccountOAuthViewModel(),
                 accountStateRepository = InMemoryAccountStateRepository(),
                 initialState = initialState,
@@ -244,6 +250,8 @@ class AccountAutoDiscoveryViewModelTest {
                         error = TestError,
                         isValid = false,
                     ),
+                    proxyServer = StringInputField(value = "", error = null, isValid = true),
+                    proxyPort = NumberInputField(value = null, error = null, isValid = true),
                 ),
             )
         }
@@ -324,7 +332,7 @@ class AccountAutoDiscoveryViewModelTest {
                 validator = FakeAccountAutoDiscoveryValidator(
                     passwordAnswer = Outcome.Failure(TestError),
                 ),
-                getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
+                getAutoDiscovery = { _, _ -> AutoDiscoveryResult.NoUsableSettingsFound },
                 oAuthViewModel = FakeAccountOAuthViewModel(),
                 accountStateRepository = InMemoryAccountStateRepository(),
                 initialState = initialState,
@@ -430,6 +438,59 @@ class AccountAutoDiscoveryViewModelTest {
         }
 
     @Test
+    fun `should toggle network settings expanded when NetworkSettingsToggled event is received`() = runMviTest {
+        eventStateTest(
+            viewModel = createTestSubject(),
+            initialState = State(),
+            event = Event.NetworkSettingsToggled,
+            expectedState = State(isNetworkSettingsExpanded = true),
+        )
+    }
+
+    @Test
+    fun `should expand network settings when OnNextClicked event is received and proxy validation fails`() =
+        runMviTest {
+            val initialState = State(
+                configStep = ConfigStep.EMAIL_ADDRESS,
+                emailAddress = StringInputField(value = "email@example.com"),
+                proxyType = MailProxyType.HTTP,
+                proxyServer = StringInputField(value = ""),
+                isNetworkSettingsExpanded = false,
+            )
+            val testSubject = AccountAutoDiscoveryViewModel(
+                validator = FakeAccountAutoDiscoveryValidator(
+                    proxyServerAnswer = Outcome.Failure(TestError),
+                ),
+                getAutoDiscovery = { _, _ -> AutoDiscoveryResult.NoUsableSettingsFound },
+                oAuthViewModel = FakeAccountOAuthViewModel(),
+                accountStateRepository = InMemoryAccountStateRepository(),
+                initialState = initialState,
+            )
+
+            eventStateTest(
+                viewModel = testSubject,
+                initialState = initialState,
+                event = Event.OnNextClicked,
+                expectedState = State(
+                    configStep = ConfigStep.EMAIL_ADDRESS,
+                    emailAddress = StringInputField(
+                        value = "email@example.com",
+                        error = null,
+                        isValid = true,
+                    ),
+                    proxyType = MailProxyType.HTTP,
+                    proxyServer = StringInputField(
+                        value = "",
+                        error = TestError,
+                        isValid = false,
+                    ),
+                    proxyPort = NumberInputField(value = null, error = null, isValid = true),
+                    isNetworkSettingsExpanded = true,
+                ),
+            )
+        }
+
+    @Test
     fun `should emit NavigateNext effect when OnEditConfigurationClicked event is received`() = runMviTest {
         val initialState = State(
             autoDiscoverySettings = AutoDiscoverySettingsFixture.settings,
@@ -464,7 +525,7 @@ class AccountAutoDiscoveryViewModelTest {
         ): AccountAutoDiscoveryViewModel {
             return AccountAutoDiscoveryViewModel(
                 validator = FakeAccountAutoDiscoveryValidator(),
-                getAutoDiscovery = {
+                getAutoDiscovery = { _, _ ->
                     delay(50)
                     AutoDiscoveryResult.NoUsableSettingsFound
                 },

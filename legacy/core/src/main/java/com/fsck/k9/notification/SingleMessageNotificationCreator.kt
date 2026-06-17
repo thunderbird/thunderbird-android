@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
@@ -19,6 +20,7 @@ internal class SingleMessageNotificationCreator(
     private val resourceProvider: NotificationResourceProvider,
     private val lockScreenNotificationCreator: LockScreenNotificationCreator,
     private val notificationPreferenceManager: NotificationPreferenceManager,
+    private val generalSettingsManager: GeneralSettingsManager,
     private val application: Application,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
@@ -31,7 +33,7 @@ internal class SingleMessageNotificationCreator(
         val account = baseNotificationData.account
         val notificationId = singleNotificationData.notificationId
         val content = singleNotificationData.content
-        val hideContent = account.notificationSettings.isContentHidden
+        val hideContent = shouldHideNotificationContent(account, generalSettingsManager)
         val contentTitle = if (hideContent) resourceProvider.newMessagesTitle(1) else content.sender.personal
         val contentText = if (hideContent) baseNotificationData.accountName else content.subject
         val expandedText = if (hideContent) contentText else content.preview

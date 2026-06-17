@@ -6,8 +6,11 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.mail.Address
+import com.fsck.k9.notification.FakePlatformConfigProvider
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.LockScreenNotificationVisibility
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationVibration
@@ -17,7 +20,8 @@ import org.mockito.kotlin.mock
 
 class BaseNotificationDataCreatorTest {
     private val account = createAccount()
-    private val notificationDataCreator = BaseNotificationDataCreator()
+    private val generalSettingsManager = FakeGeneralSettingsManager()
+    private val notificationDataCreator = BaseNotificationDataCreator(generalSettingsManager)
 
     @Test
     fun `account instance`() {
@@ -178,6 +182,19 @@ class BaseNotificationDataCreatorTest {
     }
 
     @Test
+    fun `hide lock screen notification content when global notification content is hidden`() {
+        generalSettingsManager.setHideNotificationContent(true)
+        val notificationData = createNotificationData(
+            senders = listOf("Sender One", "Sender Two"),
+            lockScreenNotificationVisibility = LockScreenNotificationVisibility.SENDERS,
+        )
+
+        val result = notificationDataCreator.createBaseNotificationData(notificationData)
+
+        assertThat(result.lockScreenNotificationData).isEqualTo(LockScreenNotificationData.MessageCount)
+    }
+
+    @Test
     fun ringtone() {
         account.updateNotificationSettings { it.copy(ringtone = "content://ringtone/1") }
         val notificationData = createNotificationData(
@@ -262,4 +279,28 @@ class BaseNotificationDataCreatorTest {
             replaceIdentities(listOf(Identity()))
         }
     }
+}
+
+private class FakeGeneralSettingsManager : GeneralSettingsManager {
+    private var generalSettings = GeneralSettings(platformConfigProvider = FakePlatformConfigProvider())
+
+    fun setHideNotificationContent(isHideNotificationContent: Boolean) {
+        generalSettings = generalSettings.copy(
+            privacy = generalSettings.privacy.copy(isHideNotificationContent = isHideNotificationContent),
+        )
+    }
+
+    @Deprecated("Use PreferenceManager<GeneralSettings>.getConfig() instead")
+    override fun getSettings() = error("Not implemented")
+
+    @Deprecated("Use PreferenceManager<GeneralSettings>.getConfigFlow() instead")
+    override fun getSettingsFlow() = error("Not implemented")
+
+    override fun save(config: GeneralSettings) {
+        generalSettings = config
+    }
+
+    override fun getConfig() = generalSettings
+
+    override fun getConfigFlow() = error("Not implemented")
 }

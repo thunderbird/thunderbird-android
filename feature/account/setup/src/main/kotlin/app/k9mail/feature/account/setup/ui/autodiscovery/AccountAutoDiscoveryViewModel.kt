@@ -18,9 +18,13 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Validator
+import com.fsck.k9.mail.MailProxySettings
+import com.fsck.k9.mail.MailProxyType
 import kotlinx.coroutines.launch
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.core.validation.ValidationSuccess
 import net.thunderbird.core.validation.input.StringInputField
 
 @Suppress("TooManyFunctions")
@@ -30,7 +34,13 @@ internal class AccountAutoDiscoveryViewModel(
     private val getAutoDiscovery: UseCase.GetAutoDiscovery,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
     override val oAuthViewModel: AccountOAuthContract.ViewModel,
-) : BaseViewModel<State, Event, Effect>(initialState), AccountAutoDiscoveryContract.ViewModel {
+    generalSettingsManager: GeneralSettingsManager? = null,
+) : BaseViewModel<State, Event, Effect>(
+    initialState = initialState.copy(
+        isPrivateKeyboardEnabled = generalSettingsManager?.getConfig()?.privacy?.isPrivateKeyboardEnabled ?: true,
+    ),
+),
+    AccountAutoDiscoveryContract.ViewModel {
 
     override fun initState(state: State) {
         updateState {
@@ -43,6 +53,24 @@ internal class AccountAutoDiscoveryViewModel(
             is Event.EmailAddressChanged -> changeEmailAddress(event.emailAddress)
 
             is Event.PasswordChanged -> changePassword(event.password)
+
+            is Event.ProxyTypeChanged -> updateState { it.copy(proxyType = event.proxyType) }
+
+            is Event.ProxyServerChanged -> updateState {
+                it.copy(proxyServer = it.proxyServer.updateValue(event.proxyServer))
+            }
+
+            is Event.ProxyPortChanged -> updateState { it.copy(proxyPort = it.proxyPort.updateValue(event.proxyPort)) }
+
+            is Event.ProxyDnsChanged -> updateState { it.copy(proxyDns = event.proxyDns) }
+
+            is Event.ProxyUsernameChanged -> updateState {
+                it.copy(proxyUsername = it.proxyUsername.updateValue(event.proxyUsername))
+            }
+
+            is Event.ProxyPasswordChanged -> updateState {
+                it.copy(proxyPassword = it.proxyPassword.updateValue(event.proxyPassword))
+            }
 
             is Event.ResultApprovalChanged -> changeConfigurationApproval(event.confirmed)
 
@@ -59,6 +87,14 @@ internal class AccountAutoDiscoveryViewModel(
             }
 
             Event.OnManualSetupClicked -> submitManualSetup()
+
+            Event.NetworkSettingsToggled -> toggleNetworkSettings()
+        }
+    }
+
+    private fun toggleNetworkSettings() {
+        updateState {
+            it.copy(isNetworkSettingsExpanded = !it.isNetworkSettingsExpanded)
         }
     }
 
@@ -120,11 +156,23 @@ internal class AccountAutoDiscoveryViewModel(
     private fun submitEmail() {
         with(state.value) {
             val emailValidationResult = validator.validateEmailAddress(emailAddress.value)
-            val hasError = emailValidationResult is Outcome.Failure
+            val proxyServerValidationResult = validateProxyServer()
+            val proxyPortValidationResult = validateProxyPort()
+            val hasError = listOf(
+                emailValidationResult,
+                proxyServerValidationResult,
+                proxyPortValidationResult,
+            ).any { it is Outcome.Failure }
+
+            val hasProxyValidationError = proxyServerValidationResult is Outcome.Failure ||
+                proxyPortValidationResult is Outcome.Failure
 
             updateState {
                 it.copy(
                     emailAddress = it.emailAddress.updateFromValidationOutcome(emailValidationResult),
+                    proxyServer = it.proxyServer.updateFromValidationOutcome(proxyServerValidationResult),
+                    proxyPort = it.proxyPort.updateFromValidationOutcome(proxyPortValidationResult),
+                    isNetworkSettingsExpanded = it.isNetworkSettingsExpanded || hasProxyValidationError,
                 )
             }
 
@@ -137,11 +185,23 @@ internal class AccountAutoDiscoveryViewModel(
     private fun submitManualSetup() {
         with(state.value) {
             val emailValidationResult = validator.validateEmailAddress(emailAddress.value)
-            val hasError = emailValidationResult is Outcome.Failure
+            val proxyServerValidationResult = validateProxyServer()
+            val proxyPortValidationResult = validateProxyPort()
+            val hasError = listOf(
+                emailValidationResult,
+                proxyServerValidationResult,
+                proxyPortValidationResult,
+            ).any { it is Outcome.Failure }
+
+            val hasProxyValidationError = proxyServerValidationResult is Outcome.Failure ||
+                proxyPortValidationResult is Outcome.Failure
 
             updateState {
                 it.copy(
                     emailAddress = it.emailAddress.updateFromValidationOutcome(emailValidationResult),
+                    proxyServer = it.proxyServer.updateFromValidationOutcome(proxyServerValidationResult),
+                    proxyPort = it.proxyPort.updateFromValidationOutcome(proxyPortValidationResult),
+                    isNetworkSettingsExpanded = it.isNetworkSettingsExpanded || hasProxyValidationError,
                 )
             }
 
@@ -159,7 +219,7 @@ internal class AccountAutoDiscoveryViewModel(
                 )
             }
 
-            val result = getAutoDiscovery.execute(state.value.emailAddress.value)
+            val result = getAutoDiscovery.execute(state.value.emailAddress.value, state.value.toProxySettings())
             when (result) {
                 AutoDiscoveryResult.NoUsableSettingsFound -> updateNoSettingsFound()
                 is AutoDiscoveryResult.Settings -> updateAutoDiscoverySettings(result)
@@ -294,6 +354,18 @@ internal class AccountAutoDiscoveryViewModel(
 
     private fun navigateBack() = emitEffect(Effect.NavigateBack)
 
+    private fun State.validateProxyServer() = if (proxyType.isProxyValidationRequired) {
+        validator.validateProxyServer(proxyServer.value)
+    } else {
+        ValidationSuccess
+    }
+
+    private fun State.validateProxyPort() = if (proxyType.isProxyValidationRequired) {
+        validator.validateProxyPort(proxyPort.value)
+    } else {
+        ValidationSuccess
+    }
+
     private fun navigateNext(isAutomaticConfig: Boolean) {
         accountStateRepository.setState(state.value.toAccountState())
 
@@ -323,3 +395,23 @@ internal class AccountAutoDiscoveryViewModel(
         )
     }
 }
+
+internal fun State.toProxySettings(): MailProxySettings {
+    return when (proxyType) {
+        MailProxyType.USE_GLOBAL -> MailProxySettings.USE_GLOBAL
+
+        MailProxyType.NONE -> MailProxySettings.NONE
+
+        else -> MailProxySettings(
+            type = proxyType,
+            host = proxyServer.value.trim(),
+            port = proxyPort.value!!.toInt(),
+            proxyDns = proxyDns,
+            username = proxyUsername.value.trim().ifBlank { null },
+            password = proxyPassword.value.ifBlank { null },
+        )
+    }
+}
+
+private val MailProxyType.isProxyValidationRequired: Boolean
+    get() = this != MailProxyType.USE_GLOBAL && this != MailProxyType.NONE

@@ -532,6 +532,69 @@
             android:title="@string/background_ops_label"
             />
 
+        <PreferenceCategory
+            android:key="default_mail_proxy"
+            android:summary="@string/global_settings_default_mail_proxy_summary"
+            android:title="@string/global_settings_default_mail_proxy_category"
+            >
+
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="default_mail_proxy_enabled"
+                android:summary="@string/global_settings_default_mail_proxy_enabled_summary"
+                android:title="@string/global_settings_default_mail_proxy_enabled_label"
+                />
+
+            <ListPreference
+                android:dependency="default_mail_proxy_enabled"
+                android:dialogTitle="@string/global_settings_proxy_type_label"
+                android:entries="@array/global_mail_proxy_type_entries"
+                android:entryValues="@array/global_mail_proxy_type_values"
+                android:key="default_mail_proxy_type"
+                app:useSimpleSummaryProvider="true"
+                android:title="@string/global_settings_proxy_type_label"
+                />
+
+            <com.takisoft.preferencex.AutoSummaryEditTextPreference
+                android:dependency="default_mail_proxy_enabled"
+                android:dialogTitle="@string/global_settings_proxy_host_label"
+                android:key="default_mail_proxy_host"
+                android:title="@string/global_settings_proxy_host_label"
+                />
+
+            <com.takisoft.preferencex.AutoSummaryEditTextPreference
+                android:dependency="default_mail_proxy_enabled"
+                android:dialogTitle="@string/global_settings_proxy_port_label"
+                android:inputType="number"
+                android:key="default_mail_proxy_port"
+                android:title="@string/global_settings_proxy_port_label"
+                />
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:dependency="default_mail_proxy_enabled"
+                android:key="default_mail_proxy_dns"
+                android:title="@string/global_settings_proxy_dns_label"
+                />
+
+            <com.takisoft.preferencex.AutoSummaryEditTextPreference
+                android:dependency="default_mail_proxy_enabled"
+                android:dialogTitle="@string/global_settings_proxy_username_label"
+                android:key="default_mail_proxy_username"
+                android:title="@string/global_settings_proxy_username_label"
+                />
+
+            <EditTextPreference
+                android:dependency="default_mail_proxy_enabled"
+                android:dialogTitle="@string/global_settings_proxy_password_label"
+                android:inputType="textPassword"
+                android:key="default_mail_proxy_password"
+                android:summary="@string/global_settings_proxy_optional_summary"
+                android:title="@string/global_settings_proxy_password_label"
+                />
+
+        </PreferenceCategory>
+
     </PreferenceScreen>
 
     <PreferenceScreen
@@ -551,6 +614,19 @@
             android:key="privacy_hide_timezone"
             android:summary="@string/global_settings_privacy_hide_timezone_detail"
             android:title="@string/global_settings_privacy_hide_timezone"
+            />
+
+        <CheckBoxPreference
+            android:key="privacy_hide_notification_content"
+            android:summary="@string/global_settings_privacy_hide_notification_content_detail"
+            android:title="@string/global_settings_privacy_hide_notification_content"
+            />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="privacy_private_keyboard"
+            android:summary="@string/global_settings_privacy_private_keyboard_detail"
+            android:title="@string/global_settings_privacy_private_keyboard"
             />
 
     </PreferenceScreen>

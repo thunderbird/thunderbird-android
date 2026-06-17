@@ -33,11 +33,35 @@ internal fun ValidationError.toAutoDiscoveryValidationErrorString(resources: Res
 
         is ValidatePassword.ValidatePasswordError -> toPasswordErrorString(resources)
 
+        is AccountAutoDiscoveryValidator.ProxyValidationError -> toProxyValidationErrorString(resources)
+
         is ValidateConfigurationApproval.ValidateConfigurationApprovalError -> toConfigurationApprovalErrorString(
             resources,
         )
 
         else -> throw IllegalArgumentException("Unknown error: $this")
+    }
+}
+
+private fun AccountAutoDiscoveryValidator.ProxyValidationError.toProxyValidationErrorString(
+    resources: Resources,
+): String {
+    return when (this) {
+        AccountAutoDiscoveryValidator.ProxyValidationError.EmptyProxyServer -> {
+            resources.getString(R.string.account_setup_auto_discovery_validation_error_proxy_server_required)
+        }
+
+        AccountAutoDiscoveryValidator.ProxyValidationError.InvalidProxyServer -> {
+            resources.getString(R.string.account_setup_auto_discovery_validation_error_proxy_server_invalid)
+        }
+
+        AccountAutoDiscoveryValidator.ProxyValidationError.EmptyProxyPort -> {
+            resources.getString(R.string.account_setup_auto_discovery_validation_error_proxy_port_required)
+        }
+
+        AccountAutoDiscoveryValidator.ProxyValidationError.InvalidProxyPort -> {
+            resources.getString(R.string.account_setup_auto_discovery_validation_error_proxy_port_invalid)
+        }
     }
 }
 

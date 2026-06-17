@@ -21,6 +21,7 @@ import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.AccountId
 
 interface ImapBackendFactory : BackendFactory
@@ -35,6 +36,7 @@ class DefaultImapBackendFactory(
     private val context: Context,
     private val clientInfoAppName: String,
     private val clientInfoAppVersion: String,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) : ImapBackendFactory {
     override fun createBackend(accountId: AccountId): Backend {
         val account = accountManager.getAccount(accountId.toString()) ?: error("Account not found: $accountId")
@@ -58,6 +60,7 @@ class DefaultImapBackendFactory(
 
     private fun createImapStore(account: LegacyAccount): ImapStore {
         val serverSettings = account.toImapServerSettings()
+            .resolveInheritedProxySettings(generalSettingsManager.getConfig().network)
 
         val oAuth2TokenProvider = if (serverSettings.authenticationType == AuthType.XOAUTH2) {
             createOAuth2TokenProvider(account.id)
@@ -89,6 +92,7 @@ class DefaultImapBackendFactory(
 
     private fun createSmtpTransport(account: LegacyAccount): SmtpTransport {
         val serverSettings = account.outgoingServerSettings
+            .resolveInheritedProxySettings(generalSettingsManager.getConfig().network)
         val oauth2TokenProvider = if (serverSettings.authenticationType == AuthType.XOAUTH2) {
             createOAuth2TokenProvider(account.id)
         } else {

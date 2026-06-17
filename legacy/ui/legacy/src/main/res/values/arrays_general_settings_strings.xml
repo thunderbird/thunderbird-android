@@ -113,6 +113,18 @@
         <item>@string/background_ops_never</item>
     </string-array>
 
+    <string-array name="global_mail_proxy_type_entries">
+        <item>@string/global_settings_proxy_type_http</item>
+        <item>@string/global_settings_proxy_type_socks4</item>
+        <item>@string/global_settings_proxy_type_socks5</item>
+    </string-array>
+
+    <string-array name="global_mail_proxy_type_values" translatable="false">
+        <item>HTTP</item>
+        <item>SOCKS4</item>
+        <item>SOCKS5</item>
+    </string-array>
+
     <string-array name="preview_lines_entries">
         <item>0</item>
         <item>1</item>

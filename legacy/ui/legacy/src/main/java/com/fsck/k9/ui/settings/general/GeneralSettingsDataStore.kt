@@ -18,6 +18,7 @@ import net.thunderbird.core.preference.SubTheme
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 import net.thunderbird.core.preference.interaction.PostMarkAsUnreadNavigation
+import net.thunderbird.core.preference.network.NetworkProxyType
 import net.thunderbird.core.preference.update
 
 @Suppress("LargeClass")
@@ -64,6 +65,10 @@ class GeneralSettingsDataStore(
             "notification_show_contact_picture" -> notificationSettings.isShowContactPictureInNotification
             "privacy_hide_useragent" -> privacySettings.isHideUserAgent
             "privacy_hide_timezone" -> privacySettings.isHideTimeZone
+            "privacy_hide_notification_content" -> privacySettings.isHideNotificationContent
+            "privacy_private_keyboard" -> privacySettings.isPrivateKeyboardEnabled
+            "default_mail_proxy_enabled" -> config.network.isProxyEnabled
+            "default_mail_proxy_dns" -> config.network.proxyDns
             "debug_logging" -> debuggingSettings.isDebugLoggingEnabled
             "sync_debug_logging" -> debuggingSettings.isSyncLoggingEnabled
             "sensitive_logging" -> debuggingSettings.isSensitiveLoggingEnabled
@@ -109,6 +114,10 @@ class GeneralSettingsDataStore(
 
             "privacy_hide_useragent" -> setIsHideUserAgent(isHideUserAgent = value)
             "privacy_hide_timezone" -> setIsHideTimeZone(isHideTimeZone = value)
+            "privacy_hide_notification_content" -> setIsHideNotificationContent(isHideNotificationContent = value)
+            "privacy_private_keyboard" -> setIsPrivateKeyboardEnabled(isPrivateKeyboardEnabled = value)
+            "default_mail_proxy_enabled" -> setDefaultMailProxyEnabled(value)
+            "default_mail_proxy_dns" -> setDefaultMailProxyDns(value)
             "debug_logging" -> setIsDebugLoggingEnabled(isDebugLoggingEnabled = value)
             "sync_debug_logging" -> setIsSyncLoggingEnabled(isSyncLoggingEnabled = value)
             "sensitive_logging" -> setIsSensitiveLoggingEnabled(isSensitiveLoggingEnabled = value)
@@ -161,6 +170,11 @@ class GeneralSettingsDataStore(
             "notification_quick_delete" -> notificationSettings.notificationQuickDeleteBehaviour.name
             "lock_screen_notification_visibility" -> notificationSettings.lockScreenNotificationVisibility.name
             "background_ops" -> networkSettings.backgroundOps.name
+            "default_mail_proxy_type" -> networkSettings.proxyType.name
+            "default_mail_proxy_host" -> networkSettings.proxyHost
+            "default_mail_proxy_port" -> networkSettings.proxyPort.takeIf { it > 0 }?.toString().orEmpty()
+            "default_mail_proxy_username" -> networkSettings.proxyUsername
+            "default_mail_proxy_password" -> networkSettings.proxyPassword
             "quiet_time_starts" -> notificationSettings.quietTimeStarts
             "quiet_time_ends" -> notificationSettings.quietTimeEnds
             "messageview_body_content_type" -> visualSettings.bodyContentType.name
@@ -204,6 +218,11 @@ class GeneralSettingsDataStore(
             }
 
             "background_ops" -> setBackgroundOps(value)
+            "default_mail_proxy_type" -> setDefaultMailProxyType(value)
+            "default_mail_proxy_host" -> setDefaultMailProxyHost(value)
+            "default_mail_proxy_port" -> setDefaultMailProxyPort(value)
+            "default_mail_proxy_username" -> setDefaultMailProxyUsername(value)
+            "default_mail_proxy_password" -> setDefaultMailProxyPassword(value)
             "messageview_body_content_type" -> setBodyContentType(value)
             "quiet_time_starts" -> setQuietTimeStarts(quietTimeStarts = value)
             "quiet_time_ends" -> setQuietTimeEnds(quietTimeEnds = value)
@@ -750,6 +769,28 @@ class GeneralSettingsDataStore(
         }
     }
 
+    private fun setIsHideNotificationContent(isHideNotificationContent: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                privacy = settings.privacy.copy(
+                    isHideNotificationContent = isHideNotificationContent,
+                ),
+            )
+        }
+    }
+
+    private fun setIsPrivateKeyboardEnabled(isPrivateKeyboardEnabled: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                privacy = settings.privacy.copy(
+                    isPrivateKeyboardEnabled = isPrivateKeyboardEnabled,
+                ),
+            )
+        }
+    }
+
     private fun setMessageViewPostRemoveNavigation(value: String) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
@@ -819,6 +860,62 @@ class GeneralSettingsDataStore(
                 settings.copy(network = settings.network.copy(backgroundOps = newBackgroundOps))
             }
             jobManager.scheduleAllMailJobs()
+        }
+    }
+
+    private fun setDefaultMailProxyType(value: String) {
+        val proxyType = NetworkProxyType.valueOf(value)
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(network = settings.network.copy(proxyType = proxyType))
+        }
+    }
+
+    private fun setDefaultMailProxyEnabled(isProxyEnabled: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            val network = settings.network
+            val updatedNetwork = if (isProxyEnabled && network.proxyType == NetworkProxyType.NONE) {
+                network.copy(isProxyEnabled = true, proxyType = NetworkProxyType.HTTP)
+            } else {
+                network.copy(isProxyEnabled = isProxyEnabled)
+            }
+            settings.copy(network = updatedNetwork)
+        }
+    }
+
+    private fun setDefaultMailProxyHost(value: String) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(network = settings.network.copy(proxyHost = value.trim()))
+        }
+    }
+
+    private fun setDefaultMailProxyPort(value: String) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(network = settings.network.copy(proxyPort = value.toIntOrNull() ?: 0))
+        }
+    }
+
+    private fun setDefaultMailProxyDns(value: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(network = settings.network.copy(proxyDns = value))
+        }
+    }
+
+    private fun setDefaultMailProxyUsername(value: String) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(network = settings.network.copy(proxyUsername = value.trim()))
+        }
+    }
+
+    private fun setDefaultMailProxyPassword(value: String) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(network = settings.network.copy(proxyPassword = value))
         }
     }
 

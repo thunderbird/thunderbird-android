@@ -6,6 +6,7 @@ import androidx.core.app.NotificationCompat.WearableExtender
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preference.GeneralSettingsManager
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
 internal class SummaryNotificationCreator(
@@ -14,6 +15,7 @@ internal class SummaryNotificationCreator(
     private val lockScreenNotificationCreator: LockScreenNotificationCreator,
     private val singleMessageNotificationCreator: SingleMessageNotificationCreator,
     private val resourceProvider: NotificationResourceProvider,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
     fun createSummaryNotification(
         baseNotificationData: BaseNotificationData,
@@ -50,7 +52,7 @@ internal class SummaryNotificationCreator(
         val newMessagesCount = baseNotificationData.newMessagesCount
         val title = resourceProvider.newMessagesTitle(newMessagesCount)
         val summary = buildInboxSummaryText(accountName, notificationData)
-        val hideContent = account.notificationSettings.isContentHidden
+        val hideContent = shouldHideNotificationContent(account, generalSettingsManager)
 
         val notification = notificationHelper.createNotificationBuilder(account, ChannelType.MESSAGES)
             .setCategory(NotificationCompat.CATEGORY_EMAIL)

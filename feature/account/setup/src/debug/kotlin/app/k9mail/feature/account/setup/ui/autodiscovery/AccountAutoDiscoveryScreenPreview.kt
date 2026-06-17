@@ -21,9 +21,34 @@ internal fun AccountAutoDiscoveryScreenPreview() {
             viewModel = viewModel {
                 AccountAutoDiscoveryViewModel(
                     validator = AccountAutoDiscoveryValidator(),
-                    getAutoDiscovery = { AutoDiscoveryResult.NoUsableSettingsFound },
+                    getAutoDiscovery = { _, _ -> AutoDiscoveryResult.NoUsableSettingsFound },
                     accountStateRepository = FakeAccountStateRepository(),
                     oAuthViewModel = FakeAccountOAuthViewModel(),
+                )
+            },
+            brandNameProvider = FakeBrandNameProvider,
+        )
+    }
+}
+
+@Composable
+@PreviewDevicesWithBackground
+internal fun AccountAutoDiscoveryScreenExpandedNetworkSettingsPreview() {
+    PreviewWithTheme {
+        AccountAutoDiscoveryScreen(
+            onNext = {},
+            onBack = {},
+            onThundermailClick = {},
+            onScanQrCodeClick = {},
+            viewModel = viewModel {
+                AccountAutoDiscoveryViewModel(
+                    validator = AccountAutoDiscoveryValidator(),
+                    getAutoDiscovery = { _, _ -> AutoDiscoveryResult.NoUsableSettingsFound },
+                    accountStateRepository = FakeAccountStateRepository(),
+                    oAuthViewModel = FakeAccountOAuthViewModel(),
+                    initialState = AccountAutoDiscoveryContract.State(
+                        isNetworkSettingsExpanded = true,
+                    ),
                 )
             },
             brandNameProvider = FakeBrandNameProvider,

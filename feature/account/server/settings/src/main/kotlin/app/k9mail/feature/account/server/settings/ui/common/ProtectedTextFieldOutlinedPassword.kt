@@ -34,6 +34,7 @@ fun ProtectedTextFieldOutlinedPassword(
     isReadOnly: Boolean = false,
     isRequired: Boolean = false,
     hasError: Boolean = false,
+    usePrivateKeyboard: Boolean = true,
 ) {
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
     var isAuthenticated by rememberSaveable { mutableStateOf(false) }
@@ -50,6 +51,7 @@ fun ProtectedTextFieldOutlinedPassword(
         isReadOnly = isReadOnly,
         isRequired = isRequired,
         hasError = hasError,
+        usePrivateKeyboard = usePrivateKeyboard,
         isPasswordVisible = isPasswordVisible,
         onPasswordVisibilityToggleClicked = {
             if (isAuthenticated) {

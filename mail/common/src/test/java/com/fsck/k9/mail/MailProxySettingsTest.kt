@@ -9,8 +9,17 @@ import kotlin.test.Test
 
 class MailProxySettingsTest {
     @Test
-    fun `fromExtra should return disabled proxy when proxy type is missing`() {
+    fun `fromExtra should return global proxy when proxy type is missing`() {
         val proxySettings = MailProxySettings.fromExtra(emptyMap())
+
+        assertThat(proxySettings).isEqualTo(MailProxySettings.USE_GLOBAL)
+    }
+
+    @Test
+    fun `fromExtra should parse disabled proxy settings`() {
+        val proxySettings = MailProxySettings.fromExtra(
+            mapOf("proxy.type" to "none"),
+        )
 
         assertThat(proxySettings).isEqualTo(MailProxySettings.NONE)
     }

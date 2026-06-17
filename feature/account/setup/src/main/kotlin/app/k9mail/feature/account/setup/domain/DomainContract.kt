@@ -4,6 +4,7 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOptions
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
+import com.fsck.k9.mail.MailProxySettings
 import net.thunderbird.core.validation.ValidationError
 import net.thunderbird.core.validation.ValidationOutcome
 
@@ -11,7 +12,7 @@ interface DomainContract {
 
     interface UseCase {
         fun interface GetAutoDiscovery {
-            suspend fun execute(emailAddress: String): AutoDiscoveryResult
+            suspend fun execute(emailAddress: String, proxySettings: MailProxySettings): AutoDiscoveryResult
         }
 
         fun interface CreateAccount {

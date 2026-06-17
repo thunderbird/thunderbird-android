@@ -1,11 +1,14 @@
 package com.fsck.k9.notification
 
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.LockScreenNotificationVisibility
 
 private const val MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION = 5
 
-internal class BaseNotificationDataCreator {
+internal class BaseNotificationDataCreator(
+    private val generalSettingsManager: GeneralSettingsManager,
+) {
 
     fun createBaseNotificationData(notificationData: NotificationData): BaseNotificationData {
         val account = notificationData.account
@@ -21,7 +24,7 @@ internal class BaseNotificationDataCreator {
     }
 
     private fun createLockScreenNotificationData(data: NotificationData): LockScreenNotificationData {
-        if (data.account.notificationSettings.isContentHidden) {
+        if (shouldHideNotificationContent(data.account, generalSettingsManager)) {
             return when (data.lockScreenNotificationVisibility) {
                 LockScreenNotificationVisibility.NOTHING -> LockScreenNotificationData.None
                 LockScreenNotificationVisibility.APP_NAME -> LockScreenNotificationData.AppName

@@ -37,6 +37,7 @@ fun ProtectedPasswordInput(
     isRequired: Boolean = false,
     errorMessage: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
+    usePrivateKeyboard: Boolean = true,
     authenticator: Authenticator = rememberBiometricAuthenticator(
         title = stringResource(R.string.account_server_settings_password_authentication_title),
         subtitle = stringResource(R.string.account_server_settings_password_authentication_subtitle),
@@ -67,6 +68,7 @@ fun ProtectedPasswordInput(
             label = resolvedLabel,
             isRequired = isRequired,
             hasError = errorMessage != null,
+            usePrivateKeyboard = usePrivateKeyboard,
             modifier = Modifier.fillMaxWidth(),
         )
     }

@@ -359,6 +359,25 @@
     <string name="global_settings_privacy_hide_useragent_detail">Remove User-Agent from mail headers</string>
     <string name="global_settings_privacy_hide_timezone">Hide timezone</string>
     <string name="global_settings_privacy_hide_timezone_detail">Use UTC instead of local timezone in mail headers and reply header</string>
+    <string name="global_settings_privacy_hide_notification_content">Hide notification content</string>
+    <string name="global_settings_privacy_hide_notification_content_detail">Show new mail notifications without sender, subject, or preview text for all accounts</string>
+    <string name="global_settings_privacy_private_keyboard">Private keyboard for sensitive fields</string>
+    <string name="global_settings_privacy_private_keyboard_detail">Disable autocorrect and personalized learning on password and proxy fields</string>
+    <string name="global_settings_default_mail_proxy_category">Default mail proxy</string>
+    <string name="global_settings_default_mail_proxy_summary">Used by accounts set to use global proxy settings</string>
+    <string name="global_settings_default_mail_proxy_enabled_label">Enable proxy</string>
+    <string name="global_settings_default_mail_proxy_enabled_summary">Route mail traffic through a proxy server</string>
+    <string name="global_settings_proxy_type_label">Proxy type</string>
+    <string name="global_settings_proxy_type_none">No proxy</string>
+    <string name="global_settings_proxy_type_http">HTTP</string>
+    <string name="global_settings_proxy_type_socks4">SOCKS4</string>
+    <string name="global_settings_proxy_type_socks5">SOCKS5</string>
+    <string name="global_settings_proxy_host_label">Proxy server</string>
+    <string name="global_settings_proxy_port_label">Proxy port</string>
+    <string name="global_settings_proxy_dns_label">Resolve mail server hostnames through proxy</string>
+    <string name="global_settings_proxy_username_label">Proxy username</string>
+    <string name="global_settings_proxy_password_label">Proxy password</string>
+    <string name="global_settings_proxy_optional_summary">Optional</string>
 
     <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>
     <string name="global_settings_notification_quick_delete_never">Never</string>

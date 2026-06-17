@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.contract)
     implementation(projects.core.ui.navigation)
+    implementation(projects.mail.common)
     implementation(projects.feature.account.common)
     implementation(projects.feature.account.oauth)
     implementation(projects.feature.account.setup)

@@ -17,6 +17,7 @@ fun ServerSettingsPasswordInput(
     isRequired: Boolean = false,
     errorMessage: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
+    usePrivateKeyboard: Boolean = true,
 ) {
     if (mode == InteractionMode.Create) {
         PasswordInput(
@@ -27,6 +28,7 @@ fun ServerSettingsPasswordInput(
             isRequired = isRequired,
             errorMessage = errorMessage,
             contentPadding = contentPadding,
+            usePrivateKeyboard = usePrivateKeyboard,
         )
     } else {
         ProtectedPasswordInput(
@@ -37,6 +39,7 @@ fun ServerSettingsPasswordInput(
             isRequired = isRequired,
             errorMessage = errorMessage,
             contentPadding = contentPadding,
+            usePrivateKeyboard = usePrivateKeyboard,
         )
     }
 }

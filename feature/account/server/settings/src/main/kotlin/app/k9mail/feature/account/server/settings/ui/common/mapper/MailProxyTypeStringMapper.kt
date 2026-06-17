@@ -6,6 +6,7 @@ import com.fsck.k9.mail.MailProxyType
 
 internal fun MailProxyType.toResourceString(resources: Resources): String {
     return when (this) {
+        MailProxyType.USE_GLOBAL -> resources.getString(R.string.account_server_settings_proxy_type_use_global)
         MailProxyType.NONE -> resources.getString(R.string.account_server_settings_proxy_type_none)
         MailProxyType.HTTP -> resources.getString(R.string.account_server_settings_proxy_type_http)
         MailProxyType.SOCKS4 -> resources.getString(R.string.account_server_settings_proxy_type_socks4)

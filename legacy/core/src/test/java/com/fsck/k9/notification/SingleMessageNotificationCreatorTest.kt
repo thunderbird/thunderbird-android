@@ -18,6 +18,8 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.MockHelper.mockBuilder
 import net.thunderbird.core.android.testing.RobolectricTest
+import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
@@ -32,6 +34,7 @@ import org.mockito.kotlin.verify
 class SingleMessageNotificationCreatorTest : RobolectricTest() {
     private val mainDispatcher = MainDispatcherHelper(UnconfinedTestDispatcher())
     private val notificationPreferenceManager = FakeNotificationPreferenceManager()
+    private val generalSettingsManager = FakeGeneralSettingsManagerForNotificationTest()
     private val resourceProvider = TestAvatarNotificationResourceProvider()
     private val notification = mock<Notification>()
     private val builder = mockBuilder<NotificationCompat.Builder> {
@@ -49,6 +52,7 @@ class SingleMessageNotificationCreatorTest : RobolectricTest() {
             resourceProvider = resourceProvider,
             lockScreenNotificationCreator = mock(),
             notificationPreferenceManager = notificationPreferenceManager,
+            generalSettingsManager = generalSettingsManager,
             application = ApplicationProvider.getApplicationContext<Application>(),
         )
     }
@@ -170,4 +174,22 @@ class SingleMessageNotificationCreatorTest : RobolectricTest() {
             prefs.update { it.copy(isShowContactPictureInNotification = isEnabled) }
         }
     }
+}
+
+private class FakeGeneralSettingsManagerForNotificationTest : GeneralSettingsManager {
+    private var generalSettings = GeneralSettings(platformConfigProvider = FakePlatformConfigProvider())
+
+    @Deprecated("Use PreferenceManager<GeneralSettings>.getConfig() instead")
+    override fun getSettings() = error("Not implemented")
+
+    @Deprecated("Use PreferenceManager<GeneralSettings>.getConfigFlow() instead")
+    override fun getSettingsFlow() = error("Not implemented")
+
+    override fun save(config: GeneralSettings) {
+        generalSettings = config
+    }
+
+    override fun getConfig() = generalSettings
+
+    override fun getConfigFlow() = error("Not implemented")
 }

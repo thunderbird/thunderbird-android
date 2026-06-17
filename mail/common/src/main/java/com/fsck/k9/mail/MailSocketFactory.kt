@@ -26,18 +26,23 @@ object MailSocketFactory {
         proxySettings: MailProxySettings,
         connectTimeout: Int,
     ): Socket {
-        return if (proxySettings.type == MailProxyType.NONE) {
-            connectDirectSocket(host, port, connectionSecurity, clientCertificateAlias, trustedSocketFactory, connectTimeout)
-        } else {
-            connectProxySocket(
-                host = host,
-                port = port,
-                connectionSecurity = connectionSecurity,
-                clientCertificateAlias = clientCertificateAlias,
-                trustedSocketFactory = trustedSocketFactory,
-                proxySettings = proxySettings,
-                connectTimeout = connectTimeout,
-            )
+        return when (proxySettings.type) {
+            MailProxyType.USE_GLOBAL -> error("Global proxy settings must be resolved before connecting")
+            MailProxyType.NONE -> {
+                connectDirectSocket(host, port, connectionSecurity, clientCertificateAlias, trustedSocketFactory, connectTimeout)
+            }
+
+            else -> {
+                connectProxySocket(
+                    host = host,
+                    port = port,
+                    connectionSecurity = connectionSecurity,
+                    clientCertificateAlias = clientCertificateAlias,
+                    trustedSocketFactory = trustedSocketFactory,
+                    proxySettings = proxySettings,
+                    connectTimeout = connectTimeout,
+                )
+            }
         }
     }
 
@@ -129,6 +134,7 @@ object MailSocketFactory {
                 MailProxyType.SOCKS4 -> connectSocks4Tunnel(socket, host, port, proxySettings)
                 MailProxyType.SOCKS5 -> connectSocks5Tunnel(socket, host, port, proxySettings)
                 MailProxyType.NONE -> error("Proxy is disabled")
+                MailProxyType.USE_GLOBAL -> error("Global proxy settings must be resolved before connecting")
             }
             return socket
         } catch (e: IOException) {

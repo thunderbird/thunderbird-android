@@ -53,6 +53,34 @@ class DefaultNetworkSettingsPreferenceManager(
             NetworkSettingKey.BackgroundOperations.value,
             NETWORK_SETTINGS_DEFAULT_BACKGROUND_OPS,
         ),
+        isProxyEnabled = storage.getBoolean(
+            NetworkSettingKey.IsProxyEnabled.value,
+            NETWORK_SETTINGS_DEFAULT_IS_PROXY_ENABLED,
+        ),
+        proxyType = storage.getEnumOrDefault(
+            NetworkSettingKey.DefaultProxyType.value,
+            NETWORK_SETTINGS_DEFAULT_PROXY_TYPE,
+        ),
+        proxyHost = storage.getStringOrDefault(
+            NetworkSettingKey.DefaultProxyHost.value,
+            NETWORK_SETTINGS_DEFAULT_PROXY_HOST,
+        ),
+        proxyPort = storage.getInt(
+            NetworkSettingKey.DefaultProxyPort.value,
+            NETWORK_SETTINGS_DEFAULT_PROXY_PORT,
+        ),
+        proxyDns = storage.getBoolean(
+            NetworkSettingKey.DefaultProxyDns.value,
+            NETWORK_SETTINGS_DEFAULT_PROXY_DNS,
+        ),
+        proxyUsername = storage.getStringOrDefault(
+            NetworkSettingKey.DefaultProxyUsername.value,
+            NETWORK_SETTINGS_DEFAULT_PROXY_USERNAME,
+        ),
+        proxyPassword = storage.getStringOrDefault(
+            NetworkSettingKey.DefaultProxyPassword.value,
+            NETWORK_SETTINGS_DEFAULT_PROXY_PASSWORD,
+        ),
     )
 
     private fun writeConfig(config: NetworkSettings) {
@@ -60,6 +88,13 @@ class DefaultNetworkSettingsPreferenceManager(
         scope.launch(ioDispatcher) {
             mutex.withLock {
                 storageEditor.putEnum(NetworkSettingKey.BackgroundOperations.value, config.backgroundOps)
+                storageEditor.putBoolean(NetworkSettingKey.IsProxyEnabled.value, config.isProxyEnabled)
+                storageEditor.putEnum(NetworkSettingKey.DefaultProxyType.value, config.proxyType)
+                storageEditor.putString(NetworkSettingKey.DefaultProxyHost.value, config.proxyHost)
+                storageEditor.putInt(NetworkSettingKey.DefaultProxyPort.value, config.proxyPort)
+                storageEditor.putBoolean(NetworkSettingKey.DefaultProxyDns.value, config.proxyDns)
+                storageEditor.putString(NetworkSettingKey.DefaultProxyUsername.value, config.proxyUsername)
+                storageEditor.putString(NetworkSettingKey.DefaultProxyPassword.value, config.proxyPassword)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }

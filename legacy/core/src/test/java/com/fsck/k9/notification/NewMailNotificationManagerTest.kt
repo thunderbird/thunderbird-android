@@ -72,7 +72,7 @@ class NewMailNotificationManagerTest {
     private val manager = NewMailNotificationManager(
         notificationContentCreator,
         createNotificationRepository(),
-        BaseNotificationDataCreator(),
+        BaseNotificationDataCreator(generalSettingsManager),
         SingleMessageNotificationDataCreator(
             interactionPreferences = mock {
                 on { getConfig() } doReturn InteractionSettings()

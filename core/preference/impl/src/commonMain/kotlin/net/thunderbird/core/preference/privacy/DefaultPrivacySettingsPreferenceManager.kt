@@ -55,6 +55,14 @@ class DefaultPrivacySettingsPreferenceManager(
             key = PrivacySettingKey.HideUserAgent.value,
             defValue = PRIVACY_SETTINGS_DEFAULT_HIDE_USER_AGENT,
         ),
+        isHideNotificationContent = storage.getBoolean(
+            key = PrivacySettingKey.HideNotificationContent.value,
+            defValue = PRIVACY_SETTINGS_DEFAULT_HIDE_NOTIFICATION_CONTENT,
+        ),
+        isPrivateKeyboardEnabled = storage.getBoolean(
+            key = PrivacySettingKey.PrivateKeyboardEnabled.value,
+            defValue = PRIVACY_SETTINGS_DEFAULT_PRIVATE_KEYBOARD_ENABLED,
+        ),
     )
 
     private fun writeConfig(config: PrivacySettings) {
@@ -63,6 +71,14 @@ class DefaultPrivacySettingsPreferenceManager(
             mutex.withLock {
                 storageEditor.putBoolean(PrivacySettingKey.HideTimeZone.value, config.isHideTimeZone)
                 storageEditor.putBoolean(PrivacySettingKey.HideUserAgent.value, config.isHideUserAgent)
+                storageEditor.putBoolean(
+                    PrivacySettingKey.HideNotificationContent.value,
+                    config.isHideNotificationContent,
+                )
+                storageEditor.putBoolean(
+                    PrivacySettingKey.PrivateKeyboardEnabled.value,
+                    config.isPrivateKeyboardEnabled,
+                )
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }

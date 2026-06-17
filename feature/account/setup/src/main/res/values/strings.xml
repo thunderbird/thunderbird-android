@@ -9,6 +9,10 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">This email address is not supported.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">This is not recognized as a valid email address.</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">Password is required.</string>
+    <string name="account_setup_auto_discovery_validation_error_proxy_server_required">Proxy server is required.</string>
+    <string name="account_setup_auto_discovery_validation_error_proxy_server_invalid">Proxy server must be a valid hostname or IP address.</string>
+    <string name="account_setup_auto_discovery_validation_error_proxy_port_required">Proxy port is required.</string>
+    <string name="account_setup_auto_discovery_validation_error_proxy_port_invalid">Proxy port must be between 1 and 65535.</string>
 
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
@@ -21,7 +25,21 @@
     <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">We received the configuration for your email server over a connection that isn\'t as secure as we\'d like. This means that there is a tiny chance that someone could have altered it. Could you please double-check the provided configuration to make sure it\'s as it should be?</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configure manually</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Edit configuration</string>
-    <string name="account_setup_auto_discovery_manual_network_setup_button_label">Manual setup / network settings</string>
+    <string name="account_setup_auto_discovery_manual_setup_button_label">Manual setup</string>
+    <string name="account_setup_auto_discovery_proxy_button_label">Proxy</string>
+    <string name="account_setup_auto_discovery_network_settings_title">Network settings</string>
+    <string name="account_setup_auto_discovery_network_settings_summary">Apply these settings to autodiscovery and the account server settings.</string>
+    <string name="account_setup_auto_discovery_proxy_type_label">Proxy</string>
+    <string name="account_setup_auto_discovery_proxy_type_use_global">Use global settings</string>
+    <string name="account_setup_auto_discovery_proxy_type_none">No proxy</string>
+    <string name="account_setup_auto_discovery_proxy_type_http">HTTP</string>
+    <string name="account_setup_auto_discovery_proxy_type_socks4">SOCKS4</string>
+    <string name="account_setup_auto_discovery_proxy_type_socks5">SOCKS5</string>
+    <string name="account_setup_auto_discovery_proxy_server_label">Proxy server</string>
+    <string name="account_setup_auto_discovery_proxy_port_label">Proxy port</string>
+    <string name="account_setup_auto_discovery_proxy_dns_label">Resolve mail server hostnames through proxy</string>
+    <string name="account_setup_auto_discovery_proxy_username_label">Proxy username</string>
+    <string name="account_setup_auto_discovery_proxy_password_label">Proxy password</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">I trust this configuration</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">It is required to approve the configuration.</string>
 

@@ -8,8 +8,14 @@ import com.fsck.k9.mail.oauth.AuthStateStorage
 class FakeFolderFetcher(
     private val folders: List<RemoteFolder> = emptyList(),
 ) : FolderFetcher {
+    var lastServerSettings: ServerSettings? = null
+        private set
+
     override fun getFolders(
         serverSettings: ServerSettings,
         authStateStorage: AuthStateStorage?,
-    ): List<RemoteFolder> = folders
+    ): List<RemoteFolder> {
+        lastServerSettings = serverSettings
+        return folders
+    }
 }

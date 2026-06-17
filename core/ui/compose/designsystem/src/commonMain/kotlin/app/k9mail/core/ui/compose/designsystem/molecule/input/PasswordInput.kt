@@ -18,6 +18,7 @@ fun PasswordInput(
     isRequired: Boolean = false,
     errorMessage: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
+    usePrivateKeyboard: Boolean = true,
 ) {
     val resolvedLabel = label ?: stringResource(Res.string.designsystem_molecule_password_input_label)
 
@@ -32,6 +33,7 @@ fun PasswordInput(
             label = resolvedLabel,
             isRequired = isRequired,
             hasError = errorMessage != null,
+            usePrivateKeyboard = usePrivateKeyboard,
             modifier = Modifier.fillMaxWidth(),
         )
     }

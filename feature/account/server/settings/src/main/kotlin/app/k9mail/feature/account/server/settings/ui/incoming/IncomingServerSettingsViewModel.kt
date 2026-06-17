@@ -12,6 +12,7 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.ViewModel
 import com.fsck.k9.mail.MailProxyType
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.core.validation.ValidationSuccess
 
@@ -20,7 +21,13 @@ open class IncomingServerSettingsViewModel(
     override val mode: InteractionMode,
     private val validator: Validator,
     private val accountStateRepository: AccountDomainContract.AccountStateRepository,
-) : BaseViewModel<State, Event, Effect>(initialState = initialState), ViewModel {
+    generalSettingsManager: GeneralSettingsManager? = null,
+) : BaseViewModel<State, Event, Effect>(
+    initialState = initialState.copy(
+        isPrivateKeyboardEnabled = generalSettingsManager?.getConfig()?.privacy?.isPrivateKeyboardEnabled ?: true,
+    ),
+),
+    ViewModel {
 
     @Suppress("CyclomaticComplexMethod")
     override fun event(event: Event) {
@@ -130,12 +137,12 @@ open class IncomingServerSettingsViewModel(
             ValidationSuccess
         }
         val imapPrefixResult = validator.validateImapPrefix(imapPrefix.value)
-        val proxyServerResult = if (proxyType == MailProxyType.NONE) {
+        val proxyServerResult = if (proxyType.isProxyValidationRequired.not()) {
             ValidationSuccess
         } else {
             validator.validateServer(proxyServer.value)
         }
-        val proxyPortResult = if (proxyType == MailProxyType.NONE) {
+        val proxyPortResult = if (proxyType.isProxyValidationRequired.not()) {
             ValidationSuccess
         } else {
             validator.validatePort(proxyPort.value)
@@ -178,3 +185,6 @@ open class IncomingServerSettingsViewModel(
 
     private fun navigateNext() = emitEffect(Effect.NavigateNext)
 }
+
+private val MailProxyType.isProxyValidationRequired: Boolean
+    get() = this != MailProxyType.USE_GLOBAL && this != MailProxyType.NONE

@@ -4,10 +4,10 @@ import android.content.res.Resources
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.res.stringResource
+import app.k9mail.core.ui.compose.designsystem.atom.textfield.nonLearningKeyboardOptions
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.NumberInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
@@ -58,7 +58,7 @@ internal fun LazyListScope.incomingFormItems(
             onTextChange = { onEvent(Event.ServerChanged(it)) },
             label = stringResource(id = R.string.account_server_settings_server_label),
             contentPadding = defaultItemPadding(),
-            keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
+            keyboardOptions = nonLearningKeyboardOptions(state.isPrivateKeyboardEnabled),
         )
     }
 
@@ -101,7 +101,7 @@ internal fun LazyListScope.incomingFormItems(
             onTextChange = { onEvent(Event.UsernameChanged(it)) },
             label = stringResource(id = R.string.account_server_settings_username_label),
             contentPadding = defaultItemPadding(),
-            keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
+            keyboardOptions = nonLearningKeyboardOptions(state.isPrivateKeyboardEnabled),
             contentType = ContentType.Username + ContentType.EmailAddress,
         )
     }
@@ -114,6 +114,7 @@ internal fun LazyListScope.incomingFormItems(
                 errorMessage = state.password.error?.toResourceString(resources),
                 onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
                 contentPadding = defaultItemPadding(),
+                usePrivateKeyboard = state.isPrivateKeyboardEnabled,
             )
         }
     }
@@ -147,6 +148,7 @@ private fun LazyListScope.proxyFormItems(
     item {
         SelectInput(
             options = listOf(
+                MailProxyType.USE_GLOBAL,
                 MailProxyType.NONE,
                 MailProxyType.HTTP,
                 MailProxyType.SOCKS4,
@@ -160,7 +162,7 @@ private fun LazyListScope.proxyFormItems(
         )
     }
 
-    if (state.proxyType != MailProxyType.NONE) {
+    if (state.proxyType.isAccountProxyConfigured) {
         item {
             TextInput(
                 text = state.proxyServer.value,
@@ -169,7 +171,7 @@ private fun LazyListScope.proxyFormItems(
                 label = stringResource(id = R.string.account_server_settings_proxy_server_label),
                 isRequired = true,
                 contentPadding = defaultItemPadding(),
-                keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
+                keyboardOptions = nonLearningKeyboardOptions(state.isPrivateKeyboardEnabled),
             )
         }
 
@@ -191,7 +193,7 @@ private fun LazyListScope.proxyFormItems(
                 onTextChange = { onEvent(Event.ProxyUsernameChanged(it)) },
                 label = stringResource(id = R.string.account_server_settings_proxy_username_label),
                 contentPadding = defaultItemPadding(),
-                keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
+                keyboardOptions = nonLearningKeyboardOptions(state.isPrivateKeyboardEnabled),
                 contentType = ContentType.Username,
             )
         }
@@ -204,6 +206,7 @@ private fun LazyListScope.proxyFormItems(
                 errorMessage = state.proxyPassword.error?.toResourceString(resources),
                 onPasswordChange = { onEvent(Event.ProxyPasswordChanged(it)) },
                 contentPadding = defaultItemPadding(),
+                usePrivateKeyboard = state.isPrivateKeyboardEnabled,
             )
         }
 
@@ -223,5 +226,8 @@ private fun LazyListScope.proxyFormItems(
 private val MailProxyType.supportsProxyDns: Boolean
     get() = when (this) {
         MailProxyType.SOCKS4, MailProxyType.SOCKS5 -> true
-        MailProxyType.NONE, MailProxyType.HTTP -> false
+        MailProxyType.USE_GLOBAL, MailProxyType.NONE, MailProxyType.HTTP -> false
     }
+
+private val MailProxyType.isAccountProxyConfigured: Boolean
+    get() = this != MailProxyType.USE_GLOBAL && this != MailProxyType.NONE

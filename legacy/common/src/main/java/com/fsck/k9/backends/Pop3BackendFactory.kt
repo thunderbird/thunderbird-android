@@ -10,6 +10,7 @@ import net.thunderbird.backend.api.BackendFactory
 import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.AccountId
 
 interface Pop3BackendFactory : BackendFactory
@@ -18,6 +19,7 @@ class DefaultPop3BackendFactory(
     private val accountManager: LegacyAccountManager,
     private val backendStorageFactory: BackendStorageFactory,
     private val trustedSocketFactory: TrustedSocketFactory,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) : Pop3BackendFactory {
 
     override fun createBackend(accountId: AccountId): Backend {
@@ -33,11 +35,13 @@ class DefaultPop3BackendFactory(
 
     private fun createPop3Store(account: LegacyAccount): Pop3Store {
         val serverSettings = account.incomingServerSettings
+            .resolveInheritedProxySettings(generalSettingsManager.getConfig().network)
         return Pop3Store(serverSettings, trustedSocketFactory)
     }
 
     private fun createSmtpTransport(account: LegacyAccount): SmtpTransport {
         val serverSettings = account.outgoingServerSettings
+            .resolveInheritedProxySettings(generalSettingsManager.getConfig().network)
         val oauth2TokenProvider: OAuth2TokenProvider? = null
         return SmtpTransport(serverSettings, trustedSocketFactory, oauth2TokenProvider)
     }
