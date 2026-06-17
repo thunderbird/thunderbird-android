@@ -1420,20 +1420,8 @@ open class MessageHomeActivity :
         singleFolderMode = false
 
         val folderIds = search.folderIds
-        if (search.searchAllAccounts()) {
-            val accountUuids = search.accountUuids
-            if (accountUuids.size == 1) {
-                account = accountManager.getAccount(accountUuids.elementAt(0))
-                singleFolderMode = folderIds.size == 1
-            } else {
-                account = null
-            }
-        } else {
-            if (account == null && search.accountUuids.size == 1) {
-                account = accountManager.getAccount(search.accountUuids.elementAt(0))
-            }
-            singleFolderMode = folderIds.size == 1
-        }
+        account = search.resolveAccount(currentAccount = account, accountManager = accountManager)
+        singleFolderMode = !search.searchAllAccounts() && folderIds.size == 1
 
         configureDrawer()
     }
