@@ -57,6 +57,8 @@ internal class AccountAutoDiscoveryViewModel(
             Event.OnEditConfigurationClicked -> {
                 navigateNext(isAutomaticConfig = false)
             }
+
+            Event.OnManualSetupClicked -> submitManualSetup()
         }
     }
 
@@ -128,6 +130,23 @@ internal class AccountAutoDiscoveryViewModel(
 
             if (!hasError) {
                 loadAutoDiscovery()
+            }
+        }
+    }
+
+    private fun submitManualSetup() {
+        with(state.value) {
+            val emailValidationResult = validator.validateEmailAddress(emailAddress.value)
+            val hasError = emailValidationResult is Outcome.Failure
+
+            updateState {
+                it.copy(
+                    emailAddress = it.emailAddress.updateFromValidationOutcome(emailValidationResult),
+                )
+            }
+
+            if (!hasError) {
+                navigateNext(isAutomaticConfig = false)
             }
         }
     }

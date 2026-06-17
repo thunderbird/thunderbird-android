@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
@@ -181,6 +182,15 @@ internal fun ContentView(
             contentPadding = PaddingValues(),
             modifier = Modifier.testTag("account_setup_email_address_input"),
         )
+
+        if (state.configStep == AccountAutoDiscoveryContract.ConfigStep.EMAIL_ADDRESS) {
+            Spacer(modifier = Modifier.height(MainTheme.spacings.default))
+            ButtonText(
+                text = stringResource(id = R.string.account_setup_auto_discovery_manual_network_setup_button_label),
+                onClick = { onEvent(Event.OnManualSetupClicked) },
+                modifier = Modifier.testTag("account_setup_manual_network_setup_button"),
+            )
+        }
 
         if (state.configStep == AccountAutoDiscoveryContract.ConfigStep.PASSWORD) {
             Spacer(modifier = Modifier.height(MainTheme.spacings.double))

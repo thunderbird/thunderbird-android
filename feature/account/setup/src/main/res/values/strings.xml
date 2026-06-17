@@ -21,6 +21,7 @@
     <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">We received the configuration for your email server over a connection that isn\'t as secure as we\'d like. This means that there is a tiny chance that someone could have altered it. Could you please double-check the provided configuration to make sure it\'s as it should be?</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configure manually</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Edit configuration</string>
+    <string name="account_setup_auto_discovery_manual_network_setup_button_label">Manual setup / network settings</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">I trust this configuration</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">It is required to approve the configuration.</string>
 

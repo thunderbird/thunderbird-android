@@ -51,6 +51,7 @@ interface AccountAutoDiscoveryContract {
         data object OnBackClicked : Event
         data object OnRetryClicked : Event
         data object OnEditConfigurationClicked : Event
+        data object OnManualSetupClicked : Event
     }
 
     sealed class Effect {
