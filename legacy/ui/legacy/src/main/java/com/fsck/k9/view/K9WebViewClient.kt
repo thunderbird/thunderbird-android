@@ -80,10 +80,10 @@ class K9WebViewClient(
     override fun shouldInterceptRequest(webView: WebView, request: WebResourceRequest): WebResourceResponse? {
         val uri = request.url
 
-        return if (uri.scheme == CID_SCHEME) {
-            handleCidUri(uri, webView)
-        } else {
-            RESULT_DO_NOT_INTERCEPT
+        return when (uri.scheme) {
+            CID_SCHEME -> handleCidUri(uri, webView)
+            HTTP_SCHEME -> RESULT_DUMMY_RESPONSE
+            else -> RESULT_DO_NOT_INTERCEPT
         }
     }
 
@@ -133,6 +133,7 @@ class K9WebViewClient(
     companion object {
         private const val CID_SCHEME = "cid"
         private const val FILE_SCHEME = "file"
+        private const val HTTP_SCHEME = "http"
 
         private val RESULT_DO_NOT_INTERCEPT: WebResourceResponse? = null
         private val RESULT_DUMMY_RESPONSE = WebResourceResponse(null, null, null)

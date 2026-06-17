@@ -20,6 +20,14 @@
     <string name="account_server_settings_client_certificate_none_selected">None</string>
     <string name="account_server_settings_client_certificate_label">Client certificate</string>
 
+    <string name="account_server_settings_proxy_type_label">Proxy</string>
+    <string name="account_server_settings_proxy_type_none">No proxy</string>
+    <string name="account_server_settings_proxy_type_http">HTTP proxy</string>
+    <string name="account_server_settings_proxy_type_socks">SOCKS proxy</string>
+    <string name="account_server_settings_proxy_server_label">Proxy server</string>
+    <string name="account_server_settings_proxy_port_label">Proxy port</string>
+    <string name="account_server_settings_proxy_dns_label">Resolve mail server hostnames through proxy</string>
+
     <string name="account_server_settings_incoming_top_bar_title">Incoming server settings</string>
 
     <string name="account_server_settings_incoming_imap_namespace_label">Auto-detect IMAP namespace</string>

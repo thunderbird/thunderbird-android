@@ -4,6 +4,7 @@ import app.k9mail.feature.account.common.domain.entity.AuthenticationType
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.common.ui.WithInteractionMode
+import com.fsck.k9.mail.MailProxyType
 import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 import net.thunderbird.core.validation.ValidationOutcome
 import net.thunderbird.core.validation.input.NumberInputField
@@ -21,6 +22,10 @@ interface OutgoingServerSettingsContract {
         val username: StringInputField = StringInputField(),
         val password: StringInputField = StringInputField(),
         val clientCertificateAlias: String? = null,
+        val proxyType: MailProxyType = MailProxyType.NONE,
+        val proxyServer: StringInputField = StringInputField(),
+        val proxyPort: NumberInputField = NumberInputField(),
+        val proxyDns: Boolean = true,
     )
 
     sealed interface Event {
@@ -31,6 +36,10 @@ interface OutgoingServerSettingsContract {
         data class UsernameChanged(val username: String) : Event
         data class PasswordChanged(val password: String) : Event
         data class ClientCertificateChanged(val clientCertificateAlias: String?) : Event
+        data class ProxyTypeChanged(val proxyType: MailProxyType) : Event
+        data class ProxyServerChanged(val proxyServer: String) : Event
+        data class ProxyPortChanged(val proxyPort: Long?) : Event
+        data class ProxyDnsChanged(val proxyDns: Boolean) : Event
 
         data object LoadAccountState : Event
 

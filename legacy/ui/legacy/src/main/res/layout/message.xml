@@ -32,14 +32,24 @@ the 'message view theme' setting).
             <!-- Header area -->
             <include layout="@layout/message_view_header" />
 
-            <FrameLayout
+            <LinearLayout
                 android:id="@+id/extra_header_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:paddingVertical="4dp"
                 android:visibility="gone"
                 tools:visibility="visible"
                 >
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:gravity="center"
+                    android:text="@string/message_view_show_remote_images_privacy_warning"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/show_pictures"
@@ -51,7 +61,7 @@ the 'message view theme' setting).
                     app:icon="@drawable/ic_image"
                     />
 
-            </FrameLayout>
+            </LinearLayout>
 
             <Space
                 android:id="@+id/line_of_death"

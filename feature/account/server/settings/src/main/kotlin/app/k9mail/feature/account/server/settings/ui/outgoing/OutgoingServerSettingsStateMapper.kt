@@ -7,6 +7,8 @@ import app.k9mail.feature.account.common.domain.entity.toConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.toMailConnectionSecurity
 import app.k9mail.feature.account.server.settings.ui.common.toInvalidEmailDomain
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
+import com.fsck.k9.mail.MailProxySettings
+import com.fsck.k9.mail.MailProxyType
 import com.fsck.k9.mail.ServerSettings
 import net.thunderbird.core.validation.input.NumberInputField
 import net.thunderbird.core.validation.input.StringInputField
@@ -31,6 +33,8 @@ private fun AccountState.getOutgoingServerPassword(): String {
 }
 
 private fun ServerSettings.toOutgoingServerSettingsState(password: String): State {
+    val proxySettings = MailProxySettings.fromServerSettings(this)
+
     return State(
         server = StringInputField(value = host),
         security = connectionSecurity.toConnectionSecurity(),
@@ -39,6 +43,10 @@ private fun ServerSettings.toOutgoingServerSettingsState(password: String): Stat
         username = StringInputField(value = username),
         password = StringInputField(value = password),
         clientCertificateAlias = clientCertificateAlias,
+        proxyType = proxySettings.type,
+        proxyServer = StringInputField(value = proxySettings.host ?: ""),
+        proxyPort = NumberInputField(value = proxySettings.port.takeIf { it > 0 }?.toLong()),
+        proxyDns = proxySettings.proxyDns,
     )
 }
 
@@ -52,5 +60,19 @@ internal fun State.toServerSettings(): ServerSettings {
         username = if (authenticationType.isUsernameRequired) username.value.trim() else "",
         password = if (authenticationType.isPasswordRequired) password.value.trim() else null,
         clientCertificateAlias = clientCertificateAlias,
+        extra = createProxySettings().toExtra(),
     )
+}
+
+private fun State.createProxySettings(): MailProxySettings {
+    return if (proxyType == MailProxyType.NONE) {
+        MailProxySettings.NONE
+    } else {
+        MailProxySettings(
+            type = proxyType,
+            host = proxyServer.value.trim(),
+            port = proxyPort.value!!.toInt(),
+            proxyDns = proxyDns,
+        )
+    }
 }

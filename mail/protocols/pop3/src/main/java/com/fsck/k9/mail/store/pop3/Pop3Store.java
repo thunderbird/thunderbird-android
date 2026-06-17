@@ -7,6 +7,7 @@ import java.util.Map;
 import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.MailProxySettings;
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -22,6 +23,7 @@ public class Pop3Store {
     private final String clientCertificateAlias;
     private final AuthType authType;
     private final ConnectionSecurity connectionSecurity;
+    private final MailProxySettings proxySettings;
 
     private Map<String, Pop3Folder> mFolders = new HashMap<>();
 
@@ -38,6 +40,7 @@ public class Pop3Store {
         password = serverSettings.password;
         clientCertificateAlias = serverSettings.clientCertificateAlias;
         authType = serverSettings.authenticationType;
+        proxySettings = MailProxySettings.fromServerSettings(serverSettings);
     }
 
     @NotNull
@@ -101,6 +104,11 @@ public class Pop3Store {
         @Override
         public String getClientCertificateAlias() {
             return clientCertificateAlias;
+        }
+
+        @Override
+        public MailProxySettings getProxySettings() {
+            return proxySettings;
         }
     }
 

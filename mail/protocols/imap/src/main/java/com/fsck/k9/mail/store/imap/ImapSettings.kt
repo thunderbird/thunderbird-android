@@ -2,6 +2,7 @@ package com.fsck.k9.mail.store.imap
 
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.MailProxySettings
 
 /**
  * Settings source for IMAP. Implemented in order to remove coupling between [ImapStore] and [ImapConnection].
@@ -14,6 +15,7 @@ internal interface ImapSettings {
     val username: String
     val password: String?
     val clientCertificateAlias: String?
+    val proxySettings: MailProxySettings
     val useCompression: Boolean
     val clientInfo: ImapClientInfo?
 

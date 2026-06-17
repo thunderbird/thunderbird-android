@@ -258,6 +258,7 @@
 
     <!-- Text of the button that is displayed below the message header when the message body references one or more remote images -->
     <string name="message_view_show_remote_images_action">Show remote images</string>
+    <string name="message_view_show_remote_images_privacy_warning">Remote images can reveal your IP address and when you opened this message. Insecure HTTP images are blocked.</string>
 
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Download complete message</string>

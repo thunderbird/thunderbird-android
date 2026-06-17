@@ -4,6 +4,7 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.FolderType
+import com.fsck.k9.mail.MailProxySettings
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
@@ -317,6 +318,7 @@ internal open class RealImapStore(
         override val username: String = serverSettings.username
         override val password: String? = serverSettings.password
         override val clientCertificateAlias: String? = serverSettings.clientCertificateAlias
+        override val proxySettings: MailProxySettings = MailProxySettings.fromServerSettings(serverSettings)
 
         override val useCompression: Boolean = serverSettings.isUseCompression
 

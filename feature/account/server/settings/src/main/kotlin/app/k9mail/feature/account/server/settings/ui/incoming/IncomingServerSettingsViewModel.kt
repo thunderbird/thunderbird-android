@@ -10,6 +10,7 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Validator
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.ViewModel
+import com.fsck.k9.mail.MailProxyType
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.core.validation.ValidationSuccess
@@ -55,6 +56,16 @@ open class IncomingServerSettingsViewModel(
             is Event.ImapUseCompressionChanged -> updateState { it.copy(imapUseCompression = event.useCompression) }
 
             is Event.ImapSendClientInfoChanged -> updateState { it.copy(imapSendClientInfo = event.sendClientInfo) }
+
+            is Event.ProxyTypeChanged -> updateState { it.copy(proxyType = event.proxyType) }
+
+            is Event.ProxyServerChanged -> updateState {
+                it.copy(proxyServer = it.proxyServer.updateValue(event.proxyServer))
+            }
+
+            is Event.ProxyPortChanged -> updateState { it.copy(proxyPort = it.proxyPort.updateValue(event.proxyPort)) }
+
+            is Event.ProxyDnsChanged -> updateState { it.copy(proxyDns = event.proxyDns) }
 
             Event.OnNextClicked -> onNext()
 
@@ -111,8 +122,26 @@ open class IncomingServerSettingsViewModel(
             ValidationSuccess
         }
         val imapPrefixResult = validator.validateImapPrefix(imapPrefix.value)
+        val proxyServerResult = if (proxyType == MailProxyType.NONE) {
+            ValidationSuccess
+        } else {
+            validator.validateServer(proxyServer.value)
+        }
+        val proxyPortResult = if (proxyType == MailProxyType.NONE) {
+            ValidationSuccess
+        } else {
+            validator.validatePort(proxyPort.value)
+        }
 
-        val hasError = listOf(serverResult, portResult, usernameResult, passwordResult, imapPrefixResult)
+        val hasError = listOf(
+            serverResult,
+            portResult,
+            usernameResult,
+            passwordResult,
+            imapPrefixResult,
+            proxyServerResult,
+            proxyPortResult,
+        )
             .any { it is Outcome.Failure }
 
         updateState {
@@ -122,6 +151,8 @@ open class IncomingServerSettingsViewModel(
                 username = it.username.updateFromValidationOutcome(usernameResult),
                 password = it.password.updateFromValidationOutcome(passwordResult),
                 imapPrefix = it.imapPrefix.updateFromValidationOutcome(imapPrefixResult),
+                proxyServer = it.proxyServer.updateFromValidationOutcome(proxyServerResult),
+                proxyPort = it.proxyPort.updateFromValidationOutcome(proxyPortResult),
             )
         }
 

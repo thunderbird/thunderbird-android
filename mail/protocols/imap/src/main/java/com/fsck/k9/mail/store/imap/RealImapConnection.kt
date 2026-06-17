@@ -6,6 +6,7 @@ import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.CertificateValidationException
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.K9MailLib
+import com.fsck.k9.mail.MailSocketFactory
 import com.fsck.k9.mail.MissingCapabilityException
 import com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT
 import com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT
@@ -23,11 +24,7 @@ import java.io.BufferedOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-import java.net.InetAddress
-import java.net.InetSocketAddress
 import java.net.Socket
-import java.net.SocketAddress
-import java.net.UnknownHostException
 import java.security.GeneralSecurityException
 import java.security.Security
 import java.util.regex.Pattern
@@ -150,40 +147,23 @@ internal class RealImapConnection(
     }
 
     private fun connect(): Socket {
-        val inetAddresses = InetAddress.getAllByName(settings.host)
-
-        var connectException: Exception? = null
-        for (address in inetAddresses) {
-            connectException = try {
-                return connectToAddress(address)
-            } catch (e: IOException) {
-                Log.w(e, "Could not connect to %s", address)
-                e
-            }
-        }
-
-        throw connectException ?: UnknownHostException()
-    }
-
-    private fun connectToAddress(address: InetAddress): Socket {
         val host = settings.host
         val port = settings.port
         val clientCertificateAlias = settings.clientCertificateAlias
 
         if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
-            Log.d("Connecting to %s as %s", host, address)
+            Log.d("Connecting to %s", host)
         }
 
-        val socketAddress: SocketAddress = InetSocketAddress(address, port)
-        val socket = if (settings.connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-            socketFactory.createSocket(null, host, port, clientCertificateAlias)
-        } else {
-            Socket()
-        }
-
-        socket.connect(socketAddress, socketConnectTimeout)
-
-        return socket
+        return MailSocketFactory.connectSocket(
+            host = host,
+            port = port,
+            connectionSecurity = settings.connectionSecurity,
+            clientCertificateAlias = clientCertificateAlias,
+            trustedSocketFactory = socketFactory,
+            proxySettings = settings.proxySettings,
+            connectTimeout = socketConnectTimeout,
+        )
     }
 
     private fun configureSocket() {

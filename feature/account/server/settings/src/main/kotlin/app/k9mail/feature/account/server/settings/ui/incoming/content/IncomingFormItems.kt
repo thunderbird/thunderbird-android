@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.res.stringResource
+import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.NumberInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
@@ -23,6 +24,8 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import app.k9mail.feature.account.server.settings.ui.incoming.allowedAuthenticationTypes
 import app.k9mail.feature.account.server.settings.ui.incoming.isPasswordFieldVisible
+import com.fsck.k9.mail.MailProxyType
+import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @Suppress("LongMethod")
@@ -124,11 +127,64 @@ internal fun LazyListScope.incomingFormItems(
         )
     }
 
+    proxyFormItems(state, onEvent, resources)
+
     if (state.protocolType == IncomingProtocolType.IMAP) {
         imapFormItems(state, onEvent, resources)
     }
 
     item {
         Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
+    }
+}
+
+private fun LazyListScope.proxyFormItems(
+    state: State,
+    onEvent: (Event) -> Unit,
+    resources: Resources,
+) {
+    item {
+        SelectInput(
+            options = listOf(MailProxyType.NONE, MailProxyType.HTTP, MailProxyType.SOCKS).toImmutableList(),
+            optionToStringTransformation = { it.toResourceString(resources) },
+            selectedOption = state.proxyType,
+            onOptionChange = { onEvent(Event.ProxyTypeChanged(it)) },
+            label = stringResource(id = R.string.account_server_settings_proxy_type_label),
+            contentPadding = defaultItemPadding(),
+        )
+    }
+
+    if (state.proxyType != MailProxyType.NONE) {
+        item {
+            TextInput(
+                text = state.proxyServer.value,
+                errorMessage = state.proxyServer.error?.toResourceString(resources),
+                onTextChange = { onEvent(Event.ProxyServerChanged(it)) },
+                label = stringResource(id = R.string.account_server_settings_proxy_server_label),
+                isRequired = true,
+                contentPadding = defaultItemPadding(),
+                keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
+            )
+        }
+
+        item {
+            NumberInput(
+                value = state.proxyPort.value,
+                errorMessage = state.proxyPort.error?.toResourceString(resources),
+                onValueChange = { onEvent(Event.ProxyPortChanged(it)) },
+                label = stringResource(id = R.string.account_server_settings_proxy_port_label),
+                isRequired = true,
+                contentPadding = defaultItemPadding(),
+            )
+        }
+
+        item {
+            CheckboxInput(
+                text = stringResource(id = R.string.account_server_settings_proxy_dns_label),
+                checked = state.proxyDns,
+                onCheckedChange = { onEvent(Event.ProxyDnsChanged(it)) },
+                contentPadding = defaultItemPadding(),
+            )
+        }
     }
 }

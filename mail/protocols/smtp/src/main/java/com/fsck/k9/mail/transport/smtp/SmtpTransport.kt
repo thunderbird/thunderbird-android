@@ -7,6 +7,8 @@ import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.CertificateValidationException
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.K9MailLib
+import com.fsck.k9.mail.MailProxySettings
+import com.fsck.k9.mail.MailSocketFactory
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mail.MissingCapabilityException
@@ -28,10 +30,7 @@ import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.net.InetAddress
-import java.net.InetSocketAddress
 import java.net.Socket
-import java.net.UnknownHostException
 import java.security.GeneralSecurityException
 import java.util.Locale
 import javax.net.ssl.SSLException
@@ -61,6 +60,7 @@ class SmtpTransport(
     private val clientCertificateAlias = serverSettings.clientCertificateAlias
     private val authType = serverSettings.authenticationType
     private val connectionSecurity = serverSettings.connectionSecurity
+    private val proxySettings = MailProxySettings.fromServerSettings(serverSettings)
 
     private var socket: Socket? = null
     private var inputStream: PeekableInputStream? = null
@@ -216,36 +216,19 @@ class SmtpTransport(
     }
 
     private fun connect(): Socket {
-        val inetAddresses = InetAddress.getAllByName(host)
-
-        var connectException: Exception? = null
-        for (address in inetAddresses) {
-            connectException = try {
-                return connectToAddress(address)
-            } catch (e: IOException) {
-                Log.w(e, "Could not connect to %s", address)
-                e
-            }
-        }
-
-        throw connectException ?: UnknownHostException()
-    }
-
-    private fun connectToAddress(address: InetAddress): Socket {
         if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_SMTP) {
-            Log.d("Connecting to %s as %s", host, address)
+            Log.d("Connecting to %s", host)
         }
 
-        val socketAddress = InetSocketAddress(address, port)
-        val socket = if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-            trustedSocketFactory.createSocket(null, host, port, clientCertificateAlias)
-        } else {
-            Socket()
-        }
-
-        socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT)
-
-        return socket
+        return MailSocketFactory.connectSocket(
+            host = host,
+            port = port,
+            connectionSecurity = connectionSecurity,
+            clientCertificateAlias = clientCertificateAlias,
+            trustedSocketFactory = trustedSocketFactory,
+            proxySettings = proxySettings,
+            connectTimeout = SOCKET_CONNECT_TIMEOUT,
+        )
     }
 
     private fun readGreeting() {

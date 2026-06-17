@@ -2,6 +2,7 @@ package com.fsck.k9.mail.store.pop3;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.MailProxySettings;
 
 class SimplePop3Settings implements Pop3Settings {
     private String host;
@@ -44,6 +45,11 @@ class SimplePop3Settings implements Pop3Settings {
     @Override
     public String getClientCertificateAlias() {
         return null;
+    }
+
+    @Override
+    public MailProxySettings getProxySettings() {
+        return MailProxySettings.NONE;
     }
 
     void setHost(String host) {

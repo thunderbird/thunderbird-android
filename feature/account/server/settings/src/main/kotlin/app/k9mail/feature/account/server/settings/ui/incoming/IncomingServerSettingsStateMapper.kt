@@ -8,6 +8,8 @@ import app.k9mail.feature.account.common.domain.entity.toConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.toMailConnectionSecurity
 import app.k9mail.feature.account.server.settings.ui.common.toInvalidEmailDomain
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
+import com.fsck.k9.mail.MailProxySettings
+import com.fsck.k9.mail.MailProxyType
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
@@ -24,6 +26,8 @@ fun AccountState.toIncomingServerSettingsState() = incomingServerSettings?.toInc
     )
 
 private fun ServerSettings.toIncomingServerSettingsState(): State {
+    val proxySettings = MailProxySettings.fromServerSettings(this)
+
     return State(
         protocolType = IncomingProtocolType.fromName(type),
         server = StringInputField(value = host),
@@ -37,6 +41,10 @@ private fun ServerSettings.toIncomingServerSettingsState(): State {
         imapPrefix = StringInputField(value = pathPrefix ?: ""),
         imapUseCompression = isUseCompression,
         imapSendClientInfo = isSendClientInfo,
+        proxyType = proxySettings.type,
+        proxyServer = StringInputField(value = proxySettings.host ?: ""),
+        proxyPort = NumberInputField(value = proxySettings.port.takeIf { it > 0 }?.toLong()),
+        proxyDns = proxySettings.proxyDns,
     )
 }
 
@@ -55,7 +63,7 @@ internal fun State.toServerSettings(): ServerSettings {
 }
 
 private fun State.createExtras(): Map<String, String?> {
-    return if (protocolType == IncomingProtocolType.IMAP) {
+    val protocolExtras = if (protocolType == IncomingProtocolType.IMAP) {
         ImapStoreSettings.createExtra(
             autoDetectNamespace = imapAutodetectNamespaceEnabled,
             pathPrefix = if (imapAutodetectNamespaceEnabled) null else imapPrefix.value.trim(),
@@ -64,5 +72,20 @@ private fun State.createExtras(): Map<String, String?> {
         )
     } else {
         emptyMap()
+    }
+
+    return protocolExtras + createProxySettings().toExtra()
+}
+
+private fun State.createProxySettings(): MailProxySettings {
+    return if (proxyType == MailProxyType.NONE) {
+        MailProxySettings.NONE
+    } else {
+        MailProxySettings(
+            type = proxyType,
+            host = proxyServer.value.trim(),
+            port = proxyPort.value!!.toInt(),
+            proxyDns = proxyDns,
+        )
     }
 }

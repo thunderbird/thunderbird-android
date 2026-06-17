@@ -5,10 +5,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.MessageDigest;
@@ -25,6 +22,7 @@ import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.K9MailLib;
+import com.fsck.k9.mail.MailSocketFactory;
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.MissingCapabilityException;
 import com.fsck.k9.mail.filter.Base64;
@@ -110,40 +108,18 @@ class Pop3Connection {
 
     private Socket connect()
             throws IOException, MessagingException, NoSuchAlgorithmException, KeyManagementException {
-        InetAddress[] inetAddresses = InetAddress.getAllByName(settings.getHost());
-
-        IOException connectException = null;
-        for (InetAddress address : inetAddresses) {
-            try {
-                return connectToAddress(address);
-            } catch (IOException e) {
-                Log.w(e, "Could not connect to %s", address);
-                connectException = e;
-            }
-        }
-
-        throw connectException != null ? connectException : new UnknownHostException();
-    }
-
-    private Socket connectToAddress(InetAddress address)
-            throws IOException, MessagingException, NoSuchAlgorithmException, KeyManagementException {
         if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_POP3) {
-            Log.d("Connecting to %s as %s", settings.getHost(), address);
+            Log.d("Connecting to %s", settings.getHost());
         }
 
-        InetSocketAddress socketAddress = new InetSocketAddress(address, settings.getPort());
-
-        final Socket socket;
-        if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
-            socket = trustedSocketFactory.createSocket(null, settings.getHost(), settings.getPort(),
-                    settings.getClientCertificateAlias());
-        } else {
-            socket = new Socket();
-        }
-
-        socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-
-        return socket;
+        return MailSocketFactory.connectSocket(
+                settings.getHost(),
+                settings.getPort(),
+                settings.getConnectionSecurity(),
+                settings.getClientCertificateAlias(),
+                trustedSocketFactory,
+                settings.getProxySettings(),
+                SOCKET_CONNECT_TIMEOUT);
     }
 
     /*

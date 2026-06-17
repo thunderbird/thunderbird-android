@@ -9,8 +9,10 @@ import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSett
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Validator
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.ViewModel
+import com.fsck.k9.mail.MailProxyType
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.core.validation.ValidationSuccess
 
 open class OutgoingServerSettingsViewModel(
     initialState: State = State(),
@@ -38,6 +40,16 @@ open class OutgoingServerSettingsViewModel(
             is Event.ClientCertificateChanged -> updateState {
                 it.copy(clientCertificateAlias = event.clientCertificateAlias)
             }
+
+            is Event.ProxyTypeChanged -> updateState { it.copy(proxyType = event.proxyType) }
+
+            is Event.ProxyServerChanged -> updateState {
+                it.copy(proxyServer = it.proxyServer.updateValue(event.proxyServer))
+            }
+
+            is Event.ProxyPortChanged -> updateState { it.copy(proxyPort = it.proxyPort.updateValue(event.proxyPort)) }
+
+            is Event.ProxyDnsChanged -> updateState { it.copy(proxyDns = event.proxyDns) }
 
             Event.OnNextClicked -> onNext()
 
@@ -73,8 +85,25 @@ open class OutgoingServerSettingsViewModel(
         } else {
             Outcome.Success(Unit)
         }
+        val proxyServerResult = if (proxyType == MailProxyType.NONE) {
+            ValidationSuccess
+        } else {
+            validator.validateServer(proxyServer.value)
+        }
+        val proxyPortResult = if (proxyType == MailProxyType.NONE) {
+            ValidationSuccess
+        } else {
+            validator.validatePort(proxyPort.value)
+        }
 
-        val hasError = listOf(serverResult, portResult, usernameResult, passwordResult)
+        val hasError = listOf(
+            serverResult,
+            portResult,
+            usernameResult,
+            passwordResult,
+            proxyServerResult,
+            proxyPortResult,
+        )
             .any { it is Outcome.Failure }
 
         updateState {
@@ -83,6 +112,8 @@ open class OutgoingServerSettingsViewModel(
                 port = it.port.updateFromValidationOutcome(portResult),
                 username = it.username.updateFromValidationOutcome(usernameResult),
                 password = it.password.updateFromValidationOutcome(passwordResult),
+                proxyServer = it.proxyServer.updateFromValidationOutcome(proxyServerResult),
+                proxyPort = it.proxyPort.updateFromValidationOutcome(proxyPortResult),
             )
         }
 
