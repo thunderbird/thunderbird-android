@@ -20,6 +20,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.ComposeView
@@ -114,6 +115,10 @@ class MessageViewFragment :
     private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
         registerForActivityResult(CreateDocumentResultContract()) { documentUri ->
             onCreateDocumentResult(documentUri)
+        }
+    private val openDocumentTreeLauncher: ActivityResultLauncher<Uri?> =
+        registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { directoryUri ->
+            onOpenDocumentTreeResult(directoryUri)
         }
     private val chooseFolderForCopyLauncher: ActivityResultLauncher<ChooseFolderResultContract.Input> =
         registerForActivityResult(ChooseFolderResultContract(ChooseFolderActivity.Action.COPY)) { result ->
@@ -241,11 +246,7 @@ class MessageViewFragment :
                             onSaveClick = { attachment ->
                                 onSaveAttachment(attachment)
                             },
-                            onSaveAllClick = {
-                                attachments.forEach { item ->
-                                    onSaveAttachment(item.attachment)
-                                }
-                            },
+                            onSaveAllClick = { onSaveAllAttachments() },
                         )
                     }
                 }
@@ -819,7 +820,21 @@ class MessageViewFragment :
             return
         }
 
-        createAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(uri)
+        currentAttachmentViewInfo?.let {
+            createAttachmentController(it).saveAttachmentTo(viewLifecycleOwner.lifecycleScope, uri)
+        }
+    }
+
+    private fun onOpenDocumentTreeResult(directoryUri: Uri?) {
+        if (directoryUri == null) return
+
+        val messageView = mMessageViewInfo ?: return
+        val attachments = messageView.attachments.filter { !it.inlineAttachment }
+        attachments.forEach {
+            currentAttachmentViewInfo = it
+                createAttachmentController(it)
+                    .saveAttachmentToDirectory(viewLifecycleOwner.lifecycleScope ,directoryUri)
+        }
     }
 
     private fun onChooseFolderMoveResult(result: ChooseFolderResultContract.Result?) {
@@ -1181,7 +1196,15 @@ class MessageViewFragment :
     override fun onViewAttachment(attachment: AttachmentViewInfo) {
         currentAttachmentViewInfo = attachment
 
-        createAttachmentController(attachment).viewAttachment()
+        createAttachmentController(attachment).viewAttachment(viewLifecycleOwner.lifecycleScope)
+    }
+
+    fun onSaveAllAttachments() {
+        try {
+            openDocumentTreeLauncher.launch(null)
+        } catch (_: ActivityNotFoundException) {
+            Toast.makeText(requireContext(), R.string.error_activity_not_found, Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onSaveAttachment(attachment: AttachmentViewInfo) {
@@ -1201,7 +1224,7 @@ class MessageViewFragment :
         }
     }
 
-    private fun createAttachmentController(attachment: AttachmentViewInfo?): AttachmentController {
+    private fun createAttachmentController(attachment: AttachmentViewInfo): AttachmentController {
         return AttachmentController(requireContext(), messagingController, this, attachment)
     }
 
