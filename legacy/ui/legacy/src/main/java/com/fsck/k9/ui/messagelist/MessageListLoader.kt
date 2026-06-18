@@ -6,7 +6,6 @@ import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.MessageColumns
 import com.fsck.k9.search.getLegacyAccounts
-import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.account.SortType
@@ -27,7 +26,6 @@ class MessageListLoader(
     private val messageHelper: MessageHelper,
     private val messageListPreferencesManager: MessageListPreferencesManager,
     private val outboxFolderManager: OutboxFolderManager,
-    private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
     private val featureFlagProvider: FeatureFlagProvider,
     private val contactLetterBitmapCreator: ContactLetterBitmapCreator,
 ) {
@@ -65,12 +63,6 @@ class MessageListLoader(
             account,
             messageListPreferencesManager,
             outboxFolderManager,
-            formatDate = { formatTime ->
-                relativeDateTimeFormatter.formatDate(
-                    formatTime,
-                    messageListPreferencesManager.getConfig().dateTimeFormat,
-                )
-            },
             contactLetterBitmapCreator = contactLetterBitmapCreator.takeIf {
                 featureFlagProvider.provide(MessageListFeatureFlags.UseComposeForMessageListItems).isEnabled() ||
                     featureFlagProvider.provide(MessageListFeatureFlags.EnableMessageListNewState).isEnabled()
