@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_screen_title">隠しデバッグ設定画面</string>
+    <string name="debug_settings_notifications_loading">読み込み中…</string>
+    <string name="debug_settings_notifications_trigger_notification">通知をトリガー</string>
+    <string name="debug_settings_notifications_single_mail_sender">差出人</string>
+    <string name="debug_settings_notifications_single_mail_subject">件名</string>
+    <string name="debug_settings_notifications_single_mail_summary">概要</string>
+    <string name="debug_settings_notifications_single_mail_preview">プレビュー</string>
+    <string name="debug_settings_notifications_common_notification_information">共通の通知情報</string>
+    <string name="debug_settings_notifications_in_app_notification">アプリ内通知</string>
+    <string name="debug_settings_notifications_title">通知</string>
+    <string name="debug_settings_notifications_system_notification">システム通知</string>
+    <string name="debug_settings_notifications_preparing_notification">通知を準備中 %1$s</string>
+    <string name="debug_settings_notification_status_log">通知ステータスログ</string>
+    <string name="debug_settings_notifications_status">"ステータス: "</string>
+    <string name="debug_settings_notifications_clear_status_log">ステータスログを消去</string>
+    <string name="debug_settings_feature_flag_title">機能フラグ</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">未保存の変更</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">保存していない変更があります。本当に移動しますか？</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">留まる</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">移動する</string>
+    <string name="debug_settings_feature_flag_restore_default_values">デフォルト値を復元</string>
+    <string name="debug_settings_feature_flag_apply_changes">変更を適用</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"上書き済み; "</string>
+    <string name="debug_settings_feature_flag_default_value">デフォルト値: %1$b</string>
 </resources>

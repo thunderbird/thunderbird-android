@@ -1,3 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_notifications_loading">Φόρτωση…</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Έχετε μη αποθηκευμένες αλλαγές. Θέλετε σίγουρα να αποχωρήσετε;</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Παραμονή</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Αποχώρηση</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Επαναφορά προεπιλεγμένων τιμών</string>
+    <string name="debug_settings_feature_flag_apply_changes">Εφαρμογή αλλαγών</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_default_value">προεπιλεγμένη τιμή: %1$b</string>
+    <string name="debug_settings_notifications_single_mail_sender">Αποστολέας</string>
+    <string name="debug_settings_notifications_single_mail_subject">Θέμα</string>
+    <string name="debug_settings_notifications_single_mail_summary">Περίληψη</string>
+    <string name="debug_settings_notifications_single_mail_preview">Προεπισκόπηση</string>
+    <string name="debug_settings_notifications_title">Ειδοποιήσεις</string>
+    <string name="debug_settings_notifications_status">"Κατάσταση: "</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Μη αποθηκευμένες αλλαγές</string>
+    <string name="debug_settings_notifications_in_app_notification">Ειδοποίηση εντός εφαρμογής</string>
 </resources>

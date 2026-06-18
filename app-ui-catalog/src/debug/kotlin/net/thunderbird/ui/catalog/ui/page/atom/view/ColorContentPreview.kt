@@ -2,8 +2,8 @@ package net.thunderbird.ui.catalog.ui.page.atom.view
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
+import net.thunderbird.core.ui.common.annotation.PreviewDevices
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @Composable

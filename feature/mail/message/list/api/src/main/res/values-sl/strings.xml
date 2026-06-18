@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Izberi</string>
     <string name="swipe_action_deselect">Odstrani izbor</string>
@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">Neželeno sporočilo</string>
     <string name="swipe_action_move">Premakni …</string>
     <string name="actionbar_selected">Izbrano: <xliff:g id="selection_count">%d</xliff:g></string>
+    <string name="sort_by">Razvrsti po …</string>
+    <string name="sort_by_date_asc">Datumu (najprej starejša)</string>
+    <string name="sort_by_date_desc">Datumu (najprej novejša)</string>
+    <string name="sort_by_arrival_asc">Prejemu (najprej starejša)</string>
+    <string name="sort_by_arrival_desc">Prejemu (najprej novejša)</string>
+    <string name="sort_by_subject_asc">Zadevi (A-Ž)</string>
+    <string name="sort_by_subject_desc">Zadevi (Ž-A)</string>
+    <string name="sort_by_sender_asc">Pošiljatelju (A-Ž)</string>
+    <string name="sort_by_sender_desc">Pošiljatelju (Ž-A)</string>
+    <string name="sort_by_flag_asc">Najprej z zvezdico</string>
+    <string name="sort_by_flag_desc">Najprej brez zvezdice</string>
+    <string name="sort_by_unread_asc">Najprej neprebrana</string>
+    <string name="sort_by_unread_desc">Najprej prebrana</string>
+    <string name="sort_by_attach_asc">Najprej s priponkami</string>
+    <string name="sort_by_attach_desc">Najprej brez priponk</string>
 </resources>

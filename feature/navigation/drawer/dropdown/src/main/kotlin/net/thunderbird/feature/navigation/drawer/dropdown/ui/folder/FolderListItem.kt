@@ -163,6 +163,7 @@ private fun mapFolderName(
                 .removePrefix("$parentPrefix${displayFolder.pathDelimiter}")
 
         is UnifiedDisplayFolder -> mapUnifiedFolderName(displayFolder)
+
         else -> throw IllegalArgumentException("Unknown display folder: $displayFolder")
     }
 }

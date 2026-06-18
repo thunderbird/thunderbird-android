@@ -1,3 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_notifications_loading">Cargando…</string>
+    <string name="debug_settings_notifications_single_mail_sender">Remitente</string>
+    <string name="debug_settings_notifications_single_mail_subject">Asunto</string>
+    <string name="debug_settings_notifications_single_mail_summary">Resumen</string>
+    <string name="debug_settings_notifications_title">Notificaciones</string>
+    <string name="debug_settings_notifications_system_notification">Notificación del sistema</string>
+    <string name="debug_settings_notifications_status">"Estado: "</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Cambios sin guardar</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Tienes cambios sin guardar. ¿Seguro que quieres salir?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Quedarse</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Salir</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Recuperar valores por defecto</string>
+    <string name="debug_settings_feature_flag_apply_changes">Aplicar cambios</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_default_value">valor por defecto: %1$b</string>
 </resources>

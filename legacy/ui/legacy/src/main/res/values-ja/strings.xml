@@ -517,7 +517,6 @@
     <string name="account_setup_push_limit_500">フォルダー 500 件</string>
     <string name="account_setup_push_limit_1000">フォルダー 1000 件</string>
     <string name="animations_title">アニメーション</string>
-    <string name="animations_summary">目立つ視覚効果を使用します</string>
     <string name="show_unified_inbox_title">統合受信トレイを表示する</string>
     <string name="show_starred_count_title">スター付きの数を表示する</string>
     <string name="integrated_inbox_title">統合受信トレイ</string>

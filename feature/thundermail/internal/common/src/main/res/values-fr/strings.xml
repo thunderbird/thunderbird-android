@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thundermail_redirecting">Redirection vers Thundermail…</string>
+    <string name="thundermail_something_went_wrong">Une erreur est survenue</string>
+    <string name="thundermail_browser_is_not_available">Le navigateur est inaccessible. Vérifiez la configuration de votre appareil</string>
+    <string name="thundermail_operation_was_canceled">L’opération a été annulée</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Erreur inconnue. Envisagez de la signaler.</string>
+</resources>

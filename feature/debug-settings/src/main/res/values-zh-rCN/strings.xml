@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_screen_title">秘密调试设置屏幕</string>
+    <string name="debug_settings_notifications_loading">正在加载…</string>
+    <string name="debug_settings_notifications_trigger_notification">触发通知</string>
+    <string name="debug_settings_notifications_single_mail_sender">发件人</string>
+    <string name="debug_settings_notifications_single_mail_subject">主题</string>
+    <string name="debug_settings_notifications_single_mail_summary">摘要</string>
+    <string name="debug_settings_notifications_single_mail_preview">预览</string>
+    <string name="debug_settings_notifications_common_notification_information">常用通知信息</string>
+    <string name="debug_settings_notifications_in_app_notification">应用内通知</string>
+    <string name="debug_settings_notifications_title">通知</string>
+    <string name="debug_settings_notifications_system_notification">系统通知</string>
+    <string name="debug_settings_notifications_preparing_notification">正在准备通知 %1$s</string>
+    <string name="debug_settings_notification_status_log">通知状态日志</string>
+    <string name="debug_settings_notifications_status">"状态： "</string>
+    <string name="debug_settings_notifications_clear_status_log">清除状态日志</string>
+    <string name="debug_settings_feature_flag_title">功能标志</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">未保存的更改</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">您有未保存的更改。是否确定要离开？</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">留下</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">离开</string>
+    <string name="debug_settings_feature_flag_restore_default_values">恢复默认值</string>
+    <string name="debug_settings_feature_flag_apply_changes">应用更改</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"已覆盖； "</string>
+    <string name="debug_settings_feature_flag_default_value">默认值：%1$b</string>
 </resources>

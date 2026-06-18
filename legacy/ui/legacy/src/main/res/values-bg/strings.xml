@@ -462,7 +462,6 @@
     <string name="account_setup_push_limit_500">500 папки</string>
     <string name="account_setup_push_limit_1000">1000 папки</string>
     <string name="animations_title">Анимация</string>
-    <string name="animations_summary">Изпoлзване на ярки визуални ефекти</string>
     <string name="show_unified_inbox_title">Показване на обединената входяща папка</string>
     <string name="integrated_inbox_title">Обединена входяща кутия</string>
     <string name="integrated_inbox_detail">Всички съобщения в общата входяща кутия</string>

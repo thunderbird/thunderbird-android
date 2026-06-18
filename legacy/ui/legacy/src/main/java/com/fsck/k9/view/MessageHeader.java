@@ -12,6 +12,7 @@ import android.view.View.OnLongClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
@@ -25,7 +26,6 @@ import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
-import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.message.ReplyAction;
 import com.fsck.k9.message.ReplyActionStrategy;
@@ -41,6 +41,7 @@ import com.fsck.k9.ui.messageview.RecipientNamesView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textview.MaterialTextView;
 import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.core.common.mail.Flag;
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListDateTimeFormat;
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager;
 
@@ -122,12 +123,13 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         View menuOverflowView = findViewById(R.id.menu_overflow);
         menuOverflowView.setOnClickListener(this);
         String menuOverflowDescription =
-                getContext().getString(androidx.appcompat.R.string.abc_action_menu_overflow_description);
+            getContext().getString(androidx.appcompat.R.string.abc_action_menu_overflow_description);
         TooltipCompat.setTooltipText(menuOverflowView, menuOverflowDescription);
 
         findViewById(R.id.participants_container).setOnClickListener(this);
 
         attachmentSummaryContainer = findViewById(R.id.attachment_summary_container);
+        attachmentSummaryContainer.setOnClickListener(this);
         attachmentSummaryText = findViewById(R.id.attachment_summary_text);
         viewAllAttachmentsButton = findViewById(R.id.view_all_attachments);
         viewAllAttachmentsButton.setOnClickListener(this);
@@ -144,7 +146,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             showOverflowMenu(view);
         } else if (id == R.id.participants_container) {
             messageHeaderClickListener.onParticipantsContainerClick();
-        } else if (id == R.id.view_all_attachments) {
+        } else if (id == R.id.view_all_attachments || id == R.id.attachment_summary_container) {
             messageHeaderClickListener.onViewAllAttachmentsClick();
         }
     }
@@ -215,7 +217,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         starView.setOnClickListener(listener);
     }
 
-    public void populate(final Message message, final LegacyAccountDto account, boolean showStar, boolean showAccountIndicator) {
+    public void populate(final Message message, final LegacyAccountDto account, boolean showStar,
+        boolean showAccountIndicator) {
         if (showAccountIndicator) {
             accountNameView.setVisibility(View.VISIBLE);
             accountNameView.setText(account.getDisplayName());
@@ -272,12 +275,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     private void setRecipientNames(Message message, LegacyAccountDto account) {
         DisplayRecipientsExtractor displayRecipientsExtractor = new DisplayRecipientsExtractor(recipientFormatter,
-                recipientNamesView.getMaxNumberOfRecipientNames());
+            recipientNamesView.getMaxNumberOfRecipientNames());
 
         DisplayRecipients displayRecipients = displayRecipientsExtractor.extractDisplayRecipients(message, account);
 
         recipientNamesView.setRecipients(displayRecipients.getRecipientNames(),
-                displayRecipients.getNumberOfRecipients());
+            displayRecipients.getNumberOfRecipients());
     }
 
     private void setReplyActions(Message message, LegacyAccountDto account) {

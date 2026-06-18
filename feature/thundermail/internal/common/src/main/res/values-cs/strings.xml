@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thundermail_redirecting">Přesměrování na Thundermail…</string>
+    <string name="thundermail_something_went_wrong">Něco se pokazilo</string>
+    <string name="thundermail_browser_is_not_available">Prohlížeč není dostupný. Zkontrolujte prosím nastavení vašeho zařízení</string>
+    <string name="thundermail_operation_was_canceled">Operace byla zrušena</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Neznámá chyba. Zvažte prosím její nahlášení.</string>
+</resources>

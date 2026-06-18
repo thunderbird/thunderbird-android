@@ -197,10 +197,6 @@
             android:label="@string/show_headers_action"
             />
 
-        <activity
-            android:name="com.fsck.k9.ui.changelog.RecentChangesActivity"
-            android:label="@string/changelog_recent_changes_title"
-            />
 
         <activity
             android:name="com.fsck.k9.ui.push.PushInfoActivity"

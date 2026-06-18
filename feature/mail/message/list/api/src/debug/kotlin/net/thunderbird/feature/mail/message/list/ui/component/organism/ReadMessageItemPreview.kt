@@ -192,6 +192,7 @@ private fun PreviewDefault(
             state = MessageItemUi(
                 state = MessageItemUi.State.Read,
                 id = "",
+                messageReference = "reference",
                 account = Account(id = AccountIdFactory.create(), color = params.accountColor),
                 senders = ComposedAddressUi(
                     displayName = params.sender,
@@ -240,6 +241,7 @@ private fun PreviewCompact(
             state = MessageItemUi(
                 state = MessageItemUi.State.Read,
                 id = "",
+                messageReference = "reference",
                 account = Account(id = AccountIdFactory.create(), color = params.accountColor),
                 senders = ComposedAddressUi(
                     displayName = params.sender,
@@ -288,6 +290,7 @@ private fun PreviewRelaxed(
             state = MessageItemUi(
                 state = MessageItemUi.State.Read,
                 id = "",
+                messageReference = "reference",
                 account = Account(id = AccountIdFactory.create(), color = params.accountColor),
                 senders = ComposedAddressUi(
                     displayName = params.sender,
@@ -336,6 +339,7 @@ private fun PreviewDefaultWithoutAccountIndicator(
             state = MessageItemUi(
                 state = MessageItemUi.State.Read,
                 id = "",
+                messageReference = "reference",
                 account = Account(id = AccountIdFactory.create(), color = params.accountColor),
                 senders = ComposedAddressUi(
                     displayName = params.sender,

@@ -313,16 +313,16 @@
     <string name="account_notify_contacts_mail_only_summary">Solo mostrar notificaciones para correos de contactos conocidos</string>
     <string name="account_settings_ignore_chat_messages_label">Ignorar mensajes de chat</string>
     <string name="account_settings_ignore_chat_messages_summary">No mostrar notificaciones para mensajes que formen parte de un chat a través de correo electrónico</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Marcar como leído al abrirlo</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Marcar el correo como leído cuando se abre para leerlo</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Marcar como leído tras abrir</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marcar el mensaje como leído cuando se abre para leerlo</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Marcar como leído al borrar</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Marcar el correo como leído al borrarlo</string>
     <string name="account_settings_notification_channels_label">Categorías de notificaciones</string>
     <string name="account_settings_open_notification_settings_messages_summary">Configura las notificaciones los correos entrantes</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Configura las notificaciones de error y estado actual</string>
-    <string name="account_settings_show_pictures_label">Mostrar imágenes siempre</string>
+    <string name="account_settings_show_pictures_label">Siempre mostrár imágenes</string>
     <string name="account_settings_show_pictures_never">No</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Solo de contactos</string>
+    <string name="account_settings_show_pictures_only_from_contacts">De contactos</string>
     <string name="account_settings_show_pictures_always">De cualquiera</string>
     <string name="account_settings_composition">Correo saliente</string>
     <string name="account_settings_default_quoted_text_shown_label">Incluir correo original al responder</string>
@@ -469,7 +469,7 @@
     <string name="sort_unread_last">Leídos primero</string>
     <string name="sort_attach_first">Con adjuntos primero</string>
     <string name="sort_unattached_first">Sin adjuntos primero</string>
-    <string name="sort_by">Ordenado por…</string>
+    <string name="sort_by">Ordenar por…</string>
     <string name="sort_by_date">Fecha</string>
     <string name="sort_by_arrival">Llegada</string>
     <string name="sort_by_subject">Asunto</string>
@@ -519,7 +519,6 @@
     <string name="account_setup_push_limit_500">500 carpetas</string>
     <string name="account_setup_push_limit_1000">1000 carpetas</string>
     <string name="animations_title">Animaciones</string>
-    <string name="animations_summary">Utilizar animaciones y otros efectos en la interfaz</string>
     <string name="show_unified_inbox_title">Ver bandeja de entrada unificada</string>
     <string name="show_starred_count_title">Ver número de correos destacados</string>
     <string name="integrated_inbox_title">Entrada unificada</string>
@@ -615,7 +614,7 @@
     <string name="webview_contextmenu_email_save_action">Guardar en contactos</string>
     <string name="webview_contextmenu_email_copy_action">Copiar dirección de correo al portapapeles</string>
     <string name="webview_contextmenu_email_clipboard_label">Dirección de correo</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Todo</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Todos</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -920,7 +919,6 @@
     <string name="sort_by_then_by">Luego por…</string>
     <string name="general_settings_message_list_date_time_format_full">Completo</string>
     <string name="global_settings_splitview_when_unfolded">Cuando el dispositivo esté desencarpetado</string>
-    <string name="encrypted_attachment_title">Adjunto cifrado</string>
     <plurals name="message_view_attachment_summary">
         <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Adjunto (<xliff:g id="size">%2$s</xliff:g>)</item>
         <item quantity="many"><xliff:g id="count">%1$d</xliff:g> Adjuntos (<xliff:g id="size">%2$s</xliff:g>)</item>
@@ -949,4 +947,13 @@
     <string name="accessibility_move_cutoff_up">Sube el tope de botones disponible</string>
     <string name="accessibility_move_cutoff_down">Baja el tope de botones disponible</string>
     <string name="notification_action_star">Destacar</string>
+    <string name="notification_show_contact_picture_title">Mostrar imágenes de contactos en notificaciones</string>
+    <string name="notification_show_contact_picture_summary">Mostrar avatares de remitentes en notificaciones de nuevos mensajes</string>
+    <string name="animation_setting_on">Sí</string>
+    <string name="animation_setting_off">No</string>
+    <string name="animation_setting_follow_system">Utilizar ajustes del sistema</string>
+    <string name="changelog_type_fixed_text">ARREGLO</string>
+    <string name="changelog_type_changed_text">CAMBIOS</string>
+    <string name="changelog_type_new_text">NOVEDADES</string>
+    <string name="changelog_latest_label_text">RECIENTES</string>
 </resources>

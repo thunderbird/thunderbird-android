@@ -16,12 +16,12 @@ dependencies {
     implementation(projects.feature.account.api)
     implementation(projects.feature.mail.folder.api)
 
-    implementation(libs.kotlinx.coroutines.core)
-
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
     testImplementation(projects.backend.testing)
+
     testImplementation(libs.mime4j.dom)
+    testImplementation(libs.mockito.kotlin)
 }
 
 codeCoverage {

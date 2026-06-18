@@ -49,6 +49,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.helper.HttpsUnsubscribeUri
 import com.fsck.k9.helper.MailtoUnsubscribeUri
 import com.fsck.k9.helper.UnsubscribeUri
+import com.fsck.k9.mail.Part
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.MessageViewInfo
@@ -86,8 +87,11 @@ import net.thunderbird.core.ui.theme.manager.ThemeManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.export.MessageExporter
 import net.thunderbird.feature.mail.message.export.MessageFileNameSuggester
+import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.openintents.openpgp.util.OpenPgpIntentStarter
+import net.thunderbird.feature.mail.message.reader.api.R as MessageReaderR
 
 @Suppress("LargeClass")
 class MessageViewFragment :
@@ -105,6 +109,7 @@ class MessageViewFragment :
     private val outboxFolderManager: OutboxFolderManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val appNameProvider: AppNameProvider by inject()
+    private val messageReaderViewModel: MessageReaderViewContract.ViewModel<Part> by viewModel()
 
     private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
         registerForActivityResult(CreateDocumentResultContract()) { documentUri ->
@@ -248,6 +253,7 @@ class MessageViewFragment :
         }
 
         messageTopView.setAttachmentCallback(this)
+        messageTopView.setMessageReaderViewModel(messageReaderViewModel)
         messageTopView.setMessageCryptoPresenter(messageCryptoPresenter)
 
         messageTopView.setOnToggleFlagClickListener {
@@ -1203,8 +1209,10 @@ class MessageViewFragment :
         try {
             createDocumentLauncher.launch(
                 input = CreateDocumentResultContract.Input(
-                    title = attachment.displayName,
-                    mimeType = attachment.mimeType,
+                    title = attachment.displayName ?: getString(MessageReaderR.string.unnamed_attachment_title),
+                    mimeType = requireNotNull(attachment.mimeType) {
+                        "Invalid attachment type. The mimeType is null. Attachment = $attachment"
+                    },
                 ),
             )
         } catch (_: ActivityNotFoundException) {

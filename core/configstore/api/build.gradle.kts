@@ -5,6 +5,5 @@ plugins {
 kotlin {
     android {
         namespace = "net.thunderbird.core.configstore"
-        withHostTest {}
     }
 }

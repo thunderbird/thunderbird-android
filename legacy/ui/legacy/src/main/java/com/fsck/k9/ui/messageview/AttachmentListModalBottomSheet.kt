@@ -29,6 +29,7 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.designsystem.organism.ModalBottomSheet
 import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.feature.mail.message.reader.api.R as MessageReaderR
 
 private const val OPEN_PGP_RED = 0xFFCC0000
 
@@ -160,7 +161,11 @@ private fun AttachmentListItem(
         Spacer(modifier = Modifier.width(MainTheme.spacings.double))
         Column(modifier = Modifier.weight(1f)) {
             TextBodyMedium(
-                text = if (isLocked) stringResource(R.string.encrypted_attachment_title) else attachment.displayName,
+                text = when (val displayName = attachment.displayName) {
+                    null -> stringResource(MessageReaderR.string.unnamed_attachment_title)
+                    else if isLocked -> stringResource(MessageReaderR.string.encrypted_attachment_title)
+                    else -> displayName
+                },
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )

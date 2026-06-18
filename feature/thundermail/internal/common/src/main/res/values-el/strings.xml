@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thundermail_redirecting">Ανακατεύθυνση στο Thundermail...</string>
+    <string name="thundermail_something_went_wrong">Κάτι πήγε στραβά</string>
+    <string name="thundermail_browser_is_not_available">Το πρόγραμμα περιήγησης δεν είναι διαθέσιμο. Επαληθεύστε τη διαμόρφωση της συσκευής σας</string>
+    <string name="thundermail_operation_was_canceled">Η ενέργεια ακυρώθηκε</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Άγνωστο σφάλμα. Καλό θα ήταν να το αναφέρετε.</string>
+</resources>

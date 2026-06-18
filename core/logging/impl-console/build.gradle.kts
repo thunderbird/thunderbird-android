@@ -8,7 +8,6 @@ plugins {
 kotlin {
     android {
         namespace = "net.thunderbird.core.logging.console"
-        withHostTest {}
     }
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     applyDefaultHierarchyTemplate {

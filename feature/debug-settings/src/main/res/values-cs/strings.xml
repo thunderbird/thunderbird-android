@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_notifications_single_mail_subject">Předmět</string>
+    <string name="debug_settings_notifications_single_mail_summary">Shrnutí</string>
+    <string name="debug_settings_notifications_title">Oznámení</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Neuložené změny</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Máte neuložené změny. Opravdu chcete odejít?</string>
+    <string name="debug_settings_screen_title">Tajná ladicí obrazovka nastavení</string>
+    <string name="debug_settings_notifications_loading">Načítání…</string>
+    <string name="debug_settings_notifications_trigger_notification">Vytvořit oznámení</string>
+    <string name="debug_settings_notifications_single_mail_sender">Odesílatel</string>
+    <string name="debug_settings_notifications_single_mail_preview">Náhled</string>
+    <string name="debug_settings_notifications_common_notification_information">Obecné informační oznámení</string>
+    <string name="debug_settings_notifications_in_app_notification">Oznámení v aplikaci</string>
+    <string name="debug_settings_notifications_system_notification">Systémové oznámení</string>
+    <string name="debug_settings_notifications_preparing_notification">Příprava oznámení %1$s</string>
+    <string name="debug_settings_notification_status_log">Protokol stavu oznámení</string>
+    <string name="debug_settings_notifications_status">"Stav: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Vymazat protokol oznámení</string>
+    <string name="debug_settings_feature_flag_title">Příznaky funkcí</string>
+    <string name="debug_settings_feature_flag_apply_changes">Použít změny</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"přepsáno; "</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Zůstat</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Odejít</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Obnovit výchozí hodnoty</string>
+    <string name="debug_settings_feature_flag_default_value">výchozí hodnota: %1$b</string>
 </resources>

@@ -40,7 +40,9 @@ internal fun ContributionError(
             modifier = modifier,
         )
 
-        is ContributionError.UserCancelled -> Unit // could be ignored
+        is ContributionError.UserCancelled -> Unit
+
+        // could be ignored
         null -> Unit
     }
 }

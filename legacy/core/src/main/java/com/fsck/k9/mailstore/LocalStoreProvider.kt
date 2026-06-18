@@ -8,6 +8,7 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.storage.legacy.mapper.LegacyAccountDataMapper
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 
 class LocalStoreProvider {
     private val localStores = ConcurrentHashMap<String, LocalStore>()
@@ -17,10 +18,11 @@ class LocalStoreProvider {
     fun getInstance(account: LegacyAccountDto): LocalStore {
         val context = DI.get(Context::class.java)
         val generalSettingsManager = DI.get(GeneralSettingsManager::class.java)
+        val localMessageUidPrefixProvider = DI.get(LocalMessageUidPrefixProvider::class.java)
         val accountUuid = account.uuid
 
         return getInstanceById(accountUuid) {
-            LocalStore.createInstance(account, context, generalSettingsManager)
+            LocalStore.createInstance(account, context, generalSettingsManager, localMessageUidPrefixProvider)
         }
     }
 
@@ -29,11 +31,12 @@ class LocalStoreProvider {
         val context = DI.get(Context::class.java)
         val legacyAccountMapper = DI.get(LegacyAccountDataMapper::class.java)
         val generalSettingsManager = DI.get(GeneralSettingsManager::class.java)
+        val localMessageUidPrefixProvider = DI.get(LocalMessageUidPrefixProvider::class.java)
         val accountUuid = account.uuid
         val accountDto = legacyAccountMapper.toDto(account)
 
         return getInstanceById(accountUuid) {
-            LocalStore.createInstance(accountDto, context, generalSettingsManager)
+            LocalStore.createInstance(accountDto, context, generalSettingsManager, localMessageUidPrefixProvider)
         }
     }
 

@@ -12,8 +12,8 @@ import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Effect
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Event
 import net.thunderbird.core.common.provider.BrandNameProvider
 import net.thunderbird.core.ui.contract.mvi.observe
-import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun PermissionsScreen(

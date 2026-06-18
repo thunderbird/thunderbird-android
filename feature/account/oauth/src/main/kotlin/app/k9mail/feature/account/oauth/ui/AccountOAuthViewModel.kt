@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.oauth.ui
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import androidx.lifecycle.viewModelScope
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
@@ -13,6 +14,7 @@ import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Event
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.State
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.ViewModel
 import kotlinx.coroutines.launch
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 
 class AccountOAuthViewModel(
@@ -20,6 +22,7 @@ class AccountOAuthViewModel(
     private val getOAuthRequestIntent: UseCase.GetOAuthRequestIntent,
     private val finishOAuthSignIn: UseCase.FinishOAuthSignIn,
     private val checkIsGoogleSignIn: UseCase.CheckIsGoogleSignIn,
+    private val logger: Logger,
 ) : BaseViewModel<State, Event, Effect>(initialState), ViewModel {
 
     override fun initState(state: State) {
@@ -35,20 +38,22 @@ class AccountOAuthViewModel(
     override fun event(event: Event) {
         when (event) {
             is Event.OnOAuthResult -> onOAuthResult(event.resultCode, event.data)
-
             Event.SignInClicked -> onSignIn()
-
             Event.OnBackClicked -> navigateBack()
-
             Event.OnRetryClicked -> onRetry()
         }
     }
 
     private fun onSignIn() {
-        val result = getOAuthRequestIntent.execute(
-            hostname = state.value.hostname,
-            emailAddress = state.value.emailAddress,
-        )
+        val result = try {
+            getOAuthRequestIntent.execute(
+                hostname = state.value.hostname,
+                emailAddress = state.value.emailAddress,
+            )
+        } catch (e: ActivityNotFoundException) {
+            logger.error(throwable = e) { "Failed to launch custom tabs. Browser is not available." }
+            AuthorizationIntentResult.BrowserNotAvailable
+        }
 
         when (result) {
             AuthorizationIntentResult.NotSupported -> {
@@ -58,6 +63,9 @@ class AccountOAuthViewModel(
                     )
                 }
             }
+
+            AuthorizationIntentResult.BrowserNotAvailable ->
+                updateErrorState(Error.BrowserNotAvailable)
 
             is AuthorizationIntentResult.Success -> {
                 emitEffect(Effect.LaunchOAuth(result.intent))
@@ -93,8 +101,11 @@ class AccountOAuthViewModel(
         viewModelScope.launch {
             when (val result = finishOAuthSignIn.execute(data)) {
                 AuthorizationResult.BrowserNotAvailable -> updateErrorState(Error.BrowserNotAvailable)
+
                 AuthorizationResult.Canceled -> updateErrorState(Error.Canceled)
+
                 is AuthorizationResult.Failure -> updateErrorState(Error.Unknown(result.error))
+
                 is AuthorizationResult.Success -> {
                     updateState { state ->
                         state.copy(isLoading = false)

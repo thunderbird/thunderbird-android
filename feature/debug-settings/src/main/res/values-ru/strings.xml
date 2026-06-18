@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_screen_title">Экран скрытых настроек отладки</string>
+    <string name="debug_settings_notifications_loading">Загрузка…</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Несохранённые изменения</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">У вас есть несохранённые изменения. Вы уверены, что хотите выйти?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Остаться</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Выйти</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Восстановить значения по умолчанию</string>
+    <string name="debug_settings_feature_flag_apply_changes">Применить изменения</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"переопределено; "</string>
+    <string name="debug_settings_feature_flag_default_value">значение по умолчанию: %1$b</string>
+    <string name="debug_settings_notifications_single_mail_sender">Отправитель</string>
+    <string name="debug_settings_notifications_single_mail_subject">Тема</string>
+    <string name="debug_settings_notifications_single_mail_preview">Предпросмотр</string>
+    <string name="debug_settings_notifications_common_notification_information">Общая информация об уведомлении</string>
+    <string name="debug_settings_notifications_in_app_notification">Уведомление в приложении</string>
+    <string name="debug_settings_notifications_title">Уведомления</string>
+    <string name="debug_settings_notifications_system_notification">Системное уведомление</string>
+    <string name="debug_settings_notifications_preparing_notification">Подготовка уведомления %1$s</string>
+    <string name="debug_settings_notification_status_log">Журнал статусов уведомлений</string>
+    <string name="debug_settings_notifications_status">"Статус: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Очистить журнал статусов</string>
+    <string name="debug_settings_feature_flag_title">Флаги функций</string>
+    <string name="debug_settings_notifications_trigger_notification">Вызвать уведомление</string>
+    <string name="debug_settings_notifications_single_mail_summary">Сводка</string>
 </resources>

@@ -312,16 +312,16 @@
     <string name="account_notify_contacts_mail_only_summary">Προβολή ειδοποιήσεων μόνο για μηνύματα από τις επαφές μου</string>
     <string name="account_settings_ignore_chat_messages_label">Αγνόηση μηνυμάτων συζήτησης</string>
     <string name="account_settings_ignore_chat_messages_summary">Να μην εμφανίζονται ειδοποιήσεις για μηνύματα που ανήκουν σε συζήτηση e-mail</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Σημείωση ως αναγνωσμένου με την ανάγνωση</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Σήμανση ως αναγνωσμένο κατά το άνοιγμα</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Σημείωση ως αναγνωσμένου με την προβολή</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Σήμανση ως αναγνωσμένο κατά τη διαγραφή</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Να γίνεται σήμανση του μηνύματος ως αναγνωσμένο όταν διαγράφεται</string>
     <string name="account_settings_notification_channels_label">Κατηγορίες ειδοποιήσεων</string>
     <string name="account_settings_open_notification_settings_messages_summary">Ρύθμιση ειδοποιήσεων για νέα μηνύματα</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Ρύθμιση ειδοποιήσεων σφαλμάτων και κατάστασης</string>
-    <string name="account_settings_show_pictures_label">Προβολή εικόνων πάντα</string>
+    <string name="account_settings_show_pictures_label">Πάντα εμφάνιση των εικόνων</string>
     <string name="account_settings_show_pictures_never">Όχι</string>
-    <string name="account_settings_show_pictures_only_from_contacts">Από τις Επαφές</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Από επαφές</string>
     <string name="account_settings_show_pictures_always">Από οποιονδήποτε</string>
     <string name="account_settings_composition">Σύνθεση ταχυδρομείου</string>
     <string name="account_settings_default_quoted_text_shown_label">Παράθεση αρχικού μηνύματος στην απάντηση</string>
@@ -343,7 +343,7 @@
     <string name="account_settings_upload_sent_messages_label">Αναφόρτωση (ανέβασμα) απεσταλμένων μηνυμάτων</string>
     <string name="account_settings_upload_sent_messages_summary">Μεταφόρτωση μηνυμάτων στον φάκελο «Απεσταλμένα» μετά την αποστολή</string>
     <string name="account_settings_general_title">Γενικές ρυθμίσεις</string>
-    <string name="account_settings_reading_mail">Ανάγνωση ταχυδρομείου</string>
+    <string name="account_settings_reading_mail">Ανάγνωση email</string>
     <string name="account_settings_sync">Συγχρονισμός ταχυδρομείου</string>
     <string name="account_settings_folders">Φάκελοι</string>
     <string name="account_settings_quote_prefix_label">Πρόθεμα κειμένου παράθεσης</string>
@@ -485,7 +485,7 @@
     <string name="setting_theme_dark">Σκοτεινό</string>
     <string name="setting_theme_light">Ανοιχτόχρωμο</string>
     <string name="setting_theme_follow_system">Χρήση προεπιλεγμένου</string>
-    <string name="display_preferences">Προβολή</string>
+    <string name="display_preferences">Εμφάνιση</string>
     <string name="global_preferences">Γενικές</string>
     <string name="debug_preferences">Αποσφαλμάτωση</string>
     <string name="privacy_preferences">Ιδιωτικό</string>
@@ -518,7 +518,6 @@
     <string name="account_setup_push_limit_500">500 φάκελοι</string>
     <string name="account_setup_push_limit_1000">1000 φάκελοι</string>
     <string name="animations_title">Κινούμενα σχέδια</string>
-    <string name="animations_summary">Χρήση οπτικών εφέ gaudy</string>
     <string name="show_unified_inbox_title">Εμφάνιση Ενιαία Εισερχόμενα</string>
     <string name="show_starred_count_title">Εμφάνιση πλήθους επιλεγμένων</string>
     <string name="integrated_inbox_title">Ενοποιημένα εισερχόμενα</string>
@@ -568,8 +567,8 @@
         <item quantity="other">Θέλετε πράγματι να διαγράψετε <xliff:g id="message_count">%1$d</xliff:g> μηνύματα;</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Διαγραφή</string>
-    <string name="dialog_confirm_delete_cancel_button">Άκυρο</string>
-    <string name="dialog_confirm_mark_all_as_read_title">Επιβεβαίωση σήμανσης όλων ως αναγνωσμένα</string>
+    <string name="dialog_confirm_delete_cancel_button">Όχι</string>
+    <string name="dialog_confirm_mark_all_as_read_title">Επιβεβαίωση σήμανσης όλων ως αναγνωσμένων</string>
     <string name="dialog_confirm_mark_all_as_read_message">Θέλετε να σημανθούν όλα τα μηνύματα ως αναγνωσμένα;</string>
     <string name="dialog_confirm_empty_trash_title">Επιβεβαίωση εκκαθάρισης απορριμμάτων</string>
     <string name="dialog_confirm_empty_trash_message">Θέλετε να αδειάσετε το φάκελο απορριμμάτων;</string>
@@ -619,7 +618,7 @@
     <string name="account_settings_remote_search_num_results_entries_100">100</string>
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
-    <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1.000</string>
     <string name="account_settings_remote_search_num_label">Όριο αναζητήσεων διακομιστή</string>
     <string name="remote_search_sending_query">Αποστολή αιτήματος στον διακομιστή</string>
     <plurals name="remote_search_downloading">
@@ -911,4 +910,20 @@
     <string name="debug_force_auth_failure_done">Η κατάσταση OAuth απαλείφθηκε. Το επόμενο αίτημα θα αποτύχει.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Δεν ήταν δυνατή η τροποποίηση του αποθηκευμένου διακριτικού πρόσβασης. Δοκιμάστε την τοπική ακύρωση.</string>
     <string name="debug_invalidate_access_token_already_modified">Το αποθηκευμένο διακριτικό πρόσβασης έχει ήδη τροποποιηθεί.</string>
+    <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="message_view_attachments_view">Προβολή</string>
+    <string name="message_view_attachments_title">Συνημμένα</string>
+    <string name="notification_action_star">Αστέρι</string>
+    <string name="changelog_latest_label_text">ΤΕΛΕΥΤΑΙΑ</string>
+    <string name="changelog_type_new_text">ΝΕΑ</string>
+    <string name="changelog_type_changed_text">ΑΛΛΑΓΕΣ</string>
+    <string name="changelog_type_fixed_text">ΔΙΟΡΘΩΣΕΙΣ</string>
+    <string name="general_settings_message_list_date_time_format_full">Πλήρης</string>
+    <string name="general_settings_message_list_date_time_format_title">Μορφή ημερομηνίας/ώρας</string>
+    <string name="accessibility_move_down">Μετακίνηση κάτω</string>
+    <string name="notification_actions_settings_title">Ενέργειες ειδοποιήσεων</string>
+    <string name="notification_actions_settings_summary">Επιλέξτε ποιες ενέργειες θα εμφανίζονται στις ειδοποιήσεις των email</string>
+    <string name="accessibility_move_up">Μετακίνηση πάνω</string>
+    <string name="accessibility_move_item_up">Μετακίνηση <xliff:g id="item">%1$s</xliff:g> πάνω</string>
+    <string name="accessibility_move_item_down">Μετακίνηση <xliff:g id="item">%1$s</xliff:g> κάτω</string>
 </resources>

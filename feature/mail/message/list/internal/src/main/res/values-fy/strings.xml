@@ -10,7 +10,7 @@
     <string name="setup_archive_folder_dialog_create_new_folder">Nije map oanmeitsje</string>
     <string name="setup_archive_folder_dialog_done">Dien</string>
     <string name="setup_archive_folder_dialog_cancel">Annulearje</string>
-    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Create & set new folder]]></string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Nije map meitsje en ynstelle]]></string>
     <string name="setup_archive_folder_set_archive_error_account_not_found">Kin gjin account assosjearre mei ‘%1$s’ fine</string>
     <string name="setup_archive_folder_unhandled_error">Net-behannele flater: %1$s</string>
     <string name="setup_archive_folder_create_archive_folder_syncing">Syngronisearje…</string>
@@ -23,4 +23,13 @@
     <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Map ‘%1$s’ ekstern syngronisearje mislearre. Berjocht: %2$s</string>
     <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Mapnamme mei net leech wêze</string>
     <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Unjildige mapnamme ‘%1$s’</string>
+    <string name="message_list_state_new_message_description">Nij</string>
+    <string name="message_list_state_read_message_description">Lêzen</string>
+    <string name="message_list_state_unread_message_description">Net lêzen</string>
+    <string name="message_list_state_active_new_message_description">Aktyf, Nij</string>
+    <string name="message_list_state_active_read_message_description">Aktyf, Lêzen</string>
+    <string name="message_list_state_active_unread_message_description">Aktyf, Net lêzen</string>
+    <string name="message_list_state_selected_new_message_description">Selektearre, Nij</string>
+    <string name="message_list_state_selected_read_message_description">Selektearre, Lêzen</string>
+    <string name="message_list_state_selected_unread_message_description">Selektearre, Net lêzen</string>
 </resources>

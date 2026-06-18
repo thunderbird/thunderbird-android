@@ -1,11 +1,12 @@
 package net.thunderbird.core.preference.display.visualSettings
 
+import net.thunderbird.core.preference.AnimationPreference
 import net.thunderbird.core.preference.BodyContentType
 import net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettings
 
 const val DISPLAY_SETTINGS_DEFAULT_IS_USE_MESSAGE_VIEW_FIXED_WIDTH_FONT = false
 const val DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH = true
-const val DISPLAY_SETTINGS_DEFAULT_IS_SHOW_ANIMATION = true
+val DISPLAY_SETTINGS_DEFAULT_ANIMATION_PREFERENCE = AnimationPreference.FOLLOW_SYSTEM
 val DISPLAY_SETTINGS_DEFAULT_BODY_CONTENT_TYPE = BodyContentType.TEXT_HTML
 const val DISPLAY_SETTINGS_DEFAULT_DRAWER_EXPAND_ALL_FOLDER = false
 const val DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_ARCHIVE_ACTION_VISIBLE = false
@@ -15,7 +16,7 @@ const val DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_COPY_ACTION_VISIBLE = false
 const val DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_SPAM_ACTION_VISIBLE = false
 
 data class DisplayVisualSettings(
-    val isShowAnimations: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_SHOW_ANIMATION,
+    val animationPreference: AnimationPreference = DISPLAY_SETTINGS_DEFAULT_ANIMATION_PREFERENCE,
     val isUseMessageViewFixedWidthFont: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_USE_MESSAGE_VIEW_FIXED_WIDTH_FONT,
     val isAutoFitWidth: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH,
     val bodyContentType: BodyContentType = DISPLAY_SETTINGS_DEFAULT_BODY_CONTENT_TYPE,

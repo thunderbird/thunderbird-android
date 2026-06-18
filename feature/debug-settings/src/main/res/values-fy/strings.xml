@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_screen_title">Geheim debugynstellingenskerm</string>
+    <string name="debug_settings_notifications_loading">Lade…</string>
+    <string name="debug_settings_notifications_trigger_notification">Notifikaasje triggerje</string>
+    <string name="debug_settings_notifications_single_mail_sender">Ofstjoerder</string>
+    <string name="debug_settings_notifications_single_mail_subject">Underwerp</string>
+    <string name="debug_settings_notifications_single_mail_summary">Gearfetting</string>
+    <string name="debug_settings_notifications_single_mail_preview">Foarbyld</string>
+    <string name="debug_settings_notifications_common_notification_information">Algemiene notifikaasje-ynformaasje</string>
+    <string name="debug_settings_notifications_in_app_notification">Yn-appnotifikaasje</string>
+    <string name="debug_settings_notifications_title">Notifikaasjes</string>
+    <string name="debug_settings_notifications_system_notification">Systeemnotifikaasje</string>
+    <string name="debug_settings_notifications_preparing_notification">Notifikaasje tariede %1$s</string>
+    <string name="debug_settings_notification_status_log">Notifikaasjestatuslochboek</string>
+    <string name="debug_settings_notifications_status">"Status: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Lochstatus wiskje</string>
+    <string name="debug_settings_feature_flag_title">Funksjeflaggen</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Net bewarre wizigingen</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Jo hawwe net bewarre wizigingen. Binne jo wis dat jo ferlitte wolle?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Bliuwe</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Ferlitte</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Standertdwearden werstelle</string>
+    <string name="debug_settings_feature_flag_apply_changes">Wizigingen tapasse</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"oerskreaun; "</string>
+    <string name="debug_settings_feature_flag_default_value">standert wearde: %1$b</string>
 </resources>

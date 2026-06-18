@@ -1,3 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="setup_archive_folder_dialog_done">Τέλος</string>
+    <string name="setup_archive_folder_dialog_cancel">Ακύρωση</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Συγχρονισμός…</string>
+    <string name="message_list_state_new_message_description">Νέο</string>
+    <string name="message_list_state_read_message_description">Αναγνωσμένο</string>
+    <string name="message_list_state_unread_message_description">Μη αναγνωσμένο</string>
+    <string name="setup_archive_folder_dialog_dont_show_again">Να μην εμφανιστεί ξανά αυτό το μήνυμα</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Δημιουργία νέου φακέλου</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Λεπτομέρειες σφάλματος: %1$s</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Παράλειψη προς το παρόν</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Ορισμός φακέλου αρχειοθήκης</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">Δεν βρέθηκε ο λογαριασμός (%1$s)</string>
 </resources>

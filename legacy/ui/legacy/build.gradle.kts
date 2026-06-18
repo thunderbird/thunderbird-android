@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    api(projects.feature.changelog.api)
     api(projects.legacy.ui.base)
     api(projects.core.ui.account)
     api(projects.legacy.ui.folder)
@@ -14,9 +15,11 @@ dependencies {
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
     implementation(projects.core.android.contact)
+    implementation(projects.feature.changelog.internal)
 
     implementation(projects.core.featureflag)
     implementation(projects.core.logging.api)
+    implementation(projects.core.ui.compose.common)
     implementation(projects.core.ui.theme.api)
     implementation(projects.feature.launcher)
     implementation(projects.feature.account.settings.api)
@@ -89,11 +92,10 @@ dependencies {
     testImplementation(projects.mail.testing)
     testImplementation(projects.legacy.storage)
     testImplementation(projects.feature.telemetry.noop)
-    testImplementation(libs.robolectric)
+
     testImplementation(libs.androidx.test.core)
-    testImplementation(libs.kotlin.test)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.turbine)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.robolectric)
 }
 
 android {

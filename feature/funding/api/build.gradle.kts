@@ -6,7 +6,6 @@ plugins {
 kotlin {
     android {
         namespace = "net.thunderbird.feature.funding.api"
-        withHostTest {}
     }
 
     sourceSets {

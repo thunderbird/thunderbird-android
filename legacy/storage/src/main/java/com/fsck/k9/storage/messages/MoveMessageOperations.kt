@@ -5,16 +5,17 @@ import android.database.sqlite.SQLiteDatabase
 import app.k9mail.core.android.common.database.getIntOrNull
 import app.k9mail.core.android.common.database.getLongOrNull
 import app.k9mail.core.android.common.database.getStringOrNull
-import com.fsck.k9.K9
 import com.fsck.k9.mailstore.LockableDatabase
 import java.util.UUID
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 
 internal class MoveMessageOperations(
     private val database: LockableDatabase,
     private val threadMessageOperations: ThreadMessageOperations,
     private val accountId: AccountId,
+    private val localMessageUidPrefixProvider: LocalMessageUidPrefixProvider,
 ) {
     fun moveMessage(messageId: Long, destinationFolderId: Long): Long {
         Log.d("Moving message [ID: $messageId] to folder [ID: $destinationFolderId]")
@@ -46,7 +47,7 @@ internal class MoveMessageOperations(
         destinationFolderId: Long,
         threadInfo: ThreadInfo?,
     ): Long {
-        val destinationUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString()
+        val destinationUid = localMessageUidPrefixProvider.get() + UUID.randomUUID().toString()
 
         val contentValues = database.query(
             "messages",

@@ -30,7 +30,7 @@ import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorCo
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract.ViewModel
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.contract.mvi.observe
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ServerCertificateErrorScreen(

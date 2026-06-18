@@ -13,6 +13,7 @@ dependencies {
 
     testImplementation(projects.core.testing)
     testImplementation(libs.robolectric)
+    testImplementation(libs.mockito.kotlin)
 }
 
 codeCoverage {

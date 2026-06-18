@@ -20,10 +20,10 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.IntOffset
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
@@ -79,7 +79,7 @@ internal fun DrawerContent(
         modifier = modifier
             .width(DRAWER_WIDTH + additionalWidth)
             .fillMaxHeight()
-            .testTagAsResourceId("DrawerContent"),
+            .testTag("DrawerContent"),
         color = MainTheme.colors.surfaceContainerLow,
     ) {
         val selectedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId }

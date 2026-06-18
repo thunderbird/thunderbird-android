@@ -16,7 +16,7 @@ import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Effect
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Event
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.ui.contract.mvi.observe
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun QrCodeScannerScreen(

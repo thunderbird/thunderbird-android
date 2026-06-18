@@ -23,9 +23,7 @@ dependencies {
     implementation(projects.feature.widget.messageList)
 
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core.ktx)
     implementation(libs.preferencex)
-    implementation(libs.kotlinx.coroutines.core)
     implementation(libs.appauth)
 
     implementation(libs.glide)

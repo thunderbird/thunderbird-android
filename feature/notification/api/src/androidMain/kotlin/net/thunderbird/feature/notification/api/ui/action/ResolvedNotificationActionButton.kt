@@ -25,6 +25,7 @@ internal fun ResolvedNotificationActionButton(
     NotificationActionButton(
         text = when (val labelResource = action.labelResource) {
             null if action.label.isNotEmpty() -> action.label
+
             null -> error(
                 "You must specify at least one of labelResource or label in ${
                     action::class.simpleName

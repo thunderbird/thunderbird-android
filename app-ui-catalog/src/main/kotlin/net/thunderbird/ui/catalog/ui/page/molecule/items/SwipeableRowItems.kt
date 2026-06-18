@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -346,12 +347,16 @@ private fun buildAccessibilityActions(
 ): PersistentList<SwipeDirectionAccessibilityAction> = buildList {
     if (startToEndBehaviour != SwipeBehaviour.Disabled) {
         add(
-            SwipeDirectionAccessibilityAction.StartToEndAccessibilityAction(startToEndBehaviour.actionId),
+            SwipeDirectionAccessibilityAction.StartToEndAccessibilityAction(
+                actionLabel = { stringResource(startToEndBehaviour.actionId) },
+            ),
         )
     }
     if (endToStartBehaviour != SwipeBehaviour.Disabled) {
         add(
-            SwipeDirectionAccessibilityAction.EndToStartAccessibilityAction(endToStartBehaviour.actionId),
+            SwipeDirectionAccessibilityAction.EndToStartAccessibilityAction(
+                actionLabel = { stringResource(endToStartBehaviour.actionId) },
+            ),
         )
     }
 }.toPersistentList()

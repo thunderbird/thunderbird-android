@@ -23,7 +23,9 @@ dependencies {
 
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
+
     testImplementation(libs.icu4j.charset)
+    testImplementation(libs.mockito.kotlin)
 }
 
 codeCoverage {

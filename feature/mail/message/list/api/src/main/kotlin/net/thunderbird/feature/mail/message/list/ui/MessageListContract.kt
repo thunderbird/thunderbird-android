@@ -12,10 +12,11 @@ import net.thunderbird.feature.mail.message.list.ui.component.MessageListScope
 import net.thunderbird.feature.mail.message.list.ui.component.rememberMessageListScope
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
+import net.thunderbird.feature.mail.message.list.ui.legacy.LegacyMessageListBridge
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageListStateSideEffectHandlerFactory
 import net.thunderbird.feature.notification.api.content.InAppNotification
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * Defines the contract between the View and the ViewModel for the message list screen.
@@ -48,6 +49,8 @@ interface MessageListContract {
         data class Args(
             val accountIds: Set<AccountId>,
             val folderId: Long?,
+            // Temporary argument just to allow using the current legacy implementation.
+            val legacyMessageListBridge: LegacyMessageListBridge,
         )
     }
 

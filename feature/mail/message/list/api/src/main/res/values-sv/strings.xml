@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Välj</string>
-    <string name="swipe_action_deselect">Välj bort</string>
+    <string name="swipe_action_deselect">Avmarkera</string>
     <string name="swipe_action_mark_as_read">Markera som läst</string>
     <string name="swipe_action_mark_as_unread">Markera som oläst</string>
     <string name="swipe_action_add_star">Lägg till stjärna</string>
@@ -12,5 +12,20 @@
     <string name="swipe_action_delete">Ta bort</string>
     <string name="swipe_action_spam">Skräppost</string>
     <string name="swipe_action_move">Flytta…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valda</string>
+    <string name="actionbar_selected">%d markerad</string>
+    <string name="sort_by">Sortera efter…</string>
+    <string name="sort_by_date_asc">Datum (äldst först)</string>
+    <string name="sort_by_date_desc">Datum (nyaste först)</string>
+    <string name="sort_by_arrival_asc">Ankomst (äldsta först)</string>
+    <string name="sort_by_arrival_desc">Ankomst (nyaste först)</string>
+    <string name="sort_by_subject_asc">Ämne (A-Ö)</string>
+    <string name="sort_by_subject_desc">Ämne (Ö-A)</string>
+    <string name="sort_by_sender_asc">Avsändare (A–Ö)</string>
+    <string name="sort_by_sender_desc">Avsändare (Ö-A)</string>
+    <string name="sort_by_flag_asc">Stjärnmärkt först</string>
+    <string name="sort_by_unread_asc">Oläst först</string>
+    <string name="sort_by_unread_desc">Läst först</string>
+    <string name="sort_by_attach_asc">Med bilagor först</string>
+    <string name="sort_by_attach_desc">Utan bilagor först</string>
+    <string name="sort_by_flag_desc">Avstjärnad först</string>
 </resources>
