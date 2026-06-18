@@ -37,10 +37,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-26912e92.js";
+            window.path_to_searchindex_js = "../searchindex-3d820c34.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-cea24de8.js"></script>
+        <script src="../toc-b1fc2326.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -184,6 +184,7 @@
 finding an issue to getting your pull request merged.</p>
 <h2 id="-quick-workflow"><a class="header" href="#-quick-workflow">✅ Quick Workflow</a></h2>
 <pre><code class="language-markdown">- [ ] Find an issue (or open a bug report)
+- [ ] Review [Engineering process](../engineering/README.md) for user journey, RFC, ADR, or Technical Design requirements
 - [ ] Fork → clone → add upstream remote
 - [ ] Create a descriptive branch from `main`
 - [ ] Make focused changes + update docs/tests
@@ -199,16 +200,48 @@ finding an issue to getting your pull request merged.</p>
 <p>Before starting work, find an appropriate issue to work on:</p>
 <ul>
 <li>Browse the <a href="https://github.com/thunderbird/thunderbird-android/issues">GitHub Issues</a> for open issues</li>
-<li>Look for issues labeled <a href="https://github.com/thunderbird/thunderbird-android/labels/good%20first%20issue">good first issue</a> if you’re new to the project</li>
+<li>Prefer issues labeled <a href="https://github.com/thunderbird/thunderbird-android/labels/status%3A%20help%20wanted">status: help wanted</a>
+or <a href="https://github.com/thunderbird/thunderbird-android/labels/good%20first%20issue">good first issue</a> if you’re new
+to the project</li>
+<li>Do not take issues labeled <a href="https://github.com/thunderbird/thunderbird-android/labels/tb-team">tb-team</a>; they are reserved
+for maintainers</li>
 <li>Avoid issues labeled <a href="https://github.com/thunderbird/thunderbird-android/labels/unconfirmed">unconfirmed</a> as they are not yet ready for contributions</li>
 </ul>
 <h3 id="requesting-new-features--ideas"><a class="header" href="#requesting-new-features--ideas">Requesting New Features / Ideas</a></h3>
-<p>We don’t track new ideas or feature requests in GitHub Issues. Mozilla connect is where feature proposals, product
+<p>We don’t track new ideas or feature requests in GitHub Issues. Mozilla Connect is where feature proposals, product
 decisions, and larger design conversations happen.</p>
 <ul>
 <li>Start a discussion in <a href="https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android">Mozilla Connect - Ideas</a></li>
 <li>Once a feature is accepted and work is planned, maintainers will create the corresponding GitHub issue(s).</li>
 </ul>
+<h3 id="working-from-github-issues"><a class="header" href="#working-from-github-issues">Working From GitHub Issues</a></h3>
+<p>GitHub Bug Issues track confirmed defects. GitHub Feature Issues and GitHub Task Issues track work that maintainers have
+accepted and planned. New feature proposals still start in Mozilla Connect; maintainers create GitHub issues after a
+proposal is accepted and scheduled.</p>
+<p>External contributors should start from existing confirmed or planned issues:</p>
+<ul>
+<li>Use GitHub Bug Issues for confirmed defects.</li>
+<li>Use GitHub Feature Issues for accepted user-visible work.</li>
+<li>Use GitHub Task Issues for accepted supporting engineering work, such as refactoring, test infrastructure,
+documentation, investigation, or technical planning.</li>
+<li>Prefer issues labeled <code>status: help wanted</code> or <code>good first issue</code>.</li>
+<li>Do not work on bug issues labeled <code>unconfirmed</code>; they still need maintainer triage.</li>
+<li>Do not take issues labeled <code>tb-team</code>; they are reserved for maintainers.</li>
+<li>Comment on the issue before coding and explain the part you want to work on.</li>
+<li>Wait until a maintainer assigns the issue to you before starting work.</li>
+<li>Do not open pull requests for large, cross-cutting, or unclear work without maintainer assignment and alignment in the
+relevant issue.</li>
+</ul>
+<p>If there is no matching issue:</p>
+<ul>
+<li>New feature ideas belong in <a href="https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android">Mozilla Connect - Ideas</a>, not GitHub Issues.</li>
+<li>Bugs should be reported with the GitHub bug template.</li>
+<li>For technical work related to an existing issue, ask in that issue whether the contribution fits the current scope.</li>
+<li>If there is no related issue and the work is not a bug or Mozilla Connect feature idea, use the
+<a href="https://matrix.to/#/#tb-mobile-dev:mozilla.org">Matrix development channel</a> to ask where the work belongs before
+starting.</li>
+</ul>
+<p>Maintainers decide whether new GitHub Feature Issues, GitHub Task Issues, or GitHub Milestone Issues are needed.</p>
 <h3 id="reporting-bugs"><a class="header" href="#reporting-bugs">Reporting Bugs</a></h3>
 <p>If you’ve found a bug that’s not yet tracked:</p>
 <ul>
@@ -220,7 +253,8 @@ decisions, and larger design conversations happen.</p>
 <ol>
 <li>Comment on the GitHub issue you want to work on.</li>
 <li>Explain your intended approach.</li>
-<li>Wait for maintainer feedback to ensure alignment and avoid duplicate work.</li>
+<li>For non-trivial changes, you may be asked to create a <strong><a href="../engineering/user-journeys/README.html">User Journey</a></strong>, <strong><a href="../engineering/rfcs/README.html">RFC</a></strong>, <strong><a href="../engineering/adr/README.html">ADR</a></strong>, or <strong><a href="../engineering/technical-designs/README.html">Technical Design</a></strong> to reach consensus before implementation.</li>
+<li>Wait for a maintainer to assign the issue to you before starting work.</li>
 </ol>
 <h2 id="-forking-and-cloning"><a class="header" href="#-forking-and-cloning">🍴 Forking and Cloning</a></h2>
 <p>To contribute code, you’ll need to work with your own fork of the repository:</p>
@@ -344,21 +378,24 @@ git push origin your-branch-name
 <li>Mention any related issues or pull requests</li>
 </ol>
 <p>Example:</p>
-<pre><code class="language-markdown">## Title
-fix(email): add validation for email input
+<pre><code class="language-markdown">## Contribution Summary
 
-## Description
-Fixes #123
+Linked Issue/Ticket: #123
+RFC / Technical Design (if applicable):
+
+#### Description
 
 This PR adds email validation to the login form. It:
 - Implements regex-based validation for email inputs
 - Shows error messages for invalid emails
 - Adds unit tests for the validation logic
 
-## Screenshots
+#### Screen Shots
+
 [Screenshot of error message]
 
-## Testing
+#### Testing
+
 1. Enter an invalid email (e.g., "test@")
 2. Verify that an error message appears
 3. Enter a valid email
@@ -459,7 +496,7 @@ git push --force-with-lease origin fix-issue-123
 <li>Thank others for their help and feedback.</li>
 </ul>
 <p>👉 See <a href="code-review-guide.html">Code review guide</a> for more details.</p>
-<footer id="last-change">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

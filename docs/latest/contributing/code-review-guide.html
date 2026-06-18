@@ -37,10 +37,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-26912e92.js";
+            window.path_to_searchindex_js = "../searchindex-3d820c34.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-cea24de8.js"></script>
+        <script src="../toc-b1fc2326.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -192,7 +192,7 @@ project. It is intended to help both authors and reviewers ensure high-quality c
 - [ ] Security/privacy: inputs validated; no PII in logs; TLS; secure storage; permission changes documented
 - [ ] i18n: No new localizable strings unless justified; translations policy followed
 - [ ] Release train: feature flags set; uplift label + risk/impact (if applicable)
-- [ ] Docs/CHANGELOG updated; issues linked (Fixes #123); PR title/commits clear
+- [ ] Docs/CHANGELOG updated; issues linked (Fixes #123); Engineering process (RFC/TechDesign) followed; PR title/commits clear
 </code></pre>
 <h2 id="-for-code-authors-selfreview-checklist"><a class="header" href="#-for-code-authors-selfreview-checklist">🧑‍💻 For Code Authors (self‑review checklist)</a></h2>
 <ol>
@@ -217,7 +217,7 @@ project. It is intended to help both authors and reviewers ensure high-quality c
 <ul>
 <li>Follow modular rules: API vs internal separation; use <code>internal</code> visibility for all code in <code>:internal</code> modules (except for DI).</li>
 <li>Only depend on <code>:feature:foo:api</code> externally; <code>:feature:foo:internal</code> (and legacy <code>:feature:foo:impl</code>) are internal.
-See <a href="../architecture/adr/0009-api-internal-split.html">ADR-0009</a> for full module structure and dependency rules.</li>
+See <a href="../engineering/adr/0009-api-internal-split.html">ADR-0009</a> for full module structure and dependency rules.</li>
 <li>Respect MVI/Compose patterns in the UI layer; keep business logic out of UI implementation.</li>
 <li>Prefer constructor injection with Koin; keep constructors simple and dependencies explicit.</li>
 </ul>
@@ -266,6 +266,7 @@ See <a href="../architecture/adr/0009-api-internal-split.html">ADR-0009</a> for 
 <ul>
 <li>Update relevant docs, CHANGELOG entries and add context as needed.</li>
 <li>Link relevant issues using GitHub keywords so they auto-close on merge (<code>Fixes #123</code>, <code>Resolves #456</code>).</li>
+<li>Adhere to the <a href="../engineering/README.html">Engineering process</a> (RFC/Technical Design/ADR) if applicable.</li>
 <li>For commit format, see the <a href="git-commit-guide.html">Git Commit Guide</a></li>
 </ul>
 </li>
@@ -281,11 +282,12 @@ See <a href="../architecture/adr/0009-api-internal-split.html">ADR-0009</a> for 
 <li><strong>Correctness &amp; requirements</strong>
 <ul>
 <li>Does the change solve the stated problem? Any edge cases missed? Are invariants upheld?</li>
+<li>If non-trivial, does it align with the agreed <a href="../engineering/README.html">RFC or Technical Design</a>?</li>
 </ul>
 </li>
 <li><strong>Architecture &amp; boundaries</strong>
 <ul>
-<li>Adheres to module API/internal separation per <a href="../architecture/adr/0009-api-internal-split.html">ADR-0009</a> and project architecture (UI: Compose/MVI, Domain, Data).</li>
+<li>Adheres to module API/internal separation per <a href="../engineering/adr/0009-api-internal-split.html">ADR-0009</a> and project architecture (UI: Compose/MVI, Domain, Data).</li>
 <li>No cross‑module leaks (check for proper <code>internal</code> visibility in <code>:internal</code> modules); dependencies flow in the right direction.</li>
 <li>Note: The codebase still contains <code>:impl</code> modules during ADR-0009 migration; treat them with the same separation rules as <code>:internal</code>.</li>
 </ul>
@@ -358,7 +360,7 @@ See <a href="../architecture/adr/0009-api-internal-split.html">ADR-0009</a> for 
 <li>When disagreeing, provide reasoning and seek consensus.</li>
 <li>Use GitHub suggestions for trivial fixes where possible.</li>
 </ul>
-<footer id="last-change">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

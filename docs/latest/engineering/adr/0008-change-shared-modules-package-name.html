@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>0005 - Central Project Configuration - Thunderbird for Android - Developer Documentation</title>
+        <title>0008 - Change Shared Module package to net.thunderbird - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -37,10 +37,10 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-26912e92.js";
+            window.path_to_searchindex_js = "../../searchindex-3d820c34.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-cea24de8.js"></script>
+        <script src="../../toc-b1fc2326.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -145,7 +145,7 @@
                         <a href="https://github.com/thunderbird/thunderbird-android/" title="Git repository" aria-label="Git repository">
                             <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./architecture/adr/0005-central-project-configuration.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./engineering/adr/0008-change-shared-modules-package-name.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -179,46 +179,59 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module"><a class="header" href="#central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module">Central Management of Android Project Dependencies and Gradle Configurations via Build-Plugin Module</a></h1>
+                        <h1 id="change-shared-modules-package-to-netthunderbird"><a class="header" href="#change-shared-modules-package-to-netthunderbird">Change Shared Modules package to <code>net.thunderbird</code></a></h1>
 <ul>
-<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7803">#7803</a></li>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/9012">#9012</a></li>
 </ul>
 <h2 id="status"><a class="header" href="#status">Status</a></h2>
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
 <h2 id="context"><a class="header" href="#context">Context</a></h2>
-<p>In our Android project, managing dependencies and configurations directly within each module’s <code>build.gradle.kts</code> file has historically led to inconsistencies, duplication, and difficulty in updates. This challenge was particularly noticeable when maintaining the project configuration. By centralizing this setup in a <code>build-plugin</code> module, we can encapsulate and reuse Gradle logic, streamline the build process, and ensure consistency across all project modules and ease maintainability of our codebase.</p>
+<p>The Thunderbird Android project is a white-label version of K-9 Mail, and both apps — <code>app-thunderbird</code> and <code>app-kmail</code>
+— coexist in the same repository. They have distinct application IDs and branding, but share a significant portion of
+the code through common modules.</p>
+<p>These shared modules currently use the <code>app.k9mail</code> or <code>com.fsck</code> package name, which are legacy artifacts from
+K-9 Mail. While K-9 will remain available for some time, the project’s primary focus has shifted toward Thunderbird.</p>
+<p>To reflect this shift, establish clearer ownership, and prepare for future development (including cross-platform code
+integration), we will rename the packages in shared modules from <code>app.k9mail</code> and <code>com.fsck</code> to <code>net.thunderbird</code>.
+The actual application IDs and package names of <code>app-thunderbird</code> and <code>app-k9mail</code> must remain <strong>unchanged</strong>.</p>
 <h2 id="decision"><a class="header" href="#decision">Decision</a></h2>
-<p>To address these challenges, we have decided to establish a <code>build-plugin</code> module within our project. This module will serve as the foundation for all common Gradle configurations, dependency management, and custom plugins, allowing for simplified configuration across various project modules and plugins. Key components of this module include:</p>
+<p>We decided to rename the base package in all shared modules from <code>app.k9mail</code> and <code>com.fsck</code> to <code>net.thunderbird</code>.</p>
+<p>Specifically:</p>
 <ul>
-<li><strong>Custom Plugins:</strong> A suite of custom plugins that configure Gradle for different project aspects, ensuring each project type has tailored and streamlined build processes. These plugins should cover Android application, Android library, Jetpack Compose and Java modules.</li>
-<li><strong>Dependency Management:</strong> Utilizing the <a href="https://docs.gradle.org/current/userguide/platforms.html">Gradle Version Catalog</a> to centrally manage and update all dependencies and plugins, ensuring that every module uses the same versions and reduces the risk of conflicts.</li>
-<li><strong>Common Configuration Settings:</strong> Establishing common configurations for Java, Kotlin, and Android to reduce the complexity and variability in setup across different modules.</li>
+<li>All Kotlin/Java packages in shared modules will be refactored to use <code>net.thunderbird</code> as the base</li>
+<li>This must not affect the application IDs or packages of <code>app-thunderbird</code> or <code>app-kmail</code>, which will remain as-is</li>
+<li>All references, imports, and configuration references will be updated accordingly</li>
+<li>Tests, resources, and Gradle module settings will be adjusted to match the new package structure</li>
 </ul>
-<h2 id="consequences"><a class="header" href="#consequences">Consequences</a></h2>
-<h3 id="positive-consequences"><a class="header" href="#positive-consequences">Positive Consequences</a></h3>
-<ol>
-<li><strong>Consistency Across Modules:</strong> All project modules will use the same versions of dependencies and plugins, reducing the risk of conflicts and enhancing uniformity. They will also share common configurations, ensuring consistency in the build process.</li>
-<li><strong>Ease of Maintenance:</strong> Centralizing dependency versions in the Gradle Version Catalog allows for simple and quick updates to libraries and tools across all project modules from a single source.</li>
-<li><strong>Simplified Configuration Process:</strong> The custom plugins within the <code>build-plugin</code> module provides a streamlined way to apply settings and dependencies uniformly, enhancing productivity and reducing setup complexity.</li>
-</ol>
-<h3 id="negative-consequences"><a class="header" href="#negative-consequences">Negative Consequences</a></h3>
-<ol>
-<li><strong>Initial Overhead:</strong> The setup of the build-plugin module with a Gradle Version Catalog and the migration of existing configurations required an initial investment of time and resources, but this has been completed.</li>
-<li><strong>Complexity for New Developers:</strong> The centralized build architecture, particularly with the use of a Gradle Version Catalog, may initially seem daunting to new team members who are unfamiliar with this level of abstraction.</li>
-<li><strong>Dependency on the Build-Plugin Module:</strong> The entire project becomes reliant on the stability and accuracy of the <code>build-plugin</code> module. Errors within this module or the catalog could impact the build process across all modules.</li>
-</ol>
-<footer id="last-change">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer>
+<p>This change will establish a clearer identity for the shared code, align with Thunderbird’s branding, and prepare the
+project for cross-platform development.</p>
+<h2 id="outcomes"><a class="header" href="#outcomes">Outcomes</a></h2>
+<h3 id="positive-outcomes"><a class="header" href="#positive-outcomes">Positive Outcomes</a></h3>
+<ul>
+<li>Shared code reflects Thunderbird branding and identity</li>
+<li>Reduces confusion when navigating codebase shared by both apps</li>
+<li>Sets the foundation for cross-platform compatibility and future modularization</li>
+<li>Helps reinforce long-term direction of the project toward Thunderbird</li>
+</ul>
+<h3 id="negative-outcomes"><a class="header" href="#negative-outcomes">Negative Outcomes</a></h3>
+<ul>
+<li>Large-scale refactoring required across multiple modules</li>
+<li>Risk of introducing regressions during package renaming</li>
+<li>Potential for disruption in local development setups (e.g., IDE caching, broken imports)</li>
+<li>Contributors familiar with the old structure may need time to adjust</li>
+</ul>
+<footer id="last-change">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../architecture/adr/0004-naming-conventions-for-interfaces-and-their-implementations.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../engineering/adr/0007-project-structure.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../../architecture/adr/0006-white-label-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../engineering/technical-designs/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -228,11 +241,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../architecture/adr/0004-naming-conventions-for-interfaces-and-their-implementations.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../engineering/adr/0007-project-structure.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../../architecture/adr/0006-white-label-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../engineering/technical-designs/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-26912e92.js";
+            window.path_to_searchindex_js = "searchindex-3d820c34.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-cea24de8.js"></script>
+        <script src="toc-b1fc2326.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -234,7 +234,7 @@ the same code and therefore may look and feel similar.</p>
 <li><a href="https://blog.thunderbird.net/2024/09/contribute-to-thunderbird-for-android/">Other ways to help</a></li>
 <li><a href="https://www.mozilla.org/about/governance/policies/participation/">Participation guidelines</a></li>
 </ul>
-<footer id="last-change">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-contributing-to-thunderbird-for-android"><a class="header" href="#-contributing-to-thunderbird-for-android">🤝 Contributing to Thunderbird for Android</a></h1>
 <p>Welcome to the Thunderbird for Android project! We’re excited to have you here and welcome your contributions.</p>
 <h2 id="-new-contributor-essentials"><a class="header" href="#-new-contributor-essentials">🌱 New Contributor Essentials</a></h2>
@@ -271,6 +271,17 @@ Where appropriate, we’ll update links to Thunderbird-specific channels.</p>
 <li>Start a discussion in <a href="https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android">Mozilla Connect – Ideas</a></li>
 <li>Once a feature is accepted and work is planned, maintainers will create the corresponding GitHub issue(s).</li>
 </ul>
+<p><strong>GitHub Work:</strong></p>
+<p>GitHub Bug Issues track confirmed defects. GitHub Feature Issues and GitHub Task Issues track work that maintainers have
+accepted and planned. New feature proposals still start in Mozilla Connect; maintainers create GitHub issues after a
+proposal is accepted and scheduled.</p>
+<ul>
+<li>External contributors should start from an existing GitHub Bug Issue, GitHub Feature Issue, or GitHub Task Issue.</li>
+<li>Bug issues labeled <code>unconfirmed</code> are not ready for contributions.</li>
+<li>Issues labeled <code>tb-team</code> are reserved for maintainers.</li>
+<li>If you are unsure whether an existing issue is ready for your contribution, follow
+<a href="#working-from-github-issues">Working From GitHub Issues</a>.</li>
+</ul>
 <h2 id="-translations"><a class="header" href="#-translations">🌐 Translations</a></h2>
 <p>If you’d like to help to translate Thunderbird for Android, please visit:</p>
 <ul>
@@ -287,6 +298,7 @@ development, testing, and review.</p>
 </ul>
 <h3 id="-development-practices"><a class="header" href="#-development-practices">🏗️ Development Practices</a></h3>
 <ul>
+<li><strong><a href="engineering/README.html">Engineering</a></strong> – Process and artifacts for proposing, deciding, and delivering technical changes (RFCs, Technical Designs, ADRs).</li>
 <li><strong><a href="architecture/README.html">Architecture</a></strong> – System design: module types, UI/Domain/Data layers, offline-first.</li>
 <li><strong><a href="#-development-guide">Development Guidelines</a></strong> – Project-specific conventions and quick “do’s &amp; don’ts.”</li>
 <li><strong><a href="#-code-quality-guide">Code Quality Guide</a></strong> – Style rules, static analysis tools, and security practices.</li>
@@ -304,7 +316,7 @@ development, testing, and review.</p>
 </ul>
 <h2 id="thank-you"><a class="header" href="#thank-you">Thank You!</a></h2>
 <p>Thank you for taking the time to contribute to Thunderbird for Android! We appreciate your help in making the project better and more useful for everyone.</p>
-<footer id="last-change-1">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-1">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-development-environment"><a class="header" href="#-development-environment">🚀 Development Environment</a></h1>
 <p>This guide will help you set up your development environment and get started with contributing to the Thunderbird for
 Android project.</p>
@@ -456,12 +468,13 @@ class ExampleActivity : ComponentActivity() {
 <li>Network activity</li>
 </ul>
 <p>For performance-sensitive code, also consider Baseline Profiles or Macrobenchmark tests.</p>
-<footer id="last-change-2">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-2">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-contribution-workflow"><a class="header" href="#-contribution-workflow">🤝 Contribution Workflow</a></h1>
 <p>The contribution workflow for the Thunderbird for Android project explains the process of contributing code, from
 finding an issue to getting your pull request merged.</p>
 <h2 id="-quick-workflow"><a class="header" href="#-quick-workflow">✅ Quick Workflow</a></h2>
 <pre><code class="language-markdown">- [ ] Find an issue (or open a bug report)
+- [ ] Review [Engineering process](../engineering/README.md) for user journey, RFC, ADR, or Technical Design requirements
 - [ ] Fork → clone → add upstream remote
 - [ ] Create a descriptive branch from `main`
 - [ ] Make focused changes + update docs/tests
@@ -477,16 +490,48 @@ finding an issue to getting your pull request merged.</p>
 <p>Before starting work, find an appropriate issue to work on:</p>
 <ul>
 <li>Browse the <a href="https://github.com/thunderbird/thunderbird-android/issues">GitHub Issues</a> for open issues</li>
-<li>Look for issues labeled <a href="https://github.com/thunderbird/thunderbird-android/labels/good%20first%20issue">good first issue</a> if you’re new to the project</li>
+<li>Prefer issues labeled <a href="https://github.com/thunderbird/thunderbird-android/labels/status%3A%20help%20wanted">status: help wanted</a>
+or <a href="https://github.com/thunderbird/thunderbird-android/labels/good%20first%20issue">good first issue</a> if you’re new
+to the project</li>
+<li>Do not take issues labeled <a href="https://github.com/thunderbird/thunderbird-android/labels/tb-team">tb-team</a>; they are reserved
+for maintainers</li>
 <li>Avoid issues labeled <a href="https://github.com/thunderbird/thunderbird-android/labels/unconfirmed">unconfirmed</a> as they are not yet ready for contributions</li>
 </ul>
 <h3 id="requesting-new-features--ideas"><a class="header" href="#requesting-new-features--ideas">Requesting New Features / Ideas</a></h3>
-<p>We don’t track new ideas or feature requests in GitHub Issues. Mozilla connect is where feature proposals, product
+<p>We don’t track new ideas or feature requests in GitHub Issues. Mozilla Connect is where feature proposals, product
 decisions, and larger design conversations happen.</p>
 <ul>
 <li>Start a discussion in <a href="https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android">Mozilla Connect - Ideas</a></li>
 <li>Once a feature is accepted and work is planned, maintainers will create the corresponding GitHub issue(s).</li>
 </ul>
+<h3 id="working-from-github-issues"><a class="header" href="#working-from-github-issues">Working From GitHub Issues</a></h3>
+<p>GitHub Bug Issues track confirmed defects. GitHub Feature Issues and GitHub Task Issues track work that maintainers have
+accepted and planned. New feature proposals still start in Mozilla Connect; maintainers create GitHub issues after a
+proposal is accepted and scheduled.</p>
+<p>External contributors should start from existing confirmed or planned issues:</p>
+<ul>
+<li>Use GitHub Bug Issues for confirmed defects.</li>
+<li>Use GitHub Feature Issues for accepted user-visible work.</li>
+<li>Use GitHub Task Issues for accepted supporting engineering work, such as refactoring, test infrastructure,
+documentation, investigation, or technical planning.</li>
+<li>Prefer issues labeled <code>status: help wanted</code> or <code>good first issue</code>.</li>
+<li>Do not work on bug issues labeled <code>unconfirmed</code>; they still need maintainer triage.</li>
+<li>Do not take issues labeled <code>tb-team</code>; they are reserved for maintainers.</li>
+<li>Comment on the issue before coding and explain the part you want to work on.</li>
+<li>Wait until a maintainer assigns the issue to you before starting work.</li>
+<li>Do not open pull requests for large, cross-cutting, or unclear work without maintainer assignment and alignment in the
+relevant issue.</li>
+</ul>
+<p>If there is no matching issue:</p>
+<ul>
+<li>New feature ideas belong in <a href="https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android">Mozilla Connect - Ideas</a>, not GitHub Issues.</li>
+<li>Bugs should be reported with the GitHub bug template.</li>
+<li>For technical work related to an existing issue, ask in that issue whether the contribution fits the current scope.</li>
+<li>If there is no related issue and the work is not a bug or Mozilla Connect feature idea, use the
+<a href="https://matrix.to/#/#tb-mobile-dev:mozilla.org">Matrix development channel</a> to ask where the work belongs before
+starting.</li>
+</ul>
+<p>Maintainers decide whether new GitHub Feature Issues, GitHub Task Issues, or GitHub Milestone Issues are needed.</p>
 <h3 id="reporting-bugs"><a class="header" href="#reporting-bugs">Reporting Bugs</a></h3>
 <p>If you’ve found a bug that’s not yet tracked:</p>
 <ul>
@@ -498,7 +543,8 @@ decisions, and larger design conversations happen.</p>
 <ol>
 <li>Comment on the GitHub issue you want to work on.</li>
 <li>Explain your intended approach.</li>
-<li>Wait for maintainer feedback to ensure alignment and avoid duplicate work.</li>
+<li>For non-trivial changes, you may be asked to create a <strong><a href="engineering/user-journeys/README.html">User Journey</a></strong>, <strong><a href="engineering/rfcs/README.html">RFC</a></strong>, <strong><a href="engineering/adr/README.html">ADR</a></strong>, or <strong><a href="engineering/technical-designs/README.html">Technical Design</a></strong> to reach consensus before implementation.</li>
+<li>Wait for a maintainer to assign the issue to you before starting work.</li>
 </ol>
 <h2 id="-forking-and-cloning"><a class="header" href="#-forking-and-cloning">🍴 Forking and Cloning</a></h2>
 <p>To contribute code, you’ll need to work with your own fork of the repository:</p>
@@ -622,21 +668,24 @@ git push origin your-branch-name
 <li>Mention any related issues or pull requests</li>
 </ol>
 <p>Example:</p>
-<pre><code class="language-markdown">## Title
-fix(email): add validation for email input
+<pre><code class="language-markdown">## Contribution Summary
 
-## Description
-Fixes #123
+Linked Issue/Ticket: #123
+RFC / Technical Design (if applicable):
+
+#### Description
 
 This PR adds email validation to the login form. It:
 - Implements regex-based validation for email inputs
 - Shows error messages for invalid emails
 - Adds unit tests for the validation logic
 
-## Screenshots
+#### Screen Shots
+
 [Screenshot of error message]
 
-## Testing
+#### Testing
+
 1. Enter an invalid email (e.g., "test@")
 2. Verify that an error message appears
 3. Enter a valid email
@@ -737,7 +786,7 @@ git push --force-with-lease origin fix-issue-123
 <li>Thank others for their help and feedback.</li>
 </ul>
 <p>👉 See <a href="#-code-review-guide">Code review guide</a> for more details.</p>
-<footer id="last-change-3">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-3">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-development-guide"><a class="header" href="#-development-guide">🏗️ Development Guide</a></h1>
 <p>This document summarizes project-specific conventions for developers.</p>
 <p>For full details, see:</p>
@@ -800,7 +849,7 @@ git push --force-with-lease origin fix-issue-123
 <li>❌ Don’t bypass the architecture and layering (e.g., UI calling data sources directly)</li>
 <li>❌ Don’t introduce circular dependencies between modules</li>
 </ul>
-<footer id="last-change-4">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-4">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-code-quality-guide"><a class="header" href="#-code-quality-guide">🔍 Code Quality Guide</a></h1>
 <p>This document provides comprehensive guidelines for maintaining high code quality in the Thunderbird for Android
 project. Following these guidelines ensures that the codebase remains:</p>
@@ -991,7 +1040,7 @@ The rules are defined in the <code>.editorconfig</code> file and as editorconfig
 <p>The CI configuration is defined in the <code>.github/workflows</code> directory. The main workflow file is <code>android.yml</code>, which
 defines the CI pipeline for Android builds.</p>
 <p>👉 See <a href="#-code-review-guide">Code Review Guide</a> for PR expectations and etiquette.</p>
-<footer id="last-change-5">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-5">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-code-review-guide"><a class="header" href="#-code-review-guide">👁️ Code Review Guide</a></h1>
 <p>This guide outlines best practices for creating and reviewing pull requests (PRs) in the Thunderbird for Android
 project. It is intended to help both authors and reviewers ensure high-quality contributions.</p>
@@ -1005,7 +1054,7 @@ project. It is intended to help both authors and reviewers ensure high-quality c
 - [ ] Security/privacy: inputs validated; no PII in logs; TLS; secure storage; permission changes documented
 - [ ] i18n: No new localizable strings unless justified; translations policy followed
 - [ ] Release train: feature flags set; uplift label + risk/impact (if applicable)
-- [ ] Docs/CHANGELOG updated; issues linked (Fixes #123); PR title/commits clear
+- [ ] Docs/CHANGELOG updated; issues linked (Fixes #123); Engineering process (RFC/TechDesign) followed; PR title/commits clear
 </code></pre>
 <h2 id="-for-code-authors-selfreview-checklist"><a class="header" href="#-for-code-authors-selfreview-checklist">🧑‍💻 For Code Authors (self‑review checklist)</a></h2>
 <ol>
@@ -1030,7 +1079,7 @@ project. It is intended to help both authors and reviewers ensure high-quality c
 <ul>
 <li>Follow modular rules: API vs internal separation; use <code>internal</code> visibility for all code in <code>:internal</code> modules (except for DI).</li>
 <li>Only depend on <code>:feature:foo:api</code> externally; <code>:feature:foo:internal</code> (and legacy <code>:feature:foo:impl</code>) are internal.
-See <a href="architecture/adr/0009-api-internal-split.html">ADR-0009</a> for full module structure and dependency rules.</li>
+See <a href="engineering/adr/0009-api-internal-split.html">ADR-0009</a> for full module structure and dependency rules.</li>
 <li>Respect MVI/Compose patterns in the UI layer; keep business logic out of UI implementation.</li>
 <li>Prefer constructor injection with Koin; keep constructors simple and dependencies explicit.</li>
 </ul>
@@ -1079,6 +1128,7 @@ See <a href="architecture/adr/0009-api-internal-split.html">ADR-0009</a> for ful
 <ul>
 <li>Update relevant docs, CHANGELOG entries and add context as needed.</li>
 <li>Link relevant issues using GitHub keywords so they auto-close on merge (<code>Fixes #123</code>, <code>Resolves #456</code>).</li>
+<li>Adhere to the <a href="engineering/README.html">Engineering process</a> (RFC/Technical Design/ADR) if applicable.</li>
 <li>For commit format, see the <a href="#git-commit-guide">Git Commit Guide</a></li>
 </ul>
 </li>
@@ -1094,11 +1144,12 @@ See <a href="architecture/adr/0009-api-internal-split.html">ADR-0009</a> for ful
 <li><strong>Correctness &amp; requirements</strong>
 <ul>
 <li>Does the change solve the stated problem? Any edge cases missed? Are invariants upheld?</li>
+<li>If non-trivial, does it align with the agreed <a href="engineering/README.html">RFC or Technical Design</a>?</li>
 </ul>
 </li>
 <li><strong>Architecture &amp; boundaries</strong>
 <ul>
-<li>Adheres to module API/internal separation per <a href="architecture/adr/0009-api-internal-split.html">ADR-0009</a> and project architecture (UI: Compose/MVI, Domain, Data).</li>
+<li>Adheres to module API/internal separation per <a href="engineering/adr/0009-api-internal-split.html">ADR-0009</a> and project architecture (UI: Compose/MVI, Domain, Data).</li>
 <li>No cross‑module leaks (check for proper <code>internal</code> visibility in <code>:internal</code> modules); dependencies flow in the right direction.</li>
 <li>Note: The codebase still contains <code>:impl</code> modules during ADR-0009 migration; treat them with the same separation rules as <code>:internal</code>.</li>
 </ul>
@@ -1171,7 +1222,7 @@ See <a href="architecture/adr/0009-api-internal-split.html">ADR-0009</a> for ful
 <li>When disagreeing, provide reasoning and seek consensus.</li>
 <li>Use GitHub suggestions for trivial fixes where possible.</li>
 </ul>
-<footer id="last-change-6">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-6">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="git-commit-guide"><a class="header" href="#git-commit-guide">Git Commit Guide</a></h1>
 <p>Use <a href="https://www.conventionalcommits.org/">Conventional Commits</a> to write consistent and meaningful commit messages.
 This makes your work easier to review, track, and maintain for everyone involved in the project.</p>
@@ -1271,7 +1322,7 @@ adding a feature).</li>
 <li>Make each commit purposeful and self-contained.</li>
 <li>Write commits that make collaboration and future development easier for everyone—including you.</li>
 </ul>
-<footer id="last-change-7">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-7">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-testing-guide"><a class="header" href="#-testing-guide">🧪 Testing Guide</a></h1>
 <p>This document outlines the testing practices and guidelines for the Thunderbird for Android project.</p>
 <p><strong>Key Testing Principles:</strong></p>
@@ -1671,7 +1722,7 @@ before requesting an exemption.</p>
 <p>High coverage does not guarantee high-quality tests. Focus on meaningful tests that validate behavior and edge cases
 while meeting the thresholds above.</p>
 </blockquote>
-<footer id="last-change-8">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-8">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-translations-2"><a class="header" href="#-translations-2">🌐 Translations</a></h1>
 <p>This document explains how you can help translate Thunderbird for Android into your language.</p>
 <ul>
@@ -1766,7 +1817,7 @@ Any special notes: [Optional]
 <h2 id="-thank-you"><a class="header" href="#-thank-you">🙏 Thank You!</a></h2>
 <p>Every translation improves Thunderbird for Android for users worldwide.
 We greatly appreciate your help in making the app accessible in more languages!</p>
-<footer id="last-change-9">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-9">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-managing-strings--languages"><a class="header" href="#-managing-strings--languages">📝 Managing Strings &amp; Languages</a></h1>
 <p>This document explains how developers manage our English <strong>source strings</strong> and add/remove <strong>languages</strong> in the
 Thunderbird for Android project.</p>
@@ -2029,7 +2080,7 @@ generate it after adding new strings.</p>
 <p>Automation tools must map between systems.
 See <a href="https://github.com/thunderbird/thunderbird-android/blob/main/cli/translation-cli/src/main/kotlin/net/thunderbird/cli/translation/LanguageCodeLoader.kt#L12-L13">LanguageCodeLoader.kt</a> for an example.</p>
 <p>You could find a more complete list of differences in the <a href="https://developer.android.com/guide/topics/resources/localization#LocaleCodes">Android documentation</a> and <a href="https://developer.android.com/guide/topics/resources/internationalization">Unicode and internationalization support</a></p>
-<footer id="last-change-10">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-10">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="java-to-kotlin-conversion-guide"><a class="header" href="#java-to-kotlin-conversion-guide">Java to Kotlin Conversion Guide</a></h1>
 <p>This guide describes our process for converting Java code to Kotlin.</p>
 <h2 id="why-convert-to-kotlin"><a class="header" href="#why-convert-to-kotlin">Why Convert to Kotlin?</a></h2>
@@ -2074,7 +2125,7 @@ See <a href="https://github.com/thunderbird/thunderbird-android/blob/main/cli/tr
 <li><a href="https://kotlinlang.org/docs/java-interop.html">Calling Java from Kotlin</a></li>
 <li><a href="https://developer.android.com/kotlin?hl=en">Kotlin and Android | Android Developers</a></li>
 </ul>
-<footer id="last-change-11">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-11">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-architecture-1"><a class="header" href="#-architecture-1">🏗️ Architecture</a></h1>
 <p>The application follows a modular architecture with clear separation between different layers and components. The architecture is designed to support both the Thunderbird for Android and K-9 Mail applications while maximizing code reuse, maintainability and enable adoption of Kotlin Multiplatform in the future.</p>
 <h2 id="-key-architectural-principles"><a class="header" href="#-key-architectural-principles">🔑 Key Architectural Principles</a></h2>
@@ -2090,9 +2141,17 @@ See <a href="https://github.com/thunderbird/thunderbird-android/blob/main/cli/tr
 <li><strong>🧪 Testability</strong>: The architecture facilitates comprehensive testing at all levels</li>
 </ul>
 <h2 id="-architecture-decision-records"><a class="header" href="#-architecture-decision-records">📝 Architecture Decision Records</a></h2>
-<p>The <a href="architecture/adr/README.html">Architecture Decision Records</a> document the architectural decisions made during the development of the
+<p>The <a href="engineering/adr/README.html">Architecture Decision Records</a> document the architectural decisions made during the development of the
 project, providing context and rationale for key technical choices. Reading through these decisions will improve your
 contributions and ensure long-term maintainability of the project.</p>
+<h2 id="-engineering-process"><a class="header" href="#-engineering-process">🏗️ Engineering Process</a></h2>
+<p>We use a structured engineering process to propose, decide, and deliver technical changes. This includes:</p>
+<ul>
+<li><strong><a href="engineering/rfcs/README.html">RFCs</a></strong> for proposing technical direction and reaching consensus.</li>
+<li><strong><a href="engineering/technical-designs/README.html">Technical Designs</a></strong> for detailing implementation plans.</li>
+<li><strong><a href="engineering/adr/README.html">ADRs</a></strong> for recording durable architectural decisions.</li>
+</ul>
+<p>For more details on how these artifacts work together, see the <a href="engineering/README.html">Engineering</a> documentation.</p>
 <h2 id="-module-structure"><a class="header" href="#-module-structure">📦 Module Structure</a></h2>
 <p>The application is organized into several module types:</p>
 <ul>
@@ -3046,7 +3105,7 @@ showing the dependencies and integration points between modules:</p>
     class FEATURE_TB featureTB
 </pre>
 
-<footer id="last-change-12">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-12">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-module-structure-1"><a class="header" href="#-module-structure-1">📦 Module Structure</a></h1>
 <p>The Thunderbird for Android project is following a modularization approach, where the codebase is divided into multiple
 distinct modules. These modules encapsulate specific functionality and can be developed, tested, and maintained
@@ -3450,7 +3509,7 @@ guidelines on when to create new modules and how to structure them.</p>
 <li><strong>Small Size</strong>: The functionality is small and simple</li>
 <li><strong>Single Responsibility</strong>: The functionality represents a single responsibility</li>
 </ol>
-<footer id="last-change-13">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-13">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-feature-modules-and-extensions"><a class="header" href="#-feature-modules-and-extensions">📦 Feature Modules and Extensions</a></h1>
 <p>The Thunderbird for Android project is organized into multiple feature modules, each encapsulating a specific
 functionality of the application. This document provides an overview of the main feature modules, how they are
@@ -3952,7 +4011,7 @@ relationships between different features:</p>
     class CALENDAR,TODO,SYNC,NOTES,APPOINTMENT extension_module
 </pre>
 
-<footer id="last-change-14">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-14">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-ui-architecture-1"><a class="header" href="#-ui-architecture-1">🎨 UI Architecture</a></h1>
 <p>The UI is built using Jetpack Compose with a component-based architecture following a modified Model-View-Intent (MVI) pattern. While we refer to it as MVI, our implementation uses “Events” instead of “Intents” for user interactions and “Actions” for use case calls. This architecture provides a unidirectional data flow, clear separation of concerns, and improved testability.</p>
 <h2 id="-component-hierarchy"><a class="header" href="#-component-hierarchy">📱 Component Hierarchy</a></h2>
@@ -5191,7 +5250,7 @@ updateState { it.copy(isLoading = false, error = "Failed to load settings") }
 <li><strong>🎨 Color Contrast</strong>: Sufficient color contrast for readability</li>
 <li><strong>⌨️ Keyboard Navigation</strong>: Support for keyboard navigation</li>
 </ul>
-<footer id="last-change-15">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-15">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-theming"><a class="header" href="#-theming">🎭 Theming</a></h1>
 <p>This document provides a detailed explanation of the theming system used in our applications. It covers the theme
 architecture, components, customization, and usage.</p>
@@ -5810,7 +5869,7 @@ fun testThemedButton() {
     composeTestRule.onNodeWithText("Click Me").assertExists()
 }
 </code></pre>
-<footer id="last-change-16">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-16">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-design-system"><a class="header" href="#-design-system">🎨 Design System</a></h1>
 <p>The design system is a collection of guidelines, principles, and tools that help teams create consistent and cohesive visual designs and user experiences. It is built using the Atomic Design Methodology.</p>
 <h2 id="-background"><a class="header" href="#-background">📚 Background</a></h2>
@@ -5839,7 +5898,7 @@ This can save time and improve the overall quality, as well as facilitate collab
 <li><a href="https://atomicdesign.bradfrost.com/chapter-2/">Atomic Design Methodology | Atomic Design by Brad Frost</a></li>
 <li><a href="https://www.wearemobilefirst.com/blog/atomic-design">Atomic Design: Getting Started | Blog | We Are Mobile First</a></li>
 </ul>
-<footer id="last-change-17">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-17">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="user-flows"><a class="header" href="#user-flows">User Flows</a></h1>
 <p>The user flows diagrams below illustrate typical paths users take through the application, helping developers
 understand how different components interact from a user perspective.</p>
@@ -5853,7 +5912,7 @@ understand how different components interact from a user perspective.</p>
 <p>We plan to test these user flows using <a href="https://maestro.dev/">maestro</a>, a tool for automating UI tests. Maestro allows us to write tests in a
 simple YAML format, making it easy to define user interactions and verify application behavior.</p>
 <p>The current flows could be found in the *<code>ui-flows</code> directory in the repository.</p>
-<footer id="last-change-18">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-18">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-settings-architecture"><a class="header" href="#-settings-architecture">⚙️ Settings Architecture</a></h1>
 <p>This document describes the settings architecture in Thunderbird for Android, explaining how preferences are organized,
 stored, and upgraded.</p>
@@ -5981,7 +6040,7 @@ sequenceDiagram
 <h2 id="-related-documentation"><a class="header" href="#-related-documentation">📚 Related Documentation</a></h2>
 <p>For information on how settings are persisted to the database and how to perform low-level database migrations,
 see the <a href="#preference-migration-guide">Preference Migration Guide</a>.</p>
-<footer id="last-change-19">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-19">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="feature-flags"><a class="header" href="#feature-flags">Feature Flags</a></h1>
 <p>A feature flag can be nothing more than a simple boolean that can enable or disable a feature that we’re working on. While some companies may use their feature flags for A/B testing, with timestamps controlling releases, and any other features they may want more control over. We primarily use them to turn off new features before they’re ready to be released to the wider userbase. This is in part because we work on the app using our own forked repositories, and rarely create feature branches to merge ongoing projects into. This isn’t a problem because we use local feature flags on debugging builds only, and allows easier testing of new features we’re working on.</p>
 <p>In this guide, you’ll learn where our feature flags live, how to add your own, and how to make use of them. It’ll come in handy if you want to work on a larger project than one single PR could create.</p>
@@ -6135,7 +6194,7 @@ if (composeForMessageReader.isEnabled()) {
 <p><img src="architecture/assets/secretDebugScreenFeatureFlags.jpg" alt="In-app debug screen with feature flags and switches"></p>
 <p>You’re probably thinking you have to add the feature flag to some list now, right? Wrong! When you do a debug build, you’ll be able to access the new feature flag right away. You can find the feature flag you’ve just made in the “Secret Debug Settings Screen.” This is displayed by the <code>DebugFeatureFlagSection</code> composable function. You’ll be able to enable your feature flag and test your new feature right from here. To access the “Secret Debug Settings Screen,” you can either use the three dot button on the message list screen and select “DEBUG: Feature Flags,” or you can go into the side menu, down to Settings, General Settings, Debugging, and tap “Open Secret debug screen.”</p>
 <p>Enjoy testing your new feature!</p>
-<footer id="last-change-20">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-20">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-legacy-module-integration"><a class="header" href="#-legacy-module-integration">🔙 Legacy Module Integration</a></h1>
 <p>This document outlines how existing legacy code is integrated into the new modular architecture of the application and
 the strategy for its migration. The core principle is to isolate legacy code and provide a controlled way for
@@ -6590,32 +6649,698 @@ If <code>:app-common</code> bridges to legacy code, that is an internal detail o
     class LEGACY_CODE legacy_module
 </pre>
 
-<footer id="last-change-21">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-21">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<h1 id="engineering"><a class="header" href="#engineering">Engineering</a></h1>
+<p>The Engineering section defines the processes and artifacts used to propose, decide, and deliver technical changes. It connects high-level roadmap planning with public delivery work through RFCs, Technical Designs, and Architecture Decision Records (ADRs).</p>
+<p>Use the smallest set of documents and issues that makes the work clear, reviewable, and maintainable.</p>
+<h2 id="for-contributors"><a class="header" href="#for-contributors">For Contributors</a></h2>
+<p>If you want to contribute:</p>
+<ol>
+<li>Start with the <a href="#-contribution-workflow">Contribution Workflow</a>, including its guidance for finding
+an issue, reporting bugs, and discussing your plan before coding.</li>
+<li>Use GitHub Feature Issues for user-visible work and GitHub Task Issues for supporting work.</li>
+<li>If the work looks larger than one issue or pull request, ask maintainers whether it needs a GitHub Milestone Issue. Use the
+<a href="https://matrix.to/#/#tb-mobile-dev:mozilla.org">Matrix development channel</a> when you are unsure where to ask.</li>
+<li>If the work needs a user journey, RFC, ADR, or technical design, add that document in a pull request and link it from
+the relevant issue.</li>
+</ol>
+<h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
+<p>Our engineering process connects high-level technical decisions with public delivery work and internal roadmap planning.</p>
+<pre class="mermaid">flowchart TD
+    subgraph Roadmap[Roadmap]
+        direction LR
+        Epic[Notion Epic] -- split into --&gt; MilestoneNotion[Notion Milestone]
+    end
+
+    subgraph Public[Public Delivery]
+        direction LR
+        MilestoneGH[GitHub Milestone Issue] --&gt; Issues[GitHub Issues]
+        Issues --&gt; PR[Pull Requests]
+    end
+    
+    subgraph Planning[Proposals &amp; Decisions]
+        direction LR
+        RFC[RFC] -. proposes .-&gt; TechDesign[Technical Design]
+        RFC -. produces .-&gt; ADR[ADR]
+        ADR -. defines .-&gt; TechDesign
+    end
+
+
+    Epic -. defines .-&gt; MilestoneGH
+    MilestoneGH -. synced .-&gt; MilestoneNotion
+    Planning -. defines .-&gt; MilestoneGH
+    MilestoneGH -. planning .-&gt; Planning
+    Issues -. planning .-&gt; Planning
+    
+    classDef proposal fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef adr fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef design fill:#ffe6cc,stroke:#000000,color:#000000
+    classDef issue fill:#fefce8,stroke:#eab308,color:#854d0e
+    classDef notion fill:#fdf4ff,stroke:#d946ef,color:#86198f
+    classDef pr fill:#f0fdf4,stroke:#22c55e,color:#166534
+
+    linkStyle default stroke:#94a3b8,stroke-width:2px
+
+    class RFC proposal
+    class ADR adr
+    class TechDesign design
+    class MilestoneGH,Issues issue
+    class Epic,MilestoneNotion,Roadmap notion
+    class PR pr
+    class Planning proposal
+</pre>
+
+<h3 id="the-three-pillars"><a class="header" href="#the-three-pillars">The Three Pillars</a></h3>
+<p>The process is built on three pillars that serve different purposes and audiences:</p>
+<ol>
+<li><strong>Roadmap</strong>: The high-level layer managed through <strong>Notion Epics</strong> and <strong>Notion Milestones</strong>. The roadmap is the leading influence for Thunderbird maintainers. This is used for high-level reporting and resource planning.</li>
+<li><strong>Public Delivery</strong>: The public project management layer. We use <strong>GitHub Milestone Issues</strong>, <strong>GitHub Feature Issues</strong>, and <strong>GitHub Task Issues</strong> to track <em>what</em> is being delivered and <em>when</em>. This is the source of truth for all delivery work, including milestone creation and technical planning, and the layer visible to external contributors.</li>
+<li><strong>Proposals &amp; Decisions</strong>: Technical documentation (User Journeys, RFCs, ADRs, Technical Designs) stored in the repository. These define <em>why</em> and <em>how</em> we build things. They are the durable technical record for all contributors and maintainers.</li>
+</ol>
+<h3 id="continuous-synchronization"><a class="header" href="#continuous-synchronization">Continuous Synchronization</a></h3>
+<p>We maintain a strict relationship between public delivery and the roadmap:</p>
+<ul>
+<li><strong>Milestone Sync</strong>: Every <strong>GitHub Milestone Issue</strong> is automatically synced to Notion as a <strong>Notion Milestone</strong>. This ensures that roadmap progress reflects actual delivery status.</li>
+<li><strong>Public First</strong>: Public GitHub artifacts must always be understandable on their own. We never reference internal Notion artifacts as the only source of requirements or technical detail.</li>
+<li><strong>Durable Records</strong>: While discussions happen in Pull Requests and Issues, the final decisions and Technical Designs must be captured in the durable artifacts (ADRs, RFCs, or Technical Designs) to remain discoverable for future contributors.</li>
+</ul>
+<h2 id="artifacts"><a class="header" href="#artifacts">Artifacts</a></h2>
+<h3 id="roadmap"><a class="header" href="#roadmap">Roadmap</a></h3>
+<p>Roadmap artifacts are used to track work against the project’s long-term goals. We use two types of artifacts:</p>
+<h4 id="notion-epic"><a class="header" href="#notion-epic">Notion Epic</a></h4>
+<p>A Notion epic is an internal roadmap artifact and the leading influence for Thunderbird maintainers.</p>
+<p>A Notion epic is typically split into multiple <strong>GitHub Milestone Issues</strong>. Each GitHub Milestone Issue is created in GitHub, synced to Notion as a <strong>Notion Milestone</strong>, and then linked back to the epic to track progress against the roadmap goal.</p>
+<p>Notion epics are internal. Public GitHub artifacts should not require access to Notion to be understood.</p>
+<h4 id="notion-milestone"><a class="header" href="#notion-milestone">Notion Milestone</a></h4>
+<p>A Notion milestone is the internal Notion representation of a synced GitHub Milestone Issue.</p>
+<p>It may stand on its own or be manually linked to a Notion epic.</p>
+<p>The GitHub Milestone Issue remains the source of truth for delivery scope, creation, and progress.</p>
+<h3 id="public-delivery"><a class="header" href="#public-delivery">Public Delivery</a></h3>
+<p>GitHub artifacts are used to track and deliver work.</p>
+<h4 id="github-milestone-issue"><a class="header" href="#github-milestone-issue">GitHub Milestone Issue</a></h4>
+<p>A GitHub Milestone Issue defines a public delivery outcome and is the primary driver for technical planning. Defining the GitHub Milestone Issue is a critical first step of the delivery phase.</p>
+<p>Use a GitHub Milestone Issue to describe the objective, scope, out-of-scope work, relevant requirements, and links to related
+work.</p>
+<p>A GitHub Milestone Issue may stand on its own. It does not need to belong to a Notion epic.</p>
+<p>RFCs, ADRs, and Technical Designs may link to a GitHub Milestone Issue when they define the direction for a delivery outcome.
+A GitHub Milestone Issue is often the primary driver for these artifacts; when the work is complex enough, it can include
+specific tasks to define and review the necessary technical documentation before implementation starts.</p>
+<p>GitHub Milestone Issues are created and managed by core maintainers because they require GitHub permissions and roadmap
+coordination. See <a href="#delivery-planning">Delivery Planning</a> for the GitHub Milestone Issue template and guidance on splitting
+milestones into GitHub Feature Issues and GitHub Task Issues.</p>
+<p>External contributors usually start from existing GitHub Feature Issues or GitHub Task Issues. If work appears large
+enough to need a GitHub Milestone Issue, discuss scope with maintainers before starting. Follow the
+<a href="#contributor-path">Contributor Path</a> when existing issues do not clearly cover the work.</p>
+<h4 id="github-feature-or-task-issue"><a class="header" href="#github-feature-or-task-issue">GitHub Feature or Task Issue</a></h4>
+<p>These issues describe the specific work needed for a GitHub Milestone Issue.</p>
+<ul>
+<li><strong>Feature</strong>: User-facing or product-visible work.</li>
+<li><strong>Task</strong>: Supporting engineering work (refactoring, tooling, etc.).</li>
+</ul>
+<p>Engineers use these issues to break milestone work into reviewable and assignable pieces. When a GitHub Milestone Issue needs a new
+technical direction or durable decision record, specific <strong>Task Issues</strong> are often created to track the delivery of the
+relevant RFC, ADR, or Technical Design.</p>
+<h3 id="proposals--decisions"><a class="header" href="#proposals--decisions">Proposals &amp; Decisions</a></h3>
+<p>Technical documentation helps us reach consensus and record why decisions were made. All proposals and designs are reviewed and approved by <strong>maintainers</strong>.</p>
+<h3 id="user-journey"><a class="header" href="#user-journey">User Journey</a></h3>
+<p>A user journey records the user-centered reason for product-visible work.</p>
+<p>Use a user journey when a milestone or feature changes an important user workflow, introduces a new workflow, or depends
+on user-centered product decisions that future contributors will need to understand.</p>
+<p>User journeys are stored in the <a href="engineering/user-journeys/README.html"><strong><code>docs/engineering/user-journeys</code></strong></a> directory.</p>
+<h3 id="rfc"><a class="header" href="#rfc">RFC</a></h3>
+<p>An RFC proposes a technical direction before implementation starts.</p>
+<p>Use an RFC when the team needs to agree on direction before implementation, especially when there are multiple reasonable
+approaches, broad impact, or unclear scope.</p>
+<p>RFCs are stored in the repository and reviewed through <a href="#-contribution-workflow">pull requests</a>.</p>
+<h3 id="adr"><a class="header" href="#adr">ADR</a></h3>
+<p>An ADR records a durable architectural decision.</p>
+<p>Use an ADR when future contributors need to understand what decision was made, why it was made, and what consequences
+it has.</p>
+<p>An ADR may come from an RFC, technical design, implementation PR, or stand on its own.</p>
+<p>ADRs are stored in the <a href="engineering/adr/README.html"><strong><code>docs/engineering/adr</code></strong></a> directory.</p>
+<h3 id="technical-design"><a class="header" href="#technical-design">Technical Design</a></h3>
+<p>A technical design describes how an accepted direction will be implemented.</p>
+<p>Use a technical design when implementation details are too large for an RFC, such as schemas, API contracts, migration
+plans, runtime behavior, build tooling, or multi-PR implementation plans.</p>
+<h2 id="process"><a class="header" href="#process">Process</a></h2>
+<p>The engineering process is flexible and scales with the complexity of the change. Work can start from a proposal,
+a milestone, a roadmap item, or a small implementation need.</p>
+<pre class="mermaid">flowchart TD
+    Start[Engineering Work] --&gt; Source{Entry Point}
+
+    subgraph Initiating[1. Initiating]
+        direction LR
+        Epic[Notion Epic]
+        RFC[RFC]
+    end
+
+    subgraph Planning[2. Technical Planning]
+        direction LR
+        TechDesign[Technical Design]
+        ADR[ADR]
+    end
+
+    subgraph Delivery[3. Delivery]
+        direction LR
+        MilestoneGH[GitHub Milestone Issue]
+        MilestoneNotion[Notion Milestone]
+        Issues[GitHub Issues]
+    end
+
+    subgraph Implementation[4. Implementation]
+        direction LR
+        PR[Pull Requests]
+    end
+
+    %% Entry Points
+    Source --&gt; Epic
+    Source --&gt; MilestoneGH
+    Source --&gt; RFC
+    Source --&gt; ADR
+
+    %% Process Flow
+    Epic -. defines .-&gt; MilestoneGH
+    RFC -. proposes .-&gt; TechDesign
+    RFC -. produces .-&gt; ADR
+    ADR -. defines .-&gt; TechDesign
+    
+    MilestoneGH -. synced .-&gt; MilestoneNotion
+    MilestoneNotion -. linked to .-&gt; Epic
+    
+    TechDesign -. may define .-&gt; MilestoneGH
+    MilestoneGH --&gt; Issues
+    Issues --&gt; PR
+
+    %% Technical Planning from Issues
+    MilestoneGH -. planning .-&gt; Planning
+    MilestoneGH -. may require .-&gt; RFC
+    Issues -. planning .-&gt; Planning
+    Issues -. may propose .-&gt; RFC
+    PR -. updates .-&gt; Planning
+
+    classDef start fill:#f8fafc,stroke:#64748b,color:#0f172a
+    classDef decision fill:#ffffff,stroke:#000000,color:#000000
+    classDef proposal fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef adr fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef design fill:#ffe6cc,stroke:#000000,color:#000000
+    classDef notion fill:#fdf4ff,stroke:#d946ef,color:#86198f
+    classDef issue fill:#fefce8,stroke:#eab308,color:#854d0e
+    classDef pr fill:#f0fdf4,stroke:#22c55e,color:#166534
+
+    linkStyle default stroke:#94a3b8,stroke-width:2px
+
+    class Start start
+    class Source decision
+    class RFC proposal
+    class ADR adr
+    class TechDesign design
+    class MilestoneGH,Issues issue
+    class Epic,MilestoneNotion notion
+    class PR pr
+</pre>
+
+<h3 id="1-initiating-work"><a class="header" href="#1-initiating-work">1. Initiating Work</a></h3>
+<p>Work enters the process through different channels depending on its nature:</p>
+<ul>
+<li><strong>Roadmap</strong>: High-level goals start as a <strong>Notion Epic</strong>. These are split into multiple outcomes, each requiring the <strong>definition of a GitHub Milestone Issue</strong>.</li>
+<li><strong>Public Delivery</strong>: Specific product requirements start with the <strong>definition of a GitHub Milestone Issue</strong>. For external contributors, existing GitHub Feature Issues and GitHub Task Issues are the primary entry point.</li>
+<li><strong>Proposals</strong>: New technical ideas or significant changes can start as an <strong>RFC</strong> or as a GitHub Task Issue proposing creation of an RFC. The GitHub Task Issue is delivered by opening the RFC pull request. If the accepted RFC leads to planned delivery work, maintainers create a <strong>GitHub Milestone Issue</strong> and link the RFC GitHub Task Issue as part of that milestone.</li>
+<li><strong>Direct Decisions</strong>: Architectural changes that don’t require a broad RFC discussion start as an <strong>ADR</strong>.</li>
+</ul>
+<h3 id="2-technical-planning"><a class="header" href="#2-technical-planning">2. Technical Planning</a></h3>
+<p>For complex changes, we use durable artifacts to reach consensus before writing production code. Not every milestone
+needs an RFC, ADR, or Technical Design. All planning artifacts are reviewed by <strong>maintainers</strong>:</p>
+<ul>
+<li><strong>RFC to ADR</strong>: If an RFC results in a significant architectural change, it should produce an ADR to record the decision.</li>
+<li><strong>RFC to Technical Design</strong>: If the implementation details are complex, an RFC leads to a <strong>Technical Design</strong>.</li>
+<li><strong>Direct to Milestone</strong>: If the direction is clear and the impact is contained, a proposal can go directly to a <strong>GitHub Milestone Issue</strong>.</li>
+<li><strong>Milestone to Planning Artifacts</strong>: The usual delivery flow is to define the <strong>GitHub Milestone Issue</strong> first, then add GitHub Task Issues for any RFCs, ADRs, or Technical Designs needed by that milestone.</li>
+</ul>
+<h3 id="3-transitioning-to-delivery"><a class="header" href="#3-transitioning-to-delivery">3. Transitioning to Delivery</a></h3>
+<p>Work is usually organized for delivery through milestones. This phase transitions high-level goals, proposals, or
+technical designs into a concrete delivery plan.</p>
+<ul>
+<li><strong>Defining the Milestone</strong>: Every non-trivial delivery outcome must be defined as a <strong>GitHub Milestone Issue</strong>. This is the source of truth where we establish the objective, scope, out-of-scope items, and success criteria.</li>
+<li><strong>Technical Planning</strong>: If the technical direction is not yet fully defined, or the work is complex enough to need a durable record, the milestone includes <strong>Task Issues</strong> to create and review the necessary RFC, ADR, or Technical Design.</li>
+<li><strong>Synchronization</strong>: The GitHub Milestone Issue is synced to a <strong>Notion Milestone</strong>, which is then linked to a <strong>Notion Epic</strong> for roadmap tracking.</li>
+<li><strong>Decomposition</strong>: The milestone is broken down into <strong>GitHub Feature Issues</strong> (user-facing) and <strong>GitHub Task Issues</strong> (supporting work) for implementation.</li>
+</ul>
+<p>For the operational steps and issue guidance, see <a href="#delivery-planning">Delivery Planning</a>.</p>
+<h3 id="4-implementation--feedback"><a class="header" href="#4-implementation--feedback">4. Implementation &amp; Feedback</a></h3>
+<p>Implementation happens in <strong>Pull Requests</strong> (PRs):</p>
+<ul>
+<li><strong>Small Changes</strong>: Tiny fixes or refactorings can skip the planning artifacts and go directly to a PR or a GitHub Task Issue.</li>
+<li><strong>Durable Updates</strong>: If a code review reveals that the original Technical Design or decision was flawed, the corresponding RFC, ADR, or Technical Design must be updated. This ensures the repository remains an accurate record of our technical state.</li>
+<li><strong>Atomic Delivery</strong>: PRs should be small and focused on a single GitHub Feature Issue or GitHub Task Issue.</li>
+</ul>
+<h2 id="common-scenarios"><a class="header" href="#common-scenarios">Common Scenarios</a></h2>
+<p>The following scenarios help you choose the right path for your work.</p>
+<h3 id="1-small-fix-or-improvement"><a class="header" href="#1-small-fix-or-improvement">1. Small Fix or Improvement</a></h3>
+<p><strong>Examples</strong>: Minor refactorings, documentation typos, or small UI tweaks.</p>
+<ul>
+<li><strong>Artifacts</strong>: GitHub Task Issue (optional) + Pull Request.</li>
+<li><strong>Flow</strong>: Go straight to code. Use a GitHub Task Issue if the work needs to be tracked or assigned before the PR is ready.</li>
+</ul>
+<h3 id="2-standard-feature-or-scoped-change"><a class="header" href="#2-standard-feature-or-scoped-change">2. Standard Feature or Scoped Change</a></h3>
+<p><strong>Examples</strong>: A new user-facing setting, a small feature, or a well-defined library update.</p>
+<ul>
+<li><strong>Artifacts</strong>: GitHub Milestone Issue + GitHub Feature/Task Issues + Pull Requests.</li>
+<li><strong>Flow</strong>: Define the outcome in a <strong>GitHub Milestone Issue</strong>, break it down into issues, and implement.</li>
+</ul>
+<h3 id="3-complex-feature-or-significant-change"><a class="header" href="#3-complex-feature-or-significant-change">3. Complex Feature or Significant Change</a></h3>
+<p><strong>Examples</strong>: Implementing a new protocol, a major UI overhaul, or a multi-PR feature.</p>
+<ul>
+<li><strong>Artifacts</strong>: GitHub Milestone Issue + Technical Design + Issues + PRs.</li>
+<li><strong>Flow</strong>: Start with a <strong>GitHub Milestone Issue</strong> to define the goal. Use a <strong>GitHub Task Issue</strong> within the milestone to create a <strong>Technical Design</strong>, get feedback, and then proceed to implementation.</li>
+</ul>
+<h3 id="4-new-technical-direction-or-broad-impact"><a class="header" href="#4-new-technical-direction-or-broad-impact">4. New Technical Direction or Broad Impact</a></h3>
+<p><strong>Examples</strong>: Proposing a new library for dependency injection, changing the module structure, or a new concurrency model.</p>
+<ul>
+<li><strong>Artifacts</strong>: RFC (+ Technical Design) + GitHub Milestone Issue + Issues + PRs.</li>
+<li><strong>Flow</strong>: Use an <strong>RFC</strong> to reach consensus on the direction. If the implementation is complex, follow up with a <strong>Technical Design</strong>.</li>
+</ul>
+<h3 id="5-fundamental-architectural-decision"><a class="header" href="#5-fundamental-architectural-decision">5. Fundamental Architectural Decision</a></h3>
+<p><strong>Examples</strong>: Decisions that must be recorded for future contributors (e.g., “Why we use Koin”).</p>
+<ul>
+<li><strong>Artifacts</strong>: ADR (+ RFC) + PR.</li>
+<li><strong>Flow</strong>: Use an <strong>ADR</strong> to record the decision and its consequences. ADRs are often produced by RFCs or Technical Designs but can also stand alone for clear architectural rules.</li>
+</ul>
+<h3 id="6-roadmap-driven-work"><a class="header" href="#6-roadmap-driven-work">6. Roadmap-Driven Work</a></h3>
+<p><strong>Examples</strong>: Large internal projects or cross-team goals.</p>
+<ul>
+<li><strong>Artifacts</strong>: Notion Epic + Notion Milestone (synced) + GitHub Milestone Issue + Issues + PRs.</li>
+<li><strong>Flow</strong>: Start with a <strong>Notion Epic</strong> to align with internal goals. Link it to a <strong>GitHub Milestone Issue</strong> (which syncs back to a <strong>Notion Milestone</strong>) to track public delivery.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="delivery-planning"><a class="header" href="#delivery-planning">Delivery Planning</a></h1>
+<p>Delivery planning turns an accepted goal into public, reviewable GitHub work. Most planned work starts with a GitHub
+Milestone Issue, then adds the GitHub Feature Issues, GitHub Task Issues, and technical documents needed to deliver it.</p>
+<p>The goal is to keep GitHub issues understandable on their own, even when the work also relates to internal roadmap
+planning.</p>
+<h2 id="internal-planning-input"><a class="header" href="#internal-planning-input">Internal Planning Input</a></h2>
+<p>Larger roadmap work may be prepared internally through a Scope of Work (SoW), kickoff meeting, milestone owner
+assignment, and follow-up planning. This internal process is not usually owned by the person creating the GitHub
+delivery artifacts.</p>
+<p>For this engineering process, the required public step is to create the GitHub Milestone Issue from the agreed planning
+output. The GitHub Milestone Issue remains the public source of truth for delivery scope, even when an internal SoW or Notion
+artifact provides additional planning context.</p>
+<p>External contributors do not need access to the SoW or Notion artifacts to contribute. Public GitHub issues must contain
+the context needed to understand and deliver the work.</p>
+<h2 id="mapping-internal-planning-to-public-github-work"><a class="header" href="#mapping-internal-planning-to-public-github-work">Mapping Internal Planning to Public GitHub Work</a></h2>
+<p>Internal planning can contain more detail than should live in a single GitHub issue. Translate only the information
+needed for public planning and delivery:</p>
+<ul>
+<li><strong>Milestone or epic scope</strong>: Capture the objective, resources, scope, out-of-scope work, and requirements in the
+GitHub Milestone Issue.</li>
+<li><strong>User journey and product value</strong>: Capture durable user journeys and user stories in repository documentation. Link
+to those documents from the GitHub Milestone Issue and related GitHub Feature Issues.</li>
+<li><strong>Technical direction</strong>: Create GitHub Task Issues for an RFC, ADR, or technical design only when the milestone needs them.</li>
+<li><strong>Implementation work</strong>: Split the milestone into GitHub Feature Issues and GitHub Task Issues that can be assigned,
+reviewed, and merged independently.</li>
+<li><strong>Validation needs</strong>: Capture expected verification in the relevant GitHub Feature Issues or GitHub Task Issues.
+Create separate GitHub Task Issues when validation work needs its own owner or pull request.</li>
+</ul>
+<p>Do not copy internal-only planning notes into public issues. Public issues must contain enough context to be understood
+without access to private documents.</p>
+<h2 id="issue-types"><a class="header" href="#issue-types">Issue Types</a></h2>
+<p>We use three GitHub issue types for planned delivery work:</p>
+<ul>
+<li><strong>GitHub Milestone Issue</strong>: Defines the public delivery outcome, scope, requirements, and related resources.</li>
+<li><strong>GitHub Feature Issue</strong>: Describes user-facing or product-visible work needed to complete the milestone.</li>
+<li><strong>GitHub Task Issue</strong>: Describes supporting work needed to complete the milestone, such as technical planning, refactoring,
+tests, build changes, documentation, or follow-up investigation.</li>
+</ul>
+<p>GitHub issues are limited to core maintainers because creating and managing them depends on GitHub
+permissions and roadmap coordination. Contributors and non-maintainer developers can discuss work through existing
+issues, but should not create new GitHub issues without prior approval.</p>
+<h2 id="contributor-path"><a class="header" href="#contributor-path">Contributor Path</a></h2>
+<p>If you are not a core maintainer:</p>
+<ol>
+<li>Follow the <a href="#-contribution-workflow">Contribution Workflow</a> for finding an issue and
+discussing your plan before coding.</li>
+<li>If the work is already tracked, contribute through the relevant GitHub Bug Issue, GitHub Feature Issue, or GitHub
+Task Issue. Prefer issues labeled <code>status: help wanted</code> or <code>good first issue</code>. Do not take issues labeled <code>tb-team</code>;
+they are reserved for maintainers. Do not work on bug issues labeled <code>unconfirmed</code>; they still need maintainer
+triage. For other GitHub Bug Issues, GitHub Feature Issues, or GitHub Task Issues, discuss the scope in the issue
+and wait for a maintainer to assign the issue to you before starting.</li>
+<li>If you want to propose a <strong>new feature</strong>, start a discussion in <a href="https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android">Mozilla Connect</a>. Once accepted and planned, maintainers will create the corresponding GitHub issues.</li>
+<li>If you found a <strong>bug</strong> that is not tracked, open a GitHub issue using the bug template.</li>
+<li>If technical work relates to an existing issue, discuss the scope in that issue before starting. Maintainers decide
+whether a new GitHub Task Issue, RFC, ADR, Technical Design, or GitHub Milestone Issue is needed.</li>
+<li>If there is no related issue and the work is not a bug or Mozilla Connect feature idea, use the
+<a href="https://matrix.to/#/#tb-mobile-dev:mozilla.org">Matrix development channel</a> to ask where the work belongs before
+starting.</li>
+</ol>
+<p>GitHub Milestone Issues are maintainer-owned. GitHub Feature Issues, GitHub Task Issues, RFC pull requests, and
+implementation pull requests are the usual entry points for external contributors.</p>
+<h2 id="github-milestone-issues"><a class="header" href="#github-milestone-issues">GitHub Milestone Issues</a></h2>
+<p>A GitHub Milestone Issue is the source of truth for a delivery outcome. It should describe what the team is trying to
+achieve, why it matters, what is in scope, and what is intentionally out of scope.</p>
+<p>Create a GitHub Milestone Issue when:</p>
+<ul>
+<li>The work represents a meaningful user, product, technical, or roadmap outcome.</li>
+<li>The work needs to be split into multiple GitHub Feature Issues or GitHub Task Issues.</li>
+<li>The work requires coordination across multiple pull requests, modules, or contributors.</li>
+<li>The work needs public tracking even if it originated from an internal roadmap item.</li>
+</ul>
+<p>Do not create a GitHub Milestone Issue for a small standalone fix or a single pull request unless maintainers need explicit
+public tracking for it.</p>
+<h3 id="quarterly-catch-all-milestones"><a class="header" href="#quarterly-catch-all-milestones">Quarterly Catch-All Milestones</a></h3>
+<p>When work does not match a dedicated GitHub Milestone Issue, maintainers link it to the relevant quarterly catch-all
+GitHub Milestone Issue:</p>
+<ul>
+<li><strong>Community Contributions YYYY QN</strong>: Community contribution work that does not belong to a dedicated milestone.</li>
+<li><strong>Android Foundations YYYY QN</strong>: Android foundations work that does not belong to a dedicated milestone.</li>
+</ul>
+<p>For example, maintainers use <strong>Community Contributions 2026 Q3</strong> or <strong>Android Foundations 2026 Q3</strong> for Q3 2026 work
+without a direct milestone match.</p>
+<h3 id="maintainer-responsibilities"><a class="header" href="#maintainer-responsibilities">Maintainer Responsibilities</a></h3>
+<p>When creating a GitHub Milestone Issue, core maintainers should:</p>
+<ol>
+<li>Define the objective and success criteria.</li>
+<li>Add links to relevant resources, such as GitHub issues, user journey documents, RFCs, and technical designs.</li>
+<li>Define what is in scope and out of scope.</li>
+<li>Capture technical and business requirements that are known at the time.</li>
+<li>Create or link the GitHub Feature Issues and GitHub Task Issues needed to deliver the milestone as subissues.</li>
+<li>Keep the GitHub Milestone Issue updated when scope changes.</li>
+</ol>
+<p>The GitHub Milestone Issue does not need to contain every implementation detail. Detailed implementation plans should
+live in GitHub Feature Issues, GitHub Task Issues, pull requests, or, when the work is complex enough, RFCs, ADRs, and
+technical designs.</p>
+<h3 id="creating-a-milestone-issue"><a class="header" href="#creating-a-milestone-issue">Creating a Milestone Issue</a></h3>
+<p>When creating a GitHub Milestone Issue:</p>
+<ol>
+<li>Create a new GitHub issue using the <a href="#-the-objective">GitHub Milestone Issue template</a>.</li>
+<li>Select the GitHub Milestone Issue type if GitHub issue types are available.</li>
+<li>Add GitHub Milestone Issues to the <a href="https://github.com/orgs/thunderbird/projects/19">roadmap project</a>.</li>
+<li>Add current implementation work to the <a href="https://github.com/orgs/thunderbird/projects/20">sprint board</a>.</li>
+<li>Set the initial project status.</li>
+<li>Link relevant resources, including GitHub issues, design artifacts, RFCs, ADRs, technical designs, and public
+planning references.</li>
+<li>Create or link GitHub Feature Issues and GitHub Task Issues as subissues of the GitHub Milestone Issue.</li>
+<li>Add RFC, ADR, or technical design GitHub Task Issues as subissues when the milestone needs them.</li>
+<li>If the work does not have a dedicated GitHub Milestone Issue, link it to the relevant quarterly catch-all milestone
+issue.</li>
+</ol>
+<p>If a GitHub field or project automation is not available to you, create the issue with the template and ask a core
+maintainer to complete the project metadata.</p>
+<h3 id="status-and-progress"><a class="header" href="#status-and-progress">Status and Progress</a></h3>
+<p>The milestone owner is responsible for keeping the GitHub Milestone Issue current.</p>
+<p>Update the GitHub Milestone Issue when:</p>
+<ul>
+<li>Scope, requirements, or out-of-scope work changes.</li>
+<li>GitHub Feature Issues or GitHub Task Issues are added, removed, completed, or replaced.</li>
+<li>An RFC, ADR, or technical design changes the delivery plan.</li>
+<li>Delivery risk, sequencing, or ownership changes.</li>
+</ul>
+<p>Progress should be visible through the GitHub Milestone Issue’s subissues. Completed GitHub Feature Issues and GitHub
+Task Issues should remain linked so the GitHub Milestone Issue shows what was delivered and what remains.</p>
+<h2 id="splitting-milestones-into-work-issues"><a class="header" href="#splitting-milestones-into-work-issues">Splitting Milestones Into Work Issues</a></h2>
+<p>After the GitHub Milestone Issue exists, split it into GitHub Feature Issues and GitHub Task Issues. The split should
+make the work small enough to assign, review, and merge safely.</p>
+<p>Prefer several focused issues over one large issue that mixes product behavior, technical planning, and implementation.
+Avoid splitting so far that each issue loses meaningful context.</p>
+<p>GitHub Feature Issues and GitHub Task Issues that belong to a milestone must be added as subissues of the GitHub
+Milestone Issue. This includes GitHub Task Issues for RFCs, ADRs, and technical designs. The GitHub Milestone Issue
+stays focused on the delivery outcome while progress is tracked through its subissues.</p>
+<p>If the milestone needs technical agreement before implementation, add GitHub Task Issues for the needed RFC, ADR, or
+technical design as part of the milestone definition. Not every milestone needs these documents; use them when the
+change has multiple reasonable approaches, broad architectural impact, complex implementation details, or decisions that
+future contributors will need to understand.</p>
+<p>Sometimes the order is reversed: a developer may create a GitHub Task Issue to propose creating an RFC before a
+milestone exists. That GitHub Task Issue is delivered by opening the pull request that adds the RFC. If the accepted RFC
+leads to planned delivery work, core maintainers should create the GitHub Milestone Issue and add the RFC GitHub Task
+Issue as a subissue of that milestone.</p>
+<h3 id="github-feature-issues"><a class="header" href="#github-feature-issues">GitHub Feature Issues</a></h3>
+<p>Use GitHub Feature Issues for product-visible work.</p>
+<p>Examples:</p>
+<ul>
+<li>Add a new user-facing setting.</li>
+<li>Change a user flow.</li>
+<li>Implement a new screen or interaction.</li>
+<li>Support a new account or message behavior.</li>
+</ul>
+<p>A GitHub Feature Issue should usually include the relevant parts of:</p>
+<ul>
+<li>The user-visible outcome.</li>
+<li>Acceptance criteria or expected behavior.</li>
+<li>Links to relevant user journey documentation and user stories.</li>
+<li>Relevant design, product, or support links.</li>
+<li>Target user segments or user states when they affect the expected behavior.</li>
+<li>Known user frictions, failure cases, or UX research questions.</li>
+<li>Known constraints, edge cases, or dependencies.</li>
+<li>A link to the GitHub Milestone Issue and related tasks.</li>
+</ul>
+<p>GitHub Feature Issues do not currently require a formal template. Keep them concise, but include enough context for a
+contributor to understand the expected behavior without relying on private documents.</p>
+<p>User journeys and user stories are part of the project’s persistent delivery context. Document them in
+<a href="engineering/user-journeys/README.html">User Journeys</a>. GitHub Feature Issues should link to the relevant user journey document so
+delivery work stays connected to the user-centered source of truth.</p>
+<h3 id="github-task-issues"><a class="header" href="#github-task-issues">GitHub Task Issues</a></h3>
+<p>Use GitHub Task Issues for supporting engineering work.</p>
+<p>Examples:</p>
+<ul>
+<li>Write an RFC, ADR, or technical design.</li>
+<li>Prepare a migration or refactoring required by a feature.</li>
+<li>Add test infrastructure.</li>
+<li>Update documentation.</li>
+<li>Investigate an implementation option before feature work starts.</li>
+</ul>
+<p>A GitHub Task Issue should usually include:</p>
+<ul>
+<li>The concrete output expected from the task.</li>
+<li>A link to the GitHub Milestone Issue and any related GitHub Feature Issues.</li>
+<li>Constraints, affected modules, or architectural boundaries.</li>
+<li>Verification expectations when known.</li>
+</ul>
+<p>GitHub Task Issues do not currently require a formal template. Keep them flexible so developers can organize technical
+work in the way that best fits the change.</p>
+<h2 id="planning-checklist"><a class="header" href="#planning-checklist">Planning Checklist</a></h2>
+<p>Before implementation starts, confirm that:</p>
+<ul>
+<li>The GitHub Milestone Issue explains the objective, scope, out-of-scope work, and requirements.</li>
+<li>Relevant user journeys and user stories are documented in the repository and linked from the milestone or feature
+issues.</li>
+<li>Any needed RFCs, ADRs, or technical designs are created or tracked by GitHub Task Issues.</li>
+<li>GitHub Feature Issues describe user-visible outcomes and acceptance criteria.</li>
+<li>GitHub Task Issues describe concrete engineering outputs.</li>
+<li>GitHub Feature Issues and GitHub Task Issues are linked as subissues of the GitHub Milestone Issue so progress can be
+tracked publicly.</li>
+<li>Private roadmap context is not required to understand the public GitHub issues.</li>
+</ul>
+<footer id="last-change-22">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<h1 id="milestone-issues"><a class="header" href="#milestone-issues">Milestone Issues</a></h1>
+<p>GitHub Milestone Issues define public delivery outcomes. They are created and managed by core maintainers because they
+depend on GitHub permissions, project metadata, and roadmap coordination.</p>
+<p>Use the <a href="#-the-objective">GitHub Milestone Issue template</a> when creating a new GitHub Milestone Issue.</p>
+<p>GitHub Feature Issues, GitHub Task Issues, user journeys, RFCs, ADRs, and technical designs should link back to the
+relevant GitHub Milestone Issue when they belong to that delivery outcome.</p>
+<p>If work does not match a dedicated GitHub Milestone Issue, maintainers should link it to the relevant quarterly
+catch-all GitHub Milestone Issue for community contributions or Android foundations work.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="-the-objective"><a class="header" href="#-the-objective">🎯 The objective</a></h1>
+<!-- ℹ️ Describe the objective and intention of this project/implementation. Include user and business requirements when applicable and highlight what problem this implementation is trying to solve. Here is a suggestion to get you started: -->
+<p>The aim of this project is to support [strategic goal] by addressing [key actions or methods], in order to [intended outcome or benefit] for [target audience or stakeholders]. Success will be measured by achieving [measurable impact or benefit].</p>
+<h3 id="-resources"><a class="header" href="#-resources">🎒 Resources</a></h3>
+<!-- ℹ️ List all relevant resources like GitHub issues, user journey documents, Figma files, Notion links, RFCs, ADRs, technical designs, and other files. These can be filled in later. -->
+<ul>
+<li></li>
+</ul>
+<h2 id="-rules-of-the-road"><a class="header" href="#-rules-of-the-road">🦮 Rules of the Road</a></h2>
+<!-- ℹ️ Initial definition of requirements and limitations, the scope of this feature and other potential considerations in order to keep the project narrow and focused. -->
+<h3 id="-in-scope"><a class="header" href="#-in-scope">🟢 In Scope</a></h3>
+<ul>
+<li></li>
+</ul>
+<h3 id="-out-of-scope"><a class="header" href="#-out-of-scope">🔴 Out of Scope</a></h3>
+<ul>
+<li></li>
+</ul>
+<h3 id="-technical-andor-business-requirements"><a class="header" href="#-technical-andor-business-requirements">🚧 Technical and/or Business Requirements</a></h3>
+<ul>
+<li></li>
+</ul>
+<footer id="last-change-23">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<h1 id="user-journeys"><a class="header" href="#user-journeys">User Journeys</a></h1>
+<p>User journeys and user stories describe the user-centered reason for product-visible work. Store them in the repository
+so maintainers and contributors can find the product context alongside the technical documentation.</p>
+<p>Use a user journey document when a milestone or feature changes an important user-visible workflow, introduces a new
+workflow, or depends on user-centered product decisions that future contributors will need to understand.</p>
+<p>Small fixes, refactorings, build tasks, and purely technical work do not need a user journey document.</p>
+<h2 id="relationship-to-issues"><a class="header" href="#relationship-to-issues">Relationship to Issues</a></h2>
+<p>GitHub issues are used for planning and delivery tracking. They should link to the relevant user journey document when
+one exists, but the repository document is the source of truth for the journey and user stories.</p>
+<ul>
+<li><strong>Milestone issues</strong> link to the relevant user journey documents for the milestone.</li>
+<li><strong>Feature issues</strong> link to the user journey document that explains the user-visible behavior.</li>
+<li><strong>Task issues</strong> link to a user journey document only when the task directly supports that journey.</li>
+</ul>
+<h2 id="suggested-structure"><a class="header" href="#suggested-structure">Suggested Structure</a></h2>
+<p>Use the <a href="#user-journey-title">user journey template</a> as the starting point for new user journey documents.
+Delete sections that do not apply and add sections when the feature needs more context.</p>
+<p>Store user journey documents in this directory using a short, descriptive lowercase filename.</p>
+<p>Add or update user journey documents through pull requests, like RFCs, ADRs, and technical designs. Link the pull
+request and resulting document from the relevant milestone or feature issues.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="user-journey-title"><a class="header" href="#user-journey-title">User Journey: Title</a></h1>
+<ul>
+<li>Status: <strong>Proposed</strong></li>
+<li>Milestone issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/NNNN">#NNNN</a></li>
+<li>Related feature issues:
+<ul>
+<li><a href="https://github.com/thunderbird/thunderbird-android/issues/NNNN">#NNNN</a></li>
+</ul>
+</li>
+<li>Design/research links:</li>
+</ul>
+<h2 id="product-value"><a class="header" href="#product-value">Product Value</a></h2>
+<p>What problem does this solve for Thunderbird for Android users?</p>
+<p>What is the core value users should get from this feature or workflow?</p>
+<p>How will we know the feature delivered its value?</p>
+<h2 id="target-users"><a class="header" href="#target-users">Target Users</a></h2>
+<p>Which user segments or user states does this journey apply to?</p>
+<p>Examples:</p>
+<ul>
+<li>First-time users going through onboarding.</li>
+<li>Returning users trying to complete a key task.</li>
+<li>Users prompted by an in-app message or release change.</li>
+</ul>
+<h2 id="user-stories"><a class="header" href="#user-stories">User Stories</a></h2>
+<ul>
+<li>As a [type of user], I want [capability], so that [benefit].</li>
+</ul>
+<h2 id="core-journey"><a class="header" href="#core-journey">Core Journey</a></h2>
+<p>Describe the essential path a user follows to reach the core outcome.</p>
+<ol>
+<li></li>
+<li></li>
+<li></li>
+</ol>
+<h2 id="success-signals"><a class="header" href="#success-signals">Success Signals</a></h2>
+<p>What user behavior or outcome indicates that the journey succeeded?</p>
+<h2 id="frictions-and-failure-cases"><a class="header" href="#frictions-and-failure-cases">Frictions and Failure Cases</a></h2>
+<p>Where might users get stuck, confused, blocked, or drop off?</p>
+<h2 id="ux-research"><a class="header" href="#ux-research">UX Research</a></h2>
+<p>What UX assumptions need validation?</p>
+<p>What research, design review, or user feedback is needed before or during implementation?</p>
+<h2 id="open-questions"><a class="header" href="#open-questions">Open Questions</a></h2>
+<p>What product, UX, or research questions are still unresolved?</p>
+<footer id="last-change-24">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<h1 id="engineering-rfcs"><a class="header" href="#engineering-rfcs">Engineering RFCs</a></h1>
+<p>RFCs are planning documents for medium-to-large engineering changes that need review before implementation.</p>
+<h2 id="what-is-an-rfc"><a class="header" href="#what-is-an-rfc">What is an RFC?</a></h2>
+<p>A Request for Comments (RFC) is a document that captures a proposed engineering direction along with its motivation,
+alternatives, risks, open questions, and outcome. RFCs record the planning process and allow others to understand the
+rationale behind a proposal before implementation begins.</p>
+<p>Architecture Decision Records (ADRs) continue to record durable architectural decisions. Technical designs capture
+implementation details that are too large or too specific for an RFC.</p>
+<p>If the implementation details are too large for an RFC, link to a technical design document from the RFC.</p>
+<h2 id="format-of-an-rfc"><a class="header" href="#format-of-an-rfc">Format of an RFC</a></h2>
+<p>Each RFC document should contain:</p>
+<ol>
+<li><strong>Title</strong>: A short descriptive name for the proposal.</li>
+<li><strong>Issue</strong>: A link to the issue that prompted the proposal.</li>
+<li><strong>Technical Design</strong>: A link to the related technical design, if one exists.</li>
+<li><strong>Status</strong>: The current status of the RFC (proposed, accepted, rejected, obsolete).</li>
+<li><strong>Summary</strong>: A brief explanation of the proposal.</li>
+<li><strong>Motivation</strong>: The context and problem the proposal is addressing.</li>
+<li><strong>Proposal</strong>: The change being proposed.</li>
+<li><strong>Alternatives Considered</strong>: Other options and why they were not chosen.</li>
+<li><strong>Risks &amp; Drawbacks</strong>: Known risks, trade-offs, or downsides.</li>
+<li><strong>Open Questions</strong>: Unresolved questions that need reviewer input.</li>
+<li><strong>Outcome</strong>: The final decision and related follow-up work.</li>
+</ol>
+<h2 id="rfc-life-cycle"><a class="header" href="#rfc-life-cycle">RFC Life Cycle</a></h2>
+<p>The life cycle of an RFC is as follows:</p>
+<ol>
+<li><strong>Proposed</strong>: The RFC is under consideration.</li>
+<li><strong>Accepted</strong>: The proposal described in the RFC has been accepted and can be implemented, unless it is obsoleted by another RFC or ADR.</li>
+<li><strong>Rejected</strong>: The proposal described in the RFC has been rejected.</li>
+<li><strong>Obsolete</strong>: The RFC has been replaced by another RFC or ADR, or is outdated because the underlying functionality or dependency no longer exists.</li>
+</ol>
+<p>Each RFC will have a status indicating its current life-cycle stage. An RFC can be updated over time, either to change
+the status or to add more information.</p>
+<h2 id="creating-a-new-rfc"><a class="header" href="#creating-a-new-rfc">Creating a New RFC</a></h2>
+<p>When creating a new RFC, please follow the provided <a href="#rfc-title">RFC template file</a> and ensure that your
+document is clear and concise.</p>
+<p>RFC pull request titles should use the repository’s conventional commit style:</p>
+<pre><code class="language-text">docs(rfc): &lt;short title&gt;
+</code></pre>
+<p>Once you are ready to propose your RFC, you should:</p>
+<ol>
+<li>Create a pull request in the repository that adds the RFC document.</li>
+<li>Request review from the relevant maintainers or module owners.</li>
+<li>Refine the RFC in the same pull request based on review feedback.</li>
+<li>Make a decision together with the reviewers. The pull request will be merged when accepted.</li>
+</ol>
+<h2 id="directory-structure"><a class="header" href="#directory-structure">Directory Structure</a></h2>
+<p>RFCs will be stored in <code>docs/engineering/rfcs</code>, and each RFC will be a file named <code>NNNN-title-with-dashes.md</code>, where
+<code>NNNN</code> is a four-digit number that is increased by 1 for every new RFC.</p>
+<p>Examples:</p>
+<pre><code class="language-text">0001-changelog-system-replacement.md
+0002-account-setup-flow-refactor.md
+0003-feature-flag-cleanup.md
+</code></pre>
+<p>RFC numbers are assigned when the pull request is opened.</p>
+<h2 id="relationship-to-adrs-and-technical-designs"><a class="header" href="#relationship-to-adrs-and-technical-designs">Relationship to ADRs and Technical Designs</a></h2>
+<p>RFCs, ADRs, and technical designs serve different purposes.</p>
+<p>An RFC is used before and during implementation. It describes what is being proposed, why, what options were
+considered, and what decision was made.</p>
+<p>An ADR records durable architectural decisions. It describes what was decided, why it was chosen, and what the
+consequences are.</p>
+<p>A technical design describes implementation details. It captures how an accepted or proposed direction will be built and
+verified.</p>
+<p>An accepted RFC may produce one or more ADRs if the decision is architectural and long-lived. It may also link to one
+or more technical designs when the implementation details need separate review.</p>
+<h2 id="contributions"><a class="header" href="#contributions">Contributions</a></h2>
+<p>We welcome contributions in the form of new RFCs or updates to existing ones. Please ensure all contributions follow
+the standard format and provide clear and concise information.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="rfc-title"><a class="header" href="#rfc-title">RFC: Title</a></h1>
+<ul>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/NNNN">#NNNN</a></li>
+<li>Technical design: <a href="engineering/technical-designs/NNNN-title.html">Title</a> (optional)</li>
+<li>Status: <strong>Proposed</strong></li>
+</ul>
+<h2 id="summary-1"><a class="header" href="#summary-1">Summary</a></h2>
+<p>Briefly describe the proposed change.</p>
+<h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
+<p>Explain why this change is needed. Focus on the problem, not the solution.</p>
+<h2 id="proposal"><a class="header" href="#proposal">Proposal</a></h2>
+<p>Describe the proposed solution.</p>
+<p>Include enough detail for reviewers to understand what would change and what decision is being requested.</p>
+<h2 id="alternatives-considered"><a class="header" href="#alternatives-considered">Alternatives Considered</a></h2>
+<p>List the main alternatives and why they are not preferred.</p>
+<p>This does not need to be exhaustive. Include only alternatives that were seriously considered.</p>
+<h2 id="risks--drawbacks"><a class="header" href="#risks--drawbacks">Risks &amp; Drawbacks</a></h2>
+<p>Describe known risks, trade-offs, or downsides.</p>
+<h2 id="open-questions-1"><a class="header" href="#open-questions-1">Open Questions</a></h2>
+<p>List unresolved questions that need reviewer input.</p>
+<h2 id="outcome"><a class="header" href="#outcome">Outcome</a></h2>
+<p>Filled in when the RFC is accepted, rejected, or obsolete.</p>
+<p>Summarize the final decision and link follow-up work.</p>
+<footer id="last-change-25">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="architecture-decision-records"><a class="header" href="#architecture-decision-records">Architecture Decision Records</a></h1>
 <p>ADRs are short text documents that serve as a historical context for the architecture decisions we make over the
 course of the project.</p>
 <h2 id="what-is-an-adr"><a class="header" href="#what-is-an-adr">What is an ADR?</a></h2>
 <p>An Architecture Decision Record (ADR) is a document that captures an important architectural decision made along
-with its context and consequences. ADRs record the decision making process and allow others to understand the
+with its context and outcomes. ADRs record the decision making process and allow others to understand the
 rationale behind decisions, providing insight and facilitating future decision-making processes.</p>
+<p>ADRs are part of our broader <a href="engineering/README.html">engineering process</a>, which also includes <a href="engineering/rfcs/README.html">RFCs</a> for technical direction and <a href="engineering/technical-designs/README.html">Technical Designs</a> for implementation details.</p>
 <h2 id="format-of-an-adr"><a class="header" href="#format-of-an-adr">Format of an ADR</a></h2>
 <p>We adhere to Michael Nygard’s <a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions">ADR format proposal</a>,
 where each ADR document should contain:</p>
 <ol>
-<li><strong>Title</strong>: A short descriptive name for the decision.
-<ol>
-<li><strong>Link to Issue</strong>: A link to the issue that prompted the decision.</li>
-<li><strong>Link to Pull Request</strong>: A link to the pull request that implements the ADR.</li>
-<li><strong>Link to Tracking Issue</strong>: A link to the tracking issue, if applicable.</li>
-</ol>
-</li>
-<li><strong>Status</strong>: The current status of the decision (proposed, accepted, rejected, deprecated, superseded)</li>
+<li><strong>Title</strong>: A short descriptive name for the decision.</li>
+<li><strong>Issue</strong>: A link to the issue that prompted the decision.</li>
+<li><strong>Status</strong>: The current status of the decision (proposed, accepted, rejected, obsolete).</li>
 <li><strong>Context</strong>: The context that motivates this decision.</li>
 <li><strong>Decision</strong>: The change that we’re proposing and/or doing.</li>
-<li><strong>Consequences</strong>: What becomes easier or more difficult to do and any risks introduced as a result of the decision.</li>
+<li><strong>Outcomes</strong>: What becomes easier or more difficult to do and any risks introduced as a result of the decision.</li>
 </ol>
-<h2 id="creating-a-new-adr"><a class="header" href="#creating-a-new-adr">Creating a new ADR</a></h2>
-<p>When creating a new ADR, please follow the provided <a href="architecture/adr/0000-adr-template.html">ADR template file</a> and ensure that your
+<h2 id="creating-a-new-adr"><a class="header" href="#creating-a-new-adr">Creating a New ADR</a></h2>
+<p>When creating a new ADR, please follow the provided <a href="#adr-descriptive-title-in-title-case">ADR template file</a> and ensure that your
 document is clear and concise.</p>
 <p>Once you are ready to propose your ADR, you should:</p>
 <ol>
@@ -6625,21 +7350,20 @@ to announce your ADR. You can use the below template as needed.</li>
 <li>Create a pull request in the repository linking the issue.</li>
 <li>Make a decision together with mobile module owners, the PR will be merged when accepted.</li>
 </ol>
-<h2 id="directory-structure"><a class="header" href="#directory-structure">Directory Structure</a></h2>
-<p>The ADRs will be stored in a directory named <code>docs/adr</code>, and each ADR will be a file named <code>NNNN-title-with-dashes.md</code>
-where <code>NNNN</code> is a four-digit number that is increased by 1 for every new adr.</p>
+<h2 id="directory-structure-1"><a class="header" href="#directory-structure-1">Directory Structure</a></h2>
+<p>The ADRs will be stored in <code>docs/engineering/adr</code>, and each ADR will be a file named <code>NNNN-title-with-dashes.md</code>
+where <code>NNNN</code> is a four-digit number that is increased by 1 for every new ADR.</p>
 <h2 id="adr-life-cycle"><a class="header" href="#adr-life-cycle">ADR Life Cycle</a></h2>
 <p>The life cycle of an ADR is as follows:</p>
 <ol>
 <li><strong>Proposed</strong>: The ADR is under consideration.</li>
-<li><strong>Accepted</strong>: The decision described in the ADR has been accepted and should be adhered to, unless it is superseded by another ADR.</li>
+<li><strong>Accepted</strong>: The decision described in the ADR has been accepted and should be adhered to, unless it is obsoleted by another ADR.</li>
 <li><strong>Rejected</strong>: The decision described in the ADR has been rejected.</li>
-<li><strong>Deprecated</strong>: The decision described in the ADR is no longer relevant due to changes in system context.</li>
-<li><strong>Superseded</strong>: The decision described in the ADR has been replaced by another decision.</li>
+<li><strong>Obsolete</strong>: The ADR has been replaced by another ADR or RFC, or is outdated because the underlying functionality or dependency no longer exists.</li>
 </ol>
 <p>Each ADR will have a status indicating its current life-cycle stage. An ADR can be updated over time, either to change
 the status or to add more information.</p>
-<h2 id="contributions"><a class="header" href="#contributions">Contributions</a></h2>
+<h2 id="contributions-1"><a class="header" href="#contributions-1">Contributions</a></h2>
 <p>We welcome contributions in the form of new ADRs or updates to existing ones. Please ensure all contributions follow
 the standard format and provide clear and concise information.</p>
 <h2 id="appendix-intent-to-adopt-template"><a class="header" href="#appendix-intent-to-adopt-template">Appendix: Intent to Adopt Template</a></h2>
@@ -6656,6 +7380,28 @@ decision after [proposed date], factoring in discussion at that time.</p>
 [Your Name]</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div>
+<h1 id="adr-descriptive-title-in-title-case"><a class="header" href="#adr-descriptive-title-in-title-case">ADR: Descriptive Title in Title Case</a></h1>
+<ul>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/NNNN">#NNNN</a></li>
+<li>Status: <strong>Proposed</strong></li>
+</ul>
+<h2 id="context"><a class="header" href="#context">Context</a></h2>
+<p>Description of the context and problem statement that the decision is addressing. It should contain any relevant factors that influenced the decision.</p>
+<h2 id="decision"><a class="header" href="#decision">Decision</a></h2>
+<p>Description of the decision that was made. Detail the change that will be implemented.</p>
+<h2 id="outcomes"><a class="header" href="#outcomes">Outcomes</a></h2>
+<p>Explanation of the outcomes of the decision. This includes both the positive and negative effects, and any potential risks.</p>
+<h3 id="positive-outcomes"><a class="header" href="#positive-outcomes">Positive Outcomes</a></h3>
+<ul>
+<li>outcome 1</li>
+<li>outcome 2</li>
+</ul>
+<h3 id="negative-outcomes"><a class="header" href="#negative-outcomes">Negative Outcomes</a></h3>
+<ul>
+<li>outcome 1</li>
+<li>outcome 2</li>
+</ul>
+<footer id="last-change-26">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="switch-from-java-to-kotlin"><a class="header" href="#switch-from-java-to-kotlin">Switch from Java to Kotlin</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7221">#7221</a></li>
@@ -6664,33 +7410,29 @@ decision after [proposed date], factoring in discussion at that time.</p>
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context"><a class="header" href="#context">Context</a></h2>
+<h2 id="context-1"><a class="header" href="#context-1">Context</a></h2>
 <p>We’ve been using Java as our primary language for Android development. While Java has served us well, it has certain
 limitations in terms of null safety, verbosity, functional programming, and more. Kotlin, officially supported by
 Google for Android development, offers solutions to many of these issues and provides more modern language features
 that can improve productivity, maintainability, and overall code quality.</p>
-<h2 id="decision"><a class="header" href="#decision">Decision</a></h2>
+<h2 id="decision-1"><a class="header" href="#decision-1">Decision</a></h2>
 <p>Switch our primary programming language for Android development from Java to Kotlin. This will involve rewriting our
 existing Java codebase in Kotlin and writing all new code in Kotlin. To facilitate the transition, we will gradually
 refactor our existing Java codebase to Kotlin.</p>
-<h2 id="consequences"><a class="header" href="#consequences">Consequences</a></h2>
-<ul>
-<li><strong>Positive Consequences</strong>
+<h2 id="outcomes-1"><a class="header" href="#outcomes-1">Outcomes</a></h2>
+<h3 id="positive-outcomes-1"><a class="header" href="#positive-outcomes-1">Positive Outcomes</a></h3>
 <ul>
 <li>Improved null safety, reducing potential for null pointer exceptions.</li>
 <li>Increased code readability and maintainability due to less verbose syntax.</li>
 <li>Availability of modern language features such as coroutines for asynchronous programming, and extension functions.</li>
 <li>Officially supported by Google for Android development, ensuring future-proof development.</li>
 </ul>
-</li>
-<li><strong>Negative Consequences</strong>
+<h3 id="negative-outcomes-1"><a class="header" href="#negative-outcomes-1">Negative Outcomes</a></h3>
 <ul>
 <li>The process of refactoring existing Java code to Kotlin can be time-consuming.</li>
 <li>Potential for introduction of new bugs during refactoring.</li>
 </ul>
-</li>
-</ul>
-<footer id="last-change-22">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-27">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="ui---wrap-material-components-in-atomic-design-system"><a class="header" href="#ui---wrap-material-components-in-atomic-design-system">UI - Wrap Material Components in Atomic Design System</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7221">#7221</a></li>
@@ -6699,36 +7441,32 @@ refactor our existing Java codebase to Kotlin.</p>
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-1"><a class="header" href="#context-1">Context</a></h2>
+<h2 id="context-2"><a class="header" href="#context-2">Context</a></h2>
 <p>As we continued developing our Jetpack Compose application, we found a need to increase the consistency, reusability,
 and maintainability of our user interface (UI) components. We have been using Material components directly throughout our
 application. This lead to a lack of uniformity and increases the complexity of changes as the same modifications had to
 be implemented multiple times across different screens.</p>
-<h2 id="decision-1"><a class="header" href="#decision-1">Decision</a></h2>
+<h2 id="decision-2"><a class="header" href="#decision-2">Decision</a></h2>
 <p>To address these challenges, we’ve decided to adopt an
-<a href="#-design-system">Atomic Design System</a> as a foundation for our application UI.
+<a href="engineering/design-system.html">Atomic Design System</a> as a foundation for our application UI.
 This system encapsulates Material components within our own <a href="https://github.com/thunderbird/thunderbird-android/tree/main/core/ui/compose/designsystem">components</a>,
 organized into categories of <em>atoms</em>, <em>molecules</em>, and <em>organisms</em>. We also defined <em>templates</em> as layout structures
 that can be flexibly combined to construct <em>pages</em>. These components collectively form the building blocks that we are
 using to construct our application’s UI.</p>
-<h2 id="consequences-1"><a class="header" href="#consequences-1">Consequences</a></h2>
-<ul>
-<li><strong>Positive Consequences</strong>
+<h2 id="outcomes-2"><a class="header" href="#outcomes-2">Outcomes</a></h2>
+<h3 id="positive-outcomes-2"><a class="header" href="#positive-outcomes-2">Positive Outcomes</a></h3>
 <ul>
 <li>Increased reusability of components across the application, reducing code duplication.</li>
 <li>More consistent UI and uniform styling across the entire application.</li>
 <li>Improved maintainability, as changes to a component only need to be made in one place.</li>
 </ul>
-</li>
-<li><strong>Negative Consequences</strong>
+<h3 id="negative-outcomes-2"><a class="header" href="#negative-outcomes-2">Negative Outcomes</a></h3>
 <ul>
 <li>Initial effort and time investment needed to implement the atomic design system.</li>
 <li>Developers need to adapt to the new system and learn how to use it effectively.</li>
 <li>Potential for over-complication if simple components are excessively broken down into atomic parts.</li>
 </ul>
-</li>
-</ul>
-<footer id="last-change-23">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-28">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="switch-test-assertions-from-truth-to-assertk"><a class="header" href="#switch-test-assertions-from-truth-to-assertk">Switch Test Assertions from Truth to assertk</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7242">#7242</a></li>
@@ -6737,36 +7475,32 @@ using to construct our application’s UI.</p>
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-2"><a class="header" href="#context-2">Context</a></h2>
+<h2 id="context-3"><a class="header" href="#context-3">Context</a></h2>
 <p>Our project has been using the Truth testing library for writing tests. While Truth has served us well, it is primarily
 designed for Java and lacks some features that make our Kotlin tests more idiomatic and expressive. As our codebase is
 <a href="#switch-from-java-to-kotlin">primarily Kotlin</a>, we have been looking for a testing library that is more aligned
 with Kotlin’s features and idioms.</p>
-<h2 id="decision-2"><a class="header" href="#decision-2">Decision</a></h2>
+<h2 id="decision-3"><a class="header" href="#decision-3">Decision</a></h2>
 <p>We have decided to use <a href="https://github.com/willowtreeapps/assertk">assertk</a> as the default assertions framework for
 writing tests in our project. assertk provides a fluent API that is very similar to Truth, making the transition easier.
 Moreover, it is designed to work well with Kotlin, enabling us to leverage Kotlin-specific features in our tests.</p>
 <p>We’ve further committed to converting all pre-existing tests from Truth to assertk.</p>
-<h2 id="consequences-2"><a class="header" href="#consequences-2">Consequences</a></h2>
+<h2 id="outcomes-3"><a class="header" href="#outcomes-3">Outcomes</a></h2>
 <p><strong>Note</strong>: The migration of all Truth tests to assertk has already been completed.</p>
-<ul>
-<li><strong>Positive Consequences</strong>
+<h3 id="positive-outcomes-3"><a class="header" href="#positive-outcomes-3">Positive Outcomes</a></h3>
 <ul>
 <li><strong>Ease of Transition</strong>: The syntax of assertk is very similar to Truth, which makes the migration process smoother.</li>
 <li><strong>Kotlin-Friendly</strong>: assertk is designed specifically for Kotlin, allowing us to write more idiomatic and
 expressive Kotlin tests.</li>
 </ul>
-</li>
-<li><strong>Negative Consequences</strong>
+<h3 id="negative-outcomes-3"><a class="header" href="#negative-outcomes-3">Negative Outcomes</a></h3>
 <ul>
 <li><strong>Dependency</strong>: While we are replacing one library with another, introducing a new library always carries the risk
 of bugs or future deprecation.</li>
 <li><strong>Migration Effort</strong>: Existing tests written using Truth will need to be migrated to use assertk, requiring some
 effort, although mitigated by the similar syntax.</li>
 </ul>
-</li>
-</ul>
-<footer id="last-change-24">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-29">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="naming-conventions-for-interfaces-and-their-implementations"><a class="header" href="#naming-conventions-for-interfaces-and-their-implementations">Naming Conventions for Interfaces and Their Implementations</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7794">#7794</a></li>
@@ -6775,7 +7509,7 @@ effort, although mitigated by the similar syntax.</li>
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-3"><a class="header" href="#context-3">Context</a></h2>
+<h2 id="context-4"><a class="header" href="#context-4">Context</a></h2>
 <p>When there’s an interface that has multiple implementations it’s often easy enough to give meaningful names to both the
 interface and the implementations (e.g. the interface <code>Backend</code> with the implementations <code>ImapBackend</code> and
 <code>Pop3Backend</code>). Naming becomes harder when the interface mainly exists to allow having isolated unit tests and the
@@ -6783,7 +7517,7 @@ production code contains exactly one implementation of the interface.
 Prior to this ADR we didn’t have any naming guidelines and the names varied widely. Often when there was only one
 (production) implementation, the class name used one of the prefixes <code>Default</code>, <code>Real</code>, or <code>K9</code>. None of these had any
 special meaning and it wasn’t clear which one to pick when creating a new interface/class pair.</p>
-<h2 id="decision-3"><a class="header" href="#decision-3">Decision</a></h2>
+<h2 id="decision-4"><a class="header" href="#decision-4">Decision</a></h2>
 <p>We’ll be using the following guidelines for naming interfaces and their implementation classes:</p>
 <ol>
 <li><strong>Interface Naming:</strong> Name interfaces as if they were classes, using a clear and descriptive name. Avoid using the
@@ -6799,21 +7533,17 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <li><strong>Flexibility:</strong> If no brief descriptive name fits and there is only one production implementation, use the prefix
 <code>Default</code>, like <code>DefaultImapFolder</code>.</li>
 </ol>
-<h2 id="consequences-3"><a class="header" href="#consequences-3">Consequences</a></h2>
-<ul>
-<li><strong>Positive Consequences</strong>
+<h2 id="outcomes-4"><a class="header" href="#outcomes-4">Outcomes</a></h2>
+<h3 id="positive-outcomes-4"><a class="header" href="#positive-outcomes-4">Positive Outcomes</a></h3>
 <ul>
 <li>Improved code readability and maintainability through consistent naming.</li>
 <li>Reduced confusion and misunderstandings by using clear and descriptive names.</li>
 </ul>
-</li>
-<li><strong>Negative Consequences</strong>
+<h3 id="negative-outcomes-4"><a class="header" href="#negative-outcomes-4">Negative Outcomes</a></h3>
 <ul>
 <li>Initial effort is required to rename existing classes that do not follow these naming conventions.</li>
 </ul>
-</li>
-</ul>
-<footer id="last-change-25">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-30">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module"><a class="header" href="#central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module">Central Management of Android Project Dependencies and Gradle Configurations via Build-Plugin Module</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7803">#7803</a></li>
@@ -6822,29 +7552,29 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-4"><a class="header" href="#context-4">Context</a></h2>
+<h2 id="context-5"><a class="header" href="#context-5">Context</a></h2>
 <p>In our Android project, managing dependencies and configurations directly within each module’s <code>build.gradle.kts</code> file has historically led to inconsistencies, duplication, and difficulty in updates. This challenge was particularly noticeable when maintaining the project configuration. By centralizing this setup in a <code>build-plugin</code> module, we can encapsulate and reuse Gradle logic, streamline the build process, and ensure consistency across all project modules and ease maintainability of our codebase.</p>
-<h2 id="decision-4"><a class="header" href="#decision-4">Decision</a></h2>
+<h2 id="decision-5"><a class="header" href="#decision-5">Decision</a></h2>
 <p>To address these challenges, we have decided to establish a <code>build-plugin</code> module within our project. This module will serve as the foundation for all common Gradle configurations, dependency management, and custom plugins, allowing for simplified configuration across various project modules and plugins. Key components of this module include:</p>
 <ul>
 <li><strong>Custom Plugins:</strong> A suite of custom plugins that configure Gradle for different project aspects, ensuring each project type has tailored and streamlined build processes. These plugins should cover Android application, Android library, Jetpack Compose and Java modules.</li>
 <li><strong>Dependency Management:</strong> Utilizing the <a href="https://docs.gradle.org/current/userguide/platforms.html">Gradle Version Catalog</a> to centrally manage and update all dependencies and plugins, ensuring that every module uses the same versions and reduces the risk of conflicts.</li>
 <li><strong>Common Configuration Settings:</strong> Establishing common configurations for Java, Kotlin, and Android to reduce the complexity and variability in setup across different modules.</li>
 </ul>
-<h2 id="consequences-4"><a class="header" href="#consequences-4">Consequences</a></h2>
-<h3 id="positive-consequences"><a class="header" href="#positive-consequences">Positive Consequences</a></h3>
+<h2 id="outcomes-5"><a class="header" href="#outcomes-5">Outcomes</a></h2>
+<h3 id="positive-outcomes-5"><a class="header" href="#positive-outcomes-5">Positive Outcomes</a></h3>
 <ol>
 <li><strong>Consistency Across Modules:</strong> All project modules will use the same versions of dependencies and plugins, reducing the risk of conflicts and enhancing uniformity. They will also share common configurations, ensuring consistency in the build process.</li>
 <li><strong>Ease of Maintenance:</strong> Centralizing dependency versions in the Gradle Version Catalog allows for simple and quick updates to libraries and tools across all project modules from a single source.</li>
 <li><strong>Simplified Configuration Process:</strong> The custom plugins within the <code>build-plugin</code> module provides a streamlined way to apply settings and dependencies uniformly, enhancing productivity and reducing setup complexity.</li>
 </ol>
-<h3 id="negative-consequences"><a class="header" href="#negative-consequences">Negative Consequences</a></h3>
+<h3 id="negative-outcomes-5"><a class="header" href="#negative-outcomes-5">Negative Outcomes</a></h3>
 <ol>
 <li><strong>Initial Overhead:</strong> The setup of the build-plugin module with a Gradle Version Catalog and the migration of existing configurations required an initial investment of time and resources, but this has been completed.</li>
 <li><strong>Complexity for New Developers:</strong> The centralized build architecture, particularly with the use of a Gradle Version Catalog, may initially seem daunting to new team members who are unfamiliar with this level of abstraction.</li>
 <li><strong>Dependency on the Build-Plugin Module:</strong> The entire project becomes reliant on the stability and accuracy of the <code>build-plugin</code> module. Errors within this module or the catalog could impact the build process across all modules.</li>
 </ol>
-<footer id="last-change-26">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-31">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="white-label-architecture"><a class="header" href="#white-label-architecture">White Label Architecture</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/7807">#7807</a></li>
@@ -6854,26 +7584,26 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-5"><a class="header" href="#context-5">Context</a></h2>
+<h2 id="context-6"><a class="header" href="#context-6">Context</a></h2>
 <p>Our project hosts two separate applications, K-9 Mail and Thunderbird for Android, which share a significant amount of functionality. Despite their common features, each app requires distinct branding elements such as app names, themes, and specific strings.</p>
-<h2 id="decision-5"><a class="header" href="#decision-5">Decision</a></h2>
+<h2 id="decision-6"><a class="header" href="#decision-6">Decision</a></h2>
 <p>We have decided to adopt a modular white-label architecture, where each application is developed as a separate module that relies on a shared codebase. This structure allows us to streamline configuration details specific to each brand either during build or at runtime. This is how we structure the modules:</p>
 <h3 id="application-modules"><a class="header" href="#application-modules">Application Modules</a></h3>
 <p>There will be 2 separate modules for each of the two applications: <strong>Thunderbird for Android</strong> will be located in <code>app-thunderbird</code> and <strong>K-9 Mail</strong> in <code>app-k9mail</code>. These modules will contain app-specific implementations, configurations, resources, and startup logic. They should solely depend on the <code>app-common</code> module for shared functionalities and may selectively integrate other modules when needed to configure app-specific functionality.</p>
 <h3 id="app-common-module"><a class="header" href="#app-common-module">App Common Module</a></h3>
 <p>A central module named <code>app-common</code> acts as the central integration point for shared code among the applications. This module contains the core functionality, shared resources, and configurations that are common to both apps. It should be kept as lean as possible to avoid unnecessary dependencies and ensure that it remains focused on shared functionality.</p>
-<h2 id="consequences-5"><a class="header" href="#consequences-5">Consequences</a></h2>
-<h3 id="positive-consequences-1"><a class="header" href="#positive-consequences-1">Positive Consequences</a></h3>
+<h2 id="outcomes-6"><a class="header" href="#outcomes-6">Outcomes</a></h2>
+<h3 id="positive-outcomes-6"><a class="header" href="#positive-outcomes-6">Positive Outcomes</a></h3>
 <ul>
 <li>Enhanced maintainability due to a shared codebase for common functionalities, reducing code duplication.</li>
 <li>Increased agility in developing and deploying new features across both applications, as common enhancements need to be implemented only once.</li>
 </ul>
-<h2 id="negative-consequences-1"><a class="header" href="#negative-consequences-1">Negative Consequences</a></h2>
+<h3 id="negative-outcomes-6"><a class="header" href="#negative-outcomes-6">Negative Outcomes</a></h3>
 <ul>
 <li>Potential for configuration complexities as differentiations increase between the two applications.</li>
 <li>Higher initial setup time and learning curve for new developers due to the modular and decoupled architecture.</li>
 </ul>
-<footer id="last-change-27">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-32">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/7852">#7852</a></li>
@@ -6883,9 +7613,9 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-6"><a class="header" href="#context-6">Context</a></h2>
+<h2 id="context-7"><a class="header" href="#context-7">Context</a></h2>
 <p>The project consists of two distinct applications. To improve maintainability and streamline development, we propose a modular structure using Gradle. This structure is designed to enable clear separation of concerns, facilitate scalable growth, and ensure efficient dependency management. It consists of various module types such as <code>app</code>, <code>app-common</code>, <code>feature</code>, <code>core</code>, and <code>library</code> modules, promoting enhanced modular reusability.</p>
-<h2 id="decision-6"><a class="header" href="#decision-6">Decision</a></h2>
+<h2 id="decision-7"><a class="header" href="#decision-7">Decision</a></h2>
 <p>To achieve the goals outlined in the context, we have decided to adopt the following modular structure:</p>
 <ol>
 <li><strong>App Modules</strong>:
@@ -7024,20 +7754,20 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
     class LEGACY legacy
 </pre>
 
-<h2 id="consequences-6"><a class="header" href="#consequences-6">Consequences</a></h2>
-<h3 id="positive-consequences-2"><a class="header" href="#positive-consequences-2">Positive Consequences</a></h3>
+<h2 id="outcomes-7"><a class="header" href="#outcomes-7">Outcomes</a></h2>
+<h3 id="positive-outcomes-7"><a class="header" href="#positive-outcomes-7">Positive Outcomes</a></h3>
 <ul>
 <li>Improved modularity facilitates easier code maintenance and scaling.</li>
 <li>Clear separation of concerns reduces dependencies and potential conflicts between modules.</li>
 <li>Enhanced reusability of the <code>feature</code>, <code>core</code> and <code>library</code> modules across different parts of the application or even in different projects.</li>
 </ul>
-<h3 id="negative-consequences-2"><a class="header" href="#negative-consequences-2">Negative Consequences</a></h3>
+<h3 id="negative-outcomes-7"><a class="header" href="#negative-outcomes-7">Negative Outcomes</a></h3>
 <ul>
 <li>Initial complexity in setting up and managing multiple modules may increase the learning curve and setup time for new developers.</li>
 <li>Over-modularization can lead to excessive abstraction, potentially impacting runtime performance and complicating the debugging process.</li>
 <li>Legacy modules may require additional effort to migrate to the new structure, potentially causing delays in the adoption of the new architecture.</li>
 </ul>
-<footer id="last-change-28">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-33">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="change-shared-modules-package-to-netthunderbird"><a class="header" href="#change-shared-modules-package-to-netthunderbird">Change Shared Modules package to <code>net.thunderbird</code></a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/9012">#9012</a></li>
@@ -7046,7 +7776,7 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-7"><a class="header" href="#context-7">Context</a></h2>
+<h2 id="context-8"><a class="header" href="#context-8">Context</a></h2>
 <p>The Thunderbird Android project is a white-label version of K-9 Mail, and both apps — <code>app-thunderbird</code> and <code>app-kmail</code>
 — coexist in the same repository. They have distinct application IDs and branding, but share a significant portion of
 the code through common modules.</p>
@@ -7055,7 +7785,7 @@ K-9 Mail. While K-9 will remain available for some time, the project’s primary
 <p>To reflect this shift, establish clearer ownership, and prepare for future development (including cross-platform code
 integration), we will rename the packages in shared modules from <code>app.k9mail</code> and <code>com.fsck</code> to <code>net.thunderbird</code>.
 The actual application IDs and package names of <code>app-thunderbird</code> and <code>app-k9mail</code> must remain <strong>unchanged</strong>.</p>
-<h2 id="decision-7"><a class="header" href="#decision-7">Decision</a></h2>
+<h2 id="decision-8"><a class="header" href="#decision-8">Decision</a></h2>
 <p>We decided to rename the base package in all shared modules from <code>app.k9mail</code> and <code>com.fsck</code> to <code>net.thunderbird</code>.</p>
 <p>Specifically:</p>
 <ul>
@@ -7066,22 +7796,101 @@ The actual application IDs and package names of <code>app-thunderbird</code> and
 </ul>
 <p>This change will establish a clearer identity for the shared code, align with Thunderbird’s branding, and prepare the
 project for cross-platform development.</p>
-<h2 id="consequences-7"><a class="header" href="#consequences-7">Consequences</a></h2>
-<h2 id="positive-consequences-3"><a class="header" href="#positive-consequences-3">Positive Consequences</a></h2>
+<h2 id="outcomes-8"><a class="header" href="#outcomes-8">Outcomes</a></h2>
+<h3 id="positive-outcomes-8"><a class="header" href="#positive-outcomes-8">Positive Outcomes</a></h3>
 <ul>
 <li>Shared code reflects Thunderbird branding and identity</li>
 <li>Reduces confusion when navigating codebase shared by both apps</li>
 <li>Sets the foundation for cross-platform compatibility and future modularization</li>
 <li>Helps reinforce long-term direction of the project toward Thunderbird</li>
 </ul>
-<h2 id="negative-consequences-3"><a class="header" href="#negative-consequences-3">Negative Consequences</a></h2>
+<h3 id="negative-outcomes-8"><a class="header" href="#negative-outcomes-8">Negative Outcomes</a></h3>
 <ul>
 <li>Large-scale refactoring required across multiple modules</li>
 <li>Risk of introducing regressions during package renaming</li>
 <li>Potential for disruption in local development setups (e.g., IDE caching, broken imports)</li>
 <li>Contributors familiar with the old structure may need time to adjust</li>
 </ul>
-<footer id="last-change-29">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-34">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<h1 id="technical-designs"><a class="header" href="#technical-designs">Technical Designs</a></h1>
+<p>Technical design documents describe implementation details that are too large or too specific for an RFC.</p>
+<h2 id="what-is-a-technical-design"><a class="header" href="#what-is-a-technical-design">What is a Technical Design?</a></h2>
+<p>A technical design is a document that captures how an accepted or proposed direction will be implemented. It focuses
+on implementation-level contracts, data formats, APIs, module changes, migration steps, rollout sequencing, and test
+coverage.</p>
+<p>Technical designs should avoid repeating product, scope, or direction questions from the RFC. Those questions belong
+in the RFC. The technical design should focus on how the work will be built and verified.</p>
+<h2 id="format-of-a-technical-design"><a class="header" href="#format-of-a-technical-design">Format of a Technical Design</a></h2>
+<p>Each technical design document should contain:</p>
+<ol>
+<li><strong>Title</strong>: A short descriptive name for the implementation design.</li>
+<li><strong>Issue</strong>: A link to the issue that prompted the work, if applicable.</li>
+<li><strong>RFC</strong>: A link to the related RFC, if applicable.</li>
+<li><strong>ADR</strong>: A link to the related ADR, if applicable.</li>
+<li><strong>Status</strong>: The current status of the design (proposed, accepted, rejected, obsolete).</li>
+<li><strong>Summary</strong>: A brief explanation of what the design implements.</li>
+<li><strong>Current State</strong>: The relevant current behavior or structure.</li>
+<li><strong>Proposed Design</strong>: The target implementation design.</li>
+<li><strong>Migration and Rollout</strong>: How the project moves from the current state to the proposed design.</li>
+<li><strong>Testing and Verification</strong>: How the implementation will be validated.</li>
+<li><strong>Open Technical Questions</strong>: Unresolved implementation-level questions.</li>
+</ol>
+<h2 id="technical-design-life-cycle"><a class="header" href="#technical-design-life-cycle">Technical Design Life Cycle</a></h2>
+<p>The life cycle of a technical design is as follows:</p>
+<ol>
+<li><strong>Proposed</strong>: The technical design is being written or reviewed.</li>
+<li><strong>Accepted</strong>: The design has been accepted as the implementation target.</li>
+<li><strong>Rejected</strong>: The design has been rejected.</li>
+<li><strong>Obsolete</strong>: The design has been replaced by another technical design, RFC, or ADR, or is outdated because the underlying functionality or dependency no longer exists.</li>
+</ol>
+<p>Each technical design will have a status indicating its current life-cycle stage. A technical design can be updated
+over time, either to change the status or to add more information.</p>
+<h2 id="creating-a-new-technical-design"><a class="header" href="#creating-a-new-technical-design">Creating a New Technical Design</a></h2>
+<p>When creating a new technical design, please follow the provided
+<a href="#technical-design-title">technical design template file</a> and ensure that your document is clear and
+concise.</p>
+<p>Technical design pull request titles should use the repository’s conventional commit style:</p>
+<pre><code class="language-text">docs(technical-design): &lt;short title&gt;
+</code></pre>
+<p>When a technical design supports an RFC, link the technical design from the RFC.</p>
+<h2 id="directory-structure-2"><a class="header" href="#directory-structure-2">Directory Structure</a></h2>
+<p>Technical designs will be stored in <code>docs/engineering/technical-designs</code>, and each design will be a file named
+<code>NNNN-title-with-dashes.md</code>, where <code>NNNN</code> is a four-digit number that is increased by 1 for every new technical
+design.</p>
+<p>Examples:</p>
+<pre><code class="language-text">0001-changelog-json-schema.md
+0002-account-setup-state-machine.md
+0003-feature-flag-resolution.md
+</code></pre>
+<p>Technical design numbers are assigned when the pull request is opened.</p>
+<h2 id="contributions-2"><a class="header" href="#contributions-2">Contributions</a></h2>
+<p>We welcome contributions in the form of new technical designs or updates to existing ones. Please ensure all
+contributions follow the standard format and provide clear and concise information.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="technical-design-title"><a class="header" href="#technical-design-title">Technical Design: Title</a></h1>
+<ul>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/NNNN">#NNNN</a></li>
+<li>RFC: <a href="engineering/rfcs/NNNN-title.html">RFC Title</a></li>
+<li>ADR: <a href="engineering/adr/NNNN-title.html">ADR Title</a></li>
+<li>Status: <strong>Proposed</strong></li>
+</ul>
+<h2 id="summary-2"><a class="header" href="#summary-2">Summary</a></h2>
+<p>Briefly describe what this design implements.</p>
+<h2 id="current-state"><a class="header" href="#current-state">Current State</a></h2>
+<p>Describe how the relevant system works today.</p>
+<p>Include only details needed to understand the proposed design.</p>
+<h2 id="proposed-design"><a class="header" href="#proposed-design">Proposed Design</a></h2>
+<p>Describe the target technical design.</p>
+<p>Include important contracts, data formats, APIs, modules, behavior changes, and constraints.</p>
+<h2 id="migration-and-rollout"><a class="header" href="#migration-and-rollout">Migration and Rollout</a></h2>
+<p>Describe how the project moves from the current state to the proposed design.</p>
+<p>Include compatibility concerns, cleanup steps, and rollout sequencing when relevant.</p>
+<h2 id="testing-and-verification"><a class="header" href="#testing-and-verification">Testing and Verification</a></h2>
+<p>Describe how the implementation will be validated.</p>
+<h2 id="open-technical-questions"><a class="header" href="#open-technical-questions">Open Technical Questions</a></h2>
+<p>List unresolved implementation-level questions.</p>
+<p>Do not repeat product, scope, or direction questions from the RFC.</p>
+<footer id="last-change-35">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="installing-adb-android-debug-bridge"><a class="header" href="#installing-adb-android-debug-bridge">Installing ADB (Android Debug Bridge)</a></h1>
 <p><a href="https://developer.android.com/tools/adb">Android Debug Bridge (<strong>adb</strong>)</a> is a versatile command-line tool that lets you communicate with an Android-powered
 device connected to a computer via USB. One of its useful features is the ability to capture a debug log (<code>logcat</code>).</p>
@@ -7134,7 +7943,7 @@ from any terminal or command prompt.</p>
 <p>When you’re done using adb, you can simply disconnect your device. If you want to stop the adb server, run:</p>
 <pre><code class="language-bash">adb kill-server
 </code></pre>
-<footer id="last-change-30">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-36">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="collecting-debug-logs"><a class="header" href="#collecting-debug-logs">Collecting Debug Logs</a></h1>
 <p>Thunderbird for Android can produce debug logs to help diagnose problems and errors. This guide explains how to enable
 logging, reproduce the issue, collect logs, and share them with the team.</p>
@@ -7268,7 +8077,7 @@ placeholders like <code>redacted-pii</code>.</li>
 adb start-server
 </code></pre>
 <p>On <em>Windows</em>, install OEM USB drivers if your device isn’t detected.</p>
-<footer id="last-change-31">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-37">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="find-your-app-version"><a class="header" href="#find-your-app-version">Find Your App Version</a></h1>
 <p>For <a href="https://github.com/k9mail/k-9/issues/new/choose">bug reports</a> it’s important for the developers to know which
 version of Thunderbird you’re using. This is especially true if you attach debug logs, since they show exactly which
@@ -7308,7 +8117,7 @@ adb shell dumpsys package com.fsck.k9 | grep versionName
 <h2 id="special-note-for-custom-builds"><a class="header" href="#special-note-for-custom-builds">Special Note for Custom Builds</a></h2>
 <p>If you’ve built your own version of the app from the source repository, please include the commit hash in your bug
 report along with the version number.</p>
-<footer id="last-change-32">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-38">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="developer-documentation"><a class="header" href="#developer-documentation">Developer Documentation</a></h1>
 <p>Developer focused documentation for contributing to the codebase. It’s dedicated to providing essential guides,
 checklists, and architectural notes to help you navigate the codebase and contribute safely.</p>
@@ -7530,11 +8339,11 @@ are on or switch to later.</p>
 </li>
 <li>The migration history is now linear and consistent across all branches, preventing future conflicts.</li>
 </ul>
-<footer id="last-change-33">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-39">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="foldable-device-support"><a class="header" href="#foldable-device-support">Foldable Device Support</a></h1>
-<h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
+<h2 id="overview-2"><a class="header" href="#overview-2">Overview</a></h2>
 <p>This document describes the foldable device support implementation for Thunderbird Android. The feature automatically switches between single-pane and split-view layouts based on the device’s fold state.</p>
-<h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
+<h2 id="motivation-1"><a class="header" href="#motivation-1">Motivation</a></h2>
 <p>Foldable devices like Samsung Galaxy Fold and Google Pixel Fold offer different screen sizes depending on their posture:</p>
 <ul>
 <li><strong>Folded</strong>: Smaller outer display (typically 6-7 inches)</li>
@@ -7739,10 +8548,10 @@ androidx-window = { module = "androidx.window:window", version.ref = "androidxWi
 <li><a href="https://developer.android.com/reference/androidx/window/layout/WindowInfoTracker">WindowInfoTracker API</a></li>
 <li><a href="https://developer.android.com/reference/androidx/window/layout/FoldingFeature">FoldingFeature</a></li>
 </ul>
-<footer id="last-change-34">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-40">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="preference-migration-guide"><a class="header" href="#preference-migration-guide">Preference Migration Guide</a></h1>
 <p>This document explains how to update and migrate preferences in Thunderbird for Android.</p>
-<h2 id="overview-2"><a class="header" href="#overview-2">Overview</a></h2>
+<h2 id="overview-3"><a class="header" href="#overview-3">Overview</a></h2>
 <p>Thunderbird for Android uses a dedicated SQLite database to store its preferences as key-value pairs.
 Both the database file and the primary table are named <code>preferences_storage</code>. This is managed by the
 <code>K9StoragePersister</code>.</p>
@@ -7881,7 +8690,7 @@ for (uuid in accountUuids) {
 </code></pre>
 <h3 id="deleting-obsolete-keys"><a class="header" href="#deleting-obsolete-keys">Deleting Obsolete Keys</a></h3>
 <p>Simply use <code>migrationsHelper.writeValue(db, "obsolete_key", null)</code>.</p>
-<footer id="last-change-35">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-41">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="releases"><a class="header" href="#releases">Releases</a></h1>
 <p>Thunderbird for Android follows a release train model to ensure timely and predictable releases. This model allows for regular feature rollouts, stability improvements, and bug fixes.</p>
 <h2 id="branches-in-the-release-train-model"><a class="header" href="#branches-in-the-release-train-model">Branches in the Release Train Model</a></h2>
@@ -8210,7 +9019,7 @@ Daily builds are scheduled with the <a href="https://github.com/thunderbird/thun
 <ul>
 <li>Crash rates, GitHub issues, install base, and reviews</li>
 </ul>
-<footer id="last-change-36">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-42">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="release-automation-setup"><a class="header" href="#release-automation-setup">Release Automation Setup</a></h1>
 <p>Release automation is triggered by the workflow_dispatch event on the “Shippable Build &amp; Signing”
 workflow. GitHub environments are used to set configuration variables and secrets for each
@@ -8308,7 +9117,7 @@ to upload the release with limited permissions.</p>
 <li>MATRIX_NOTIFY_USER_MAP: A json object that maps github usernames to matrix ids</li>
 </ul>
 <p>If you leave out this environment, no notifications will be sent.</p>
-<footer id="last-change-37">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-43">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="developer-release-checklist"><a class="header" href="#developer-release-checklist">Developer Release Checklist</a></h1>
 <p>This checklist is for developers. It summarizes what you (as a contributor/feature owner) should do before the scheduled merges in our release train:</p>
 <ul>
@@ -8428,7 +9237,7 @@ to upload the release with limited permissions.</p>
 <p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>Merge-day coordination (branch locks, Matrix announcements, running scripts) is handled by release drivers. See <a href="#merge-process">Merge Process</a> for details.</p>
 </blockquote>
-<footer id="last-change-38">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-44">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="release-testing-checklist"><a href="#release-testing-checklist" class="header">Release Testing Checklist</a></h1>
 <h3 id="release-manual-testing-checklist"><a class="header" href="#release-manual-testing-checklist">Release Manual Testing Checklist</a></h3>
 <p>Purpose</p>
@@ -8759,7 +9568,7 @@ to upload the release with limited permissions.</p>
 <ul>
 <li>Include timestamps, steps, expected vs actual, screenshots, and logs as needed</li>
 </ul>
-<footer id="last-change-39">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-45">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="create-k-9-mail-releases"><a class="header" href="#create-k-9-mail-releases">Create K-9 Mail releases</a></h1>
 <div class="warning">
 This document contains the historical manual release process for K-9 Mail. Please use the <a href="#release-automation-setup">automated process</a> instead.
@@ -9091,7 +9900,7 @@ URL)</p>
 <li>Check <a href="https://fdroidstatus.org/status/fdroid">F-Droid Status</a> for any issues.</li>
 <li>Check <a href="https://monitor.f-droid.org/builds">F-Droid Monitor</a> for any errors mentioning <code>com.fsck.k9</code>.</li>
 </ul>
-<footer id="last-change-40">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-46">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-threat-modeling-guide"><a class="header" href="#-threat-modeling-guide">📖 Threat Modeling Guide</a></h1>
 <p>This guide walks you through how to apply the <strong>STRIDE</strong> methodology for identifying and addressing security risks in
 Thunderbird’s mobile clients. Each step includes <strong>examples</strong> specific to Android/iOS email handling. Use it during
@@ -9521,7 +10330,7 @@ logs/metrics (if enabled), cryptographic keyrings</li>
 <li><strong>Medium</strong>: Notification spam floods, retry storms.</li>
 <li><strong>Low</strong>: Repudiation of notification receipt.</li>
 </ul>
-<footer id="last-change-41">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-47">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="how-to-document"><a class="header" href="#how-to-document">How to Document</a></h1>
 <p>This guide provides detailed instructions for contributing to and maintaining the documentation for the Thunderbird for Android project. It explains the tools used, the structure of the documentation, and guidelines for creating and editing content.</p>
 <p>We use <a href="https://rust-lang.github.io/mdBook/">mdbook</a> to generate the documentation. The source files for the documentation are located in the <code>docs/</code> directory.</p>
@@ -9596,7 +10405,7 @@ respective section.</p>
 <pre><code class="language-shell">mdbook serve docs --open
 </code></pre>
 <p>The <code>mdbook serve docs</code> command will serve the book at <a href="http://localhost:3000">http://localhost:3000</a> and rebuild the documentation on changes. The <code>--open</code> option will open the book in your web browser and is optional.</p>
-<footer id="last-change-42">Last change: <time datetime="2026-06-08">2026-06-08</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/530ed13">530ed13</a></footer>
+<footer id="last-change-48">Last change: <time datetime="2026-06-18">2026-06-18</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/8417c5d">8417c5d</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
