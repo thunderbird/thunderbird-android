@@ -142,15 +142,15 @@ graph TD
     class LEGACY legacy
 ```
 
-## Consequences
+## Outcomes
 
-### Positive Consequences
+### Positive Outcomes
 
 - Improved modularity facilitates easier code maintenance and scaling.
 - Clear separation of concerns reduces dependencies and potential conflicts between modules.
 - Enhanced reusability of the `feature`, `core` and `library` modules across different parts of the application or even in different projects.
 
-### Negative Consequences
+### Negative Outcomes
 
 - Initial complexity in setting up and managing multiple modules may increase the learning curve and setup time for new developers.
 - Over-modularization can lead to excessive abstraction, potentially impacting runtime performance and complicating the debugging process.

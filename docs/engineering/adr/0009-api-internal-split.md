@@ -120,9 +120,9 @@ Notes for core modules:
 5. Move all composition wiring (DI, factory bindings, navigation registrations) to `:app-common` or app modules.
 6. When in doubt, prefer starting in `internal`. Promote types to `api` only once they’re needed and stable.
 
-## Consequences
+## Outcomes
 
-### Positive Consequences
+### Positive Outcomes
 
 - Explicit and discoverable boundary between public and internal code.
 - Stronger enforcement of architectural intent; easier refactors.
@@ -131,7 +131,7 @@ Notes for core modules:
 - Reduced confusion around whether a type is public or internal.
 - Clear criteria for placing types in `api` vs. `internal` improves consistency.
 
-### Negative Consequences
+### Negative Outcomes
 
 - Requires renaming existing modules and packages, plus updating imports.
 - Slight learning overhead for contributors until the pattern becomes familiar.

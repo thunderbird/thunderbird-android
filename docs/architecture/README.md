@@ -16,9 +16,19 @@ The application follows a modular architecture with clear separation between dif
 
 ## 📝 Architecture Decision Records
 
-The [Architecture Decision Records](adr/README.md) document the architectural decisions made during the development of the
+The [Architecture Decision Records](../engineering/adr/README.md) document the architectural decisions made during the development of the
 project, providing context and rationale for key technical choices. Reading through these decisions will improve your
 contributions and ensure long-term maintainability of the project.
+
+## 🏗️ Engineering Process
+
+We use a structured engineering process to propose, decide, and deliver technical changes. This includes:
+
+- **[RFCs](../engineering/rfcs/README.md)** for proposing technical direction and reaching consensus.
+- **[Technical Designs](../engineering/technical-designs/README.md)** for detailing implementation plans.
+- **[ADRs](../engineering/adr/README.md)** for recording durable architectural decisions.
+
+For more details on how these artifacts work together, see the [Engineering](../engineering/README.md) documentation.
 
 ## 📦 Module Structure
 
