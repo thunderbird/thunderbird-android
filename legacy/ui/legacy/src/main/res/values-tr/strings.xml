@@ -504,7 +504,6 @@
     <string name="account_setup_push_limit_500">500 klasör</string>
     <string name="account_setup_push_limit_1000">1000 klasör</string>
     <string name="animations_title">Animasyon</string>
-    <string name="animations_summary">Gösterişli görsel efektleri kullan</string>
     <string name="show_unified_inbox_title">Birleşik gelen kutusunu göster</string>
     <string name="show_starred_count_title">Yıldızlı sayısını göster</string>
     <string name="integrated_inbox_title">Birleşik Gelen Kutusu</string>
@@ -913,7 +912,6 @@
     <string name="general_settings_message_list_date_time_format_full">Tam</string>
     <string name="global_settings_splitview_when_unfolded">Cihazın kapağı açıldığında</string>
     <string name="sort_by_then_by">Sonra…</string>
-    <string name="encrypted_attachment_title">Şifrelenmiş ek</string>
     <plurals name="message_view_attachment_summary">
         <item quantity="one"><xliff:g id="count">%1$d</xliff:g> ek (<xliff:g id="size">%2$s</xliff:g>)</item>
         <item quantity="other"><xliff:g id="count">%1$d</xliff:g> ek (<xliff:g id="size">%2$s</xliff:g>)</item>

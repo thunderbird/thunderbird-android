@@ -64,15 +64,17 @@ We welcome contributions from everyone.
 - Thunderbird is supported solely by financial contributions from users like you. [Make a financial contribution today](https://www.thunderbird.net/donate/mobile/?form=tfa)!
 - Make sure to check out the [Mozilla Community Participation Guidelines](https://www.mozilla.org/about/governance/policies/participation/).
 
-### Architecture Decision Records (ADR)
+### Engineering Process
 
-We use [Architecture Decision Records](https://adr.github.io/) to document the architectural decisions made in the
-development of Thunderbird for Android. You can find them in the [`docs/architecture/adr`](docs/architecture/adr) directory.
+We use a structured engineering process to propose, decide, and deliver technical changes. This includes:
+- [Requests for Comments (RFCs)](docs/engineering/rfcs/README.md) for technical direction.
+- [Technical Designs](docs/engineering/technical-designs/README.md) for implementation details.
+- [Architecture Decision Records (ADRs)](docs/engineering/adr/README.md) for durable architectural decisions.
 
-For more information about our ADRs, please see the [ADRs README](docs/architecture/adr/README.md).
+You can find more information in the [`docs/engineering`](docs/engineering) directory.
 
-We encourage team members and contributors to read through our ADRs to understand the architectural decisions that
-have shaped this project so far. Feel free to propose new ADRs or suggest modifications to existing ones as needed.
+We encourage team members and contributors to read through our engineering documentation to understand the
+processes and decisions that have shaped this project so far.
 
 ## K-9 Mail
 

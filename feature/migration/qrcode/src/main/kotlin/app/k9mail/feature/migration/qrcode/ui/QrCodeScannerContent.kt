@@ -27,6 +27,7 @@ internal fun QrCodeScannerContent(
             UiPermissionState.Unknown -> {
                 // Display empty surface while we're waiting for the camera permission request to return a result
             }
+
             UiPermissionState.Granted -> {
                 QrCodeScannerView(
                     cameraUseCasesProvider = cameraUseCasesProvider,
@@ -34,11 +35,13 @@ internal fun QrCodeScannerContent(
                     onDoneClick = { onEvent(Event.DoneClicked) },
                 )
             }
+
             UiPermissionState.Denied -> {
                 PermissionDeniedContent(
                     onGoToSettingsClick = { onEvent(Event.GoToSettingsClicked) },
                 )
             }
+
             UiPermissionState.Waiting -> {
                 // We've launched Android's app info screen and are now waiting for the user to return to our app.
 

@@ -17,7 +17,7 @@
     <string name="changelog_loading_error">It laden fan it wizigingslochboek is mislearre.</string>
     <string name="changelog_version_title">Ferzje %s</string>
     <string name="changelog_recent_changes_title">Wat is der nij</string>
-    <string name="changelog_show_recent_changes">Lit wizigingen sjen as de app resint bywurke is</string>
+    <string name="changelog_show_recent_changes">Lit wizigingen sjen as de app resintlik bywurke is</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <string name="changelog_snackbar_text">Untdek wat der nij is yn dizze ferzje</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
@@ -122,7 +122,7 @@
     <string name="notification_notify_error_title">Meldingsflater</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_text">Der is in flater bard wylst it meitsjen fan in systeemmelding foar in nij berjocht. De reden is wierskynlik in ûntbrekkend meldingslûd.\n\nTik om meldingsynstellingen te iepenjen.</string>
-    <string name="notification_bg_sync_ticker">Berjochten kontrolearje: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Op berjochten kontrolearje: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Berjochten kontrolearje</string>
     <string name="notification_bg_send_ticker">Berjochten ferstjoere: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">E-mailberjocht(en) ferstjoere</string>
@@ -517,7 +517,6 @@
     <string name="account_setup_push_limit_500">500 mappen</string>
     <string name="account_setup_push_limit_1000">1000 mappen</string>
     <string name="animations_title">Animaasje</string>
-    <string name="animations_summary">Fisuele effekten brûke</string>
     <string name="show_unified_inbox_title">Kombinearre Postfek YN toane</string>
     <string name="show_starred_count_title">Tal berjochten mei in stjer toane</string>
     <string name="integrated_inbox_title">Kombinearre Postfek YN</string>
@@ -611,7 +610,7 @@
     <string name="webview_contextmenu_email_save_action">Yn kontakten bewarje</string>
     <string name="webview_contextmenu_email_copy_action">Adres nei klamboerd kopiearje</string>
     <string name="webview_contextmenu_email_clipboard_label">E-mailadres</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Alles</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Alle</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -924,7 +923,6 @@
     <string name="message_view_attachments_title">Bylagen</string>
     <string name="message_view_attachments_save_all">Alles bewarje</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
-    <string name="encrypted_attachment_title">Fersifere bylage</string>
     <string name="no_network_message_will_be_sent_later_toast">Offline. Berjocht sil ferstjoerd wurde as de ferbining beskikber is</string>
     <string name="notification_actions_settings_title">Meldingsaksjes</string>
     <string name="notification_actions_settings_summary">Kies hokker aksjes yn e-mailmeldingen ferskine</string>
@@ -942,4 +940,13 @@
     <string name="accessibility_move_cutoff_up">Werjeftegrins aksjes omheech ferpleatse</string>
     <string name="accessibility_move_cutoff_down">Werjeftegrins aksjes omleech ferpleatse</string>
     <string name="notification_action_star">Stjer</string>
+    <string name="changelog_latest_label_text">LÊSTE</string>
+    <string name="changelog_type_new_text">NIJ</string>
+    <string name="changelog_type_changed_text">WIZIGE</string>
+    <string name="changelog_type_fixed_text">FIKST</string>
+    <string name="notification_show_contact_picture_title">Kontaktôfbyldingen yn notifikaasjes toane</string>
+    <string name="notification_show_contact_picture_summary">Ofstjoerderavatars yn nij-berjochtnotifikaasjes toane</string>
+    <string name="animation_setting_on">Oan</string>
+    <string name="animation_setting_off">Ut</string>
+    <string name="animation_setting_follow_system">Systeemstandert brûke</string>
 </resources>

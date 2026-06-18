@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_screen_title">Ekran ukrytych ustawień debugowania</string>
+    <string name="debug_settings_notifications_loading">Wczytywanie…</string>
+    <string name="debug_settings_notifications_trigger_notification">Wyzwalacz powiadomienia</string>
+    <string name="debug_settings_notifications_single_mail_sender">Nadawca</string>
+    <string name="debug_settings_notifications_single_mail_subject">Temat</string>
+    <string name="debug_settings_notifications_single_mail_summary">Podsumowanie</string>
+    <string name="debug_settings_notifications_single_mail_preview">Podgląd</string>
+    <string name="debug_settings_notifications_common_notification_information">Informacje o powiadomieniach ogólnych</string>
+    <string name="debug_settings_notifications_in_app_notification">Powiadomienie w aplikacji</string>
+    <string name="debug_settings_notifications_title">Powiadomienia</string>
+    <string name="debug_settings_notifications_system_notification">Powiadomienie systemowe</string>
+    <string name="debug_settings_notifications_preparing_notification">Przygotowywanie powiadomienia %1$s</string>
+    <string name="debug_settings_notification_status_log">Dziennik statusu powiadomień</string>
+    <string name="debug_settings_notifications_status">"Status: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Wyczyść dziennik statusu</string>
+    <string name="debug_settings_feature_flag_title">Flagi funkcji</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Niezapisane zmiany</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Masz niezapisane zmiany. Czy na pewno chcesz wyjść?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Zostań</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Wyjdź</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Przywróć wartości domyślne</string>
+    <string name="debug_settings_feature_flag_apply_changes">Zastosuj zmiany</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"zastąpiona; "</string>
+    <string name="debug_settings_feature_flag_default_value">wartość domyślna: %1$b</string>
 </resources>

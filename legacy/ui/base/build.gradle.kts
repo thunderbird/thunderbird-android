@@ -6,6 +6,7 @@ dependencies {
     implementation(projects.legacy.core)
 
     api(projects.core.ui.theme.manager)
+    api(projects.core.ui.animation.manager)
 
     api(libs.androidx.appcompat)
     api(libs.androidx.activity)
@@ -14,9 +15,7 @@ dependencies {
     api(libs.androidx.navigation.ui)
     api(libs.androidx.lifecycle.livedata.ktx)
 
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.biometric)
-    implementation(libs.kotlinx.coroutines.core)
 }
 
 android {

@@ -11,7 +11,6 @@ kotlin {
             implementation(projects.core.outcome)
             implementation(projects.feature.account.api)
             implementation(projects.feature.mail.account.api)
-            implementation(libs.androidx.annotation)
         }
     }
 }

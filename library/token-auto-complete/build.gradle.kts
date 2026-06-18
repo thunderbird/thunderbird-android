@@ -12,12 +12,11 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.annotation)
     implementation(libs.androidx.appcompat)
 
+    testImplementation(libs.androidx.test.core)
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)
-    testImplementation(libs.androidx.test.core)
 }
 
 codeCoverage {

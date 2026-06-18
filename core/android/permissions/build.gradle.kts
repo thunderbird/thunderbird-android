@@ -9,7 +9,6 @@ android {
 dependencies {
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.robolectric)
-    testImplementation(libs.assertk)
 }
 
 codeCoverage {

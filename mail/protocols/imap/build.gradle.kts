@@ -15,6 +15,7 @@ dependencies {
 
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
-    testImplementation(libs.okio)
+
     testImplementation(libs.mime4j.core)
+    testImplementation(libs.mockito.kotlin)
 }

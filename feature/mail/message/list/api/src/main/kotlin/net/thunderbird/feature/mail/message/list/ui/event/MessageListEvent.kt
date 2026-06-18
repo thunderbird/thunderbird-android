@@ -56,7 +56,7 @@ sealed interface MessageListEvent {
      *
      * @param progress A float value between 0.0 and 1.0 representing the loading completion percentage.
      */
-    data class UpdateLoadingProgress(val progress: Float) : SystemEvent
+    data class UpdateLoadingProgress(val progress: Float, val messages: List<MessageItemUi> = emptyList()) : SystemEvent
 
     /**
      * A system event indicating that a list of messages has been successfully loaded.
@@ -112,4 +112,8 @@ sealed interface MessageListEvent {
      * @see MessageListEvent
      */
     data object LoadNextPage : UserEvent
+
+    // region [ Legacy Support events ]
+    data class UpdateFooter(val footer: String?) : SystemEvent
+    // endregion [ Legacy Support events ]
 }

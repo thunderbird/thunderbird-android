@@ -15,7 +15,7 @@ import net.thunderbird.feature.mail.message.list.ui.state.sideeffect.MessageList
 
 private const val TAG = "LoadPreferencesSideEffect"
 
-class LoadPreferencesSideEffect(
+internal class LoadPreferencesSideEffect(
     private val scope: CoroutineScope,
     dispatch: suspend (MessageListEvent) -> Unit,
     private val logger: Logger,

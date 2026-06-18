@@ -13,6 +13,7 @@ import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.legacyCoreModules
 import com.fsck.k9.preferences.K9StoragePersister
+import com.fsck.k9.storage.messages.FakeLocalMessageUidPrefixProvider
 import kotlinx.coroutines.flow.emptyFlow
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
@@ -30,6 +31,7 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogLevelManager
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -93,6 +95,7 @@ val testModule = module {
         }
     }
     single<PlatformConfigProvider> { FakePlatformConfigProvider() }
+    single<LocalMessageUidPrefixProvider> { FakeLocalMessageUidPrefixProvider() }
 }
 
 class FakePlatformConfigProvider : PlatformConfigProvider {

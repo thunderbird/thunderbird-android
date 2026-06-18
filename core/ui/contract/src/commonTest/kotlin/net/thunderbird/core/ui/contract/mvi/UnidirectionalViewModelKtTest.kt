@@ -1,15 +1,11 @@
 package net.thunderbird.core.ui.contract.mvi
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.runComposeUiTest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -18,27 +14,16 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
+import kotlinx.coroutines.test.StandardTestDispatcher
+import net.thunderbird.core.ui.testing.ComposeUiTestHarness
 
-class UnidirectionalViewModelKtTest {
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val mainDispatcher = MainDispatcherHelper(UnconfinedTestDispatcher())
-
-    @BeforeTest
-    fun setUp() {
-        mainDispatcher.setUp()
-    }
-
-    @AfterTest
-    fun tearDown() {
-        mainDispatcher.tearDown()
-    }
+class UnidirectionalViewModelKtTest : ComposeUiTestHarness(
+    mainDispatcher = StandardTestDispatcher(),
+) {
 
     @OptIn(ExperimentalTestApi::class)
     @Test
-    fun `observe should emit state changes, allow event dispatch and expose effects`() = runComposeUiTest {
+    fun `observe should emit state changes, allow event dispatch and expose effects`() = runComposeTest {
         val viewModel = TestViewModel()
         val effects = mutableListOf<TestEffect>()
         lateinit var stateDispatch: StateDispatch<TestState, TestEvent>
@@ -56,12 +41,14 @@ class UnidirectionalViewModelKtTest {
 
         // Dispatch an event
         dispatch(TestEvent("Event 1"))
+        waitForIdle()
 
         assertThat(state.value.data).isEqualTo("TestState: Event 1")
         assertThat(effects.last().result).isEqualTo("TestEffect: Event 1")
 
         // Dispatch another event
         dispatch(TestEvent("Event 2"))
+        waitForIdle()
 
         assertThat(state.value.data).isEqualTo("TestState: Event 2")
         assertThat(effects.last().result).isEqualTo("TestEffect: Event 2")

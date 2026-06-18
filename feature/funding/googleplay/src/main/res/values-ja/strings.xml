@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_claim">私たちの資金はあなたのようなユーザーからの寄付のみです。</string>
     <string name="funding_googleplay_contribution_reminder_statement">Thunderbird は無料でオープンソースです。</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_2">あなたのデータを販売しません。</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">支払いの処理中…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">キャンセル</string>
 </resources>

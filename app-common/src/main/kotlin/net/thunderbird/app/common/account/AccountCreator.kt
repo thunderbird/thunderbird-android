@@ -143,9 +143,11 @@ internal class AccountCreator(
             is SpecialFolderOption.None -> {
                 if (isAutomatic) SpecialFolderSelection.AUTOMATIC else SpecialFolderSelection.MANUAL
             }
+
             is SpecialFolderOption.Regular -> {
                 SpecialFolderSelection.MANUAL
             }
+
             is SpecialFolderOption.Special -> {
                 if (isAutomatic) SpecialFolderSelection.AUTOMATIC else SpecialFolderSelection.MANUAL
             }

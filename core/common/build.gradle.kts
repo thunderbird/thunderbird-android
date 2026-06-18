@@ -25,11 +25,6 @@ kotlin {
             implementation(projects.core.logging.api)
             implementation(projects.core.logging.implFile)
         }
-        getByName("commonJvmMain") {
-            dependencies {
-                implementation(libs.androidx.annotation)
-            }
-        }
         getByName("commonJvmTest") {
             dependencies {
                 implementation(projects.core.logging.testing)
@@ -37,9 +32,6 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(projects.core.testing)
-        }
-        jvmMain.dependencies {
-            implementation(libs.androidx.annotation)
         }
     }
 }

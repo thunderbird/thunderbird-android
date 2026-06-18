@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
@@ -16,7 +17,6 @@ import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Event
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.State
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.R as CommonR
 
@@ -30,7 +30,7 @@ fun SpecialFoldersContent(
 ) {
     ResponsiveWidthContainer(
         modifier = Modifier
-            .testTagAsResourceId("SpecialFoldersContent")
+            .testTag("SpecialFoldersContent")
             .padding(contentPadding)
             .then(modifier),
     ) { contentPadding ->

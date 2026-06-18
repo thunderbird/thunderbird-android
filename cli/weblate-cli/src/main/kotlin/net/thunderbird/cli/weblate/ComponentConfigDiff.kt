@@ -97,7 +97,12 @@ private class SetField(
         val actualValue = selector(actual)
 
         return if (expectedValue.toSet() != actualValue.toSet()) {
-            listDiff(name, expectedValue, actualValue, indentLevel)
+            listDiff(
+                name = name,
+                expected = expectedValue,
+                actual = actualValue,
+                indentLevel = indentLevel,
+            )
         } else {
             null
         }
@@ -142,7 +147,12 @@ private class MultilineField(
         val actualValue = selector(actual)
 
         return if (expectedValue != actualValue) {
-            multilineDiff(name, expectedValue, actualValue, indentLevel)
+            multilineDiff(
+                name = name,
+                expected = expectedValue,
+                actual = actualValue,
+                indentLevel = indentLevel,
+            )
         } else {
             null
         }

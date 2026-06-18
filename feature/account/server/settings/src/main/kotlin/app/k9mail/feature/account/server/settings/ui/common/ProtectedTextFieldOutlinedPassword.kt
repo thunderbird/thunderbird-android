@@ -64,6 +64,7 @@ fun ProtectedTextFieldOutlinedPassword(
                             onWarningChange(null)
                             activity.setSecure(true)
                         }
+
                         is Outcome.Failure -> {
                             onWarningChange(outcome.error)
                         }

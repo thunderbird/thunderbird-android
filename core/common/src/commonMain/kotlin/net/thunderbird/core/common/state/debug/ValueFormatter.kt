@@ -17,11 +17,14 @@ internal class ValueFormatter(
             StatePrettyPrinterVocabulary.formatCollectionItemsValue(value.size)
 
         is Collection<*> -> formatList(value)
+
         is Map<*, *> if value.size > MAX_COLLECTION_SIZE_PRINT_THRESHOLD ->
             StatePrettyPrinterVocabulary.formatMapEntriesValue(value.size)
 
         is Map<*, *> -> formatMap(value)
+
         null -> "null"
+
         else -> {
             val formattedValue = customFormatter(value, ::format)
             if (formattedValue.length > maxLen) {

@@ -461,7 +461,6 @@
     <string name="account_setup_push_limit_500">500 folder</string>
     <string name="account_setup_push_limit_1000">1000 folder</string>
     <string name="animations_title">Animasi</string>
-    <string name="animations_summary">Gunakan efek visual yang mencolok</string>
     <string name="show_unified_inbox_title">Tampilkan Kotak Masuk Terpadu</string>
     <string name="integrated_inbox_title">Kotak Masuk Terpadu</string>
     <string name="integrated_inbox_detail">Semua pesan dalam folder terpadu</string>
@@ -922,7 +921,6 @@
     <string name="message_view_attachments_title">Lampiran</string>
     <string name="message_view_attachments_save_all">Simpan semua</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
-    <string name="encrypted_attachment_title">Lampiran terenkripsi</string>
     <string name="no_network_message_will_be_sent_later_toast">Offline. Pesan akan dikirim setelah koneksi tersedia</string>
     <string name="notification_actions_settings_title">Tindakan notifikasi</string>
     <string name="notification_actions_settings_summary">Pilih tindakan mana yang muncul dalam notifikasi email</string>

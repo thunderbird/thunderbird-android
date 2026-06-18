@@ -29,7 +29,7 @@
     <string name="push_notification_grant_alarm_permission">Klepnutím udělíte oprávnění.</string>
     <string name="push_info_disable_push_action">Vypnout Push</string>
     <string name="notification_action_reply">Odpovědět</string>
-    <string name="notification_action_mark_as_read">Přečteno</string>
+    <string name="notification_action_mark_as_read">Označit jako přečtené</string>
     <string name="notification_action_mark_all_as_read">Označit vše jako přečtené</string>
     <string name="notification_action_delete">Smazat</string>
     <string name="notification_action_delete_all">Smazat vše</string>

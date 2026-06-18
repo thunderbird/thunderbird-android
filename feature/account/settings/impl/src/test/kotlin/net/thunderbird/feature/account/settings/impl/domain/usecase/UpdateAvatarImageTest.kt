@@ -40,6 +40,7 @@ class UpdateAvatarImageTest {
                 assertThat(avatar).isInstanceOf(Avatar.Image::class)
                 assertThat(avatar.uri).isEqualTo(repo.lastUpdatedUri?.toString())
             }
+
             else -> error("Expected Success but was $result")
         }
         // ensure repository received correct inputs
@@ -90,6 +91,7 @@ class UpdateAvatarImageTest {
                 assertThat(avatar).isInstanceOf(Avatar.Image::class)
                 assertThat(avatar.uri).isEqualTo(repo.lastUpdatedUri?.toString())
             }
+
             else -> error("Expected Success but was $result")
         }
     }

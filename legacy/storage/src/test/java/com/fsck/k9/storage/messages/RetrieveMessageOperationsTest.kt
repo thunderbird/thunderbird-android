@@ -27,7 +27,8 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
         Log.logger = TestLogger()
         sqliteDatabase = createDatabase()
         val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-        retrieveMessageOperations = RetrieveMessageOperations(lockableDatabase)
+        val localMessageUidPrefixProvider = FakeLocalMessageUidPrefixProvider()
+        retrieveMessageOperations = RetrieveMessageOperations(lockableDatabase, localMessageUidPrefixProvider)
     }
 
     @After

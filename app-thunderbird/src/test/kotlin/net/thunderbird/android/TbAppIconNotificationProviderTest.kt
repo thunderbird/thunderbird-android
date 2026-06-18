@@ -2,8 +2,8 @@ package net.thunderbird.android
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import kotlin.test.Test
 import net.thunderbird.android.provider.TbAppIconNotificationProvider
-import org.junit.Test
 
 class TbAppIconNotificationProviderTest {
     @Test

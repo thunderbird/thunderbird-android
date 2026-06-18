@@ -207,8 +207,8 @@ jobs:
     outputs:
       k9mail_sha: ${{ steps.commit.outputs.k9mail_sha }}
       thunderbird_sha: ${{ steps.commit.outputs.thunderbird_sha }}
-      k9mail_github_notes: ${{ steps.render_notes.outputs.k9mail_github_notes }}
-      thunderbird_github_notes: ${{ steps.render_notes.outputs.thunderbird_github_notes }}
+      k9mail_github_notes: ${{ steps.append_contributors.outputs.k9mail_github_notes }}
+      thunderbird_github_notes: ${{ steps.append_contributors.outputs.thunderbird_github_notes }}
       old_version_code: ${{ steps.new_version_code.outputs.old_version_code }}
       new_version_code: ${{ steps.new_version_code.outputs.new_version_code }}
     steps:
@@ -222,7 +222,7 @@ jobs:
 
       - name: Checkout repository
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token || github.token }}
@@ -415,6 +415,53 @@ jobs:
           echo "${APP_NAME}_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
+      - name: Append Contributors
+        id: append_contributors
+        if: "${{ contains(matrix.releaseTarget, 'github') && contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
+        shell: bash
+        env:
+          APP_NAME: ${{ matrix.appName }}
+          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+          APPLICATION_LABEL: ${{ steps.appinfo.outputs.APPLICATION_LABEL }}
+          VERSION_CODE: ${{ steps.new_version_code.outputs.new_version_code }}
+          FULL_VERSION_NAME: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
+          K9MAIL_GITHUB_NOTES: ${{ steps.render_notes.outputs.k9mail_github_notes }}
+          THUNDERBIRD_GITHUB_NOTES: ${{ steps.render_notes.outputs.thunderbird_github_notes }}
+        run: |
+          case "${APP_NAME}:${RELEASE_TYPE}" in
+            thunderbird:beta) TAG_REGEX='^THUNDERBIRD_[0-9]+_0b[0-9]+$'
+                              GITHUB_NOTES=$THUNDERBIRD_GITHUB_NOTES
+                              ;;
+            thunderbird:*) TAG_REGEX='^THUNDERBIRD_[0-9]+_[0-9]+$'
+                           GITHUB_NOTES=$THUNDERBIRD_GITHUB_NOTES
+                           ;;
+            k9mail:*) TAG_REGEX='^K9MAIL_[0-9]+_[0-9]+$'
+                      GITHUB_NOTES=$K9MAIL_GITHUB_NOTES
+                      ;;
+          esac
+
+          TAG_NAME="${APP_NAME^^}_${FULL_VERSION_NAME//./_}"
+          NOTES_FILE="$(mktemp -d)/github_notes.txt"
+          CONTRIBUTORS_FILE="$(mktemp -d)/contributors.txt"
+          echo "${GITHUB_NOTES}" >> "${NOTES_FILE}"
+
+          python ./scripts/ci/contributor_list.py \
+            --regex "$TAG_REGEX" \
+            --head "HEAD" \
+            --changelog-head "$TAG_NAME" \
+          "$CONTRIBUTORS_FILE"
+
+          cat "${CONTRIBUTORS_FILE}" >> "${NOTES_FILE}"
+
+          echo "${APP_NAME}_github_notes<<EOF" >> $GITHUB_OUTPUT
+          cat $NOTES_FILE >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "<h2>${APPLICATION_LABEL} ${FULL_VERSION_NAME} Contributors (${VERSION_CODE})</h2>" | tee -a $GITHUB_STEP_SUMMARY
+          echo -e "\n\n\`\`\`" | tee -a $GITHUB_STEP_SUMMARY
+          cat $CONTRIBUTORS_FILE | tee -a $GITHUB_STEP_SUMMARY
+          echo -e "\`\`\`" | tee -a $GITHUB_STEP_SUMMARY
+
       - name: Summary
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
@@ -470,7 +517,7 @@ jobs:
           cat $GITHUB_OUTPUT
 
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           ref: ${{ steps.sha.outputs.app_sha }}
 
@@ -694,7 +741,7 @@ jobs:
           cat $GITHUB_OUTPUT
 
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           ref: ${{ steps.shanotes.outputs.app_sha }}
 
@@ -945,6 +992,25 @@ jobs:
           path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH_NIGHTLY_LATEST }}/${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
           destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
           gzip: false
+
+      - name: Set up Cloud SDK for pruning
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily' }}
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3.0.1
+
+      - name: Prune FTP Nightly Latest
+        continue-on-error: true
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily' }}
+        shell: bash
+        env:
+          FTP_DESTINATION_NIGHTLY_LATEST: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
+          PKG_FILE: ${{ steps.rename.outputs.PKG_FILE }}
+          FTP_TAR_FILENAME: ${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
+        run: |
+          set -x
+          gcloud storage ls "gs://${FTP_DESTINATION_NIGHTLY_LATEST}/" \
+            | grep -vF "${PKG_FILE}" \
+            | grep -vF "${FTP_TAR_FILENAME}" \
+            | xargs -r gcloud storage rm
 
       - name: Summary
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0

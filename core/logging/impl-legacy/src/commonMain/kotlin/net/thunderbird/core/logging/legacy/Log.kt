@@ -6,7 +6,8 @@ import net.thunderbird.core.logging.LogTag
 import net.thunderbird.core.logging.Logger
 
 /**
- * A static logging utility that implements [net.thunderbird.core.logging.Logger] and delegates to a [net.thunderbird.core.logging.Logger] implementation.
+ * A static logging utility that implements [net.thunderbird.core.logging.Logger] and delegates to a
+ * [net.thunderbird.core.logging.Logger] implementation.
  *
  * You can initialize it in your application startup code, for example:
  *
@@ -27,6 +28,7 @@ import net.thunderbird.core.logging.Logger
     message = "Use a net.thunderbird.core.logging.Logger instance via dependency injection instead. " +
         "This class will be removed in a future release.",
 )
+@Suppress("TooManyFunctions")
 object Log : Logger {
 
     lateinit var logger: Logger
@@ -143,6 +145,7 @@ object Log : Logger {
         logger.error(message = { formatMessage(message, args) }, throwable = t)
     }
 
+    @Suppress("SpreadOperator", "TooGenericExceptionCaught")
     private fun formatMessage(message: String?, args: Array<out Any?>): String {
         return if (message == null) {
             ""

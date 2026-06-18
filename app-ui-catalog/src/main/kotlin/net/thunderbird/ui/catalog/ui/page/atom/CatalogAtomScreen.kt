@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.ui.catalog.ui.page.CatalogPageContract.ViewModel
 import net.thunderbird.ui.catalog.ui.page.CatalogPageViewModel
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CatalogAtomScreen(

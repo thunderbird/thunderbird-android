@@ -6,9 +6,10 @@ import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.oauth.ui.AccountOAuthViewModel
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase.GetAutoDiscovery
 import app.k9mail.feature.account.setup.domain.toServerSettings
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.handle
@@ -18,6 +19,7 @@ private const val TAG = "ThundermailOAuthViewModel"
 
 private const val OAUTH_AUTO_DISCOVERY = "oauth-autodiscovery@thundermail.com"
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class ThundermailOAuthViewModel(
     private val logger: Logger,
     private val accountOAuthViewModel: AccountOAuthViewModel,
@@ -27,7 +29,7 @@ internal class ThundermailOAuthViewModel(
 
     init {
         flow { emit(getAutoDiscovery.execute(OAUTH_AUTO_DISCOVERY)) }
-            .map { result ->
+            .flatMapConcat { result ->
                 when (result) {
                     is AutoDiscoveryResult.Settings -> {
                         val incomingServerSettings = result.incomingServerSettings.toServerSettings(password = null)
@@ -50,8 +52,21 @@ internal class ThundermailOAuthViewModel(
                 accountOAuthViewModel.state
             }
             .onEach { state ->
-                updateState { it.copy(initialized = true) }
-                logger.verbose(TAG) { "accountOAuthViewModel.state() called with: state = $state" }
+                updateState {
+                    it.copy(
+                        initialized = true,
+                        error = when (val error = state.error) {
+                            AccountOAuthContract.Error.BrowserNotAvailable ->
+                                ThundermailContract.Error.BrowserNotAvailable
+
+                            AccountOAuthContract.Error.Canceled -> ThundermailContract.Error.Canceled
+
+                            is AccountOAuthContract.Error.Unknown -> ThundermailContract.Error.Unknown(error.error)
+
+                            else -> null
+                        },
+                    )
+                }
             }
             .launchIn(viewModelScope)
 
@@ -65,6 +80,7 @@ internal class ThundermailOAuthViewModel(
                     )
 
                     AccountOAuthContract.Effect.NavigateBack -> Unit
+
                     is AccountOAuthContract.Effect.NavigateNext -> handleNavigateNext(effect)
                 }
             }

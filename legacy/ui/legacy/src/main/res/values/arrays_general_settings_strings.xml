@@ -95,6 +95,12 @@
         <item>@string/setting_theme_follow_system</item>
     </string-array>
 
+    <string-array name="animation_entries">
+        <item>@string/animation_setting_on</item>
+        <item>@string/animation_setting_off</item>
+        <item>@string/animation_setting_follow_system</item>
+    </string-array>
+
     <string-array name="message_theme_entries">
         <item>@string/setting_theme_light</item>
         <item>@string/setting_theme_dark</item>

@@ -517,7 +517,6 @@
     <string name="account_setup_push_limit_500">500 karpeta</string>
     <string name="account_setup_push_limit_1000">1000 karpeta</string>
     <string name="animations_title">Animazioak</string>
-    <string name="animations_summary">Erabili bistaratze efektu nabarmenak</string>
     <string name="show_unified_inbox_title">Erakutsi Sarrera Ontzi Bateratua</string>
     <string name="show_starred_count_title">Erakutsi kontu izardunak</string>
     <string name="integrated_inbox_title">Sarrerako ontzi bateratua</string>

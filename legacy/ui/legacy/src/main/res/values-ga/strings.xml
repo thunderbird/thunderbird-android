@@ -567,7 +567,6 @@
     <string name="account_setup_push_limit_500">500 fillteán</string>
     <string name="account_setup_push_limit_1000">1000 fillteán</string>
     <string name="animations_title">Beochan</string>
-    <string name="animations_summary">Bain úsáid as maisíochtaí amhairc gaudy</string>
     <string name="show_unified_inbox_title">Taispeáin Bosca Isteach Aontaithe</string>
     <string name="show_starred_count_title">Taispeáin líon na réalta</string>
     <string name="integrated_inbox_title">Bosca Isteach Aontaithe</string>
@@ -883,7 +882,6 @@
     <string name="message_view_attachments_title">Ceangaltáin</string>
     <string name="message_view_attachments_save_all">Sábháil gach rud</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
-    <string name="encrypted_attachment_title">Ceangaltán criptithe</string>
     <string name="no_network_message_will_be_sent_later_toast">As líne. Seolfar teachtaireacht a luaithe a bheidh nasc ar fáil</string>
     <string name="notification_actions_settings_title">Gníomhartha fógra</string>
     <string name="notification_actions_settings_summary">Roghnaigh cé na gníomhartha a thaispeánfar i bhfógraí ríomhphoist</string>
@@ -901,4 +899,10 @@
     <string name="accessibility_move_cutoff_up">Bog an gearradh suas de na gníomhartha a thaispeántar</string>
     <string name="accessibility_move_cutoff_down">Bog gearrthán na ngníomhartha a thaispeántar síos</string>
     <string name="notification_action_star">Réalta</string>
+    <string name="changelog_latest_label_text">IS DÉANAÍ</string>
+    <string name="changelog_type_new_text">NUA</string>
+    <string name="changelog_type_changed_text">ATHRAITHE</string>
+    <string name="changelog_type_fixed_text">SOCRAITHE</string>
+    <string name="notification_show_contact_picture_title">Taispeáin pictiúir teagmhála i bhfógraí</string>
+    <string name="notification_show_contact_picture_summary">Taispeáin abhatáranna an tseoltóra i bhfógraí teachtaireachtaí nua</string>
 </resources>

@@ -100,6 +100,7 @@ fun OnboardingNavHost(
                         }
 
                         AccountSetupRoute.ThundermailScanQrCode -> onFinish(OnboardingRoute.ThundermailScanQrCode)
+
                         AccountSetupRoute.ThundermailSignIn -> onFinish(OnboardingRoute.ThundermailSignIn)
                     }
                 },

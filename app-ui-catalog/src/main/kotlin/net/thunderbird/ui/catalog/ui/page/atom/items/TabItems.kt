@@ -31,6 +31,7 @@ fun LazyGridScope.tabItems() {
                     icon = {
                         when (tabItem) {
                             PrimaryTabItems.TextOnly -> null
+
                             PrimaryTabItems.TextWithIcon, PrimaryTabItems.TextWithIconAndBadge ->
                                 Icon(imageVector = requireNotNull(tabItem.icon))
                         }

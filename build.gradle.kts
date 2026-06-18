@@ -13,8 +13,8 @@ plugins {
     alias(libs.plugins.jetbrains.compose) apply false
 
     id("thunderbird.dependency.check")
-    id("thunderbird.quality.spotless.root")
     id("net.thunderbird.gradle.plugin.quality.coverage")
+    id("net.thunderbird.gradle.plugin.quality.spotless")
 }
 
 allprojects {

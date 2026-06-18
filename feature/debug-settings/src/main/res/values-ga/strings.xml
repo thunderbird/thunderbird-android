@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_screen_title">Scáileán Socruithe Dífhabhtaithe Rúnda</string>
+    <string name="debug_settings_notifications_loading">Ag lódáil…</string>
+    <string name="debug_settings_notifications_trigger_notification">Fógra spreagtha</string>
+    <string name="debug_settings_notifications_single_mail_sender">Seoltóir</string>
+    <string name="debug_settings_notifications_single_mail_subject">Ábhar</string>
+    <string name="debug_settings_notifications_single_mail_summary">Achoimre</string>
+    <string name="debug_settings_notifications_single_mail_preview">Réamhamharc</string>
+    <string name="debug_settings_notifications_common_notification_information">Faisnéis choitianta fógraí</string>
+    <string name="debug_settings_notifications_in_app_notification">Fógra san Aip</string>
+    <string name="debug_settings_notifications_title">Fógraí</string>
+    <string name="debug_settings_notifications_system_notification">Fógra córais</string>
+    <string name="debug_settings_notifications_preparing_notification">Fógra %1$s á ullmhú</string>
+    <string name="debug_settings_notification_status_log">Log stádais fógra</string>
+    <string name="debug_settings_notifications_status">"Stádas: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Glan log stádais</string>
+    <string name="debug_settings_feature_flag_title">Bratacha gné</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Athruithe gan sábháil</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Tá athruithe neamhshábháilte agat. An bhfuil tú cinnte gur mhaith leat imeacht?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Fan</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Fág</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Athchóirigh Luachanna Réamhshocraithe</string>
+    <string name="debug_settings_feature_flag_apply_changes">Cuir athruithe i bhfeidhm</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"sáraithe; "</string>
+    <string name="debug_settings_feature_flag_default_value">luach réamhshocraithe: %1$b</string>
 </resources>

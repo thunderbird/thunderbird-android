@@ -472,7 +472,7 @@
     <string name="sort_unread_last">Przeczytane wiadomości jako pierwsze</string>
     <string name="sort_attach_first">Wiadomości z załącznikami jako pierwsze</string>
     <string name="sort_unattached_first">Wiadomości bez załączników jako pierwsze</string>
-    <string name="sort_by">Sortuj wg…</string>
+    <string name="sort_by">Sortowanie wg…</string>
     <string name="sort_by_date">Data</string>
     <string name="sort_by_arrival">Data otrzymania</string>
     <string name="sort_by_subject">Temat</string>
@@ -522,7 +522,6 @@
     <string name="account_setup_push_limit_500">Do 500 folderów</string>
     <string name="account_setup_push_limit_1000">Do 1000 folderów</string>
     <string name="animations_title">Animacje</string>
-    <string name="animations_summary">Używaj efektów wizualnych</string>
     <string name="show_unified_inbox_title">Pokaż zintegrowaną skrzynkę odbiorczą</string>
     <string name="show_starred_count_title">Pokaż liczbę oznaczonych gwiazdką</string>
     <string name="integrated_inbox_title">Zintegrowana odbiorcza</string>
@@ -687,7 +686,7 @@
     <string name="compose_error_no_key_configured">Nie skonfigurowanego klucza dla tego konta! Sprawdź ustawienia.</string>
     <string name="error_crypto_provider_incompatible">Aplikacja szyfrująca w niezgodnej wersji. Sprawdź ustawienia!</string>
     <string name="error_crypto_provider_connect">Nie można połączyć się z dostawcą kryptografii, sprawdź ustawienia lub kliknij ikonę kryptografii, aby spróbować ponownie!</string>
-    <string name="error_crypto_provider_ui_required">Inicjalizacja szyfrowania typu „end-to-end” nie powiodła się. Sprawdź ustawienia.</string>
+    <string name="error_crypto_provider_ui_required">Inicjalizacja szyfrowania typu „end-to-end” się nie powiodła. Sprawdź ustawienia.</string>
     <string name="error_crypto_inline_attach">Tryb PGP/INLINE nie obsługuje załączników!</string>
     <string name="enable_inline_pgp">Włącz PGP/INLINE</string>
     <string name="disable_inline_pgp">Wyłącz PGP/INLINE</string>
@@ -937,7 +936,6 @@
     <string name="message_view_attachments_view">Wyświetl</string>
     <string name="message_view_attachments_title">Załączniki</string>
     <string name="message_view_attachments_save_all">Zapisz wszystkie</string>
-    <string name="encrypted_attachment_title">Zaszyfrowany załącznik</string>
     <string name="no_network_message_will_be_sent_later_toast">Offline. Wiadomość zostanie wysłana, gdy połączenie będzie dostępne</string>
     <string name="notification_actions_settings_title">Czynności powiadomień</string>
     <string name="notification_actions_settings_summary">Wybierz, jakie czynności będą wyświetlane w powiadomieniach e-mail</string>
@@ -955,4 +953,13 @@
     <string name="notification_action_star">Gwiazdka</string>
     <string name="accessibility_move_cutoff_up">Przesuń odcięcie wyświetlanych czynności w górę</string>
     <string name="accessibility_move_cutoff_down">Przesuń odcięcie wyświetlanych czynności w dół</string>
+    <string name="changelog_latest_label_text">NAJNOWSZE</string>
+    <string name="changelog_type_new_text">NOWE</string>
+    <string name="changelog_type_changed_text">ZMIENIONE</string>
+    <string name="changelog_type_fixed_text">NAPRAWIONE</string>
+    <string name="notification_show_contact_picture_title">Pokazuj zdjęcia kontaktów w powiadomieniach</string>
+    <string name="notification_show_contact_picture_summary">Wyświetlaj awatary nadawców w powiadomieniach o nowych wiadomościach</string>
+    <string name="animation_setting_on">Włącz</string>
+    <string name="animation_setting_off">Wyłącz</string>
+    <string name="animation_setting_follow_system">Użyj domyślnych systemu</string>
 </resources>

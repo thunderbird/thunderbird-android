@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_statement_point_1">我们不会显示广告。</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_2">我们不会出售您的数据。</string>
     <string name="funding_googleplay_contribution_reminder_claim">我们的资金完全来自像您这样的用户。</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">正在处理购买…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">取消</string>
 </resources>

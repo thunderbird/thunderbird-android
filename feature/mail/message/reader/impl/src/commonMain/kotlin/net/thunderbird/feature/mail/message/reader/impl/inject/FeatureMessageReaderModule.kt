@@ -8,12 +8,16 @@ import net.thunderbird.feature.mail.message.reader.api.css.GlobalCssStyleProvide
 import net.thunderbird.feature.mail.message.reader.api.css.PlainTextMessagePreElementCssStyleProvider
 import net.thunderbird.feature.mail.message.reader.api.css.SignatureCssStyleProvider
 import net.thunderbird.feature.mail.message.reader.api.html.MessageReaderHtmlSettingsProvider
+import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract
 import net.thunderbird.feature.mail.message.reader.impl.css.DefaultCssVariableNameProvider
 import net.thunderbird.feature.mail.message.reader.impl.css.DefaultGlobalCssStyleProvider
 import net.thunderbird.feature.mail.message.reader.impl.css.DefaultPlainTextMessagePreElementCssStyleProvider
 import net.thunderbird.feature.mail.message.reader.impl.css.DefaultSignatureCssStyleProvider
 import net.thunderbird.feature.mail.message.reader.impl.css.LegacyGlobalCssStyleProvider
 import net.thunderbird.feature.mail.message.reader.impl.html.DefaultMessageReaderHtmlSettingsProvider
+import net.thunderbird.feature.mail.message.reader.impl.ui.MailPart
+import net.thunderbird.feature.mail.message.reader.impl.ui.MessageReaderViewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val featureMessageReaderModule = module {
@@ -40,4 +44,8 @@ val featureMessageReaderModule = module {
         { get<SignatureCssStyleProvider.Factory>() },
         { get<PlainTextMessagePreElementCssStyleProvider.Factory>() },
     )
+
+    viewModel<MessageReaderViewContract.ViewModel<MailPart>> {
+        MessageReaderViewModel(attachmentViewInfoMapper = get())
+    }
 }

@@ -23,4 +23,13 @@
     <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Ime mape \'%1$s\' ni veljavno.</string>
     <string name="setup_archive_folder_dialog_email_can_not_be_archived">E-pošte ni mogoče arhivirati.</string>
     <string name="setup_archive_folder_dialog_configure_archive_folder">Nastavi mapo za arhiviranje zdaj</string>
+    <string name="message_list_state_new_message_description">Novo</string>
+    <string name="message_list_state_read_message_description">Prebrano</string>
+    <string name="message_list_state_unread_message_description">Neprebrano</string>
+    <string name="message_list_state_active_new_message_description">Dejavna, nova</string>
+    <string name="message_list_state_active_read_message_description">Dejavna, prebrana</string>
+    <string name="message_list_state_active_unread_message_description">Dejavna neprebrana</string>
+    <string name="message_list_state_selected_new_message_description">Izbrana, nova</string>
+    <string name="message_list_state_selected_read_message_description">Izbrana, prebrana</string>
+    <string name="message_list_state_selected_unread_message_description">Izbrana, neprebrana</string>
 </resources>

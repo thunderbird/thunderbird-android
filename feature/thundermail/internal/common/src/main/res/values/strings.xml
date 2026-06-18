@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="thundermail_redirecting">Redirecting to Thundermail...</string>
+    <string name="thundermail_something_went_wrong">Something went wrong</string>
+    <string name="thundermail_browser_is_not_available">Browser is not available. Please verify your\'s device configuration</string>
+    <string name="thundermail_operation_was_canceled">Operation was canceled</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Unknown error. Please consider reporting.</string>
 </resources>

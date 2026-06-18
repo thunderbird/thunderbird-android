@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_atom_password_textfield_hide_password">Απόκρυψη κωδικού πρόσβασης</string>
+    <string name="designsystem_molecule_email_address_input_label">Διεύθυνση email</string>
+    <string name="designsystem_atom_password_textfield_show_password">Εμφάνιση κωδικού πρόσβασης</string>
+    <string name="designsystem_molecule_error_view_button_retry">Επανάληψη</string>
+    <string name="designsystem_molecule_password_input_label">Κωδικός πρόσβασης</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Δεξιά: %1$s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Αριστερά: %1$s</string>
+</resources>

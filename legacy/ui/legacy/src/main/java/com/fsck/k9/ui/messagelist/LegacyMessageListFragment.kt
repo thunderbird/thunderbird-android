@@ -64,10 +64,9 @@ import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.search.getLegacyAccounts
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.changelog.RecentChangesActivity
-import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
+import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListFragmentListener
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.ui.messagelist.debug.AuthDebugActions
@@ -80,10 +79,8 @@ import java.util.concurrent.Future
 import kotlin.time.ExperimentalTime
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import net.jcip.annotations.GuardedBy
@@ -106,9 +103,11 @@ import net.thunderbird.core.preference.display.visualSettings.message.list.Displ
 import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.changelog.internal.RecentChangesViewModel
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
+import net.thunderbird.feature.navigation.changelog.api.ChangeLogMode
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.SentFolderNotFoundNotification
 import net.thunderbird.feature.notification.api.ui.InAppNotificationHost
@@ -183,6 +182,7 @@ class LegacyMessageListFragment :
 
     private val contactRepository: ContactRepository by inject()
     private val avatarMonogramCreator: AvatarMonogramCreator by inject()
+    private val relativeDateTimeFormatter: RelativeDateTimeFormatter by inject()
 
     private val chooseFolderForMoveLauncher: ActivityResultLauncher<ChooseFolderResultContract.Input> =
         registerForActivityResult(ChooseFolderResultContract(ChooseFolderActivity.Action.MOVE)) { result ->
@@ -318,18 +318,25 @@ class LegacyMessageListFragment :
 
         adapter = createMessageListAdapter()
 
+        var observedDateTimeFormat = messageListSettings.dateTimeFormat
         generalSettingsManager.getSettingsFlow()
             /**
              * Skips the first emitted item from the settings flow,
-             * since the initial value of `showingThreadedList` is taken
-             * from the fragment's arguments rather than the flow.
+             * since initial display settings are taken from fragment state and current preferences.
              */
             .drop(1)
-            .map { it.display.inboxSettings.isThreadedViewEnabled }
-            .distinctUntilChanged()
-            .onEach {
-                showingThreadedList = it
-                loadMessageList(forceUpdate = true)
+            .onEach { generalSettings ->
+                val isThreadedViewEnabled = generalSettings.display.inboxSettings.isThreadedViewEnabled
+                if (showingThreadedList != isThreadedViewEnabled) {
+                    showingThreadedList = isThreadedViewEnabled
+                    loadMessageList(forceUpdate = true)
+                }
+
+                val dateTimeFormat = generalSettings.display.visualSettings.messageListSettings.dateTimeFormat
+                if (observedDateTimeFormat != dateTimeFormat) {
+                    observedDateTimeFormat = dateTimeFormat
+                    adapter.refreshFormattedDates()
+                }
             }
             .launchIn(lifecycleScope)
 
@@ -405,6 +412,9 @@ class LegacyMessageListFragment :
             featureFlagProvider = featureFlagProvider,
             contactRepository = contactRepository,
             avatarMonogramCreator = avatarMonogramCreator,
+            formatDate = { timestamp ->
+                relativeDateTimeFormatter.formatDate(timestamp, messageListSettings.dateTimeFormat)
+            },
         ).apply {
             activeMessage = this@LegacyMessageListFragment.activeMessage
         }
@@ -667,8 +677,10 @@ class LegacyMessageListFragment :
     private fun launchRecentChangesActivity() {
         recentChangesViewModel.shouldShowRecentChangesHint.removeObserver(shouldShowRecentChangesHintObserver)
 
-        val intent = Intent(requireActivity(), RecentChangesActivity::class.java)
-        startActivity(intent)
+        FeatureLauncherActivity.launch(
+            context = requireContext(),
+            target = FeatureLauncherTarget.Changelog(changeLogMode = ChangeLogMode.RECENT_CHANGES),
+        )
     }
 
     private fun initializeSortSettings() {

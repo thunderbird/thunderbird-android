@@ -283,9 +283,8 @@
     <string name="account_settings_notify_self_summary">내가 보낸 메시지에 대해 알림 보기</string>
     <string name="account_notify_contacts_mail_only_label">연락처 만</string>
     <string name="account_notify_contacts_mail_only_summary">아는 사람이 보낸 메시지만 알림 보기</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">열었을 때 읽음으로 표시</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">메시지를 보기 위해 열었을 때 읽음으로 표시합니다</string>
-    <string name="account_settings_show_pictures_label">항상 사진 표시</string>
+    <string name="account_settings_show_pictures_label">이미지 항상 표시</string>
     <string name="account_settings_show_pictures_never">안 함</string>
     <string name="account_settings_show_pictures_only_from_contacts">연락처 주소만</string>
     <string name="account_settings_show_pictures_always">누구의 메일이든</string>
@@ -392,7 +391,7 @@
     <string name="sort_unread_last">읽은 메시지 먼저</string>
     <string name="sort_attach_first">첨부 파일이 있는 메시지 먼저</string>
     <string name="sort_unattached_first">첨부 파일이 없는 메시지 먼저</string>
-    <string name="sort_by">정렬</string>
+    <string name="sort_by">정렬 기준…</string>
     <string name="sort_by_date">날짜</string>
     <string name="sort_by_arrival">수신 일시</string>
     <string name="sort_by_subject">제목</string>
@@ -438,7 +437,6 @@
     <string name="account_setup_push_limit_500">500개 폴더</string>
     <string name="account_setup_push_limit_1000">1000개 폴더</string>
     <string name="animations_title">애니메이션</string>
-    <string name="animations_summary">매끄러운 시각 효과 사용</string>
     <string name="integrated_inbox_title">통합 편지함</string>
     <string name="integrated_inbox_detail">통합 폴더의 모든 이메일</string>
     <string name="folder_settings_include_in_integrated_inbox_label">통합</string>
@@ -836,11 +834,11 @@
     <string name="push_notification_state_initializing">초기화 중…</string>
     <string name="push_notification_state_listening">새 이메일 기다리는 중</string>
     <string name="push_notification_info">눌러서 자세히 알아보세요.</string>
-    <string name="push_info_disable_push_action">푸시 비활성화</string>
-    <string name="push_notification_state_alarm_permission_missing">알람을 설정할 권한이 없습니다</string>
-    <string name="push_notification_grant_alarm_permission">눌러서 권한을 부여하십시오.</string>
+    <string name="push_info_disable_push_action">알림 끄기</string>
+    <string name="push_notification_state_alarm_permission_missing">알람을 예약할 권한이 없음</string>
+    <string name="push_notification_grant_alarm_permission">눌러서 권한을 부여하세요.</string>
     <string name="push_notification_state_wait_background_sync">백그라운드 동기화가 허용될 때까지 휴면 중</string>
-    <string name="push_notification_state_wait_network">네트워크에 연결할 때까지 휴면 중</string>
+    <string name="push_notification_state_wait_network">네트워크에 연결될 때까지 휴면 중</string>
     <string name="open_camera">카메라 열기</string>
     <string name="attach_file">파일 첨부</string>
     <string name="camera_permission_denied">카메라 권한이 거부되었습니다! 사진 촬영 불가</string>
@@ -876,7 +874,6 @@
     <string name="dialog_confirm_empty_spam_message">스팸 폴더를 비우시겠습니까?</string>
     <string name="global_settings_splitview_when_unfolded">기기를 펼쳤을 때</string>
     <string name="expand_content_description">펼치기</string>
-    <string name="encrypted_attachment_title">암호화된 첨부 파일</string>
     <string name="ac_transfer_intro">Autocrypt 설정 메시지는 종단간 설정을 다른 기기와 안전하게 공유합니다.</string>
     <string name="action_copy_email_address">이메일 주소 복사</string>
     <string name="action_copy_name_and_email_address">이름과 이메일 주소 복사</string>
@@ -939,4 +936,11 @@
     <string name="notification_actions_cutoff_description">표시 동작 경계선</string>
     <string name="accessibility_move_cutoff_up">표시 동작 경계선 위로 이동</string>
     <string name="accessibility_move_cutoff_down">표시 동작 경계선 아래로 이동</string>
+    <string name="changelog_latest_label_text">최신</string>
+    <string name="changelog_type_new_text">신규</string>
+    <string name="changelog_type_changed_text">변경</string>
+    <string name="changelog_type_fixed_text">수정</string>
+    <string name="notification_show_contact_picture_title">알림에서 연락처 사진 표시</string>
+    <string name="notification_show_contact_picture_summary">새 메시지 알림에 발신인 아바타를 표시합니다</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">열 때 읽음으로 표시</string>
 </resources>

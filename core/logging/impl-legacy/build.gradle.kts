@@ -5,7 +5,6 @@ plugins {
 kotlin {
     android {
         namespace = "net.thunderbird.core.logging.legacy"
-        withHostTest {}
     }
     sourceSets {
         androidMain.dependencies {
@@ -17,7 +16,6 @@ kotlin {
 
         commonMain.dependencies {
             api(projects.core.logging.api)
-            api(libs.androidx.annotation)
         }
 
         commonTest.dependencies {

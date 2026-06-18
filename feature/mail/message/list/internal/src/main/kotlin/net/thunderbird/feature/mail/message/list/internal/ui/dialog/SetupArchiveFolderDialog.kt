@@ -29,7 +29,7 @@ import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDia
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.Event
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.State
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.ViewModel
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
@@ -94,7 +94,9 @@ internal fun SetupArchiveFolderDialog(
         BasicDialog(
             headlineText = when (state) {
                 is State.ChooseArchiveFolder -> stringResource(R.string.setup_archive_folder_dialog_set_archive_folder)
+
                 is State.CreateArchiveFolder -> stringResource(R.string.setup_archive_folder_dialog_create_new_folder)
+
                 is State.EmailCantBeArchived ->
                     stringResource(R.string.setup_archive_folder_dialog_email_can_not_be_archived)
             },
