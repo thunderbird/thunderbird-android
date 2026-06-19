@@ -7,35 +7,41 @@ import com.fsck.k9.message.html.EmailSection
 import com.fsck.k9.message.html.EmailSectionExtractor
 import com.fsck.k9.message.html.HtmlConverter
 
+@Suppress("TooManyFunctions")
 internal class PreviewTextExtractor {
     @Throws(PreviewExtractionException::class)
     fun extractPreview(textPart: Part): String {
         val text = MessageExtractor.getTextFromPart(textPart, MAX_CHARACTERS_CHECKED_FOR_PREVIEW)
             ?: throw PreviewExtractionException("Couldn't get text from part")
 
-        val plainText = convertFromHtmlIfNecessary(textPart, text)
-        return stripTextForPreview(plainText)
+        val (plainText, parsePlainTextAsHtml) = convertFromHtmlIfNecessary(textPart, text)
+        return stripTextForPreview(plainText, parsePlainTextAsHtml)
     }
 
-    private fun convertFromHtmlIfNecessary(textPart: Part, text: String): String {
+    private fun convertFromHtmlIfNecessary(textPart: Part, text: String): Pair<String, Boolean> {
         return if (isSameMimeType(textPart.mimeType, "text/html")) {
-            HtmlConverter.htmlToText(text)
+            HtmlConverter.htmlToText(text) to false
         } else {
-            text
+            text to true
         }
     }
 
-    private fun stripTextForPreview(text: String): String {
+    private fun stripTextForPreview(text: String, parsePlainTextAsHtml: Boolean): String {
         var intermediateText = text
 
         intermediateText = normalizeLineBreaks(intermediateText)
         intermediateText = stripSignature(intermediateText)
         intermediateText = extractUnquotedText(intermediateText)
 
-        // try to remove lines of dashes in the preview
-        intermediateText = intermediateText.replace("(?m)^----.*?$".toRegex(), "")
-        // Remove horizontal rules.
-        intermediateText = intermediateText.replace("\\s*([-=_]{30,}+)\\s*".toRegex(), " ")
+        // Run line-based cleanup before HTML normalization, so that we don't remove line breaks in HTML
+        intermediateText = stripLineBasedArtifacts(intermediateText)
+        // Always parse the text as HTML if it's plaintext, independently of the mimetype
+        if (parsePlainTextAsHtml) {
+            intermediateText = HtmlConverter.htmlToText(intermediateText)
+            intermediateText = stripLineBasedArtifacts(intermediateText)
+        }
+        intermediateText = removeParsedHtmlUrls(intermediateText)
+        intermediateText = removeInvisibleFormattingCharacters(intermediateText)
 
         // URLs in the preview should just be shown as "..." - They're not
         // clickable and they usually overwhelm the preview
@@ -52,6 +58,45 @@ internal class PreviewTextExtractor {
         } else {
             intermediateText
         }
+    }
+
+    private fun stripLineBasedArtifacts(text: String): String {
+        var strippedText = text
+
+        strippedText = stripForwardedMessageMetadata(strippedText)
+        strippedText = stripDashLines(strippedText)
+        strippedText = stripHorizontalRules(strippedText)
+
+        return strippedText
+    }
+
+    private fun stripForwardedMessageMetadata(text: String): String {
+        return REGEX_FORWARDED_MESSAGE_HEADER_BLOCK.replace(text) { matchResult ->
+            val hasContentBefore = text.substring(0, matchResult.range.first).isNotBlank()
+            val hasContentAfter = text.substring(matchResult.range.last + 1).isNotBlank()
+
+            if (hasContentBefore && hasContentAfter) {
+                " $PREVIEW_SECTION_SEPARATOR "
+            } else {
+                " "
+            }
+        }
+    }
+
+    private fun stripDashLines(text: String): String {
+        return text.replace(REGEX_DASH_LINE, "")
+    }
+
+    private fun stripHorizontalRules(text: String): String {
+        return text.replace(REGEX_HORIZONTAL_RULE, " ")
+    }
+
+    private fun removeParsedHtmlUrls(text: String): String {
+        return text.replace(REGEX_PARSED_HTML_URL, " ")
+    }
+
+    private fun removeInvisibleFormattingCharacters(text: String): String {
+        return text.replace(REGEX_INVISIBLE_FORMATTING_CHARACTERS, "")
     }
 
     private fun normalizeLineBreaks(text: String) = text.replace(REGEX_CRLF, "\n")
@@ -121,7 +166,17 @@ internal class PreviewTextExtractor {
     companion object {
         private const val MAX_PREVIEW_LENGTH = 512
         private const val MAX_CHARACTERS_CHECKED_FOR_PREVIEW = 8192L
+        private const val PREVIEW_SECTION_SEPARATOR = "[…]"
 
         private val REGEX_CRLF = "(\\r\\n|\\r)".toRegex()
+        private val REGEX_DASH_LINE = "(?m)^-{4,}\\s*$".toRegex()
+        private val REGEX_HORIZONTAL_RULE = "\\s*([-=_]{30,}+)\\s*".toRegex()
+        private val REGEX_PARSED_HTML_URL = "[(<]\\s?https?://\\S+[^)>]\\s?[>)]".toRegex()
+        private val REGEX_INVISIBLE_FORMATTING_CHARACTERS = "[\\u034F\\u200B-\\u200D\\uFEFF]".toRegex()
+        private val REGEX_FORWARDED_MESSAGE_HEADER_BLOCK = (
+            "(?im)^[\\t -]*Original Message[\\t -]*\\n" +
+                "(?:[\\t ]*[A-Za-z][A-Za-z-]*:.*\\n)+" +
+                "[\\t ]*\\n?"
+            ).toRegex()
     }
 }
