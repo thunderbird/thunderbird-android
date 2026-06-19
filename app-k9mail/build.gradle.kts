@@ -5,7 +5,9 @@ plugins {
     alias(libs.plugins.tb.app.versioning)
 }
 
-val testCoverageEnabled = hasProperty("testCoverageEnabled")
+val testCoverageEnabled = providers
+    .gradleProperty("testCoverageEnabled")
+    .isPresent
 
 android {
     namespace = "com.fsck.k9"
@@ -85,12 +87,14 @@ android {
     }
 
     buildTypes {
-        val isCI = project.findProperty("ci") == "true"
+        val isCI = providers.gradleProperty("ci")
+            .map(String::toBoolean)
+            .orElse(false)
         release {
             signingConfig = signingConfigs.getByType(SigningType.K9_RELEASE)
 
-            isMinifyEnabled = !isCI
-            isShrinkResources = !isCI
+            isMinifyEnabled = !isCI.get()
+            isShrinkResources = !isCI.get()
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

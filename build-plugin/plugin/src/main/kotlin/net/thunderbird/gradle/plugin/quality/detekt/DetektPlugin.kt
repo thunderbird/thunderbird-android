@@ -38,12 +38,14 @@ class DetektPlugin : Plugin<Project> {
         }
     }
 
+    @Suppress("UnstableApiUsage")
     private fun Project.configureDetekt() {
         extensions.configure<DetektExtension>("detekt") {
-            config.setFrom(project.rootProject.files("config/detekt/detekt.yml"))
+            config.setFrom(isolated.rootProject.projectDirectory.file("config/detekt/detekt.yml").asFile)
 
             val name = project.path.replace(":", "-").replace("/", "-")
-            baseline = project.rootProject.file("config/detekt/detekt-baseline$name.xml")
+            baseline = isolated.rootProject.projectDirectory
+                .file("config/detekt/detekt-baseline$name.xml").asFile
 
             ignoredBuildTypes = listOf("release")
         }
