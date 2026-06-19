@@ -31,10 +31,6 @@ internal fun AvatarLayout(
         modifier = modifier
             .size(resolvedSize)
             .clip(CircleShape)
-            .clickable(
-                enabled = onClick != null,
-                onClick = { onClick?.invoke() },
-            )
             .background(
                 color = backgroundColor,
                 shape = CircleShape,
@@ -43,6 +39,10 @@ internal fun AvatarLayout(
                 width = 2.dp,
                 shape = CircleShape,
                 color = color,
+            )
+            .clickable(
+                enabled = onClick != null,
+                onClick = { onClick?.invoke() },
             ),
         contentAlignment = Alignment.Center,
     ) {

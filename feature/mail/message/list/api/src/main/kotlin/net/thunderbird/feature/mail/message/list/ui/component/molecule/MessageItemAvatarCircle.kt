@@ -45,19 +45,14 @@ fun MessageItemAvatarCircle(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-    // Intentionally set the `combinedClickable` modifier is after `clip(CircleShape)`
-    // and before the `size` and the `padding`.
-    //
-    // This ensures that the ripple effect covers the entire touch target rather than
-    // just the avatar icon itself.
     Box(
         modifier = modifier
             .clip(CircleShape)
-            .combinedClickable(enabled = enabled, onClick = onClick)
             .size(MainTheme.sizes.iconAvatar)
             .padding(MainTheme.spacings.half)
             .background(color = colors.containerColor, shape = CircleShape)
-            .border(width = 1.dp, color = colors.borderColor, shape = CircleShape),
+            .border(width = 1.dp, color = colors.borderColor, shape = CircleShape)
+            .combinedClickable(enabled = enabled, onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
         when (avatar) {

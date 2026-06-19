@@ -25,8 +25,8 @@ import net.thunderbird.feature.mail.message.list.ui.state.Avatar
 fun MessageItemAvatar(
     avatar: Avatar?,
     showMessageAvatar: Boolean,
-    modifier: Modifier = Modifier,
     onAvatarClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     if (showMessageAvatar) {
         Box(

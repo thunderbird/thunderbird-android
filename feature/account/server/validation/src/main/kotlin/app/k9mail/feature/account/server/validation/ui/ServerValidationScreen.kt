@@ -38,7 +38,7 @@ fun ServerValidationScreen(
 
     if (state.value.error is ServerValidationContract.Error.CertificateError) {
         ServerCertificateErrorScreen(
-            onCertificateAccepted = { dispatch(Event.OnCertificateAccepted) },
+            onServerCertificateAcceptClick = { dispatch(Event.OnCertificateAccepted) },
             onBack = { dispatch(Event.OnBackClicked) },
             modifier = modifier,
         )

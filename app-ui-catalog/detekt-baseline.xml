@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ModifierNotUsedAtRoot:IconItems.kt:modifier = modifier</ID>
+    <ID>ParameterNaming:CatalogContent.kt:onThemeChanged: () -&gt; Unit</ID>
+    <ID>ParameterNaming:CatalogContent.kt:onThemeVariantChanged: () -&gt; Unit</ID>
+    <ID>ParameterNaming:DrawerContent.kt:onThemeChanged: () -&gt; Unit</ID>
+    <ID>ParameterNaming:DrawerContent.kt:onThemeVariantChanged: () -&gt; Unit</ID>
+  </CurrentIssues>
+</SmellBaseline>

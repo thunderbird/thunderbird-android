@@ -34,7 +34,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ServerCertificateErrorScreen(
-    onCertificateAccepted: () -> Unit,
+    onServerCertificateAcceptClick: () -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ViewModel = koinViewModel<ServerCertificateErrorViewModel>(),
@@ -43,7 +43,7 @@ fun ServerCertificateErrorScreen(
 
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
-            is Effect.NavigateCertificateAccepted -> onCertificateAccepted()
+            is Effect.NavigateCertificateAccepted -> onServerCertificateAcceptClick()
             is Effect.NavigateBack -> onBack()
         }
     }

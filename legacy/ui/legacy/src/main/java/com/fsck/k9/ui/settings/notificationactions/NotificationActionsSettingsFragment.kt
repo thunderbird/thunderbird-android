@@ -40,7 +40,7 @@ class NotificationActionsSettingsFragment : Fragment() {
                         description = stringResource(R.string.notification_actions_settings_description),
                         initialActions = actionOrder.toImmutableList(),
                         initialCutoff = cutoff,
-                        onStateChanged = ::onStateChanged,
+                        onStateChange = ::onStateChanged,
                     )
                 }
             }

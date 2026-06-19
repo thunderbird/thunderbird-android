@@ -860,10 +860,20 @@ style:
       - 'java.util.*'
 
 Compose:
+  ComposableAnnotationNaming:
+    active: true
+  ComposableNaming:
+    active: true
+  ComposableNestingDepth:
+    active: false
+    ## TODO: disabled as we need to understand the use cases better
+  ComposableParamOrder:
+    active: true
   CompositionLocalAllowlist:
     active: true
     allowedCompositionLocals: [
       LocalColors,
+      LocalDateTimeConfiguration,
       LocalElevations,
       LocalImages,
       LocalShapes,
@@ -876,13 +886,39 @@ Compose:
       LocalThemeSizes,
       LocalThemeSpacings,
       LocalThemeTypography,
-      LocalDateTimeConfiguration
     ]
+  CompositionLocalNaming:
+    active: true
+  ConditionHoist:
+    active: true
   ContentEmitterReturningValues:
     active: true
-  ModifierComposable:
+  ContentTrailingLambda:
+    active: true
+  ContentSlotReused:
+    active: true
+  DefaultsVisibility:
+    active: true
+  InvalidReadOnlyComposable:
+    active: true
+  LambdaParameterEventTrailing:
+    active: true
+  LambdaParameterInRestartableEffect:
+    active: false
+    # TODO: disabled as we need to understand the use cases better
+  Material2:
+    active: true
+  MissingReadOnlyComposable:
+    active: true
+  ModifierClickableOrder:
+    active: true
+  ModifierComposed:
     active: true
   ModifierMissing:
+    active: true
+  ModifierNaming:
+    active: true
+  ModifierNotUsedAtRoot:
     active: true
   ModifierReused:
     active: true
@@ -892,17 +928,32 @@ Compose:
     active: true
   MutableParams:
     active: true
-  ComposableNaming:
+  MutableStateAutoboxing:
     active: true
-  ComposableParamOrder:
+  MutableStateParam:
+    active: false
+    ## TODO: disabled as we need to understand the use cases better
+  ParameterNaming:
     active: true
   PreviewAnnotationNaming:
     active: true
+  PreviewNaming:
+    active: true
   PreviewPublic:
+    active: true
+  RememberContentMissing:
     active: true
   RememberMissing:
     active: true
+  StaleRememberUpdatedStateInRemember:
+    active: true
+  StateParam:
+    active: true
+  UnnecessaryComposable:
+    active: true
   UnstableCollections:
+    active: true
+  VarsWithoutStateBacking:
     active: true
   ViewModelForwarding:
     active: true

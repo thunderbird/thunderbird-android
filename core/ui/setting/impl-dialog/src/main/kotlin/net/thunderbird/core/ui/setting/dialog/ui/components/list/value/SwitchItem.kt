@@ -17,8 +17,8 @@ import net.thunderbird.core.ui.setting.SettingValue
 @Composable
 internal fun SwitchItem(
     setting: SettingValue.Switch,
-    modifier: Modifier = Modifier,
     onSettingValueChange: (SettingValue<*>) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,

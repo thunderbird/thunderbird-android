@@ -77,8 +77,8 @@ internal fun AutoDiscoveryResultBodyView(
 
 @Composable
 internal fun EditConfigurationButton(
-    modifier: Modifier = Modifier,
     onEditConfigurationClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         horizontalArrangement = Arrangement.End,
