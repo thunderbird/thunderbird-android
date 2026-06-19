@@ -63,8 +63,8 @@ clikt = "5.1.0"
 commonsIo = "2.22.0"
 dependencyCheckPlugin = "0.54.0"
 dependencyGuardPlugin = "0.5.0"
-detektPlugin = "1.23.8"
-detektPluginCompose = "0.4.27"
+detektPlugin = "2.0.0-alpha.5"
+detektPluginCompose = "0.6.2"
 fastAdapter = "5.7.0"
 forkhandlesBom = "2.25.6.0"
 glide = "4.16.0"
@@ -133,7 +133,7 @@ android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinBom" }
 dependency-check = { id = "com.github.ben-manes.versions", version.ref = "dependencyCheckPlugin" }
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuardPlugin" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektPlugin" }
+detekt = { id = "dev.detekt", version.ref = "detektPlugin" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinBom" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlinBom" }

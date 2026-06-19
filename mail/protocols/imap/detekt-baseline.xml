@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:RealImapFolder.kt:RealImapFolder$@Throws(MessagingException::class) override fun appendMessages: Map&lt;String, String&gt;?</ID>
+    <ID>CyclomaticComplexMethod:RealImapFolder.kt:RealImapFolder$@Throws(MessagingException::class) override fun fetch</ID>
+    <ID>CyclomaticComplexMethod:RealImapFolder.kt:RealImapFolder$@Throws(MessagingException::class) private fun handleFetchResponse: Any?</ID>
+    <ID>CyclomaticComplexMethod:RealImapFolder.kt:RealImapFolder$@Throws(MessagingException::class) private fun parseBodyStructure</ID>
+    <ID>CyclomaticComplexMethod:RealImapStore.kt:RealImapStore$@Throws(IOException::class, MessagingException::class) private fun listFolders: List&lt;FolderListItem&gt;</ID>
+    <ID>LargeClass:RealImapConnection.kt:RealImapConnection : ImapConnection</ID>
+    <ID>LargeClass:RealImapConnectionTest.kt:RealImapConnectionTest</ID>
+    <ID>LargeClass:RealImapFolder.kt:RealImapFolder : ImapFolder</ID>
+    <ID>LongMethod:RealImapFolder.kt:RealImapFolder$@Throws(MessagingException::class) override fun appendMessages: Map&lt;String, String&gt;?</ID>
+    <ID>LongMethod:RealImapFolder.kt:RealImapFolder$@Throws(MessagingException::class) override fun fetch</ID>
+    <ID>LongMethod:RealImapFolder.kt:RealImapFolder$@Throws(MessagingException::class) private fun handleFetchResponse: Any?</ID>
+    <ID>LongMethod:RealImapFolder.kt:RealImapFolder$@Throws(MessagingException::class) private fun parseBodyStructure</ID>
+    <ID>LongMethod:RealImapFolderIdler.kt:RealImapFolderIdler$private fun ImapFolder.idle: IdleResult</ID>
+    <ID>LoopWithTooManyJumpStatements:RealImapStore.kt:RealImapStore$for</ID>
+    <ID>MagicNumber:RealImapConnection.kt:RealImapConnection$4</ID>
+    <ID>MagicNumber:RealImapFolder.kt:RealImapFolder$3</ID>
+    <ID>MagicNumber:RealImapFolder.kt:RealImapFolder$8</ID>
+    <ID>MagicNumber:RealImapFolder.kt:RealImapFolder$9</ID>
+    <ID>MagicNumber:UidValidityResponse.kt:UidValidityResponse.Companion$0xFFFFFFFFL</ID>
+    <ID>MaxLineLength:RealImapFolder.kt:RealImapFolder$// [MESSAGE, RFC822, [NAME, Fwd: [#HTR-517941]: update plans at 1am Friday - Memory allocation - displayware.eml], NIL, NIL, 7BIT, 5974, NIL, [INLINE, [FILENAME*0, Fwd: [#HTR-517941]: update plans at 1am Friday - Memory all, FILENAME*1, ocation - displayware.eml]], NIL]</ID>
+    <ID>MaxLineLength:RealImapStoreTest.kt:RealImapStoreTest$fun</ID>
+    <ID>NestedBlockDepth:RealImapFolder.kt:RealImapFolder$@Throws(MessagingException::class) override fun appendMessages: Map&lt;String, String&gt;?</ID>
+    <ID>NestedBlockDepth:RealImapFolder.kt:RealImapFolder$@Throws(MessagingException::class) override fun fetch</ID>
+    <ID>NestedBlockDepth:RealImapFolder.kt:RealImapFolder$@Throws(MessagingException::class) override fun fetchPart</ID>
+    <ID>NestedBlockDepth:RealImapFolder.kt:RealImapFolder$@Throws(MessagingException::class) private fun parseBodyStructure</ID>
+    <ID>ReturnCount:RealImapFolder.kt:RealImapFolder$@Throws(IOException::class, MessagingException::class) override fun areMoreMessagesAvailable: Boolean</ID>
+    <ID>ReturnCount:RealImapFolderIdler.kt:RealImapFolderIdler$private fun ImapFolder.idle: IdleResult</ID>
+    <ID>ReturnCount:RealImapStore.kt:RealImapStore$private fun removePrefixFromFolderName: String?</ID>
+    <ID>ReturnCount:UidValidityResponse.kt:UidValidityResponse.Companion$@JvmStatic fun parse: UidValidityResponse?</ID>
+    <ID>SwallowedException:RealImapFolder.kt:RealImapFolder$e: NegativeImapResponseException</ID>
+    <ID>SwallowedException:RealImapStore.kt:RealImapStore$ioe: IOException</ID>
+    <ID>ThrowingExceptionsWithoutMessageOrCause:RealImapConnection.kt:RealImapConnection$Exception()</ID>
+    <ID>ThrowsCount:ImapFolderFetcher.kt:ImapFolderFetcher$@Suppress("TooGenericExceptionCaught") override fun getFolders: List&lt;RemoteFolder&gt;</ID>
+    <ID>ThrowsCount:RealImapConnection.kt:RealImapConnection$private fun authenticate: List&lt;ImapResponse&gt;</ID>
+    <ID>ThrowsCount:RealImapStore.kt:RealImapStore$@Throws(MessagingException::class) override fun getFolders: List&lt;FolderListItem&gt;</ID>
+    <ID>TooGenericExceptionCaught:RealImapConnection.kt:RealImapConnection$e: Exception</ID>
+    <ID>TooManyFunctions:ImapConnection.kt:ImapConnection</ID>
+    <ID>TooManyFunctions:ImapFolder.kt:ImapFolder</ID>
+    <ID>TooManyFunctions:RealImapConnection.kt:RealImapConnection : ImapConnection</ID>
+    <ID>TooManyFunctions:RealImapFolder.kt:RealImapFolder : ImapFolder</ID>
+    <ID>TooManyFunctions:RealImapStore.kt:RealImapStore : ImapStoreImapConnectionManagerInternalImapStore</ID>
+  </CurrentIssues>
+</SmellBaseline>
