@@ -26,6 +26,7 @@ updates:
     labels:
       - "type: dependency"
       - "type: gradle"
+      - "report: exclude"
     cooldown:
       default-days: 7
     commit-message:
@@ -40,6 +41,7 @@ updates:
     labels:
       - "type: dependency"
       - "type: pip"
+      - "report: exclude"
     cooldown:
       default-days: 7
     commit-message:
