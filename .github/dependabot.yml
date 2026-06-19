@@ -18,6 +18,10 @@ updates:
     commit-message:
       prefix: chore
       include: scope
+    groups:
+      actions-deps:
+        patterns:
+          - "*"
   - package-ecosystem: "gradle"
     open-pull-requests-limit: 20
     directory: "/"
