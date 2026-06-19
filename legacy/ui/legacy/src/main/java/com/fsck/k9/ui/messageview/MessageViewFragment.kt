@@ -78,6 +78,7 @@ import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettings
@@ -110,6 +111,7 @@ class MessageViewFragment :
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val appNameProvider: AppNameProvider by inject()
     private val messageReaderViewModel: MessageReaderViewContract.ViewModel<Part> by viewModel()
+    private val logger: Logger by inject()
 
     private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
         registerForActivityResult(CreateDocumentResultContract()) { documentUri ->
@@ -819,7 +821,9 @@ class MessageViewFragment :
             return
         }
 
-        createAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(uri)
+        currentAttachmentViewInfo?.let {
+            createAttachmentController(it).saveAttachmentTo(lifecycleScope, uri)
+        }
     }
 
     private fun onChooseFolderMoveResult(result: ChooseFolderResultContract.Result?) {
@@ -1181,7 +1185,7 @@ class MessageViewFragment :
     override fun onViewAttachment(attachment: AttachmentViewInfo) {
         currentAttachmentViewInfo = attachment
 
-        createAttachmentController(attachment).viewAttachment()
+        createAttachmentController(attachment).viewAttachment(lifecycleScope)
     }
 
     override fun onSaveAttachment(attachment: AttachmentViewInfo) {
@@ -1201,8 +1205,14 @@ class MessageViewFragment :
         }
     }
 
-    private fun createAttachmentController(attachment: AttachmentViewInfo?): AttachmentController {
-        return AttachmentController(requireContext(), messagingController, this, attachment)
+    private fun createAttachmentController(attachment: AttachmentViewInfo): AttachmentController {
+        return AttachmentController(
+            context = requireContext(),
+            controller = messagingController,
+            messageViewFragment = this,
+            attachment = attachment,
+            logger = logger
+        )
     }
 
     private fun invalidateMenu() {
