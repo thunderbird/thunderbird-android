@@ -98,6 +98,7 @@ import net.thunderbird.feature.mail.message.reader.api.R as MessageReaderR
 class MessageViewFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
+    AttachmentDisplayController,
     AttachmentViewCallback {
 
     private val themeManager: ThemeManager by inject()
@@ -1055,17 +1056,17 @@ class MessageViewFragment :
         requireActivity().runOnUiThread(runnable)
     }
 
-    fun showAttachmentLoadingDialog() {
+    override fun showAttachmentLoadingDialog() {
         showDialog(R.id.dialog_attachment_progress)
     }
 
-    fun hideAttachmentLoadingDialogOnMainThread() {
+    override fun hideAttachmentLoadingDialogOnMainThread() {
         runOnMainThread {
             removeDialog(R.id.dialog_attachment_progress)
         }
     }
 
-    fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo) {
+    override fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo) {
         messageTopView.refreshAttachmentThumbnail(attachment)
     }
 
@@ -1209,7 +1210,7 @@ class MessageViewFragment :
         return AttachmentController(
             context = requireContext(),
             controller = messagingController,
-            messageViewFragment = this,
+            attachmentDisplayController = this,
             attachment = attachment,
             logger = logger
         )

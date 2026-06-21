@@ -30,7 +30,7 @@ import org.apache.commons.io.IOUtils
 class AttachmentController internal constructor(
     private val context: Context,
     private val controller: MessagingController,
-    private val messageViewFragment: MessageViewFragment,
+    private val attachmentDisplayController: AttachmentDisplayController,
     private val attachment: AttachmentViewInfo,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val logger: Logger
@@ -42,7 +42,7 @@ class AttachmentController internal constructor(
             if (!attachment.isContentAvailable) {
                 val success = downloadAttachment()
                 if (success) {
-                    messageViewFragment.refreshAttachmentThumbnail(attachment)
+                    attachmentDisplayController.refreshAttachmentThumbnail(attachment)
                     viewLocalAttachment()
                 }
             } else {
@@ -58,7 +58,7 @@ class AttachmentController internal constructor(
             if (!attachment.isContentAvailable) {
                 val success = downloadAttachment()
                 if (success) {
-                    messageViewFragment.refreshAttachmentThumbnail(attachment)
+                    attachmentDisplayController.refreshAttachmentThumbnail(attachment)
                     saveLocalAttachmentTo(documentUri)
                 }
             } else {
@@ -84,13 +84,13 @@ class AttachmentController internal constructor(
         val localPart = attachment.part as LocalPart
         val account = getPreferences().getAccount(localPart.accountUuid)
 
-        messageViewFragment.showAttachmentLoadingDialog()
+        attachmentDisplayController.showAttachmentLoadingDialog()
         controller.loadAttachment(
             account, localPart.message, attachment.part,
             object : SimpleMessagingListener() {
                 override fun loadAttachmentFinished(account: LegacyAccountDto?, message: Message?, part: Part?) {
                     attachment.setContentAvailable()
-                    messageViewFragment.hideAttachmentLoadingDialogOnMainThread()
+                    attachmentDisplayController.hideAttachmentLoadingDialogOnMainThread()
                     if (continuation.isActive) {
                         continuation.resume(true)
                     }
@@ -102,7 +102,7 @@ class AttachmentController internal constructor(
                     part: Part?,
                     reason: String?,
                 ) {
-                    messageViewFragment.hideAttachmentLoadingDialogOnMainThread()
+                    attachmentDisplayController.hideAttachmentLoadingDialogOnMainThread()
                     if (continuation.isActive) {
                         continuation.resume(false)
                     }
