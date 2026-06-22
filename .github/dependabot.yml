@@ -26,11 +26,14 @@ updates:
     labels:
       - "type: dependency"
       - "type: gradle"
+      - "report: exclude"
     cooldown:
       default-days: 7
     commit-message:
       prefix: chore
       include: scope
+    ignore:
+      - dependency-name: "gradle"
   - package-ecosystem: pip
     open-pull-requests-limit: 10
     directories:
@@ -40,6 +43,7 @@ updates:
     labels:
       - "type: dependency"
       - "type: pip"
+      - "report: exclude"
     cooldown:
       default-days: 7
     commit-message:
