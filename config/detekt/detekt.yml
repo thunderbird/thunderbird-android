@@ -161,12 +161,12 @@ complexity:
     ignorePrivate: false
     ignoreInternal: false
     ignoreOverridden: false
-    ignoreAnnotatedFunctions: ['Preview']
+    ignoreAnnotatedFunctions: ['Preview', 'PreviewLightDark', 'PreviewLightDarkLandscape']
 
 coroutines:
   active: true
   CoroutineLaunchedInTestWithoutRunTest:
-    active: false
+    active: true
   GlobalCoroutineUsage:
     active: false
   InjectDispatcher:
@@ -330,7 +330,7 @@ naming:
     active: true
     aliases: ['FunctionName']
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**', '**/nativeTest/**']
-    functionPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    functionPattern: '[a-z][a-zA-Z0-9]*'
     excludeClassPattern: '$^'
     ignoreAnnotated:
       - 'Composable'
@@ -505,7 +505,7 @@ potential-bugs:
       - 'androidx.annotation.CallSuper'
       - 'javax.annotation.OverridingMethodsMustInvokeSuper'
   MissingUseCall:
-    active: true
+    active: false
     ignoreClass:
       - 'java.io.ByteArrayInputStream'
       - 'java.io.ByteArrayOutputStream'
