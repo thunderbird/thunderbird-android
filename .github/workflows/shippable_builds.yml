@@ -427,6 +427,7 @@ jobs:
           FULL_VERSION_NAME: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
           K9MAIL_GITHUB_NOTES: ${{ steps.render_notes.outputs.k9mail_github_notes }}
           THUNDERBIRD_GITHUB_NOTES: ${{ steps.render_notes.outputs.thunderbird_github_notes }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           case "${APP_NAME}:${RELEASE_TYPE}" in
             thunderbird:beta) TAG_REGEX='^THUNDERBIRD_[0-9]+_0b[0-9]+$'
