@@ -13,7 +13,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
@@ -223,7 +222,7 @@ private fun WelcomeFooter(
     }
 }
 
-private fun Modifier.defaultItemModifier() = composed {
-    fillMaxWidth()
-        .padding(MainTheme.spacings.default)
-}
+@Composable
+private fun Modifier.defaultItemModifier() = this
+    .fillMaxWidth()
+    .padding(MainTheme.spacings.default)

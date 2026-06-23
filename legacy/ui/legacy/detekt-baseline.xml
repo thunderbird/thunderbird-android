@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComplexCondition:IntentDataMapper.kt:IntentDataMapper$Intent.ACTION_SEND == action || Intent.ACTION_SEND_MULTIPLE == action || Intent.ACTION_SENDTO == action || Intent.ACTION_VIEW == action</ID>
+    <ID>ComplexCondition:LegacyMessageListFragment.kt:LegacyMessageListFragment$operation == FolderOperation.MOVE &amp;&amp; !messagingController.isMoveCapable(account.id) || operation == FolderOperation.COPY &amp;&amp; !messagingController.isCopyCapable(account.id)</ID>
+    <ID>ComplexCondition:LegacyMessageListFragment.kt:LegacyMessageListFragment$operation == FolderOperation.MOVE &amp;&amp; !messagingController.isMoveCapable(message) || operation == FolderOperation.COPY &amp;&amp; !messagingController.isCopyCapable(message)</ID>
+    <ID>ComplexCondition:MessageListFragment.kt:MessageListFragment$operation == FolderOperation.MOVE &amp;&amp; !messagingController.isMoveCapable(account.id) || operation == FolderOperation.COPY &amp;&amp; !messagingController.isCopyCapable(account.id)</ID>
+    <ID>ComplexCondition:MessageListFragment.kt:MessageListFragment$operation == FolderOperation.MOVE &amp;&amp; !messagingController.isMoveCapable(message) || operation == FolderOperation.COPY &amp;&amp; !messagingController.isCopyCapable(message)</ID>
+    <ID>ComplexCondition:TouchInterceptView.kt:TouchInterceptView$absoluteDeltaY &gt; touchSlop &amp;&amp; absoluteDeltaY &gt; absoluteDeltaX &amp;&amp; (scrollView.canScrollVertically(deltaY.toInt()) || webView.canScrollVertically(deltaY.toInt()))</ID>
+    <ID>CyclomaticComplexMethod:AccountSettingsDataStore.kt:AccountSettingsDataStore$override fun getBoolean: Boolean</ID>
+    <ID>CyclomaticComplexMethod:AccountSettingsDataStore.kt:AccountSettingsDataStore$override fun getString: String?</ID>
+    <ID>CyclomaticComplexMethod:AccountSettingsDataStore.kt:AccountSettingsDataStore$override fun putBoolean</ID>
+    <ID>CyclomaticComplexMethod:AccountSettingsDataStore.kt:AccountSettingsDataStore$override fun putString</ID>
+    <ID>CyclomaticComplexMethod:GeneralSettingsDataStore.kt:GeneralSettingsDataStore$override fun getString: String?</ID>
+    <ID>CyclomaticComplexMethod:GeneralSettingsDataStore.kt:GeneralSettingsDataStore$override fun getStringSet: Set&lt;String&gt;?</ID>
+    <ID>CyclomaticComplexMethod:GeneralSettingsDataStore.kt:GeneralSettingsDataStore$override fun putBoolean</ID>
+    <ID>CyclomaticComplexMethod:GeneralSettingsDataStore.kt:GeneralSettingsDataStore$override fun putString</ID>
+    <ID>CyclomaticComplexMethod:SortTypeToastProvider.kt:SortTypeToastProvider$fun getToast: Int</ID>
+    <ID>ForbiddenComment:MessageDetailsFragment.kt:MessageDetailsFragment$// FIXME: Replace this with a mechanism that survives process death</ID>
+    <ID>LongMethod:MessageContainerView.kt:MessageContainerView$private fun createImageMenu</ID>
+    <ID>LongMethod:RecipientNamesView.kt:RecipientNamesView$override fun onLayout</ID>
+    <ID>MagicNumber:AccountItem.kt:AccountItem$200L</ID>
+    <ID>MagicNumber:AutocryptSetupTransferLiveEvent.kt:AutocryptSetupTransferLiveEvent$2000</ID>
+    <ID>MagicNumber:MessageListItemAnimator.kt:MessageListItemAnimator$120</ID>
+    <ID>MagicNumber:MessageListItemMapper.kt:MessageListItemMapper$52</ID>
+    <ID>MagicNumber:RecipientMvpView.kt:RecipientMvpView$100.0f</ID>
+    <ID>MagicNumber:RecipientMvpView.kt:RecipientMvpView$15</ID>
+    <ID>MagicNumber:RecipientNamesView.kt:RecipientNamesView$8</ID>
+    <ID>MagicNumber:ReplyToView.kt:ReplyToView$15</ID>
+    <ID>MagicNumber:SettingsViewModel.kt:SettingsViewModel$500</ID>
+    <ID>MagicNumber:SimpleHighlightView.kt:SimpleHighlightView$0xFFFFFF</ID>
+    <ID>MagicNumber:SimpleHighlightView.kt:SimpleHighlightView$100</ID>
+    <ID>MagicNumber:SimpleHighlightView.kt:SimpleHighlightView$128</ID>
+    <ID>MagicNumber:SimpleHighlightView.kt:SimpleHighlightView$80</ID>
+    <ID>MagicNumber:SizeFormatter.kt:SizeFormatter$1000L</ID>
+    <ID>MagicNumber:SizeFormatter.kt:SizeFormatter$999_950L</ID>
+    <ID>MagicNumber:SizeFormatter.kt:SizeFormatter$999_950_000L</ID>
+    <ID>ReturnCount:ChooseFolderActivity.kt:ChooseFolderActivity$private fun decodeArguments: Boolean</ID>
+    <ID>ReturnCount:EditIdentity.kt:EditIdentity$override fun onOptionsItemSelected: Boolean</ID>
+    <ID>ReturnCount:MessageTopView.kt:MessageTopView$private fun shouldShowPicturesFromSender: Boolean</ID>
+    <ID>ReturnCount:RecipientLayoutCreator.kt:RecipientLayoutCreator$fun createRecipientLayout: RecipientLayoutData</ID>
+    <ID>ReturnCount:RecipientPresenter.kt:RecipientPresenter$fun checkRecipientsOkForSending: Boolean</ID>
+    <ID>ReturnCount:RecipientPresenter.kt:RecipientPresenter$private fun toggleEncryptionState</ID>
+    <ID>ReturnCount:ShareIntentBuilder.kt:ShareIntentBuilder$private fun extractBodyText: String</ID>
+    <ID>ReturnCount:TouchInterceptView.kt:TouchInterceptView$private fun handleOnInterceptTouchEvent</ID>
+    <ID>SwallowedException:AboutFragment.kt:e: ActivityNotFoundException</ID>
+    <ID>SwallowedException:ContactPictureLoader.kt:ContactPictureLoader$e: Exception</ID>
+    <ID>SwallowedException:MessageContainerView.kt:MessageContainerView$e: ActivityNotFoundException</ID>
+    <ID>SwallowedException:MessageDetailsViewModel.kt:MessageDetailsViewModel$e: Exception</ID>
+    <ID>SwallowedException:PushInfoFragment.kt:PushInfoFragment$e: ActivityNotFoundException</ID>
+    <ID>SwallowedException:SettingsListFragment.kt:SettingsListFragment$e: ActivityNotFoundException</ID>
+    <ID>TooGenericExceptionCaught:AccountRemover.kt:AccountRemover$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:AutocryptSetupTransferLiveEvent.kt:AutocryptSetupTransferLiveEvent$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ContactPhotoLoader.kt:ContactPhotoLoader$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ContactPictureLoader.kt:ContactPictureLoader$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:GeneralSettingsViewModel.kt:GeneralSettingsViewModel$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:MessageDetailsViewModel.kt:MessageDetailsViewModel$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:MessageListLoader.kt:MessageListLoader$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:SettingsExportViewModel.kt:SettingsExportViewModel$e: Exception</ID>
+    <ID>TooGenericExceptionThrown:AccountSettingsActivity.kt:AccountSettingsActivity$throw RuntimeException("getSupportActionBar() == null")</ID>
+    <ID>TooGenericExceptionThrown:GeneralSettingsActivity.kt:GeneralSettingsActivity$throw RuntimeException("getSupportActionBar() == null")</ID>
+    <ID>TooGenericExceptionThrown:MessageViewFragment.kt:MessageViewFragment$throw RuntimeException("Called showDialog(int) with unknown dialog id.")</ID>
+    <ID>TooManyFunctions:AccountSettingsDataStore.kt:AccountSettingsDataStore : PreferenceDataStore</ID>
+    <ID>TooManyFunctions:AccountSettingsFragment.kt:AccountSettingsFragment : PreferenceFragmentCompatConfirmationDialogFragmentListener</ID>
+    <ID>TooManyFunctions:FolderSettingsFragment.kt:FolderSettingsFragment : PreferenceFragmentCompatConfirmationDialogFragmentListener</ID>
+    <ID>TooManyFunctions:GeneralSettingsDataStore.kt:GeneralSettingsDataStore : PreferenceDataStore</ID>
+    <ID>TooManyFunctions:MessageContainerView.kt:MessageContainerView : LinearLayoutOnCreateContextMenuListenerKoinComponent</ID>
+    <ID>TooManyFunctions:MessageDetailsFragment.kt:MessageDetailsFragment : ToolbarBottomSheetDialogFragment</ID>
+    <ID>TooManyFunctions:MessageListAdapter.kt:MessageListAdapter : Adapter</ID>
+    <ID>TooManyFunctions:MessageListSwipeCallback.kt:MessageListSwipeCallback : Callback</ID>
+    <ID>TooManyFunctions:MessageTopView.kt:MessageTopView : LinearLayoutKoinComponent</ID>
+    <ID>TooManyFunctions:MessageViewContainerFragment.kt:MessageViewContainerFragment : Fragment</ID>
+    <ID>TooManyFunctions:MessageViewFragment.kt:MessageViewFragment : FragmentConfirmationDialogFragmentListenerAttachmentViewCallback</ID>
+    <ID>TooManyFunctions:RecipientMvpView.kt:RecipientMvpView : OnFocusChangeListenerOnClickListener</ID>
+    <ID>TooManyFunctions:RecipientPresenter.kt:RecipientPresenter</ID>
+    <ID>TooManyFunctions:SettingsExportViewModel.kt:SettingsExportViewModel : ViewModel</ID>
+    <ID>TooManyFunctions:SettingsListFragment.kt:SettingsListFragment : FragmentItemTouchCallback</ID>
+    <ID>TooManyFunctions:SimpleHighlightView.kt:SimpleHighlightView : FrameLayout</ID>
+    <ID>TooManyFunctions:VibrationDialogFragment.kt:VibrationDialogFragment$VibrationPatternAdapter : BaseAdapter</ID>
+    <ID>UnusedParameter:MessageViewFragment.kt:MessageViewFragment$requestKey: String</ID>
+  </CurrentIssues>
+</SmellBaseline>

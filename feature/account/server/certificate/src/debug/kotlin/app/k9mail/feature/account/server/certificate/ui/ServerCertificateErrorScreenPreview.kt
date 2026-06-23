@@ -61,7 +61,7 @@ internal fun ServerCertificateErrorScreenPreview() {
     } WithContent {
         PreviewWithTheme {
             ServerCertificateErrorScreen(
-                onCertificateAccepted = {},
+                onServerCertificateAcceptClick = {},
                 onBack = {},
                 viewModel = viewModel {
                     ServerCertificateErrorViewModel(

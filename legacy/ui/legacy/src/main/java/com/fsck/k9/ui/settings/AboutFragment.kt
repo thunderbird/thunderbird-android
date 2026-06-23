@@ -199,11 +199,11 @@ fun AboutScreen(
 ) {
     val scrollState = rememberScrollState()
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
     ) {
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState),
         ) {

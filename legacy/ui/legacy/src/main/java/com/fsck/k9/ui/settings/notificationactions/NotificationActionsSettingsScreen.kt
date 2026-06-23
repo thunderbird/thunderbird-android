@@ -51,13 +51,13 @@ internal fun NotificationActionsSettingsScreen(
     description: String,
     initialActions: ImmutableList<MessageNotificationAction>,
     initialCutoff: Int,
-    onStateChanged: (List<MessageNotificationAction>, Int) -> Unit,
+    onStateChange: (List<MessageNotificationAction>, Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val reorderController = rememberReorderController(
         initialActions = initialActions,
         initialCutoff = initialCutoff,
-        onStateChanged = onStateChanged,
+        onStateChange = onStateChange,
     )
     NotificationActionsContent(
         description = description,
@@ -70,13 +70,13 @@ internal fun NotificationActionsSettingsScreen(
 private fun rememberReorderController(
     initialActions: ImmutableList<MessageNotificationAction>,
     initialCutoff: Int,
-    onStateChanged: (List<MessageNotificationAction>, Int) -> Unit,
+    onStateChange: (List<MessageNotificationAction>, Int) -> Unit,
 ): NotificationActionsReorderController {
     val reorderController = remember {
         NotificationActionsReorderController(
             initialActions = initialActions,
             initialCutoff = initialCutoff,
-            onStateChanged = onStateChanged,
+            onStateChanged = onStateChange,
         )
     }
 
@@ -150,7 +150,7 @@ private fun NotificationActionsList(reorderController: NotificationActionsReorde
                 index = index,
                 reorderController = reorderController,
                 onDrag = onDrag,
-                rowModifier = rowModifier,
+                modifier = rowModifier,
             )
         }
     }
@@ -162,7 +162,8 @@ private fun NotificationActionsListItem(
     index: Int,
     reorderController: NotificationActionsReorderController,
     onDrag: (Float) -> Unit,
-    rowModifier: Modifier = Modifier,
+    @Suppress("ModifierNotUsedAtRoot")
+    modifier: Modifier = Modifier,
 ) {
     val isDragged = reorderController.draggedKey == item.key
     val dragState = RowDragState(
@@ -193,14 +194,14 @@ private fun NotificationActionsListItem(
                     onMoveDown = { reorderController.moveByStep(item.key, 1) },
                 ),
                 dragCallbacks = dragCallbacks,
-                modifier = rowModifier,
+                modifier = modifier,
             )
         }
 
         is NotificationListItem.Cutoff -> NotificationCutoffRow(
             dragState = dragState,
             dragCallbacks = dragCallbacks,
-            modifier = rowModifier,
+            modifier = modifier,
         )
     }
 }

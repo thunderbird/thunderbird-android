@@ -25,7 +25,7 @@ fun AccountIndicatorIcon(
 
 @Preview
 @Composable
-private fun PreviewAccountIndicatorIconDefault() {
+private fun AccountIndicatorIconDefaultPreview() {
     AccountIndicatorIcon(
         color = Color.Red,
     )
