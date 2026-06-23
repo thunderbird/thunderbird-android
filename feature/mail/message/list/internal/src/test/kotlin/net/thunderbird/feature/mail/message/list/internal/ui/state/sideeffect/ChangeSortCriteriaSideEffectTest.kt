@@ -6,7 +6,6 @@ import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
-import dev.mokkery.mock
 import kotlin.test.Test
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.test.runTest
@@ -61,7 +60,7 @@ class ChangeSortCriteriaSideEffectTest : BaseSideEffectHandlerTest() {
         val testSubject = ChangeSortCriteriaSideEffect(
             dispatch = {},
             logger = TestLogger(),
-            updateSortCriteria = mock(),
+            updateSortCriteria = { _, _ -> error("should not be called") },
         )
 
         // Act

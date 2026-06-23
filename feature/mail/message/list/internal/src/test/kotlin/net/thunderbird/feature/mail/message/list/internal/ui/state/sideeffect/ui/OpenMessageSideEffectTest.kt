@@ -1,16 +1,16 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.ui
 
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
-import dev.mokkery.spy
-import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.mail.message.list.internal.fakes.RecordingSuspendFunction
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.BaseSideEffectHandlerTest
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
@@ -77,8 +77,8 @@ class OpenMessageSideEffectTest : BaseSideEffectHandlerTest() {
     fun `handle() should dispatch OpenMessage effect with active message`() = runTest {
         // Arrange
         val message = createMessageItemUi()
-        val dispatchUiEffect = spy<suspend (MessageListEffect) -> Unit>(obj = {})
-        val testSubject = createTestSubject(dispatchUiEffect = dispatchUiEffect)
+        val dispatchUiEffect = RecordingSuspendFunction<MessageListEffect>()
+        val testSubject = createTestSubject(dispatchUiEffect = dispatchUiEffect.function)
 
         // Act
         testSubject.handle(
@@ -88,7 +88,7 @@ class OpenMessageSideEffectTest : BaseSideEffectHandlerTest() {
         )
 
         // Assert
-        verifySuspend { dispatchUiEffect(MessageListEffect.OpenMessage(message = message)) }
+        assertThat(dispatchUiEffect.calls).containsExactly(MessageListEffect.OpenMessage(message = message))
     }
 
     @Test
