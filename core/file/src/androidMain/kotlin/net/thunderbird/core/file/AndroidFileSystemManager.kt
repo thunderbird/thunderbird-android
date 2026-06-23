@@ -3,6 +3,7 @@ package net.thunderbird.core.file
 import android.content.ContentResolver
 import com.eygraber.uri.Uri
 import com.eygraber.uri.toAndroidUri
+import java.io.File
 import kotlinx.io.IOException
 import kotlinx.io.RawSink
 import kotlinx.io.RawSource
@@ -50,7 +51,7 @@ class AndroidFileSystemManager(
             throw IOException("Unsupported URI scheme for creating directories: $scheme")
         }
         val path = androidUri.path ?: throw IOException("Missing path for URI: $uri")
-        val file = java.io.File(path)
+        val file = File(path)
         if (file.exists()) return
         if (!file.mkdirs()) {
             if (!file.exists()) {
