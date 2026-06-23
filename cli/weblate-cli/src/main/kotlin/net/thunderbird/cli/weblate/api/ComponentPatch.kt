@@ -53,8 +53,8 @@ data class ComponentPatch(
                 value.category?.let { put(key = "category", value = it) }
                 value.linkedComponent?.let { put(key = "linked_component", value = it) }
                 put(key = "locked", value = value.locked)
-                config.jsonObject.forEach { (key, value) ->
-                    put(key, value)
+                config.jsonObject.forEach { (key, jsonElement) ->
+                    put(key, jsonElement)
                 }
             }
 

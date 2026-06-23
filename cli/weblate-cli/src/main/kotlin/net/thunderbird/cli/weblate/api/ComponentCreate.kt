@@ -87,8 +87,8 @@ data class ComponentCreate(
                 put(key = "merge_style", value = value.mergeStyle)
 
                 val configJson = encoder.json.encodeToJsonElement(ComponentConfig.serializer(), value.config)
-                configJson.jsonObject.forEach { (key, value) ->
-                    put(key, value)
+                configJson.jsonObject.forEach { (key, jsonElement) ->
+                    put(key, jsonElement)
                 }
             }
 
