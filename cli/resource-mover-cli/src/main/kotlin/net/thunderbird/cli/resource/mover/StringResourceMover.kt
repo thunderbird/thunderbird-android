@@ -1,7 +1,6 @@
 package net.thunderbird.cli.resource.mover
 
 import java.io.File
-import kotlin.system.exitProcess
 
 @Suppress("TooManyFunctions")
 class StringResourceMover {
@@ -170,18 +169,13 @@ class StringResourceMover {
     private fun createTargetFile(targetFile: File, isTargetComposeResources: Boolean) {
         val isNewFileCreated: Boolean = targetFile.createNewFile()
         if (!isNewFileCreated) {
-            printError("Target file could not be created: ${targetFile.path}")
-            exitProcess(-1)
+            error("Target file could not be created: ${targetFile.path}")
         }
 
         targetFile.writeText(
             if (isTargetComposeResources) TARGET_FILE_CONTENT_COMPOSE_RESOURCE else TARGET_FILE_CONTENT,
         )
         println("Target file ${targetFile.path} created")
-    }
-
-    private fun printError(message: String) {
-        System.err.println("\n$message\n")
     }
 
     private companion object {

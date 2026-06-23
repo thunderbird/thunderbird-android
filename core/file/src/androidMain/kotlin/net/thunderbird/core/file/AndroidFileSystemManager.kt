@@ -29,6 +29,7 @@ class AndroidFileSystemManager(
         return contentResolver.openInputStream(uri.toAndroidUri())?.asSource()
     }
 
+    @Suppress("ThrowsCount")
     override fun delete(uri: Uri) {
         try {
             val rowsDeleted = contentResolver.delete(uri.toAndroidUri(), null, null)
