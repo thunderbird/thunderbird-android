@@ -5,6 +5,19 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="20.0" versioncode="39039" date="2026-06-22">
+        <change>New: Enable easily discoverable way to configure and use Thundermail</change>
+        <change>Changed: Only show message notification configuration actions above the cutoff</change>
+        <change>Fixed: Account drawer stayed open after account switch despite auto-select Inbox setting</change>
+        <change>Fixed: Imported settings could incorrectly show &#39;XX&#39; avatar monogram</change>
+        <change>Fixed: Printed emails omitted message headers and used minimal margins</change>
+        <change>Fixed: Compose button did not work in tablet split-screen message view</change>
+        <change>Fixed: Accented subfolder names sorted to bottom instead of locale order</change>
+        <change>Fixed: Disabled font size setting appeared in General Settings search</change>
+        <change>Fixed: New mail notifications showed avatars when contact pictures were disabled</change>
+        <change>Fixed: Mail opening still used fade-in after animations were disabled</change>
+        <change>Fixed: Sidebar account-switching animations were too fast</change>
+    </release>
     <release version="19.2" versioncode="39038" date="2026-06-04">
         <change>Fixed: K-9 Mail crashed when scanning Thundermail QR code</change>
     </release>
