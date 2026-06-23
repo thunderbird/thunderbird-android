@@ -92,7 +92,7 @@ private inline fun <reified T> LazyGridScope.getLegacyIconsFor(icons: T) {
                 method.isAccessible = true
                 val drawableResId = method.invoke(icons) as Int
                 LegacyIconItem(
-                    name = method.name.replaceFirst("get", ""),
+                    name = method.name.replaceFirst(oldValue = "get", newValue = ""),
                     drawableResId = drawableResId,
                 )
             }

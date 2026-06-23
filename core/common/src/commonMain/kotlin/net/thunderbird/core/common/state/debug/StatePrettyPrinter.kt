@@ -75,7 +75,7 @@ internal fun <TState : Any, TEvent : Any> StatePrettyPrinter(
     clock: Clock,
     valueFormatter: (Any, formatter: (Any) -> String) -> String,
 ): StatePrettyPrinter<TState, TEvent> =
-    CommonStatePrettyPrinter(logger, logTag, clock, valueFormatter)
+    CommonStatePrettyPrinter(logger = logger, logTag = logTag, clock = clock, customValueFormatter = valueFormatter)
 
 /**
  * A pretty printer implementation for state machine debugging that formats and logs state transitions.

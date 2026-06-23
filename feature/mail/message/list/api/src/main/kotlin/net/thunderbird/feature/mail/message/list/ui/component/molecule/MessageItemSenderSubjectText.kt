@@ -88,7 +88,7 @@ private fun styledSenderOrSubject(
     append(text)
     when {
         forceRegularFontWeight -> {
-            addStyle(SpanStyle(fontWeight = FontWeight.Normal), 0, text.length)
+            addStyle(style = SpanStyle(fontWeight = FontWeight.Normal), start = 0, end = text.length)
         }
 
         useSender -> {
@@ -101,15 +101,15 @@ private fun styledSenderOrSubject(
                     )
 
                     is ComposedAddressStyle.Bold -> addStyle(
-                        SpanStyle(fontWeight = FontWeight.Bold),
-                        style.start,
-                        style.end ?: text.length,
+                        style = SpanStyle(fontWeight = FontWeight.Bold),
+                        start = style.start,
+                        end = style.end ?: text.length,
                     )
 
                     is ComposedAddressStyle.Regular -> addStyle(
-                        SpanStyle(fontWeight = FontWeight.Normal),
-                        style.start,
-                        style.end ?: text.length,
+                        style = SpanStyle(fontWeight = FontWeight.Normal),
+                        start = style.start,
+                        end = style.end ?: text.length,
                     )
                 }
             }

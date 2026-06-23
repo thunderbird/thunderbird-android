@@ -12,7 +12,7 @@ internal actual fun <T : Any> T.toPropertyMap(): Map<String, Any?> {
         for (field in fields) {
             try {
                 field.isAccessible = true
-                put(field.name, field[this@toPropertyMap])
+                put(key = field.name, value = field[this@toPropertyMap])
             } catch (_: RuntimeException) {
                 // Skip fields that cannot be accessed (e.g., platform types in named modules)
             }

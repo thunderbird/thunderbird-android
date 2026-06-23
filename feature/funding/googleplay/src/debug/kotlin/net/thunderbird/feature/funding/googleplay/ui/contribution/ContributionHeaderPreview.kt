@@ -22,7 +22,7 @@ internal fun ContributionHeaderWithPurchasedOneTimeContributionPreview() {
             purchasedContribution = PurchasedContribution(
                 id = FakeData.oneTimeContribution.id,
                 contribution = FakeData.oneTimeContribution,
-                purchaseDate = LocalDateTime(2024, 6, 1, 12, 0),
+                purchaseDate = LocalDateTime(year = 2024, month = 6, day = 1, hour = 12, minute = 0),
             ),
         )
     }
@@ -36,7 +36,7 @@ internal fun ContributionHeaderWithPurchasedRecurringContributionPreview() {
             purchasedContribution = PurchasedContribution(
                 id = FakeData.recurringContribution.id,
                 contribution = FakeData.recurringContribution,
-                purchaseDate = LocalDateTime(2024, 6, 1, 12, 0),
+                purchaseDate = LocalDateTime(year = 2024, month = 6, day = 1, hour = 12, minute = 0),
             ),
         )
     }

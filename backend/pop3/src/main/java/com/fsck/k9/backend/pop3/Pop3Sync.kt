@@ -132,7 +132,11 @@ internal class Pop3Sync(
 
                 for (thisMess in remoteMessageArray) {
                     headerProgress.incrementAndGet()
-                    listener.syncHeadersProgress(folder, headerProgress.get(), messageCount)
+                    listener.syncHeadersProgress(
+                        folderServerId = folder,
+                        completed = headerProgress.get(),
+                        total = messageCount,
+                    )
 
                     val localMessageTimestamp = localUidMap[thisMess.uid]
                     if (localMessageTimestamp == null || localMessageTimestamp >= earliestTimestamp) {
@@ -143,7 +147,11 @@ internal class Pop3Sync(
 
                 Log.v("SYNC: Got %d messages for folder %s", remoteUidMap.size, folder)
 
-                listener.syncHeadersFinished(folder, headerProgress.get(), remoteUidMap.size)
+                listener.syncHeadersFinished(
+                    folderServerId = folder,
+                    totalMessagesInMailbox = headerProgress.get(),
+                    numNewMessages = remoteUidMap.size,
+                )
             } else if (remoteMessageCount < 0) {
                 throw Exception("Message count $remoteMessageCount for folder $folder")
             }
@@ -165,7 +173,7 @@ internal class Pop3Sync(
 
                     backendFolder.destroyMessages(destroyMessageUids)
                     for (uid in destroyMessageUids) {
-                        listener.syncRemovedMessage(folder, uid)
+                        listener.syncRemovedMessage(folderServerId = folder, messageServerId = uid)
                     }
                 }
             }
@@ -178,11 +186,11 @@ internal class Pop3Sync(
              * Now we download the actual content of messages.
              */
             val newMessages = downloadMessages(
-                syncConfig,
-                remoteFolder,
-                backendFolder,
-                remoteMessages,
-                listener,
+                syncConfig = syncConfig,
+                remoteFolder = remoteFolder,
+                backendFolder = backendFolder,
+                inputMessages = remoteMessages,
+                listener = listener,
             )
 
             listener.folderStatusChanged(folder)
@@ -203,7 +211,7 @@ internal class Pop3Sync(
 
             Log.i("Done synchronizing folder %s:%s", accountName, folder)
         } catch (e: AuthenticationFailedException) {
-            listener.syncFailed(folder, "Authentication failure", e)
+            listener.syncFailed(folderServerId = folder, message = "Authentication failure", exception = e)
         } catch (e: Exception) {
             Log.e(e, "synchronizeMailbox")
             // If we don't set the last checked, it can try too often during
@@ -218,7 +226,7 @@ internal class Pop3Sync(
                 }
             }
 
-            listener.syncFailed(folder, rootMessage, e)
+            listener.syncFailed(folderServerId = folder, message = rootMessage, exception = e)
 
             Log.e(
                 "Failed synchronizing folder %s:%s @ %tc",
@@ -276,7 +284,7 @@ internal class Pop3Sync(
 
         val progress = AtomicInteger(0)
         val todo = unsyncedMessages.size + syncFlagMessages.size
-        listener.syncProgress(folder, progress.get(), todo)
+        listener.syncProgress(folderServerId = folder, completed = progress.get(), total = todo)
 
         Log.d("SYNC: Have %d unsynced messages", unsyncedMessages.size)
 
@@ -288,7 +296,7 @@ internal class Pop3Sync(
             val listSize = unsyncedMessages.size
 
             if ((visibleLimit > 0) && (listSize > visibleLimit)) {
-                unsyncedMessages = unsyncedMessages.subList(0, visibleLimit)
+                unsyncedMessages = unsyncedMessages.subList(fromIndex = 0, toIndex = visibleLimit)
             }
 
             val fp = FetchProfile()
@@ -297,8 +305,15 @@ internal class Pop3Sync(
             Log.d("SYNC: About to fetch %d unsynced messages for folder %s", unsyncedMessages.size, folder)
 
             fetchUnsyncedMessages(
-                syncConfig, remoteFolder, unsyncedMessages, smallMessages, largeMessages, progress,
-                todo, fp, listener,
+                syncConfig = syncConfig,
+                remoteFolder = remoteFolder,
+                unsyncedMessages = unsyncedMessages,
+                smallMessages = smallMessages,
+                largeMessages = largeMessages,
+                progress = progress,
+                todo = todo,
+                fp = fp,
+                listener = listener,
             )
 
             Log.d("SYNC: Synced unsynced messages for folder %s", folder)
@@ -322,7 +337,16 @@ internal class Pop3Sync(
         fp.add(FetchProfile.Item.BODY)
         //        fp.add(FetchProfile.Item.FLAGS);
         //        fp.add(FetchProfile.Item.ENVELOPE);
-        downloadSmallMessages(remoteFolder, backendFolder, smallMessages, progress, newMessages, todo, fp, listener)
+        downloadSmallMessages(
+            remoteFolder = remoteFolder,
+            backendFolder = backendFolder,
+            smallMessages = smallMessages,
+            progress = progress,
+            newMessages = newMessages,
+            todo = todo,
+            fp = fp,
+            listener = listener,
+        )
         smallMessages.clear()
         /*
          * Now do the large messages that require more round trips.
@@ -330,15 +354,15 @@ internal class Pop3Sync(
         fp = FetchProfile()
         fp.add(FetchProfile.Item.STRUCTURE)
         downloadLargeMessages(
-            syncConfig,
-            remoteFolder,
-            backendFolder,
-            largeMessages,
-            progress,
-            newMessages,
-            todo,
-            fp,
-            listener,
+            syncConfig = syncConfig,
+            remoteFolder = remoteFolder,
+            backendFolder = backendFolder,
+            largeMessages = largeMessages,
+            progress = progress,
+            newMessages = newMessages,
+            todo = todo,
+            fp = fp,
+            listener = listener,
         )
         largeMessages.clear()
 
@@ -403,7 +427,11 @@ internal class Pop3Sync(
                 }
 
                 val isOldMessage = isOldMessage(backendFolder, message)
-                listener.syncNewMessage(folder, messageServerId, isOldMessage)
+                listener.syncNewMessage(
+                    folderServerId = folder,
+                    messageServerId = messageServerId,
+                    isOldMessage = isOldMessage,
+                )
             }
             return
         }
@@ -469,7 +497,7 @@ internal class Pop3Sync(
 
                             // TODO: This might be the source of poll count errors in the UI.
                             // Is todo always the same as ofTotal
-                            listener.syncProgress(folder, progress.get(), todo)
+                            listener.syncProgress(folderServerId = folder, completed = progress.get(), total = todo)
                             return
                         }
 
@@ -533,10 +561,14 @@ internal class Pop3Sync(
                         )
 
                         // Update the listener with what we've found
-                        listener.syncProgress(folder, progress.get(), todo)
+                        listener.syncProgress(folderServerId = folder, completed = progress.get(), total = todo)
 
                         val isOldMessage = isOldMessage(backendFolder, message)
-                        listener.syncNewMessage(folder, messageServerId, isOldMessage)
+                        listener.syncNewMessage(
+                            folderServerId = folder,
+                            messageServerId = messageServerId,
+                            isOldMessage = isOldMessage,
+                        )
                     } catch (e: Exception) {
                         Log.e(e, "SYNC: fetch small messages")
                     }
@@ -593,10 +625,14 @@ internal class Pop3Sync(
                 newMessages.incrementAndGet()
             }
 
-            listener.syncProgress(folder, progress.get(), todo)
+            listener.syncProgress(folderServerId = folder, completed = progress.get(), total = todo)
 
             val isOldMessage = isOldMessage(backendFolder, message)
-            listener.syncNewMessage(folder, messageServerId, isOldMessage)
+            listener.syncNewMessage(
+                folderServerId = folder,
+                messageServerId = messageServerId,
+                isOldMessage = isOldMessage,
+            )
         }
 
         Log.d("SYNC: Done fetching large messages for folder %s", folder)

@@ -50,9 +50,9 @@ data class ComponentPatch(
             val config = encoder.json.encodeToJsonElement(ComponentConfig.serializer(), value.config)
 
             val json = buildJsonObject {
-                value.category?.let { put("category", it) }
-                value.linkedComponent?.let { put("linked_component", it) }
-                put("locked", value.locked)
+                value.category?.let { put(key = "category", value = it) }
+                value.linkedComponent?.let { put(key = "linked_component", value = it) }
+                put(key = "locked", value = value.locked)
                 config.jsonObject.forEach { (key, value) ->
                     put(key, value)
                 }

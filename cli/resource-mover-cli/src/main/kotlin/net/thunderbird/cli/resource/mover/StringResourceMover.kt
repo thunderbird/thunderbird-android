@@ -95,7 +95,7 @@ class StringResourceMover {
     }
 
     private fun createKeyPattern(key: String): Regex {
-        return KEY_PATTERN.replace(KEY_PLACEHOLDER, Regex.escape(key)).toRegex()
+        return KEY_PATTERN.replace(oldValue = KEY_PLACEHOLDER, newValue = Regex.escape(key)).toRegex()
     }
 
     private fun isTagClosed(line: String): Boolean {
@@ -134,7 +134,7 @@ class StringResourceMover {
         val oldKeyDeclaration = extractKeyDeclaration(targetFile, key)
         val targetContent = targetFile.readText()
 
-        targetFile.writeText(targetContent.replace(oldKeyDeclaration, keyDeclaration))
+        targetFile.writeText(targetContent.replace(oldValue = oldKeyDeclaration, newValue = keyDeclaration))
     }
 
     private fun deleteKeyFromSource(sourceFile: File, keyDeclaration: String) {
@@ -142,7 +142,7 @@ class StringResourceMover {
 
         val sourceContent = sourceFile.readText()
 
-        sourceFile.writeText(sourceContent.replace(keyDeclaration, ""))
+        sourceFile.writeText(sourceContent.replace(oldValue = keyDeclaration, newValue = ""))
     }
 
     private fun isSourceFileEmpty(sourceFile: File): Boolean {
