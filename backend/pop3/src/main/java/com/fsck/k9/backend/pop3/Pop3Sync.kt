@@ -141,7 +141,7 @@ internal class Pop3Sync(
                     val localMessageTimestamp = localUidMap[thisMess.uid]
                     if (localMessageTimestamp == null || localMessageTimestamp >= earliestTimestamp) {
                         remoteMessages.add(thisMess)
-                        remoteUidMap.put(thisMess.uid, thisMess)
+                        remoteUidMap[thisMess.uid] = thisMess
                     }
                 }
 
