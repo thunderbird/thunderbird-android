@@ -468,49 +468,46 @@ internal class Pop3Sync(
         val folder = remoteFolder.serverId
 
         val earliestDate = syncConfig.earliestPollDate
+        @Suppress("TooGenericExceptionCaught")
         remoteFolder.fetch(
             unsyncedMessages,
             fp,
-            object : MessageRetrievalListener<Pop3Message> {
-
-                @Suppress("TooGenericExceptionCaught")
-                override fun messageFinished(message: Pop3Message) {
-                    try {
-                        if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
-                            if (message.isSet(Flag.DELETED)) {
-                                Log.v(
-                                    "Newly downloaded message %s:%s:%s was marked deleted on server, " +
-                                        "skipping",
-                                    accountName,
-                                    folder,
-                                    message.uid,
-                                )
-                            } else {
-                                Log.d(
-                                    "Newly downloaded message %s is older than %s, skipping",
-                                    message.uid,
-                                    earliestDate,
-                                )
-                            }
-
-                            progress.incrementAndGet()
-
-                            // TODO: This might be the source of poll count errors in the UI.
-                            // Is todo always the same as ofTotal
-                            listener.syncProgress(folderServerId = folder, completed = progress.get(), total = todo)
-                            return
-                        }
-
-                        if (syncConfig.maximumAutoDownloadMessageSize > 0 &&
-                            message.size > syncConfig.maximumAutoDownloadMessageSize
-                        ) {
-                            largeMessages.add(message)
+            MessageRetrievalListener { message ->
+                try {
+                    if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
+                        if (message.isSet(Flag.DELETED)) {
+                            Log.v(
+                                "Newly downloaded message %s:%s:%s was marked deleted on server, " +
+                                    "skipping",
+                                accountName,
+                                folder,
+                                message.uid,
+                            )
                         } else {
-                            smallMessages.add(message)
+                            Log.d(
+                                "Newly downloaded message %s is older than %s, skipping",
+                                message.uid,
+                                earliestDate,
+                            )
                         }
-                    } catch (e: Exception) {
-                        Log.e(e, "Error while storing downloaded message.")
+
+                        progress.incrementAndGet()
+
+                        // TODO: This might be the source of poll count errors in the UI.
+                        // Is todo always the same as ofTotal
+                        listener.syncProgress(folderServerId = folder, completed = progress.get(), total = todo)
+                        return@MessageRetrievalListener
                     }
+
+                    if (syncConfig.maximumAutoDownloadMessageSize > 0 &&
+                        message.size > syncConfig.maximumAutoDownloadMessageSize
+                    ) {
+                        largeMessages.add(message)
+                    } else {
+                        smallMessages.add(message)
+                    }
+                } catch (e: Exception) {
+                    Log.e(e, "Error while storing downloaded message.")
                 }
             },
             syncConfig.maximumAutoDownloadMessageSize,
@@ -533,45 +530,42 @@ internal class Pop3Sync(
 
         Log.d("SYNC: Fetching %d small messages for folder %s", smallMessages.size, folder)
 
+        @Suppress("TooGenericExceptionCaught")
         remoteFolder.fetch(
             smallMessages,
             fp,
-            object : MessageRetrievalListener<Pop3Message> {
+            MessageRetrievalListener { message ->
+                try {
+                    // Store the updated message locally
 
-                @Suppress("TooGenericExceptionCaught")
-                override fun messageFinished(message: Pop3Message) {
-                    try {
-                        // Store the updated message locally
+                    backendFolder.saveMessage(message, MessageDownloadState.FULL)
+                    progress.incrementAndGet()
 
-                        backendFolder.saveMessage(message, MessageDownloadState.FULL)
-                        progress.incrementAndGet()
-
-                        // Increment the number of "new messages" if the newly downloaded message is
-                        // not marked as read.
-                        if (!message.isSet(Flag.SEEN)) {
-                            newMessages.incrementAndGet()
-                        }
-
-                        val messageServerId = message.uid
-                        Log.v(
-                            "About to notify listeners that we got a new small message %s:%s:%s",
-                            accountName,
-                            folder,
-                            messageServerId,
-                        )
-
-                        // Update the listener with what we've found
-                        listener.syncProgress(folderServerId = folder, completed = progress.get(), total = todo)
-
-                        val isOldMessage = isOldMessage(backendFolder, message)
-                        listener.syncNewMessage(
-                            folderServerId = folder,
-                            messageServerId = messageServerId,
-                            isOldMessage = isOldMessage,
-                        )
-                    } catch (e: Exception) {
-                        Log.e(e, "SYNC: fetch small messages")
+                    // Increment the number of "new messages" if the newly downloaded message is
+                    // not marked as read.
+                    if (!message.isSet(Flag.SEEN)) {
+                        newMessages.incrementAndGet()
                     }
+
+                    val messageServerId = message.uid
+                    Log.v(
+                        "About to notify listeners that we got a new small message %s:%s:%s",
+                        accountName,
+                        folder,
+                        messageServerId,
+                    )
+
+                    // Update the listener with what we've found
+                    listener.syncProgress(folderServerId = folder, completed = progress.get(), total = todo)
+
+                    val isOldMessage = isOldMessage(backendFolder, message)
+                    listener.syncNewMessage(
+                        folderServerId = folder,
+                        messageServerId = messageServerId,
+                        isOldMessage = isOldMessage,
+                    )
+                } catch (e: Exception) {
+                    Log.e(e, "SYNC: fetch small messages")
                 }
             },
             -1,

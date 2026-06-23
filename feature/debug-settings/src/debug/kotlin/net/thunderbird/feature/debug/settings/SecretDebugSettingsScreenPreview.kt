@@ -16,11 +16,9 @@ import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRout
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionViewModel
 import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
-import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
-import net.thunderbird.feature.notification.api.sender.NotificationSender
 
 @PreviewLightDark
 @Composable
@@ -55,12 +53,7 @@ private fun SecretDebugSettingsScreenPreview() {
 
                     override fun saveAccount(account: BaseAccount) = Unit
                 },
-                notificationSender = object : NotificationSender {
-                    override fun send(
-                        notification: Notification,
-                    ): Flow<NotificationCommandOutcome<Notification>> =
-                        error("not implemented")
-                },
+                notificationSender = { _: Notification -> error("not implemented") },
                 inAppNotificationStream = get(),
                 notificationIconResourceProvider = get(),
             )

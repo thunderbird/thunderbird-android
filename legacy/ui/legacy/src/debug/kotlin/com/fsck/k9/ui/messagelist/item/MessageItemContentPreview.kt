@@ -126,6 +126,4 @@ private val fakeContactRepository = object : ContactRepository {
     override fun getPhotoUri(emailAddress: String) = null
 }
 
-private val fakeAvatarMonogramCreator = object : AvatarMonogramCreator {
-    override fun create(name: String?, email: String?) = "SE"
-}
+private val fakeAvatarMonogramCreator = AvatarMonogramCreator { _, _ -> "SE" }
