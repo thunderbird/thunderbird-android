@@ -19,7 +19,7 @@ data class WeblateConfig(
     val cacheEnabled: Boolean = false,
 ) {
     fun getDefaultHeaders(token: String): List<Pair<String, String>> =
-        defaultHeaders.mapValues { it.value.replace(PLACEHOLDER_TOKEN, token) }
+        defaultHeaders.mapValues { it.value.replace(oldValue = PLACEHOLDER_TOKEN, newValue = token) }
             .map { (key, value) -> key to value }
 
     private companion object {

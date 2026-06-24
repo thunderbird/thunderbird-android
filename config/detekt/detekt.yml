@@ -522,7 +522,12 @@ potential-bugs:
     allowAdjacentDifferentTypeParams: true
     allowSingleParamUse: true
     ignoreArgumentsMatchingNames: true
-    ignoreFunctionCall: []
+    ignoreFunctionCall:
+      - androidx.compose.runtime.remember
+      - kotlin.comparisons.maxOf
+      - kotlin.comparisons.minOf
+      - kotlin.math.max
+      - kotlin.Pair.<init>
   UnnecessaryNotNullCheck:
     active: false
   UnnecessaryNotNullOperator:

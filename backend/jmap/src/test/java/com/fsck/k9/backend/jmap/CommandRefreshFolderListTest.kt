@@ -55,12 +55,12 @@ class CommandRefreshFolderListTest {
         command.refreshFolderList()
 
         assertFolderList("id_inbox", "id_archive", "id_drafts", "id_sent", "id_trash", "id_folder1")
-        assertFolderPresent("id_inbox", "Inbox", FolderType.INBOX)
-        assertFolderPresent("id_archive", "Archive", FolderType.ARCHIVE)
-        assertFolderPresent("id_drafts", "Drafts", FolderType.DRAFTS)
-        assertFolderPresent("id_sent", "Sent", FolderType.SENT)
-        assertFolderPresent("id_trash", "Trash", FolderType.TRASH)
-        assertFolderPresent("id_folder1", "folder1", FolderType.REGULAR)
+        assertFolderPresent(serverId = "id_inbox", name = "Inbox", type = FolderType.INBOX)
+        assertFolderPresent(serverId = "id_archive", name = "Archive", type = FolderType.ARCHIVE)
+        assertFolderPresent(serverId = "id_drafts", name = "Drafts", type = FolderType.DRAFTS)
+        assertFolderPresent(serverId = "id_sent", name = "Sent", type = FolderType.SENT)
+        assertFolderPresent(serverId = "id_trash", name = "Trash", type = FolderType.TRASH)
+        assertFolderPresent(serverId = "id_folder1", name = "folder1", type = FolderType.REGULAR)
         assertMailboxState("23")
     }
 
@@ -75,12 +75,12 @@ class CommandRefreshFolderListTest {
         command.refreshFolderList()
 
         assertFolderList("id_inbox", "id_archive", "id_drafts", "id_sent", "id_trash", "id_folder2")
-        assertFolderPresent("id_inbox", "Inbox", FolderType.INBOX)
-        assertFolderPresent("id_archive", "Archive", FolderType.ARCHIVE)
-        assertFolderPresent("id_drafts", "Drafts", FolderType.DRAFTS)
-        assertFolderPresent("id_sent", "Sent", FolderType.SENT)
-        assertFolderPresent("id_trash", "Deleted messages", FolderType.TRASH)
-        assertFolderPresent("id_folder2", "folder2", FolderType.REGULAR)
+        assertFolderPresent(serverId = "id_inbox", name = "Inbox", type = FolderType.INBOX)
+        assertFolderPresent(serverId = "id_archive", name = "Archive", type = FolderType.ARCHIVE)
+        assertFolderPresent(serverId = "id_drafts", name = "Drafts", type = FolderType.DRAFTS)
+        assertFolderPresent(serverId = "id_sent", name = "Sent", type = FolderType.SENT)
+        assertFolderPresent(serverId = "id_trash", name = "Deleted messages", type = FolderType.TRASH)
+        assertFolderPresent(serverId = "id_folder2", name = "folder2", type = FolderType.REGULAR)
         assertMailboxState("42")
     }
 
@@ -96,12 +96,12 @@ class CommandRefreshFolderListTest {
         command.refreshFolderList()
 
         assertFolderList("id_inbox", "id_archive", "id_drafts", "id_sent", "id_trash", "id_folder2")
-        assertFolderPresent("id_inbox", "Inbox", FolderType.INBOX)
-        assertFolderPresent("id_archive", "Archive", FolderType.ARCHIVE)
-        assertFolderPresent("id_drafts", "Drafts", FolderType.DRAFTS)
-        assertFolderPresent("id_sent", "Sent", FolderType.SENT)
-        assertFolderPresent("id_trash", "Deleted messages", FolderType.TRASH)
-        assertFolderPresent("id_folder2", "folder2", FolderType.REGULAR)
+        assertFolderPresent(serverId = "id_inbox", name = "Inbox", type = FolderType.INBOX)
+        assertFolderPresent(serverId = "id_archive", name = "Archive", type = FolderType.ARCHIVE)
+        assertFolderPresent(serverId = "id_drafts", name = "Drafts", type = FolderType.DRAFTS)
+        assertFolderPresent(serverId = "id_sent", name = "Sent", type = FolderType.SENT)
+        assertFolderPresent(serverId = "id_trash", name = "Deleted messages", type = FolderType.TRASH)
+        assertFolderPresent(serverId = "id_folder2", name = "folder2", type = FolderType.REGULAR)
         assertMailboxState("42")
     }
 
@@ -117,12 +117,12 @@ class CommandRefreshFolderListTest {
         command.refreshFolderList()
 
         assertFolderList("id_inbox", "id_archive", "id_drafts", "id_sent", "id_trash", "id_folder1")
-        assertFolderPresent("id_inbox", "Inbox", FolderType.INBOX)
-        assertFolderPresent("id_archive", "Archive", FolderType.ARCHIVE)
-        assertFolderPresent("id_drafts", "Drafts", FolderType.DRAFTS)
-        assertFolderPresent("id_sent", "Sent", FolderType.SENT)
-        assertFolderPresent("id_trash", "Trash", FolderType.TRASH)
-        assertFolderPresent("id_folder1", "folder1", FolderType.REGULAR)
+        assertFolderPresent(serverId = "id_inbox", name = "Inbox", type = FolderType.INBOX)
+        assertFolderPresent(serverId = "id_archive", name = "Archive", type = FolderType.ARCHIVE)
+        assertFolderPresent(serverId = "id_drafts", name = "Drafts", type = FolderType.DRAFTS)
+        assertFolderPresent(serverId = "id_sent", name = "Sent", type = FolderType.SENT)
+        assertFolderPresent(serverId = "id_trash", name = "Trash", type = FolderType.TRASH)
+        assertFolderPresent(serverId = "id_folder1", name = "folder1", type = FolderType.REGULAR)
         assertMailboxState("23")
     }
 
@@ -142,22 +142,22 @@ class CommandRefreshFolderListTest {
     @Suppress("SameParameterValue")
     private fun createFoldersInBackendStorage(state: String) {
         backendStorage.updateFolders {
-            createFolder("id_inbox", "Inbox", FolderType.INBOX)
-            createFolder("id_archive", "Archive", FolderType.ARCHIVE)
-            createFolder("id_drafts", "Drafts", FolderType.DRAFTS)
-            createFolder("id_sent", "Sent", FolderType.SENT)
-            createFolder("id_trash", "Trash", FolderType.TRASH)
-            createFolder("id_folder1", "folder1", FolderType.REGULAR)
+            createFolder(serverId = "id_inbox", name = "Inbox", type = FolderType.INBOX)
+            createFolder(serverId = "id_archive", name = "Archive", type = FolderType.ARCHIVE)
+            createFolder(serverId = "id_drafts", name = "Drafts", type = FolderType.DRAFTS)
+            createFolder(serverId = "id_sent", name = "Sent", type = FolderType.SENT)
+            createFolder(serverId = "id_trash", name = "Trash", type = FolderType.TRASH)
+            createFolder(serverId = "id_folder1", name = "folder1", type = FolderType.REGULAR)
         }
         setMailboxState(state)
     }
 
     private fun BackendFolderUpdater.createFolder(serverId: String, name: String, type: FolderType) {
-        createFolders(listOf(FolderInfo(serverId, name, type)))
+        createFolders(listOf(FolderInfo(serverId = serverId, name = name, type = type)))
     }
 
     private fun setMailboxState(state: String) {
-        backendStorage.setExtraString("jmapState", state)
+        backendStorage.setExtraString(name = "jmapState", value = state)
     }
 
     private fun assertFolderList(vararg folderServerIds: String) {

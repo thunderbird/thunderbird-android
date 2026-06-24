@@ -27,7 +27,7 @@ val featureModule = module {
     single<CssClassNameProvider> {
         DefaultCssClassNameProvider(
             featureFlagProvider = get(),
-            defaultNamespaceClassName = BuildConfig.APPLICATION_ID.replace(".", "-"),
+            defaultNamespaceClassName = BuildConfig.APPLICATION_ID.replace(oldValue = ".", newValue = "-"),
         )
     }
 }

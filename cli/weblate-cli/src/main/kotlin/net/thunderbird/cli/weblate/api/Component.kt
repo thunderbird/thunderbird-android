@@ -50,8 +50,8 @@ data class Component(
             val config = encoder.json.encodeToJsonElement(ComponentConfig.serializer(), value.config)
 
             val jsonObject = buildJsonObject {
-                info.jsonObject.forEach { (key, value) -> put(key, value) }
-                config.jsonObject.forEach { (key, value) -> put(key, value) }
+                info.jsonObject.forEach { (key, jsonElement) -> put(key, jsonElement) }
+                config.jsonObject.forEach { (key, jsonElement) -> put(key, jsonElement) }
             }
 
             encoder.encodeJsonElement(jsonObject)

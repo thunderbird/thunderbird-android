@@ -61,7 +61,7 @@ class WeblateClient(
     fun patchComponent(url: String, patch: ComponentPatch): Boolean {
         return runBlocking {
             val response = client.patch(url) {
-                header(HttpHeaders.Authorization, "Token $token")
+                header(key = HttpHeaders.Authorization, value = "Token $token")
                 contentType(ContentType.Application.Json)
                 setBody(patch)
             }
@@ -74,7 +74,7 @@ class WeblateClient(
         return runBlocking {
             val url = "${config.baseUrl}projects/${config.projectName}/components/"
             val response = client.post(url) {
-                header(HttpHeaders.Authorization, "Token $token")
+                header(key = HttpHeaders.Authorization, value = "Token $token")
                 contentType(ContentType.Application.Json)
                 setBody(create)
             }
@@ -86,7 +86,7 @@ class WeblateClient(
     fun deleteComponent(url: String): Boolean {
         return runBlocking {
             val response = client.delete(url) {
-                header(HttpHeaders.Authorization, "Token $token")
+                header(key = HttpHeaders.Authorization, value = "Token $token")
             }
 
             response.status.value in SUCCESS

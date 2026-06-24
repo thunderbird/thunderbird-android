@@ -74,21 +74,21 @@ data class ComponentCreate(
             }
 
             val json = buildJsonObject {
-                put("name", value.name)
-                put("slug", value.slug)
-                put("project", value.project)
-                put("filemask", value.fileMask)
-                put("template", value.template)
-                put("file_format", value.fileFormat)
-                value.category?.let { put("category", it) }
-                value.linkedComponent?.let { put("linked_component", it) }
-                put("repo", value.repo)
-                put("vcs", value.vcs)
-                put("merge_style", value.mergeStyle)
+                put(key = "name", value = value.name)
+                put(key = "slug", value = value.slug)
+                put(key = "project", value = value.project)
+                put(key = "filemask", value = value.fileMask)
+                put(key = "template", value = value.template)
+                put(key = "file_format", value = value.fileFormat)
+                value.category?.let { put(key = "category", value = it) }
+                value.linkedComponent?.let { put(key = "linked_component", value = it) }
+                put(key = "repo", value = value.repo)
+                put(key = "vcs", value = value.vcs)
+                put(key = "merge_style", value = value.mergeStyle)
 
                 val configJson = encoder.json.encodeToJsonElement(ComponentConfig.serializer(), value.config)
-                configJson.jsonObject.forEach { (key, value) ->
-                    put(key, value)
+                configJson.jsonObject.forEach { (key, jsonElement) ->
+                    put(key, jsonElement)
                 }
             }
 

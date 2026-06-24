@@ -40,7 +40,7 @@ private class NewMessageItemPrevParamCol : CollectionPreviewParameterProvider<Me
             previewName = "Multiple senders threaded",
             sender = "Mason Tran, Me, Ryan Thomas",
             senderStyles = persistentListOf(
-                ComposedAddressStyle.Bold(0, 11),
+                ComposedAddressStyle.Bold(start = 0, end = 11),
             ),
             subject = "Follow-up on gaming PC build specs",
             excerpt = LoremIpsum(words = 20).values.joinToString(),
