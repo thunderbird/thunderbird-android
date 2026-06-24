@@ -1177,6 +1177,20 @@ class LegacyMessageListFragment :
 
     private fun prepareSortMenu(menu: Menu) {
         menu.findItem(R.id.set_sort).isVisible = true
+        val selectedSortItem = menu.findItem(getSelectedSortId())
+        selectedSortItem.title = "${resources.getString(R.string.sort_by_indicator)} ${selectedSortItem.title}"
+    }
+
+    private fun getSelectedSortId(): Int {
+        return when (this.sortType) {
+            SortType.SORT_DATE -> R.id.set_sort_date
+            SortType.SORT_ARRIVAL -> R.id.set_sort_arrival
+            SortType.SORT_SUBJECT -> R.id.set_sort_subject
+            SortType.SORT_SENDER -> R.id.set_sort_sender
+            SortType.SORT_UNREAD -> R.id.set_sort_unread
+            SortType.SORT_FLAGGED -> R.id.set_sort_flag
+            SortType.SORT_ATTACHMENT -> R.id.set_sort_attach
+        }
     }
 
     private fun prepareDebugMenu(menu: Menu) {
