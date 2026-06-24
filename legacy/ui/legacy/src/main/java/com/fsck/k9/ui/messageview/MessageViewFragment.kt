@@ -106,6 +106,7 @@ class MessageViewFragment :
     private val messageLoaderHelperFactory: MessageLoaderHelperFactory by inject()
     private val accountManager: LegacyAccountDtoManager by inject()
     private val messagingController: MessagingController by inject()
+    private val attachmentLoadingController: AttachmentLoadingController by inject()
     private val shareIntentBuilder: ShareIntentBuilder by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
     private val outboxFolderManager: OutboxFolderManager by inject()
@@ -1209,7 +1210,7 @@ class MessageViewFragment :
     private fun createAttachmentController(attachment: AttachmentViewInfo): AttachmentController {
         return AttachmentController(
             context = requireContext(),
-            controller = messagingController,
+            controller = attachmentLoadingController,
             attachmentDisplayController = this,
             attachment = attachment,
             logger = logger
