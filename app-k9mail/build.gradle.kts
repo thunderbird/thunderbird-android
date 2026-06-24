@@ -14,8 +14,8 @@ android {
     namespace = "com.fsck.k9"
 
     defaultConfig {
-        applicationId = "com.fsck.k9"
-        testApplicationId = "com.fsck.k9.tests"
+        applicationId = "com.fsck.k9.fork"
+        testApplicationId = "com.fsck.k9.fork.tests"
 
         versionCode = 39004
         versionName = "13.0"
@@ -88,11 +88,12 @@ android {
         release {
             signingConfig = signingConfigs.getByType(SigningType.K9_RELEASE)
 
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android.txt"),
-                "proguard-rules.pro",
-            )
+            // Temporarily disable minification for debugging
+            isMinifyEnabled = false
+            // proguardFiles(
+            //     getDefaultProguardFile("proguard-android.txt"),
+            //     "proguard-rules.pro",
+            // )
         }
 
         debug {
@@ -139,6 +140,7 @@ dependencies {
     implementation(projects.core.ui.legacy.theme2.k9mail)
     implementation(projects.feature.launcher)
     implementation(projects.feature.mail.message.list)
+    implementation(projects.feature.debugSettings)
 
     implementation(projects.legacy.core)
     implementation(projects.legacy.ui.legacy)

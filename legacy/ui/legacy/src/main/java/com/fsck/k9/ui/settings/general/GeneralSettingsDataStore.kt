@@ -167,6 +167,7 @@ class GeneralSettingsDataStore(
             "message_list_density" -> K9.messageListDensity.toString()
             "post_remove_navigation" -> K9.messageViewPostRemoveNavigation.name
             "post_mark_as_unread_navigation" -> K9.messageViewPostMarkAsUnreadNavigation.name
+            "ai_n8n_webhook_url" -> getAiWebhookUrl()
             else -> defValue
         }
     }
@@ -194,6 +195,7 @@ class GeneralSettingsDataStore(
             }
 
             "background_ops" -> setBackgroundOps(value)
+            "ai_n8n_webhook_url" -> setAiWebhookUrl(value)
             "quiet_time_starts" -> setQuietTimeStarts(quietTimeStarts = value)
             "quiet_time_ends" -> setQuietTimeEnds(quietTimeEnds = value)
             "message_list_subject_font" -> K9.fontSizes.messageListSubject = value.toInt()
@@ -553,5 +555,13 @@ class GeneralSettingsDataStore(
     private fun setTelemetryEnabled(enable: Boolean) {
         K9.isTelemetryEnabled = enable
         telemetryManager.setEnabled(enable)
+    }
+
+    private fun getAiWebhookUrl(): String {
+        return K9.aiN8nWebhookUrl
+    }
+
+    private fun setAiWebhookUrl(url: String) {
+        K9.aiN8nWebhookUrl = url
     }
 }

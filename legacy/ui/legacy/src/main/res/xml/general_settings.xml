@@ -531,6 +531,23 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:icon="@drawable/ic_smart_toy"
+        android:key="ai_preferences"
+        android:title="@string/ai_preferences"
+        search:ignore="true"
+        >
+
+        <EditTextPreference
+            android:key="ai_n8n_webhook_url"
+            android:title="@string/ai_n8n_webhook_url_title"
+            android:summary="@string/ai_n8n_webhook_url_summary"
+            android:inputType="textUri"
+            app:useSimpleSummaryProvider="true"
+            />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
         android:icon="@drawable/ic_bug_report"
         android:key="debug_preferences"
         android:title="@string/debug_preferences"

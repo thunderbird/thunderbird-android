@@ -168,6 +168,13 @@
         </activity>
 
         <activity
+            android:name="com.fsck.k9.textblocks.TextBlockManagementActivity"
+            android:configChanges="locale"
+            android:label="@string/textblock_management_title"
+            android:parentActivityName="com.fsck.k9.activity.MessageCompose"
+            />
+
+        <activity
             android:name="com.fsck.k9.activity.Search"
             android:label="@string/search_action"
             android:exported="false"

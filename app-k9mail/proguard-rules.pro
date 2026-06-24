@@ -59,6 +59,32 @@
 -dontwarn kotlinx.serialization.KSerializer
 -dontwarn kotlinx.serialization.Serializable
 -dontwarn org.apache.http.client.methods.CloseableHttpResponse
+
+# K9Mail specific rules to prevent startup crashes
+-keep class app.k9mail.** { *; }
+-keep class com.fsck.k9.** { *; }
+-keep class net.thunderbird.** { *; }
+
+# Koin dependency injection
+-keep class org.koin.** { *; }
+-keep class * extends org.koin.core.module.Module { *; }
+
+# Keep all Application classes
+-keep class * extends android.app.Application { *; }
+-keep class * extends net.thunderbird.app.common.BaseApplication { *; }
+
+# Keep BuildConfig
+-keep class **.BuildConfig { *; }
+
+# Keep all classes with Koin annotations
+-keep @org.koin.core.annotation.** class * { *; }
+
+# Keep Compose navigation
+-keep class androidx.compose.** { *; }
+-keep class androidx.navigation.** { *; }
+
+# Keep ViewModel classes
+-keep class * extends androidx.lifecycle.ViewModel { *; }
 -dontwarn org.slf4j.impl.StaticLoggerBinder
 
 -keep,allowshrinking class com.tokenautocomplete.TokenCompleteTextView

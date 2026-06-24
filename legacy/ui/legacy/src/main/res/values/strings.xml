@@ -48,6 +48,22 @@
     <string name="choose_folder_copy_title">Copy to…</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>
+
+    <!-- Textbausteine (Text blocks) strings -->
+    <string name="textblock_management_title">Textbausteine</string>
+    <string name="textblock_empty_list">Keine Textbausteine vorhanden.\nTippen Sie auf + um einen neuen Textbaustein zu erstellen.</string>
+    <string name="textblock_add_new">Neuen Textbaustein hinzufügen</string>
+    <string name="textblock_edit">Textbaustein bearbeiten</string>
+    <string name="textblock_delete">Textbaustein löschen</string>
+    <string name="textblock_name_hint">Name des Textbausteins</string>
+    <string name="textblock_content_hint">Inhalt des Textbausteins</string>
+    <string name="textblock_dialog_title_add">Textbaustein hinzufügen</string>
+    <string name="textblock_dialog_title_edit">Textbaustein bearbeiten</string>
+    <string name="textblock_delete_confirm">Möchten Sie diesen Textbaustein wirklich löschen?</string>
+    <string name="textblock_insert">Textbausteine</string>
+    <string name="textblock_select_title">Textbaustein auswählen</string>
+    <string name="textblock_name_empty">Bitte geben Sie einen Namen ein</string>
+    <string name="textblock_content_empty">Bitte geben Sie einen Inhalt ein</string>
     <string name="send_action">Send</string>
     <string name="empty_subject">Subject is empty, click again to send anyway</string>
     <string name="reply_action">Reply</string>
@@ -617,6 +633,14 @@
     <string name="setting_theme_follow_system">Use system default</string>
     <string name="display_preferences">Display</string>
     <string name="global_preferences">Global</string>
+    <string name="ai_preferences">Künstliche Intelligenz</string>
+    <string name="ai_n8n_webhook_url_title">N8N Webhook-URL</string>
+    <string name="ai_n8n_webhook_url_summary">Noch keine Webhook-URL konfiguriert</string>
+    <string name="ai_assistant_button">KI-Assistent</string>
+    <string name="ai_undo_button">KI-Text rückgängig machen</string>
+    <string name="ai_processing">KI-Antwort wird generiert...</string>
+    <string name="ai_error_no_url">Bitte zuerst N8N Webhook-URL in den Einstellungen konfigurieren</string>
+    <string name="ai_error_network">Fehler bei der Kommunikation mit dem KI-Server</string>
     <string name="debug_preferences">Debugging</string>
     <string name="privacy_preferences">Privacy</string>
     <string name="network_preferences">Network</string>

@@ -24,6 +24,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.ContextThemeWrapper;
@@ -36,9 +37,11 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewStub;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -71,6 +74,7 @@ import com.fsck.k9.activity.compose.RecipientPresenter;
 import com.fsck.k9.activity.compose.ReplyToPresenter;
 import com.fsck.k9.activity.compose.ReplyToView;
 import com.fsck.k9.activity.compose.SaveMessageTask;
+import com.fsck.k9.activity.compose.AiAssistant;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser;
 import app.k9mail.legacy.message.controller.MessageReference;
@@ -81,6 +85,9 @@ import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment.AttachmentDownloadCancelListener;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.fragment.ProgressDialogFragment.CancelListener;
+import com.fsck.k9.textblocks.TextBlockManagementActivity;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.CrLfConverter;
 import com.fsck.k9.helper.IdentityHelper;
@@ -227,6 +234,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private RecipientPresenter recipientPresenter;
     private MessageBuilder currentMessageBuilder;
     private ReplyToPresenter replyToPresenter;
+    private AiAssistant aiAssistant;
+    private String originalTextBeforeAi = null;
+    private boolean isAiTextReplacement = false;
+    private QuotedMessageMvpView quotedMessageMvpView;
     private boolean finishAfterDraftSaved;
     private boolean alreadyNotifiedUserOfEmptySubject = false;
     private boolean changesMadeSinceLastSave = false;
@@ -254,10 +265,28 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private boolean navigateUp;
 
     private boolean sendMessageHasBeenTriggered = false;
+    
+    private ActivityResultLauncher<Intent> textBlockLauncher;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialize AI Assistant
+        aiAssistant = new AiAssistant(this);
+
+        // Initialize ActivityResultLauncher for text blocks
+        textBlockLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    String selectedText = result.getData().getStringExtra("selected_text");
+                    if (selectedText != null) {
+                        insertTextAtCursor(selectedText);
+                    }
+                }
+            }
+        );
 
         if (UpgradeDatabases.actionUpgradeDatabases(this, getIntent())) {
             finish();
@@ -336,7 +365,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         EditText lowerSignature = findViewById(R.id.lower_signature);
 
 
-        QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
+        quotedMessageMvpView = new QuotedMessageMvpView(this);
         quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, account);
         attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView,
                 getSupportLoaderManager(), this);
@@ -380,6 +409,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         subjectView.setOnFocusChangeListener(this);
         messageContentView.setOnFocusChangeListener(this);
+        
+        // Add text watcher to hide undo button when user manually edits text
+        setupMessageContentWatcher();
+        
+        // Setup textblock buttons
+        setupTextBlockButtons();
 
         if (savedInstanceState != null) {
             /*
@@ -820,6 +855,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 attachmentPresenter.onActivityResult(resultCode, REQUEST_CODE_ATTACHMENT_URI, intent);
                 return;
             }
+
+
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -1016,6 +1053,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             showPopupMenu(attachmentMenuAnchor);
         } else if (id == R.id.read_receipt) {
             onReadReceipt();
+
         } else {
             return super.onOptionsItemSelected(item);
         }
@@ -1922,6 +1960,65 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     };
 
+    private void setupMessageContentWatcher() {
+        messageContentView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not needed
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Hide undo button if user manually edits text (but not during AI replacement)
+                if (!isAiTextReplacement && originalTextBeforeAi != null) {
+                    showUndoButton(false);
+                    originalTextBeforeAi = null;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Not needed
+            }
+        });
+    }
+
+    private void setupTextBlockButtons() {
+        ImageButton textBlockButton = findViewById(R.id.button_textblocks);
+        textBlockButton.setOnClickListener(v -> openTextBlockManagement());
+        
+        ImageButton aiButton = findViewById(R.id.button_ai_assistant);
+        aiButton.setOnClickListener(v -> onAiAssistant());
+        
+        ImageButton undoButton = findViewById(R.id.button_ai_undo);
+        undoButton.setOnClickListener(v -> onAiUndo());
+    }
+
+    private void openTextBlockManagement() {
+        Intent intent = TextBlockManagementActivity.createIntentForTextInsertion(this);
+        textBlockLauncher.launch(intent);
+    }
+
+    private void insertTextAtCursor(String text) {
+        int cursorPosition = messageContentView.getSelectionStart();
+        if (cursorPosition == -1) {
+            cursorPosition = messageContentView.getText().length();
+        }
+
+        String currentText = messageContentView.getText().toString();
+        String beforeCursor = currentText.substring(0, cursorPosition);
+        String afterCursor = currentText.substring(cursorPosition);
+
+        String newText = beforeCursor + text + afterCursor;
+        messageContentView.setText(newText);
+        
+        // Set cursor position after inserted text
+        int newCursorPosition = cursorPosition + text.length();
+        if (newCursorPosition <= messageContentView.getText().length()) {
+            messageContentView.setSelection(newCursorPosition);
+        }
+    }
+
     public enum Action {
         COMPOSE(R.string.compose_title_compose),
         REPLY(R.string.compose_title_reply),
@@ -1940,5 +2037,127 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         public int getTitleResource() {
             return titleResource;
         }
+    }
+
+    private void onAiAssistant() {
+        String emailHistory = getEmailHistory();
+        String currentMessage = messageContentView.getText().toString();
+        String userName = getUserName();
+        String signature = getUserSignature();
+        
+        // Save original text before AI replacement
+        originalTextBeforeAi = currentMessage;
+        
+        // Show loading spinner and hide the button
+        showAiLoadingState(true);
+        
+        aiAssistant.requestAiAssistance(emailHistory, currentMessage, userName, signature, new AiAssistant.AiAssistantCallback() {
+            @Override
+            public void onAiResponseReceived(String response) {
+                // Hide loading spinner and show button again
+                showAiLoadingState(false);
+                
+                // Set flag to prevent TextWatcher from hiding undo button
+                isAiTextReplacement = true;
+                
+                // Replace entire text content with AI response
+                messageContentView.setText(response);
+                messageContentView.setSelection(response.length());
+                
+                // Reset flag
+                isAiTextReplacement = false;
+                
+                // Show undo button since text was replaced
+                showUndoButton(true);
+            }
+
+            @Override
+            public void onAiError(String error) {
+                // Hide loading spinner and show button again
+                showAiLoadingState(false);
+                // Clear saved text since no replacement happened
+                originalTextBeforeAi = null;
+                Toast.makeText(MessageCompose.this, error, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void showAiLoadingState(boolean isLoading) {
+        ImageButton aiButton = findViewById(R.id.button_ai_assistant);
+        ProgressBar loadingSpinner = findViewById(R.id.ai_loading_spinner);
+        
+        if (isLoading) {
+            aiButton.setVisibility(View.INVISIBLE);
+            loadingSpinner.setVisibility(View.VISIBLE);
+        } else {
+            aiButton.setVisibility(View.VISIBLE);
+            loadingSpinner.setVisibility(View.GONE);
+        }
+    }
+
+    private void showUndoButton(boolean show) {
+        ImageButton undoButton = findViewById(R.id.button_ai_undo);
+        undoButton.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private void onAiUndo() {
+        if (originalTextBeforeAi != null) {
+            // Set flag to prevent TextWatcher from interfering
+            isAiTextReplacement = true;
+            
+            // Restore original text
+            messageContentView.setText(originalTextBeforeAi);
+            messageContentView.setSelection(originalTextBeforeAi.length());
+            
+            // Reset flag
+            isAiTextReplacement = false;
+            
+            // Hide undo button and clear saved text
+            showUndoButton(false);
+            originalTextBeforeAi = null;
+            
+            Toast.makeText(this, "Text wiederhergestellt", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getEmailHistory() {
+        StringBuilder emailHistory = new StringBuilder();
+        
+        // Add subject
+        String subject = subjectView.getText().toString();
+        if (!subject.isEmpty()) {
+            emailHistory.append("Betreff: ").append(subject).append("\n\n");
+        }
+        
+        // Add quoted message if available
+        if (quotedMessageMvpView != null) {
+            try {
+                String quotedText = quotedMessageMvpView.getQuotedText();
+                if (quotedText != null && !quotedText.isEmpty()) {
+                    emailHistory.append("Vorherige E-Mail:\n").append(quotedText).append("\n\n");
+                }
+            } catch (Exception e) {
+                Log.w("MessageCompose", "Could not get quoted text", e);
+            }
+        }
+        
+        return emailHistory.toString();
+    }
+
+    private String getUserName() {
+        if (identity != null && identity.getName() != null) {
+            return identity.getName();
+        }
+        if (account != null && account.getName() != null) {
+            return account.getName();
+        }
+        return "Unbekannt";
+    }
+
+    private String getUserSignature() {
+        if (identity != null && identity.getSignatureUse() && identity.getSignature() != null) {
+            return identity.getSignature();
+        }
+        return "";
     }
 }

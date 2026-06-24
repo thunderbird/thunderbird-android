@@ -6,6 +6,7 @@ import app.k9mail.feature.migration.launcher.featureMigrationModule
 import app.k9mail.feature.onboarding.migration.onboardingMigrationModule
 import app.k9mail.feature.telemetry.telemetryModule
 import net.thunderbird.feature.account.settings.featureAccountSettingsModule
+import net.thunderbird.feature.debug.settings.inject.featureDebugSettingsModule
 import net.thunderbird.feature.mail.message.list.featureMessageListModule
 import org.koin.dsl.module
 
@@ -16,6 +17,7 @@ val featureModule = module {
     includes(onboardingMigrationModule)
     includes(featureMigrationModule)
     includes(featureMessageListModule)
+    includes(featureDebugSettingsModule)
 
     single<FundingSettings> { K9FundingSettings() }
 }
