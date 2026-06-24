@@ -1,0 +1,726 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>0001 - Changelog System Replacement - Thunderbird for Android - Developer Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Developer Documentation for the Thunderbird for Android project.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-bb060dd9.css">
+        <link rel="stylesheet" href="../../css/general-0d197534.css">
+        <link rel="stylesheet" href="../../css/chrome-2bf922bf.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../fonts/fonts-868d674e.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../assets/additional/css/last-changed-baed6e4e.css">
+        <link rel="stylesheet" href="../../assets/additional/css/navigation-c5b35b00.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../../searchindex-91e36e90.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc-f79c439b.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-dark">Dark</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Thunderbird for Android - Developer Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/thunderbird/thunderbird-android/" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./engineering/technical-designs/0001-changelog-system-replacement.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="technical-design-0001-changelog-system-replacement"><a class="header" href="#technical-design-0001-changelog-system-replacement">Technical Design 0001: Changelog System Replacement</a></h1>
+<ul>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11079">#11079</a></li>
+<li>RFC: <a href="../rfcs/0001-changelog-system-replacement.html">Changelog System Replacement</a></li>
+<li>Status: <strong>Proposed</strong></li>
+</ul>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>This design replaces <code>ckChangeLog</code> with a feature-owned changelog reader backed by generated JSON raw resources.</p>
+<p>The implementation consists of:</p>
+<ul>
+<li>A generated changelog index resource for each app target.</li>
+<li>Generated per-release changelog JSON resources.</li>
+<li>JSON schema validation before packaging.</li>
+<li>Migration from existing <code>changelog_master.xml</code> files.</li>
+<li>K-9 Mail changelog resource migration from <code>src/main</code> to app-target source sets.</li>
+<li>A changelog feature data source that reads the index and release resources.</li>
+<li>Preservation of the existing Changelog screen and Recent Changes behavior.</li>
+<li>Removal of <code>ckChangeLog</code> after all runtime references are gone.</li>
+</ul>
+<h2 id="current-state"><a class="header" href="#current-state">Current State</a></h2>
+<p>The app currently uses <code>ckChangeLog</code> to read XML changelog resources and expose releases to the Changelog and Recent Changes flows.</p>
+<p>Relevant areas:</p>
+<ul>
+<li><code>scripts/ci/render-notes.py</code></li>
+<li><code>scripts/ci/templates/changelog_master.xml</code></li>
+<li><code>app-k9mail/src/main/res/raw/changelog_master.xml</code></li>
+<li><code>app-thunderbird/src/*/res/raw/changelog_master.xml</code></li>
+<li><code>feature/changelog/internal</code></li>
+<li><code>feature/changelog/internal/src/main/kotlin/net/thunderbird/feature/changelog/internal/ChangeLogManager.kt</code></li>
+<li><code>feature/changelog/internal/src/main/kotlin/net/thunderbird/feature/changelog/internal/ChangelogViewModel.kt</code></li>
+<li><code>feature/changelog/internal/src/main/kotlin/net/thunderbird/feature/changelog/internal/RecentChangesViewModel.kt</code></li>
+<li><code>feature/changelog/internal/build.gradle.kts</code></li>
+<li><code>legacy/ui/legacy/build.gradle.kts</code></li>
+<li><code>gradle/libs.versions.toml</code></li>
+<li><code>docs/release/RELEASE.md</code></li>
+</ul>
+<p>The existing implementation supports:</p>
+<ul>
+<li>Full in-app changelog display.</li>
+<li>Recent Changes display after upgrade.</li>
+<li>Seen-state tracking.</li>
+<li>XML changelog assets.</li>
+<li>Generation of changelog XML from release-note tooling.</li>
+</ul>
+<p>The replacement must preserve the user-facing behavior while changing the data format, release tooling, and runtime
+reader.</p>
+<h2 id="proposed-design"><a class="header" href="#proposed-design">Proposed Design</a></h2>
+<p>At a high level, the packaged changelog resources move from one XML file per relevant source set to one generated index
+plus one generated JSON file per release:</p>
+<p>Before:</p>
+<pre><code class="language-text">app-k9mail/
+`-- src/
+    `-- main/
+        `-- res/
+            `-- raw/
+                `-- changelog_master.xml
+
+app-thunderbird/
+`-- src/
+    |-- daily/
+    |   `-- res/
+    |       `-- raw/
+    |           `-- changelog_master.xml
+    `-- debug/
+        `-- res/
+            `-- raw/
+                `-- changelog_master.xml
+</code></pre>
+<p>After:</p>
+<pre><code class="language-text">app-k9mail/
+`-- src/
+    |-- release/
+    |   `-- res/
+    |       `-- raw/
+    |           |-- changelog_index.json
+    |           |-- changelog_release_8_2.json
+    |           `-- changelog_release_8_1.json
+    `-- debug/
+        `-- res/
+            `-- raw/
+                |-- changelog_index.json
+                `-- changelog_release_dummy.json
+
+app-thunderbird/
+`-- src/
+    |-- release/
+    |   `-- res/
+    |       `-- raw/
+    |           |-- changelog_index.json
+    |           |-- changelog_release_21_0.json
+    |           `-- changelog_release_20_0.json
+    |-- beta/
+    |   `-- res/
+    |       `-- raw/
+    |           |-- changelog_index.json
+    |           `-- changelog_release_21_0_b1.json
+    |-- daily/
+    |   `-- res/
+    |       `-- raw/
+    |           |-- changelog_index.json
+    |           `-- changelog_release_21_0_a1_2026_05_29.json
+    `-- debug/
+        `-- res/
+            `-- raw/
+                |-- changelog_index.json
+                `-- changelog_release_dummy.json
+</code></pre>
+<p>The daily example includes the date because the daily version name suffix, <code>a1</code>, is constant. The generator should append
+the <code>date</code> to the sanitized daily release resource name so daily builds do not collide.
+Debug source sets package dummy changelog JSON files for testing the UI and do not mirror real release history.
+The dummy release file should contain representative changelog content only; it is not generated from release notes and
+must not be used for release, beta, or daily builds.</p>
+<h3 id="runtime-asset"><a class="header" href="#runtime-asset">Runtime Asset</a></h3>
+<p>Each app target packages one generated changelog index raw resource:</p>
+<pre><code class="language-text">R.raw.changelog_index
+</code></pre>
+<p>The index points to generated per-release raw resources. Android cannot scan arbitrary files in <code>res/raw</code>, so the index
+is the app’s discovery mechanism.</p>
+<p>The layout matches <code>thunderbird-notes</code>, where release notes are maintained as one file per release. Generation can
+transform each release source file into one packaged release resource and update the index separately.</p>
+<p>Expected generated index files:</p>
+<pre><code class="language-text">app-k9mail/src/release/res/raw/changelog_index.json
+app-thunderbird/src/release/res/raw/changelog_index.json
+app-thunderbird/src/beta/res/raw/changelog_index.json
+app-thunderbird/src/daily/res/raw/changelog_index.json
+</code></pre>
+<p>Expected debug dummy index files:</p>
+<pre><code class="language-text">app-k9mail/src/debug/res/raw/changelog_index.json
+app-thunderbird/src/debug/res/raw/changelog_index.json
+</code></pre>
+<p>Expected debug dummy release files:</p>
+<pre><code class="language-text">app-k9mail/src/debug/res/raw/changelog_release_dummy.json
+app-thunderbird/src/debug/res/raw/changelog_release_dummy.json
+</code></pre>
+<p>Expected per-release file naming:</p>
+<pre><code class="language-text">changelog_release_&lt;version&gt;.json
+changelog_release_&lt;version&gt;_&lt;date&gt;.json
+</code></pre>
+<p>Example:</p>
+<pre><code class="language-text">app-thunderbird/src/release/res/raw/changelog_release_17_0.json
+app-thunderbird/src/beta/res/raw/changelog_release_10_0_b1.json
+app-thunderbird/src/beta/res/raw/changelog_release_10_0_b2.json
+app-thunderbird/src/daily/res/raw/changelog_release_21_0_a1_2026_05_29.json
+</code></pre>
+<p>The release filename is derived from the release <code>version</code>. Daily release filenames also append the <code>date</code> because daily
+builds keep the same <code>a1</code> version suffix throughout a release cycle. The generator must sanitize the version and date for
+Android raw resource naming by lowercasing them, separating trailing prerelease labels from the numeric version with <code>_</code>,
+and replacing characters outside <code>[a-z0-9_]</code> with <code>_</code>. For example, <code>10.0b1</code> becomes <code>10_0_b1</code> and <code>2026-05-29</code> becomes
+<code>2026_05_29</code>.</p>
+<p>K-9 Mail currently stores <code>changelog_master.xml</code> in <code>app-k9mail/src/main/res/raw</code>. The JSON replacement should change that
+structure to be consistent with Thunderbird for Android during migration and switch to:</p>
+<pre><code class="language-text">app-k9mail/src/release/res/raw/changelog_index.json
+app-k9mail/src/debug/res/raw/changelog_index.json
+</code></pre>
+<p>The index must list every packaged release resource. The app must not try to discover changelog files by scanning
+<code>res/raw</code>.</p>
+<h3 id="json-schema"><a class="header" href="#json-schema">JSON Schema</a></h3>
+<p>Add schemas at:</p>
+<pre><code class="language-text">scripts/ci/schemas/changelog-index.schema.json
+scripts/ci/schemas/changelog-release.schema.json
+</code></pre>
+<p>Use JSON Schema draft <code>2020-12</code>.</p>
+<p>Index shape:</p>
+<pre><code class="language-json">{
+  "schemaVersion": 1,
+  "releases": [
+    {
+      "version": "21.0",
+      "date": "2026-05-29",
+      "url": "https://github.com/thunderbird/thunderbird-android/releases/tag/THUNDERBIRD_21_0",
+      "resourceName": "changelog_release_21_0"
+    }
+  ]
+}
+</code></pre>
+<p>Release file shape:</p>
+<pre><code class="language-json">{
+  "schemaVersion": 1,
+  "version": "21.0",
+  "date": "2026-05-29",
+  "url": "https://github.com/thunderbird/thunderbird-android/releases/tag/THUNDERBIRD_21_0",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed a crash when opening the message list",
+      "issues": [12345],
+      "pullRequests": [10301],
+      "featureFlags": ["use_compose_for_message_reader"]
+    }
+  ]
+}
+</code></pre>
+<p>Required index fields:</p>
+<ul>
+<li><code>schemaVersion</code>: integer, must be <code>1</code>.</li>
+<li><code>releases</code>: array of release index objects.</li>
+</ul>
+<p>Required release index fields:</p>
+<ul>
+<li><code>version</code>: non-empty string.</li>
+<li><code>date</code>: string matching <code>YYYY-MM-DD</code>.</li>
+<li><code>resourceName</code>: non-empty string matching the generated raw resource name for <code>version</code>, plus <code>date</code> for daily
+entries.</li>
+</ul>
+<p>Optional release index fields:</p>
+<ul>
+<li><code>summary</code>: non-empty string.</li>
+<li><code>url</code>: URI string.</li>
+</ul>
+<p>Required release file fields:</p>
+<ul>
+<li><code>schemaVersion</code>: integer, must be <code>1</code>.</li>
+<li><code>version</code>: non-empty string.</li>
+<li><code>date</code>: string matching <code>YYYY-MM-DD</code>.</li>
+<li><code>notes</code>: array of note objects.</li>
+</ul>
+<p>Optional release file fields:</p>
+<ul>
+<li><code>summary</code>: non-empty string.</li>
+<li><code>url</code>: URI string.</li>
+</ul>
+<p>Required note fields:</p>
+<ul>
+<li><code>type</code>: enum, one of <code>new</code>, <code>changed</code>, or <code>fixed</code>.</li>
+<li><code>text</code>: non-empty string.</li>
+</ul>
+<p>Optional note fields:</p>
+<ul>
+<li><code>id</code>: stable non-empty string.</li>
+<li><code>issues</code>: array of positive integers.</li>
+<li><code>pullRequests</code>: array of positive integers.</li>
+<li><code>featureFlags</code>: array of non-empty strings.</li>
+<li><code>source</code>: enum, one of <code>thunderbird-notes</code> or <code>ckchangelog-xml</code>.</li>
+</ul>
+<p>The schemas must use <code>additionalProperties: false</code> for every object.</p>
+<p>The index and release file for the same release must agree on <code>version</code> and <code>date</code>.</p>
+<h3 id="data-semantics"><a class="header" href="#data-semantics">Data Semantics</a></h3>
+<p>Release ordering:</p>
+<ul>
+<li>Releases sort by descending <code>date</code>.</li>
+<li>Recent Changes matches the full current app version name to the release <code>version</code> for beta and release builds.</li>
+<li>Recent Changes matches both the full current app version name and the current date for daily builds.</li>
+<li>Per-release resource names are derived from the release <code>version</code>, matching <code>thunderbird-notes</code>.</li>
+<li>Daily per-release resource names also include the <code>date</code> to avoid collisions while the daily version name suffix remains
+<code>a1</code>.</li>
+</ul>
+<p>Note ordering:</p>
+<ul>
+<li>Notes render in the order they appear in the release file.</li>
+<li>Generation must preserve source note order from <code>thunderbird-notes</code>.</li>
+<li>For <code>thunderbird-notes</code> files with <code>groups</code>, generation must preserve source note order within each generated
+release file after filtering by release group.</li>
+<li>XML migration must preserve source XML note order after classification.</li>
+</ul>
+<p>Note types:</p>
+<ul>
+<li><code>new</code>: new user-visible functionality or newly supported capability.</li>
+<li><code>changed</code>: behavior changes, improvements, removals, translations, and entries that cannot be confidently classified.</li>
+<li><code>fixed</code>: bug fixes, crash fixes, regressions fixed, and security fixes.</li>
+</ul>
+<p>Text rendering:</p>
+<ul>
+<li>v1 note text is plain text.</li>
+<li>Markdown rendering is out of scope for the first replacement.</li>
+</ul>
+<p>Feature flags:</p>
+<ul>
+<li>Feature-gated notes must use explicit <code>featureFlags</code> metadata.</li>
+<li>Feature flags must not be inferred from note text.</li>
+<li>Packaged changelog JSON must contain only notes that are available for the generated app target.</li>
+</ul>
+<p>URLs:</p>
+<ul>
+<li>Release URLs should point to GitHub releases when reliably constructible.</li>
+<li>XML migration must not invent URLs.</li>
+</ul>
+<p>Issue and pull request references:</p>
+<ul>
+<li><code>issues</code> maps from <code>thunderbird-notes</code> <code>issues</code>.</li>
+<li><code>pullRequests</code> maps from <code>thunderbird-notes</code> <code>pull_requests</code>.</li>
+<li>These fields are the canonical link metadata for notes.</li>
+<li>XML migration must not invent issue or pull request references.</li>
+</ul>
+<p>App-specific notes:</p>
+<ul>
+<li><code>thunderbird_only: true</code> notes are emitted only for Thunderbird targets.</li>
+<li><code>k9mail_only: true</code> notes are emitted only for K-9 Mail targets.</li>
+<li>Notes without app-specific metadata are emitted for both apps, subject to feature flag filtering.</li>
+<li>If both <code>thunderbird_only</code> and <code>k9mail_only</code> are true, generation must fail.</li>
+</ul>
+<h3 id="json-generation"><a class="header" href="#json-generation">JSON Generation</a></h3>
+<p>Extend the existing release-note tooling instead of adding runtime parsing.</p>
+<p>Primary entry point:</p>
+<pre><code class="language-text">scripts/ci/render-notes.py
+</code></pre>
+<p>Generation behavior:</p>
+<ol>
+<li>Read release notes from <code>thunderbird-notes</code>.</li>
+<li>Create one release file for each entry in <code>release.releases</code>.</li>
+<li>Use the release entry <code>version</code> and <code>release_date</code> as the generated release <code>version</code> and <code>date</code>.</li>
+<li>For grouped beta notes, include only notes whose <code>group</code> belongs to the generated release entry.</li>
+<li>Map release-note tags to <code>new</code>, <code>changed</code>, or <code>fixed</code>.</li>
+<li>Prefer long-form note text for the packaged in-app changelog when both long-form and store-facing text are
+available.</li>
+<li>Preserve note text, release summary, release URL, release date, issues, pull requests, source note order, and
+explicit feature flag metadata when available.</li>
+<li>Filter app-specific notes for the generated app target using <code>thunderbird_only</code> and <code>k9mail_only</code>.</li>
+<li>Filter feature-gated notes for the generated app target.</li>
+<li>Write or replace each per-release changelog file.</li>
+<li>Load the existing <code>changelog_index.json</code> when present.</li>
+<li>Insert or replace release index entries by <code>version</code>.</li>
+<li>Sort index entries descending by <code>date</code>.</li>
+<li>Validate the index and release files against their schemas.</li>
+<li>Write the target <code>changelog_index.json</code>.</li>
+</ol>
+<p>Existing store-facing release-note outputs must continue to work during the transition. Store-facing outputs are not the
+preferred source for the packaged in-app changelog when long-form content exists.</p>
+<h3 id="feature-flag-handling"><a class="header" href="#feature-flag-handling">Feature Flag Handling</a></h3>
+<p>Feature-gated changelog notes require explicit metadata in <code>thunderbird-notes</code>.</p>
+<p>Relevant feature flag factory locations include:</p>
+<pre><code class="language-text">app-thunderbird/src/release/kotlin/net/thunderbird/android/featureflag/TbFeatureFlagFactory.kt
+app-thunderbird/src/beta/kotlin/net/thunderbird/android/featureflag/TbFeatureFlagFactory.kt
+app-thunderbird/src/daily/kotlin/net/thunderbird/android/featureflag/TbFeatureFlagFactory.kt
+app-thunderbird/src/debug/kotlin/net/thunderbird/android/featureflag/TbFeatureFlagFactory.kt
+app-k9mail/src/release/kotlin/app/k9mail/featureflag/K9FeatureFlagFactory.kt
+app-k9mail/src/debug/kotlin/app/k9mail/featureflag/K9FeatureFlagFactory.kt
+</code></pre>
+<p>Generation behavior:</p>
+<ol>
+<li>If a note has no explicit feature flags, emit it normally.</li>
+<li>If a note has feature flags, resolve them for the generated app target.</li>
+<li>If all required flags are enabled, emit the note with <code>featureFlags</code>.</li>
+<li>If any required flag is disabled, omit the note from the packaged target JSON.</li>
+<li>If a flag cannot be resolved, fail generation.</li>
+</ol>
+<p>Runtime debug overrides do not affect packaged changelog JSON.</p>
+<h3 id="xml-migration"><a class="header" href="#xml-migration">XML Migration</a></h3>
+<p>Add a migration tool for historical XML changelog data.</p>
+<pre><code class="language-text">scripts/migrate-changelog-xml-to-json.py
+</code></pre>
+<p>The migration tool lives under <code>scripts</code> because it is repository-level migration tooling. It is separate from
+<code>scripts/ci/render-notes.py</code>, which remains responsible for normal release-note generation from <code>thunderbird-notes</code>.</p>
+<p>The migration tool must:</p>
+<ul>
+<li>Accept an explicit input XML path.</li>
+<li>Accept an explicit output resource directory.</li>
+<li>Parse XML with a structured XML parser.</li>
+<li>Convert releases and notes into schema v1 index and release files.</li>
+<li>Sort output deterministically.</li>
+<li>Validate output against the schemas.</li>
+<li>Report migration counts.</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-bash">python scripts/migrate-changelog-xml-to-json.py \
+  --input app-k9mail/src/main/res/raw/changelog_master.xml \
+  --output-dir app-k9mail/src/release/res/raw
+</code></pre>
+<p>For K-9 Mail, migration reads the legacy <code>src/main</code> XML file and writes JSON output to the target source set that will
+package it.</p>
+<p>Migration classification should be deterministic and conservative:</p>
+<ul>
+<li>Prefixes such as <code>New:</code>, <code>Added:</code>, and <code>Add:</code> map to <code>new</code>.</li>
+<li>Prefixes such as <code>Fixed:</code> and <code>Fix:</code> map to <code>fixed</code>.</li>
+<li>Prefixes such as <code>Changed:</code>, <code>Updated:</code>, <code>Improved:</code>, and <code>Removed:</code> map to <code>changed</code>.</li>
+<li>Unmatched notes default to <code>changed</code>.</li>
+</ul>
+<p>Migration must not invent URLs, issues, pull requests, feature flags, breaking-change metadata, or availability metadata.</p>
+<h3 id="android-runtime"><a class="header" href="#android-runtime">Android Runtime</a></h3>
+<p>The changelog feature owns the replacement runtime code.</p>
+<p>Runtime requirements:</p>
+<ul>
+<li>Add internal serializable models for schema v1.</li>
+<li>Add a data source that reads <code>R.raw.changelog_index</code>.</li>
+<li>Inject the app version provider and use the full app version name, including build-type suffixes, for Recent Changes
+lookup. Daily builds must also match the current date.</li>
+<li>Resolve each <code>resourceName</code> from the index to the corresponding generated raw resource ID.</li>
+<li>Load per-release JSON files on demand for the Changelog screen.</li>
+<li>Load only the release file matching the current app version name for Recent Changes, and also matching the current date
+for daily builds.</li>
+<li>Replace <code>ChangeLogManager</code> internals without changing public navigation APIs.</li>
+<li>Throw an exception in debug builds when the index or a required release file is missing, has an unsupported schema
+version, or contains invalid JSON.</li>
+<li>Return an empty changelog in release, beta, and daily builds when the index or a required release file is missing, has
+an unsupported schema version, or contains invalid JSON.</li>
+<li>Use <code>net.thunderbird.core.logging.Logger</code> for non-PII diagnostics when decode fails.</li>
+<li>Map explicit JSON note types to the existing <code>NEW</code>, <code>CHANGED</code>, and <code>FIXED</code> UI categories.</li>
+<li>Keep the existing Compose UI layout. Adding new display fields requires a later design.</li>
+</ul>
+<h3 id="recent-changes"><a class="header" href="#recent-changes">Recent Changes</a></h3>
+<p>Preserve current Recent Changes behavior:</p>
+<ul>
+<li>Fresh install does not show the Recent Changes snackbar.</li>
+<li>Upgrade shows the snackbar once when Recent Changes is enabled, the release matching the current app version has
+notes, and that version has not been marked as seen.</li>
+<li>Opening or dismissing Recent Changes records the current app version as seen.</li>
+</ul>
+<p>Seen state should be stored in feature-owned namespaced storage. Migration from <code>ckChangeLog</code> seen state is optional
+until the RFC open question is resolved.</p>
+<h3 id="dependency-removal"><a class="header" href="#dependency-removal">Dependency Removal</a></h3>
+<p>After the JSON reader is active and verified:</p>
+<ul>
+<li>Remove <code>ckChangeLog</code> from changelog feature dependencies.</li>
+<li>Remove <code>ckChangeLog</code> from legacy UI dependencies once unused.</li>
+<li>Remove <code>ckChangeLog</code> from the version catalog.</li>
+<li>Remove obsolete XML runtime references.</li>
+<li>Keep or remove XML generation only according to the final release-tooling rollout decision.</li>
+</ul>
+<p>Search terms for cleanup:</p>
+<pre><code class="language-text">de.cketti
+ckchangelog
+ChangeLog.newInstance
+ReleaseItem
+changelog_master
+</code></pre>
+<h2 id="migration-and-rollout"><a class="header" href="#migration-and-rollout">Migration and Rollout</a></h2>
+<p>Implement the change in reviewable slices:</p>
+<ol>
+<li>Add schema and validation tests.</li>
+<li>Add JSON generation beside the existing XML generation.</li>
+<li>Add XML migration tooling and migrate selected historical assets.</li>
+<li>Replace the changelog feature runtime reader.</li>
+<li>Remove <code>ckChangeLog</code> dependencies and obsolete runtime references.</li>
+<li>Update release documentation to make JSON generation and validation part of the release flow.</li>
+</ol>
+<p>JSON generation can run beside XML generation until the app runtime switches to JSON. After the runtime switch is
+complete and verified, <code>ckChangeLog</code> can be removed.</p>
+<h2 id="testing-and-verification"><a class="header" href="#testing-and-verification">Testing and Verification</a></h2>
+<p>Schema validation:</p>
+<pre><code class="language-bash">python -m jsonschema -i app-k9mail/src/release/res/raw/changelog_index.json scripts/ci/schemas/changelog-index.schema.json
+python -m jsonschema -i app-thunderbird/src/release/res/raw/changelog_index.json scripts/ci/schemas/changelog-index.schema.json
+python -m jsonschema -i app-thunderbird/src/release/res/raw/changelog_release_21_0.json scripts/ci/schemas/changelog-release.schema.json
+</code></pre>
+<p>Schema tests should verify:</p>
+<ul>
+<li>Valid fixtures pass.</li>
+<li>Unknown fields fail.</li>
+<li>Missing required fields fail.</li>
+<li>Unsupported note types fail.</li>
+<li>Invalid URLs fail where URI format validation applies.</li>
+</ul>
+<p>Generator tests should verify:</p>
+<ul>
+<li>Type mapping from <code>thunderbird-notes</code>.</li>
+<li>Invalid type rejection.</li>
+<li>Per-release file insert and replace by <code>version</code>.</li>
+<li>Index insert and replace by <code>version</code>.</li>
+<li>Resource name generation from <code>version</code>.</li>
+<li>Resource name generation from beta versions such as <code>10.0b1</code>.</li>
+<li>Multiple release files generated from one <code>thunderbird-notes</code> file with multiple <code>release.releases</code> entries.</li>
+<li>Grouped beta notes are emitted only to the matching generated release file.</li>
+<li>Descending release ordering by <code>date</code>.</li>
+<li>Source note order preservation.</li>
+<li><code>issues</code> preservation.</li>
+<li><code>pull_requests</code> to <code>pullRequests</code> mapping.</li>
+<li>Thunderbird-only note inclusion for Thunderbird targets.</li>
+<li>Thunderbird-only note omission for K-9 Mail targets.</li>
+<li>K-9 Mail-only note inclusion for K-9 Mail targets.</li>
+<li>K-9 Mail-only note omission for Thunderbird targets.</li>
+<li>Conflicting app-specific note metadata fails generation.</li>
+<li>Feature-gated note inclusion.</li>
+<li>Feature-gated note omission.</li>
+<li>Unresolved feature flags fail generation.</li>
+<li>Missing release resources referenced by the index fail validation.</li>
+<li>Schema validation before writing.</li>
+</ul>
+<p>Migration tests should verify:</p>
+<ul>
+<li>XML releases and notes are parsed.</li>
+<li>Prefix classification works.</li>
+<li>Unmatched notes default to <code>changed</code>.</li>
+<li>Source XML note order is preserved after classification.</li>
+<li>Migrated index and release files validate against the schemas.</li>
+</ul>
+<p>Android tests should cover:</p>
+<ul>
+<li>Valid JSON maps to existing release UI models.</li>
+<li>Missing or invalid index JSON returns an empty changelog and logs a non-PII diagnostic.</li>
+<li>Missing or invalid release JSON is handled defensively and logs a non-PII diagnostic.</li>
+<li>Recent Changes is not shown on fresh install.</li>
+<li>Recent Changes is shown once after upgrade when the release matching the current app version has notes.</li>
+<li>Opening or dismissing Recent Changes records the current app version as seen.</li>
+</ul>
+<h2 id="open-technical-questions"><a class="header" href="#open-technical-questions">Open Technical Questions</a></h2>
+<p>None.</p>
+<footer id="last-change">Last change: <time datetime="2026-06-24">2026-06-24</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/fc11203">fc11203</a></footer>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../engineering/technical-designs/0000-technical-design-template.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../../user-guide/setup/installing-adb.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../engineering/technical-designs/0000-technical-design-template.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../../user-guide/setup/installing-adb.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
+
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-7163d6e2.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../assets/additional/js/mermaid-217b66ef.min.js"></script>
+        <script src="../../assets/additional/js/mermaid-init-73b11a66.js"></script>
+        <script src="../../assets/additional/js/navigation-dde10ad4.js"></script>
+
+
+
+    </div>
+    </body>
+</html>
