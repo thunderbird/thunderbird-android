@@ -37,10 +37,10 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-91e36e90.js";
+            window.path_to_searchindex_js = "../searchindex-4b0d708f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-f79c439b.js"></script>
+        <script src="../toc-ddd5fe48.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -243,7 +243,7 @@ architecture, components, customization, and usage.</p>
 <h3 id="-architecture-layers"><a class="header" href="#-architecture-layers">🏗️ Architecture Layers</a></h3>
 <p>The theme system consists of three main layers:</p>
 <ol>
-<li><strong>App-Specific Themes</strong>: The <code>core:ui:compose:theme2</code> module contains theme implementations for specific applications (ThunderbirdTheme2, K9MailTheme2). Each app theme:
+<li><strong>App-Specific Themes</strong>: The <code>:components:ui:bolt</code> module contains theme implementations for specific applications (ThunderbirdTheme2, K9MailTheme2). Each app theme:
 <ul>
 <li>Defines its own brand colors, logos, and other app-specific visual elements</li>
 <li>Creates a ThemeConfig with these customizations</li>
@@ -625,7 +625,7 @@ fun ThunderbirdTheme2(
     content: @Composable () -&gt; Unit,
 ) {
     val images = ThemeImages(
-        logo = R.drawable.core_ui_theme2_thunderbird_logo,
+        logo = R.drawable.bolt_thunderbird_logo,
     )
 
     val themeConfig = ThemeConfig(
@@ -660,7 +660,7 @@ fun K9MailTheme2(
     content: @Composable () -&gt; Unit,
 ) {
     val images = ThemeImages(
-        logo = R.drawable.core_ui_theme2_k9mail_logo,
+        logo = R.drawable.bolt_k9mail_logo,
     )
 
     val themeConfig = ThemeConfig(
@@ -797,7 +797,7 @@ fun testThemedButton() {
     composeTestRule.onNodeWithText("Click Me").assertExists()
 }
 </code></pre>
-<footer id="last-change">Last change: <time datetime="2026-06-24">2026-06-24</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/fc11203">fc11203</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-06-25">2026-06-25</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/eeaa9e4">eeaa9e4</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
