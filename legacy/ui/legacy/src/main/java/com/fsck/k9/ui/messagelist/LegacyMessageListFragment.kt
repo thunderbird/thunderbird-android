@@ -1008,11 +1008,11 @@ class LegacyMessageListFragment :
         changeSort(nextSortType)
     }
 
-    private fun onDelete(messages: List<MessageReference>) {
+    private fun onDelete(messages: List<MessageReference>, count: Int) {
         if (interactionSettings.isConfirmDelete) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages
-            showDialog(R.id.dialog_confirm_delete)
+            showDialog(R.id.dialog_confirm_delete, count)
         } else {
             onDeleteConfirmed(messages)
         }
@@ -1056,15 +1056,14 @@ class LegacyMessageListFragment :
             return currentFolder!!.databaseId == account!!.trashFolderId
         }
 
-    private fun showDialog(dialogId: Int) {
+    private fun showDialog(dialogId: Int, selectionCount: Int = 1) {
         val dialogFragment = when (dialogId) {
             R.id.dialog_confirm_spam -> {
                 val title = getString(R.string.dialog_confirm_spam_title)
-                val selectionSize = activeMessages!!.size
                 val message = resources.getQuantityString(
                     R.plurals.dialog_confirm_spam_message,
-                    selectionSize,
-                    selectionSize,
+                    selectionCount,
+                    selectionCount,
                 )
                 val confirmText = getString(R.string.dialog_confirm_spam_confirm_button)
                 val cancelText = getString(R.string.dialog_confirm_spam_cancel_button)
@@ -1073,11 +1072,10 @@ class LegacyMessageListFragment :
 
             R.id.dialog_confirm_delete -> {
                 val title = getString(R.string.dialog_confirm_delete_title)
-                val selectionSize = activeMessages!!.size
                 val message = resources.getQuantityString(
                     R.plurals.dialog_confirm_delete_messages,
-                    selectionSize,
-                    selectionSize,
+                    selectionCount,
+                    selectionCount,
                 )
                 val confirmText = getString(R.string.dialog_confirm_delete_confirm_button)
                 val cancelText = getString(R.string.dialog_confirm_delete_cancel_button)
@@ -1109,7 +1107,7 @@ class LegacyMessageListFragment :
             }
 
             else -> {
-                throw RuntimeException("Called showDialog(int) with unknown dialog id.")
+                throw RuntimeException("Called showDialog(int, int) with unknown dialog id.")
             }
         }
 
@@ -1662,11 +1660,11 @@ class LegacyMessageListFragment :
         return messages.groupBy { accountManager.getAccount(it.accountUuid)!! }
     }
 
-    private fun onSpam(messages: List<MessageReference>) {
+    private fun onSpam(messages: List<MessageReference>, count: Int) {
         if (interactionSettings.isConfirmSpam) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages
-            showDialog(R.id.dialog_confirm_spam)
+            showDialog(R.id.dialog_confirm_spam, count)
         } else {
             onSpamConfirmed(messages)
         }
@@ -1903,9 +1901,12 @@ class LegacyMessageListFragment :
     private val selectedMessages: List<MessageReference>
         get() = adapter.selectedMessages.map { it.messageReference }
 
+    private val selectedMessagesCount
+        get() = adapter.selectedCount
+
     override fun onDelete() {
         selectedMessage?.let { message ->
-            onDelete(listOf(message))
+            onDelete(listOf(message), selectedMessagesCount)
         }
     }
 
@@ -2254,11 +2255,11 @@ class LegacyMessageListFragment :
                 }
 
                 SwipeAction.Delete -> {
-                    onDelete(listOf(item.messageReference))
+                    onDelete(listOf(item.messageReference), item.threadCount)
                 }
 
                 SwipeAction.Spam -> {
-                    onSpam(listOf(item.messageReference))
+                    onSpam(listOf(item.messageReference), item.threadCount)
                 }
 
                 SwipeAction.Move -> {
@@ -2614,7 +2615,7 @@ class LegacyMessageListFragment :
 
             val endSelectionMode = when (item.itemId) {
                 R.id.delete -> {
-                    onDelete(selectedMessages)
+                    onDelete(selectedMessages, selectedMessagesCount)
                     true
                 }
 
@@ -2650,7 +2651,7 @@ class LegacyMessageListFragment :
                 }
 
                 R.id.spam -> {
-                    onSpam(selectedMessages)
+                    onSpam(selectedMessages, selectedMessagesCount)
                     // TODO: Only finish action mode if all messages have been moved.
                     true
                 }

@@ -953,7 +953,7 @@ class MessageListFragment :
         val dialogFragment = when (dialogId) {
             R.id.dialog_confirm_spam -> {
                 val title = getString(R.string.dialog_confirm_spam_title)
-                val selectionSize = activeMessages!!.size
+                val selectionSize = selectedMessagesCount
                 val message = resources.getQuantityString(
                     R.plurals.dialog_confirm_spam_message,
                     selectionSize,
@@ -966,7 +966,7 @@ class MessageListFragment :
 
             R.id.dialog_confirm_delete -> {
                 val title = getString(R.string.dialog_confirm_delete_title)
-                val selectionSize = activeMessages!!.size
+                val selectionSize = selectedMessagesCount
                 val message = resources.getQuantityString(
                     R.plurals.dialog_confirm_delete_messages,
                     selectionSize,
