@@ -25,6 +25,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMedium
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMediumAutoResize
 import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.feature.onboarding.welcome.R
@@ -134,10 +135,12 @@ private fun WelcomeTitle(
         modifier = modifier.padding(horizontal = MainTheme.spacings.quadruple),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        TextDisplayMedium(
-            text = title,
-            textAlign = TextAlign.Center,
-        )
+        UsingBrandTypography {
+            TextDisplayMediumAutoResize(
+                text = title,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }
 

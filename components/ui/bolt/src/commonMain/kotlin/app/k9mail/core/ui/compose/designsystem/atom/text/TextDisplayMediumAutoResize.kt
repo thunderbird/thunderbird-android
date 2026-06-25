@@ -27,7 +27,7 @@ fun TextDisplayMediumAutoResize(
         ),
         softWrap = false,
         autoSize = TextAutoSize.StepBased(
-            minFontSize = style.fontSize * 0.95f,
+            minFontSize = style.fontSize * 0.35f,
             maxFontSize = MainTheme.typography.displayMedium.fontSize,
             stepSize = 0.5.sp,
         ),
