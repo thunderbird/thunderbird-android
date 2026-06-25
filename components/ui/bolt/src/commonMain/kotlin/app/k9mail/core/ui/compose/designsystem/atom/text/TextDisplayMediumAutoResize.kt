@@ -3,6 +3,7 @@ package app.k9mail.core.ui.compose.designsystem.atom.text
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.runtime.Composable
+import androidx.compose.material3.Text as Material3Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -18,7 +19,7 @@ fun TextDisplayMediumAutoResize(
     textAlign: TextAlign? = null,
 ) {
     val style: TextStyle = MainTheme.typography.displayMedium
-    BasicText(
+    Material3Text(
         text = text,
         modifier = modifier,
         style = style.merge(
