@@ -13,7 +13,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
+import net.thunderbird.core.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.testing.fake.FakeNotification
 

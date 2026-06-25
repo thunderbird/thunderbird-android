@@ -18,7 +18,7 @@ import net.thunderbird.core.common.state.StateMachine
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
+import net.thunderbird.core.ui.testing.coroutines.MainDispatcherHelper
 
 class BaseStateMachineViewModelTest {
 

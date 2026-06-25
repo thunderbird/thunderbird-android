@@ -15,12 +15,9 @@ import app.k9mail.core.ui.compose.designsystem.molecule.input.InputLayout
 import app.k9mail.core.ui.compose.designsystem.molecule.input.inputContentPadding
 import app.k9mail.feature.account.server.settings.R
 import kotlinx.coroutines.delay
-import net.thunderbird.core.ui.designsystem.resources.Res
-import net.thunderbird.core.ui.designsystem.resources.designsystem_molecule_password_input_label
 import net.thunderbird.feature.account.server.settings.ui.common.AuthenticationError
 import net.thunderbird.feature.account.server.settings.ui.common.Authenticator
 import net.thunderbird.feature.account.server.settings.ui.common.rememberBiometricAuthenticator
-import org.jetbrains.compose.resources.stringResource as composeStringResource
 
 private const val SHOW_WARNING_DURATION = 5000L
 
@@ -62,7 +59,7 @@ fun ProtectedPasswordInput(
             onValueChange = onPasswordChange,
             onWarningChange = { authenticationError = it },
             authenticator = authenticator,
-            label = composeStringResource(Res.string.designsystem_molecule_password_input_label),
+            label = stringResource(R.string.account_server_settings_password_input_label),
             isRequired = isRequired,
             hasError = errorMessage != null,
             modifier = Modifier.fillMaxWidth(),

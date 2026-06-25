@@ -11,7 +11,6 @@ dependencies {
     api(libs.androidx.compose.ui.test.junit4)
 
     implementation(projects.core.ui.contract)
-    implementation(projects.core.ui.compose.theme2)
 
     implementation(libs.androidx.test.espresso.core)
     implementation(libs.assertk)

@@ -64,7 +64,7 @@ graph TD
 
 The theme system consists of three main layers:
 
-1. **App-Specific Themes**: The `core:ui:compose:theme2` module contains theme implementations for specific applications (ThunderbirdTheme2, K9MailTheme2). Each app theme:
+1. **App-Specific Themes**: The `:components:ui:bolt` module contains theme implementations for specific applications (ThunderbirdTheme2, K9MailTheme2). Each app theme:
    - Defines its own brand colors, logos, and other app-specific visual elements
    - Creates a ThemeConfig with these customizations
    - Uses the MainTheme as its foundation
@@ -490,7 +490,7 @@ fun ThunderbirdTheme2(
     content: @Composable () -> Unit,
 ) {
     val images = ThemeImages(
-        logo = R.drawable.core_ui_theme2_thunderbird_logo,
+        logo = R.drawable.bolt_thunderbird_logo,
     )
 
     val themeConfig = ThemeConfig(
@@ -528,7 +528,7 @@ fun K9MailTheme2(
     content: @Composable () -> Unit,
 ) {
     val images = ThemeImages(
-        logo = R.drawable.core_ui_theme2_k9mail_logo,
+        logo = R.drawable.bolt_k9mail_logo,
     )
 
     val themeConfig = ThemeConfig(

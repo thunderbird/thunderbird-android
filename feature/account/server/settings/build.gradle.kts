@@ -14,7 +14,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.core.ui.contract)
     implementation(projects.core.common)
     implementation(projects.core.validation)
 
@@ -26,7 +26,6 @@ dependencies {
     implementation(libs.androidx.biometric)
 
     testImplementation(projects.core.ui.compose.testing)
-    testImplementation(projects.core.ui.testing)
 }
 
 codeCoverage {

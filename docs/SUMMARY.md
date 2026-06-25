@@ -73,6 +73,7 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
   - [Database Migration Checklist](developer/db-migration-checklist.md)
   - [Foldable Device Support](developer/foldable-device-support.md)
   - [Preference Migration Guide](developer/preference-migration-guide.md)
+  - [Thunderbird Mobile Components](developer/thunderbird-mobile-components.md)
 - [Release]()
   - [Release Process](release/RELEASE.md)
   - [Release Automation](release/AUTOMATION.md)

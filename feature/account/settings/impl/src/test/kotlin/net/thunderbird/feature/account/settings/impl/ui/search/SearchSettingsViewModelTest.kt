@@ -15,7 +15,7 @@ import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
+import net.thunderbird.core.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract

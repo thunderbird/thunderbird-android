@@ -11,8 +11,6 @@ android {
 dependencies {
     implementation(projects.core.ui.setting.api)
 
-    implementation(projects.core.ui.compose.designsystem)
-
     testImplementation(projects.core.ui.compose.testing)
 }
 

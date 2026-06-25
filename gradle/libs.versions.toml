@@ -117,6 +117,7 @@ robolectric = "4.16.1"
 safeContentResolver = "1.0.0"
 searchPreference = "2.7.3"
 spotlessPlugin = "8.6.0"
+tbMobileComponents = "0.1.0-SNAPSHOT"
 timber = "5.0.1"
 turbine = "1.2.1"
 uri = "0.0.21"
@@ -300,6 +301,8 @@ preferencex-datetimepicker = { module = "com.takisoft.preferencex:preferencex-da
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 safeContentResolver = { module = "de.cketti.safecontentresolver:safe-content-resolver-v21", version.ref = "safeContentResolver" }
 searchPreference = { module = "com.github.ByteHamster:SearchPreference", version.ref = "searchPreference" }
+tb-mobile-components-ui-bolt = { module = "net.thunderbird.components.ui.bolt:bolt", version.ref = "tbMobileComponents" }
+tb-mobile-components-ui-testing = { module = "net.thunderbird.components.ui:testing", version.ref = "tbMobileComponents" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
@@ -354,7 +357,7 @@ shared-kmp-compose-jvm = [
 ]
 
 shared-kmp-compose-common-test = [
-  "jetbrains-compose-ui-test"
+  "jetbrains-compose-ui-test",
 ]
 shared-kmp-compose-android-test = [
   "androidx-compose-ui-test-junit4",
@@ -380,7 +383,7 @@ shared-android-compose = [
   "koin-compose",
   "koin-compose-viewmodel",
   "kotlinx-collections-immutable",
-  "jetbrains-compose-components-resources"
+  "jetbrains-compose-components-resources",
 ]
 shared-android-compose-debug = [
   "jetbrains-compose-ui-tooling"
