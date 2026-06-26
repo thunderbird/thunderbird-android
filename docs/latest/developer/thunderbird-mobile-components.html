@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-4b0d708f.js";
+            window.path_to_searchindex_js = "../searchindex-74807aef.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-ddd5fe48.js"></script>
@@ -207,22 +207,22 @@ default:</p>
 <li><code>net.thunderbird.components.ui:testing</code> -&gt; <code>:components:ui:testing</code></li>
 </ul>
 <p>Disable local component substitution when testing released artifacts with:</p>
-<pre><code class="language-shell">./gradlew -Ptb.components.local=false :app-ui-catalog:assembleDebug
+<pre><code class="language-shell">./gradlew -Ptb.components.local=false :app-thunderbird:assembleDebug
 </code></pre>
 <p>Control Bolt substitution independently with <code>tb.components.local.bolt</code>. This is useful when testing released component
 artifacts for everything else while still working on Bolt locally:</p>
-<pre><code class="language-shell">./gradlew -Ptb.components.local=false -Ptb.components.local.bolt=true :app-ui-catalog:assembleDebug
+<pre><code class="language-shell">./gradlew -Ptb.components.local=false -Ptb.components.local.bolt=true :app-thunderbird:assembleDebug
 </code></pre>
 <p>Build Bolt directly from the included build when working on the components. In this command, <code>:ui:bolt</code>
 is the project path inside the <code>components</code> build:</p>
 <pre><code class="language-shell">./gradlew -p components :ui:bolt:assemble
 </code></pre>
-<p>Build a root consumer to verify substitution from Thunderbird for Android:</p>
-<pre><code class="language-shell">./gradlew :app-ui-catalog:assembleDebug
+<p>Build the Bolt catalog directly from the components build:</p>
+<pre><code class="language-shell">./gradlew -p components :ui:catalog:assembleDebug
 </code></pre>
 <p>Do not add a broad dependency on all components. Add new coordinates and substitutions only for component groups that
 Thunderbird for Android actually consumes.</p>
-<footer id="last-change">Last change: <time datetime="2026-06-25">2026-06-25</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/eeaa9e4">eeaa9e4</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-06-26">2026-06-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/2815a8f">2815a8f</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
