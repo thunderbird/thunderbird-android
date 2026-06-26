@@ -65,6 +65,7 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
     - [Obsolete]()
 - [User Guide]()
   - [Setup]()
+    - [Android Version Compatibility](user-guide/setup/android-version-compatibility.md)
     - [Installing ADB](user-guide/setup/installing-adb.md)
   - [Troubleshooting]()
     - [Collecting Debug Logs](user-guide/troubleshooting/collecting-debug-logs.md)
