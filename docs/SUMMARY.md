@@ -77,6 +77,8 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
 - [Release]()
   - [Release Process](release/RELEASE.md)
   - [Release Automation](release/AUTOMATION.md)
+  - [Release Notes](release/release-notes.md)
+  - [Historic Release Notes](release/historic-release-notes.md)
   - [Developer Release Checklist](release/developer-checklist.md)
   - [Release Testing Checklist](release/testing-checklist.md)
   - [Manual Release (historical)](release/HISTORICAL_RELEASE.md)
