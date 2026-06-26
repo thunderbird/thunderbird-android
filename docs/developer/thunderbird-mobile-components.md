@@ -39,14 +39,14 @@ default:
 Disable local component substitution when testing released artifacts with:
 
 ```shell
-./gradlew -Ptb.components.local=false :app-ui-catalog:assembleDebug
+./gradlew -Ptb.components.local=false :app-thunderbird:assembleDebug
 ```
 
 Control Bolt substitution independently with `tb.components.local.bolt`. This is useful when testing released component
 artifacts for everything else while still working on Bolt locally:
 
 ```shell
-./gradlew -Ptb.components.local=false -Ptb.components.local.bolt=true :app-ui-catalog:assembleDebug
+./gradlew -Ptb.components.local=false -Ptb.components.local.bolt=true :app-thunderbird:assembleDebug
 ```
 
 Build Bolt directly from the included build when working on the components. In this command, `:ui:bolt`
@@ -56,10 +56,10 @@ is the project path inside the `components` build:
 ./gradlew -p components :ui:bolt:assemble
 ```
 
-Build a root consumer to verify substitution from Thunderbird for Android:
+Build the Bolt catalog directly from the components build:
 
 ```shell
-./gradlew :app-ui-catalog:assembleDebug
+./gradlew -p components :ui:catalog:assembleDebug
 ```
 
 Do not add a broad dependency on all components. Add new coordinates and substitutions only for component groups that

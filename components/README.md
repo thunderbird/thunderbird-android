@@ -37,8 +37,10 @@ its own component, or introduce a smaller public API.
 The app currently consumes local component sources by default through dependency substitution. Disable local source
 substitution with the `tb.components.local` Gradle property when testing released artifacts.
 
+The UI catalog app lives in the components build and can be built directly:
+
 ```shell
-./gradlew -Ptb.components.local=false :app-ui-catalog:assembleDebug
+./gradlew -p components :ui:catalog:assembleDebug
 ```
 
 Individual component groups can provide their own override property. Bolt substitution can be controlled with

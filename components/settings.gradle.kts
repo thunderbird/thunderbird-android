@@ -43,4 +43,6 @@ dependencyResolutionManagement {
 
 include(":ui:bolt")
 
+include(":ui:catalog")
+
 include(":ui:testing")
