@@ -94,10 +94,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.openintents.openpgp.util.OpenPgpIntentStarter
 import net.thunderbird.feature.mail.message.reader.api.R as MessageReaderR
 
-@Suppress("LargeClass")
+@Suppress("LargeClass", "TooManyFunctions")
 class MessageViewFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
+    AttachmentDisplayController,
     AttachmentViewCallback {
 
     private val themeManager: ThemeManager by inject()
@@ -105,6 +106,7 @@ class MessageViewFragment :
     private val messageLoaderHelperFactory: MessageLoaderHelperFactory by inject()
     private val accountManager: LegacyAccountDtoManager by inject()
     private val messagingController: MessagingController by inject()
+    private val attachmentLoadingController: AttachmentLoadingController by inject()
     private val shareIntentBuilder: ShareIntentBuilder by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
     private val outboxFolderManager: OutboxFolderManager by inject()
@@ -1055,17 +1057,17 @@ class MessageViewFragment :
         requireActivity().runOnUiThread(runnable)
     }
 
-    fun showAttachmentLoadingDialog() {
+    override fun showAttachmentLoadingDialog() {
         showDialog(R.id.dialog_attachment_progress)
     }
 
-    fun hideAttachmentLoadingDialogOnMainThread() {
+    override fun hideAttachmentLoadingDialogOnMainThread() {
         runOnMainThread {
             removeDialog(R.id.dialog_attachment_progress)
         }
     }
 
-    fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo) {
+    override fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo) {
         messageTopView.refreshAttachmentThumbnail(attachment)
     }
 
@@ -1208,8 +1210,8 @@ class MessageViewFragment :
     private fun createAttachmentController(attachment: AttachmentViewInfo): AttachmentController {
         return AttachmentController(
             context = requireContext(),
-            controller = messagingController,
-            messageViewFragment = this,
+            controller = attachmentLoadingController,
+            attachmentDisplayController = this,
             attachment = attachment,
             logger = logger
         )
