@@ -94,7 +94,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.openintents.openpgp.util.OpenPgpIntentStarter
 import net.thunderbird.feature.mail.message.reader.api.R as MessageReaderR
 
-@Suppress("LargeClass")
+@Suppress("LargeClass", "TooManyFunctions")
 class MessageViewFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,

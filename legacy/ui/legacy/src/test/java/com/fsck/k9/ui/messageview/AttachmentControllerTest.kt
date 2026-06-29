@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ProviderInfo
-import android.net.Uri
 import androidx.core.net.toUri
 import androidx.test.core.app.ApplicationProvider
 import app.k9mail.legacy.message.controller.MessagingListener
@@ -18,15 +17,11 @@ import com.fsck.k9.mailstore.LocalPart
 import com.fsck.k9.provider.AttachmentTempFileProvider
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.IOException
-import java.io.OutputStream
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -52,7 +47,8 @@ class AttachmentControllerTest : RobolectricTest() {
 
     private val displayName = "document.pdf"
     private val mimeType = "application/pdf"
-    private val part = LocalBodyPart("00000000-0000-4000-0000-000000000000",
+    private val part = LocalBodyPart(
+        "00000000-0000-4000-0000-000000000000",
         null,
         1L,
         42L,
@@ -209,14 +205,14 @@ class AttachmentControllerTest : RobolectricTest() {
     }
 
     class FakeAttachmentDisplayController : AttachmentDisplayController {
-        override fun showAttachmentLoadingDialog() {}
+        override fun showAttachmentLoadingDialog() = Unit
 
-        override fun hideAttachmentLoadingDialogOnMainThread() {}
+        override fun hideAttachmentLoadingDialogOnMainThread() = Unit
 
-        override fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo) {}
+        override fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo) = Unit
     }
 
-    class FakeAttachmentLoadingController: AttachmentLoadingController {
+    class FakeAttachmentLoadingController : AttachmentLoadingController {
         override fun loadAttachment(
             part: Part?,
             listener: MessagingListener,
@@ -233,9 +229,10 @@ class AttachmentControllerTest : RobolectricTest() {
         override fun getConfig(): GeneralSettings = GeneralSettings(
             platformConfigProvider = object : PlatformConfigProvider {
                 override val isDebug: Boolean = true
-            }
+            },
         )
+
         override fun getConfigFlow(): Flow<GeneralSettings> = flowOf(getConfig())
-        override fun save(config: GeneralSettings) {}
+        override fun save(config: GeneralSettings) = Unit
     }
 }
