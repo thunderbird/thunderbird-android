@@ -442,6 +442,7 @@ class MessageListAdapterTest : RobolectricTest() {
             featureFlagProvider = FakeFeatureFlagProvider(),
             avatarMonogramCreator = mock(),
             contactRepository = mock(),
+            formatDate = { "12:34" },
         )
     }
 
