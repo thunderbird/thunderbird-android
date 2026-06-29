@@ -1,0 +1,5 @@
+Thunderbird version 21.0b2
+
+Fixed:
+- Manage Folders opened the wrong account instead of the selected account
+- Application crashed when attempting to change account color

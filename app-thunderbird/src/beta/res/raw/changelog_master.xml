@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="21.0b2" versioncode="55" date="2026-06-29">
+        <change>Fixed: Manage Folders opened the wrong account instead of the selected account</change>
+        <change>Fixed: Application crashed when attempting to change account color</change>
+    </release>
     <release version="21.0b1" versioncode="54" date="2026-06-22">
         <change>Changed: Animation setting now allows On, Off, and System Default options</change>
         <change>Changed: Modernized &#39;Fetching mail&#39; account settings screen</change>
