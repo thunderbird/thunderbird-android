@@ -3,10 +3,13 @@ package net.thunderbird.gradle.plugin.quality.detekt
 import dev.detekt.gradle.Detekt
 import dev.detekt.gradle.DetektCreateBaselineTask
 import dev.detekt.gradle.extensions.DetektExtension
+import java.io.File
+import java.nio.file.Path
 import net.thunderbird.gradle.plugin.ProjectConfig
 import net.thunderbird.gradle.plugin.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.FileTreeElement
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
@@ -47,13 +50,15 @@ class DetektPlugin : Plugin<Project> {
     private fun Project.configureDetektTasks() {
         with(tasks) {
             withType<Detekt>().configureEach {
+                val isInProjectBuildDirectory = buildDirectoryExclusion(layout.buildDirectory.get().asFile)
+
                 if (name.contains("androidHostTest", ignoreCase = true)) {
                     enabled = false
                 }
 
                 jvmTarget = ProjectConfig.Compiler.jvmTarget.target
 
-                exclude(defaultExcludes)
+                exclude(isInProjectBuildDirectory)
 
                 reports {
                     checkstyle.required.set(false)
@@ -66,13 +71,15 @@ class DetektPlugin : Plugin<Project> {
             }
 
             withType<DetektCreateBaselineTask>().configureEach {
+                val isInProjectBuildDirectory = buildDirectoryExclusion(layout.buildDirectory.get().asFile)
+
                 if (name.contains("androidHostTest", ignoreCase = true)) {
                     enabled = false
                 }
 
                 jvmTarget = ProjectConfig.Compiler.jvmTarget.target
 
-                exclude(defaultExcludes)
+                exclude(isInProjectBuildDirectory)
             }
 
             register("detektAll") {
@@ -85,11 +92,12 @@ class DetektPlugin : Plugin<Project> {
     }
 }
 
-private val defaultExcludes = listOf(
-    "**/.gradle/**",
-    "**/.idea/**",
-    "**/build/**",
-    "**/generated/**",
-    ".github/**",
-    "gradle/**",
-)
+private fun buildDirectoryExclusion(buildDirectory: File): (FileTreeElement) -> Boolean {
+    val buildDirectoryPath = buildDirectory.normalizedPath()
+
+    return { fileTreeElement ->
+        fileTreeElement.file.normalizedPath().startsWith(buildDirectoryPath)
+    }
+}
+
+private fun File.normalizedPath(): Path = absoluteFile.toPath().normalize()
