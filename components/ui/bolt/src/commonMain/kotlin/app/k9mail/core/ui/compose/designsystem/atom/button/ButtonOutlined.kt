@@ -48,7 +48,6 @@ fun ButtonOutlined(
                 modifier = Modifier
                     .alignByBaseline()
                     .padding(end = MainTheme.spacings.default),
-                tint = colors.iconColor,
             )
         }
         Material3Text(
