@@ -24,16 +24,21 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMedium
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMediumAutoResize
 import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.feature.onboarding.welcome.R
+import net.thunderbird.core.ui.common.window.WindowSizeClass
+import net.thunderbird.core.ui.common.window.WindowWidthSizeClass
+import net.thunderbird.core.ui.common.window.calculateWindowSizeInfo
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import org.jetbrains.compose.resources.painterResource
 
 private const val CIRCLE_COLOR = 0xFFEEEEEE
 private const val CIRCLE_SIZE_DP = 200
+private const val CIRCLE_SIZE_SMALL_DP = 125
 private const val LOGO_SIZE_DP = 125
+private const val LOGO_SIZE_SMALL_DP = 80
 
 @Composable
 internal fun WelcomeContent(
@@ -89,6 +94,19 @@ private fun WelcomeHeaderSection(
 private fun WelcomeLogo(
     modifier: Modifier = Modifier,
 ) {
+    val windowSizeInfo = calculateWindowSizeInfo()
+    val isSmallScreen =
+        windowSizeInfo.sizeClass.widthSizeClass == WindowWidthSizeClass.Small
+    val circleSize = if (isSmallScreen) {
+        CIRCLE_SIZE_SMALL_DP
+    } else {
+        CIRCLE_SIZE_DP
+    }
+    val logoSize = if (isSmallScreen) {
+        LOGO_SIZE_SMALL_DP
+    } else {
+        LOGO_SIZE_DP
+    }
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -97,13 +115,13 @@ private fun WelcomeLogo(
             modifier = Modifier
                 .clip(CircleShape)
                 .background(Color(CIRCLE_COLOR))
-                .size(CIRCLE_SIZE_DP.dp),
+                .size(circleSize.dp),
         ) {
             Image(
                 painter = painterResource(MainTheme.images.logo),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(LOGO_SIZE_DP.dp)
+                    .size(logoSize.dp)
                     .align(Alignment.Center),
             )
         }
@@ -134,7 +152,7 @@ private fun WelcomeTitle(
         modifier = modifier.padding(horizontal = MainTheme.spacings.quadruple),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        TextDisplayMedium(
+        TextDisplayMediumAutoResize(
             text = title,
             textAlign = TextAlign.Center,
         )
