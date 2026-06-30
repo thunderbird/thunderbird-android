@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,6 +48,19 @@ import net.thunderbird.core.common.exception.MessagingException;
  * RFC 2045 style headers.
  */
 public class MimeMessage extends Message {
+
+    // Common non-standard date formats seen in real-world email headers that
+    // mime4j's DefaultFieldParser rejects. Tried in order; first match wins.
+    private static final List<String> FALLBACK_DATE_PATTERNS = Arrays.asList(
+            "EEE, d MMM yyyy HH:mm:ss Z",
+            "d MMM yyyy HH:mm:ss Z",
+            "EEE, d MMM yyyy HH:mm Z",
+            "d MMM yyyy HH:mm Z",
+            "EEE, d MMM yy HH:mm:ss Z",
+            "EEE d MMM yyyy HH:mm:ss Z",
+            "yyyy-MM-dd'T'HH:mm:ssZ"
+    );
+
     private MimeHeader mHeader = new MimeHeader();
     protected Address[] mFrom;
     protected Address[] mSender;
@@ -150,7 +165,11 @@ public class MimeMessage extends Message {
                 DateTimeField field = (DateTimeField) DefaultFieldParser.parse("Date: " + dateHeaderBody);
                 mSentDate = field.getDate();
             } catch (Exception e) {
-                Log.d(e, "Couldn't parse Date header field");
+                Log.d(e, "Couldn't parse Date header field with mime4j, trying fallback patterns");
+                mSentDate = tryFallbackDateParsing(dateHeaderBody);
+                if (mSentDate == null) {
+                    Log.w("Could not parse date header using any known pattern: %s", dateHeaderBody);
+                }
             }
         }
         return mSentDate;
@@ -164,6 +183,20 @@ public class MimeMessage extends Message {
      * @param sentDate
      * @throws net.thunderbird.core.common.exception.MessagingException
      */
+    private Date tryFallbackDateParsing(String dateString) {
+        String trimmed = dateString.trim();
+        for (String pattern : FALLBACK_DATE_PATTERNS) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.US);
+                sdf.setLenient(false);
+                return sdf.parse(trimmed);
+            } catch (ParseException ignored) {
+                // try next pattern
+            }
+        }
+        return null;
+    }
+
     public void addSentDate(Date sentDate, boolean hideTimeZone) {
         if (mDateFormat == null) {
             mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
