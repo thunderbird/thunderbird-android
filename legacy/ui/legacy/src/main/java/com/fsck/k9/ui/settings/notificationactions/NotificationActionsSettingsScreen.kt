@@ -37,6 +37,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons as LegacyIcons
 import com.fsck.k9.ui.R
 import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
@@ -350,14 +351,30 @@ private fun NotificationReorderRow(
             }
             .zIndex(if (dragState.isDragged) 1f else 0f)
             .background(MainTheme.colors.surface)
-            .padding(start = startPadding, end = MainTheme.spacings.zero)
+            .padding(start = startPadding, end = MainTheme.spacings.zero),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        NotificationDragHandle(dragCallbacks = dragCallbacks)
+        content()
+    }
+}
+
+@Composable
+private fun NotificationDragHandle(
+    dragCallbacks: DragCallbacks,
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(LegacyIcons.Outlined.DragHandle),
+        contentDescription = null,
+        modifier = modifier
             .immediateDragGesture(
                 onDragStart = dragCallbacks.onDragStart,
                 onDrag = dragCallbacks.onDrag,
                 onDragEnd = dragCallbacks.onDragEnd,
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-        content = content,
+            )
+            .padding(MainTheme.spacings.default)
+            .clearAndSetSemantics { },
     )
 }
 
