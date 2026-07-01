@@ -10,10 +10,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
-import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
+import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.ui.state.ComposedAddressStyle
 import net.thunderbird.feature.mail.message.list.ui.state.ComposedAddressUi
 
@@ -106,14 +106,14 @@ private fun MessageItemSenderTextPreview(
     @PreviewParameter(MessageItemSenderTextPreviewCol::class) params: MessageItemSenderTextPreviewParams,
 ) {
     PreviewWithThemes {
-        Column(verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default)) {
+        Column(verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default)) {
             TextLabelSmall(text = "MessageItemSenderTitleSmall:")
             MessageItemSenderSubjectFirstLine(
                 senders = params.senders,
                 subject = AnnotatedString(params.subject),
                 useSender = params.useSender,
             )
-            DividerHorizontal(modifier = Modifier.padding(vertical = MainTheme.spacings.default))
+            DividerHorizontal(modifier = Modifier.padding(vertical = BoltTheme.spacings.default))
             TextLabelSmall(text = "MessageItemSenderBodyMedium:")
             MessageItemSenderSubjectSecondLine(
                 senders = params.senders,

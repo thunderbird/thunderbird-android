@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import kotlinx.collections.immutable.ImmutableList
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 
 @Composable
@@ -25,7 +25,7 @@ internal fun AccountList(
         state = listState,
         modifier = modifier
             .fillMaxWidth(),
-        contentPadding = PaddingValues(vertical = MainTheme.spacings.default),
+        contentPadding = PaddingValues(vertical = BoltTheme.spacings.default),
     ) {
         items(
             items = accounts,

@@ -9,11 +9,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import app.k9mail.core.ui.compose.designsystem.molecule.PullToRefreshBox
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.molecule.PullToRefreshBox
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Suppress("MagicNumber")
 @Composable
@@ -37,7 +37,7 @@ fun PullToRefresh(
         modifier = modifier.fillMaxWidth(),
     ) {
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         ) {
             items(10) {
                 TextTitleMedium(text = "Item $it")

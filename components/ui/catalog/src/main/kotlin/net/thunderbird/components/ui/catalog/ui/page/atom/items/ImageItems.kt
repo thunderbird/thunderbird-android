@@ -14,12 +14,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.image.FixedScaleImage
-import app.k9mail.core.ui.compose.designsystem.atom.image.RemoteImage
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.image.FixedScaleImage
+import net.thunderbird.components.ui.bolt.atom.image.RemoteImage
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.components.ui.catalog.ui.page.common.list.fullSpanItem
@@ -31,7 +31,7 @@ fun LazyGridScope.imageItems() {
     sectionHeaderItem(text = "Images")
     defaultItem {
         Image(
-            painter = painterResource(MainTheme.images.logo),
+            painter = painterResource(BoltTheme.images.logo),
             contentDescription = "logo",
             modifier = Modifier.padding(defaultItemPadding()),
         )
@@ -145,10 +145,10 @@ private fun FixedScaleImageView(
             modifier = Modifier
                 .width(width)
                 .height(height)
-                .border(1.dp, MainTheme.colors.primary, MainTheme.shapes.small),
+                .border(1.dp, BoltTheme.colors.primary, BoltTheme.shapes.small),
         ) {
             FixedScaleImage(
-                resource = MainTheme.images.logo,
+                resource = BoltTheme.images.logo,
                 alignment = alignment,
                 allowOverflow = allowOverflow,
             )
@@ -168,7 +168,7 @@ private fun LazyGridScope.remoteImage(
         ) {
             RemoteImage(
                 url = url,
-                modifier = Modifier.size(MainTheme.sizes.large),
+                modifier = Modifier.size(BoltTheme.sizes.large),
                 placeholder = {
                     Icon(
                         imageVector = Icons.Filled.Star,

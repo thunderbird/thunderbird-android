@@ -15,14 +15,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.Checkbox
-import app.k9mail.core.ui.compose.designsystem.atom.DropdownMenuBox
-import app.k9mail.core.ui.compose.designsystem.atom.RadioGroup
-import app.k9mail.core.ui.compose.designsystem.atom.Switch
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.atom.Checkbox
+import net.thunderbird.components.ui.bolt.atom.DropdownMenuBox
+import net.thunderbird.components.ui.bolt.atom.RadioGroup
+import net.thunderbird.components.ui.bolt.atom.Switch
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 import kotlinx.collections.immutable.persistentListOf
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionHeaderItem
@@ -71,7 +71,7 @@ fun LazyGridScope.selectionControlItems() {
                 optionTitle = { it.second },
                 selectedOption = radioGroupChoice[0],
                 modifier = Modifier
-                    .padding(MainTheme.spacings.default)
+                    .padding(BoltTheme.spacings.default)
                     .fillMaxWidth(),
             )
         }
@@ -89,7 +89,7 @@ fun LazyGridScope.selectionControlItems() {
                 options = radioGroupChoice,
                 optionTitle = { it.second },
                 modifier = Modifier
-                    .padding(MainTheme.spacings.default)
+                    .padding(BoltTheme.spacings.default)
                     .fillMaxWidth(),
             )
         }

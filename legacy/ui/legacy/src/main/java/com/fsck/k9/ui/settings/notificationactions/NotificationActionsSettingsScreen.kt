@@ -33,14 +33,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import com.fsck.k9.ui.R
 import kotlinx.collections.immutable.ImmutableList
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 private const val DIMMED_ROW_ALPHA = 0.6f
 private const val DRAGGED_ROW_SCALE = 1.02f
@@ -103,10 +103,10 @@ private fun NotificationActionsContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        start = MainTheme.spacings.double,
-                        end = MainTheme.spacings.double,
-                        top = MainTheme.spacings.double,
-                        bottom = MainTheme.spacings.default,
+                        start = BoltTheme.spacings.double,
+                        end = BoltTheme.spacings.double,
+                        top = BoltTheme.spacings.double,
+                        bottom = BoltTheme.spacings.default,
                     ),
             )
 
@@ -136,7 +136,7 @@ private fun NotificationActionsList(reorderController: NotificationActionsReorde
         modifier = Modifier.fillMaxSize(),
         state = listState,
         contentPadding = androidx.compose.foundation.layout.PaddingValues(
-            vertical = MainTheme.spacings.default,
+            vertical = BoltTheme.spacings.default,
         ),
     ) {
         itemsIndexed(
@@ -235,27 +235,27 @@ private fun NotificationActionRow(
 
     NotificationReorderRow(
         dragState = dragState,
-        startPadding = MainTheme.spacings.default,
+        startPadding = BoltTheme.spacings.default,
         dragCallbacks = dragCallbacks,
         modifier = modifier
-            .heightIn(min = MainTheme.sizes.iconAvatar),
+            .heightIn(min = BoltTheme.sizes.iconAvatar),
     ) {
         Image(
             painter = painterResource(action.iconRes),
             contentDescription = null,
             modifier = Modifier
-                .padding(MainTheme.spacings.default)
+                .padding(BoltTheme.spacings.default)
                 .clearAndSetSemantics { },
         )
         TextBodyLarge(
             text = contentLabel,
             modifier = Modifier
                 .weight(1f)
-                .padding(start = MainTheme.spacings.triple, end = MainTheme.spacings.default),
+                .padding(start = BoltTheme.spacings.triple, end = BoltTheme.spacings.default),
         )
         Row(
-            modifier = Modifier.padding(end = MainTheme.spacings.default),
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            modifier = Modifier.padding(end = BoltTheme.spacings.default),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         ) {
             ArrowButton(
                 imageVector = Icons.Outlined.ExpandLess,
@@ -281,24 +281,24 @@ private fun NotificationCutoffRow(
 ) {
     NotificationReorderRow(
         dragState = dragState.copy(alpha = 1f),
-        startPadding = MainTheme.spacings.double,
+        startPadding = BoltTheme.spacings.double,
         dragCallbacks = dragCallbacks,
         modifier = modifier
-            .heightIn(min = MainTheme.sizes.iconAvatar),
+            .heightIn(min = BoltTheme.sizes.iconAvatar),
     ) {
         Box(
             modifier = Modifier
                 .weight(1f)
-                .padding(end = MainTheme.spacings.default)
+                .padding(end = BoltTheme.spacings.default)
                 .clearAndSetSemantics { },
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(MainTheme.spacings.quarter)
+                    .height(BoltTheme.spacings.quarter)
                     .align(Alignment.Center)
                     .alpha(DIMMED_ROW_ALPHA)
-                    .background(MainTheme.colors.primary),
+                    .background(BoltTheme.colors.primary),
             )
         }
     }
@@ -349,8 +349,8 @@ private fun NotificationReorderRow(
                 shadowElevation = dragElevationPx
             }
             .zIndex(if (dragState.isDragged) 1f else 0f)
-            .background(MainTheme.colors.surface)
-            .padding(start = startPadding, end = MainTheme.spacings.zero)
+            .background(BoltTheme.colors.surface)
+            .padding(start = startPadding, end = BoltTheme.spacings.zero)
             .immediateDragGesture(
                 onDragStart = dragCallbacks.onDragStart,
                 onDrag = dragCallbacks.onDrag,

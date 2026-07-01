@@ -14,10 +14,10 @@ import kotlin.test.Test
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.core.validation.input.StringInputField
 import net.thunderbird.feature.account.AccountId

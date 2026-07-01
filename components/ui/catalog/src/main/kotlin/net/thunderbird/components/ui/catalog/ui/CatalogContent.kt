@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
-import app.k9mail.core.ui.compose.designsystem.organism.drawer.ModalNavigationDrawer
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
+import net.thunderbird.components.ui.bolt.organism.drawer.ModalNavigationDrawer
+import net.thunderbird.components.ui.bolt.template.Scaffold
 import net.thunderbird.components.ui.catalog.ui.CatalogContract.State
 import net.thunderbird.components.ui.catalog.ui.common.ThemeTopAppBar
 import net.thunderbird.components.ui.catalog.ui.common.drawer.DrawerContent

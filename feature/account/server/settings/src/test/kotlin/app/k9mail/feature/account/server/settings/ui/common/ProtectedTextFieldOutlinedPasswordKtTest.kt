@@ -13,7 +13,7 @@ import net.thunderbird.components.ui.bolt.resources.bolt_atom_password_textfield
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.server.settings.ui.common.AuthenticationError
 import org.junit.Test
-import net.thunderbird.core.ui.testing.resource.getString as getComposeString
+import net.thunderbird.components.ui.testing.resource.getString as getComposeString
 
 class ProtectedTextFieldOutlinedPasswordKtTest : ComposeTest() {
 

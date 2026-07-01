@@ -70,10 +70,10 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelMedium
+import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelMedium
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.message.controller.MessageReference
@@ -137,10 +137,10 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettings
-import net.thunderbird.core.ui.compose.designsystem.atom.ClickableSurface
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.ClickableSurface
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.contract.mvi.observeWithoutEffect
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.AccountIdFactory
@@ -2507,10 +2507,10 @@ class MessageListFragment :
         }
 
         Surface(
-            modifier = Modifier.padding(MainTheme.spacings.default),
-            color = MainTheme.colors.surfaceContainer,
-            tonalElevation = MainTheme.elevations.level2,
-            shape = MainTheme.shapes.medium,
+            modifier = Modifier.padding(BoltTheme.spacings.default),
+            color = BoltTheme.colors.surfaceContainer,
+            tonalElevation = BoltTheme.elevations.level2,
+            shape = BoltTheme.shapes.medium,
         ) {
             SortTypeList(
                 currentSortCriteria = currentSortCriteria,
@@ -2574,7 +2574,7 @@ private fun SecondarySortOptions(
         Column(modifier = modifier) {
             SortTypeDivider(
                 label = stringResource(R.string.sort_by_then_by),
-                modifier = Modifier.padding(start = MainTheme.spacings.default),
+                modifier = Modifier.padding(start = BoltTheme.spacings.default),
             )
             Column {
                 secondarySortTypes.forEach { sortType ->
@@ -2583,10 +2583,10 @@ private fun SecondarySortOptions(
                         selected = isSelected(sortType),
                         onClick = { onSortTypeClick(sortType) },
                         contentPadding = PaddingValues(
-                            top = MainTheme.spacings.default,
-                            bottom = MainTheme.spacings.default,
-                            start = MainTheme.spacings.triple,
-                            end = MainTheme.spacings.double,
+                            top = BoltTheme.spacings.default,
+                            bottom = BoltTheme.spacings.default,
+                            start = BoltTheme.spacings.triple,
+                            end = BoltTheme.spacings.double,
                         ),
                     )
                 }
@@ -2639,8 +2639,8 @@ private fun SortTypeList(
 fun SortTypeDivider(label: String, modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
-        modifier = modifier.padding(horizontal = MainTheme.spacings.default),
+        horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
+        modifier = modifier.padding(horizontal = BoltTheme.spacings.default),
     ) {
         TextLabelMedium(label)
         DividerHorizontal()
@@ -2654,17 +2654,17 @@ private fun SortTypeMenuItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(
-        vertical = MainTheme.spacings.default,
-        horizontal = MainTheme.spacings.double,
+        vertical = BoltTheme.spacings.default,
+        horizontal = BoltTheme.spacings.double,
     ),
 ) {
     ClickableSurface(
         onClick = onClick,
-        color = MainTheme.colors.surfaceContainer,
+        color = BoltTheme.colors.surfaceContainer,
         modifier = modifier.fillMaxWidth(),
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(contentPadding),
         ) {

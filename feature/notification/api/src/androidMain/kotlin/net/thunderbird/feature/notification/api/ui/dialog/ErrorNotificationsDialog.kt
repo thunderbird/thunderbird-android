@@ -10,14 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
-import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
-import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.BannerInlineNotificationCardBehaviour
-import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.ErrorBannerInlineNotificationCard
 import kotlinx.collections.immutable.ImmutableSet
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.organism.TopAppBar
+import net.thunderbird.components.ui.bolt.organism.banner.inline.BannerInlineNotificationCardBehaviour
+import net.thunderbird.components.ui.bolt.organism.banner.inline.ErrorBannerInlineNotificationCard
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.action.ResolvedNotificationActionButton
 import net.thunderbird.feature.notification.api.ui.host.visual.BannerInlineVisual
@@ -62,12 +62,12 @@ private fun ErrorNotificationsDialogContent(
                 },
             )
             LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
                 contentPadding = PaddingValues(
-                    top = MainTheme.spacings.default,
-                    start = MainTheme.spacings.double,
-                    end = MainTheme.spacings.double,
-                    bottom = MainTheme.spacings.double,
+                    top = BoltTheme.spacings.default,
+                    start = BoltTheme.spacings.double,
+                    end = BoltTheme.spacings.double,
+                    bottom = BoltTheme.spacings.double,
                 ),
             ) {
                 items(

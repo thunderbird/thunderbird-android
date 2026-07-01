@@ -21,13 +21,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineSmall
-import app.k9mail.core.ui.compose.designsystem.organism.BasicDialog
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineSmall
+import net.thunderbird.components.ui.bolt.organism.BasicDialog
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionHeaderItem
@@ -52,7 +52,7 @@ private fun LazyGridScope.basicDialogContentAndButtonItem() {
                 TextBodyLarge("Dialog content")
             },
             buttons = { ButtonText(text = "Dismiss", onClick = { dismiss() }) },
-            contentPadding = PaddingValues(horizontal = MainTheme.spacings.triple),
+            contentPadding = PaddingValues(horizontal = BoltTheme.spacings.triple),
         )
     }
 }
@@ -68,7 +68,7 @@ private fun LazyGridScope.basicDialogContentButtonHeadlineItem() {
                 TextBodyLarge("Dialog content")
             },
             buttons = { ButtonText(text = "Dismiss", onClick = { dismiss() }) },
-            contentPadding = PaddingValues(horizontal = MainTheme.spacings.triple),
+            contentPadding = PaddingValues(horizontal = BoltTheme.spacings.triple),
         )
     }
 }
@@ -85,7 +85,7 @@ private fun LazyGridScope.basicDialogContentButtonHeadlineSupportingTextItem() {
                 TextBodyLarge("Dialog content")
             },
             buttons = { ButtonText(text = "Dismiss", onClick = { dismiss() }) },
-            contentPadding = PaddingValues(horizontal = MainTheme.spacings.triple),
+            contentPadding = PaddingValues(horizontal = BoltTheme.spacings.triple),
         )
     }
 }
@@ -102,9 +102,9 @@ private fun LazyGridScope.basicDialogWithDividers() {
                 TextBodyLarge("Dialog content")
             },
             buttons = { ButtonText(text = "Dismiss", onClick = { dismiss() }) },
-            contentPadding = PaddingValues(all = MainTheme.spacings.triple),
+            contentPadding = PaddingValues(all = BoltTheme.spacings.triple),
             showDividers = true,
-            dividerColor = MainTheme.colors.primary,
+            dividerColor = BoltTheme.colors.primary,
         )
     }
 }
@@ -123,7 +123,7 @@ private fun LazyGridScope.basicDialogComplexImplementation() {
             headline = {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                    verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
@@ -134,7 +134,7 @@ private fun LazyGridScope.basicDialogComplexImplementation() {
                 TextBodyMedium(
                     text = "This will reset your app preferences back to their default settings. " +
                         "The following accounts will also be signed out:",
-                    color = MainTheme.colors.onSurfaceVariant,
+                    color = BoltTheme.colors.onSurfaceVariant,
                 )
             },
             showDividers = true,
@@ -145,44 +145,44 @@ private fun LazyGridScope.basicDialogComplexImplementation() {
 @Composable
 private fun ComplexBasicDialogContent(modifier: Modifier = Modifier) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                start = MainTheme.spacings.triple,
-                end = MainTheme.spacings.triple,
+                start = BoltTheme.spacings.triple,
+                end = BoltTheme.spacings.triple,
             ),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         ) {
             Box(
                 modifier = Modifier
-                    .size(MainTheme.sizes.iconAvatar)
-                    .background(color = MainTheme.colors.primary, shape = CircleShape),
+                    .size(BoltTheme.sizes.iconAvatar)
+                    .background(color = BoltTheme.colors.primary, shape = CircleShape),
             )
             Text(text = "Account 1")
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         ) {
             Box(
                 modifier = Modifier
-                    .size(MainTheme.sizes.iconAvatar)
-                    .background(color = MainTheme.colors.primary, shape = CircleShape),
+                    .size(BoltTheme.sizes.iconAvatar)
+                    .background(color = BoltTheme.colors.primary, shape = CircleShape),
             )
             Text(text = "Account 2")
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         ) {
             Box(
                 modifier = Modifier
-                    .size(MainTheme.sizes.iconAvatar)
-                    .background(color = MainTheme.colors.primary, shape = CircleShape),
+                    .size(BoltTheme.sizes.iconAvatar)
+                    .background(color = BoltTheme.colors.primary, shape = CircleShape),
             )
             Text(text = "Account 3")
         }

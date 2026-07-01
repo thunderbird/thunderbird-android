@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun DebugSection(
@@ -43,7 +43,7 @@ internal fun DebugSection(
 ) {
     Column(modifier = modifier) {
         title()
-        DividerHorizontal(modifier = Modifier.padding(vertical = MainTheme.spacings.double))
+        DividerHorizontal(modifier = Modifier.padding(vertical = BoltTheme.spacings.double))
         content()
     }
 }

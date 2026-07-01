@@ -10,9 +10,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import app.k9mail.core.ui.compose.common.resources.annotatedStringResource
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.feature.account.oauth.R
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 private const val GOOGLE_OAUTH_SUPPORT_PAGE = "https://support.thunderbird.net/kb/gmail-thunderbird-android"
 
@@ -23,7 +23,7 @@ internal fun GoogleSignInSupportText() {
         argument = buildAnnotatedString {
             withStyle(
                 style = SpanStyle(
-                    color = MainTheme.colors.primary,
+                    color = BoltTheme.colors.primary,
                     textDecoration = TextDecoration.Underline,
                 ),
             ) {

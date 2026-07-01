@@ -3,6 +3,9 @@ package net.thunderbird.components.ui.catalog.ui.page.atom
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevicesWithBackground
 import net.thunderbird.components.ui.catalog.ui.page.CatalogPageContract
 import net.thunderbird.components.ui.catalog.ui.page.atom.CatalogAtomPage.BUTTON
 import net.thunderbird.components.ui.catalog.ui.page.atom.CatalogAtomPage.CARD
@@ -51,4 +54,16 @@ fun CatalogAtomContent(
         onRenderFullScreenPage = {},
         onEvent = onEvent,
     )
+}
+
+@Composable
+@PreviewDevicesWithBackground
+internal fun CatalogContentPreview() {
+    PreviewWithTheme {
+        CatalogAtomContent(
+            pages = persistentListOf(TYPOGRAPHY, COLOR),
+            initialPage = TYPOGRAPHY,
+            onEvent = {},
+        )
+    }
 }

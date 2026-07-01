@@ -2,9 +2,9 @@ package net.thunderbird.components.ui.catalog.ui.page.common.list
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun defaultItemPadding(): PaddingValues = PaddingValues(
-    horizontal = MainTheme.spacings.double,
+    horizontal = BoltTheme.spacings.double,
 )

@@ -8,7 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.catalog.ui.CatalogContract.Event.OnThemeChanged
 import net.thunderbird.components.ui.catalog.ui.CatalogContract.Event.OnThemeVariantChanged
 import net.thunderbird.components.ui.catalog.ui.CatalogContract.ViewModel

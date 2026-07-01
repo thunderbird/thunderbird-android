@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.setup.ui.specialfolders
 
-import app.k9mail.core.ui.compose.designsystem.molecule.LoadingErrorState
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
+import net.thunderbird.components.ui.bolt.molecule.LoadingErrorState
 import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 
 interface SpecialFoldersContract {

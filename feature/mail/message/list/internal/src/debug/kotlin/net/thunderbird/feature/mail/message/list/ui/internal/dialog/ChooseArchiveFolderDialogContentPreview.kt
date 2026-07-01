@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.PreviewLightDarkLandscape
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.PreviewLightDarkLandscape
+import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.message.list.internal.ui.dialog.ChooseArchiveFolderDialogButtons
@@ -72,7 +72,7 @@ private fun ChooseArchiveFolderDialogContentPreview(
         arrangement = Arrangement.spacedBy(24.dp),
     ) {
         Surface(
-            shape = MainTheme.shapes.extraLarge,
+            shape = BoltTheme.shapes.extraLarge,
             modifier = Modifier.width(300.dp),
         ) {
             Column {

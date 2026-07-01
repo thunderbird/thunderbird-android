@@ -9,8 +9,8 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
-import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 /**
  * Contains the default values used by all [MessageItem] types.
@@ -28,9 +28,9 @@ object MessageItemDefaults {
         @Composable
         @ReadOnlyComposable
         get() = PaddingValues(
-            top = MainTheme.spacings.oneHalf,
-            bottom = MainTheme.spacings.oneHalf,
-            start = MainTheme.spacings.default,
+            top = BoltTheme.spacings.oneHalf,
+            bottom = BoltTheme.spacings.oneHalf,
+            start = BoltTheme.spacings.default,
         )
 
     /**
@@ -41,9 +41,9 @@ object MessageItemDefaults {
         @Composable
         @ReadOnlyComposable
         get() = PaddingValues(
-            top = MainTheme.spacings.default,
-            bottom = MainTheme.spacings.default,
-            start = MainTheme.spacings.half,
+            top = BoltTheme.spacings.default,
+            bottom = BoltTheme.spacings.default,
+            start = BoltTheme.spacings.half,
         )
 
     /**
@@ -54,9 +54,9 @@ object MessageItemDefaults {
         @Composable
         @ReadOnlyComposable
         get() = PaddingValues(
-            top = MainTheme.spacings.double,
-            bottom = MainTheme.spacings.double,
-            start = MainTheme.spacings.double,
+            top = BoltTheme.spacings.double,
+            bottom = BoltTheme.spacings.double,
+            start = BoltTheme.spacings.double,
         )
 
     /**
@@ -69,8 +69,8 @@ object MessageItemDefaults {
      */
     @Composable
     fun newMessageItemColors(
-        containerColor: Color = MainTheme.colors.surfaceContainerLowest,
-        contentColor: Color = MainTheme.colors.onSurface,
+        containerColor: Color = BoltTheme.colors.surfaceContainerLowest,
+        contentColor: Color = BoltTheme.colors.onSurface,
     ): MessageItemColors = MessageItemColors(
         containerColor = containerColor,
         contentColor = contentColor,
@@ -87,8 +87,8 @@ object MessageItemDefaults {
      */
     @Composable
     fun defaultMessageItemColors(
-        containerColor: Color = MainTheme.colors.surfaceContainerLowest,
-        contentColor: Color = MainTheme.colors.onSurface,
+        containerColor: Color = BoltTheme.colors.surfaceContainerLowest,
+        contentColor: Color = BoltTheme.colors.onSurface,
     ): MessageItemColors = MessageItemColors(
         containerColor = containerColor,
         contentColor = contentColor,
@@ -105,8 +105,8 @@ object MessageItemDefaults {
      */
     @Composable
     fun readMessageItemColors(
-        containerColor: Color = MainTheme.colors.surfaceContainerLow,
-        contentColor: Color = MainTheme.colors.onSurfaceVariant,
+        containerColor: Color = BoltTheme.colors.surfaceContainerLow,
+        contentColor: Color = BoltTheme.colors.onSurfaceVariant,
     ): MessageItemColors = MessageItemColors(
         containerColor = containerColor,
         contentColor = contentColor,
@@ -122,8 +122,8 @@ object MessageItemDefaults {
      */
     @Composable
     fun selectedMessageItemColors(
-        containerColor: Color = MainTheme.colors.surfaceContainer,
-        contentColor: Color = MainTheme.colors.onSurface,
+        containerColor: Color = BoltTheme.colors.surfaceContainer,
+        contentColor: Color = BoltTheme.colors.onSurface,
     ): MessageItemColors = MessageItemColors(
         containerColor = containerColor,
         contentColor = contentColor,
@@ -139,9 +139,9 @@ object MessageItemDefaults {
      */
     @Composable
     fun activeMessageItemColors(
-        // MainTheme.colors.infoContainer == MainTheme.colors.surfaceVariantBlue
-        containerColor: Color = MainTheme.colors.infoContainer,
-        contentColor: Color = MainTheme.colors.onSurface,
+        // BoltTheme.colors.infoContainer == BoltTheme.colors.surfaceVariantBlue
+        containerColor: Color = BoltTheme.colors.infoContainer,
+        contentColor: Color = BoltTheme.colors.onSurface,
     ): MessageItemColors = MessageItemColors(
         containerColor = containerColor,
         contentColor = contentColor,

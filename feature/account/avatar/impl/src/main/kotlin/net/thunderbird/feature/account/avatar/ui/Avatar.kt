@@ -10,11 +10,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
-import net.thunderbird.core.ui.compose.theme2.toSurfaceContainer
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.components.ui.bolt.theme.toSurfaceContainer
 import net.thunderbird.feature.account.avatar.Avatar
 
 private const val AVATAR_ALPHA = 0.2f
@@ -83,7 +83,7 @@ fun Avatar(
                 color = color,
                 shape = CircleShape,
                 modifier = Modifier
-                    .size(MainTheme.sizes.iconSmall),
+                    .size(BoltTheme.sizes.iconSmall),
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Check,

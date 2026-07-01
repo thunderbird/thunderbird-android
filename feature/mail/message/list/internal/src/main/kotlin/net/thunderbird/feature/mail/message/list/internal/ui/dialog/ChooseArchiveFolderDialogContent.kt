@@ -17,12 +17,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
-import app.k9mail.core.ui.compose.designsystem.atom.button.RadioButton
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.CircularProgressIndicator
+import net.thunderbird.components.ui.bolt.atom.button.RadioButton
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.message.list.internal.R
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.State
@@ -44,7 +44,7 @@ internal fun ChooseArchiveFolderDialogContent(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(MainTheme.spacings.triple),
+                        .padding(BoltTheme.spacings.triple),
                 ) {
                     CircularProgressIndicator()
                 }
@@ -52,14 +52,14 @@ internal fun ChooseArchiveFolderDialogContent(
 
             errorMessage?.isNotBlank() == true -> {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                    verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(MainTheme.spacings.triple),
+                        .padding(BoltTheme.spacings.triple),
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.ErrorOutline,
-                        tint = MainTheme.colors.error,
+                        tint = BoltTheme.colors.error,
                         modifier = Modifier.align(Alignment.CenterHorizontally),
                     )
                     TextBodyMedium(
@@ -109,7 +109,7 @@ private fun RemoteFolderListItem(
                 role = Role.RadioButton,
                 onClick = onFolderSelect,
             )
-            .padding(horizontal = MainTheme.spacings.oneHalf),
+            .padding(horizontal = BoltTheme.spacings.oneHalf),
     ) {
         RadioButton(
             selected = isSelected,
@@ -117,7 +117,7 @@ private fun RemoteFolderListItem(
             onClick = onFolderSelect,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = MainTheme.spacings.oneHalf),
+                .padding(horizontal = BoltTheme.spacings.oneHalf),
         )
     }
 }

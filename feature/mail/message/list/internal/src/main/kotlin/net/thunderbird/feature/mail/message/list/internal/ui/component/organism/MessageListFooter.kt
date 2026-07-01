@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 

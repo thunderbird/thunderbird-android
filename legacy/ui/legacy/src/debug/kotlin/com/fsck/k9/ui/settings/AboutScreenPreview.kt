@@ -2,9 +2,9 @@ package com.fsck.k9.ui.settings
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
 
 @Composable
 @PreviewLightDark

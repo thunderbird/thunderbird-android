@@ -14,12 +14,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.designsystem.organism.AlertDialog
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.organism.AlertDialog
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.defaultItemPadding
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionHeaderItem
@@ -51,7 +51,7 @@ internal fun LazyGridScope.alertDialogs() {
         text = "This is a dialog with custom content",
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         ) {
             TextBodyLarge("Large body")
             TextBodyMedium("Medium body")

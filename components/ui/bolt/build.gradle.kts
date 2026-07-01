@@ -7,7 +7,7 @@ version = libs.versions.tbMobileComponents.get()
 
 kotlin {
     android {
-        namespace = "app.k9mail.core.ui.compose.designsystem"
+        namespace = "net.thunderbird.components.ui.bolt"
         androidResources.enable = true
     }
 

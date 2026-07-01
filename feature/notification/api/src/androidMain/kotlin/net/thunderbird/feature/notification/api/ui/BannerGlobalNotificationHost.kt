@@ -8,9 +8,9 @@ import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import app.k9mail.core.ui.compose.designsystem.organism.banner.global.ErrorBannerGlobalNotificationCard
-import app.k9mail.core.ui.compose.designsystem.organism.banner.global.InfoBannerGlobalNotificationCard
-import app.k9mail.core.ui.compose.designsystem.organism.banner.global.WarningBannerGlobalNotificationCard
+import net.thunderbird.components.ui.bolt.organism.banner.global.ErrorBannerGlobalNotificationCard
+import net.thunderbird.components.ui.bolt.organism.banner.global.InfoBannerGlobalNotificationCard
+import net.thunderbird.components.ui.bolt.organism.banner.global.WarningBannerGlobalNotificationCard
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.BannerGlobalNotificationHostDefaults.TEST_TAG_BANNER_GLOBAL_ACTION
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction

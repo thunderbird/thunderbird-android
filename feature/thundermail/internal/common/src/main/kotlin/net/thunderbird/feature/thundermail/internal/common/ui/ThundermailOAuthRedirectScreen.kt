@@ -20,13 +20,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.CircularProgressIndicator
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
+import net.thunderbird.components.ui.bolt.template.Scaffold
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.feature.thundermail.internal.common.R
 import net.thunderbird.feature.thundermail.navigation.ThundermailRoute
@@ -89,7 +89,7 @@ internal fun ThundermailOAuthRedirectScreen(
                 .padding(paddingValues)
                 .fillMaxSize()
                 .safeContentPadding()
-                .padding(horizontal = MainTheme.spacings.quadruple),
+                .padding(horizontal = BoltTheme.spacings.quadruple),
         ) {
             Crossfade(
                 targetState = state.error,
@@ -122,12 +122,12 @@ private fun LaunchedErrorEffect(
 private fun RedirectingUserContent(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator(
-                modifier = Modifier.size(MainTheme.sizes.medium),
+                modifier = Modifier.size(BoltTheme.sizes.medium),
             )
         }
         TextBodyLarge(stringResource(R.string.thundermail_redirecting))
@@ -138,7 +138,7 @@ private fun RedirectingUserContent(modifier: Modifier = Modifier) {
 private fun ErrorDetails(error: ThundermailContract.Error, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
     ) {
         TextTitleLarge(text = stringResource(R.string.thundermail_something_went_wrong))
         TextBodyLarge(

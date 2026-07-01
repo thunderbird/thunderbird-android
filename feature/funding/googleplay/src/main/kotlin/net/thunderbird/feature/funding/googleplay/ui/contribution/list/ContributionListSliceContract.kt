@@ -1,8 +1,8 @@
 package net.thunderbird.feature.funding.googleplay.ui.contribution.list
 
 import androidx.compose.runtime.Stable
-import app.k9mail.core.ui.compose.designsystem.molecule.LoadingErrorState
 import kotlinx.coroutines.CoroutineScope
+import net.thunderbird.components.ui.bolt.molecule.LoadingErrorState
 import net.thunderbird.core.ui.contract.udf.UnidirectionalSlice
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
