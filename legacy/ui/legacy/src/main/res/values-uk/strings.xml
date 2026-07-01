@@ -927,6 +927,7 @@
     <string name="message_view_attachments_title">Вкладення</string>
     <string name="message_view_attachments_save_all">Зберегти всі</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Зашифроване вкладення</string>
     <string name="no_network_message_will_be_sent_later_toast">Офлайн. Повідомлення буде вислано як тільки з\'явиться з\'єднання</string>
     <string name="notification_actions_settings_title">Дії сповіщень</string>
     <string name="notification_actions_settings_summary">Оберіть які дії з\'являтимуться в сповіщеннях електронної пошти</string>

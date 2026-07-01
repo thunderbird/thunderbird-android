@@ -935,6 +935,7 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="message_view_attachments_view">Afișează</string>
     <string name="message_view_attachments_title">Atașamente</string>
     <string name="message_view_attachments_save_all">Salvează tot</string>
+    <string name="encrypted_attachment_title">Atașament criptat</string>
     <string name="no_network_message_will_be_sent_later_toast">Fără conexiune. Mesajul va fi trimis imediat ce conexiunea va fi disponibilă.</string>
     <string name="notification_actions_settings_title">Acțiuni de notificare</string>
     <string name="notification_summary_delete_title">Afișează opțiunea «Șterge» în notificările cu multiple mesaje</string>
