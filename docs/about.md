@@ -17,6 +17,7 @@ You can get Thunderbird for Android from multiple sources:
 - [Beta on F-Droid](https://f-droid.org/packages/net.thunderbird.android.beta)
 - [GitHub Releases](https://github.com/thunderbird/thunderbird-android/releases)
 
+Check the [Android Version Compatibility](user-guide/setup/android-version-compatibility.md) before installing.
 Check the [Release Notes](https://github.com/thunderbird/thunderbird-android/releases) to see what’s new in each version.
 
 ## ✨ Highlights
