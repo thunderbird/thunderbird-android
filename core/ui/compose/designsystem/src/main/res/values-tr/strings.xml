@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_atom_password_textfield_hide_password">Parolayı gizle</string>
+    <string name="designsystem_molecule_email_address_input_label">E-posta adresi</string>
+    <string name="designsystem_atom_password_textfield_show_password">Parolayı göster</string>
+    <string name="designsystem_molecule_error_view_button_retry">Yeniden dene</string>
+    <string name="designsystem_molecule_password_input_label">Parola</string>
+</resources>

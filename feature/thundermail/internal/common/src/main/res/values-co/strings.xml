@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="thundermail_redirecting">Ridirezzione versu Thundermail…</string>
+    <string name="thundermail_something_went_wrong">Un sbagliu hè accadutu</string>
+    <string name="thundermail_browser_is_not_available">U navigatore hè indispunibule. Ci vole à verificà a cunfigurazione di u vostru apparechju</string>
+    <string name="thundermail_operation_was_canceled">L’operazione hè stata abbandunata</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Sbagliu scunnisciutu. Pensate à fà un signalamentu.</string>
 </resources>
