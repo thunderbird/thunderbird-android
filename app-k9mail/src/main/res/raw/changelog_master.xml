@@ -5,6 +5,10 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="20.1" versioncode="39040" date="2026-07-06">
+        <change>Fixed: Application could crash when rendering long messages</change>
+        <change>Fixed: Application could crash due to memory exhaustion</change>
+    </release>
     <release version="20.0" versioncode="39039" date="2026-06-22">
         <change>New: Enable easily discoverable way to configure and use Thundermail</change>
         <change>Changed: Only show message notification configuration actions above the cutoff</change>

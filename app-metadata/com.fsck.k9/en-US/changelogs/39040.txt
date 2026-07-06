@@ -1,0 +1,5 @@
+K-9 Mail version 20.1
+
+Fixed:
+- Application could crash when rendering long messages
+- Application could crash due to memory exhaustion
