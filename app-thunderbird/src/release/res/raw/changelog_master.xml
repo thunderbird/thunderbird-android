@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="20.1" versioncode="27" date="2026-07-06">
+        <change>Fixed: Application could crash when rendering long messages</change>
+        <change>Fixed: Application could crash due to memory exhaustion</change>
+    </release>
     <release version="20.0" versioncode="26" date="2026-06-22">
         <change>New: Enable easily discoverable way to configure and use Thundermail</change>
         <change>Changed: Only show message notification configuration actions above the cutoff</change>
