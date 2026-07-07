@@ -1,4 +1,4 @@
-# RFC 0003: Render inline images in plain-text messages (Apple Mail positional images)
+# RFC 0003: Render inline images in plain-text messages
 
 - Issue: [#11179](https://github.com/thunderbird/thunderbird-android/issues/11179)
 - Technical design: TBD
@@ -14,8 +14,9 @@ mirroring Desktop's `mail.inline_attachments`. Additionally, this new behaviour 
 
 ## Motivation
 
-Some senders, most notably Apple Mail composing in plain text, attach images *inline* by position rather than by HTML
-reference. A representative message is a `multipart/mixed` whose children are, in order:
+Some senders attach images *inline* by position rather than by HTML reference. Apple Mail composing in plain text is a
+common producer of this standards-based message shape, but **the behaviour is not Apple-specific**. A representative 
+message is a `multipart/mixed` whose children are, in order:
 
 ```
 multipart/mixed  
