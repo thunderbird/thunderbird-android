@@ -1,17 +1,18 @@
 package app.k9mail.feature.onboarding.migration.thunderbird
 
 import androidx.compose.runtime.Composable
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevices
+import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdBoltTheme
 import net.thunderbird.core.common.provider.BrandNameProvider
-import net.thunderbird.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
 
 @Composable
 @PreviewDevices
 internal fun TbOnboardingMigrationScreenPreview() {
-    ThunderbirdTheme2 {
+    ThunderbirdBoltTheme {
         Surface {
             TbOnboardingMigrationScreen(
+                onThundermailClick = {},
                 onQrCodeScan = {},
                 onAddAccount = {},
                 onImport = {},

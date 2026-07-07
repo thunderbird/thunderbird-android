@@ -1,0 +1,258 @@
+package net.thunderbird.feature.funding.googleplay.ui.contribution.list
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withLink
+import androidx.compose.ui.text.withStyle
+import app.k9mail.core.ui.compose.common.resources.annotatedStringResource
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.button.ButtonSegmentedSingleChoice
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
+import net.thunderbird.components.ui.bolt.molecule.ContentLoadingErrorView
+import net.thunderbird.components.ui.bolt.molecule.LoadingView
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.feature.funding.googleplay.R
+import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
+import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
+import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionListItem
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.ContributionType
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.Event
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.State
+import net.thunderbird.feature.funding.googleplay.ui.contribution.mapErrorToTitle
+
+@Composable
+internal fun ContributionList(
+    state: State,
+    onEvent: (Event) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        color = BoltTheme.colors.surfaceContainerLowest,
+        shape = BoltTheme.shapes.small,
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(BoltTheme.spacings.double),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
+        ) {
+            TextLabelLarge(
+                text = stringResource(R.string.funding_googleplay_contribution_list_title),
+            )
+
+            ContentLoadingErrorView(
+                state = state,
+                loading = {
+                    LoadingView()
+                },
+                error = { error ->
+                    ListErrorView(
+                        error = error,
+                        onRetryClick = {
+                            onEvent(Event.RetryClicked)
+                        },
+                    )
+                },
+                content = { state ->
+                    if (state.contributions.oneTimeContributions.isEmpty() &&
+                        state.contributions.recurringContributions.isEmpty()
+                    ) {
+                        ListEmptyView()
+                    } else {
+                        ListContentView(
+                            state = state,
+                            onContributionTypeClick = {
+                                onEvent(Event.TypeClicked(it))
+                            },
+                            onItemClick = {
+                                onEvent(Event.ItemClicked(it.id))
+                            },
+                        )
+                    }
+                },
+            )
+
+            TextBodyMedium(
+                text = buildAnnotatedString {
+                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                        append(stringResource(R.string.funding_googleplay_contribution_list_disclaimer))
+                    }
+                },
+                modifier = Modifier.padding(top = BoltTheme.spacings.default),
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun ChoicesRow(
+    contributions: ImmutableList<Contribution>,
+    onItemClick: (Contribution) -> Unit,
+    selectedItemId: ContributionId?,
+    modifier: Modifier = Modifier,
+) {
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
+        modifier = modifier,
+    ) {
+        contributions.forEach {
+            ContributionListItem(
+                text = it.priceFormatted,
+                onClick = { onItemClick(it) },
+                isSelected = it.id == selectedItemId,
+                modifier = Modifier.weight(1f),
+            )
+        }
+    }
+}
+
+@Composable
+private fun ListContentView(
+    state: State,
+    onContributionTypeClick: (ContributionType) -> Unit,
+    onItemClick: (Contribution) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val oneTimeLabel = stringResource(R.string.funding_googleplay_contribution_list_type_one_time)
+    val recurringLabel = stringResource(R.string.funding_googleplay_contribution_list_type_recurring)
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
+        modifier = modifier,
+    ) {
+        ButtonSegmentedSingleChoice(
+            options = ContributionType.entries.toImmutableList(),
+            selectedOption = state.selectedType,
+            onClick = onContributionTypeClick,
+            optionTitle = { type ->
+                when (type) {
+                    ContributionType.OneTime -> oneTimeLabel
+                    ContributionType.Recurring -> recurringLabel
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        ChoicesRow(
+            contributions = if (state.selectedType == ContributionType.Recurring) {
+                state.contributions.recurringContributions
+            } else {
+                state.contributions.oneTimeContributions
+            },
+            selectedItemId = state.selectedContribution?.id,
+            onItemClick = onItemClick,
+        )
+    }
+}
+
+@Composable
+private fun ListEmptyView(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
+        modifier = modifier.padding(vertical = BoltTheme.spacings.double),
+    ) {
+        val annotatedString = annotatedStringResource(
+            id = R.string.funding_googleplay_contribution_list_empty_message,
+            argument = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        color = BoltTheme.colors.primary,
+                        textDecoration = TextDecoration.Underline,
+                    ),
+                ) {
+                    withLink(
+                        LinkAnnotation.Url(
+                            url = stringResource(R.string.funding_googleplay_thunderbird_website_url),
+                        ),
+                    ) {
+                        append(stringResource(R.string.funding_googleplay_thunderbird_website_domain))
+                    }
+                }
+            },
+        )
+
+        TextBodyMedium(
+            text = stringResource(R.string.funding_googleplay_contribution_list_empty_title),
+        )
+
+        TextBodyMedium(
+            text = annotatedString,
+        )
+    }
+}
+
+@Composable
+private fun ListErrorView(
+    error: ContributionError,
+    onRetryClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val showDetails = remember { mutableStateOf(false) }
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
+        modifier = modifier,
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
+        ) {
+            TextBodyLarge(
+                text = mapErrorToTitle(error),
+            )
+            if (error.message.isNotEmpty()) {
+                Icon(
+                    imageVector = if (showDetails.value) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
+                    contentDescription = "Show more details",
+                    modifier = Modifier
+                        .clickable { showDetails.value = !showDetails.value }
+                        .padding(BoltTheme.spacings.quarter),
+                )
+            }
+
+            AnimatedVisibility(visible = showDetails.value) {
+                TextBodySmall(
+                    text = error.message,
+                    color = BoltTheme.colors.onErrorContainer,
+                )
+            }
+        }
+
+        ButtonText(
+            text = stringResource(R.string.funding_googleplay_contribution_list_error_retry_button),
+            onClick = onRetryClick,
+            modifier = Modifier.padding(top = BoltTheme.spacings.default),
+        )
+    }
+}

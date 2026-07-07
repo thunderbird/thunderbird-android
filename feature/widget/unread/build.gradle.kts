@@ -12,8 +12,11 @@ dependencies {
 
     implementation(libs.preferencex)
 
-    testImplementation(libs.robolectric)
     testImplementation(projects.core.logging.testing)
+
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.robolectric)
 }
 
 android {

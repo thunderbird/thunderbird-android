@@ -5,7 +5,9 @@ plugins {
     alias(libs.plugins.tb.app.versioning)
 }
 
-val testCoverageEnabled = hasProperty("testCoverageEnabled")
+val testCoverageEnabled = providers
+    .gradleProperty("testCoverageEnabled")
+    .isPresent
 
 android {
     namespace = "net.thunderbird.android"
@@ -15,7 +17,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 4
-        versionName = "20.0"
+        versionName = "22.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
     }
@@ -80,7 +82,10 @@ android {
     }
 
     signingConfigs {
-        val useUploadKey = properties.getOrDefault("tb.useUploadKey", "true") == "true"
+        val useUploadKey = providers.gradleProperty("tb.useUploadKey")
+            .map(String::toBoolean)
+            .orElse(true)
+            .get()
 
         createSigningConfig(project, SigningType.TB_RELEASE, isUpload = useUploadKey)
         createSigningConfig(project, SigningType.TB_BETA, isUpload = useUploadKey)
@@ -88,12 +93,14 @@ android {
     }
 
     buildTypes {
-        val isCI = project.findProperty("ci") == "true"
+        val isCI = providers.gradleProperty("ci")
+            .map(String::toBoolean)
+            .orElse(false)
         release {
             signingConfig = signingConfigs.getByType(SigningType.TB_RELEASE)
 
-            isMinifyEnabled = !isCI
-            isShrinkResources = !isCI
+            isMinifyEnabled = !isCI.get()
+            isShrinkResources = !isCI.get()
             isDebuggable = false
 
             proguardFiles(
@@ -112,8 +119,8 @@ android {
             applicationIdSuffix = ".beta"
             versionNameSuffix = "b0"
 
-            isMinifyEnabled = !isCI
-            isShrinkResources = !isCI
+            isMinifyEnabled = isCI.get()
+            isShrinkResources = isCI.get()
             isDebuggable = false
 
             matchingFallbacks += listOf("release")
@@ -134,8 +141,8 @@ android {
             applicationIdSuffix = ".daily"
             versionNameSuffix = "a1"
 
-            isMinifyEnabled = !isCI
-            isShrinkResources = !isCI
+            isMinifyEnabled = isCI.get()
+            isShrinkResources = isCI.get()
             isDebuggable = false
 
             matchingFallbacks += listOf("release")
@@ -209,15 +216,14 @@ androidComponents {
 
 // Initialize placeholders for the product flavor and build type combinations needed for dependency declarations.
 // They are required to avoid "Unresolved configuration" errors.
-val fullDebugImplementation by configurations.creating
-val fullDailyImplementation by configurations.creating
-val fullBetaImplementation by configurations.creating
-val fullReleaseImplementation by configurations.creating
+val fullDebugImplementation = configurations.create("fullDebugImplementation")
+val fullDailyImplementation = configurations.create("fullDailyImplementation")
+val fullBetaImplementation = configurations.create("fullBetaImplementation")
+val fullReleaseImplementation = configurations.create("fullReleaseImplementation")
 
 dependencies {
     implementation(projects.appCommon)
     implementation(projects.core.ui.compose.common)
-    implementation(projects.core.ui.compose.theme2.thunderbird)
     implementation(projects.core.ui.legacy.theme2.thunderbird)
     implementation(projects.feature.launcher)
 
@@ -258,6 +264,8 @@ dependencies {
 
     implementation(projects.feature.onboarding.migration.thunderbird)
     implementation(projects.feature.migration.launcher.thunderbird)
+    implementation(projects.feature.thundermail.api)
+    implementation(projects.feature.thundermail.thunderbird)
 
     // TODO remove once OAuth ids have been moved from TBD to TBA
     releaseImplementation(libs.appauth)
@@ -265,7 +273,10 @@ dependencies {
     // Required for DependencyInjectionTest
     testImplementation(projects.feature.account.api)
     testImplementation(projects.feature.account.common)
+    testImplementation(projects.feature.thundermail.internal.common)
     testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
+    testImplementation(projects.feature.changelog.internal)
+
     testImplementation(libs.appauth)
 }
 

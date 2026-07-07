@@ -7,10 +7,11 @@ import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirectionAccessibilityAction
+import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirectionAccessibilityAction.EndToStartAccessibilityAction
+import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirectionAccessibilityAction.StartToEndAccessibilityAction
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
-import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectionAccessibilityAction
-import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectionAccessibilityAction.StartToEndAccessibilityAction
 import net.thunderbird.feature.mail.message.list.internal.R
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 import net.thunderbird.feature.mail.message.list.R as ApiR
@@ -30,7 +31,7 @@ import net.thunderbird.feature.mail.message.list.R as ApiR
  *  swipe actions are available.
  */
 @Stable
-class MessageListScreenAccessibilityState(
+internal class MessageListScreenAccessibilityState(
     private val stateDescription: Map<MessageListStateDescription, String>,
     val swipeDirectionAccessibilityAction: ImmutableList<SwipeDirectionAccessibilityAction> = persistentListOf(),
 ) {
@@ -97,7 +98,9 @@ enum class MessageListStateDescription {
  *  description strings or swipe actions change.
  */
 @Composable
-fun rememberMessageListScreenAccessibilityState(swipeActions: SwipeActions?): MessageListScreenAccessibilityState {
+internal fun rememberMessageListScreenAccessibilityState(
+    swipeActions: SwipeActions?,
+): MessageListScreenAccessibilityState {
     val stateDescription = mapOf(
         MessageListStateDescription.NewMessage to stringResource(
             id = R.string.message_list_state_new_message_description,
@@ -131,11 +134,19 @@ fun rememberMessageListScreenAccessibilityState(swipeActions: SwipeActions?): Me
         buildList {
             val rightAction = swipeActions?.rightAction?.toAccessibilityStringRes()
             if (rightAction != null) {
-                add(StartToEndAccessibilityAction(actionStringRes = rightAction))
+                add(
+                    StartToEndAccessibilityAction(
+                        actionLabel = { stringResource(id = rightAction) },
+                    ),
+                )
             }
             val leftAction = swipeActions?.leftAction?.toAccessibilityStringRes()
             if (leftAction != null) {
-                add(StartToEndAccessibilityAction(actionStringRes = leftAction))
+                add(
+                    EndToStartAccessibilityAction(
+                        actionLabel = { stringResource(id = leftAction) },
+                    ),
+                )
             }
         }
     }

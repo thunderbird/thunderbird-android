@@ -515,7 +515,6 @@
     <string name="account_setup_push_limit_500">500 个文件夹</string>
     <string name="account_setup_push_limit_1000">1000 个文件夹</string>
     <string name="animations_title">动画</string>
-    <string name="animations_summary">使用绚丽的视觉效果</string>
     <string name="show_unified_inbox_title">显示统一收件箱</string>
     <string name="show_starred_count_title">显示星标邮件数</string>
     <string name="integrated_inbox_title">统一收件箱</string>
@@ -917,7 +916,6 @@
     <string name="message_view_attachments_view">查看</string>
     <string name="message_view_attachments_title">附件</string>
     <string name="message_view_attachments_save_all">保存全部</string>
-    <string name="encrypted_attachment_title">加密的附件</string>
     <string name="no_network_message_will_be_sent_later_toast">离线。一旦网络连接可用将发送消息</string>
     <string name="notification_actions_settings_title">通知操作</string>
     <string name="notification_actions_settings_summary">选择要在电子邮件通知中显示的操作</string>
@@ -935,4 +933,13 @@
     <string name="accessibility_move_cutoff_up">将显示的操作分界线向上移动</string>
     <string name="accessibility_move_cutoff_down">将显示的操作分界线向下移动</string>
     <string name="notification_action_star">星标</string>
+    <string name="changelog_latest_label_text">最新</string>
+    <string name="changelog_type_new_text">新增</string>
+    <string name="changelog_type_changed_text">变更</string>
+    <string name="changelog_type_fixed_text">修复</string>
+    <string name="notification_show_contact_picture_title">在通知中显示联系人图片</string>
+    <string name="notification_show_contact_picture_summary">在新邮件通知中显示发件人头像</string>
+    <string name="animation_setting_follow_system">使用系统默认</string>
+    <string name="animation_setting_on">开</string>
+    <string name="animation_setting_off">关</string>
 </resources>

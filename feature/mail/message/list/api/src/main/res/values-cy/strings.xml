@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Dewis</string>
     <string name="swipe_action_deselect">Dad-ddewis</string>
@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">Sbam</string>
     <string name="swipe_action_move">Symud…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> wedi\'i dewis</string>
+    <string name="sort_by">Trefnu yn ôl…</string>
+    <string name="sort_by_date_asc">Dyddiad (hynaf yn gyntaf)</string>
+    <string name="sort_by_date_desc">Dyddiad (diweddaraf yn gyntaf)</string>
+    <string name="sort_by_arrival_asc">Derbyn (hynaf yn gyntaf)</string>
+    <string name="sort_by_arrival_desc">Derbyn (diweddaraf yn gyntaf)</string>
+    <string name="sort_by_subject_asc">Pwnc (A-Z)</string>
+    <string name="sort_by_subject_desc">Pwnc (Z-A)</string>
+    <string name="sort_by_sender_asc">Anfonwr (A-Z)</string>
+    <string name="sort_by_sender_desc">Anfonwr (Z-A)</string>
+    <string name="sort_by_flag_asc">Gyda seren yn gyntaf</string>
+    <string name="sort_by_flag_desc">Heb seren yn gyntaf</string>
+    <string name="sort_by_unread_asc">Heb eu darllen yn gyntaf</string>
+    <string name="sort_by_unread_desc">Darllenwyd yn gyntaf</string>
+    <string name="sort_by_attach_asc">Gydag atodiadau yn gyntaf</string>
+    <string name="sort_by_attach_desc">Heb atodiadau yn gyntaf</string>
 </resources>

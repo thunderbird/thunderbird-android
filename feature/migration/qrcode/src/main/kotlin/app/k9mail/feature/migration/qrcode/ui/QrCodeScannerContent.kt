@@ -6,11 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Event
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.State
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.UiPermissionState
+import net.thunderbird.components.ui.bolt.atom.Surface
 
 @Composable
 internal fun QrCodeScannerContent(
@@ -27,6 +27,7 @@ internal fun QrCodeScannerContent(
             UiPermissionState.Unknown -> {
                 // Display empty surface while we're waiting for the camera permission request to return a result
             }
+
             UiPermissionState.Granted -> {
                 QrCodeScannerView(
                     cameraUseCasesProvider = cameraUseCasesProvider,
@@ -34,11 +35,13 @@ internal fun QrCodeScannerContent(
                     onDoneClick = { onEvent(Event.DoneClicked) },
                 )
             }
+
             UiPermissionState.Denied -> {
                 PermissionDeniedContent(
                     onGoToSettingsClick = { onEvent(Event.GoToSettingsClicked) },
                 )
             }
+
             UiPermissionState.Waiting -> {
                 // We've launched Android's app info screen and are now waiting for the user to return to our app.
 

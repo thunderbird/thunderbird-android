@@ -23,7 +23,7 @@ The repository implements a white-label architecture producing:
 - `app-k9mail`: K-9 Mail
 
 Project documentation resides in the `docs/` directory.
-Architectural Decision Records (ADRs) are located in `docs/architecture/adr/`.
+Architectural Decision Records (ADRs) are located in `docs/engineering/adr/`.
 
 Agents MUST consult relevant documentation before making architectural or structural changes.
 
@@ -43,7 +43,7 @@ Before making changes, agents MUST:
 
 - Read `README.md`, `docs/CONTRIBUTING.md`, and relevant documentation in `docs/`
 - Review existing implementations in affected modules
-- Check for related ADRs in `docs/architecture/adr/`
+- Check for related ADRs in `docs/engineering/adr/`
 - Understand the module's role in the white-label architecture
 
 ### 3. Make Changes
@@ -78,7 +78,7 @@ Agents MUST:
 - Keep implementation details internal using the `internal` modifier
 - Bind implementations in `app-common` or app modules only
 
-New code MUST NOT violate the API/internal boundary, see [ADR-0009](docs/architecture/adr/0009-api-internal-split.md).
+New code MUST NOT violate the API/internal boundary, see [ADR-0009](docs/engineering/adr/0009-api-internal-split.md).
 
 If existing code violates this boundary, agents MUST NOT replicate the pattern and SHOULD move the code toward the
 intended architecture when modifying it.

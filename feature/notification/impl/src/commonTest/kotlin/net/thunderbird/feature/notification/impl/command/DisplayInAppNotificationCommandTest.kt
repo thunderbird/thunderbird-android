@@ -2,12 +2,10 @@ package net.thunderbird.feature.notification.impl.command
 
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import dev.mokkery.spy
-import dev.mokkery.verify.VerifyMode.Companion.exactly
-import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.featureflag.FeatureFlagKey
@@ -94,7 +92,7 @@ class DisplayInAppNotificationCommandTest {
                 severity = NotificationSeverity.Information,
             )
             val notificationRegistry = FakeNotificationRegistry()
-            val notifier = spy(FakeInAppNotificationNotifier(notificationRegistry))
+            val notifier = FakeInAppNotificationNotifier(notificationRegistry)
             val testSubject = createTestSubject(
                 notification = notification,
                 notifier = notifier,
@@ -114,9 +112,7 @@ class DisplayInAppNotificationCommandTest {
                         .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
-            verifySuspend(exactly(1)) {
-                notifier.show(notification)
-            }
+            assertThat(notifier.shownNotifications).containsExactly(notification)
         }
 
     private fun createTestSubject(

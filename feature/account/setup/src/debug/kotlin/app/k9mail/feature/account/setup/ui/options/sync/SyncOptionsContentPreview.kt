@@ -3,7 +3,7 @@ package app.k9mail.feature.account.setup.ui.options.sync
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
 
 @Composable
 @Preview(showBackground = true)

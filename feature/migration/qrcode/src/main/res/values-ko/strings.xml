@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="migration_qrcode_permission_denied_title">카메라 접근 권한 필요</string>
+    <string name="migration_qrcode_permission_denied_message">Android 설정으로 이동하여, 권한을 누르고, 카메라 권한을 허용하세요.</string>
+    <string name="migration_qrcode_go_to_settings_button_text">설정으로 이동</string>
+    <string name="migration_qrcode_scanning_progress">%1$s/%2$s 스캔 완료</string>
+    <string name="migration_qrcode_scanning_instructions">Thunderbird 데스크톱에서 나타나는 QR 코드에 맞추세요</string>
+    <string name="migration_qrcode_done_button_text">완료</string>
+</resources>

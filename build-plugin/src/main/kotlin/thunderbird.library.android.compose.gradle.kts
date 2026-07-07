@@ -4,9 +4,9 @@ plugins {
     id("thunderbird.library.android")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.kotlin.plugin.serialization")
-    id("thunderbird.quality.detekt.typed")
     id("net.thunderbird.gradle.plugin.quality.coverage")
-    id("thunderbird.quality.spotless")
+    id("net.thunderbird.gradle.plugin.quality.detekt")
+    id("net.thunderbird.gradle.plugin.quality.spotless")
 }
 
 androidComponents {
@@ -18,15 +18,23 @@ androidComponents {
 }
 
 dependencies {
+    val isComponentsBuild = rootProject.name == "components"
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
-    implementation(libs.bundles.shared.jvm.android.compose)
+    implementation(libs.bundles.shared.android)
+    implementation(libs.bundles.shared.android.compose)
 
-    debugImplementation(libs.bundles.shared.jvm.android.compose.debug)
+    debugImplementation(libs.bundles.shared.android.compose.debug)
 
-    testImplementation(libs.bundles.shared.jvm.test.compose)
+    testImplementation(libs.bundles.shared.android.test)
+    testImplementation(libs.bundles.shared.android.compose.test)
 
-    androidTestImplementation(libs.bundles.shared.jvm.androidtest.compose)
+    androidTestImplementation(libs.bundles.shared.android.compose.androidTest)
+
+    if (!isComponentsBuild) {
+        implementation(libs.tb.mobile.components.ui.bolt)
+        testImplementation(libs.tb.mobile.components.ui.testing)
+    }
 }

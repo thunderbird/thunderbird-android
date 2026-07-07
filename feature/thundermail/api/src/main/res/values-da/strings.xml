@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_thundermail_button_panel_scan_qr_code">Scan QR-kode</string>
+    <string name="feature_thundermail_button_panel_sign_in_or">eller</string>
+</resources>

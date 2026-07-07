@@ -64,10 +64,9 @@ import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.search.getLegacyAccounts
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.changelog.RecentChangesActivity
-import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
+import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListFragmentListener
 import com.fsck.k9.ui.messagelist.MessageListFragmentBridgeContract.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.fsck.k9.ui.messagelist.debug.AuthDebugActions
@@ -80,10 +79,8 @@ import java.util.concurrent.Future
 import kotlin.time.ExperimentalTime
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import net.jcip.annotations.GuardedBy
@@ -106,9 +103,11 @@ import net.thunderbird.core.preference.display.visualSettings.message.list.Displ
 import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.changelog.internal.RecentChangesViewModel
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
+import net.thunderbird.feature.navigation.changelog.api.ChangeLogMode
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.SentFolderNotFoundNotification
 import net.thunderbird.feature.notification.api.ui.InAppNotificationHost
@@ -183,6 +182,7 @@ class LegacyMessageListFragment :
 
     private val contactRepository: ContactRepository by inject()
     private val avatarMonogramCreator: AvatarMonogramCreator by inject()
+    private val relativeDateTimeFormatter: RelativeDateTimeFormatter by inject()
 
     private val chooseFolderForMoveLauncher: ActivityResultLauncher<ChooseFolderResultContract.Input> =
         registerForActivityResult(ChooseFolderResultContract(ChooseFolderActivity.Action.MOVE)) { result ->
@@ -318,18 +318,25 @@ class LegacyMessageListFragment :
 
         adapter = createMessageListAdapter()
 
+        var observedDateTimeFormat = messageListSettings.dateTimeFormat
         generalSettingsManager.getSettingsFlow()
             /**
              * Skips the first emitted item from the settings flow,
-             * since the initial value of `showingThreadedList` is taken
-             * from the fragment's arguments rather than the flow.
+             * since initial display settings are taken from fragment state and current preferences.
              */
             .drop(1)
-            .map { it.display.inboxSettings.isThreadedViewEnabled }
-            .distinctUntilChanged()
-            .onEach {
-                showingThreadedList = it
-                loadMessageList(forceUpdate = true)
+            .onEach { generalSettings ->
+                val isThreadedViewEnabled = generalSettings.display.inboxSettings.isThreadedViewEnabled
+                if (showingThreadedList != isThreadedViewEnabled) {
+                    showingThreadedList = isThreadedViewEnabled
+                    loadMessageList(forceUpdate = true)
+                }
+
+                val dateTimeFormat = generalSettings.display.visualSettings.messageListSettings.dateTimeFormat
+                if (observedDateTimeFormat != dateTimeFormat) {
+                    observedDateTimeFormat = dateTimeFormat
+                    adapter.refreshFormattedDates()
+                }
             }
             .launchIn(lifecycleScope)
 
@@ -405,6 +412,9 @@ class LegacyMessageListFragment :
             featureFlagProvider = featureFlagProvider,
             contactRepository = contactRepository,
             avatarMonogramCreator = avatarMonogramCreator,
+            formatDate = { timestamp ->
+                relativeDateTimeFormatter.formatDate(timestamp, messageListSettings.dateTimeFormat)
+            },
         ).apply {
             activeMessage = this@LegacyMessageListFragment.activeMessage
         }
@@ -667,8 +677,10 @@ class LegacyMessageListFragment :
     private fun launchRecentChangesActivity() {
         recentChangesViewModel.shouldShowRecentChangesHint.removeObserver(shouldShowRecentChangesHintObserver)
 
-        val intent = Intent(requireActivity(), RecentChangesActivity::class.java)
-        startActivity(intent)
+        FeatureLauncherActivity.launch(
+            context = requireContext(),
+            target = FeatureLauncherTarget.Changelog(changeLogMode = ChangeLogMode.RECENT_CHANGES),
+        )
     }
 
     private fun initializeSortSettings() {
@@ -996,11 +1008,11 @@ class LegacyMessageListFragment :
         changeSort(nextSortType)
     }
 
-    private fun onDelete(messages: List<MessageReference>) {
+    private fun onDelete(messages: List<MessageReference>, count: Int) {
         if (interactionSettings.isConfirmDelete) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages
-            showDialog(R.id.dialog_confirm_delete)
+            showDialog(R.id.dialog_confirm_delete, count)
         } else {
             onDeleteConfirmed(messages)
         }
@@ -1044,15 +1056,14 @@ class LegacyMessageListFragment :
             return currentFolder!!.databaseId == account!!.trashFolderId
         }
 
-    private fun showDialog(dialogId: Int) {
+    private fun showDialog(dialogId: Int, selectionCount: Int = 1) {
         val dialogFragment = when (dialogId) {
             R.id.dialog_confirm_spam -> {
                 val title = getString(R.string.dialog_confirm_spam_title)
-                val selectionSize = activeMessages!!.size
                 val message = resources.getQuantityString(
                     R.plurals.dialog_confirm_spam_message,
-                    selectionSize,
-                    selectionSize,
+                    selectionCount,
+                    selectionCount,
                 )
                 val confirmText = getString(R.string.dialog_confirm_spam_confirm_button)
                 val cancelText = getString(R.string.dialog_confirm_spam_cancel_button)
@@ -1061,11 +1072,10 @@ class LegacyMessageListFragment :
 
             R.id.dialog_confirm_delete -> {
                 val title = getString(R.string.dialog_confirm_delete_title)
-                val selectionSize = activeMessages!!.size
                 val message = resources.getQuantityString(
                     R.plurals.dialog_confirm_delete_messages,
-                    selectionSize,
-                    selectionSize,
+                    selectionCount,
+                    selectionCount,
                 )
                 val confirmText = getString(R.string.dialog_confirm_delete_confirm_button)
                 val cancelText = getString(R.string.dialog_confirm_delete_cancel_button)
@@ -1097,7 +1107,7 @@ class LegacyMessageListFragment :
             }
 
             else -> {
-                throw RuntimeException("Called showDialog(int) with unknown dialog id.")
+                throw RuntimeException("Called showDialog(int, int) with unknown dialog id.")
             }
         }
 
@@ -1165,6 +1175,20 @@ class LegacyMessageListFragment :
 
     private fun prepareSortMenu(menu: Menu) {
         menu.findItem(R.id.set_sort).isVisible = true
+        val selectedSortItem = menu.findItem(getSelectedSortId())
+        selectedSortItem.title = "${resources.getString(R.string.sort_by_indicator)} ${selectedSortItem.title}"
+    }
+
+    private fun getSelectedSortId(): Int {
+        return when (this.sortType) {
+            SortType.SORT_DATE -> R.id.set_sort_date
+            SortType.SORT_ARRIVAL -> R.id.set_sort_arrival
+            SortType.SORT_SUBJECT -> R.id.set_sort_subject
+            SortType.SORT_SENDER -> R.id.set_sort_sender
+            SortType.SORT_UNREAD -> R.id.set_sort_unread
+            SortType.SORT_FLAGGED -> R.id.set_sort_flag
+            SortType.SORT_ATTACHMENT -> R.id.set_sort_attach
+        }
     }
 
     private fun prepareDebugMenu(menu: Menu) {
@@ -1636,11 +1660,11 @@ class LegacyMessageListFragment :
         return messages.groupBy { accountManager.getAccount(it.accountUuid)!! }
     }
 
-    private fun onSpam(messages: List<MessageReference>) {
+    private fun onSpam(messages: List<MessageReference>, count: Int) {
         if (interactionSettings.isConfirmSpam) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages
-            showDialog(R.id.dialog_confirm_spam)
+            showDialog(R.id.dialog_confirm_spam, count)
         } else {
             onSpamConfirmed(messages)
         }
@@ -1877,9 +1901,12 @@ class LegacyMessageListFragment :
     private val selectedMessages: List<MessageReference>
         get() = adapter.selectedMessages.map { it.messageReference }
 
+    private val selectedMessagesCount
+        get() = adapter.selectedCount
+
     override fun onDelete() {
         selectedMessage?.let { message ->
-            onDelete(listOf(message))
+            onDelete(listOf(message), selectedMessagesCount)
         }
     }
 
@@ -2228,11 +2255,11 @@ class LegacyMessageListFragment :
                 }
 
                 SwipeAction.Delete -> {
-                    onDelete(listOf(item.messageReference))
+                    onDelete(listOf(item.messageReference), item.threadCount)
                 }
 
                 SwipeAction.Spam -> {
-                    onSpam(listOf(item.messageReference))
+                    onSpam(listOf(item.messageReference), item.threadCount)
                 }
 
                 SwipeAction.Move -> {
@@ -2588,7 +2615,7 @@ class LegacyMessageListFragment :
 
             val endSelectionMode = when (item.itemId) {
                 R.id.delete -> {
-                    onDelete(selectedMessages)
+                    onDelete(selectedMessages, selectedMessagesCount)
                     true
                 }
 
@@ -2624,7 +2651,7 @@ class LegacyMessageListFragment :
                 }
 
                 R.id.spam -> {
-                    onSpam(selectedMessages)
+                    onSpam(selectedMessages, selectedMessagesCount)
                     // TODO: Only finish action mode if all messages have been moved.
                     true
                 }

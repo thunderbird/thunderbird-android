@@ -6,12 +6,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.feature.migration.qrcode.R
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.button.ButtonOutlined
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun QrCodeScannerBottomContent(
@@ -25,9 +25,9 @@ internal fun QrCodeScannerBottomContent(
         TextBodyLarge(
             text = text,
             modifier = Modifier
-                .testTagAsResourceId("ScannedStatus")
-                .padding(vertical = MainTheme.spacings.double)
-                .padding(start = MainTheme.spacings.double)
+                .testTag("ScannedStatus")
+                .padding(vertical = BoltTheme.spacings.double)
+                .padding(start = BoltTheme.spacings.double)
                 .weight(1f),
         )
 
@@ -35,8 +35,8 @@ internal fun QrCodeScannerBottomContent(
             text = stringResource(R.string.migration_qrcode_done_button_text),
             onClick = onDoneClick,
             modifier = Modifier
-                .testTagAsResourceId("DoneButton")
-                .padding(MainTheme.spacings.double),
+                .testTag("DoneButton")
+                .padding(BoltTheme.spacings.double),
         )
     }
 }

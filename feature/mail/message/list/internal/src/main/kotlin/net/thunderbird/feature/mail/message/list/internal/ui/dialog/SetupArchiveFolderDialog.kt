@@ -18,9 +18,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
-import app.k9mail.core.ui.compose.designsystem.organism.BasicDialog
-import app.k9mail.core.ui.compose.designsystem.organism.BasicDialogDefaults
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.organism.BasicDialog
+import net.thunderbird.components.ui.bolt.organism.BasicDialogDefaults
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
@@ -29,7 +29,7 @@ import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDia
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.Event
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.State
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.ViewModel
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
@@ -94,7 +94,9 @@ internal fun SetupArchiveFolderDialog(
         BasicDialog(
             headlineText = when (state) {
                 is State.ChooseArchiveFolder -> stringResource(R.string.setup_archive_folder_dialog_set_archive_folder)
+
                 is State.CreateArchiveFolder -> stringResource(R.string.setup_archive_folder_dialog_create_new_folder)
+
                 is State.EmailCantBeArchived ->
                     stringResource(R.string.setup_archive_folder_dialog_email_can_not_be_archived)
             },
@@ -170,7 +172,7 @@ private fun SetupArchiveFolderDialogContent(
                 onFolderNameChange = onFolderNameChange,
             )
 
-            else -> Spacer(modifier = Modifier.height(MainTheme.spacings.half))
+            else -> Spacer(modifier = Modifier.height(BoltTheme.spacings.half))
         }
     }
 }

@@ -34,19 +34,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleSmall
+import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.launcher.FeatureLauncherTarget
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.settings.AboutContract.Effect
 import com.fsck.k9.ui.settings.AboutContract.Event
 import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.core.common.provider.AppNameProvider
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
+import net.thunderbird.feature.navigation.changelog.api.ChangeLogMode
 import org.koin.android.ext.android.inject
 import app.k9mail.core.ui.legacy.designsystem.R as DesignSystemR
 import app.k9mail.core.ui.legacy.theme2.common.R as Theme2CommonR
@@ -70,9 +72,12 @@ class AboutFragment : Fragment() {
             setContent {
                 val (state, dispatch) = viewModel.observe { effect ->
                     when (effect) {
-                        is Effect.OpenChangeLog ->
-                            findNavController()
-                                .navigate(R.id.action_aboutScreen_to_changelogScreen)
+                        is Effect.OpenChangeLog -> {
+                            FeatureLauncherActivity.launch(
+                                context = requireContext(),
+                                target = FeatureLauncherTarget.Changelog(changeLogMode = ChangeLogMode.CHANGE_LOG),
+                            )
+                        }
 
                         is Effect.OpenUrl ->
                             context.openUrl(effect.url)
@@ -156,8 +161,8 @@ fun LibraryItem(
                 onClick = { context.openUrl(library.url) },
             )
             .padding(
-                horizontal = MainTheme.spacings.double,
-                vertical = MainTheme.spacings.oneHalf,
+                horizontal = BoltTheme.spacings.double,
+                vertical = BoltTheme.spacings.oneHalf,
             )
             .fillMaxWidth()
             .wrapContentHeight(),
@@ -194,11 +199,11 @@ fun AboutScreen(
 ) {
     val scrollState = rememberScrollState()
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
     ) {
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState),
         ) {
@@ -255,7 +260,7 @@ fun AppLogo(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(all = MainTheme.spacings.double),
+            .padding(all = BoltTheme.spacings.double),
         horizontalArrangement = Arrangement.Center,
     ) {
         Image(
@@ -273,10 +278,10 @@ fun SectionTitle(title: String, modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                start = MainTheme.spacings.double,
-                end = MainTheme.spacings.double,
-                top = MainTheme.spacings.double,
-                bottom = MainTheme.spacings.default,
+                start = BoltTheme.spacings.double,
+                end = BoltTheme.spacings.double,
+                top = BoltTheme.spacings.double,
+                bottom = BoltTheme.spacings.default,
             ),
     )
 }
@@ -293,7 +298,7 @@ fun SectionContent(
     Row(
         modifier = modifier
             .clickable(onClick = onClick)
-            .padding(horizontal = MainTheme.spacings.double, vertical = MainTheme.spacings.default)
+            .padding(horizontal = BoltTheme.spacings.double, vertical = BoltTheme.spacings.default)
             .fillMaxWidth()
             .wrapContentHeight(),
         horizontalArrangement = Arrangement.Start,
@@ -302,10 +307,10 @@ fun SectionContent(
         Image(
             painter = painterResource(id = sectionImageId),
             modifier = Modifier
-                .size(MainTheme.sizes.icon),
+                .size(BoltTheme.sizes.icon),
             contentDescription = null,
         )
-        Spacer(modifier = Modifier.width(MainTheme.spacings.triple))
+        Spacer(modifier = Modifier.width(BoltTheme.spacings.triple))
         Column(
             modifier = Modifier
                 .weight(1f)

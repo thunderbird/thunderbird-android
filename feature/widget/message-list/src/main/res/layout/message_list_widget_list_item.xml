@@ -71,7 +71,7 @@
             android:layout_toStartOf="@id/thread_count"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textSize="16sp"
+            android:textSize="14sp"
             tools:text="Kinda long subject that should be long enough to exceed the available display space"
             />
 
@@ -84,7 +84,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:paddingBottom="2dp"
-            android:textSize="15sp"
+            android:textSize="13sp"
             tools:text="Wikipedia"
             />
 
@@ -95,7 +95,7 @@
             android:layout_below="@+id/mail_subject"
             android:layout_alignParentStart="true"
             android:maxLines="1"
-            android:textSize="13sp"
+            android:textSize="11sp"
             tools:text="Towel Day is celebrated every year on 25 May as a tribute to the author Douglas Adams by his fans."
             />
 

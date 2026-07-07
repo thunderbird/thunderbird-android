@@ -414,7 +414,6 @@
     <string name="account_setup_push_limit_500">500 תיקיות</string>
     <string name="account_setup_push_limit_1000">1000 תיקיות</string>
     <string name="animations_title">אנימציה</string>
-    <string name="animations_summary">השתמש באפקטים חזותיים ססגונים</string>
     <string name="integrated_inbox_title">תיבת דואר נכנס אחידה</string>
     <string name="integrated_inbox_detail">כל ההודעות בתיקיות המאוחדות</string>
     <string name="folder_settings_include_in_integrated_inbox_label">לאחד</string>
@@ -947,6 +946,5 @@
     <string name="message_view_attachments_save_all">שמור הכל</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
     <string name="sort_by_then_by">ואז לפי…</string>
-    <string name="encrypted_attachment_title">הצפן צרופה</string>
     <string name="no_network_message_will_be_sent_later_toast">לא מקוון. ההודעה תישלח כשיתאפשר חיבור</string>
 </resources>

@@ -14,10 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
-import app.k9mail.core.ui.compose.common.window.WindowSizeClass
-import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleSmall
+import net.thunderbird.components.ui.bolt.common.window.WindowWidthSizeClass
+import net.thunderbird.components.ui.bolt.common.window.calculateWindowSizeInfo
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemAccountIndicator
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemConfiguration
 
@@ -43,8 +43,8 @@ internal fun AdaptiveMessageItemHeaderRow(
     firstLine: @Composable (() -> Unit),
     modifier: Modifier = Modifier,
 ) {
-    val windowSizeInfo = getWindowSizeInfo()
-    val isSmallScreen = windowSizeInfo.screenWidthSizeClass == WindowSizeClass.Small
+    val windowSizeInfo = calculateWindowSizeInfo()
+    val isSmallScreen = windowSizeInfo.sizeClass.widthSizeClass == WindowWidthSizeClass.Small
 
     val headerRowContent: @Composable ((RowScope) -> Unit) = rememberAdaptiveHeaderRowContent(
         isSmallScreen = isSmallScreen,
@@ -65,7 +65,7 @@ private fun HeaderRow(
     headerRowContent: @Composable ((RowScope) -> Unit),
 ) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         modifier = modifier
             .defaultMinSize(minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT)
             .fillMaxWidth()
@@ -81,7 +81,7 @@ private fun HeaderRowSmall(
     headerRowContent: @Composable ((RowScope) -> Unit),
 ) {
     FlowRow(
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.quarter),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.quarter),
         horizontalArrangement = Arrangement.Start,
         maxLines = 2,
         modifier = modifier.defaultMinSize(minHeight = AccountIndicatorIcon.ACCOUNT_INDICATOR_DEFAULT_HEIGHT),

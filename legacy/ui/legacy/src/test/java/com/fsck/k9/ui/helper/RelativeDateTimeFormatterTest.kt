@@ -178,6 +178,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
 
         assertThat(displayDate).isEqualTo("2019-12-31 23:59")
     }
+
     private fun setClockTo(time: String) {
         val dateTime = LocalDateTime.parse(time)
         val timeInMillis = dateTime.toEpochMillis()

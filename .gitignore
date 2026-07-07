@@ -52,3 +52,6 @@ eml-files/
 # Merged PRs report
 merged-prs-*.md
 merged-prs-*.csv
+
+# Weblate cache
+cli/weblate-cli/weblate-components-cache.json

@@ -26,6 +26,7 @@ internal class DefaultGlobalCssStyleProvider private constructor(
         |    -webkit-user-select: auto;
         |  }
         |  .${cssClassNameProvider.rootClassName}.${cssClassNameProvider.mainContentClassName} {
+        |    box-sizing: border-box;
         |    width: 100%;
         |    overflow-wrap: break-word;
         |    padding: 0 8px;

@@ -23,17 +23,11 @@ dependencies {
     implementation(projects.feature.widget.messageList)
 
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core.ktx)
     implementation(libs.preferencex)
-    implementation(libs.kotlinx.coroutines.core)
     implementation(libs.appauth)
 
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
-
-    if (project.hasProperty("k9mail.enableLeakCanary") && project.property("k9mail.enableLeakCanary") == "true") {
-        debugImplementation(libs.leakcanary.android)
-    }
 
     testImplementation(projects.core.logging.testing)
     testImplementation(libs.robolectric)

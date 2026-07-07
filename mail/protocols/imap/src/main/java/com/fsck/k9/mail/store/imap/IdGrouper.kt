@@ -28,7 +28,7 @@ internal object IdGrouper {
                 }
             } else {
                 if (currentIdGroupStart != NO_VALID_ID) {
-                    idGroups.add(ContiguousIdGroup(currentIdGroupStart, currentIdGroupEnd))
+                    idGroups.add(ContiguousIdGroup(start = currentIdGroupStart, end = currentIdGroupEnd))
                     currentIdGroupStart = NO_VALID_ID
                 }
                 remainingIds.add(currentId)
@@ -38,7 +38,7 @@ internal object IdGrouper {
         }
 
         if (currentIdGroupStart != NO_VALID_ID) {
-            idGroups.add(ContiguousIdGroup(currentIdGroupStart, currentIdGroupEnd))
+            idGroups.add(ContiguousIdGroup(start = currentIdGroupStart, end = currentIdGroupEnd))
         }
 
         return GroupedIds(remainingIds, idGroups)

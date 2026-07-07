@@ -19,12 +19,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
-import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItem
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
+import net.thunderbird.components.ui.bolt.organism.drawer.NavigationDrawerItem
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
@@ -102,7 +102,7 @@ internal fun FolderListItem(
                 folderNameFormatter = folderNameFormatter,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = MainTheme.spacings.double * indentationLevel),
+                    .padding(start = BoltTheme.spacings.double * indentationLevel),
                 treeFolder = child,
                 parentPrefix = if (displayParent is MailDisplayFolder) displayParent.folder.name else null,
                 indentationLevel = indentationLevel + 1,
@@ -132,10 +132,10 @@ private fun NavigationDrawerLabel(
         if (expandableState?.value != null) {
             Box(
                 modifier = Modifier
-                    .size(MainTheme.sizes.iconAvatar)
+                    .size(BoltTheme.sizes.iconAvatar)
                     .padding(
-                        start = MainTheme.spacings.quarter,
-                        end = MainTheme.spacings.quarter,
+                        start = BoltTheme.spacings.quarter,
+                        end = BoltTheme.spacings.quarter,
                     )
                     .clip(CircleShape)
                     .clickable(onClick = { expandableState.value = !expandableState.value }),
@@ -163,6 +163,7 @@ private fun mapFolderName(
                 .removePrefix("$parentPrefix${displayFolder.pathDelimiter}")
 
         is UnifiedDisplayFolder -> mapUnifiedFolderName(displayFolder)
+
         else -> throw IllegalArgumentException("Unknown display folder: $displayFolder")
     }
 }

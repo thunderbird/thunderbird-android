@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thundermail_redirecting">Перенаправление на Thundermail...</string>
+    <string name="thundermail_something_went_wrong">Произошла ошибка</string>
+    <string name="thundermail_browser_is_not_available">Браузер недоступен. Проверьте конфигурацию своего устройства.</string>
+    <string name="thundermail_operation_was_canceled">Операция отменена</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Неизвестная ошибка. Пожалуйста, сообщите о ней.</string>
+</resources>

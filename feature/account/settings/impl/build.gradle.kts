@@ -31,11 +31,13 @@ dependencies {
     implementation(projects.core.ui.setting.component)
 
     implementation(projects.core.logging.implLegacy)
-    implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.core.ui.contract)
     implementation(projects.core.ui.navigation)
     implementation(projects.core.common)
 
     implementation(libs.uri)
+
+    implementation(projects.feature.launcher)
 
     debugImplementation(projects.core.ui.setting.implDialog)
 

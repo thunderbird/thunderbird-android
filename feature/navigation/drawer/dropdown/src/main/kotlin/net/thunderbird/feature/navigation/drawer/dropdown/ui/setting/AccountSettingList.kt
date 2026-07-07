@@ -6,10 +6,10 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.common.window.WindowSizeClass
-import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.common.window.WindowHeightSizeClass
+import net.thunderbird.components.ui.bolt.common.window.calculateWindowSizeInfo
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 
 @Composable
@@ -20,14 +20,14 @@ internal fun AccountSettingList(
     isLoading: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val windowSizeInfo = getWindowSizeInfo()
-    val isLandscape = windowSizeInfo.screenWidth > windowSizeInfo.screenHeight
-    val isCompactHeight = windowSizeInfo.screenHeightSizeClass == WindowSizeClass.Compact
+    val windowSizeInfo = calculateWindowSizeInfo()
+    val isLandscape = windowSizeInfo.size.width > windowSizeInfo.size.height
+    val isCompactHeight = windowSizeInfo.sizeClass.heightSizeClass == WindowHeightSizeClass.Compact
     val hideText = isLandscape && isCompactHeight
 
     SettingList(
         modifier = modifier
-            .padding(vertical = MainTheme.spacings.default)
+            .padding(vertical = BoltTheme.spacings.default)
             .fillMaxWidth(),
     ) {
         item(span = { if (hideText) GridItemSpan(1) else GridItemSpan(maxLineSpan) }) {

@@ -42,15 +42,10 @@ internal class SetupArchiveFolderDialogViewModel(
     override fun event(event: Event) {
         when (event) {
             Event.MoveNext -> onNext(state = state.value)
-
             Event.OnDoneClicked -> onDoneClicked(state = state.value)
-
             Event.OnDismissClicked -> onDismissClicked()
-
             is Event.OnDoNotShowDialogAgainChanged -> onDoNotShowDialogAgainChanged(isChecked = event.isChecked)
-
             is Event.OnCreateFolderClicked -> onCreateFolderClicked(newFolderName = event.newFolderName)
-
             is Event.OnFolderSelected -> onFolderSelected(folder = event.folder)
         }
     }

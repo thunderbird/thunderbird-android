@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.molecule.PullToRefreshBox
+import net.thunderbird.components.ui.bolt.molecule.PullToRefreshBox
 import net.thunderbird.feature.mail.message.list.internal.ui.component.template.MessageList
 import net.thunderbird.feature.mail.message.list.ui.component.MessageListScope
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent

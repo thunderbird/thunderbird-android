@@ -139,7 +139,7 @@ internal class DefaultStateMachine<TState : Any, TEvent : Any>(
     private val _currentState = MutableStateFlow(initialState)
     override val currentState: StateFlow<TState> = _currentState.asStateFlow()
     override val historyStack: List<StateMachine.StateTransitionRecord<TState, TEvent>>
-        get() = stateMachineDebugger?.historyStack ?: emptyList()
+        get() = stateMachineDebugger?.historyStack.orEmpty()
 
     init {
         scope.launch {

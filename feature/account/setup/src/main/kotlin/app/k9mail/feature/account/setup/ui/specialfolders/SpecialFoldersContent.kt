@@ -7,17 +7,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
-import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
-import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Event
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.State
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.molecule.ContentLoadingErrorView
+import net.thunderbird.components.ui.bolt.molecule.ErrorView
+import net.thunderbird.components.ui.bolt.molecule.LoadingView
+import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import app.k9mail.feature.account.common.R as CommonR
 
 @Composable
@@ -30,7 +30,7 @@ fun SpecialFoldersContent(
 ) {
     ResponsiveWidthContainer(
         modifier = Modifier
-            .testTagAsResourceId("SpecialFoldersContent")
+            .testTag("SpecialFoldersContent")
             .padding(contentPadding)
             .then(modifier),
     ) { contentPadding ->
@@ -58,7 +58,7 @@ fun SpecialFoldersContent(
                 if (state.isSuccess) {
                     LoadingView(
                         message = stringResource(id = R.string.account_setup_special_folders_success_message),
-                        modifier = Modifier.padding(horizontal = MainTheme.spacings.double),
+                        modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
                     )
                 } else {
                     SpecialFoldersFormContent(
@@ -91,6 +91,6 @@ private fun SpecialFoldersErrorView(
         onRetry = onRetry,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(MainTheme.spacings.double),
+            .padding(BoltTheme.spacings.double),
     )
 }

@@ -59,14 +59,17 @@ dependencies {
     implementation(projects.mail.protocols.imap)
     implementation(projects.backend.imap)
 
+    implementation(projects.feature.thundermail.internal.common)
+
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.lifecycle.process)
-    implementation(libs.kotlinx.collections.immutable)
 
     testImplementation(projects.feature.account.fake)
     testImplementation(projects.core.testing)
     testImplementation(projects.core.android.testing)
     testImplementation(projects.core.logging.testing)
+
+    testImplementation(libs.mockito.kotlin)
 }
 
 codeCoverage {

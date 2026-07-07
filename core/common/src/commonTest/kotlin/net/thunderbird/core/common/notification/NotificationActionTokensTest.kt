@@ -1,7 +1,8 @@
 package net.thunderbird.core.common.notification
 
+import assertk.assertThat
+import assertk.assertions.containsExactly
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class NotificationActionTokensTest {
     @Test
@@ -11,10 +12,7 @@ class NotificationActionTokensTest {
             supportedActions = supportedActions(),
         )
 
-        assertEquals(
-            listOf("delete", "reply", "mark_as_read"),
-            result,
-        )
+        assertThat(result).containsExactly("delete", "reply", "mark_as_read")
     }
 
     @Test
@@ -28,10 +26,7 @@ class NotificationActionTokensTest {
             supportedActions = supportedActions(),
         )
 
-        assertEquals(
-            listOf("delete", "reply", "mark_as_read"),
-            result,
-        )
+        assertThat(result).containsExactly("delete", "reply", "mark_as_read")
     }
 
     @Test
@@ -41,10 +36,7 @@ class NotificationActionTokensTest {
             supportedActions = supportedActions(),
         )
 
-        assertEquals(
-            listOf("mark_as_read", "reply", "delete"),
-            result,
-        )
+        assertThat(result).containsExactly("mark_as_read", "reply", "delete")
     }
 
     private fun supportedActions(): List<Pair<String, String>> {

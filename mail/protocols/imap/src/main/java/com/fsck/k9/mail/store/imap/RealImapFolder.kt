@@ -153,7 +153,7 @@ internal class RealImapFolder(
                 handlePermanentFlags(response)
             }
 
-            handleSelectOrExamineOkResponse(ImapUtility.getLastResponse(responses))
+            handleSelectOrExamineOkResponse(responses.last())
 
             exists = true
 
@@ -313,9 +313,9 @@ internal class RealImapFolder(
 
         return try {
             val imapResponses = connection!!.executeCommandWithIdSet(
-                Commands.UID_COPY,
-                escapedDestinationFolderName,
-                uids,
+                commandPrefix = Commands.UID_COPY,
+                commandSuffix = escapedDestinationFolderName,
+                ids = uids,
             )
 
             UidCopyResponse.parse(imapResponses)?.uidMapping
@@ -349,9 +349,9 @@ internal class RealImapFolder(
 
         return try {
             val imapResponses = connection!!.executeCommandWithIdSet(
-                Commands.UID_MOVE,
-                escapedDestinationFolderName,
-                uids,
+                commandPrefix = Commands.UID_MOVE,
+                commandSuffix = escapedDestinationFolderName,
+                ids = uids,
             )
 
             UidCopyResponse.parse(imapResponses, allowUntaggedResponse = true)?.uidMapping
@@ -533,7 +533,11 @@ internal class RealImapFolder(
         val uidSet = mesgUids.map { it.toLong() }.toSet()
 
         try {
-            val imapResponses = connection!!.executeCommandWithIdSet("UID SEARCH UID", "", uidSet)
+            val imapResponses = connection!!.executeCommandWithIdSet(
+                commandPrefix = "UID SEARCH UID",
+                commandSuffix = "",
+                ids = uidSet,
+            )
 
             val searchResponse = SearchResponse.parse(imapResponses)
             return getMessages(searchResponse, null)
@@ -609,15 +613,15 @@ internal class RealImapFolder(
             fetchFields.add("BODY.PEEK[]")
         }
 
-        val spaceSeparatedFetchFields = ImapUtility.join(" ", fetchFields)
+        val spaceSeparatedFetchFields = fetchFields.joinToString(" ")
         var windowStart = 0
         val processedUids = mutableSetOf<String>()
         while (windowStart < messages.size) {
-            val windowEnd = min(windowStart + FETCH_WINDOW_SIZE, messages.size)
-            val uidWindow = uids.subList(windowStart, windowEnd)
+            val windowEnd = min(a = windowStart + FETCH_WINDOW_SIZE, b = messages.size)
+            val uidWindow = uids.subList(fromIndex = windowStart, toIndex = windowEnd)
 
             try {
-                val commaSeparatedUids = ImapUtility.join(",", uidWindow)
+                val commaSeparatedUids = uidWindow.joinToString(",")
                 val command = String.format("UID FETCH %s (%s)", commaSeparatedUids, spaceSeparatedFetchFields)
                 connection!!.sendCommand(command, false)
 
@@ -1168,7 +1172,11 @@ internal class RealImapFolder(
         try {
             if (connection!!.isUidPlusCapable) {
                 val longUids = uids.map { it.toLong() }.toSet()
-                connection!!.executeCommandWithIdSet(Commands.UID_EXPUNGE, "", longUids)
+                connection!!.executeCommandWithIdSet(
+                    commandPrefix = Commands.UID_EXPUNGE,
+                    commandSuffix = "",
+                    ids = longUids,
+                )
             } else if (fullExpungeFallback) {
                 executeSimpleCommand("EXPUNGE")
             } else {

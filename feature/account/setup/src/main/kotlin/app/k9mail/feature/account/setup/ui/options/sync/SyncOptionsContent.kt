@@ -14,11 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
-import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
-import app.k9mail.core.ui.compose.designsystem.molecule.input.SwitchInput
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.item.defaultHeadlineItemPadding
 import app.k9mail.feature.account.common.ui.item.defaultItemPadding
@@ -27,8 +24,11 @@ import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
 import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.State
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
+import net.thunderbird.components.ui.bolt.molecule.input.SelectInput
+import net.thunderbird.components.ui.bolt.molecule.input.SwitchInput
+import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Suppress("LongMethod")
 @Composable
@@ -43,7 +43,7 @@ internal fun SyncOptionsContent(
 
     ResponsiveWidthContainer(
         modifier = Modifier
-            .testTagAsResourceId("SyncOptionsContent")
+            .testTag("SyncOptionsContent")
             .consumeWindowInsets(contentPadding)
             .padding(contentPadding)
             .then(modifier),
@@ -54,7 +54,7 @@ internal fun SyncOptionsContent(
                 .imePadding(),
             contentPadding = contentPadding,
             horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         ) {
             item {
                 AppTitleTopHeader(
@@ -103,7 +103,7 @@ internal fun SyncOptionsContent(
             }
 
             item {
-                Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
+                Spacer(modifier = Modifier.requiredHeight(BoltTheme.sizes.smaller))
             }
         }
     }

@@ -3,7 +3,7 @@ package net.thunderbird.feature.mail.message.list.internal.ui.dialog
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
 import net.thunderbird.feature.mail.message.list.internal.R
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.State
 

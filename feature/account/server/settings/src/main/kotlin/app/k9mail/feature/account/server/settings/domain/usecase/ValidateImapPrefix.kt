@@ -11,7 +11,6 @@ internal class ValidateImapPrefix : UseCase.ValidateImapPrefix {
         return when {
             imapPrefix.isEmpty() -> Outcome.Success(Unit)
             imapPrefix.isBlank() -> Outcome.Failure(ValidateImapPrefixError.BlankImapPrefix)
-
             else -> Outcome.Success(Unit)
         }
     }

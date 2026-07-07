@@ -7,13 +7,14 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.feature.funding.googleplay.R
+import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 
 // Ids need to be kept in sync with ContributionIdProvider.kt
 internal object ContributionIdStringMapper {
 
     @Composable
-    fun mapToContributionTitle(contributionId: String): String {
-        return when (contributionId) {
+    fun mapToContributionTitle(contributionId: ContributionId): String {
+        return when (contributionId.value) {
             "contribution_tfa_onetime_xs" -> stringResource(
                 R.string.funding_googleplay_contribution_tfa_onetime_xs_title,
             )
@@ -67,8 +68,8 @@ internal object ContributionIdStringMapper {
     }
 
     @Composable
-    fun mapToContributionDescription(contributionId: String): String {
-        return when (contributionId) {
+    fun mapToContributionDescription(contributionId: ContributionId): String {
+        return when (contributionId.value) {
             "contribution_tfa_onetime_xs" -> stringResource(
                 R.string.funding_googleplay_contribution_tfa_onetime_xs_description,
             )
@@ -122,8 +123,8 @@ internal object ContributionIdStringMapper {
     }
 
     @Composable
-    fun mapToContributionBenefits(contributionId: String): ImmutableList<String> {
-        return when (contributionId) {
+    fun mapToContributionBenefits(contributionId: ContributionId): ImmutableList<String> {
+        return when (contributionId.value) {
             "contribution_tfa_monthly_xs" -> stringArrayResource(
                 R.array.funding_googleplay_contribution_tfa_recurring_xs_benefits,
             ).toImmutableList()

@@ -49,6 +49,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.helper.HttpsUnsubscribeUri
 import com.fsck.k9.helper.MailtoUnsubscribeUri
 import com.fsck.k9.helper.UnsubscribeUri
+import com.fsck.k9.mail.Part
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.MessageViewInfo
@@ -77,6 +78,7 @@ import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettings
@@ -86,13 +88,17 @@ import net.thunderbird.core.ui.theme.manager.ThemeManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.export.MessageExporter
 import net.thunderbird.feature.mail.message.export.MessageFileNameSuggester
+import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.openintents.openpgp.util.OpenPgpIntentStarter
+import net.thunderbird.feature.mail.message.reader.api.R as MessageReaderR
 
-@Suppress("LargeClass")
+@Suppress("LargeClass", "TooManyFunctions")
 class MessageViewFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
+    AttachmentDisplayController,
     AttachmentViewCallback {
 
     private val themeManager: ThemeManager by inject()
@@ -100,11 +106,14 @@ class MessageViewFragment :
     private val messageLoaderHelperFactory: MessageLoaderHelperFactory by inject()
     private val accountManager: LegacyAccountDtoManager by inject()
     private val messagingController: MessagingController by inject()
+    private val attachmentLoadingController: AttachmentLoadingController by inject()
     private val shareIntentBuilder: ShareIntentBuilder by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
     private val outboxFolderManager: OutboxFolderManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val appNameProvider: AppNameProvider by inject()
+    private val messageReaderViewModel: MessageReaderViewContract.ViewModel<Part> by viewModel()
+    private val logger: Logger by inject()
 
     private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
         registerForActivityResult(CreateDocumentResultContract()) { documentUri ->
@@ -248,6 +257,7 @@ class MessageViewFragment :
         }
 
         messageTopView.setAttachmentCallback(this)
+        messageTopView.setMessageReaderViewModel(messageReaderViewModel)
         messageTopView.setMessageCryptoPresenter(messageCryptoPresenter)
 
         messageTopView.setOnToggleFlagClickListener {
@@ -813,7 +823,9 @@ class MessageViewFragment :
             return
         }
 
-        createAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(uri)
+        currentAttachmentViewInfo?.let {
+            createAttachmentController(it).saveAttachmentTo(lifecycleScope, uri)
+        }
     }
 
     private fun onChooseFolderMoveResult(result: ChooseFolderResultContract.Result?) {
@@ -1045,17 +1057,17 @@ class MessageViewFragment :
         requireActivity().runOnUiThread(runnable)
     }
 
-    fun showAttachmentLoadingDialog() {
+    override fun showAttachmentLoadingDialog() {
         showDialog(R.id.dialog_attachment_progress)
     }
 
-    fun hideAttachmentLoadingDialogOnMainThread() {
+    override fun hideAttachmentLoadingDialogOnMainThread() {
         runOnMainThread {
             removeDialog(R.id.dialog_attachment_progress)
         }
     }
 
-    fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo) {
+    override fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo) {
         messageTopView.refreshAttachmentThumbnail(attachment)
     }
 
@@ -1175,7 +1187,7 @@ class MessageViewFragment :
     override fun onViewAttachment(attachment: AttachmentViewInfo) {
         currentAttachmentViewInfo = attachment
 
-        createAttachmentController(attachment).viewAttachment()
+        createAttachmentController(attachment).viewAttachment(lifecycleScope)
     }
 
     override fun onSaveAttachment(attachment: AttachmentViewInfo) {
@@ -1184,8 +1196,10 @@ class MessageViewFragment :
         try {
             createDocumentLauncher.launch(
                 input = CreateDocumentResultContract.Input(
-                    title = attachment.displayName,
-                    mimeType = attachment.mimeType,
+                    title = attachment.displayName ?: getString(MessageReaderR.string.unnamed_attachment_title),
+                    mimeType = requireNotNull(attachment.mimeType) {
+                        "Invalid attachment type. The mimeType is null. Attachment = $attachment"
+                    },
                 ),
             )
         } catch (_: ActivityNotFoundException) {
@@ -1193,8 +1207,14 @@ class MessageViewFragment :
         }
     }
 
-    private fun createAttachmentController(attachment: AttachmentViewInfo?): AttachmentController {
-        return AttachmentController(requireContext(), messagingController, this, attachment)
+    private fun createAttachmentController(attachment: AttachmentViewInfo): AttachmentController {
+        return AttachmentController(
+            context = requireContext(),
+            controller = attachmentLoadingController,
+            attachmentDisplayController = this,
+            attachment = attachment,
+            logger = logger
+        )
     }
 
     private fun invalidateMenu() {

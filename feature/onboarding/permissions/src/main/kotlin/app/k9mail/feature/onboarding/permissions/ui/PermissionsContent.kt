@@ -17,27 +17,36 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.visibility.hide
-import app.k9mail.core.ui.compose.designsystem.atom.DelayedCircularProgressIndicator
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineSmall
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.onboarding.permissions.R
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Event
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.State
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.IconsWithBottomRightOverlay
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import net.thunderbird.components.ui.bolt.atom.CircularProgressIndicator
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineSmall
+import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
+import net.thunderbird.components.ui.bolt.template.Scaffold
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import app.k9mail.feature.account.common.R as CommonR
+
+private const val LOADING_INDICATOR_DELAY = 500L
 
 @Composable
 internal fun PermissionsContent(
@@ -73,7 +82,7 @@ internal fun PermissionsContent(
 
                 // This provides some bottom padding but is also necessary to make the vertical arrangement have the
                 // desired effect of putting ContentArea() in the middle.
-                Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+                Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
             }
         }
     }
@@ -92,10 +101,10 @@ private fun HeaderArea(
 
         TextHeadlineSmall(
             text = stringResource(R.string.onboarding_permissions_screen_title),
-            modifier = Modifier.padding(horizontal = MainTheme.spacings.double),
+            modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
         )
 
-        Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
     }
 }
 
@@ -105,7 +114,7 @@ private fun ContentArea(state: State, onEvent: (Event) -> Unit) {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxHeight()
-            .padding(MainTheme.spacings.double),
+            .padding(BoltTheme.spacings.double),
     ) {
         if (state.isLoading) {
             DelayedCircularProgressIndicator()
@@ -121,7 +130,7 @@ private fun PermissionBoxes(
     onEvent: (Event) -> Unit,
 ) {
     PermissionBox(
-        icon = IconsWithBottomRightOverlay.person,
+        icon = Icons.Filled.Person,
         permissionState = state.contactsPermissionState,
         title = stringResource(R.string.onboarding_permissions_contacts_title),
         description = stringResource(R.string.onboarding_permissions_contacts_description),
@@ -129,10 +138,10 @@ private fun PermissionBoxes(
     )
 
     if (state.isNotificationsPermissionVisible) {
-        Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.quadruple))
 
         PermissionBox(
-            icon = IconsWithBottomRightOverlay.notification,
+            icon = Icons.Filled.Notifications,
             permissionState = state.notificationsPermissionState,
             title = stringResource(R.string.onboarding_permissions_notifications_title),
             description = stringResource(R.string.onboarding_permissions_notifications_description),
@@ -162,10 +171,10 @@ private fun BottomBar(
             Row(
                 modifier = Modifier
                     .padding(
-                        start = MainTheme.spacings.quadruple,
-                        end = MainTheme.spacings.quadruple,
-                        top = MainTheme.spacings.default,
-                        bottom = MainTheme.spacings.double,
+                        start = BoltTheme.spacings.quadruple,
+                        end = BoltTheme.spacings.quadruple,
+                        top = BoltTheme.spacings.default,
+                        bottom = BoltTheme.spacings.double,
                     )
                     .fillMaxWidth()
                     .padding(contentPadding),
@@ -179,17 +188,45 @@ private fun BottomBar(
                         text = stringResource(CommonR.string.account_common_button_next),
                         onClick = { onEvent(Event.NextClicked) },
                         modifier = Modifier.hide(!isNextButtonVisible)
-                            .testTagAsResourceId("onboarding_permissions_next_button"),
+                            .testTag("onboarding_permissions_next_button"),
                     )
 
                     ButtonText(
                         text = stringResource(R.string.onboarding_permissions_skip_button),
                         onClick = { onEvent(Event.NextClicked) },
                         modifier = Modifier.hide(isNextButtonVisible)
-                            .testTagAsResourceId("onboarding_permissions_skip_button"),
+                            .testTag("onboarding_permissions_skip_button"),
                     )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun DelayedCircularProgressIndicator(
+    modifier: Modifier = Modifier,
+) {
+    var progressIndicatorVisible by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = Unit) {
+        launch {
+            delay(LOADING_INDICATOR_DELAY)
+            progressIndicatorVisible = true
+        }
+    }
+
+    CircularProgressIndicator(
+        modifier = Modifier
+            .hide(!progressIndicatorVisible)
+            .then(modifier),
+    )
+}
+
+private fun Modifier.hide(hide: Boolean): Modifier {
+    return if (hide) {
+        alpha(0f).clearAndSetSemantics {}
+    } else {
+        alpha(1f)
     }
 }

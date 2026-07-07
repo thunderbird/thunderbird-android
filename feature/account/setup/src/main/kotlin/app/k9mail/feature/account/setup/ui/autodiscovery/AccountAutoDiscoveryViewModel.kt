@@ -41,13 +41,19 @@ internal class AccountAutoDiscoveryViewModel(
     override fun event(event: Event) {
         when (event) {
             is Event.EmailAddressChanged -> changeEmailAddress(event.emailAddress)
+
             is Event.PasswordChanged -> changePassword(event.password)
+
             is Event.ResultApprovalChanged -> changeConfigurationApproval(event.confirmed)
+
             is Event.OnOAuthResult -> onOAuthResult(event.result)
 
             Event.OnNextClicked -> onNext()
+
             Event.OnBackClicked -> onBack()
+
             Event.OnRetryClicked -> onRetry()
+
             Event.OnEditConfigurationClicked -> {
                 navigateNext(isAutomaticConfig = false)
             }
@@ -95,7 +101,9 @@ internal class AccountAutoDiscoveryViewModel(
                 }
 
             ConfigStep.PASSWORD -> submitPassword()
+
             ConfigStep.OAUTH -> Unit
+
             ConfigStep.MANUAL_SETUP -> navigateNext(isAutomaticConfig = false)
         }
     }

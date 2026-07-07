@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">선택</string>
     <string name="swipe_action_deselect">선택 해제</string>
@@ -10,4 +10,21 @@
     <string name="swipe_action_delete">삭제</string>
     <string name="swipe_action_spam">스팸</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 선택됨</string>
+    <string name="sort_by">정렬 기준…</string>
+    <string name="swipe_action_move">이동…</string>
+    <string name="swipe_action_archive_folder_not_set">보관함 설정하기</string>
+    <string name="swipe_action_change_swipe_gestures">스와이프 제스처 \n변경</string>
+    <string name="sort_by_date_asc">날짜 (과거순)</string>
+    <string name="sort_by_date_desc">날짜 (최신순)</string>
+    <string name="sort_by_arrival_asc">도착일시 (과거순)</string>
+    <string name="sort_by_arrival_desc">도착일시 (최신순)</string>
+    <string name="sort_by_subject_asc">제목 (오름차순)</string>
+    <string name="sort_by_subject_desc">제목 (내림차순)</string>
+    <string name="sort_by_sender_asc">보낸 사람 (오름차순)</string>
+    <string name="sort_by_sender_desc">보낸 사람 (내림차순)</string>
+    <string name="sort_by_flag_asc">별표 우선</string>
+    <string name="sort_by_flag_desc">별표 없음 우선</string>
+    <string name="sort_by_unread_asc">읽지 않음 우선</string>
+    <string name="sort_by_unread_desc">읽음 우선</string>
+    <string name="sort_by_attach_desc">첨부 미포함 우선</string>
 </resources>

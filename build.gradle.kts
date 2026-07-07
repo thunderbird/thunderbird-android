@@ -13,30 +13,17 @@ plugins {
     alias(libs.plugins.jetbrains.compose) apply false
 
     id("thunderbird.dependency.check")
-    id("thunderbird.quality.spotless.root")
     id("net.thunderbird.gradle.plugin.quality.coverage")
+    id("net.thunderbird.gradle.plugin.quality.spotless")
 }
 
-allprojects {
-    tasks.withType<Test> {
-        testLogging {
-            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-            showCauses = true
-            showExceptions = true
-            showStackTraces = true
-        }
+tasks.withType<Test>().configureEach {
+    testLogging {
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        showCauses = true
+        showExceptions = true
+        showStackTraces = true
     }
-}
-
-tasks.register("testsOnCi") {
-    val skipTests = setOf("testReleaseUnitTest")
-
-    dependsOn(
-        subprojects
-            .filterNot { it.path == ":quality:konsist" } // Konsist tests should be run separately
-            .flatMap { it.tasks.withType(Test::class.java) }
-            .filterNot { it.name in skipTests },
-    )
 }
 
 tasks.register("buildCliTools") {

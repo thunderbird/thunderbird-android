@@ -1,9 +1,9 @@
 package app.k9mail.feature.onboarding.welcome.ui
 
 import androidx.compose.runtime.Composable
-import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
-import app.k9mail.core.ui.compose.designsystem.PreviewThemeType
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.PreviewThemeType
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevices
 
 @Composable
 @PreviewDevices
@@ -13,7 +13,6 @@ internal fun WelcomeContentThunderbirdPreview() {
             onStartClick = {},
             onImportClick = {},
             appName = "Thunderbird Beta",
-            showImportButton = false,
         )
     }
 }
@@ -26,7 +25,6 @@ internal fun WelcomeContentK9MailPreview() {
             onStartClick = {},
             onImportClick = {},
             appName = "K-9 Mail",
-            showImportButton = true,
         )
     }
 }

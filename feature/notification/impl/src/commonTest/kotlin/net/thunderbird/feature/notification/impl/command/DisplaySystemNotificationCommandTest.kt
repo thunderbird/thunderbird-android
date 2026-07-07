@@ -2,12 +2,10 @@ package net.thunderbird.feature.notification.impl.command
 
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import dev.mokkery.spy
-import dev.mokkery.verify.VerifyMode.Companion.exactly
-import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.featureflag.FeatureFlagKey
@@ -122,7 +120,7 @@ class DisplaySystemNotificationCommandTest {
                 severity = NotificationSeverity.Information,
             )
             val notificationRegistry = FakeNotificationRegistry()
-            val notifier = spy(FakeSystemNotificationNotifier(notificationRegistry))
+            val notifier = FakeSystemNotificationNotifier(notificationRegistry)
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
@@ -144,9 +142,7 @@ class DisplaySystemNotificationCommandTest {
                         .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
-            verifySuspend(exactly(1)) {
-                notifier.show(notification)
-            }
+            assertThat(notifier.shownNotifications).containsExactly(notification)
         }
 
     @Test
@@ -157,7 +153,7 @@ class DisplaySystemNotificationCommandTest {
                 severity = NotificationSeverity.Fatal,
             )
             val notificationRegistry = FakeNotificationRegistry()
-            val notifier = spy(FakeSystemNotificationNotifier(notificationRegistry))
+            val notifier = FakeSystemNotificationNotifier(notificationRegistry)
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
@@ -179,9 +175,7 @@ class DisplaySystemNotificationCommandTest {
                         .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
-            verifySuspend(exactly(1)) {
-                notifier.show(notification)
-            }
+            assertThat(notifier.shownNotifications).containsExactly(notification)
         }
 
     @Test
@@ -192,7 +186,7 @@ class DisplaySystemNotificationCommandTest {
                 severity = NotificationSeverity.Critical,
             )
             val notificationRegistry = FakeNotificationRegistry()
-            val notifier = spy(FakeSystemNotificationNotifier(notificationRegistry))
+            val notifier = FakeSystemNotificationNotifier(notificationRegistry)
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
@@ -214,9 +208,7 @@ class DisplaySystemNotificationCommandTest {
                         .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
-            verifySuspend(exactly(1)) {
-                notifier.show(notification)
-            }
+            assertThat(notifier.shownNotifications).containsExactly(notification)
         }
 
     @Test
@@ -227,7 +219,7 @@ class DisplaySystemNotificationCommandTest {
                 severity = NotificationSeverity.Information,
             )
             val notificationRegistry = FakeNotificationRegistry()
-            val notifier = spy(FakeSystemNotificationNotifier(notificationRegistry))
+            val notifier = FakeSystemNotificationNotifier(notificationRegistry)
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
@@ -249,9 +241,7 @@ class DisplaySystemNotificationCommandTest {
                         .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
-            verifySuspend(exactly(1)) {
-                notifier.show(notification)
-            }
+            assertThat(notifier.shownNotifications).containsExactly(notification)
         }
 
     private fun createTestSubject(

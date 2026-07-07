@@ -16,19 +16,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.SizeFormatter
 import kotlinx.collections.immutable.ImmutableList
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.designsystem.organism.ModalBottomSheet
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.organism.ModalBottomSheet
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.feature.mail.message.reader.api.R as MessageReaderR
 
 private const val OPEN_PGP_RED = 0xFFCC0000
 
@@ -94,20 +95,20 @@ private fun AttachmentListHeader(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                start = MainTheme.spacings.double,
-                end = MainTheme.spacings.double,
-                bottom = MainTheme.spacings.default,
-                top = MainTheme.spacings.double,
+                start = BoltTheme.spacings.double,
+                end = BoltTheme.spacings.double,
+                bottom = BoltTheme.spacings.default,
+                top = BoltTheme.spacings.double,
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             imageVector = Icons.Outlined.Attachment,
             contentDescription = null,
-            tint = MainTheme.colors.onSurfaceVariant,
-            modifier = Modifier.size(MainTheme.sizes.icon),
+            tint = BoltTheme.colors.onSurfaceVariant,
+            modifier = Modifier.size(BoltTheme.sizes.icon),
         )
-        Spacer(modifier = Modifier.width(MainTheme.spacings.default))
+        Spacer(modifier = Modifier.width(BoltTheme.spacings.default))
         TextTitleMedium(
             text = stringResource(R.string.message_view_attachments_title),
             modifier = Modifier.weight(1f),
@@ -119,13 +120,13 @@ private fun AttachmentListHeader(
             Icon(
                 imageVector = Icons.Outlined.Download,
                 contentDescription = null,
-                tint = MainTheme.colors.primary,
-                modifier = Modifier.size(MainTheme.sizes.iconSmall),
+                tint = BoltTheme.colors.primary,
+                modifier = Modifier.size(BoltTheme.sizes.iconSmall),
             )
-            Spacer(modifier = Modifier.width(MainTheme.spacings.half))
+            Spacer(modifier = Modifier.width(BoltTheme.spacings.half))
             TextLabelLarge(
                 text = stringResource(R.string.message_view_attachments_save_all),
-                color = MainTheme.colors.primary,
+                color = BoltTheme.colors.primary,
             )
         }
     }
@@ -144,35 +145,39 @@ private fun AttachmentListItem(
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(
-                start = MainTheme.spacings.double,
-                end = MainTheme.spacings.default,
-                top = MainTheme.spacings.default,
-                bottom = MainTheme.spacings.default,
+                start = BoltTheme.spacings.double,
+                end = BoltTheme.spacings.default,
+                top = BoltTheme.spacings.default,
+                bottom = BoltTheme.spacings.default,
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             imageVector = if (isLocked) Icons.Outlined.Lock else Icons.Outlined.Description,
             contentDescription = null,
-            tint = if (isLocked) Color(OPEN_PGP_RED) else MainTheme.colors.onSurfaceVariant,
-            modifier = Modifier.size(MainTheme.sizes.icon),
+            tint = if (isLocked) Color(OPEN_PGP_RED) else BoltTheme.colors.onSurfaceVariant,
+            modifier = Modifier.size(BoltTheme.sizes.icon),
         )
-        Spacer(modifier = Modifier.width(MainTheme.spacings.double))
+        Spacer(modifier = Modifier.width(BoltTheme.spacings.double))
         Column(modifier = Modifier.weight(1f)) {
             TextBodyMedium(
-                text = if (isLocked) stringResource(R.string.encrypted_attachment_title) else attachment.displayName,
+                text = when (val displayName = attachment.displayName) {
+                    null -> stringResource(MessageReaderR.string.unnamed_attachment_title)
+                    else if isLocked -> stringResource(MessageReaderR.string.encrypted_attachment_title)
+                    else -> displayName
+                },
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             if (isLocked) {
                 TextBodySmall(
                     text = stringResource(R.string.locked_attach_unencrypted),
-                    color = MainTheme.colors.onSurfaceVariant,
+                    color = BoltTheme.colors.onSurfaceVariant,
                 )
             } else if (attachment.size != AttachmentViewInfo.UNKNOWN_SIZE) {
                 TextBodySmall(
                     text = sizeFormatter.formatSize(attachment.size),
-                    color = MainTheme.colors.onSurfaceVariant,
+                    color = BoltTheme.colors.onSurfaceVariant,
                 )
             }
         }

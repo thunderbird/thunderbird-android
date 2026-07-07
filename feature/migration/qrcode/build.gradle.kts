@@ -18,7 +18,7 @@ dependencies {
     implementation(projects.core.android.account)
     implementation(projects.legacy.common)
     implementation(projects.legacy.ui.base)
-    implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.core.ui.contract)
 
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.camera2)
@@ -30,7 +30,6 @@ dependencies {
 
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)
-    testImplementation(projects.core.ui.compose.theme2.k9mail)
 }
 
 codeCoverage {

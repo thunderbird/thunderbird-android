@@ -12,7 +12,6 @@ android {
 dependencies {
     implementation(projects.legacy.core)
     implementation(projects.legacy.ui.base)
-    implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.legacy.designsystem)
 
     implementation(projects.feature.migration.launcher.api)
@@ -25,6 +24,9 @@ dependencies {
     implementation(libs.fastadapter)
 
     testImplementation(projects.core.logging.testing)
+
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.mockito.kotlin)
 }
 
 codeCoverage {

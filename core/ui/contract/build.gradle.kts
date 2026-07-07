@@ -17,10 +17,6 @@ kotlin {
         commonTest.dependencies {
             implementation(projects.core.testing)
         }
-
-        jvmTest.dependencies {
-            implementation(compose.desktop.currentOs)
-        }
     }
 }
 

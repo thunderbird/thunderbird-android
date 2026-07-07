@@ -14,17 +14,20 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.common)
+    implementation(projects.core.ui.compose.common)
 
     implementation(projects.mail.common)
 
     implementation(projects.feature.account.common)
 
     implementation(libs.appauth)
-    implementation(libs.androidx.compose.material3)
+    implementation(libs.jetbrains.compose.material3)
 
+    testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)
+
+    testImplementation(libs.mockito.kotlin)
 }
 
 codeCoverage {

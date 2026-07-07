@@ -31,8 +31,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import app.k9mail.core.ui.compose.common.koin.koinPreview
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import assertk.assertThat
@@ -41,7 +39,9 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import kotlin.test.Test
 import kotlinx.collections.immutable.persistentSetOf
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
@@ -91,7 +91,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                         .verticalScroll(rememberScrollState())
                         .padding(paddingValues)
                         .testTag(contentTag),
-                    verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                    verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
                 ) {
                     repeat(size) { index ->
                         TextBodyLarge(
@@ -137,7 +137,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                         .fillMaxSize()
                         .padding(paddingValues)
                         .testTag(contentTag),
-                    verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+                    verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
                 ) {
                     items(size) { index ->
                         TextBodyLarge(

@@ -10,22 +10,29 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import androidx.compose.ui.platform.testTag
+import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Event
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.State
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionList
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract.State as ListState
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract.Event as PurchaseEvent
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract.State as PurchaseState
 
 @Composable
 internal fun ContributionContent(
     state: State,
+    listState: ListState,
+    purchaseState: PurchaseState,
     onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     ResponsiveWidthContainer(
         modifier = modifier
-            .testTagAsResourceId("ContributionContent")
+            .testTag("ContributionContent")
             .padding(contentPadding),
     ) { contentPadding ->
         val scrollState = rememberScrollState()
@@ -33,47 +40,39 @@ internal fun ContributionContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = MainTheme.spacings.quadruple)
+                .padding(horizontal = BoltTheme.spacings.quadruple)
                 .verticalScroll(scrollState)
                 .padding(contentPadding),
             horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.triple),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.triple),
         ) {
             ContributionHeader(
-                purchasedContribution = state.purchasedContribution,
+                purchasedContribution = purchaseState.purchasedContribution,
             )
 
             if (state.showContributionList) {
                 ContributionList(
-                    state = state.listState,
-                    onOneTimeContributionTypeClick = {
-                        onEvent(Event.OnOneTimeContributionSelected)
-                    },
-                    onRecurringContributionTypeClick = {
-                        onEvent(Event.OnRecurringContributionSelected)
-                    },
-                    onItemClick = {
-                        onEvent(Event.OnContributionItemClicked(it))
-                    },
-                    onRetryClick = {
-                        onEvent(Event.OnRetryClicked)
-                    },
+                    state = listState,
+                    onEvent = { onEvent(Event.List(it)) },
                 )
             }
 
-            if (state.purchaseError != null) {
+            if (purchaseState.purchaseFlow is PurchaseSliceContract.PurchaseFlow.Failed) {
                 ContributionError(
-                    error = state.purchaseError,
-                    onDismissClick = { onEvent(Event.OnDismissPurchaseErrorClicked) },
+                    error = purchaseState.purchaseFlow.error,
+                    onDismissClick = {
+                        onEvent(Event.Purchase(PurchaseEvent.DismissPurchaseErrorClicked))
+                    },
                 )
             }
 
             ContributionFooter(
-                purchasedContribution = state.purchasedContribution,
-                onPurchaseClick = { onEvent(Event.OnPurchaseClicked) },
-                onManagePurchaseClick = { onEvent(Event.OnManagePurchaseClicked(it)) },
-                onShowContributionListClick = { onEvent(Event.OnShowContributionListClicked) },
-                isPurchaseEnabled = state.listState.selectedContribution != null,
+                state = purchaseState,
+                onEvent = { onEvent(Event.Purchase(it)) },
+                onShowContributionListClick = {
+                    onEvent(Event.ShowContributionListClicked)
+                },
+                selectedContributionId = state.selectedContributionId,
                 isContributionListShown = state.showContributionList,
             )
         }

@@ -7,10 +7,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
-import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemAccountIndicator
@@ -40,7 +40,7 @@ private class NewMessageItemPrevParamCol : CollectionPreviewParameterProvider<Me
             previewName = "Multiple senders threaded",
             sender = "Mason Tran, Me, Ryan Thomas",
             senderStyles = persistentListOf(
-                ComposedAddressStyle.Bold(0, 11),
+                ComposedAddressStyle.Bold(start = 0, end = 11),
             ),
             subject = "Follow-up on gaming PC build specs",
             excerpt = LoremIpsum(words = 20).values.joinToString(),
@@ -161,6 +161,7 @@ private fun PreviewDefault(
             state = MessageItemUi(
                 state = MessageItemUi.State.New,
                 id = "",
+                messageReference = "reference",
                 account = Account(id = AccountIdFactory.create(), color = params.accountColor),
                 senders = ComposedAddressUi(
                     displayName = params.sender,
@@ -194,7 +195,7 @@ private fun PreviewDefault(
             onLongClick = { },
             onAvatarClick = { },
             onFavouriteChange = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -209,6 +210,7 @@ private fun PreviewCompact(
             state = MessageItemUi(
                 state = MessageItemUi.State.New,
                 id = "",
+                messageReference = "reference",
                 account = Account(id = AccountIdFactory.create(), color = params.accountColor),
                 senders = ComposedAddressUi(
                     displayName = params.sender,
@@ -242,7 +244,7 @@ private fun PreviewCompact(
             onLongClick = { },
             onAvatarClick = { },
             onFavouriteChange = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -257,6 +259,7 @@ private fun PreviewRelaxed(
             state = MessageItemUi(
                 state = MessageItemUi.State.New,
                 id = "",
+                messageReference = "reference",
                 account = Account(id = AccountIdFactory.create(), color = params.accountColor),
                 senders = ComposedAddressUi(
                     displayName = params.sender,
@@ -290,7 +293,7 @@ private fun PreviewRelaxed(
             onLongClick = { },
             onAvatarClick = { },
             onFavouriteChange = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -305,6 +308,7 @@ private fun PreviewDefaultWithoutAccountIndicator(
             state = MessageItemUi(
                 state = MessageItemUi.State.New,
                 id = "",
+                messageReference = "reference",
                 account = Account(id = AccountIdFactory.create(), color = params.accountColor),
                 senders = ComposedAddressUi(
                     displayName = params.sender,
@@ -338,7 +342,7 @@ private fun PreviewDefaultWithoutAccountIndicator(
             onLongClick = { },
             onAvatarClick = { },
             onFavouriteChange = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }

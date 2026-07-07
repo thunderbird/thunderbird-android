@@ -3,11 +3,11 @@ package app.k9mail.feature.account.setup.ui.autodiscovery
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.AutoDiscoveryUiResult
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Effect
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.Event
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.ViewModel
+import net.thunderbird.components.ui.bolt.template.Scaffold
 import net.thunderbird.core.common.provider.BrandNameProvider
 import net.thunderbird.core.ui.contract.mvi.observe
 
@@ -15,6 +15,8 @@ import net.thunderbird.core.ui.contract.mvi.observe
 internal fun AccountAutoDiscoveryScreen(
     onNext: (AutoDiscoveryUiResult) -> Unit,
     onBack: () -> Unit,
+    onThundermailClick: () -> Unit,
+    onScanQrCodeClick: () -> Unit,
     viewModel: ViewModel,
     brandNameProvider: BrandNameProvider,
     modifier: Modifier = Modifier,
@@ -36,6 +38,8 @@ internal fun AccountAutoDiscoveryScreen(
         AccountAutoDiscoveryContent(
             state = state.value,
             onEvent = { dispatch(it) },
+            onThundermailClick = onThundermailClick,
+            onScanQrCodeClick = onScanQrCodeClick,
             oAuthViewModel = viewModel.oAuthViewModel,
             brandName = brandNameProvider.brandName,
             contentPadding = innerPadding,

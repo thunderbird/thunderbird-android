@@ -63,6 +63,7 @@ class UnreadWidgetDataProvider(
             title = coreResourceProvider.searchUnifiedFoldersTitle(),
             detail = coreResourceProvider.searchUnifiedFoldersDetail(),
         )
+
         else -> throw AssertionError("SearchAccount expected")
     }
 

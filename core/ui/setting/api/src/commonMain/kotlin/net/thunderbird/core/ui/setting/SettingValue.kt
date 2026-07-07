@@ -40,6 +40,32 @@ sealed interface SettingValue<T> : Setting {
     }
 
     /**
+     * A setting that displays a text value and triggers an action when clicked.
+     *
+     * Unlike [Text], this setting does not require an edit view. Instead,
+     * the entire setting item acts as a clickable action that can be used
+     * for navigation, opening dialogs, launching pickers, or performing
+     * custom actions.
+     *
+     * @param id The unique identifier for the setting.
+     * @param title A lambda that returns the title of the setting.
+     * @param description A lambda that returns the description of the setting. Default is null.
+     * @param icon A lambda that returns the icon of the setting as an [ImageVector]. Default is null.
+     * @param value The current text value displayed by the setting.
+     * @param onClick The action to invoke when the setting is clicked.
+     */
+    data class ActionText(
+        override val id: String,
+        val title: () -> String,
+        val description: () -> String? = { null },
+        val icon: () -> ImageVector? = { null },
+        override val value: String,
+        val onClick: () -> Unit,
+    ) : SettingValue<String> {
+        override val requiresEditView: Boolean = false
+    }
+
+    /**
      * A setting that holds a color value.
      *
      * This requires an edit view to select a color from the provided list of colors.

@@ -11,8 +11,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedPassword
 import kotlinx.coroutines.launch
+import net.thunderbird.components.ui.bolt.atom.textfield.TextFieldOutlinedPassword
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.server.settings.ui.common.AuthenticationError
 import net.thunderbird.feature.account.server.settings.ui.common.Authenticator
@@ -64,6 +64,7 @@ fun ProtectedTextFieldOutlinedPassword(
                             onWarningChange(null)
                             activity.setSecure(true)
                         }
+
                         is Outcome.Failure -> {
                             onWarningChange(outcome.error)
                         }

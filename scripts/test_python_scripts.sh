@@ -54,6 +54,7 @@ echo ""
 python3 -m py_compile "$SCRIPT_DIR/ci/render-notes.py" && echo "  ✓ render-notes.py"
 python3 -m py_compile "$SCRIPT_DIR/ci/setup_release_automation" && echo "  ✓ setup_release_automation"
 python3 -m py_compile "$SCRIPT_DIR/ci/merges/merge_gradle.py" && echo "  ✓ merge_gradle.py"
+python3 -m py_compile "$SCRIPT_DIR/ci/contributor_list.py" && echo "  ✓ contributor_list.py"
 
 echo ""
 echo "✓ All tests passed!"

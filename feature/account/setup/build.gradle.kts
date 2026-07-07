@@ -16,7 +16,7 @@ android {
 dependencies {
     implementation(projects.core.common)
     implementation(projects.core.validation)
-    implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.core.ui.contract)
     implementation(projects.core.ui.navigation)
 
     implementation(projects.mail.common)
@@ -28,17 +28,22 @@ dependencies {
     implementation(projects.feature.autodiscovery.service)
     implementation(projects.feature.autodiscovery.demo)
 
+    implementation(projects.feature.thundermail.api)
+
     api(projects.feature.account.common)
     implementation(projects.feature.account.oauth)
     implementation(projects.feature.account.server.settings)
     implementation(projects.feature.account.server.certificate)
+    implementation(projects.feature.settings.import)
     api(projects.feature.account.server.validation)
 
+    implementation(projects.feature.thundermail.api)
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)
 
     testImplementation(platform(libs.forkhandles.bom))
     testImplementation(libs.forkhandles.fabrikate4k)
+    testImplementation(projects.core.featureflag)
 }
 
 codeCoverage {

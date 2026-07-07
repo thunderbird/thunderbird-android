@@ -44,7 +44,7 @@ internal class StateDiffer(
     ) {
         val allKeys = (oldProps.keys + newProps.keys).toSet()
         for (key in allKeys) {
-            appendPropertyDiff(key, oldProps[key], newProps[key], context)
+            appendPropertyDiff(key = key, oldVal = oldProps[key], newVal = newProps[key], context = context)
         }
     }
 
@@ -59,6 +59,7 @@ internal class StateDiffer(
 
         when {
             oldIsObject && newIsObject -> appendObjectDiff(key, oldVal, newVal, context)
+
             oldVal is Map<*, *> && newVal is Map<*, *> ->
                 appendMapDiff(key, oldVal, newVal, context)
 
@@ -106,7 +107,7 @@ internal class StateDiffer(
             return
         }
         appendLine("$key:".prependIndent(size = context.indentSize))
-        append(buildDiff(oldVal, newVal, context.nested()))
+        append(buildDiff(old = oldVal, new = newVal, context = context.nested()))
     }
 
     private fun StringBuilder.appendMapDiff(key: String, oldVal: Map<*, *>?, newVal: Map<*, *>?, context: DiffContext) {

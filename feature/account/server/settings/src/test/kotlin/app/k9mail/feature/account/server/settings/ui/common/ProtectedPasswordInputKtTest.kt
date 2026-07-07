@@ -1,4 +1,3 @@
-
 package app.k9mail.feature.account.server.settings.ui.common
 
 import androidx.compose.ui.test.assertIsDisplayed
@@ -8,11 +7,14 @@ import androidx.compose.ui.test.performClick
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import app.k9mail.feature.account.server.settings.R
+import net.thunderbird.components.ui.bolt.resources.Res
+import net.thunderbird.components.ui.bolt.resources.bolt_atom_password_textfield_show_password
+import net.thunderbird.components.ui.bolt.resources.bolt_molecule_password_input_label
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.server.settings.ui.common.AuthenticationError
 import net.thunderbird.feature.account.server.settings.ui.common.Authenticator
 import org.junit.Test
-import app.k9mail.core.ui.compose.designsystem.R as RDesign
+import net.thunderbird.components.ui.testing.resource.getString as getComposeString
 
 class ProtectedPasswordInputKtTest : ComposeTest() {
 
@@ -28,15 +30,14 @@ class ProtectedPasswordInputKtTest : ComposeTest() {
         }
 
         // Assert
-        onNodeWithText(getString(RDesign.string.designsystem_molecule_password_input_label))
-            .assertIsDisplayed()
+        onNodeWithText(getComposeString(Res.string.bolt_molecule_password_input_label)).assertIsDisplayed()
     }
 
     @Test
     fun `should show warning message when authenticator fails`() = runComposeTest {
         // Arrange
         val password = "Password input"
-        val failingAuthenticator: Authenticator = Authenticator { Outcome.Failure(AuthenticationError.NotAvailable) }
+        val failingAuthenticator = Authenticator { Outcome.Failure(AuthenticationError.NotAvailable) }
         setContentWithTheme {
             ProtectedPasswordInput(
                 password = password,
@@ -47,7 +48,7 @@ class ProtectedPasswordInputKtTest : ComposeTest() {
 
         // Act
         onNodeWithContentDescription(
-            getString(RDesign.string.designsystem_atom_password_textfield_show_password),
+            getComposeString(Res.string.bolt_atom_password_textfield_show_password),
         ).performClick()
 
         // Assert

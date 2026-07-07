@@ -14,7 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun AvatarLayout(
@@ -31,10 +31,6 @@ internal fun AvatarLayout(
         modifier = modifier
             .size(resolvedSize)
             .clip(CircleShape)
-            .clickable(
-                enabled = onClick != null,
-                onClick = { onClick?.invoke() },
-            )
             .background(
                 color = backgroundColor,
                 shape = CircleShape,
@@ -43,6 +39,10 @@ internal fun AvatarLayout(
                 width = 2.dp,
                 shape = CircleShape,
                 color = color,
+            )
+            .clickable(
+                enabled = onClick != null,
+                onClick = { onClick?.invoke() },
             ),
         contentAlignment = Alignment.Center,
     ) {
@@ -53,7 +53,7 @@ internal fun AvatarLayout(
 @Composable
 private fun getAvatarSize(size: AvatarSize): Dp {
     return when (size) {
-        AvatarSize.MEDIUM -> MainTheme.sizes.iconAvatar
-        AvatarSize.LARGE -> MainTheme.sizes.large
+        AvatarSize.MEDIUM -> BoltTheme.sizes.iconAvatar
+        AvatarSize.LARGE -> BoltTheme.sizes.large
     }
 }

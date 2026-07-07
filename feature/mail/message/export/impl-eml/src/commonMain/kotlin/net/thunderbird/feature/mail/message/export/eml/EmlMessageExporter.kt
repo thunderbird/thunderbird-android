@@ -18,6 +18,7 @@ class EmlMessageExporter(
         val outcome = fileManager.copy(sourceUri = sourceUri, destinationUri = destinationUri)
         return when (outcome) {
             is Outcome.Success -> Outcome.Success(Unit)
+
             is Outcome.Failure -> Outcome.Failure(
                 error = mapError(outcome.error),
                 cause = outcome.cause,
@@ -33,8 +34,11 @@ class EmlMessageExporter(
                 error.uri,
                 error.message,
             )
+
             is FileOperationError.ReadFailed -> MessageExportError.Io(error.message)
+
             is FileOperationError.WriteFailed -> MessageExportError.Io(error.message)
+
             is FileOperationError.Unknown -> MessageExportError.Unknown(error.message)
         }
     }

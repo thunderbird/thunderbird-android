@@ -5,10 +5,10 @@ import app.k9mail.feature.launcher.di.featureLauncherModule
 import app.k9mail.legacy.ui.folder.uiFolderModule
 import com.fsck.k9.account.accountModule
 import com.fsck.k9.activity.activityModule
+import com.fsck.k9.activity.setup.setUpModule
 import com.fsck.k9.contacts.contactsModule
 import com.fsck.k9.ui.account.accountUiModule
 import com.fsck.k9.ui.base.uiBaseModule
-import com.fsck.k9.ui.changelog.changelogUiModule
 import com.fsck.k9.ui.choosefolder.chooseFolderUiModule
 import com.fsck.k9.ui.compose.composeModule
 import com.fsck.k9.ui.endtoend.endToEndUiModule
@@ -22,6 +22,7 @@ import com.fsck.k9.ui.messageview.messageViewUiModule
 import com.fsck.k9.ui.settings.settingsUiModule
 import com.fsck.k9.ui.uiModule
 import com.fsck.k9.view.viewModule
+import net.thunderbird.feature.changelog.internal.changelogUiModule
 
 val legacyUiModules = listOf(
     featureAccountOAuthModule,
@@ -46,4 +47,5 @@ val legacyUiModules = listOf(
     messageViewUiModule,
     identityUiModule,
     featureLauncherModule,
+    setUpModule,
 )

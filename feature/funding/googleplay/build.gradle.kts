@@ -20,7 +20,7 @@ dependencies {
     implementation(projects.core.android.common)
     implementation(projects.core.outcome)
     implementation(projects.core.logging.api)
-    implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.core.ui.compose.common)
 
     implementation(libs.android.billing)
     implementation(libs.android.billing.ktx)
@@ -32,6 +32,7 @@ dependencies {
 
     testImplementation(libs.androidx.lifecycle.runtime.testing)
     testImplementation(libs.androidx.fragment.testing)
+    testImplementation(libs.mockito.kotlin)
 }
 
 codeCoverage {

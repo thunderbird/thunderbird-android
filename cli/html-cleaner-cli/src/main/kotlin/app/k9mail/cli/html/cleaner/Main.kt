@@ -13,7 +13,6 @@ import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.inputStream
 import java.io.File
 import okio.buffer
-import okio.sink
 import okio.source
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -66,9 +65,7 @@ class HtmlCleaner : CliktCommand() {
     }
 
     private fun File.writeOutput(data: String) {
-        sink().buffer().use {
-            it.writeUtf8(data)
-        }
+        writeText(data)
     }
 }
 

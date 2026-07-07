@@ -8,11 +8,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 import kotlin.random.Random
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemAccountIndicator
@@ -159,7 +159,7 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             subject = "The subject",
             excerpt = "",
             hasAttachments = true,
-            threadCount = Random.nextInt(2, 100),
+            threadCount = Random.nextInt(from = 2, until = 100),
             selected = false,
             receivedAt = "12:34",
             maxExcerptLines = 0,
@@ -170,9 +170,9 @@ private class ReadMessageItemPrevParamCol : CollectionPreviewParameterProvider<M
             previewName = "Long excerpt five lines",
             sender = "Sender Name",
             subject = "The subject",
-            excerpt = LoremIpsum(words = 100).values.joinToString { it.replace("\n", "") },
+            excerpt = LoremIpsum(words = 100).values.joinToString { it.replace(oldValue = "\n", newValue = "") },
             hasAttachments = true,
-            threadCount = Random.nextInt(2, 100),
+            threadCount = Random.nextInt(from = 2, until = 100),
             selected = false,
             receivedAt = "12:34",
             maxExcerptLines = 5,
@@ -192,6 +192,7 @@ private fun PreviewDefault(
             state = MessageItemUi(
                 state = MessageItemUi.State.Read,
                 id = "",
+                messageReference = "reference",
                 account = Account(id = AccountIdFactory.create(), color = params.accountColor),
                 senders = ComposedAddressUi(
                     displayName = params.sender,
@@ -225,7 +226,7 @@ private fun PreviewDefault(
             onLongClick = { },
             onAvatarClick = { },
             onFavouriteChange = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -240,6 +241,7 @@ private fun PreviewCompact(
             state = MessageItemUi(
                 state = MessageItemUi.State.Read,
                 id = "",
+                messageReference = "reference",
                 account = Account(id = AccountIdFactory.create(), color = params.accountColor),
                 senders = ComposedAddressUi(
                     displayName = params.sender,
@@ -273,7 +275,7 @@ private fun PreviewCompact(
             onLongClick = { },
             onAvatarClick = { },
             onFavouriteChange = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -288,6 +290,7 @@ private fun PreviewRelaxed(
             state = MessageItemUi(
                 state = MessageItemUi.State.Read,
                 id = "",
+                messageReference = "reference",
                 account = Account(id = AccountIdFactory.create(), color = params.accountColor),
                 senders = ComposedAddressUi(
                     displayName = params.sender,
@@ -321,7 +324,7 @@ private fun PreviewRelaxed(
             onLongClick = { },
             onAvatarClick = { },
             onFavouriteChange = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -336,6 +339,7 @@ private fun PreviewDefaultWithoutAccountIndicator(
             state = MessageItemUi(
                 state = MessageItemUi.State.Read,
                 id = "",
+                messageReference = "reference",
                 account = Account(id = AccountIdFactory.create(), color = params.accountColor),
                 senders = ComposedAddressUi(
                     displayName = params.sender,
@@ -369,7 +373,7 @@ private fun PreviewDefaultWithoutAccountIndicator(
             onLongClick = { },
             onAvatarClick = { },
             onFavouriteChange = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }

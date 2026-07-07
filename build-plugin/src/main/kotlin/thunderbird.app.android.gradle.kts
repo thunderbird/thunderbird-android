@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application")
-    id("thunderbird.quality.detekt.typed")
     id("net.thunderbird.gradle.plugin.quality.coverage")
-    id("thunderbird.quality.spotless")
+    id("net.thunderbird.gradle.plugin.quality.detekt")
+    id("net.thunderbird.gradle.plugin.quality.spotless")
 }
 
 android {
@@ -35,7 +35,8 @@ android {
         warningsAsErrors = false
         abortOnError = true
         checkDependencies = true
-        lintConfig = project.file("${project.rootProject.projectDir}/config/lint/lint.xml")
+        @Suppress("UnstableApiUsage")
+        lintConfig = isolated.rootProject.projectDirectory.file("config/lint/lint.xml").asFile
         checkReleaseBuilds = System.getenv("CI_CHECK_RELEASE_BUILDS")?.toBoolean() ?: true
     }
 
@@ -89,7 +90,15 @@ dependencies {
     implementation(platform(libs.kotlin.bom))
     implementation(platform(libs.koin.bom))
 
-    implementation(libs.bundles.shared.jvm.android.app)
+    implementation(libs.bundles.shared.android.app)
 
-    testImplementation(libs.bundles.shared.jvm.test)
+    testImplementation(libs.bundles.shared.android.app.test)
+}
+
+tasks.register("testsOnCi") {
+    dependsOn(
+        tasks.withType<Test>().matching {
+            it.name != "testReleaseUnitTest"
+        }
+    )
 }

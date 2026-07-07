@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_screen_title">Skrivni zaslon nastavitev za razhroščevanje</string>
+    <string name="debug_settings_notifications_loading">Nalaganje …</string>
+    <string name="debug_settings_notifications_trigger_notification">Sproži obvestilo</string>
+    <string name="debug_settings_notifications_single_mail_sender">Pošiljatelj</string>
+    <string name="debug_settings_notifications_single_mail_subject">Zadeva</string>
+    <string name="debug_settings_notifications_single_mail_summary">Povzetek</string>
+    <string name="debug_settings_notifications_single_mail_preview">Predogled</string>
+    <string name="debug_settings_notifications_common_notification_information">Splošni podatki o obvestilih</string>
+    <string name="debug_settings_notifications_in_app_notification">Obvestilo v programu</string>
+    <string name="debug_settings_notifications_title">Obvestila</string>
+    <string name="debug_settings_notifications_system_notification">Sistemsko obvestilo</string>
+    <string name="debug_settings_notifications_preparing_notification">Pripravljanje obvestil %1$s</string>
+    <string name="debug_settings_notification_status_log">Dnevnik stanja obvestil</string>
+    <string name="debug_settings_notifications_status">"Stanje: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Počisti dnevnik stanja</string>
+    <string name="debug_settings_feature_flag_title">Oznake značilnosti</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Neshranjene spremembe</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Imate neshranjene spremembe. Ali res želite zapustiti stran?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Ostani</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Zapusti</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Obnovi privzete vrednosti</string>
+    <string name="debug_settings_feature_flag_apply_changes">Uporabi spremembe</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"preglašeno; "</string>
+    <string name="debug_settings_feature_flag_default_value">privzeta vrednost: %1$b</string>
 </resources>

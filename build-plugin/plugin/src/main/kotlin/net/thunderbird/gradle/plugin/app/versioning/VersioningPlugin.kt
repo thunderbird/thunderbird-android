@@ -74,5 +74,3 @@ class VersioningPlugin : Plugin<Project> {
         if (it.isLowerCase()) it.titlecase() else it.toString()
     }
 }
-
-

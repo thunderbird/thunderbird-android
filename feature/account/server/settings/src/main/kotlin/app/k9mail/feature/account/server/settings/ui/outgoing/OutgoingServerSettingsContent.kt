@@ -7,13 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
+import androidx.compose.ui.platform.testTag
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Event
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
 import app.k9mail.feature.account.server.settings.ui.outgoing.content.outgoingFormItems
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun OutgoingServerSettingsContent(
@@ -25,15 +25,14 @@ internal fun OutgoingServerSettingsContent(
     val resources = LocalResources.current
 
     ResponsiveWidthContainer(
-        modifier = Modifier
-            .testTagAsResourceId("OutgoingServerSettingsContent")
+        modifier = Modifier.testTag("OutgoingServerSettingsContent")
             .then(modifier),
     ) { contentPadding ->
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = contentPadding,
             horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         ) {
             outgoingFormItems(
                 mode = mode,

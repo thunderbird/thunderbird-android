@@ -1,2 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="funding_googleplay_contribution_list_empty_title">현재는 앱 내 후원을 이용할 수 없습니다.</string>
+    <string name="funding_googleplay_contribution_title">Thunderbird 지원</string>
+    <string name="funding_googleplay_contribution_header_title">Thunderbird 지원</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">결제 처리 중…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">취소</string>
+    <string name="funding_googleplay_contribution_error_show_more">세부 정보 더 보기</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">오류 무시</string>
+    <string name="funding_googleplay_contribution_error_unknown">알 수 없는 오류</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">결제에 실패했습니다.</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">현재 후원을 진행할 수 없습니다.</string>
+    <string name="funding_googleplay_contribution_reminder_title">Thunderbird 지원</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird는 자유 및 오픈 소스입니다.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">저희는 광고를 보여주지 않습니다.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">저희는 사용자의 데이터를 팔지 않습니다.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">저희는 여러분같은 사용자의 후원으로만 운영됩니다.</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">네</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">나중에</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">재시도</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">현재 결제할 수 없음</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">이용 불가</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">후원은 기부금 세액공제 대상에 해당하지 않습니다.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Thunderbird를 지원하는 더 많은 방법을 알아보려면 <xliff:g id="link_text">%s</xliff:g>에 방문하세요.</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">결제 진행</string>
+</resources>

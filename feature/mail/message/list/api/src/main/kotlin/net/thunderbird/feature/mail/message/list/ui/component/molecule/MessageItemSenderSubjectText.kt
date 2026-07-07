@@ -8,10 +8,10 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleSmall
 import net.thunderbird.feature.mail.message.list.ui.state.ComposedAddressStyle
 import net.thunderbird.feature.mail.message.list.ui.state.ComposedAddressUi
 
@@ -88,7 +88,7 @@ private fun styledSenderOrSubject(
     append(text)
     when {
         forceRegularFontWeight -> {
-            addStyle(SpanStyle(fontWeight = FontWeight.Normal), 0, text.length)
+            addStyle(style = SpanStyle(fontWeight = FontWeight.Normal), start = 0, end = text.length)
         }
 
         useSender -> {
@@ -101,15 +101,15 @@ private fun styledSenderOrSubject(
                     )
 
                     is ComposedAddressStyle.Bold -> addStyle(
-                        SpanStyle(fontWeight = FontWeight.Bold),
-                        style.start,
-                        style.end ?: text.length,
+                        style = SpanStyle(fontWeight = FontWeight.Bold),
+                        start = style.start,
+                        end = style.end ?: text.length,
                     )
 
                     is ComposedAddressStyle.Regular -> addStyle(
-                        SpanStyle(fontWeight = FontWeight.Normal),
-                        style.start,
-                        style.end ?: text.length,
+                        style = SpanStyle(fontWeight = FontWeight.Normal),
+                        start = style.start,
+                        end = style.end ?: text.length,
                     )
                 }
             }

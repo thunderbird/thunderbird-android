@@ -175,37 +175,64 @@ The merge process enables various benefits, including:
 - Git tags are retained in the git log.
 - Files/code that is unique per branch can remain that way (e.g. notes files such as changelog_master.xml, version codes).
 
-The following steps are taken when merging main into beta:
+**The following steps are taken when merging main into beta:**
 
 1. Lock the main branch with the 'CLOSED TREE (main)' ruleset
 2. Send a message to the #tb-mobile-dev:mozilla.org matrix channel to let them know:
+   - You will be performing the merge from main into beta
+   - The main branch is locked and cannot be changed during the merge
+   - You will let them know when the merge is complete and main is re-opened
+3. Clone thunderbird-android into three working directories:
+   - `merge_beta` - where you'll perform the merge; check out the `beta` branch
+   - `orig_main` - reference copy on the `main` branch
+   - `orig_beta` - reference copy on the `beta` branch
+4. From `merge_beta`, run `scripts/ci/merges/do_merge.sh beta`
+5. Handle merge conflicts if there are any:
+   - See conflicting files with `git status`
+   - Search for `<<<<` to find conflicts
+   - Fix conflicts
+   - `git add <file>` each fixed file
+   - When all files have been fixed and added, run `git merge --continue`
+   - Tip: use the `orig_main` and `orig_beta` repos to diff conflicting files, e.g. `vimdiff "${orig_main}/${f}" "${orig_beta}/${f}"`
+6. Review merge results and ensure correctness:
+   - Review the changes to `app-thunderbird/build.gradle.kts`, `app-k9mail/build.gradle.kts`, and release note files
+   - Diff the merge commit with `git diff HEAD~1 HEAD --name-only` and sanity check the files that changed
+   - Diff main vs the new beta with `diff -Naur --exclude=".git" --exclude="images" "${orig_main}" "${merge_beta}"`
+     - Note: Ensure the metadata symlink is the same on each repo to ensure proper diff
+7. Push the merge (`git push`)
+8. Update milestones (must be done before version increment in main)
+   - Open a new milestone for the new version
+   - Close the oldest milestone
+   - There should always be 3 milestones open (main, beta, release)
+9. Submit a pull request that increments the version name in main (e.g. https://github.com/thunderbird/thunderbird-android/pull/11034)
+10. Once the version increment is merged into main, unlock the branch
+11. Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion and that main is re-opened for the new version (e.g. 21.0)
 
-- You will be performing the merge from main into beta
-- The main branch is locked and cannot be changed during the merge
-- You will let them know when the merge is complete and main is re-opened
-
-3. Review merge results and ensure correctness
-4. Push the merge
-5. Update milestones (must be done before version increment in main)
-
-- Open a new milestone for the new version
-- Close the oldest milestone
-- There should always be 3 milestones open (main, beta, release)
-
-6. Submit a pull request that increments the version in main
-7. Once the version increment is merged into main, unlock the branch
-8. Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion and that main is re-opened
-
-The following steps are taken when merging beta into release:
+**The following steps are taken when merging beta into release:**
 
 1. Send a message to the #tb-mobile-dev:mozilla.org matrix channel to let them know:
-
-- You will be performing the merge from beta into release
-- You will let them know when the merge is complete
-
-2. Review merge results and ensure correctness
-3. Push the merge
-4. Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion
+   - You will be performing the merge from beta into release
+   - You will let them know when the merge is complete
+2. Clone thunderbird-android into three working directories:
+   - `merge_release` - where you'll perform the merge; check out the `release` branch
+   - `orig_beta` - reference copy on the `beta` branch
+   - `orig_release` - reference copy on the `release` branch
+3. From `merge_release`, run `scripts/ci/merges/do_merge.sh release`
+4. Handle merge conflicts if there are any:
+   - See conflicting files with `git status`
+   - Search for `<<<<` to find conflicts
+   - Fix conflicts
+   - `git add <file>` each fixed file
+   - When all files have been fixed and added, run `git merge --continue`
+   - Tip: use the `orig_beta` and `orig_release` repos to diff conflicting files, e.g. `vimdiff "${orig_beta}/${f}" "${orig_release}/${f}"`
+5. Review merge results and ensure correctness:
+   - Review the changes to `app-thunderbird/build.gradle.kts`, `app-k9mail/build.gradle.kts`, and release note files
+   - Ensure `app-k9mail/src/main/res/raw/changelog_master.xml` does not include any beta notes
+   - Diff the merge commit with `git diff HEAD~1 HEAD --name-only` and sanity check the files that changed
+   - Diff beta vs the new release with `diff -Naur --exclude=".git" --exclude="images" "${orig_beta}" "${merge_release}"`
+     - Note: Ensure the metadata symlink is the same on each repo to ensure proper diff
+6. Push the merge (`git push`)
+7. Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion
 
 Merges are performed with the `do_merge.sh` script.
 
@@ -230,7 +257,7 @@ The app-k9mail/src/main/res/raw/changelog_master.xml should not include any beta
 ## Releases
 
 Releases for both K-9 and Thunderbird for Android are automated with github actions.
-Daily builds are scheduled with the [Daily Builds](https://github.com/thunderbird/thunderbird-android/actions/workflows/daily_builds.yml) action and all builds are performed by the [Shippable Build & Signing](https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml) action.
+Daily builds are scheduled with the [Daily Builds](https://github.com/thunderbird/thunderbird-android/actions/workflows/build-daily.yml) action and all builds are performed by the [Shippable Build & Signing](https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml) action.
 
 For the historical manual release process, see [Releasing](HISTORICAL_RELEASE.md).
 

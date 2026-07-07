@@ -1,215 +1,85 @@
 package net.thunderbird.feature.funding.googleplay.ui.contribution
 
 import androidx.lifecycle.viewModelScope
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
-import net.thunderbird.core.outcome.handle
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
-import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.UseCase
-import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
-import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
-import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Effect
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.Event
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.State
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.ViewModel
+import net.thunderbird.feature.funding.googleplay.ui.contribution.list.ContributionListSliceContract
+import net.thunderbird.feature.funding.googleplay.ui.contribution.purchase.PurchaseSliceContract
 
 @Suppress("TooManyFunctions")
 internal class ContributionViewModel(
-    private val getAvailableContributions: UseCase.GetAvailableContributions,
+    listSliceFactory: ContributionListSliceContract.Slice.Factory,
+    purchaseSliceFactory: PurchaseSliceContract.Slice.Factory,
     private val repository: FundingDomainContract.ContributionRepository,
+    private val logger: Logger,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState),
     ViewModel {
 
+    private val listSlice = listSliceFactory.create(viewModelScope)
+    private val purchaseSlice = purchaseSliceFactory.create(viewModelScope)
+
+    override val listState = listSlice.state
+    override val purchaseState = purchaseSlice.state
+
     init {
-        viewModelScope.launch {
-            loadAvailableContributions()
-        }
-
-        viewModelScope.launch {
-            repository.purchasedContribution.collect { result ->
-                result.handle(
-                    onSuccess = { purchasedContribution ->
-                        updateState { state ->
-                            state.copy(
-                                listState = state.listState.copy(
-                                    isLoading = false,
-                                ),
-                                purchasedContribution = purchasedContribution,
-                                showContributionList = purchasedContribution == null,
-                                purchaseError = null,
-                            )
-                        }
-                    },
-                    onFailure = {
-                        updateState { state ->
-                            state.copy(
-                                listState = state.listState.copy(
-                                    isLoading = false,
-                                ),
-                                purchasedContribution = null,
-                                showContributionList = true,
-                                purchaseError = it,
-                            )
-                        }
-                    },
-                )
-            }
-        }
-    }
-
-    private suspend fun loadAvailableContributions() {
-        getAvailableContributions().collect { outcome ->
-            outcome.handle(
-                onSuccess = { data ->
-                    updateState { state ->
-                        val selectedContribution = selectContribution(data)
-
-                        state.copy(
-                            listState = state.listState.copy(
-                                oneTimeContributions = data.oneTimeContributions.toImmutableList(),
-                                recurringContributions = data.recurringContributions.toImmutableList(),
-                                selectedContribution = selectedContribution,
-                                isRecurringContributionSelected = selectedContribution is RecurringContribution,
-                                isLoading = false,
-                            ),
-                            purchasedContribution = data.purchasedContribution,
-                            showContributionList = data.purchasedContribution == null,
-                            purchaseError = null,
-                        )
-                    }
-                },
-                onFailure = {
-                    updateState { state ->
-                        state.copy(
-                            listState = state.listState.copy(
-                                isLoading = false,
-                                error = it,
-                            ),
-                        )
-                    }
-                },
-            )
-        }
-    }
-
-    private fun selectContribution(data: AvailableContributions): Contribution? {
-        val hasSelectedContribution = state.value.listState.selectedContribution != null &&
-            (
-                data.oneTimeContributions.contains(state.value.listState.selectedContribution) ||
-                    data.recurringContributions.contains(state.value.listState.selectedContribution)
-                )
-
-        return if (hasSelectedContribution) {
-            state.value.listState.selectedContribution
-        } else {
-            if (state.value.listState.isRecurringContributionSelected) {
-                data.recurringContributions.getSecondLowestOrNull()
-            } else {
-                data.oneTimeContributions.getSecondLowestOrNull()
-            }
-        }
+        observeListEffects()
+        observePurchaseEffects()
     }
 
     override fun event(event: Event) {
         when (event) {
-            Event.OnOneTimeContributionSelected -> onOneTimeContributionSelected()
-            Event.OnRecurringContributionSelected -> onRecurringContributionSelected()
-            is Event.OnContributionItemClicked -> onContributionItemClicked(event.item)
-            is Event.OnPurchaseClicked -> onPurchaseClicked()
-            is Event.OnManagePurchaseClicked -> onManagePurchaseClicked(event.contribution)
-            Event.OnShowContributionListClicked -> onShowContributionListClicked()
-            Event.OnDismissPurchaseErrorClicked -> updateState {
-                it.copy(
-                    purchaseError = null,
-                )
-            }
-
-            Event.OnRetryClicked -> onRetryClicked()
+            is Event.List -> listSlice.event(event.event)
+            is Event.Purchase -> purchaseSlice.event(event.event)
+            Event.ShowContributionListClicked -> onShowContributionListClicked()
         }
     }
 
-    private fun onOneTimeContributionSelected() {
-        updateState {
-            it.copy(
-                listState = it.listState.copy(
-                    isRecurringContributionSelected = false,
-                    selectedContribution = it.listState.oneTimeContributions.getSecondLowestOrNull(),
-                ),
-                showContributionList = true,
-            )
-        }
-    }
-
-    private fun onRecurringContributionSelected() {
-        updateState {
-            it.copy(
-                listState = it.listState.copy(
-                    isRecurringContributionSelected = true,
-                    selectedContribution = it.listState.recurringContributions.getSecondLowestOrNull(),
-                ),
-                showContributionList = true,
-            )
-        }
-    }
-
-    private fun List<Contribution>.getSecondLowestOrNull(): Contribution? {
-        return when {
-            this.size > 1 -> this.sortedBy { it.price }[1]
-            this.size == 1 -> this[0]
-            else -> null
-        }
-    }
-
-    private fun onContributionItemClicked(item: Contribution) {
-        updateState {
-            it.copy(
-                listState = it.listState.copy(
-                    selectedContribution = item,
-                ),
-            )
-        }
-    }
-
-    private fun onPurchaseClicked() {
-        val selectedContribution = state.value.listState.selectedContribution ?: return
-
-        updateState {
-            it.copy(
-                listState = it.listState.copy(
-                    isLoading = true,
-                ),
-            )
-        }
-        emitEffect(
-            Effect.PurchaseContribution(
-                startPurchaseFlow = {
-                    viewModelScope.launch {
-                        repository.purchaseContribution(selectedContribution).handle(
-                            onSuccess = {
-                                // we need to wait for the callback to be called
-                            },
-                            onFailure = { error ->
-                                updateState { state ->
-                                    state.copy(
-                                        listState = state.listState.copy(
-                                            isLoading = false,
-                                        ),
-                                        purchaseError = error,
-                                    )
-                                }
-                            },
-                        )
+    private fun observeListEffects() {
+        viewModelScope.launch {
+            listSlice.effect.collect { effect ->
+                when (effect) {
+                    is ContributionListSliceContract.Effect.SelectionChanged -> {
+                        logger.debug { "Contribution selection changed: ${effect.contributionId}" }
+                        updateState { state ->
+                            state.copy(
+                                selectedContributionId = effect.contributionId,
+                            )
+                        }
                     }
-                },
-            ),
-        )
+                }
+            }
+        }
     }
 
-    private fun onManagePurchaseClicked(contribution: Contribution) {
-        emitEffect(Effect.ManageSubscription(contribution.id))
+    private fun observePurchaseEffects() {
+        viewModelScope.launch {
+            purchaseSlice.effect.collect { effect ->
+                when (effect) {
+                    is PurchaseSliceContract.Effect.Purchased -> {
+                        logger.debug { "Contribution purchased: ${effect.contributionId}" }
+                        updateState { state ->
+                            state.copy(
+                                showContributionList = effect.contributionId == null,
+                            )
+                        }
+                    }
+
+                    is PurchaseSliceContract.Effect.ManageSubscription -> {
+                        logger.debug {
+                            "Manage subscription effect received for contribution: ${effect.contributionId}"
+                        }
+                        emitEffect(Effect.ManageSubscription(effect.contributionId))
+                    }
+                }
+            }
+        }
     }
 
     private fun onShowContributionListClicked() {
@@ -217,20 +87,6 @@ internal class ContributionViewModel(
             it.copy(
                 showContributionList = true,
             )
-        }
-    }
-
-    private fun onRetryClicked() {
-        updateState {
-            it.copy(
-                listState = it.listState.copy(
-                    isLoading = true,
-                    error = null,
-                ),
-            )
-        }
-        viewModelScope.launch {
-            loadAvailableContributions()
         }
     }
 

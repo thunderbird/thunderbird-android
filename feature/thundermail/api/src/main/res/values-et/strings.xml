@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="feature_thundermail_button_panel_sign_in">Logi sisse Thundermaili teenusega</string>
+    <string name="feature_thundermail_button_panel_scan_qr_code">Skaneeri QR-koodi</string>
+    <string name="feature_thundermail_button_panel_sign_in_or">või</string>
+</resources>

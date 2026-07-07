@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="changelog_title">Changelog</string>
+    <string name="changelog_latest_label_text">LATEST</string>
+    <string name="changelog_show_recent_changes">Show recent changes when app was updated</string>
+    <string name="changelog_type_new_text">NEW</string>
+    <string name="changelog_type_changed_text">CHANGED</string>
+    <string name="changelog_type_fixed_text">FIXED</string>
+</resources>

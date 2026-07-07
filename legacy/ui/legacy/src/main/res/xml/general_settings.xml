@@ -192,9 +192,12 @@
 
             </PreferenceScreen>
 
-            <CheckBoxPreference
+            <ListPreference
+                android:dialogTitle="@string/animations_title"
+                android:entries="@array/animation_entries"
+                android:entryValues="@array/animation_values"
                 android:key="animations"
-                android:summary="@string/animations_summary"
+                app:useSimpleSummaryProvider="true"
                 android:title="@string/animations_title"
                 />
 
@@ -503,6 +506,12 @@
             android:key="notification_summary_delete"
             android:title="@string/notification_summary_delete_title"
             android:summary="@string/notification_summary_delete_summary"
+            />
+
+        <SwitchPreferenceCompat
+            android:key="notification_show_contact_picture"
+            android:title="@string/notification_show_contact_picture_title"
+            android:summary="@string/notification_show_contact_picture_summary"
             />
 
     </PreferenceScreen>

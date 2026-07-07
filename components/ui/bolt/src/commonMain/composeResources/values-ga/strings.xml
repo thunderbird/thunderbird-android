@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bolt_molecule_error_view_button_retry">Bain triail eile as</string>
+    <string name="bolt_atom_password_textfield_hide_password">Folaigh pasfhocal</string>
+    <string name="bolt_molecule_email_address_input_label">Seoladh ríomhphoist</string>
+    <string name="bolt_molecule_password_input_label">Pasfhocal</string>
+    <string name="bolt_atom_password_textfield_show_password">Taispeáin pasfhocal</string>
+    <string name="bolt_molecule_swipeable_row_start_to_end_accessibility_description">Ar dheis: %1$s</string>
+    <string name="bolt_molecule_swipeable_row_end_to_start_accessibility_description">Ar chlé: %1$s</string>
+</resources>

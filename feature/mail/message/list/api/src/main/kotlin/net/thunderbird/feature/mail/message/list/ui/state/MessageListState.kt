@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 
 /**
@@ -72,6 +73,26 @@ sealed interface MessageListState {
         is SearchingMessages -> copy(preferences = preferences.transform())
         is SelectingMessages -> copy(preferences = preferences.transform())
         is WarmingUp -> copy(preferences = preferences?.transform())
+    }
+
+    /**
+     * Creates a copy of the current state with an updated list of [messages], preserving all other
+     * properties.
+     *
+     * @param transform A lambda function that receives the current [ImmutableList] of [MessageItemUi]
+     * and returns a new, transformed list.
+     * @return A new [MessageListState] instance of the same type as the original, containing the
+     * transformed messages.
+     */
+    fun mapMessages(transform: (MessageItemUi) -> MessageItemUi): MessageListState {
+        val messages = messages.map(transform).toImmutableList()
+        return when (this) {
+            is LoadedMessages -> copy(messages = messages)
+            is LoadingMessages -> copy(messages = messages)
+            is SearchingMessages -> copy(messages = messages)
+            is SelectingMessages -> copy(messages = messages)
+            is WarmingUp -> copy(messages = messages)
+        }
     }
 
     /**

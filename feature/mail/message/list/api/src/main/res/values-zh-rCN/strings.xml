@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">选择</string>
     <string name="swipe_action_deselect">取消选择</string>
@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">标记为垃圾邮件</string>
     <string name="swipe_action_move">移动…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已选择</string>
+    <string name="sort_by">排序依据…</string>
+    <string name="sort_by_date_asc">日期（从旧到新）</string>
+    <string name="sort_by_date_desc">日期（从新到旧）</string>
+    <string name="sort_by_arrival_asc">到达时间（从旧到新）</string>
+    <string name="sort_by_arrival_desc">到达时间（从新到旧）</string>
+    <string name="sort_by_subject_asc">主题（A-Z）</string>
+    <string name="sort_by_subject_desc">主题（Z-A）</string>
+    <string name="sort_by_sender_asc">发件人（A-Z）</string>
+    <string name="sort_by_sender_desc">发件人（Z-A）</string>
+    <string name="sort_by_flag_asc">已加星标在前</string>
+    <string name="sort_by_flag_desc">未加星标在前</string>
+    <string name="sort_by_unread_asc">未读在前</string>
+    <string name="sort_by_unread_desc">已读在前</string>
+    <string name="sort_by_attach_asc">带附件在前</string>
+    <string name="sort_by_attach_desc">无附件在前</string>
 </resources>

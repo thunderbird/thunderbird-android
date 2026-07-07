@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ViewModelForwarding:AccountAutoDiscoveryContent.kt:AccountOAuthView( onOAuthResult = { result -&gt; onEvent(Event.OnOAuthResult(result)) }, viewModel = oAuthViewModel, isEnabled = isAutoDiscoverySettingsTrusted || isConfigurationApproved, )</ID>
+  </CurrentIssues>
+</SmellBaseline>

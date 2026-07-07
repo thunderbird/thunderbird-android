@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">選択</string>
     <string name="swipe_action_deselect">選択を解除</string>
@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">迷惑メール</string>
     <string name="swipe_action_move">移動…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 通を選択中</string>
+    <string name="sort_by">並べ替え…</string>
+    <string name="sort_by_date_asc">日付 (古い順)</string>
+    <string name="sort_by_date_desc">日付 (新しい順)</string>
+    <string name="sort_by_arrival_asc">受信 (古い順)</string>
+    <string name="sort_by_arrival_desc">受信 (新しい順)</string>
+    <string name="sort_by_subject_asc">件名 (A-Z)</string>
+    <string name="sort_by_subject_desc">件名 (Z-A)</string>
+    <string name="sort_by_sender_asc">差出人 (A-Z)</string>
+    <string name="sort_by_sender_desc">差出人 (Z-A)</string>
+    <string name="sort_by_flag_asc">スターあり</string>
+    <string name="sort_by_flag_desc">スターなし</string>
+    <string name="sort_by_unread_asc">未読</string>
+    <string name="sort_by_unread_desc">既読</string>
+    <string name="sort_by_attach_asc">添付あり</string>
+    <string name="sort_by_attach_desc">添付なし</string>
 </resources>

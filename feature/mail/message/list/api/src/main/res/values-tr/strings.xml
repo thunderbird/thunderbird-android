@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Seç</string>
     <string name="swipe_action_deselect">Seçimi kaldır</string>
@@ -8,9 +8,10 @@
     <string name="swipe_action_remove_star">Yıldızı kaldır</string>
     <string name="swipe_action_archive">Arşivle</string>
     <string name="swipe_action_archive_folder_not_set">Arşiv klasörünü ayarla</string>
-    <string name="swipe_action_change_swipe_gestures">Kaydırma\nHareketlerini Değiştir</string>
+    <string name="swipe_action_change_swipe_gestures">Kaydırma\nhareketlerini değiştir</string>
     <string name="swipe_action_delete">Sil</string>
-    <string name="swipe_action_spam">Gereksiz</string>
+    <string name="swipe_action_spam">Spam</string>
     <string name="swipe_action_move">Taşı…</string>
-    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> tane seçildi</string>
+    <string name="actionbar_selected">%d tane seçildi</string>
+    <string name="sort_by">Sırala…</string>
 </resources>

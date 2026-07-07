@@ -61,7 +61,10 @@ internal class AccountCreator(
 
         newAccount.avatar = AvatarDto(
             avatarType = AvatarTypeDto.MONOGRAM,
-            avatarMonogram = avatarMonogramCreator.create(account.options.accountName, account.emailAddress),
+            avatarMonogram = avatarMonogramCreator.create(
+                name = account.options.accountName,
+                email = account.emailAddress,
+            ),
             avatarImageUri = null,
             avatarIconName = null,
         )
@@ -143,9 +146,11 @@ internal class AccountCreator(
             is SpecialFolderOption.None -> {
                 if (isAutomatic) SpecialFolderSelection.AUTOMATIC else SpecialFolderSelection.MANUAL
             }
+
             is SpecialFolderOption.Regular -> {
                 SpecialFolderSelection.MANUAL
             }
+
             is SpecialFolderOption.Special -> {
                 if (isAutomatic) SpecialFolderSelection.AUTOMATIC else SpecialFolderSelection.MANUAL
             }

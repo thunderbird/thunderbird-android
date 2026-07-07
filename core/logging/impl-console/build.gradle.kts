@@ -8,7 +8,6 @@ plugins {
 kotlin {
     android {
         namespace = "net.thunderbird.core.logging.console"
-        withHostTest {}
     }
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     applyDefaultHierarchyTemplate {
@@ -21,7 +20,7 @@ kotlin {
         }
     }
     sourceSets {
-        val commonJvmMain by getting
+        val commonJvmMain = getByName("commonJvmMain")
 
         commonMain.dependencies {
             implementation(projects.core.logging.api)

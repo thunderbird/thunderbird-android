@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thundermail_redirecting">Omleiden naar Thundermail…</string>
+    <string name="thundermail_something_went_wrong">Er ging wat mis</string>
+    <string name="thundermail_browser_is_not_available">Browser is niet beschikbaar. Controleer uw apparaatconfiguratie.</string>
+    <string name="thundermail_operation_was_canceled">Bewerking is geannuleerd</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Onbekende fout. Overweeg om dit te rapporteren.</string>
+</resources>

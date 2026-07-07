@@ -69,7 +69,12 @@ class Pop3Backend(
     }
 
     override fun deleteMessages(folderServerId: String, messageServerIds: List<String>) {
-        commandSetFlag.setFlag(folderServerId, messageServerIds, Flag.DELETED, true)
+        commandSetFlag.setFlag(
+            folderServerId = folderServerId,
+            messageServerIds = messageServerIds,
+            flag = Flag.DELETED,
+            newState = true,
+        )
     }
 
     override fun deleteAllMessages(folderServerId: String) {

@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ForbiddenComment:CommandSync.kt:CommandSync$// FIXME: Add sort parameter</ID>
+    <ID>ReturnCount:JmapAccountDiscovery.kt:JmapAccountDiscovery$fun discover: JmapDiscoveryResult</ID>
+    <ID>SwallowedException:JmapAccountDiscovery.kt:JmapAccountDiscovery$e: EndpointNotFoundException</ID>
+    <ID>SwallowedException:JmapAccountDiscovery.kt:JmapAccountDiscovery$e: UnauthorizedException</ID>
+    <ID>SwallowedException:JmapAccountDiscovery.kt:JmapAccountDiscovery$e: UnknownHostException</ID>
+    <ID>TooGenericExceptionCaught:CommandSync.kt:CommandSync$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:JmapAccountDiscovery.kt:JmapAccountDiscovery$e: Exception</ID>
+    <ID>TooManyFunctions:CommandSync.kt:CommandSync</ID>
+    <ID>TooManyFunctions:JmapBackend.kt:JmapBackend : Backend</ID>
+  </CurrentIssues>
+</SmellBaseline>

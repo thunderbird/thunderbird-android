@@ -4,8 +4,6 @@ plugins {
 
 dependencies {
     api(libs.androidx.recyclerview)
-
-    implementation(libs.androidx.annotation)
 }
 
 android {

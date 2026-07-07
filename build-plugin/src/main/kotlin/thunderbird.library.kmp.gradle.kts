@@ -2,9 +2,9 @@ plugins {
     id("com.android.kotlin.multiplatform.library")
     id("org.jetbrains.kotlin.multiplatform")
     id("org.jetbrains.kotlin.plugin.serialization")
-    id("thunderbird.quality.detekt.typed")
     id("net.thunderbird.gradle.plugin.quality.coverage")
-    id("thunderbird.quality.spotless")
+    id("net.thunderbird.gradle.plugin.quality.detekt")
+    id("net.thunderbird.gradle.plugin.quality.spotless")
 }
 
 kotlin {
@@ -15,6 +15,9 @@ kotlin {
     android {
         compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
         minSdk = ThunderbirdProjectConfig.Android.sdkMin
+
+        withHostTest { }
+
         compilerOptions {
             jvmTarget.set(ThunderbirdProjectConfig.Compiler.jvmTarget)
         }
@@ -40,7 +43,25 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.bundles.shared.kmp.android)
         }
+
+        androidHostTest.dependencies {
+            implementation(libs.bundles.shared.kmp.android.test)
+        }
+
+        jvmMain.dependencies {
+            implementation(libs.bundles.shared.kmp.jvm)
+        }
+
+        jvmTest.dependencies {
+            implementation(libs.bundles.shared.kmp.jvm.test)
+        }
     }
 }
 
 configureKotlinJavaCompatibility()
+
+tasks.register("testsOnCi") {
+    dependsOn(
+        tasks.withType<Test>()
+    )
+}

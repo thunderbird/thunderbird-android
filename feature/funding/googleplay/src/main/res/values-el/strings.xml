@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_tfa_onetime_xl_description">Η υποστήριξή σας είναι πραγματικά εμπνευσμένη! Χάρη στην ουσιαστική συνεισφορά σας, είμαστε σε θέση να διευρύνουμε τα όρια, να καινοτομήσουμε και να κάνουμε σημαντικά βήματα προς την επίτευξη των στόχων μας.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_l_description">Είστε ένας σημαντικός λόγος που μπορούμε να κάνουμε αυτό που κάνουμε! Η γενναιοδωρία σας μας βοηθά να φτάσουμε σε νέα ορόσημα.</string>
     <string name="funding_googleplay_contribution_reminder_title">Υποστηρίξτε το Thunderbird</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Επεξεργασία αγοράς…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Ακύρωση</string>
 </resources>
