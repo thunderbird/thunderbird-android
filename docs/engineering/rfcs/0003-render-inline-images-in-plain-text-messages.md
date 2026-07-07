@@ -27,11 +27,12 @@ multipart/mixed
 There is no HTML part and no `cid:` reference. The sender intends that the image appear between the two text blocks.
 
 Currently, the app only inlines images that are referenced from an HTML body via `cid:` and have a matching
-`Content-ID`. An image like the one above satisfies neither condition, so it is shown solely as an attachment. The user
-sees an attachment card/entry instead of the picture the sender placed in the message.
+`Content-ID`. **That existing path should continue to work unchanged.** An image like the one above satisfies neither
+condition, so it is shown solely as an attachment. The user sees an attachment card/entry instead of the picture the
+sender placed in the message.
 
-Thunderbird Desktop displays this image inline by default. The two products diverging on a common, real-world message
-shape is a usability gap and the same message to look the same.
+Thunderbird Desktop displays this image inline by default. This divergence is a usability gap because the same message
+does not look the same across products.
 
 This is **not** a regression: the `cid:` inline path works correctly. It is a class of message that has never been
 supported on the app.
@@ -49,8 +50,8 @@ supported on the app.
 
 ## Proposal
 
-Render any images which contain the header `Content-Disposition: inline`, that a message places among its body parts
-inline, at its position, even when it has no `Content-ID`, and it is not referenced by any HTML.
+Render supported images that have `Content-Disposition: inline` at the position where the message places them among its
+body parts, even when the image has no `Content-ID` and is not referenced by any HTML.
 
 Concretely:
 
@@ -59,20 +60,20 @@ Concretely:
    images that contain the header `Content-Disposition: inline`; other media (PDF, video, ...) continue to be shown as a
    regular attachment because the message body cannot render them.
 
-2. Introduce an Android equivalent of the desktop's `mail.inline_attachments` preference. When enabled (the default),
-   images display inline as described. When disabled, behaviour escape hatch if they prefer a compact, attachment-only
-   view, and matches the control Desktop already exposes.
+2. **Keep existing `cid:` inline image rendering unchanged.** This RFC adds support for positional plain-text inline 
+   images; it must not reinterpret HTML `cid:` references or `multipart/related` resources.
 
-3. Following Desktop's rule, an inline image that has a filename is shown **both** in the body and as an attachment
-   chip (so it remains easy to find and save). An inline image with no filename is shown in the body only. This differs
-   from how Android currently hides `cid:` inline images from the attachment list; see Risks & Drawbacks.
+3. Treat inline images consistently in the user-facing attachment affordance. If an inline image has a filename, it is
+   shown in the body and remains discoverable in the attachment UI, regardless of whether it was referenced by `cid:` or
+   placed positionally. **An inline image with no filename is shown in the body only.**
 
-4. Scope to plain-text messages (no HTML alternative). The unambiguous, high-value case is a `multipart/mixed` (or
-   similar) message with no HTML body. Messages that contain both an HTML alternative and loose inline images are out of
-   scope for the first iteration; they are discussed in Open Questions.
+4. **Scope to plain-text messages with no HTML alternative.** The unambiguous, high-value case is a `multipart/mixed`
+   (or similar) message with no HTML body. Messages that contain both an HTML alternative and loose inline images are 
+   out of scope for the first iteration; see Non-goals.
 
-The decision requested from reviewers: **adopt Desktop-parity inline image display for plain-text messages, gated behind
-a default-on preference, with named images also listed as attachments.**
+The proposed decision is: **render standards-based positional inline images in plain-text messages, without adding a 
+user-visible setting, while keeping existing `cid:` rendering intact and presenting inline image attachments 
+consistently to users.**
 
 ## Alternatives Considered
 
