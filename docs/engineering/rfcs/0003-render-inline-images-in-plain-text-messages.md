@@ -79,8 +79,8 @@ consistently to users.**
 
 - **Strict, Apple-Mail-only heuristic.** Inline only images that exactly match the Apple Mail shape (explicit
   `Content-Disposition: inline`, sibling of text parts, no HTML). Lowest false-positive risk, but narrower than Desktop
-  and would still render some messages differently from desktop. **Rejected** in favour of Desktop parity, which the
-  preference makes safe to default on.
+  and would still render some standards-based messages differently from desktop. 
+  - **Rejected** in favour of handling the standards-based shape directly.
 
 - **Add a user-visible setting.** This would mirror Desktop's `mail.inline_attachments` preference and provide an 
   opt-out for users who prefer an attachment-only view. 
@@ -89,11 +89,12 @@ consistently to users.**
     correctly by default.
 
 - **Hide all inline images from the attachment list (body-only).** Consistent with how Android treats `cid:` inline
-  images today. **Rejected** because it removes the easy save affordance and diverges from Desktop, which lists named
-  inline images.  ***Note**: TfA supports long-press to save on inline images, but it isn't as explicit as on Desktop.*
+  images today. 
+  - **Rejected** because it removes the explicit save/discovery affordance. Thunderbird for Android supports
+    long-press save on inline images, but that is less visible than the attachment UI.
 
-- **Do nothing.** Leave these images as attachments. **Rejected:** It is a visible cross-product inconsistency on a
-  common message shape.
+- **Do nothing.** Leave these images as attachments. 
+  - **Rejected:** It is a visible cross-product inconsistency on a common message shape.
 
 ## Risks & Drawbacks
 
