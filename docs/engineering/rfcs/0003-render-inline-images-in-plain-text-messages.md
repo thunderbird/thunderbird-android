@@ -36,6 +36,17 @@ shape is a usability gap and the same message to look the same.
 This is **not** a regression: the `cid:` inline path works correctly. It is a class of message that has never been
 supported on the app.
 
+## Standards References
+
+- [RFC 2183, section 2.1](https://www.rfc-editor.org/rfc/rfc2183.html#section-2.1) defines `inline` as a disposition
+  for body parts intended to be displayed automatically.
+- [RFC 2046, section 5.1.3](https://www.rfc-editor.org/rfc/rfc2046.html#section-5.1.3) defines `multipart/mixed` as
+  ordered independent body parts.
+- [RFC 2392](https://www.rfc-editor.org/rfc/rfc2392.html) defines `cid:` URLs used by HTML bodies to reference MIME
+  parts. This is the existing inline-image path and is distinct from this positional plain-text case.
+- [RFC 2387](https://www.rfc-editor.org/rfc/rfc2387.html) defines `multipart/related`, which is relevant for HTML plus
+  related resources but is not the plain-text positional case covered by this RFC.
+
 ## Proposal
 
 Render any images which contain the header `Content-Disposition: inline`, that a message places among its body parts
