@@ -8,9 +8,8 @@
 
 Display images in the message body when a message carries them as positionally placed parts rather than `cid:`
 -referenced HTML images. Today these render only as attachments. This brings Thunderbird for Android in line with
-Thunderbird Desktop, which displays such images inline. The behaviour is gated behind a new preference (default on),
-mirroring Desktop's `mail.inline_attachments`. Additionally, this new behaviour must be secured under a feature flag
-(`enable_inline_images_positional_body_message`)
+Thunderbird Desktop, which displays such images inline. **This behaviour must be secured under a feature flag
+(`enable_inline_images_positional_body_message`) while it is being implemented and validated.**
 
 ## Motivation
 
@@ -71,9 +70,11 @@ a default-on preference, with named images also listed as attachments.**
   and would still render some messages differently from desktop. **Rejected** in favour of Desktop parity, which the
   preference makes safe to default on.
 
-- **Inline broadly with no preference.** Simpler (no settings surface), but removes the user's ability to opt out and is
-  a less faithful match to Desktop, which ships the toggle. **Rejected** because the toggle is cheap insurance against
-  the breadth occasionally inlining something a user considered an attachment.
+- **Add a user-visible setting.** This would mirror Desktop's `mail.inline_attachments` preference and provide an 
+  opt-out for users who prefer an attachment-only view. 
+  - **Rejected** because the sender explicitly marked these parts as inline, users should not need to reason about 
+    sender implementation details, and the app is moving away from adding settings for behaviour that should work 
+    correctly by default.
 
 - **Hide all inline images from the attachment list (body-only).** Consistent with how Android treats `cid:` inline
   images today. **Rejected** because it removes the easy save affordance and diverges from Desktop, which lists named
