@@ -99,12 +99,12 @@ consistently to users.**
 ## Risks & Drawbacks
 
 - **False positives.** Broad inlining may render something a sender or user thought of as an attachment in the body. The
-  default-on preference mitigates this: users who dislike it can turn it off. Scoping to plain-text-only further limits
-  exposure.
+  risk is limited by requiring `Content-Disposition: inline`, supported image types, and scoping the first iteration to
+  plain-text messages without an HTML alternative.
 
-- **Behavioural divergence within Android.** Existing `cid:` inline images are hidden from the attachment list; named
-  positional inline images will be listed. Two inline images could be treated differently in the list depending on how
-  they were authored. This matches Desktop's actual behaviour, but is an internal inconsistency worth noting.
+- **Attachment-list noise.** Named inline images, such as logos or email signatures, may appear in the attachment UI. 
+  This increases clarity for saving user-visible images but can add noise on small screens. **The UI should rely on the
+  existing attachment presentation rather than adding a separate inline-image setting.**
 
 - **Large images.** Inlining a multi-megabyte photo affects body rendering cost. The chosen rendering path loads the
   image lazily (it is not embedded in the HTML document), which keeps this in line with existing `cid:` images.
