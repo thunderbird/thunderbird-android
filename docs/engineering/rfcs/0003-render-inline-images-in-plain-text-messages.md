@@ -14,7 +14,7 @@ Thunderbird Desktop, which displays such images inline. **This behaviour must be
 ## Motivation
 
 Some senders attach images *inline* by position rather than by HTML reference. Apple Mail composing in plain text is a
-common producer of this standards-based message shape, but **the behaviour is not Apple-specific**. A representative 
+common producer of this standards-based message shape, but **the behaviour is not Apple-specific**. A representative
 message is a `multipart/mixed` whose children are, in order:
 
 ```
@@ -60,7 +60,7 @@ Concretely:
    images that contain the header `Content-Disposition: inline`; other media (PDF, video, ...) continue to be shown as a
    regular attachment because the message body cannot render them.
 
-2. **Keep existing `cid:` inline image rendering unchanged.** This RFC adds support for positional plain-text inline 
+2. **Keep existing `cid:` inline image rendering unchanged.** This RFC adds support for positional plain-text inline
    images; it must not reinterpret HTML `cid:` references or `multipart/related` resources.
 
 3. Treat inline images consistently in the user-facing attachment affordance. If an inline image has a filename, it is
@@ -68,32 +68,29 @@ Concretely:
    placed positionally. **An inline image with no filename is shown in the body only.**
 
 4. **Scope to plain-text messages with no HTML alternative.** The unambiguous, high-value case is a `multipart/mixed`
-   (or similar) message with no HTML body. Messages that contain both an HTML alternative and loose inline images are 
+   (or similar) message with no HTML body. Messages that contain both an HTML alternative and loose inline images are
    out of scope for the first iteration; see Non-goals.
 
-The proposed decision is: **render standards-based positional inline images in plain-text messages, without adding a 
-user-visible setting, while keeping existing `cid:` rendering intact and presenting inline image attachments 
+The proposed decision is: **render standards-based positional inline images in plain-text messages, without adding a
+user-visible setting, while keeping existing `cid:` rendering intact and presenting inline image attachments
 consistently to users.**
 
 ## Alternatives Considered
 
 - **Strict, Apple-Mail-only heuristic.** Inline only images that exactly match the Apple Mail shape (explicit
   `Content-Disposition: inline`, sibling of text parts, no HTML). Lowest false-positive risk, but narrower than Desktop
-  and would still render some standards-based messages differently from desktop. 
+  and would still render some standards-based messages differently from desktop.
   - **Rejected** in favour of handling the standards-based shape directly.
-
-- **Add a user-visible setting.** This would mirror Desktop's `mail.inline_attachments` preference and provide an 
-  opt-out for users who prefer an attachment-only view. 
-  - **Rejected** because the sender explicitly marked these parts as inline, users should not need to reason about 
-    sender implementation details, and the app is moving away from adding settings for behaviour that should work 
+- **Add a user-visible setting.** This would mirror Desktop's `mail.inline_attachments` preference and provide an
+  opt-out for users who prefer an attachment-only view.
+  - **Rejected** because the sender explicitly marked these parts as inline, users should not need to reason about
+    sender implementation details, and the app is moving away from adding settings for behaviour that should work
     correctly by default.
-
 - **Hide all inline images from the attachment list (body-only).** Consistent with how Android treats `cid:` inline
-  images today. 
+  images today.
   - **Rejected** because it removes the explicit save/discovery affordance. Thunderbird for Android supports
     long-press save on inline images, but that is less visible than the attachment UI.
-
-- **Do nothing.** Leave these images as attachments. 
+- **Do nothing.** Leave these images as attachments.
   - **Rejected:** It is a visible cross-product inconsistency on a common message shape.
 
 ## Risks & Drawbacks
@@ -102,7 +99,7 @@ consistently to users.**
   risk is limited by requiring `Content-Disposition: inline`, supported image types, and scoping the first iteration to
   plain-text messages without an HTML alternative.
 
-- **Attachment-list noise.** Named inline images, such as logos or email signatures, may appear in the attachment UI. 
+- **Attachment-list noise.** Named inline images, such as logos or email signatures, may appear in the attachment UI.
   This increases clarity for saving user-visible images but can add noise on small screens. **The UI should rely on the
   existing attachment presentation rather than adding a separate inline-image setting.**
 
@@ -115,13 +112,13 @@ consistently to users.**
   iteration. Appending them may duplicate content or expose tracking assets, so this requires real samples and a
   follow-up proposal.
 
-- **Nested under `multipart/alternative`.** Positional images nested inside an alternative are excluded. Alternatives 
+- **Nested under `multipart/alternative`.** Positional images nested inside an alternative are excluded. Alternatives
   are not content to render together; the renderer should pick the best supported alternative and ignore the others.
 
 - **Reply/quote/forward.** This RFC only changes the message display. Reply, quote, and forward behaviour **should  
   remain unchanged and be handled in a follow-up proposal if needed.**
 
-- **Per-account or per-message overrides.** No user-visible setting is proposed for this feature. Per-message state 
+- **Per-account or per-message overrides.** No user-visible setting is proposed for this feature. Per-message state
   would be device-local and hard to sync or import/export, and per-account behaviour would make the same message render
   differently depending on where it is viewed.
 
