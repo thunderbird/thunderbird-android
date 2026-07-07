@@ -109,20 +109,21 @@ consistently to users.**
 - **Large images.** Inlining a multi-megabyte photo affects body rendering cost. The chosen rendering path loads the
   image lazily (it is not embedded in the HTML document), which keeps this in line with existing `cid:` images.
 
-## Open Questions
+## Non-goals
 
-- **HTML + loose images.** When a message has both an HTML alternative and loose inline images, should the loose images
-  be appended/inlined (as Desktop does), or should we trust the HTML and leave them as attachments? **Proposed:** out of
-  scope for this RFC, follow-up issue.
+- **HTML + loose images.** Messages with both an HTML alternative and loose inline images are out of scope for the first
+  iteration. Appending them may duplicate content or expose tracking assets, so this requires real samples and a
+  follow-up proposal.
 
-- **Nested under `multipart/alternative`.** Positional images nested inside an alternative are an unusual shape. Exclude
-  or handle? **Proposed:** exclude.
+- **Nested under `multipart/alternative`.** Positional images nested inside an alternative are excluded. Alternatives 
+  are not content to render together; the renderer should pick the best supported alternative and ignore the others.
 
-- **Reply/quote/forward.** Should positional inline images be reproduced when quoting a message (*Desktop has a separate
-  preference for this*)? **Proposed:** out of scope for this RFC.
+- **Reply/quote/forward.** This RFC only changes the message display. Reply, quote, and forward behaviour **should  
+  remain unchanged and be handled in a follow-up proposal if needed.**
 
-- **Preference placement and naming.** Where in Settings should the toggle live, and what should it be called?
-  (Implementation detail deferred to the technical design, but the user-facing label needs product/UX input.)
+- **Per-account or per-message overrides.** No user-visible setting is proposed for this feature. Per-message state 
+  would be device-local and hard to sync or import/export, and per-account behaviour would make the same message render
+  differently depending on where it is viewed.
 
 ## Outcome
 
