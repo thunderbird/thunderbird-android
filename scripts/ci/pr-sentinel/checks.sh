@@ -18,10 +18,19 @@ check_title() {
 
 check_linked_issue() {
   local body="$1"
+  # Strip code before matching: a closing keyword inside inline code (`Closes #1234`,
+  # e.g. the PR-template placeholder) or a fenced block does NOT link an issue on
+  # GitHub, so it must not count here either.
+  local stripped
+  stripped="$(printf '%s\n' "$body" | tr -d '\r' | awk '
+    /^[[:space:]]*```/ { infence = !infence; next }   # toggle fenced code blocks
+    infence { next }                                   # drop fenced content
+    { gsub(/`[^`]*`/, ""); print }                     # drop inline code spans
+  ')"
   local pattern='(^|[^[:alnum:]_])(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved) #[0-9]+'
   local rc=1
   shopt -s nocasematch
-  if [[ "$body" =~ $pattern ]]; then rc=0; fi
+  if [[ "$stripped" =~ $pattern ]]; then rc=0; fi
   shopt -u nocasematch
   if [[ "$rc" -eq 0 ]]; then printf ''
   else printf 'Link an issue in the description using a closing keyword (e.g. `Closes #123`).'; fi
