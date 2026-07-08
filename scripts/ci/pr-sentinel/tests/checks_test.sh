@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Test inputs contain literal backticks (Markdown), not command substitution.
+# shellcheck disable=SC2016
 set -uo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # shellcheck source=scripts/ci/pr-sentinel/tests/_asserts.sh
@@ -17,6 +19,10 @@ test_linked_issue() {
   assert_empty    "$(check_linked_issue 'text fixes #9')" "linked mid-sentence"
   assert_nonempty "$(check_linked_issue 'prefixes #5')"  "linked substring rejected"
   assert_nonempty "$(check_linked_issue 'no link')"      "linked missing"
+  # closing keyword inside code must NOT count (template placeholder, examples)
+  assert_nonempty "$(check_linked_issue 'e.g. `Closes #1234` (template placeholder)')" "linked in inline code rejected"
+  assert_nonempty "$(check_linked_issue $'intro\n```\nCloses #7\n```\noutro')"          "linked in fenced code rejected"
+  assert_empty    "$(check_linked_issue 'See `foo` then Closes #8')"                    "real link alongside inline code passes"
 }
 
 test_ai_disclosure() {
