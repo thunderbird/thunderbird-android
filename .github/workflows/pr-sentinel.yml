@@ -1,0 +1,78 @@
+---
+name: PR - Sentinel Bot
+
+# Warning, this job runs on pull_request_target and therefore has access to issue content.
+# Don't add any steps that act on external (PR-head) code.
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - edited
+      - ready_for_review
+      - converted_to_draft
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Single PR to evaluate; leave blank to evaluate all open PRs."
+        required: false
+        default: ""
+      dry_run:
+        description: "Log actions without posting comments, changing labels, or closing PRs."
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: pr-sentinel-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  sentinel:
+    name: PR Sentinel
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Determine target PRs
+        id: prs
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_PR: ${{ github.event.pull_request.number }}
+          INPUT_PR: ${{ github.event.inputs.pr_number }}
+        run: |
+          set -euo pipefail
+          if [[ "$EVENT_NAME" == "pull_request_target" ]]; then
+            numbers="$EVENT_PR"
+          elif [[ -n "$INPUT_PR" ]]; then
+            numbers="$INPUT_PR"
+          else
+            numbers="$(gh pr list --state open --json number --jq 'map(.number) | join(" ")')"
+          fi
+          echo "numbers=${numbers}" >> "$GITHUB_OUTPUT"
+
+      - name: Evaluate and report
+        env:
+          NUMBERS: ${{ steps.prs.outputs.numbers }}
+          DRY_RUN_INPUT: ${{ github.event.inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          args=()
+          if [[ "${DRY_RUN_INPUT:-false}" == "true" ]]; then args+=(--dry-run); fi
+          overall=0
+          for pr in $NUMBERS; do
+            ./scripts/ci/pr-sentinel/report-pr.sh "$pr" "${args[@]}" || overall=1
+          done
+          exit "$overall"
