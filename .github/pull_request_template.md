@@ -25,7 +25,7 @@ As always, thank you for the contribution!
 -------------------------------------------------------------------------------------------------
 ## Contribution Summary
 
-Linked Issue/Ticket: _<Please include the issue number with the closing keyword, e.g. Closes #1234>_
+Linked Issue/Ticket: _<Please include the issue number with the closing keyword, e.g. `Closes #1234`>_
 
 RFC / Technical Design (if applicable): _<Remove if not applicable>_
 
