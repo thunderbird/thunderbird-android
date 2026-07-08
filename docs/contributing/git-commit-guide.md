@@ -5,6 +5,14 @@ This makes your work easier to review, track, and maintain for everyone involved
 
 ## ✍️ Commit Message Format
 
+> [!IMPORTANT]
+> **Enforced in CI:**
+> - the PR title **and every commit subject** must match this format (checked by the [PR Sentinel workflow](https://github.com/thunderbird/thunderbird-android/blob/main/.github/workflows/pr-sentinel.yml)).
+> - The `<description>` must be 70 characters or fewer.
+>
+> See [Automated PR checks (PR Sentinel)](https://github.com/thunderbird/thunderbird-android/blob/main/docs/contributing/contribution-workflow.md#-automated-pr-checks-pr-sentinel)
+> for more details.
+
 ```git
 <type>(<scope>): <description>
 
@@ -17,7 +25,7 @@ Components:
 
 - `<type>`: The [type of change](#-commit-types) being made (e.g., feat, fix, docs).
 - `<scope>` **(optional)**: The [scope](#optional-scope) indicates the area of the codebase affected by the change (e.g., auth, ui).
-- `<description>`: Short description of the change (50 characters or less)
+- `<description>`: Short description of the change (70 characters or less)
 - `<body>` **(optional)**: Explain what changed and why, include context if helpful.
 - `<footer(s)>` **(optional)**: Include issue references, breaking changes, etc.
 
@@ -54,8 +62,11 @@ Fixes #123
 | `docs`     | Documentation only               | `docs(readme): update setup instructions` |
 | `style`    | Code style (no logic changes)    | `style: reformat settings screen`         |
 | `refactor` | Code changes (no features/fixes) | `refactor(nav): simplify stack setup`     |
+| `perf`     | Performance improvements         | `perf(list): cache adapter lookups`       |
 | `test`     | Adding/editing tests             | `test(api): add unit test for login`      |
 | `chore`    | Tooling, CI, dependencies        | `chore(ci): update GitHub Actions config` |
+| `build`    | Build system changes             | `build(gradle): raise JVM target`         |
+| `ci`       | CI configuration                 | `ci: add PR Sentinel workflow`            |
 | `revert`   | Reverting previous commits       | `revert: remove feature flag`             |
 
 ### 📍Optional Scope
@@ -76,7 +87,7 @@ codebase are involved.
 ### 1. One Commit, One Purpose
 
 - ✅ Each commit should represent a single logical change or addition to the codebase.
-- ❌ Don’t mix unrelated changes together (e.g., fixing a bug and updating docs, or changing a style and )
+- ❌ Don’t mix unrelated changes together (e.g., fixing a bug and updating docs, or changing a style and
   adding a feature).
 
 ### 2. Keep It Manageable
