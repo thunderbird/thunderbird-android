@@ -13,23 +13,33 @@
 > You can help us by categorizing your pull request with labels. 
 > We appreciate you working with us and will get to reviewing your contribution as soon as we can!
 
+> [!NOTE]
+> **Automated PR Sentinel checks (required):** a linked issue, a Conventional Commit title, Conventional Commit 
+> messages on every commit (no `Co-authored-by:` trailers), no merge commits (rebase instead), and a completed 
+> **AI Disclosure**. PRs that stay non-compliant are **auto-closed 3 days** after the first Sentinel notice. 
+> See the [Contribution Workflow](https://github.com/thunderbird/thunderbird-android/blob/main/docs/contributing/contribution-workflow.md#-automated-pr-checks-pr-sentinel).
+
 As always, thank you for the contribution!
 
-### \~\~After reading, delete this line and the above to use the template for your pull request\~\~
-
-
+# \~\~After reading, delete this line and the above to use the template for your pull request\~\~
+-------------------------------------------------------------------------------------------------
 ## Contribution Summary
 
-Linked Issue/Ticket: 
-RFC / Technical Design (if applicable):
+Linked Issue/Ticket: _<Please include the issue number with the closing keyword, e.g. Closes #1234>_
 
-#### Description
+RFC / Technical Design (if applicable): _<Remove if not applicable>_
+
+### Description
 
 _<Please provide a detailed description of your contribution here>_
 
-#### Screen Shots
+### Screenshots
 
-_<If your pull request makes any UI changes, include screenshots displaying those changes here>_
+_<If your pull request makes any UI changes, include screenshots displaying those changes here; Remove section if not applicable>_
+
+### Testing
+
+_<Please provide the steps to reproduce the issue, so we can review it properly>_
 
 ## AI Disclosure
 
@@ -41,11 +51,11 @@ Select **one** of the following (mandatory)
 
 ## Contribution Checklist
 
-- [ ] I have read and affirm that my contribution adheres to [Mozilla’s Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/)
+- [ ] I have read, and I affirm that my contribution adheres to [Mozilla’s Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/)
 - [ ] This contribution is in Kotlin where possible
 - [ ] This contribution does not use merge commits
 - [ ] This contribution adheres to the existing codestyle (run `gradlew spotlessCheck` to check and `gradlew spotlessApply` to format your source code; will be checked by CI).
 - [ ] This contribution does not break existing unit tests (run `gradlew testDebugUnitTest`; will be checked by CI).
-- [ ] This contribution includes tests for any new functionality, and maintains tests for any updated functionality.
+- [ ] This contribution includes tests for any new functionality and maintains tests for any updated functionality.
 - [ ] This contribution adheres to our [Engineering process](https://github.com/thunderbird/thunderbird-android/tree/main/docs/engineering) (RFC/Technical Design/ADR)
-- [ ] This PR has a descriptive title and body that accurately outlines all changes made, and contains a reference to any issues that it fixes (e.g. _Closes #XXX_ or _Fixes #XXX_).
+- [ ] This PR has a descriptive title and body that accurately outlines all changes made and contains a reference to any issues that it fixes (e.g. _Closes #XXX_ or _Fixes #XXX_).
