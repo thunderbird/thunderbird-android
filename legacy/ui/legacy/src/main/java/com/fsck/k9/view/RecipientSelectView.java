@@ -50,6 +50,7 @@ import com.google.android.material.textview.MaterialTextView;
 import com.tokenautocomplete.TokenCompleteTextView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager;
 
 import static com.fsck.k9.FontSizes.FONT_DEFAULT;
@@ -103,11 +104,17 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     @Override
     public InputConnection onCreateInputConnection(@NonNull EditorInfo outAttrs) {
         InputConnection ic = super.onCreateInputConnection(outAttrs);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && isIncognitoKeyboardEnabled()) {
             outAttrs.imeOptions |= EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING;
         }
         return ic;
     }
+
+    private boolean isIncognitoKeyboardEnabled() {
+        GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
+        return generalSettingsManager.getConfig().getPrivacy().isIncognitoKeyboardEnabled();
+    }
+
     private void initView(Context context) {
         // TODO: validator?
 
