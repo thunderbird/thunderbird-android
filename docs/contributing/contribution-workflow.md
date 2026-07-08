@@ -213,9 +213,13 @@ To submit your changes for review:
    - Base branch: `main`
    - Head repo: your fork & branch
 4. Select your fork and branch as the source
-5. Click **Create pull request**
+5. Make sure your [Pull Request Description](https://github.com/thunderbird/thunderbird-android/blob/main/docs/contributing-workflow.md#pull-request-description)
+   is compliant with our guidelines
+6. Click **Create pull request**
 
 ### Pull Request Description
+
+Before start writing the description, read the Pull Request template that will be prompted for you.
 
 Write a clear and concise description for your pull request:
 
@@ -225,12 +229,29 @@ Write a clear and concise description for your pull request:
 4. Include screenshots or videos for UI changes
 5. Mention any related issues or pull requests
 
-Example:
+#### Mandatory fields
+
+When writing your Pull Request Description, you must fill all the mandatory fields:
+
+- **Linked Issue/Ticket**
+  - Must use closing keywords, e.g. Closes, Fixes, Resolves, etc. See [Linking a pull request to an issue using a keyword](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)
+    for available keywords.
+- **Description**
+- **AI Disclosure**
+  - Must check at least one of the checkboxes
+- **Contribution Checklist**
+  - Must follow all the instructions of the checklist and then mark as completed by checking all.
+
+An automated PR Sentinel will be checking if you are following the requirements and will flag the PR if not.
+See [Automated PR checks (PR Sentinel)](https://github.com/thunderbird/thunderbird-android/blob/main/docs/contributing/contribution-workflow.md#-automated-pr-checks-pr-sentinel)
+for more details.
+
+#### Example
 
 ```markdown
 ## Contribution Summary
 
-Linked Issue/Ticket: #123
+Linked Issue/Ticket: Closes #123
 RFC / Technical Design (if applicable):
 
 #### Description
@@ -240,9 +261,9 @@ This PR adds email validation to the login form. It:
 - Shows error messages for invalid emails
 - Adds unit tests for the validation logic
 
-#### Screen Shots
+#### Screenshots
 
-[Screenshot of error message]
+[Screenshot of the error message]
 
 #### Testing
 
@@ -250,6 +271,26 @@ This PR adds email validation to the login form. It:
 2. Verify that an error message appears
 3. Enter a valid email
 4. Verify that the error message disappears
+
+## AI Disclosure
+
+Select **one** of the following (mandatory)
+
+- [x] This contribution does not include any changes created or assisted by AI.
+- [ ] This contribution includes changes assisted by AI.
+- [ ] This contribution includes changes created by AI.
+
+## Contribution Checklist
+
+- [x] I have read, and I affirm that my contribution adheres to [Mozilla’s Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/)
+- [x] This contribution is in Kotlin where possible
+- [x] This contribution does not use merge commits
+- [x] This contribution adheres to the existing codestyle (run `gradlew spotlessCheck` to check and `gradlew spotlessApply` to format your source code; will be checked by CI).
+- [x] This contribution does not break existing unit tests (run `gradlew testDebugUnitTest`; will be checked by CI).
+- [x] This contribution includes tests for any new functionality, and maintains tests for any updated functionality.
+- [x] This contribution adheres to our [Engineering process](https://github.com/thunderbird/thunderbird-android/tree/main/docs/engineering) (RFC/Technical Design/ADR)
+- [x] This PR has a descriptive title and body that accurately outlines all changes made, and contains a reference to any issues that it fixes (e.g. _Closes #XXX_ or _Fixes #XXX_).
+
 ```
 
 ## 👀 Code Review Process
@@ -264,6 +305,25 @@ After submitting your pull request:
 6. Once approved, a maintainer will merge your pull request.
 
 👉 For expectations and etiquette, see [Code Review Guide](code-review-guide.md).
+
+### 🤖 Automated PR checks (PR Sentinel)
+
+Every PR is validated automatically to verify if the PR is ready for review. To be reviewable it must have:
+
+1. A **linked issue** in the description (e.g. `Closes #123`).
+2. A **Conventional Commit title** (see the [Git Commit Guide](git-commit-guide.md)).
+3. **Conventional Commit messages** on every commit, with **no `Co-authored-by:` trailers**.
+4. A completed **AI Disclosure** section (exactly one option selected).
+5. **No merge commits** — rebase onto the base branch instead of merging.
+
+When something is missing, PR Sentinel posts a single comment listing it and labels the PR
+`pr-sentinel: needs updates`. If it stays unresolved, the bot posts a closing warning after **1 day**
+and **auto-closes the PR after 3 days**.
+
+Push a fix (or edit the description), and the comment/label will be cleared automatically.
+
+**Draft PRs are skipped** until marked ready for review, and **bot PRs** (Dependabot, Renovate, …) are exempt.
+Everyone else — **including maintainers and members** — must comply.
 
 ## 🔄 Keeping Your Fork Updated
 
