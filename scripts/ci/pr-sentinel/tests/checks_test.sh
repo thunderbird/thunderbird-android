@@ -15,12 +15,14 @@ test_title() {
 }
 
 test_linked_issue() {
-  assert_empty    "$(check_linked_issue 'Closes #12')"   "linked Closes cap"
-  assert_empty    "$(check_linked_issue 'text fixes #9')" "linked mid-sentence"
-  assert_nonempty "$(check_linked_issue 'prefixes #5')"  "linked substring rejected"
-  assert_nonempty "$(check_linked_issue 'no link')"      "linked missing"
+  # fn ----------- evaluate ------------------------------------------------------------ message
+  assert_empty    "$(check_linked_issue 'Closes #12')"                                  "linked Closes cap"
+  assert_empty    "$(check_linked_issue 'text fixes #9')"                               "linked mid-sentence"
+  assert_nonempty "$(check_linked_issue 'prefixes #5')"                                 "linked substring rejected"
+  assert_nonempty "$(check_linked_issue 'no link')"                                     "linked missing"
+  assert_empty    "$(check_linked_issue 'Part of #12')"                                 "linked via Part of"
   # closing keyword inside code must NOT count (template placeholder, examples)
-  assert_nonempty "$(check_linked_issue 'e.g. `Closes #1234` (template placeholder)')" "linked in inline code rejected"
+  assert_nonempty "$(check_linked_issue 'e.g. `Closes #1234` (template placeholder)')"  "linked in inline code rejected"
   assert_nonempty "$(check_linked_issue $'intro\n```\nCloses #7\n```\noutro')"          "linked in fenced code rejected"
   assert_empty    "$(check_linked_issue 'See `foo` then Closes #8')"                    "real link alongside inline code passes"
 }
