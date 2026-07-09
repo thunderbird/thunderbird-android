@@ -27,7 +27,7 @@ check_linked_issue() {
     infence { next }                                   # drop fenced content
     { gsub(/`[^`]*`/, ""); print }                     # drop inline code spans
   ')"
-  local pattern='(^|[^[:alnum:]_])(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved) #[0-9]+'
+  local pattern='(^|[^[:alnum:]_])(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved|part of) #[0-9]+'
   local rc=1
   shopt -s nocasematch
   if [[ "$stripped" =~ $pattern ]]; then rc=0; fi
