@@ -53,12 +53,12 @@ check_commit_subject() {
   # Group 3 captures the <description> only (type and optional scope are excluded).
   local pattern="^(${COMMIT_MESSAGE_TYPES_REGEX})(${COMMIT_MESSAGE_SCOPE_REGEX})?!?: (.+)$"
   if [[ ! "$subject" =~ $pattern ]]; then
-    printf 'Commit `%s`: subject must follow Conventional Commits.' "$sha"; return
+    printf 'Commit %s: subject must follow Conventional Commits.' "$sha"; return
   fi
   local desc="${BASH_REMATCH[3]}"
   MAX_COMMIT_DESC_SIZE=70
   if (( ${#desc} > MAX_COMMIT_DESC_SIZE )); then
-    printf 'Commit `%s`: description is %s chars (max %d).' "$sha" "${#desc}" "$MAX_COMMIT_DESC_SIZE"; return
+    printf 'Commit %s: description is %s chars (max %d).' "$sha" "${#desc}" "$MAX_COMMIT_DESC_SIZE"; return
   fi
   printf ''
 }
@@ -66,7 +66,7 @@ check_commit_subject() {
 check_commit_coauthor() {
   local sha="$1" message="$2"
   if printf '%s\n' "$message" | grep -qiE '^Co-authored-by:'; then
-    printf 'Commit `%s`: remove the `Co-authored-by:` trailer.' "$sha"
+    printf 'Commit %s: remove the `Co-authored-by:` trailer.' "$sha"
   else printf ''; fi
 }
 
