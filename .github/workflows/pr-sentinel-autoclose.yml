@@ -33,7 +33,7 @@ jobs:
           set -euo pipefail
           # shellcheck source=scripts/ci/pr-sentinel/lib.sh disable=SC1091
           source ./scripts/ci/pr-sentinel/lib.sh
-          require_label
+          require_label_needs_updates
 
       - name: Escalate / close labeled PRs
         env:
