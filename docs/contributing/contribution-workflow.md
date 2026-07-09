@@ -320,7 +320,8 @@ When something is missing, PR Sentinel posts a single comment listing it and lab
 `pr-sentinel: needs updates`. If it stays unresolved, the bot posts a closing warning after **1 day**
 and **auto-closes the PR after 3 days**.
 
-Push a fix (or edit the description), and the comment/label will be cleared automatically.
+Push a fix (or edit the description), and the comment is removed, the `pr-sentinel: needs updates`
+label is swapped for **`pr-sentinel: ready for review`**, and the check turns green.
 
 **Draft PRs are skipped** until marked ready for review, and **bot PRs** (Dependabot, Renovate, …) are exempt.
 Everyone else — **including maintainers and members** — must comply.

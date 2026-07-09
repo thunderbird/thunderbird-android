@@ -8,9 +8,9 @@ usage() {
   cat <<'USAGE'
 Usage: report-pr.sh <pr-number> [--dry-run] [-h|--help]
 
-Evaluate a pull request and report the result: post/update or remove the consolidated
-PR Sentinel status comment, add/remove the 'pr-sentinel: needs updates' label, and exit
-non-zero when the PR is non-compliant and not exempt.
+Evaluate a pull request and report the result: manage the consolidated PR Sentinel
+status comment and the 'pr-sentinel: needs updates' / 'pr-sentinel: ready for review'
+labels, and exit non-zero when the PR is non-compliant and not exempt.
 
 Arguments:
   <pr-number>   Pull request number to evaluate (required, numeric).
@@ -59,19 +59,19 @@ draft="$(jq -r '.draft' <<<"$result")"
 missing_markdown="$(jq -r '.missing_markdown' <<<"$result")"
 topics="$(jq -r '.topics' <<<"$result")"
 
-# Draft PRs are skipped entirely: clear any prior comment/label (e.g. when a ready
+# Draft PRs are skipped entirely: clear any prior comment/labels (e.g. when a ready
 # PR is converted back to draft) so the cron won't escalate, then stop.
 if [[ "$draft" == "true" ]]; then
   delete_status_comment "$PR_NUMBER"
-  remove_label "$PR_NUMBER"
+  clear_sentinel_labels "$PR_NUMBER"
   echo "PR #${PR_NUMBER}: draft; skipping Sentinel checks."
   exit 0
 fi
 
 if [[ "$compliant" == "true" ]]; then
   delete_status_comment "$PR_NUMBER"
-  remove_label "$PR_NUMBER"
-  echo "PR #${PR_NUMBER}: compliant."
+  mark_ready_for_review "$PR_NUMBER"
+  echo "PR #${PR_NUMBER}: compliant; marked ready for review."
   exit 0
 fi
 
@@ -83,8 +83,7 @@ if [[ "$exempt" == "true" ]]; then
   exit 0
 fi
 
-# Fail loud if the label is missing, then label and fail the check.
-require_label
-add_label "$PR_NUMBER"
+# Swap to "needs updates" (fails loud if the label is missing) and fail the check.
+mark_needs_updates "$PR_NUMBER"
 echo "::error::PR #${PR_NUMBER} is not ready to merge — see the PR Sentinel comment."
 exit 1

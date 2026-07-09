@@ -35,10 +35,19 @@ assert_nonempty() { # $1=value $2=label
 }
 
 assert_contains() { # $1=haystack $2=needle $3=label (literal match)
-  if grep -qF "$2" <<<"$1"; then
+  if grep -qF -- "$2" <<<"$1"; then
     echo "ok   - $3"
   else
     echo "FAIL - $3: [$2] not found in output"
     fail=1
+  fi
+}
+
+assert_not_contains() { # $1=haystack $2=needle $3=label (literal match)
+  if grep -qF -- "$2" <<<"$1"; then
+    echo "FAIL - $3: [$2] unexpectedly found in output"
+    fail=1
+  else
+    echo "ok   - $3"
   fi
 }
