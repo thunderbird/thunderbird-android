@@ -3,7 +3,8 @@
 # Requires: gh, jq. Env: GH_TOKEN, GH_REPO.
 # These constants are consumed by scripts that source this file.
 # shellcheck disable=SC2034
-PR_SENTINEL_LABEL="pr-sentinel: needs updates"
+PR_SENTINEL_LABEL_NEEDS_UPDATES="pr-sentinel: needs updates"
+PR_SENTINEL_LABEL_READY_FOR_REVIEW="pr-sentinel: ready for review"
 # shellcheck disable=SC2034
 PR_SENTINEL_MARKER="<!-- pr-sentinel-status-comment -->"
 # shellcheck disable=SC2034
@@ -24,11 +25,20 @@ gh_write() {
   gh "$@" >/dev/null
 }
 
-require_label() {
+require_label_needs_updates() {
+  require_label "$PR_SENTINEL_LABEL_NEEDS_UPDATES"
+}
+
+require_label_ready_for_review() {
+  require_label "$PR_SENTINEL_LABEL_READY_FOR_REVIEW"
+}
+
+require_label() { # $1 label name
+  local label_name=$1
   local encoded
-  encoded="$(jq -rn --arg s "$PR_SENTINEL_LABEL" '$s|@uri')"
+  encoded="$(jq -rn --arg s "$label_name" '$s|@uri')"
   if ! gh api "repos/{owner}/{repo}/labels/${encoded}" >/dev/null 2>&1; then
-    echo "::error::Label '${PR_SENTINEL_LABEL}' is missing — a maintainer must create it."
+    echo "::error::Label '${label_name}' is missing — a maintainer must create it."
     return 1
   fi
 }
@@ -104,15 +114,39 @@ delete_status_comment() {
   fi
 }
 
-add_label() {
-  local pr="$1"
+add_label() { # $1=PR number, $2=label name
+  local pr="$1" label_name="$2"
   gh_write api -X POST "repos/{owner}/{repo}/issues/${pr}/labels" \
-    -f "labels[]=${PR_SENTINEL_LABEL}"
+    -f "labels[]=${label_name}"
 }
 
-remove_label() {
-  local pr="$1" encoded
-  encoded="$(jq -rn --arg s "$PR_SENTINEL_LABEL" '$s|@uri')"
-  # DELETE 404s when the label was not applied — tolerate it.
+remove_label() { # $1=PR number, $2=label name (tolerates 404 when not applied)
+  local pr="$1" label_name="$2" encoded
+  encoded="$(jq -rn --arg s "$label_name" '$s|@uri')"
   gh_write api -X DELETE "repos/{owner}/{repo}/issues/${pr}/labels/${encoded}" || true
+}
+
+# --- Sentinel label state transitions (the two labels are mutually exclusive) ---
+
+# Non-compliant PR: drop "ready for review", then require + add "needs updates".
+mark_needs_updates() { # $1=PR number
+  local pr="$1"
+  remove_label "$pr" "$PR_SENTINEL_LABEL_READY_FOR_REVIEW"
+  require_label_needs_updates
+  add_label "$pr" "$PR_SENTINEL_LABEL_NEEDS_UPDATES"
+}
+
+# Compliant PR: drop "needs updates", then require + add "ready for review".
+mark_ready_for_review() { # $1=PR number
+  local pr="$1"
+  remove_label "$pr" "$PR_SENTINEL_LABEL_NEEDS_UPDATES"
+  require_label_ready_for_review
+  add_label "$pr" "$PR_SENTINEL_LABEL_READY_FOR_REVIEW"
+}
+
+# Draft / skipped PR: drop both Sentinel labels, add none.
+clear_sentinel_labels() { # $1=PR number
+  local pr="$1"
+  remove_label "$pr" "$PR_SENTINEL_LABEL_NEEDS_UPDATES"
+  remove_label "$pr" "$PR_SENTINEL_LABEL_READY_FOR_REVIEW"
 }
