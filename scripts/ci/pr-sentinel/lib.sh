@@ -4,12 +4,9 @@ set -euo pipefail
 # Shared PR Sentinel helpers for comment + label + close orchestration.
 # Requires: gh, jq. Env: GH_TOKEN, GH_REPO.
 # These constants are consumed by scripts that source this file.
-# shellcheck disable=SC2034
 PR_SENTINEL_LABEL_NEEDS_UPDATES="pr-sentinel: needs updates"
 PR_SENTINEL_LABEL_READY_FOR_REVIEW="pr-sentinel: ready for review"
-# shellcheck disable=SC2034
 PR_SENTINEL_MARKER="<!-- pr-sentinel-status-comment -->"
-# shellcheck disable=SC2034
 PR_SENTINEL_ESCALATED_MARKER="<!-- pr-sentinel-escalated -->"
 
 # Dry-run: when enabled, state-changing gh calls are logged instead of executed.

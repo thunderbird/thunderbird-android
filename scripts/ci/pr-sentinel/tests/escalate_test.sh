@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 set -uo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-# shellcheck source=scripts/ci/pr-sentinel/tests/_asserts.sh
 source "${DIR}/tests/_asserts.sh"
-# shellcheck source=scripts/ci/pr-sentinel/checks.sh
 source "${DIR}/checks.sh"
 
 test_escalated_marker() { # already-escalated body must be detected so we notify only once

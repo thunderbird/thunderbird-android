@@ -4,8 +4,6 @@
 #
 # Backticks in the messages below are literal Markdown for the PR comment, not
 # command substitution — single quotes are intentional.
-# shellcheck disable=SC2016
-
 COMMIT_MESSAGE_TYPES_REGEX='feat|fix|docs|style|refactor|test|chore|revert'
 COMMIT_MESSAGE_SCOPE_REGEX='\([a-zA-Z0-9._ -/:]+\)'
 
