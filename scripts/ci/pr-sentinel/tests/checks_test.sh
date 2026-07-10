@@ -12,6 +12,7 @@ test_title() {
     assert_empty    "$(check_title 'feat(ui): add thing')" "title valid scoped"
     assert_empty    "$(check_title 'fix: bug')"            "title valid basic"
     assert_nonempty "$(check_title 'add thing')"           "title missing type"
+    assert_nonempty "$(check_title 'ci: add thing')"       "invalid scope"
 }
 
 test_linked_issue() {
@@ -37,8 +38,9 @@ test_ai_disclosure() {
 }
 
 test_commit_subject() { # max description length = 70
-  assert_empty    "$(check_commit_subject abc1234 'feat: ok')"                         "commit subj valid"
-  assert_nonempty "$(check_commit_subject abc1234 'bad subject no type')"              "commit subj bad type"
+  assert_empty    "$(check_commit_subject abc1234 'feat: ok')"                        "commit subj valid"
+  assert_nonempty "$(check_commit_subject abc1234 'bad subject no type')"             "commit subj bad type"
+  assert_nonempty "$(check_commit_subject abc1234 'build: several changes')"          "commit subj bad scope"
   assert_nonempty "$(check_commit_subject abc1234 "feat: $(printf 'x%.0s' {1..71})")" "commit subj desc >70"
   assert_empty    "$(check_commit_subject abc1234 "feat: $(printf 'x%.0s' {1..70})")" "commit subj desc ==70"
 }

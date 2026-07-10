@@ -64,8 +64,6 @@ Fixes #123
 | `refactor` | Code changes (no features/fixes) | `refactor(nav): simplify stack setup`     |
 | `test`     | Adding/editing tests             | `test(api): add unit test for login`      |
 | `chore`    | Tooling, CI, dependencies        | `chore(ci): update GitHub Actions config` |
-| `build`    | Build system changes             | `build(gradle): raise JVM target`         |
-| `ci`       | CI configuration                 | `ci: add PR Sentinel workflow`            |
 | `revert`   | Reverting previous commits       | `revert: remove feature flag`             |
 
 ### 📍Optional Scope
@@ -73,13 +71,14 @@ Fixes #123
 The **scope** is optional but recommended for clarity, especially for large changes or or when multiple areas of the
 codebase are involved.
 
-|   Scope    |   Use for...   |                 Example                  |
-|------------|----------------|------------------------------------------|
-| `auth`     | Authentication | `feat(auth): add login functionality`    |
-| `settings` | User settings  | `feat(settings): add dark mode toggle`   |
-| `build`    | Build system   | `fix(build): improve build performance`  |
-| `ui`       | UI/theme       | `refactor(ui): split theme into modules` |
-| `deps`     | Dependencies   | `chore(deps): bump Kotlin to 2.0.0`      |
+|   Scope    |    Use for...    |                 Example                  |
+|------------|------------------|------------------------------------------|
+| `auth`     | Authentication   | `feat(auth): add login functionality`    |
+| `settings` | User settings    | `feat(settings): add dark mode toggle`   |
+| `build`    | Build system     | `fix(build): improve build performance`  |
+| `ci`       | CI configuration | `chore(ci): add PR Sentinel workflow`    |
+| `ui`       | UI/theme         | `refactor(ui): split theme into modules` |
+| `deps`     | Dependencies     | `chore(deps): bump Kotlin to 2.0.0`      |
 
 ## 🧠 Best Practices
 
