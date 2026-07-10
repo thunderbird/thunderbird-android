@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
 # Pure PR Sentinel check functions. No network, no side effects.
 # Each check_* echoes "" on pass, or a single-line failure message.
 #
