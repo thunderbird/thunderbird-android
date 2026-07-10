@@ -62,7 +62,6 @@ Fixes #123
 | `docs`     | Documentation only               | `docs(readme): update setup instructions` |
 | `style`    | Code style (no logic changes)    | `style: reformat settings screen`         |
 | `refactor` | Code changes (no features/fixes) | `refactor(nav): simplify stack setup`     |
-| `perf`     | Performance improvements         | `perf(list): cache adapter lookups`       |
 | `test`     | Adding/editing tests             | `test(api): add unit test for login`      |
 | `chore`    | Tooling, CI, dependencies        | `chore(ci): update GitHub Actions config` |
 | `build`    | Build system changes             | `build(gradle): raise JVM target`         |
