@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -euo pipefail
+
 # Shared PR Sentinel helpers for comment + label + close orchestration.
 # Requires: gh, jq. Env: GH_TOKEN, GH_REPO.
 # These constants are consumed by scripts that source this file.
