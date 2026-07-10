@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -uo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-# shellcheck source=scripts/ci/pr-sentinel/tests/_asserts.sh
 source "${DIR}/tests/_asserts.sh"
 
 # Fake `gh` that records each invocation and reports every label as existing
@@ -17,7 +16,6 @@ export PATH="${tmp}:${PATH}"
 export GH_CALL_LOG="${tmp}/calls.log"
 export GH_REPO="o/r"
 
-# shellcheck source=scripts/ci/pr-sentinel/lib.sh
 source "${DIR}/lib.sh"
 
 DEL_NEEDS="-X DELETE repos/{owner}/{repo}/issues/1/labels/pr-sentinel%3A%20needs%20updates"

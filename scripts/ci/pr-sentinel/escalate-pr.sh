@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=scripts/ci/pr-sentinel/lib.sh
 source "${SCRIPT_DIR}/lib.sh"
-# shellcheck source=scripts/ci/pr-sentinel/checks.sh
 source "${SCRIPT_DIR}/checks.sh"
 
 usage() {

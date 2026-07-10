@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 # Test inputs contain literal backticks (Markdown), not command substitution.
-# shellcheck disable=SC2016
 set -uo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-# shellcheck source=scripts/ci/pr-sentinel/tests/_asserts.sh
 source "${DIR}/tests/_asserts.sh"
-# shellcheck source=scripts/ci/pr-sentinel/checks.sh
 source "${DIR}/checks.sh"
 
 test_title() {

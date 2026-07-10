@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -uo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-# shellcheck source=scripts/ci/pr-sentinel/tests/_asserts.sh
 source "${DIR}/tests/_asserts.sh"
 
 # Fake `gh` on PATH that records each invocation to a log file.
@@ -15,7 +14,6 @@ chmod +x "${tmp}/gh"
 export PATH="${tmp}:${PATH}"
 export GH_CALL_LOG="${tmp}/calls.log"
 
-# shellcheck source=scripts/ci/pr-sentinel/lib.sh
 source "${DIR}/lib.sh"
 
 test_dry_run_skips_gh() { # gh must NOT be invoked; a notice is printed to stderr

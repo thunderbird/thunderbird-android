@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -uo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-# shellcheck source=scripts/ci/pr-sentinel/tests/_asserts.sh
 source "${DIR}/tests/_asserts.sh"
 
 run() { PR_JSON="$1" COMMITS_JSON="$2" bash "${DIR}/evaluate-pr.sh" 1; }
