@@ -16,9 +16,9 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.core.testing.TestClock
-import net.thunderbird.core.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.feature.funding.api.FundingSettings
 import net.thunderbird.feature.funding.googleplay.ui.reminder.FundingReminderContract.Dialog
 import org.mockito.kotlin.mock

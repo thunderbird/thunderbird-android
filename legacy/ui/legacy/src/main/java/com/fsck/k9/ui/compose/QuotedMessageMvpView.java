@@ -4,10 +4,12 @@ package com.fsck.k9.ui.compose;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.graphics.Typeface;
+import android.os.Build;
 
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
@@ -48,6 +50,10 @@ public class QuotedMessageMvpView {
         if(generalSettingsManager.getConfig().getDisplay().getVisualSettings().isUseMessageViewFixedWidthFont())
             mQuotedText.setTypeface(Typeface.MONOSPACE);
         mQuotedText.getInputExtras(true).putBoolean("allowEmoji", true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                && generalSettingsManager.getConfig().getPrivacy().isIncognitoKeyboardEnabled()) {
+            mQuotedText.setImeOptions(mQuotedText.getImeOptions() | EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING);
+        }
 
         mQuotedHTML = messageCompose.findViewById(R.id.quoted_html);
         mQuotedHTML.configure(webViewConfigProvider.createForMessageCompose());

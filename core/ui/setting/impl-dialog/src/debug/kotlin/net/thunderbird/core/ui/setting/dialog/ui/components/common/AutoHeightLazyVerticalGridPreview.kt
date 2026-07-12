@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
 
 @Composable
 @Preview(showBackground = true)

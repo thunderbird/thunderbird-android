@@ -7,8 +7,6 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.annotation.WorkerThread
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
-import com.fsck.k9.Preferences.Companion.getPreferences
-import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mailstore.AttachmentViewInfo
@@ -24,13 +22,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.Logger
 import org.apache.commons.io.IOUtils
 
 class AttachmentController internal constructor(
     private val context: Context,
-    private val controller: MessagingController,
-    private val messageViewFragment: MessageViewFragment,
+    private val controller: AttachmentLoadingController,
+    private val attachmentDisplayController: AttachmentDisplayController,
     private val attachment: AttachmentViewInfo,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val logger: Logger
@@ -42,7 +41,7 @@ class AttachmentController internal constructor(
             if (!attachment.isContentAvailable) {
                 val success = downloadAttachment()
                 if (success) {
-                    messageViewFragment.refreshAttachmentThumbnail(attachment)
+                    attachmentDisplayController.refreshAttachmentThumbnail(attachment)
                     viewLocalAttachment()
                 }
             } else {
@@ -58,7 +57,7 @@ class AttachmentController internal constructor(
             if (!attachment.isContentAvailable) {
                 val success = downloadAttachment()
                 if (success) {
-                    messageViewFragment.refreshAttachmentThumbnail(attachment)
+                    attachmentDisplayController.refreshAttachmentThumbnail(attachment)
                     saveLocalAttachmentTo(documentUri)
                 }
             } else {
@@ -81,16 +80,13 @@ class AttachmentController internal constructor(
     }
 
     private suspend fun downloadAttachment(): Boolean = suspendCancellableCoroutine { continuation ->
-        val localPart = attachment.part as LocalPart
-        val account = getPreferences().getAccount(localPart.accountUuid)
-
-        messageViewFragment.showAttachmentLoadingDialog()
+        attachmentDisplayController.showAttachmentLoadingDialog()
         controller.loadAttachment(
-            account, localPart.message, attachment.part,
-            object : SimpleMessagingListener() {
+            part = attachment.part,
+            listener = object : SimpleMessagingListener() {
                 override fun loadAttachmentFinished(account: LegacyAccountDto?, message: Message?, part: Part?) {
                     attachment.setContentAvailable()
-                    messageViewFragment.hideAttachmentLoadingDialogOnMainThread()
+                    attachmentDisplayController.hideAttachmentLoadingDialogOnMainThread()
                     if (continuation.isActive) {
                         continuation.resume(true)
                     }
@@ -102,7 +98,7 @@ class AttachmentController internal constructor(
                     part: Part?,
                     reason: String?,
                 ) {
-                    messageViewFragment.hideAttachmentLoadingDialogOnMainThread()
+                    attachmentDisplayController.hideAttachmentLoadingDialogOnMainThread()
                     if (continuation.isActive) {
                         continuation.resume(false)
                     }

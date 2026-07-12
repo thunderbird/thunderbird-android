@@ -3,12 +3,12 @@ package net.thunderbird.components.ui.catalog.ui.page.organism.items.banners
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.molecule.notification.NotificationActionButton
-import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.ErrorBannerInlineNotificationCard
-import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.InfoBannerInlineNotificationCard
-import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.SuccessBannerInlineNotificationCard
-import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.WarningBannerInlineNotificationCard
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.molecule.notification.NotificationActionButton
+import net.thunderbird.components.ui.bolt.organism.banner.inline.ErrorBannerInlineNotificationCard
+import net.thunderbird.components.ui.bolt.organism.banner.inline.InfoBannerInlineNotificationCard
+import net.thunderbird.components.ui.bolt.organism.banner.inline.SuccessBannerInlineNotificationCard
+import net.thunderbird.components.ui.bolt.organism.banner.inline.WarningBannerInlineNotificationCard
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.components.ui.catalog.ui.page.common.list.fullSpanItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionHeaderItem
 import net.thunderbird.components.ui.catalog.ui.page.common.list.sectionSubtitleItem
@@ -31,7 +31,7 @@ fun LazyGridScope.errorBannerInline() {
                 NotificationActionButton(text = "View support article", onClick = {}, isExternalLink = true)
                 NotificationActionButton(text = "Action 1", onClick = {})
             },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -46,7 +46,7 @@ fun LazyGridScope.infoBannerInline() {
                 NotificationActionButton(text = "Action 2", onClick = {})
                 NotificationActionButton(text = "Action 1", onClick = {})
             },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -61,7 +61,7 @@ fun LazyGridScope.warningBannerInline() {
                 NotificationActionButton(text = "Action 2", onClick = {})
                 NotificationActionButton(text = "Action 1", onClick = {})
             },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }
@@ -76,7 +76,7 @@ fun LazyGridScope.successBannerInline() {
                 NotificationActionButton(text = "Action 2", onClick = {})
                 NotificationActionButton(text = "Action 1", onClick = {})
             },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
         )
     }
 }

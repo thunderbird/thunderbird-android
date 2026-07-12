@@ -13,10 +13,10 @@ import androidx.compose.ui.res.stringResource
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.feature.account.setup.R
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun AutoDiscoveryResultBodyView(
@@ -27,12 +27,12 @@ internal fun AutoDiscoveryResultBodyView(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = MainTheme.spacings.default)
+            .padding(horizontal = BoltTheme.spacings.default)
             .then(modifier),
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
     ) {
         if (settings.isTrusted.not()) {
-            Spacer(modifier = Modifier.height(MainTheme.sizes.smaller))
+            Spacer(modifier = Modifier.height(BoltTheme.sizes.smaller))
             TextBodyMedium(
                 text = stringResource(
                     id = R.string.account_setup_auto_discovery_result_disclaimer_untrusted_configuration,
@@ -43,7 +43,7 @@ internal fun AutoDiscoveryResultBodyView(
 
         val incomingServerSettings = settings.incomingServerSettings
         if (incomingServerSettings is ImapServerSettings) {
-            Spacer(modifier = Modifier.height(MainTheme.sizes.smaller))
+            Spacer(modifier = Modifier.height(BoltTheme.sizes.smaller))
             AutoDiscoveryServerSettingsView(
                 protocolName = "IMAP",
                 serverHostname = incomingServerSettings.hostname,
@@ -57,7 +57,7 @@ internal fun AutoDiscoveryResultBodyView(
 
         val outgoingServerSettings = settings.outgoingServerSettings
         if (outgoingServerSettings is SmtpServerSettings) {
-            Spacer(modifier = Modifier.height(MainTheme.sizes.smaller))
+            Spacer(modifier = Modifier.height(BoltTheme.sizes.smaller))
             AutoDiscoveryServerSettingsView(
                 protocolName = "SMTP",
                 serverHostname = outgoingServerSettings.hostname,
@@ -89,7 +89,7 @@ internal fun EditConfigurationButton(
         ButtonText(
             text = stringResource(id = R.string.account_setup_auto_discovery_result_edit_configuration_button_label),
             onClick = onEditConfigurationClick,
-            color = MainTheme.colors.warning,
+            color = BoltTheme.colors.warning,
         )
     }
 }

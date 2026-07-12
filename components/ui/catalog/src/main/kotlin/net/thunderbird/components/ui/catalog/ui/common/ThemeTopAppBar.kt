@@ -5,8 +5,8 @@ import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.ShuffleOn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
-import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithMenuButton
+import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
+import net.thunderbird.components.ui.bolt.organism.TopAppBarWithMenuButton
 import net.thunderbird.components.ui.catalog.ui.CatalogContract.Theme
 import net.thunderbird.components.ui.catalog.ui.CatalogContract.ThemeVariant
 import androidx.compose.material.icons.Icons as MaterialIcons

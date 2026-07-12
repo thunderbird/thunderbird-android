@@ -1,13 +1,13 @@
 package net.thunderbird.components.ui.catalog.ui.page.molecule.items
 
 import androidx.compose.foundation.lazy.grid.LazyGridScope
-import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
-import app.k9mail.core.ui.compose.designsystem.molecule.input.EmailAddressInput
-import app.k9mail.core.ui.compose.designsystem.molecule.input.NumberInput
-import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
-import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
-import app.k9mail.core.ui.compose.designsystem.molecule.input.SwitchInput
-import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
+import net.thunderbird.components.ui.bolt.molecule.input.CheckboxInput
+import net.thunderbird.components.ui.bolt.molecule.input.EmailAddressInput
+import net.thunderbird.components.ui.bolt.molecule.input.NumberInput
+import net.thunderbird.components.ui.bolt.molecule.input.PasswordInput
+import net.thunderbird.components.ui.bolt.molecule.input.SelectInput
+import net.thunderbird.components.ui.bolt.molecule.input.SwitchInput
+import net.thunderbird.components.ui.bolt.molecule.input.TextInput
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.components.ui.catalog.ui.page.common.helper.WithRememberedState
 import net.thunderbird.components.ui.catalog.ui.page.common.list.ItemOutlinedView

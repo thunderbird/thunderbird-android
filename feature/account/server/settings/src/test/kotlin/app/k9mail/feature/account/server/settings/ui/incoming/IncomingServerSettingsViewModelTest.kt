@@ -27,8 +27,8 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.ui.testing.coroutines.MainDispatcherHelper
 import net.thunderbird.core.validation.ValidationError
 import net.thunderbird.core.validation.input.NumberInputField
 import net.thunderbird.core.validation.input.StringInputField

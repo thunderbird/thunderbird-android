@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemeLightDark
+import net.thunderbird.components.ui.bolt.PreviewWithThemeLightDark
 
 @Preview
 @Composable

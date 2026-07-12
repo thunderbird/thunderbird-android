@@ -6,6 +6,7 @@ enum class PrivacySettingKey(val value: String) {
 
     HideTimeZone("hideTimeZone"),
     HideUserAgent("hideUserAgent"),
+    IncognitoKeyboard("incognitoKeyboard"),
 }
 
 interface PrivacySettingsPreferenceManager : PreferenceManager<PrivacySettings>

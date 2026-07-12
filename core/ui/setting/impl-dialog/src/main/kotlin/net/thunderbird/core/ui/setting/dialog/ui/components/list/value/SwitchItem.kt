@@ -8,10 +8,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.Switch
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.Switch
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.setting.SettingValue
 
 @Composable
@@ -22,7 +22,7 @@ internal fun SwitchItem(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.padding(MainTheme.spacings.double),
+        modifier = modifier.padding(BoltTheme.spacings.double),
     ) {
         Column(
             Modifier.weight(1f),
@@ -32,7 +32,7 @@ internal fun SwitchItem(
                 TextBodyMedium(text = it)
             }
         }
-        Spacer(modifier = Modifier.width(MainTheme.spacings.default))
+        Spacer(modifier = Modifier.width(BoltTheme.spacings.default))
         Switch(
             checked = setting.value,
             onCheckedChange = {

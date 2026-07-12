@@ -7,8 +7,8 @@ Android.
 Components are consumed through focused artifacts. Do not depend on a broad "all components" artifact; add only the
 component groups a module actually needs.
 
-**Bolt** is the Compose UI component group. It contains the design-system components, theme support, and common UI
-support used by Thunderbird for Android.
+[**Bolt**](https://bolt.thunderbird.net/) is the Compose UI component group. It contains the design-system components,
+theme support, and common UI support used by Thunderbird for Android.
 
 ## Coordinates
 

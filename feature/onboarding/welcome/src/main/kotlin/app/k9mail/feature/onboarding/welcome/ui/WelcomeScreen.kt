@@ -3,7 +3,7 @@ package app.k9mail.feature.onboarding.welcome.ui
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
+import net.thunderbird.components.ui.bolt.template.Scaffold
 import net.thunderbird.core.common.provider.AppNameProvider
 
 @Composable

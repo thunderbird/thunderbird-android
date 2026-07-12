@@ -12,9 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMediumAutoResize
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.text.TextDisplayMediumAutoResize
+import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import org.jetbrains.compose.resources.painterResource
 
 private const val TITLE_ICON_SIZE_DP = 56
@@ -37,8 +37,8 @@ fun AppTitleTopHeader(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = MainTheme.spacings.quadruple,
-                bottom = MainTheme.spacings.default,
+                top = BoltTheme.spacings.quadruple,
+                bottom = BoltTheme.spacings.default,
             )
             .then(modifier),
     ) { contentPadding ->
@@ -46,16 +46,16 @@ fun AppTitleTopHeader(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(contentPadding)
-                .padding(horizontal = MainTheme.spacings.double),
+                .padding(horizontal = BoltTheme.spacings.double),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Column(modifier = Modifier.wrapContentWidth()) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
-                        painter = painterResource(MainTheme.images.logo),
+                        painter = painterResource(BoltTheme.images.logo),
                         modifier = Modifier
-                            .padding(all = MainTheme.spacings.default)
-                            .padding(end = MainTheme.spacings.default)
+                            .padding(all = BoltTheme.spacings.default)
+                            .padding(end = BoltTheme.spacings.default)
                             .size(TITLE_ICON_SIZE_DP.dp),
                         contentDescription = null,
                     )
