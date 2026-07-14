@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons as LegacyIcons
 import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
@@ -200,7 +201,6 @@ private fun NotificationActionsListItem(
 
         is NotificationListItem.Cutoff -> NotificationCutoffRow(
             dragState = dragState,
-            dragCallbacks = dragCallbacks,
             modifier = modifier,
         )
     }
@@ -236,10 +236,10 @@ private fun NotificationActionRow(
     NotificationReorderRow(
         dragState = dragState,
         startPadding = BoltTheme.spacings.default,
-        dragCallbacks = dragCallbacks,
         modifier = modifier
             .heightIn(min = BoltTheme.sizes.iconAvatar),
     ) {
+        NotificationDragHandle(dragCallbacks = dragCallbacks)
         Image(
             painter = painterResource(action.iconRes),
             contentDescription = null,
@@ -276,13 +276,11 @@ private fun NotificationActionRow(
 @Composable
 private fun NotificationCutoffRow(
     dragState: RowDragState,
-    dragCallbacks: DragCallbacks,
     modifier: Modifier = Modifier,
 ) {
     NotificationReorderRow(
         dragState = dragState.copy(alpha = 1f),
         startPadding = BoltTheme.spacings.double,
-        dragCallbacks = dragCallbacks,
         modifier = modifier
             .heightIn(min = BoltTheme.sizes.iconAvatar),
     ) {
@@ -327,7 +325,6 @@ private data class MoveActions(
 private fun NotificationReorderRow(
     dragState: RowDragState,
     startPadding: androidx.compose.ui.unit.Dp,
-    dragCallbacks: DragCallbacks,
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -350,14 +347,28 @@ private fun NotificationReorderRow(
             }
             .zIndex(if (dragState.isDragged) 1f else 0f)
             .background(BoltTheme.colors.surface)
-            .padding(start = startPadding, end = BoltTheme.spacings.zero)
+            .padding(start = startPadding, end = BoltTheme.spacings.zero),
+        verticalAlignment = Alignment.CenterVertically,
+        content = content,
+    )
+}
+
+@Composable
+private fun NotificationDragHandle(
+    dragCallbacks: DragCallbacks,
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painterResource(LegacyIcons.Outlined.DragHandle),
+        contentDescription = null,
+        modifier = modifier
             .immediateDragGesture(
                 onDragStart = dragCallbacks.onDragStart,
                 onDrag = dragCallbacks.onDrag,
                 onDragEnd = dragCallbacks.onDragEnd,
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-        content = content,
+            )
+            .padding(BoltTheme.spacings.default)
+            .clearAndSetSemantics { },
     )
 }
 
