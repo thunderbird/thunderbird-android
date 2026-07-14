@@ -23,4 +23,13 @@
     <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Nie udało się zsynchronizować folderu „%1$s” ze zdalnym. Komunikat: %2$s</string>
     <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Nazwa folderu nie może być pusta</string>
     <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Nieprawidłowa nazwa folderu „%1$s”</string>
+    <string name="message_list_state_new_message_description">Nowa</string>
+    <string name="message_list_state_read_message_description">Przeczytana</string>
+    <string name="message_list_state_unread_message_description">Nieprzeczytana</string>
+    <string name="message_list_state_active_new_message_description">Aktywna, nowa</string>
+    <string name="message_list_state_active_read_message_description">Aktywna, przeczytana</string>
+    <string name="message_list_state_active_unread_message_description">Aktywna, nieprzeczytana</string>
+    <string name="message_list_state_selected_new_message_description">Wybrana, nowa</string>
+    <string name="message_list_state_selected_read_message_description">Wybrana, przeczytana</string>
+    <string name="message_list_state_selected_unread_message_description">Wybrana, nieprzeczytana</string>
 </resources>

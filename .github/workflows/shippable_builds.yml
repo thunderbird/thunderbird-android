@@ -222,7 +222,7 @@ jobs:
 
       - name: Checkout repository
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token || github.token }}
@@ -518,7 +518,7 @@ jobs:
           cat $GITHUB_OUTPUT
 
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           ref: ${{ steps.sha.outputs.app_sha }}
 
@@ -742,7 +742,7 @@ jobs:
           cat $GITHUB_OUTPUT
 
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           ref: ${{ steps.shanotes.outputs.app_sha }}
 
@@ -993,6 +993,25 @@ jobs:
           path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH_NIGHTLY_LATEST }}/${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
           destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
           gzip: false
+
+      - name: Set up Cloud SDK for pruning
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily' }}
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3.0.1
+
+      - name: Prune FTP Nightly Latest
+        continue-on-error: true
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily' }}
+        shell: bash
+        env:
+          FTP_DESTINATION_NIGHTLY_LATEST: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
+          PKG_FILE: ${{ steps.rename.outputs.PKG_FILE }}
+          FTP_TAR_FILENAME: ${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
+        run: |
+          set -x
+          gcloud storage ls "gs://${FTP_DESTINATION_NIGHTLY_LATEST}/" \
+            | grep -vF "${PKG_FILE}" \
+            | grep -vF "${FTP_TAR_FILENAME}" \
+            | xargs -r gcloud storage rm
 
       - name: Summary
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0

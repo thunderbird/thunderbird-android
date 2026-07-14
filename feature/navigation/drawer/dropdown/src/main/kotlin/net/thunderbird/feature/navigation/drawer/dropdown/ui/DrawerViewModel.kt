@@ -153,10 +153,13 @@ internal class DrawerViewModel(
     override fun event(event: Event) {
         when (event) {
             is Event.SelectAccount -> selectAccount(event.accountId)
+
             is Event.SelectFolder -> selectFolder(event.folderId)
 
             is Event.OnAccountClick -> openAccount(event.account)
+
             is Event.OnFolderClick -> openFolder(event.folder)
+
             is Event.OnAccountViewClick -> {
                 openAccount(
                     state.value.accounts.nextOrFirst(event.account),
@@ -176,9 +179,13 @@ internal class DrawerViewModel(
             }
 
             Event.OnManageFoldersClick -> emitEffect(Effect.OpenManageFolders)
+
             Event.OnSettingsClick -> emitEffect(Effect.OpenSettings)
+
             Event.OnSyncAccount -> onSyncAccount()
+
             Event.OnSyncAllAccounts -> onSyncAllAccounts()
+
             Event.OnAddAccountClick -> emitEffect(Effect.OpenAddAccount)
         }
     }

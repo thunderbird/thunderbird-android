@@ -13,11 +13,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import app.k9mail.core.ui.compose.designsystem.molecule.notification.NotificationActionButton
 import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.BannerInlineNotificationCardBehaviour
 import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.ErrorBannerInlineNotificationCard
 import kotlinx.collections.immutable.ImmutableSet
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_BANNER_INLINE_LIST
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_CHECK_ERROR_NOTIFICATIONS
@@ -72,7 +72,7 @@ fun BannerInlineNotificationListHost(
     val bannerInlineSet = state.bannerInlineVisuals
     AnimatedContent(
         targetState = bannerInlineSet,
-        modifier = modifier.testTagAsResourceId(TEST_TAG_HOST_PARENT),
+        modifier = modifier.testTag(TEST_TAG_HOST_PARENT),
         transitionSpec = { bannerSlideInSlideOutAnimationSpec() },
         contentKey = { it.isEmpty() },
     ) { bannerInlineSet ->
@@ -105,7 +105,7 @@ private fun BannerInlineNotificationListHostLayout(
     Column(
         modifier = modifier
             .padding(vertical = MainTheme.spacings.half, horizontal = MainTheme.spacings.double)
-            .testTagAsResourceId(TEST_TAG_BANNER_INLINE_LIST),
+            .testTag(TEST_TAG_BANNER_INLINE_LIST),
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
     ) {
         displayableNotifications.forEachIndexed { index, banner ->
@@ -129,11 +129,11 @@ private fun BannerInlineNotificationListHostLayout(
                             resource = Res.string.banner_inline_notification_open_notifications,
                         ),
                         onClick = onOpenErrorNotificationsClick,
-                        modifier = Modifier.testTagAsResourceId(TEST_TAG_CHECK_ERROR_NOTIFICATIONS_ACTION),
+                        modifier = Modifier.testTag(TEST_TAG_CHECK_ERROR_NOTIFICATIONS_ACTION),
                     )
                 },
                 modifier = Modifier
-                    .testTagAsResourceId(TEST_TAG_CHECK_ERROR_NOTIFICATIONS)
+                    .testTag(TEST_TAG_CHECK_ERROR_NOTIFICATIONS)
                     .animateContentSize(),
             )
         }
@@ -159,14 +159,14 @@ private fun BannerInlineItem(
                         resource = Res.string.banner_inline_notification_learn_more,
                     ),
                     onClick = onOpenErrorNotificationsClick,
-                    modifier = Modifier.testTagAsResourceId(TEST_TAG_LEARN_MORE_ACTION),
+                    modifier = Modifier.testTag(TEST_TAG_LEARN_MORE_ACTION),
                 )
             }
             banner.actions.forEachIndexed { actionIndex, action ->
                 ResolvedNotificationActionButton(
                     action = action,
                     onActionClick = onActionClick,
-                    modifier = Modifier.testTagAsResourceId(
+                    modifier = Modifier.testTag(
                         tag = BannerInlineNotificationListHostDefaults.testTagBannerInlineListItemAction(
                             index = index,
                             actionIndex = actionIndex,

@@ -110,7 +110,7 @@
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> dalších na <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Odpovědět</string>
-    <string name="notification_action_mark_as_read">Přečteno</string>
+    <string name="notification_action_mark_as_read">Označit jako přečtené</string>
     <string name="notification_action_mark_all_as_read">Označit vše jako přečtené</string>
     <string name="notification_action_delete">Smazat</string>
     <string name="notification_action_delete_all">Smazat vše</string>
@@ -473,7 +473,7 @@
     <string name="sort_unread_last">Přečtené první</string>
     <string name="sort_attach_first">S přílohou první</string>
     <string name="sort_unattached_first">Bez přílohy první</string>
-    <string name="sort_by">Třídit podle položky…</string>
+    <string name="sort_by">Seřadit podle…</string>
     <string name="sort_by_date">Datum</string>
     <string name="sort_by_arrival">Příchodu</string>
     <string name="sort_by_subject">Předmět</string>
@@ -523,7 +523,6 @@
     <string name="account_setup_push_limit_500">500 složek</string>
     <string name="account_setup_push_limit_1000">1000 složek</string>
     <string name="animations_title">Animace</string>
-    <string name="animations_summary">Používat okázalé vizuální efekty</string>
     <string name="show_unified_inbox_title">Ukázat sjednocený pohled na doručenou poštu</string>
     <string name="show_starred_count_title">Zobrazit počet označených hvězdičkou</string>
     <string name="integrated_inbox_title">Jednotná schránka</string>
@@ -629,7 +628,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Limit počtu výsledků vyhledávání serveru</string>
+    <string name="account_settings_remote_search_num_label">Limit vyhledávání na serveru</string>
     <string name="remote_search_sending_query">Odeslání dotazu na server</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Načítání %d výsledku</item>
@@ -946,7 +945,6 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="message_view_attachments_title">Přílohy</string>
     <string name="message_view_attachments_save_all">Uložit vše</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
-    <string name="encrypted_attachment_title">Zašifrovaná příloha</string>
     <string name="no_network_message_will_be_sent_later_toast">Jste offline. Zpráva bude odeslána, jakmile bude dostupné připojení</string>
     <string name="notification_actions_settings_title">Akce oznámení</string>
     <string name="notification_actions_settings_summary">Vyberte, které akce se zobrazí v oznámeních o e-mailech</string>
@@ -964,4 +962,13 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="accessibility_move_cutoff_up">Přesunout hranici zobrazených akcí nahoru</string>
     <string name="accessibility_move_cutoff_down">Přesunout hranici zobrazených akcí dolů</string>
     <string name="notification_action_star">Hvězdička</string>
+    <string name="changelog_latest_label_text">NEJNOVĚJŠÍ</string>
+    <string name="changelog_type_new_text">NOVINKY</string>
+    <string name="changelog_type_fixed_text">OPRAVY</string>
+    <string name="changelog_type_changed_text">ZMĚNY</string>
+    <string name="notification_show_contact_picture_title">Zobrazit obrázky kontaktů v oznámeních</string>
+    <string name="notification_show_contact_picture_summary">Zobrazit avatary odesílatelů v oznámeních o nových zprávách</string>
+    <string name="animation_setting_on">Zapnuty</string>
+    <string name="animation_setting_off">Vypnuty</string>
+    <string name="animation_setting_follow_system">Podle systému</string>
 </resources>

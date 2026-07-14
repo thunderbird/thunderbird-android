@@ -11,8 +11,8 @@ import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Event
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.SettingsBuilder
-import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
@@ -34,6 +34,7 @@ internal fun GeneralSettingsScreen(
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
             is Effect.NavigateBack -> onBack()
+
             is Effect.OpenAvatarImagePicker -> {
                 imagePicker.launch(arrayOf("image/jpeg", "image/png"))
             }

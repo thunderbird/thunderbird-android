@@ -539,7 +539,6 @@
     <string name="account_setup_push_limit_label">புச் மூலம் சரிபார்க்க அதிகபட்ச கோப்புறைகள்</string>
     <string name="account_setup_push_limit_100">100 கோப்புறைகள்</string>
     <string name="account_setup_push_limit_250">250 கோப்புறைகள்</string>
-    <string name="animations_summary">அழகிய காட்சி விளைவுகளைப் பயன்படுத்தவும்</string>
     <string name="folder_settings_include_in_integrated_inbox_label">ஒன்றுபடுங்கள்</string>
     <string name="font_size_message_list_sender">அனுப்புநர்</string>
     <string name="font_size_message_view_date">நேரம் மற்றும் தேதி</string>

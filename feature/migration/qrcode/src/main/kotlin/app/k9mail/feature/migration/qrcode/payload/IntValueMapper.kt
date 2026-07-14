@@ -25,9 +25,14 @@ internal fun Int.toOutgoingServerProtocol(): OutgoingServerProtocol {
 internal fun Int.toConnectionSecurity(): ConnectionSecurity {
     return when (this) {
         0 -> ConnectionSecurity.Plain
-        1 -> ConnectionSecurity.AlwaysStartTls // TryStartTls, but we treat it like AlwaysStartTls
+
+        // TryStartTls, but we treat it like AlwaysStartTls
+        1 -> ConnectionSecurity.AlwaysStartTls
+
         2 -> ConnectionSecurity.AlwaysStartTls
+
         3 -> ConnectionSecurity.Tls
+
         else -> throw IllegalArgumentException("Unsupported value: $this")
     }
 }

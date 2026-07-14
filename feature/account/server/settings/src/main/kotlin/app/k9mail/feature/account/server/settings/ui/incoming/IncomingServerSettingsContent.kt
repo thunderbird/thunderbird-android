@@ -7,12 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.testTag
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Event
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import app.k9mail.feature.account.server.settings.ui.incoming.content.incomingFormItems
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @Composable
@@ -25,8 +25,7 @@ internal fun IncomingServerSettingsContent(
     val resources = LocalResources.current
 
     ResponsiveWidthContainer(
-        modifier = Modifier
-            .testTagAsResourceId("IncomingServerSettingsContent")
+        modifier = Modifier.testTag("IncomingServerSettingsContent")
             .then(modifier),
     ) { contentPadding ->
         LazyColumn(

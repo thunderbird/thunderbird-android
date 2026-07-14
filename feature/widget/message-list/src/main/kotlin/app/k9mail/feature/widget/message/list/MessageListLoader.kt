@@ -68,11 +68,18 @@ internal class MessageListLoader(
     private fun buildSortOrder(config: MessageListConfig): String {
         val sortColumn = when (config.sortType) {
             SortType.SORT_ARRIVAL -> MessageColumns.INTERNAL_DATE
+
             SortType.SORT_ATTACHMENT -> "(${MessageColumns.ATTACHMENT_COUNT} < 1)"
+
             SortType.SORT_FLAGGED -> "(${MessageColumns.FLAGGED} != 1)"
-            SortType.SORT_SENDER -> MessageColumns.SENDER_LIST // FIXME
+
+            // FIXME
+            SortType.SORT_SENDER -> MessageColumns.SENDER_LIST
+
             SortType.SORT_SUBJECT -> "${MessageColumns.SUBJECT} COLLATE NOCASE"
+
             SortType.SORT_UNREAD -> MessageColumns.READ
+
             SortType.SORT_DATE -> MessageColumns.DATE
         }
 

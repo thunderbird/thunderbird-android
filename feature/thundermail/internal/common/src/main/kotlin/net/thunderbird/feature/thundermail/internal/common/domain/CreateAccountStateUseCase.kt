@@ -31,8 +31,11 @@ internal class CreateAccountStateUseCase(
 
         return when {
             authState == null && error != null -> Outcome.failure(error)
+
             idToken == null -> Outcome.failure(Failure.IdTokenMissing)
+
             emailAddress.isNullOrBlank() -> Outcome.failure(Failure.MissingEmail(idToken.toString()))
+
             else -> {
                 val name = (idToken.additionalClaims["name"] ?: idToken.additionalClaims["given_name"])?.toString()
                 val state = AccountState(

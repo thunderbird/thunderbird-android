@@ -67,6 +67,7 @@ fun MessageItemAvatarCircle(
             )
 
             is Avatar.Monogram -> TextTitleSmall(text = avatar.value)
+
             is Avatar.Image -> RemoteImage(
                 url = avatar.url,
                 placeholder = {

@@ -15,7 +15,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 27
-        versionName = "20.1"
+        versionName = "21.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
     }
@@ -268,6 +268,8 @@ dependencies {
     testImplementation(projects.feature.account.common)
     testImplementation(projects.feature.thundermail.internal.common)
     testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
+    testImplementation(projects.feature.changelog.internal)
+
     testImplementation(libs.appauth)
 }
 

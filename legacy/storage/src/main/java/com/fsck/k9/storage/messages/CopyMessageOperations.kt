@@ -6,16 +6,17 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.core.database.getBlobOrNull
 import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
-import com.fsck.k9.K9
 import com.fsck.k9.mailstore.LockableDatabase
 import java.util.UUID
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 
 internal class CopyMessageOperations(
     private val lockableDatabase: LockableDatabase,
     private val attachmentFileManager: AttachmentFileManager,
     private val threadMessageOperations: ThreadMessageOperations,
     private val accountId: AccountId,
+    private val localMessageUidPrefixProvider: LocalMessageUidPrefixProvider,
 ) {
     fun copyMessage(messageId: Long, destinationFolderId: Long): Long {
         return lockableDatabase.execute(true) { database ->
@@ -90,10 +91,10 @@ SELECT
   message_parts.epilogue,
   message_parts.boundary,
   message_parts.content_id,
-  message_parts.server_extra 
-FROM messages 
-JOIN message_parts ON (message_parts.root = messages.message_part_id) 
-WHERE messages.id = ? 
+  message_parts.server_extra
+FROM messages
+JOIN message_parts ON (message_parts.root = messages.message_part_id)
+WHERE messages.id = ?
 ORDER BY message_parts.seq
             """,
             arrayOf(messageId.toString()),
@@ -196,7 +197,7 @@ ORDER BY message_parts.seq
 
         return values.apply {
             put("folder_id", destinationFolderId)
-            put("uid", K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString())
+            put("uid", localMessageUidPrefixProvider.get() + UUID.randomUUID().toString())
             put("message_part_id", rootMessagePartId)
             put("account_id", accountId.toString())
         }

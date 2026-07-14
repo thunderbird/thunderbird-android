@@ -16,7 +16,6 @@ dependencies {
     api(libs.androidx.fragment)
 
     implementation(projects.core.logging.implLegacy)
-    implementation(libs.androidx.annotation)
 }
 
 codeCoverage {

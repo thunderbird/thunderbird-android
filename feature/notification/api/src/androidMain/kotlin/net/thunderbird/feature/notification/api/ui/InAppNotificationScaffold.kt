@@ -19,7 +19,6 @@ import app.k9mail.core.ui.compose.designsystem.organism.snackbar.rememberSnackba
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.designsystem.template.ScaffoldFabPosition
 import kotlinx.collections.immutable.ImmutableSet
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffoldDefaults.TEST_TAG_ERROR_NOTIFICATIONS_DIALOG
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffoldDefaults.TEST_TAG_INNER_SCAFFOLD
@@ -68,13 +67,13 @@ fun InAppNotificationScaffold(
     val hostStateHolder = rememberInAppNotificationHostStateHolder(enabled)
     var showErrorNotificationDialog by remember { mutableStateOf(false) }
     Scaffold(
-        modifier = modifier.testTagAsResourceId(TEST_TAG_INNER_SCAFFOLD),
+        modifier = modifier.testTag(TEST_TAG_INNER_SCAFFOLD),
         topBar = topBar,
         bottomBar = bottomBar,
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHostState,
-                modifier = Modifier.testTagAsResourceId(TEST_TAG_SNACKBAR_HOST),
+                modifier = Modifier.testTag(TEST_TAG_SNACKBAR_HOST),
             )
         },
         floatingActionButton = floatingActionButton,
@@ -101,7 +100,7 @@ fun InAppNotificationScaffold(
                 )
             },
             eventFilter = eventFilter,
-            modifier = Modifier.testTagAsResourceId(TEST_TAG_IN_APP_NOTIFICATION_HOST),
+            modifier = Modifier.testTag(TEST_TAG_IN_APP_NOTIFICATION_HOST),
             content = content,
         )
 

@@ -10,7 +10,7 @@ Java and Kotlin are compatible languages, but we decided to convert our codebase
 - Kotlin has better support for null safety.
 - Kotlin has a number of modern language features that make it easier to write maintainable code.
 
-See our [ADR-0001](../architecture/adr/0001-switch-from-java-to-kotlin.md) for more information.
+See our [ADR-0001](../engineering/adr/0001-switch-from-java-to-kotlin.md) for more information.
 
 ## How to Convert Java Code to Kotlin
 

@@ -6,17 +6,17 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.window.WindowSizeClass
-import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
+import net.thunderbird.core.ui.common.window.WindowHeightSizeClass
+import net.thunderbird.core.ui.common.window.calculateWindowSizeInfo
 
 @Composable
 internal fun SettingList(
     modifier: Modifier = Modifier,
     content: LazyGridScope.() -> Unit,
 ) {
-    val windowSizeInfo = getWindowSizeInfo()
-    val isLandscape = windowSizeInfo.screenWidth > windowSizeInfo.screenHeight
-    val isCompactHeight = windowSizeInfo.screenHeightSizeClass == WindowSizeClass.Compact
+    val windowSizeInfo = calculateWindowSizeInfo()
+    val isLandscape = windowSizeInfo.size.width > windowSizeInfo.size.height
+    val isCompactHeight = windowSizeInfo.sizeClass.heightSizeClass == WindowHeightSizeClass.Compact
     val phoneLandscape = isLandscape && isCompactHeight
 
     LazyVerticalGrid(

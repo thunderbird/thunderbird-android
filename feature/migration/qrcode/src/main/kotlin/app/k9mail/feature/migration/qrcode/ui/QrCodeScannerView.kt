@@ -6,11 +6,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.feature.migration.qrcode.R
 import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.DisplayText
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 
 @Composable
@@ -19,7 +19,7 @@ internal fun QrCodeScannerView(
     displayText: DisplayText,
     onDoneClick: () -> Unit,
 ) {
-    Column(modifier = Modifier.testTagAsResourceId("QrCodeScannerView")) {
+    Column(modifier = Modifier.testTag("QrCodeScannerView")) {
         CameraPreviewView(
             cameraUseCasesProvider = cameraUseCasesProvider,
             modifier = Modifier

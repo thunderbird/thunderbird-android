@@ -81,3 +81,9 @@ enum class LockScreenNotificationVisibility {
     APP_NAME,
     NOTHING,
 }
+
+enum class AnimationPreference {
+    ON,
+    OFF,
+    FOLLOW_SYSTEM,
+}

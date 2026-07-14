@@ -93,6 +93,7 @@ private fun handleSettingChange(
         is SettingValue.Select -> onEvent(
             SearchSettingsContract.Event.OnServerSearchLimitChange(setting.value.id.toInt()),
         )
+
         else -> Unit
     }
 }

@@ -106,6 +106,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
                             }
                             true
                         }
+
                         else -> false
                     }
                 }

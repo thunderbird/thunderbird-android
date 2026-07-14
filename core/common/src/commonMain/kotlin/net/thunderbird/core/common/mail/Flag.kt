@@ -13,6 +13,7 @@ enum class Flag {
     FORWARDED,
 
     // The following flags are for internal library use only.
+
     /**
      * Delete and remove from the LocalStore immediately.
      */

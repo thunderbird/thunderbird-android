@@ -11,7 +11,6 @@ internal class ValidateUsername : UseCase.ValidateUsername {
     override fun execute(username: String): ValidationOutcome {
         return when {
             username.isBlank() -> Outcome.Failure(ValidateUsernameError.EmptyUsername)
-
             else -> ValidationSuccess
         }
     }

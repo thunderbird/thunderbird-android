@@ -15,6 +15,7 @@ val featureThundermailCommonModule = module {
             getOAuthRequestIntent = get(),
             finishOAuthSignIn = get(),
             checkIsGoogleSignIn = get(),
+            logger = get(),
         )
     }
     viewModel<ThundermailContract.ViewModel> {

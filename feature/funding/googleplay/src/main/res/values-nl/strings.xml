@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_statement_point_2">We verkopen uw gegevens niet.</string>
     <string name="funding_googleplay_contribution_reminder_claim">We worden alleen gefinancierd door gebruikers zoals u.</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_1">We tonen geen advertenties.</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Aankoop verwerken…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Annuleren</string>
 </resources>

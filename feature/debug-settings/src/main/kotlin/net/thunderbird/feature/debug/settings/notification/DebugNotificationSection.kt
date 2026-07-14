@@ -31,7 +31,7 @@ import net.thunderbird.feature.debug.settings.notification.DebugNotificationSect
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.notification.api.content.MailNotification
 import net.thunderbird.feature.notification.api.content.Notification
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 private const val UUID_MAX_CHAR_DISPLAY = 4
 

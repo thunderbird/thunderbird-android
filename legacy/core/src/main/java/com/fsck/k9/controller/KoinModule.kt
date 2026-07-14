@@ -15,6 +15,7 @@ import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import net.thunderbird.feature.notification.api.NotificationManager
 import org.koin.core.qualifier.named
 import org.koin.dsl.binds
@@ -33,6 +34,7 @@ val controllerModule = module {
             get<SaveMessageDataCreator>(),
             get<SpecialLocalFoldersCreator>(),
             get<LocalDeleteOperationDecider>(),
+            get<LocalMessageUidPrefixProvider>(),
             get(named("controllerExtensions")),
             get<FeatureFlagProvider>(),
             get<Logger>(named("syncDebug")),

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thundermail_redirecting">Omliede nei Thundermail…</string>
+    <string name="thundermail_something_went_wrong">Der gie wat mis</string>
+    <string name="thundermail_browser_is_not_available">Browser is net beskikber. Kontrolearje jo apparaatkonfiguraasje.</string>
+    <string name="thundermail_operation_was_canceled">Bewurking is annulearre</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Unbekende flater. Oerweagje om dit te rapportearjen.</string>
+</resources>

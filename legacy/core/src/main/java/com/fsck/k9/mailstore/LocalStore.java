@@ -48,6 +48,7 @@ import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import kotlin.time.Clock;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.preference.GeneralSettingsManager;
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
 import net.thunderbird.feature.search.legacy.LocalMessageSearch;
 import net.thunderbird.feature.search.legacy.api.SearchAttribute;
 import net.thunderbird.feature.search.legacy.api.MessageSearchField;
@@ -167,24 +168,26 @@ public class LocalStore {
     private final LockableDatabase database;
     private final OutboxStateRepository outboxStateRepository;
     private GeneralSettingsManager generalSettingsManager;
+    private LocalMessageUidPrefixProvider localMessageUidPrefixProvider;
 
-    static LocalStore createInstance(LegacyAccountDto account, Context context, GeneralSettingsManager generalSettingsManager) throws MessagingException {
-        return new LocalStore(account, context, generalSettingsManager);
+    static LocalStore createInstance(LegacyAccountDto account, Context context, GeneralSettingsManager generalSettingsManager,
+        LocalMessageUidPrefixProvider localMessageUidPrefixProvider) throws MessagingException {
+        return new LocalStore(account, context, generalSettingsManager, localMessageUidPrefixProvider);
     }
 
     /**
      * local://localhost/path/to/database/uuid.db
-     * This constructor is only used by {@link LocalStoreProvider#getInstance(LegacyAccountDto,GeneralSettingsManager)}
+     * This constructor is only used by {@link LocalStoreProvider#getInstance(LegacyAccountDto)}
      */
-    private LocalStore(final LegacyAccountDto account, final Context context, final GeneralSettingsManager generalSettingsManager) throws MessagingException {
+    private LocalStore(final LegacyAccountDto account, final Context context, final GeneralSettingsManager generalSettingsManager,
+        LocalMessageUidPrefixProvider localMessageUidPrefixProvider) throws MessagingException {
         pendingCommandSerializer = PendingCommandSerializer.getInstance();
         attachmentInfoExtractor = DI.get(AttachmentInfoExtractor.class);
         StorageFilesProviderFactory storageFilesProviderFactory = DI.get(StorageFilesProviderFactory.class);
         storageFilesProvider = storageFilesProviderFactory.createStorageFilesProvider(account.getUuid());
-
+        this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
         this.account = account;
         this.generalSettingsManager = generalSettingsManager;
-
         SchemaDefinitionFactory schemaDefinitionFactory = DI.get(SchemaDefinitionFactory.class);
         RealMigrationsHelper migrationsHelper = new RealMigrationsHelper();
         SchemaDefinition schemaDefinition = schemaDefinitionFactory.createSchemaDefinition(migrationsHelper);
@@ -214,7 +217,7 @@ public class LocalStore {
     }
 
     public LocalFolder getFolder(String serverId) {
-        return new LocalFolder(this, serverId, generalSettingsManager);
+        return new LocalFolder(this, serverId, generalSettingsManager, localMessageUidPrefixProvider);
     }
 
     public LocalFolder getFolder(long folderId) {
@@ -222,7 +225,7 @@ public class LocalStore {
     }
 
     public LocalFolder getFolder(String serverId, String name, FolderType type) {
-        return new LocalFolder(this, serverId, name, type, generalSettingsManager);
+        return new LocalFolder(this, serverId, name, type, generalSettingsManager, localMessageUidPrefixProvider);
     }
 
     // TODO this takes about 260-300ms, seems slow.

@@ -21,13 +21,16 @@ class SerialRunner(private val runnables: List<AutoDiscoveryRunnable>) {
                 is Settings -> {
                     return discoveryResult
                 }
+
                 is NetworkError -> {
                     networkErrorCount++
                     if (networkError == null) {
                         networkError = discoveryResult
                     }
                 }
+
                 NoUsableSettingsFound -> { }
+
                 is UnexpectedException -> {
                     Log.w(discoveryResult.exception, "Unexpected exception")
                 }

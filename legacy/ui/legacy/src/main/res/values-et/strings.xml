@@ -518,7 +518,6 @@
     <string name="account_setup_push_limit_500">500 kausta</string>
     <string name="account_setup_push_limit_1000">1000 kausta</string>
     <string name="animations_title">Animatsioon</string>
-    <string name="animations_summary">Kasuta erinevaid visuaalseid efekte</string>
     <string name="show_unified_inbox_title">Näita koondsisendkausta</string>
     <string name="show_starred_count_title">Näita tärniga tähistatud kirjade arvu</string>
     <string name="integrated_inbox_title">Koondsisendkaust</string>
@@ -930,7 +929,6 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="message_view_attachments_title">Manused</string>
     <string name="message_view_attachments_save_all">Salvesta kõik</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
-    <string name="encrypted_attachment_title">Krüptitud manus</string>
     <string name="no_network_message_will_be_sent_later_toast">Võrguühendus puudub. Kiri saadetakse selle taastumisel</string>
     <string name="notification_actions_settings_title">Toimingud teavitustes</string>
     <string name="notification_actions_settings_summary">Saad valida tegevused, mis kuvatakse e-kirjade teavitustes</string>
@@ -952,4 +950,9 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="accessibility_move_cutoff_up">Tõsta näidatud tegevuste vaheltlõige ülespoole</string>
     <string name="accessibility_move_cutoff_down">Tõsta näidatud tegevuste vaheltlõige allapoole</string>
     <string name="notification_action_star">Märgi tähega</string>
+    <string name="notification_show_contact_picture_title">Näita teavitustes kontaktide pilte</string>
+    <string name="notification_show_contact_picture_summary">Näita uute kirjade teavitustes kontaktide tunnuspilte</string>
+    <string name="animation_setting_on">Sisselülitatud</string>
+    <string name="animation_setting_off">Väljalülitatud</string>
+    <string name="animation_setting_follow_system">Kasuta süsteemi vaikimisi eelistust</string>
 </resources>

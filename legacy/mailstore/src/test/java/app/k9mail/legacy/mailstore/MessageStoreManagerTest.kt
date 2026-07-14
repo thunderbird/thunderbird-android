@@ -2,10 +2,10 @@ package app.k9mail.legacy.mailstore
 
 import assertk.assertThat
 import assertk.assertions.isSameInstanceAs
+import kotlin.test.Test
 import net.thunderbird.core.android.account.AccountRemovedListener
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import org.junit.Test
 import org.mockito.kotlin.KStubbing
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doNothing

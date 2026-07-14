@@ -488,7 +488,6 @@
     <string name="account_setup_push_limit_500">500 cartulari</string>
     <string name="account_setup_push_limit_1000">1000 cartulari</string>
     <string name="animations_title">Animazione</string>
-    <string name="animations_summary">Impiegà l’effetti visuali esagerati</string>
     <string name="show_unified_inbox_title">Affissà a scatula di ricezzione cuncolta</string>
     <string name="show_starred_count_title">Affissà u numaru di stellati</string>
     <string name="integrated_inbox_detail">Tutti i messaghji in i cartulari cuncolti</string>
@@ -866,6 +865,5 @@
     <string name="message_view_attachments_title">Pezze ghjunte</string>
     <string name="message_view_attachments_save_all">Tuttu arregistrà</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
-    <string name="encrypted_attachment_title">Pezza ghjunta cifrata</string>
     <string name="no_network_message_will_be_sent_later_toast">Fora di linea. U messaghju serà mandatu da ch’ella serà dispunibule a cunnessione</string>
 </resources>

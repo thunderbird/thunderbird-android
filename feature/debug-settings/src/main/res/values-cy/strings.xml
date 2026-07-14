@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_screen_title">Sgrin Gosodiadau Dadfygio Cyfrinachol</string>
+    <string name="debug_settings_notifications_loading">Yn llwytho…</string>
+    <string name="debug_settings_notifications_trigger_notification">Cychwyn hysbysu</string>
+    <string name="debug_settings_notifications_single_mail_sender">Anfonwr</string>
+    <string name="debug_settings_notifications_single_mail_subject">Pwnc</string>
+    <string name="debug_settings_notifications_single_mail_summary">Crynodeb</string>
+    <string name="debug_settings_notifications_single_mail_preview">Rhagolwg</string>
+    <string name="debug_settings_notifications_common_notification_information">Manylion hysbysu cyffredin</string>
+    <string name="debug_settings_notifications_in_app_notification">Hysbysu o fewn yr ap</string>
+    <string name="debug_settings_notifications_title">Hysbysiad</string>
+    <string name="debug_settings_notifications_system_notification">Hysbysiad system</string>
+    <string name="debug_settings_notifications_preparing_notification">Yn paratoi hysbysiad %1$s</string>
+    <string name="debug_settings_notification_status_log">Log statws hysbysiad</string>
+    <string name="debug_settings_notifications_status">"Statws: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Clirio statws log</string>
+    <string name="debug_settings_feature_flag_title">Baneri nodwedd</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Newidiadau heb eu Cadw</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Mae gennych newidiadau heb eu cadw. Ydych chi\'n siŵr eich bod am adael?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Aros</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Gadael</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Adfer Gwerthoedd Rhagosodedig</string>
+    <string name="debug_settings_feature_flag_apply_changes">Gosod y newidiadau</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_default_value">gwerth rhagosodedig: %1$b</string>
+    <string name="debug_settings_feature_flag_overridden">"diystyrwyd; "</string>
 </resources>

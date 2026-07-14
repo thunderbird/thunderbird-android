@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_screen_title">Skärmen för hemliga felsökningsinställningar</string>
+    <string name="debug_settings_notifications_loading">Laddar…</string>
+    <string name="debug_settings_notifications_trigger_notification">Utlös avisering</string>
+    <string name="debug_settings_notifications_single_mail_sender">Avsändare</string>
+    <string name="debug_settings_notifications_single_mail_subject">Ämne</string>
+    <string name="debug_settings_notifications_single_mail_summary">Sammanfattning</string>
+    <string name="debug_settings_notifications_single_mail_preview">Förhandsvisning</string>
+    <string name="debug_settings_notifications_common_notification_information">Allmän aviseringsinformation</string>
+    <string name="debug_settings_notifications_in_app_notification">Aviseringar i appen</string>
+    <string name="debug_settings_notifications_title">Aviseringar</string>
+    <string name="debug_settings_notifications_system_notification">Systemmeddelande</string>
+    <string name="debug_settings_notifications_preparing_notification">Förbereder avisering %1$s</string>
+    <string name="debug_settings_notification_status_log">Logg för aviseringsstatus</string>
+    <string name="debug_settings_notifications_status">"Status: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Rensa statuslogg</string>
+    <string name="debug_settings_feature_flag_title">Funktionsflaggor</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Osparade ändringar</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Du har osparade ändringar. Är du säker på att du vill avsluta?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Stanna</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Lämna</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Återställ standardvärden</string>
+    <string name="debug_settings_feature_flag_apply_changes">Tillämpa ändringar</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"åsidosatt; "</string>
+    <string name="debug_settings_feature_flag_default_value">standardvärde: %1$b</string>
 </resources>

@@ -6,6 +6,7 @@ dependencies {
     api(libs.koin.core)
 
     implementation(projects.core.logging.api)
+    implementation(projects.feature.mail.message.list.api)
 
     implementation(projects.legacy.core)
     // Required for MigrationTo107
@@ -20,9 +21,11 @@ dependencies {
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
     testImplementation(projects.feature.telemetry.noop)
+    testImplementation(projects.core.featureflag)
+
     testImplementation(libs.robolectric)
     testImplementation(libs.commons.io)
-    testImplementation(projects.core.featureflag)
+    testImplementation(libs.mockito.kotlin)
 }
 
 android {

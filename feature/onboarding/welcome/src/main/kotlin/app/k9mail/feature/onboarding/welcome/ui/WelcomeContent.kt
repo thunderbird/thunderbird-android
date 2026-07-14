@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -28,7 +29,6 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMedium
 import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.feature.onboarding.welcome.R
-import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.core.ui.compose.theme2.MainTheme
 import org.jetbrains.compose.resources.painterResource
 
@@ -212,7 +212,7 @@ private fun WelcomeFooter(
         ButtonFilled(
             text = stringResource(id = R.string.onboarding_welcome_start_button),
             onClick = onStartClick,
-            modifier = Modifier.testTagAsResourceId("onboarding_welcome_start_button"),
+            modifier = Modifier.testTag("onboarding_welcome_start_button"),
         )
         if (showImportButton) {
             ButtonText(

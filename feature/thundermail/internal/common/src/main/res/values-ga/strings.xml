@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="thundermail_redirecting">Ag atreorú chuig Thundermail...</string>
+    <string name="thundermail_something_went_wrong">Chuaigh rud éigin mícheart</string>
+    <string name="thundermail_browser_is_not_available">Níl an brabhsálaí ar fáil. Fíoraigh cumraíocht do ghléis le do thoil</string>
+    <string name="thundermail_operation_was_canceled">Cuireadh an oibríocht ar ceal</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Earráid anaithnid. Smaoinigh ar thuairisciú, le do thoil.</string>
+</resources>

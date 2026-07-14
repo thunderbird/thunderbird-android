@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">보낸편지함 할당</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">취소</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">전송 및 삭제</string>
+    <string name="sent_folder_not_found_dialog_title">보낸편지함을 찾을 수 없음</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">이메일을 전송한 뒤 저장하려면, 계정 설정에서 보낸편지함을 설정하세요.</string>
 </resources>

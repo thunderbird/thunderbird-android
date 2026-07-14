@@ -38,6 +38,7 @@ internal class SyncOptionsViewModel(
             }
 
             Event.OnNextClicked -> submit()
+
             Event.OnBackClicked -> navigateBack()
         }
     }

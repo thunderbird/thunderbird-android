@@ -306,7 +306,7 @@
     <string name="account_settings_ignore_chat_messages_label">Anwybyddu ceisiadau i sgwrsio</string>
     <string name="account_settings_ignore_chat_messages_summary">Peidio â dangos hysbysiadau am negeseuon sy\'n perthyn i sgwrs e-bost</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Marcio fel wedi ei darllen wrth ei hagor</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">Marcio neges fel ei bod wedi ei darllen wrth ei hagor i\'w darllen</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marcio neges fel wedi\'i darllen pan fydd wedi\'i hagor i\'w gweld</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Nodi wedi\'i darllen ar ôl ei dileu</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Nodi neges wedi\'i darllen wrth ei dileu</string>
     <string name="account_settings_notification_channels_label">Categorïau hysbysiadau</string>
@@ -511,7 +511,6 @@
     <string name="account_setup_push_limit_500">500 ffolder</string>
     <string name="account_setup_push_limit_1000">1000 ffolder</string>
     <string name="animations_title">Animeiddiad</string>
-    <string name="animations_summary">Defnyddio effeithiau gweledol lliwgar</string>
     <string name="show_unified_inbox_title">Dangos Blwch Derbyn Cyfun</string>
     <string name="show_starred_count_title">Dangos cyfrif serennog</string>
     <string name="integrated_inbox_title">Blwch Derbyn Cyfun</string>
@@ -612,7 +611,7 @@
     <string name="webview_contextmenu_email_save_action">Cadw i\'r Cysylltiadau</string>
     <string name="webview_contextmenu_email_copy_action">Copïo\'r cyfeiriad i\'r clipfwrdd</string>
     <string name="webview_contextmenu_email_clipboard_label">Cyfeiriad e-bost</string>
-    <string name="account_settings_remote_search_num_results_entries_all">Y Cyfan</string>
+    <string name="account_settings_remote_search_num_results_entries_all">Popeth</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
     <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -938,4 +937,44 @@
     <string name="general_settings_message_list_date_time_format_contextual">Cyd-destunol</string>
     <string name="general_settings_message_list_date_time_format_full">Llawn</string>
     <string name="sort_by_then_by">Yna gan…</string>
+    <string name="changelog_latest_label_text">DIWEDDARAF</string>
+    <string name="changelog_type_new_text">NEWYDD</string>
+    <string name="changelog_type_changed_text">NEWIDIWYD</string>
+    <string name="changelog_type_fixed_text">TRWSIWYD</string>
+    <string name="notification_actions_settings_title">Gweithgaredd hysbysu</string>
+    <string name="notification_actions_settings_summary">Dewiswch pa weithredoedd sy\'n ymddangos mewn hysbysiadau e-bost</string>
+    <string name="notification_summary_delete_title">Dangos Dileu mewn hysbysiadau aml i neges</string>
+    <string name="notification_summary_delete_summary">Yn ychwanegu gweithred Dileu i hysbysiadau sy\'n crynhoi negeseuon newydd lluosog</string>
+    <string name="notification_show_contact_picture_title">Dangos lluniau cysylltiadau mewn hysbysiadau</string>
+    <string name="notification_show_contact_picture_summary">Dangos afatar yr anfonwr mewn hysbysiadau negeseuon newydd</string>
+    <string name="notification_actions_settings_description">Ail drefnu gweithredoedd hysbysiadau.</string>
+    <string name="notification_actions_cutoff_description">Dangos terfynau gweithredoedd</string>
+    <string name="notification_actions_cutoff_state">Mae gweithredoedd uwchlaw\'r llinell hon yn cael eu dangos yn yr hysbysiadau</string>
+    <string name="notification_actions_shown_state">Dangos yn yr hysbysiadau</string>
+    <string name="notification_actions_hidden_state">Dim yn cael ei dangos yn yr hysbysiadau</string>
+    <string name="accessibility_move_up">Symud i fyny</string>
+    <string name="accessibility_move_down">Symud i lawr</string>
+    <string name="accessibility_move_item_up">Symud <xliff:g id="item">%1$s</xliff:g> i fyny</string>
+    <string name="accessibility_move_item_down">Symud <xliff:g id="item">%1$s</xliff:g> i lawr</string>
+    <string name="accessibility_move_cutoff_up">Symud terfynau gweithredoedd i fyny</string>
+    <string name="accessibility_move_cutoff_down">Symud terfynau gweithredoedd i lawr</string>
+    <string name="notification_action_star">Seren</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="zero"><xliff:g id="count">%1$d</xliff:g> Atodiadau(<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Atodiad(<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="two"><xliff:g id="count">%1$d</xliff:g> Atodiad(<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="few"><xliff:g id="count">%1$d</xliff:g> Atodiad(<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="many"><xliff:g id="count">%1$d</xliff:g> Atodiad(<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Atodiad(<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
+    <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
+    <string name="message_view_attachments_view_all">Gweld y cyfan</string>
+    <string name="message_view_attachments_view">Gweld</string>
+    <string name="message_view_attachments_title">Atodiadau</string>
+    <string name="message_view_attachments_save_all">Cadw\'r cyfan</string>
+    <string name="general_settings_message_list_date_time_format_iso">Dewis gosodiadau fformat neges Rhestr Dyddiad/Amser: ISO</string>
+    <string name="animation_setting_on">Ymlaen</string>
+    <string name="animation_setting_off">I Ffwrdd</string>
+    <string name="animation_setting_follow_system">Defnyddio rhagosodiad y system</string>
+    <string name="no_network_message_will_be_sent_later_toast">All-lein. Bydd y neges yn cael ei hanfon pan fydd cysylltiad ar gael</string>
 </resources>

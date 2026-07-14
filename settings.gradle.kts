@@ -118,6 +118,7 @@ include(
 include(
     ":feature:navigation:drawer:api",
     ":feature:navigation:drawer:dropdown",
+    ":feature:changelog:api",
 )
 
 include(
@@ -190,14 +191,17 @@ include(
 )
 
 include(
+    ":core:ui:common",
     ":core:ui:contract",
     ":core:ui:setting:api",
     ":core:ui:setting:component",
     ":core:ui:setting:impl-dialog",
+    ":core:ui:testing",
 )
 
 include(
     ":core:ui:account",
+    ":core:ui:animation:manager",
     ":core:ui:compose:common",
     ":core:ui:compose:designsystem",
     ":core:ui:compose:testing",
@@ -288,3 +292,4 @@ check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {
         https://developer.android.com/build/jdks#jdk-config-in-studio
     """.trimIndent()
 }
+include(":feature:changelog:internal")

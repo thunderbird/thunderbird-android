@@ -64,7 +64,8 @@ class MessageListLoader(
             messageListPreferencesManager,
             outboxFolderManager,
             contactLetterBitmapCreator = contactLetterBitmapCreator.takeIf {
-                featureFlagProvider.provide(MessageListFeatureFlags.UseComposeForMessageListItems).isEnabled()
+                featureFlagProvider.provide(MessageListFeatureFlags.UseComposeForMessageListItems).isEnabled() ||
+                    featureFlagProvider.provide(MessageListFeatureFlags.EnableMessageListNewState).isEnabled()
             },
         )
 

@@ -9,9 +9,11 @@ dependencies {
 
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
+
     testImplementation(libs.okio)
     testImplementation(libs.jzlib)
     testImplementation(libs.commons.io)
+    testImplementation(libs.mockito.kotlin)
 }
 
 codeCoverage {

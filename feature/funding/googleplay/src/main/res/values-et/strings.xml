@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_statement">Thunderbird on tasuta ja põhineb avatud lähtekoodil.</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_2">Me ei müü sinu andmeid.</string>
     <string name="funding_googleplay_contribution_reminder_claim">Meid rahastavad vaid sellised kasutajad, nagu sinagi.</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Töötlen ostu…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Katkesta</string>
 </resources>

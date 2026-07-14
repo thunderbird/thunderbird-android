@@ -39,6 +39,7 @@ class DefaultDataStoreConfigBackend(
         config
     }
 
+    @Suppress("CyclomaticComplexMethod")
     override suspend fun update(keys: List<ConfigKey<*>>, transform: (Config) -> Config) {
         val current = read(keys).first()
         val updated = transform(current)
@@ -53,9 +54,13 @@ class DefaultDataStoreConfigBackend(
                     }
 
                     is ConfigKey.IntKey -> if (value is Int) preferences[intPreferencesKey(key.name)] = value
+
                     is ConfigKey.StringKey -> if (value is String) preferences[stringPreferencesKey(key.name)] = value
+
                     is ConfigKey.LongKey -> if (value is Long) preferences[longPreferencesKey(key.name)] = value
+
                     is ConfigKey.FloatKey -> if (value is Float) preferences[floatPreferencesKey(key.name)] = value
+
                     is ConfigKey.DoubleKey -> if (value is Double) preferences[doublePreferencesKey(key.name)] = value
                 }
             }
