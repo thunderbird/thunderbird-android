@@ -5,6 +5,7 @@ import com.github.ajalt.clikt.core.terminal
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.mordant.terminal.YesNoPrompt
+import net.thunderbird.cli.weblate.api.ComponentConfig
 import net.thunderbird.cli.weblate.api.ComponentInfo
 import net.thunderbird.cli.weblate.api.WeblateClient
 
@@ -20,7 +21,7 @@ class DeleteComponent : BaseCommand(name = "delete") {
 
     override fun onRun(
         client: WeblateClient,
-        defaultComponentConfig: net.thunderbird.cli.weblate.api.ComponentConfig,
+        defaultComponentConfig: ComponentConfig,
         managedComponents: Set<String>,
     ) {
         val components = client.loadComponents()

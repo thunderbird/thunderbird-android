@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
-import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItemBadge
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.organism.drawer.NavigationDrawerItemBadge
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.labelForCount
 
 @Composable
@@ -51,7 +51,7 @@ private fun FolderCountAndStarredBadge(
         }
 
         if (showStarredCount && starredCount > 0) {
-            Spacer(modifier = Modifier.width(MainTheme.spacings.half))
+            Spacer(modifier = Modifier.width(BoltTheme.spacings.half))
             NavigationDrawerItemBadge(
                 label = labelForCount(
                     count = starredCount,

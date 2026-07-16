@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bolt_atom_password_textfield_hide_password">Парольді жасыру</string>
+    <string name="bolt_atom_password_textfield_show_password">Парольді көрсету</string>
+    <string name="bolt_molecule_email_address_input_label">Электронды пошта</string>
+    <string name="bolt_molecule_password_input_label">Пароль</string>
+    <string name="bolt_molecule_error_view_button_retry">Қайталау</string>
+    <string name="bolt_molecule_swipeable_row_start_to_end_accessibility_description">Оңға: %1$s</string>
+    <string name="bolt_molecule_swipeable_row_end_to_start_accessibility_description">Солға: %1$s</string>
+</resources>

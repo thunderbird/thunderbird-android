@@ -1,8 +1,8 @@
 package app.k9mail.feature.account.oauth.ui.view
 
 import androidx.compose.runtime.Composable
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
-import net.thunderbird.core.ui.common.annotation.PreviewDevices
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevices
 
 @PreviewDevices
 @Composable

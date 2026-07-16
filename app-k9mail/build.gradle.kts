@@ -5,7 +5,9 @@ plugins {
     alias(libs.plugins.tb.app.versioning)
 }
 
-val testCoverageEnabled = hasProperty("testCoverageEnabled")
+val testCoverageEnabled = providers
+    .gradleProperty("testCoverageEnabled")
+    .isPresent
 
 android {
     namespace = "com.fsck.k9"
@@ -15,7 +17,7 @@ android {
         testApplicationId = "com.fsck.k9.tests"
 
         versionCode = 39021
-        versionName = "21.0"
+        versionName = "22.0"
         versionNameSuffix = "b1"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"K-9 Mail\"")
@@ -85,12 +87,14 @@ android {
     }
 
     buildTypes {
-        val isCI = project.findProperty("ci") == "true"
+        val isCI = providers.gradleProperty("ci")
+            .map(String::toBoolean)
+            .orElse(false)
         release {
             signingConfig = signingConfigs.getByType(SigningType.K9_RELEASE)
 
-            isMinifyEnabled = !isCI
-            isShrinkResources = !isCI
+            isMinifyEnabled = !isCI.get()
+            isShrinkResources = !isCI.get()
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -140,7 +144,6 @@ android {
 dependencies {
     implementation(projects.appCommon)
     implementation(projects.core.ui.compose.common)
-    implementation(projects.core.ui.compose.theme2)
     implementation(projects.core.ui.legacy.theme2.k9mail)
     implementation(projects.feature.launcher)
     implementation(projects.feature.mail.message.list.api)

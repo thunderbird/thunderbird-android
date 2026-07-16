@@ -1,11 +1,9 @@
 package net.thunderbird.feature.notification.impl.receiver
 
 import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
-import dev.mokkery.matcher.any
-import dev.mokkery.spy
-import dev.mokkery.verify.VerifyMode.Companion.exactly
-import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.logging.testing.TestLogger
@@ -22,14 +20,14 @@ class InAppNotificationNotifierTest {
         val expectedNotificationId = NotificationId(value = 1)
         val notification = FakeInAppOnlyNotification()
         val registrar = mapOf(expectedNotificationId to notification)
-        val registry = spy(FakeNotificationRegistry(initialRegistrar = registrar))
+        val registry = FakeNotificationRegistry(initialRegistrar = registrar)
         val testSubject = createTestSubject(registry)
 
         // Act
         val actual = testSubject.show(notification)
 
         // Assert
-        verifySuspend(exactly(0)) { registry.register(any()) }
+        assertThat(registry.registeredNotifications).isEmpty()
         assertThat(actual).isEqualTo(expectedNotificationId)
     }
 
@@ -43,11 +41,9 @@ class InAppNotificationNotifierTest {
                 put(NotificationId(index), FakeInAppOnlyNotification(title = "fake title $index"))
             }
         }
-        val registry = spy(
-            FakeNotificationRegistry(
-                initialRegistrar = registrar,
-                useRandomIdForRegistering = false,
-            ),
+        val registry = FakeNotificationRegistry(
+            initialRegistrar = registrar,
+            useRandomIdForRegistering = false,
         )
         val testSubject = createTestSubject(registry)
 
@@ -55,7 +51,7 @@ class InAppNotificationNotifierTest {
         val id = testSubject.show(notification)
 
         // Assert
-        verifySuspend(exactly(1)) { registry.register(notification) }
+        assertThat(registry.registeredNotifications).containsExactly(notification)
         assertThat(id)
             .isEqualTo(NotificationId(registrarInitialSize + 1))
     }

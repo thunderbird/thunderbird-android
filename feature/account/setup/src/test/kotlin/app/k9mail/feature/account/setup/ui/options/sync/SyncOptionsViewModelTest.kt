@@ -19,7 +19,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import net.thunderbird.core.testing.coroutines.MainDispatcherHelper
+import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
 
 class SyncOptionsViewModelTest {
 

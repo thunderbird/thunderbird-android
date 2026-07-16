@@ -78,6 +78,7 @@ import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettings
@@ -93,10 +94,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.openintents.openpgp.util.OpenPgpIntentStarter
 import net.thunderbird.feature.mail.message.reader.api.R as MessageReaderR
 
-@Suppress("LargeClass")
+@Suppress("LargeClass", "TooManyFunctions")
 class MessageViewFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
+    AttachmentDisplayController,
     AttachmentViewCallback {
 
     private val themeManager: ThemeManager by inject()
@@ -104,12 +106,14 @@ class MessageViewFragment :
     private val messageLoaderHelperFactory: MessageLoaderHelperFactory by inject()
     private val accountManager: LegacyAccountDtoManager by inject()
     private val messagingController: MessagingController by inject()
+    private val attachmentLoadingController: AttachmentLoadingController by inject()
     private val shareIntentBuilder: ShareIntentBuilder by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
     private val outboxFolderManager: OutboxFolderManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val appNameProvider: AppNameProvider by inject()
     private val messageReaderViewModel: MessageReaderViewContract.ViewModel<Part> by viewModel()
+    private val logger: Logger by inject()
 
     private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
         registerForActivityResult(CreateDocumentResultContract()) { documentUri ->
@@ -819,7 +823,9 @@ class MessageViewFragment :
             return
         }
 
-        createAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(uri)
+        currentAttachmentViewInfo?.let {
+            createAttachmentController(it).saveAttachmentTo(lifecycleScope, uri)
+        }
     }
 
     private fun onChooseFolderMoveResult(result: ChooseFolderResultContract.Result?) {
@@ -1051,17 +1057,17 @@ class MessageViewFragment :
         requireActivity().runOnUiThread(runnable)
     }
 
-    fun showAttachmentLoadingDialog() {
+    override fun showAttachmentLoadingDialog() {
         showDialog(R.id.dialog_attachment_progress)
     }
 
-    fun hideAttachmentLoadingDialogOnMainThread() {
+    override fun hideAttachmentLoadingDialogOnMainThread() {
         runOnMainThread {
             removeDialog(R.id.dialog_attachment_progress)
         }
     }
 
-    fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo) {
+    override fun refreshAttachmentThumbnail(attachment: AttachmentViewInfo) {
         messageTopView.refreshAttachmentThumbnail(attachment)
     }
 
@@ -1181,7 +1187,7 @@ class MessageViewFragment :
     override fun onViewAttachment(attachment: AttachmentViewInfo) {
         currentAttachmentViewInfo = attachment
 
-        createAttachmentController(attachment).viewAttachment()
+        createAttachmentController(attachment).viewAttachment(lifecycleScope)
     }
 
     override fun onSaveAttachment(attachment: AttachmentViewInfo) {
@@ -1201,8 +1207,14 @@ class MessageViewFragment :
         }
     }
 
-    private fun createAttachmentController(attachment: AttachmentViewInfo?): AttachmentController {
-        return AttachmentController(requireContext(), messagingController, this, attachment)
+    private fun createAttachmentController(attachment: AttachmentViewInfo): AttachmentController {
+        return AttachmentController(
+            context = requireContext(),
+            controller = attachmentLoadingController,
+            attachmentDisplayController = this,
+            attachment = attachment,
+            logger = logger
+        )
     }
 
     private fun invalidateMenu() {

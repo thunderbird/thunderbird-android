@@ -1,0 +1,28 @@
+package net.thunderbird.components.ui.catalog.ui.page.atom
+
+import kotlinx.collections.immutable.toImmutableList
+import net.thunderbird.components.ui.catalog.ui.page.CatalogPageContract.CatalogPage
+
+enum class CatalogAtomPage(
+    override val displayName: String,
+    override val isFullScreen: Boolean = false,
+) : CatalogPage {
+    TYPOGRAPHY("Typography"),
+    COLOR("Colors"),
+    BUTTON("Buttons"),
+    SELECTION_CONTROL("Selection Controls"),
+    TEXT_FIELD("TextFields"),
+    ICON("Icons"),
+    IMAGE("Images"),
+    CARD("Cards"),
+    TAB("Tabs"),
+    ;
+
+    override fun toString(): String {
+        return displayName
+    }
+
+    companion object {
+        fun all() = entries.toImmutableList()
+    }
+}

@@ -29,12 +29,12 @@ The theming system follows a hierarchical structure:
 ```mermaid
 graph TD
     subgraph APP_THEMES["App-Specific Themes"]
-        TB_THEME[ThunderbirdTheme2]
-        K9_THEME[K9MailTheme2]
+        TB_THEME[ThunderbirdBoltTheme]
+        K9_THEME[K9MailBoltTheme]
     end
 
     subgraph MAIN["Main Theme"]
-        MAIN_THEME[MainTheme]
+        MAIN_THEME[BoltTheme]
         THEME_CONFIG[ThemeConfig]
     end
 
@@ -64,30 +64,30 @@ graph TD
 
 The theme system consists of three main layers:
 
-1. **App-Specific Themes**: The `core:ui:compose:theme2` module contains theme implementations for specific applications (ThunderbirdTheme2, K9MailTheme2). Each app theme:
+1. **App-Specific Themes**: The `:components:ui:bolt` module contains theme implementations for specific applications (ThunderbirdBoltTheme, K9MailBoltTheme). Each app theme:
    - Defines its own brand colors, logos, and other app-specific visual elements
    - Creates a ThemeConfig with these customizations
-   - Uses the MainTheme as its foundation
+   - Uses the BoltTheme as its foundation
 2. **Main Theme**: This layer provides our extended theming system:
-   - MainTheme: A composable function that sets up the theme environment
+   - BoltTheme: A composable function that sets up the theme environment
    - ThemeConfig: A data class that holds all theme components
    - This layer extends Material Design with additional components like custom spacings, elevations, and app-specific colors
 3. **Material Design Layer**: The foundation layer is Material Design 3:
    - Provides the base theming system (colors, typography, shapes)
    - Ensures compatibility with standard Material components
-   - Our MainTheme wraps MaterialTheme and converts our theme components to Material 3 format when needed
+   - Our BoltTheme wraps MaterialTheme and converts our theme components to Material 3 format when needed
 
 ### 🔄 Data Flow
 
 The theme data flows through the system as follows:
 
-1. App-specific themes (ThunderbirdTheme2, K9MailTheme2) define their visual identity through a ThemeConfig
-2. ThemeConfig is passed to MainTheme, which:
+1. App-specific themes (ThunderbirdBoltTheme, K9MailBoltTheme) define their visual identity through a ThemeConfig
+2. ThemeConfig is passed to BoltTheme, which:
    - Selects the appropriate color scheme based on dark/light mode
    - Configures system bars (status bar, navigation bar)
    - Provides all theme components through CompositionLocal providers
    - Converts our theme components to Material 3 format and configures MaterialTheme
-3. Composables access theme properties through the MainTheme object
+3. Composables access theme properties through the BoltTheme object
 4. Material components automatically use the Material 3 theme derived from our theme
 
 ### 🌟 Benefits
@@ -107,7 +107,7 @@ The theming system consists of several components that work together to provide 
 
 ### 🔧 ThemeConfig
 
-The `ThemeConfig` is the central configuration class that holds all theme components. It serves as a container for all theme-related settings and is passed to the `MainTheme` composable.
+The `ThemeConfig` is the central configuration class that holds all theme components. It serves as a container for all theme-related settings and is passed to the `BoltTheme` composable.
 
 ```kotlin
 data class ThemeConfig(
@@ -372,32 +372,32 @@ The `ThemeTypography` can be converted to Material 3 typography using the `toMat
 
 These theme components work together to create a cohesive design system:
 
-1. **ThemeConfig** aggregates all components and provides them to the `MainTheme`
-2. **MainTheme** makes components available through `CompositionLocal` providers
-3. Composables access theme components through the `MainTheme` object
+1. **ThemeConfig** aggregates all components and provides them to the `BoltTheme`
+2. **BoltTheme** makes components available through `CompositionLocal` providers
+3. Composables access theme components through the `BoltTheme` object
 4. Components like `ThemeColorScheme` and `ThemeShapes` are converted to Material 3 equivalents for use with Material components
 
 This structured approach ensures consistent design application throughout the app while providing flexibility for customization.
 
-## 🌟 MainTheme
+## 🌟 BoltTheme
 
-The `MainTheme` is the foundation of our theming system:
+The `BoltTheme` is the foundation of our theming system:
 
 - Acts as a wrapper around Material Design 3's `MaterialTheme`
 - Provides additional theme components beyond what Material Design offers
 - Configurable through a `ThemeConfig` parameter
 - Supports dark mode and dynamic color
-- Exposes theme components through the `MainTheme` object
+- Exposes theme components through the `BoltTheme` object
 
 ### 🔌 Theme Provider Implementation and Usage
 
 #### 🛠️ How the Theme Provider Works
 
-The `MainTheme` function uses Jetpack Compose's `CompositionLocalProvider` to make theme components available throughout the composition tree:
+The `BoltTheme` function uses Jetpack Compose's `CompositionLocalProvider` to make theme components available throughout the composition tree:
 
 ```kotlin
 @Composable
-fun MainTheme(
+fun BoltTheme(
     themeConfig: ThemeConfig,
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
@@ -451,10 +451,10 @@ internal val LocalThemeElevations = staticCompositionLocalOf<ThemeElevations> {
 // ... other LocalTheme* definitions
 ```
 
-The `MainTheme` object provides properties to access these values from anywhere in the composition tree:
+The `BoltTheme` object provides properties to access these values from anywhere in the composition tree:
 
 ```kotlin
-object MainTheme {
+object BoltTheme {
     val colors: ThemeColorScheme
         @Composable
         @ReadOnlyComposable
@@ -473,24 +473,24 @@ This theme provider mechanism ensures that theme components are available throug
 
 ## 🎭 App-Specific Themes
 
-The app-specific themes (`ThunderbirdTheme2` and `K9MailTheme2`) customize the `MainTheme` for each application:
+The app-specific themes (`ThunderbirdBoltTheme` and `K9MailBoltTheme`) customize the `BoltTheme` for each application:
 
 - Provide app-specific color schemes
 - Include app-specific assets (like logos)
 - Configure theme components through `ThemeConfig`
 - Use default values for common components (elevations, sizes, spacings, shapes, typography)
 
-### ThunderbirdTheme2
+### ThunderbirdBoltTheme
 
 ```kotlin
 @Composable
-fun ThunderbirdTheme2(
+fun ThunderbirdBoltTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     val images = ThemeImages(
-        logo = R.drawable.core_ui_theme2_thunderbird_logo,
+        logo = R.drawable.bolt_thunderbird_logo,
     )
 
     val themeConfig = ThemeConfig(
@@ -509,7 +509,7 @@ fun ThunderbirdTheme2(
         typography = defaultTypography,
     )
 
-    MainTheme(
+    BoltTheme(
         themeConfig = themeConfig,
         darkTheme = darkTheme,
         dynamicColor = dynamicColor,
@@ -518,17 +518,17 @@ fun ThunderbirdTheme2(
 }
 ```
 
-### K9MailTheme2
+### K9MailBoltTheme
 
 ```kotlin
 @Composable
-fun K9MailTheme2(
+fun K9MailBoltTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     val images = ThemeImages(
-        logo = R.drawable.core_ui_theme2_k9mail_logo,
+        logo = R.drawable.bolt_k9mail_logo,
     )
 
     val themeConfig = ThemeConfig(
@@ -547,7 +547,7 @@ fun K9MailTheme2(
         typography = defaultTypography,
     )
 
-    MainTheme(
+    BoltTheme(
         themeConfig = themeConfig,
         darkTheme = darkTheme,
         dynamicColor = dynamicColor,
@@ -566,7 +566,7 @@ To apply a theme to your UI, wrap your composables with the appropriate theme co
 // For Thunderbird app
 @Composable
 fun ThunderbirdApp() {
-    ThunderbirdTheme2 {
+    ThunderbirdBoltTheme {
         // App content
     }
 }
@@ -574,7 +574,7 @@ fun ThunderbirdApp() {
 // For K9Mail app
 @Composable
 fun K9MailApp() {
-    K9MailTheme2 {
+    K9MailBoltTheme {
         // App content
     }
 }
@@ -582,7 +582,7 @@ fun K9MailApp() {
 
 ### 🔑 Accessing Theme Components
 
-Inside themed content, you can access theme properties through the `MainTheme` object:
+Inside themed content, you can access theme properties through the `BoltTheme` object:
 
 ```kotlin
 @Composable
@@ -595,14 +595,14 @@ fun ThemedButton(
         onClick = onClick,
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MainTheme.colors.primary,
-            contentColor = MainTheme.colors.onPrimary,
+            containerColor = BoltTheme.colors.primary,
+            contentColor = BoltTheme.colors.onPrimary,
         ),
-        shape = MainTheme.shapes.medium,
+        shape = BoltTheme.shapes.medium,
     ) {
         Text(
             text = text,
-            style = MainTheme.typography.labelLarge,
+            style = BoltTheme.typography.labelLarge,
         )
     }
 }
@@ -617,7 +617,7 @@ The theming system supports both dark mode and dynamic color:
 
 ```kotlin
 @Composable
-fun ThunderbirdTheme2(
+fun ThunderbirdBoltTheme(
     darkTheme: Boolean = isSystemInDarkTheme(), // Default to system setting
     dynamicColor: Boolean = false, // Disabled by default
     content: @Composable () -> Unit,
@@ -628,7 +628,7 @@ fun ThunderbirdTheme2(
 
 ## 🔧 Customizing Themes
 
-To customize a theme, you can create a new theme composable that wraps `MainTheme` with your custom `ThemeConfig`:
+To customize a theme, you can create a new theme composable that wraps `BoltTheme` with your custom `ThemeConfig`:
 
 ```kotlin
 @Composable
@@ -657,7 +657,7 @@ fun CustomTheme(
         typography = customTypography,
     )
 
-    MainTheme(
+    BoltTheme(
         themeConfig = themeConfig,
         darkTheme = darkTheme,
         dynamicColor = dynamicColor,
@@ -674,7 +674,7 @@ When writing tests for composables that use theme components, you need to wrap t
 @Test
 fun testThemedButton() {
     composeTestRule.setContent {
-        ThunderbirdTheme2 {
+        ThunderbirdBoltTheme {
             ThemedButton(
                 text = "Click Me",
                 onClick = {},

@@ -15,16 +15,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
-import app.k9mail.core.ui.compose.designsystem.atom.card.CardOutlined
-import app.k9mail.core.ui.compose.designsystem.atom.image.RemoteImage
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.CircularProgressIndicator
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
+import net.thunderbird.components.ui.bolt.atom.card.CardOutlined
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.image.RemoteImage
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.reader.api.R
 import net.thunderbird.feature.mail.message.reader.api.ui.attachment.AttachmentUiItem
 
@@ -42,16 +42,16 @@ fun <TPart> AttachmentCard(
         Column {
             AttachmentThumbnail(attachment)
 
-            Surface(color = MainTheme.colors.surfaceContainerHigh) {
+            Surface(color = BoltTheme.colors.surfaceContainerHigh) {
                 Row(
                     modifier = Modifier
                         .padding(
-                            start = MainTheme.spacings.double,
-                            top = MainTheme.spacings.default,
-                            end = MainTheme.spacings.default,
-                            bottom = MainTheme.spacings.default,
+                            start = BoltTheme.spacings.double,
+                            top = BoltTheme.spacings.default,
+                            end = BoltTheme.spacings.default,
+                            bottom = BoltTheme.spacings.default,
                         ),
-                    horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.quadruple),
+                    horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.quadruple),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(
@@ -59,7 +59,7 @@ fun <TPart> AttachmentCard(
                             is AttachmentUiItem.File, is AttachmentUiItem.InlinedFile -> Icons.Outlined.Description
                             is AttachmentUiItem.InlinedImage, is AttachmentUiItem.RemoteImage -> Icons.Outlined.Image
                         },
-                        tint = MainTheme.colors.primary,
+                        tint = BoltTheme.colors.primary,
                     )
                     Column(
                         modifier = Modifier.weight(1f),
@@ -71,7 +71,7 @@ fun <TPart> AttachmentCard(
                                 else -> filename
                             },
                         )
-                        TextBodySmall(text = attachment.formattedSize, color = MainTheme.colors.primary)
+                        TextBodySmall(text = attachment.formattedSize, color = BoltTheme.colors.primary)
                     }
                     ButtonIcon(
                         onClick = onDownloadClick,
@@ -91,7 +91,7 @@ fun <TPart> AttachmentCard(
 private fun <TPart> AttachmentThumbnail(attachment: AttachmentUiItem<TPart>, modifier: Modifier = Modifier) {
     val thumbnailModifier = modifier
         .fillMaxWidth()
-        .height(MainTheme.sizes.huge)
+        .height(BoltTheme.sizes.huge)
     when (attachment) {
         is AttachmentUiItem.RemoteImage -> RemoteImage(
             url = attachment.url,
@@ -125,7 +125,7 @@ private fun BoxScope.AttachmentThumbnailPlaceholder() {
     Box(modifier = Modifier.fillMaxSize().align(Alignment.Center)) {
         CircularProgressIndicator(
             modifier = Modifier
-                .size(MainTheme.sizes.large)
+                .size(BoltTheme.sizes.large)
                 .align(Alignment.Center),
         )
     }

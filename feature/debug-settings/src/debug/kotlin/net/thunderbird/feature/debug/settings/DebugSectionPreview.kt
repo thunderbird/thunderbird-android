@@ -5,15 +5,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @PreviewLightDark
 @Composable
 private fun DebugSectionPreview() {
     PreviewWithThemesLightDark {
-        Box(modifier = Modifier.padding(MainTheme.spacings.triple)) {
+        Box(modifier = Modifier.padding(BoltTheme.spacings.triple)) {
             DebugSection(
                 title = "Debug section",
             ) {

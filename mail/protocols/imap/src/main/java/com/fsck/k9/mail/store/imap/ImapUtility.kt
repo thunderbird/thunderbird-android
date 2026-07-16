@@ -77,7 +77,7 @@ internal object ImapUtility {
         val colonPos = range?.indexOf(':')?.takeIf { it > 0 } ?: return null
 
         return try {
-            val first = range.substring(0, colonPos).toLong()
+            val first = range.substring(startIndex = 0, endIndex = colonPos).toLong()
             val second = range.substring(colonPos + 1).toLong()
             if (is32bitValue(first) && is32bitValue(second)) {
                 first to second
@@ -117,7 +117,9 @@ internal object ImapUtility {
     // TODO use a literal string
     @JvmStatic
     fun encodeString(str: String): String {
-        return "\"" + str.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
+        return "\"" + str
+            .replace(oldValue = "\\", newValue = "\\\\")
+            .replace(oldValue = "\"", newValue = "\\\"") + "\""
     }
 
     internal fun combineFlags(flags: Iterable<Flag>, canCreateForwardedFlag: Boolean): String {

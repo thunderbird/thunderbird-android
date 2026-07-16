@@ -16,8 +16,7 @@ android {
 dependencies {
     implementation(projects.core.common)
     implementation(projects.core.validation)
-    implementation(projects.core.ui.compose.theme2)
-    implementation(projects.core.ui.compose.designsystem)
+    implementation(projects.core.ui.contract)
     implementation(projects.core.ui.navigation)
 
     implementation(projects.mail.common)
@@ -39,7 +38,6 @@ dependencies {
     api(projects.feature.account.server.validation)
 
     implementation(projects.feature.thundermail.api)
-
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)
 

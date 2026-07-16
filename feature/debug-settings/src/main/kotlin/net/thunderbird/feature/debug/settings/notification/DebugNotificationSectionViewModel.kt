@@ -314,7 +314,7 @@ internal val KClass<out Notification>.realName: String
         val clazz = java
 
         return clazz.name
-            .replace(clazz.`package`?.name.orEmpty(), "")
+            .replace(oldValue = clazz.`package`?.name.orEmpty(), newValue = "")
             .removePrefix(".")
-            .replace("$", ".")
+            .replace(oldValue = "$", newValue = ".")
     }

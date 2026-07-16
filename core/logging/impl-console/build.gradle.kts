@@ -20,7 +20,7 @@ kotlin {
         }
     }
     sourceSets {
-        val commonJvmMain by getting
+        val commonJvmMain = getByName("commonJvmMain")
 
         commonMain.dependencies {
             implementation(projects.core.logging.api)

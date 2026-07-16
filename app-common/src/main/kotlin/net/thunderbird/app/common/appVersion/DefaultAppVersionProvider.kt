@@ -16,7 +16,7 @@ class DefaultAppVersionProvider(
             val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
             return packageInfo.versionName ?: "?"
         } catch (e: PackageManager.NameNotFoundException) {
-            logger.error(TAG, e, { "Error getting PackageInfo" })
+            logger.error(TAG, e) { "Error getting PackageInfo" }
             return "?"
         }
     }

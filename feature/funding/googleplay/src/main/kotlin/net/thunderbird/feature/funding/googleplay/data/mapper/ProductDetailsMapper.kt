@@ -34,7 +34,7 @@ internal class ProductDetailsMapper : Mapper.Product {
             OneTimeContribution(
                 id = ContributionId(product.productId),
                 title = product.name,
-                description = product.description.replace("\n", ""),
+                description = product.description.replace(oldValue = "\n", newValue = ""),
                 price = offerDetails.priceAmountMicros,
                 priceFormatted = offerDetails.formattedPrice,
             )
@@ -54,7 +54,7 @@ internal class ProductDetailsMapper : Mapper.Product {
             RecurringContribution(
                 id = ContributionId(product.productId),
                 title = product.name,
-                description = product.description.replace("\n", ""),
+                description = product.description.replace(oldValue = "\n", newValue = ""),
                 price = pricingPhase.priceAmountMicros,
                 priceFormatted = pricingPhase.formattedPrice,
             )

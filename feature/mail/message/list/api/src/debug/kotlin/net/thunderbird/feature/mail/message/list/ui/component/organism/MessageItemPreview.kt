@@ -9,14 +9,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import kotlin.random.Random
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleSmall
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageBadgeStyle
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemAccountIndicator
 import net.thunderbird.feature.mail.message.list.ui.component.config.MessageItemConfiguration
@@ -72,7 +72,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             subject = "The subject",
             excerpt = LoremIpsum(words = 20).values.joinToString(),
             hasAttachments = true,
-            threadCount = Random.nextInt(2, 100),
+            threadCount = Random.nextInt(from = 2, until = 100),
             selected = true,
             receivedAt = "12:34",
         ),
@@ -82,7 +82,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             subject = "The subject",
             excerpt = "",
             hasAttachments = true,
-            threadCount = Random.nextInt(2, 100),
+            threadCount = Random.nextInt(from = 2, until = 100),
             selected = true,
             receivedAt = "12:34",
             maxExcerptLines = 0,
@@ -93,7 +93,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             subject = "The subject",
             excerpt = "",
             hasAttachments = true,
-            threadCount = Random.nextInt(2, 100),
+            threadCount = Random.nextInt(from = 2, until = 100),
             selected = true,
             receivedAt = "12:34",
             maxExcerptLines = 0,
@@ -105,7 +105,7 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             subject = "The subject",
             excerpt = "",
             hasAttachments = true,
-            threadCount = Random.nextInt(2, 100),
+            threadCount = Random.nextInt(from = 2, until = 100),
             selected = false,
             receivedAt = "12:34",
             maxExcerptLines = 0,
@@ -117,9 +117,9 @@ private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<Messa
             previewName = "Unread long excerpt",
             sender = "Sender Name",
             subject = "The subject",
-            excerpt = LoremIpsum(words = 100).values.joinToString { it.replace("\n", "") },
+            excerpt = LoremIpsum(words = 100).values.joinToString { it.replace(oldValue = "\n", newValue = "") },
             hasAttachments = true,
-            threadCount = Random.nextInt(2, 100),
+            threadCount = Random.nextInt(from = 2, until = 100),
             selected = false,
             receivedAt = "12:34",
             maxExcerptLines = 5,
@@ -215,7 +215,7 @@ private fun PreviewDefault(
             onLongClick = { },
             onAvatarClick = { },
             onTrailingClick = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
             selected = params.selected,
             colors = MessageItemDefaults.newMessageItemColors(),
             contentPadding = MessageItemDefaults.defaultContentPadding,
@@ -288,7 +288,7 @@ private fun PreviewCompact(
             onLongClick = { },
             onAvatarClick = { },
             onTrailingClick = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
             selected = params.selected,
             colors = MessageItemDefaults.newMessageItemColors(),
             contentPadding = MessageItemDefaults.compactContentPadding,
@@ -361,7 +361,7 @@ private fun PreviewRelaxed(
             onLongClick = { },
             onAvatarClick = { },
             onTrailingClick = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
             selected = params.selected,
             colors = MessageItemDefaults.newMessageItemColors(),
             contentPadding = MessageItemDefaults.relaxedContentPadding,
@@ -434,7 +434,7 @@ private fun PreviewDefaultWithoutAccountIndicator(
             onLongClick = { },
             onAvatarClick = { },
             onTrailingClick = { },
-            modifier = Modifier.padding(MainTheme.spacings.double),
+            modifier = Modifier.padding(BoltTheme.spacings.double),
             selected = params.selected,
             colors = MessageItemDefaults.newMessageItemColors(),
         )

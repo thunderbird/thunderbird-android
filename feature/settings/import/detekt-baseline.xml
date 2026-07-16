@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:SettingsImportFragment.kt:SettingsImportFragment$private fun ViewHolder.updateUi</ID>
+    <ID>TooGenericExceptionCaught:SettingsImportViewModel.kt:SettingsImportViewModel$e: Exception</ID>
+    <ID>TooManyFunctions:SettingsImportFragment.kt:SettingsImportFragment : Fragment</ID>
+    <ID>TooManyFunctions:SettingsImportUiModel.kt:SettingsImportUiModel</ID>
+    <ID>TooManyFunctions:SettingsImportViewModel.kt:SettingsImportViewModel : ViewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

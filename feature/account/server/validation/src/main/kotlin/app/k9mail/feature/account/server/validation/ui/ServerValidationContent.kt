@@ -15,8 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.feature.account.common.ui.item.ErrorItem
 import app.k9mail.feature.account.common.ui.item.ListItem
 import app.k9mail.feature.account.common.ui.item.LoadingItem
@@ -25,7 +23,9 @@ import app.k9mail.feature.account.oauth.ui.AccountOAuthView
 import app.k9mail.feature.account.server.validation.R
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.State
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Suppress("LongMethod", "ViewModelForwarding")
 @Composable
@@ -52,7 +52,7 @@ internal fun ServerValidationContent(
                 .imePadding(),
             contentPadding = contentPadding,
             horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double, Alignment.CenterVertically),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double, Alignment.CenterVertically),
         ) {
             if (state.error != null) {
                 item(key = "error") {
@@ -94,7 +94,7 @@ internal fun ServerValidationContent(
                                     id = R.string.account_server_validation_sign_in,
                                 ),
                             )
-                            Spacer(modifier = Modifier.padding(MainTheme.spacings.default))
+                            Spacer(modifier = Modifier.padding(BoltTheme.spacings.default))
                             AccountOAuthView(
                                 onOAuthResult = { result -> onEvent(Event.OnOAuthResult(result)) },
                                 viewModel = oAuthViewModel,

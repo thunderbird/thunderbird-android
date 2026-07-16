@@ -6,8 +6,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import net.thunderbird.core.ui.common.window.WindowHeightSizeClass
-import net.thunderbird.core.ui.common.window.calculateWindowSizeInfo
+import net.thunderbird.components.ui.bolt.common.window.WindowHeightSizeClass
+import net.thunderbird.components.ui.bolt.common.window.calculateWindowSizeInfo
 
 @Composable
 internal fun SettingList(

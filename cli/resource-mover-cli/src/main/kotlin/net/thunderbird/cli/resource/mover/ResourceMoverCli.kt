@@ -27,6 +27,10 @@ class ResourceMoverCli(
     override fun help(context: Context): String = "Move string resources from one file to another"
 
     override fun run() {
-        stringResourceMover.moveKeys(from, to, keys)
+        stringResourceMover.moveKeys(
+            source = from,
+            target = to,
+            keys = keys,
+        )
     }
 }

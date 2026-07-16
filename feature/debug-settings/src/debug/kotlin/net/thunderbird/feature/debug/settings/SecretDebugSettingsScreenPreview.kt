@@ -6,21 +6,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import app.k9mail.core.ui.compose.common.koin.koinPreview
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOf
+import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionViewModel
 import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
-import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
-import net.thunderbird.feature.notification.api.sender.NotificationSender
 
 @PreviewLightDark
 @Composable
@@ -55,12 +53,7 @@ private fun SecretDebugSettingsScreenPreview() {
 
                     override fun saveAccount(account: BaseAccount) = Unit
                 },
-                notificationSender = object : NotificationSender {
-                    override fun send(
-                        notification: Notification,
-                    ): Flow<NotificationCommandOutcome<Notification>> =
-                        error("not implemented")
-                },
+                notificationSender = { _: Notification -> error("not implemented") },
                 inAppNotificationStream = get(),
                 notificationIconResourceProvider = get(),
             )

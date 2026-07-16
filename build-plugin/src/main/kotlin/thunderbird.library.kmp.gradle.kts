@@ -59,3 +59,9 @@ kotlin {
 }
 
 configureKotlinJavaCompatibility()
+
+tasks.register("testsOnCi") {
+    dependsOn(
+        tasks.withType<Test>()
+    )
+}

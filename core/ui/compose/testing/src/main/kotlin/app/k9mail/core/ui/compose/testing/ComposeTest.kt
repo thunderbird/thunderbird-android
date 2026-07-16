@@ -17,7 +17,7 @@ import androidx.test.espresso.Espresso
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
+import net.thunderbird.components.ui.bolt.theme.thunderbird.ThunderbirdBoltTheme
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.koin.compose.KoinApplicationPreview
@@ -55,7 +55,7 @@ fun ComposeTest.setContent(content: @Composable () -> Unit) = composeTestRule.se
  * Set the content of the test and wrap it in the default theme.
  */
 fun ComposeTest.setContentWithTheme(content: @Composable () -> Unit) = composeTestRule.setContent {
-    ThunderbirdTheme2 {
+    ThunderbirdBoltTheme {
         content()
     }
 }
@@ -69,7 +69,7 @@ fun ComposeTest.setContentWithTheme(content: @Composable () -> Unit) = composeTe
 fun ComposeTest.setContentWithKoinAndTheme(modules: ModuleDeclaration, content: @Composable () -> Unit) =
     composeTestRule.setContent {
         KoinApplicationPreview(application = { modules(listOf(module(moduleDeclaration = modules))) }) {
-            ThunderbirdTheme2 {
+            ThunderbirdBoltTheme {
                 content()
             }
         }

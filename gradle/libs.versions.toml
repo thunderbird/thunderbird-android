@@ -63,13 +63,13 @@ clikt = "5.1.0"
 commonsIo = "2.22.0"
 dependencyCheckPlugin = "0.54.0"
 dependencyGuardPlugin = "0.5.0"
-detektPlugin = "1.23.8"
-detektPluginCompose = "0.4.27"
+detektPlugin = "2.0.0-alpha.5"
+detektPluginCompose = "0.6.2"
 fastAdapter = "5.7.0"
 forkhandlesBom = "2.25.6.0"
 glide = "4.16.0"
-gradle = "9.5.1"
-gradleSha256 = "c72fb9991f6025cbe337d52ba77e531b3faf62bdd3e348fe1ccee9f51c71adb0"
+gradle = "9.6.1"
+gradleSha256 = "61ba77b3ff7167e60962763eb4bae79db7120c189b9544358d0ade3c1e712a83"
 icu4j = "78.3"
 javaDiffUtils = "4.17"
 jcipAnnotations = "1.0"
@@ -88,36 +88,36 @@ jsoup = "1.19.1"
 junit = "4.13.2"
 jutf7 = "1.0.0"
 jzlib = "1.0.7"
-koinBom = "4.2.1"
+koinBom = "4.2.2"
 konsist = "0.17.3"
 kotlinBom = "2.4.0"
 kotlinKsp = "2.3.9"
 kotlinxCoroutines = "1.11.0"
-kotlinxCollectionsImmutable = "0.4.0"
+kotlinxCollectionsImmutable = "0.5.1"
 kotlinxDateTime = "0.8.0"
-kotlinxIoCore = "0.9.0"
+kotlinxIoCore = "0.9.1"
 kotlinxSerialization = "1.11.0"
 kover = "0.9.8"
 ktlint = "1.5.0"
-ktor = "3.5.0"
+ktor = "3.5.1"
 kxml2 = "1.0"
 landscapist = "2.9.8"
 leakcanary = "2.14"
-logbackClassic = "1.5.34"
+logbackClassic = "1.5.37"
 mime4j = "0.8.14"
 minidns = "1.1.1"
 mockito = "5.23.0"
 mockitoKotlin = "6.3.0"
-mokkery = "3.4.0"
 moshi = "1.15.2"
 mozillaAndroidComponents = "145.0.1"
-okhttp = "5.3.2"
+okhttp = "5.4.0"
 okio = "3.17.0"
 preferencesFix = "1.1.0"
 robolectric = "4.16.1"
 safeContentResolver = "1.0.0"
 searchPreference = "2.7.3"
-spotlessPlugin = "8.6.0"
+spotlessPlugin = "8.8.0"
+tbMobileComponents = "0.1.0-SNAPSHOT"
 timber = "5.0.1"
 turbine = "1.2.1"
 uri = "0.0.21"
@@ -133,7 +133,7 @@ android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinBom" }
 dependency-check = { id = "com.github.ben-manes.versions", version.ref = "dependencyCheckPlugin" }
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuardPlugin" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektPlugin" }
+detekt = { id = "dev.detekt", version.ref = "detektPlugin" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinBom" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlinBom" }
@@ -142,7 +142,6 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
-dev-mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
 
 # Build plugins
 tb-app-badging = { id = "net.thunderbird.gradle.plugin.app.badging" }
@@ -302,6 +301,8 @@ preferencex-datetimepicker = { module = "com.takisoft.preferencex:preferencex-da
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 safeContentResolver = { module = "de.cketti.safecontentresolver:safe-content-resolver-v21", version.ref = "safeContentResolver" }
 searchPreference = { module = "com.github.ByteHamster:SearchPreference", version.ref = "searchPreference" }
+tb-mobile-components-ui-bolt = { module = "net.thunderbird.components.ui.bolt:bolt", version.ref = "tbMobileComponents" }
+tb-mobile-components-ui-testing = { module = "net.thunderbird.components.ui:testing", version.ref = "tbMobileComponents" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
@@ -356,7 +357,7 @@ shared-kmp-compose-jvm = [
 ]
 
 shared-kmp-compose-common-test = [
-  "jetbrains-compose-ui-test"
+  "jetbrains-compose-ui-test",
 ]
 shared-kmp-compose-android-test = [
   "androidx-compose-ui-test-junit4",
@@ -382,7 +383,7 @@ shared-android-compose = [
   "koin-compose",
   "koin-compose-viewmodel",
   "kotlinx-collections-immutable",
-  "jetbrains-compose-components-resources"
+  "jetbrains-compose-components-resources",
 ]
 shared-android-compose-debug = [
   "jetbrains-compose-ui-tooling"

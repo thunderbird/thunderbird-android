@@ -2,10 +2,7 @@ package net.thunderbird.feature.notification.api.sender.compat
 
 import assertk.assertThat
 import assertk.assertions.containsExactlyInAnyOrder
-import dev.mokkery.matcher.any
-import dev.mokkery.spy
-import dev.mokkery.verify
-import dev.mokkery.verify.VerifyMode.Companion.exactly
+import assertk.assertions.hasSize
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -38,11 +35,9 @@ class NotificationSenderCompatTest {
         )
         val sender = FakeNotificationSender(results = expectedResults)
         val actualResults = mutableListOf<NotificationCommandOutcome<Notification>>()
-        val listener = spy(
-            NotificationSenderCompat.OnResultListener { outcome ->
-                actualResults += outcome
-            },
-        )
+        val listener = NotificationSenderCompat.OnResultListener { outcome ->
+            actualResults += outcome
+        }
         val testSubject = NotificationSenderCompat(
             notificationSender = sender,
             mainImmediateDispatcher = UnconfinedTestDispatcher(),
@@ -52,9 +47,7 @@ class NotificationSenderCompatTest {
         testSubject.send(notification = FakeNotification(), listener)
 
         // Assert
-        verify(exactly(expectedResults.size)) {
-            listener.onResult(outcome = any())
-        }
+        assertThat(actualResults).hasSize(expectedResults.size)
         assertThat(actualResults).containsExactlyInAnyOrder(elements = expectedResults.toTypedArray())
     }
 }

@@ -12,6 +12,9 @@ open class FakeNotificationRegistry(
     private val useRandomIdForRegistering: Boolean = true,
 ) : NotificationRegistry {
     private val internalRegistrar = MutableStateFlow(initialRegistrar)
+    val registeredNotifications = mutableListOf<Notification>()
+    val unregisteredNotificationIds = mutableListOf<NotificationId>()
+    val unregisteredNotifications = mutableListOf<Notification>()
 
     override fun get(notificationId: NotificationId): Notification? = internalRegistrar.value[notificationId]
 
@@ -28,6 +31,7 @@ open class FakeNotificationRegistry(
         }
 
     override suspend fun register(notification: Notification): NotificationId {
+        registeredNotifications += notification
         val id = NotificationId(
             value = if (useRandomIdForRegistering) Random.nextInt() else internalRegistrar.value.size + 1,
         )
@@ -36,10 +40,12 @@ open class FakeNotificationRegistry(
     }
 
     override fun unregister(notificationId: NotificationId) {
+        unregisteredNotificationIds += notificationId
         internalRegistrar.update { current -> current - notificationId }
     }
 
     override fun unregister(notification: Notification) {
+        unregisteredNotifications += notification
         internalRegistrar.update { current -> current.filterValues { it != notification } }
     }
 

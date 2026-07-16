@@ -92,7 +92,14 @@ class CommandSync(
         val destroyServerIds = (cachedServerIds - remoteServerIds).toList()
         val newServerIds = remoteServerIds - cachedServerIds
 
-        handleFolderUpdates(backendFolder, folderServerId, destroyServerIds, newServerIds, queryState, listener)
+        handleFolderUpdates(
+            backendFolder = backendFolder,
+            folderServerId = folderServerId,
+            destroyServerIds = destroyServerIds,
+            newServerIds = newServerIds,
+            newQueryState = queryState,
+            listener = listener
+        )
 
         val refreshServerIds = cachedServerIds.intersect(remoteServerIds)
         refreshMessageFlags(backendFolder, syncConfig, refreshServerIds)
@@ -230,7 +237,12 @@ class CommandSync(
 
     private fun Email.toMessageInfo(session: Session): MessageInfo {
         val downloadUrl = session.getDownloadUrl(accountId, blobId, blobId, "application/octet-stream")
-        return MessageInfo(id, downloadUrl, receivedAt, keywords.toFlags())
+        return MessageInfo(
+            serverId = id,
+            downloadUrl = downloadUrl,
+            receivedAt = receivedAt,
+            flags = keywords.toFlags(),
+        )
     }
 
     private fun downloadMessage(downloadUrl: HttpUrl): MimeMessage? {
@@ -303,7 +315,7 @@ class CommandSync(
     }
 
     private fun BackendFolder.saveQueryState(queryState: String?) {
-        setFolderExtraString(EXTRA_QUERY_STATE, queryState)
+        setFolderExtraString(name = EXTRA_QUERY_STATE, value = queryState)
     }
 
     companion object {

@@ -3,7 +3,7 @@ package net.thunderbird.feature.funding.googleplay.ui.contribution
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
 import net.thunderbird.feature.funding.googleplay.ui.contribution.ContributionContract.State

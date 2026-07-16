@@ -69,10 +69,10 @@ class PreviewTextExtractorTest {
     fun extractPreview_shouldStripSignature() {
         val text =
             """
-            Some text
-            -- 
-            Signature
-            """.trimIndent()
+            |Some text
+            |$SIGNATURE_DELIMITER
+            |Signature
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -84,10 +84,10 @@ class PreviewTextExtractorTest {
     fun extractPreview_shouldStripHorizontalLine() {
         val text =
             """
-            line 1
-            ----
-            line 2
-            """.trimIndent()
+            |line 1
+            |----
+            |line 2
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -99,12 +99,12 @@ class PreviewTextExtractorTest {
     fun extractPreview_shouldStripQuoteHeaderAndQuotedText() {
         val text =
             """
-            some text
-            
-            On 01/02/03 someone wrote:
-            > some quoted text
-            > some other quoted text
-            """.trimIndent()
+            |some text
+            |
+            |On 01/02/03 someone wrote:
+            |> some quoted text
+            |> some other quoted text
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -116,11 +116,11 @@ class PreviewTextExtractorTest {
     fun extractPreview_shouldStripGenericQuoteHeader() {
         val text =
             """
-            Am 13.12.2015 um 23:42 schrieb Hans:
-            > hallo
-            hi there
-            
-            """.trimIndent()
+            |Am 13.12.2015 um 23:42 schrieb Hans:
+            |> hallo
+            |hi there
+            |
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -132,9 +132,9 @@ class PreviewTextExtractorTest {
     fun extractPreview_shouldStripHorizontalRules() {
         val text =
             """
-            line 1------------------------------
-            line 2
-            """.trimIndent()
+            |line 1------------------------------
+            |line 2
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -144,12 +144,128 @@ class PreviewTextExtractorTest {
 
     @Test
     fun extractPreview_shouldReplaceUrl() {
-        val text = "some url: https://k9mail.org/"
+        val text = "some url: https://thunderbird.net/"
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
 
         assertThat(preview).isEqualTo("some url: ...")
+    }
+
+    @Test
+    fun extractPreview_withTextPlain_shouldParseHtml() {
+        val text = "some <b>HTML</b> text"
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("some HTML text")
+    }
+
+    @Test
+    fun extractPreview_withTextPlainContainingAngleBracketContent_shouldTreatItAsHtml() {
+        val text = "Contact Alice <alice@example.com>"
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Contact Alice")
+    }
+
+    @Test
+    fun extractPreview_withTextPlain_shouldDecodeHtmlEntities() {
+        val text = "Tom &amp; Jerry&nbsp;are friends"
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Tom & Jerry are friends")
+    }
+
+    @Test
+    fun extractPreview_withZeroWidthCharacters_shouldRemoveThem() {
+        val text = "Actual\u034F\u200C\u200C\u200C preview text"
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Actual preview text")
+    }
+
+    @Test
+    fun extractPreview_withZeroWidthHtmlEntities_shouldRemoveThem() {
+        val text = "Actual &#847;&#847; preview text"
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Actual preview text")
+    }
+
+    @Test
+    fun extractPreview_withParsedHtmlLink_shouldRemoveUrl() {
+        val text = """read <a href="https://thunderbird.net/">Thunderbird</a>"""
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("read Thunderbird")
+    }
+
+    @Test
+    fun extractPreview_withParenthesizedUrl_shouldRemoveUrl() {
+        val text = "some image: ( https://thunderbird.net/logo.png )"
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("some image:")
+    }
+
+    @Test
+    fun extractPreview_forwardedMessage() {
+        val text =
+            """
+            |Here is the forwarded message:
+            |
+            |-----Original Message-----
+            |From: alice@example.com
+            |Sent: Monday, January 1, 2024 10:00 AM
+            |To: bob@example.com
+            |Subject: Hello
+            |
+            |This is the original content.
+            """.trimMargin()
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Here is the forwarded message: […] This is the original content.")
+    }
+
+    @Test
+    fun extractPreview_withHtmlForwardedMessageAsTextPlain() {
+        val text =
+            """
+            |<html>
+            |<body>
+            |Here is the forwarded message:<br>
+            |<br>
+            |-----Original Message-----<br>
+            |From: alice@example.com<br>
+            |Sent: Monday, January 1, 2024 10:00 AM<br>
+            |To: bob@example.com<br>
+            |Subject: Hello<br>
+            |<br>
+            |This is the original content.
+            |</body>
+            |</html>
+            """.trimMargin()
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Here is the forwarded message: […] This is the original content.")
     }
 
     @Test
@@ -166,10 +282,10 @@ class PreviewTextExtractorTest {
     fun extractPreview_lineEndingWithColon() {
         val text =
             """
-            Here's a list:
-            - item 1
-            - item 2
-            """.trimIndent()
+            |Here's a list:
+            |- item 1
+            |- item 2
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -181,16 +297,16 @@ class PreviewTextExtractorTest {
     fun extractPreview_inlineReplies() {
         val text =
             """
-            On 2020-09-30 at 03:12 Bob wrote:
-            > Hi Alice
-            Hi Bob
-            
-            > How are you?
-            I'm fine. Thanks for asking.
-            
-            > Bye
-            See you tomorrow
-            """.trimIndent()
+            |On 2020-09-30 at 03:12 Bob wrote:
+            |> Hi Alice
+            |Hi Bob
+            |
+            |> How are you?
+            |I'm fine. Thanks for asking.
+            |
+            |> Bye
+            |See you tomorrow
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -202,12 +318,12 @@ class PreviewTextExtractorTest {
     fun extractPreview_quoteHeaderContainingLineBreak() {
         val text =
             """
-            Reply text
-            
-            On 2020-09-30 at 03:12
-            Bob wrote:
-            > Quoted text
-            """.trimIndent()
+            |Reply text
+            |
+            |On 2020-09-30 at 03:12
+            |Bob wrote:
+            |> Quoted text
+            """.trimMargin()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
         val preview = previewTextExtractor.extractPreview(part)
@@ -223,5 +339,9 @@ class PreviewTextExtractorTest {
         val preview = previewTextExtractor.extractPreview(part)
 
         assertThat(preview).isEqualTo("")
+    }
+
+    private companion object {
+        const val SIGNATURE_DELIMITER = "-- "
     }
 }

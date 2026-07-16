@@ -7,12 +7,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.DropdownMenuBox
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
-import app.k9mail.core.ui.compose.designsystem.organism.AlertDialog
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.components.ui.bolt.atom.DropdownMenuBox
+import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.organism.AlertDialog
 import net.thunderbird.core.common.provider.AppNameProvider
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.setting.Setting
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.SettingViewProvider

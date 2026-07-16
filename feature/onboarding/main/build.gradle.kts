@@ -9,7 +9,6 @@ android {
 
 dependencies {
     implementation(projects.core.common)
-    implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.navigation)
     implementation(projects.feature.onboarding.welcome)
     implementation(projects.feature.account.setup)

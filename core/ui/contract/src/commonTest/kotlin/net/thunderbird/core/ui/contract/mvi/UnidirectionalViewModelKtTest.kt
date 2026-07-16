@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
-import net.thunderbird.core.ui.testing.ComposeUiTestHarness
+import net.thunderbird.components.ui.testing.ComposeUiTestHarness
 
 class UnidirectionalViewModelKtTest : ComposeUiTestHarness(
     mainDispatcher = StandardTestDispatcher(),
