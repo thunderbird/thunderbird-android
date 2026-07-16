@@ -40,6 +40,9 @@ public class QuotedMessagePresenter {
     private static final String STATE_KEY_QUOTED_TEXT_FORMAT = "state:quotedTextFormat";
     private static final String STATE_KEY_FORCE_PLAIN_TEXT = "state:forcePlainText";
 
+    // Keep the serialized quote well below the Binder transaction limit.
+    static final int MAX_QUOTED_HTML_CHARACTERS = 256 * 1024;
+
     private static final int UNKNOWN_LENGTH = 0;
 
     private final TextQuoteCreator textQuoteCreator = DI.get(TextQuoteCreator.class);
@@ -151,9 +154,15 @@ public class QuotedMessagePresenter {
 
     public void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(STATE_KEY_QUOTED_TEXT_MODE, quotedTextMode);
-        outState.putSerializable(STATE_KEY_HTML_QUOTE, quotedHtmlContent);
+        if (shouldPersistQuotedHtml(quotedHtmlContent, MAX_QUOTED_HTML_CHARACTERS)) {
+            outState.putSerializable(STATE_KEY_HTML_QUOTE, quotedHtmlContent);
+        }
         outState.putSerializable(STATE_KEY_QUOTED_TEXT_FORMAT, quotedTextFormat);
         outState.putBoolean(STATE_KEY_FORCE_PLAIN_TEXT, forcePlainText);
+    }
+
+    static boolean shouldPersistQuotedHtml(InsertableHtmlContent quotedHtmlContent, int maxCharacters) {
+        return quotedHtmlContent == null || quotedHtmlContent.getQuotedContent().length() <= maxCharacters;
     }
 
     public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
