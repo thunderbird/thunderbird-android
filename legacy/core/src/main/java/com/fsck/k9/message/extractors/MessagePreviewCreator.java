@@ -12,24 +12,30 @@ import net.thunderbird.core.logging.legacy.Log;
 
 public class MessagePreviewCreator {
     private final TextPartFinder textPartFinder;
+    private final HTMLPartFinder htmlPartFinder;
     private final PreviewTextExtractor previewTextExtractor;
 
 
-    MessagePreviewCreator(TextPartFinder textPartFinder, PreviewTextExtractor previewTextExtractor) {
+    MessagePreviewCreator(TextPartFinder textPartFinder, HTMLPartFinder htmlPartFinder, PreviewTextExtractor previewTextExtractor) {
         this.textPartFinder = textPartFinder;
+        this.htmlPartFinder = htmlPartFinder;
         this.previewTextExtractor = previewTextExtractor;
     }
 
     public static MessagePreviewCreator newInstance() {
         TextPartFinder textPartFinder = new TextPartFinder();
         PreviewTextExtractor previewTextExtractor = new PreviewTextExtractor();
-        return new MessagePreviewCreator(textPartFinder, previewTextExtractor);
+        HTMLPartFinder htmlPartFinder = new HTMLPartFinder();
+        return new MessagePreviewCreator(textPartFinder, htmlPartFinder, previewTextExtractor);
     }
 
     public PreviewResult createPreview(@NonNull Message message) {
-        Part textPart = textPartFinder.findFirstTextPart(message);
+        Part textPart = htmlPartFinder.findFirstHTMLPart(message);
         if (textPart == null || hasEmptyBody(textPart)) {
-            return PreviewResult.none();
+            textPart = textPartFinder.findFirstTextPart(message);
+            if (textPart == null || hasEmptyBody(textPart)) {
+                return PreviewResult.none();
+            }
         }
 
         try {
