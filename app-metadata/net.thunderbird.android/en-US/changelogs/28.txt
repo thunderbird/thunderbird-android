@@ -1,0 +1,13 @@
+Thunderbird version 21.0
+
+Changed:
+- Animation setting now allows On, Off, and System Default options
+- Modernized 'Fetching mail' account settings screen
+- Modernized 'Composition defaults' screen
+
+Fixed:
+- Application could crash due to memory exhaustion
+- Application could crash when rendering long messages
+- Inline images were shown as attachments instead of displaying in message
+- Server search results could disappear
+- Manage Folders opened the wrong account instead of selected account

@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="21.0" versioncode="28" date="2026-07-20">
+        <change>Changed: Animation setting now allows On, Off, and System Default options</change>
+        <change>Changed: Modernized &#39;Fetching mail&#39; account settings screen</change>
+        <change>Changed: Modernized &#39;Composition defaults&#39; screen</change>
+        <change>Fixed: Application could crash due to memory exhaustion</change>
+        <change>Fixed: Application could crash when rendering long messages</change>
+        <change>Fixed: Inline images were shown as attachments instead of displaying in message</change>
+        <change>Fixed: Server search results could disappear after loading</change>
+        <change>Fixed: Manage Folders opened the wrong account instead of selected account</change>
+        <change>Fixed: Android widget text scaled too large when system font size was increased</change>
+        <change>Fixed: Cancelling the Thundermail OAuth process incorrectly redirects users to the &#34;Redirecting to Thundermail&#34; screen</change>
+        <change>Fixed: Custom swipe actions were not restored from exported settings backups</change>
+        <change>Fixed: Links failed when trailing punctuation was incorrectly included in URLs</change>
+    </release>
     <release version="20.1" versioncode="27" date="2026-07-06">
         <change>Fixed: Application could crash when rendering long messages</change>
         <change>Fixed: Application could crash due to memory exhaustion</change>
