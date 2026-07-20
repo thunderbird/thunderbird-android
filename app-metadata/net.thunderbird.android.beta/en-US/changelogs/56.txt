@@ -1,0 +1,14 @@
+Thunderbird version 22.0b1
+
+New:
+- Incognito Keyboard privacy setting
+- Thundermail interim screen when adding account
+
+Changed:
+- Selected sort option now shows indicator in sort menu
+
+Fixed:
+- Messages could scroll horizontally when content fit screen
+- Thread deletion confirmation incorrectly said only one message would be deleted
+- Notification actions difficult to scroll/reorder on small screen
+- Show Headers collapsed multi-line email headers into single line

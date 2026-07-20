@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="22.0b1" versioncode="56" date="2026-07-20">
+        <change>New: Incognito Keyboard privacy setting disables Google keyboard from learning words</change>
+        <change>New: Thundermail interim screen when adding an account</change>
+        <change>Changed: Selected sort option now shows an indicator in the sort menu</change>
+        <change>Fixed: Messages could scroll horizontally when content fit the screen</change>
+        <change>Fixed: Thread deletion confirmation incorrectly said only one message would be deleted</change>
+        <change>Fixed: Notification actions were difficult to scroll and reorder on small screen</change>
+        <change>Fixed: Show Headers collapsed multi-line email headers into a single line</change>
+        <change>Fixed: Notification previews displayed HTML entities and markup instead of clean text</change>
+        <change>Fixed: Select Image icon was hard to see in dark theme</change>
+        <change>Fixed: Printed message headers always used US date format instead of local format</change>
+        <change>Fixed: Splash screen truncated the Thunderbird name on small displays</change>
+    </release>
     <release version="21.0b2" versioncode="55" date="2026-06-29">
         <change>Fixed: Manage Folders opened the wrong account instead of the selected account</change>
         <change>Fixed: Application crashed when attempting to change account color</change>
