@@ -2,7 +2,7 @@
 
 - Issue: [#11179](https://github.com/thunderbird/thunderbird-android/issues/11179)
 - Technical design: TBD
-- Status: **Proposed**
+- Status: **Accepted**
 
 ## Summary
 
