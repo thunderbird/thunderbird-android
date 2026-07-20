@@ -17,8 +17,8 @@ Some senders attach images *inline* by position rather than by HTML reference. A
 common producer of this standards-based message shape, but **the behaviour is not Apple-specific**. A representative
 message is a `multipart/mixed` whose children are, in order:
 
-```
-multipart/mixed  
+```plaintext
+multipart/mixed
 ├── text/plain   "Text before"  
 ├── image/jpeg   Content-Disposition: inline; filename=DSC01740.jpeg   (no Content-ID)  
 └── text/plain   "Text after"  
