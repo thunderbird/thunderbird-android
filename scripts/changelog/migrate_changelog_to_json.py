@@ -371,8 +371,7 @@ def main():
         "src" /
         build_type /
         "res" /
-        "raw" /
-        "changelog"
+        "raw"
     )
 
     schema_dir = (
