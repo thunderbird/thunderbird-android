@@ -41,6 +41,7 @@ internal class AccountCreator(
     private val avatarMonogramCreator: AvatarMonogramCreator,
     private val unifiedInboxConfigurator: UnifiedInboxConfigurator,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val servicesEnabler: (Context) -> Unit = Core::setServicesEnabled,
 ) : AccountSetupExternalContract.AccountCreator {
 
     @Suppress("TooGenericExceptionCaught")
@@ -99,13 +100,10 @@ internal class AccountCreator(
 
         unifiedInboxConfigurator.configureUnifiedInbox()
 
-        Core.setServicesEnabled(context)
-
         messagingController.refreshFolderListBlocking(newAccount)
+        messagingController.checkMail(newAccount, true, true, false, null)
 
-        if (account.options.checkFrequencyInMinutes == -1) {
-            messagingController.checkMail(newAccount, false, true, false, null)
-        }
+        servicesEnabler(context)
 
         return newAccount.uuid
     }
