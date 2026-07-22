@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      The legacy inbox still consumes the Thunderbird XML theme. Override its color
+      tokens at the app boundary so views and Compose use the same Android 12+
+      wallpaper palette without changing the shared K-9/Thunderbird theme module.
+    -->
+
+    <!-- Light theme -->
+    <color name="lightPrimary">@color/m3_sys_color_dynamic_light_primary</color>
+    <color name="lightOnPrimary">@color/m3_sys_color_dynamic_light_on_primary</color>
+    <color name="lightPrimaryContainer">@color/m3_sys_color_dynamic_light_primary_container</color>
+    <color name="lightOnPrimaryContainer">@color/m3_sys_color_dynamic_light_on_primary_container</color>
+
+    <color name="lightSecondary">@color/m3_sys_color_dynamic_light_secondary</color>
+    <color name="lightOnSecondary">@color/m3_sys_color_dynamic_light_on_secondary</color>
+    <color name="lightSecondaryContainer">@color/m3_sys_color_dynamic_light_secondary_container</color>
+    <color name="lightOnSecondaryContainer">@color/m3_sys_color_dynamic_light_on_secondary_container</color>
+
+    <color name="lightTertiary">@color/m3_sys_color_dynamic_light_tertiary</color>
+    <color name="lightOnTertiary">@color/m3_sys_color_dynamic_light_on_tertiary</color>
+    <color name="lightTertiaryContainer">@color/m3_sys_color_dynamic_light_tertiary_container</color>
+    <color name="lightOnTertiaryContainer">@color/m3_sys_color_dynamic_light_on_tertiary_container</color>
+
+    <color name="lightError">@color/m3_sys_color_light_error</color>
+    <color name="lightOnError">@color/m3_sys_color_light_on_error</color>
+    <color name="lightErrorContainer">@color/m3_sys_color_light_error_container</color>
+    <color name="lightOnErrorContainer">@color/m3_sys_color_light_on_error_container</color>
+
+    <color name="lightSurfaceDim">@color/m3_sys_color_dynamic_light_surface_dim</color>
+    <color name="lightSurface">@color/m3_sys_color_dynamic_light_surface</color>
+    <color name="lightSurfaceBright">@color/m3_sys_color_dynamic_light_surface_bright</color>
+    <color name="lightOnSurface">@color/m3_sys_color_dynamic_light_on_surface</color>
+    <color name="lightOnSurfaceVariant">@color/m3_sys_color_dynamic_light_on_surface_variant</color>
+
+    <color name="lightSurfaceContainerLowest">@color/m3_sys_color_dynamic_light_surface_container_lowest</color>
+    <color name="lightSurfaceContainerLow">@color/m3_sys_color_dynamic_light_surface_container_low</color>
+    <color name="lightSurfaceContainer">@color/m3_sys_color_dynamic_light_surface_container</color>
+    <color name="lightSurfaceContainerHigh">@color/m3_sys_color_dynamic_light_surface_container_high</color>
+    <color name="lightSurfaceContainerHighest">@color/m3_sys_color_dynamic_light_surface_container_highest</color>
+
+    <color name="lightSurfaceInverse">@color/m3_sys_color_dynamic_light_inverse_surface</color>
+    <color name="lightOnSurfaceInverse">@color/m3_sys_color_dynamic_light_inverse_on_surface</color>
+    <color name="lightPrimaryInverse">@color/m3_sys_color_dynamic_light_inverse_primary</color>
+
+    <color name="lightOutline">@color/m3_sys_color_dynamic_light_outline</color>
+    <color name="lightOutlineVariant">@color/m3_sys_color_dynamic_light_outline_variant</color>
+
+    <color name="lightPrimaryFixed">@color/m3_sys_color_dynamic_primary_fixed</color>
+    <color name="lightOnPrimaryFixed">@color/m3_sys_color_dynamic_on_primary_fixed</color>
+    <color name="lightPrimaryFixedDim">@color/m3_sys_color_dynamic_primary_fixed_dim</color>
+    <color name="lightOnPrimaryFixedVariant">@color/m3_sys_color_dynamic_on_primary_fixed_variant</color>
+
+    <color name="lightSecondaryFixed">@color/m3_sys_color_dynamic_secondary_fixed</color>
+    <color name="lightOnSecondaryFixed">@color/m3_sys_color_dynamic_on_secondary_fixed</color>
+    <color name="lightSecondaryFixedDim">@color/m3_sys_color_dynamic_secondary_fixed_dim</color>
+    <color name="lightOnSecondaryFixedVariant">@color/m3_sys_color_dynamic_on_secondary_fixed_variant</color>
+
+    <color name="lightTertiaryFixed">@color/m3_sys_color_dynamic_tertiary_fixed</color>
+    <color name="lightOnTertiaryFixed">@color/m3_sys_color_dynamic_on_tertiary_fixed</color>
+    <color name="lightTertiaryFixedDim">@color/m3_sys_color_dynamic_tertiary_fixed_dim</color>
+    <color name="lightOnTertiaryFixedVariant">@color/m3_sys_color_dynamic_on_tertiary_fixed_variant</color>
+
+    <!-- Dark theme -->
+    <color name="darkPrimary">@color/m3_sys_color_dynamic_dark_primary</color>
+    <color name="darkOnPrimary">@color/m3_sys_color_dynamic_dark_on_primary</color>
+    <color name="darkPrimaryContainer">@color/m3_sys_color_dynamic_dark_primary_container</color>
+    <color name="darkOnPrimaryContainer">@color/m3_sys_color_dynamic_dark_on_primary_container</color>
+
+    <color name="darkSecondary">@color/m3_sys_color_dynamic_dark_secondary</color>
+    <color name="darkOnSecondary">@color/m3_sys_color_dynamic_dark_on_secondary</color>
+    <color name="darkSecondaryContainer">@color/m3_sys_color_dynamic_dark_secondary_container</color>
+    <color name="darkOnSecondaryContainer">@color/m3_sys_color_dynamic_dark_on_secondary_container</color>
+
+    <color name="darkTertiary">@color/m3_sys_color_dynamic_dark_tertiary</color>
+    <color name="darkOnTertiary">@color/m3_sys_color_dynamic_dark_on_tertiary</color>
+    <color name="darkTertiaryContainer">@color/m3_sys_color_dynamic_dark_tertiary_container</color>
+    <color name="darkOnTertiaryContainer">@color/m3_sys_color_dynamic_dark_on_tertiary_container</color>
+
+    <color name="darkError">@color/m3_sys_color_dark_error</color>
+    <color name="darkOnError">@color/m3_sys_color_dark_on_error</color>
+    <color name="darkErrorContainer">@color/m3_sys_color_dark_error_container</color>
+    <color name="darkOnErrorContainer">@color/m3_sys_color_dark_on_error_container</color>
+
+    <color name="darkSurfaceDim">@color/m3_sys_color_dynamic_dark_surface_dim</color>
+    <color name="darkSurface">@color/m3_sys_color_dynamic_dark_surface</color>
+    <color name="darkSurfaceBright">@color/m3_sys_color_dynamic_dark_surface_bright</color>
+    <color name="darkOnSurface">@color/m3_sys_color_dynamic_dark_on_surface</color>
+    <color name="darkOnSurfaceVariant">@color/m3_sys_color_dynamic_dark_on_surface_variant</color>
+
+    <color name="darkSurfaceContainerLowest">@color/m3_sys_color_dynamic_dark_surface_container_lowest</color>
+    <color name="darkSurfaceContainerLow">@color/m3_sys_color_dynamic_dark_surface_container_low</color>
+    <color name="darkSurfaceContainer">@color/m3_sys_color_dynamic_dark_surface_container</color>
+    <color name="darkSurfaceContainerHigh">@color/m3_sys_color_dynamic_dark_surface_container_high</color>
+    <color name="darkSurfaceContainerHighest">@color/m3_sys_color_dynamic_dark_surface_container_highest</color>
+
+    <color name="darkSurfaceInverse">@color/m3_sys_color_dynamic_dark_inverse_surface</color>
+    <color name="darkOnSurfaceInverse">@color/m3_sys_color_dynamic_dark_inverse_on_surface</color>
+    <color name="darkPrimaryInverse">@color/m3_sys_color_dynamic_dark_inverse_primary</color>
+
+    <color name="darkOutline">@color/m3_sys_color_dynamic_dark_outline</color>
+    <color name="darkOutlineVariant">@color/m3_sys_color_dynamic_dark_outline_variant</color>
+
+    <color name="darkPrimaryFixed">@color/m3_sys_color_dynamic_primary_fixed</color>
+    <color name="darkOnPrimaryFixed">@color/m3_sys_color_dynamic_on_primary_fixed</color>
+    <color name="darkPrimaryFixedDim">@color/m3_sys_color_dynamic_primary_fixed_dim</color>
+    <color name="darkOnPrimaryFixedVariant">@color/m3_sys_color_dynamic_on_primary_fixed_variant</color>
+
+    <color name="darkSecondaryFixed">@color/m3_sys_color_dynamic_secondary_fixed</color>
+    <color name="darkOnSecondaryFixed">@color/m3_sys_color_dynamic_on_secondary_fixed</color>
+    <color name="darkSecondaryFixedDim">@color/m3_sys_color_dynamic_secondary_fixed_dim</color>
+    <color name="darkOnSecondaryFixedVariant">@color/m3_sys_color_dynamic_on_secondary_fixed_variant</color>
+
+    <color name="darkTertiaryFixed">@color/m3_sys_color_dynamic_tertiary_fixed</color>
+    <color name="darkOnTertiaryFixed">@color/m3_sys_color_dynamic_on_tertiary_fixed</color>
+    <color name="darkTertiaryFixedDim">@color/m3_sys_color_dynamic_tertiary_fixed_dim</color>
+    <color name="darkOnTertiaryFixedVariant">@color/m3_sys_color_dynamic_on_tertiary_fixed_variant</color>
+</resources>

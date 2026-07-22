@@ -222,6 +222,7 @@ val fullBetaImplementation = configurations.create("fullBetaImplementation")
 val fullReleaseImplementation = configurations.create("fullReleaseImplementation")
 
 dependencies {
+    implementation(libs.android.material)
     implementation(projects.appCommon)
     implementation(projects.core.ui.compose.common)
     implementation(projects.core.ui.legacy.theme2.thunderbird)

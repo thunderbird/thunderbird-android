@@ -78,6 +78,53 @@ data class ThemeColorScheme(
 )
 
 /**
+ * Convert a Material 3 [ColorScheme] to a [ThemeColorScheme].
+ *
+ * Bolt's additional semantic colors don't have Material equivalents and are retained from [fallback].
+ */
+internal fun ColorScheme.toBoltColorScheme(fallback: ThemeColorScheme): ThemeColorScheme = fallback.copy(
+    primary = primary,
+    onPrimary = onPrimary,
+    primaryContainer = primaryContainer,
+    onPrimaryContainer = onPrimaryContainer,
+
+    secondary = secondary,
+    onSecondary = onSecondary,
+    secondaryContainer = secondaryContainer,
+    onSecondaryContainer = onSecondaryContainer,
+
+    tertiary = tertiary,
+    onTertiary = onTertiary,
+    tertiaryContainer = tertiaryContainer,
+    onTertiaryContainer = onTertiaryContainer,
+
+    error = error,
+    onError = onError,
+    errorContainer = errorContainer,
+    onErrorContainer = onErrorContainer,
+
+    surfaceDim = surfaceDim,
+    surface = surface,
+    surfaceBright = surfaceBright,
+    onSurface = onSurface,
+    onSurfaceVariant = onSurfaceVariant,
+
+    surfaceContainerLowest = surfaceContainerLowest,
+    surfaceContainerLow = surfaceContainerLow,
+    surfaceContainer = surfaceContainer,
+    surfaceContainerHigh = surfaceContainerHigh,
+    surfaceContainerHighest = surfaceContainerHighest,
+
+    inverseSurface = inverseSurface,
+    inverseOnSurface = inverseOnSurface,
+    inversePrimary = inversePrimary,
+
+    outline = outline,
+    outlineVariant = outlineVariant,
+    scrim = scrim,
+)
+
+/**
  * Convert a [ThemeColorScheme] to a Material 3 [ColorScheme].
  *
  * Note: background, onBackground are deprecated and mapped to surface, onSurface.

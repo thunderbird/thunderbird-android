@@ -43,6 +43,7 @@ fun ThunderbirdBoltTheme(
     BoltTheme(
         themeConfig = themeConfig,
         darkTheme = darkTheme,
+        dynamicColor = true,
         content = content,
     )
 }
