@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_atom_password_textfield_hide_password">Skrij geslo</string>
+    <string name="designsystem_atom_password_textfield_show_password">Pokaži geslo</string>
+    <string name="designsystem_molecule_email_address_input_label">E-poštni naslov</string>
+    <string name="designsystem_molecule_password_input_label">Geslo</string>
+    <string name="designsystem_molecule_error_view_button_retry">Poskusi znova</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">Desno: %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">Levo: %s</string>
+    <string name="designsystem_organism_thundermail_button_panel_sign_in">Vpiši se s Thundermailom</string>
+    <string name="designsystem_organism_thundermail_button_panel_scan_qr_code">Preberi kodo QR</string>
+    <string name="designsystem_organism_thundermail_button_panel_sign_in_or">ali</string>
+</resources>

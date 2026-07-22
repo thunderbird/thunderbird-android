@@ -124,7 +124,7 @@
     <string name="notification_notify_error_title">Eroare de notificare</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_text">S-a produs o eroare în timpul încercării de a crea o notificare de sistem pentru un mesaj nou. Motivul este cel mai probabil lipsa unui sunet de notificare.\n\nApasă pentru a deschide setările de notificare.</string>
-    <string name="notification_bg_sync_ticker">Se verifică emailul: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Se verifică corespondența: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Se verifică emailul</string>
     <string name="notification_bg_send_ticker">Se trimite emailul: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Se trimite emailul</string>
@@ -665,7 +665,7 @@
     <string name="preview_encrypted">*Criptat*</string>
     <string name="add_from_contacts">Adaugă din Contacte</string>
     <string name="recipient_cc">Cc</string>
-    <string name="recipient_bcc">BCC</string>
+    <string name="recipient_bcc">Bcc</string>
     <string name="recipient_to">Către</string>
     <string name="recipient_from">De la</string>
     <string name="reply_to_label">Răspunde la</string>
@@ -837,7 +837,7 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
     <string name="message_details_cc_section_title">Cc</string>
     <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
-    <string name="message_details_bcc_section_title">BCC</string>
+    <string name="message_details_bcc_section_title">Bcc</string>
     <!--Displayed when loading the message details has failed-->
     <string name="message_details_loading_error">S-a produs o eroare la încărcarea detaliilor mesajului.</string>
     <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
@@ -935,6 +935,7 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="message_view_attachments_view">Afișează</string>
     <string name="message_view_attachments_title">Atașamente</string>
     <string name="message_view_attachments_save_all">Salvează tot</string>
+    <string name="encrypted_attachment_title">Atașament criptat</string>
     <string name="no_network_message_will_be_sent_later_toast">Fără conexiune. Mesajul va fi trimis imediat ce conexiunea va fi disponibilă.</string>
     <string name="notification_actions_settings_title">Acțiuni de notificare</string>
     <string name="notification_summary_delete_title">Afișează opțiunea «Șterge» în notificările cu multiple mesaje</string>
@@ -952,4 +953,13 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="notification_actions_cutoff_description">Limitarea acțiunilor afișate</string>
     <string name="accessibility_move_cutoff_up">Mută limita acțiunilor afișate în sus</string>
     <string name="accessibility_move_cutoff_down">Mută limita acțiunilor afișate în jos</string>
+    <string name="changelog_latest_label_text">RECENTE</string>
+    <string name="changelog_type_new_text">NOU</string>
+    <string name="changelog_type_changed_text">SCHIMBAT</string>
+    <string name="changelog_type_fixed_text">REMEDIAT</string>
+    <string name="notification_show_contact_picture_title">Afișează imaginile contactelor în notificări</string>
+    <string name="notification_show_contact_picture_summary">Afișează avatarurile expeditorilor în notificările privind mesajele noi</string>
+    <string name="animation_setting_on">Da</string>
+    <string name="animation_setting_off">Nu</string>
+    <string name="animation_setting_follow_system">Utilizează configurarea implicită a sistemului</string>
 </resources>

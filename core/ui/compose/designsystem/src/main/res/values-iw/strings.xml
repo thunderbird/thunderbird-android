@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_atom_password_textfield_show_password">הצג סיסמה</string>
+    <string name="designsystem_molecule_email_address_input_label">כתובת דוא\"ל</string>
+    <string name="designsystem_molecule_password_input_label">סיסמה</string>
+    <string name="designsystem_atom_password_textfield_hide_password">הסתר סיסמה</string>
+    <string name="designsystem_molecule_error_view_button_retry">נסה שוב</string>
+    <string name="designsystem_molecule_swipeable_row_start_to_end_accessibility_description">ימין: %s</string>
+    <string name="designsystem_molecule_swipeable_row_end_to_start_accessibility_description">שמאל: %s</string>
+    <string name="designsystem_organism_thundermail_button_panel_sign_in">היכנסו לThundermail</string>
+    <string name="designsystem_organism_thundermail_button_panel_scan_qr_code">סירקו קוד QR</string>
+    <string name="designsystem_organism_thundermail_button_panel_sign_in_or">או</string>
+</resources>
