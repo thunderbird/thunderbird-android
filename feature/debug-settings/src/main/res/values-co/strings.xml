@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_screen_title">Screnu di i parametri di spannatura di u sicretu</string>
+    <string name="debug_settings_notifications_loading">Caricamentu…</string>
+    <string name="debug_settings_notifications_trigger_notification">Scruchjà una nutificazione</string>
+    <string name="debug_settings_notifications_single_mail_sender">Speditore</string>
+    <string name="debug_settings_notifications_single_mail_subject">Sughjettu</string>
+    <string name="debug_settings_notifications_single_mail_summary">Riassuntu</string>
+    <string name="debug_settings_notifications_single_mail_preview">Fighjulata</string>
+    <string name="debug_settings_notifications_common_notification_information">Infurmazioni generale per e nutificazioni</string>
+    <string name="debug_settings_notifications_in_app_notification">Nutificazione in l’appiecazione</string>
+    <string name="debug_settings_notifications_title">Nutificazioni</string>
+    <string name="debug_settings_notifications_system_notification">Nutificazione di u sistema</string>
+    <string name="debug_settings_notifications_preparing_notification">Appruntata di a nutificazione %1$s</string>
+    <string name="debug_settings_notification_status_log">Ghjurnale di u statu di e nutificazioni</string>
+    <string name="debug_settings_notifications_status">"Statu : "</string>
+    <string name="debug_settings_notifications_clear_status_log">Squassà u ghjurnale di i stati</string>
+    <string name="debug_settings_feature_flag_title">Indicatori di funzione</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Cambiamenti non arregistrati</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Certi cambiamenti ùn sò micca arregistrati. Vulete veramente tralascià a pagina ?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Stà</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Tralascià</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Risturà i valori predefiniti</string>
+    <string name="debug_settings_feature_flag_apply_changes">Appiecà i cambiamenti</string>
+    <string name="debug_settings_feature_flag_overridden">"rimpiazzatu ; "</string>
+    <string name="debug_settings_feature_flag_default_value">valore predefinitu : %1$b</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
 </resources>

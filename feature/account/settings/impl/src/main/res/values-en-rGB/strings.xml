@@ -23,4 +23,6 @@
     <string name="account_settings_general_avatar_icon_description">Pick one of the icons to use as your avatar.</string>
     <string name="account_settings_avatar_error_unsupported_format">Only JPEG images are supported.</string>
     <string name="account_settings_avatar_hint_jpeg_only">JPEG only</string>
+    <string name="account_settings_remote_search_num_results_entries_500">500</string>
+    <string name="account_settings_remote_search_num_label">Server search limit</string>
 </resources>

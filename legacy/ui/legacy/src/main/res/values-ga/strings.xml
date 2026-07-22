@@ -882,6 +882,7 @@
     <string name="message_view_attachments_title">Ceangaltáin</string>
     <string name="message_view_attachments_save_all">Sábháil gach rud</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Ceangaltán criptithe</string>
     <string name="no_network_message_will_be_sent_later_toast">As líne. Seolfar teachtaireacht a luaithe a bheidh nasc ar fáil</string>
     <string name="notification_actions_settings_title">Gníomhartha fógra</string>
     <string name="notification_actions_settings_summary">Roghnaigh cé na gníomhartha a thaispeánfar i bhfógraí ríomhphoist</string>
@@ -905,4 +906,7 @@
     <string name="changelog_type_fixed_text">SOCRAITHE</string>
     <string name="notification_show_contact_picture_title">Taispeáin pictiúir teagmhála i bhfógraí</string>
     <string name="notification_show_contact_picture_summary">Taispeáin abhatáranna an tseoltóra i bhfógraí teachtaireachtaí nua</string>
+    <string name="animation_setting_on">Ar siúl</string>
+    <string name="animation_setting_off">Múchta</string>
+    <string name="animation_setting_follow_system">Úsáid réamhshocrú an chórais</string>
 </resources>

@@ -929,6 +929,7 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="message_view_attachments_title">Manused</string>
     <string name="message_view_attachments_save_all">Salvesta kõik</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Krüptitud manus</string>
     <string name="no_network_message_will_be_sent_later_toast">Võrguühendus puudub. Kiri saadetakse selle taastumisel</string>
     <string name="notification_actions_settings_title">Toimingud teavitustes</string>
     <string name="notification_actions_settings_summary">Saad valida tegevused, mis kuvatakse e-kirjade teavitustes</string>

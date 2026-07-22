@@ -27,4 +27,5 @@
     <string name="sort_by_unread_asc">읽지 않음 우선</string>
     <string name="sort_by_unread_desc">읽음 우선</string>
     <string name="sort_by_attach_desc">첨부 미포함 우선</string>
+    <string name="sort_by_attach_asc">첨부 포함 우선</string>
 </resources>

@@ -1,3 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_screen_title">Layar Pengaturan Debug Rahasia</string>
+    <string name="debug_settings_notifications_loading">Memuat…</string>
+    <string name="debug_settings_notifications_trigger_notification">Notifikasi pemicu</string>
+    <string name="debug_settings_notifications_single_mail_sender">Pengirim</string>
+    <string name="debug_settings_notifications_single_mail_subject">Subyek</string>
+    <string name="debug_settings_notifications_single_mail_summary">Ringkasan</string>
+    <string name="debug_settings_notifications_single_mail_preview">Pratinjau</string>
+    <string name="debug_settings_notifications_common_notification_information">Informasi pemberitahuan umum</string>
+    <string name="debug_settings_notifications_in_app_notification">Notifikasi dalam aplikasi</string>
+    <string name="debug_settings_notifications_title">Pemberitahuan</string>
 </resources>
