@@ -1,0 +1,66 @@
+---
+name: PR - Sentinel Auto-Close
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # 00:00 GMT/UTC daily
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Log escalate/close actions without making changes."
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  autoclose:
+    name: Escalate and close stale non-compliant PRs
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: botmobile
+    env:
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: App token generate
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1  # v3.2.0
+        if: ${{ vars.BOT_CLIENT_ID }}
+        id: app-token
+        with:
+          client-id: ${{ vars.BOT_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
+      - name: Assert Sentinel label exists (fail loud)
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+        run: |
+          set -euo pipefail
+          # shellcheck source=scripts/ci/pr-sentinel/lib.sh disable=SC1091
+          source ./scripts/ci/pr-sentinel/lib.sh
+          require_label_needs_updates
+
+      - name: Escalate / close labeled PRs
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+          DRY_RUN_INPUT: ${{ github.event.inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          args=()
+          if [[ "${DRY_RUN_INPUT:-false}" == "true" ]]; then
+            args+=(--dry-run)
+          fi
+          numbers="$(gh pr list --state open --label "pr-sentinel: needs updates" \
+            --json number --jq 'map(.number) | join(" ")')"
+          if [[ -z "$numbers" ]]; then
+            echo "No labeled PRs; nothing to do."
+            exit 0
+          fi
+          for pr in $numbers; do
+            ./scripts/ci/pr-sentinel/escalate-pr.sh "$pr" "${args[@]}"
+          done
