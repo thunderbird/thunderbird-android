@@ -65,8 +65,8 @@ public class LocalFolder {
 
     private final LocalStore localStore;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
-    private GeneralSettingsManager generalSettingsManager;
-    private LocalMessageUidPrefixProvider localMessageUidPrefixProvider;
+    private final GeneralSettingsManager generalSettingsManager;
+    private final LocalMessageUidPrefixProvider localMessageUidPrefixProvider;
 
     private String status = null;
     private long lastChecked = 0;
@@ -97,8 +97,8 @@ public class LocalFolder {
         this(localStore, serverId, name, FolderType.REGULAR, generalSettingsManager, localMessageUidPrefixProvider);
     }
 
-    public LocalFolder(LocalStore localStore, String serverId, String name, FolderType type, GeneralSettingsManager generalSettingsManager,
-        LocalMessageUidPrefixProvider localMessageUidPrefixProvider) {
+    public LocalFolder(LocalStore localStore, String serverId, String name, FolderType type,
+        GeneralSettingsManager generalSettingsManager, LocalMessageUidPrefixProvider localMessageUidPrefixProvider) {
         this.localStore = localStore;
         this.serverId = serverId;
         this.name = name;
@@ -108,11 +108,14 @@ public class LocalFolder {
         this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
     }
 
-    public LocalFolder(LocalStore localStore, long databaseId, GeneralSettingsManager generalSettingsManager) {
+    public LocalFolder(LocalStore localStore, long databaseId, GeneralSettingsManager generalSettingsManager,
+        LocalMessageUidPrefixProvider localMessageUidPrefixProvider) {
         super();
         this.localStore = localStore;
         this.databaseId = databaseId;
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
+        this.generalSettingsManager = generalSettingsManager;
+        this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
     }
 
     public FolderType getType() {
@@ -485,7 +488,11 @@ public class LocalFolder {
             @Override
             public LocalMessage doDbWork(final SQLiteDatabase db) throws MessagingException {
                 open();
-                LocalMessage message = new LocalMessage(LocalFolder.this.localStore, uid, LocalFolder.this, generalSettingsManager);
+                final LocalMessage message = new LocalMessage(LocalFolder.this.localStore,
+                    uid,
+                    LocalFolder.this,
+                    generalSettingsManager,
+                    localMessageUidPrefixProvider);
                 Cursor cursor = null;
 
                 try {
@@ -514,7 +521,11 @@ public class LocalFolder {
     public LocalMessage getMessage(long messageId) throws MessagingException {
         return localStore.getDatabase().execute(false, db -> {
             open();
-            LocalMessage message = new LocalMessage(localStore, messageId, LocalFolder.this, generalSettingsManager);
+            final LocalMessage message = new LocalMessage(localStore,
+                messageId,
+                LocalFolder.this,
+                generalSettingsManager,
+                localMessageUidPrefixProvider);
 
             Cursor cursor = db.rawQuery(
                     "SELECT " +
