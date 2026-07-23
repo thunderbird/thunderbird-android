@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import com.fsck.k9.helper.MimeTypeUtil;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 import androidx.annotation.WorkerThread;
 
 import com.fsck.k9.mail.Body;

@@ -14,8 +14,8 @@ import kotlin.test.Test
 import net.thunderbird.core.common.mail.toUserEmailAddress
 import net.thunderbird.core.common.net.toHostname
 import net.thunderbird.core.common.net.toPort
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.legacy.logging.Log
 import org.junit.Before
 
 @Suppress("LongMethod")

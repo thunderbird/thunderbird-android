@@ -11,7 +11,7 @@ import com.fsck.k9.helper.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderDetails
 

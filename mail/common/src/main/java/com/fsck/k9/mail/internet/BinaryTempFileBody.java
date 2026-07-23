@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import net.thunderbird.core.logging.legacy.Log;
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.filter.Base64OutputStream;
+import net.thunderbird.legacy.logging.Log;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.apache.james.mime4j.util.MimeUtil;

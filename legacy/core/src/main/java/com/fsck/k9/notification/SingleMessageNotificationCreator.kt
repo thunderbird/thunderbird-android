@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 

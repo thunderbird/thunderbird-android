@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.mail.Protocols
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 class AccountStateLoader(
     private val accountManager: LegacyAccountDtoManager,

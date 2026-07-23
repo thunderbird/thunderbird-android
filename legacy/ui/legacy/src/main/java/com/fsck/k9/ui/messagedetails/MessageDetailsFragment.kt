@@ -35,7 +35,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf

@@ -10,6 +10,7 @@ dependencies {
 
     api(projects.feature.mail.account.api)
 
+    api(projects.legacy.logging)
     api(projects.mail.protocols.imap)
     api(projects.mail.protocols.smtp)
 

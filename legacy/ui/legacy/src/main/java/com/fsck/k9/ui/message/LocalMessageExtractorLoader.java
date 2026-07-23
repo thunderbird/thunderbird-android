@@ -10,7 +10,7 @@ import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageCryptoAnnotations;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfoExtractor;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo> {

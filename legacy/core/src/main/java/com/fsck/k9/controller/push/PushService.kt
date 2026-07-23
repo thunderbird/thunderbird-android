@@ -7,7 +7,7 @@ import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
 import com.fsck.k9.notification.PushNotificationManager
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import org.koin.android.ext.android.inject
 
 /**

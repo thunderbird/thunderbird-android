@@ -4,7 +4,7 @@ import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import android.net.ConnectivityManager as SystemConnectivityManager
 
 internal class ConnectivityManagerApi23(

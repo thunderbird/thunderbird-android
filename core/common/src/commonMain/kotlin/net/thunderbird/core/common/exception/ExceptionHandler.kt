@@ -2,7 +2,7 @@ package net.thunderbird.core.common.exception
 
 import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.logging.file.FileLogSink
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named

@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.mail.Protocols
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 class AccountServerSettingsUpdater(
     private val accountManager: LegacyAccountDtoManager,

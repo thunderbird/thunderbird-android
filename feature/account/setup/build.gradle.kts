@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.core.ui.contract)
     implementation(projects.core.ui.navigation)
 
+    implementation(projects.legacy.logging)
     implementation(projects.mail.common)
     implementation(projects.mail.protocols.imap)
     implementation(projects.mail.protocols.pop3)

@@ -1,4 +1,4 @@
-package net.thunderbird.core.logging.legacy
+package net.thunderbird.legacy.logging
 
 import androidx.annotation.Discouraged
 import net.thunderbird.core.logging.LogMessage
@@ -6,13 +6,15 @@ import net.thunderbird.core.logging.LogTag
 import net.thunderbird.core.logging.Logger
 
 /**
- * A static logging utility that implements [net.thunderbird.core.logging.Logger] and delegates to a
- * [net.thunderbird.core.logging.Logger] implementation.
+ * Legacy static facade over a [Logger].
+ *
+ * New code should receive a [Logger] through dependency injection. This facade exists only for Java and Kotlin
+ * callers that still use the historic static logging methods.
  *
  * You can initialize it in your application startup code, for example:
  *
  * ```kotlin
- * import net.thunderbird.core.logging.Log
+ * import net.thunderbird.legacy.logging.Log
  * import net.thunderbird.core.logging.DefaultLogger // or any other Logger implementation
  * fun main() {
  *     val sink: LogSink = // Your LogSink implementation

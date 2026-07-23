@@ -26,8 +26,8 @@ import net.thunderbird.app.common.feature.LoggerLifecycleObserver
 import net.thunderbird.core.common.exception.ExceptionHandler
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.file.FileLogSink
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.ui.theme.manager.ThemeManager
+import net.thunderbird.legacy.logging.Log
 import org.koin.android.ext.android.inject
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named

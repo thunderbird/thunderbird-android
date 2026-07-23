@@ -21,7 +21,7 @@ import com.fsck.k9.storage.RobolectricTest
 import java.io.ByteArrayOutputStream
 import java.util.Stack
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After

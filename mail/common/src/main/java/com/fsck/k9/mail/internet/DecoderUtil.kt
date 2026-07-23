@@ -4,7 +4,7 @@ import com.fsck.k9.mail.Message
 import java.io.ByteArrayInputStream
 import java.io.IOException
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import okio.Buffer
 import okio.ByteString
 import okio.ByteString.Companion.decodeBase64

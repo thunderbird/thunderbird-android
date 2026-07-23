@@ -1,4 +1,4 @@
-package net.thunderbird.core.logging.legacy
+package net.thunderbird.legacy.logging
 
 import assertk.assertThat
 import assertk.assertions.hasSize

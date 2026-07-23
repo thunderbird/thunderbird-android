@@ -1,8 +1,8 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.preferences.Settings.SettingsDescription
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.legacy.logging.Log
 
 internal object SettingsUpgradeHelper {
     /**

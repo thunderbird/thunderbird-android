@@ -14,7 +14,7 @@ import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Before
 import org.junit.Test

@@ -13,7 +13,7 @@ import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.SaveMessageDataCreator
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 import org.jetbrains.annotations.NotNull
 

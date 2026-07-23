@@ -11,7 +11,7 @@ import androidx.core.net.toUri
 import java.util.concurrent.Executor
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
 

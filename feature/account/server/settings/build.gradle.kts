@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.core.validation)
 
+    implementation(projects.legacy.logging)
     implementation(projects.mail.common)
     implementation(projects.mail.protocols.imap)
 

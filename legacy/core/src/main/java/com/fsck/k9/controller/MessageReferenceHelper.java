@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.k9mail.legacy.message.controller.MessageReference;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 public class MessageReferenceHelper {

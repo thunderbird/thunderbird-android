@@ -18,8 +18,8 @@ import com.fsck.k9.mail.internet.BinaryTempFileBody
 import java.io.File
 import java.util.EnumSet
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.legacy.logging.Log
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse

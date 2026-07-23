@@ -21,9 +21,9 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.core.logging.implLegacy)
             implementation(projects.core.logging.api)
             implementation(projects.core.logging.implFile)
+            implementation(projects.legacy.logging)
         }
         getByName("commonJvmTest") {
             dependencies {

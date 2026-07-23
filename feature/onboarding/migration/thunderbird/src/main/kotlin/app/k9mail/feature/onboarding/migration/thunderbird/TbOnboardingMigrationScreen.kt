@@ -46,8 +46,8 @@ import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
 import net.thunderbird.components.ui.bolt.template.Scaffold
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.common.provider.BrandNameProvider
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.thundermail.ui.component.ThundermailButtonPanel
+import net.thunderbird.legacy.logging.Log
 import org.koin.compose.koinInject
 
 @Composable

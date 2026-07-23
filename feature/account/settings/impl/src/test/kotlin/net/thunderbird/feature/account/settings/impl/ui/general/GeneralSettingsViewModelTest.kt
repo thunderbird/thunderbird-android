@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.validation.input.IntegerInputField
@@ -28,6 +27,7 @@ import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomai
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UpdateGeneralSettingCommand
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.State
+import net.thunderbird.legacy.logging.Log
 
 class GeneralSettingsViewModelTest {
 

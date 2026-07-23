@@ -12,7 +12,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
 
 import app.k9mail.legacy.di.DI;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 import com.fsck.k9.mail.Body;
 import net.thunderbird.core.common.exception.MessagingException;

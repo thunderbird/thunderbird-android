@@ -1,7 +1,7 @@
 package com.fsck.k9.backend.jmap
 
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import rs.ltt.jmap.client.JmapClient
 import rs.ltt.jmap.common.entity.filter.EmailFilterCondition
 import rs.ltt.jmap.common.method.call.email.QueryEmailMethodCall

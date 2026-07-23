@@ -13,7 +13,7 @@ import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.message.Attachment.LoadingState;
 import de.cketti.safecontentresolver.SafeContentResolver;
 import org.apache.commons.io.IOUtils;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 /**
  * Loader to fetch the content of an attachment.

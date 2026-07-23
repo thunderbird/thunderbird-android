@@ -20,7 +20,7 @@ import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import okio.IOException
 import org.intellij.lang.annotations.Language
 import org.koin.core.component.KoinComponent

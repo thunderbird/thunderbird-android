@@ -4,12 +4,12 @@ package com.fsck.k9.mail.store.pop3;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import net.thunderbird.legacy.logging.Log;
 import org.jetbrains.annotations.NotNull;
 
 

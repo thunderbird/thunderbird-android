@@ -5,7 +5,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.annotation.RequiresApi
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import android.net.ConnectivityManager as SystemConnectivityManager
 
 @RequiresApi(Build.VERSION_CODES.N)

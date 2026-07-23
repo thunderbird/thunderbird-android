@@ -23,11 +23,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
+import net.thunderbird.legacy.logging.Log
 
 // TODO Move to feature/account/setup
 @Suppress("LongParameterList")
