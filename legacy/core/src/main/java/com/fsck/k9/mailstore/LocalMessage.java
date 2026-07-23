@@ -24,6 +24,7 @@ import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.logging.legacy.Log;
 import net.thunderbird.core.preference.GeneralSettingsManager;
+import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
 
 
 public class LocalMessage extends MimeMessage {
@@ -41,20 +42,25 @@ public class LocalMessage extends MimeMessage {
     private PreviewType previewType;
     private boolean headerNeedsUpdating = false;
     private LocalFolder mFolder;
-    private GeneralSettingsManager generalSettingsManager;
+    private final GeneralSettingsManager generalSettingsManager;
+    private final LocalMessageUidPrefixProvider localMessageUidPrefixProvider;
 
-    LocalMessage(LocalStore localStore, String uid, LocalFolder folder, GeneralSettingsManager generalSettingsManager) {
+    LocalMessage(LocalStore localStore, String uid, LocalFolder folder, GeneralSettingsManager generalSettingsManager,
+        LocalMessageUidPrefixProvider localMessageUidPrefixProvider) {
         this.localStore = localStore;
         this.mUid = uid;
         this.mFolder = folder;
         this.generalSettingsManager = generalSettingsManager;
+        this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
     }
 
-    LocalMessage(LocalStore localStore, long databaseId, LocalFolder folder, GeneralSettingsManager generalSettingsManager) {
+    LocalMessage(LocalStore localStore, long databaseId, LocalFolder folder, GeneralSettingsManager generalSettingsManager,
+        LocalMessageUidPrefixProvider localMessageUidPrefixProvider) {
         this.localStore = localStore;
         this.databaseId = databaseId;
         this.mFolder = folder;
         this.generalSettingsManager = generalSettingsManager;
+        this.localMessageUidPrefixProvider = localMessageUidPrefixProvider;
     }
 
 
@@ -105,7 +111,10 @@ public class LocalMessage extends MimeMessage {
         }
 
         if (this.mFolder == null) {
-            LocalFolder f = new LocalFolder(this.localStore, cursor.getInt(LocalStore.MSG_INDEX_FOLDER_ID), generalSettingsManager);
+            final LocalFolder f = new LocalFolder(this.localStore,
+                cursor.getInt(LocalStore.MSG_INDEX_FOLDER_ID),
+                generalSettingsManager,
+                localMessageUidPrefixProvider);
             f.open();
             this.mFolder = f;
         }
