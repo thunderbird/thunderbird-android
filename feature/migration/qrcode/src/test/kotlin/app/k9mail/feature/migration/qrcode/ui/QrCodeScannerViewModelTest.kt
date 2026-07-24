@@ -30,6 +30,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import net.thunderbird.components.ui.testing.coroutines.MainDispatcherHelper
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
@@ -43,6 +45,7 @@ class QrCodeScannerViewModelTest {
 
     @BeforeTest
     fun setUp() {
+        Log.logger = TestLogger()
         mainDispatcher.setUp()
     }
 
@@ -146,6 +149,56 @@ class QrCodeScannerViewModelTest {
             ensureThatAllEventsAreConsumed()
         }
     }
+
+    @Test
+    fun `user scans unsupported QR code`() = runMviTest {
+        with(QrCodeScannerScreenRobot(mviContext = this)) {
+            startScreen()
+            systemGrantsCameraPermission()
+
+            userScansUnsupportedQrCode()
+            assertUnsupportedQrCodeStatus()
+
+            ensureThatAllEventsAreConsumed()
+        }
+    }
+
+    @Test
+    fun `user scans supported QR code after unsupported QR code`() = runMviTest {
+        with(QrCodeScannerScreenRobot(mviContext = this)) {
+            startScreen()
+            systemGrantsCameraPermission()
+
+            userScansUnsupportedQrCode()
+            assertUnsupportedQrCodeStatus()
+
+            userScansQrCode(sequenceNumber = 1, sequenceEnd = 2)
+            assertScannedStatus(expectedScannedCount = 1, expectedScannedTotal = 2)
+
+            ensureThatAllEventsAreConsumed()
+        }
+    }
+
+    @Test
+    fun `user scans same unsupported QR code more than once`() = runMviTest {
+        with(QrCodeScannerScreenRobot(mviContext = this)) {
+            startScreen()
+            systemGrantsCameraPermission()
+
+            userScansUnsupportedQrCode()
+            assertUnsupportedQrCodeStatus()
+
+            userScansUnsupportedQrCode()
+            assertCurrentState(
+                State(
+                    cameraPermissionState = UiPermissionState.Granted,
+                    displayText = DisplayText.UnsupportedQrCode,
+                ),
+            )
+
+            ensureThatAllEventsAreConsumed()
+        }
+    }
 }
 
 private class QrCodeScannerScreenRobot(
@@ -231,6 +284,10 @@ private class QrCodeScannerScreenRobot(
         qrCodeListener.invoke(payload)
     }
 
+    fun userScansUnsupportedQrCode() {
+        qrCodeListener.invoke("Unsupported QR code payload")
+    }
+
     fun userClicksDoneButton() {
         viewModel.event(Event.DoneClicked)
     }
@@ -245,6 +302,19 @@ private class QrCodeScannerScreenRobot(
                 ),
             ),
         )
+    }
+
+    suspend fun assertUnsupportedQrCodeStatus() {
+        assertThat(turbines.awaitStateItem()).isEqualTo(
+            State(
+                cameraPermissionState = UiPermissionState.Granted,
+                displayText = DisplayText.UnsupportedQrCode,
+            ),
+        )
+    }
+
+    fun assertCurrentState(expectedState: State) {
+        assertThat(viewModel.state.value).isEqualTo(expectedState)
     }
 
     suspend fun assertScanResult(expectedNumberOfAccounts: Int) {
