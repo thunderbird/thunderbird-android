@@ -8,6 +8,7 @@
     <string name="open_camera">Open Camera</string>
     <string name="attach_file">Attach File</string>
     <string name="camera_permission_denied">Camera Permission Denied! Unable to take photo</string>
+    <string name="camera_capture_lost">Captured image was lost because the app was closed. Please try again.</string>
     <string name="source_code">Source code</string>
     <string name="app_license">Apache License, Version 2.0</string>
     <string name="about_project_title">Open Source Project</string>
