@@ -36,6 +36,7 @@
         android:allowTaskReparenting="false"
         android:resizeableActivity="true"
         android:supportsRtl="true"
+        android:intentMatchingFlags="enforceIntentFilter"
         tools:ignore="UnusedAttribute"
         >
 
