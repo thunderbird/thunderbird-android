@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="22.0b2" versioncode="57" date="2026-07-27">
+        <change>Fixed: Could not empty the Trash folder using the Empty Trash action</change>
+    </release>
     <release version="22.0b1" versioncode="56" date="2026-07-20">
         <change>New: Incognito Keyboard privacy setting disables Google keyboard from learning words</change>
         <change>New: Thundermail interim screen when adding an account</change>

@@ -1,0 +1,4 @@
+Thunderbird version 22.0b2
+
+Fixed:
+- Could not empty the Trash folder using the Empty Trash action
