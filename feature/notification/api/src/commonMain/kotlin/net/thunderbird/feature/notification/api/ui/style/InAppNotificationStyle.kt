@@ -70,7 +70,6 @@ value class NotificationPriority(val value: UInt) : Comparable<NotificationPrior
  * used to configure the system notification style.
  * @return a list of [InAppNotificationStyle]
  */
-@NotificationStyleMarker
 fun inAppNotificationStyle(
     builder: @NotificationStyleMarker InAppNotificationStyleBuilder.() -> Unit,
 ): InAppNotificationStyle {
