@@ -67,7 +67,7 @@ value class NotificationPriority(val value: UInt) : Comparable<NotificationPrior
  * ```
  *
  * @param builder A lambda function with [InAppNotificationStyleBuilder] as its receiver,
- * used to configure the system notification style.
+ * used to configure the in-app notification style.
  * @return a list of [InAppNotificationStyle]
  */
 fun inAppNotificationStyle(
