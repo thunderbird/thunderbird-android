@@ -79,7 +79,7 @@ property: name='android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE' value='This servic
 provides-component:'app-widget'
 supports-any-density: 'true'
 supports-screens: 'small' 'normal' 'large' 'xlarge'
-targetSdkVersion:'35'
+targetSdkVersion:'36'
 uses-feature-not-required: name='android.hardware.camera'
 uses-feature-not-required: name='android.hardware.touchscreen'
 uses-library-not-required:'androidx.window.extensions'
