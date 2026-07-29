@@ -21,10 +21,13 @@ import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.feature.account.storage.mapper.AvatarDataMapper
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UnifiedFolderRepository
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 import net.thunderbird.feature.notification.api.content.AuthenticationErrorNotification
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
 
@@ -35,6 +38,7 @@ internal class GetDisplayAccounts(
     private val notificationStream: InAppNotificationStream,
     private val featureFlagProvider: FeatureFlagProvider,
     private val avatarMapper: AvatarDataMapper,
+    private val unifiedFolderRepository: UnifiedFolderRepository,
     private val coroutineContext: CoroutineContext = Dispatchers.IO,
 ) : UseCase.GetDisplayAccounts {
 
@@ -49,7 +53,7 @@ internal class GetDisplayAccounts(
                     getMessageCountsFlow(account)
                 }
 
-                combine(messageCountsFlows) { messageCountsList ->
+                val displayAccountsFlow = combine(messageCountsFlows) { messageCountsList ->
                     val displayAccounts = messageCountsList.mapIndexed { index, messageCounts ->
                         val account = accounts[index]
                         MailDisplayAccount(
@@ -65,11 +69,18 @@ internal class GetDisplayAccounts(
                         )
                     }
 
-                    if (showUnifiedAccount) {
-                        withUnifiedAccount(displayAccounts)
-                    } else {
-                        displayAccounts
+                    displayAccounts
+                }
+
+                if (showUnifiedAccount) {
+                    combine(
+                        displayAccountsFlow,
+                        unifiedFolderRepository.getUnifiedDisplayFolderFlow(UnifiedDisplayFolderType.INBOX),
+                    ) { displayAccounts, unifiedInbox ->
+                        withUnifiedAccount(displayAccounts, unifiedInbox)
                     }
+                } else {
+                    displayAccountsFlow
                 }
             }
     }
@@ -92,10 +103,13 @@ internal class GetDisplayAccounts(
         }
     }
 
-    private fun withUnifiedAccount(accounts: List<DisplayAccount>): List<DisplayAccount> {
+    private fun withUnifiedAccount(
+        accounts: List<DisplayAccount>,
+        unifiedInbox: UnifiedDisplayFolder,
+    ): List<DisplayAccount> {
         val unified = UnifiedDisplayAccount(
-            unreadMessageCount = accounts.sumOf { it.unreadMessageCount },
-            starredMessageCount = accounts.sumOf { it.starredMessageCount },
+            unreadMessageCount = unifiedInbox.unreadMessageCount,
+            starredMessageCount = unifiedInbox.starredMessageCount,
             hasError = accounts.any { it.hasError },
         )
 
