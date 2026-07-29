@@ -32,6 +32,7 @@ import net.thunderbird.feature.notification.api.ui.style.SystemNotificationStyle
  * ```
  * @see net.thunderbird.feature.notification.api.ui.style.systemNotificationStyle
  */
+@NotificationStyleMarker
 class SystemNotificationStyleBuilder internal constructor() {
     private var bigText: BigTextStyle? = null
     private var inboxStyle: InboxStyle? = null
@@ -61,7 +62,6 @@ class SystemNotificationStyleBuilder internal constructor() {
      * used to configure the Inbox style.
      * @see InboxSystemNotificationStyleBuilder
      */
-    @NotificationStyleMarker
     fun inbox(builder: @NotificationStyleMarker InboxSystemNotificationStyleBuilder.() -> Unit) {
         inboxStyle = InboxSystemNotificationStyleBuilder().apply(builder).build()
     }
