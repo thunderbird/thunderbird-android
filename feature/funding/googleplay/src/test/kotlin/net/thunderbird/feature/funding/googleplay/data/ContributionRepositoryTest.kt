@@ -52,6 +52,22 @@ internal class ContributionRepositoryTest {
     }
 
     @Test
+    fun `getAllPurchased should ignore asynchronous purchase failure`() = runTest {
+        // Arrange
+        val expectedOutcome = Outcome.success(emptyList<PurchasedContribution>())
+        (remoteContributionDataSource as FakeContributionDataSource).purchasedFlow = flowOf(expectedOutcome)
+        remoteContributionDataSource.purchasedContribution.value = Outcome.failure(
+            ContributionError.UserCancelled("Purchase cancelled"),
+        )
+
+        // Act
+        val result = testSubject.getAllPurchased().first()
+
+        // Assert
+        assertThat(result).isEqualTo(expectedOutcome)
+    }
+
+    @Test
     fun `getAllPurchased should include cached one-time contribution`() = runTest {
         // Arrange
         val purchase = PurchasedContribution(

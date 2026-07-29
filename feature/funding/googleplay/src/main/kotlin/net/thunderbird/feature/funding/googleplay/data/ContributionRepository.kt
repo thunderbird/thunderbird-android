@@ -42,13 +42,11 @@ internal class ContributionRepository(
                 }
             }
         },
-    ) { remoteOutcome, localOutcome, purchaseOutcome ->
+    ) { remoteOutcome, localOutcome, _ ->
         when {
             remoteOutcome is Outcome.Failure -> Outcome.failure(remoteOutcome.error)
 
             localOutcome is Outcome.Failure -> Outcome.failure(localOutcome.error)
-
-            purchaseOutcome is Outcome.Failure -> Outcome.failure(purchaseOutcome.error)
 
             else -> {
                 val remotePurchases = (remoteOutcome as Outcome.Success).data
