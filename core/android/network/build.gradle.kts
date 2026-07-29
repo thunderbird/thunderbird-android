@@ -10,7 +10,6 @@ dependencies {
     api(projects.core.common)
 
     implementation(projects.core.logging.api)
-    implementation(projects.legacy.logging)
 
     testImplementation(projects.core.testing)
     testImplementation(libs.robolectric)

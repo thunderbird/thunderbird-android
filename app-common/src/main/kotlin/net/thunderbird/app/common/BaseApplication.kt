@@ -72,7 +72,7 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
             messagingController.addListener(listener)
         }
         val originalHandler = Thread.getDefaultUncaughtExceptionHandler()
-        Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(originalHandler))
+        Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(originalHandler, logger))
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(LoggerLifecycleObserver(syncDebugFileLogSink))
     }
