@@ -191,8 +191,8 @@ co.touchlab:stately-concurrent-collections-jvm:2.1.0
 co.touchlab:stately-concurrent-collections:2.1.0
 co.touchlab:stately-strict-jvm:2.1.0
 co.touchlab:stately-strict:2.1.0
-com.android.billingclient:billing-ktx:8.3.0
-com.android.billingclient:billing:8.3.0
+com.android.billingclient:billing-ktx:9.1.0
+com.android.billingclient:billing:9.1.0
 com.beetstra.jutf7:jutf7:1.0.0
 com.eygraber:uri-kmp-android:0.0.21
 com.eygraber:uri-kmp:0.0.21
