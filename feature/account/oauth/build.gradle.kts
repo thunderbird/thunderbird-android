@@ -15,7 +15,6 @@ android {
 
 dependencies {
     implementation(projects.core.common)
-    implementation(projects.core.logging.api)
     implementation(projects.core.ui.compose.common)
 
     implementation(projects.legacy.logging)
