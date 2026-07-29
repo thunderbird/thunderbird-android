@@ -9,8 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.legacy.logging.Log
 
 /**
  * An [Authenticator] implementation that uses Android's BiometricPrompt to authenticate the user.

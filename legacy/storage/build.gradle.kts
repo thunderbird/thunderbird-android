@@ -9,6 +9,7 @@ dependencies {
     implementation(projects.feature.mail.message.list.api)
 
     implementation(projects.legacy.core)
+    implementation(projects.legacy.logging)
     // Required for MigrationTo107
     implementation(projects.mail.common)
     implementation(projects.mail.protocols.imap)

@@ -17,7 +17,7 @@
 package com.fsck.k9.mail.store.imap
 
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 /**
  * Utility methods for use with IMAP.

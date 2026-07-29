@@ -9,7 +9,7 @@ import java.io.IOException
 import net.thunderbird.core.common.mail.EmailAddress
 import net.thunderbird.core.common.mail.toDomain
 import net.thunderbird.core.common.net.Domain
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import okhttp3.OkHttpClient
 import org.minidns.dnsname.InvalidDnsNameException
 

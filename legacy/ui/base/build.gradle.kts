@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation(projects.legacy.core)
+    implementation(projects.legacy.logging)
 
     api(projects.core.ui.theme.manager)
     api(projects.core.ui.animation.manager)

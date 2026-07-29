@@ -6,7 +6,7 @@ import app.k9mail.core.android.common.database.map
 import com.fsck.k9.mailstore.MigrationsHelper
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 /**
  * Clean up special local folders

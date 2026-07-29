@@ -16,7 +16,7 @@ import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.CodeVerifierUtil
 import net.openid.appauth.ResponseTypeValues
 import net.thunderbird.core.common.oauth.OAuthConfiguration
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 class AuthorizationRepository(
     private val service: AuthorizationService,

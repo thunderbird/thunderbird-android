@@ -6,7 +6,7 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryResult.NoUsableSettingsFound
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult.Settings
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult.UnexpectedException
 import app.k9mail.autodiscovery.api.AutoDiscoveryRunnable
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 /**
  * Run a list of [AutoDiscoveryRunnable] one after the other until one returns a [Settings] result.

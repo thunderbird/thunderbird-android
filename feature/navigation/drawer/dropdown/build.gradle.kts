@@ -17,6 +17,7 @@ dependencies {
     api(projects.feature.navigation.drawer.api)
 
     implementation(projects.core.android.account)
+    implementation(projects.core.logging.api)
     implementation(projects.core.ui.contract)
     implementation(projects.core.ui.theme.api)
 

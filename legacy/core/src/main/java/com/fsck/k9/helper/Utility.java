@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import android.database.Cursor;
 import android.text.TextUtils;
 
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 public class Utility {
 

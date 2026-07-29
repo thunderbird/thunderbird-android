@@ -4,7 +4,7 @@ import net.thunderbird.core.common.mail.EmailAddressParserException
 import net.thunderbird.core.common.mail.toUserEmailAddress
 import net.thunderbird.core.common.net.toHostname
 import net.thunderbird.core.common.net.toPort
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 @Suppress("TooManyFunctions")
 internal class QrCodePayloadValidator {

@@ -7,7 +7,7 @@ import app.k9mail.autodiscovery.autoconfig.HttpFetchResult.ErrorResponse
 import app.k9mail.autodiscovery.autoconfig.HttpFetchResult.SuccessResponse
 import java.io.IOException
 import net.thunderbird.core.common.mail.EmailAddress
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import okhttp3.HttpUrl
 
 internal class RealAutoconfigFetcher(

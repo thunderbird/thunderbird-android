@@ -2,7 +2,7 @@ package com.fsck.k9.helper
 
 import java.io.File
 import java.io.IOException
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 object FileHelper {
 

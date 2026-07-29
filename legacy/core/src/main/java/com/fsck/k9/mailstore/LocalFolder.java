@@ -55,7 +55,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 public class LocalFolder {

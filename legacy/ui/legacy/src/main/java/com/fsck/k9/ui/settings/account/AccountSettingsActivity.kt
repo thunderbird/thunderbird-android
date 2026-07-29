@@ -14,7 +14,7 @@ import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.base.extensions.fragmentTransaction
 import com.fsck.k9.ui.base.extensions.fragmentTransactionWithBackStack
 import com.fsck.k9.ui.base.livedata.observeNotNull
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AccountSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback {

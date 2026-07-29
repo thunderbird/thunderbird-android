@@ -6,7 +6,7 @@ import assertk.assertions.key
 import com.fsck.k9.preferences.createPreferencesDatabase
 import java.util.UUID
 import kotlin.test.Test
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import org.junit.After

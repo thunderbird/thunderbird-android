@@ -6,7 +6,7 @@ import android.net.Uri;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.internet.MessageIdParser;
 import com.fsck.k9.mail.internet.MimeHeaderParserException;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 import java.util.ArrayList;
 import java.util.List;

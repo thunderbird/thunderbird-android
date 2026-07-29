@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyFactory;
@@ -27,6 +26,7 @@ import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.MimeType;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import net.thunderbird.legacy.logging.Log;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.dom.field.DateTimeField;

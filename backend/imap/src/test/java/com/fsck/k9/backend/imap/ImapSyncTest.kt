@@ -20,8 +20,8 @@ import com.fsck.k9.mail.store.imap.ImapMessage
 import com.fsck.k9.mail.testing.message.buildMessage
 import java.util.Date
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.legacy.logging.Log
 import org.apache.james.mime4j.dom.field.DateTimeField
 import org.apache.james.mime4j.field.DefaultFieldParser
 import org.junit.Before

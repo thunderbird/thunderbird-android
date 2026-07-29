@@ -35,7 +35,7 @@ import com.fsck.k9.ui.message.LocalMessageExtractorLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 /** This class is responsible for loading a message start to finish, and

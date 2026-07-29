@@ -21,7 +21,7 @@ import android.security.KeyChain;
 import android.security.KeyChainException;
 
 import net.thunderbird.core.common.exception.MessagingException;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 /**

@@ -12,7 +12,7 @@ import com.fsck.k9.storage.RobolectricTest
 import com.fsck.k9.storage.messages.createDatabase
 import com.fsck.k9.storage.messages.createLockableDatabaseMock
 import com.fsck.k9.storage.messages.createMessage
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.After
 import org.junit.Before

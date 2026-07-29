@@ -7,7 +7,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.none
 import assertk.assertions.prop
 import com.fsck.k9.storage.RobolectricTest
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderDetails

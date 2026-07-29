@@ -4,7 +4,7 @@ import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 class NotificationController internal constructor(
     private val certificateErrorNotificationController: CertificateErrorNotificationController,

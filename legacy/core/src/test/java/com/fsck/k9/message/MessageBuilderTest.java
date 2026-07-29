@@ -31,7 +31,7 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.message.MessageBuilder.Callback;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 import net.thunderbird.core.logging.testing.TestLogger;
 import net.thunderbird.core.preference.GeneralSettings;
 import net.thunderbird.core.preference.GeneralSettingsManager;

@@ -5,7 +5,7 @@ import android.os.SystemClock
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.power.WakeLock
 import java.util.concurrent.atomic.AtomicInteger
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import android.os.PowerManager as SystemPowerManager
 import android.os.PowerManager.WakeLock as SystemWakeLock
 

@@ -12,7 +12,7 @@ import assertk.assertions.isTrue
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.storage.RobolectricTest
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.After
 import org.junit.Before

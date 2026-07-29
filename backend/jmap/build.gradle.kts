@@ -8,6 +8,7 @@ dependencies {
     api(projects.backend.api)
     implementation(projects.core.common)
     implementation(projects.feature.mail.folder.api)
+    implementation(projects.legacy.logging)
 
     api(libs.okhttp)
     implementation(libs.jmap.client)
