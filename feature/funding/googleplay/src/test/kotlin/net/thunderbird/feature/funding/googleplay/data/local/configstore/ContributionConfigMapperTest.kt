@@ -53,6 +53,19 @@ class ContributionConfigMapperTest {
     }
 
     @Test
+    fun `fromConfig should deserialize null lastPurchasedContribution without logging an error`() {
+        // Arrange
+        val config = mapper.toConfig(ContributionConfig(lastPurchasedContribution = null))
+
+        // Act
+        val result = mapper.fromConfig(config)
+
+        // Assert
+        assertThat(result).isEqualTo(ContributionConfig.DEFAULT)
+        assertThat(logger.events.filter { it.level == LogLevel.ERROR }.size).isEqualTo(0)
+    }
+
+    @Test
     fun `fromConfig should deserialize a config produced by toConfig`() {
         val purchase = ContributionPurchase(
             id = "id123",

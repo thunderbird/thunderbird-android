@@ -23,7 +23,7 @@ internal class ContributionConfigMapper(
     override fun fromConfig(config: Config): ContributionConfig? {
         val jsonString = config[ContributionConfigKeys.LAST_PURCHASED_CONTRIBUTION] ?: return ContributionConfig.DEFAULT
         return try {
-            val purchase = json.decodeFromString<ContributionPurchase>(jsonString)
+            val purchase = json.decodeFromString<ContributionPurchase?>(jsonString)
             ContributionConfig(lastPurchasedContribution = purchase)
         } catch (e: SerializationException) {
             logger.error(tag = TAG, throwable = e) {
