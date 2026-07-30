@@ -5,4 +5,12 @@
     <string name="account_server_certificate_unknown_error_subtitle">Сертификат қатесі</string>
     <string name="account_server_certificate_button_continue">Тәуекелді қабылдап, жалғастыру</string>
     <string name="account_server_certificate_section_title">Сервер сертификаты</string>
+    <string name="account_server_certificate_button_advanced"></string>
+    <string name="account_server_certificate_subject_alternative_names"></string>
+    <string name="account_server_certificate_issuer"></string>
+    <string name="account_server_certificate_not_valid_after"></string>
+    <string name="account_server_certificate_unknown_error_description_format"></string>
+    <string name="account_server_certificate_fingerprints_section"></string>
+    <string name="account_server_certificate_subject"></string>
+    <string name="account_server_certificate_not_valid_before"></string>
 </resources>
