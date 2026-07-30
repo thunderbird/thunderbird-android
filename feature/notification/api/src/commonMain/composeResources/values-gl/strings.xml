@@ -7,9 +7,7 @@
     <string name="notification_channel_miscellaneous_title">Varios</string>
     <string name="notification_channel_miscellaneous_description">Notificacións varias como erros, etc.</string>
     <string name="notification_notify_error_title">Erro de notificación</string>
-    <string name="notification_notify_error_text">Produciuse un erro ao tentar crear unha notificación do sistema para unha mensaxe nova. O motivo é probablemente un son de notificación que falta.
-\n
-\nToca para abrir a configuración de notificacións.</string>
+    <string name="notification_notify_error_text">Produciuse un erro ao tentar crear unha notificación do sistema para unha mensaxe nova. O motivo é probablemente un son de notificación que falta. \n \nToca para abrir a configuración de notificacións.</string>
     <string name="notification_authentication_error_title">Fallo de autenticación</string>
     <string name="notification_certificate_error_public">Erro certificado</string>
     <string name="notification_certificate_error_title">Fallo no certificado para %1$s</string>
@@ -22,7 +20,7 @@
     <string name="notification_additional_messages">+ %1$d máis en %2$s</string>
     <string name="push_notification_state_initializing">Iniciando…</string>
     <string name="push_notification_state_listening">Agardando por novos correos</string>
-    <string name="push_notification_state_wait_background_sync">Suspender ata que sexa permitida a sincronización de fondo </string>
+    <string name="push_notification_state_wait_background_sync">Suspender ata que sexa permitida a sincronización de fondo</string>
     <string name="push_notification_state_wait_network">Suspender ata que estea dispoñible a rede</string>
     <string name="push_notification_state_alarm_permission_missing">Faltan permisos para programar alarmas</string>
     <string name="push_notification_info">Prema para saber máis.</string>
@@ -38,4 +36,16 @@
     <string name="notification_action_spam">Spam</string>
     <string name="notification_authentication_incoming_server_error_text">Non foi posible iniciar sesión en %1$s. Actualiza os axustes do teu servidor de entrada.</string>
     <string name="notification_authentication_outgoing_server_error_text">Erro de autenticación para %1$s. Actualiza os axustes do teu servidor de saída.</string>
+    <string name="banner_inline_notification_open_notifications"></string>
+    <string name="banner_inline_notification_some_messages_need_attention"></string>
+    <string name="banner_inline_notification_learn_more"></string>
+    <plurals name="notification_new_messages_title">
+    </plurals>
+    <string name="banner_inline_notification_check_error_notifications"></string>
+    <string name="sent_folder_not_found_title"></string>
+    <string name="notification_action_update_server_settings"></string>
+    <string name="banner_inline_notification_view_support_article"></string>
+    <string name="notification_action_retry"></string>
+    <string name="notification_bg_sync_text"></string>
+    <string name="notification_action_assign_sent_folder"></string>
 </resources>
