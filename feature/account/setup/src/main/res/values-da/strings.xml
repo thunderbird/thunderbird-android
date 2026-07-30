@@ -21,4 +21,38 @@
         <item quantity="one">Hver time</item>
         <item quantity="other">Hver %d. time</item>
     </plurals>
+    <string name="account_setup_options_account_name_error_blank"></string>
+    <string name="account_setup_special_folders_success_message"></string>
+    <string name="account_setup_options_your_name_label"></string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed"></string>
+    <string name="account_setup_options_your_name_error_required"></string>
+    <string name="account_setup_auto_discovery_validation_error_password_required"></string>
+    <string name="account_setup_options_account_check_frequency_label"></string>
+    <string name="account_setup_special_folders_folder_automatic"></string>
+    <string name="account_setup_special_folders_drafts_folder_label"></string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted"></string>
+    <string name="account_setup_create_account_created"></string>
+    <string name="account_setup_special_folders_error_message"></string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+    </plurals>
+    <string name="account_setup_options_email_display_count_label"></string>
+    <string name="account_setup_special_folders_loading_message"></string>
+    <string name="account_setup_special_folders_form_description"></string>
+    <string name="account_setup_options_email_signature_error_blank"></string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required"></string>
+    <string name="account_setup_special_folders_sent_folder_label"></string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration"></string>
+    <string name="account_setup_special_folders_folder_none"></string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported"></string>
+    <plurals name="account_setup_options_email_display_count_messages">
+    </plurals>
+    <string name="account_setup_special_folders_trash_folder_label"></string>
+    <string name="account_setup_create_account_creating"></string>
+    <string name="account_setup_special_folders_archive_folder_label"></string>
+    <string name="account_setup_auto_discovery_loading_error"></string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label"></string>
+    <string name="account_setup_create_account_error"></string>
+    <string name="account_setup_special_folders_spam_folder_label"></string>
+    <string name="account_setup_auto_discovery_loading_message"></string>
+    <string name="account_setup_special_folders_form_description_automatic"></string>
 </resources>
