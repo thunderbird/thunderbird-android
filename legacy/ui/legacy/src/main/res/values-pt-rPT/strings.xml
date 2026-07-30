@@ -92,7 +92,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Sem assunto)</string>
     <string name="general_no_sender">Sem remetente</string>
-    <string name="status_loading_more">A carregar mensagens\u2026</string>
+    <string name="status_loading_more">A carregar mensagens…</string>
     <string name="status_network_error">Erro de ligação</string>
     <string name="status_invalid_id_error">Mensagem não encontrada</string>
     <string name="status_loading_error">Erro ao carregar mensagem</string>
@@ -123,8 +123,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Erro de notificação</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Occoreu um erro ao tentar criar uma notificação do sistema para uma nova mensagem. A causa mais provavel é a falta de um som de notificação.\n\nToque para abrir as definições de notificação
-.</string>
+    <string name="notification_notify_error_text">Occoreu um erro ao tentar criar uma notificação do sistema para uma nova mensagem. A causa mais provavel é a falta de um som de notificação.\n\nToque para abrir as definições de notificação .</string>
     <string name="notification_bg_sync_ticker">A verificar correio: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">A verificar correio</string>
     <string name="notification_bg_send_ticker">A enviar correio: <xliff:g id="account">%s</xliff:g></string>
@@ -162,7 +161,7 @@
     <string name="compose_error_incomplete_recipient">O campo de destinatário está incompleto!</string>
     <string name="error_contact_address_not_found">Não foi possível encontrar um endereço de email para este contacto.</string>
     <string name="message_compose_attachments_skipped_toast">Alguns anexos não podem ser encaminhados porque não foram transferidos.</string>
-    <string name="message_compose_attachments_forward_toast">Esta mensagem não pode ser encaminhada porque alguns anexos não foram transferidos. </string>
+    <string name="message_compose_attachments_forward_toast">Esta mensagem não pode ser encaminhada porque alguns anexos não foram transferidos.</string>
     <string name="message_compose_show_quoted_text_action">Incluir mensagem citada</string>
     <string name="message_compose_description_delete_quoted_text">Remover texto citado</string>
     <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>
@@ -392,7 +391,7 @@
     <string name="account_settings_message_age_1_year">o último ano</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronizar as eliminações do servidor</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove as mensagens quando eliminadas no servidor</string>
-    <string name="account_settings_openpgp_missing">Falta uma aplicação OpenPGP; foi desinstalada? </string>
+    <string name="account_settings_openpgp_missing">Falta uma aplicação OpenPGP; foi desinstalada?</string>
     <string name="folder_settings_title">Configurações da pasta</string>
     <string name="folder_settings_in_top_group_label">Mostrar no grupo do topo</string>
     <string name="folder_settings_clear_local_folder_action">Apagar mensagens locais</string>
@@ -599,7 +598,7 @@
     <string name="webview_contextmenu_link_share_action">Partilhar hiperligação</string>
     <string name="webview_contextmenu_link_copy_action">Copiar hiperligação para a área de transferência</string>
     <string name="webview_contextmenu_link_clipboard_label">Hiperligação</string>
-    <string name="webview_contextmenu_link_text_copy_action"> Copiar texto do apontador para a área de transferência</string>
+    <string name="webview_contextmenu_link_text_copy_action">Copiar texto do apontador para a área de transferência</string>
     <string name="webview_contextmenu_link_text_clipboard_label">Texto do apontador</string>
     <string name="webview_contextmenu_image_title">Imagem</string>
     <string name="webview_contextmenu_image_view_action">Ver imagem</string>
@@ -786,12 +785,7 @@
     <string name="ac_transfer_finish">Para terminar, abra a mensagem no outro dispositivo seu e introduza o código de configuração.</string>
     <string name="ac_transfer_show_code">Mostrar o código de configuração</string>
     <string name="ac_transfer_msg_subject">Mensagem de configuração de auto-encriptação</string>
-    <string name="ac_transfer_msg_body">Esta mensagem contém todas as informações necessárias para transferir as suas configurações de auto-encriptação juntamente com sua chave secreta, de forma segura, a partir do seu dispositivo original
-
-Para configurar o seu novo dispositivo para auto-encriptação, siga as instruções que apresentadas pelo seu novo dispositivo.
-
-Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua chave secreta. Caso queira fazer isso, deve anotar a palavra-passe e armazená-la num local seguro.
-</string>
+    <string name="ac_transfer_msg_body">Esta mensagem contém todas as informações necessárias para transferir as suas configurações de auto-encriptação juntamente com sua chave secreta, de forma segura, a partir do seu dispositivo original Para configurar o seu novo dispositivo para auto-encriptação, siga as instruções que apresentadas pelo seu novo dispositivo. Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua chave secreta. Caso queira fazer isso, deve anotar a palavra-passe e armazená-la num local seguro.</string>
     <string name="ac_transfer_error_send">Ocorreu um erro durante o envio da mensagem. Verifique a conectividade da sua rede e as configurações do servidor de saída.</string>
     <string name="switch_on">Ativado</string>
     <string name="switch_off">Desativado</string>
@@ -890,4 +884,71 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
     <string name="open_camera">Abrir Câmera</string>
     <string name="attach_file">Anexar ficheiro</string>
     <string name="camera_permission_denied">Permissão de câmera negada! Incapaz de tirar foto</string>
+    <string name="debug_invalidate_access_token_local"></string>
+    <string name="accessibility_move_item_up"></string>
+    <string name="notification_actions_settings_description"></string>
+    <string name="debug_invalidate_access_token_local_done"></string>
+    <string name="animation_setting_follow_system"></string>
+    <string name="message_view_attachments_save_all"></string>
+    <string name="expand_folders"></string>
+    <string name="notification_actions_settings_summary"></string>
+    <string name="debug_invalidate_access_token_done"></string>
+    <string name="debug_invalidate_access_token_unavailable"></string>
+    <string name="sort_by_then_by"></string>
+    <string name="notification_summary_delete_summary"></string>
+    <string name="set_format_plain_condensed_action"></string>
+    <string name="set_format_html_condensed_action"></string>
+    <string name="message_view_menu_action_export_eml"></string>
+    <string name="debug_enable_sync_debug_logging_summary"></string>
+    <string name="notification_summary_delete_title"></string>
+    <string name="notification_actions_cutoff_state"></string>
+    <string name="message_view_attachments_view_all"></string>
+    <string name="accessibility_move_cutoff_up"></string>
+    <string name="archiving_not_available_for_this_account"></string>
+    <string name="set_format_html_action"></string>
+    <string name="message_view_attachments_view"></string>
+    <string name="global_settings_messageview_body_content_type_title"></string>
+    <string name="navigation_drawer_preferences"></string>
+    <string name="changelog_type_new_text"></string>
+    <string name="set_format_plain_action"></string>
+    <string name="global_settings_messageview_body_content_type_text_plain"></string>
+    <string name="notification_action_star"></string>
+    <string name="debug_force_auth_failure_unavailable"></string>
+    <string name="general_settings_message_list_date_time_format_contextual"></string>
+    <string name="print_message_action"></string>
+    <string name="general_settings_message_list_date_time_format_title"></string>
+    <string name="changelog_latest_label_text"></string>
+    <string name="changelog_type_fixed_text"></string>
+    <string name="debug_enable_sync_debug_logging_title"></string>
+    <string name="notification_show_contact_picture_title"></string>
+    <string name="debug_open_secret_debug_screen"></string>
+    <string name="notification_actions_cutoff_description"></string>
+    <string name="notification_show_contact_picture_summary"></string>
+    <string name="accessibility_move_cutoff_down"></string>
+    <string name="general_settings_message_list_date_time_format_iso"></string>
+    <string name="debug_invalidate_access_token_already_modified"></string>
+    <string name="notification_actions_hidden_state"></string>
+    <string name="accessibility_move_down"></string>
+    <string name="debug_invalidate_access_token_server"></string>
+    <string name="message_view_attachments_title"></string>
+    <string name="animation_setting_off"></string>
+    <string name="debug_invalidate_access_token_server_done"></string>
+    <string name="debug_sync_export_logs_title"></string>
+    <string name="debug_force_auth_failure_done"></string>
+    <string name="global_settings_messageview_body_content_type_text_html"></string>
+    <string name="animation_setting_on"></string>
+    <string name="debug_invalidate_access_token_cannot_modify"></string>
+    <string name="notification_actions_shown_state"></string>
+    <string name="account_setup_auto_select_folder"></string>
+    <string name="general_settings_message_list_date_time_format_full"></string>
+    <string name="changelog_type_changed_text"></string>
+    <string name="debug_invalidate_access_token"></string>
+    <string name="debug_force_auth_failure"></string>
+    <string name="global_settings_splitview_when_unfolded"></string>
+    <string name="no_network_message_will_be_sent_later_toast"></string>
+    <string name="accessibility_move_up"></string>
+    <string name="debug_feature_flags"></string>
+    <string name="accessibility_move_item_down"></string>
+    <string name="notification_actions_settings_title"></string>
+    <string name="message_view_single_attachment_summary"></string>
 </resources>
