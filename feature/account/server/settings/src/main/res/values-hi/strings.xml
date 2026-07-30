@@ -30,4 +30,8 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">यहां अपना पासवर्ड देखने के लिए इस डिवाइस पे स्क्रीन लॉक लगाएं।</string>
     <string name="account_server_settings_server_label">सर्वर</string>
     <string name="account_server_settings_security_label">सेक्योरिटी</string>
+    <string name="account_server_settings_password_authentication_failed"></string>
+    <string name="account_server_settings_password_authentication_unable_to_start"></string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname"></string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label"></string>
 </resources>
