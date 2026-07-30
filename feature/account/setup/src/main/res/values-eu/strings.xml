@@ -10,7 +10,7 @@
     <string name="account_setup_options_email_signature_error_blank">E-mail sinadura izenak ezin du hutsa izan.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">Konfigurazioa onartu egin behar da.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Erabat segurua ez den konexio baten bidez zure e-mail zerbitzariko ezarpenak jaso ditugu. Horrek esan nahi du aukera txiki bat eduki duela norbaitek ibilbidean zehar aldatzeko. Ziurta zenezake emandako konfigurazioa zuzena dela\?</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Erabat segurua ez den konexio baten bidez zure e-mail zerbitzariko ezarpenak jaso ditugu. Horrek esan nahi du aukera txiki bat eduki duela norbaitek ibilbidean zehar aldatzeko. Ziurta zenezake emandako konfigurazioa zuzena dela?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Editatu konfigurazioa</string>
     <string name="account_setup_error_unknown">Errore ezezaguna</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
