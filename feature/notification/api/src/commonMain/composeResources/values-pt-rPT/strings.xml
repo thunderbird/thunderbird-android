@@ -7,8 +7,7 @@
     <string name="notification_channel_miscellaneous_title">Diversos</string>
     <string name="notification_channel_miscellaneous_description">Notificações várias como erros, etc.</string>
     <string name="notification_notify_error_title">Erro de notificação</string>
-    <string name="notification_notify_error_text">Occoreu um erro ao tentar criar uma notificação do sistema para uma nova mensagem. A causa mais provavel é a falta de um som de notificação.\n\nToque para abrir as definições de notificação
-.</string>
+    <string name="notification_notify_error_text">Occoreu um erro ao tentar criar uma notificação do sistema para uma nova mensagem. A causa mais provavel é a falta de um som de notificação.\n\nToque para abrir as definições de notificação .</string>
     <string name="notification_authentication_error_title">A autenticação falhou</string>
     <string name="notification_certificate_error_public">Erro de certificado</string>
     <string name="notification_certificate_error_title">Erro de certificado para %1$s</string>
@@ -43,4 +42,13 @@
         <item quantity="many">%1$d novas mensagens</item>
         <item quantity="other">%1$d novas mensagens</item>
     </plurals>
+    <string name="banner_inline_notification_open_notifications"></string>
+    <string name="banner_inline_notification_some_messages_need_attention"></string>
+    <string name="banner_inline_notification_learn_more"></string>
+    <string name="banner_inline_notification_check_error_notifications"></string>
+    <string name="sent_folder_not_found_title"></string>
+    <string name="notification_action_update_server_settings"></string>
+    <string name="banner_inline_notification_view_support_article"></string>
+    <string name="notification_action_retry"></string>
+    <string name="notification_action_assign_sent_folder"></string>
 </resources>
