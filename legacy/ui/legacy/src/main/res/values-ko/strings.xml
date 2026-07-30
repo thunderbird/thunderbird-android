@@ -88,7 +88,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(제목 없음)</string>
     <string name="general_no_sender">보낸 사람 없음</string>
-    <string name="status_loading_more">이메일을 가져오는 중..\u2026</string>
+    <string name="status_loading_more">이메일을 가져오는 중..…</string>
     <string name="status_network_error">연결 오류</string>
     <string name="status_invalid_id_error">메시지를 찾을 수 없습니다</string>
     <string name="status_loading_error">메시지 로딩 오류</string>
