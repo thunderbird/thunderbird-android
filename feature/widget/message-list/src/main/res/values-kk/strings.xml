@@ -4,4 +4,5 @@
     <string name="message_list_widget_list_item_loading">Жүктелуде…</string>
     <string name="message_list_widget_initializing">Жүктелуде…</string>
     <string name="message_list_widget_label">Хабарламалар тізімі</string>
+    <string name="message_list_widget_inbox_title"></string>
 </resources>
