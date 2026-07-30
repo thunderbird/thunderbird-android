@@ -35,4 +35,14 @@
     <string name="account_settings_cancel_action">Cancella</string>
     <string name="account_settings_account_delete_dlg_title">Rimuovi l\'account</string>
     <string name="account_settings_account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%1$s</xliff:g>\" sarà rimosso da <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_settings_remote_search_num_label"></string>
+    <string name="account_settings_remote_search_num_results_entries_500"></string>
+    <string name="account_settings_remote_search_num_results_entries_25"></string>
+    <string name="account_settings_remote_search_num_results_entries_1000"></string>
+    <string name="account_settings_remote_search_num_results_entries_all"></string>
+    <string name="account_settings_remote_search_num_results_entries_100"></string>
+    <string name="account_settings_search_action"></string>
+    <string name="account_settings_remote_search_num_results_entries_50"></string>
+    <string name="account_settings_remote_search_num_results_entries_250"></string>
+    <string name="account_settings_remote_search_num_results_entries_10"></string>
 </resources>
