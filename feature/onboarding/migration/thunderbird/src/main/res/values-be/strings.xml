@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_migration_thunderbird_qr_code_import_title">Ужо карыстаецеся Thunderbird на камп\'ютэры?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text"></string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text"></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2"></string>
+    <string name="onboarding_migration_thunderbird_import_title"></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro"></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1"></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update"></string>
+    <string name="onboarding_migration_thunderbird_link_open_error"></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest"></string>
+    <string name="onboarding_migration_thunderbird_new_account_title"></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text"></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text"></string>
 </resources>
