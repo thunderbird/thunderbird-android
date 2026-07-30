@@ -37,6 +37,10 @@ dependencies {
     compileOnly(plugin(libs.plugins.kover))
     implementation(libs.diff.utils)
     compileOnly(libs.kotlinx.datetime)
+    implementation(libs.networknt.jsonSchemaValidator)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.assertk)
 }
 
 kotlin {
@@ -74,6 +78,10 @@ gradlePlugin {
         register("QualitySpotless") {
             id = "net.thunderbird.gradle.plugin.quality.spotless"
             implementationClass = "net.thunderbird.gradle.plugin.quality.spotless.SpotlessPlugin"
+        }
+        register("FeatureFlag") {
+            id = "net.thunderbird.gradle.plugin.featureflag"
+            implementationClass = "net.thunderbird.gradle.plugin.featureflag.FeatureFlagPlugin"
         }
     }
 }
