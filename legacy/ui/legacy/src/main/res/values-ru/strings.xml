@@ -93,7 +93,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Без темы)</string>
     <string name="general_no_sender">Нет отправителя</string>
-    <string name="status_loading_more">Загрузка сообщений\u2026</string>
+    <string name="status_loading_more">Загрузка сообщений…</string>
     <string name="status_network_error">Сбой подключения</string>
     <string name="status_invalid_id_error">Сообщение не найдено</string>
     <string name="status_loading_error">Сбой загрузки сообщения</string>
@@ -125,9 +125,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Ошибка уведомления</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">При попытке создать системное уведомление для нового сообщения произошла ошибка. Причина, скорее всего, заключается в отсутствующем звуке уведомления.
-\n
-\nНажмите, чтобы открыть настройки уведомлений.</string>
+    <string name="notification_notify_error_text">При попытке создать системное уведомление для нового сообщения произошла ошибка. Причина, скорее всего, заключается в отсутствующем звуке уведомления. \n \nНажмите, чтобы открыть настройки уведомлений.</string>
     <string name="notification_bg_sync_ticker">Проверка почты: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Проверка почты</string>
     <string name="notification_bg_send_ticker">Отправка <xliff:g id="account">%s</xliff:g></string>
@@ -694,8 +692,7 @@
     <string name="enable_sign_only">Включить PGP \"Только подпись\"</string>
     <string name="disable_sign_only">Отключить PGP \"Только подпись\"</string>
     <string name="openpgp_inline_title">Режим PGP/INLINE</string>
-    <string name="openpgp_inline_text">Сообщение отправлено в формате PGP/INLINE.
-\nИспользуйте только для совместимости:</string>
+    <string name="openpgp_inline_text">Сообщение отправлено в формате PGP/INLINE. \nИспользуйте только для совместимости:</string>
     <string name="openpgp_inline_plus_compat">Некоторые клиенты поддерживают только этот формат</string>
     <string name="openpgp_inline_minus_transit">Подписи могут повредиться при передаче</string>
     <string name="openpgp_inline_minus_attach">Вложения не поддерживаются</string>
@@ -794,12 +791,7 @@
     <string name="ac_transfer_finish">Для завершения, откройте сообщение на новом устройстве и введите код установки.</string>
     <string name="ac_transfer_show_code">Показать код установки</string>
     <string name="ac_transfer_msg_subject">Настройки взаимного автошифрования</string>
-    <string name="ac_transfer_msg_body">Это сообщение содержит все сведения, необходимые для переноса настроек взаимного автошифрования вместе с секретным ключом с исходного устройства.
-
-Для настройки взаимного автошифрования на новом устройстве, следуйте руководству, отображаемому на новом устройстве.
-
-Это сообщение можно сохранить и использовать в качестве резервной копии своего секретного ключа. Запишите и надёжно сохраните пароль.
-</string>
+    <string name="ac_transfer_msg_body">Это сообщение содержит все сведения, необходимые для переноса настроек взаимного автошифрования вместе с секретным ключом с исходного устройства. Для настройки взаимного автошифрования на новом устройстве, следуйте руководству, отображаемому на новом устройстве. Это сообщение можно сохранить и использовать в качестве резервной копии своего секретного ключа. Запишите и надёжно сохраните пароль.</string>
     <string name="ac_transfer_error_send">Сбой при отправке сообщения. Проверьте соединение с сетью и настройки сервера исходящей почты.</string>
     <string name="switch_on">Вкл</string>
     <string name="switch_off">Выкл</string>
