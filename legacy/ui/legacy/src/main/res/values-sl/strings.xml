@@ -965,4 +965,7 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="sort_by_then_by">Nato po …</string>
     <string name="global_settings_splitview_when_unfolded">Ko je naprava odprta</string>
     <string name="no_network_message_will_be_sent_later_toast">Ni povezave. Sporočilo bo poslano, ko bo povezava spet vzpostavljena.</string>
+    <string name="animation_setting_on">Vklopljeno</string>
+    <string name="animation_setting_off">Izklopljeno</string>
+    <string name="animation_setting_follow_system">Uporabi sistemsko privzeto</string>
 </resources>

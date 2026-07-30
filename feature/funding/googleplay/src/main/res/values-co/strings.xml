@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_positive_button">Sì</string>
     <string name="funding_googleplay_contribution_reminder_title">Sustene Thunderbird</string>
     <string name="funding_googleplay_contribution_reminder_message">Raghjunghjite a nostra missione di creà a più bella esperienza di messaghjeria elettronica, persunalizavule è rispettosa di a vostra vita privata.</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Trattamentu di a cumprera…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Abbandunà</string>
 </resources>

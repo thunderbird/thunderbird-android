@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Desteğiniz bize ilham veriyor! Katkınız, sınırları zorlamamıza ve hedeflerimize ulaşmamıza yardımcı oluyor.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Büyük hayaller kurmamıza yardımcı oluyorsunuz! Desteğiniz olağanüstü şeyler başarmamızı sağlıyor.</string>
     <string name="funding_googleplay_contribution_reminder_message">Gizliliğe saygılı, özelleştirilebilir en iyi e-posta deneyimini yaratma misyonumuza katılın.</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Satın alma işlemi gerçekleştiriliyor…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">İptal</string>
 </resources>

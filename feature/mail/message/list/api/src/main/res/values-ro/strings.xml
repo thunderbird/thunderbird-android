@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Selectează</string>
     <string name="swipe_action_deselect">Deselectează</string>
@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">Spam</string>
     <string name="swipe_action_move">Mutare…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selectate</string>
+    <string name="sort_by">Sortează după…</string>
+    <string name="sort_by_date_asc">Dată (de la cel mai vechi la cel mai recent)</string>
+    <string name="sort_by_date_desc">Dată (cele mai noi mai întâi)</string>
+    <string name="sort_by_arrival_desc">Sosire (cele mai noi mai întâi)</string>
+    <string name="sort_by_subject_asc">Subiect (A-Z)</string>
+    <string name="sort_by_subject_desc">Subiect (Z-A)</string>
+    <string name="sort_by_sender_asc">Expeditor (A-Z)</string>
+    <string name="sort_by_sender_desc">Expeditor (Z-A)</string>
+    <string name="sort_by_arrival_asc">Sosire (cele mai vechi mai întâi)</string>
+    <string name="sort_by_flag_asc">Numărul de steluțe (de la max. la min.)</string>
+    <string name="sort_by_flag_desc">Numărul de steluțe (de la min. la max.)</string>
+    <string name="sort_by_unread_asc">Mai întâi cele necitite</string>
+    <string name="sort_by_unread_desc">Mai întâi cele citite</string>
+    <string name="sort_by_attach_asc">Mai întâi cele cu atașamente</string>
+    <string name="sort_by_attach_desc">Mai întâi cele fără atașamente</string>
 </resources>

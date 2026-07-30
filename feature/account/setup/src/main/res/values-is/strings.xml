@@ -50,11 +50,11 @@
         <item quantity="other">Á %d mínútna fresti</item>
     </plurals>
     <plurals name="account_setup_options_email_check_frequency_hours">
-        <item quantity="one">Á klukkustundar fresti</item>
+        <item quantity="one">Á %d klukkustundar fresti</item>
         <item quantity="other">Á %d klukkustunda fresti</item>
     </plurals>
     <plurals name="account_setup_options_email_display_count_messages">
-        <item quantity="one">1 skilaboð</item>
+        <item quantity="one">%d skilaboð</item>
         <item quantity="other">%d skilaboð</item>
     </plurals>
     <string name="account_setup_options_your_name_label">Nafnið þitt</string>

@@ -905,4 +905,7 @@
     <string name="changelog_type_fixed_text">SOCRAITHE</string>
     <string name="notification_show_contact_picture_title">Taispeáin pictiúir teagmhála i bhfógraí</string>
     <string name="notification_show_contact_picture_summary">Taispeáin abhatáranna an tseoltóra i bhfógraí teachtaireachtaí nua</string>
+    <string name="animation_setting_on">Ar siúl</string>
+    <string name="animation_setting_off">Múchta</string>
+    <string name="animation_setting_follow_system">Úsáid réamhshocrú an chórais</string>
 </resources>

@@ -953,4 +953,7 @@
     <string name="changelog_type_new_text">NOUVEAUX</string>
     <string name="changelog_type_changed_text">CHANGÉS</string>
     <string name="changelog_type_fixed_text">CORRIGÉS</string>
+    <string name="animation_setting_on">Activée</string>
+    <string name="animation_setting_off">Désactivée</string>
+    <string name="animation_setting_follow_system">Utiliser la valeur par défaut du système</string>
 </resources>

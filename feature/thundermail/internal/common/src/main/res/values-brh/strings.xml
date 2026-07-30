@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="thundermail_something_went_wrong">گڈاس رد تما</string>
+    <string name="thundermail_browser_is_not_available">براؤزر دستیاب اف۔ مہربانی کرسا تینا ڈیوائس نا ترتیب آتے پک کبو</string>
+    <string name="thundermail_operation_was_canceled">کاریم کینسل مس</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">ناچاہوک ردی۔ مہربانی کرسا رپورٹ کننگ نا سوج کبو۔</string>
+    <string name="thundermail_redirecting">Thundermail اے گدریفسہ ان۔۔۔</string>
 </resources>

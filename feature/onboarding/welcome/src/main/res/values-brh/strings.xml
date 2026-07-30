@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="onboarding_welcome_start_button">بنا کین</string>
+    <string name="onboarding_welcome_import_button">سیٹنگ آتے امپورٹ کبو</string>
+    <string name="onboarding_welcome_developed_by">MZLA Technologies نا کاریمی ءُ ٹیم اس و رضاکار آتا اسہ عالمی کمیونٹی اس دادے جوڑ کرینو۔ Mozilla خاہوت نا بشخ او۔</string>
 </resources>

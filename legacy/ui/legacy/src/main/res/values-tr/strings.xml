@@ -923,4 +923,29 @@
     <string name="message_view_attachments_save_all">Tümünü kaydet</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
     <string name="no_network_message_will_be_sent_later_toast">Çevrim dışı. Bağlantı kurulduğunda ileti gönderilecek</string>
+    <string name="changelog_latest_label_text">EN SON</string>
+    <string name="changelog_type_new_text">YENİ</string>
+    <string name="changelog_type_changed_text">DEĞİŞTİ</string>
+    <string name="changelog_type_fixed_text">DÜZELTİLDİ</string>
+    <string name="notification_actions_settings_title">Bildirim eylemleri</string>
+    <string name="notification_actions_settings_summary">E-posta bildirimlerinde hangi eylemlerin görüneceğini seçin</string>
+    <string name="notification_summary_delete_title">Birden fazla ileti içeren bildirimlerde Sil seçeneğini göster</string>
+    <string name="notification_summary_delete_summary">Birden fazla yeni iletiyi özetleyen bildirimlere Sil eylemi ekler</string>
+    <string name="notification_show_contact_picture_title">Bildirimlerde kişi resimlerini göster</string>
+    <string name="notification_show_contact_picture_summary">Yeni ileti bildirimlerinde gönderenin avatarlarını görüntüle</string>
+    <string name="notification_actions_settings_description">Bildirim eylemlerini yeniden sırala.</string>
+    <string name="notification_actions_cutoff_description">Gösterilen eylemlerin kesilmesi</string>
+    <string name="notification_actions_cutoff_state">Bu satırın üzerindeki eylemler bildirimde gösterilir</string>
+    <string name="notification_actions_shown_state">Bildirimde gösterilir</string>
+    <string name="notification_actions_hidden_state">Bildirimde gösterilmez</string>
+    <string name="accessibility_move_up">Yukarı taşı</string>
+    <string name="accessibility_move_down">Aşağı taşı</string>
+    <string name="accessibility_move_item_up"><xliff:g id="item">%1$s</xliff:g> ögesini yukarı taşı</string>
+    <string name="accessibility_move_item_down"><xliff:g id="item">%1$s</xliff:g> ögesini aşağı taşı</string>
+    <string name="accessibility_move_cutoff_up">Gösterilen eylemlerin kesilmesini yukarı taşı</string>
+    <string name="accessibility_move_cutoff_down">Gösterilen eylemlerin kesilmesini aşağı taşı</string>
+    <string name="notification_action_star">Yıldız</string>
+    <string name="animation_setting_on">Açık</string>
+    <string name="animation_setting_off">Kapalı</string>
+    <string name="animation_setting_follow_system">Sistem varsayılanını kullan</string>
 </resources>
