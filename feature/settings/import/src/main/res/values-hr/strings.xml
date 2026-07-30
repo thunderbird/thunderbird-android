@@ -41,4 +41,5 @@
     <string name="settings_import_oauth_error_browser_not_found">Aplikacija nije mogla pronaći preglednik za davanje pristupa vašem računu.</string>
     <string name="settings_import_scan_qr_code_button">Skeniraj QR kod</string>
     <string name="settings_import_authorization_and_password_required">Molimo Vas prijavite se i unesite lozinke</string>
+    <string name="settings_import_app_version_not_supported"></string>
 </resources>
