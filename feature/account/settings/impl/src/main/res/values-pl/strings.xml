@@ -5,9 +5,9 @@
     <string name="account_settings_general_avatar_option_image">Obraz</string>
     <string name="account_settings_general_avatar_option_icon">Ikona</string>
     <string name="account_settings_general_name_title">Nazwa konta</string>
-    <string name="account_settings_general_name_description">Nazwa powiązana z Twoim kontem.</string>
+    <string name="account_settings_general_name_description">Nazwa powiązana z Twoim kontem.</string>
     <string name="account_settings_general_color_title">Kolor konta</string>
-    <string name="account_settings_general_color_description">Kolor wiodący tego konta używany w folderach i na listach kont.</string>
+    <string name="account_settings_general_color_description">Kolor wiodący tego konta używany w folderach i na listach kont.</string>
     <string name="account_settings_general_avatar_title">Awatar</string>
     <string name="account_settings_general_avatar_description">Wybierz sposób wyświetlania awatara konta.</string>
     <string name="account_settings_general_name_error_empty">Nazwa nie może być pusta</string>
@@ -17,7 +17,7 @@
     <string name="account_settings_general_avatar_monogram_error_empty">Monogram nie może być pusty</string>
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogram jest zbyt długi</string>
     <string name="account_settings_general_avatar_icon_title">Ikona awatara</string>
-    <string name="account_settings_general_avatar_icon_description">Wybierz jedną z ikon, która będzie Twoim awatarem.</string>
+    <string name="account_settings_general_avatar_icon_description">Wybierz jedną z ikon, która będzie Twoim awatarem.</string>
     <string name="account_settings_general_avatar_image_description">Wybierz obraz reprezentujący konto.</string>
     <string name="account_settings_general_avatar_image_select">Wybierz obraz</string>
     <string name="account_settings_general_avatar_image_title">Obraz awatara</string>
@@ -34,7 +34,7 @@
     <string name="account_settings_okay_action">OK</string>
     <string name="account_settings_cancel_action">Anuluj</string>
     <string name="account_settings_account_delete_dlg_title">Usuń konto</string>
-    <string name="account_settings_account_delete_dlg_instructions_fmt">Konto „<xliff:g id="account">%1$s</xliff:g>” zostanie usunięte z <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">Konto „<xliff:g id="account">%1$s</xliff:g>” zostanie usunięte z <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="account_settings_search_action">Szukaj</string>
     <string name="account_settings_remote_search_num_results_entries_all">Wszystkie</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
