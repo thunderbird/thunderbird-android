@@ -3,4 +3,8 @@
     <string name="onboarding_permissions_contacts_title">Контакттар</string>
     <string name="onboarding_permissions_allow_button">Рұқсат ету</string>
     <string name="onboarding_permissions_skip_button">Аттап кету</string>
+    <string name="onboarding_permissions_contacts_description"></string>
+    <string name="onboarding_permissions_notifications_description"></string>
+    <string name="onboarding_permissions_notifications_title"></string>
+    <string name="onboarding_permissions_screen_title"></string>
 </resources>
