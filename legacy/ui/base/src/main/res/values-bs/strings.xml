@@ -2,4 +2,5 @@
 <resources>
     <string name="okay_action">U redu</string>
     <string name="cancel_action">Otkaži</string>
+    <string name="star_button_description"></string>
 </resources>
