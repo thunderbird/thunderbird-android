@@ -49,7 +49,7 @@ The catalog is local-only in this phase. It is packaged with the app and cannot 
 
 ```json
 {
-    "$schema": "featureflag.schema.lean.json",
+    "$schema": "thunderbird_mobile_featureflag.schema.json",
     "version": "2026-06-18.1",
     "flags": [
         {
