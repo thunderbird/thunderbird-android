@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="unread_widget_account_title"></string>
+    <string name="unread_widget_action_done"></string>
+    <string name="unread_widget_folder_not_selected"></string>
+    <string name="unread_widget_unified_inbox_account_summary"></string>
+    <string name="unread_widget_label"></string>
+    <string name="unread_widget_select_account"></string>
+    <string name="unread_widget_title"></string>
+    <string name="unread_widget_choose_account_title"></string>
+    <string name="unread_widget_folder_enabled_summary"></string>
+    <string name="unread_widget_account_not_selected"></string>
+    <string name="unread_widget_folder_enabled_title"></string>
+    <string name="unread_widget_account_summary"></string>
+    <string name="unread_widget_folder_title"></string>
+    <string name="unread_widget_folder_summary"></string>
+</resources>
