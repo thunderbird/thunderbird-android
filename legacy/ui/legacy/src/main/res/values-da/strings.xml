@@ -314,8 +314,8 @@
     <string name="account_settings_mark_message_as_read_on_delete_label">Marker som læst ved sletning</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Marker en besked som læst når den bliver slettet</string>
     <string name="account_settings_notification_channels_label">Notifikation kategorier</string>
-    <string name="account_settings_open_notification_settings_messages_summary">Konfiguér notifikationer for nye beskeder</string>
-    <string name="account_settings_open_notification_settings_miscellaneous_summary">Konfiguér fejl og status notifikationer</string>
+    <string name="account_settings_open_notification_settings_messages_summary">Konfigurér notifikationer for nye beskeder</string>
+    <string name="account_settings_open_notification_settings_miscellaneous_summary">Konfigurér fejl og status notifikationer</string>
     <string name="account_settings_show_pictures_label">Vis altid billeder</string>
     <string name="account_settings_show_pictures_never">Aldrig</string>
     <string name="account_settings_show_pictures_only_from_contacts">Kun når afsender findes i Kontakter</string>

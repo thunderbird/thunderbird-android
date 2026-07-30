@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Sinhronizē grūdeni/stūmekli (push)</string>
     <string name="notification_channel_push_description">Tiek rādīts, kamēr gaida jaunas ziņas</string>
@@ -14,7 +14,7 @@
     <string name="notification_certificate_error_public">Sertifikāta kļūda</string>
     <string name="notification_certificate_error_title">Sertifikāta kļūda kontam %1$s</string>
     <string name="notification_certificate_error_text">Pārbaudiet sava servera iestatījumus</string>
-    <string name="notification_bg_sync_ticker">Pārbauda pastu: %1$s:%2$s</string>
+    <string name="notification_bg_sync_ticker">Pārbauda %1$s e-pasta ziņojumus %2$s mapē</string>
     <string name="notification_bg_sync_title">Pārbauda pastu</string>
     <string name="notification_bg_send_ticker">Sūta pastu: %1$s</string>
     <string name="notification_bg_send_title">Sūta pastu</string>

@@ -936,6 +936,7 @@
     <string name="message_view_attachments_view">Wyświetl</string>
     <string name="message_view_attachments_title">Załączniki</string>
     <string name="message_view_attachments_save_all">Zapisz wszystkie</string>
+    <string name="encrypted_attachment_title">Zaszyfrowany załącznik</string>
     <string name="no_network_message_will_be_sent_later_toast">Offline. Wiadomość zostanie wysłana, gdy połączenie będzie dostępne</string>
     <string name="notification_actions_settings_title">Czynności powiadomień</string>
     <string name="notification_actions_settings_summary">Wybierz, jakie czynności będą wyświetlane w powiadomieniach e-mail</string>

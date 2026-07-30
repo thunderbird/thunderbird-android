@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="thundermail_redirecting">Перенаправлення до Thundermail...</string>
+    <string name="thundermail_something_went_wrong">Щось пішло не так</string>
+    <string name="thundermail_browser_is_not_available">Браузер не доступний. Будь-ласка перевірте конфігурацію вашого пристрою</string>
+    <string name="thundermail_operation_was_canceled">Операція була скасована</string>
+    <string name="thundermail_unknown_error_please_consider_reporting">Невідома помилка. Будь-ласка розгляньте можливість по звітуванню про помилку.</string>
 </resources>

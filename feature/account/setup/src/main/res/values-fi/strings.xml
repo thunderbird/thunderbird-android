@@ -58,4 +58,5 @@
     </plurals>
     <string name="account_setup_options_your_name_label">Nimesi</string>
     <string name="account_setup_options_your_name_error_required">Nimi on pakollinen tieto.</string>
+    <string name="account_setup_special_folders_form_description_automatic">\"Automaattinen\" seuraa palvelimella tehtyjä muutoksia automaattisesti. Nykyisen palvelimen arvo näytetään suluissa.</string>
 </resources>

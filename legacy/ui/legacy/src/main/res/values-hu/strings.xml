@@ -928,5 +928,6 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="message_view_attachments_title">Csatolmányok</string>
     <string name="message_view_attachments_save_all">Minden mentése</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
+    <string name="encrypted_attachment_title">Titkosított csatolmány</string>
     <string name="no_network_message_will_be_sent_later_toast">Nincs kapcsolat. Az üzenet elküldésre kerül, amint kapcsolat áll rendelkezésre</string>
 </resources>

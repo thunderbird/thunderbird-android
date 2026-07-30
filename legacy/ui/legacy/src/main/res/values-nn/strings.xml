@@ -928,5 +928,6 @@
     <string name="message_view_attachments_view">Vis</string>
     <string name="message_view_attachments_title">Vedlegg</string>
     <string name="message_view_attachments_save_all">Lagre alt</string>
+    <string name="encrypted_attachment_title">Kryptert vedlegg</string>
     <string name="no_network_message_will_be_sent_later_toast">Fråkopla. Meldinga vil bli sendt når forbindinga er tilgjengeleg</string>
 </resources>

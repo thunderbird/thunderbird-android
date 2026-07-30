@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_atom_password_textfield_hide_password">مخفی کردن رمز عبور</string>
+    <string name="designsystem_molecule_email_address_input_label">نشانی رایانامه</string>
+    <string name="designsystem_atom_password_textfield_show_password">نشان دادن رمز عبور</string>
+    <string name="designsystem_molecule_error_view_button_retry">تلاش دوباره</string>
+    <string name="designsystem_molecule_password_input_label">رمز عبور</string>
+</resources>

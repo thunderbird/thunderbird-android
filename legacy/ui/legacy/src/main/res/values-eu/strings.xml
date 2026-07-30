@@ -318,7 +318,7 @@
     <string name="account_settings_notification_channels_label">Jakinarazpen kategoriak</string>
     <string name="account_settings_open_notification_settings_messages_summary">Konfiguratu mezu berrien jakinarazpenak</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Konfiguratu akatsen eta egoeraren jakinarazpenak</string>
-    <string name="account_settings_show_pictures_label">Erakutsi beti Irudiak</string>
+    <string name="account_settings_show_pictures_label">Erakutsi beti irudiak</string>
     <string name="account_settings_show_pictures_never">Ez</string>
     <string name="account_settings_show_pictures_only_from_contacts">Kontaktuetatik</string>
     <string name="account_settings_show_pictures_always">Edonorengandik</string>

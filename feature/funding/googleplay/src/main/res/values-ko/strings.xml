@@ -23,4 +23,37 @@
     <string name="funding_googleplay_contribution_list_disclaimer">후원은 기부금 세액공제 대상에 해당하지 않습니다.</string>
     <string name="funding_googleplay_contribution_list_empty_message">Thunderbird를 지원하는 더 많은 방법을 알아보려면 <xliff:g id="link_text">%s</xliff:g>에 방문하세요.</string>
     <string name="funding_googleplay_contribution_footer_payment_button">결제 진행</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird는 사용자 여러분들의 기여로만 운영됩니다. 저희는 절대 광고를 표시하거나 데이터를 판매하지 않습니다. Thunderbird가 마음에 드시면 후원을 부탁드립니다. 여러분 없이는 해낼 수 없습니다!</string>
+    <string name="funding_googleplay_contribution_list_title">안전한 기부</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">1회</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">월간</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">월간 결제 수정</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">또다른 의미 있는 기여하기</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">당신의 기부가 Thunderbird 개발에 큰 도움이 됩니다. 후원해주셔서 진심으로 감사드립니다.</string>
+    <string name="funding_googleplay_contribution_header_thank_you">저희 모두가 진심으로 감사드립니다!</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_title">필요한 기여</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_title">소중한 기여</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_title">상당한 기여</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_title">주요한 기여</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_title">뛰어난 기여</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_title">남다른 기여</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_title">필요한 월간 기여</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_title">소중한 월간 기여</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_title">상당한 월간 기여</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_title">주요한 월간 기여</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_title">뛰어난 월간 기여</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">남다른 월간 기여</string>
+    <string name="funding_googleplay_contribution_reminder_message">개인정보를 중시하고 사용자에 맞출 수 있는 최고의 이메일 환경을 만들기 위한 저희의 사명에 동참하세요.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_description">당신의 기여가 저희를 나아가게 합니다! 가장 작은 후원이라도 변화의 물결을 일으킵니다. 함께해 주셔서 감사드립니다.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_description">당신의 기여 덕분에 놀라운 일이 일어납니다! 이 정도로 후원해주시면, 저희가 의미 있는 발걸음을 내딛고 지속적으로 성장할 수 있도록 지원해 주시는 것입니다.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_description">당신의 기여가 눈부시게 빛납니다! 저희의 사명을 발전시키고, 중요한 목표들을 달성하며 더 큰 영향력을 발휘하는 데 주요한 역할을 하고 계십니다.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_description">당신은 저희의 큰 원동력입니다! 당신의 아낌없는 지원 덕분에, 함께 더 큰 프로젝트를 진행하고 새 목표를 달성할 수 있습니다.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_description">당신의 기여가 정말 큰 힘이 됩니다! 당신의 상당한 기여 덕분에 저희는 한계를 뛰어넘고, 혁신을 이루며, 목표 달성에 상당한 진전을 이룰 수 있습니다.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">당신 덕분에 저희는 큰 꿈을 꿀 수 있습니다! 당신의 놀라운 성원이 저희가 특별한 성과를 이뤄내도록 돕고, 저희가 하는 모든 일에 지속적인 힘을 줍니다.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_description">당신의 기여가 저희를 나아가게 합니다! 모든 후원은 변화를 만듭니다. 감사드립니다!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_description">당신의 기여 덕분에 저희는 성장하고 의미 있는 발걸음을 내딛을 수 있습니다. 감사드립니다!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_description">당신의 기여가 빛납니다! 저희가 사명을 발전시키고 영향력을 발휘하는 데 중요한 역할을 하고 계십니다.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_description">당신은 저희의 큰 원동력입니다! 당신의 아낌없는 지원 덕분에 새 목표를 달성할 수 있습니다.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_description">당신의 기여가 큰 힘이 됩니다! 당신의 기여 덕분에 한계를 뛰어넘고 목표를 달성할 수 있습니다.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">당신 덕분에 저희는 큰 꿈을 꿀 수 있습니다! 당신의 성원이 저희가 특별한 성과를 이뤄내도록 돕습니다.</string>
 </resources>

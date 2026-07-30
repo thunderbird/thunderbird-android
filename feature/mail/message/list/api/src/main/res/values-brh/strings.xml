@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sort_by">ترتیب…</string>
+    <string name="sort_by_date_asc">تاریخ(متکنا مالو)</string>
+    <string name="sort_by_date_desc">تاریخ(پوسکنا مالو)</string>
+    <string name="sort_by_sender_asc">رائ کروک (A-Z)</string>
+    <string name="sort_by_sender_desc">رائ کروک (Z-A)</string>
 </resources>

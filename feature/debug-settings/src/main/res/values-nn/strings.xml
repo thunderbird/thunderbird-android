@@ -7,4 +7,16 @@
     <string name="debug_settings_notifications_single_mail_summary">Oppsummering</string>
     <string name="debug_settings_notifications_single_mail_preview">Førehandsvising</string>
     <string name="debug_settings_notifications_common_notification_information">Felles notifikasjonsinformasjon</string>
+    <string name="debug_settings_notifications_in_app_notification">I app-notifikasjon</string>
+    <string name="debug_settings_notifications_title">Notifikasjonar</string>
+    <string name="debug_settings_notifications_system_notification">Systemnotifikasjon</string>
+    <string name="debug_settings_notifications_status">"Status: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Tøm statusloggen</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Ulagra endringar</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Du har endringar som ikkje er lagra. Er du sikker på at du vil forlate?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Forlat</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Gjenopprett standardverdiane</string>
+    <string name="debug_settings_feature_flag_apply_changes">Bruk endringane</string>
+    <string name="debug_settings_feature_flag_overridden">"overstyrt; "</string>
+    <string name="debug_settings_feature_flag_default_value">standardverdi: %1$b</string>
 </resources>

@@ -874,6 +874,7 @@
     <string name="dialog_confirm_empty_spam_message">스팸 폴더를 비우시겠습니까?</string>
     <string name="global_settings_splitview_when_unfolded">기기를 펼쳤을 때</string>
     <string name="expand_content_description">펼치기</string>
+    <string name="encrypted_attachment_title">암호화된 첨부 파일</string>
     <string name="ac_transfer_intro">Autocrypt 설정 메시지는 종단간 설정을 다른 기기와 안전하게 공유합니다.</string>
     <string name="action_copy_email_address">이메일 주소 복사</string>
     <string name="action_copy_name_and_email_address">이름과 이메일 주소 복사</string>
@@ -943,4 +944,7 @@
     <string name="notification_show_contact_picture_title">알림에서 연락처 사진 표시</string>
     <string name="notification_show_contact_picture_summary">새 메시지 알림에 발신인 아바타를 표시합니다</string>
     <string name="account_settings_mark_message_as_read_on_view_label">열 때 읽음으로 표시</string>
+    <string name="animation_setting_follow_system">시스템 기본값 사용</string>
+    <string name="animation_setting_on">켜기</string>
+    <string name="animation_setting_off">끄기</string>
 </resources>

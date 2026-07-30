@@ -1,3 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">אל תציג הודעה זו שוב</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">האימייל לא יכול לעבור לארכיון</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">הגדירו תיקיית ארכיון עכשיו</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">דלג לבנתיים</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">הגדר תיקיית ארכיון</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">אופס, משהו השתבש בעת ייבוא תיקיות חשבון!</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">פרטי שגיאה: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">צור תיקייה חדשה</string>
+    <string name="setup_archive_folder_dialog_done">בוצע</string>
+    <string name="setup_archive_folder_dialog_cancel">ביטול</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[צור והגדר תיקייה חדשה]]></string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">לא נמצא חשבון משוייך ל \'%1$s\' UUID</string>
+    <string name="setup_archive_folder_unhandled_error">שגיאה לא מטופלת: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">מסנכרן…</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">תיקייה מקומית נוצרה. מתחיל סנכרון…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">תיקייה מרוחקת נוצרה.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">יוצר תיקייה בספק המייל…</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">מעדכן חוקי תיקייה מיוחדים…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">חשבון (%1$s) לא נמצא</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">נכשל ביצירת תיקייה מקומית \'%1$s\'.</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">נכשל סנכרון תיקייה \'%1$s\' עם השרת. הודעה: %2$s</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">שם תיקייה אינו יכול להיות ריק</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">שם בלתי שמיש לתיקייה \'%1$s\'</string>
+    <string name="message_list_state_new_message_description">חדשה</string>
+    <string name="message_list_state_read_message_description">נקרא</string>
+    <string name="message_list_state_unread_message_description">לא נקרא</string>
+    <string name="message_list_state_active_new_message_description">פעיל, חדשה</string>
+    <string name="message_list_state_active_read_message_description">פעיל, נקרא</string>
+    <string name="message_list_state_active_unread_message_description">פעיל, לא נקרא</string>
+    <string name="message_list_state_selected_new_message_description">נבחר, חדשה</string>
+    <string name="message_list_state_selected_read_message_description">נבחר, נקרא</string>
+    <string name="message_list_state_selected_unread_message_description">נבחר, לא נקרא</string>
 </resources>

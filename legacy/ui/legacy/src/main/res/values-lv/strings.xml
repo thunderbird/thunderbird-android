@@ -126,7 +126,7 @@
     <string name="notification_notify_error_text">Neizdevās izveidot sistēmas paziņojumu par jaunu ziņu. Visdrīzākais, ka trūkst paziņojuma skaņas.
 \n
 \nPieskarieties, lai atvērtu paziņojumu iestatījumus.</string>
-    <string name="notification_bg_sync_ticker">Pārbauda pastu: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Pārbauda <xliff:g id="account">%1$s</xliff:g> e-pasta ziņojumus <xliff:g id="folder">%2$s</xliff:g> mapē</string>
     <string name="notification_bg_sync_title">Pārbauda pastu</string>
     <string name="notification_bg_send_ticker">Sūta pastu: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Sūta pastu</string>
@@ -761,7 +761,7 @@
     <string name="openpgp_description_text1">Ziņu šifrēšana nodrošina to, ka neviens cits kā vien saņēmējs, tās nevarēs lasīt.</string>
     <string name="openpgp_description_text3">Šifrēšana parādīsies tikai tad, ja to atbalstīs visi saņēmēji un viņi jau iepriekš būs Jums atsūtījuši kādu epastu.</string>
     <string name="openpgp_description_text2">Pārslēgt šifrēšanu, noklikšķinot uz šīs ikonas.</string>
-    <string name="openpgp_enabled_error_gotit">Sapratu!</string>
+    <string name="openpgp_enabled_error_gotit">Sapratu</string>
     <string name="openpgp_enabled_error_back">Atpakaļ</string>
     <string name="openpgp_enabled_error_disable">Atspējot šifrēšanu</string>
     <string name="openpgp_encryption">OpenPGP šifrēšana</string>

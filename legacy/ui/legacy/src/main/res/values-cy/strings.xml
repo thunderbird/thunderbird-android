@@ -976,5 +976,6 @@
     <string name="animation_setting_on">Ymlaen</string>
     <string name="animation_setting_off">I Ffwrdd</string>
     <string name="animation_setting_follow_system">Defnyddio rhagosodiad y system</string>
+    <string name="encrypted_attachment_title">Atodiadau wedi\'i amgryptio</string>
     <string name="no_network_message_will_be_sent_later_toast">All-lein. Bydd y neges yn cael ei hanfon pan fydd cysylltiad ar gael</string>
 </resources>
