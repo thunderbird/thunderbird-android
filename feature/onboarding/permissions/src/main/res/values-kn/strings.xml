@@ -1,3 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="onboarding_permissions_contacts_description"></string>
+    <string name="onboarding_permissions_notifications_description"></string>
+    <string name="onboarding_permissions_notifications_title"></string>
+    <string name="onboarding_permissions_screen_title"></string>
+    <string name="onboarding_permissions_contacts_title"></string>
+    <string name="onboarding_permissions_allow_button"></string>
+    <string name="onboarding_permissions_skip_button"></string>
 </resources>
