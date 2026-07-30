@@ -38,4 +38,8 @@
     <string name="settings_import_oauth_error_oauth_not_supported">Šis epasta pakalpojumu sniedzējs OAuth 2.0 nenodrošina.</string>
     <string name="settings_import_oauth_error_browser_not_found">Lietotnei neizdevās atrast pārlūku, lai ar tā starpniecību iegūtu piekļuvi Jūsu kontam.</string>
     <string name="settings_import_general_settings_item">Vispārējie iestatījumi</string>
+    <string name="settings_import_scan_qr_code_button"></string>
+    <string name="settings_import_app_version_not_supported"></string>
+    <string name="settings_import_pick_app_button"></string>
+    <string name="settings_import_pick_app_dialog_title"></string>
 </resources>
