@@ -32,4 +32,6 @@
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Neispravna IP adresa ili naziv hosta</string>
     <string name="account_server_settings_validation_error_username_required">Korisničko ime je obavezno.</string>
     <string name="account_server_settings_password_authentication_subtitle">Otključajte za prikaz lozinke</string>
+    <string name="account_server_settings_password_authentication_failed"></string>
+    <string name="account_server_settings_password_authentication_unable_to_start"></string>
 </resources>
