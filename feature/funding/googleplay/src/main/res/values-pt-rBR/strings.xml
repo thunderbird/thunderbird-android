@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Seu apoio é inspirador! Sua contribuição nos ajuda a ultrapassar limites e atingir nossos objetivos.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Você está nos ajudando a sonhar alto! Seu apoio nos capacita a alcançar coisas extraordinárias.</string>
     <string name="funding_googleplay_contribution_reminder_message">Junte-se à nossa missão de criar a melhor experiência de e-mail personalizável, respeitando ao máximo a sua privacidade.</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>
