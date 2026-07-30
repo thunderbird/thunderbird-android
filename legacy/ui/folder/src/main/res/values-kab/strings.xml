@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="special_mailbox_name_sent"></string>
+    <string name="special_mailbox_name_trash"></string>
+    <string name="special_mailbox_name_inbox"></string>
+    <string name="special_mailbox_name_outbox"></string>
+    <string name="special_mailbox_name_drafts"></string>
+</resources>
