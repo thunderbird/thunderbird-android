@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_tfa_recurring_m_title">Contribució mensual significativa</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xl_title">Contribució mensual destacada</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Ara no</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>
