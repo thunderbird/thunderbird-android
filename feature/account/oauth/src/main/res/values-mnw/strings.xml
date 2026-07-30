@@ -2,4 +2,13 @@
 <resources>
     <string name="account_oauth_sign_in_description">သ္ဂောံလုပ် အဳမေလ်ဂွံဂှ် ပိုဲတအ်ပၠံၚ်ဗ္စိုပ်ဏာကဵု ဌာနအဳမေလ်မၞးရောၚ်။. မၞးသ္ဒးကဵုအခေါၚ်သုၚ်စောဲအေပ်ကု အဳမေလ်မၞးရောၚ်။.</string>
     <string name="account_oauth_sign_in_button">လုပ်</string>
+    <string name="account_oauth_sign_in_with_google_button"></string>
+    <string name="account_oauth_loading_error"></string>
+    <string name="account_oauth_error_failed"></string>
+    <string name="account_oauth_error_browser_not_available"></string>
+    <string name="account_oauth_error_not_supported"></string>
+    <string name="account_oauth_error_canceled"></string>
+    <string name="account_oauth_google_sign_in_support_text_link_text"></string>
+    <string name="account_oauth_loading_message"></string>
+    <string name="account_oauth_google_sign_in_support_text"></string>
 </resources>
