@@ -11,4 +11,6 @@
     <string name="account_server_certificate_subject">Emne</string>
     <string name="account_server_certificate_issuer">Udsteder</string>
     <string name="account_server_certificate_fingerprints_section">Fingeraftryk</string>
+    <string name="account_server_certificate_subject_alternative_names"></string>
+    <string name="account_server_certificate_unknown_error_description_format"></string>
 </resources>
