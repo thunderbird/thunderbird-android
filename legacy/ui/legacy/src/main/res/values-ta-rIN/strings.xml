@@ -58,7 +58,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(தலைப்பு இல்லை)</string>
     <string name="general_no_sender">அனுப்புநர் இல்லை</string>
-    <string name="status_loading_more">அஞ்சல் ஏற்றப்படுகிறது \u2026</string>
+    <string name="status_loading_more">அஞ்சல் ஏற்றப்படுகிறது …</string>
     <string name="status_network_error">இணைப்பு பிழை</string>
     <string name="status_invalid_id_error">அஞ்சல் கிடைக்கவில்லை</string>
     <string name="load_more_messages_fmt">&lt;Xliff வரை ஏற்றவும்: g ஐடி = \"messages_to_load\"&gt;%d &lt;/xliff: g&gt; மேலும்</string>
@@ -67,7 +67,7 @@
     <string name="notification_action_delete">அழி</string>
     <string name="notification_action_archive">காப்பகம்</string>
     <string name="notification_action_spam">பயனற்றது</string>
-    <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> சான்றிதழ் பிழை </string>
+    <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> சான்றிதழ் பிழை</string>
     <string name="notification_certificate_error_text">வழங்கியை சோதி</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
@@ -903,4 +903,54 @@
     <string name="debug_force_auth_failure_unavailable">இந்தக் கணக்கிற்கு OAuth உள்ளமைவு எதுவும் இல்லை.</string>
     <string name="debug_invalidate_access_token_cannot_modify">சேமிக்கப்பட்ட அணுகல் கிள்ளாக்கை மாற்ற முடியவில்லை. உள்ளக செல்லாததை முயற்சிக்கவும்.</string>
     <string name="debug_invalidate_access_token_already_modified">சேமிக்கப்பட்ட அணுகல் கிள்ளாக்கு ஏற்கனவே மாற்றியமைக்கப்பட்டுள்ளது.</string>
+    <string name="accessibility_move_item_up"></string>
+    <string name="notification_actions_settings_description"></string>
+    <string name="animation_setting_follow_system"></string>
+    <string name="message_view_attachments_save_all"></string>
+    <string name="expand_folders"></string>
+    <string name="notification_actions_settings_summary"></string>
+    <string name="sort_by_then_by"></string>
+    <string name="notification_summary_delete_summary"></string>
+    <string name="set_format_plain_condensed_action"></string>
+    <string name="set_format_html_condensed_action"></string>
+    <string name="message_view_menu_action_export_eml"></string>
+    <string name="notification_summary_delete_title"></string>
+    <string name="notification_actions_cutoff_state"></string>
+    <string name="message_view_attachments_view_all"></string>
+    <string name="accessibility_move_cutoff_up"></string>
+    <string name="set_format_html_action"></string>
+    <string name="message_view_attachments_view"></string>
+    <string name="global_settings_messageview_body_content_type_title"></string>
+    <string name="navigation_drawer_preferences"></string>
+    <string name="changelog_type_new_text"></string>
+    <string name="set_format_plain_action"></string>
+    <string name="global_settings_messageview_body_content_type_text_plain"></string>
+    <string name="notification_action_star"></string>
+    <string name="general_settings_message_list_date_time_format_contextual"></string>
+    <string name="print_message_action"></string>
+    <string name="general_settings_message_list_date_time_format_title"></string>
+    <string name="changelog_latest_label_text"></string>
+    <string name="changelog_type_fixed_text"></string>
+    <string name="notification_show_contact_picture_title"></string>
+    <string name="notification_actions_cutoff_description"></string>
+    <string name="notification_show_contact_picture_summary"></string>
+    <string name="accessibility_move_cutoff_down"></string>
+    <string name="general_settings_message_list_date_time_format_iso"></string>
+    <string name="notification_actions_hidden_state"></string>
+    <string name="accessibility_move_down"></string>
+    <string name="message_view_attachments_title"></string>
+    <string name="animation_setting_off"></string>
+    <string name="global_settings_messageview_body_content_type_text_html"></string>
+    <string name="animation_setting_on"></string>
+    <string name="notification_actions_shown_state"></string>
+    <string name="account_setup_auto_select_folder"></string>
+    <string name="general_settings_message_list_date_time_format_full"></string>
+    <string name="changelog_type_changed_text"></string>
+    <string name="global_settings_splitview_when_unfolded"></string>
+    <string name="no_network_message_will_be_sent_later_toast"></string>
+    <string name="accessibility_move_up"></string>
+    <string name="debug_feature_flags"></string>
+    <string name="accessibility_move_item_down"></string>
+    <string name="notification_actions_settings_title"></string>
+    <string name="message_view_single_attachment_summary"></string>
 </resources>
