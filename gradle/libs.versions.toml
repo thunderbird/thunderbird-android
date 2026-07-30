@@ -11,7 +11,7 @@
 # 4. Run the app and check for any issues.
 
 [versions]
-androidBilling = "7.1.1"
+androidBilling = "9.1.0"
 androidDesugar = "2.1.5"
 androidMaterial = "1.14.0"
 # AGP and tools should be updated together.

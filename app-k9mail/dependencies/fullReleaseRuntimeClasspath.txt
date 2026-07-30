@@ -191,8 +191,8 @@ co.touchlab:stately-concurrent-collections-jvm:2.1.0
 co.touchlab:stately-concurrent-collections:2.1.0
 co.touchlab:stately-strict-jvm:2.1.0
 co.touchlab:stately-strict:2.1.0
-com.android.billingclient:billing-ktx:7.1.1
-com.android.billingclient:billing:7.1.1
+com.android.billingclient:billing-ktx:9.1.0
+com.android.billingclient:billing:9.1.0
 com.beetstra.jutf7:jutf7:1.0.0
 com.eygraber:uri-kmp-android:0.0.21
 com.eygraber:uri-kmp:0.0.21
@@ -210,7 +210,7 @@ com.google.android.datatransport:transport-backend-cct:3.1.8
 com.google.android.datatransport:transport-runtime:3.1.8
 com.google.android.flexbox:flexbox:3.0.0
 com.google.android.gms:play-services-base:18.5.0
-com.google.android.gms:play-services-basement:18.4.0
+com.google.android.gms:play-services-basement:18.9.0
 com.google.android.gms:play-services-location:19.0.0
 com.google.android.gms:play-services-places-placereport:17.0.0
 com.google.android.gms:play-services-tasks:18.2.0
