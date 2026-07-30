@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_tfa_recurring_l_title">Месечно дарение</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xl_title">Месечно дарение</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">Месечно дарение</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>
