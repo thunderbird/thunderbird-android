@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="cancel_action">Encaboxar</string>
+    <string name="star_button_description"></string>
+    <string name="okay_action"></string>
 </resources>
