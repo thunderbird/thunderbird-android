@@ -34,7 +34,7 @@
     <string name="settings_import_oauth_description">Для користування цим обліковим записом е-пошти, потрібно увійти та надати застосунку доступ до ваших електронних листів.</string>
     <string name="settings_import_oauth_sign_in">Увійти</string>
     <string name="settings_import_oauth_sign_in_with_google">Увійти за допомогою Google</string>
-    <string name="settings_import_oauth_error_oauth_flow_canceled"> Авторизація скасована</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Авторизація скасована</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">Не вдалося авторизуватися через наступну помилку: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">Цей постачальник наразі не підтримує OAuth 2.0.</string>
     <string name="settings_import_oauth_error_browser_not_found">Застосунок не може знайти браузер для надання доступу до вашого облікового запису.</string>
