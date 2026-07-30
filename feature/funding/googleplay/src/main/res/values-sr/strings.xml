@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_header_description">Thunderbird се у потпуности финансира доприносима корисника попут вас. Никада не приказујемо огласе нити продајемо ваше податке. Ако уживате у Thunderbird-у, помозите да га подржите. Не можемо ово без вас!</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Помажете нам да сањамо велике снове! Ваша подршка нам даје снагу да постигнемо изванредне ствари.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xs_title">Основни месечни допринос</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>
