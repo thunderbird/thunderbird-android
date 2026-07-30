@@ -11,4 +11,6 @@
     <string name="onboarding_migration_thunderbird_import_button_text">Tuo tilin asetukset nyt</string>
     <string name="onboarding_migration_thunderbird_link_open_error">Sovellusta linkin avaamiseksi ei löytynyt.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Opi päivittämään Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2"></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest"></string>
 </resources>
