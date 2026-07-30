@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_common_button_next"></string>
+    <string name="account_common_button_back"></string>
+    <string name="account_common_error_server_message"></string>
 </resources>
