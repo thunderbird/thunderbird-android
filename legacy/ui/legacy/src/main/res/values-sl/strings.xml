@@ -143,7 +143,7 @@
     <string name="debug_enable_sensitive_logging_title">Beleženje občutljivih podrobnosti</string>
     <string name="debug_enable_sensitive_logging_summary">V dnevnikih so lahko objavljena tudi gesla.</string>
     <string name="debug_export_logs_title">Izvozi dnevnike</string>
-    <string name="debug_export_logs_success">Izvoz je uspešno zaključen. Dnevniški zapis lahko vsebuje občutljive podrobnosti. Priporočena je previdnost pri pošiljanju tretjim osebam. </string>
+    <string name="debug_export_logs_success">Izvoz je uspešno zaključen. Dnevniški zapis lahko vsebuje občutljive podrobnosti. Priporočena je previdnost pri pošiljanju tretjim osebam.</string>
     <string name="debug_export_logs_failure">Izvoz je spodletel.</string>
     <string name="message_list_load_more_messages_action">Naloži več sporočil</string>
     <string name="message_to_fmt">Za:<xliff:g id="counterParty">%s</xliff:g></string>
@@ -787,19 +787,14 @@
     <string name="ac_transfer_finish">Za dokončanje odprite sporočilo na drugi napravi in vpišite kodo nastavitve.</string>
     <string name="ac_transfer_show_code">Pokaži kodo nastavitev</string>
     <string name="ac_transfer_msg_subject">Nastavitveno sporočilo šifriranja AutoCrypt</string>
-    <string name="ac_transfer_msg_body">Sporočilo vsebuje vse podrobnosti za varen prenos nastavitev šifriranja AutoCrypt, vključno s šifrirnim ključem, z vaše izvorne naprave.
-
-Za nastavitev nove naprave za šifriranje AutoCrypt, sledite navodilom, prikazanim na vaši drugi napravi.
-
-Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. Če boste to storili, si geslo zapišite in ga varno shranite.
-</string>
+    <string name="ac_transfer_msg_body">Sporočilo vsebuje vse podrobnosti za varen prenos nastavitev šifriranja AutoCrypt, vključno s šifrirnim ključem, z vaše izvorne naprave. Za nastavitev nove naprave za šifriranje AutoCrypt, sledite navodilom, prikazanim na vaši drugi napravi. Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. Če boste to storili, si geslo zapišite in ga varno shranite.</string>
     <string name="ac_transfer_error_send">Prišlo je do napake med pošiljanjem sporočila. Preverite omrežne nastavitve in nastavitve odhodnega strežnika.</string>
     <string name="switch_on">Vključi</string>
     <string name="switch_off">Izključi</string>
     <string name="generic_loading_error">Med nalaganjem podatkov je prišlo do napake</string>
     <string name="push_notification_state_initializing">Začenjanje …</string>
     <string name="push_notification_state_listening">Čakam na nova e-poštna sporočila</string>
-    <string name="push_notification_state_wait_background_sync">Spanje, dokler ni dovoljena sinhronizacija v ozadju </string>
+    <string name="push_notification_state_wait_background_sync">Spanje, dokler ni dovoljena sinhronizacija v ozadju</string>
     <string name="push_notification_state_wait_network">Spanje, dokler ni na voljo omrežja</string>
     <string name="push_notification_info">Dotakni se, če želiš izvedeti več.</string>
     <string name="push_info_title">Podrobnosti potisnih storitev</string>
