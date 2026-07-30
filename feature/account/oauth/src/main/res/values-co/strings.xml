@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_oauth_error_failed">Fiascu di l’autorizazione cù quellu sbagliu : <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_failed">Fiascu di l’autorizazione cù quellu sbagliu : <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_sign_in_description">Avemu da ridiregevi versu u vostru furnidore di messaghjeria per cunnettesi. Ci vole à cuncede à l’appiecazione l’accessu à u vostru contu di messaghjeria.</string>
     <string name="account_oauth_sign_in_button">Cunnettesi</string>
     <string name="account_oauth_sign_in_with_google_button">Cunnettesi cù Google</string>
