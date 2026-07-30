@@ -311,7 +311,7 @@
     <string name="account_settings_crypto">Crioptografachd</string>
     <string name="account_settings_crypto_app">Aplacaid OpenPGP</string>
     <string name="account_settings_crypto_key">An iuchair agam</string>
-    <string name="account_settings_mail_check_frequency_label">Dè cho tric ’s a dh’iarras sinn am post\?</string>
+    <string name="account_settings_mail_check_frequency_label">Dè cho tric ’s a dh’iarras sinn am post?</string>
     <string name="account_settings_mail_display_count_label">Meud a’ phasgain ionadail</string>
     <string name="account_settings_autodownload_message_size_label">Faigh teachdaireachdan suas ri</string>
     <string name="account_settings_autodownload_message_size_1">1KB</string>
@@ -482,30 +482,30 @@
     <string name="font_size_larger">Nas motha</string>
     <string name="error_activity_not_found">Cha deach aplacaid iomchaidh a lorg dhan ghnìomh seo.</string>
     <string name="send_failed_reason">Dh’fhàillig a chur: %s</string>
-    <string name="save_or_discard_draft_message_dlg_title">A bheil thu airson dreachd na teachdaireachd a shàbhaladh\?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">A bheil thu airson an teachdaireachd seo a shàbhaladh no a thilgeil air falbh\?</string>
-    <string name="confirm_discard_draft_message_title">A bheil thu airson an teachdaireachd seo a thilgeil air falbh\?</string>
-    <string name="confirm_discard_draft_message">A bheil thu cinnteach gu bheil thu airson an teachdaireachd seo a thilgeil air falbh\?</string>
+    <string name="save_or_discard_draft_message_dlg_title">A bheil thu airson dreachd na teachdaireachd a shàbhaladh?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">A bheil thu airson an teachdaireachd seo a shàbhaladh no a thilgeil air falbh?</string>
+    <string name="confirm_discard_draft_message_title">A bheil thu airson an teachdaireachd seo a thilgeil air falbh?</string>
+    <string name="confirm_discard_draft_message">A bheil thu cinnteach gu bheil thu airson an teachdaireachd seo a thilgeil air falbh?</string>
     <string name="dialog_confirm_delete_title">Dearbh an sguabadh às</string>
-    <string name="dialog_confirm_delete_message">A bheil thu cinnteach gu bheil thu airson an teachdaireachd seo a sguabadh às\?</string>
+    <string name="dialog_confirm_delete_message">A bheil thu cinnteach gu bheil thu airson an teachdaireachd seo a sguabadh às?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a sguabadh às\?</item>
-        <item quantity="two">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> theachdaireachd a sguabadh às\?</item>
-        <item quantity="few">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachdan a sguabadh às\?</item>
-        <item quantity="other">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a sguabadh às\?</item>
+        <item quantity="one">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a sguabadh às?</item>
+        <item quantity="two">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> theachdaireachd a sguabadh às?</item>
+        <item quantity="few">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachdan a sguabadh às?</item>
+        <item quantity="other">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a sguabadh às?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Tha</string>
     <string name="dialog_confirm_delete_cancel_button">Chan eil</string>
     <string name="dialog_confirm_mark_all_as_read_title">Comharraich gun deach gach teachdaireachd a leughadh</string>
-    <string name="dialog_confirm_mark_all_as_read_message">A bheil thu airson comharradh gun deach na teachdaireachdan uile seo a leughadh\?</string>
+    <string name="dialog_confirm_mark_all_as_read_message">A bheil thu airson comharradh gun deach na teachdaireachdan uile seo a leughadh?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Tha</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Chan eil</string>
     <string name="dialog_confirm_spam_title">Dearbh a ghluasad do phasgan an spama</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a ghluasad gu pasgan an spama\?</item>
-        <item quantity="two">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> theachdaireachd a ghluasad gu pasgan an spama\?</item>
-        <item quantity="few">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachdan a ghluasad gu pasgan an spama\?</item>
-        <item quantity="other">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a ghluasad gu pasgan an spama\?</item>
+        <item quantity="one">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a ghluasad gu pasgan an spama?</item>
+        <item quantity="two">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> theachdaireachd a ghluasad gu pasgan an spama?</item>
+        <item quantity="few">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachdan a ghluasad gu pasgan an spama?</item>
+        <item quantity="other">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a ghluasad gu pasgan an spama?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Tha</string>
     <string name="dialog_confirm_spam_cancel_button">Chan eil</string>
@@ -609,8 +609,7 @@
     <string name="enable_sign_only">Cuir PGP Sign-Only an comas</string>
     <string name="disable_sign_only">Cuir PGP Sign-Only à comas</string>
     <string name="openpgp_inline_title">Am modh PGP/INLINE</string>
-    <string name="openpgp_inline_text">Tha am post-d seo ’ga chur san fhòrmat PGP/INLINE.
-\nCha bu chòir dhut seo a dhèanamh ach airson co-chòrdalachd:</string>
+    <string name="openpgp_inline_text">Tha am post-d seo ’ga chur san fhòrmat PGP/INLINE. \nCha bu chòir dhut seo a dhèanamh ach airson co-chòrdalachd:</string>
     <string name="openpgp_inline_plus_compat">Tha cuid a chliantan ann nach cuir taic ach ris an fhòrmat seo</string>
     <string name="openpgp_inline_minus_transit">Dh’fhaoidte gum bris soidhneadh rè an tar-chuir</string>
     <string name="openpgp_inline_minus_attach">Chan eil taic ri ceanglachain</string>
@@ -668,8 +667,7 @@
     <string name="error_sign_only_no_encryption">Chan eil crioptachadh ri fhaighinn sa mhodh anns nach dèanar ach soidhneadh!</string>
     <string name="unsigned_text_divider_label">Teacsa gun soidhneadh</string>
     <string name="crypto_no_provider_title">Tha am post-d seo crioptaichte</string>
-    <string name="crypto_no_provider_message">Chaidh am post-d seo a chrioptachadh le OpenPGP.
-\nFeumaidh tu aplacaid a tha comasach air OpenPGP a stàladh is a rèiteachadh mus urrainn dhut a leughadh.</string>
+    <string name="crypto_no_provider_message">Chaidh am post-d seo a chrioptachadh le OpenPGP. \nFeumaidh tu aplacaid a tha comasach air OpenPGP a stàladh is a rèiteachadh mus urrainn dhut a leughadh.</string>
     <string name="crypto_no_provider_button">Tagh aplacaid OpenPGP</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -898,4 +896,68 @@
     <string name="debug_enable_sync_debug_logging_summary">Dèan loga dhen fhiosrachadh diagnosachd fad 24 uair a thìde</string>
     <string name="debug_sync_export_logs_title">Às-phortaich logaichean an t-sioncronachaidh</string>
     <string name="message_view_me_text">domh-sa</string>
+    <string name="debug_invalidate_access_token_local"></string>
+    <string name="accessibility_move_item_up"></string>
+    <string name="notification_actions_settings_description"></string>
+    <string name="debug_invalidate_access_token_local_done"></string>
+    <string name="animation_setting_follow_system"></string>
+    <string name="message_view_attachments_save_all"></string>
+    <string name="expand_folders"></string>
+    <string name="notification_actions_settings_summary"></string>
+    <string name="debug_invalidate_access_token_done"></string>
+    <string name="debug_invalidate_access_token_unavailable"></string>
+    <string name="sort_by_then_by"></string>
+    <string name="notification_summary_delete_summary"></string>
+    <string name="set_format_plain_condensed_action"></string>
+    <string name="set_format_html_condensed_action"></string>
+    <string name="message_view_menu_action_export_eml"></string>
+    <string name="notification_summary_delete_title"></string>
+    <string name="notification_actions_cutoff_state"></string>
+    <string name="message_view_attachments_view_all"></string>
+    <string name="accessibility_move_cutoff_up"></string>
+    <string name="archiving_not_available_for_this_account"></string>
+    <string name="set_format_html_action"></string>
+    <string name="message_view_attachments_view"></string>
+    <string name="global_settings_messageview_body_content_type_title"></string>
+    <string name="navigation_drawer_preferences"></string>
+    <string name="changelog_type_new_text"></string>
+    <string name="set_format_plain_action"></string>
+    <string name="global_settings_messageview_body_content_type_text_plain"></string>
+    <string name="notification_action_star"></string>
+    <string name="debug_force_auth_failure_unavailable"></string>
+    <string name="general_settings_message_list_date_time_format_contextual"></string>
+    <string name="print_message_action"></string>
+    <string name="general_settings_message_list_date_time_format_title"></string>
+    <string name="changelog_latest_label_text"></string>
+    <string name="changelog_type_fixed_text"></string>
+    <string name="notification_show_contact_picture_title"></string>
+    <string name="debug_open_secret_debug_screen"></string>
+    <string name="notification_actions_cutoff_description"></string>
+    <string name="notification_show_contact_picture_summary"></string>
+    <string name="accessibility_move_cutoff_down"></string>
+    <string name="general_settings_message_list_date_time_format_iso"></string>
+    <string name="debug_invalidate_access_token_already_modified"></string>
+    <string name="notification_actions_hidden_state"></string>
+    <string name="accessibility_move_down"></string>
+    <string name="debug_invalidate_access_token_server"></string>
+    <string name="message_view_attachments_title"></string>
+    <string name="animation_setting_off"></string>
+    <string name="debug_invalidate_access_token_server_done"></string>
+    <string name="debug_force_auth_failure_done"></string>
+    <string name="global_settings_messageview_body_content_type_text_html"></string>
+    <string name="animation_setting_on"></string>
+    <string name="debug_invalidate_access_token_cannot_modify"></string>
+    <string name="notification_actions_shown_state"></string>
+    <string name="account_setup_auto_select_folder"></string>
+    <string name="general_settings_message_list_date_time_format_full"></string>
+    <string name="changelog_type_changed_text"></string>
+    <string name="debug_invalidate_access_token"></string>
+    <string name="debug_force_auth_failure"></string>
+    <string name="global_settings_splitview_when_unfolded"></string>
+    <string name="no_network_message_will_be_sent_later_toast"></string>
+    <string name="accessibility_move_up"></string>
+    <string name="debug_feature_flags"></string>
+    <string name="accessibility_move_item_down"></string>
+    <string name="notification_actions_settings_title"></string>
+    <string name="message_view_single_attachment_summary"></string>
 </resources>
