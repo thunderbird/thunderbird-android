@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_statement_point_2">Nepredávame vaše údaje.</string>
     <string name="funding_googleplay_contribution_reminder_claim">Sme financovaní výhradne používateľmi, ako ste vy.</string>
     <string name="funding_googleplay_contribution_reminder_message">Pridajte sa k našej misii vytvoriť ten najlepší e-mailový nástroj, ktorý rešpektuje súkromie a ponúka maximálnu prispôsobiteľnosť.</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>
