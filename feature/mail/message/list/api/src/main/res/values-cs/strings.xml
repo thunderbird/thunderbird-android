@@ -4,8 +4,8 @@
     <string name="swipe_action_deselect">Zrušit výběr</string>
     <string name="swipe_action_mark_as_read">Označit jako přečtené</string>
     <string name="swipe_action_mark_as_unread">Označit jako nepřečtené</string>
-    <string name="swipe_action_add_star">Přidat \u2605</string>
-    <string name="swipe_action_remove_star">Odebrat \u2606</string>
+    <string name="swipe_action_add_star">Přidat ★</string>
+    <string name="swipe_action_remove_star">Odebrat ☆</string>
     <string name="swipe_action_archive">Archivovat</string>
     <string name="swipe_action_archive_folder_not_set">Nastavte složku Archiv</string>
     <string name="swipe_action_change_swipe_gestures">Změnit\ngesta posunutí</string>
