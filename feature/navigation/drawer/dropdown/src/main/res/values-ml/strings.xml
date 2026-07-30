@@ -3,4 +3,11 @@
     <string name="navigation_drawer_dropdown_action_settings">സജ്ജീകരണങ്ങൾ</string>
     <string name="navigation_drawer_dropdown_action_manage_folders">ഫോൾഡറുകൾ നിയന്ത്രിക്കുക</string>
     <string name="navigation_drawer_dropdown_unified_inbox_title">ഏകീകൃത ഇൻ‌ബോക്സ്</string>
+    <string name="navigation_drawer_dropdown_action_sync_account"></string>
+    <string name="navigation_drawer_dropdown_action_add_account"></string>
+    <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99"></string>
+    <string name="navigation_drawer_dropdown_action_sync_all_accounts"></string>
+    <string name="navigation_drawer_dropdown_unified_account_title"></string>
+    <string name="navigation_drawer_dropdown_avount_view_selection_title"></string>
+    <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000"></string>
 </resources>
