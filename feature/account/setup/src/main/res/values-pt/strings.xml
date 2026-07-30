@@ -60,4 +60,6 @@
     <string name="account_setup_options_show_notifications_label">Mostrar notificações</string>
     <string name="account_setup_create_account_creating">Criando conta…</string>
     <string name="account_setup_create_account_error">Ocorreu um erro ao tentar criar a conta</string>
+    <string name="account_setup_options_your_name_label"></string>
+    <string name="account_setup_options_your_name_error_required"></string>
 </resources>
