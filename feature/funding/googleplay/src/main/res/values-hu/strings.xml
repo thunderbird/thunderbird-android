@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_claim">Kizárólak az Önhöz hasonló felhasználókból finanszírozzuk magunkat.</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Igen</string>
     <string name="funding_googleplay_contribution_tfa_recurring_l_title">Nagy értékű havi hozzájárulás</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>
