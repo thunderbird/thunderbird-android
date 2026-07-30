@@ -26,4 +26,12 @@
     <string name="account_server_settings_incoming_imap_send_client_info_label">Send klient information</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Ugyldig IP eller hostnavn</string>
     <string name="account_server_settings_password_authentication_subtitle">Lås op for at se din adgangskode</string>
+    <string name="account_server_settings_password_authentication_failed"></string>
+    <string name="account_server_settings_password_authentication_unable_to_start"></string>
+    <string name="account_server_settings_password_authentication_title"></string>
+    <string name="account_server_settings_authentication_label"></string>
+    <string name="account_server_settings_incoming_imap_compression_label"></string>
+    <string name="account_server_settings_incoming_imap_prefix_label"></string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank"></string>
+    <string name="account_server_settings_password_authentication_screen_lock_required"></string>
 </resources>
