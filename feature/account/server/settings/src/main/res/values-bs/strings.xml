@@ -31,4 +31,7 @@
     <string name="account_server_settings_username_label">Korisničko ime</string>
     <string name="account_server_settings_validation_error_server_required">Ime servera je neophodno.</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Da bi vidjeli lozinku ovde, omogućite zaključavanje ekrana na ovom uređaju.</string>
+    <string name="account_server_settings_password_authentication_failed"></string>
+    <string name="account_server_settings_password_authentication_unable_to_start"></string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label"></string>
 </resources>
