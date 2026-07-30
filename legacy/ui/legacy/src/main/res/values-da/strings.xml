@@ -91,12 +91,11 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Intet emne)</string>
     <string name="general_no_sender">Ingen afsender</string>
-    <string name="status_loading_more">Henter mails\u2026</string>
+    <string name="status_loading_more">Henter mails…</string>
     <string name="status_network_error">Tilslutningsfejl</string>
     <string name="status_invalid_id_error">Mail ikke fundet</string>
     <string name="status_loading_error">Fejl ved hentning af meddelelse</string>
-    <string name="load_more_messages_fmt">Hent yderligere op
-    til <xliff:g id="messages_to_load">%d</xliff:g> mails</string>
+    <string name="load_more_messages_fmt">Hent yderligere op til <xliff:g id="messages_to_load">%d</xliff:g> mails</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -241,7 +240,7 @@
     <string name="global_settings_notification_quick_delete_when_single_msg">For enkelt-meddelelsesbesked</string>
     <string name="global_settings_notification_quick_delete_always">Altid</string>
     <string name="global_settings_lock_screen_notification_visibility_title">Besked på låseskærmen</string>
-    <string name="global_settings_lock_screen_notification_visibility_nothing">Ingen besked på låseskærmen </string>
+    <string name="global_settings_lock_screen_notification_visibility_nothing">Ingen besked på låseskærmen</string>
     <string name="global_settings_lock_screen_notification_visibility_app_name">Programnavn</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Antal af nye beskeder</string>
     <string name="global_settings_lock_screen_notification_visibility_senders">Antal mails og afsendere</string>
@@ -249,7 +248,7 @@
     <string name="quiet_time">Tidsrum med stilhed</string>
     <string name="quiet_time_description">Undlad at ringe, vibrere og blinke i tidsrummet</string>
     <string name="quiet_time_notification">Deaktiver beskeder</string>
-    <string name="quiet_time_notification_description">Deaktivér beskeder helt  under Forstyr-Ikke-tilstand</string>
+    <string name="quiet_time_notification_description">Deaktivér beskeder helt under Forstyr-Ikke-tilstand</string>
     <string name="quiet_time_starts">Start tid</string>
     <string name="quiet_time_ends">Slut tid</string>
     <string name="account_setup_basics_title">Opsætning af ny konto</string>
@@ -695,7 +694,7 @@
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Krypterede meddelelser inkluderer altid en signatur.</string>
     <string name="crypto_msg_title_plaintext">Simpel tekst</string>
     <string name="crypto_msg_unencrypted_sign_error">end-to-end signatur indeholder en fejl</string>
-    <string name="crypto_msg_incomplete_signed">En komplet hentning af  beskeden er nødvendig for at behandle signaturen</string>
+    <string name="crypto_msg_incomplete_signed">En komplet hentning af beskeden er nødvendig for at behandle signaturen</string>
     <string name="crypto_msg_unsupported_signed">indeholder ikke-understøttet end-to-end signatur</string>
     <string name="crypto_msg_unsupported_encrypted">Meddelelsen er krypteret, men i et ikke-understøttet format.</string>
     <string name="crypto_msg_cancelled">Meddelelsen er krypteret, men dekrypteringen blev afbrudt.</string>
@@ -709,7 +708,7 @@
     <string name="crypto_msg_unencrypted_sign_unknown">fra ukendt end-to-end nøgle</string>
     <string name="crypto_msg_title_encrypted_unknown">Krypteret</string>
     <string name="crypto_msg_encrypted_error">men der var en dekrypteringsfejl</string>
-    <string name="crypto_msg_encrypted_incomplete">En komplet hentning af  beskeden er nødvendig for at kunne dekryptere</string>
+    <string name="crypto_msg_encrypted_incomplete">En komplet hentning af beskeden er nødvendig for at kunne dekryptere</string>
     <string name="crypto_msg_encrypted_no_provider">men ingen krypterings applikation er konfigureret</string>
     <string name="crypto_msg_title_encrypted_unsigned">Krypteret</string>
     <string name="crypto_msg_encrypted_unsigned">men ikke end-to-end</string>
@@ -776,12 +775,7 @@
     <string name="ac_transfer_finish">For at afslutte, åben besked på anden enhed og indtast opsætningskode.</string>
     <string name="ac_transfer_show_code">Vise opsætningskode</string>
     <string name="ac_transfer_msg_subject">Autocrypt opsætningsbeksed</string>
-    <string name="ac_transfer_msg_body">Beskeden indeholder alle oplysninger for at overføre Autocrypt indstillinger sammen med den hemmelige nøgle, sikkert fra den originale enhed.
-
-For at indstille den nye enhed til Autocrypt, følg instruktionerne der vises på den nye enhed.
-
-Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvis dette gøres skal adgangskoden gemmes sikkert.
-</string>
+    <string name="ac_transfer_msg_body">Beskeden indeholder alle oplysninger for at overføre Autocrypt indstillinger sammen med den hemmelige nøgle, sikkert fra den originale enhed. For at indstille den nye enhed til Autocrypt, følg instruktionerne der vises på den nye enhed. Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvis dette gøres skal adgangskoden gemmes sikkert.</string>
     <string name="ac_transfer_error_send">Fejl opstod under sending af besked. Kontrollere netværk forbindelse og udgående server indstilling.</string>
     <string name="switch_on">Til</string>
     <string name="switch_off">Fra</string>
@@ -796,7 +790,7 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
     <string name="push_info_learn_more_text">Lær mere</string>
     <string name="push_info_configure_notification_action">Indstille påmindelse</string>
     <string name="push_info_disable_push_text">Hvis der ikke er brug for hurtig påmindelse om nye beskeder, skal skub handling deaktiveres og test bruges. Test kontrollerer regelmæssigt efter ny post og har ikke brug for påmindelsen.</string>
-    <string name="push_info_disable_push_action">Deaktivere skub handling </string>
+    <string name="push_info_disable_push_action">Deaktivere skub handling</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
@@ -845,4 +839,110 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
 <string name="general_settings_post_remove_action_show_next_message">Vis næste meddelelse</string>
     <string name="general_settings_post_remove_action_show_previous_message">Vis forrige meddelelse</string>
     <string name="about_title">Om <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="general_settings_post_mark_as_unread_action_stay"></string>
+    <string name="debug_invalidate_access_token_local"></string>
+    <string name="accessibility_move_item_up"></string>
+    <string name="volume_navigation_title_short"></string>
+    <string name="notification_actions_settings_description"></string>
+    <string name="message_list_content_description_unread_prefix"></string>
+    <string name="debug_invalidate_access_token_local_done"></string>
+    <string name="general_settings_post_remove_action_return_to_list"></string>
+    <string name="message_details_missing_date"></string>
+    <string name="animation_setting_follow_system"></string>
+    <string name="general_settings_post_mark_as_unread_action_title"></string>
+    <string name="message_view_attachments_save_all"></string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list"></string>
+    <string name="expand_folders"></string>
+    <string name="notification_actions_settings_summary"></string>
+    <string name="debug_invalidate_access_token_done"></string>
+    <string name="debug_invalidate_access_token_unavailable"></string>
+    <string name="sort_by_then_by"></string>
+    <string name="notification_summary_delete_summary"></string>
+    <string name="set_format_plain_condensed_action"></string>
+    <string name="set_format_html_condensed_action"></string>
+    <string name="message_view_menu_action_export_eml"></string>
+    <string name="debug_enable_sync_debug_logging_summary"></string>
+    <string name="notification_summary_delete_title"></string>
+    <string name="notification_actions_cutoff_state"></string>
+    <string name="message_view_attachments_view_all"></string>
+    <string name="accessibility_move_cutoff_up"></string>
+    <string name="archiving_not_available_for_this_account"></string>
+    <string name="set_format_html_action"></string>
+    <string name="message_view_attachments_view"></string>
+    <string name="account_settings_notification_light_default_color"></string>
+    <string name="global_settings_messageview_body_content_type_title"></string>
+    <string name="navigation_drawer_preferences"></string>
+    <string name="debug_export_logs_success"></string>
+    <string name="notification_notify_error_text"></string>
+    <string name="changelog_type_new_text"></string>
+    <string name="set_format_plain_action"></string>
+    <string name="global_settings_messageview_body_content_type_text_plain"></string>
+    <string name="notification_action_star"></string>
+    <string name="camera_permission_denied"></string>
+    <string name="general_settings_show_compose_button_title"></string>
+    <string name="debug_force_auth_failure_unavailable"></string>
+    <string name="general_settings_message_list_date_time_format_contextual"></string>
+    <string name="push_notification_state_alarm_permission_missing"></string>
+    <string name="dialog_openkeychain_info_text"></string>
+    <string name="print_message_action"></string>
+    <string name="general_settings_message_list_date_time_format_title"></string>
+    <string name="changelog_latest_label_text"></string>
+    <string name="empty_spam_action"></string>
+    <string name="changelog_type_fixed_text"></string>
+    <string name="debug_enable_sync_debug_logging_title"></string>
+    <string name="notification_show_contact_picture_title"></string>
+    <string name="debug_open_secret_debug_screen"></string>
+    <string name="notification_actions_cutoff_description"></string>
+    <string name="settings_ui_telemetry_title"></string>
+    <string name="notification_show_contact_picture_summary"></string>
+    <string name="accessibility_move_cutoff_down"></string>
+    <string name="general_settings_message_list_date_time_format_iso"></string>
+    <string name="debug_invalidate_access_token_already_modified"></string>
+    <string name="save_attachment_action"></string>
+    <string name="notification_actions_hidden_state"></string>
+    <string name="accessibility_move_down"></string>
+    <string name="account_settings_ignore_chat_messages_summary"></string>
+    <string name="message_details_loading_error"></string>
+    <string name="folder_settings_visible_label"></string>
+    <string name="folder_settings_push_label"></string>
+    <string name="about_app_authors_thunderbird"></string>
+    <string name="debug_invalidate_access_token_server"></string>
+    <string name="attach_file"></string>
+    <string name="settings_ui_telemetry_description"></string>
+    <string name="message_view_attachments_title"></string>
+    <string name="animation_setting_off"></string>
+    <string name="folder_settings_sync_label"></string>
+    <string name="debug_invalidate_access_token_server_done"></string>
+    <string name="settings_ui_data_collection"></string>
+    <string name="debug_sync_export_logs_title"></string>
+    <string name="debug_force_auth_failure_done"></string>
+    <string name="global_settings_messageview_body_content_type_text_html"></string>
+    <string name="folder_settings_notifications_label"></string>
+    <string name="animation_setting_on"></string>
+    <string name="debug_invalidate_access_token_cannot_modify"></string>
+    <string name="notification_actions_shown_state"></string>
+    <string name="account_delete_dlg_instructions_fmt"></string>
+    <string name="account_setup_auto_select_folder"></string>
+    <string name="folder_list_show_hidden_folders"></string>
+    <string name="general_settings_message_list_date_time_format_full"></string>
+    <string name="settings_list_action_support"></string>
+    <string name="changelog_type_changed_text"></string>
+    <string name="debug_invalidate_access_token"></string>
+    <string name="debug_force_auth_failure"></string>
+    <string name="global_settings_splitview_when_unfolded"></string>
+    <string name="expand_content_description"></string>
+    <string name="no_network_message_will_be_sent_later_toast"></string>
+    <string name="accessibility_move_up"></string>
+    <string name="debug_feature_flags"></string>
+    <string name="general_settings_post_remove_action_title"></string>
+    <string name="accessibility_move_item_down"></string>
+    <string name="push_notification_grant_alarm_permission"></string>
+    <string name="push_info_notification_explanation_text"></string>
+    <string name="dialog_confirm_empty_spam_title"></string>
+    <string name="volume_navigation_summary"></string>
+    <string name="notification_actions_settings_title"></string>
+    <string name="dialog_confirm_empty_spam_message"></string>
+    <string name="background_work_notification_remove_account"></string>
+    <string name="open_camera"></string>
+    <string name="message_view_single_attachment_summary"></string>
 </resources>
