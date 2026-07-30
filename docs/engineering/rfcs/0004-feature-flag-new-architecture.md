@@ -1,8 +1,8 @@
 # RFC 0004: Add a Declarative Feature Flag Catalog
 
 - Issue: [#11222](https://github.com/thunderbird/thunderbird-android/issues/11222)
-- Technical design: TBD
-- Status: **Proposed**
+- Technical design: [Technical Design 0002: Declarative Feature Flag Catalog](../technical-designs/0002-feature-flag-declarative-catalog.md)
+- Status: **Accepted**
 
 ## Summary
 
