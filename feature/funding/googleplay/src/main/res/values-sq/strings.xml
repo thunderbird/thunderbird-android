@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_claim">Financohemi vetëm nga përdorues si ju.</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_2">S’shesim të dhëna tuajat.</string>
     <string name="funding_googleplay_contribution_reminder_statement">Thunderbird është i lirë dhe me burim të hapët.</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>
