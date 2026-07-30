@@ -10,7 +10,7 @@
     <string name="account_setup_options_email_signature_error_blank">La signature du courriel ne peut pas être vide.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">Il est obligatoire d’approuver la configuration.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Nous avons reçu la configuration de votre serveur de courriel par une connexion qui n’est pas aussi sécurisée que nous le souhaitions. Cela signifie qu’il y a une infime chance que quelqu’un ait pu la modifier. Pourriez-vous revérifier la configuration fournie pour vous assurer qu’elle est conforme à ce qu’elle devrait être ?</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Nous avons reçu la configuration de votre serveur de courriel par une connexion qui n’est pas aussi sécurisée que nous le souhaitions. Cela signifie qu’il y a une infime chance que quelqu’un ait pu la modifier. Pourriez-vous revérifier la configuration fournie pour vous assurer qu’elle est conforme à ce qu’elle devrait être ?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Modifier la configuration</string>
     <string name="account_setup_error_unknown">Erreur inconnue</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
