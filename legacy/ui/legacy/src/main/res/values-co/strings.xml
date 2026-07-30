@@ -78,10 +78,10 @@
     <string name="status_invalid_id_error">Messaghju intruvevule</string>
     <string name="status_loading_error">Sbaglii di caricamentu di u messaghju</string>
     <string name="load_more_messages_fmt">Caricà fine à <xliff:g id="messages_to_load">%d</xliff:g> di più</string>
-    <string name="size_format_gigabytes">%.1f Go</string>
-    <string name="size_format_megabytes">%.1f Mo</string>
-    <string name="size_format_kilobytes">%.1f ko</string>
-    <string name="size_format_bytes">%d o</string>
+    <string name="size_format_gigabytes">%.1f Go</string>
+    <string name="size_format_megabytes">%.1f Mo</string>
+    <string name="size_format_kilobytes">%.1f ko</string>
+    <string name="size_format_bytes">%d o</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> messaghju novu</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> messaghji novi</item>
@@ -100,9 +100,9 @@
     <string name="notification_certificate_error_text">Verificate i vostri parametri di servitore</string>
     <string name="notification_authentication_error_title">Fiascu d’autenticazione</string>
     <string name="notification_authentication_error_text">Fiascu d’autenticazione per <xliff:g id="account">%s</xliff:g>. Mittite à livellu i vostri parametri di servitore.</string>
-    <string name="notification_bg_sync_ticker">Rileva di i messaghji : <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Rileva di i messaghji : <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Rileva di i messaghji</string>
-    <string name="notification_bg_send_ticker">Inviu di i messaghji : <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_ticker">Inviu di i messaghji : <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Inviu di i messaghji</string>
     <string name="notification_bg_title_separator">:</string>
     <string name="notification_channel_push_title">Sincrunizà (Catapughjà)</string>
@@ -118,26 +118,26 @@
     <string name="debug_enable_sensitive_logging_summary">Puderia affissà e parolle d’intesa in i ghjurnali.</string>
     <string name="debug_export_logs_title">Espurtà i ghjurnali</string>
     <string name="debug_export_logs_failure">Fiascu d’espurtazione.</string>
-    <string name="message_to_fmt">À :<xliff:g id="counterParty">%s</xliff:g></string>
+    <string name="message_to_fmt">À :<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_compose_subject_hint">Sughjettu</string>
     <string name="message_compose_signature_hint">Segnatura</string>
     <string name="message_compose_quote_header_separator">-------- Messaghju d’origine --------</string>
-    <string name="message_compose_quote_header_subject">Sughjettu :</string>
-    <string name="message_compose_quote_header_send_date">Mandatu :</string>
-    <string name="message_compose_quote_header_to">À :</string>
-    <string name="message_compose_quote_header_cc">Cc :</string>
-    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> hà scrittu :</string>
+    <string name="message_compose_quote_header_subject">Sughjettu :</string>
+    <string name="message_compose_quote_header_send_date">Mandatu :</string>
+    <string name="message_compose_quote_header_to">À :</string>
+    <string name="message_compose_quote_header_cc">Cc :</string>
+    <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> hà scrittu :</string>
     <string name="message_compose_error_no_recipients">Ci vole à aghjunghje omancu un destinatariu.</string>
-    <string name="compose_error_incomplete_recipient">U campu Destinatariu cuntene un’entrata incumpleta !</string>
+    <string name="compose_error_incomplete_recipient">U campu Destinatariu cuntene un’entrata incumpleta !</string>
     <string name="error_contact_address_not_found">Ùn si pò truvà alcunu indirizzu elettronicu per stu cuntattu.</string>
     <string name="message_compose_show_quoted_text_action">Mintuà u messaghju d’origine</string>
     <string name="message_compose_attachments_forward_toast">U messaghju ùn pò micca esse trasferitu perchè certe pezze ghjunte ùn sò state scaricate.</string>
     <string name="message_compose_description_delete_quoted_text">Caccià u testu menziunatu</string>
     <string name="message_compose_description_edit_quoted_text">Mudificà u testu menziunatu</string>
     <string name="remove_attachment_action">Caccià a pezza ghjunta</string>
-    <string name="message_to_label">À :</string>
-    <string name="message_view_cc_label">Cc :</string>
-    <string name="message_view_bcc_label">Cci :</string>
+    <string name="message_to_label">À :</string>
+    <string name="message_view_cc_label">Cc :</string>
+    <string name="message_view_bcc_label">Cci :</string>
     <string name="message_view_status_attachment_not_saved">Impussibule d’arregistrà a pezza ghjunta.</string>
     <string name="message_view_me_text">eiu</string>
     <string name="message_view_no_viewer">Ùn si pò truvà un affissadore per <xliff:g id="mimetype">%s</xliff:g>.</string>
@@ -213,7 +213,7 @@
     <string name="sort_by_attach">Pezze ghjunte</string>
     <string name="loading_attachment">Caricamentu di a pezza ghjunta…</string>
     <string name="fetching_attachment_dialog_message">Riguarera di a pezza ghjunta…</string>
-    <string name="error_crypto_inline_attach">U modu PGP/INLINE ùn accetteghja micca e pezze ghjunte !</string>
+    <string name="error_crypto_inline_attach">U modu PGP/INLINE ùn accetteghja micca e pezze ghjunte !</string>
     <string name="account_settings_action">Parametri di u contu</string>
     <string name="remove_account_action">Caccià u contu</string>
     <string name="mark_as_read_action">Marcà cum’è lettu</string>
@@ -223,19 +223,17 @@
         <item quantity="other">L’indirizzi sò stati cupiati in u preme’papei</item>
     </plurals>
     <string name="notification_notify_error_title">Sbagliu di nutificazione</string>
-    <string name="notification_notify_error_text">Un sbagliu hè accadutu pruvendu di creà una nutificazione di sistema per un messaghju novu. A ragione prubabile hè l’assenza di sonu di nutificazione.
-\n
-\nPicchichjà per apre i parametri di nutificazione.</string>
+    <string name="notification_notify_error_text">Un sbagliu hè accadutu pruvendu di creà una nutificazione di sistema per un messaghju novu. A ragione prubabile hè l’assenza di sonu di nutificazione. \n \nPicchichjà per apre i parametri di nutificazione.</string>
     <string name="debug_enable_debug_logging_summary">Arregistrà l’infurmazioni addiziunale di diagnosticu</string>
     <string name="debug_export_logs_success">L’espurtazione hè riesciuta. I ghjurnali puderianu cuntene infurmazioni sensibile. Fate casu à quale i mandate.</string>
     <string name="message_list_load_more_messages_action">Caricà d’altri messaghji</string>
     <string name="message_compose_content_hint">Testu di u messaghju</string>
-    <string name="message_compose_quote_header_from">Da :</string>
-    <string name="message_compose_reply_header_fmt_with_date">U <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> hà scrittu :</string>
+    <string name="message_compose_quote_header_from">Da :</string>
+    <string name="message_compose_reply_header_fmt_with_date">U <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> hà scrittu :</string>
     <string name="message_compose_attachments_skipped_toast">Certe pezze ghjunte ùn ponu micca esse trasferite perchè ùn sò state scaricate.</string>
     <string name="dialog_attachment_progress_title">Scaricamentu di a pezza ghjunta</string>
     <string name="openpgp_inline_minus_attach">E pezza aghjunte ùn sò micca accettate</string>
-    <string name="openpgp_dialog_sign_only_minus_attach">E segnature puderianu esse affissate cum’è pezze ghjunte « signature.asc » in certe messaghjerie elettroniche.</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">E segnature puderianu esse affissate cum’è pezze ghjunte « signature.asc » in certe messaghjerie elettroniche.</string>
     <string name="message_view_recipients_format">à <xliff:g id="recipients">%s</xliff:g></string>
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="message_view_show_remote_images_action">Affissà e fiure alluntanate</string>
@@ -249,7 +247,7 @@
     <string name="global_settings_confirm_action_delete_notif">Squassà (da una nutificazione)</string>
     <string name="global_settings_confirm_action_spam">Merzaghju</string>
     <string name="general_settings_ui_density_compact">Cumpatta</string>
-    <string name="global_settings_notification_quick_delete_title">Affissà u buttone « Squassà »</string>
+    <string name="global_settings_notification_quick_delete_title">Affissà u buttone « Squassà »</string>
     <string name="global_settings_notification_quick_delete_never">Mai</string>
     <string name="general_settings_ui_density_relaxed">Allungata</string>
     <string name="global_settings_lock_screen_notification_visibility_nothing">Nisuna nutificazione quandu u screnu hè ammarchjunatu</string>
@@ -333,19 +331,19 @@
     <string name="account_settings_crypto_encrypt_all_drafts_off">Cifrà e bruttacopie solu s’è a cifratura hè attivata</string>
     <string name="account_settings_mail_check_frequency_label">Frequenza di sullicitazione di i cartulari</string>
     <string name="account_settings_mail_display_count_label">Dimensione di u cartulare lucale</string>
-    <string name="account_settings_autodownload_message_size_1">1 Kio</string>
-    <string name="account_settings_autodownload_message_size_512">512 Kio</string>
+    <string name="account_settings_autodownload_message_size_1">1 Kio</string>
+    <string name="account_settings_autodownload_message_size_512">512 Kio</string>
     <string name="account_settings_autodownload_message_size_any">qualsiasi dimensione (senza limitu)</string>
     <string name="account_settings_message_age_label">Sincrunizà i messaghji da</string>
     <string name="account_settings_message_age_any">qualsiasi data (senza limitu)</string>
     <string name="account_settings_message_age_0">oghje</string>
-    <string name="account_settings_message_age_2">i 3 ultimi ghjorni</string>
+    <string name="account_settings_message_age_2">i 3 ultimi ghjorni</string>
     <string name="account_settings_message_age_7">l’ultima settimana</string>
-    <string name="account_settings_message_age_14">e 2 ultime settimane</string>
+    <string name="account_settings_message_age_14">e 2 ultime settimane</string>
     <string name="account_settings_message_age_1_month">l’ultimu mese</string>
-    <string name="account_settings_message_age_2_months">i 2 ultimi mesi</string>
-    <string name="account_settings_message_age_3_months">i 3 ultimi mesi</string>
-    <string name="account_settings_message_age_6_months">i 6 ultimi mesi</string>
+    <string name="account_settings_message_age_2_months">i 2 ultimi mesi</string>
+    <string name="account_settings_message_age_3_months">i 3 ultimi mesi</string>
+    <string name="account_settings_message_age_6_months">i 6 ultimi mesi</string>
     <string name="account_settings_message_age_1_year">l’ultimu annu</string>
     <string name="folder_settings_clear_local_folder_action">Squassà i messaghji lucale</string>
     <string name="account_settings_outgoing_summary">Cunfigurà u servitore d’esciuta (SMTP) di i messaghji</string>
@@ -370,23 +368,23 @@
     <string name="account_settings_crypto_summary_config">Cunfigurazione…</string>
     <string name="account_settings_crypto_encrypt_all_drafts">Arregistrà cifrate tutte e bruttacopie</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Tutte e bruttacopie seranu arregistrate cifrate</string>
-    <string name="account_settings_autodownload_message_size_2">2 Kio</string>
-    <string name="account_settings_autodownload_message_size_4">4 Kio</string>
-    <string name="account_settings_autodownload_message_size_8">8 Kio</string>
-    <string name="account_settings_autodownload_message_size_16">16 Kio</string>
-    <string name="account_settings_autodownload_message_size_32">32 Kio</string>
-    <string name="account_settings_autodownload_message_size_64">64 Kio</string>
-    <string name="account_settings_autodownload_message_size_128">128 Kio</string>
-    <string name="account_settings_autodownload_message_size_256">256 Kio</string>
-    <string name="account_settings_autodownload_message_size_1024">1 Mio</string>
-    <string name="account_settings_autodownload_message_size_2048">2 Mio</string>
-    <string name="account_settings_autodownload_message_size_5120">5 Mio</string>
-    <string name="account_settings_autodownload_message_size_10240">10 Mio</string>
-    <string name="account_settings_message_age_1">i 2 ultimi ghjorni</string>
-    <string name="account_settings_message_age_21">e 3 ultime settimane</string>
+    <string name="account_settings_autodownload_message_size_2">2 Kio</string>
+    <string name="account_settings_autodownload_message_size_4">4 Kio</string>
+    <string name="account_settings_autodownload_message_size_8">8 Kio</string>
+    <string name="account_settings_autodownload_message_size_16">16 Kio</string>
+    <string name="account_settings_autodownload_message_size_32">32 Kio</string>
+    <string name="account_settings_autodownload_message_size_64">64 Kio</string>
+    <string name="account_settings_autodownload_message_size_128">128 Kio</string>
+    <string name="account_settings_autodownload_message_size_256">256 Kio</string>
+    <string name="account_settings_autodownload_message_size_1024">1 Mio</string>
+    <string name="account_settings_autodownload_message_size_2048">2 Mio</string>
+    <string name="account_settings_autodownload_message_size_5120">5 Mio</string>
+    <string name="account_settings_autodownload_message_size_10240">10 Mio</string>
+    <string name="account_settings_message_age_1">i 2 ultimi ghjorni</string>
+    <string name="account_settings_message_age_21">e 3 ultime settimane</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincrunizà e squassature di u servitore</string>
     <string name="account_settings_sync_remote_deletetions_summary">Caccià i messaghji quand’elli sò squassati nant’à u servitore</string>
-    <string name="account_settings_openpgp_missing">L’appiecazione OpenPGP hè assente ; seria desinstallata ?</string>
+    <string name="account_settings_openpgp_missing">L’appiecazione OpenPGP hè assente ; seria desinstallata ?</string>
     <string name="folder_settings_title">Parametri di u cartulare</string>
     <string name="folder_settings_in_top_group_label">Affissà in u gruppu superiore</string>
     <string name="account_settings_vibrate_enable">Vibrà</string>
@@ -410,7 +408,7 @@
     <string name="account_settings_composition_label">Valori predefiniti di redazzione</string>
     <string name="account_settings_composition_summary">Definisce i valori predefiniti per Da, Cci è a segnatura</string>
     <string name="account_settings_identities_label">Amministrà l’identità</string>
-    <string name="account_settings_identities_summary">Definisce d’altri indirizzi « Da » è d’altre segnature</string>
+    <string name="account_settings_identities_summary">Definisce d’altri indirizzi « Da » è d’altre segnature</string>
     <string name="manage_identities_title">Amministrà l’identità</string>
     <string name="manage_identities_context_menu_title">Amministrà un’identità</string>
     <string name="edit_identity_title">Mudificà un’identità</string>
@@ -506,9 +504,9 @@
     <string name="font_size_small">Chjucu</string>
     <string name="font_size_large">Maiò</string>
     <string name="font_size_larger">Più maiò</string>
-    <string name="send_failed_reason">Fiascu d’inviu : %s</string>
-    <string name="save_or_discard_draft_message_changes">Arregistrà o tralascià i cambiamenti ?</string>
-    <string name="confirm_discard_draft_message_title">Tralascià u messaghju ?</string>
+    <string name="send_failed_reason">Fiascu d’inviu : %s</string>
+    <string name="save_or_discard_draft_message_changes">Arregistrà o tralascià i cambiamenti ?</string>
+    <string name="confirm_discard_draft_message_title">Tralascià u messaghju ?</string>
     <string name="dialog_confirm_delete_cancel_button">Nò</string>
     <string name="dialog_confirm_mark_all_as_read_title">Cunfirmà tuttu marcà cum’è lettu</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Nò</string>
@@ -535,18 +533,18 @@
     <string name="font_size_default">Predefinita</string>
     <string name="font_size_smaller">Più chjucu</string>
     <string name="font_size_medium">Medianu</string>
-    <string name="save_or_discard_draft_message_dlg_title">Arregistrà a bruttacopia ?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">Arregistrà o tralascià stu messaghju ?</string>
-    <string name="confirm_discard_draft_message">Da veru, vulete tralascià stu messaghju ?</string>
-    <string name="dialog_confirm_clear_local_folder_title">Squassà i messaghji lucale ?</string>
+    <string name="save_or_discard_draft_message_dlg_title">Arregistrà a bruttacopia ?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Arregistrà o tralascià stu messaghju ?</string>
+    <string name="confirm_discard_draft_message">Da veru, vulete tralascià stu messaghju ?</string>
+    <string name="dialog_confirm_clear_local_folder_title">Squassà i messaghji lucale ?</string>
     <string name="dialog_confirm_clear_local_folder_message">St’azzione caccierà tutti i messaghji lucale da u cartulare. Alcunu messaghju ùn serà squassatu da u servitore.</string>
     <string name="dialog_confirm_clear_local_folder_action">Squassà i messaghji</string>
-    <string name="dialog_confirm_delete_message">Vulete squassà stu messaghju ?</string>
-    <string name="dialog_confirm_mark_all_as_read_message">Vulete marcà tutti i messaghji cum’è letti ?</string>
+    <string name="dialog_confirm_delete_message">Vulete squassà stu messaghju ?</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Vulete marcà tutti i messaghji cum’è letti ?</string>
     <string name="webview_contextmenu_link_copy_action">Cupià u liame in u preme’papei</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Da veru, vulete dispiazzà stu messaghju versu u cartulare di i merzaghji ?</item>
-        <item quantity="other">Da veru, vulete dispiazzà i <xliff:g id="message_count">%1$d</xliff:g> messaghji versu u cartulare di i merzaghji ?</item>
+        <item quantity="one">Da veru, vulete dispiazzà stu messaghju versu u cartulare di i merzaghji ?</item>
+        <item quantity="other">Da veru, vulete dispiazzà i <xliff:g id="message_count">%1$d</xliff:g> messaghji versu u cartulare di i merzaghji ?</item>
     </plurals>
     <string name="settings_list_backup_category">Salvaguardia</string>
     <string name="dialog_confirm_delete_title">Cunfirmà a squassatura</string>
@@ -569,7 +567,7 @@
     <string name="webview_contextmenu_phone_clipboard_label">Numeru di telefonu</string>
     <string name="remote_search_unavailable_no_network">Una cunnessione à a reta hè richiesta per una ricerca nant’à u servitore.</string>
     <string name="global_settings_background_as_unread_indicator_summary">Un sfondulu sfarente indicherà chì u messaghju hè statu lettu</string>
-    <string name="upgrade_database_format">Messa à livellu di a basa di dati di u contu « <xliff:g id="account">%s</xliff:g> »</string>
+    <string name="upgrade_database_format">Messa à livellu di a basa di dati di u contu « <xliff:g id="account">%s</xliff:g> »</string>
     <string name="interaction_preferences">Interazzione</string>
     <string name="accountlist_preferences">Lista di i conti</string>
     <string name="messageview_preferences">Messaghji</string>
@@ -587,12 +585,12 @@
     <string name="font_size_settings_title">Dimensione di grafia</string>
     <string name="error_activity_not_found">Nisuna appiecazione apprupiata ùn hè stata trova per st’azzione.</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">Da veru, vulete squassà stu messaghju ?</item>
-        <item quantity="other">Da veru, vulete squassà i <xliff:g id="message_count">%1$d</xliff:g> messaghji ?</item>
+        <item quantity="one">Da veru, vulete squassà stu messaghju ?</item>
+        <item quantity="other">Da veru, vulete squassà i <xliff:g id="message_count">%1$d</xliff:g> messaghji ?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Sì</string>
     <string name="dialog_confirm_empty_trash_title">Cunfirmazione di a viutatura di a curbella</string>
-    <string name="dialog_confirm_empty_trash_message">Vulete viutà u cartulare di a curbella ?</string>
+    <string name="dialog_confirm_empty_trash_message">Vulete viutà u cartulare di a curbella ?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Sì</string>
     <string name="dialog_confirm_spam_cancel_button">Nò</string>
     <string name="settings_export_success_generic">I parametri sò stati espurtati currettamente</string>
@@ -636,7 +634,7 @@
     <string name="reply_to_label">Risponde à</string>
     <string name="address_type_work">Travagliu</string>
     <string name="address_type_other">Altru</string>
-    <string name="compose_error_no_key_configured">Alcuna chjave ùn hè cunfigurata per stu contu ! Verificate i vostri parametri.</string>
+    <string name="compose_error_no_key_configured">Alcuna chjave ùn hè cunfigurata per stu contu ! Verificate i vostri parametri.</string>
     <string name="enable_inline_pgp">Attivà PGP/INLINE</string>
     <string name="disable_inline_pgp">Disattivà PGP/INLINE</string>
     <string name="recipient_bcc">Cci</string>
@@ -644,7 +642,7 @@
     <string name="unknown_recipient">&lt;U destinatariu hè scunnisciutu&gt;</string>
     <string name="address_type_home">Casa</string>
     <string name="unknown_sender">&lt;U speditore hè scunnisciutu&gt;</string>
-    <string name="compose_error_no_draft_folder">Alcunu cartulare Bruttacopia ùn hè cunfiguratu per stu contu !</string>
+    <string name="compose_error_no_draft_folder">Alcunu cartulare Bruttacopia ùn hè cunfiguratu per stu contu !</string>
     <string name="error_crypto_provider_ui_required">Ùn si pò micca inizià a cifratura da un capu à l’altru, ci vole à vérificà i vostri parametri</string>
     <string name="global_settings_splitview_mode_label">Affissà un screnu frazziunatu</string>
     <string name="message_view_empty">Selezziunate un messaghju à manu manca</string>
@@ -656,13 +654,12 @@
     <string name="fetching_attachment_dialog_title_save">Arregistramentu di a bruttacopia</string>
     <string name="add_from_contacts">Aghjunghje da i cuntatti</string>
     <string name="address_type_mobile">Telefuninu</string>
-    <string name="error_crypto_provider_incompatible">U furnidore crittograficu impiegheghja una versione incumpatibile. Ci vole à verificà i vostri parametri !</string>
-    <string name="error_crypto_provider_connect">Ùn si pò micca cunnette à u furnidore crittograficu. Verificate i vostri parametri o tuccate l’icona Crittografia per pruvà torna !</string>
+    <string name="error_crypto_provider_incompatible">U furnidore crittograficu impiegheghja una versione incumpatibile. Ci vole à verificà i vostri parametri !</string>
+    <string name="error_crypto_provider_connect">Ùn si pò micca cunnette à u furnidore crittograficu. Verificate i vostri parametri o tuccate l’icona Crittografia per pruvà torna !</string>
     <string name="enable_sign_only">Attivà PGP Sign-Only</string>
-    <string name="openpgp_inline_text">Stu messaghju elettronicu hè mandatu à u furmatu PGP/INLINE.
-\nQuessu furmatu duveria esse impiegatu solu per ragioni di cumpatibilità :</string>
+    <string name="openpgp_inline_text">Stu messaghju elettronicu hè mandatu à u furmatu PGP/INLINE. \nQuessu furmatu duveria esse impiegatu solu per ragioni di cumpatibilità :</string>
     <string name="openpgp_inline_keep_enabled">Cunservà attivatu</string>
-    <string name="openpgp_sign_only_ok">Aghju capitu !</string>
+    <string name="openpgp_sign_only_ok">Aghju capitu !</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">I messaghji cifrati cuntenenu sempre una segnatura.</string>
     <string name="crypto_msg_unencrypted_sign_error">A segnatura da un capu à l’altru cuntinia un sbagliu</string>
     <string name="crypto_msg_cancelled">U messaghju hè cifratu, ma a dicifratura hè stata abbandunata.</string>
@@ -689,11 +686,11 @@
     <string name="dialog_openkeychain_info_install">Installà</string>
     <string name="account_settings_crypto_encrypt_subject">Cifrà u sughjettu di i messaghji</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Què puderia ùn esse micca accettatu da certi destinatarii</string>
-    <string name="toast_openpgp_provider_error">Sbagliu di cunnessione à %s !</string>
+    <string name="toast_openpgp_provider_error">Sbagliu di cunnessione à %s !</string>
     <string name="ac_transfer_setting_title">Mandà un messaghju di cunfigurazione Autocrypt</string>
     <string name="ac_transfer_title">Messaghju di cunfigurazione Autocrypt</string>
     <string name="ac_transfer_button_send">Mandà u messaghju di cunfigurazione</string>
-    <string name="ac_transfer_sending_to">Inviu di u messaghju à :</string>
+    <string name="ac_transfer_sending_to">Inviu di u messaghju à :</string>
     <string name="ac_transfer_finish">Per compie, aprite u messaghju nant’à u vostru altru apparechju è stampittate u codice di cunfigurazione.</string>
     <string name="switch_off">Inattivu</string>
     <string name="generic_loading_error">Un sbagliu hè accadutu durante u caricamentu di i dati</string>
@@ -701,7 +698,7 @@
     <string name="push_notification_state_wait_network">Inattiva finchè a reta sia dispunibule</string>
     <string name="push_notification_grant_alarm_permission">Tuccà per cunsente u permessu.</string>
     <string name="general_settings_show_compose_button_title">Affissà buttone undighjante per redige</string>
-    <string name="message_details_missing_date">L’intestatura « Data » hè assente</string>
+    <string name="message_details_missing_date">L’intestatura « Data » hè assente</string>
     <string name="message_details_bcc_section_title">Cci</string>
     <string name="message_details_loading_error">Un sbagliu hè accadutu durante u caricamentu di i detaglii di u messaghju.</string>
     <string name="clipboard_label_email_address">Indirizzu elettronicu</string>
@@ -727,12 +724,12 @@
     <string name="crypto_msg_encrypted_sign_error">ma i dati da un capu à l’altru cuntenenu sbaglii</string>
     <string name="messageview_decrypt_retry">Pruvà torna</string>
     <string name="messageview_decrypt_incomplete">U messaghju cifratu deve esse scaricatu per pudè esse dicifratu.</string>
-    <string name="error_sign_only_no_encryption">A cifratura hè indispunibule in u modu « sign-only » !</string>
+    <string name="error_sign_only_no_encryption">A cifratura hè indispunibule in u modu « sign-only » !</string>
     <string name="account_settings_crypto_prefer_encrypt">Modu mutuale di cifratura autumatica</string>
     <string name="dialog_autocrypt_mutual_description_2">S’è u speditore è i destinatarii attivanu u modu mutuale, a cifratura serà attivata in modu predefinitu.</string>
     <string name="dialog_openkeychain_info_title">Alcuna appiecazione OpenPGP ùn hè installata</string>
     <string name="ac_transfer_intro">Un messaghju di cunfigurazione Autocrypt sparte in modu sicuru a vostra cunfigurazione da un capu à l’altru cù d’altri apparechji.</string>
-    <string name="ac_transfer_will_be_sent">U messaghju serà mandatu à u vostru indirizzu :</string>
+    <string name="ac_transfer_will_be_sent">U messaghju serà mandatu à u vostru indirizzu :</string>
     <string name="ac_transfer_msg_body">Stu messaghju cuntene tutte l’infurmazioni per trasferisce in modu sicuru i vostri parametri Autocrypt è a vostra chjave sicreta da u vostru apparechju d’origine. Per cunfigurà u vostru apparechju novu per Autocrypt, ci vole à seguità l’istruzzioni chì duverianu esse prisentate da u vostru apparechju novu. Pudete cunservà stu messaghju è impiegallu tale una salvaguardia di a vostra chjave sicreta. S’è vo vulete fà cusì, duveriate piglià nota di a parolla d’intesa è piazzalla in un locu sicuru.</string>
     <string name="push_info_title">Infurmazioni di a catapughjata</string>
     <string name="push_notification_state_alarm_permission_missing">Un permessu hè assente per pianificà l’alarme</string>
@@ -743,7 +740,7 @@
     <string name="action_copy_email_address">Cupià l’indirizzu elettronicu</string>
     <string name="disable_sign_only">Disattivà PGP Sign-Only</string>
     <string name="openpgp_inline_title">Modu PGP/INLINE</string>
-    <string name="openpgp_inline_ok">Aghju capitu !</string>
+    <string name="openpgp_inline_ok">Aghju capitu !</string>
     <string name="openpgp_inline_disable">Disattivà</string>
     <string name="openpgp_sign_only_disable">Disattivà</string>
     <string name="openpgp_dialog_sign_only_title">Modu PGP Sign-Only</string>
@@ -753,25 +750,24 @@
     <string name="crypto_msg_encrypted_sign_expired">ma a chjave da un capu à l’altru hè scaduta</string>
     <string name="locked_attach_unlock">Spalancà</string>
     <string name="message_progress_text">Caricamentu…</string>
-    <string name="recipient_error_parse_failed">Sbagliu durante l’analisa di l’indirizzu !</string>
+    <string name="recipient_error_parse_failed">Sbagliu durante l’analisa di l’indirizzu !</string>
     <string name="account_settings_crypto_hide_sign_only">Piattà e segnature micca cifrate</string>
     <string name="messageview_crypto_error_title">Sbagliu di dicifratura di u messaghju</string>
-    <string name="recipient_error_non_ascii">Attualmente, I caratteri speziali ùn sò micca accettati !</string>
+    <string name="recipient_error_non_ascii">Attualmente, I caratteri speziali ùn sò micca accettati !</string>
     <string name="account_settings_crypto_hide_sign_only_on">Solu e segnature cifrate seranu affissate</string>
-    <string name="crypto_no_provider_message">Stu messaghju elettronicu hè statu cifratu cù OpenPGP.
-\nPer leghjelu, ci vole à installà è cunfigurà un’appiecazione cumpatibile cù OpenPGP.</string>
+    <string name="crypto_no_provider_message">Stu messaghju elettronicu hè statu cifratu cù OpenPGP. \nPer leghjelu, ci vole à installà è cunfigurà un’appiecazione cumpatibile cù OpenPGP.</string>
     <string name="crypto_no_provider_title">Stu messaghju hè cifratu</string>
     <string name="crypto_no_provider_button">Andà à i parametri</string>
     <string name="unsigned_text_divider_label">Testu micca firmatu</string>
     <string name="enable_encryption">Attivà a cifratura</string>
     <string name="disable_encryption">Disattivà a cifratura</string>
     <string name="openpgp_enabled_error_title">A cifratura hè impussibule</string>
-    <string name="openpgp_enabled_error_msg">Certi destinatarii selezziunati ùn accettanu micca sta funzione !</string>
+    <string name="openpgp_enabled_error_msg">Certi destinatarii selezziunati ùn accettanu micca sta funzione !</string>
     <string name="openpgp_description_text2">Attivà o disattivà a cifratura tucchendu st’icona.</string>
     <string name="openpgp_description_text3">A cifratura ùn serà pruposta chì solu s’ella hè accettata da tutti i destinatarii, è ch’elli vi anu dighjà mandatu un messaghju prima.</string>
     <string name="openpgp_enabled_error_gotit">Aghju capitu</string>
     <string name="openpgp_enabled_error_back">Ritornu</string>
-    <string name="toast_account_not_found">Sbagliu internu : u contu hè inaccettevule !</string>
+    <string name="toast_account_not_found">Sbagliu internu : u contu hè inaccettevule !</string>
     <string name="ac_transfer_setting_summary">Sparte in modu sicuru a cunfigurazione da un capu à l’altru cù d’altri apparechji</string>
     <string name="ac_transfer_generating">Generazione di u messaghju di cunfigurazione…</string>
     <string name="ac_transfer_show_code">Affissà u codice di cunfigurazione</string>
@@ -814,7 +810,7 @@
     <string name="volume_navigation_summary">Navigà d’un messaghju à l’altru cù i tasti di vulume nant’à a vista di i messaghji</string>
     <string name="save_attachment_action">Arregistrà a pezza ghjunta</string>
     <string name="expand_content_description">Spiegà</string>
-    <string name="dialog_confirm_empty_spam_message">Vulete viutà u cartulare di i merzaghji ?</string>
+    <string name="dialog_confirm_empty_spam_message">Vulete viutà u cartulare di i merzaghji ?</string>
     <string name="empty_spam_action">Squassà i merzaghji</string>
     <string name="dialog_confirm_empty_spam_title">Cunfirmà à squassatura di i merzaghji</string>
     <string name="attach_file">Assucià un schedariu</string>
@@ -825,14 +821,14 @@
     <string name="debug_sync_export_logs_title">Espurtà i ghjurnali di sincrunizazione</string>
     <string name="debug_open_secret_debug_screen">Apre u screnu sicretu di spannatura</string>
     <string name="archiving_not_available_for_this_account">L’archiviera ùn hè micca dispunibule per stu contu.</string>
-    <string name="debug_invalidate_access_token">Prova : invalidà u gettone d’accessu</string>
+    <string name="debug_invalidate_access_token">Prova : invalidà u gettone d’accessu</string>
     <string name="debug_invalidate_access_token_done">U gettone d’accessu hè statu invalidatu. A prossima richiesta u rinfrescherà.</string>
     <string name="debug_invalidate_access_token_unavailable">Nisunu gettone OAuth hè dispunibule per stu contu.</string>
-    <string name="debug_invalidate_access_token_local">Prova : invalidà u gettone d’accessu (lucale)</string>
+    <string name="debug_invalidate_access_token_local">Prova : invalidà u gettone d’accessu (lucale)</string>
     <string name="debug_invalidate_access_token_local_done">L’invalidazione lucale hè stata richiesta. A prossima richiesta riguarerà un gettone novu.</string>
-    <string name="debug_invalidate_access_token_server">Prova : invalidà u gettone d’accessu (servitore)</string>
+    <string name="debug_invalidate_access_token_server">Prova : invalidà u gettone d’accessu (servitore)</string>
     <string name="debug_invalidate_access_token_server_done">U gettone d’accessu arregistratu hè dannighjatu. A prossima richiesta si fiascherà eppò u rinfrescherà.</string>
-    <string name="debug_force_auth_failure">Prova : sfurzà un fiascu d’autenticazione subitu</string>
+    <string name="debug_force_auth_failure">Prova : sfurzà un fiascu d’autenticazione subitu</string>
     <string name="debug_force_auth_failure_done">U statu OAuth hè statu squassatu. A prossima richiesta si fiascherà.</string>
     <string name="debug_force_auth_failure_unavailable">Nisuna cunfigurazione OAuth hè dispunibule per stu contu.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Ùn si pò micca mudificà u gettone d’accessu arregistratu. Pruvate un’invalidazione lucale.</string>
@@ -848,7 +844,7 @@
     <string name="account_setup_auto_select_folder">Selezzione autumatica di u cartulare</string>
     <string name="navigation_drawer_preferences">Listinu laterale</string>
     <string name="expand_folders">Spiegà i cartulari</string>
-    <string name="debug_feature_flags">SPANNATURA : Bandere di funzione</string>
+    <string name="debug_feature_flags">SPANNATURA : Bandere di funzione</string>
     <string name="print_message_action">Stampà</string>
     <string name="global_settings_splitview_when_unfolded">Quandu l’apparechju hè apertu</string>
     <string name="general_settings_message_list_date_time_format_title">Furmatu di a data è di l’ora</string>
