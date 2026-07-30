@@ -43,4 +43,6 @@
     <string name="account_settings_account_delete_dlg_title">Αφαίρεση λογαριασμού</string>
     <string name="account_settings_show_pictures_label">Πάντα εμφάνιση των εικόνων</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Σήμανση ως αναγνωσμένο κατά το άνοιγμα</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary"></string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt"></string>
 </resources>
