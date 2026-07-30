@@ -2,4 +2,5 @@
 <resources>
     <string name="message_list_glance_widget_compose_action">Skridaozañ</string>
     <string name="message_list_glance_widget_inbox_title">Boest degemer unvanet</string>
+    <string name="message_list_glance_widget_label"></string>
 </resources>
