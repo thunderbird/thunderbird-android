@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Code Quality Guide - Thunderbird for Android - Developer Documentation</title>
+        <title>0002 - Thundermail – Add an Account interim screen - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -12,35 +12,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../favicon-de23e50b.svg">
-        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
-        <link rel="stylesheet" href="../css/variables-bb060dd9.css">
-        <link rel="stylesheet" href="../css/general-0d197534.css">
-        <link rel="stylesheet" href="../css/chrome-2bf922bf.css">
-        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+        <link rel="icon" href="../../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../../css/variables-bb060dd9.css">
+        <link rel="stylesheet" href="../../css/general-0d197534.css">
+        <link rel="stylesheet" href="../../css/chrome-2bf922bf.css">
+        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../fonts/fonts-868d674e.css">
+        <link rel="stylesheet" href="../../fonts/fonts-868d674e.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
-        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
-        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="../assets/additional/css/last-changed-baed6e4e.css">
-        <link rel="stylesheet" href="../assets/additional/css/navigation-c5b35b00.css">
+        <link rel="stylesheet" href="../../assets/additional/css/last-changed-baed6e4e.css">
+        <link rel="stylesheet" href="../../assets/additional/css/navigation-c5b35b00.css">
 
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "../";
+            const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-31fcff17.js";
+            window.path_to_searchindex_js = "../../searchindex-31fcff17.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../toc-f2813344.js"></script>
+        <script src="../../toc-f2813344.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -107,7 +107,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
             </noscript>
             <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -139,13 +139,13 @@
                     <h1 class="menu-title">Thunderbird for Android - Developer Documentation</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
                             <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/thunderbird/thunderbird-android/" title="Git repository" aria-label="Git repository">
                             <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./contributing/code-quality-guide.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./engineering/rfcs/0002-thundermail-add-an-account-interim-screen.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -179,206 +179,70 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="-code-quality-guide"><a class="header" href="#-code-quality-guide">🔍 Code Quality Guide</a></h1>
-<p>This document provides comprehensive guidelines for maintaining high code quality in the Thunderbird for Android
-project. Following these guidelines ensures that the codebase remains:</p>
+                        <h1 id="rfc-0002-thundermail--add-an-account-interim-screen"><a class="header" href="#rfc-0002-thundermail--add-an-account-interim-screen">RFC 0002: Thundermail – Add an Account interim screen</a></h1>
 <ul>
-<li><strong>Maintainable</strong>: Easy to understand, modify, and extend</li>
-<li><strong>Reliable</strong>: Functions correctly and consistently</li>
-<li><strong>Efficient</strong>: Uses resources effectively</li>
-<li><strong>Secure</strong>: Protects user data and privacy</li>
-<li><strong>Testable</strong>: Is verified through automated tests</li>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11102">#11102</a></li>
+<li>Status: <strong>Accepted</strong></li>
 </ul>
-<h2 id="-static-analysis-tools"><a class="header" href="#-static-analysis-tools">🛠️ Static Analysis Tools</a></h2>
-<p>We use static analysis tools to automatically detect code quality issues and enforce standards.</p>
-<h3 id="android-lint"><a class="header" href="#android-lint">Android Lint</a></h3>
-<p>Android Lint checks for potential bugs, optimization opportunities, and Android-specific issues:</p>
-<pre><code class="language-bash"># Run lint checks for all modules
-./gradlew lint
-
-# Run lint checks for a specific module
-./gradlew :module-name:lint
-</code></pre>
-<p>Common issues detected:</p>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>Replace the TfA migration screen with a prioritized add account and sign in to Thundermail for a lean MVP.</p>
+<h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
+<p>With the introduction of the Thundermail onboarding flow, the <code>TbOnboardingMigrationScreen</code> is now too cluttered and
+confusing for users. Additionally, we currently don’t have a similar screen on K9-Mail</p>
+<h2 id="proposal"><a class="header" href="#proposal">Proposal</a></h2>
+<p>Create a new “Add Account” screen, under the <code>:feature:thundermail:internal</code> that will serve as a screen with 3 CTAs: “
+Add an email account“, “Sign in with Thundermail”, and “What is Thundermail?”</p>
+<p>The navigation flow should:</p>
 <ul>
-<li>Unused resources</li>
-<li>Accessibility issues</li>
-<li>Performance optimizations</li>
-<li>Internationalization problems</li>
-<li>Security vulnerabilities</li>
+<li>When users tap on the “Add an email account” button, navigate to the “Add email account” screen to start the
+authentication process</li>
+<li>When users tap on the “Sign in with Thundermail” button, start the Thundermail OAuth flow</li>
+<li>When users tap on the “What is Thundermail?” button, open
+the <a href="https://www.tb.pro/thundermail/">https://www.tb.pro/thundermail/</a> url in an external browser</li>
 </ul>
-<h4 id="configuration"><a class="header" href="#configuration">Configuration</a></h4>
-<p>The project’s lint configuration is in <code>config/lint/lint.xml</code>. You can customize lint rules for specific modules by
-adding a <code>lint</code> block to the module’s <code>build.gradle.kts</code> file:</p>
-<pre><code class="language-kotlin">android {
-    lint {
-        abortOnError = false
-        warningsAsErrors = false
-        
-        // Ignore specific issues
-        disable += listOf("InvalidPackage", "MissingTranslation")
-        // Enable specific issues
-        enable += listOf("RtlHardcoded", "RtlCompat", "RtlEnabled")
-    }
-}
-</code></pre>
-<h3 id="detekt"><a class="header" href="#detekt">Detekt</a></h3>
-<p><a href="https://detekt.dev/">Detekt</a> analyzes Kotlin code for code smells, complexity issues, and potential bugs:</p>
-<pre><code class="language-bash"># Run detekt for all modules
-./gradlew detekt
-
-# Run detekt for a specific module
-./gradlew :module-name:detekt
-</code></pre>
-<p>Detekt checks for:</p>
+<p>Additionally, we need to change the navigation of the K9-Mail to, when the user taps on the “Get started” button on the
+Welcome Screen, we first redirect them to the new “Add Account” screen.</p>
+<h2 id="alternatives-considered"><a class="header" href="#alternatives-considered">Alternatives Considered</a></h2>
 <ul>
-<li>Code complexity (cyclomatic complexity, long methods, etc.)</li>
-<li>Potential bugs (empty blocks, unreachable code, etc.)</li>
-<li>Code style issues (naming conventions, formatting, etc.)</li>
-<li>Performance issues (inefficient collection operations, etc.)</li>
-</ul>
-<h4 id="configuration-1"><a class="header" href="#configuration-1">Configuration</a></h4>
-<p>The project’s Detekt configuration is defined in the <code>config/detekt/detekt.yml</code> file. This file specifies which rules
-to apply and their severity levels. The detekt plugin is configured in the
-<code>build-plugin/src/main/kotlin/thunderbird.quality.detekt.gradle.kts</code> file.</p>
-<h3 id="spotless"><a class="header" href="#spotless">Spotless</a></h3>
-<p><a href="https://github.com/diffplug/spotless">Spotless</a> ensures consistent code formatting across the codebase:</p>
-<pre><code class="language-bash"># Check if code formatting meets standards
-./gradlew spotlessCheck
-
-# Apply automatic formatting fixes
-./gradlew spotlessApply
-</code></pre>
-<p>Spotless enforces:</p>
+<li>Modify the <code>TbOnboardingMigrationScreen</code> to the new layout
 <ul>
-<li>Consistent indentation</li>
-<li>Line endings</li>
-<li>Import ordering</li>
-<li>Whitespace usage</li>
-</ul>
-<h4 id="configuration-2"><a class="header" href="#configuration-2">Configuration</a></h4>
-<p>The project’s Spotless plugin is configured in the
-<code>build-plugin/src/main/kotlin/thunderbird.quality.spotless.gradle.kts</code> file. We use ktlint for Kotlin formatting.
-The rules are defined in the <code>.editorconfig</code> file and as editorconfig overrides in the Spotless configuration.</p>
-<pre><code class="language-kotlin">configure&lt;SpotlessExtension&gt; {
-    kotlin {
-        target(
-            "src/*/java/*.kt",
-            "src/*/kotlin/*.kt",
-            "src/*/java/**/*.kt",
-            "src/*/kotlin/**/*.kt",
-        )
-
-        ktlint(libs.versions.ktlint.get())
-            .setEditorConfigPath("${project.rootProject.projectDir}/.editorconfig")
-            .editorConfigOverride(
-                mapOf(
-                    "ktlint_code_style" to "intellij_idea",
-                    "ktlint_standard_function-signature" to "disabled",
-                ),
-            )
-    }
-}
-</code></pre>
-<p>For Markdown we use Flexmark and no further configuration is needed.</p>
-<h2 id="-code-style-guidelines"><a class="header" href="#-code-style-guidelines">📝 Code Style Guidelines</a></h2>
-<h3 id="kotlin-style-guide"><a class="header" href="#kotlin-style-guide">Kotlin Style Guide</a></h3>
-<p>The project follows the <a href="https://kotlinlang.org/docs/coding-conventions.html">Kotlin style guide</a> with some project-specific adaptations:</p>
-<ol>
-<li><strong>Naming Conventions</strong>:
-<ul>
-<li>Use <code>camelCase</code> for variables, functions, and methods</li>
-<li>Use <code>PascalCase</code> for classes, interfaces, enums and type parameters</li>
-<li>Use <code>UPPER_SNAKE_CASE</code> for constants and enum constants</li>
-<li>Prefix interface implementations with <code>Default</code> or a specific name, e.g.:</li>
-<li><code>DefaultEmailRepository</code> implements <code>EmailRepository</code></li>
-<li><code>InMemoryCache</code> implements <code>Cache</code></li>
+<li>Reject: It would be the same effort as creating a new screen</li>
 </ul>
 </li>
-<li><strong>Formatting</strong>:
-<ul>
-<li>Use 4 spaces for indentation</li>
-<li>Limit line length to 120 characters</li>
-<li>Use <code>./gradlew spotlessApply</code> to enforce formatting automatically</li>
 </ul>
-</li>
-<li><strong>Comments</strong>:
+<h2 id="risks--drawbacks"><a class="header" href="#risks--drawbacks">Risks &amp; Drawbacks</a></h2>
 <ul>
-<li>Use KDoc comments for public APIs</li>
-<li>Include a summary, parameter descriptions, and return value description</li>
-<li>Document exceptions that might be thrown</li>
+<li>TfA users won’t be able to import data from K9-Mail through the FTU. However, they will still be able to do that after
+adding an account first.</li>
 </ul>
-</li>
-<li><strong>File Organization</strong>:
+<h2 id="ui-screenshots"><a class="header" href="#ui-screenshots">UI Screenshots</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Current Thunderbird Migration Screen</th><th>Suggestion Add Account with Thundermail lean version</th></tr>
+</thead>
+<tbody>
+<tr><td><img width="70%" src="resources/tfa-migration-screen.png" /></td><td><img src="resources/thundermail-add-account-interim-screen.png" /></td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="open-questions"><a class="header" href="#open-questions">Open Questions</a></h2>
 <ul>
-<li>One class per file (with exceptions for related small classes)</li>
-<li>Package structure should reflect the module structure</li>
-<li>Imports should be organized alphabetically</li>
+<li>Should we delete the <code>TbOnboardingMigrationScreen</code> and its dependencies from the codebase?</li>
 </ul>
-</li>
-</ol>
-<h3 id="kotlin-best-practices"><a class="header" href="#kotlin-best-practices">Kotlin Best Practices</a></h3>
-<ul>
-<li>Prefer <code>val</code> (immutable) over <code>var</code> when possible</li>
-<li>Use null-safety (<code>?.</code>, <code>?:</code>, <code>requireNotNull</code>, <code>checkNotNull</code>)</li>
-<li>Use extension functions to enhance existing classes</li>
-<li>Leverage Kotlin’s functional programming features (<code>map</code>, <code>filter</code>, etc.) for cleaner code</li>
-<li>Use <code>data classes</code> for model objects</li>
-<li>Implement ‘sealed classes’ for representing finite sets of options</li>
-<li>Use <code>coroutines</code> for asynchronous operations</li>
-<li>Use <code>flow</code> for reactive programming</li>
-</ul>
-<h3 id="android-best-practices"><a class="header" href="#android-best-practices">Android Best Practices</a></h3>
-<ul>
-<li>Follow the <a href="https://developer.android.com/topic/architecture">Android app architecture guidelines</a></li>
-<li>Use Jetpack libraries when appropriate</li>
-<li>Manage lifecycle properly (<code>ViewModel</code>, <code>LifecycleOwner</code>)</li>
-<li>Handle configuration changes (rotation, locale, dark mode)</li>
-<li>Optimize for different screen sizes and orientations</li>
-<li>Follow Material 3 design guidelines</li>
-</ul>
-<h2 id="-security-practices"><a class="header" href="#-security-practices">🔒 Security Practices</a></h2>
-<p>Security is critical. Always:</p>
-<ul>
-<li>Validate all input</li>
-<li>Avoid logging sensitive data</li>
-<li>Use HTTPS/TLS for all network traffic</li>
-<li>Store secrets securely (e.g., Android Keystore, EncryptedSharedPreferences)</li>
-<li>Apply least privilege to permissions</li>
-<li>Follow Android’s <a href="https://developer.android.com/topic/security/best-practices">security best practices</a></li>
-</ul>
-<h2 id="-testing"><a class="header" href="#-testing">🧪 Testing</a></h2>
-<p>Comprehensive testing is a critical aspect of code quality.</p>
-<p>Key expectations:</p>
-<ul>
-<li>Write tests for new/changed code</li>
-<li>Use meaningful, deterministic tests</li>
-<li>Follow Arrange–Act–Assert pattern</li>
-<li>Maintain high coverage</li>
-</ul>
-<p>👉 See <a href="testing-guide.html">Testing Guide</a> for frameworks, patterns, and CI coverage rules.</p>
-<h2 id="-continuous-integration"><a class="header" href="#-continuous-integration">🔄 Continuous Integration</a></h2>
-<p>The project uses GitHub Actions for continuous integration. Each pull request triggers automated checks for:</p>
-<ul>
-<li>Build success</li>
-<li>Test execution</li>
-<li>Lint issues</li>
-<li>Detekt issues</li>
-<li>Spotless formatting</li>
-</ul>
-<p>The CI configuration is defined in the <code>.github/workflows</code> directory. The main workflow file is <code>android.yml</code>, which
-defines the CI pipeline for Android builds.</p>
-<p>👉 See <a href="code-review-guide.html">Code Review Guide</a> for PR expectations and etiquette.</p>
+<h2 id="outcome"><a class="header" href="#outcome">Outcome</a></h2>
+<p>The team decided to implement the suggested screen. We might have a follow-up task for deleting the
+<code>TbOnboardingMigrationScreen</code> and/or include the <code>Import settings</code> button in another screen.</p>
 <footer id="last-change">Last change: <time datetime="2026-07-30">2026-07-30</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/3361deb">3361deb</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../contributing/development-guide.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../engineering/rfcs/0001-changelog-system-replacement.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../contributing/code-review-guide.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../engineering/rfcs/0003-render-inline-images-in-plain-text-messages.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -388,11 +252,11 @@ defines the CI pipeline for Android builds.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../contributing/development-guide.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../engineering/rfcs/0001-changelog-system-replacement.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../contributing/code-review-guide.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../engineering/rfcs/0003-render-inline-images-in-plain-text-messages.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
@@ -412,18 +276,18 @@ defines the CI pipeline for Android builds.</p>
         </script>
 
 
-        <script src="../elasticlunr-ef4e11c1.min.js"></script>
-        <script src="../mark-09e88c2c.min.js"></script>
-        <script src="../searcher-09f2665d.js"></script>
+        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../../mark-09e88c2c.min.js"></script>
+        <script src="../../searcher-09f2665d.js"></script>
 
-        <script src="../clipboard-1626706a.min.js"></script>
-        <script src="../highlight-abc7f01d.js"></script>
-        <script src="../book-7163d6e2.js"></script>
+        <script src="../../clipboard-1626706a.min.js"></script>
+        <script src="../../highlight-abc7f01d.js"></script>
+        <script src="../../book-7163d6e2.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="../assets/additional/js/mermaid-217b66ef.min.js"></script>
-        <script src="../assets/additional/js/mermaid-init-73b11a66.js"></script>
-        <script src="../assets/additional/js/navigation-dde10ad4.js"></script>
+        <script src="../../assets/additional/js/mermaid-217b66ef.min.js"></script>
+        <script src="../../assets/additional/js/mermaid-init-73b11a66.js"></script>
+        <script src="../../assets/additional/js/navigation-dde10ad4.js"></script>
 
 
 
