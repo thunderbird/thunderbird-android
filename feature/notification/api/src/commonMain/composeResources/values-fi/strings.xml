@@ -47,4 +47,7 @@
     <string name="sent_folder_not_found_title">Lähetetyt-kansio ei ole saatavilla.</string>
     <string name="notification_bg_sync_text">%1$s: %2$s</string>
     <string name="banner_inline_notification_check_error_notifications">Tarkista virheilmoitukset</string>
+    <string name="notification_authentication_outgoing_server_error_text"></string>
+    <string name="notification_action_assign_sent_folder"></string>
+    <string name="notification_authentication_incoming_server_error_text"></string>
 </resources>
