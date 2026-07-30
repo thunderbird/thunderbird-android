@@ -921,7 +921,6 @@
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
     <string name="sort_by_then_by">Després per…</string>
     <string name="global_settings_splitview_when_unfolded">Quan el dispositiu està desplegat</string>
-    <string name="encrypted_attachment_title">Adjunt xifrat</string>
     <string name="debug_invalidate_access_token">Test: Invalidar el token d\'accés</string>
     <string name="debug_invalidate_access_token_done">Token d\'accés anul·lat. La propera sol·licitud l\'actualitzarà.</string>
     <string name="debug_invalidate_access_token_unavailable">Token OAuth no disponible per aquest compte.</string>

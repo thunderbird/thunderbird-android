@@ -927,7 +927,6 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="message_view_attachments_title">Bilagor</string>
     <string name="message_view_attachments_save_all">Spara alla</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
-    <string name="encrypted_attachment_title">Krypterad bilaga</string>
     <string name="no_network_message_will_be_sent_later_toast">Offline. Meddelandet skickas när anslutningen är tillgänglig</string>
     <string name="notification_actions_settings_title">Aviseringsåtgärder</string>
     <string name="notification_actions_settings_summary">Välj vilka åtgärder som visas i e-postaviseringar</string>

@@ -917,6 +917,5 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
     <string name="general_settings_message_list_date_time_format_iso">ISO-snið</string>
     <string name="sort_by_then_by">Síðan eftir…</string>
     <string name="global_settings_splitview_when_unfolded">Þegar tækið er útflett</string>
-    <string name="encrypted_attachment_title">Dulritað viðhengi</string>
     <string name="debug_feature_flags">VILLULEIT: Flögg eiginleika</string>
 </resources>

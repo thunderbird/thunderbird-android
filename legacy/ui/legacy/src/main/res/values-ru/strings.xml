@@ -945,7 +945,6 @@
     <string name="message_view_attachments_save_all">Сохранить все</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
     <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
-    <string name="encrypted_attachment_title">Зашифрованное вложение</string>
     <string name="no_network_message_will_be_sent_later_toast">Нет сети. Сообщение будет отправлено, как только появится соединение.</string>
     <string name="notification_actions_settings_title">Действия в уведомлениях</string>
     <string name="notification_actions_settings_summary">Выбор действий, которые будут доступны в уведомлениях об электронной почте</string>

@@ -945,7 +945,6 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="message_view_attachments_title">Přílohy</string>
     <string name="message_view_attachments_save_all">Uložit vše</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
-    <string name="encrypted_attachment_title">Zašifrovaná příloha</string>
     <string name="no_network_message_will_be_sent_later_toast">Jste offline. Zpráva bude odeslána, jakmile bude dostupné připojení</string>
     <string name="notification_actions_settings_title">Akce oznámení</string>
     <string name="notification_actions_settings_summary">Vyberte, které akce se zobrazí v oznámeních o e-mailech</string>
