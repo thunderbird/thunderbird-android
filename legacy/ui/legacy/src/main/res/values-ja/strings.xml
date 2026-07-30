@@ -120,9 +120,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">通知エラー</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">新着メッセージのシステム通知の作成中にエラーが発生しました。通知サウンドが存在しないことが原因と思われます。
-\n
-\nタップして通知設定を開いてください。</string>
+    <string name="notification_notify_error_text">新着メッセージのシステム通知の作成中にエラーが発生しました。通知サウンドが存在しないことが原因と思われます。 \n \nタップして通知設定を開いてください。</string>
     <string name="notification_bg_sync_ticker">メール確認中: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">メール確認中</string>
     <string name="notification_bg_send_ticker">メール送信中: <xliff:g id="account">%s</xliff:g></string>
@@ -676,8 +674,7 @@
     <string name="enable_sign_only">PGP 署名のみ有効にする</string>
     <string name="disable_sign_only">PGP 署名のみ無効にする</string>
     <string name="openpgp_inline_title">PGP/INLINE モード</string>
-    <string name="openpgp_inline_text">メールは PGP/INLINE 形式で送信されます。
-\nこれは互換性のためでのみ使用する必要があります:</string>
+    <string name="openpgp_inline_text">メールは PGP/INLINE 形式で送信されます。 \nこれは互換性のためでのみ使用する必要があります:</string>
     <string name="openpgp_inline_plus_compat">一部のクライアントはこの形式のみ対応します</string>
     <string name="openpgp_inline_minus_transit">署名は転送中に破損する可能性があります</string>
     <string name="openpgp_inline_minus_attach">添付ファイルに対応していません</string>
@@ -738,8 +735,7 @@
     <string name="error_sign_only_no_encryption">署名のみモードでは暗号化できません！</string>
     <string name="unsigned_text_divider_label">未署名のテキスト</string>
     <string name="crypto_no_provider_title">このメールは暗号化されています</string>
-    <string name="crypto_no_provider_message">このメールは OpenPGP で暗号化されました。
-\nメールを読むためには、OpenPGP と互換性のあるアプリをインストールして設定する必要があります。</string>
+    <string name="crypto_no_provider_message">このメールは OpenPGP で暗号化されました。 \nメールを読むためには、OpenPGP と互換性のあるアプリをインストールして設定する必要があります。</string>
     <string name="crypto_no_provider_button">設定に移動</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -910,4 +906,38 @@
     <string name="general_settings_message_list_date_time_format_full">フル</string>
     <string name="sort_by_then_by">次に…</string>
     <string name="global_settings_splitview_when_unfolded">端末が折り畳まれていないとき分割</string>
+    <string name="accessibility_move_item_up"></string>
+    <string name="notification_actions_settings_description"></string>
+    <string name="animation_setting_follow_system"></string>
+    <string name="message_view_attachments_save_all"></string>
+    <string name="notification_actions_settings_summary"></string>
+    <string name="notification_summary_delete_summary"></string>
+    <string name="notification_summary_delete_title"></string>
+    <string name="notification_actions_cutoff_state"></string>
+    <string name="message_view_attachments_view_all"></string>
+    <string name="accessibility_move_cutoff_up"></string>
+    <string name="message_view_attachments_view"></string>
+    <string name="changelog_type_new_text"></string>
+    <string name="notification_action_star"></string>
+    <string name="changelog_latest_label_text"></string>
+    <string name="changelog_type_fixed_text"></string>
+    <string name="notification_show_contact_picture_title"></string>
+    <string name="notification_actions_cutoff_description"></string>
+    <string name="notification_show_contact_picture_summary"></string>
+    <string name="accessibility_move_cutoff_down"></string>
+    <string name="general_settings_message_list_date_time_format_iso"></string>
+    <string name="notification_actions_hidden_state"></string>
+    <string name="accessibility_move_down"></string>
+    <plurals name="message_view_attachment_summary">
+    </plurals>
+    <string name="message_view_attachments_title"></string>
+    <string name="animation_setting_off"></string>
+    <string name="animation_setting_on"></string>
+    <string name="notification_actions_shown_state"></string>
+    <string name="changelog_type_changed_text"></string>
+    <string name="no_network_message_will_be_sent_later_toast"></string>
+    <string name="accessibility_move_up"></string>
+    <string name="accessibility_move_item_down"></string>
+    <string name="notification_actions_settings_title"></string>
+    <string name="message_view_single_attachment_summary"></string>
 </resources>
