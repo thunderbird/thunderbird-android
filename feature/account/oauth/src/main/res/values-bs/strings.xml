@@ -9,4 +9,6 @@
     <string name="account_oauth_error_canceled">Autorizacija otkazana</string>
     <string name="account_oauth_sign_in_description">Preusmjerit ćemo vas na vašeg provajdera e-pošte da se prijavite. Morate odobriti aplikaciji pristup vašem računu e-pošte.</string>
     <string name="account_oauth_error_failed">Autorizacija neuspjela iz sljedećeg razloga: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_google_sign_in_support_text_link_text"></string>
+    <string name="account_oauth_google_sign_in_support_text"></string>
 </resources>
