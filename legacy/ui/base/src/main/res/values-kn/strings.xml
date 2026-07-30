@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="star_button_description"></string>
+    <string name="cancel_action"></string>
+    <string name="okay_action"></string>
 </resources>
