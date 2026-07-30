@@ -1,3 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_server_validation_incoming_loading_message"></string>
+    <string name="account_server_validation_error_missing_server_capability"></string>
+    <string name="account_server_validation_error_authentication"></string>
+    <string name="account_server_validation_outgoing_loading_message"></string>
+    <string name="account_server_validation_error_network"></string>
+    <string name="account_server_validation_outgoing_success"></string>
+    <string name="account_server_validation_error_unknown"></string>
+    <string name="account_server_validation_sign_in"></string>
+    <string name="account_server_validation_outgoing_loading_error"></string>
+    <string name="account_server_validation_incoming_success"></string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure"></string>
+    <string name="account_server_validation_error_missing_server_capability_details"></string>
+    <string name="account_server_validation_incoming_loading_error"></string>
+    <string name="account_server_validation_error_server"></string>
+    <string name="account_server_validation_error_client_certificate_expired"></string>
+    <string name="account_server_validation_error_details"></string>
 </resources>
