@@ -67,15 +67,15 @@
     <string name="mark_as_read_action">Označit jako přečtené</string>
     <string name="send_alternate_action">Sdílet</string>
     <string name="send_alternate_chooser_title">Vybrat odesílatele</string>
-    <string name="flag_action">Přidat \u2605</string>
-    <string name="unflag_action">Odebrat \u2606</string>
+    <string name="flag_action">Přidat ★</string>
+    <string name="unflag_action">Odebrat ☆</string>
     <string name="copy_action">Kopírovat</string>
     <string name="unsubscribe_action">Odhlásit odběr</string>
     <string name="show_headers_action">Zobrazit hlavičku</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Adresa zkopírována do schránky</item>
         <item quantity="few">Adresy zkopírovány do schránky</item>
-        <item quantity="many">Adres zkopírováno do schránky</item>
+        <item quantity="many">Adresy zkopírovány do schránky</item>
         <item quantity="other">Adresy zkopírovány do schránky</item>
     </plurals>
     <string name="copy_subject_to_clipboard">Text předmětu zkopírován do schránky</string>
@@ -93,7 +93,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Bez předmětu)</string>
     <string name="general_no_sender">Bez odesílatele</string>
-    <string name="status_loading_more">Načítání zpráv\u2026</string>
+    <string name="status_loading_more">Načítání zpráv…</string>
     <string name="status_network_error">Chyba spojení</string>
     <string name="status_invalid_id_error">Zpráva nenalezena</string>
     <string name="status_loading_error">Chyba při načítání zprávy</string>
@@ -125,9 +125,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Chyba oznámení</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Vyskytla se chyba při vytvoření systémového oznámení pro novou zprávu. Důvodem je nejspíš chybějící zvuk oznámení.
-\n
-\nKlepnutím otevřete nastavení oznámení.</string>
+    <string name="notification_notify_error_text">Vyskytla se chyba při vytvoření systémového oznámení pro novou zprávu. Důvodem je nejspíš chybějící zvuk oznámení. \n \nKlepnutím otevřete nastavení oznámení.</string>
     <string name="notification_bg_sync_ticker">Kontrola nové pošty: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Kontrola nové pošty</string>
     <string name="notification_bg_send_ticker">Odesílání pošty: <xliff:g id="account">%s</xliff:g></string>
@@ -188,7 +186,7 @@
     <string name="from_same_sender">Více od tohoto odesílatele</string>
     <string name="message_discarded_toast">Zpráva byla zrušena</string>
     <string name="message_saved_toast">Zpráva byla uložena jako koncept</string>
-    <string name="global_settings_flag_label">Zprávy s \u2605</string>
+    <string name="global_settings_flag_label">Zprávy s ★</string>
     <string name="global_settings_flag_summary">Hvězdička indikuje označenou zprávu</string>
     <string name="global_settings_preview_lines_label">Počet řádků náhledu</string>
     <string name="global_settings_show_correspondent_names_label">Zobraz jméno odesílatele</string>
@@ -466,9 +464,9 @@
     <string name="sort_subject_alpha">Předmět abecedně A-Z</string>
     <string name="sort_subject_re_alpha">Předmět abecedně Z-A</string>
     <string name="sort_sender_alpha">Odesílatel A-Z</string>
-    <string name="sort_sender_re_alpha">Odesílatel  Z-A</string>
-    <string name="sort_flagged_first">S \u2605 první</string>
-    <string name="sort_flagged_last">Bez \u2606 první</string>
+    <string name="sort_sender_re_alpha">Odesílatel Z-A</string>
+    <string name="sort_flagged_first">S ★ první</string>
+    <string name="sort_flagged_last">Bez ☆ první</string>
     <string name="sort_unread_first">Nepřečtené první</string>
     <string name="sort_unread_last">Přečtené první</string>
     <string name="sort_attach_first">S přílohou první</string>
@@ -694,8 +692,7 @@
     <string name="enable_sign_only">Povolit režim podepisování PGP</string>
     <string name="disable_sign_only">Zakázat jen PGP podpis</string>
     <string name="openpgp_inline_title">Režim PGP/INLINE</string>
-    <string name="openpgp_inline_text">E-mail je odeslán v PGP/INLINE formátu.
-\nTen má být používán jen z důvodu kompatibility:</string>
+    <string name="openpgp_inline_text">E-mail je odeslán v PGP/INLINE formátu. \nTen má být používán jen z důvodu kompatibility:</string>
     <string name="openpgp_inline_plus_compat">Některé klientské aplikace podporují pouze tento formát</string>
     <string name="openpgp_inline_minus_transit">Může dojít k poškození podpisu v průběhu přenosu</string>
     <string name="openpgp_inline_minus_attach">Přílohy nejsou podporovány</string>
@@ -756,8 +753,7 @@
     <string name="error_sign_only_no_encryption">Šifrování není v režimu podepisování dostupné!</string>
     <string name="unsigned_text_divider_label">Nepodepsaný text</string>
     <string name="crypto_no_provider_title">Tento e-mail je šifrovaný</string>
-    <string name="crypto_no_provider_message">Tento e-mail byl zašifrován pomocí OpenPGP.
-\nPro jeho přečtení je třeba nainstalovat a nastavit kompatibilní OpenPGP aplikaci.</string>
+    <string name="crypto_no_provider_message">Tento e-mail byl zašifrován pomocí OpenPGP. \nPro jeho přečtení je třeba nainstalovat a nastavit kompatibilní OpenPGP aplikaci.</string>
     <string name="crypto_no_provider_button">Přejít do nastavení</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -795,11 +791,7 @@
     <string name="ac_transfer_finish">Pro dokončení otevřete zprávu na svém dalším zařízení a zadejte nastavovací kód.</string>
     <string name="ac_transfer_show_code">Zobrazit nastavovací kód</string>
     <string name="ac_transfer_msg_subject">Autocrypt nastavovací správa</string>
-    <string name="ac_transfer_msg_body">Tato zpráva obsahuje všechny údaje pro zabezpečené přenesení vašich nastavení Autocrypt společně s tajným klíčem z původního zařízení.
-
-Pro nastavení nového zařízení pro Autocrypt, postupujte podle pokynů které by se měly zobrazit na novém zařízení.
-
-Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného klíče. Pokud toho chcete využít, měli byste si zapsat heslo a bezpečně ho uložit.</string>
+    <string name="ac_transfer_msg_body">Tato zpráva obsahuje všechny údaje pro zabezpečené přenesení vašich nastavení Autocrypt společně s tajným klíčem z původního zařízení. Pro nastavení nového zařízení pro Autocrypt, postupujte podle pokynů které by se měly zobrazit na novém zařízení. Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného klíče. Pokud toho chcete využít, měli byste si zapsat heslo a bezpečně ho uložit.</string>
     <string name="ac_transfer_error_send">Při odesílání zprávy došlo k chybě. Zkontrolujte své připojení k síti a nastavení odchozího serveru.</string>
     <string name="switch_on">Zapnuto</string>
     <string name="switch_off">Vypnuto</string>
