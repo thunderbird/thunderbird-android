@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_sign_in_with_google_button"></string>
+    <string name="account_oauth_loading_error"></string>
+    <string name="account_oauth_error_failed"></string>
+    <string name="account_oauth_error_browser_not_available"></string>
+    <string name="account_oauth_error_not_supported"></string>
+    <string name="account_oauth_error_canceled"></string>
+    <string name="account_oauth_google_sign_in_support_text_link_text"></string>
+    <string name="account_oauth_loading_message"></string>
+    <string name="account_oauth_sign_in_description"></string>
+    <string name="account_oauth_google_sign_in_support_text"></string>
+    <string name="account_oauth_sign_in_button"></string>
+</resources>
