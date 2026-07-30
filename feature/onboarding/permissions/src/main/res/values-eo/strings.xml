@@ -4,4 +4,7 @@
     <string name="onboarding_permissions_skip_button">Preterpasi</string>
     <string name="onboarding_permissions_notifications_title">Sciigoj</string>
     <string name="onboarding_permissions_contacts_title">Kontaktoj</string>
+    <string name="onboarding_permissions_contacts_description"></string>
+    <string name="onboarding_permissions_notifications_description"></string>
+    <string name="onboarding_permissions_screen_title"></string>
 </resources>
