@@ -19,4 +19,10 @@
     <string name="debug_settings_feature_flag_apply_changes">Bruk endringane</string>
     <string name="debug_settings_feature_flag_overridden">"overstyrt; "</string>
     <string name="debug_settings_feature_flag_default_value">standardverdi: %1$b</string>
+    <string name="debug_settings_notification_status_log"></string>
+    <string name="debug_settings_feature_flag_modified_indicator"></string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button"></string>
+    <string name="debug_settings_feature_flag_title"></string>
+    <string name="debug_settings_notifications_trigger_notification"></string>
+    <string name="debug_settings_notifications_preparing_notification"></string>
 </resources>
