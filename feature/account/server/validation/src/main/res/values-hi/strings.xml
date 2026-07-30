@@ -11,4 +11,9 @@
     <string name="account_server_validation_incoming_success">इनकमिंग सर्वर सेटिंग सही है!</string>
     <string name="account_server_validation_incoming_loading_error">इनकमिंग सर्वर सेटिंग चेक करने में फेल!</string>
     <string name="account_server_validation_error_server">सर्वर गड़बड़</string>
+    <string name="account_server_validation_error_missing_server_capability"></string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure"></string>
+    <string name="account_server_validation_error_missing_server_capability_details"></string>
+    <string name="account_server_validation_error_client_certificate_expired"></string>
+    <string name="account_server_validation_error_details"></string>
 </resources>
