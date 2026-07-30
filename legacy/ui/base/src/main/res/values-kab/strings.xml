@@ -2,4 +2,5 @@
 <resources>
     <string name="cancel_action">Sefsex</string>
     <string name="star_button_description">Rnu itri</string>
+    <string name="okay_action"></string>
 </resources>
