@@ -15,4 +15,14 @@
     <string name="debug_settings_feature_flag_apply_changes">Aplicar cambios</string>
     <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
     <string name="debug_settings_feature_flag_default_value">valor por defecto: %1$b</string>
+    <string name="debug_settings_notifications_in_app_notification"></string>
+    <string name="debug_settings_notification_status_log"></string>
+    <string name="debug_settings_notifications_single_mail_preview"></string>
+    <string name="debug_settings_notifications_common_notification_information"></string>
+    <string name="debug_settings_feature_flag_title"></string>
+    <string name="debug_settings_feature_flag_overridden"></string>
+    <string name="debug_settings_notifications_trigger_notification"></string>
+    <string name="debug_settings_notifications_clear_status_log"></string>
+    <string name="debug_settings_notifications_preparing_notification"></string>
+    <string name="debug_settings_screen_title"></string>
 </resources>
