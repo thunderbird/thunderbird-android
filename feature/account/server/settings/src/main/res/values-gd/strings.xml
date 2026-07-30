@@ -32,4 +32,6 @@
     <string name="account_server_settings_validation_error_server_required">Tha feum air ainm an fhrithealaiche.</string>
     <string name="account_server_settings_validation_error_port_invalid">Tha feum air port (feumaidh e a bhith eadar 1 is 65535).</string>
     <string name="account_server_settings_validation_error_username_required">Tha feum air ainm-cleachdaiche.</string>
+    <string name="account_server_settings_password_authentication_failed"></string>
+    <string name="account_server_settings_password_authentication_unable_to_start"></string>
 </resources>
