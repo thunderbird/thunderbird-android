@@ -91,7 +91,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Gairik ez)</string>
     <string name="general_no_sender">Bidaltzailerik ez</string>
-    <string name="status_loading_more">Mezuak kargatzen\u2026</string>
+    <string name="status_loading_more">Mezuak kargatzen…</string>
     <string name="status_network_error">Konexio errorea</string>
     <string name="status_invalid_id_error">Ez da mezua aurkitu</string>
     <string name="status_loading_error">Akatsa mezua kargatzean</string>
@@ -207,7 +207,7 @@
     <string name="global_settings_confirm_menu_mark_all_read">Markatu mezu guztiak irakurritako gisa</string>
     <string name="global_settings_confirm_action_delete_notif">Ezabatu (jakinarazpenetatik)</string>
     <!--Title of the screen to configure swipe actions-->
-    <string name="general_settings_swipe_actions_title">Hatza pasatzearen ekintzak </string>
+    <string name="general_settings_swipe_actions_title">Hatza pasatzearen ekintzak</string>
     <!--Name of the setting to configure the right swipe action-->
     <string name="general_settings_right_swipe_title">Pasatu hatza eskubirantz</string>
     <!--Name of the setting to configure the left swipe action-->
@@ -779,11 +779,7 @@
     <string name="ac_transfer_finish">Bukatzeko, ireki mezua zure beste gailuan eta sartu ezarpen kodea.</string>
     <string name="ac_transfer_show_code">Erakutsi ezarpen kodea</string>
     <string name="ac_transfer_msg_subject">Autocrypt ezarpen mezua</string>
-    <string name="ac_transfer_msg_body">Mezu honek zure Autocrypt ezarpenak eta gako sekretuak jatorrizko gailutik partekatzeko informazio guztia du.
-
-Zure gailu berrian Autocrypt ezartzeko, jarraitu gailu berrian agertuko zaizkizun argibideak.
-
-Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau egin nahi baduzu, pasahitza idatzi beharko zenuke eta toki seguruan gorde.</string>
+    <string name="ac_transfer_msg_body">Mezu honek zure Autocrypt ezarpenak eta gako sekretuak jatorrizko gailutik partekatzeko informazio guztia du. Zure gailu berrian Autocrypt ezartzeko, jarraitu gailu berrian agertuko zaizkizun argibideak. Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau egin nahi baduzu, pasahitza idatzi beharko zenuke eta toki seguruan gorde.</string>
     <string name="ac_transfer_error_send">Errore bat gertatu da mezua bidaltzean. Egiaztatu zure sare konexioa eta mezuak bidaltzeko zerbitzariaren konfigurazioa.</string>
     <string name="switch_on">Bai</string>
     <string name="switch_off">Itzali</string>
@@ -916,4 +912,37 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
     <string name="debug_invalidate_access_token_cannot_modify">Ezin izan da gordetako sarbide-tokena aldatu. Saiatu tokiko baliogabetzea.</string>
     <string name="debug_invalidate_access_token_already_modified">Dagoeneko aldatu da gordetako sarbide-tokena.</string>
     <string name="debug_feature_flags">ARAZKETA: funtzioen markak</string>
+    <string name="accessibility_move_item_up"></string>
+    <string name="notification_actions_settings_description"></string>
+    <string name="animation_setting_follow_system"></string>
+    <string name="message_view_attachments_save_all"></string>
+    <string name="notification_actions_settings_summary"></string>
+    <string name="sort_by_then_by"></string>
+    <string name="notification_summary_delete_summary"></string>
+    <string name="notification_summary_delete_title"></string>
+    <string name="notification_actions_cutoff_state"></string>
+    <string name="message_view_attachments_view_all"></string>
+    <string name="accessibility_move_cutoff_up"></string>
+    <string name="message_view_attachments_view"></string>
+    <string name="changelog_type_new_text"></string>
+    <string name="notification_action_star"></string>
+    <string name="changelog_latest_label_text"></string>
+    <string name="changelog_type_fixed_text"></string>
+    <string name="notification_show_contact_picture_title"></string>
+    <string name="notification_actions_cutoff_description"></string>
+    <string name="notification_show_contact_picture_summary"></string>
+    <string name="accessibility_move_cutoff_down"></string>
+    <string name="general_settings_message_list_date_time_format_iso"></string>
+    <string name="notification_actions_hidden_state"></string>
+    <string name="accessibility_move_down"></string>
+    <string name="message_view_attachments_title"></string>
+    <string name="animation_setting_off"></string>
+    <string name="animation_setting_on"></string>
+    <string name="notification_actions_shown_state"></string>
+    <string name="changelog_type_changed_text"></string>
+    <string name="no_network_message_will_be_sent_later_toast"></string>
+    <string name="accessibility_move_up"></string>
+    <string name="accessibility_move_item_down"></string>
+    <string name="notification_actions_settings_title"></string>
+    <string name="message_view_single_attachment_summary"></string>
 </resources>
