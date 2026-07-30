@@ -2,4 +2,5 @@
 <resources>
     <string name="account_common_button_next">အာဂတ</string>
     <string name="account_common_button_back">လက်ကရဴ</string>
+    <string name="account_common_error_server_message"></string>
 </resources>
