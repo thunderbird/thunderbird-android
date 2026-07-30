@@ -32,4 +32,13 @@
     <string name="settings_import_oauth_sign_in">Log ind</string>
     <string name="settings_import_oauth_sign_in_with_google">Log ind med Google</string>
     <string name="settings_import_general_settings_item">Generelt</string>
+    <string name="settings_import_scan_qr_code_button"></string>
+    <string name="settings_import_app_version_not_supported"></string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled"></string>
+    <string name="settings_import_oauth_error_oauth_flow_failed"></string>
+    <string name="settings_import_oauth_error_oauth_not_supported"></string>
+    <string name="settings_import_pick_app_button"></string>
+    <string name="settings_import_oauth_description"></string>
+    <string name="settings_import_pick_app_dialog_title"></string>
+    <string name="settings_import_oauth_error_browser_not_found"></string>
 </resources>
