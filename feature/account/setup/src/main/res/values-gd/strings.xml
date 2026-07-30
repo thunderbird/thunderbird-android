@@ -63,4 +63,6 @@
     </plurals>
     <string name="account_setup_special_folders_form_description_automatic">Gabhaidh an t-inneart “Fèin-obrachail” ri atharraichean a rinn am frithealaiche gu fèin-obrachail. Tha luach làithreach an fhrithealaiche ann an eadar-ràdhan.</string>
     <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Fhuair sinn rèiteachadh frithealaiche a’ phuist-d agad air ceangal nach eil buileach tèarainte. ’S ciall dha sin gu bheil cunnart beag ann gu bheil cuideigin air beantainn ris. Thoir sùil eile air an rèiteachadh is dèan cinnteach gu bheil gach rud mar bu chòir.</string>
+    <string name="account_setup_options_your_name_label"></string>
+    <string name="account_setup_options_your_name_error_required"></string>
 </resources>
