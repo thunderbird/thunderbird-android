@@ -10,4 +10,7 @@
     <string name="account_server_certificate_not_valid_after">Nije valjano nakon</string>
     <string name="account_server_certificate_button_advanced">Napredno</string>
     <string name="account_server_certificate_issuer">Izdavatelj</string>
+    <string name="account_server_certificate_subject_alternative_names"></string>
+    <string name="account_server_certificate_fingerprints_section"></string>
+    <string name="account_server_certificate_subject"></string>
 </resources>
