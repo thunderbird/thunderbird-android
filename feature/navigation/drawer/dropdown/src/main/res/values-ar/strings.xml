@@ -9,4 +9,5 @@
     <string name="navigation_drawer_dropdown_avount_view_selection_title">قائمة الحسابات</string>
     <string name="navigation_drawer_dropdown_unified_account_title">حساب موحد</string>
     <string name="navigation_drawer_dropdown_action_add_account">إضافة حساب</string>
+    <string name="navigation_drawer_dropdown_action_sync_account"></string>
 </resources>
