@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_message">Bli med oss i oppdraget om å skape den beste privatlivsorienterte e-postopplevelsen som kan tilpasses deg.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">Du hjelper oss drømme stort! Støtten din lar oss oppnå det ekstraordinære, med varig påvirkning på det vi gjør.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xs_title">Essensielt månedlig bidrag</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>
