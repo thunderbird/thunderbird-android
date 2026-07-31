@@ -1,28 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="debug_settings_screen_title">Secret Debug Settings Screen</string>
-    <string name="debug_settings_notifications_single_mail_subject"></string>
-    <string name="debug_settings_notifications_in_app_notification"></string>
-    <string name="debug_settings_notification_status_log"></string>
-    <string name="debug_settings_feature_flag_modified_indicator"></string>
-    <string name="debug_settings_feature_flag_default_value"></string>
-    <string name="debug_settings_notifications_single_mail_sender"></string>
-    <string name="debug_settings_feature_flag_unsaved_changes_content_text"></string>
-    <string name="debug_settings_notifications_single_mail_preview"></string>
-    <string name="debug_settings_notifications_system_notification"></string>
-    <string name="debug_settings_notifications_common_notification_information"></string>
-    <string name="debug_settings_feature_flag_unsaved_changes_stay_button"></string>
-    <string name="debug_settings_feature_flag_title"></string>
-    <string name="debug_settings_feature_flag_unsaved_changes"></string>
-    <string name="debug_settings_feature_flag_overridden"></string>
-    <string name="debug_settings_notifications_trigger_notification"></string>
-    <string name="debug_settings_notifications_status"></string>
-    <string name="debug_settings_notifications_clear_status_log"></string>
-    <string name="debug_settings_notifications_preparing_notification"></string>
-    <string name="debug_settings_feature_flag_restore_default_values"></string>
-    <string name="debug_settings_feature_flag_unsaved_changes_leave_button"></string>
-    <string name="debug_settings_notifications_title"></string>
-    <string name="debug_settings_feature_flag_apply_changes"></string>
-    <string name="debug_settings_notifications_loading"></string>
-    <string name="debug_settings_notifications_single_mail_summary"></string>
 </resources>

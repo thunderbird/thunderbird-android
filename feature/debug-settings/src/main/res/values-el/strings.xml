@@ -16,13 +16,4 @@
     <string name="debug_settings_notifications_status">"Κατάσταση: "</string>
     <string name="debug_settings_feature_flag_unsaved_changes">Μη αποθηκευμένες αλλαγές</string>
     <string name="debug_settings_notifications_in_app_notification">Ειδοποίηση εντός εφαρμογής</string>
-    <string name="debug_settings_notification_status_log"></string>
-    <string name="debug_settings_notifications_system_notification"></string>
-    <string name="debug_settings_notifications_common_notification_information"></string>
-    <string name="debug_settings_feature_flag_title"></string>
-    <string name="debug_settings_feature_flag_overridden"></string>
-    <string name="debug_settings_notifications_trigger_notification"></string>
-    <string name="debug_settings_notifications_clear_status_log"></string>
-    <string name="debug_settings_notifications_preparing_notification"></string>
-    <string name="debug_settings_screen_title"></string>
 </resources>
