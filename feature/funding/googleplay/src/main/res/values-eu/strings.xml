@@ -54,6 +54,4 @@
     <string name="funding_googleplay_contribution_reminder_statement_point_2">Ez dugu zure datuak saltzen.</string>
     <string name="funding_googleplay_contribution_reminder_claim">Gure finantzak soilik zu bezalako erabiltzaileen ekarpenek elikatzen dituzte.</string>
     <string name="funding_googleplay_contribution_reminder_message">Bat egin gure misioan pribatutasuna errespetatzen duen eta pertsonalizagarria den posta elektronikoko esperientzia onena sortzeko.</string>
-    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
-    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>

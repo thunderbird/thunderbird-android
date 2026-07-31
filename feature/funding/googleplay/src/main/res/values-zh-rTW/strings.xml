@@ -54,6 +54,4 @@
     <string name="funding_googleplay_contribution_tfa_recurring_l_title">每月主要支持</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xl_title">每月傑出支持</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">每月卓越支持</string>
-    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
-    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>

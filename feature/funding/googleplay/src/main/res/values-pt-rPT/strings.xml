@@ -54,6 +54,4 @@
     <string name="funding_googleplay_contribution_reminder_statement_point_2">Não vendemos os seus dados.</string>
     <string name="funding_googleplay_contribution_reminder_claim">Somos financiados apenas por utilizadores como si.</string>
     <string name="funding_googleplay_contribution_reminder_message">Junte-se à nossa missão de criar a melhor experiência de e-mail personalizável, respeitando ao máximo a sua privacidade.</string>
-    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
-    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>

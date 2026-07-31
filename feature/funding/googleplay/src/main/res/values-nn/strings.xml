@@ -54,6 +54,4 @@
     <string name="funding_googleplay_contribution_reminder_statement">Thunderbird er fri og med open kjeldekode.</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_1">Me viser ikkje reklame.</string>
     <string name="funding_googleplay_contribution_reminder_claim">Me er fullstendig finansiert av brukarar som deg.</string>
-    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
-    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>

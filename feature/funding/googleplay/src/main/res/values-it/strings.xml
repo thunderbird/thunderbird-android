@@ -54,6 +54,4 @@
     <string name="funding_googleplay_contribution_reminder_claim">Siamo finanziati esclusivamente da utenti come te.</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_1">Noi non mostriamo pubblicità.</string>
     <string name="funding_googleplay_contribution_reminder_statement">Thunderbird è libero e open source.</string>
-    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
-    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>

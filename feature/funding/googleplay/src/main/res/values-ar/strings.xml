@@ -54,6 +54,4 @@
     <string name="funding_googleplay_contribution_tfa_recurring_xl_description">دعمكم ملهم! فمساهمتكم تساعدنا على تخطي الحدود وتحقيق أهدافنا.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_l_description">أنت سبب كبير في قدرتنا على القيام بما نقوم به! إن كرمكم يساعدنا على تحقيق إنجازات جديدة.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_m_description">مساهمتك تلمع! أنت مفتاح النهوض بمهمتنا وتحقيق الأثر.</string>
-    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
-    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>

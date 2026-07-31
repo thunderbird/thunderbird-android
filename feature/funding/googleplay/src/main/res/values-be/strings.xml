@@ -54,6 +54,4 @@
     <string name="funding_googleplay_contribution_tfa_onetime_xs_description">Ваша падтрымка дапамагае нам рухацца наперад! Нават самы маленькі ўнёсак стварае хвалі пераменаў, і мы вельмі ўдзячныя вам за вашу падтрымку.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_l_description">Вы — вялікая прычына, чаму мы можам рабіць тое, што робім! Ваша шчодрасць дапамагае нам дасягаць новых вышынь.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Ваша падтрымка натхняе! Ваш унёсак дапамагае нам пашыраць межы і дасягаць нашых мэтаў.</string>
-    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
-    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>

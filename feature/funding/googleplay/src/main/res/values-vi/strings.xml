@@ -54,6 +54,4 @@
     <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">Bạn đang thật sự giúp chúng tôi dám mơ lớn hơn! Sự hỗ trợ tuyệt vời của bạn tiếp thêm năng lượng cho chúng tôi để đạt được những điều phi thường, để lại một tác động lâu dài cho mọi việc chúng tôi làm.</string>
     <string name="funding_googleplay_contribution_header_thank_you">Một lời cảm ơn chân thành đến từ tất cả chúng tôi!</string>
     <string name="funding_googleplay_contribution_header_description">Thunderbird hoàn toàn kiếm tiền hoàn toàn từ các khoản đóng góp từ các người dùng như bạn. Chúng tôi không bao giờ hiện thị quảng cáo hay bán dữ liệu của bạn. Nếu bạn đang tận hưởng Thunderbird, hãy hỗ trợ giúp nó. Chúng tôi không thể làm được việc này mà thiếu bạn được!</string>
-    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
-    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>

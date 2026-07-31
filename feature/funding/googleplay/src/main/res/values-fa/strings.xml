@@ -54,6 +54,4 @@
     <string name="funding_googleplay_contribution_reminder_statement_point_2">ما داده‌های شما را نمی‌فروشیم.</string>
     <string name="funding_googleplay_contribution_reminder_claim">ما فقط توسط کاربرانی مانند شما تأمین مالی می‌شویم.</string>
     <string name="funding_googleplay_contribution_reminder_statement">تاندربرد آزاد و متن‌باز است.</string>
-    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
-    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>

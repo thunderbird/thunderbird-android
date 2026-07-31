@@ -54,6 +54,4 @@
     <string name="funding_googleplay_contribution_reminder_statement">O Thunderbird é gratuito e de código aberto.</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_1">Não exibimos anúncios.</string>
     <string name="funding_googleplay_contribution_reminder_claim">Somos financiados apenas por utilizadores como si.</string>
-    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
-    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
 </resources>

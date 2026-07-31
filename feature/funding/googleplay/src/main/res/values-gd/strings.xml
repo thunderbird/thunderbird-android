@@ -38,22 +38,4 @@
     <string name="funding_googleplay_contribution_reminder_statement_point_1">Cha seall sinn sanasachd.</string>
     <string name="funding_googleplay_contribution_reminder_statement_point_2">Cha reic sinn an dàta agad.</string>
     <string name="funding_googleplay_contribution_reminder_claim">Tha am maoineachadh air fad againn a’ tighinn o luchd-cleachdaidh mar thu fhèin.</string>
-    <string name="funding_googleplay_contribution_footer_payment_cancel_button"></string>
-    <string name="funding_googleplay_contribution_tfa_onetime_xxl_description"></string>
-    <string name="funding_googleplay_contribution_tfa_recurring_xxl_description"></string>
-    <string name="funding_googleplay_contribution_tfa_recurring_xxl_title"></string>
-    <string name="funding_googleplay_contribution_tfa_recurring_l_description"></string>
-    <string name="funding_googleplay_contribution_tfa_recurring_s_title"></string>
-    <string name="funding_googleplay_contribution_tfa_recurring_m_title"></string>
-    <string name="funding_googleplay_contribution_tfa_recurring_l_title"></string>
-    <string name="funding_googleplay_contribution_tfa_recurring_xl_description"></string>
-    <string name="funding_googleplay_contribution_tfa_recurring_s_description"></string>
-    <string name="funding_googleplay_contribution_reminder_message"></string>
-    <string name="funding_googleplay_contribution_tfa_recurring_xs_description"></string>
-    <string name="funding_googleplay_contribution_tfa_recurring_m_description"></string>
-    <string name="funding_googleplay_contribution_footer_payment_processing_button"></string>
-    <string name="funding_googleplay_contribution_tfa_recurring_xl_title"></string>
-    <string name="funding_googleplay_contribution_tfa_onetime_l_description"></string>
-    <string name="funding_googleplay_contribution_tfa_onetime_xl_description"></string>
-    <string name="funding_googleplay_contribution_tfa_recurring_xs_title"></string>
 </resources>
