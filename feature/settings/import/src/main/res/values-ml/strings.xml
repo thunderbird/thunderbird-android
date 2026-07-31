@@ -27,18 +27,4 @@
     <string name="settings_import_use_same_password_for_outgoing_server">ഔട്ട്‌ഗോയിംഗ് സെർവറിനായി സമാന രഹസ്യവാചകം ഉപയോഗിക്കുക</string>
     <string name="settings_import_server_name_format">സെർവർ നാമം: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="settings_import_general_settings_item">പൊതുവായ ക്രമീകരണങ്ങൾ</string>
-    <string name="settings_import_status_log_in_required"></string>
-    <string name="settings_import_scan_qr_code_button"></string>
-    <string name="settings_import_oauth_sign_in"></string>
-    <string name="settings_import_app_version_not_supported"></string>
-    <string name="settings_import_oauth_error_oauth_flow_canceled"></string>
-    <string name="settings_import_oauth_error_oauth_flow_failed"></string>
-    <string name="settings_import_oauth_error_oauth_not_supported"></string>
-    <string name="settings_import_pick_app_button"></string>
-    <string name="settings_import_authorization_and_password_required"></string>
-    <string name="settings_import_oauth_sign_in_with_google"></string>
-    <string name="settings_import_authorization_required"></string>
-    <string name="settings_import_oauth_description"></string>
-    <string name="settings_import_pick_app_dialog_title"></string>
-    <string name="settings_import_oauth_error_browser_not_found"></string>
 </resources>

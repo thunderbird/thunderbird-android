@@ -37,6 +37,4 @@
     <string name="settings_import_pick_app_button">الاستيراد من تطبيق</string>
     <string name="settings_import_pick_app_dialog_title">الاستيراد من التطبيق</string>
     <string name="settings_import_app_version_not_supported">إصدار التطبيق غير مدعوم.</string>
-    <plurals name="settings_import_password_prompt">
-    </plurals>
 </resources>

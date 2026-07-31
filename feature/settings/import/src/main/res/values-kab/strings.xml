@@ -9,30 +9,4 @@
     <string name="settings_import_authorization_required">Ttxil qqen</string>
     <string name="settings_import_later_button">Ticki</string>
     <string name="settings_import_title">Kter-d iɣewwaren</string>
-    <string name="settings_import_outgoing_server_password_hint"></string>
-    <string name="settings_import_read_failure"></string>
-    <string name="settings_import_server_name_format"></string>
-    <string name="settings_import_status_log_in_required"></string>
-    <string name="settings_import_partial_failure"></string>
-    <string name="settings_importing"></string>
-    <plurals name="settings_import_password_prompt">
-    </plurals>
-    <string name="settings_import_failure"></string>
-    <string name="settings_import_app_version_not_supported"></string>
-    <string name="settings_import_oauth_error_oauth_flow_canceled"></string>
-    <string name="settings_import_oauth_error_oauth_flow_failed"></string>
-    <string name="settings_import_oauth_error_oauth_not_supported"></string>
-    <string name="settings_import_status_error"></string>
-    <string name="settings_import_incoming_server_password_hint"></string>
-    <string name="settings_import_use_same_password_for_outgoing_server"></string>
-    <string name="settings_import_authorization_and_password_required"></string>
-    <string name="settings_import_oauth_sign_in_with_google"></string>
-    <string name="settings_import_status_not_imported"></string>
-    <string name="settings_import_oauth_description"></string>
-    <string name="settings_import_status_password_required"></string>
-    <string name="settings_import_password_required"></string>
-    <string name="settings_import_status_success"></string>
-    <string name="settings_import_button"></string>
-    <string name="settings_import_oauth_error_browser_not_found"></string>
-    <string name="settings_import_success_generic"></string>
 </resources>
