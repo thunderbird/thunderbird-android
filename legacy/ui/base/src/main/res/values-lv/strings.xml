@@ -3,5 +3,4 @@
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">Piekrist</string>
     <string name="cancel_action">Atcelt</string>
-    <string name="star_button_description"></string>
 </resources>
