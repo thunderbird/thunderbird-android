@@ -4,14 +4,4 @@
     <string name="unread_widget_account_title">खाता</string>
     <string name="unread_widget_choose_account_title">अकाउंट चुनें</string>
     <string name="unread_widget_account_summary">जिसके लिए अपठित गिनती प्रदर्शित की जानी चाहिए</string>
-    <string name="unread_widget_action_done"></string>
-    <string name="unread_widget_folder_not_selected"></string>
-    <string name="unread_widget_unified_inbox_account_summary"></string>
-    <string name="unread_widget_label"></string>
-    <string name="unread_widget_title"></string>
-    <string name="unread_widget_folder_enabled_summary"></string>
-    <string name="unread_widget_account_not_selected"></string>
-    <string name="unread_widget_folder_enabled_title"></string>
-    <string name="unread_widget_folder_title"></string>
-    <string name="unread_widget_folder_summary"></string>
 </resources>

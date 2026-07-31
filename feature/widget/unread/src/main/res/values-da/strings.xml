@@ -13,5 +13,4 @@
     <string name="unread_widget_account_not_selected">Ingen konto valgt</string>
     <string name="unread_widget_folder_not_selected">Ingen mappe valgt</string>
     <string name="unread_widget_choose_account_title">Vælg konto</string>
-    <string name="unread_widget_label"></string>
 </resources>
