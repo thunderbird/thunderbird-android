@@ -15,5 +15,4 @@
     <string name="account_server_validation_outgoing_success">ตรวจสอบการตั้งค่าเซิร์ฟเวอร์ขาออกแล้ว</string>
     <string name="account_server_validation_sign_in">กรุณาลงชื่อเข้าใช้</string>
     <string name="account_server_validation_error_missing_server_capability_details">เซิร์ฟเวอร์ขาดความสามารถนี้:\n%s</string>
-    <string name="account_server_validation_error_missing_server_capability"></string>
 </resources>
