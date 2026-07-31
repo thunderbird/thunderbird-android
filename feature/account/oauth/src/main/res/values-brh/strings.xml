@@ -5,10 +5,4 @@
     <string name="account_oauth_sign_in_with_google_button">Google تون سائن ان</string>
     <string name="account_oauth_loading_message">OAuth تون سائن ان مرسہ اے</string>
     <string name="account_oauth_loading_error">OAuth تون سائن ان مننگ کتو</string>
-    <string name="account_oauth_error_failed"></string>
-    <string name="account_oauth_error_browser_not_available"></string>
-    <string name="account_oauth_error_not_supported"></string>
-    <string name="account_oauth_error_canceled"></string>
-    <string name="account_oauth_google_sign_in_support_text_link_text"></string>
-    <string name="account_oauth_google_sign_in_support_text"></string>
 </resources>

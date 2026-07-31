@@ -6,9 +6,4 @@
     <string name="account_oauth_loading_error">OAuth кіру сәтсіз аяқталды</string>
     <string name="account_oauth_error_canceled">Авторизациясы тоқтатылды</string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 қазір бұл провайдермен қолжетімсіз.</string>
-    <string name="account_oauth_error_failed"></string>
-    <string name="account_oauth_error_browser_not_available"></string>
-    <string name="account_oauth_google_sign_in_support_text_link_text"></string>
-    <string name="account_oauth_sign_in_description"></string>
-    <string name="account_oauth_google_sign_in_support_text"></string>
 </resources>

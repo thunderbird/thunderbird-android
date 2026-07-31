@@ -9,6 +9,4 @@
     <string name="account_oauth_error_not_supported">OAuth 2.0 trenutačno nije podržan kod ovog pružatelja usluga e-pošte.</string>
     <string name="account_oauth_error_browser_not_available">Aplikacija nije mogla pronaći preglednik za davanje pristupa vašem računu.</string>
     <string name="account_oauth_error_failed">Autorizacija nije uspjela sa sljedećom pogreškom: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_oauth_google_sign_in_support_text_link_text"></string>
-    <string name="account_oauth_google_sign_in_support_text"></string>
 </resources>

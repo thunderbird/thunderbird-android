@@ -4,11 +4,4 @@
     <string name="account_oauth_sign_in_with_google_button">Qqen s Google</string>
     <string name="account_oauth_loading_message">Qqen s OAuth</string>
     <string name="account_oauth_loading_error">Tuccḍa deg tuqqna s OAuth</string>
-    <string name="account_oauth_error_failed"></string>
-    <string name="account_oauth_error_browser_not_available"></string>
-    <string name="account_oauth_error_not_supported"></string>
-    <string name="account_oauth_error_canceled"></string>
-    <string name="account_oauth_google_sign_in_support_text_link_text"></string>
-    <string name="account_oauth_sign_in_description"></string>
-    <string name="account_oauth_google_sign_in_support_text"></string>
 </resources>
