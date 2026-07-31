@@ -2,5 +2,4 @@
 <resources>
     <string name="message_list_glance_widget_compose_action">बनाएं</string>
     <string name="message_list_glance_widget_inbox_title">एकीकृत इनबॉक्स</string>
-    <string name="message_list_glance_widget_label"></string>
 </resources>
