@@ -1,16 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_server_certificate_button_advanced"></string>
-    <string name="account_server_certificate_warning_title"></string>
-    <string name="account_server_certificate_button_back"></string>
-    <string name="account_server_certificate_subject_alternative_names"></string>
-    <string name="account_server_certificate_issuer"></string>
-    <string name="account_server_certificate_not_valid_after"></string>
-    <string name="account_server_certificate_unknown_error_subtitle"></string>
-    <string name="account_server_certificate_unknown_error_description_format"></string>
-    <string name="account_server_certificate_fingerprints_section"></string>
-    <string name="account_server_certificate_subject"></string>
-    <string name="account_server_certificate_not_valid_before"></string>
-    <string name="account_server_certificate_button_continue"></string>
-    <string name="account_server_certificate_section_title"></string>
-</resources>
+    </resources>

@@ -12,5 +12,4 @@
     <string name="account_server_certificate_issuer">Myöntäjä</string>
     <string name="account_server_certificate_fingerprints_section">Sormenjäljet</string>
     <string name="account_server_certificate_unknown_error_description_format">Sovellus havaitsi mahdollisen turvallisuusriskin eikä jatkanut <xliff:g id="serverName">%s</xliff:g> yhdistämistä.\nJos jatkat, hyökkääjät voivat yrittää varastaa tietoja kuten salasanasi tai sähköposteja.</string>
-    <string name="account_server_certificate_subject"></string>
 </resources>
