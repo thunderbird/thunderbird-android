@@ -2,7 +2,4 @@
 <resources>
     <string name="special_mailbox_name_outbox">ကဠာလိက်တိတ်</string>
     <string name="special_mailbox_name_drafts">လိက်အပြောံ</string>
-    <string name="special_mailbox_name_sent"></string>
-    <string name="special_mailbox_name_trash"></string>
-    <string name="special_mailbox_name_inbox"></string>
 </resources>
