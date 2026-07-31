@@ -2,5 +2,4 @@
 <resources>
     <string name="account_common_button_next">Da heul</string>
     <string name="account_common_button_back">Kent</string>
-    <string name="account_common_error_server_message"></string>
 </resources>
