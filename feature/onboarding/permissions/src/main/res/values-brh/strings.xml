@@ -3,8 +3,4 @@
     <string name="onboarding_permissions_contacts_title">کونٹیکٹ آک</string>
     <string name="onboarding_permissions_contacts_description">کانٹیکٹ آتا تجاویز و اوفتا پن و فوٹو تے نشان ترفنگ کن رسائی ایتبو۔</string>
     <string name="onboarding_permissions_notifications_title">اعلاناک</string>
-    <string name="onboarding_permissions_notifications_description"></string>
-    <string name="onboarding_permissions_screen_title"></string>
-    <string name="onboarding_permissions_allow_button"></string>
-    <string name="onboarding_permissions_skip_button"></string>
 </resources>
