@@ -13,19 +13,4 @@
     <string name="swipe_action_spam">Spam</string>
     <string name="swipe_action_move">Mover…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selecionada(s)</string>
-    <string name="sort_by_attach_asc"></string>
-    <string name="sort_by"></string>
-    <string name="sort_by_sender_desc"></string>
-    <string name="sort_by_subject_asc"></string>
-    <string name="sort_by_unread_desc"></string>
-    <string name="sort_by_attach_desc"></string>
-    <string name="sort_by_flag_desc"></string>
-    <string name="sort_by_sender_asc"></string>
-    <string name="sort_by_arrival_asc"></string>
-    <string name="sort_by_flag_asc"></string>
-    <string name="sort_by_arrival_desc"></string>
-    <string name="sort_by_unread_asc"></string>
-    <string name="sort_by_date_desc"></string>
-    <string name="sort_by_subject_desc"></string>
-    <string name="sort_by_date_asc"></string>
 </resources>

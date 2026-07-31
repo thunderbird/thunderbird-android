@@ -1,31 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> चुने गए</string>
-    <string name="sort_by_attach_asc"></string>
-    <string name="swipe_action_change_swipe_gestures"></string>
-    <string name="swipe_action_select"></string>
-    <string name="swipe_action_move"></string>
-    <string name="sort_by"></string>
-    <string name="swipe_action_archive"></string>
-    <string name="sort_by_sender_desc"></string>
-    <string name="swipe_action_spam"></string>
-    <string name="sort_by_subject_asc"></string>
-    <string name="sort_by_unread_desc"></string>
-    <string name="sort_by_attach_desc"></string>
-    <string name="swipe_action_mark_as_read"></string>
-    <string name="sort_by_flag_desc"></string>
-    <string name="swipe_action_archive_folder_not_set"></string>
-    <string name="sort_by_sender_asc"></string>
-    <string name="swipe_action_delete"></string>
-    <string name="swipe_action_deselect"></string>
-    <string name="swipe_action_add_star"></string>
-    <string name="swipe_action_remove_star"></string>
-    <string name="sort_by_arrival_asc"></string>
-    <string name="sort_by_flag_asc"></string>
-    <string name="sort_by_arrival_desc"></string>
-    <string name="sort_by_unread_asc"></string>
-    <string name="sort_by_date_desc"></string>
-    <string name="sort_by_subject_desc"></string>
-    <string name="sort_by_date_asc"></string>
-    <string name="swipe_action_mark_as_unread"></string>
 </resources>
