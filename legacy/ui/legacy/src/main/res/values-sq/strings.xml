@@ -939,14 +939,4 @@
     <string name="accessibility_move_cutoff_up">Ngjite prerjen e veprimeve të shfaqur sipër</string>
     <string name="accessibility_move_cutoff_down">Zbritje prerjen e veprimeve të shfaqur poshtë</string>
     <string name="notification_action_star">Yll</string>
-    <string name="animation_setting_follow_system"></string>
-    <string name="changelog_type_new_text"></string>
-    <string name="changelog_latest_label_text"></string>
-    <string name="changelog_type_fixed_text"></string>
-    <string name="notification_show_contact_picture_title"></string>
-    <string name="notification_show_contact_picture_summary"></string>
-    <string name="animation_setting_off"></string>
-    <string name="animation_setting_on"></string>
-    <string name="changelog_type_changed_text"></string>
-    <string name="debug_feature_flags"></string>
 </resources>

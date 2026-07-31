@@ -936,17 +936,4 @@
         <item quantity="other">‫‏<xliff:g id="count">%1$d</xliff:g> پیوست (<xliff:g id="اندازه">%2$s</xliff:g>)</item>
     </plurals>
     <string name="notification_summary_delete_summary">کنش حذف را به آگاهی‌ای که چندین پیام جدید را خلاصه می‌کند می‌افزاید</string>
-    <string name="animation_setting_follow_system"></string>
-    <string name="sort_by_then_by"></string>
-    <string name="accessibility_move_cutoff_up"></string>
-    <string name="changelog_type_new_text"></string>
-    <string name="changelog_latest_label_text"></string>
-    <string name="changelog_type_fixed_text"></string>
-    <string name="notification_show_contact_picture_title"></string>
-    <string name="notification_actions_cutoff_description"></string>
-    <string name="notification_show_contact_picture_summary"></string>
-    <string name="accessibility_move_cutoff_down"></string>
-    <string name="animation_setting_off"></string>
-    <string name="animation_setting_on"></string>
-    <string name="changelog_type_changed_text"></string>
 </resources>

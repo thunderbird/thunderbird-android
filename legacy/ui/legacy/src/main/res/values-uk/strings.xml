@@ -948,8 +948,4 @@
     <string name="changelog_type_new_text">НОВИЙ</string>
     <string name="changelog_type_changed_text">ЗМІНЕННІ</string>
     <string name="notification_show_contact_picture_title">Відображати зображення контакту в сповіщеннях</string>
-    <string name="animation_setting_follow_system"></string>
-    <string name="notification_show_contact_picture_summary"></string>
-    <string name="animation_setting_off"></string>
-    <string name="animation_setting_on"></string>
 </resources>

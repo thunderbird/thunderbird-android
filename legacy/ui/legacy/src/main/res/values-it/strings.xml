@@ -947,13 +947,4 @@
     <string name="accessibility_move_cutoff_up">Sposta su le azioni mostrate interrompendole</string>
     <string name="accessibility_move_cutoff_down">Sposta giù le azioni mostrate interrompendole</string>
     <string name="notification_action_star">Stella</string>
-    <string name="animation_setting_follow_system"></string>
-    <string name="changelog_type_new_text"></string>
-    <string name="changelog_latest_label_text"></string>
-    <string name="changelog_type_fixed_text"></string>
-    <string name="notification_show_contact_picture_title"></string>
-    <string name="notification_show_contact_picture_summary"></string>
-    <string name="animation_setting_off"></string>
-    <string name="animation_setting_on"></string>
-    <string name="changelog_type_changed_text"></string>
 </resources>

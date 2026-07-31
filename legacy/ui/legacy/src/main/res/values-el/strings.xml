@@ -925,24 +925,4 @@
     <string name="accessibility_move_up">Μετακίνηση πάνω</string>
     <string name="accessibility_move_item_up">Μετακίνηση <xliff:g id="item">%1$s</xliff:g> πάνω</string>
     <string name="accessibility_move_item_down">Μετακίνηση <xliff:g id="item">%1$s</xliff:g> κάτω</string>
-    <string name="notification_actions_settings_description"></string>
-    <string name="animation_setting_follow_system"></string>
-    <string name="message_view_attachments_save_all"></string>
-    <string name="sort_by_then_by"></string>
-    <string name="notification_summary_delete_summary"></string>
-    <string name="notification_summary_delete_title"></string>
-    <string name="notification_actions_cutoff_state"></string>
-    <string name="message_view_attachments_view_all"></string>
-    <string name="accessibility_move_cutoff_up"></string>
-    <string name="general_settings_message_list_date_time_format_contextual"></string>
-    <string name="notification_show_contact_picture_title"></string>
-    <string name="notification_actions_cutoff_description"></string>
-    <string name="notification_show_contact_picture_summary"></string>
-    <string name="accessibility_move_cutoff_down"></string>
-    <string name="notification_actions_hidden_state"></string>
-    <string name="animation_setting_off"></string>
-    <string name="animation_setting_on"></string>
-    <string name="notification_actions_shown_state"></string>
-    <string name="no_network_message_will_be_sent_later_toast"></string>
-    <string name="message_view_single_attachment_summary"></string>
 </resources>
