@@ -2,6 +2,4 @@
 <resources>
     <string name="onboarding_welcome_start_button">Бастау</string>
     <string name="onboarding_welcome_import_button">Баптауларды импорттау</string>
-    <string name="onboarding_welcome_developed_by"></string>
-    <string name="onboarding_welcome_text"></string>
 </resources>
