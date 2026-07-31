@@ -45,4 +45,5 @@
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">Zoeklimiet server</string>
+    <string name="account_settings_fetching_mail">E-mail ophalen</string>
 </resources>
