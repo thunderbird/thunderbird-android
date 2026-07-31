@@ -34,18 +34,4 @@
     <string name="notification_action_archive">أرشيف</string>
     <string name="notification_action_archive_all">أرشفة الكل</string>
     <string name="notification_action_spam">بريد مُزعج</string>
-    <string name="banner_inline_notification_open_notifications"></string>
-    <string name="notification_authentication_outgoing_server_error_text"></string>
-    <string name="banner_inline_notification_some_messages_need_attention"></string>
-    <string name="banner_inline_notification_learn_more"></string>
-    <plurals name="notification_new_messages_title">
-    </plurals>
-    <string name="banner_inline_notification_check_error_notifications"></string>
-    <string name="sent_folder_not_found_title"></string>
-    <string name="notification_action_update_server_settings"></string>
-    <string name="banner_inline_notification_view_support_article"></string>
-    <string name="notification_action_retry"></string>
-    <string name="notification_bg_sync_text"></string>
-    <string name="notification_action_assign_sent_folder"></string>
-    <string name="notification_authentication_incoming_server_error_text"></string>
 </resources>

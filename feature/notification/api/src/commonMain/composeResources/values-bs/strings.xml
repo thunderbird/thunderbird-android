@@ -26,26 +26,4 @@
     <string name="notification_action_archive">Arhiviraj</string>
     <string name="notification_action_archive_all">Arhiviraj sve</string>
     <string name="notification_action_spam">Neželjena pošta</string>
-    <string name="push_notification_state_initializing"></string>
-    <string name="banner_inline_notification_open_notifications"></string>
-    <string name="notification_authentication_outgoing_server_error_text"></string>
-    <string name="banner_inline_notification_some_messages_need_attention"></string>
-    <string name="banner_inline_notification_learn_more"></string>
-    <string name="push_notification_state_alarm_permission_missing"></string>
-    <string name="push_notification_state_listening"></string>
-    <string name="push_notification_state_wait_network"></string>
-    <plurals name="notification_new_messages_title">
-    </plurals>
-    <string name="banner_inline_notification_check_error_notifications"></string>
-    <string name="sent_folder_not_found_title"></string>
-    <string name="push_notification_state_wait_background_sync"></string>
-    <string name="notification_action_update_server_settings"></string>
-    <string name="banner_inline_notification_view_support_article"></string>
-    <string name="notification_action_retry"></string>
-    <string name="notification_bg_sync_text"></string>
-    <string name="notification_action_assign_sent_folder"></string>
-    <string name="push_notification_info"></string>
-    <string name="notification_authentication_incoming_server_error_text"></string>
-    <string name="push_info_disable_push_action"></string>
-    <string name="push_notification_grant_alarm_permission"></string>
 </resources>
