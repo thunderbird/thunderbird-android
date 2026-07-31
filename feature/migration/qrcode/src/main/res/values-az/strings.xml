@@ -1,9 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="migration_qrcode_go_to_settings_button_text"></string>
-    <string name="migration_qrcode_permission_denied_message"></string>
-    <string name="migration_qrcode_done_button_text"></string>
-    <string name="migration_qrcode_scanning_progress"></string>
-    <string name="migration_qrcode_permission_denied_title"></string>
-    <string name="migration_qrcode_scanning_instructions"></string>
-</resources>
+    </resources>
