@@ -260,8 +260,8 @@
     <string name="quiet_time_ends">Koniec okresu ciszy</string>
     <string name="account_setup_basics_title">Dodaj konto</string>
     <string name="account_setup_incoming_delete_policy_label">Kiedy usuwam wiadomość</string>
-    <string name="account_setup_incoming_delete_policy_never_label">Nie usuwaj z serwera</string>
-    <string name="account_setup_incoming_delete_policy_delete_label">Usuń ją z serwera</string>
+    <string name="account_setup_incoming_delete_policy_never_label">Nie usuwaj z serwera</string>
+    <string name="account_setup_incoming_delete_policy_delete_label">Usuń z serwera</string>
     <string name="account_setup_incoming_delete_policy_markread_label">Oznacz jako przeczytane na serwerze</string>
     <string name="account_setup_expunge_policy_label">Kasowanie usuniętych wiadomości na serwerze</string>
     <string name="account_setup_expunge_policy_immediately">Od razu</string>
@@ -276,7 +276,7 @@
     <string name="account_setup_options_mail_check_frequency_never">Nigdy</string>
     <string name="account_setup_options_mail_check_frequency_15min">Co 15 minut</string>
     <string name="account_setup_options_mail_check_frequency_30min">Co 30 minut</string>
-    <string name="account_setup_options_mail_check_frequency_1hour">Co 1 godzinę</string>
+    <string name="account_setup_options_mail_check_frequency_1hour">Co godzinę</string>
     <string name="account_setup_options_mail_check_frequency_2hour">Co 2 godziny</string>
     <string name="account_setup_options_mail_check_frequency_3hour">Co 3 godziny</string>
     <string name="account_setup_options_mail_check_frequency_6hour">Co 6 godzin</string>
@@ -301,7 +301,7 @@
     <string name="account_setup_options_mail_display_count_2500">2500 wiadomości</string>
     <string name="account_setup_options_mail_display_count_5000">5000 wiadomości</string>
     <string name="account_setup_options_mail_display_count_10000">10000 wiadomości</string>
-    <string name="account_setup_options_mail_display_count_all">Wszystkie wiadomości</string>
+    <string name="account_setup_options_mail_display_count_all">wszystkie wiadomości</string>
     <string name="move_copy_cannot_copy_unsynced_message">Nie można skopiować ani przenieść wiadomości, która nie jest zsynchronizowana z serwerem</string>
     <string name="account_settings_push_advanced_title">Zaawansowane</string>
     <string name="account_settings_title_fmt">Ustawienia konta</string>
@@ -348,7 +348,7 @@
     <string name="account_settings_upload_sent_messages_summary">Dodaj wiadomości do folderu wysłanych po wysłaniu</string>
     <string name="account_settings_general_title">Ustawienia ogólne</string>
     <string name="account_settings_reading_mail">Czytanie poczty</string>
-    <string name="account_settings_sync">Synchronizacja folderów</string>
+    <string name="account_settings_sync">Pobieranie poczty</string>
     <string name="account_settings_folders">Foldery</string>
     <string name="account_settings_quote_prefix_label">Prefiks cytowania</string>
     <string name="account_settings_crypto">Szyfrowanie typu „end-to-end”</string>
@@ -382,8 +382,8 @@
     <string name="account_settings_message_age_label">Synchronizuj nowsze niż</string>
     <string name="account_settings_message_age_any">wszystkie (bez ograniczenia)</string>
     <string name="account_settings_message_age_0">dzisiaj</string>
-    <string name="account_settings_message_age_1">2 dni</string>
-    <string name="account_settings_message_age_2">3 dni</string>
+    <string name="account_settings_message_age_1">ostatnie 2 dni</string>
+    <string name="account_settings_message_age_2">ostatnie 3 dni</string>
     <string name="account_settings_message_age_7">ostatni tydzień</string>
     <string name="account_settings_message_age_14">ostatnie 2 tygodnie</string>
     <string name="account_settings_message_age_21">ostatnie 3 tygodnie</string>
@@ -393,13 +393,13 @@
     <string name="account_settings_message_age_6_months">ostatnie 6 miesięcy</string>
     <string name="account_settings_message_age_1_year">ostatni rok</string>
     <string name="account_settings_sync_remote_deletetions_label">Synchronizacja usunięć</string>
-    <string name="account_settings_sync_remote_deletetions_summary">Usuwaj wiadomości również z serwera poczty</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Usuwaj wiadomości również z serwera poczty</string>
     <string name="account_settings_openpgp_missing">Brakuje aplikacji OpenPGP. Czy została odinstalowana?</string>
     <string name="folder_settings_title">Ustawienia folderu</string>
     <string name="folder_settings_in_top_group_label">Umieść na początku</string>
     <string name="folder_settings_clear_local_folder_action">Wyczyść wiadomości lokalne</string>
     <string name="account_settings_incoming_label">Serwer poczty przychodzącej</string>
-    <string name="account_settings_incoming_summary">Ustawienia serwera poczty przychodzącej</string>
+    <string name="account_settings_incoming_summary">Konfiguracja serwera poczty przychodzącej</string>
     <string name="account_settings_outgoing_label">Serwer poczty wychodzącej</string>
     <string name="account_settings_outgoing_summary">Ustawienia serwera poczty wychodzącej (SMTP)</string>
     <string name="account_settings_name_label">Imię i nazwisko</string>
@@ -957,9 +957,12 @@
     <string name="changelog_type_new_text">NOWE</string>
     <string name="changelog_type_changed_text">ZMIENIONE</string>
     <string name="changelog_type_fixed_text">NAPRAWIONE</string>
-    <string name="notification_show_contact_picture_title">Pokazuj zdjęcia kontaktów w powiadomieniach</string>
-    <string name="notification_show_contact_picture_summary">Wyświetlaj awatary nadawców w powiadomieniach o nowych wiadomościach</string>
+    <string name="notification_show_contact_picture_title">Pokazuj zdjęcia kontaktów w powiadomieniach</string>
+    <string name="notification_show_contact_picture_summary">Wyświetlaj awatary nadawców w powiadomieniach o nowych wiadomościach</string>
     <string name="animation_setting_on">Włącz</string>
     <string name="animation_setting_off">Wyłącz</string>
     <string name="animation_setting_follow_system">Użyj domyślnych systemu</string>
+    <string name="global_settings_privacy_incognito_keyboard">Klawiatura incognito</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Poproś klawiaturę, aby nie uczyła się tego, co wpisujesz podczas tworzenia wiadomości</string>
+    <string name="sort_by_indicator">•</string>
 </resources>
