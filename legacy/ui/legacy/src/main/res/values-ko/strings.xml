@@ -946,4 +946,7 @@
     <string name="animation_setting_follow_system">시스템 기본값 사용</string>
     <string name="animation_setting_on">켜기</string>
     <string name="animation_setting_off">끄기</string>
+    <string name="global_settings_privacy_incognito_keyboard">시크릿 키보드</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">메시지를 작성할 때 키보드가 해당 내용으로 학습하지 않도록 요청</string>
+    <string name="sort_by_indicator">•</string>
 </resources>
