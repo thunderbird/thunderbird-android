@@ -32,6 +32,4 @@
     <string name="account_server_settings_security_label">பாதுகாப்பு</string>
     <string name="account_server_settings_port_label">துறைமுகம்</string>
     <string name="account_server_settings_authentication_label">ஏற்பு</string>
-    <string name="account_server_settings_password_authentication_failed"></string>
-    <string name="account_server_settings_password_authentication_unable_to_start"></string>
 </resources>

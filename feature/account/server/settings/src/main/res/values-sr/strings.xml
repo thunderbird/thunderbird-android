@@ -32,6 +32,4 @@
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_client_certificate_none_selected">Нема</string>
     <string name="account_server_settings_client_certificate_label">Сертификат клијента</string>
-    <string name="account_server_settings_password_authentication_failed"></string>
-    <string name="account_server_settings_password_authentication_unable_to_start"></string>
 </resources>

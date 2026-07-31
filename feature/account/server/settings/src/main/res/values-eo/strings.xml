@@ -32,6 +32,4 @@
     <string name="account_server_settings_incoming_top_bar_title">Eniran servilon agordoj</string>
     <string name="account_server_settings_outgoing_top_bar_title">Eliran servilon agordoj</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Nevalida IP-adreso aŭ nomregno</string>
-    <string name="account_server_settings_password_authentication_failed"></string>
-    <string name="account_server_settings_password_authentication_unable_to_start"></string>
 </resources>

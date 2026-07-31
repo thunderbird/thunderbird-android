@@ -15,23 +15,4 @@
     <string name="account_server_settings_incoming_imap_compression_label">Seqdec tussda</string>
     <string name="account_server_settings_password_authentication_failed">Asesteb yecceḍ!</string>
     <string name="account_server_settings_outgoing_top_bar_title">Iɣewwaren n uqeddac yessuffuɣen</string>
-    <string name="account_server_settings_validation_error_server_required"></string>
-    <string name="account_server_settings_validation_error_username_required"></string>
-    <string name="account_server_settings_validation_error_password_required"></string>
-    <string name="account_server_settings_password_authentication_unable_to_start"></string>
-    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname"></string>
-    <string name="account_server_settings_authentication_password_encrypted"></string>
-    <string name="account_server_settings_incoming_imap_namespace_label"></string>
-    <string name="account_server_settings_incoming_top_bar_title"></string>
-    <string name="account_server_settings_authentication_password_cleartext"></string>
-    <string name="account_server_settings_password_authentication_title"></string>
-    <string name="account_server_settings_incoming_imap_send_client_info_label"></string>
-    <string name="account_server_settings_validation_error_port_required"></string>
-    <string name="account_server_settings_authentication_client_certificate"></string>
-    <string name="account_server_settings_incoming_imap_prefix_label"></string>
-    <string name="account_server_settings_password_authentication_subtitle"></string>
-    <string name="account_server_settings_validation_error_port_invalid"></string>
-    <string name="account_server_settings_client_certificate_label"></string>
-    <string name="account_server_settings_validation_error_imap_prefix_blank"></string>
-    <string name="account_server_settings_password_authentication_screen_lock_required"></string>
 </resources>

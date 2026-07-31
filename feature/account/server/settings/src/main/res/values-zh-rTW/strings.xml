@@ -32,6 +32,4 @@
     <string name="account_server_settings_security_label">安全</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP或主機名無效</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">發送客戶資訊</string>
-    <string name="account_server_settings_password_authentication_failed"></string>
-    <string name="account_server_settings_password_authentication_unable_to_start"></string>
 </resources>

@@ -32,6 +32,4 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">За да видите паролата си тук, включете заключването на екрана на това устройство.</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Изпращане на информация до клиента</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Невалиден IP адрес или име на хост</string>
-    <string name="account_server_settings_password_authentication_failed"></string>
-    <string name="account_server_settings_password_authentication_unable_to_start"></string>
 </resources>

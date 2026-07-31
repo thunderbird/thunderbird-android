@@ -33,5 +33,4 @@
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP o nom d\'amfitrió no vàlids</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Envia informació del client</string>
     <string name="account_server_settings_password_authentication_failed">Ha fallat l\'autenticació</string>
-    <string name="account_server_settings_password_authentication_unable_to_start"></string>
 </resources>
