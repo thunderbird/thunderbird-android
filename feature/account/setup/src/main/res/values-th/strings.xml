@@ -41,16 +41,4 @@
     <string name="account_setup_options_email_display_count_label">จำนวนข้อความที่แสดง</string>
     <string name="account_setup_options_show_notifications_label">แสดงการแจ้งเตือน</string>
     <string name="account_setup_create_account_creating">กำลังสร้างบัญชี…</string>
-    <string name="account_setup_options_your_name_label"></string>
-    <string name="account_setup_options_your_name_error_required"></string>
-    <plurals name="account_setup_options_email_check_frequency_hours">
-    </plurals>
-    <string name="account_setup_create_account_created"></string>
-    <plurals name="account_setup_options_email_check_frequency_minutes">
-    </plurals>
-    <string name="account_setup_special_folders_folder_none"></string>
-    <plurals name="account_setup_options_email_display_count_messages">
-    </plurals>
-    <string name="account_setup_create_account_error"></string>
-    <string name="account_setup_options_email_check_frequency_never"></string>
 </resources>

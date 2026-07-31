@@ -57,6 +57,4 @@
         <item quantity="one">ஒவ்வொரு நிமிடமும்</item>
         <item quantity="other">ஒவ்வொரு %d நிமிடங்களும்</item>
     </plurals>
-    <string name="account_setup_options_your_name_label"></string>
-    <string name="account_setup_options_your_name_error_required"></string>
 </resources>

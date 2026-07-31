@@ -53,10 +53,4 @@
         <item quantity="one">1 mensaxe</item>
         <item quantity="other">%d mensaxes</item>
     </plurals>
-    <string name="account_setup_options_your_name_label"></string>
-    <string name="account_setup_options_your_name_error_required"></string>
-    <string name="account_setup_options_email_display_count_label"></string>
-    <string name="account_setup_create_account_creating"></string>
-    <string name="account_setup_create_account_error"></string>
-    <string name="account_setup_options_show_notifications_label"></string>
 </resources>

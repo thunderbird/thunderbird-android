@@ -54,9 +54,4 @@
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Agordi aŭtomate</string>
     <string name="account_setup_special_folders_loading_message">Akirante liston de dosierujoj…</string>
     <string name="account_setup_special_folders_error_message">Malsukcesis akiri la liston de dosierujoj el la servilo</string>
-    <string name="account_setup_special_folders_success_message"></string>
-    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted"></string>
-    <string name="account_setup_auto_discovery_result_approval_error_approval_required"></string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration"></string>
-    <string name="account_setup_special_folders_form_description_automatic"></string>
 </resources>
