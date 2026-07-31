@@ -2,7 +2,4 @@
 <resources>
     <string name="sent_folder_not_found_dialog_cancel_action">Nuligi</string>
     <string name="sent_folder_not_found_dialog_send_and_delete_action">Sendi kaj forviŝi</string>
-    <string name="sent_folder_not_found_dialog_supporting_text"></string>
-    <string name="sent_folder_not_found_dialog_assign_folder_action"></string>
-    <string name="sent_folder_not_found_dialog_title"></string>
 </resources>

@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="sent_folder_not_found_dialog_title">Ne c\'haller ket kavout an teuliad Kaset</string>
-    <string name="sent_folder_not_found_dialog_supporting_text"></string>
-    <string name="sent_folder_not_found_dialog_cancel_action"></string>
-    <string name="sent_folder_not_found_dialog_send_and_delete_action"></string>
-    <string name="sent_folder_not_found_dialog_assign_folder_action"></string>
 </resources>
