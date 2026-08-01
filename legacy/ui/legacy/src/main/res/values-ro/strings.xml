@@ -956,4 +956,7 @@
     <string name="animation_setting_on">Da</string>
     <string name="animation_setting_off">Nu</string>
     <string name="animation_setting_follow_system">Utilizează configurarea implicită a sistemului</string>
+    <string name="global_settings_privacy_incognito_keyboard">Tastatură incognito</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Solicită tastaturii să nu memoreze ceea ce tastezi atunci când redactezi mesaje</string>
+    <string name="sort_by_indicator">•</string>
 </resources>
