@@ -34,4 +34,5 @@
     <string name="account_server_settings_incoming_imap_send_client_info_label">Trimite informații despre client</string>
     <string name="account_server_settings_password_authentication_failed">Autentificarea a eșuat!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Nu s-a putut lansa solicitarea biometrică.</string>
+    <string name="account_server_settings_password_input_label">Parola</string>
 </resources>
