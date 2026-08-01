@@ -948,4 +948,7 @@
     <string name="animation_setting_on">Açık</string>
     <string name="animation_setting_off">Kapalı</string>
     <string name="animation_setting_follow_system">Sistem varsayılanını kullan</string>
+    <string name="global_settings_privacy_incognito_keyboard">Gizli klavye</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">İleti oluştururken klavyenin yazdıklarınızı öğrenmemesini isteyin</string>
+    <string name="sort_by_indicator">•</string>
 </resources>
