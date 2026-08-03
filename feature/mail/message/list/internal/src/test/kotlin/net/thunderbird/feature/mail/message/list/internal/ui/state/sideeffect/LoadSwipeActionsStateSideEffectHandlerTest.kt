@@ -1,11 +1,9 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 
 import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
-import dev.mokkery.matcher.any
-import dev.mokkery.spy
-import dev.mokkery.verify
-import dev.mokkery.verify.VerifyMode
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +16,7 @@ import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
+import net.thunderbird.feature.mail.message.list.internal.fakes.RecordingFunction
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import org.junit.Test
@@ -70,13 +69,13 @@ class LoadSwipeActionsStateSideEffectHandlerTest : BaseSideEffectHandlerTest() {
     fun `handle() should start buildSwipeActions flow and dispatch SwipeActionsLoaded event`() =
         runTest(UnconfinedTestDispatcher()) {
             // Arrange
-            val dispatch = spy<(MessageListEvent) -> Unit>(obj = {})
+            val dispatch = RecordingFunction<MessageListEvent>()
             val initialSwipeActions = mapOf<AccountId, SwipeActions>(
                 AccountIdFactory.create() to SwipeActions(SwipeAction.None, SwipeAction.None),
             )
             val fakeBuildSwipeActionsUseCase = FakeBuildSwipeActionsUseCase(initialSwipeActions)
             val testSubject = LoadSwipeActionsStateSideEffectHandler(
-                dispatch = dispatch,
+                dispatch = dispatch.function,
                 scope = backgroundScope,
                 logger = TestLogger(),
                 buildSwipeActions = fakeBuildSwipeActionsUseCase,
@@ -88,9 +87,7 @@ class LoadSwipeActionsStateSideEffectHandlerTest : BaseSideEffectHandlerTest() {
             testSubject.handle(event = MessageListEvent.LoadConfigurations, oldState = oldState, newState = newState)
 
             // Assert
-            verify(mode = VerifyMode.exactly(1)) {
-                dispatch(MessageListEvent.SwipeActionsLoaded(initialSwipeActions))
-            }
+            assertThat(dispatch.calls).containsExactly(MessageListEvent.SwipeActionsLoaded(initialSwipeActions))
         }
 
     @Test
@@ -98,7 +95,7 @@ class LoadSwipeActionsStateSideEffectHandlerTest : BaseSideEffectHandlerTest() {
     fun `buildSwipeActions() should dispatch SwipeActionsLoaded event whenever a new swipe action is emitted`() =
         runTest(UnconfinedTestDispatcher()) {
             // Arrange
-            val dispatch = spy<(MessageListEvent) -> Unit>(obj = {})
+            val dispatch = RecordingFunction<MessageListEvent>()
             val initialSwipeActions = mapOf(
                 AccountIdFactory.create() to SwipeActions(SwipeAction.None, SwipeAction.None),
             )
@@ -107,7 +104,7 @@ class LoadSwipeActionsStateSideEffectHandlerTest : BaseSideEffectHandlerTest() {
             }
             val fakeBuildSwipeActionsUseCase = FakeBuildSwipeActionsUseCase(initialSwipeActions)
             val testSubject = LoadSwipeActionsStateSideEffectHandler(
-                dispatch = dispatch,
+                dispatch = dispatch.function,
                 scope = backgroundScope,
                 logger = TestLogger(),
                 buildSwipeActions = fakeBuildSwipeActionsUseCase,
@@ -131,9 +128,7 @@ class LoadSwipeActionsStateSideEffectHandlerTest : BaseSideEffectHandlerTest() {
             }
 
             // Assert
-            verify(mode = VerifyMode.exactly(5)) {
-                dispatch(any())
-            }
+            assertThat(dispatch.calls).hasSize(5)
         }
 }
 

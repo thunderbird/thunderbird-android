@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleMedium
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.component.list.item.SettingItemLayout
 import net.thunderbird.core.ui.setting.dialog.ui.components.common.AutoHeightLazyVerticalGrid
@@ -28,11 +28,11 @@ internal fun IconListItem(
         setting.description()?.let {
             TextBodyMedium(text = it)
         }
-        Spacer(modifier = Modifier.height(MainTheme.spacings.half))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.half))
 
         AutoHeightLazyVerticalGrid(
             items = setting.icons,
-            itemSize = MainTheme.sizes.iconAvatar,
+            itemSize = BoltTheme.sizes.iconAvatar,
         ) { icon ->
             IconView(
                 icon = icon,
@@ -41,7 +41,7 @@ internal fun IconListItem(
                 onClick = {
                     onSettingValueChange(setting.copy(value = icon))
                 },
-                modifier = Modifier.size(MainTheme.sizes.iconAvatar),
+                modifier = Modifier.size(BoltTheme.sizes.iconAvatar),
             )
         }
     }

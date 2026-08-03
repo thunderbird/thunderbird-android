@@ -6,6 +6,10 @@ object AndroidLanguageCodeHelper {
      * Fix the language code format to match the Android resource format.
      */
     fun fixLanguageCodeFormat(languageCode: String): String {
-        return if (languageCode.contains("-r")) languageCode.replace("-r", "_") else languageCode
+        return if (languageCode.contains("-r")) {
+            languageCode.replace(oldValue = "-r", newValue = "_")
+        } else {
+            languageCode
+        }
     }
 }

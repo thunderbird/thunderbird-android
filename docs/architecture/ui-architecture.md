@@ -110,7 +110,7 @@ fun AccountSettingsContent(
 - Foundational UI elements that implement the design system
 - Consistent visual language across the application
 - Encapsulate styling, theming, and behavior from Material Design 3
-- Located in the `core:ui:compose:designsystem` module for reuse across features
+- Located in the `:components:ui:bolt` module for reuse across features
 - Built using the [Atomic Design Methodology](design-system.md)
 
 Example:
@@ -142,8 +142,8 @@ fun PrimaryButton(
 - Supports light and dark modes
 - Provides consistent visual appearance across the application
 - Implemented using Material Design 3 theming system
-- Located in the `core:ui:compose:theme2` module for reuse across features
-- Provides a `ThunderbirdTheme2` and a `K9MailTheme2` composable that wraps the MaterialTheme with custom color schemes, typography, and shapes
+- Located in the `:components:ui:bolt` module for reuse across features
+- Provides a `ThunderbirdBoltTheme` and a `K9MailBoltTheme` composable that wraps the MaterialTheme with custom color schemes, typography, and shapes
 - Uses Jetpack Compose's `CompositionLocalProvider` as a theme provider to make theme components available throughout the app
 
 For a more detailed explanation of the theming system, including the theme provider implementation, see

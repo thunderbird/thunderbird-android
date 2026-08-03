@@ -553,6 +553,12 @@
             android:title="@string/global_settings_privacy_hide_timezone"
             />
 
+        <CheckBoxPreference
+            android:key="privacy_incognito_keyboard"
+            android:summary="@string/global_settings_privacy_incognito_keyboard_detail"
+            android:title="@string/global_settings_privacy_incognito_keyboard"
+            />
+
     </PreferenceScreen>
 
     <PreferenceScreen

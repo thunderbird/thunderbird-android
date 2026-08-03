@@ -62,11 +62,11 @@ internal class CommandRefreshFolderList(
         val (foldersToUpdate, foldersToCreate) = foldersOnServer.partition { it.id in oldFolderServerIds }
 
         for (folder in foldersToUpdate) {
-            folderUpdater.changeFolder(folder.id, folder.name, folder.type)
+            folderUpdater.changeFolder(folderServerId = folder.id, name = folder.name, type = folder.type)
         }
 
         val newFolders = foldersToCreate.map { folder ->
-            FolderInfo(folder.id, folder.name, folder.type)
+            FolderInfo(serverId = folder.id, name = folder.name, type = folder.type)
         }
         folderUpdater.createFolders(newFolders)
 
@@ -74,7 +74,7 @@ internal class CommandRefreshFolderList(
         val removedFolderServerIds = oldFolderServerIds - newFolderServerIds
         folderUpdater.deleteFolders(removedFolderServerIds)
 
-        backendStorage.setExtraString(STATE, response.state)
+        backendStorage.setExtraString(name = STATE, value = response.state)
     }
 
     private fun fetchMailboxUpdates(folderUpdater: BackendFolderUpdater, state: String) {
@@ -124,12 +124,12 @@ internal class CommandRefreshFolderList(
         val changedMailboxResponse = changedMailboxesCall.getMainResponseBlocking<GetMailboxMethodResponse>()
 
         val foldersToCreate = createdMailboxResponse.list.map { folder ->
-            FolderInfo(folder.id, folder.name, folder.type)
+            FolderInfo(serverId = folder.id, name = folder.name, type = folder.type)
         }
         folderUpdater.createFolders(foldersToCreate)
 
         for (folder in changedMailboxResponse.list) {
-            folderUpdater.changeFolder(folder.id, folder.name, folder.type)
+            folderUpdater.changeFolder(folderServerId = folder.id, name = folder.name, type = folder.type)
         }
 
         val destroyed = mailboxChangesResponse.destroyed
@@ -137,7 +137,7 @@ internal class CommandRefreshFolderList(
             folderUpdater.deleteFolders(it.toList())
         }
 
-        backendStorage.setExtraString(STATE, mailboxChangesResponse.newState)
+        backendStorage.setExtraString(name = STATE, value = mailboxChangesResponse.newState)
 
         return UpdateState(
             state = mailboxChangesResponse.newState,

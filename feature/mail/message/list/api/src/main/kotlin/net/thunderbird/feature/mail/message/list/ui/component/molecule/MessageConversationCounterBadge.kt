@@ -13,8 +13,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 internal const val MESSAGE_CONVERSATION_COUNTER_BADGE_PADDING = 3
 
@@ -44,14 +44,14 @@ internal fun MessageConversationCounterBadge(
         modifier = modifier
             .background(
                 color = color.containerColor,
-                shape = MainTheme.shapes.large,
+                shape = BoltTheme.shapes.large,
             )
             .border(
                 width = 1.dp,
                 color = color.borderColor ?: color.containerColor,
-                shape = MainTheme.shapes.large,
+                shape = BoltTheme.shapes.large,
             )
-            .padding(horizontal = MainTheme.spacings.half, vertical = MESSAGE_CONVERSATION_COUNTER_BADGE_PADDING.dp),
+            .padding(horizontal = BoltTheme.spacings.half, vertical = MESSAGE_CONVERSATION_COUNTER_BADGE_PADDING.dp),
         contentAlignment = Alignment.Center,
     ) {
         TextLabelSmall(
@@ -144,8 +144,8 @@ object MessageConversationCounterBadgeDefaults {
      */
     @Composable
     fun newMessageColor(
-        containerColor: Color = MainTheme.colors.primary,
-        contentColor: Color = MainTheme.colors.onPrimary,
+        containerColor: Color = BoltTheme.colors.primary,
+        contentColor: Color = BoltTheme.colors.onPrimary,
         borderColor: Color? = null,
     ): MessageConversationCounterBadgeColor = MessageConversationCounterBadgeColor(
         contentColor = contentColor,
@@ -162,9 +162,9 @@ object MessageConversationCounterBadgeDefaults {
      */
     @Composable
     fun readMessageColor(
-        containerColor: Color = MainTheme.colors.surfaceContainerLow,
-        contentColor: Color = MainTheme.colors.onSurface,
-        borderColor: Color? = MainTheme.colors.outline,
+        containerColor: Color = BoltTheme.colors.surfaceContainerLow,
+        contentColor: Color = BoltTheme.colors.onSurface,
+        borderColor: Color? = BoltTheme.colors.outline,
     ): MessageConversationCounterBadgeColor = MessageConversationCounterBadgeColor(
         contentColor = contentColor,
         containerColor = containerColor,
@@ -180,8 +180,8 @@ object MessageConversationCounterBadgeDefaults {
      */
     @Composable
     fun unreadMessageColor(
-        containerColor: Color = MainTheme.colors.inverseSurface,
-        contentColor: Color = MainTheme.colors.inverseOnSurface,
+        containerColor: Color = BoltTheme.colors.inverseSurface,
+        contentColor: Color = BoltTheme.colors.inverseOnSurface,
         borderColor: Color? = null,
     ): MessageConversationCounterBadgeColor = MessageConversationCounterBadgeColor(
         contentColor = contentColor,

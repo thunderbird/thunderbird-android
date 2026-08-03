@@ -64,6 +64,7 @@ class GeneralSettingsDataStore(
             "notification_show_contact_picture" -> notificationSettings.isShowContactPictureInNotification
             "privacy_hide_useragent" -> privacySettings.isHideUserAgent
             "privacy_hide_timezone" -> privacySettings.isHideTimeZone
+            "privacy_incognito_keyboard" -> privacySettings.isIncognitoKeyboardEnabled
             "debug_logging" -> debuggingSettings.isDebugLoggingEnabled
             "sync_debug_logging" -> debuggingSettings.isSyncLoggingEnabled
             "sensitive_logging" -> debuggingSettings.isSensitiveLoggingEnabled
@@ -109,6 +110,7 @@ class GeneralSettingsDataStore(
 
             "privacy_hide_useragent" -> setIsHideUserAgent(isHideUserAgent = value)
             "privacy_hide_timezone" -> setIsHideTimeZone(isHideTimeZone = value)
+            "privacy_incognito_keyboard" -> setIsIncognitoKeyboardEnabled(isIncognitoKeyboardEnabled = value)
             "debug_logging" -> setIsDebugLoggingEnabled(isDebugLoggingEnabled = value)
             "sync_debug_logging" -> setIsSyncLoggingEnabled(isSyncLoggingEnabled = value)
             "sensitive_logging" -> setIsSensitiveLoggingEnabled(isSensitiveLoggingEnabled = value)
@@ -745,6 +747,17 @@ class GeneralSettingsDataStore(
             settings.copy(
                 privacy = settings.privacy.copy(
                     isHideUserAgent = isHideUserAgent,
+                ),
+            )
+        }
+    }
+
+    private fun setIsIncognitoKeyboardEnabled(isIncognitoKeyboardEnabled: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                privacy = settings.privacy.copy(
+                    isIncognitoKeyboardEnabled = isIncognitoKeyboardEnabled,
                 ),
             )
         }

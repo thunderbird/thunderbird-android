@@ -1,4 +1,4 @@
-@file:Suppress("MagicNumber")
+@file:Suppress("MagicNumber", "UnnamedParameterUse")
 
 package net.thunderbird.feature.funding.googleplay.ui.contribution.image
 

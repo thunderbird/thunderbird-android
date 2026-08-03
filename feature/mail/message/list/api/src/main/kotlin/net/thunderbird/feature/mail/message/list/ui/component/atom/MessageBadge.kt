@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 internal const val MESSAGE_BADGE_SIZE = 14
 
@@ -29,7 +29,7 @@ fun NewMessageBadge(modifier: Modifier = Modifier) {
             .size(size = MESSAGE_BADGE_SIZE.dp)
             .padding(all = 1.dp)
             .clip(CircleShape)
-            .background(MainTheme.colors.primary),
+            .background(BoltTheme.colors.primary),
     )
 }
 
@@ -47,9 +47,9 @@ fun UnreadMessageBadge(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .size(size = MESSAGE_BADGE_SIZE.dp)
-            .padding(MainTheme.spacings.quarter)
+            .padding(BoltTheme.spacings.quarter)
             .clip(CircleShape)
-            .background(MainTheme.colors.surface)
-            .border(width = 2.dp, color = MainTheme.colors.primary, shape = CircleShape),
+            .background(BoltTheme.colors.surface)
+            .border(width = 2.dp, color = BoltTheme.colors.primary, shape = CircleShape),
     )
 }

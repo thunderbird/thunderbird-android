@@ -3,15 +3,13 @@ package net.thunderbird.feature.mail.message.list.internal.ui.state.machine
 import app.cash.turbine.test
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import assertk.assertions.prop
-import dev.mokkery.spy
-import dev.mokkery.verify
-import dev.mokkery.verify.VerifyMode
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -23,6 +21,7 @@ import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
 import net.thunderbird.feature.mail.message.list.domain.model.SortType
+import net.thunderbird.feature.mail.message.list.internal.fakes.RecordingFunction
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.event.FolderEvent
 import net.thunderbird.feature.mail.message.list.ui.event.MessageItemEvent
@@ -40,12 +39,12 @@ class MessageListStateMachineTest : BaseMessageListStateMachineTest() {
     @Test
     fun `stateMachine should trigger LoadConfigurations event when it is initialized`() = runTest {
         // Arrange
-        val dispatch = spy<(MessageListEvent) -> Unit>(obj = {})
+        val dispatch = RecordingFunction<MessageListEvent>()
         // Act
-        createStateMachine(dispatch)
+        createStateMachine(dispatch.function)
         advanceUntilIdle()
         // Assert
-        verify(mode = VerifyMode.exactly(1)) { dispatch(MessageListEvent.LoadConfigurations) }
+        assertThat(dispatch.calls).containsExactly(MessageListEvent.LoadConfigurations)
     }
 
     @Test

@@ -29,10 +29,6 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
 
-    if (project.hasProperty("k9mail.enableLeakCanary") && project.property("k9mail.enableLeakCanary") == "true") {
-        debugImplementation(libs.leakcanary.android)
-    }
-
     testImplementation(projects.core.logging.testing)
     testImplementation(libs.robolectric)
     testImplementation(projects.feature.account.fake)

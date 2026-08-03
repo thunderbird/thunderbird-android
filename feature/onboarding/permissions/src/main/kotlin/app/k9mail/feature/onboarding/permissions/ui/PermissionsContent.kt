@@ -29,21 +29,21 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineSmall
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.onboarding.permissions.R
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.Event
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.State
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.CircularProgressIndicator
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineSmall
+import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
+import net.thunderbird.components.ui.bolt.template.Scaffold
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import app.k9mail.feature.account.common.R as CommonR
 
 private const val LOADING_INDICATOR_DELAY = 500L
@@ -82,7 +82,7 @@ internal fun PermissionsContent(
 
                 // This provides some bottom padding but is also necessary to make the vertical arrangement have the
                 // desired effect of putting ContentArea() in the middle.
-                Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+                Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
             }
         }
     }
@@ -101,10 +101,10 @@ private fun HeaderArea(
 
         TextHeadlineSmall(
             text = stringResource(R.string.onboarding_permissions_screen_title),
-            modifier = Modifier.padding(horizontal = MainTheme.spacings.double),
+            modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
         )
 
-        Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
     }
 }
 
@@ -114,7 +114,7 @@ private fun ContentArea(state: State, onEvent: (Event) -> Unit) {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxHeight()
-            .padding(MainTheme.spacings.double),
+            .padding(BoltTheme.spacings.double),
     ) {
         if (state.isLoading) {
             DelayedCircularProgressIndicator()
@@ -138,7 +138,7 @@ private fun PermissionBoxes(
     )
 
     if (state.isNotificationsPermissionVisible) {
-        Spacer(modifier = Modifier.height(MainTheme.spacings.quadruple))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.quadruple))
 
         PermissionBox(
             icon = Icons.Filled.Notifications,
@@ -171,10 +171,10 @@ private fun BottomBar(
             Row(
                 modifier = Modifier
                     .padding(
-                        start = MainTheme.spacings.quadruple,
-                        end = MainTheme.spacings.quadruple,
-                        top = MainTheme.spacings.default,
-                        bottom = MainTheme.spacings.double,
+                        start = BoltTheme.spacings.quadruple,
+                        end = BoltTheme.spacings.quadruple,
+                        top = BoltTheme.spacings.default,
+                        bottom = BoltTheme.spacings.double,
                     )
                     .fillMaxWidth()
                     .padding(contentPadding),

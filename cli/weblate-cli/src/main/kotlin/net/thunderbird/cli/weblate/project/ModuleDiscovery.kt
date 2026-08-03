@@ -24,8 +24,8 @@ class ModuleDiscovery {
             ModuleInfo(
                 path = path,
                 type = type,
-                name = path.replace("/", ":"),
-                slug = path.replace("/", "-"),
+                name = path.replace(oldValue = "/", newValue = ":"),
+                slug = path.replace(oldValue = "/", newValue = "-"),
             )
         }
     }

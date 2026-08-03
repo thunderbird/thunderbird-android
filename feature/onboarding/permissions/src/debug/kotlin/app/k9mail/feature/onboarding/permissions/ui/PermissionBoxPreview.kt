@@ -2,8 +2,8 @@ package app.k9mail.feature.onboarding.permissions.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
 
 @Composable
 @Preview(showBackground = true)

@@ -14,7 +14,6 @@ import net.thunderbird.cli.translation.net.WeblateConfig
 const val TRANSLATED_THRESHOLD = 70.0
 
 class TranslationCli(
-    private val languageCodeLoader: LanguageCodeLoader = LanguageCodeLoader(),
     private val configurationsFormatter: ResourceConfigurationsFormatter = ResourceConfigurationsFormatter(),
     private val supportedLanguagesFormatter: SupportedLanguagesFormatter = SupportedLanguagesFormatter(),
 ) : CliktCommand(

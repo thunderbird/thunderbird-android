@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.molecule.input.TextInput
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.internal.R
 
 @Composable
@@ -23,7 +23,7 @@ internal fun CreateNewArchiveFolderDialogContent(
 ) {
     Column(
         modifier = modifier
-            .padding(horizontal = MainTheme.spacings.oneHalf),
+            .padding(horizontal = BoltTheme.spacings.oneHalf),
     ) {
         TextInput(
             onTextChange = onFolderNameChange,
@@ -35,13 +35,13 @@ internal fun CreateNewArchiveFolderDialogContent(
 
         AnimatedVisibility(
             visible = syncingMessage != null,
-            modifier = Modifier.padding(horizontal = MainTheme.spacings.quadruple),
+            modifier = Modifier.padding(horizontal = BoltTheme.spacings.quadruple),
         ) {
             syncingMessage?.let { message ->
-                Spacer(modifier = Modifier.height(MainTheme.spacings.oneHalf))
+                Spacer(modifier = Modifier.height(BoltTheme.spacings.oneHalf))
                 TextBodySmall(
                     text = message,
-                    color = MainTheme.colors.onSurfaceVariant,
+                    color = BoltTheme.colors.onSurfaceVariant,
                 )
             }
         }

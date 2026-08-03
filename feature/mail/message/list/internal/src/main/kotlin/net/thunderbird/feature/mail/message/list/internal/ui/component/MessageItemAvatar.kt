@@ -14,35 +14,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
-import app.k9mail.core.ui.compose.designsystem.atom.image.RemoteImage
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.CircularProgressIndicator
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.image.RemoteImage
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleSmall
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.ui.state.Avatar
 
 @Composable
 fun MessageItemAvatar(
     avatar: Avatar?,
     showMessageAvatar: Boolean,
-    modifier: Modifier = Modifier,
     onAvatarClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     if (showMessageAvatar) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = modifier
-                .size(MainTheme.sizes.iconAvatar)
-                .padding(MainTheme.spacings.half)
-                .background(color = MainTheme.colors.primaryContainer.copy(alpha = 0.15f), shape = CircleShape)
-                .border(width = 1.dp, color = MainTheme.colors.primary, shape = CircleShape)
+                .size(BoltTheme.sizes.iconAvatar)
+                .padding(BoltTheme.spacings.half)
+                .background(color = BoltTheme.colors.primaryContainer.copy(alpha = 0.15f), shape = CircleShape)
+                .border(width = 1.dp, color = BoltTheme.colors.primary, shape = CircleShape)
                 .clickable(onClick = onAvatarClick),
         ) {
             when (avatar) {
                 is Avatar.Icon -> Icon(
                     avatar.imageVector,
                     contentDescription = null,
-                    modifier = Modifier.size(MainTheme.sizes.iconAvatar),
+                    modifier = Modifier.size(BoltTheme.sizes.iconAvatar),
                 )
 
                 is Avatar.Image -> RemoteImage(
@@ -53,8 +53,8 @@ fun MessageItemAvatar(
                         .fillMaxSize()
                         .clip(CircleShape),
                     placeholder = {
-                        Box(contentAlignment = Alignment.Center, modifier = Modifier.size(MainTheme.sizes.iconAvatar)) {
-                            CircularProgressIndicator(modifier = Modifier.size(MainTheme.sizes.icon))
+                        Box(contentAlignment = Alignment.Center, modifier = Modifier.size(BoltTheme.sizes.iconAvatar)) {
+                            CircularProgressIndicator(modifier = Modifier.size(BoltTheme.sizes.icon))
                         }
                     },
                 )

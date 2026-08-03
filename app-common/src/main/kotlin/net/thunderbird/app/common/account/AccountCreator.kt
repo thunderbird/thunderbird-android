@@ -61,7 +61,10 @@ internal class AccountCreator(
 
         newAccount.avatar = AvatarDto(
             avatarType = AvatarTypeDto.MONOGRAM,
-            avatarMonogram = avatarMonogramCreator.create(account.options.accountName, account.emailAddress),
+            avatarMonogram = avatarMonogramCreator.create(
+                name = account.options.accountName,
+                email = account.emailAddress,
+            ),
             avatarImageUri = null,
             avatarIconName = null,
         )

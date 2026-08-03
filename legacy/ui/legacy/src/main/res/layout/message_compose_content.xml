@@ -37,7 +37,7 @@ the 'composer theme' setting).
                 android:layout_height="wrap_content"
                 android:hint="@string/message_compose_subject_hint"
                 android:inputType="textEmailSubject|textAutoCorrect|textCapSentences"
-                android:imeOptions="actionNext|flagNoExtractUi"
+                android:imeOptions="actionNext|flagNoExtractUi|flagNoPersonalizedLearning"
                 android:singleLine="true"
                 android:layout_marginLeft="12dip"
                 android:layout_marginRight="12dip"
@@ -64,7 +64,7 @@ the 'composer theme' setting).
             android:gravity="top"
             android:hint="@string/message_compose_content_hint"
             android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
-            android:imeOptions="actionDone|flagNoEnterAction|flagNoExtractUi"
+            android:imeOptions="actionDone|flagNoEnterAction|flagNoExtractUi|flagNoPersonalizedLearning"
             android:minLines="3"
             android:paddingLeft="12dip"
             android:paddingRight="12dip"
@@ -80,7 +80,7 @@ the 'composer theme' setting).
             android:minLines="0"
             android:hint="@string/message_compose_signature_hint"
             android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
-            android:imeOptions="flagNoExtractUi"
+            android:imeOptions="flagNoExtractUi|flagNoPersonalizedLearning"
             android:textAppearance="?attr/textAppearanceBodyLarge"
             />
 
@@ -107,7 +107,7 @@ the 'composer theme' setting).
                 android:gravity="top"
                 android:minLines="3"
                 android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
-                android:imeOptions="flagNoExtractUi"
+                android:imeOptions="flagNoExtractUi|flagNoPersonalizedLearning"
                 android:textAppearance="?attr/textAppearanceBodyLarge"
                 />
 
@@ -156,7 +156,7 @@ the 'composer theme' setting).
             android:minLines="0"
             android:hint="@string/message_compose_signature_hint"
             android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
-            android:imeOptions="flagNoExtractUi"
+            android:imeOptions="flagNoExtractUi|flagNoPersonalizedLearning"
             android:textAppearance="?attr/textAppearanceBodyLarge"
             />
 

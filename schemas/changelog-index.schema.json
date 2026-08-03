@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thunderbird.net/schemas/android/changelog-index.schema.json",
+  "title": "Thunderbird for Android changelog index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "releases"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "releases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "version",
+          "date",
+          "resourceName"
+        ],
+        "properties": {
+          "version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+          },
+          "resourceName": {
+            "type": "string",
+            "pattern": "^changelog_release_[a-z0-9_]+$"
+          }
+        }
+      }
+    }
+  }
+}

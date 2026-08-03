@@ -50,7 +50,7 @@ internal class TransitionFormatter<TState : Any, TEvent : Any>(
         } else {
             StatePrettyPrinterVocabulary.STATE_NO_CHANGE_MARKER
         }
-        val elapsed = previousTimestamp?.let { formatElapsed(record.timestamp - it) } ?: ""
+        val elapsed = previousTimestamp?.let { formatElapsed(record.timestamp - it) }.orEmpty()
 
         append("${prev::class.simpleName} $transitionMarker ${new::class.simpleName}")
         append("event=${record.event::class.simpleName}".prependIndent(size = 2))

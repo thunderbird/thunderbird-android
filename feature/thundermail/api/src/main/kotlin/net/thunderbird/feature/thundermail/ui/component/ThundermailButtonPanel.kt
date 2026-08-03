@@ -11,13 +11,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonDefaults
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
+import net.thunderbird.components.ui.bolt.atom.button.ButtonDefaults
+import net.thunderbird.components.ui.bolt.atom.button.ButtonOutlined
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.thundermail.R
 import net.thunderbird.feature.thundermail.featureflag.ThundermailFeatureFlags
 import org.koin.compose.koinInject
@@ -32,43 +32,43 @@ fun ThundermailButtonPanel(
     if (featureFlagProvider.provide(ThundermailFeatureFlags.ThundermailOnboardingEnabled).isEnabled()) {
         Column(
             modifier = modifier,
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.quadruple),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.quadruple),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             FlowRow(
                 horizontalArrangement = Arrangement.Center,
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
             ) {
                 ButtonOutlined(
                     text = stringResource(R.string.feature_thundermail_button_panel_sign_in),
                     onClick = onThundermailClick,
                     colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MainTheme.colors.primary,
+                        contentColor = BoltTheme.colors.primary,
                     ),
                     shape = ButtonDefaults.outlinedShape(
                         border = ButtonDefaults.outlinedButtonBorder(
-                            color = MainTheme.colors.primary,
+                            color = BoltTheme.colors.primary,
                         ),
                     ),
                     icon = Icons.Filled.Thundermail,
                 )
-                Spacer(modifier = Modifier.width(MainTheme.spacings.double))
+                Spacer(modifier = Modifier.width(BoltTheme.spacings.double))
                 ButtonOutlined(
                     text = stringResource(R.string.feature_thundermail_button_panel_scan_qr_code),
                     onClick = onScanQrCodeClick,
                     colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MainTheme.colors.primary,
+                        contentColor = BoltTheme.colors.primary,
                     ),
                     shape = ButtonDefaults.outlinedShape(
                         border = ButtonDefaults.outlinedButtonBorder(
-                            color = MainTheme.colors.primary,
+                            color = BoltTheme.colors.primary,
                         ),
                     ),
                     icon = Icons.Outlined.QrCode,
                 )
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.quarter),
+                horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.quarter),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 DividerHorizontal(modifier = Modifier.weight(weight = 1f))

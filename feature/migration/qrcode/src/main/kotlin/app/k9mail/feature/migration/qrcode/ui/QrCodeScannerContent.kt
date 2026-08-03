@@ -6,11 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Event
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.State
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.UiPermissionState
+import net.thunderbird.components.ui.bolt.atom.Surface
 
 @Composable
 internal fun QrCodeScannerContent(

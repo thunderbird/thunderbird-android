@@ -20,7 +20,7 @@ class TimeLimitedCacheTest {
     @Test
     fun `getValue should return null when entry present and expired`() {
         // Arrange
-        cache.set(KEY, VALUE, expiresIn = EXPIRES_IN)
+        cache.set(key = KEY, value = VALUE, expiresIn = EXPIRES_IN)
         clock.advanceTimeBy(EXPIRES_IN + 1.milliseconds)
 
         // Act
@@ -33,7 +33,7 @@ class TimeLimitedCacheTest {
     @Test
     fun `hasKey should answer false when cache has entry and validity expired`() {
         // Arrange
-        cache.set(KEY, VALUE, expiresIn = EXPIRES_IN)
+        cache.set(key = KEY, value = VALUE, expiresIn = EXPIRES_IN)
         clock.advanceTimeBy(EXPIRES_IN + 1.milliseconds)
 
         // Act
@@ -46,7 +46,7 @@ class TimeLimitedCacheTest {
     @Test
     fun `should keep cache when time progresses within expiration`() {
         // Arrange
-        cache.set(KEY, VALUE, expiresIn = EXPIRES_IN)
+        cache.set(key = KEY, value = VALUE, expiresIn = EXPIRES_IN)
         clock.advanceTimeBy(EXPIRES_IN - 1.milliseconds)
 
         // Act
@@ -59,8 +59,8 @@ class TimeLimitedCacheTest {
     @Test
     fun `clearExpired should remove only expired entries`() {
         // Arrange
-        cache.set(KEY, VALUE, expiresIn = EXPIRES_IN)
-        cache.set(KEY_2, VALUE_2, expiresIn = EXPIRES_IN * 2)
+        cache.set(key = KEY, value = VALUE, expiresIn = EXPIRES_IN)
+        cache.set(key = KEY_2, value = VALUE_2, expiresIn = EXPIRES_IN * 2)
         clock.advanceTimeBy(EXPIRES_IN + 1.milliseconds)
 
         // Act
@@ -74,7 +74,7 @@ class TimeLimitedCacheTest {
     @Test
     fun `get should return Entry with correct metadata when not expired`() {
         // Arrange
-        cache.set(KEY, VALUE, expiresIn = EXPIRES_IN)
+        cache.set(key = KEY, value = VALUE, expiresIn = EXPIRES_IN)
 
         // Act
         val entry = cache[KEY]

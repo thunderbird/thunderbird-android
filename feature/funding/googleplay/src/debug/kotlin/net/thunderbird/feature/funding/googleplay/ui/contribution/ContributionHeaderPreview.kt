@@ -2,8 +2,8 @@ package net.thunderbird.feature.funding.googleplay.ui.contribution
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import kotlinx.datetime.LocalDateTime
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
 import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 
 @Composable
@@ -22,7 +22,7 @@ internal fun ContributionHeaderWithPurchasedOneTimeContributionPreview() {
             purchasedContribution = PurchasedContribution(
                 id = FakeData.oneTimeContribution.id,
                 contribution = FakeData.oneTimeContribution,
-                purchaseDate = LocalDateTime(2024, 6, 1, 12, 0),
+                purchaseDate = LocalDateTime(year = 2024, month = 6, day = 1, hour = 12, minute = 0),
             ),
         )
     }
@@ -36,7 +36,7 @@ internal fun ContributionHeaderWithPurchasedRecurringContributionPreview() {
             purchasedContribution = PurchasedContribution(
                 id = FakeData.recurringContribution.id,
                 contribution = FakeData.recurringContribution,
-                purchaseDate = LocalDateTime(2024, 6, 1, 12, 0),
+                purchaseDate = LocalDateTime(year = 2024, month = 6, day = 1, hour = 12, minute = 0),
             ),
         )
     }

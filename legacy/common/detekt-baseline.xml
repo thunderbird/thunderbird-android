@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComplexCondition:RealOAuth2TokenProvider.kt:RealOAuth2TokenProvider$authException == GeneralErrors.NETWORK_ERROR || authException == GeneralErrors.SERVER_ERROR || authException == AuthorizationRequestErrors.SERVER_ERROR || authException == AuthorizationRequestErrors.TEMPORARILY_UNAVAILABLE</ID>
+    <ID>ThrowsCount:RealOAuth2TokenProvider.kt:RealOAuth2TokenProvider$@Suppress("TooGenericExceptionCaught") override fun getToken: String</ID>
+    <ID>TooManyFunctions:K9CoreResourceProvider.kt:K9CoreResourceProvider : CoreResourceProvider</ID>
+    <ID>TooManyFunctions:K9NotificationActionCreator.kt:K9NotificationActionCreator : NotificationActionCreator</ID>
+    <ID>TooManyFunctions:K9NotificationResourceProvider.kt:K9NotificationResourceProvider : NotificationResourceProvider</ID>
+  </CurrentIssues>
+</SmellBaseline>

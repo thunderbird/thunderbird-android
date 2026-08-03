@@ -17,12 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
-import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
-import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
-import app.k9mail.core.ui.compose.designsystem.molecule.input.EmailAddressInput
-import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
@@ -33,7 +27,13 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract.State
 import app.k9mail.feature.account.setup.ui.autodiscovery.view.AutoDiscoveryResultApprovalView
 import app.k9mail.feature.account.setup.ui.autodiscovery.view.AutoDiscoveryResultView
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.molecule.ContentLoadingErrorView
+import net.thunderbird.components.ui.bolt.molecule.ErrorView
+import net.thunderbird.components.ui.bolt.molecule.LoadingView
+import net.thunderbird.components.ui.bolt.molecule.input.EmailAddressInput
+import net.thunderbird.components.ui.bolt.molecule.input.PasswordInput
+import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.thundermail.ui.component.ThundermailButtonPanel
 
 @Composable
@@ -147,7 +147,7 @@ internal fun ContentView(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(MainTheme.spacings.quadruple)
+            .padding(BoltTheme.spacings.quadruple)
             .then(modifier),
     ) {
         if (state.configStep != AccountAutoDiscoveryContract.ConfigStep.EMAIL_ADDRESS) {
@@ -161,7 +161,7 @@ internal fun ContentView(
                     onApprovalChange = { onEvent(Event.ResultApprovalChanged(it)) },
                 )
             }
-            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+            Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
         }
 
         AnimatedVisibility(state.emailAddress.value.isBlank()) {
@@ -170,7 +170,7 @@ internal fun ContentView(
                 onScanQrCodeClick = onScanQrCodeClick,
                 modifier = Modifier
                     .testTag("thundermail_panel")
-                    .padding(bottom = MainTheme.spacings.quadruple),
+                    .padding(bottom = BoltTheme.spacings.quadruple),
             )
         }
 
@@ -183,7 +183,7 @@ internal fun ContentView(
         )
 
         if (state.configStep == AccountAutoDiscoveryContract.ConfigStep.PASSWORD) {
-            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+            Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
             PasswordInput(
                 password = state.password.value,
                 errorMessage = state.password.error?.toAutoDiscoveryValidationErrorString(resources),
@@ -194,7 +194,7 @@ internal fun ContentView(
         } else if (state.configStep == AccountAutoDiscoveryContract.ConfigStep.OAUTH) {
             val isAutoDiscoverySettingsTrusted = state.autoDiscoverySettings?.isTrusted ?: false
             val isConfigurationApproved = state.configurationApproved.value ?: false
-            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+            Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
             AccountOAuthView(
                 onOAuthResult = { result -> onEvent(Event.OnOAuthResult(result)) },
                 viewModel = oAuthViewModel,

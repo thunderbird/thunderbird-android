@@ -3,7 +3,7 @@ package net.thunderbird.feature.navigation.drawer.dropdown.ui.common
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
@@ -14,7 +14,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedD
 internal fun getDisplayAccountColor(account: DisplayAccount): Color {
     return when (account) {
         is UnifiedDisplayAccount -> {
-            MainTheme.colors.onSurfaceVariant
+            BoltTheme.colors.onSurfaceVariant
         }
 
         is MailDisplayAccount -> {

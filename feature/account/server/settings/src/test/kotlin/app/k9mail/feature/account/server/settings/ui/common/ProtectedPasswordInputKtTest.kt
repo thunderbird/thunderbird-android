@@ -7,14 +7,14 @@ import androidx.compose.ui.test.performClick
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import app.k9mail.feature.account.server.settings.R
+import net.thunderbird.components.ui.bolt.resources.Res
+import net.thunderbird.components.ui.bolt.resources.bolt_atom_password_textfield_show_password
+import net.thunderbird.components.ui.bolt.resources.bolt_molecule_password_input_label
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.ui.designsystem.resources.Res
-import net.thunderbird.core.ui.designsystem.resources.designsystem_atom_password_textfield_show_password
-import net.thunderbird.core.ui.designsystem.resources.designsystem_molecule_password_input_label
 import net.thunderbird.feature.account.server.settings.ui.common.AuthenticationError
 import net.thunderbird.feature.account.server.settings.ui.common.Authenticator
 import org.junit.Test
-import net.thunderbird.core.ui.testing.getString as getComposeString
+import net.thunderbird.components.ui.testing.resource.getString as getComposeString
 
 class ProtectedPasswordInputKtTest : ComposeTest() {
 
@@ -30,7 +30,7 @@ class ProtectedPasswordInputKtTest : ComposeTest() {
         }
 
         // Assert
-        onNodeWithText(getComposeString(Res.string.designsystem_molecule_password_input_label)).assertIsDisplayed()
+        onNodeWithText(getComposeString(Res.string.bolt_molecule_password_input_label)).assertIsDisplayed()
     }
 
     @Test
@@ -48,7 +48,7 @@ class ProtectedPasswordInputKtTest : ComposeTest() {
 
         // Act
         onNodeWithContentDescription(
-            getComposeString(Res.string.designsystem_atom_password_textfield_show_password),
+            getComposeString(Res.string.bolt_atom_password_textfield_show_password),
         ).performClick()
 
         // Assert

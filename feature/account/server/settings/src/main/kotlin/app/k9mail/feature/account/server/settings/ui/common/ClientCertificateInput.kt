@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedFakeSelect
-import app.k9mail.core.ui.compose.designsystem.molecule.input.inputContentPadding
 import app.k9mail.feature.account.server.settings.R
+import net.thunderbird.components.ui.bolt.atom.textfield.TextFieldOutlinedFakeSelect
+import net.thunderbird.components.ui.bolt.molecule.input.inputContentPadding
 
 @Composable
 fun ClientCertificateInput(

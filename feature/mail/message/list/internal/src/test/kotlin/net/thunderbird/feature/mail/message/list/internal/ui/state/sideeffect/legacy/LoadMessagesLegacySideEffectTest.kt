@@ -1,13 +1,12 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.legacy
 
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import dev.mokkery.spy
-import dev.mokkery.verify.VerifyMode
-import dev.mokkery.verifySuspend
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -19,6 +18,7 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.mail.message.list.internal.fakes.RecordingSuspendFunction
 import net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect.BaseSideEffectHandlerTest
 import net.thunderbird.feature.mail.message.list.preferences.MessageListPreferences
 import net.thunderbird.feature.mail.message.list.ui.effect.MessageListEffect
@@ -91,12 +91,12 @@ class LoadMessagesLegacySideEffectTest : BaseSideEffectHandlerTest() {
     fun `handle() should dispatch UpdateLoadingProgress with progress 1f for non-empty messages`() =
         runTest(UnconfinedTestDispatcher()) {
             // Arrange
-            val dispatch = spy<suspend (MessageListEvent) -> Unit>(obj = {})
+            val dispatch = RecordingSuspendFunction<MessageListEvent>()
             val fakeMessages = listOf(createMessageItemUi())
             val fakeBridge = FakeLegacyMessageListBridge(flow { emit(fakeMessages) })
             val testSubject = createTestSubject(
                 scope = backgroundScope,
-                dispatch = dispatch,
+                dispatch = dispatch.function,
                 legacyBridge = fakeBridge,
             )
             val oldState = MessageListState.WarmingUp()
@@ -106,20 +106,19 @@ class LoadMessagesLegacySideEffectTest : BaseSideEffectHandlerTest() {
             testSubject.handle(event = MessageListEvent.LoadNextPage, oldState, newState)
 
             // Assert
-            verifySuspend(mode = VerifyMode.exactly(1)) {
-                dispatch(MessageListEvent.UpdateLoadingProgress(progress = 1f, messages = fakeMessages))
-            }
+            assertThat(dispatch.calls)
+                .containsExactly(MessageListEvent.UpdateLoadingProgress(progress = 1f, messages = fakeMessages))
         }
 
     @Test
     fun `handle() should dispatch UpdateLoadingProgress with progress 0f for empty messages`() =
         runTest(UnconfinedTestDispatcher()) {
             // Arrange
-            val dispatch = spy<suspend (MessageListEvent) -> Unit>(obj = {})
+            val dispatch = RecordingSuspendFunction<MessageListEvent>()
             val fakeBridge = FakeLegacyMessageListBridge(flow { emit(emptyList()) })
             val testSubject = createTestSubject(
                 scope = backgroundScope,
-                dispatch = dispatch,
+                dispatch = dispatch.function,
                 legacyBridge = fakeBridge,
             )
             val oldState = MessageListState.WarmingUp()
@@ -129,20 +128,19 @@ class LoadMessagesLegacySideEffectTest : BaseSideEffectHandlerTest() {
             testSubject.handle(event = MessageListEvent.LoadNextPage, oldState, newState)
 
             // Assert
-            verifySuspend(mode = VerifyMode.exactly(1)) {
-                dispatch(MessageListEvent.UpdateLoadingProgress(progress = 0f, messages = emptyList()))
-            }
+            assertThat(dispatch.calls)
+                .containsExactly(MessageListEvent.UpdateLoadingProgress(progress = 0f, messages = emptyList()))
         }
 
     @Test
     fun `handle() should do nothing when newState is not LoadingMessages`() =
         runTest(UnconfinedTestDispatcher()) {
             // Arrange
-            val dispatch = spy<suspend (MessageListEvent) -> Unit>(obj = {})
+            val dispatch = RecordingSuspendFunction<MessageListEvent>()
             val fakeBridge = FakeLegacyMessageListBridge()
             val testSubject = createTestSubject(
                 scope = backgroundScope,
-                dispatch = dispatch,
+                dispatch = dispatch.function,
                 legacyBridge = fakeBridge,
             )
             val oldState = MessageListState.WarmingUp()
@@ -152,9 +150,7 @@ class LoadMessagesLegacySideEffectTest : BaseSideEffectHandlerTest() {
             testSubject.handle(event = MessageListEvent.LoadNextPage, oldState, newState)
 
             // Assert
-            verifySuspend(mode = VerifyMode.exactly(0)) {
-                dispatch(MessageListEvent.UpdateLoadingProgress(progress = 0f))
-            }
+            assertThat(dispatch.calls).isEmpty()
             assertThat(fakeBridge.loadMessagesCallCount).isEqualTo(0)
         }
 

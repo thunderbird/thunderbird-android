@@ -6,9 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.koin.koinPreview
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.server.certificate.domain.entity.FormattedServerCertificateError
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateProperties
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
 import okio.ByteString.Companion.decodeHex
 
 @Composable

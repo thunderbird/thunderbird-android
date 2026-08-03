@@ -1,0 +1,42 @@
+package net.thunderbird.components.ui.catalog.ui.navigation
+
+import androidx.navigation.NavGraphBuilder
+import net.thunderbird.components.ui.catalog.ui.page.atom.CatalogAtomScreen
+import net.thunderbird.components.ui.catalog.ui.page.molecule.CatalogMoleculeScreen
+import net.thunderbird.components.ui.catalog.ui.page.organism.CatalogOrganismScreen
+import net.thunderbird.components.ui.catalog.ui.page.template.CatalogTemplateScreen
+
+class DefaultCatalogNavigation : CatalogNavigation {
+
+    override fun registerRoutes(
+        navGraphBuilder: NavGraphBuilder,
+        onBack: () -> Unit,
+        onFinish: (CatalogRoute) -> Unit,
+    ) {
+        with(navGraphBuilder) {
+            deepLinkComposable<CatalogRoute.Atom>(
+                basePath = CatalogRoute.Atom.BASE_PATH,
+            ) { backStackEntry ->
+                CatalogAtomScreen()
+            }
+
+            deepLinkComposable<CatalogRoute.Molecule>(
+                basePath = CatalogRoute.Molecule.BASE_PATH,
+            ) { backStackEntry ->
+                CatalogMoleculeScreen()
+            }
+
+            deepLinkComposable<CatalogRoute.Organism>(
+                basePath = CatalogRoute.Organism.BASE_PATH,
+            ) { backStackEntry ->
+                CatalogOrganismScreen()
+            }
+
+            deepLinkComposable<CatalogRoute.Template>(
+                basePath = CatalogRoute.Template.BASE_PATH,
+            ) { backStackEntry ->
+                CatalogTemplateScreen()
+            }
+        }
+    }
+}

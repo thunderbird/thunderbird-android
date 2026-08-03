@@ -424,7 +424,7 @@ jobs:
           RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
           APPLICATION_LABEL: ${{ steps.appinfo.outputs.APPLICATION_LABEL }}
           VERSION_CODE: ${{ steps.new_version_code.outputs.new_version_code }}
-          FULL_VERSION_NAME: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
+          FULL_VERSION_NAME: ${{ steps.bump_version_name.outputs.VERSION_NAME || steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
           K9MAIL_GITHUB_NOTES: ${{ steps.render_notes.outputs.k9mail_github_notes }}
           THUNDERBIRD_GITHUB_NOTES: ${{ steps.render_notes.outputs.thunderbird_github_notes }}
           GITHUB_TOKEN: ${{ github.token }}

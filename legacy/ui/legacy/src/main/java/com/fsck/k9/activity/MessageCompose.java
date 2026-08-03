@@ -26,6 +26,7 @@ import android.graphics.Typeface;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -40,6 +41,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewStub;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -369,9 +371,12 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         subjectView = findViewById(R.id.subject);
         subjectView.getInputExtras(true).putBoolean("allowEmoji", true);
+        applyIncognitoKeyboardSetting(subjectView);
 
         EditText upperSignature = findViewById(R.id.upper_signature);
         EditText lowerSignature = findViewById(R.id.lower_signature);
+        applyIncognitoKeyboardSetting(upperSignature);
+        applyIncognitoKeyboardSetting(lowerSignature);
 
 
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
@@ -381,6 +386,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         messageContentView = findViewById(R.id.message_content);
         messageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
+        applyIncognitoKeyboardSetting(messageContentView);
 
         attachmentsView = findViewById(R.id.attachments);
 
@@ -1077,6 +1083,20 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         updateMessageFormat();
         replyToPresenter.setIdentity(identity);
         recipientPresenter.onSwitchIdentity();
+    }
+
+    private void applyIncognitoKeyboardSetting(EditText editText) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return;
+        }
+
+        boolean incognitoKeyboardEnabled = generalSettingsManager.getConfig().getPrivacy().isIncognitoKeyboardEnabled();
+        int imeOptions = editText.getImeOptions();
+        if (incognitoKeyboardEnabled) {
+            editText.setImeOptions(imeOptions | EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING);
+        } else {
+            editText.setImeOptions(imeOptions & ~EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING);
+        }
     }
 
     private void updateFrom() {

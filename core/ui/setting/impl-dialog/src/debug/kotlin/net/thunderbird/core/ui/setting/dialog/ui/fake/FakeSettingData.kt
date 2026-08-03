@@ -1,7 +1,7 @@
 package net.thunderbird.core.ui.setting.dialog.ui.fake
 
 import kotlinx.collections.immutable.persistentListOf
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.SettingValue.SegmentedButton.SegmentedButtonOption
 import net.thunderbird.core.ui.setting.SettingValue.Select.SelectOption

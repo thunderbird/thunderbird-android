@@ -27,5 +27,5 @@ val featureThundermailCommonModule = module {
         )
     }
     single<CreateAccountStateUseCase> { CreateAccountStateUseCase(get()) }
-    single<ThundermailNavigation> { DefaultThundermailNavigation() }
+    single<ThundermailNavigation> { DefaultThundermailNavigation(get()) }
 }

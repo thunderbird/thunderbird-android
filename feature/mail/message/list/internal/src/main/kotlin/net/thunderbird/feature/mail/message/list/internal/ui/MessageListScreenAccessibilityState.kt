@@ -7,11 +7,11 @@ import androidx.compose.ui.res.stringResource
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirectionAccessibilityAction
+import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirectionAccessibilityAction.EndToStartAccessibilityAction
+import net.thunderbird.components.ui.bolt.molecule.swipe.SwipeDirectionAccessibilityAction.StartToEndAccessibilityAction
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
-import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectionAccessibilityAction
-import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectionAccessibilityAction.EndToStartAccessibilityAction
-import net.thunderbird.core.ui.compose.designsystem.molecule.swipe.SwipeDirectionAccessibilityAction.StartToEndAccessibilityAction
 import net.thunderbird.feature.mail.message.list.internal.R
 import net.thunderbird.feature.mail.message.list.ui.state.MessageItemUi
 import net.thunderbird.feature.mail.message.list.R as ApiR

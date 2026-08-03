@@ -1,0 +1,34 @@
+package net.thunderbird.components.ui.catalog.ui.page.common.list
+
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
+
+@Composable
+fun ItemOutlinedView(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
+        modifier = Modifier
+            .padding(defaultItemPadding())
+            .then(modifier),
+    ) {
+        Box(
+            modifier = Modifier
+                .border(1.dp, Color.Gray)
+                .fillMaxWidth(),
+        ) {
+            content()
+        }
+    }
+}

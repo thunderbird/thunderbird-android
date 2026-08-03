@@ -36,10 +36,10 @@ internal class DefaultAccountProfileLocalDataSource(
         val currentAccount = accountManager.getById(accountProfile.id)
             .firstOrNull() ?: return
 
-        val accountProfile = dataMapper.toDto(accountProfile)
+        val accountProfileDto = dataMapper.toDto(accountProfile)
 
         val updatedAccount = currentAccount.copy(
-            profile = accountProfile,
+            profile = accountProfileDto,
         )
 
         accountManager.update(updatedAccount)

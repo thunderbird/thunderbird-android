@@ -41,7 +41,11 @@ class UpdateComponent : BaseCommand(name = "update") {
 
     @Suppress("NestedBlockDepth")
     private fun processComponent(component: Component, componentConfig: ComponentConfig, client: WeblateClient) {
-        val diffs = ComponentConfigDiff.computeConfigDiff(componentConfig, component.config, 1)
+        val diffs = ComponentConfigDiff.computeConfigDiff(
+            expected = componentConfig,
+            actual = component.config,
+            indentLevel = 1,
+        )
 
         if (diffs.isEmpty()) {
             println("  ✅ Config matches common config")

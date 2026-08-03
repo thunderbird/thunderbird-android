@@ -2,13 +2,11 @@ package net.thunderbird.feature.notification.impl.command
 
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.containsExactly
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import dev.mokkery.matcher.any
-import dev.mokkery.spy
-import dev.mokkery.verify.VerifyMode.Companion.exactly
-import dev.mokkery.verifySuspend
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.featureflag.FeatureFlagKey
@@ -96,7 +94,7 @@ class DismissInAppNotificationCommandTest {
         val registry = FakeNotificationRegistry().apply {
             register(notification)
         }
-        val notifier = spy(FakeInAppNotificationNotifier())
+        val notifier = FakeInAppNotificationNotifier()
         val testSubject = createTestSubject(
             notification = notification,
             notifier = notifier,
@@ -118,7 +116,7 @@ class DismissInAppNotificationCommandTest {
                     .isEqualTo(expectedId)
             }
 
-        verifySuspend(exactly(1)) { notifier.dismiss(expectedId) }
+        assertThat(notifier.dismissedNotificationIds).containsExactly(expectedId)
     }
 
     @Test
@@ -126,7 +124,7 @@ class DismissInAppNotificationCommandTest {
         // Arrange
         val notification = FakeNotification()
         val registry = FakeNotificationRegistry() // empty, not registered
-        val notifier = spy(FakeInAppNotificationNotifier())
+        val notifier = FakeInAppNotificationNotifier()
         val testSubject = createTestSubject(
             notification = notification,
             notifier = notifier,
@@ -147,7 +145,7 @@ class DismissInAppNotificationCommandTest {
                     .isEqualTo("Notification is not registered in the NotificationRegistry.")
             }
 
-        verifySuspend(exactly(0)) { notifier.dismiss(any()) }
+        assertThat(notifier.dismissedNotificationIds).isEmpty()
     }
 
     private fun createTestSubject(

@@ -8,13 +8,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.feature.account.server.certificate.R
 import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertificateProperties
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleSmall
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import okio.ByteString
 import org.koin.compose.koinInject
 
@@ -27,13 +27,13 @@ internal fun ServerCertificateView(
 ) {
     Column(
         modifier = modifier.padding(
-            start = MainTheme.spacings.double,
-            end = MainTheme.spacings.double,
-            top = MainTheme.spacings.double,
+            start = BoltTheme.spacings.double,
+            end = BoltTheme.spacings.double,
+            top = BoltTheme.spacings.double,
         ),
     ) {
         TextTitleLarge(stringResource(R.string.account_server_certificate_section_title))
-        Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
 
         if (serverCertificateProperties.subjectAlternativeNames.isNotEmpty()) {
             TextTitleSmall(stringResource(R.string.account_server_certificate_subject_alternative_names))
@@ -41,31 +41,31 @@ internal fun ServerCertificateView(
                 BulletedListItem(serverNameFormatter.format(subjectAlternativeName))
             }
 
-            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+            Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
         }
 
         TextTitleSmall(stringResource(R.string.account_server_certificate_not_valid_before))
         TextBodyLarge(text = serverCertificateProperties.notValidBefore)
 
-        Spacer(modifier = Modifier.height(MainTheme.spacings.default))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
 
         TextTitleSmall(stringResource(R.string.account_server_certificate_not_valid_after))
         TextBodyLarge(text = serverCertificateProperties.notValidAfter)
 
-        Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
 
         TextTitleSmall(stringResource(R.string.account_server_certificate_subject))
         TextBodyLarge(text = serverCertificateProperties.subject)
 
-        Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
 
         TextTitleSmall(stringResource(R.string.account_server_certificate_issuer))
         TextBodyLarge(text = serverCertificateProperties.issuer)
 
-        Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
 
         TextLabelSmall(text = stringResource(R.string.account_server_certificate_fingerprints_section))
-        Spacer(modifier = Modifier.height(MainTheme.spacings.default))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
 
         Fingerprint("SHA-1", serverCertificateProperties.fingerprintSha1, fingerprintFormatter)
         Fingerprint("SHA-256", serverCertificateProperties.fingerprintSha256, fingerprintFormatter)
@@ -81,13 +81,13 @@ private fun Fingerprint(
 ) {
     val formattedFingerprint = fingerprintFormatter.format(
         fingerprint,
-        separatorColor = MainTheme.colors.onSurfaceVariant,
+        separatorColor = BoltTheme.colors.onSurfaceVariant,
     )
 
     Column {
         TextTitleSmall(text = title)
         TextBodyLarge(text = formattedFingerprint)
-        Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+        Spacer(modifier = Modifier.height(BoltTheme.spacings.double))
     }
 }
 
@@ -96,7 +96,7 @@ private fun BulletedListItem(text: String) {
     Row {
         TextBodyLarge(
             text = "\u2022",
-            modifier = Modifier.padding(horizontal = MainTheme.spacings.half),
+            modifier = Modifier.padding(horizontal = BoltTheme.spacings.half),
         )
         TextBodyLarge(text = text)
     }

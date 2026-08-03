@@ -36,3 +36,11 @@ dependencies {
     implementation(libs.bundles.shared.jvm)
     testImplementation(libs.bundles.shared.jvm.test)
 }
+
+tasks.register("testsOnCi") {
+    dependsOn(
+        tasks.withType<Test>().matching {
+            it.name.contains("konsist").not()
+        }
+    )
+}

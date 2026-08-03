@@ -10,7 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
 
@@ -30,7 +30,7 @@ internal fun FolderList(
     LazyColumn(
         state = listState,
         modifier = modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(vertical = MainTheme.spacings.default),
+        contentPadding = PaddingValues(vertical = BoltTheme.spacings.default),
     ) {
         items(
             items = rootFolder.children,

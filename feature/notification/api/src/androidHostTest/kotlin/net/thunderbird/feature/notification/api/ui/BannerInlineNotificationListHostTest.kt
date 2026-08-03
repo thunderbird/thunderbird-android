@@ -18,7 +18,6 @@ import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasTextExactly
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.performClick
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.onNodeWithTag
 import app.k9mail.core.ui.compose.testing.onNodeWithText
@@ -29,6 +28,7 @@ import kotlin.test.Test
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.host.rememberInAppNotificationHostStateHolder
 import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle

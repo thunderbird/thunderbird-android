@@ -15,14 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import app.k9mail.core.ui.compose.designsystem.atom.image.FixedScaleImage
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineSmall
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.image.FixedScaleImage
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextHeadlineSmall
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.funding.googleplay.R
 import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.ui.contribution.image.GoldenHearthSunburst
@@ -69,13 +69,13 @@ private fun ContributionHeaderView(
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.triple),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.triple),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = MainTheme.spacings.triple)
-                .height(MainTheme.sizes.large),
+                .padding(top = BoltTheme.spacings.triple)
+                .height(BoltTheme.sizes.large),
         ) {
             FixedScaleImage(
                 imageVector = logo,
@@ -87,7 +87,7 @@ private fun ContributionHeaderView(
 
         TextHeadlineSmall(
             text = title,
-            color = MainTheme.colors.primary,
+            color = BoltTheme.colors.primary,
             textAlign = TextAlign.Center,
         )
 
@@ -102,7 +102,7 @@ private fun ContributionHeaderView(
 
         if (benefits.isNotEmpty()) {
             Column(
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
             ) {
                 benefits.forEach { benefit ->
                     ContributionBenefit(
@@ -125,11 +125,11 @@ private fun ContributionBenefit(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+        horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
     ) {
         Icon(
             imageVector = Icons.Filled.Dot,
-            modifier = Modifier.size(MainTheme.sizes.small),
+            modifier = Modifier.size(BoltTheme.sizes.small),
         )
         TextBodyMedium(
             text = benefit,

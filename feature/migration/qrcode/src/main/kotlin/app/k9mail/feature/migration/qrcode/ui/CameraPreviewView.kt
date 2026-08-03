@@ -17,8 +17,8 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase.CameraUseCasesProvider
+import net.thunderbird.components.ui.bolt.atom.text.TextTitleLarge
 import android.graphics.Color as AndroidColor
 
 /**

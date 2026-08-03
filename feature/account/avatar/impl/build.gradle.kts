@@ -10,7 +10,6 @@ android {
 dependencies {
     implementation(projects.core.common)
     implementation(projects.core.ui.compose.common)
-    implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.file)
 
     implementation(projects.feature.account.avatar.api)

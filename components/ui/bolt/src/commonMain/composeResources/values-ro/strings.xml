@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bolt_atom_password_textfield_hide_password">Ascunde parola</string>
+    <string name="bolt_molecule_email_address_input_label">Adresa e-mail</string>
+    <string name="bolt_atom_password_textfield_show_password">Arată parola</string>
+    <string name="bolt_molecule_error_view_button_retry">Reîncearcă</string>
+    <string name="bolt_molecule_password_input_label">Parola</string>
+    <string name="bolt_molecule_swipeable_row_start_to_end_accessibility_description">Dreapta: %1$s</string>
+    <string name="bolt_molecule_swipeable_row_end_to_start_accessibility_description">Stânga: %1$s</string>
+</resources>

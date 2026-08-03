@@ -1,6 +1,6 @@
 package app.k9mail.feature.account.edit.ui.server.settings.save
 
-import app.k9mail.core.ui.compose.designsystem.molecule.LoadingErrorState
+import net.thunderbird.components.ui.bolt.molecule.LoadingErrorState
 import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 
 interface SaveServerSettingsContract {

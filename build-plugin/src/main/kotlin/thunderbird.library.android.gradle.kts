@@ -28,7 +28,8 @@ android {
         warningsAsErrors = false
         abortOnError = true
         checkDependencies = true
-        lintConfig = project.file("${project.rootProject.projectDir}/config/lint/lint.xml")
+        @Suppress("UnstableApiUsage")
+        lintConfig = isolated.rootProject.projectDirectory.file("config/lint/lint.xml").asFile
         checkReleaseBuilds = System.getenv("CI_CHECK_RELEASE_BUILDS")?.toBoolean() ?: true
     }
 
@@ -83,4 +84,12 @@ dependencies {
     implementation(libs.bundles.shared.android)
 
     testImplementation(libs.bundles.shared.android.test)
+}
+
+tasks.register("testsOnCi") {
+    dependsOn(
+        tasks.withType<Test>().matching {
+            it.name != "testReleaseUnitTest"
+        }
+    )
 }

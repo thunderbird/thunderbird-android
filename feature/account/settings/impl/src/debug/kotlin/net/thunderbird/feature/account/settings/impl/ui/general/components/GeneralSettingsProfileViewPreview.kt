@@ -3,7 +3,7 @@ package net.thunderbird.feature.account.settings.impl.ui.general.components
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
+import net.thunderbird.components.ui.bolt.PreviewWithThemes
 import net.thunderbird.feature.account.avatar.Avatar
 
 @Composable

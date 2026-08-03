@@ -11,12 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import net.thunderbird.core.ui.compose.theme2.LocalContentColor
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.CircularProgressIndicator
+import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.components.ui.bolt.theme.LocalContentColor
 import net.thunderbird.feature.funding.googleplay.R
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
 import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribution
@@ -75,10 +75,10 @@ internal fun ContributionFooter(
                     modifier = Modifier.weight(1f),
                 ) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(MainTheme.sizes.icon),
+                        modifier = Modifier.size(BoltTheme.sizes.icon),
                         color = LocalContentColor.current,
                     )
-                    Spacer(modifier = Modifier.width(MainTheme.spacings.double))
+                    Spacer(modifier = Modifier.width(BoltTheme.spacings.double))
                     TextBodyMedium(
                         text = stringResource(
                             R.string.funding_googleplay_contribution_footer_payment_processing_button,

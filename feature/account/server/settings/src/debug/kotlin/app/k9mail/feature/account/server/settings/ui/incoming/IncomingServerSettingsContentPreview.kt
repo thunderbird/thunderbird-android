@@ -1,9 +1,9 @@
 package app.k9mail.feature.account.server.settings.ui.incoming
 
 import androidx.compose.runtime.Composable
-import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
-import net.thunderbird.core.ui.common.annotation.PreviewDevices
+import net.thunderbird.components.ui.bolt.PreviewWithTheme
+import net.thunderbird.components.ui.bolt.common.annotation.PreviewDevices
 
 @Composable
 @PreviewDevices

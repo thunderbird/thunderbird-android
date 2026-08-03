@@ -17,8 +17,8 @@ dependencies {
     api(projects.feature.navigation.drawer.api)
 
     implementation(projects.core.android.account)
+    implementation(projects.core.ui.contract)
     implementation(projects.core.ui.theme.api)
-    implementation(projects.core.ui.compose.designsystem)
 
     implementation(projects.feature.account.avatar.impl)
     implementation(projects.feature.mail.account.api)
@@ -30,7 +30,6 @@ dependencies {
     implementation(projects.legacy.message)
     implementation(projects.legacy.ui.folder)
     implementation(projects.core.featureflag)
-
     testImplementation(projects.core.ui.compose.testing)
     testImplementation(projects.core.logging.testing)
 

@@ -50,6 +50,11 @@ internal class CommandDownloadMessage(private val backendStorage: BackendStorage
 
     private fun fetchMessage(remoteFolder: ImapFolder, message: ImapMessage, fetchProfile: FetchProfile) {
         val maxDownloadSize = 0
-        remoteFolder.fetch(listOf(message), fetchProfile, null, maxDownloadSize)
+        remoteFolder.fetch(
+            messages = listOf(element = message),
+            fetchProfile = fetchProfile,
+            listener = null,
+            maxDownloadSize = maxDownloadSize
+        )
     }
 }

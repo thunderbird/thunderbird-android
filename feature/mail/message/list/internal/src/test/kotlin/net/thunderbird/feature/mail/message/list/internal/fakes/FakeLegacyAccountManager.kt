@@ -9,6 +9,9 @@ import net.thunderbird.feature.account.AccountId
 internal open class FakeLegacyAccountManager(
     private val accounts: List<LegacyAccount>,
 ) : LegacyAccountManager {
+    val getByIdCalls = mutableListOf<AccountId>()
+    val savedAccounts = mutableListOf<LegacyAccount>()
+
     override fun getAccounts(): List<LegacyAccount> = accounts
 
     override fun getAccountsFlow(): Flow<List<LegacyAccount>> = flowOf(accounts)
@@ -22,10 +25,15 @@ internal open class FakeLegacyAccountManager(
         newPosition: Int,
     ) = error("not implemented.")
 
-    override fun saveAccount(account: LegacyAccount) = Unit
+    override fun saveAccount(account: LegacyAccount) {
+        savedAccounts += account
+    }
     override fun getAll(): Flow<List<LegacyAccount>> = flowOf(getAccounts())
 
-    override fun getById(id: AccountId): Flow<LegacyAccount?> = flowOf(getAccount(id.toString()))
+    override fun getById(id: AccountId): Flow<LegacyAccount?> {
+        getByIdCalls += id
+        return flowOf(getAccount(id.toString()))
+    }
 
     override suspend fun update(account: LegacyAccount) = saveAccount(account)
 

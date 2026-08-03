@@ -247,12 +247,26 @@ class CommandSyncTest {
     private fun createCommandSync(baseUrl: HttpUrl): CommandSync {
         val httpAuthentication = BasicAuthHttpAuthentication(USERNAME, PASSWORD)
         val jmapClient = JmapClient(httpAuthentication, baseUrl)
-        return CommandSync(backendStorage, jmapClient, okHttpClient, ACCOUNT_ID, httpAuthentication)
+        return CommandSync(
+            backendStorage = backendStorage,
+            jmapClient = jmapClient,
+            okHttpClient = okHttpClient,
+            accountId = ACCOUNT_ID,
+            httpAuthentication = httpAuthentication,
+        )
     }
 
     private fun createFolderInBackendStorage() {
         backendStorage.updateFolders {
-            createFolders(listOf(FolderInfo(FOLDER_SERVER_ID, "Regular folder", FolderType.REGULAR)))
+            createFolders(
+                listOf(
+                    FolderInfo(
+                        serverId = FOLDER_SERVER_ID,
+                        name = "Regular folder",
+                        type = FolderType.REGULAR,
+                    ),
+                ),
+            )
         }
     }
 
@@ -268,7 +282,7 @@ class CommandSyncTest {
     }
 
     private fun InMemoryBackendFolder.setQueryState(queryState: String) {
-        setFolderExtraString("jmapQueryState", queryState)
+        setFolderExtraString(name = "jmapQueryState", value = queryState)
     }
 
     companion object {

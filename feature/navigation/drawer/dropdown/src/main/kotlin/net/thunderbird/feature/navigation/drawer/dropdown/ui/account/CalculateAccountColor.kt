@@ -3,8 +3,8 @@ package net.thunderbird.feature.navigation.drawer.dropdown.ui.account
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import app.k9mail.core.ui.compose.theme2.toHarmonizedColor
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.components.ui.bolt.theme.toHarmonizedColor
 
 /**
  * Calculates the account color based on the provided account color and surface color.
@@ -18,9 +18,9 @@ import net.thunderbird.core.ui.compose.theme2.MainTheme
 @Composable
 internal fun rememberCalculatedAccountColor(
     accountColor: Color,
-    fallbackColor: Color = MainTheme.colors.primary,
+    fallbackColor: Color = BoltTheme.colors.primary,
 ): Color {
-    val surfaceColor = MainTheme.colors.surface
+    val surfaceColor = BoltTheme.colors.surface
     return remember(accountColor, surfaceColor, fallbackColor) {
         if (accountColor == Color.Unspecified) {
             fallbackColor

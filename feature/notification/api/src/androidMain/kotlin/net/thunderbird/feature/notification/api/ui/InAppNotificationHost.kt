@@ -11,8 +11,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import kotlinx.collections.immutable.ImmutableSet
+import net.thunderbird.components.ui.bolt.template.Scaffold
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction

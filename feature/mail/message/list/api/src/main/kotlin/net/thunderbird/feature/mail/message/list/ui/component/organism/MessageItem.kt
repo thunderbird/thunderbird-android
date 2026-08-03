@@ -28,14 +28,14 @@ import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIconDefaults
 import kotlinx.collections.immutable.ImmutableMap
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
-import net.thunderbird.core.ui.compose.theme2.contentColorFor
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
+import net.thunderbird.components.ui.bolt.atom.button.ButtonIconDefaults
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.components.ui.bolt.theme.contentColorFor
 import net.thunderbird.feature.mail.message.list.ui.component.atom.FavouriteButtonIcon
 import net.thunderbird.feature.mail.message.list.ui.component.atom.MESSAGE_BADGE_SIZE
 import net.thunderbird.feature.mail.message.list.ui.component.atom.NewMessageBadge
@@ -113,7 +113,7 @@ internal fun MessageItem(
     Surface(
         modifier = modifier
             .combinedClickable(onClick = onClick, onLongClick = onLongClick)
-            .borderBottom(width = 1.dp, color = MainTheme.colors.outlineVariant),
+            .borderBottom(width = 1.dp, color = BoltTheme.colors.outlineVariant),
         color = colors.containerColor,
         contentColor = colors.contentColor,
     ) {
@@ -128,11 +128,11 @@ internal fun MessageItem(
                 configuration = configuration.leadingConfiguration,
                 onClick = onAvatarClick,
             )
-            Spacer(Modifier.width(MainTheme.spacings.default))
+            Spacer(Modifier.width(BoltTheme.spacings.default))
             // Message Content and Contents
             Column(
                 modifier = Modifier.weight(1f).fillMaxHeight(),
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half, Alignment.CenterVertically),
             ) {
                 AdaptiveMessageItemHeaderRow(configuration, receivedAt, firstLine)
                 MessageBodyContent(
@@ -141,12 +141,12 @@ internal fun MessageItem(
                     subject = secondaryLine,
                 )
             }
-            Spacer(Modifier.width(MainTheme.spacings.half))
+            Spacer(Modifier.width(BoltTheme.spacings.half))
             // Message controls and interaction items
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .widthIn(min = MainTheme.sizes.icon),
+                    .widthIn(min = BoltTheme.sizes.icon),
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -158,8 +158,8 @@ internal fun MessageItem(
                             modifier = Modifier.then(
                                 if (element.isFavouriteHidden) {
                                     Modifier.padding(
-                                        start = MainTheme.spacings.half,
-                                        end = MainTheme.spacings.default,
+                                        start = BoltTheme.spacings.half,
+                                        end = BoltTheme.spacings.default,
                                     )
                                 } else {
                                     Modifier
@@ -170,8 +170,8 @@ internal fun MessageItem(
                         is MessageItemTrailingElement.FavouriteIconButton -> FavouriteButtonIcon(
                             favourite = element.favourite,
                             onFavouriteChange = { onTrailingClick(element) },
-                            size = MainTheme.sizes.minTouchTarget,
-                            modifier = Modifier.height(MainTheme.sizes.minTouchTarget / 2),
+                            size = BoltTheme.sizes.minTouchTarget,
+                            modifier = Modifier.height(BoltTheme.sizes.minTouchTarget / 2),
                         )
                     }
                 }
@@ -205,7 +205,7 @@ private fun LeadingElements(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.quarter),
+        horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.quarter),
         modifier = modifier.fillMaxHeight(),
     ) {
         when (configuration.badgeStyle) {
@@ -219,19 +219,19 @@ private fun LeadingElements(
                     onClick = onClick,
                     imageVector = Icons.Outlined.Check,
                     colors = ButtonIconDefaults.buttonIconFilledColors(
-                        containerColor = MainTheme.colors.secondaryContainer,
-                        contentColor = contentColorFor(backgroundColor = MainTheme.colors.secondaryContainer),
+                        containerColor = BoltTheme.colors.secondaryContainer,
+                        contentColor = contentColorFor(backgroundColor = BoltTheme.colors.secondaryContainer),
                     ),
                     modifier = Modifier
-                        .size(MainTheme.sizes.iconAvatar)
-                        .padding(MainTheme.spacings.half),
+                        .size(BoltTheme.sizes.iconAvatar)
+                        .padding(BoltTheme.spacings.half),
                 )
 
                 configuration.avatar != null ->
                     MessageItemAvatarCircle(
                         avatar = configuration.avatar,
                         colors = MessageItemAvatarCircleDefaults.colorsFrom(
-                            configuration.avatarColor ?: MainTheme.colors.secondaryContainer,
+                            configuration.avatarColor ?: BoltTheme.colors.secondaryContainer,
                         ),
                         onClick = onClick,
                     )

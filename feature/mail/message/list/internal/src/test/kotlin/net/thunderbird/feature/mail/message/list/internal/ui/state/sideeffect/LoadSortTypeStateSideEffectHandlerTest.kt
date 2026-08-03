@@ -1,9 +1,8 @@
 package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
-import dev.mokkery.spy
-import dev.mokkery.verifySuspend
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.common.state.sideeffect.StateSideEffectHandler
 import net.thunderbird.core.logging.Logger
@@ -13,6 +12,7 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.domain.model.SortCriteria
 import net.thunderbird.feature.mail.message.list.domain.model.SortType
+import net.thunderbird.feature.mail.message.list.internal.fakes.RecordingSuspendFunction
 import net.thunderbird.feature.mail.message.list.ui.event.MessageListEvent
 import net.thunderbird.feature.mail.message.list.ui.state.MessageListState
 import org.junit.Test
@@ -51,14 +51,13 @@ class LoadSortTypeStateSideEffectHandlerTest : BaseSideEffectHandlerTest() {
         // Arrange
         TestLogger()
         val accounts = setOf(AccountIdFactory.create())
-        val dispatch = spy<suspend (MessageListEvent) -> Unit>(obj = {})
+        val dispatch = RecordingSuspendFunction<MessageListEvent>()
         val sortCriteriaPerAccount = mapOf(accounts.firstOrNull() to SortCriteria(primary = SortType.DateDesc))
-        val fakeGetSortCriteriaPerAccount =
-            spy<DomainContract.UseCase.GetSortCriteriaPerAccount>(FakeGetSortCriteriaPerAccount(sortCriteriaPerAccount))
+        val fakeGetSortCriteriaPerAccount = FakeGetSortCriteriaPerAccount(sortCriteriaPerAccount)
         val handler = createTestSubject(
             accounts = accounts,
             getSortCriteriaPerAccount = fakeGetSortCriteriaPerAccount,
-            dispatch = dispatch,
+            dispatch = dispatch.function,
         )
 
         // Act
@@ -69,10 +68,8 @@ class LoadSortTypeStateSideEffectHandlerTest : BaseSideEffectHandlerTest() {
         )
 
         // Assert
-        verifySuspend {
-            fakeGetSortCriteriaPerAccount.invoke(accounts)
-            dispatch(MessageListEvent.SortCriteriaLoaded(sortCriteriaPerAccount))
-        }
+        assertThat(fakeGetSortCriteriaPerAccount.calls).containsExactly(accounts)
+        assertThat(dispatch.calls).containsExactly(MessageListEvent.SortCriteriaLoaded(sortCriteriaPerAccount))
     }
 
     private fun createTestSubject(
@@ -90,6 +87,11 @@ class LoadSortTypeStateSideEffectHandlerTest : BaseSideEffectHandlerTest() {
     private class FakeGetSortCriteriaPerAccount(
         private val sortCriteriaPerAccount: Map<AccountId?, SortCriteria> = emptyMap(),
     ) : DomainContract.UseCase.GetSortCriteriaPerAccount {
-        override suspend fun invoke(accountIds: Set<AccountId>): Map<AccountId?, SortCriteria> = sortCriteriaPerAccount
+        val calls = mutableListOf<Set<AccountId>>()
+
+        override suspend fun invoke(accountIds: Set<AccountId>): Map<AccountId?, SortCriteria> {
+            calls += accountIds
+            return sortCriteriaPerAccount
+        }
     }
 }

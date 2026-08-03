@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:ImapSync.kt:ImapSync$private fun synchronizeMailboxSynchronous</ID>
+    <ID>LongMethod:ImapSync.kt:ImapSync$private fun downloadMessages</ID>
+    <ID>LongMethod:ImapSync.kt:ImapSync$private fun synchronizeMailboxSynchronous</ID>
+    <ID>MagicNumber:ImapBackendPusher.kt:ImapBackendPusher$1000L</ID>
+    <ID>MagicNumber:ImapBackendPusher.kt:ImapBackendPusher$15</ID>
+    <ID>MagicNumber:ImapBackendPusher.kt:ImapBackendPusher$60</ID>
+    <ID>MaxLineLength:ImapSync.kt:ImapSync.&lt;no name provided&gt;$// TODO: This might be the source of poll count errors in the UI. Is todo always the same as ofTotal</ID>
+    <ID>ReturnCount:ImapSync.kt:ImapSync$private fun isOldMessage: Boolean</ID>
+    <ID>ReturnCount:ImapSync.kt:ImapSync$private fun syncFlags: Boolean</ID>
+    <ID>ReturnCount:UidReverseComparator.kt:UidReverseComparator$override fun compare: Int</ID>
+    <ID>TooGenericExceptionCaught:ImapFolderPusher.kt:ImapFolderPusher$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ImapSync.kt:ImapSync$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ImapSync.kt:ImapSync.&lt;no name provided&gt;$e: Exception</ID>
+    <ID>TooGenericExceptionThrown:ImapSync.kt:ImapSync$throw Exception("Message count $remoteMessageCount for folder $folder")</ID>
+    <ID>TooManyFunctions:ImapBackend.kt:ImapBackend : Backend</ID>
+    <ID>TooManyFunctions:ImapBackendPusher.kt:ImapBackendPusher : BackendPusherImapPusherCallback</ID>
+    <ID>TooManyFunctions:ImapSync.kt:ImapSync</ID>
+    <ID>TooManyFunctions:SimpleSyncListener.kt:SimpleSyncListener : SyncListener</ID>
+  </CurrentIssues>
+</SmellBaseline>

@@ -97,7 +97,7 @@ object HostNameUtils {
             val part1 = ((lastPartComponents[0] shl 8) or lastPartComponents[1]).toString(radix = 16)
             val part2 = ((lastPartComponents[2] shl 8) or lastPartComponents[3]).toString(radix = 16)
 
-            ipComponentStrings.subList(0, ipComponentStrings.lastIndex) + part1 + part2
+            ipComponentStrings.subList(fromIndex = 0, toIndex = ipComponentStrings.lastIndex) + part1 + part2
         } else {
             ipComponentStrings
         }

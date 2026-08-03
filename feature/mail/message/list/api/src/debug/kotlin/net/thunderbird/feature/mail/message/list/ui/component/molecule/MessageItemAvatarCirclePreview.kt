@@ -10,9 +10,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_NIGHT_YES
 import androidx.compose.ui.tooling.preview.AndroidUiModes.UI_MODE_TYPE_NORMAL
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemeLightDark
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.PreviewWithThemeLightDark
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.ui.state.Avatar
 
 @Composable
@@ -28,16 +28,16 @@ import net.thunderbird.feature.mail.message.list.ui.state.Avatar
 private fun MessageItemAvatarCirclePreview() {
     PreviewWithThemeLightDark {
         FlowRow(
-            modifier = Modifier.padding(top = MainTheme.spacings.triple),
+            modifier = Modifier.padding(top = BoltTheme.spacings.triple),
         ) {
             MessageItemAvatarCircle(
                 avatar = Avatar.Monogram("AB"),
-                colors = MessageItemAvatarCircleDefaults.colorsFrom(MainTheme.colors.primary),
+                colors = MessageItemAvatarCircleDefaults.colorsFrom(BoltTheme.colors.primary),
                 onClick = {},
             )
             MessageItemAvatarCircle(
                 avatar = Avatar.Image("https://picsum.photos/250/250"),
-                colors = MessageItemAvatarCircleDefaults.colorsFrom(MainTheme.colors.secondary),
+                colors = MessageItemAvatarCircleDefaults.colorsFrom(BoltTheme.colors.secondary),
                 onClick = {},
             )
             MessageItemAvatarCircle(

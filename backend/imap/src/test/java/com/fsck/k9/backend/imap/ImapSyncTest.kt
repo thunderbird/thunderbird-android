@@ -321,11 +321,11 @@ class ImapSyncTest {
 
     private fun createSimpleMessage(uid: String, date: String, text: String = "UID: $uid"): Message {
         return buildMessage {
-            header("Subject", "Test Message")
-            header("From", "alice@domain.example")
-            header("To", "Bob <bob@domain.example>")
-            header("Date", date)
-            header("Message-ID", "<msg-$uid@domain.example>")
+            header(name = "Subject", value = "Test Message")
+            header(name = "From", value = "alice@domain.example")
+            header(name = "To", value = "Bob <bob@domain.example>")
+            header(name = "Date", value = date)
+            header(name = "Message-ID", value = "<msg-$uid@domain.example>")
 
             textBody(text)
         }

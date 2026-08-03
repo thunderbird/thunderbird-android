@@ -2,7 +2,7 @@ package net.thunderbird.feature.notification.api.ui.action
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.molecule.notification.NotificationActionButton
+import net.thunderbird.components.ui.bolt.molecule.notification.NotificationActionButton
 import org.jetbrains.compose.resources.stringResource
 
 /**

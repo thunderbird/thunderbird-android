@@ -12,7 +12,12 @@ internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
         targetFolderServerId: String,
         messageServerIds: List<String>,
     ): Map<String, String>? {
-        return moveOrCopyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds, false)
+        return moveOrCopyMessages(
+            srcFolder = sourceFolderServerId,
+            destFolder = targetFolderServerId,
+            uids = messageServerIds,
+            isCopy = false,
+        )
     }
 
     fun copyMessages(
@@ -20,7 +25,12 @@ internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
         targetFolderServerId: String,
         messageServerIds: List<String>,
     ): Map<String, String>? {
-        return moveOrCopyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds, true)
+        return moveOrCopyMessages(
+            srcFolder = sourceFolderServerId,
+            destFolder = targetFolderServerId,
+            uids = messageServerIds,
+            isCopy = true,
+        )
     }
 
     private fun moveOrCopyMessages(

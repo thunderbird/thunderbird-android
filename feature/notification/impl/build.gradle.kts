@@ -1,6 +1,5 @@
 plugins {
     id(ThunderbirdPlugins.Library.kmpCompose)
-    alias(libs.plugins.dev.mokkery)
 }
 
 kotlin {

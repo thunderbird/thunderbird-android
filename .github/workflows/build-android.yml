@@ -150,7 +150,7 @@ jobs:
         uses: ./.github/actions/setup-gradle
 
       - name: Build App UI-catalog application in Debug mode
-        run: ./gradlew :app-ui-catalog:assembleDebug
+        run: ./gradlew -p components :ui:catalog:assembleDebug
 
   quality-unit-test:
     name: Quality - Unit tests

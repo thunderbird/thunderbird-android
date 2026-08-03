@@ -22,7 +22,7 @@ import androidx.lifecycle.compose.LifecycleStartEffect
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.mail.message.list.internal.ui.component.MessageListItem
 import net.thunderbird.feature.mail.message.list.internal.ui.component.organism.MessageListFooter
 import net.thunderbird.feature.mail.message.list.internal.ui.component.organism.MessageListSwipeableItem
@@ -52,7 +52,7 @@ internal fun MessageListScope.MessageList(
     LazyColumn(
         modifier = modifier.testTag(TEST_TAG_MESSAGE_LIST_ROOT),
         state = listState,
-        contentPadding = PaddingValues(bottom = MainTheme.sizes.large),
+        contentPadding = PaddingValues(bottom = BoltTheme.sizes.large),
     ) {
         items(
             items = state.messages,

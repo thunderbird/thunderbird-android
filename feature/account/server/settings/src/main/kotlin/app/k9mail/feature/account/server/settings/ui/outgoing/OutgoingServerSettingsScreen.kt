@@ -12,8 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithBackButton
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.common.ui.AccountTopAppBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
@@ -21,6 +19,8 @@ import app.k9mail.feature.account.server.settings.R
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Effect
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Event
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.ViewModel
+import net.thunderbird.components.ui.bolt.organism.TopAppBarWithBackButton
+import net.thunderbird.components.ui.bolt.template.Scaffold
 import net.thunderbird.core.ui.contract.mvi.observe
 
 @Composable

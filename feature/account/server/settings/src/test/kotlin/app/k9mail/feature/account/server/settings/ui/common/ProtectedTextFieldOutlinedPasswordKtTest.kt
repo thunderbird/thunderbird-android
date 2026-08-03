@@ -7,13 +7,13 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
+import net.thunderbird.components.ui.bolt.resources.Res
+import net.thunderbird.components.ui.bolt.resources.bolt_atom_password_textfield_hide_password
+import net.thunderbird.components.ui.bolt.resources.bolt_atom_password_textfield_show_password
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.ui.designsystem.resources.Res
-import net.thunderbird.core.ui.designsystem.resources.designsystem_atom_password_textfield_hide_password
-import net.thunderbird.core.ui.designsystem.resources.designsystem_atom_password_textfield_show_password
 import net.thunderbird.feature.account.server.settings.ui.common.AuthenticationError
 import org.junit.Test
-import net.thunderbird.core.ui.testing.getString as getComposeString
+import net.thunderbird.components.ui.testing.resource.getString as getComposeString
 
 class ProtectedTextFieldOutlinedPasswordKtTest : ComposeTest() {
 
@@ -32,16 +32,16 @@ class ProtectedTextFieldOutlinedPasswordKtTest : ComposeTest() {
 
         // Act
         onNodeWithContentDescription(
-            getComposeString(Res.string.designsystem_atom_password_textfield_show_password),
+            getComposeString(Res.string.bolt_atom_password_textfield_show_password),
         ).performClick()
 
         // Assert
         onNodeWithContentDescription(
-            getComposeString(Res.string.designsystem_atom_password_textfield_hide_password),
+            getComposeString(Res.string.bolt_atom_password_textfield_hide_password),
         ).assertIsNotDisplayed()
         onNodeWithText(VALUE_MASKED).assertIsDisplayed()
         onNodeWithContentDescription(
-            getComposeString(Res.string.designsystem_atom_password_textfield_show_password),
+            getComposeString(Res.string.bolt_atom_password_textfield_show_password),
         ).assertIsDisplayed()
     }
 
@@ -60,15 +60,15 @@ class ProtectedTextFieldOutlinedPasswordKtTest : ComposeTest() {
 
         // Act
         onNodeWithContentDescription(
-            getComposeString(Res.string.designsystem_atom_password_textfield_show_password),
+            getComposeString(Res.string.bolt_atom_password_textfield_show_password),
         ).performClick()
 
         // Assert
         onNodeWithContentDescription(
-            getComposeString(Res.string.designsystem_atom_password_textfield_hide_password),
+            getComposeString(Res.string.bolt_atom_password_textfield_hide_password),
         ).assertIsNotDisplayed()
         onNodeWithContentDescription(
-            getComposeString(Res.string.designsystem_atom_password_textfield_show_password),
+            getComposeString(Res.string.bolt_atom_password_textfield_show_password),
         ).assertIsDisplayed()
     }
 
@@ -87,14 +87,14 @@ class ProtectedTextFieldOutlinedPasswordKtTest : ComposeTest() {
 
         // Act
         onNodeWithContentDescription(
-            getComposeString(Res.string.designsystem_atom_password_textfield_show_password),
+            getComposeString(Res.string.bolt_atom_password_textfield_show_password),
         ).performClick()
 
         // Assert
         onNodeWithText(VALUE_MASKED).assertIsNotDisplayed()
         onNodeWithText(VALUE).assertIsDisplayed()
         onNodeWithContentDescription(
-            getComposeString(Res.string.designsystem_atom_password_textfield_hide_password),
+            getComposeString(Res.string.bolt_atom_password_textfield_hide_password),
         ).assertIsDisplayed()
     }
 
@@ -113,12 +113,12 @@ class ProtectedTextFieldOutlinedPasswordKtTest : ComposeTest() {
 
         // Act
         onNodeWithContentDescription(
-            getComposeString(Res.string.designsystem_atom_password_textfield_show_password),
+            getComposeString(Res.string.bolt_atom_password_textfield_show_password),
         ).performClick()
 
         // Assert
         onNodeWithContentDescription(
-            getComposeString(Res.string.designsystem_atom_password_textfield_hide_password),
+            getComposeString(Res.string.bolt_atom_password_textfield_hide_password),
         ).assertIsDisplayed()
     }
 

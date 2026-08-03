@@ -108,7 +108,12 @@ class ImapBackend(
             messageServerIds,
         )
         if (uidMapping != null) {
-            setFlag(targetFolderServerId, uidMapping.values.toList(), Flag.SEEN, true)
+            setFlag(
+                folderServerId = targetFolderServerId,
+                messageServerIds = uidMapping.values.toList(),
+                flag = Flag.SEEN,
+                newState = true,
+            )
         }
         return uidMapping
     }
@@ -118,7 +123,11 @@ class ImapBackend(
         targetFolderServerId: String,
         messageServerIds: List<String>,
     ): Map<String, String>? {
-        return commandMoveOrCopyMessages.copyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds)
+        return commandMoveOrCopyMessages.copyMessages(
+            sourceFolderServerId = sourceFolderServerId,
+            targetFolderServerId = targetFolderServerId,
+            messageServerIds = messageServerIds,
+        )
     }
 
     override fun search(
@@ -128,11 +137,22 @@ class ImapBackend(
         forbiddenFlags: Set<Flag>?,
         performFullTextSearch: Boolean,
     ): List<String> {
-        return commandSearch.search(folderServerId, query, requiredFlags, forbiddenFlags, performFullTextSearch)
+        return commandSearch.search(
+            folderServerId = folderServerId,
+            query = query,
+            requiredFlags = requiredFlags,
+            forbiddenFlags = forbiddenFlags,
+            performFullTextSearch = performFullTextSearch,
+        )
     }
 
     override fun fetchPart(folderServerId: String, messageServerId: String, part: Part, bodyFactory: BodyFactory) {
-        commandFetchMessage.fetchPart(folderServerId, messageServerId, part, bodyFactory)
+        commandFetchMessage.fetchPart(
+            folderServerId = folderServerId,
+            messageServerId = messageServerId,
+            part = part,
+            bodyFactory = bodyFactory,
+        )
     }
 
     override fun findByMessageId(folderServerId: String, messageId: String): String? {

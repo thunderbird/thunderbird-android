@@ -15,14 +15,14 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
-import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableList
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.molecule.input.SelectInput
+import net.thunderbird.components.ui.bolt.molecule.input.TextInput
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.contract.mvi.observeWithoutEffect
 import net.thunderbird.feature.debug.settings.DebugSubSection
 import net.thunderbird.feature.debug.settings.R
@@ -76,7 +76,7 @@ internal fun DebugNotificationSection(
     onClearStatusLog: () -> Unit = {},
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.quadruple),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.quadruple),
         modifier = modifier,
     ) {
         CommonNotificationInformation(state, onAccountSelect)
@@ -107,7 +107,7 @@ private fun CommonNotificationInformation(
 ) {
     DebugSubSection(
         title = stringResource(R.string.debug_settings_notifications_common_notification_information),
-        modifier = modifier.padding(start = MainTheme.spacings.double),
+        modifier = modifier.padding(start = BoltTheme.spacings.double),
     ) {
         val loadingText = stringResource(R.string.debug_settings_notifications_loading)
         SelectInput(
@@ -141,7 +141,7 @@ private fun SystemNotificationSection(
 ) {
     DebugSubSection(
         title = stringResource(R.string.debug_settings_notifications_system_notification),
-        modifier = modifier.padding(start = MainTheme.spacings.double),
+        modifier = modifier.padding(start = BoltTheme.spacings.double),
     ) {
         Column {
             TriggerNotificationSection(
@@ -188,7 +188,7 @@ private fun InAppNotificationSection(
 ) {
     DebugSubSection(
         title = stringResource(R.string.debug_settings_notifications_in_app_notification),
-        modifier = modifier.padding(start = MainTheme.spacings.double),
+        modifier = modifier.padding(start = BoltTheme.spacings.double),
     ) {
         TriggerNotificationSection(
             selectedNotificationType = selectedNotificationType,
@@ -208,7 +208,7 @@ private fun TriggerNotificationSection(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.oneHalf),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.oneHalf),
         modifier = modifier,
     ) {
         val selectedOption = remember(selectedNotificationType, options) {
@@ -238,7 +238,7 @@ private fun ColumnScope.NotificationStatusLog(
 ) {
     AnimatedVisibility(
         visible = notificationStatusLog.isNotEmpty(),
-        modifier = modifier.padding(start = MainTheme.spacings.double),
+        modifier = modifier.padding(start = BoltTheme.spacings.double),
     ) {
         DebugSubSection(
             title = stringResource(R.string.debug_settings_notification_status_log),

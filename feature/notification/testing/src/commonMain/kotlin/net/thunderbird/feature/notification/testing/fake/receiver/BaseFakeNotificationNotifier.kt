@@ -9,11 +9,20 @@ import net.thunderbird.feature.notification.testing.fake.FakeNotificationRegistr
 abstract class BaseFakeNotificationNotifier<T : Notification> internal constructor(
     private val registry: NotificationRegistry = FakeNotificationRegistry(),
 ) : NotificationNotifier<T> {
+    val shownNotifications = mutableListOf<T>()
+    val dismissedNotificationIds = mutableListOf<NotificationId>()
+
     override suspend fun show(
         notification: T,
-    ): NotificationId = registry.register(notification)
+    ): NotificationId {
+        shownNotifications += notification
+        return registry.register(notification)
+    }
 
-    override suspend fun dismiss(id: NotificationId) = registry.unregister(id)
+    override suspend fun dismiss(id: NotificationId) {
+        dismissedNotificationIds += id
+        registry.unregister(id)
+    }
 
     override fun dispose() = Unit
 }

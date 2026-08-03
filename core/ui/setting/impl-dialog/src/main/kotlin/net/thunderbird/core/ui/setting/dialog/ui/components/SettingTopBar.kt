@@ -2,8 +2,8 @@ package net.thunderbird.core.ui.setting.dialog.ui.components
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
-import app.k9mail.core.ui.compose.designsystem.organism.SubtitleTopAppBarWithBackButton
-import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithBackButton
+import net.thunderbird.components.ui.bolt.organism.SubtitleTopAppBarWithBackButton
+import net.thunderbird.components.ui.bolt.organism.TopAppBarWithBackButton
 
 @Composable
 internal fun SettingTopBar(

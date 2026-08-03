@@ -23,20 +23,20 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import app.k9mail.core.ui.compose.common.resources.annotatedStringResource
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonSegmentedSingleChoice
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
-import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
-import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.Surface
+import net.thunderbird.components.ui.bolt.atom.button.ButtonSegmentedSingleChoice
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
+import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelLarge
+import net.thunderbird.components.ui.bolt.molecule.ContentLoadingErrorView
+import net.thunderbird.components.ui.bolt.molecule.LoadingView
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.feature.funding.googleplay.R
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
@@ -54,14 +54,14 @@ internal fun ContributionList(
     modifier: Modifier = Modifier,
 ) {
     Surface(
-        color = MainTheme.colors.surfaceContainerLowest,
-        shape = MainTheme.shapes.small,
+        color = BoltTheme.colors.surfaceContainerLowest,
+        shape = BoltTheme.shapes.small,
         modifier = modifier.fillMaxWidth(),
     ) {
         Column(
             modifier = Modifier
-                .padding(MainTheme.spacings.double),
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+                .padding(BoltTheme.spacings.double),
+            verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         ) {
             TextLabelLarge(
                 text = stringResource(R.string.funding_googleplay_contribution_list_title),
@@ -105,7 +105,7 @@ internal fun ContributionList(
                         append(stringResource(R.string.funding_googleplay_contribution_list_disclaimer))
                     }
                 },
-                modifier = Modifier.padding(top = MainTheme.spacings.default),
+                modifier = Modifier.padding(top = BoltTheme.spacings.default),
             )
         }
     }
@@ -120,8 +120,8 @@ private fun ChoicesRow(
     modifier: Modifier = Modifier,
 ) {
     FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         modifier = modifier,
     ) {
         contributions.forEach {
@@ -146,7 +146,7 @@ private fun ListContentView(
     val recurringLabel = stringResource(R.string.funding_googleplay_contribution_list_type_recurring)
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         modifier = modifier,
     ) {
         ButtonSegmentedSingleChoice(
@@ -179,15 +179,15 @@ private fun ListEmptyView(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
-        modifier = modifier.padding(vertical = MainTheme.spacings.double),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
+        modifier = modifier.padding(vertical = BoltTheme.spacings.double),
     ) {
         val annotatedString = annotatedStringResource(
             id = R.string.funding_googleplay_contribution_list_empty_message,
             argument = buildAnnotatedString {
                 withStyle(
                     style = SpanStyle(
-                        color = MainTheme.colors.primary,
+                        color = BoltTheme.colors.primary,
                         textDecoration = TextDecoration.Underline,
                     ),
                 ) {
@@ -221,12 +221,12 @@ private fun ListErrorView(
     val showDetails = remember { mutableStateOf(false) }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         modifier = modifier,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+            horizontalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
         ) {
             TextBodyLarge(
                 text = mapErrorToTitle(error),
@@ -237,14 +237,14 @@ private fun ListErrorView(
                     contentDescription = "Show more details",
                     modifier = Modifier
                         .clickable { showDetails.value = !showDetails.value }
-                        .padding(MainTheme.spacings.quarter),
+                        .padding(BoltTheme.spacings.quarter),
                 )
             }
 
             AnimatedVisibility(visible = showDetails.value) {
                 TextBodySmall(
                     text = error.message,
-                    color = MainTheme.colors.onErrorContainer,
+                    color = BoltTheme.colors.onErrorContainer,
                 )
             }
         }
@@ -252,7 +252,7 @@ private fun ListErrorView(
         ButtonText(
             text = stringResource(R.string.funding_googleplay_contribution_list_error_retry_button),
             onClick = onRetryClick,
-            modifier = Modifier.padding(top = MainTheme.spacings.default),
+            modifier = Modifier.padding(top = BoltTheme.spacings.default),
         )
     }
 }

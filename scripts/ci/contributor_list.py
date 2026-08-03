@@ -134,7 +134,7 @@ def generate_contributor_list(
 
     with open(output_file, "w", encoding='utf-8') as f:
         print("\nContributors:", file=f)
-        thanks_to = "Thanks to: " + ', '.join(sorted(contributors, key=str.casefold))
+        thanks_to = "* Thanks to: " + ', '.join(sorted(contributors, key=str.casefold))
         print(thanks_to, file=f)
 
         if first_contributions:

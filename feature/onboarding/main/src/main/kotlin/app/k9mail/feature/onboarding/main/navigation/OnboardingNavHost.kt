@@ -25,10 +25,6 @@ private const val NESTED_NAVIGATION_ROUTE_SETTINGS_IMPORT = "settings_import"
 private const val NESTED_NAVIGATION_ROUTE_SETTINGS_IMPORT_QR_CODE = "settings_import_qr_code"
 const val NESTED_NAVIGATION_ROUTE_PERMISSIONS = "permissions"
 
-private fun NavController.navigateToMigration() {
-    navigate(NESTED_NAVIGATION_ROUTE_MIGRATION)
-}
-
 private fun NavController.navigateToAccountSetup() {
     navigate(NESTED_NAVIGATION_ROUTE_ACCOUNT_SETUP)
 }
@@ -68,16 +64,9 @@ fun OnboardingNavHost(
     ) {
         composable(route = NESTED_NAVIGATION_ROUTE_WELCOME) {
             WelcomeScreen(
-                onStartClick = {
-                    if (onboardingMigrationManager.isFeatureIncluded()) {
-                        navController.navigateToMigration()
-                    } else {
-                        navController.navigateToAccountSetup()
-                    }
-                },
+                onStartClick = { onFinish(OnboardingRoute.ThundermailAddAccount) },
                 onImportClick = { navController.navigateToSettingsImport() },
                 appNameProvider = koinInject(),
-                onboardingMigrationManager = koinInject(),
             )
         }
 

@@ -55,6 +55,10 @@ class DefaultPrivacySettingsPreferenceManager(
             key = PrivacySettingKey.HideUserAgent.value,
             defValue = PRIVACY_SETTINGS_DEFAULT_HIDE_USER_AGENT,
         ),
+        isIncognitoKeyboardEnabled = storage.getBoolean(
+            key = PrivacySettingKey.IncognitoKeyboard.value,
+            defValue = PRIVACY_SETTINGS_DEFAULT_INCOGNITO_KEYBOARD,
+        ),
     )
 
     private fun writeConfig(config: PrivacySettings) {
@@ -63,6 +67,10 @@ class DefaultPrivacySettingsPreferenceManager(
             mutex.withLock {
                 storageEditor.putBoolean(PrivacySettingKey.HideTimeZone.value, config.isHideTimeZone)
                 storageEditor.putBoolean(PrivacySettingKey.HideUserAgent.value, config.isHideUserAgent)
+                storageEditor.putBoolean(
+                    PrivacySettingKey.IncognitoKeyboard.value,
+                    config.isIncognitoKeyboardEnabled,
+                )
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }

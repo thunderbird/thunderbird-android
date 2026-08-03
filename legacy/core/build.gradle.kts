@@ -51,6 +51,7 @@ dependencies {
     implementation(projects.feature.mail.message.reader.api)
 
     testImplementation(projects.core.testing)
+    testImplementation(libs.tb.mobile.components.ui.testing)
     testImplementation(projects.core.android.testing)
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.feature.telemetry.noop)

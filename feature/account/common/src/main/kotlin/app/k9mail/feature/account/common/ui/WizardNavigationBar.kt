@@ -8,11 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.feature.account.common.R
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.atom.button.ButtonFilled
+import net.thunderbird.components.ui.bolt.atom.button.ButtonOutlined
+import net.thunderbird.components.ui.bolt.template.ResponsiveWidthContainer
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 fun WizardNavigationBar(
@@ -31,10 +31,10 @@ fun WizardNavigationBar(
         Row(
             modifier = Modifier
                 .padding(
-                    start = MainTheme.spacings.quadruple,
-                    top = MainTheme.spacings.default,
-                    end = MainTheme.spacings.quadruple,
-                    bottom = MainTheme.spacings.double,
+                    start = BoltTheme.spacings.quadruple,
+                    top = BoltTheme.spacings.default,
+                    end = BoltTheme.spacings.quadruple,
+                    bottom = BoltTheme.spacings.double,
                 )
                 .padding(contentPadding)
                 .fillMaxWidth(),

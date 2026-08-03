@@ -18,14 +18,14 @@ class InMemoryFeatureFlagProvider(
         featureFlagFactory.getCatalog(),
         featureFlagOverrides.overrides,
     ) { defaults, overrides ->
-        val defaults = defaults.associateBy { it.key }
-        val overrides = overrides.mapValues {
+        val defaultsMap = defaults.associateBy { it.key }
+        val overridesMap = overrides.mapValues {
             FeatureFlag(
                 key = it.key,
                 enabled = it.value,
             )
         }
-        defaults + overrides
+        defaultsMap + overridesMap
     }.stateIn(
         scope = scope,
         started = SharingStarted.Eagerly,

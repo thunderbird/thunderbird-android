@@ -8,12 +8,12 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Effect
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Event
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.ViewModel
+import net.thunderbird.components.ui.bolt.template.Scaffold
 import net.thunderbird.core.common.provider.BrandNameProvider
 import net.thunderbird.core.ui.contract.mvi.observe
 

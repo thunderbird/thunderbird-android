@@ -411,7 +411,7 @@ internal class RealImapConnection(
         val token = oauthTokenProvider.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT.toLong())
 
         val authString = method.buildInitialClientResponse(settings.username, token)
-        val tag = sendSaslIrCommand(method.command, authString, true)
+        val tag = sendSaslIrCommand(command = method.command, initialClientResponse = authString, sensitive = true)
 
         return responseParser.readStatusResponse(
             tag,
@@ -768,10 +768,10 @@ internal class RealImapConnection(
     ): List<ImapResponse> {
         val groupedIds = IdGrouper.groupIds(ids)
         val splitCommands = ImapCommandSplitter.splitCommand(
-            commandPrefix,
-            commandSuffix,
-            groupedIds,
-            lineLengthLimit,
+            prefix = commandPrefix,
+            suffix = commandSuffix,
+            groupedIds = groupedIds,
+            lengthLimit = lineLengthLimit,
         )
 
         return splitCommands.flatMap { splitCommand ->

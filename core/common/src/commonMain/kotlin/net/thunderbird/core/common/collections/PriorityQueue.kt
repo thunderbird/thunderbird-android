@@ -71,7 +71,7 @@ class PriorityQueue<T>(
         fun parentIndex(childIndex: Int) = (childIndex - 1) / 2
 
         while (childIndex > 0 && comparator.compare(heap[childIndex], heap[parentIndex(childIndex)]) < 0) {
-            swap(childIndex, parentIndex(childIndex))
+            swap(first = childIndex, second = parentIndex(childIndex))
             childIndex = parentIndex(childIndex)
         }
     }
@@ -93,7 +93,7 @@ class PriorityQueue<T>(
                 break
             }
 
-            swap(parentIndex, childIndex)
+            swap(first = parentIndex, second = childIndex)
             parentIndex = childIndex
         }
     }

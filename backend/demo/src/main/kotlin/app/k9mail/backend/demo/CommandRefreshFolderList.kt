@@ -19,7 +19,7 @@ internal class CommandRefreshFolderList(
             val foldersServerIdsToCreate = remoteFolderServerIds - localFolderServerIds
             val foldersToCreate = foldersServerIdsToCreate.mapNotNull { folderServerId ->
                 demoStore.getFolder(folderServerId)?.let { folderData ->
-                    FolderInfo(folderServerId, folderData.name, folderData.type)
+                    FolderInfo(serverId = folderServerId, name = folderData.name, type = folderData.type)
                 }
             }
             createFolders(foldersToCreate)

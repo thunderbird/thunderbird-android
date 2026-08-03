@@ -8,14 +8,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
-import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import app.k9mail.feature.account.oauth.R
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.Event
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract.State
 import app.k9mail.feature.account.oauth.ui.view.GoogleSignInSupportText
 import app.k9mail.feature.account.oauth.ui.view.SignInView
-import net.thunderbird.core.ui.compose.theme2.MainTheme
+import net.thunderbird.components.ui.bolt.molecule.ErrorView
+import net.thunderbird.components.ui.bolt.molecule.LoadingView
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
 internal fun AccountOAuthContent(
@@ -29,7 +29,7 @@ internal fun AccountOAuthContent(
     Column(
         modifier = Modifier.testTag("AccountOAuthContent")
             .then(modifier),
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double, Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double, Alignment.CenterVertically),
     ) {
         if (state.isLoading) {
             LoadingView(

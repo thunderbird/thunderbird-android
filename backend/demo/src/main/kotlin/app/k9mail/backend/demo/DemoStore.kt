@@ -46,7 +46,13 @@ internal class DemoStore(
 
             val subFolders = demoFolder.subFolders
             if (subFolders != null) {
-                flatFolders.putAll(flattenDemoFolders(demoFolder.subFolders, fullName, fullServerId))
+                flatFolders.putAll(
+                    from = flattenDemoFolders(
+                        demoFolders = demoFolder.subFolders,
+                        parentName = fullName,
+                        parentServerId = fullServerId,
+                    ),
+                )
             }
         }
         return flatFolders
