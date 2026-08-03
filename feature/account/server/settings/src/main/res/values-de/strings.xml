@@ -34,4 +34,5 @@
     <string name="account_server_settings_incoming_imap_send_client_info_label">Client-Informationen senden</string>
     <string name="account_server_settings_password_authentication_failed">Authentifizierung fehlgeschlagen!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Biometrische Abfrage konnte nicht gestartet werden.</string>
+    <string name="account_server_settings_password_input_label">Passwort</string>
 </resources>
