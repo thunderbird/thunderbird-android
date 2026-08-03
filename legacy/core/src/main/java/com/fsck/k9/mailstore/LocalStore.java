@@ -221,7 +221,7 @@ public class LocalStore {
     }
 
     public LocalFolder getFolder(long folderId) {
-        return new LocalFolder(this, folderId, generalSettingsManager);
+        return new LocalFolder(this, folderId, generalSettingsManager, localMessageUidPrefixProvider);
     }
 
     public LocalFolder getFolder(String serverId, String name, FolderType type) {
@@ -245,7 +245,10 @@ public class LocalStore {
                             continue;
                         }
                         long folderId = cursor.getLong(FOLDER_ID_INDEX);
-                        LocalFolder folder = new LocalFolder(LocalStore.this, folderId, generalSettingsManager);
+                        final LocalFolder folder = new LocalFolder(LocalStore.this,
+                            folderId,
+                            generalSettingsManager,
+                            localMessageUidPrefixProvider);
                         folder.open(cursor);
 
                         folders.add(folder);
@@ -379,7 +382,11 @@ public class LocalStore {
                     cursor = db.rawQuery(queryString + " LIMIT 10", placeHolders);
 
                     while (cursor.moveToNext()) {
-                        LocalMessage message = new LocalMessage(LocalStore.this, null, folder, generalSettingsManager);
+                        final LocalMessage message = new LocalMessage(LocalStore.this,
+                            null,
+                            folder,
+                            generalSettingsManager,
+                            localMessageUidPrefixProvider);
                         message.populateFromGetMessageCursor(cursor);
 
                         messages.add(message);
@@ -388,7 +395,11 @@ public class LocalStore {
                     cursor = db.rawQuery(queryString + " LIMIT -1 OFFSET 10", placeHolders);
 
                     while (cursor.moveToNext()) {
-                        LocalMessage message = new LocalMessage(LocalStore.this, null, folder, generalSettingsManager);
+                        final LocalMessage message = new LocalMessage(LocalStore.this,
+                            null,
+                            folder,
+                            generalSettingsManager,
+                            localMessageUidPrefixProvider);
                         message.populateFromGetMessageCursor(cursor);
 
                         messages.add(message);
@@ -1010,8 +1021,12 @@ public class LocalStore {
                 List<NotificationMessage> messages = new ArrayList<>(cursor.getCount());
                 while (cursor.moveToNext()) {
                     long folderId = cursor.getLong(MSG_INDEX_FOLDER_ID);
-                    LocalFolder folder = getFolder(folderId);
-                    LocalMessage message = new LocalMessage(LocalStore.this, null, folder, generalSettingsManager);
+                    final LocalFolder folder = getFolder(folderId);
+                    final LocalMessage message = new LocalMessage(LocalStore.this,
+                        null,
+                        folder,
+                        generalSettingsManager,
+                        localMessageUidPrefixProvider);
                     message.populateFromGetMessageCursor(cursor);
 
                     Integer notificationId = CursorKt.getIntOrNull(cursor, MSG_INDEX_NOTIFICATION_ID);
