@@ -1,0 +1,4 @@
+K-9 Mail version 21.1
+
+Fixed:
+- Could not empty the Trash folder using the Empty Trash action
