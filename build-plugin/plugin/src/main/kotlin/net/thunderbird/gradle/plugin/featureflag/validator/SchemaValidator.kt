@@ -1,4 +1,4 @@
-package net.thunderbird.gradle.plugin.featureflag.schema
+package net.thunderbird.gradle.plugin.featureflag.validator
 
 import com.networknt.schema.InputFormat
 import com.networknt.schema.SchemaRegistry

@@ -1,6 +1,6 @@
 package net.thunderbird.gradle.plugin.featureflag
 
-import net.thunderbird.gradle.plugin.featureflag.schema.SchemaValidator
+import net.thunderbird.gradle.plugin.featureflag.validator.SchemaValidator
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
