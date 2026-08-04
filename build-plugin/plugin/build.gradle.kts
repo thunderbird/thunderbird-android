@@ -40,6 +40,7 @@ dependencies {
     compileOnly(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.networknt.jsonSchemaValidator)
+    implementation(libs.kotlinpoet)
 
     testImplementation(libs.junit)
     testImplementation(libs.assertk)

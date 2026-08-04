@@ -92,8 +92,9 @@ koinBom = "4.2.2"
 konsist = "0.17.3"
 kotlinBom = "2.4.10"
 kotlinKsp = "2.3.10"
-kotlinxCoroutines = "1.11.0"
+kotlinpoet = "2.3.0"
 kotlinxCollectionsImmutable = "0.5.1"
+kotlinxCoroutines = "1.11.0"
 kotlinxDateTime = "0.8.0"
 kotlinxIoCore = "0.9.1"
 kotlinxSerialization = "1.11.0"
@@ -269,6 +270,7 @@ kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
+kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
