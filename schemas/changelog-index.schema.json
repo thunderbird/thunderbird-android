@@ -20,6 +20,7 @@
         "additionalProperties": false,
         "required": [
           "version",
+          "versioncode",
           "date",
           "resourceName"
         ],
@@ -27,6 +28,10 @@
           "version": {
             "type": "string",
             "minLength": 1
+          },
+          "versioncode": {
+            "type": "integer",
+            "minimum": 1
           },
           "date": {
             "type": "string",
