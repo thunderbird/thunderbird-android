@@ -9,39 +9,17 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.prop
 import java.io.File
 import net.thunderbird.gradle.plugin.featureflag.fake.FakeData
-import net.thunderbird.gradle.plugin.testing.rule.ProjectTempFolderRule
-import org.junit.Rule
 import org.junit.Test
 
 internal class SchemaValidatorTest {
 
-    @get:Rule
-    val temporaryFolder = ProjectTempFolderRule()
-
-    @Test
-    fun `validate should return FileNotFound with schema file when schema does not exist`() {
-        // Arrange
-        val schemaFile = File(temporaryFolder.root, "missing.schema.json")
-        val testSubject = SchemaValidator(validateFormats = true)
-
-        // Act
-        val result = testSubject.validate(schemaFile = schemaFile, catalogAsText = FakeData.VALID_CATALOG)
-
-        // Assert
-        assertThat(result)
-            .isInstanceOf<SchemaValidator.Result.Error.FileNotFound>()
-            .prop(SchemaValidator.Result.Error.FileNotFound::path)
-            .isEqualTo(schemaFile)
-    }
-
     @Test
     fun `validate should return Success when catalog conforms to schema`() {
         // Arrange
-        val schemaFile = writeFile(name = "schema.json", content = FakeData.SCHEMA)
         val testSubject = SchemaValidator(validateFormats = true)
 
         // Act
-        val result = testSubject.validate(schemaFile = schemaFile, catalogAsText = FakeData.VALID_CATALOG)
+        val result = testSubject.validate(schemaContents = FakeData.SCHEMA, catalogContents = FakeData.VALID_CATALOG)
 
         // Assert
         assertThat(result).isEqualTo(SchemaValidator.Result.Success)
@@ -50,9 +28,8 @@ internal class SchemaValidatorTest {
     @Test
     fun `validate should return ValidationFailed with given schema and catalog when required property is missing`() {
         // Arrange
-        val schemaFile = writeFile(name = "schema.json", content = FakeData.SCHEMA)
         // language=json
-        val catalogAsText = """
+        val catalogContents = """
             {
               "flags": []
             }
@@ -60,22 +37,21 @@ internal class SchemaValidatorTest {
         val testSubject = SchemaValidator(validateFormats = true)
 
         // Act
-        val result = testSubject.validate(schemaFile = schemaFile, catalogAsText = catalogAsText)
+        val result = testSubject.validate(schemaContents = FakeData.SCHEMA, catalogContents = catalogContents)
 
         // Assert
-        assertThat(result).isInstanceOf<SchemaValidator.Result.Error.ValidationFailed>().all {
-            prop(SchemaValidator.Result.Error.ValidationFailed::schema).isEqualTo(schemaFile)
-            prop(SchemaValidator.Result.Error.ValidationFailed::catalogAsText).isEqualTo(catalogAsText)
-            prop(SchemaValidator.Result.Error.ValidationFailed::errors).isNotEmpty()
+        assertThat(result).isInstanceOf<SchemaValidator.Result.ValidationFailed>().all {
+            prop(SchemaValidator.Result.ValidationFailed::schemaContents).isEqualTo(FakeData.SCHEMA)
+            prop(SchemaValidator.Result.ValidationFailed::catalogContents).isEqualTo(catalogContents)
+            prop(SchemaValidator.Result.ValidationFailed::errors).isNotEmpty()
         }
     }
 
     @Test
     fun `validate should return ValidationFailed when catalog has an unknown property`() {
         // Arrange
-        val schemaFile = writeFile(name = "schema.json", content = FakeData.SCHEMA)
         // language=json
-        val catalogAsText = """
+        val catalogContents = """
             {
               "version": "2026-07-30.1",
               "flags": [],
@@ -85,21 +61,20 @@ internal class SchemaValidatorTest {
         val testSubject = SchemaValidator(validateFormats = true)
 
         // Act
-        val result = testSubject.validate(schemaFile = schemaFile, catalogAsText = catalogAsText)
+        val result = testSubject.validate(schemaContents = FakeData.SCHEMA, catalogContents = catalogContents)
 
         // Assert
         assertThat(result)
-            .isInstanceOf<SchemaValidator.Result.Error.ValidationFailed>()
-            .prop(SchemaValidator.Result.Error.ValidationFailed::errors)
+            .isInstanceOf<SchemaValidator.Result.ValidationFailed>()
+            .prop(SchemaValidator.Result.ValidationFailed::errors)
             .isNotEmpty()
     }
 
     @Test
     fun `validate should report every schema violation of the catalog`() {
         // Arrange
-        val schemaFile = writeFile(name = "schema.json", content = FakeData.SCHEMA)
         // language=json
-        val catalogAsText = """
+        val catalogContents = """
             {
               "version": "2026-07-30.1",
               "flags": [
@@ -113,12 +88,12 @@ internal class SchemaValidatorTest {
         val testSubject = SchemaValidator(validateFormats = true)
 
         // Act
-        val result = testSubject.validate(schemaFile = schemaFile, catalogAsText = catalogAsText)
+        val result = testSubject.validate(schemaContents = FakeData.SCHEMA, catalogContents = catalogContents)
 
         // Assert
         assertThat(result)
-            .isInstanceOf<SchemaValidator.Result.Error.ValidationFailed>()
-            .prop(SchemaValidator.Result.Error.ValidationFailed::errors)
+            .isInstanceOf<SchemaValidator.Result.ValidationFailed>()
+            .prop(SchemaValidator.Result.ValidationFailed::errors)
             .transform { errors -> errors.joinToString(separator = "\n") }
             .all {
                 contains("pattern")
@@ -129,19 +104,18 @@ internal class SchemaValidatorTest {
     @Test
     fun `validate should return ValidationFailed when format is invalid and formats are validated`() {
         // Arrange
-        val schemaFile = writeFile(name = "schema.json", content = FakeData.SCHEMA)
         val testSubject = SchemaValidator(validateFormats = true)
 
         // Act
         val result = testSubject.validate(
-            schemaFile = schemaFile,
-            catalogAsText = FakeData.CATALOG_WITH_INVALID_DATE_FORMAT,
+            schemaContents = FakeData.SCHEMA,
+            catalogContents = FakeData.CATALOG_WITH_INVALID_DATE_FORMAT,
         )
 
         // Assert
         assertThat(result)
-            .isInstanceOf<SchemaValidator.Result.Error.ValidationFailed>()
-            .prop(SchemaValidator.Result.Error.ValidationFailed::errors)
+            .isInstanceOf<SchemaValidator.Result.ValidationFailed>()
+            .prop(SchemaValidator.Result.ValidationFailed::errors)
             .transform { errors -> errors.joinToString(separator = "\n") }
             .contains("date")
     }
@@ -149,13 +123,12 @@ internal class SchemaValidatorTest {
     @Test
     fun `validate should return Success when format is invalid and formats are not validated`() {
         // Arrange
-        val schemaFile = writeFile(name = "schema.json", content = FakeData.SCHEMA)
         val testSubject = SchemaValidator(validateFormats = false)
 
         // Act
         val result = testSubject.validate(
-            schemaFile = schemaFile,
-            catalogAsText = FakeData.CATALOG_WITH_INVALID_DATE_FORMAT,
+            schemaContents = FakeData.SCHEMA,
+            catalogContents = FakeData.CATALOG_WITH_INVALID_DATE_FORMAT,
         )
 
         // Assert
@@ -165,12 +138,13 @@ internal class SchemaValidatorTest {
     @Test
     fun `validate should return Success when override keys match the flag key format`() {
         // Arrange
-        val schemaFile = catalogSchemaFile()
-        val catalogAsText = FakeData.catalogWithOverrideKey("archive_marks_as_read")
         val testSubject = SchemaValidator(validateFormats = true)
 
         // Act
-        val result = testSubject.validate(schemaFile = schemaFile, catalogAsText = catalogAsText)
+        val result = testSubject.validate(
+            schemaContents = catalogSchemaContents(),
+            catalogContents = FakeData.catalogWithOverrideKey("archive_marks_as_read"),
+        )
 
         // Assert
         assertThat(result).isEqualTo(SchemaValidator.Result.Success)
@@ -179,31 +153,30 @@ internal class SchemaValidatorTest {
     @Test
     fun `validate should return ValidationFailed when an override key does not match the flag key format`() {
         // Arrange
-        val schemaFile = catalogSchemaFile()
-        val catalogAsText = FakeData.catalogWithOverrideKey("Foo")
         val testSubject = SchemaValidator(validateFormats = true)
 
         // Act
-        val result = testSubject.validate(schemaFile = schemaFile, catalogAsText = catalogAsText)
+        val result = testSubject.validate(
+            schemaContents = catalogSchemaContents(),
+            catalogContents = FakeData.catalogWithOverrideKey("Foo"),
+        )
 
         // Assert
         assertThat(result)
-            .isInstanceOf<SchemaValidator.Result.Error.ValidationFailed>()
-            .prop(SchemaValidator.Result.Error.ValidationFailed::errors)
+            .isInstanceOf<SchemaValidator.Result.ValidationFailed>()
+            .prop(SchemaValidator.Result.ValidationFailed::errors)
             .isNotEmpty()
     }
-
-    private fun writeFile(name: String, content: String): File =
-        temporaryFolder.writeFile(name, content)
 
     /**
      * The override key format is a rule of the shipped catalog schema, so these cases validate against the real
      * schema instead of a fake one.
      */
-    private fun catalogSchemaFile(): File =
+    private fun catalogSchemaContents(): String =
         generateSequence(File("").absoluteFile) { it.parentFile }
             .map { root -> File(root, CATALOG_SCHEMA_PATH) }
             .firstOrNull { it.isFile }
+            ?.readText(Charsets.UTF_8)
             ?: error("Could not find '$CATALOG_SCHEMA_PATH' in any parent of '${File("").absolutePath}'.")
 
     private companion object {

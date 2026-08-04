@@ -7,6 +7,7 @@ import net.thunderbird.gradle.plugin.featureflag.validator.SchemaValidator
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.kotlin.dsl.create
 
 /**
@@ -38,59 +39,60 @@ class FeatureFlagPlugin : Plugin<Project> {
 
         val schemaValidator = SchemaValidator(validateFormats = extension.validateFormats.orElse(true).get())
         val catalog = extension.catalog.asFile.get()
-        if (!catalog.exists()) {
-            throw GradleException(
-                "Failed to apply feature flag plugin. Reason: The catalog file '${catalog.path}' not found.",
-            )
-        }
+        val catalogContents = readTextOrNull(extension.catalog) ?: throw GradleException(
+            "Failed to apply feature flag plugin. Reason: The feature flag catalog was not found at '${catalog.path}'.",
+        )
 
-        val catalogAsText = catalog.readText(Charsets.UTF_8)
+        val schema = extension.schema.asFile.get()
+        val schemaContents = readTextOrNull(extension.schema) ?: throw GradleException(
+            "Failed to apply feature flag plugin. Reason: The  feature flag schema was not found at '${schema.path}'.",
+        )
 
-        val validSchema = validateSchema(schemaValidator, extension, catalogAsText, catalog)
-        val validCatalog = validateCatalog(catalogAsText)
-        if (validSchema && validCatalog) {
-            // TODO(#11327): register Feature Flag key enum generation task
-            logger.debug("Registering Feature Flag Key enum generation task.")
-        }
+        validateSchema(extension, schemaValidator, schemaContents, catalogContents, catalog)
+        validateCatalog(catalogContents)
     }
 
-    private fun validateSchema(
-        schemaValidator: SchemaValidator,
-        extension: FeatureFlagPluginExtension,
-        catalogAsText: String,
-        catalog: File,
-    ): Boolean = when (
-        val result = schemaValidator.validate(
-            schemaFile = extension.schema.asFile.get(),
-            catalogAsText = catalogAsText,
-        )
-    ) {
-        is SchemaValidator.Result.Error.FileNotFound -> throw GradleException(
-            "Failed to apply feature flag plugin. Reason: File '${result.path}' not found.",
-        )
+    /**
+     * Reads [file] through the provider API so that the configuration cache tracks it as an input.
+     *
+     * Reading a file directly, e.g. with [File.readText], happens outside of Gradle's view: a cached
+     * configuration would be reused after editing the catalog or the schema, silently skipping the
+     * validation below.
+     *
+     * @return the file content, or `null` when the file does not exist.
+     */
+    private fun Project.readTextOrNull(file: RegularFileProperty): String? =
+        providers.fileContents(file).asText.orNull
 
-        is SchemaValidator.Result.Error.ValidationFailed -> {
+    private fun validateSchema(
+        extension: FeatureFlagPluginExtension,
+        schemaValidator: SchemaValidator,
+        schemaContents: String,
+        catalogContents: String,
+        catalog: File,
+    ): Unit = when (val result = schemaValidator.validate(schemaContents, catalogContents)) {
+        is SchemaValidator.Result.ValidationFailed -> {
             val detail = result.errors.joinToString(System.lineSeparator()) { error ->
                 "- $error"
             }
             val message = "Feature flag catalog JSON validation failed for ${catalog.path} against ${
-                result.schema.path
+                extension.schema.asFile.get().path
             }:${System.lineSeparator()}$detail"
 
             throw GradleException(message)
         }
 
-        SchemaValidator.Result.Success -> true
+        SchemaValidator.Result.Success -> Unit
     }
 
-    private fun validateCatalog(catalogAsText: String): Boolean {
+    private fun validateCatalog(catalogAsText: String) {
         val featureFlagCatalog = Json.decodeFromString<FeatureFlagCatalog>(catalogAsText)
-        return when (val result = CatalogValidator().validate(featureFlagCatalog)) {
+        when (val result = CatalogValidator().validate(featureFlagCatalog)) {
             is CatalogValidator.Result.Error.ValidationError -> throw GradleException(
                 "Failed to validate Feature flag catalog. Reason: \n${result.message}",
             )
 
-            CatalogValidator.Result.Success -> true
+            CatalogValidator.Result.Success -> Unit
         }
     }
 }
