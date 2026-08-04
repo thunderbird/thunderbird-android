@@ -86,6 +86,10 @@ gradlePlugin {
             id = "net.thunderbird.gradle.plugin.featureflag.root"
             implementationClass = "net.thunderbird.gradle.plugin.featureflag.FeatureFlagRootPlugin"
         }
+        register("FeatureFlagLibrary") {
+            id = "net.thunderbird.gradle.plugin.featureflag.library"
+            implementationClass = "net.thunderbird.gradle.plugin.featureflag.FeatureFlagLibraryPlugin"
+        }
     }
 }
 
