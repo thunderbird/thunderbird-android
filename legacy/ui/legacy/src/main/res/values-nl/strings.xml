@@ -387,8 +387,8 @@
     <string name="account_settings_message_age_3_months">de afgelopen 3 maanden</string>
     <string name="account_settings_message_age_6_months">de afgelopen 6 maanden</string>
     <string name="account_settings_message_age_1_year">het afgelopen jaar</string>
-    <string name="account_settings_sync_remote_deletetions_label">Verwijderingen op server synchroniseren</string>
-    <string name="account_settings_sync_remote_deletetions_summary">Berichten verwijderen wanneer verwijderd van server</string>
+    <string name="account_settings_sync_remote_deletetions_label">Verwijderingen op de server synchroniseren</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Berichten verwijderen wanneer verwijderd op de server</string>
     <string name="account_settings_openpgp_missing">OpenPGP-app niet aanwezig – is de app verwijderd?</string>
     <string name="folder_settings_title">Mapinstellingen</string>
     <string name="folder_settings_in_top_group_label">In topgroep tonen</string>
