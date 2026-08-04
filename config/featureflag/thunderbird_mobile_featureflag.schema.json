@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://www.thunderbird.net/mobile.featureflag.schema.json",
+  "title": "Thunderbird Mobile Feature Flag Catalog",
+  "description": "Single source of truth for feature flags in Thunderbird and K-9 Mail: the authored flag registry, the codegen input, and the offline defaults bundled with the app.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "flags",
+    "overrides"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Optional self-reference so editors can resolve this schema (e.g. 'thunderbird_mobile_featureflag.schema.json')."
+    },
+    "version": {
+      "type": "string",
+      "description": "Catalog version; used for the offline 'needs update' / staleness fallback."
+    },
+    "flags": {
+      "type": "array",
+      "description": "The flag registry: identity, codegen target, and baseline value. One entry per flag.",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "key",
+          "default"
+        ],
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "description": {
+            "type": "string",
+            "description": "The human description of the given feature flag. This will be displayed in the Secret Debug Settings"
+          },
+          "type": {
+            "enum": [
+              "boolean"
+            ],
+            "default": "boolean",
+            "description": "Boolean only for now; the online provider may serve richer types later. To support multivariate, widen this enum and let 'default' accept the non-boolean value (or a variant key)."
+          },
+          "default": {
+            "type": "boolean",
+            "description": "Baseline value used offline and whenever no per-variant override applies. Promoting a flag = set this true and drop its overrides."
+          },
+          "time_to_promote": {
+            "type": "string",
+            "format": "date",
+            "description": "Target date to graduate or remove the flag (lifecycle hygiene)."
+          }
+        }
+      }
+    },
+    "overrides": {
+      "type": "object",
+      "description": "Offline default snapshot. Per app, per build types, ONLY the flag keys whose value differs from the flag's 'default'. An absent/empty build type means every flag takes its 'default'. The bundled (offline) provider serves: flag.default MERGED WITH the matching app/build type override. (Keys here must exist in 'flags' — enforced by the codegen/validation tool.)",
+      "additionalProperties": false,
+      "properties": {
+        "thunderbird": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "debug": {
+              "$ref": "#/definitions/overrideMap"
+            },
+            "daily": {
+              "$ref": "#/definitions/overrideMap"
+            },
+            "beta": {
+              "$ref": "#/definitions/overrideMap"
+            },
+            "release": {
+              "$ref": "#/definitions/overrideMap"
+            }
+          }
+        },
+        "k9": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "debug": {
+              "$ref": "#/definitions/overrideMap"
+            },
+            "release": {
+              "$ref": "#/definitions/overrideMap"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "overrideMap": {
+      "type": "object",
+      "description": "flagKey -> boolean override (value differs from the flag's 'default').",
+      "patternProperties": {
+        "^[a-z0-9_]+$": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
