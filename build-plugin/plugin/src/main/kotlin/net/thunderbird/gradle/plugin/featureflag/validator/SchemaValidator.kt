@@ -22,13 +22,12 @@ class SchemaValidator(
      * Format assertions are enabled or disabled based on the validator configuration.
      *
      * @param schemaFile The JSON schema file to validate against
-     * @param catalog The JSON catalog file to validate
+     * @param catalogAsText The JSON catalog as text to validate
      * @return Result.Success if validation passes, Result.Error.FileNotFound if either file doesn't exist,
      * or Result.Error.ValidationFailed if the catalog doesn't conform to the schema
      */
-    fun validate(schemaFile: File, catalog: File): Result {
+    fun validate(schemaFile: File, catalogAsText: String): Result {
         if (!schemaFile.exists()) return Result.Error.FileNotFound(schemaFile)
-        if (!catalog.exists()) return Result.Error.FileNotFound(catalog)
 
         val registry = SchemaRegistry
             .builder()
@@ -38,8 +37,7 @@ class SchemaValidator(
         val schema = schemaFile.inputStream().use { registry.getSchema(it) }
 
         schema.initializeValidators()
-        val jsonText = catalog.readText(Charsets.UTF_8)
-        val error = schema.validate(jsonText, InputFormat.JSON) { context ->
+        val error = schema.validate(catalogAsText, InputFormat.JSON) { context ->
             context.executionConfig { config ->
                 config.formatAssertionsEnabled(validateFormats)
             }
@@ -48,7 +46,7 @@ class SchemaValidator(
         return if (error.isEmpty()) {
             Result.Success
         } else {
-            Result.Error.ValidationFailed(schemaFile, catalog, errors = error.map { it.message })
+            Result.Error.ValidationFailed(schemaFile, catalogAsText, errors = error.map { it.message })
         }
     }
 
@@ -58,7 +56,7 @@ class SchemaValidator(
             data class FileNotFound(val path: File) : Error
             data class ValidationFailed(
                 val schema: File,
-                val catalog: File,
+                val catalogAsText: String,
                 val errors: List<String>,
             ) : Error
         }

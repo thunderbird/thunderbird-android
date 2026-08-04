@@ -1,6 +1,7 @@
 package net.thunderbird.gradle.plugin.featureflag
 
 import assertk.Assert
+import assertk.all
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.contains
@@ -8,6 +9,7 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isSuccess
 import java.io.File
 import net.thunderbird.gradle.plugin.featureflag.fake.FakeData.CATALOG_WITH_INVALID_DATE_FORMAT
+import net.thunderbird.gradle.plugin.featureflag.fake.FakeData.CATALOG_WITH_UNKNOWN_OVERRIDE_KEY
 import net.thunderbird.gradle.plugin.featureflag.fake.FakeData.INVALID_CATALOG
 import net.thunderbird.gradle.plugin.featureflag.fake.FakeData.SCHEMA
 import net.thunderbird.gradle.plugin.featureflag.fake.FakeData.VALID_CATALOG
@@ -101,7 +103,7 @@ internal class FeatureFlagPluginTest {
         // Act & Assert
         assertFailure { testSubject.evaluate() }
             .failureMessages()
-            .contains("Failed to apply feature flag plugin. Reason: File '$missingCatalog' not found.")
+            .contains("Failed to apply feature flag plugin. Reason: The catalog file '$missingCatalog' not found.")
     }
 
     @Test
@@ -132,6 +134,26 @@ internal class FeatureFlagPluginTest {
         assertFailure { testSubject.evaluate() }
             .failureMessages()
             .contains("${System.lineSeparator()}- ")
+    }
+
+    @Test
+    fun `evaluating root project should fail with the catalog details when an override key has no definition`() {
+        // Arrange
+        val testSubject = rootProject()
+        testSubject.pluginManager.apply(FeatureFlagPlugin::class.java)
+        testSubject.featureFlag.schema.set(writeFile(name = "schema.json", content = SCHEMA))
+        testSubject.featureFlag.catalog.set(
+            writeFile(name = "catalog.json", content = CATALOG_WITH_UNKNOWN_OVERRIDE_KEY),
+        )
+
+        // Act & Assert
+        assertFailure { testSubject.evaluate() }
+            .failureMessages()
+            .all {
+                contains("Failed to validate Feature flag catalog. Reason:")
+                contains("overrides.thunderbird.debug:")
+                contains("- Key 'unknown_flag' missing definition at '\$.flags'")
+            }
     }
 
     @Test
