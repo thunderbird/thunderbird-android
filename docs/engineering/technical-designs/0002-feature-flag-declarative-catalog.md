@@ -2,7 +2,7 @@
 
 - Issue: [#11252](https://github.com/thunderbird/thunderbird-android/issues/11252)
 - RFC: [RFC 0004: Add a Declarative Feature Flag Catalog](../rfcs/0004-feature-flag-new-architecture.md)
-- Status: **Proposed**
+- Status: **Accepted**
 
 ## Summary
 
