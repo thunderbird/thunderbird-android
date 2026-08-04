@@ -37,6 +37,7 @@ data class ContextAttribute(
     val optional: Boolean = false,
 )
 
+@Serializable
 enum class AttributeType {
     @SerialName("string")
     String,
