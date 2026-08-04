@@ -31,7 +31,7 @@ class FeatureFlagPlugin : Plugin<Project> {
         get() = this == rootProject
 
     private fun Project.applyForRootProject(extension: FeatureFlagPluginExtension) {
-        logger.lifecycle("[feature-flag] Applied on root project: $this")
+        logger.info("[feature-flag] Applied on root project: $this")
 
         val schemaValidator = SchemaValidator(validateFormats = extension.validateFormats.orElse(true).get())
         when (
