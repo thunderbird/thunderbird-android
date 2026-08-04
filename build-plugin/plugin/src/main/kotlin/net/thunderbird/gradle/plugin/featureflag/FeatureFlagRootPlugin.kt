@@ -11,14 +11,15 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.kotlin.dsl.create
 
 /**
- * Gradle plugin that validates feature flag catalog files against JSON schema definitions.
+ * Root Gradle plugin for managing and validating feature flag catalogs.
  *
- * This plugin must be applied to the root project. It creates a "featureFlag" extension
- * for configuring catalog and schema files, then validates the catalog against the schema
- * during project evaluation.
+ * The plugin only activates when applied to the root project; applying it to subprojects has no effect.
+ * All validation occurs during project evaluation after the extension has been configured.
+ *
+ * @throws GradleException if the catalog or schema files are missing, not found, or validation fails
  */
 @Suppress("unused")
-class FeatureFlagPlugin : Plugin<Project> {
+abstract class FeatureFlagRootPlugin : Plugin<Project> {
     override fun apply(target: Project): Unit = with(target) {
         val extension = target.extensions.create<FeatureFlagPluginExtension>(FeatureFlagPluginExtension.NAME)
         when {

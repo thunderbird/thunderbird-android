@@ -81,9 +81,9 @@ gradlePlugin {
             id = "net.thunderbird.gradle.plugin.quality.spotless"
             implementationClass = "net.thunderbird.gradle.plugin.quality.spotless.SpotlessPlugin"
         }
-        register("FeatureFlag") {
-            id = "net.thunderbird.gradle.plugin.featureflag"
-            implementationClass = "net.thunderbird.gradle.plugin.featureflag.FeatureFlagPlugin"
+        register("FeatureFlagRoot") {
+            id = "net.thunderbird.gradle.plugin.featureflag.root"
+            implementationClass = "net.thunderbird.gradle.plugin.featureflag.FeatureFlagRootPlugin"
         }
     }
 }

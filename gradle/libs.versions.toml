@@ -147,7 +147,7 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 # Build plugins
 tb-app-badging = { id = "net.thunderbird.gradle.plugin.app.badging" }
 tb-app-versioning = { id = "net.thunderbird.gradle.plugin.app.versioning" }
-tb-featureflag = { id = "net.thunderbird.gradle.plugin.featureflag" }
+tb-featureflag-root = { id = "net.thunderbird.gradle.plugin.featureflag.root" }
 tb-quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
 tb-quality-detekt = { id = "net.thunderbird.gradle.plugin.quality.detekt" }
 tb-quality-spotless = { id = "net.thunderbird.gradle.plugin.quality.spotless" }
