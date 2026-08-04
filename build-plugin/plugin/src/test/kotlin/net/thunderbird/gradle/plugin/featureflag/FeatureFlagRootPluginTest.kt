@@ -21,7 +21,7 @@ import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Rule
 import org.junit.Test
 
-internal class FeatureFlagPluginTest {
+internal class FeatureFlagRootPluginTest {
 
     @get:Rule
     val temporaryFolder = ProjectTempFolderRule()
@@ -32,7 +32,7 @@ internal class FeatureFlagPluginTest {
         val testSubject = rootProject()
 
         // Act
-        testSubject.pluginManager.apply(FeatureFlagPlugin::class.java)
+        testSubject.pluginManager.apply(FeatureFlagRootPlugin::class.java)
 
         // Assert
         assertThat(testSubject.extensions.findByType<FeatureFlagPluginExtension>()).isNotNull()
@@ -44,7 +44,7 @@ internal class FeatureFlagPluginTest {
         val testSubject = rootProject()
 
         // Act
-        testSubject.pluginManager.apply(FeatureFlagPlugin::class.java)
+        testSubject.pluginManager.apply(FeatureFlagRootPlugin::class.java)
 
         // Assert
         assertThat(testSubject.extensions.findByName(FeatureFlagPluginExtension.NAME)).isNotNull()
@@ -54,7 +54,7 @@ internal class FeatureFlagPluginTest {
     fun `evaluating root project should fail when the catalog is not configured`() {
         // Arrange
         val testSubject = rootProject()
-        testSubject.pluginManager.apply(FeatureFlagPlugin::class.java)
+        testSubject.pluginManager.apply(FeatureFlagRootPlugin::class.java)
         testSubject.featureFlag.schema.set(writeFile(name = "schema.json", content = SCHEMA))
 
         // Act & Assert
@@ -67,7 +67,7 @@ internal class FeatureFlagPluginTest {
     fun `evaluating root project should fail when the schema is not configured`() {
         // Arrange
         val testSubject = rootProject()
-        testSubject.pluginManager.apply(FeatureFlagPlugin::class.java)
+        testSubject.pluginManager.apply(FeatureFlagRootPlugin::class.java)
         testSubject.featureFlag.catalog.set(writeFile(name = "catalog.json", content = VALID_CATALOG))
 
         // Act & Assert
@@ -81,7 +81,7 @@ internal class FeatureFlagPluginTest {
         // Arrange
         val missingSchema = File(temporaryFolder.root, "missing.schema.json")
         val testSubject = rootProject()
-        testSubject.pluginManager.apply(FeatureFlagPlugin::class.java)
+        testSubject.pluginManager.apply(FeatureFlagRootPlugin::class.java)
         testSubject.featureFlag.schema.set(missingSchema)
         testSubject.featureFlag.catalog.set(writeFile(name = "catalog.json", content = VALID_CATALOG))
 
@@ -99,7 +99,7 @@ internal class FeatureFlagPluginTest {
         // Arrange
         val missingCatalog = File(temporaryFolder.root, "missing.catalog.json")
         val testSubject = rootProject()
-        testSubject.pluginManager.apply(FeatureFlagPlugin::class.java)
+        testSubject.pluginManager.apply(FeatureFlagRootPlugin::class.java)
         testSubject.featureFlag.schema.set(writeFile(name = "schema.json", content = SCHEMA))
         testSubject.featureFlag.catalog.set(missingCatalog)
 
@@ -118,7 +118,7 @@ internal class FeatureFlagPluginTest {
         val schema = writeFile(name = "schema.json", content = SCHEMA)
         val catalog = writeFile(name = "catalog.json", content = INVALID_CATALOG)
         val testSubject = rootProject()
-        testSubject.pluginManager.apply(FeatureFlagPlugin::class.java)
+        testSubject.pluginManager.apply(FeatureFlagRootPlugin::class.java)
         testSubject.featureFlag.schema.set(schema)
         testSubject.featureFlag.catalog.set(catalog)
 
@@ -132,7 +132,7 @@ internal class FeatureFlagPluginTest {
     fun `evaluating root project should list every validation error as a detail line`() {
         // Arrange
         val testSubject = rootProject()
-        testSubject.pluginManager.apply(FeatureFlagPlugin::class.java)
+        testSubject.pluginManager.apply(FeatureFlagRootPlugin::class.java)
         testSubject.featureFlag.schema.set(writeFile(name = "schema.json", content = SCHEMA))
         testSubject.featureFlag.catalog.set(writeFile(name = "catalog.json", content = INVALID_CATALOG))
 
@@ -146,7 +146,7 @@ internal class FeatureFlagPluginTest {
     fun `evaluating root project should fail with the catalog details when an override key has no definition`() {
         // Arrange
         val testSubject = rootProject()
-        testSubject.pluginManager.apply(FeatureFlagPlugin::class.java)
+        testSubject.pluginManager.apply(FeatureFlagRootPlugin::class.java)
         testSubject.featureFlag.schema.set(writeFile(name = "schema.json", content = SCHEMA))
         testSubject.featureFlag.catalog.set(
             writeFile(name = "catalog.json", content = CATALOG_WITH_UNKNOWN_OVERRIDE_KEY),
@@ -166,7 +166,7 @@ internal class FeatureFlagPluginTest {
     fun `evaluating root project should succeed when the catalog conforms to the schema`() {
         // Arrange
         val testSubject = rootProject()
-        testSubject.pluginManager.apply(FeatureFlagPlugin::class.java)
+        testSubject.pluginManager.apply(FeatureFlagRootPlugin::class.java)
         testSubject.featureFlag.schema.set(writeFile(name = "schema.json", content = SCHEMA))
         testSubject.featureFlag.catalog.set(writeFile(name = "catalog.json", content = VALID_CATALOG))
 
@@ -178,7 +178,7 @@ internal class FeatureFlagPluginTest {
     fun `evaluating root project should skip format assertions when validateFormats is false`() {
         // Arrange
         val testSubject = rootProject()
-        testSubject.pluginManager.apply(FeatureFlagPlugin::class.java)
+        testSubject.pluginManager.apply(FeatureFlagRootPlugin::class.java)
         testSubject.featureFlag.schema.set(writeFile(name = "schema.json", content = SCHEMA))
         testSubject.featureFlag.catalog.set(
             writeFile(name = "catalog.json", content = CATALOG_WITH_INVALID_DATE_FORMAT),
@@ -193,7 +193,7 @@ internal class FeatureFlagPluginTest {
     fun `evaluating root project should assert formats by default`() {
         // Arrange
         val testSubject = rootProject()
-        testSubject.pluginManager.apply(FeatureFlagPlugin::class.java)
+        testSubject.pluginManager.apply(FeatureFlagRootPlugin::class.java)
         testSubject.featureFlag.schema.set(writeFile(name = "schema.json", content = SCHEMA))
         testSubject.featureFlag.catalog.set(
             writeFile(name = "catalog.json", content = CATALOG_WITH_INVALID_DATE_FORMAT),
@@ -215,7 +215,7 @@ internal class FeatureFlagPluginTest {
             .build()
 
         // Act
-        testSubject.pluginManager.apply(FeatureFlagPlugin::class.java)
+        testSubject.pluginManager.apply(FeatureFlagRootPlugin::class.java)
 
         // Assert
         assertThat(runCatching { testSubject.evaluate() }).isSuccess()

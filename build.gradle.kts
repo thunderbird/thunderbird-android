@@ -15,7 +15,7 @@ plugins {
     id("thunderbird.dependency.check")
     id("net.thunderbird.gradle.plugin.quality.coverage")
     id("net.thunderbird.gradle.plugin.quality.spotless")
-    alias(libs.plugins.tb.featureflag)
+    alias(libs.plugins.tb.featureflag.root)
 }
 
 featureFlag {
