@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -137,8 +139,9 @@ fun AccountSetupCompositionScreen(
                 .padding(innerPadding)
                 .consumeWindowInsets(innerPadding),
         ) {
+            val scrollState = rememberScrollState()
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
                 verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
             ) {
                 TextInput(
@@ -179,6 +182,7 @@ fun AccountSetupCompositionScreen(
                 }
                 if (useSignature) {
                     TextFieldOutlined(
+                        isSingleLine = false,
                         label = stringResource(id = R.string.account_settings_signature_label),
                         value = signature,
                         onValueChange = { onEvent(Event.SignatureChange(it)) },
