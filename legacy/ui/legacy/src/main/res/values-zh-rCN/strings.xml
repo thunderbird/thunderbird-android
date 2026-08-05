@@ -90,7 +90,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">（无主题）</string>
     <string name="general_no_sender">无发件人</string>
-    <string name="status_loading_more">正在加载邮件\u2026</string>
+    <string name="status_loading_more">正在加载邮件…</string>
     <string name="status_network_error">连接错误</string>
     <string name="status_invalid_id_error">未找到邮件</string>
     <string name="status_loading_error">邮件加载错误</string>
@@ -176,7 +176,7 @@
     <string name="message_view_show_remote_images_action">显示远程图片</string>
     <string name="message_view_no_viewer">无法找到查看 <xliff:g id="mimetype">%s</xliff:g> 的应用。</string>
     <string name="message_view_download_remainder">下载完整邮件</string>
-    <string name="message_view_sender_label">通过  %1$s</string>
+    <string name="message_view_sender_label">通过 %1$s</string>
     <string name="from_same_sender">来自此发件人的更多邮件</string>
     <string name="message_discarded_toast">邮件已舍弃</string>
     <string name="message_saved_toast">邮件已保存为草稿</string>
@@ -253,7 +253,7 @@
     <string name="quiet_time_ends">勿扰时段结束</string>
     <string name="account_setup_basics_title">设置新账号</string>
     <string name="account_setup_incoming_delete_policy_label">当我删除邮件时</string>
-    <string name="account_setup_incoming_delete_policy_never_label">不要在服务器上删除</string>
+    <string name="account_setup_incoming_delete_policy_never_label">不在服务器上删除</string>
     <string name="account_setup_incoming_delete_policy_delete_label">从服务器删除</string>
     <string name="account_setup_incoming_delete_policy_markread_label">在服务器上标记为已读</string>
     <string name="account_setup_expunge_policy_label">清除服务器上已删除的邮件</string>
@@ -284,17 +284,17 @@
     <string name="idle_refresh_period_36min">每 36 分钟</string>
     <string name="idle_refresh_period_48min">每 48 分钟</string>
     <string name="idle_refresh_period_60min">每 60 分钟</string>
-    <string name="account_setup_options_mail_display_count_10">10 封</string>
-    <string name="account_setup_options_mail_display_count_25">25 封</string>
-    <string name="account_setup_options_mail_display_count_50">50 封</string>
-    <string name="account_setup_options_mail_display_count_100">100 封</string>
-    <string name="account_setup_options_mail_display_count_250">250 封</string>
-    <string name="account_setup_options_mail_display_count_500">500 封</string>
-    <string name="account_setup_options_mail_display_count_1000">1000 封</string>
-    <string name="account_setup_options_mail_display_count_2500">2500 封</string>
-    <string name="account_setup_options_mail_display_count_5000">5000 封</string>
-    <string name="account_setup_options_mail_display_count_10000">10000 封</string>
-    <string name="account_setup_options_mail_display_count_all">全部邮件</string>
+    <string name="account_setup_options_mail_display_count_10">10 封邮件</string>
+    <string name="account_setup_options_mail_display_count_25">25 封邮件</string>
+    <string name="account_setup_options_mail_display_count_50">50 封邮件</string>
+    <string name="account_setup_options_mail_display_count_100">100 封邮件</string>
+    <string name="account_setup_options_mail_display_count_250">250 封邮件</string>
+    <string name="account_setup_options_mail_display_count_500">500 封邮件</string>
+    <string name="account_setup_options_mail_display_count_1000">1000 封邮件</string>
+    <string name="account_setup_options_mail_display_count_2500">2500 封邮件</string>
+    <string name="account_setup_options_mail_display_count_5000">5000 封邮件</string>
+    <string name="account_setup_options_mail_display_count_10000">10000 封邮件</string>
+    <string name="account_setup_options_mail_display_count_all">所有邮件</string>
     <string name="move_copy_cannot_copy_unsynced_message">无法复制或移动未与服务器同步的邮件</string>
     <string name="account_settings_push_advanced_title">高级</string>
     <string name="account_settings_title_fmt">账号设置</string>
@@ -312,7 +312,7 @@
     <string name="account_settings_mark_message_as_read_on_view_label">打开时标记为已读</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">打开邮件查看时将其标记为已读</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">删除时标记为已读</string>
-    <string name="account_settings_mark_message_as_read_on_delete_summary">删除邮件时将其标记为已读</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">当邮件被删除时将其标记为已读</string>
     <string name="account_settings_notification_channels_label">通知类别</string>
     <string name="account_settings_open_notification_settings_messages_summary">为新邮件配置通知</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">配置错误和状态通知</string>
@@ -357,20 +357,20 @@
     <string name="account_settings_mail_check_frequency_label">文件夹轮询频率</string>
     <string name="account_settings_mail_display_count_label">本地文件夹大小</string>
     <string name="account_settings_autodownload_message_size_label">收取邮件大小上限</string>
-    <string name="account_settings_autodownload_message_size_1">1 KiB </string>
-    <string name="account_settings_autodownload_message_size_2">2 KiB </string>
-    <string name="account_settings_autodownload_message_size_4">4 KiB </string>
-    <string name="account_settings_autodownload_message_size_8">8 KiB </string>
-    <string name="account_settings_autodownload_message_size_16">16 KiB </string>
-    <string name="account_settings_autodownload_message_size_32">32 KiB </string>
-    <string name="account_settings_autodownload_message_size_64">64 KiB </string>
-    <string name="account_settings_autodownload_message_size_128">128 KiB </string>
-    <string name="account_settings_autodownload_message_size_256">256 KiB </string>
-    <string name="account_settings_autodownload_message_size_512">512 KiB </string>
-    <string name="account_settings_autodownload_message_size_1024">1 MiB </string>
-    <string name="account_settings_autodownload_message_size_2048">2 MiB </string>
-    <string name="account_settings_autodownload_message_size_5120">5 MiB </string>
-    <string name="account_settings_autodownload_message_size_10240">10 MiB </string>
+    <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+    <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+    <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+    <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+    <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+    <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+    <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+    <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+    <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+    <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+    <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+    <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+    <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+    <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
     <string name="account_settings_autodownload_message_size_any">任意大小（无限制）</string>
     <string name="account_settings_message_age_label">同步邮件时间范围</string>
     <string name="account_settings_message_age_any">任意时间（无限制）</string>
@@ -385,7 +385,7 @@
     <string name="account_settings_message_age_3_months">最近 3 个月</string>
     <string name="account_settings_message_age_6_months">最近 6 个月</string>
     <string name="account_settings_message_age_1_year">最近 1 年</string>
-    <string name="account_settings_sync_remote_deletetions_label">同步服务器的删除</string>
+    <string name="account_settings_sync_remote_deletetions_label">同步服务器删除操作</string>
     <string name="account_settings_sync_remote_deletetions_summary">在服务器上删除邮件时移除邮件</string>
     <string name="account_settings_openpgp_missing">缺少 OpenPGP 应用 - 是否已卸载？</string>
     <string name="folder_settings_title">文件夹设置</string>
@@ -507,7 +507,7 @@
     <string name="batch_select_all">全选</string>
     <string name="account_setup_push_limit_label">推送检查的最大文件夹数</string>
     <string name="account_setup_push_limit_5">5 个文件夹</string>
-    <string name="account_setup_push_limit_10">10 个文件夹 </string>
+    <string name="account_setup_push_limit_10">10 个文件夹</string>
     <string name="account_setup_push_limit_25">25 个文件夹</string>
     <string name="account_setup_push_limit_50">50 个文件夹</string>
     <string name="account_setup_push_limit_100">100 个文件夹</string>
@@ -572,7 +572,7 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">否</string>
     <string name="dialog_confirm_spam_title">确认移动到垃圾邮件文件夹</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="other">是否确定要移动 <xliff:g id="message_count">%1$d</xliff:g> 封邮件到垃圾邮件文件夹？</item>
+        <item quantity="other">是否确定要将 <xliff:g id="message_count">%1$d</xliff:g> 封邮件移动到垃圾邮件文件夹？</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">是</string>
     <string name="dialog_confirm_spam_cancel_button">否</string>
@@ -942,4 +942,7 @@
     <string name="animation_setting_follow_system">使用系统默认</string>
     <string name="animation_setting_on">开</string>
     <string name="animation_setting_off">关</string>
+    <string name="global_settings_privacy_incognito_keyboard">隐身键盘</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">在撰写邮件时，让键盘不要从您的输入内容中学习</string>
+    <string name="sort_by_indicator">•</string>
 </resources>

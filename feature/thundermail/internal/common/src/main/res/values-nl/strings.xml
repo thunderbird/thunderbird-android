@@ -5,4 +5,8 @@
     <string name="thundermail_browser_is_not_available">Browser is niet beschikbaar. Controleer uw apparaatconfiguratie.</string>
     <string name="thundermail_operation_was_canceled">Bewerking is geannuleerd</string>
     <string name="thundermail_unknown_error_please_consider_reporting">Onbekende fout. Overweeg om dit te rapporteren.</string>
+    <string name="thundermail_add_account">Voeg een account toe</string>
+    <string name="thundermail_add_an_email_account">Voeg een e-mail account toe</string>
+    <string name="thundermail_what_is_thundermail">Wat is Thundermail?</string>
+    <string name="thundermail_or_divider">- of -</string>
 </resources>

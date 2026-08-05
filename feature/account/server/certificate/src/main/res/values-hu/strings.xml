@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_server_certificate_unknown_error_description_format">Az alkalmazás lehetséges biztonsági fenyegetést észlelt, és nem folytatta a kapcsolódást a(z) <xliff:g id="serverName">%s</xliff:g> felé.
-\nHa folytatja, akkor támadók olyan információkat próbálhatnak ellopni, mint a jelszava vagy az e-mailjei.</string>
+    <string name="account_server_certificate_unknown_error_description_format">Az alkalmazás lehetséges biztonsági fenyegetést észlelt, és nem folytatta a kapcsolódást a(z) <xliff:g id="serverName">%s</xliff:g> felé. \nHa folytatja, akkor támadók olyan információkat próbálhatnak ellopni, mint a jelszava vagy az e-mailjei.</string>
     <string name="account_server_certificate_fingerprints_section">Ujjlenyomatok</string>
     <string name="account_server_certificate_warning_title">Figyelmeztetés</string>
     <string name="account_server_certificate_unknown_error_subtitle">Tanúsítványhiba</string>

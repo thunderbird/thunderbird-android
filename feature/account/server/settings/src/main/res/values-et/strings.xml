@@ -34,4 +34,5 @@
     <string name="account_server_settings_incoming_imap_send_client_info_label">Saada kliendi teave</string>
     <string name="account_server_settings_password_authentication_failed">Autentimine ei õnnestunud!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Ei õnnestu käivitada biomeetrilise tuvastamise päringut.</string>
+    <string name="account_server_settings_password_input_label">Salasõna</string>
 </resources>

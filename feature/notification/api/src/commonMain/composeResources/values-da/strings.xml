@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Synkronisér (Push)</string>
     <string name="notification_channel_push_description">Vist når der lyttes efter nye emails</string>
@@ -22,7 +22,7 @@
     <string name="push_notification_state_wait_background_sync">I dvale indtil baggrundssynkronisering er tilladt</string>
     <string name="push_notification_state_wait_network">I dvale indtil netværk er tilgængelig</string>
     <string name="push_notification_info">Tryk for at lære mere.</string>
-    <string name="push_info_disable_push_action">Deaktivere skub handling </string>
+    <string name="push_info_disable_push_action">Deaktivere skub handling</string>
     <string name="notification_action_reply">Svar</string>
     <string name="notification_action_mark_as_read">Markér som læst</string>
     <string name="notification_action_mark_all_as_read">Markér alle som læst</string>

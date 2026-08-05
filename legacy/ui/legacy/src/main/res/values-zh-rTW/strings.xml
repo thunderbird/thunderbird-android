@@ -773,12 +773,7 @@
     <string name="ac_transfer_finish">請在你的其他裝置上開啟訊息，並輸入設定代碼以完成設定精靈。</string>
     <string name="ac_transfer_show_code">顯示設定代碼</string>
     <string name="ac_transfer_msg_subject">Autocrypt設定訊息</string>
-    <string name="ac_transfer_msg_body">這條訊息包括所有你的舊裝置上的 Autocrypt 設定與你的私鑰。
-
-要在你的新裝置上設定自動加密，請按您的新裝置上的提示操作。
-
-你可以儲存這條訊息，並用作你的私鑰的備份。如果你想這樣做，您應該寫下密碼並安全保管。
-</string>
+    <string name="ac_transfer_msg_body">這條訊息包括所有你的舊裝置上的 Autocrypt 設定與你的私鑰。 要在你的新裝置上設定自動加密，請按您的新裝置上的提示操作。 你可以儲存這條訊息，並用作你的私鑰的備份。如果你想這樣做，您應該寫下密碼並安全保管。</string>
     <string name="ac_transfer_error_send">寄送訊息時出現錯誤。請檢查您的網路連線與外寄伺服器設定。</string>
     <string name="switch_on">開</string>
     <string name="switch_off">關</string>

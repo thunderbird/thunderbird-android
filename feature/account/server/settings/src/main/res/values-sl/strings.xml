@@ -34,4 +34,5 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">Če želite tukaj prikazati svoje geslo, na tej napravi omogočite zaklepanje zaslona.</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Biometričnega poziva ni mogoče zagnati.</string>
     <string name="account_server_settings_password_authentication_failed">Overjanje je spodletelo!</string>
+    <string name="account_server_settings_password_input_label">Geslo</string>
 </resources>

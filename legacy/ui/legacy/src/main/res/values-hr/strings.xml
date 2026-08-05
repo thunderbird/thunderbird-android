@@ -73,12 +73,11 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Nema subjekta)</string>
     <string name="general_no_sender">Nema pošiljatelja</string>
-    <string name="status_loading_more">Učitavanje poruka\u2026</string>
+    <string name="status_loading_more">Učitavanje poruka…</string>
     <string name="status_network_error">Greška veze</string>
     <string name="status_invalid_id_error">Poruka nije pronađena</string>
     <string name="status_loading_error">Greška pri učitavanju poruke</string>
-    <string name="load_more_messages_fmt">Učitati
-    za <xliff:g id="messages_to_load">%d</xliff:g> više</string>
+    <string name="load_more_messages_fmt">Učitati za <xliff:g id="messages_to_load">%d</xliff:g> više</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -299,7 +298,7 @@
     <string name="account_settings_upload_sent_messages_summary">Prenesi poruke u mapu Poslano nakon slanja</string>
     <string name="account_settings_general_title">Opća podešavanja</string>
     <string name="account_settings_reading_mail">Čitanje pošte</string>
-    <string name="account_settings_sync">Dohvaćanje pošte </string>
+    <string name="account_settings_sync">Dohvaćanje pošte</string>
     <string name="account_settings_folders">Mape</string>
     <string name="account_settings_quote_prefix_label">Prefiks citiranog teksta</string>
     <string name="account_settings_crypto">Šifriranje s kraja na kraj</string>

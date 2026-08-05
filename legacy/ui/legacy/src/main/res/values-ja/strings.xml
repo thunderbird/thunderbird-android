@@ -120,9 +120,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">通知エラー</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">新着メッセージのシステム通知の作成中にエラーが発生しました。通知サウンドが存在しないことが原因と思われます。
-\n
-\nタップして通知設定を開いてください。</string>
+    <string name="notification_notify_error_text">新着メッセージのシステム通知の作成中にエラーが発生しました。通知サウンドが存在しないことが原因と思われます。 \n \nタップして通知設定を開いてください。</string>
     <string name="notification_bg_sync_ticker">メール確認中: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">メール確認中</string>
     <string name="notification_bg_send_ticker">メール送信中: <xliff:g id="account">%s</xliff:g></string>
@@ -676,8 +674,7 @@
     <string name="enable_sign_only">PGP 署名のみ有効にする</string>
     <string name="disable_sign_only">PGP 署名のみ無効にする</string>
     <string name="openpgp_inline_title">PGP/INLINE モード</string>
-    <string name="openpgp_inline_text">メールは PGP/INLINE 形式で送信されます。
-\nこれは互換性のためでのみ使用する必要があります:</string>
+    <string name="openpgp_inline_text">メールは PGP/INLINE 形式で送信されます。 \nこれは互換性のためでのみ使用する必要があります:</string>
     <string name="openpgp_inline_plus_compat">一部のクライアントはこの形式のみ対応します</string>
     <string name="openpgp_inline_minus_transit">署名は転送中に破損する可能性があります</string>
     <string name="openpgp_inline_minus_attach">添付ファイルに対応していません</string>
@@ -738,8 +735,7 @@
     <string name="error_sign_only_no_encryption">署名のみモードでは暗号化できません！</string>
     <string name="unsigned_text_divider_label">未署名のテキスト</string>
     <string name="crypto_no_provider_title">このメールは暗号化されています</string>
-    <string name="crypto_no_provider_message">このメールは OpenPGP で暗号化されました。
-\nメールを読むためには、OpenPGP と互換性のあるアプリをインストールして設定する必要があります。</string>
+    <string name="crypto_no_provider_message">このメールは OpenPGP で暗号化されました。 \nメールを読むためには、OpenPGP と互換性のあるアプリをインストールして設定する必要があります。</string>
     <string name="crypto_no_provider_button">設定に移動</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->

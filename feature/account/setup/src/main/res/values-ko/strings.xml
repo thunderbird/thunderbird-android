@@ -21,7 +21,7 @@
     <string name="account_setup_options_account_name_label">계정 이름</string>
     <string name="account_setup_special_folders_folder_automatic">자동 (%s)</string>
     <plurals name="account_setup_options_email_check_frequency_minutes">
-        <item quantity="other">%d 분마다</item>
+        <item quantity="other">%d분마다</item>
     </plurals>
     <plurals name="account_setup_options_email_display_count_messages">
         <item quantity="other">메시지 %d 개</item>
@@ -40,7 +40,7 @@
     <string name="account_setup_options_section_sync_options">동기화 옵션</string>
     <string name="account_setup_options_email_signature_error_blank">이메일 서명은 비워둘 수 없습니다.</string>
     <plurals name="account_setup_options_email_check_frequency_hours">
-        <item quantity="other">%d 시간마다</item>
+        <item quantity="other">%d시간마다</item>
     </plurals>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">설정을 찾음</string>

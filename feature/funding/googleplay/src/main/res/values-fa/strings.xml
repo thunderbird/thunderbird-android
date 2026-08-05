@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="funding_googleplay_contribution_list_type_one_time">پرداخت یک باره</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">پرداخت یک باره</string>
     <string name="funding_googleplay_contribution_header_title">حمایت از تاندربرد</string>
     <string name="funding_googleplay_contribution_list_title">مشارکت امن</string>
     <string name="funding_googleplay_contribution_list_type_recurring">ماهانه</string>

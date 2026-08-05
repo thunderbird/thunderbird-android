@@ -91,12 +91,11 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(teemata)</string>
     <string name="general_no_sender">Saatja puudub</string>
-    <string name="status_loading_more">Laadib kirju\u2026</string>
+    <string name="status_loading_more">Laadib kirju…</string>
     <string name="status_network_error">Ühenduse viga</string>
     <string name="status_invalid_id_error">Kirja ei leidu</string>
     <string name="status_loading_error">Viga kirja laadimisel</string>
-    <string name="load_more_messages_fmt">Laadi alla
-    <xliff:g id="messages_to_load">%d</xliff:g> rohkem</string>
+    <string name="load_more_messages_fmt">Laadi alla <xliff:g id="messages_to_load">%d</xliff:g> rohkem</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -155,7 +154,7 @@
     <string name="message_compose_quote_header_to">Kellele:</string>
     <string name="message_compose_quote_header_cc">Koopia:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> kirjutas:</string>
-    <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g>  kirjutas:</string>
+    <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> kirjutas:</string>
     <string name="message_compose_error_no_recipients">Pead kirjale lisama vähemalt ühe saaja.</string>
     <string name="compose_error_incomplete_recipient">Kirja saaja väli on puudulikult täidetud!</string>
     <string name="error_contact_address_not_found">Ei õnnestu leida selle e-posti aadressi kontaktkirjet.</string>
@@ -234,10 +233,10 @@
     <string name="general_settings_ui_density_compact">Kompaktne</string>
     <string name="general_settings_ui_density_default">Vaikimisi</string>
     <string name="general_settings_ui_density_relaxed">Hõre</string>
-    <string name="global_settings_privacy_hide_useragent">Peida meiliklient</string>
+    <string name="global_settings_privacy_hide_useragent">Peida e-postiklient</string>
     <string name="global_settings_privacy_hide_useragent_detail">Eemalda rakenduse tunnus e-kirja päistest</string>
     <string name="global_settings_privacy_hide_timezone">Peida ajavöönd</string>
-    <string name="global_settings_privacy_hide_timezone_detail">Kasuta UTCd kohaliku ajavööndi asemel meili päistes ja vastuse päises</string>
+    <string name="global_settings_privacy_hide_timezone_detail">Kasuta UTC-d kohaliku ajavööndi asemel saadetud kirjade ja vastuste päistes</string>
     <string name="global_settings_notification_quick_delete_title">Näita \"Kustuta\" nuppu</string>
     <string name="global_settings_notification_quick_delete_never">Mitte kunagi</string>
     <string name="global_settings_notification_quick_delete_when_single_msg">Ühest kirjast teatamiseks</string>
@@ -299,7 +298,7 @@
     <string name="account_setup_options_mail_display_count_10000">10000 kirja</string>
     <string name="account_setup_options_mail_display_count_all">kõik kirjad</string>
     <string name="move_copy_cannot_copy_unsynced_message">Serveriga sünkroniseerimata kirja pole võimalik kopeerida ega teisaldada</string>
-    <string name="account_settings_push_advanced_title">Täpsemalt</string>
+    <string name="account_settings_push_advanced_title">Tõuketeenuste täiendavad seadistused</string>
     <string name="account_settings_title_fmt">Konto seadistused</string>
     <string name="account_settings_notify_label">Uue sõnumi teated</string>
     <string name="account_settings_notify_sync_label">Sünkroniseerimise teated</string>
@@ -314,8 +313,8 @@
     <string name="account_settings_ignore_chat_messages_summary">Ära näita teavitusi kirjade puhul, mis on vestluse osa</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Avamisel märgi loetuks</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Vaatamiseks avamisel märgi kiri loetuks</string>
-    <string name="account_settings_mark_message_as_read_on_delete_label">Pärast kustutamist märgi loetuks</string>
-    <string name="account_settings_mark_message_as_read_on_delete_summary">Kustutamisel märgi kiri loetuks</string>
+    <string name="account_settings_mark_message_as_read_on_delete_label">Kustutamisel märgi loetuks</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">Kustutamisel märgi kirjad loetuks</string>
     <string name="account_settings_notification_channels_label">Teavituste kategooriad</string>
     <string name="account_settings_open_notification_settings_messages_summary">Seadista uute kirjade teavitusi</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Seadista vigade ja olekute teavitusi</string>
@@ -323,7 +322,7 @@
     <string name="account_settings_show_pictures_never">Ei</string>
     <string name="account_settings_show_pictures_only_from_contacts">Kontaktidelt</string>
     <string name="account_settings_show_pictures_always">Kõigilt</string>
-    <string name="account_settings_composition">Meili saatmine</string>
+    <string name="account_settings_composition">E-kiri on saatmisel</string>
     <string name="account_settings_default_quoted_text_shown_label">Vastamisel tsiteeri algset kirja</string>
     <string name="account_settings_default_quoted_text_shown_summary">Lisa oma vastusesse algne kiri.</string>
     <string name="account_settings_reply_after_quote_label">Vasta peale algset sõnumit</string>
@@ -341,10 +340,10 @@
     <string name="account_settings_quote_style_prefix">Eesliide (nagu Gmail)</string>
     <string name="account_settings_quote_style_header">Päis (nagu Outlook)</string>
     <string name="account_settings_upload_sent_messages_label">Laadi üles saadetud kirjad</string>
-    <string name="account_settings_upload_sent_messages_summary">Pärast saatmist tõsta kirjad saadetud kirjade kausta </string>
+    <string name="account_settings_upload_sent_messages_summary">Pärast saatmist tõsta kirjad saadetud kirjade kausta</string>
     <string name="account_settings_general_title">Üldseadistused</string>
     <string name="account_settings_reading_mail">E-kirjade lugemine</string>
-    <string name="account_settings_sync">Meili toomine</string>
+    <string name="account_settings_sync">E-kirjad on laadimisel</string>
     <string name="account_settings_folders">Kaustad</string>
     <string name="account_settings_quote_prefix_label">Tsiteeritud teksti eesliide</string>
     <string name="account_settings_crypto">Otspunktkrüpteerimine</string>
@@ -352,14 +351,14 @@
     <string name="account_settings_crypto_app_select_title">Vali OpenPGP rakendus</string>
     <string name="account_settings_crypto_key">Seadista otspunktide võti</string>
     <string name="account_settings_crypto_summary_off">OpenPGP rakendus seadistamata</string>
-    <string name="account_settings_crypto_summary_on"> %s ühendatud</string>
+    <string name="account_settings_crypto_summary_on">%s ühendatud</string>
     <string name="account_settings_crypto_summary_config">Seadistamine…</string>
     <string name="account_settings_crypto_encrypt_all_drafts">Salvesta kõik mustandid krüpteeritult</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Kõik mustandid salvestatakse krüpteeritult</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Krüpteeri mustandid vaid siis, kui krüpteerimine on lubatud</string>
-    <string name="account_settings_mail_check_frequency_label">Kausta pollimise sagedus</string>
-    <string name="account_settings_mail_display_count_label">Lokaalse kausta suurus</string>
-    <string name="account_settings_autodownload_message_size_label">Laadi kirju kuni</string>
+    <string name="account_settings_mail_check_frequency_label">Kaustade pollimise sagedus</string>
+    <string name="account_settings_mail_display_count_label">Kohaliku kausta andmemaht</string>
+    <string name="account_settings_autodownload_message_size_label">Laadi kirjad mahuga kuni</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
     <string name="account_settings_autodownload_message_size_4">4 KiB</string>
@@ -374,9 +373,9 @@
     <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
     <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
     <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
-    <string name="account_settings_autodownload_message_size_any">suvaline maht (piiranguid pole)</string>
-    <string name="account_settings_message_age_label">Sünkroniseeri kirjad</string>
-    <string name="account_settings_message_age_any">suvalisest ajast (piirangud pole)</string>
+    <string name="account_settings_autodownload_message_size_any">ilma mahupiiranguta</string>
+    <string name="account_settings_message_age_label">Sünkrooni kirjad ajavahemikust</string>
+    <string name="account_settings_message_age_any">piiranguta</string>
     <string name="account_settings_message_age_0">täna</string>
     <string name="account_settings_message_age_1">viimased 2 päeva</string>
     <string name="account_settings_message_age_2">viimased 3 päeva</string>
@@ -388,16 +387,16 @@
     <string name="account_settings_message_age_3_months">viimased 3 kuud</string>
     <string name="account_settings_message_age_6_months">viimased 6 kuud</string>
     <string name="account_settings_message_age_1_year">viimane aasta</string>
-    <string name="account_settings_sync_remote_deletetions_label">Süngi serveris kustutamised</string>
-    <string name="account_settings_sync_remote_deletetions_summary">Eemalda kirjad kui need serveris kustutatud</string>
+    <string name="account_settings_sync_remote_deletetions_label">Serverist kustutamise sünkroonimine</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Serverist kustutamisel eemalda kirjad</string>
     <string name="account_settings_openpgp_missing">OpenPGP rakendus puudub - kas see on eemaldatud?</string>
     <string name="folder_settings_title">Kausta seadistused</string>
     <string name="folder_settings_in_top_group_label">Näita tipp grupis</string>
     <string name="folder_settings_clear_local_folder_action">Puhasta kohalikud kirjad</string>
-    <string name="account_settings_incoming_label">Sissetuleva meili server</string>
-    <string name="account_settings_incoming_summary">Konfigureeri sisse tuleva meili server</string>
-    <string name="account_settings_outgoing_label">Väljuva meili server</string>
-    <string name="account_settings_outgoing_summary">Konfigureeri väljuva meili server (SMTP)</string>
+    <string name="account_settings_incoming_label">Sissetulevate kirjade server</string>
+    <string name="account_settings_incoming_summary">Seadista saabuvate kirjade server</string>
+    <string name="account_settings_outgoing_label">Saadetud kirjade server</string>
+    <string name="account_settings_outgoing_summary">Seadista saadetud e-kirjade server (SMTP)</string>
     <string name="account_settings_name_label">Sinu nimi</string>
     <string name="notifications_title">Teated</string>
     <string name="account_settings_vibration">Värinaalarm</string>
@@ -411,7 +410,7 @@
     <string name="account_settings_vibrate_pattern_5">muster 5</string>
     <string name="account_settings_vibrate_times">Korda vibreerimist</string>
     <string name="account_settings_vibrate_summary_disabled">ei ole kasutusel</string>
-    <string name="account_settings_ringtone">Uue meilisõnumi helin</string>
+    <string name="account_settings_ringtone">Uue e-kirja helin</string>
     <string name="account_settings_notification_light_label">Teavitustule värv</string>
     <string name="account_settings_notification_light_disabled">ei ole kasutusel</string>
     <string name="account_settings_notification_light_account_color">Konto värv</string>
@@ -454,8 +453,8 @@
     <string name="default_identity_description">Algne identiteet</string>
     <string name="choose_identity_title">Vali identiteet</string>
     <string name="send_as">Saada kui</string>
-    <string name="no_removable_identity">Kasutusel olevat identiteeti  ei saa eemaldada</string>
-    <string name="identity_has_no_email">Identiteeti ei saa ilma meiliaadressita kasutada</string>
+    <string name="no_removable_identity">Kasutusel olevat identiteeti ei saa eemaldada</string>
+    <string name="identity_has_no_email">Identiteeti ei saa ilma e-postiaadressita kasutada</string>
     <string name="sort_earliest_first">Varasemad kirjad esimesena</string>
     <string name="sort_latest_first">Hilisemad kirjad esimesena</string>
     <string name="sort_subject_alpha">Teema tähestiku järjekorras</string>
@@ -508,7 +507,7 @@
     <string name="background_ops_always">Alati</string>
     <string name="background_ops_auto_sync_only">Kui \'Auto-sync\' on märgitud</string>
     <string name="batch_select_all">Vali kõik</string>
-    <string name="account_setup_push_limit_label">Tõukemeili maksimaalelt kontrollitavate kaustade arv</string>
+    <string name="account_setup_push_limit_label">Tõuketeenuse puhul maksimaalselt kontrollitavate kaustade arv</string>
     <string name="account_setup_push_limit_5">5 kausta</string>
     <string name="account_setup_push_limit_10">10 kausta</string>
     <string name="account_setup_push_limit_25">25 kausta</string>
@@ -639,7 +638,7 @@
     <string name="global_settings_threaded_view_summary">Grupeeri kirjad vestluste järgi</string>
     <string name="upgrade_databases_title">Uuendab andmebaase</string>
     <string name="upgrade_databases_unspecified">Uuendab andmebaase…</string>
-    <string name="upgrade_database_format">Uuendab konto  \"<xliff:g id="account">%s</xliff:g>\" andmebaase</string>
+    <string name="upgrade_database_format">Uuendab konto \"<xliff:g id="account">%s</xliff:g>\" andmebaase</string>
     <string name="global_settings_splitview_mode_label">Näita jagatud ekraani</string>
     <string name="global_settings_splitview_always">Alati</string>
     <string name="global_settings_splitview_never">Mitte kunagi</string>
@@ -733,7 +732,7 @@
     <string name="messageview_decrypt_cancelled">Dekrüptimine katkestati.</string>
     <string name="messageview_decrypt_retry">Korduskatse</string>
     <string name="messageview_decrypt_incomplete">Dekrüptimiseks peab krüptitud kiri olema tervikuna allalaaditud.</string>
-    <string name="messageview_crypto_error_title">Viga meili dekrüptimisel</string>
+    <string name="messageview_crypto_error_title">Viga e-kirja dekrüptimisel</string>
     <string name="recipient_error_non_ascii">Mõnede ebatavalsiemate tähemärkide kasutamine ei ole hetkel toetatud!</string>
     <string name="recipient_error_parse_failed">Viga aadressi parsimisel!</string>
     <string name="account_settings_crypto_hide_sign_only">Peida krüpteerimata allkirjad</string>
@@ -780,12 +779,7 @@
     <string name="ac_transfer_finish">Seadistuse lõpetamiseks ava kiri oma muus seadmes ning sisesta seadistuskood.</string>
     <string name="ac_transfer_show_code">Näita seadistuskoodi</string>
     <string name="ac_transfer_msg_subject">Autocrypt-standardi järgne seadistuskiri</string>
-    <string name="ac_transfer_msg_body">Selles kirjas on kõik vajalik teave Autocrypt-standardi ja sellega seotud krüptovõtme edastamiseks turvalisel viisil oma algsest seadmest.
-
-Seadistamaks uut nutiseadet kasutama Autocrypt\'i palun järgi seal kuvatud juhtnööre.
-
-Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varundamiseks. Soovitame, et teed seda välises kanalis või andmekandjal ning turvalisel viisil.
-</string>
+    <string name="ac_transfer_msg_body">Selles kirjas on kõik vajalik teave Autocrypt-standardi ja sellega seotud krüptovõtme edastamiseks turvalisel viisil oma algsest seadmest. Seadistamaks uut nutiseadet kasutama Autocrypt\'i palun järgi seal kuvatud juhtnööre. Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varundamiseks. Soovitame, et teed seda välises kanalis või andmekandjal ning turvalisel viisil.</string>
     <string name="ac_transfer_error_send">Kirja saatmisel tekkis viga. Palun kontrolli võrguühenduse olemasolu ning väljuva e-postiserveri seadistusi.</string>
     <string name="switch_on">Sisse</string>
     <string name="switch_off">Välja</string>
@@ -955,4 +949,7 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="animation_setting_on">Sisselülitatud</string>
     <string name="animation_setting_off">Väljalülitatud</string>
     <string name="animation_setting_follow_system">Kasuta süsteemi vaikimisi eelistust</string>
+    <string name="global_settings_privacy_incognito_keyboard">Privaatne klahvistik</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Palu klahvistikul mitte jätta meelde seda, mida sa kirjade koostamisel sisestad</string>
+    <string name="sort_by_indicator">•</string>
 </resources>

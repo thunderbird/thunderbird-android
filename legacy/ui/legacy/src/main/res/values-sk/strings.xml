@@ -82,7 +82,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Žiadny predmet)</string>
     <string name="general_no_sender">Žiadny odosielateľ</string>
-    <string name="status_loading_more">Načítavanie správ\u2026</string>
+    <string name="status_loading_more">Načítavanie správ…</string>
     <string name="status_network_error">Chyba pripojenia</string>
     <string name="status_invalid_id_error">Správa nebola nájdená</string>
     <string name="status_loading_error">Chyba otvárania správy</string>
@@ -314,11 +314,11 @@
     <string name="account_settings_crypto">Koncové šifrovanie</string>
     <string name="account_settings_crypto_app">Zapnúť podporu OpenPGP</string>
     <string name="account_settings_crypto_app_select_title">Vybrať aplikáciu pre OpenPGP</string>
-    <string name="account_settings_crypto_key">Nastaviť kľúč pre koncové šifrovanie </string>
+    <string name="account_settings_crypto_key">Nastaviť kľúč pre koncové šifrovanie</string>
     <string name="account_settings_crypto_summary_off">Nie je nastavená aplikácia pre OpenPGP</string>
     <string name="account_settings_crypto_summary_on">Pripojené k %s</string>
     <string name="account_settings_crypto_summary_config">Nastavuje sa…</string>
-    <string name="account_settings_crypto_encrypt_all_drafts">Ukladať všetky koncepty zašifrované </string>
+    <string name="account_settings_crypto_encrypt_all_drafts">Ukladať všetky koncepty zašifrované</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Všetky koncepty sa budú ukladať zašifrované</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Šifrovať koncepty len keď je zapnuté šifrovanie</string>
     <string name="account_settings_mail_check_frequency_label">Frekvencia synchronizácie priečinkov</string>

@@ -10,7 +10,7 @@
     <string name="account_setup_options_email_signature_error_blank">Il nome della firma email non può essere vuoto</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">È necessario approvare la configurazione</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Abbiamo ricevuto la configurazione del server di posta elettronica tramite una connessione non sicura come vorremmo. C\'è dunque una possibilità che qualcuno possa averla modificata. Potresti ricontrollare la configurazione per assicurarti che sia affidabile\?</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Abbiamo ricevuto la configurazione del server di posta elettronica tramite una connessione non sicura come vorremmo. C\'è dunque una possibilità che qualcuno possa averla modificata. Potresti ricontrollare la configurazione per assicurarti che sia affidabile?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Modifica configurazione</string>
     <string name="account_setup_error_unknown">Errore sconosciuto</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>

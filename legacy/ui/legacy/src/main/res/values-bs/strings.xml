@@ -156,9 +156,7 @@
     <string name="notification_authentication_error_text">Autentifikacija nije uspjela za <xliff:g id="account">%s</xliff:g>. Ažurirajte postavke vašeg servera.</string>
     <string name="notification_authentication_error_title">Autentifikacija nije uspjela</string>
     <string name="notification_notify_error_title">Greška pri kreiranju obavještenja</string>
-    <string name="notification_notify_error_text">Dogodila se greška tokom kreiranja sistemskog obavještenja za novu poruku. Razlog je vjerovatno nemanje zvuka obavještenja.
-\n
-\nDodirnite da otvorite podešavanja obavještenja.</string>
+    <string name="notification_notify_error_text">Dogodila se greška tokom kreiranja sistemskog obavještenja za novu poruku. Razlog je vjerovatno nemanje zvuka obavještenja. \n \nDodirnite da otvorite podešavanja obavještenja.</string>
     <string name="notification_bg_sync_title">Provjeravanje pošte</string>
     <string name="notification_bg_sync_ticker">Provjeravanje pošte: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_channel_push_title">Sinhronizacija (Push)</string>

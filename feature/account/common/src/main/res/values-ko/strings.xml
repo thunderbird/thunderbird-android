@@ -2,6 +2,5 @@
 <resources>
     <string name="account_common_button_next">다음</string>
     <string name="account_common_button_back">이전</string>
-    <string name="account_common_error_server_message">서버가 다음의 메시지를 보냈습니다:
-\n%s</string>
+    <string name="account_common_error_server_message">서버가 다음의 메시지를 보냈습니다: \n%s</string>
 </resources>

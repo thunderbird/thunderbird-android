@@ -43,7 +43,7 @@
     <string name="archive_action">Arhivēt</string>
     <string name="spam_action">Ievietot mēstulēs</string>
     <string name="forward_action">Pārsūtīt</string>
-    <string name="forward_as_attachment_action">Pārsūtīt kā pielikumu </string>
+    <string name="forward_as_attachment_action">Pārsūtīt kā pielikumu</string>
     <string name="edit_as_new_message_action">Rediģēt kā jaunu vēstuli</string>
     <string name="move_action">Pārvietot</string>
     <string name="move_to_drafts_action">Pārvietot uz melnrakstiem</string>
@@ -123,9 +123,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Paziņojuma kļūda</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Neizdevās izveidot sistēmas paziņojumu par jaunu ziņu. Visdrīzākais, ka trūkst paziņojuma skaņas.
-\n
-\nPieskarieties, lai atvērtu paziņojumu iestatījumus.</string>
+    <string name="notification_notify_error_text">Neizdevās izveidot sistēmas paziņojumu par jaunu ziņu. Visdrīzākais, ka trūkst paziņojuma skaņas. \n \nPieskarieties, lai atvērtu paziņojumu iestatījumus.</string>
     <string name="notification_bg_sync_ticker">Pārbauda <xliff:g id="account">%1$s</xliff:g> e-pasta ziņojumus <xliff:g id="folder">%2$s</xliff:g> mapē</string>
     <string name="notification_bg_sync_title">Pārbauda pastu</string>
     <string name="notification_bg_send_ticker">Sūta pastu: <xliff:g id="account">%s</xliff:g></string>
@@ -393,7 +391,7 @@
     <string name="account_settings_message_age_1_year">pēdējā gada</string>
     <string name="account_settings_sync_remote_deletetions_label">Sinhronizēt dzēšanu ar serveri</string>
     <string name="account_settings_sync_remote_deletetions_summary">Dzēst ziņas, kad tās dzēstas serverī</string>
-    <string name="account_settings_openpgp_missing">Trūkst OpenPGP lietotnes - vai tā noinstalēta\?</string>
+    <string name="account_settings_openpgp_missing">Trūkst OpenPGP lietotnes - vai tā noinstalēta?</string>
     <string name="folder_settings_title">Mapes iestatījumi</string>
     <string name="folder_settings_in_top_group_label">Parādīt augšējā grupā</string>
     <string name="folder_settings_clear_local_folder_action">Dzēst ierīcē atrodošās ziņas</string>
@@ -555,27 +553,27 @@
     <string name="font_size_larger">Milzīgs</string>
     <string name="error_activity_not_found">Šīs darbības veikšanai nav atrasta atbilstoša aplikācija.</string>
     <string name="send_failed_reason">Nosūtīšana neizdevās: %s</string>
-    <string name="save_or_discard_draft_message_dlg_title">Saglabāt ziņu melnrakstos\?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">Saglabāt vai dzēst šo ziņu\?</string>
+    <string name="save_or_discard_draft_message_dlg_title">Saglabāt ziņu melnrakstos?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Saglabāt vai dzēst šo ziņu?</string>
     <string name="save_or_discard_draft_message_changes">Saglabāt vai atcelt izmaiņas?</string>
-    <string name="confirm_discard_draft_message_title">Dzēst ziņu\?</string>
-    <string name="confirm_discard_draft_message">Vai tiešām dzēst šo ziņu\?</string>
-    <string name="dialog_confirm_clear_local_folder_title">Izdzēst ierīcē esošās ziņas\?</string>
+    <string name="confirm_discard_draft_message_title">Dzēst ziņu?</string>
+    <string name="confirm_discard_draft_message">Vai tiešām dzēst šo ziņu?</string>
+    <string name="dialog_confirm_clear_local_folder_title">Izdzēst ierīcē esošās ziņas?</string>
     <string name="dialog_confirm_clear_local_folder_message">Ar šo no ierīces mapes tiks dzēstas visas ziņas. No servera ziņas dzēstas netiks.</string>
     <string name="dialog_confirm_clear_local_folder_action">Dzēst ziņas</string>
     <string name="dialog_confirm_delete_title">Apstiprināt dzēšanu</string>
-    <string name="dialog_confirm_delete_message">Vai gribat dzēst šo ziņu\?</string>
+    <string name="dialog_confirm_delete_message">Vai gribat dzēst šo ziņu?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="zero">Vai tiešām dzēst <xliff:g id="message_count">%1$d</xliff:g> ziņas\?</item>
-        <item quantity="one">Vai tiešām dzēst <xliff:g id="message_count">%1$d</xliff:g> ziņu\?</item>
-        <item quantity="other">Vai tiešām dzēst <xliff:g id="message_count">%1$d</xliff:g> ziņas\?</item>
+        <item quantity="zero">Vai tiešām dzēst <xliff:g id="message_count">%1$d</xliff:g> ziņas?</item>
+        <item quantity="one">Vai tiešām dzēst <xliff:g id="message_count">%1$d</xliff:g> ziņu?</item>
+        <item quantity="other">Vai tiešām dzēst <xliff:g id="message_count">%1$d</xliff:g> ziņas?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Jā</string>
     <string name="dialog_confirm_delete_cancel_button">Nē</string>
     <string name="dialog_confirm_mark_all_as_read_title">Apstiprināt, ka visas tiks apzīmētas kā lasītas</string>
-    <string name="dialog_confirm_mark_all_as_read_message">Vai apzīmēt visas ziņas kā lasītas\?</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Vai apzīmēt visas ziņas kā lasītas?</string>
     <string name="dialog_confirm_empty_trash_title">Apstiprināt Papīrkurvja iztukšošanu</string>
-    <string name="dialog_confirm_empty_trash_message">Vēlaties iztukšot Papīrkurvja mapi\?</string>
+    <string name="dialog_confirm_empty_trash_message">Vēlaties iztukšot Papīrkurvja mapi?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Jā</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Nē</string>
     <string name="dialog_confirm_spam_title">Vai apstiprināt pārvietošanu uz Mēstuļu mapi</string>
@@ -688,8 +686,7 @@
     <string name="enable_sign_only">Iespējot PGP \"Tikai parakstīt\"</string>
     <string name="disable_sign_only">Atspējot PGP \"Tikai parakstīt\"</string>
     <string name="openpgp_inline_title">PGP/INLINE režīms</string>
-    <string name="openpgp_inline_text">Šī ziņa nosūtīta PGP/INLINE formātā.
-\nTo var izmantot vienīgi savietojamībai:</string>
+    <string name="openpgp_inline_text">Šī ziņa nosūtīta PGP/INLINE formātā. \nTo var izmantot vienīgi savietojamībai:</string>
     <string name="openpgp_inline_plus_compat">Ne visas programmas atbalsta šo formātu</string>
     <string name="openpgp_inline_minus_transit">Paraksti var tikt bojāti pārsūtīšanas laikā</string>
     <string name="openpgp_inline_minus_attach">Pielikumi netiek atbalstīti</string>

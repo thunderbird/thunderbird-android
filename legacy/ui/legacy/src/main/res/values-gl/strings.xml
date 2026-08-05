@@ -87,7 +87,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(sen Asunto)</string>
     <string name="general_no_sender">Sen Remitente</string>
-    <string name="status_loading_more">Cargando mensaxes\u2026</string>
+    <string name="status_loading_more">Cargando mensaxes…</string>
     <string name="status_network_error">Erro en conexión</string>
     <string name="status_invalid_id_error">Mensaxes non atopados</string>
     <string name="status_loading_error">Fallo ao cargar a mensaxe</string>
@@ -247,7 +247,7 @@
     <string name="trash_folder_label">Carpeta Lixo</string>
     <string name="archive_folder_label">Carpeta Arquivados</string>
     <string name="spam_folder_label">Carpeta SPAM</string>
-    <string name="account_setup_incoming_subscribed_folders_only_label">Ver só carpetas	suscritas</string>
+    <string name="account_setup_incoming_subscribed_folders_only_label">Ver só carpetas suscritas</string>
     <string name="account_setup_options_mail_check_frequency_never">Nunca</string>
     <string name="account_setup_options_mail_check_frequency_15min">Cada 15 minutos</string>
     <string name="account_setup_options_mail_check_frequency_30min">Cada 30 minutos</string>
@@ -702,8 +702,7 @@
     <string name="error_sign_only_no_encryption">Cifrado non dispoñible no modo só-firma!</string>
     <string name="unsigned_text_divider_label">Texto non firmado</string>
     <string name="crypto_no_provider_title">Este correo está cifrado</string>
-    <string name="crypto_no_provider_message">Este correo foi cifrado con OpenPGP.
-\nPara lelo, precisa instalar e configurar un app compatible con OpenPGP.</string>
+    <string name="crypto_no_provider_message">Este correo foi cifrado con OpenPGP. \nPara lelo, precisa instalar e configurar un app compatible con OpenPGP.</string>
     <string name="crypto_no_provider_button">Ir a Configuración</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -741,19 +740,14 @@
     <string name="ac_transfer_finish">Para rematar, abra a mensaxe noutro dispositivo e insira a ocnfiguración do código.</string>
     <string name="ac_transfer_show_code">Amosar a configuración do código</string>
     <string name="ac_transfer_msg_subject">Mensaxe de configuración de cifrado automático</string>
-    <string name="ac_transfer_msg_body">Esta mensaxe contén toda a información para transferir a túa configuración de Autocrypt xunto coa túa clave secreta de forma segura desde o teu dispositivo orixinal.
-
-Para configurar o teu novo dispositivo para Autocrypt, sigue as instrucións que debería presentar o teu novo dispositivo.
-
-Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secreta. Se queres facelo, debes anotar o contrasinal e gardalo de forma segura.
-</string>
+    <string name="ac_transfer_msg_body">Esta mensaxe contén toda a información para transferir a túa configuración de Autocrypt xunto coa túa clave secreta de forma segura desde o teu dispositivo orixinal. Para configurar o teu novo dispositivo para Autocrypt, sigue as instrucións que debería presentar o teu novo dispositivo. Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secreta. Se queres facelo, debes anotar o contrasinal e gardalo de forma segura.</string>
     <string name="ac_transfer_error_send">Produciuse un erro ao enviar a mensaxe. Comprobe a conectividade da súa rede e a configuración do servidor de saída.</string>
     <string name="switch_on">Acender</string>
     <string name="switch_off">Apagar</string>
     <string name="generic_loading_error">Ocorreu un erro mentres se estaban cargando os datos</string>
     <string name="push_notification_state_initializing">Iniciando…</string>
     <string name="push_notification_state_listening">Agardando por novos correos</string>
-    <string name="push_notification_state_wait_background_sync">Suspender ata que sexa permitida a sincronización de fondo </string>
+    <string name="push_notification_state_wait_background_sync">Suspender ata que sexa permitida a sincronización de fondo</string>
     <string name="push_notification_state_wait_network">Suspender ata que estea dispoñible a rede</string>
     <string name="push_notification_info">Prema para saber máis.</string>
     <string name="push_info_title">Información sobre Push</string>
@@ -854,9 +848,7 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <string name="account_settings_vibration">Vibración</string>
     <string name="font_size_message_view_recipients">Destinatarios</string>
     <string name="clipboard_label_name_and_email_address">Nome e enderezo de correo electrónico</string>
-    <string name="notification_notify_error_text">Produciuse un erro ao tentar crear unha notificación do sistema para unha mensaxe nova. O motivo é probablemente un son de notificación que falta.
-\n
-\nToca para abrir a configuración de notificacións.</string>
+    <string name="notification_notify_error_text">Produciuse un erro ao tentar crear unha notificación do sistema para unha mensaxe nova. O motivo é probablemente un son de notificación que falta. \n \nToca para abrir a configuración de notificacións.</string>
     <string name="message_details_missing_date">Falta a cabeceira \"Data\"</string>
     <string name="general_settings_post_mark_as_unread_action_title">Despois de marcar unha mensaxe como non lida</string>
     <string name="message_list_content_description_unread_prefix">sen ler, %s</string>

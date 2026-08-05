@@ -143,7 +143,7 @@
     <string name="debug_enable_sensitive_logging_title">Beleženje občutljivih podrobnosti</string>
     <string name="debug_enable_sensitive_logging_summary">V dnevnikih so lahko objavljena tudi gesla.</string>
     <string name="debug_export_logs_title">Izvozi dnevnike</string>
-    <string name="debug_export_logs_success">Izvoz je uspešno zaključen. Dnevniški zapis lahko vsebuje občutljive podrobnosti. Priporočena je previdnost pri pošiljanju tretjim osebam. </string>
+    <string name="debug_export_logs_success">Izvoz je uspešno zaključen. Dnevniški zapis lahko vsebuje občutljive podrobnosti. Priporočena je previdnost pri pošiljanju tretjim osebam.</string>
     <string name="debug_export_logs_failure">Izvoz je spodletel.</string>
     <string name="message_list_load_more_messages_action">Naloži več sporočil</string>
     <string name="message_to_fmt">Za:<xliff:g id="counterParty">%s</xliff:g></string>
@@ -298,7 +298,7 @@
     <string name="account_setup_options_mail_display_count_10000">10000 sporočil</string>
     <string name="account_setup_options_mail_display_count_all">Vsa sporočila</string>
     <string name="move_copy_cannot_copy_unsynced_message">Ni mogoče kopirati oziroma premakniti sporočila, ki ni usklajeno s strežnikom.</string>
-    <string name="account_settings_push_advanced_title">Napredne možnosti</string>
+    <string name="account_settings_push_advanced_title">Napredno</string>
     <string name="account_settings_title_fmt">Nastavitve računa</string>
     <string name="account_settings_notify_label">Obvestila za prejem nove pošte</string>
     <string name="account_settings_notify_sync_label">Obvestila usklajevanja</string>
@@ -314,7 +314,7 @@
     <string name="account_settings_mark_message_as_read_on_view_label">Ob odprtju označi kot prebrano</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Ko je sporočilo odprto za branje, ga označi kot prebrano.</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Ob izbrisu označi kot prebrano</string>
-    <string name="account_settings_mark_message_as_read_on_delete_summary">Ob izbrisu označi sporočilo tudi kot prebrano</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">Ob izbrisu označi sporočilo kot prebrano.</string>
     <string name="account_settings_notification_channels_label">Kategorije obvestil</string>
     <string name="account_settings_open_notification_settings_messages_summary">Nastavitev obvestil za nova sporočila</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Nastavitev obvestil o napakah in o stanju računa</string>
@@ -357,44 +357,44 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Vsi osnutki bodo shranjeni šifrirano</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Šifriraj osnutke samo, če je omogočeno šifriranje</string>
     <string name="account_settings_mail_check_frequency_label">Pogostost izpraševanja map</string>
-    <string name="account_settings_mail_display_count_label">Velikost mape sporočil</string>
-    <string name="account_settings_autodownload_message_size_label">V celoti prejmi sporočila do velikosti</string>
-    <string name="account_settings_autodownload_message_size_1">1 KiB</string>
-    <string name="account_settings_autodownload_message_size_2">2 KiB</string>
-    <string name="account_settings_autodownload_message_size_4">4 KiB</string>
-    <string name="account_settings_autodownload_message_size_8">8 KiB</string>
-    <string name="account_settings_autodownload_message_size_16">16 KiB</string>
-    <string name="account_settings_autodownload_message_size_32">32 KiB</string>
-    <string name="account_settings_autodownload_message_size_64">64 KiB</string>
-    <string name="account_settings_autodownload_message_size_128">128 KiB</string>
-    <string name="account_settings_autodownload_message_size_256">256 KiB</string>
-    <string name="account_settings_autodownload_message_size_512">512 KiB</string>
-    <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
-    <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
-    <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
-    <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
+    <string name="account_settings_mail_display_count_label">Velikost krajevne mape</string>
+    <string name="account_settings_autodownload_message_size_label">Prejmi sporočila do velikosti</string>
+    <string name="account_settings_autodownload_message_size_1">1-ega KiB</string>
+    <string name="account_settings_autodownload_message_size_2">2-h KiB</string>
+    <string name="account_settings_autodownload_message_size_4">4-h KiB</string>
+    <string name="account_settings_autodownload_message_size_8">8-ih KiB</string>
+    <string name="account_settings_autodownload_message_size_16">16-ih KiB</string>
+    <string name="account_settings_autodownload_message_size_32">32-ih KiB</string>
+    <string name="account_settings_autodownload_message_size_64">64-ih KiB</string>
+    <string name="account_settings_autodownload_message_size_128">128-ih KiB</string>
+    <string name="account_settings_autodownload_message_size_256">256-ih KiB</string>
+    <string name="account_settings_autodownload_message_size_512">512-ih KiB</string>
+    <string name="account_settings_autodownload_message_size_1024">1-ega MiB</string>
+    <string name="account_settings_autodownload_message_size_2048">2-h MiB</string>
+    <string name="account_settings_autodownload_message_size_5120">5-ih MiB</string>
+    <string name="account_settings_autodownload_message_size_10240">10-ih MiB</string>
     <string name="account_settings_autodownload_message_size_any">brez omejitev</string>
-    <string name="account_settings_message_age_label">Uskladi sporočila</string>
-    <string name="account_settings_message_age_any">Brez omejitev</string>
-    <string name="account_settings_message_age_0">Današnjega dne</string>
-    <string name="account_settings_message_age_1">Zadnjih 2 dni</string>
-    <string name="account_settings_message_age_2">Zadnjih 3 dni</string>
-    <string name="account_settings_message_age_7">Zadnjega tedna</string>
-    <string name="account_settings_message_age_14">Zadnjih 2 tednov</string>
-    <string name="account_settings_message_age_21">Zadnjih 3 tednov</string>
-    <string name="account_settings_message_age_1_month">Zadnjega meseca</string>
-    <string name="account_settings_message_age_2_months">Zadnjih 2 mesecev</string>
-    <string name="account_settings_message_age_3_months">Zadnjih 3 mesecev</string>
-    <string name="account_settings_message_age_6_months">Zadnjih 6 mesecev</string>
-    <string name="account_settings_message_age_1_year">Zadnjega leta</string>
-    <string name="account_settings_sync_remote_deletetions_label">Usklajevanje izbrisanih sporočil</string>
-    <string name="account_settings_sync_remote_deletetions_summary">Odstrani sporočila, ki so bila izbrisana na strežniku</string>
+    <string name="account_settings_message_age_label">Uskladi sporočila od</string>
+    <string name="account_settings_message_age_any">kadarkoli (brez omejitev)</string>
+    <string name="account_settings_message_age_0">danes</string>
+    <string name="account_settings_message_age_1">zadnjih 2 dni</string>
+    <string name="account_settings_message_age_2">zadnjih 3-h dni</string>
+    <string name="account_settings_message_age_7">zadnjega tedna</string>
+    <string name="account_settings_message_age_14">zadnjih 2-h tednov</string>
+    <string name="account_settings_message_age_21">zadnjih 3-h tednov</string>
+    <string name="account_settings_message_age_1_month">zadnjega meseca</string>
+    <string name="account_settings_message_age_2_months">zadnjih 2-h mesecev</string>
+    <string name="account_settings_message_age_3_months">zadnjih 3-h mesecev</string>
+    <string name="account_settings_message_age_6_months">zadnjih 6-ih mesecev</string>
+    <string name="account_settings_message_age_1_year">zadnjega leta</string>
+    <string name="account_settings_sync_remote_deletetions_label">Uskladi izbrisana sporočila</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Odstrani sporočila, ki so bila izbrisana na strežniku.</string>
     <string name="account_settings_openpgp_missing">Ni programa OpenPGP – ali je bila namestitev odstranjena?</string>
     <string name="folder_settings_title">Nastavitve mape</string>
     <string name="folder_settings_in_top_group_label">Pokaži mapo v zgornji skupini</string>
     <string name="folder_settings_clear_local_folder_action">Počisti krajevna sporočila</string>
     <string name="account_settings_incoming_label">Dohodni strežnik</string>
-    <string name="account_settings_incoming_summary">Nastavitev strežnika dohodne pošte</string>
+    <string name="account_settings_incoming_summary">Nastavi dohodni poštni strežnik.</string>
     <string name="account_settings_outgoing_label">Odhodni strežnik</string>
     <string name="account_settings_outgoing_summary">Nastavitev strežnika odhodne pošte (SMTP)</string>
     <string name="account_settings_name_label">Ime in Priimek</string>
@@ -787,19 +787,14 @@
     <string name="ac_transfer_finish">Za dokončanje odprite sporočilo na drugi napravi in vpišite kodo nastavitve.</string>
     <string name="ac_transfer_show_code">Pokaži kodo nastavitev</string>
     <string name="ac_transfer_msg_subject">Nastavitveno sporočilo šifriranja AutoCrypt</string>
-    <string name="ac_transfer_msg_body">Sporočilo vsebuje vse podrobnosti za varen prenos nastavitev šifriranja AutoCrypt, vključno s šifrirnim ključem, z vaše izvorne naprave.
-
-Za nastavitev nove naprave za šifriranje AutoCrypt, sledite navodilom, prikazanim na vaši drugi napravi.
-
-Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. Če boste to storili, si geslo zapišite in ga varno shranite.
-</string>
+    <string name="ac_transfer_msg_body">Sporočilo vsebuje vse podrobnosti za varen prenos nastavitev šifriranja AutoCrypt, vključno s šifrirnim ključem, z vaše izvorne naprave. Za nastavitev nove naprave za šifriranje AutoCrypt, sledite navodilom, prikazanim na vaši drugi napravi. Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. Če boste to storili, si geslo zapišite in ga varno shranite.</string>
     <string name="ac_transfer_error_send">Prišlo je do napake med pošiljanjem sporočila. Preverite omrežne nastavitve in nastavitve odhodnega strežnika.</string>
     <string name="switch_on">Vključi</string>
     <string name="switch_off">Izključi</string>
     <string name="generic_loading_error">Med nalaganjem podatkov je prišlo do napake</string>
     <string name="push_notification_state_initializing">Začenjanje …</string>
     <string name="push_notification_state_listening">Čakam na nova e-poštna sporočila</string>
-    <string name="push_notification_state_wait_background_sync">Spanje, dokler ni dovoljena sinhronizacija v ozadju </string>
+    <string name="push_notification_state_wait_background_sync">Spanje, dokler ni dovoljena sinhronizacija v ozadju</string>
     <string name="push_notification_state_wait_network">Spanje, dokler ni na voljo omrežja</string>
     <string name="push_notification_info">Dotakni se, če želiš izvedeti več.</string>
     <string name="push_info_title">Podrobnosti potisnih storitev</string>
@@ -968,4 +963,7 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="animation_setting_on">Vklopljeno</string>
     <string name="animation_setting_off">Izklopljeno</string>
     <string name="animation_setting_follow_system">Uporabi sistemsko privzeto</string>
+    <string name="global_settings_privacy_incognito_keyboard">Zasebna tipkovnica</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Zahtevajte od tipkovnice, da se pri sestavljanju sporočil ne uči od vašega tipkanja.</string>
+    <string name="sort_by_indicator">•</string>
 </resources>

@@ -3,7 +3,7 @@
     <string name="unread_widget_select_account">Mostrar contador de não lidos para…</string>
     <string name="unread_widget_account_title">Conta</string>
     <string name="unread_widget_account_summary">A conta para a qual a contagem das não lidas referente deva ser mostrada</string>
-    <string name="unread_widget_unified_inbox_account_summary">Caixa de Entrada Unificada </string>
+    <string name="unread_widget_unified_inbox_account_summary">Caixa de Entrada Unificada</string>
     <string name="unread_widget_folder_enabled_title">Número de pastas</string>
     <string name="unread_widget_folder_enabled_summary">Mostrar a contagem das não lidas de apenas uma pasta</string>
     <string name="unread_widget_folder_title">Pasta</string>

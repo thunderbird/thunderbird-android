@@ -34,4 +34,5 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">I weld eich cyfrinair yma, galluogwch glo sgrin ar y ddyfais hon.</string>
     <string name="account_server_settings_password_authentication_failed">Methodd y dilysu!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Methu cychwyn yr anogwr biometrig.</string>
+    <string name="account_server_settings_password_input_label">Cyfrinair</string>
 </resources>

@@ -12,6 +12,5 @@
     <string name="account_server_certificate_subject">Subiect</string>
     <string name="account_server_certificate_issuer">Emitent</string>
     <string name="account_server_certificate_fingerprints_section">Amprente digitale</string>
-    <string name="account_server_certificate_unknown_error_description_format">Aplicația a detectat o potențială amenințare la adresa securității și nu a continuat să se conecteze la <xliff:g id="serverName">%s</xliff:g>.
-\nDacă continui, atacatorii ar putea încerca să fure informații precum parola sau corespondența electronică.</string>
+    <string name="account_server_certificate_unknown_error_description_format">Aplicația a detectat o potențială amenințare la adresa securității și nu a continuat să se conecteze la <xliff:g id="serverName">%s</xliff:g>. \nDacă continui, atacatorii ar putea încerca să fure informații precum parola sau corespondența electronică.</string>
 </resources>

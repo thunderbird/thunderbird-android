@@ -7,9 +7,7 @@
     <string name="notification_channel_miscellaneous_title">Varios</string>
     <string name="notification_channel_miscellaneous_description">Notificacións varias como erros, etc.</string>
     <string name="notification_notify_error_title">Erro de notificación</string>
-    <string name="notification_notify_error_text">Produciuse un erro ao tentar crear unha notificación do sistema para unha mensaxe nova. O motivo é probablemente un son de notificación que falta.
-\n
-\nToca para abrir a configuración de notificacións.</string>
+    <string name="notification_notify_error_text">Produciuse un erro ao tentar crear unha notificación do sistema para unha mensaxe nova. O motivo é probablemente un son de notificación que falta. \n \nToca para abrir a configuración de notificacións.</string>
     <string name="notification_authentication_error_title">Fallo de autenticación</string>
     <string name="notification_certificate_error_public">Erro certificado</string>
     <string name="notification_certificate_error_title">Fallo no certificado para %1$s</string>
@@ -22,7 +20,7 @@
     <string name="notification_additional_messages">+ %1$d máis en %2$s</string>
     <string name="push_notification_state_initializing">Iniciando…</string>
     <string name="push_notification_state_listening">Agardando por novos correos</string>
-    <string name="push_notification_state_wait_background_sync">Suspender ata que sexa permitida a sincronización de fondo </string>
+    <string name="push_notification_state_wait_background_sync">Suspender ata que sexa permitida a sincronización de fondo</string>
     <string name="push_notification_state_wait_network">Suspender ata que estea dispoñible a rede</string>
     <string name="push_notification_state_alarm_permission_missing">Faltan permisos para programar alarmas</string>
     <string name="push_notification_info">Prema para saber máis.</string>

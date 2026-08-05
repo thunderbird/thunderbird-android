@@ -11,7 +11,6 @@
     <string name="account_server_certificate_subject">Subjekat iz sertifikata servera</string>
     <string name="account_server_certificate_issuer">Sertifikaciono tijelo</string>
     <string name="account_server_certificate_fingerprints_section">Fingerprint-i</string>
-    <string name="account_server_certificate_unknown_error_description_format">Aplikacija je detektovala potencijalnu sigurnosnu prijetnju i neće se povezati sa <xliff:g id="serverName">%s</xliff:g>.
-\nAko nastavite, hakeri bi mogli ukrasti vaše informacije kao što su lozinka ili mejlovi.</string>
+    <string name="account_server_certificate_unknown_error_description_format">Aplikacija je detektovala potencijalnu sigurnosnu prijetnju i neće se povezati sa <xliff:g id="serverName">%s</xliff:g>. \nAko nastavite, hakeri bi mogli ukrasti vaše informacije kao što su lozinka ili mejlovi.</string>
     <string name="account_server_certificate_not_valid_before">Nevažeći prije</string>
 </resources>

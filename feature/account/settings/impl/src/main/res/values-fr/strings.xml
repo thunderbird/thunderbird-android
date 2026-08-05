@@ -34,7 +34,7 @@
     <string name="account_settings_okay_action">Valider</string>
     <string name="account_settings_cancel_action">Annuler</string>
     <string name="account_settings_account_delete_dlg_title">Supprimer le compte</string>
-    <string name="account_settings_account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%1$s</xliff:g> » sera supprimé de <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_settings_account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%1$s</xliff:g> » sera supprimé de <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="account_settings_search_action">Chercher</string>
     <string name="account_settings_remote_search_num_results_entries_all">Tout</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
