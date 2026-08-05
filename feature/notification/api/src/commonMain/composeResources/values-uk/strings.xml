@@ -3,7 +3,7 @@
     <string name="notification_channel_push_title">Синхронізація (Push)</string>
     <string name="notification_channel_push_description">Показується під час очікування нових повідомлень</string>
     <string name="notification_channel_messages_title">Повідомлення</string>
-    <string name="notification_channel_messages_description">Сповіщення, пов\'язані з повідомленнями</string>
+    <string name="notification_channel_messages_description">Сповіщення, пов\\'язані з повідомленнями</string>
     <string name="notification_channel_miscellaneous_title">Різне</string>
     <string name="notification_channel_miscellaneous_description">Різноманітні сповіщення, такі як помилки тощо.</string>
     <string name="notification_notify_error_title">Помилка сповіщення</string>

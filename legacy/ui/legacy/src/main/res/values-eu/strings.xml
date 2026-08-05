@@ -91,7 +91,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Gairik ez)</string>
     <string name="general_no_sender">Bidaltzailerik ez</string>
-    <string name="status_loading_more">Mezuak kargatzen\u2026</string>
+    <string name="status_loading_more">Mezuak kargatzen…</string>
     <string name="status_network_error">Konexio errorea</string>
     <string name="status_invalid_id_error">Ez da mezua aurkitu</string>
     <string name="status_loading_error">Akatsa mezua kargatzean</string>
@@ -207,7 +207,7 @@
     <string name="global_settings_confirm_menu_mark_all_read">Markatu mezu guztiak irakurritako gisa</string>
     <string name="global_settings_confirm_action_delete_notif">Ezabatu (jakinarazpenetatik)</string>
     <!--Title of the screen to configure swipe actions-->
-    <string name="general_settings_swipe_actions_title">Hatza pasatzearen ekintzak </string>
+    <string name="general_settings_swipe_actions_title">Hatza pasatzearen ekintzak</string>
     <!--Name of the setting to configure the right swipe action-->
     <string name="general_settings_right_swipe_title">Pasatu hatza eskubirantz</string>
     <!--Name of the setting to configure the left swipe action-->
@@ -779,11 +779,7 @@
     <string name="ac_transfer_finish">Bukatzeko, ireki mezua zure beste gailuan eta sartu ezarpen kodea.</string>
     <string name="ac_transfer_show_code">Erakutsi ezarpen kodea</string>
     <string name="ac_transfer_msg_subject">Autocrypt ezarpen mezua</string>
-    <string name="ac_transfer_msg_body">Mezu honek zure Autocrypt ezarpenak eta gako sekretuak jatorrizko gailutik partekatzeko informazio guztia du.
-
-Zure gailu berrian Autocrypt ezartzeko, jarraitu gailu berrian agertuko zaizkizun argibideak.
-
-Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau egin nahi baduzu, pasahitza idatzi beharko zenuke eta toki seguruan gorde.</string>
+    <string name="ac_transfer_msg_body">Mezu honek zure Autocrypt ezarpenak eta gako sekretuak jatorrizko gailutik partekatzeko informazio guztia du. Zure gailu berrian Autocrypt ezartzeko, jarraitu gailu berrian agertuko zaizkizun argibideak. Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau egin nahi baduzu, pasahitza idatzi beharko zenuke eta toki seguruan gorde.</string>
     <string name="ac_transfer_error_send">Errore bat gertatu da mezua bidaltzean. Egiaztatu zure sare konexioa eta mezuak bidaltzeko zerbitzariaren konfigurazioa.</string>
     <string name="switch_on">Bai</string>
     <string name="switch_off">Itzali</string>

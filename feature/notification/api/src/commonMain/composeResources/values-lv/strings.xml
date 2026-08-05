@@ -7,9 +7,7 @@
     <string name="notification_channel_miscellaneous_title">Dažādi</string>
     <string name="notification_channel_miscellaneous_description">Dažādi paziņojumi, piemēram, par kļūdām u.tml.</string>
     <string name="notification_notify_error_title">Paziņojuma kļūda</string>
-    <string name="notification_notify_error_text">Neizdevās izveidot sistēmas paziņojumu par jaunu ziņu. Visdrīzākais, ka trūkst paziņojuma skaņas.
-\n
-\nPieskarieties, lai atvērtu paziņojumu iestatījumus.</string>
+    <string name="notification_notify_error_text">Neizdevās izveidot sistēmas paziņojumu par jaunu ziņu. Visdrīzākais, ka trūkst paziņojuma skaņas. \n \nPieskarieties, lai atvērtu paziņojumu iestatījumus.</string>
     <string name="notification_authentication_error_title">Autentifikācija neizdevās</string>
     <string name="notification_certificate_error_public">Sertifikāta kļūda</string>
     <string name="notification_certificate_error_title">Sertifikāta kļūda kontam %1$s</string>

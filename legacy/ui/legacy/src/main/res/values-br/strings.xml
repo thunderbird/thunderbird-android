@@ -74,7 +74,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Danvez ebet)</string>
     <string name="general_no_sender">Kaser ebet</string>
-    <string name="status_loading_more">O kargañ ar posteloù\u2026</string>
+    <string name="status_loading_more">O kargañ ar posteloù…</string>
     <string name="status_network_error">Fazi kennaskañ</string>
     <string name="status_invalid_id_error">N’eo ket bet kavet ar gemennadenn</string>
     <string name="status_loading_error">Fazi kargañ ar gemennadenn</string>
@@ -481,7 +481,7 @@
     <string name="dialog_confirm_delete_confirm_button">Ya</string>
     <string name="dialog_confirm_delete_cancel_button">Ket</string>
     <string name="dialog_confirm_mark_all_as_read_title">Merkañ an holl evel lennet</string>
-    <string name="dialog_confirm_mark_all_as_read_message">Fellout a ra deoc’h merkañ an holl gemennadennoù evel lennet ?</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Fellout a ra deoc’h merkañ an holl gemennadennoù evel lennet ?</string>
     <string name="dialog_confirm_empty_trash_title">Kadarnaat goullonderiñ ar c\'hest</string>
     <string name="dialog_confirm_empty_trash_message">Ha fellout a ra deoc\'h goullonderiñ teuliad ar c\'hest?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Ya</string>
@@ -554,7 +554,7 @@
     <string name="action_remote_search">Klask kemennadennoù war an dafariad</string>
     <string name="remote_search_unavailable_no_network">Ret eo deoc’h bezañ kennasket evit klask war an dafariad</string>
     <string name="global_settings_background_as_unread_indicator_label">Kemmañ al liv p’eo lennet</string>
-    <string name="global_settings_background_as_unread_indicator_summary">Un drekleur disheñvel a vo skrammet pa vo bet kennet ar gemennadenn </string>
+    <string name="global_settings_background_as_unread_indicator_summary">Un drekleur disheñvel a vo skrammet pa vo bet kennet ar gemennadenn</string>
     <string name="global_settings_threaded_view_label">Gwell e neudennoù</string>
     <string name="global_settings_threaded_view_summary">Strollañ ar c’hemennadennoù dre gaozeadenn</string>
     <string name="upgrade_databases_title">Oc’h hizivaat ar stlennvon</string>
@@ -667,7 +667,7 @@
     <string name="openpgp_enabled_error_msg">Ul lodenn eus an degemererien ne skoront ket ar c’heweriuster-mañ!</string>
     <string name="enable_encryption">Gweredekaat an enrinegañ</string>
     <string name="disable_encryption">Diweredekaat an enrinegañ</string>
-    <string name="openpgp_description_text1">En ur enrinegañ kemennadennoù e vezit sur eo lennet ar c’hemennadennoù gant an degemerer ha den ebet all. </string>
+    <string name="openpgp_description_text1">En ur enrinegañ kemennadennoù e vezit sur eo lennet ar c’hemennadennoù gant an degemerer ha den ebet all.</string>
     <string name="openpgp_description_text3">Kinniget e vo an enrinegañ m\'eo skoret gant an holl zegemererien, ha dav eo dezho bezañ bet kaset ur postel deoc\'h a-raok</string>
     <string name="openpgp_description_text2">Trec’haolit an enrinegañ en ur glikañ war an arlun-mañ.</string>
     <string name="openpgp_enabled_error_gotit">Komprenet ’m eus!</string>
@@ -697,11 +697,7 @@
     <string name="ac_transfer_finish">Evit echuiñ, digorit ar gemennadenn war ho trevnad all hag enankit ar boneg kefluniañ.</string>
     <string name="ac_transfer_show_code">Diskouez ar boneg kefluniañ</string>
     <string name="ac_transfer_msg_subject">Kemennadenn kefluniañ Autocrypt</string>
-    <string name="ac_transfer_msg_body">Ar gemennadenn-mañ a endalc\'h an holl ditouroù evit treuzkas hoc\'h arventennoù Autocrypt gant hoc\'h alc\'hwez kuzh d\'ho trevnad orin en un doare diogel.
-
-Evit arventennañ ho trevnad nevez evit Autocrypt, heuilhit an ditouroù a rankfe bezañ kinniget war ho trevnad nevez.
-
-Gallout a rit mirout ar gemennadenn-mañ hag implij anezhi evel un enrolladenn eus ho alc\'hwez prevez. Ma fell deoc\'h en ober e rankfec\'h skrivañ ar ger-tremen ha mirout anezhañ.</string>
+    <string name="ac_transfer_msg_body">Ar gemennadenn-mañ a endalc\'h an holl ditouroù evit treuzkas hoc\'h arventennoù Autocrypt gant hoc\'h alc\'hwez kuzh d\'ho trevnad orin en un doare diogel. Evit arventennañ ho trevnad nevez evit Autocrypt, heuilhit an ditouroù a rankfe bezañ kinniget war ho trevnad nevez. Gallout a rit mirout ar gemennadenn-mañ hag implij anezhi evel un enrolladenn eus ho alc\'hwez prevez. Ma fell deoc\'h en ober e rankfec\'h skrivañ ar ger-tremen ha mirout anezhañ.</string>
     <string name="ac_transfer_error_send">Degouezhet ez eus bet ur fazi en ur gas ar gemennadenn. Gwiriekait ho kennask d\'ar rouedad hag ho kefluniadur evit an dafariad ec\'hankat.</string>
     <string name="switch_on">Gwereddekaat</string>
     <string name="switch_off">Diweredekaat</string>
@@ -895,7 +891,7 @@ Gallout a rit mirout ar gemennadenn-mañ hag implij anezhi evel un enrolladenn e
     <string name="debug_enable_sync_debug_logging_summary">Mirout titouroù diagnostikañ ar sinkronaat e-pad 24 eurvezh</string>
     <string name="debug_sync_export_logs_title">Ezporzhiañ ar c\'herzhlevr sinkronaat</string>
     <string name="dialog_confirm_empty_spam_title">Kadarnaat goullonderiñ al lastez</string>
-    <string name="dialog_confirm_empty_spam_message">Ha fellout a ra deoc\'h goullonderiñ teuliad al lastez ?</string>
+    <string name="dialog_confirm_empty_spam_message">Ha fellout a ra deoc\'h goullonderiñ teuliad al lastez ?</string>
     <string name="archiving_not_available_for_this_account">Ne c\'haller ket diellaouiñ ar gont-mañ.</string>
     <string name="message_view_menu_action_export_eml">Ezporzhiañ e stumm EML</string>
     <string name="print_message_action">Moullañ</string>

@@ -92,7 +92,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Fără subiect)</string>
     <string name="general_no_sender">Fără expeditor</string>
-    <string name="status_loading_more">Se încarcă mesajele\u2026</string>
+    <string name="status_loading_more">Se încarcă mesajele…</string>
     <string name="status_network_error">Eroare de conectare</string>
     <string name="status_invalid_id_error">Mesajul nu a fost găsit</string>
     <string name="status_loading_error">Eroare la încărcarea mesajului</string>
@@ -187,7 +187,7 @@
     <string name="global_settings_flag_label">Arată stele</string>
     <string name="global_settings_flag_summary">Stele indică mesaje marcate</string>
     <string name="global_settings_preview_lines_label">Linii previzualizare</string>
-    <string name="global_settings_show_correspondent_names_label"> Arată numele corespondentului</string>
+    <string name="global_settings_show_correspondent_names_label">Arată numele corespondentului</string>
     <string name="global_settings_show_correspondent_names_summary">Arată numele corespondentului în loc de adresele lui de e-mail</string>
     <string name="global_settings_sender_above_subject_label">Corespondent deasupra subiect</string>
     <string name="global_settings_sender_above_subject_summary">Arată numele corespondentului deasupra liniei de subiect, mai degrabă decât sub ea</string>
@@ -785,12 +785,7 @@
     <string name="ac_transfer_finish">Pentru a încheia, deschide mesajul pe celălalt dispozitiv și introdu codul de setare.</string>
     <string name="ac_transfer_show_code">Arată Codul de Setare</string>
     <string name="ac_transfer_msg_subject">Mesaj Setare Autocriptare</string>
-    <string name="ac_transfer_msg_body">Acest mesaj conține toată informația pentru transferul setărilor tale de Autocrypt împreună cu cheia ta secretă de la dispozitivul original.
-
-Pentru a seta noul dispozitiv cu Autocript, te rog urmărește indicațiile afișate de dispozitivul tău nou.
-
-Poți păstra acest mesaj și să îl folosești drept copie de siguranță a cheii tale secrete. Dacă vrei să faci asta, va trebui să-ți notezi o copie a parolei pe care să o păstrezi undeva în siguranță.
-</string>
+    <string name="ac_transfer_msg_body">Acest mesaj conține toată informația pentru transferul setărilor tale de Autocrypt împreună cu cheia ta secretă de la dispozitivul original. Pentru a seta noul dispozitiv cu Autocript, te rog urmărește indicațiile afișate de dispozitivul tău nou. Poți păstra acest mesaj și să îl folosești drept copie de siguranță a cheii tale secrete. Dacă vrei să faci asta, va trebui să-ți notezi o copie a parolei pe care să o păstrezi undeva în siguranță.</string>
     <string name="ac_transfer_error_send">A apărut o eroare la trimiterea mesajului. Te rog verifică conexiunea la rețea și setările serverului de trimitere.</string>
     <string name="switch_on">Pornit</string>
     <string name="switch_off">Oprit</string>
@@ -800,7 +795,7 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="push_notification_state_wait_background_sync">Adormire până când este permisă sincronizarea în fundal</string>
     <string name="push_notification_state_wait_network">În așteptare până când rețeaua este disponibilă</string>
     <string name="push_notification_info">Apasă pentru a afla mai multe.</string>
-    <string name="push_info_title">Informații despre Push </string>
+    <string name="push_info_title">Informații despre Push</string>
     <string name="push_info_configure_notification_text">Cu toate acestea, Android permite, de asemenea, ascunderea notificării.</string>
     <string name="push_info_learn_more_text">Află mai multe</string>
     <string name="push_info_configure_notification_action">Configurează notificarea</string>
@@ -961,4 +956,7 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="animation_setting_on">Da</string>
     <string name="animation_setting_off">Nu</string>
     <string name="animation_setting_follow_system">Utilizează configurarea implicită a sistemului</string>
+    <string name="global_settings_privacy_incognito_keyboard">Tastatură incognito</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Solicită tastaturii să nu memoreze ceea ce tastezi atunci când redactezi mesaje</string>
+    <string name="sort_by_indicator">•</string>
 </resources>

@@ -19,14 +19,14 @@
     <string name="settings_import_later_button">Neskôr</string>
     <string name="settings_importing">Importovanie nastavení…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="one">Pred používaním účtu \"<xliff:g id="account">%s</xliff:g>\"  je potrebné zadať heslo na server.</item>
+        <item quantity="one">Pred používaním účtu \"<xliff:g id="account">%s</xliff:g>\" je potrebné zadať heslo na server.</item>
         <item quantity="few">Pred používaním účtu \"<xliff:g id="account">%s</xliff:g>\" je potrebné zadať heslo na server.</item>
-        <item quantity="many">Pred používaním účtov \"<xliff:g id="account">%s</xliff:g>\" je potrebné zadať heslo na server.</item>
+        <item quantity="many">Pred používaním účtov „<xliff:g id="account">%s</xliff:g>“ je potrebné zadať heslo na server.</item>
         <item quantity="other">Pred používaním účtov „<xliff:g id="account">%s</xliff:g>“ je potrebné zadať heslo na server.</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Heslo na server na príjem</string>
     <string name="settings_import_outgoing_server_password_hint">Heslo na server na odosielanie</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Použiť rovnaké heslo ako na server na odosielanie </string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Použiť rovnaké heslo ako na server na odosielanie</string>
     <string name="settings_import_server_name_format">Názov serveru: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="settings_import_general_settings_item">Všeobecné nastavenia</string>
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 nie je momentálne podporovaný poskytovateľ.</string>

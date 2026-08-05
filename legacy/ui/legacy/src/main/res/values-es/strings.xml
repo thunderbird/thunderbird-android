@@ -699,7 +699,7 @@
     <string name="openpgp_dialog_sign_only_title">Modo de solo-firma PGP</string>
     <string name="openpgp_dialog_sign_only_text">En este modo la clave PGP se usará para crear una firma criptográfica en un correo no cifrado.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Esto no cifra el correo, pero permite verificar que fue enviado con esa clave.</string>
-    <string name="openpgp_dialog_sign_only_minus_break">Las firmas pueden estropearse o perderse al enviarse a listas de correo. </string>
+    <string name="openpgp_dialog_sign_only_minus_break">Las firmas pueden estropearse o perderse al enviarse a listas de correo.</string>
     <string name="openpgp_dialog_sign_only_minus_attach">En algunos clientes las firmas de correo pueden ser exhibidas como adjuntos ‘signature.asc’.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Los correos cifrados siempre incluirán una firma.</string>
     <string name="crypto_msg_title_plaintext">Texto plano</string>
@@ -796,7 +796,7 @@
     <string name="push_notification_state_wait_network">Esperar hasta que la red esté disponible</string>
     <string name="push_notification_info">Toca aquí para leer más sobre el tema.</string>
     <string name="push_info_title">Información sobre comprobaciones rápidas («push»)</string>
-    <string name="push_info_configure_notification_text">Sin embargo, Android también te permite ocultar la notificación. </string>
+    <string name="push_info_configure_notification_text">Sin embargo, Android también te permite ocultar la notificación.</string>
     <string name="push_info_learn_more_text">Leer más sobre el tema</string>
     <string name="push_info_configure_notification_action">Configurar la apariencia de la notificación</string>
     <string name="push_info_disable_push_text">En caso de no necesitar notificaciones instantáneas de correos nuevos puedes desactivar las comprobaciones rápidas («push», o IDLE) y seguir utilizando comprobaciones normales («poll»); esta opción clásica pregunta al servidor de vez en cuando, conectándose de forma esporádica a intervalos regulares y no necesita mantener una conexión permanente ni mantener un servicio y notificación constante en segundo plano. Gastando menos batería.</string>

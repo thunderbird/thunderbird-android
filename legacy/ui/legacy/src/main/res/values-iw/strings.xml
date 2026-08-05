@@ -66,7 +66,6 @@
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">כתובת הועתקה ללוח</item>
         <item quantity="two">כתובות הועתקו ללוח</item>
-        <item quantity="many">כתובות הועתקו ללוח</item>
         <item quantity="other">כתובות הועתקו ללוח</item>
     </plurals>
     <string name="copy_subject_to_clipboard">הנושא הועתק ללוח</string>
@@ -95,7 +94,6 @@
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> הודעה חדשה</item>
         <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
-        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> עוד עלינו<xliff:g id="account">%2$s</xliff:g></string>
@@ -111,13 +109,12 @@
     <string name="notification_certificate_error_title">בעיה בתעודה עבור <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">בדוק את הגדרות השרת</string>
     <string name="notification_authentication_error_title">נכשל באימות</string>
-    <string name="notification_authentication_error_text">האימות נכשל עבור <xliff:g id="account">%s</xliff:g>.
-עדכן את הגדרות השרת.</string>
+    <string name="notification_authentication_error_text">האימות נכשל עבור <xliff:g id="account">%s</xliff:g>. עדכן את הגדרות השרת.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_bg_sync_ticker">בודק דואל: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">בודק דוא\"ל</string>
-    <string name="notification_bg_send_ticker">שולח דוא"ל: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_ticker">שולח דוא\"ל: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">שולח דוא\"ל</string>
     <string name="notification_bg_title_separator">:</string>
     <string name="notification_channel_push_description">מוצג בעת המתנה להודעות חדשות</string>
@@ -130,8 +127,7 @@
     <string name="debug_enable_sensitive_logging_title">יומן מידע רגיש</string>
     <string name="debug_enable_sensitive_logging_summary">עשוי להציג סיסמאות ביומן.</string>
     <string name="debug_export_logs_title">ייצא לוגים</string>
-    <string name="debug_export_logs_success">ייצוא הושלם. היומנים עלולים להכיל מידע רגיש.
-היזהרו עם מי שאתם משתפים אותם.</string>
+    <string name="debug_export_logs_success">ייצוא הושלם. היומנים עלולים להכיל מידע רגיש. היזהרו עם מי שאתם משתפים אותם.</string>
     <string name="debug_export_logs_failure">ייצוא נכשל.</string>
     <string name="message_list_load_more_messages_action">טען עוד הודעות</string>
     <string name="message_to_fmt">ל:<xliff:g id="counterParty">%s</xliff:g></string>
@@ -315,7 +311,7 @@
     <string name="account_settings_incoming_label">שרת הודעות נכנסות</string>
     <string name="account_settings_incoming_summary">הגדר את שרת הדואר הנכנס</string>
     <string name="account_settings_outgoing_label">שרת דואר יוצא</string>
-    <string name="account_settings_outgoing_summary">הגדר את שרת הדואר היוצא (SMTP) </string>
+    <string name="account_settings_outgoing_summary">הגדר את שרת הדואר היוצא (SMTP)</string>
     <string name="account_settings_name_label">השם שלך</string>
     <string name="notifications_title">התראות</string>
     <string name="account_settings_vibration">רטט</string>
@@ -455,7 +451,6 @@
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">אתה בטוח שאתה רוצה להעביר את ההודעות האלו לתיקיית דואר הזבל?</item>
         <item quantity="two">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
-        <item quantity="many">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
         <item quantity="other">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">כן</string>
@@ -535,9 +530,7 @@
     <string name="unsubscribe_action">ביטול הרשמה</string>
     <string name="status_loading_error">שגיאה בטעינת הודעה</string>
     <string name="notification_notify_error_title">שגיאת התראה</string>
-    <string name="notification_notify_error_text">אירעה שגיאה בעת נסיון יצירת התראת מערכת עבור הודעה חדשה. הסיבה ככל הנראה היא צליל התראה חסר.
-\n
-\nלחץ כדי לפתוח הגדרות התראה.</string>
+    <string name="notification_notify_error_text">אירעה שגיאה בעת נסיון יצירת התראת מערכת עבור הודעה חדשה. הסיבה ככל הנראה היא צליל התראה חסר. \n \nלחץ כדי לפתוח הגדרות התראה.</string>
     <string name="notification_channel_push_title">סנכרן (דחיפה)</string>
     <string name="notification_channel_messages_description">התראות הקשורות להודעות</string>
     <string name="compose_error_incomplete_recipient">שדה נמען מכיל קלט חלקי!</string>
@@ -579,13 +572,11 @@
     <plurals name="remote_search_downloading">
         <item quantity="one">מביא תוצאה %d</item>
         <item quantity="two">מביא %d תוצאות</item>
-        <item quantity="many">מביא %d תוצאות</item>
         <item quantity="other">מביא %d תוצאות</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">מביא תוצאה %1$d מתוך %2$d</item>
         <item quantity="two">מביא %1$d תוצאות מתוך%2$d</item>
-        <item quantity="many">מביא %1$d תוצאות מתוך%2$d</item>
         <item quantity="other">מביא %1$d תוצאות מתוך%2$d</item>
     </plurals>
     <string name="upgrade_databases_unspecified">משדרג מסדי נתונים…</string>
@@ -688,7 +679,6 @@
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">בטוח שברצונך למחוק הודעה זו?</item>
         <item quantity="two">בטוח שברצונך למחוק <xliff:g id="message_count">%1$d</xliff:g> הודעות?</item>
-        <item quantity="many">בטוח שברצונך למחוק <xliff:g id="message_count">%1$d</xliff:g> הודעות?</item>
         <item quantity="other">בטוח שברצונך למחוק <xliff:g id="message_count">%1$d</xliff:g> הודעות?</item>
     </plurals>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
@@ -703,14 +693,12 @@
     <string name="address_type_home">בית</string>
     <string name="address_type_work">עבודה</string>
     <string name="error_crypto_provider_connect">לא יכול להתחבר לספק Crypto, בדוק את ההגדרות שלך או לחץ על איקון Crypto כדי לנסות שוב!</string>
-    <string name="openpgp_inline_text">הדוא\"ל נשלח בפורמט PGP/INLINE.
-\nצריך להשתמש בו רק עבור תאימות:</string>
+    <string name="openpgp_inline_text">הדוא\"ל נשלח בפורמט PGP/INLINE. \nצריך להשתמש בו רק עבור תאימות:</string>
     <string name="openpgp_sign_only_ok">הבנתי!</string>
     <string name="openpgp_dialog_sign_only_text">במצב זה, יהיה שימוש במפתח ה־PGP שלך על מנת ליצור חתימה מוצפנת של דוא\"ל לא מוצפן.</string>
     <string name="account_settings_crypto_hide_sign_only_on">רק חתימות מוצפנות יוצגו</string>
     <string name="account_settings_crypto_hide_sign_only_off">כל החתימות יוצגו</string>
-    <string name="crypto_no_provider_message">הדוא\"ל הזה הוצפן עם OpenPGP.
-\nעל מנת לקרוא אותו, עליך להתקין ולהגדיר יישומון OpenPGP תואם.</string>
+    <string name="crypto_no_provider_message">הדוא\"ל הזה הוצפן עם OpenPGP. \nעל מנת לקרוא אותו, עליך להתקין ולהגדיר יישומון OpenPGP תואם.</string>
     <string name="openpgp_enabled_error_title">הצפנה לא אפשרית</string>
     <string name="openpgp_description_text3">הצפנה תופיע רק אם היא נתמכת ע\"י כל הנמענים, והם שלחו לך דוא\"ל בעבר.</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">הגדרת התראות שגיאה ומצב</string>

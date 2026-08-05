@@ -34,4 +34,5 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">Chun féachaint ar do phasfhocal anseo, cumasaigh glas scáileáin ar an ngléas seo.</string>
     <string name="account_server_settings_password_authentication_failed">Theip ar an bhfíordheimhniú!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Ní féidir an leid bhithmhéadrach a thosú.</string>
+    <string name="account_server_settings_password_input_label">Pasfhocal</string>
 </resources>

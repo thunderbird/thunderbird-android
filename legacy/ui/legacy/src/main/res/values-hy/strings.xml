@@ -64,7 +64,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(անվերնագիր)</string>
     <string name="general_no_sender">Առանց ուղարկող</string>
-    <string name="status_loading_more">Բեռնւում են նամակները\u2026</string>
+    <string name="status_loading_more">Բեռնւում են նամակները…</string>
     <string name="status_network_error">Կապի սխալ</string>
     <string name="status_invalid_id_error">Նամակը գտնուած չէ</string>
     <plurals name="notification_new_messages_title">
@@ -358,7 +358,4 @@
     <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <!--A user visible label for the email address copied to the clipboard-->
     <string name="clipboard_label_email_address">Էլ․ փոստի հասցէ</string>
-    <!--A user visible label for the name and email address copied to the clipboard-->
-    <!--Might be displayed in a notification when deleting an account (in the background)-->
-    <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
 </resources>

@@ -9,7 +9,7 @@
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Konfigurera manuellt</string>
     <string name="account_setup_options_email_signature_error_blank">E-postsignaturens namn får inte vara tomt.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">Det krävs för att godkänna konfigurationen.</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Vi fick konfigurationen för din e-postserver via en anslutning som inte är så säker som vi skulle vilja. Det betyder att det finns en liten chans att någon kunde ha ändrat den. Kan du dubbelkolla den medföljande konfigurationen för att se till att den är som den ska vara\?</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Vi fick konfigurationen för din e-postserver via en anslutning som inte är så säker som vi skulle vilja. Det betyder att det finns en liten chans att någon kunde ha ändrat den. Kan du dubbelkolla den medföljande konfigurationen för att se till att den är som den ska vara?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Redigera konfiguration</string>
     <string name="account_setup_error_unknown">Okänt fel</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Konfiguration hittades inte</string>

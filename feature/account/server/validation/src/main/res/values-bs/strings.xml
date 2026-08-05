@@ -6,10 +6,8 @@
     <string name="account_server_validation_error_unknown">Nepoznata greška</string>
     <string name="account_server_validation_error_client_certificate_expired">Sertifikat klijenta više nije važeći</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Ne može se pristupiti sertifikatu klijenta</string>
-    <string name="account_server_validation_error_details">Detalji:
-\n%s</string>
-    <string name="account_server_validation_error_missing_server_capability_details">Server ne posjeduje ovu sposobnost:
-\n%s</string>
+    <string name="account_server_validation_error_details">Detalji: \n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Server ne posjeduje ovu sposobnost: \n%s</string>
     <string name="account_server_validation_error_missing_server_capability">Server nema ovu sposobnost</string>
     <string name="account_server_validation_incoming_loading_message">Proveravanje postavki dolazećeg servera…</string>
     <string name="account_server_validation_incoming_loading_error">Proveravanje postavki dolazećeg servera neuspješno</string>

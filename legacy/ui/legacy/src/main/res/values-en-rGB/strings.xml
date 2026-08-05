@@ -325,9 +325,7 @@
     <string name="account_settings_crypto_encrypt_all_drafts">Store all drafts encrypted</string>
     <string name="account_settings_vibrate_pattern_4">Pattern 4</string>
     <string name="debug_export_logs_success">Export successful. Logs might contain sensitive information. Be careful who you send them to.</string>
-    <string name="notification_notify_error_text">An error has occurred while trying to create a system notification for a new message. The reason is most likely a missing notification sound.
-\n
-\nTap to open notification settings.</string>
+    <string name="notification_notify_error_text">An error has occurred while trying to create a system notification for a new message. The reason is most likely a missing notification sound. \n \nTap to open notification settings.</string>
     <string name="general_settings_swipe_action_archive">Archive</string>
     <string name="add_attachment_action">Add attachment</string>
     <string name="idle_refresh_period_24min">Every 24 minutes</string>
@@ -669,8 +667,7 @@
     <string name="webview_contextmenu_link_text_clipboard_label">Link text</string>
     <string name="openpgp_inline_ok">Got it!</string>
     <string name="crypto_msg_unsupported_encrypted">Message is encrypted, but in an unsupported format.</string>
-    <string name="crypto_no_provider_message">This email has been encrypted with OpenPGP.
-\nTo read it, you need to install and configure a compatible OpenPGP App.</string>
+    <string name="crypto_no_provider_message">This email has been encrypted with OpenPGP. \nTo read it, you need to install and configure a compatible OpenPGP App.</string>
     <string name="fetching_attachment_dialog_title_send">Sending message</string>
     <string name="message_details_missing_date">Missing \'Date\' header</string>
     <string name="crypto_msg_encrypted_insecure">but encryption not considered secure</string>
@@ -817,8 +814,7 @@
     <string name="action_remote_search">Search messages on server</string>
     <string name="global_settings_splitview_always">Always</string>
     <string name="address_type_work">Work</string>
-    <string name="openpgp_inline_text">The email is sent in PGP/INLINE format.
-\nThis should only be used for compatibility:</string>
+    <string name="openpgp_inline_text">The email is sent in PGP/INLINE format. \nThis should only be used for compatibility:</string>
     <string name="openpgp_enabled_error_back">Back</string>
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="address_type_mobile">Mobile</string>

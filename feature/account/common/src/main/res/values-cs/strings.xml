@@ -2,6 +2,5 @@
 <resources>
     <string name="account_common_button_next">Další</string>
     <string name="account_common_button_back">Zpět</string>
-    <string name="account_common_error_server_message">Server vrátil následující zprávu:
-\n%s</string>
+    <string name="account_common_error_server_message">Server vrátil následující zprávu: \n%s</string>
 </resources>

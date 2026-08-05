@@ -11,7 +11,6 @@
     <string name="account_server_certificate_not_valid_after">Не действителен после</string>
     <string name="account_server_certificate_subject">Субъект</string>
     <string name="account_server_certificate_issuer">Эмитент</string>
-    <string name="account_server_certificate_unknown_error_description_format">Приложение обнаружило потенциальную угрозу безопасности и прекратило подключение к <xliff:g id="serverName">%s</xliff:g>.
-\nЕсли вы продолжите подключение, злоумышленники могут попытаться украсть информацию, например ваш пароль или электронную почту.</string>
+    <string name="account_server_certificate_unknown_error_description_format">Приложение обнаружило потенциальную угрозу безопасности и прекратило подключение к <xliff:g id="serverName">%s</xliff:g>. \nЕсли вы продолжите подключение, злоумышленники могут попытаться украсть информацию, например ваш пароль или электронную почту.</string>
     <string name="account_server_certificate_fingerprints_section">Цифровой отпечаток</string>
 </resources>

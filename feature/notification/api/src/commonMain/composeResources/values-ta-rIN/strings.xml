@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">ஒத்திசைக்கவும் (புச்)</string>
     <string name="notification_channel_push_description">புதிய செய்திகளுக்காக காத்திருக்கும்போது காட்டப்படும்</string>
@@ -10,7 +10,7 @@
     <string name="notification_notify_error_text">புதிய செய்திக்கு கணினி அறிவிப்பை உருவாக்க முயற்சிக்கும்போது பிழை ஏற்பட்டது. காரணம் பெரும்பாலும் காணாமல் போன அறிவிப்பு ஒலி.\n\n அறிவிப்பு அமைப்புகளைத் திறக்க தட்டவும்.</string>
     <string name="notification_authentication_error_title">ஏற்பு தோல்வியடைந்தது</string>
     <string name="notification_certificate_error_public">சான்றிதழ் பிழை</string>
-    <string name="notification_certificate_error_title">%1$s சான்றிதழ் பிழை </string>
+    <string name="notification_certificate_error_title">%1$s சான்றிதழ் பிழை</string>
     <string name="notification_certificate_error_text">வழங்கியை சோதி</string>
     <string name="notification_bg_sync_ticker">%1$s:%2$s கணக்கு பார்க்கப்படுகிறது</string>
     <string name="notification_bg_sync_title">கணக்கு பார்க்கப்படுகிறது</string>

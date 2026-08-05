@@ -14,8 +14,6 @@
     <string name="account_server_validation_error_client_certificate_expired">A klienstanúsítvány már nem érvényes</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">A klienstanúsítvány nem érhető el</string>
     <string name="account_server_validation_error_missing_server_capability">Hiányzó kiszolgálófunkció</string>
-    <string name="account_server_validation_error_details">Részletek:
-\n%s</string>
-    <string name="account_server_validation_error_missing_server_capability_details">A kiszolgálóból hiányzik ez a funkció:
-\n%s</string>
+    <string name="account_server_validation_error_details">Részletek: \n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">A kiszolgálóból hiányzik ez a funkció: \n%s</string>
 </resources>

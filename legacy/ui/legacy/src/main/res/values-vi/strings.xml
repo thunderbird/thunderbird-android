@@ -90,7 +90,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Không chủ đề)</string>
     <string name="general_no_sender">Không có người gửi</string>
-    <string name="status_loading_more">Đang tải thư\u2026</string>
+    <string name="status_loading_more">Đang tải thư…</string>
     <string name="status_network_error">Lỗi kết nối</string>
     <string name="status_invalid_id_error">Không tìm thấy thư nào</string>
     <string name="status_loading_error">Lỗi tải thư</string>
@@ -119,9 +119,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Thông báo lỗi</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Có lỗi xảy ra khi tạo thông báo hệ thống cho tin nhắn mới. Nguyên nhân có thể do thiếu âm thanh thông báo.
-\n
-\nNhấn để mở thiết đặt thông báo.</string>
+    <string name="notification_notify_error_text">Có lỗi xảy ra khi tạo thông báo hệ thống cho tin nhắn mới. Nguyên nhân có thể do thiếu âm thanh thông báo. \n \nNhấn để mở thiết đặt thông báo.</string>
     <string name="notification_bg_sync_ticker">Đang kiểm tra thư cho: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Kiểm tra thư</string>
     <string name="notification_bg_send_ticker">Đang gửi thư: <xliff:g id="account">%s</xliff:g></string>
@@ -770,8 +768,7 @@
     <string name="crypto_no_provider_title">Email này được mã hóa</string>
     <string name="error_sign_only_no_encryption">Mã hóa không hiện có trong chế độ \"chỉ ký\"!</string>
     <string name="unsigned_text_divider_label">Chữ không ký</string>
-    <string name="crypto_no_provider_message">Email này được mã hóa bằng PGP.
-\nĐể đọc nó, bạn cần cài đặt một ứng dụng tương thích với OpenPGP.</string>
+    <string name="crypto_no_provider_message">Email này được mã hóa bằng PGP. \nĐể đọc nó, bạn cần cài đặt một ứng dụng tương thích với OpenPGP.</string>
     <string name="crypto_no_provider_button">Đi đến Cài đặt</string>
     <string name="enable_encryption">Kích hoạt Mã hóa</string>
     <string name="ac_transfer_setting_summary">An toàn chia sẻ thiết lập hai đầu với các thiết bị khác</string>
@@ -811,8 +808,7 @@
     <string name="recipient_from">Từ</string>
     <string name="address_type_home">Nhà</string>
     <string name="address_type_mobile">Điện thoại</string>
-    <string name="openpgp_inline_text">Email này được gửi bằng tiêu chuẩn PGP/INLINE.
-\nĐiều này chỉ nên sử dụng cho việc tương thích ngược:</string>
+    <string name="openpgp_inline_text">Email này được gửi bằng tiêu chuẩn PGP/INLINE. \nĐiều này chỉ nên sử dụng cho việc tương thích ngược:</string>
     <string name="locked_attach_unlock">Mở khóa</string>
     <string name="account_settings_crypto_hide_sign_only">Ẩn chữ ký không mã hóa</string>
     <string name="account_settings_crypto_hide_sign_only_on">Chỉ chữ ký mã hóa mới được hiển thị</string>

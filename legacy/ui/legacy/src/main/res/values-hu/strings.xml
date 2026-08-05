@@ -91,7 +91,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Nincs tárgy)</string>
     <string name="general_no_sender">Nincs feladó</string>
-    <string name="status_loading_more">Üzenetek betöltése\u2026</string>
+    <string name="status_loading_more">Üzenetek betöltése…</string>
     <string name="status_network_error">Kapcsolódási hiba</string>
     <string name="status_invalid_id_error">Az üzenet nem található</string>
     <string name="status_loading_error">Üzenetbetöltési hiba történt</string>
@@ -389,7 +389,7 @@
     <string name="account_settings_message_age_1_year">az elmúlt év</string>
     <string name="account_settings_sync_remote_deletetions_label">Kiszolgáló törléseinek szinkronizálása</string>
     <string name="account_settings_sync_remote_deletetions_summary">Üzenetek eltávolítása a kiszolgálóról törléskor</string>
-    <string name="account_settings_openpgp_missing">Hiányzó OpenPGP alkalmazás – talán eltávolításra került\?</string>
+    <string name="account_settings_openpgp_missing">Hiányzó OpenPGP alkalmazás – talán eltávolításra került?</string>
     <string name="folder_settings_title">Mappa beállításai</string>
     <string name="folder_settings_in_top_group_label">Megjelenítés a felső csoportban</string>
     <string name="folder_settings_clear_local_folder_action">Helyi üzenetek törlése</string>
@@ -556,8 +556,8 @@
     <string name="save_or_discard_draft_message_changes">Menti vagy elveti a változtatásokat?</string>
     <string name="confirm_discard_draft_message_title">Elveti az üzenet?</string>
     <string name="confirm_discard_draft_message">Biztosan el szeretné vetni ezt az üzenetet?</string>
-    <string name="dialog_confirm_clear_local_folder_title">Helyi üzenetek kiürítése\?</string>
-    <string name="dialog_confirm_clear_local_folder_message">Ez eltávolítja az összes helyi üzenetet mappából.  Az üzenetek nem kerülnek törlésre a szerverről.</string>
+    <string name="dialog_confirm_clear_local_folder_title">Helyi üzenetek kiürítése?</string>
+    <string name="dialog_confirm_clear_local_folder_message">Ez eltávolítja az összes helyi üzenetet mappából. Az üzenetek nem kerülnek törlésre a szerverről.</string>
     <string name="dialog_confirm_clear_local_folder_action">Üzenetek kiürítése</string>
     <string name="dialog_confirm_delete_title">Törlés megerősítése</string>
     <string name="dialog_confirm_delete_message">Valóban törölni szeretné ezt az üzenetet?</string>
@@ -779,12 +779,7 @@
     <string name="ac_transfer_finish">A befejezéshez nyissa meg az üzenetet a másik eszközén, és írja be a beállítási kódot.</string>
     <string name="ac_transfer_show_code">Beállítási kód megjelenítése</string>
     <string name="ac_transfer_msg_subject">Autocrypt beállítási üzenet</string>
-    <string name="ac_transfer_msg_body">Ez az üzenet minden információt tartalmaz az Autocrypt beállítások és a titkos kulcs biztonságos átviteléhez az eredeti eszközről.
-
-Az új eszköz Autocrypthez történő beállításához kövesse az utasításokat, amelynek az új eszközön kell megjelennie.
-
-Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági mentéséhez. Ha ezt szeretné tenni, akkor fel kell írnia a jelszót, és biztonságosan kell tárolnia.
-</string>
+    <string name="ac_transfer_msg_body">Ez az üzenet minden információt tartalmaz az Autocrypt beállítások és a titkos kulcs biztonságos átviteléhez az eredeti eszközről. Az új eszköz Autocrypthez történő beállításához kövesse az utasításokat, amelynek az új eszközön kell megjelennie. Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági mentéséhez. Ha ezt szeretné tenni, akkor fel kell írnia a jelszót, és biztonságosan kell tárolnia.</string>
     <string name="ac_transfer_error_send">Hiba történt az üzenet elküldése során. Ellenőrizze a hálózati kapcsolatot és a kimenő kiszolgáló beállítását.</string>
     <string name="switch_on">Be</string>
     <string name="switch_off">Ki</string>

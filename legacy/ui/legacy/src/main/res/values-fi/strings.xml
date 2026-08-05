@@ -91,7 +91,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Ei aihetta)</string>
     <string name="general_no_sender">Ei lähettäjää</string>
-    <string name="status_loading_more">Ladataan viestejä\u2026</string>
+    <string name="status_loading_more">Ladataan viestejä…</string>
     <string name="status_network_error">Yhteysvirhe</string>
     <string name="status_invalid_id_error">Viestiä ei löytynyt</string>
     <string name="status_loading_error">Viestin lataamisvirhe</string>
@@ -323,7 +323,7 @@
     <string name="account_settings_show_pictures_only_from_contacts">Yhteystiedoista</string>
     <string name="account_settings_show_pictures_always">Kaikilta</string>
     <string name="account_settings_composition">Viestien lähettäminen</string>
-    <string name="account_settings_default_quoted_text_shown_label">Lainaa alkuperäistä viestiä vastattaessa  </string>
+    <string name="account_settings_default_quoted_text_shown_label">Lainaa alkuperäistä viestiä vastattaessa</string>
     <string name="account_settings_default_quoted_text_shown_summary">Alkuperäinen viesti on vastauksessa viesteihin vastattaessa.</string>
     <string name="account_settings_reply_after_quote_label">Vastaa lainauksen jälkeen</string>
     <string name="account_settings_reply_after_quote_summary">Kun viestiin vastataan, alkuperäinen viesti on vastauksesi yläpuolella.</string>
@@ -779,12 +779,7 @@
     <string name="ac_transfer_finish">Viimeistelläksesi avaa viesti toisella laitteellasi ja kirjoita asetuskoodi.</string>
     <string name="ac_transfer_show_code">Näytä asetuskoodi</string>
     <string name="ac_transfer_msg_subject">Autocrypt-asetusviesti</string>
-    <string name="ac_transfer_msg_body">Tämä viesti sisältää kaikki tiedot Autocryptin asetusten sekä salausavaimesi siirtämiseksi turvallisesti alkuperäisestä laitteestasi.
-
-Aseta uusi laitteesi käyttämään Autocryptiä noudattamalla ohjeita, jotka uusi laitteesi näyttää.
-
-Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavaimellesi. Jos haluat tehdä tämän, kirjoita salasana muistiin ja säilytä se turvallisesti.
-</string>
+    <string name="ac_transfer_msg_body">Tämä viesti sisältää kaikki tiedot Autocryptin asetusten sekä salausavaimesi siirtämiseksi turvallisesti alkuperäisestä laitteestasi. Aseta uusi laitteesi käyttämään Autocryptiä noudattamalla ohjeita, jotka uusi laitteesi näyttää. Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavaimellesi. Jos haluat tehdä tämän, kirjoita salasana muistiin ja säilytä se turvallisesti.</string>
     <string name="ac_transfer_error_send">Viestiä lähettäessä tapahtui virhe. Tarkista verkkoyhteyden tila ja lähtevän postin palvelimen asetukset.</string>
     <string name="switch_on">Päällä</string>
     <string name="switch_off">Pois</string>

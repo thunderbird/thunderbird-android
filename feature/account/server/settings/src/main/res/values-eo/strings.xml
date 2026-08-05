@@ -24,7 +24,7 @@
     <string name="account_server_settings_incoming_imap_prefix_label">IMAP vojprefikso</string>
     <string name="account_server_settings_incoming_imap_compression_label">Uzi densigo</string>
     <string name="account_server_settings_validation_error_password_required">Pasvorto nepras.</string>
-    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP prefikso ne povas esti malplena.</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP prefikso ne povas esti malplena.</string>
     <string name="account_server_settings_validation_error_server_required">Servila nomo nepras.</string>
     <string name="account_server_settings_validation_error_port_invalid">Pordo estas nevalida (endas esti 1–65535).</string>
     <string name="account_server_settings_validation_error_port_required">Pordo nepras.</string>

@@ -74,7 +74,7 @@
     <string name="show_headers_action">Προβολή κεφαλίδων</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Η διεύθυνση αντιγράφηκε στο πρόχειρο</item>
-        <item quantity="other">Οι διευθύνσεις αντιγράφηκαν στο πρόχειρο </item>
+        <item quantity="other">Οι διευθύνσεις αντιγράφηκαν στο πρόχειρο</item>
     </plurals>
     <string name="copy_subject_to_clipboard">Το θέμα αντιγράφηκε στο πρόχειρο</string>
     <string name="message_view_theme_action_dark">Εφαρμογή σκούρας εμφάνισης</string>
@@ -91,12 +91,11 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Χωρίς θέμα)</string>
     <string name="general_no_sender">Χωρίς αποστολέα</string>
-    <string name="status_loading_more">Φόρτωση μηνυμάτων\u2026</string>
+    <string name="status_loading_more">Φόρτωση μηνυμάτων…</string>
     <string name="status_network_error">Σφάλμα σύνδεσης</string>
     <string name="status_invalid_id_error">Δεν βρέθηκε το μήνυμα</string>
     <string name="status_loading_error">Σφάλμα φόρτωσης μηνύματος</string>
-    <string name="load_more_messages_fmt">Φόρτωση έως
-    <xliff:g id="messages_to_load">%d</xliff:g> περισσότερων</string>
+    <string name="load_more_messages_fmt">Φόρτωση έως <xliff:g id="messages_to_load">%d</xliff:g> περισσότερων</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -443,7 +442,7 @@
     <string name="edit_identity_description_hint">(Προαιρετικό)</string>
     <string name="edit_identity_name_label">Το όνομά σου</string>
     <string name="edit_identity_name_hint">(Προαιρετικό)</string>
-    <string name="edit_identity_email_label">Διεύθυνση ηλ. ταχυδρομείου </string>
+    <string name="edit_identity_email_label">Διεύθυνση ηλ. ταχυδρομείου</string>
     <string name="edit_identity_email_hint">(Απαιτείται)</string>
     <string name="edit_identity_reply_to_label">Διεύθυνση απάντησης</string>
     <string name="edit_identity_reply_to_hint">(Προαιρετικό)</string>
@@ -593,7 +592,7 @@
     <string name="webview_empty_message">Κενό μήνυμα</string>
     <string name="webview_contextmenu_link_view_action">Άνοιγμα για προβολή</string>
     <string name="webview_contextmenu_link_share_action">Κοινοποίηση συνδέσμου</string>
-    <string name="webview_contextmenu_link_copy_action">Αντιγραφή του συνδέσμου στο πρόχειρο </string>
+    <string name="webview_contextmenu_link_copy_action">Αντιγραφή του συνδέσμου στο πρόχειρο</string>
     <string name="webview_contextmenu_link_clipboard_label">Σύνδεσμος</string>
     <string name="webview_contextmenu_link_text_copy_action">Αντιγραφή του συνδέσμου στο πρόχειρο</string>
     <string name="webview_contextmenu_link_text_clipboard_label">Μετατροπή κειμένου σε σύνδεσμο</string>
@@ -627,7 +626,7 @@
     </plurals>
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">Φόρτωση %1$d από %2$d αποτελέσματα</item>
-        <item quantity="other"> Φόρτωση %1$d από %2$d αποτελέσματα</item>
+        <item quantity="other">Φόρτωση %1$d από %2$d αποτελέσματα</item>
     </plurals>
     <string name="remote_search_error">Αποτυχία απομακρυσμένης αναζήτησης</string>
     <string name="account_settings_search">Αναζήτηση</string>
@@ -699,7 +698,7 @@
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Τα κρυπτογραφημένα μηνύματα περιλαμβάνουν πάντα μια υπογραφή.</string>
     <string name="crypto_msg_title_plaintext">Aπλό κείμενο</string>
     <string name="crypto_msg_unencrypted_sign_error">η υπογραφή διατερματικής κρυπτογράφησης περιείχε σφάλμα</string>
-    <string name="crypto_msg_incomplete_signed">απαιτείται η πλήρης λήψη του μηνύματος για επεξεργασία υπογραφής </string>
+    <string name="crypto_msg_incomplete_signed">απαιτείται η πλήρης λήψη του μηνύματος για επεξεργασία υπογραφής</string>
     <string name="crypto_msg_unsupported_signed">περιέχει μη υποστηριζομενη διατερματική υπογραφή</string>
     <string name="crypto_msg_unsupported_encrypted">Το μήνυμα είναι κρυπτογραφημένο, αλλά η μορφή του δεν υποστηρίζεται.</string>
     <string name="crypto_msg_cancelled">Το μήνυμα είναι κρυπτογραφημένο, αλλά η αποκρυπτογράφηση ακυρώθηκε.</string>
@@ -711,13 +710,13 @@
     <string name="crypto_msg_unencrypted_sign_revoked">όμως το διατερματικό κλειδί έχει ανακληθεί</string>
     <string name="crypto_msg_unencrypted_sign_insecure">όμως το διατερματικό κλειδί δε θεωρείται ασφαλές</string>
     <string name="crypto_msg_unencrypted_sign_unknown">από άγνωστο διατερματικό κλειδί</string>
-    <string name="crypto_msg_title_encrypted_unknown">Κρυπτογραφημένο </string>
-    <string name="crypto_msg_encrypted_error">όμως υπήρξε ένα σφάλμα αποκρυπτογράφησης </string>
+    <string name="crypto_msg_title_encrypted_unknown">Κρυπτογραφημένο</string>
+    <string name="crypto_msg_encrypted_error">όμως υπήρξε ένα σφάλμα αποκρυπτογράφησης</string>
     <string name="crypto_msg_encrypted_incomplete">απαιτείται πλήρης λήψη του μηνύματος για αποκρυπτογράφηση</string>
     <string name="crypto_msg_encrypted_no_provider">μα δεν έχει ρυθμιστεί καμία εφαρμογή κρυπτογράφησης</string>
     <string name="crypto_msg_title_encrypted_unsigned">Κρυπτογραφημένο</string>
     <string name="crypto_msg_encrypted_unsigned">όμως όχι διατερματικά</string>
-    <string name="crypto_msg_title_encrypted_signed_e2e">Διατερματικά κρυπτογραφημένο </string>
+    <string name="crypto_msg_title_encrypted_signed_e2e">Διατερματικά κρυπτογραφημένο</string>
     <string name="crypto_msg_encrypted_sign_verified">από επικυρωμένο αποστολέα</string>
     <string name="crypto_msg_title_encrypted_signed">Κρυπτογραφημένο</string>
     <string name="crypto_msg_encrypted_sign_unknown">από άγνωστο από άκρο σε άκρο κλειδί</string>
@@ -765,7 +764,7 @@
     <string name="general_settings_title">Γενικές ρυθμίσεις</string>
     <string name="dialog_openkeychain_info_title">Δεν υπάρχει εγκατεστημένη εφαρμογή OpenPGP</string>
     <string name="dialog_openkeychain_info_install">Εγκατάσταση</string>
-    <string name="account_settings_crypto_encrypt_subject">Κρυπτογράφηση θεμάτων των μηνυμάτων </string>
+    <string name="account_settings_crypto_encrypt_subject">Κρυπτογράφηση θεμάτων των μηνυμάτων</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Ενδέχεται να μην υποστηρίζεται από ορισμένους παραλήπτες</string>
     <string name="toast_account_not_found">Εσωτερικό σφάλμα: Μη έγκυρος λογαριασμός!</string>
     <string name="toast_openpgp_provider_error">Σφάλμα σύνδεσης στο %s!</string>
@@ -839,7 +838,7 @@
     <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_copy_name_and_email_address">\'Αντιγραφή ονόματος και διεύθυνσης ηλ. ταχυδρομείου</string>
     <!--A user visible label for the email address copied to the clipboard-->
-    <string name="clipboard_label_email_address">Διεύθυνση ηλ. ταχυδρομείου </string>
+    <string name="clipboard_label_email_address">Διεύθυνση ηλ. ταχυδρομείου</string>
     <!--A user visible label for the name and email address copied to the clipboard-->
     <string name="clipboard_label_name_and_email_address">Όνομα και διεύθυνση email</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->

@@ -67,15 +67,15 @@
     <string name="mark_as_read_action">Označit jako přečtené</string>
     <string name="send_alternate_action">Sdílet</string>
     <string name="send_alternate_chooser_title">Vybrat odesílatele</string>
-    <string name="flag_action">Přidat \u2605</string>
-    <string name="unflag_action">Odebrat \u2606</string>
+    <string name="flag_action">Přidat ★</string>
+    <string name="unflag_action">Odebrat ☆</string>
     <string name="copy_action">Kopírovat</string>
     <string name="unsubscribe_action">Odhlásit odběr</string>
     <string name="show_headers_action">Zobrazit hlavičku</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Adresa zkopírována do schránky</item>
         <item quantity="few">Adresy zkopírovány do schránky</item>
-        <item quantity="many">Adres zkopírováno do schránky</item>
+        <item quantity="many">Adresy zkopírovány do schránky</item>
         <item quantity="other">Adresy zkopírovány do schránky</item>
     </plurals>
     <string name="copy_subject_to_clipboard">Text předmětu zkopírován do schránky</string>
@@ -93,7 +93,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Bez předmětu)</string>
     <string name="general_no_sender">Bez odesílatele</string>
-    <string name="status_loading_more">Načítání zpráv\u2026</string>
+    <string name="status_loading_more">Načítání zpráv…</string>
     <string name="status_network_error">Chyba spojení</string>
     <string name="status_invalid_id_error">Zpráva nenalezena</string>
     <string name="status_loading_error">Chyba při načítání zprávy</string>
@@ -125,9 +125,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Chyba oznámení</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Vyskytla se chyba při vytvoření systémového oznámení pro novou zprávu. Důvodem je nejspíš chybějící zvuk oznámení.
-\n
-\nKlepnutím otevřete nastavení oznámení.</string>
+    <string name="notification_notify_error_text">Vyskytla se chyba při vytvoření systémového oznámení pro novou zprávu. Důvodem je nejspíš chybějící zvuk oznámení. \n \nKlepnutím otevřete nastavení oznámení.</string>
     <string name="notification_bg_sync_ticker">Kontrola nové pošty: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Kontrola nové pošty</string>
     <string name="notification_bg_send_ticker">Odesílání pošty: <xliff:g id="account">%s</xliff:g></string>
@@ -188,7 +186,7 @@
     <string name="from_same_sender">Více od tohoto odesílatele</string>
     <string name="message_discarded_toast">Zpráva byla zrušena</string>
     <string name="message_saved_toast">Zpráva byla uložena jako koncept</string>
-    <string name="global_settings_flag_label">Zprávy s \u2605</string>
+    <string name="global_settings_flag_label">Zprávy s ★</string>
     <string name="global_settings_flag_summary">Hvězdička indikuje označenou zprávu</string>
     <string name="global_settings_preview_lines_label">Počet řádků náhledu</string>
     <string name="global_settings_show_correspondent_names_label">Zobraz jméno odesílatele</string>
@@ -304,7 +302,7 @@
     <string name="account_setup_options_mail_display_count_10000">10000 zpráv</string>
     <string name="account_setup_options_mail_display_count_all">všechny zprávy</string>
     <string name="move_copy_cannot_copy_unsynced_message">Nelze kopírovat nebo přesunovat zprávu, která není synchronizována se serverem</string>
-    <string name="account_settings_push_advanced_title">Rozšířené</string>
+    <string name="account_settings_push_advanced_title">Pokročilé</string>
     <string name="account_settings_title_fmt">Nastavení účtu</string>
     <string name="account_settings_notify_label">Oznamování nové pošty</string>
     <string name="account_settings_notify_sync_label">Synchronizovat oznámení</string>
@@ -319,8 +317,8 @@
     <string name="account_settings_ignore_chat_messages_summary">Nezobrazovat oznámení na zprávy patřící do e-mailového chatu</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Označit jako přečtené po otevření</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Označit zprávu jako přečtenou po jejím otevření pro prohlížení</string>
-    <string name="account_settings_mark_message_as_read_on_delete_label">Při smazání označit jako přečtené</string>
-    <string name="account_settings_mark_message_as_read_on_delete_summary">Při jejím mazání, označit zprávu jako přečtenou</string>
+    <string name="account_settings_mark_message_as_read_on_delete_label">Označit jako přečtené při smazání</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">Označit zprávu jako přečtenou, když je smazána</string>
     <string name="account_settings_notification_channels_label">Kategorie oznámení</string>
     <string name="account_settings_open_notification_settings_messages_summary">Nastavit oznámení na nové zprávy</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Nastavit oznámení na chyby a stavy</string>
@@ -362,9 +360,9 @@
     <string name="account_settings_crypto_encrypt_all_drafts">Ukládat veškeré koncepty šifrovaně</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Všechny koncepty budou ukládány šifrovaně</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Šifrovat koncepty pouze pokud je zapnuté šifrování</string>
-    <string name="account_settings_mail_check_frequency_label">Frekvence dotazování složky</string>
-    <string name="account_settings_mail_display_count_label">Velikost místního adresáře</string>
-    <string name="account_settings_autodownload_message_size_label">Stahovat zprávy až do</string>
+    <string name="account_settings_mail_check_frequency_label">Četnost dotazování složky</string>
+    <string name="account_settings_mail_display_count_label">Velikost místní složky</string>
+    <string name="account_settings_autodownload_message_size_label">Načíst zprávy až do</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
     <string name="account_settings_autodownload_message_size_4">4 KiB</string>
@@ -379,28 +377,28 @@
     <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
     <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
     <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
-    <string name="account_settings_autodownload_message_size_any">jakékoli velikosti (bez omezení)</string>
-    <string name="account_settings_message_age_label">Synchronizovat odeslané zprávy</string>
-    <string name="account_settings_message_age_any">kdykoliv (bez omezení)</string>
-    <string name="account_settings_message_age_0">dnešní</string>
-    <string name="account_settings_message_age_1">za poslední 2 dny</string>
-    <string name="account_settings_message_age_2">za poslední 3 dny</string>
-    <string name="account_settings_message_age_7">za poslední týden</string>
-    <string name="account_settings_message_age_14">za poslední 2 týdny</string>
-    <string name="account_settings_message_age_21">za poslední 3 týdny</string>
-    <string name="account_settings_message_age_1_month">za poslední měsíc</string>
-    <string name="account_settings_message_age_2_months">za poslední 2 měsíce</string>
-    <string name="account_settings_message_age_3_months">za poslední 3 měsíce</string>
-    <string name="account_settings_message_age_6_months">za posledních 6 měsíců</string>
-    <string name="account_settings_message_age_1_year">za poslední rok</string>
-    <string name="account_settings_sync_remote_deletetions_label">Synchronizace smazání na serveru</string>
-    <string name="account_settings_sync_remote_deletetions_summary">Odstranit zprávy, když je smaže server</string>
+    <string name="account_settings_autodownload_message_size_any">libovolná velikost (bez omezení)</string>
+    <string name="account_settings_message_age_label">Synchronizovat zprávy z</string>
+    <string name="account_settings_message_age_any">kdykoli (bez omezení)</string>
+    <string name="account_settings_message_age_0">dnes</string>
+    <string name="account_settings_message_age_1">poslední 2 dny</string>
+    <string name="account_settings_message_age_2">poslední 3 dny</string>
+    <string name="account_settings_message_age_7">poslední týden</string>
+    <string name="account_settings_message_age_14">poslední 2 týdny</string>
+    <string name="account_settings_message_age_21">poslední 3 týdny</string>
+    <string name="account_settings_message_age_1_month">poslední měsíc</string>
+    <string name="account_settings_message_age_2_months">poslední 2 měsíce</string>
+    <string name="account_settings_message_age_3_months">poslední 3 měsíce</string>
+    <string name="account_settings_message_age_6_months">posledních 6 měsíců</string>
+    <string name="account_settings_message_age_1_year">poslední rok</string>
+    <string name="account_settings_sync_remote_deletetions_label">Synchronizace odstranění ze serveru</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Odstranit zprávy po jejich smazání na serveru</string>
     <string name="account_settings_openpgp_missing">Chybí OpenPGP aplikace – byla odinstalována?</string>
     <string name="folder_settings_title">Nastavení složky</string>
     <string name="folder_settings_in_top_group_label">Zobrazit v nejvyšší skupině</string>
     <string name="folder_settings_clear_local_folder_action">Vyčistit místní zprávy</string>
-    <string name="account_settings_incoming_label">Server příchozí pošty</string>
-    <string name="account_settings_incoming_summary">Nastavení serveru příchozí pošty</string>
+    <string name="account_settings_incoming_label">Příchozí server</string>
+    <string name="account_settings_incoming_summary">Nastavení serveru pro příchozí poštu</string>
     <string name="account_settings_outgoing_label">Server odchozí pošty</string>
     <string name="account_settings_outgoing_summary">Nastavení serveru odchozí pošty (SMTP)</string>
     <string name="account_settings_name_label">Vaše jméno</string>
@@ -466,9 +464,9 @@
     <string name="sort_subject_alpha">Předmět abecedně A-Z</string>
     <string name="sort_subject_re_alpha">Předmět abecedně Z-A</string>
     <string name="sort_sender_alpha">Odesílatel A-Z</string>
-    <string name="sort_sender_re_alpha">Odesílatel  Z-A</string>
-    <string name="sort_flagged_first">S \u2605 první</string>
-    <string name="sort_flagged_last">Bez \u2606 první</string>
+    <string name="sort_sender_re_alpha">Odesílatel Z-A</string>
+    <string name="sort_flagged_first">S ★ první</string>
+    <string name="sort_flagged_last">Bez ☆ první</string>
     <string name="sort_unread_first">Nepřečtené první</string>
     <string name="sort_unread_last">Přečtené první</string>
     <string name="sort_attach_first">S přílohou první</string>
@@ -694,8 +692,7 @@
     <string name="enable_sign_only">Povolit režim podepisování PGP</string>
     <string name="disable_sign_only">Zakázat jen PGP podpis</string>
     <string name="openpgp_inline_title">Režim PGP/INLINE</string>
-    <string name="openpgp_inline_text">E-mail je odeslán v PGP/INLINE formátu.
-\nTen má být používán jen z důvodu kompatibility:</string>
+    <string name="openpgp_inline_text">E-mail je odeslán v PGP/INLINE formátu. \nTen má být používán jen z důvodu kompatibility:</string>
     <string name="openpgp_inline_plus_compat">Některé klientské aplikace podporují pouze tento formát</string>
     <string name="openpgp_inline_minus_transit">Může dojít k poškození podpisu v průběhu přenosu</string>
     <string name="openpgp_inline_minus_attach">Přílohy nejsou podporovány</string>
@@ -756,8 +753,7 @@
     <string name="error_sign_only_no_encryption">Šifrování není v režimu podepisování dostupné!</string>
     <string name="unsigned_text_divider_label">Nepodepsaný text</string>
     <string name="crypto_no_provider_title">Tento e-mail je šifrovaný</string>
-    <string name="crypto_no_provider_message">Tento e-mail byl zašifrován pomocí OpenPGP.
-\nPro jeho přečtení je třeba nainstalovat a nastavit kompatibilní OpenPGP aplikaci.</string>
+    <string name="crypto_no_provider_message">Tento e-mail byl zašifrován pomocí OpenPGP. \nPro jeho přečtení je třeba nainstalovat a nastavit kompatibilní OpenPGP aplikaci.</string>
     <string name="crypto_no_provider_button">Přejít do nastavení</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -795,11 +791,7 @@
     <string name="ac_transfer_finish">Pro dokončení otevřete zprávu na svém dalším zařízení a zadejte nastavovací kód.</string>
     <string name="ac_transfer_show_code">Zobrazit nastavovací kód</string>
     <string name="ac_transfer_msg_subject">Autocrypt nastavovací správa</string>
-    <string name="ac_transfer_msg_body">Tato zpráva obsahuje všechny údaje pro zabezpečené přenesení vašich nastavení Autocrypt společně s tajným klíčem z původního zařízení.
-
-Pro nastavení nového zařízení pro Autocrypt, postupujte podle pokynů které by se měly zobrazit na novém zařízení.
-
-Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného klíče. Pokud toho chcete využít, měli byste si zapsat heslo a bezpečně ho uložit.</string>
+    <string name="ac_transfer_msg_body">Tato zpráva obsahuje všechny údaje pro zabezpečené přenesení vašich nastavení Autocrypt společně s tajným klíčem z původního zařízení. Pro nastavení nového zařízení pro Autocrypt, postupujte podle pokynů které by se měly zobrazit na novém zařízení. Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného klíče. Pokud toho chcete využít, měli byste si zapsat heslo a bezpečně ho uložit.</string>
     <string name="ac_transfer_error_send">Při odesílání zprávy došlo k chybě. Zkontrolujte své připojení k síti a nastavení odchozího serveru.</string>
     <string name="switch_on">Zapnuto</string>
     <string name="switch_off">Vypnuto</string>
@@ -971,4 +963,7 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="animation_setting_on">Zapnuty</string>
     <string name="animation_setting_off">Vypnuty</string>
     <string name="animation_setting_follow_system">Podle systému</string>
+    <string name="global_settings_privacy_incognito_keyboard">Klávesnice v anonymním režimu</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Při psaní zpráv nastavte klávesnici tak, aby se neučila z toho, co píšete</string>
+    <string name="sort_by_indicator">•</string>
 </resources>
