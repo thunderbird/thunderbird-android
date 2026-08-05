@@ -1391,6 +1391,10 @@ class LegacyMessageListFragment :
     }
 
     private fun updateFooterText() {
+        // While a remote search is running, the MessagingListener callbacks supply the footer text
+        // (progress messages). Don't overwrite them here.
+        if (remoteSearchFuture != null) return
+
         val currentFolder = this.currentFolder
         val account = this.account
 
@@ -2036,6 +2040,9 @@ class LegacyMessageListFragment :
                 add(MessageListViewItem.InAppNotificationBannerList)
             }
             addAll(messageListItems.map { MessageListViewItem.Message(it) })
+            // Keep the current footer (e.g. remote search progress) across list rebuilds.
+            // updateFooterText() below recomputes it when no remote search is running.
+            adapter.viewItems.filterIsInstance<MessageListViewItem.Footer>().firstOrNull()?.let { add(it) }
         }
 
         rememberedSelected?.let {
