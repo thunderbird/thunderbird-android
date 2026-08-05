@@ -356,8 +356,8 @@
     <string name="account_settings_crypto_encrypt_all_drafts">Alle concepten versleuteld opslaan</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle concepten zullen versleuteld worden opgeslagen</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Versleutel concepten alleen als versleuteling is ingeschakeld</string>
-    <string name="account_settings_mail_check_frequency_label">Interval mapcontrole</string>
-    <string name="account_settings_mail_display_count_label">Grootte van de lokale map</string>
+    <string name="account_settings_mail_check_frequency_label">Map-peilingsfrequentie</string>
+    <string name="account_settings_mail_display_count_label">Grootte van lokale map</string>
     <string name="account_settings_autodownload_message_size_label">Berichten ophalen tot aan</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
@@ -387,7 +387,7 @@
     <string name="account_settings_message_age_3_months">de afgelopen 3 maanden</string>
     <string name="account_settings_message_age_6_months">de afgelopen 6 maanden</string>
     <string name="account_settings_message_age_1_year">het afgelopen jaar</string>
-    <string name="account_settings_sync_remote_deletetions_label">Verwijderingen op de server synchroniseren</string>
+    <string name="account_settings_sync_remote_deletetions_label">Verwijderingen op server synchroniseren</string>
     <string name="account_settings_sync_remote_deletetions_summary">Berichten verwijderen wanneer verwijderd op de server</string>
     <string name="account_settings_openpgp_missing">OpenPGP-app niet aanwezig – is de app verwijderd?</string>
     <string name="folder_settings_title">Mapinstellingen</string>
