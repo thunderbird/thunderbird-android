@@ -40,6 +40,7 @@
     <plurals name="notification_new_messages_title">
         <item quantity="one">הודעה חדשה %1$d</item>
         <item quantity="two">%1$d הודעות חדשות</item>
+        <item quantity="many">%1$d הודעות חדשות</item>
         <item quantity="other">%1$d הודעות חדשות</item>
     </plurals>
     <string name="notification_action_retry">נסה שוב</string>
