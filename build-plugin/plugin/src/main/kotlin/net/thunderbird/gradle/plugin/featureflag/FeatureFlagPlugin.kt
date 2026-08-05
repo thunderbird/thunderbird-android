@@ -45,7 +45,7 @@ class FeatureFlagPlugin : Plugin<Project> {
 
         val schema = extension.schema.asFile.get()
         val schemaContents = readTextOrNull(extension.schema) ?: throw GradleException(
-            "Failed to apply feature flag plugin. Reason: The  feature flag schema was not found at '${schema.path}'.",
+            "Failed to apply feature flag plugin. Reason: The feature flag schema was not found at '$schema'.",
         )
 
         validateSchema(extension, schemaValidator, schemaContents, catalogContents, catalog)
