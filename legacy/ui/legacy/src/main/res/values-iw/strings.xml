@@ -66,6 +66,7 @@
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">כתובת הועתקה ללוח</item>
         <item quantity="two">כתובות הועתקו ללוח</item>
+        <item quantity="many">כתובות הועתקו ללוח</item>
         <item quantity="other">כתובות הועתקו ללוח</item>
     </plurals>
     <string name="copy_subject_to_clipboard">הנושא הועתק ללוח</string>
@@ -94,6 +95,7 @@
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> הודעה חדשה</item>
         <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
+        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> עוד עלינו<xliff:g id="account">%2$s</xliff:g></string>
@@ -451,6 +453,7 @@
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">אתה בטוח שאתה רוצה להעביר את ההודעות האלו לתיקיית דואר הזבל?</item>
         <item quantity="two">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
+        <item quantity="many">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
         <item quantity="other">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">כן</string>
@@ -572,12 +575,14 @@
     <plurals name="remote_search_downloading">
         <item quantity="one">מביא תוצאה %d</item>
         <item quantity="two">מביא %d תוצאות</item>
+        <item quantity="many">מביא %d תוצאות</item>
         <item quantity="other">מביא %d תוצאות</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">מביא תוצאה %1$d מתוך %2$d</item>
-        <item quantity="two">מביא %1$d תוצאות מתוך%2$d</item>
-        <item quantity="other">מביא %1$d תוצאות מתוך%2$d</item>
+        <item quantity="two">מביא %1$d תוצאות מתוך %2$d</item>
+        <item quantity="many">מביא %1$d תוצאות מתוך %2$d</item>
+        <item quantity="other">מביא %1$d תוצאות מתוך %2$d</item>
     </plurals>
     <string name="upgrade_databases_unspecified">משדרג מסדי נתונים…</string>
     <string name="upgrade_database_format">משדרג מסד נתונים של חשבון \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -679,6 +684,7 @@
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">בטוח שברצונך למחוק הודעה זו?</item>
         <item quantity="two">בטוח שברצונך למחוק <xliff:g id="message_count">%1$d</xliff:g> הודעות?</item>
+        <item quantity="many">בטוח שברצונך למחוק <xliff:g id="message_count">%1$d</xliff:g> הודעות?</item>
         <item quantity="other">בטוח שברצונך למחוק <xliff:g id="message_count">%1$d</xliff:g> הודעות?</item>
     </plurals>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
@@ -925,6 +931,7 @@
     <plurals name="message_view_attachment_summary">
         <item quantity="one">צרופה<xliff:g id="count">%1$d</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</item>
         <item quantity="two"><xliff:g id="count">%1$d</xliff:g> צרופות (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="many"><xliff:g id="count">%1$d</xliff:g> צרופות (<xliff:g id="size">%2$s</xliff:g>)</item>
         <item quantity="other"><xliff:g id="count">%1$d</xliff:g> צרופות (<xliff:g id="size">%2$s</xliff:g>)</item>
     </plurals>
     <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
