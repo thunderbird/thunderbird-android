@@ -1,5 +1,6 @@
 package net.thunderbird.core.featureflag.model
 
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 
@@ -15,5 +16,6 @@ import kotlinx.serialization.Serializable
 data class FeatureFlagCatalog(
     val version: String,
     val flags: List<FlagRegistry>,
+    @Contextual
     val overrides: FlagRegistryOverride,
 )
