@@ -57,20 +57,23 @@ internal class CatalogValidator {
 
     private fun ThunderbirdOverrides.checkOverrides(keyRegistry: KeyRegistry): Map<String, OverrideErrors> =
         buildMap {
-            debug.putIfInvalid(overrideName = "debug", keyRegistry = keyRegistry)
-            daily.putIfInvalid(overrideName = "daily", keyRegistry = keyRegistry)
-            beta.putIfInvalid(overrideName = "beta", keyRegistry = keyRegistry)
-            release.putIfInvalid(overrideName = "release", keyRegistry = keyRegistry)
+            debug.putIfInvalid(map = this, overrideName = "debug", keyRegistry = keyRegistry)
+            daily.putIfInvalid(map = this, overrideName = "daily", keyRegistry = keyRegistry)
+            beta.putIfInvalid(map = this, overrideName = "beta", keyRegistry = keyRegistry)
+            release.putIfInvalid(map = this, overrideName = "release", keyRegistry = keyRegistry)
         }
 
     private fun K9Overrides.checkOverrides(keyRegistry: KeyRegistry): Map<String, OverrideErrors> =
         buildMap {
-            debug.putIfInvalid(overrideName = "debug", keyRegistry = keyRegistry)
-            release.putIfInvalid(overrideName = "release", keyRegistry = keyRegistry)
+            debug.putIfInvalid(map = this, overrideName = "debug", keyRegistry = keyRegistry)
+            release.putIfInvalid(map = this, overrideName = "release", keyRegistry = keyRegistry)
         }
 
-    context(map: MutableMap<String, OverrideErrors>)
-    private fun FlagOverrides.putIfInvalid(overrideName: String, keyRegistry: KeyRegistry) {
+    private fun FlagOverrides.putIfInvalid(
+        map: MutableMap<String, OverrideErrors>,
+        overrideName: String,
+        keyRegistry: KeyRegistry,
+    ) {
         val missingKeys = this.filterOverridesMissingKeyDefinition(keyRegistry = keyRegistry)
         val sameValueAsDefaultKeys = this.filterOverridesWithSameValueAsDefault(keyRegistry = keyRegistry)
         if (missingKeys.isNotEmpty() || sameValueAsDefaultKeys.isNotEmpty()) {
