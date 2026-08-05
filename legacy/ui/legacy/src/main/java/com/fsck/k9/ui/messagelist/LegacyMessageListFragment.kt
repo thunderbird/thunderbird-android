@@ -220,6 +220,7 @@ class LegacyMessageListFragment :
     private var currentFolder: FolderInfoHolder? = null
     private var remoteSearchFuture: Future<*>? = null
     private var extraSearchResults: List<String>? = null
+    private var hasRemoteSearchFailed = false
     private var threadTitle: String? = null
     private var allAccounts = false
     private var sortType = SortType.SORT_DATE
@@ -808,6 +809,8 @@ class LegacyMessageListFragment :
                 loadSearchResults,
                 activityListener,
             )
+        } else if (isRemoteSearchAllowed) {
+            onRemoteSearch()
         }
     }
 
@@ -933,6 +936,7 @@ class LegacyMessageListFragment :
         val queryString = localSearch.remoteSearchArguments
 
         isRemoteSearch = true
+        hasRemoteSearchFailed = false
         swipeRefreshLayout?.isEnabled = false
 
         val account = this.account ?: return
@@ -1396,7 +1400,9 @@ class LegacyMessageListFragment :
 
         val footerText = if (initialMessageListLoad) {
             null
-        } else if (localSearch.isManualSearch || currentFolder == null || account == null) {
+        } else if (localSearch.isManualSearch) {
+            getSearchResultsFooterText()
+        } else if (currentFolder == null || account == null) {
             null
         } else if (currentFolder.loading) {
             getString(R.string.status_loading_more)
@@ -1409,6 +1415,25 @@ class LegacyMessageListFragment :
         }
 
         updateFooterText(footerText)
+    }
+
+    private fun getSearchResultsFooterText(): String? {
+        val extraSearchResults = this.extraSearchResults
+        return if (hasRemoteSearchFailed) {
+            getString(R.string.remote_search_error)
+        } else if (!extraSearchResults.isNullOrEmpty()) {
+            // A remote search found more results than were downloaded. Offer to load more.
+            account?.let { getString(R.string.load_more_messages_fmt, it.remoteSearchNumResults) }
+        } else if (adapter.viewItems.any { it is MessageListViewItem.Message }) {
+            null
+        } else if (isRemoteSearch) {
+            // A remote search completed without results; say so instead of showing a generic message.
+            getString(R.string.remote_search_no_results)
+        } else if (isRemoteSearchAllowed) {
+            getString(R.string.search_no_results_search_server_prompt)
+        } else {
+            getString(R.string.search_no_results)
+        }
     }
 
     override fun updateFooterText(text: String?) {
@@ -2057,8 +2082,8 @@ class LegacyMessageListFragment :
 
         currentFolder?.let { currentFolder ->
             currentFolder.moreMessages = messageListInfo.hasMoreMessages
-            updateFooterText()
         }
+        updateFooterText()
     }
 
     private fun resetActionMode() {
@@ -2340,6 +2365,7 @@ class LegacyMessageListFragment :
 
         override fun remoteSearchFailed(folderServerId: String?, err: String?) {
             handler.post {
+                hasRemoteSearchFailed = true
                 activity?.let { activity ->
                     Toast.makeText(activity, R.string.remote_search_error, Toast.LENGTH_LONG).show()
                 }
@@ -2364,11 +2390,11 @@ class LegacyMessageListFragment :
             handler.progress(false)
             handler.remoteSearchFinished()
 
-            extraSearchResults = extraResults
-            if (extraResults != null && extraResults.isNotEmpty()) {
-                handler.updateFooter(String.format(getString(R.string.load_more_messages_fmt), maxResults))
-            } else {
-                handler.updateFooter(null)
+            handler.post {
+                extraSearchResults = extraResults
+                if (isAdded) {
+                    updateFooterText()
+                }
             }
         }
 

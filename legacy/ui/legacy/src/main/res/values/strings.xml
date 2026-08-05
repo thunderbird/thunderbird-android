@@ -864,6 +864,9 @@
     <string name="account_settings_search">Search</string>
     <string name="action_remote_search">Search messages on server</string>
     <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>
+    <string name="search_no_results">No messages found</string>
+    <string name="search_no_results_search_server_prompt">No messages found on this device. Tap to search on the server.</string>
+    <string name="remote_search_no_results">No messages found on the server</string>
 
     <string name="global_settings_background_as_unread_indicator_label">Change colour when read</string>
     <string name="global_settings_background_as_unread_indicator_summary">A different background will show that the message has been read</string>
