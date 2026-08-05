@@ -33,7 +33,7 @@
         "properties": {
           "key": {
             "type": "string",
-            "pattern": "^[a-z0-9_]+$"
+            "pattern": "^[a-z]+[a-z0-9_]+$"
           },
           "description": {
             "type": "string",
@@ -101,7 +101,7 @@
       "type": "object",
       "description": "flagKey -> boolean override (value differs from the flag's 'default').",
       "patternProperties": {
-        "^[a-z0-9_]+$": {
+        "^[a-z]+[a-z0-9_]+$": {
           "type": "boolean"
         }
       },
