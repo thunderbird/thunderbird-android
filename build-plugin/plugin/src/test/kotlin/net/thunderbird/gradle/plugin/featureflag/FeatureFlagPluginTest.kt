@@ -88,7 +88,10 @@ internal class FeatureFlagPluginTest {
         // Act & Assert
         assertFailure { testSubject.evaluate() }
             .failureMessages()
-            .contains("Failed to apply feature flag plugin. Reason: File '$missingSchema' not found.")
+            .contains(
+                "Failed to apply feature flag plugin. " +
+                    "Reason: The feature flag schema was not found at '$missingSchema'.",
+            )
     }
 
     @Test
@@ -103,7 +106,10 @@ internal class FeatureFlagPluginTest {
         // Act & Assert
         assertFailure { testSubject.evaluate() }
             .failureMessages()
-            .contains("Failed to apply feature flag plugin. Reason: The catalog file '$missingCatalog' not found.")
+            .contains(
+                "Failed to apply feature flag plugin. " +
+                    "Reason: The feature flag catalog was not found at '$missingCatalog'.",
+            )
     }
 
     @Test
