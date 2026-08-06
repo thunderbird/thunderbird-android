@@ -142,6 +142,10 @@ def extract_release(
         "version"
     )
 
+    versioncode = release_element.get(
+        "versioncode"
+    )
+
     date = release_element.get(
         "date"
     )
@@ -150,6 +154,13 @@ def extract_release(
         raise ValueError(
             "Release is missing "
             "'version' attribute"
+        )
+
+    if not versioncode:
+        raise ValueError(
+            f"Release {version} "
+            "is missing "
+            "'versioncode' attribute"
         )
 
     if not date:
@@ -186,6 +197,7 @@ def extract_release(
     release = {
         "schemaVersion": 1,
         "version": version,
+        "versioncode": int(versioncode),
         "date": date,
         "notes": notes,
     }
@@ -229,6 +241,8 @@ def create_index_entry(
     return {
         "version":
             release_data["version"],
+        "versioncode":
+            release_data["versioncode"],
         "date":
             release_data["date"],
         "resourceName":
