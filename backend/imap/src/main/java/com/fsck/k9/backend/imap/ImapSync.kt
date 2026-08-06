@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.max
 import net.thunderbird.core.common.exception.rootCauseMessage
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 internal class ImapSync(
     private val accountName: String,

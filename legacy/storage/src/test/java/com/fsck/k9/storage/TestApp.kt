@@ -27,7 +27,7 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.composite.CompositeLogSink
 import net.thunderbird.core.logging.composite.CompositeLogSinkManager
 import net.thunderbird.core.logging.file.FileLogSink
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogLevelManager
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.storage.StoragePersister

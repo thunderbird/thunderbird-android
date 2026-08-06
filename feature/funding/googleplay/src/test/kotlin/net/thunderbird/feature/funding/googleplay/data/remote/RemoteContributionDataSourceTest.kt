@@ -76,13 +76,8 @@ class RemoteContributionDataSourceTest {
     }
 
     @Test
-    fun `getAllPurchased should combine one-time and recurring purchases`() = runTest {
+    fun `getAllPurchased should return recurring purchases`() = runTest {
         // Arrange
-        val oneTime = PurchasedContribution(
-            id = ContributionId("ot1"),
-            contribution = OneTimeContribution(ContributionId("ot1"), "OneTime", "Desc", 100L, "$1.00"),
-            purchaseDate = LocalDateTime(2024, 1, 1, 0, 0),
-        )
         val recurring = PurchasedContribution(
             id = ContributionId("rec1"),
             contribution = RecurringContribution(ContributionId("rec1"), "Recurring", "Desc", 1000L, "$10.00"),
@@ -90,7 +85,6 @@ class RemoteContributionDataSourceTest {
         )
 
         billingClient.purchasedRecurringOutcome = Outcome.success(listOf(recurring))
-        billingClient.purchaseHistoryOutcome = Outcome.success(oneTime)
 
         // Act
         val result = testSubject.getAllPurchased().first()
@@ -100,28 +94,6 @@ class RemoteContributionDataSourceTest {
         val data = (result as Outcome.Success).data
         assertThat(data.size).isEqualTo(1)
         assertThat(data).isEqualTo(listOf(recurring))
-    }
-
-    @Test
-    fun `getAllPurchased should return one-time when no recurring purchases`() = runTest {
-        // Arrange
-        val oneTime = PurchasedContribution(
-            id = ContributionId("ot1"),
-            contribution = OneTimeContribution(ContributionId("ot1"), "OneTime", "Desc", 100L, "$1.00"),
-            purchaseDate = LocalDateTime(2024, 1, 1, 0, 0),
-        )
-
-        billingClient.purchasedRecurringOutcome = Outcome.success(emptyList())
-        billingClient.purchaseHistoryOutcome = Outcome.success(oneTime)
-
-        // Act
-        val result = testSubject.getAllPurchased().first()
-
-        // Assert
-        assertThat(result).isInstanceOf(Outcome.Success::class)
-        val data = (result as Outcome.Success).data
-        assertThat(data.size).isEqualTo(1)
-        assertThat(data).isEqualTo(listOf(oneTime))
     }
 
     @Test
@@ -149,6 +121,24 @@ class RemoteContributionDataSourceTest {
         // Assert
         assertThat(result).isInstanceOf(Outcome.Failure::class)
         assertThat((result as Outcome.Failure).error).isEqualTo(error)
+    }
+
+    @Test
+    fun `purchasedContribution should return asynchronous purchase from billingClient`() = runTest {
+        // Arrange
+        val purchasedContribution = PurchasedContribution(
+            id = ContributionId("one_time_1"),
+            contribution = OneTimeContribution(ContributionId("one_time_1"), "Title", "Desc", 100L, "$1.00"),
+            purchaseDate = LocalDateTime(2024, 1, 1, 0, 0),
+        )
+        val expectedOutcome = Outcome.success(purchasedContribution)
+        billingClient.updatePurchasedContribution(expectedOutcome)
+
+        // Act
+        val result = testSubject.purchasedContribution.first()
+
+        // Assert
+        assertThat(result).isEqualTo(expectedOutcome)
     }
 
     @Test

@@ -25,7 +25,7 @@ import kotlin.math.max
 import kotlin.math.min
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.protocols.imap.folder.attributeName
 
 internal class RealImapFolder(

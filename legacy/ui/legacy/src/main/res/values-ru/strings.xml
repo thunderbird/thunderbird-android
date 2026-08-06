@@ -93,7 +93,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Без темы)</string>
     <string name="general_no_sender">Нет отправителя</string>
-    <string name="status_loading_more">Загрузка сообщений\u2026</string>
+    <string name="status_loading_more">Загрузка сообщений…</string>
     <string name="status_network_error">Сбой подключения</string>
     <string name="status_invalid_id_error">Сообщение не найдено</string>
     <string name="status_loading_error">Сбой загрузки сообщения</string>
@@ -125,9 +125,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Ошибка уведомления</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">При попытке создать системное уведомление для нового сообщения произошла ошибка. Причина, скорее всего, заключается в отсутствующем звуке уведомления.
-\n
-\nНажмите, чтобы открыть настройки уведомлений.</string>
+    <string name="notification_notify_error_text">При попытке создать системное уведомление для нового сообщения произошла ошибка. Причина, скорее всего, заключается в отсутствующем звуке уведомления. \n \nНажмите, чтобы открыть настройки уведомлений.</string>
     <string name="notification_bg_sync_ticker">Проверка почты: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Проверка почты</string>
     <string name="notification_bg_send_ticker">Отправка <xliff:g id="account">%s</xliff:g></string>
@@ -304,7 +302,7 @@
     <string name="account_setup_options_mail_display_count_10000">10000 сообщений</string>
     <string name="account_setup_options_mail_display_count_all">Все сообщения</string>
     <string name="move_copy_cannot_copy_unsynced_message">Нельзя скопировать или переместить сообщение, не синхронизированное с сервером</string>
-    <string name="account_settings_push_advanced_title">Дополнительно</string>
+    <string name="account_settings_push_advanced_title">Дополнительные</string>
     <string name="account_settings_title_fmt">Настройки учётной записи</string>
     <string name="account_settings_notify_label">Уведомить о почте</string>
     <string name="account_settings_notify_sync_label">Уведомить о проверке</string>
@@ -320,7 +318,7 @@
     <string name="account_settings_mark_message_as_read_on_view_label">Открытое прочитано</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Отметить сообщение прочитанным после просмотра</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Отметить как прочитанное при удалении</string>
-    <string name="account_settings_mark_message_as_read_on_delete_summary">Отметить как прочитанное при удалении</string>
+    <string name="account_settings_mark_message_as_read_on_delete_summary">Отмечать сообщение прочитанным при удалении</string>
     <string name="account_settings_notification_channels_label">Категории уведомлений</string>
     <string name="account_settings_open_notification_settings_messages_summary">Настройка уведомлений о новых сообщениях</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Настройка уведомлений об ошибках и статусе</string>
@@ -363,44 +361,44 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Все черновики будут храниться в зашифрованном виде</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Зашифровать черновики, если включено шифрование</string>
     <string name="account_settings_mail_check_frequency_label">Промежуток проверки</string>
-    <string name="account_settings_mail_display_count_label">Отображать сообщений</string>
+    <string name="account_settings_mail_display_count_label">Размер локальной папки</string>
     <string name="account_settings_autodownload_message_size_label">Загружать фрагмент</string>
-    <string name="account_settings_autodownload_message_size_1">1 КиБ</string>
-    <string name="account_settings_autodownload_message_size_2">2 КиБ</string>
-    <string name="account_settings_autodownload_message_size_4">4 КиБ</string>
-    <string name="account_settings_autodownload_message_size_8">8 КиБ</string>
-    <string name="account_settings_autodownload_message_size_16">16 КиБ</string>
-    <string name="account_settings_autodownload_message_size_32">32 КиБ</string>
-    <string name="account_settings_autodownload_message_size_64">64 КиБ</string>
-    <string name="account_settings_autodownload_message_size_128">128 КиБ</string>
-    <string name="account_settings_autodownload_message_size_256">256 КиБ</string>
-    <string name="account_settings_autodownload_message_size_512">512 КиБ</string>
-    <string name="account_settings_autodownload_message_size_1024">1 МиБ</string>
-    <string name="account_settings_autodownload_message_size_2048">2 МиБ</string>
-    <string name="account_settings_autodownload_message_size_5120">5 МиБ</string>
-    <string name="account_settings_autodownload_message_size_10240">10 МиБ</string>
-    <string name="account_settings_autodownload_message_size_any">Полностью</string>
-    <string name="account_settings_message_age_label">Глубина синхронизации</string>
-    <string name="account_settings_message_age_any">Всё время</string>
-    <string name="account_settings_message_age_0">Сегодня</string>
-    <string name="account_settings_message_age_1">2 дня</string>
-    <string name="account_settings_message_age_2">3 дня</string>
-    <string name="account_settings_message_age_7">1 неделя</string>
-    <string name="account_settings_message_age_14">2 недели</string>
-    <string name="account_settings_message_age_21">3 недели</string>
-    <string name="account_settings_message_age_1_month">1 месяц</string>
-    <string name="account_settings_message_age_2_months">2 месяца</string>
-    <string name="account_settings_message_age_3_months">3 месяца</string>
-    <string name="account_settings_message_age_6_months">6 месяцев</string>
-    <string name="account_settings_message_age_1_year">1 год</string>
+    <string name="account_settings_autodownload_message_size_1">1 КБ</string>
+    <string name="account_settings_autodownload_message_size_2">2 КБ</string>
+    <string name="account_settings_autodownload_message_size_4">4 КБ</string>
+    <string name="account_settings_autodownload_message_size_8">8 КБ</string>
+    <string name="account_settings_autodownload_message_size_16">16 КБ</string>
+    <string name="account_settings_autodownload_message_size_32">32 КБ</string>
+    <string name="account_settings_autodownload_message_size_64">64 КБ</string>
+    <string name="account_settings_autodownload_message_size_128">128 КБ</string>
+    <string name="account_settings_autodownload_message_size_256">256 КБ</string>
+    <string name="account_settings_autodownload_message_size_512">512 КБ</string>
+    <string name="account_settings_autodownload_message_size_1024">1 МБ</string>
+    <string name="account_settings_autodownload_message_size_2048">2 МБ</string>
+    <string name="account_settings_autodownload_message_size_5120">5 МБ</string>
+    <string name="account_settings_autodownload_message_size_10240">10 МБ</string>
+    <string name="account_settings_autodownload_message_size_any">любой размер (без ограничений)</string>
+    <string name="account_settings_message_age_label">Синхронизировать сообщения за</string>
+    <string name="account_settings_message_age_any">любое время (без ограничений)</string>
+    <string name="account_settings_message_age_0">сегодня</string>
+    <string name="account_settings_message_age_1">последние 2 дня</string>
+    <string name="account_settings_message_age_2">последние 3 дня</string>
+    <string name="account_settings_message_age_7">последняя неделя</string>
+    <string name="account_settings_message_age_14">последние 2 недели</string>
+    <string name="account_settings_message_age_21">последние 3 недели</string>
+    <string name="account_settings_message_age_1_month">последний месяц</string>
+    <string name="account_settings_message_age_2_months">последние 2 месяца</string>
+    <string name="account_settings_message_age_3_months">последние 3 месяца</string>
+    <string name="account_settings_message_age_6_months">последние 6 месяцев</string>
+    <string name="account_settings_message_age_1_year">последний год</string>
     <string name="account_settings_sync_remote_deletetions_label">Синхронное удаление</string>
     <string name="account_settings_sync_remote_deletetions_summary">Удалять сообщения при удалении на сервере</string>
     <string name="account_settings_openpgp_missing">Отсутствует OpenPGP-приложение – было удалено?</string>
     <string name="folder_settings_title">Настройки папки</string>
     <string name="folder_settings_in_top_group_label">Начало списка</string>
     <string name="folder_settings_clear_local_folder_action">Стереть локальные</string>
-    <string name="account_settings_incoming_label">Сервер входящих</string>
-    <string name="account_settings_incoming_summary">Настройки сервера входящей почты</string>
+    <string name="account_settings_incoming_label">Входящий сервер</string>
+    <string name="account_settings_incoming_summary">Настройка сервера входящей почты</string>
     <string name="account_settings_outgoing_label">Сервер исходящих</string>
     <string name="account_settings_outgoing_summary">Настройки сервера исходящей почты</string>
     <string name="account_settings_name_label">Ваше имя</string>
@@ -694,8 +692,7 @@
     <string name="enable_sign_only">Включить PGP \"Только подпись\"</string>
     <string name="disable_sign_only">Отключить PGP \"Только подпись\"</string>
     <string name="openpgp_inline_title">Режим PGP/INLINE</string>
-    <string name="openpgp_inline_text">Сообщение отправлено в формате PGP/INLINE.
-\nИспользуйте только для совместимости:</string>
+    <string name="openpgp_inline_text">Сообщение отправлено в формате PGP/INLINE. \nИспользуйте только для совместимости:</string>
     <string name="openpgp_inline_plus_compat">Некоторые клиенты поддерживают только этот формат</string>
     <string name="openpgp_inline_minus_transit">Подписи могут повредиться при передаче</string>
     <string name="openpgp_inline_minus_attach">Вложения не поддерживаются</string>
@@ -794,12 +791,7 @@
     <string name="ac_transfer_finish">Для завершения, откройте сообщение на новом устройстве и введите код установки.</string>
     <string name="ac_transfer_show_code">Показать код установки</string>
     <string name="ac_transfer_msg_subject">Настройки взаимного автошифрования</string>
-    <string name="ac_transfer_msg_body">Это сообщение содержит все сведения, необходимые для переноса настроек взаимного автошифрования вместе с секретным ключом с исходного устройства.
-
-Для настройки взаимного автошифрования на новом устройстве, следуйте руководству, отображаемому на новом устройстве.
-
-Это сообщение можно сохранить и использовать в качестве резервной копии своего секретного ключа. Запишите и надёжно сохраните пароль.
-</string>
+    <string name="ac_transfer_msg_body">Это сообщение содержит все сведения, необходимые для переноса настроек взаимного автошифрования вместе с секретным ключом с исходного устройства. Для настройки взаимного автошифрования на новом устройстве, следуйте руководству, отображаемому на новом устройстве. Это сообщение можно сохранить и использовать в качестве резервной копии своего секретного ключа. Запишите и надёжно сохраните пароль.</string>
     <string name="ac_transfer_error_send">Сбой при отправке сообщения. Проверьте соединение с сетью и настройки сервера исходящей почты.</string>
     <string name="switch_on">Вкл</string>
     <string name="switch_off">Выкл</string>
@@ -971,4 +963,7 @@
     <string name="animation_setting_on">Включена</string>
     <string name="animation_setting_off">Отключена</string>
     <string name="animation_setting_follow_system">Как в системе</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Запрещать клавиатуре обучаться на том, что вы вводите при написании сообщений</string>
+    <string name="global_settings_privacy_incognito_keyboard">Инкогнито-клавиатура</string>
+    <string name="sort_by_indicator">•</string>
 </resources>

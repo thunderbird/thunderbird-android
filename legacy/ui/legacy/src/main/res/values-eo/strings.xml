@@ -87,7 +87,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(sen temo)</string>
     <string name="general_no_sender">Neniu sendanto</string>
-    <string name="status_loading_more">Ŝargado de mesaĝoj\u2026</string>
+    <string name="status_loading_more">Ŝargado de mesaĝoj…</string>
     <string name="status_network_error">Konekta eraro</string>
     <string name="status_invalid_id_error">Mesaĝo ne trovita</string>
     <string name="status_loading_error">Eraro dum ŝargado de mesaĝo</string>
@@ -736,12 +736,7 @@
     <string name="ac_transfer_finish">Por fini, malfermu la mesaĝon per via alia aparato kaj entajpu la instal-kodon.</string>
     <string name="ac_transfer_show_code">Montri instal-kodon</string>
     <string name="ac_transfer_msg_subject">Instal-mesaĝo de Autocrypt</string>
-    <string name="ac_transfer_msg_body">Tiu ĉi mesaĝo enhavas ĉiujn informojn por transporti viajn agordojn de Autocrypt kune kun via privata ŝlosilo sekure el via origina aparato.
-
-Por agordi vian novan aparaton por Autocrypt, bonvolu plenumi la instrukciojn montrataj ĉe via nova aparato.
-
-Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata ŝlosilo. Por fari tion, skribu la pasvorton kaj tenu ĝin sekrete.
-</string>
+    <string name="ac_transfer_msg_body">Tiu ĉi mesaĝo enhavas ĉiujn informojn por transporti viajn agordojn de Autocrypt kune kun via privata ŝlosilo sekure el via origina aparato. Por agordi vian novan aparaton por Autocrypt, bonvolu plenumi la instrukciojn montrataj ĉe via nova aparato. Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata ŝlosilo. Por fari tion, skribu la pasvorton kaj tenu ĝin sekrete.</string>
     <string name="ac_transfer_error_send">Eraro okazis dum sendado de mesaĝo. Bonvolu kontroli vian retkonekton kaj agordojn de eliga servilo.</string>
     <string name="switch_on">Ek</string>
     <string name="switch_off">For</string>

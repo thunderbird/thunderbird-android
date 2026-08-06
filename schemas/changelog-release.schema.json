@@ -7,6 +7,7 @@
   "required": [
     "schemaVersion",
     "version",
+    "versioncode",
     "date",
     "notes"
   ],
@@ -18,6 +19,10 @@
     "version": {
       "type": "string",
       "minLength": 1
+    },
+    "versioncode": {
+      "type": "integer",
+      "minimum": 1
     },
     "date": {
       "type": "string",

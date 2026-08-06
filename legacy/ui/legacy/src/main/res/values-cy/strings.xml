@@ -352,7 +352,7 @@
     <string name="account_settings_crypto_encrypt_all_drafts_off">Amgryptio negeseuon drafft dim ond os yw amgryptio wedi\'i alluogi</string>
     <string name="account_settings_mail_check_frequency_label">Amlder gwirio ffolderi</string>
     <string name="account_settings_mail_display_count_label">Maint ffolder lleol</string>
-    <string name="account_settings_autodownload_message_size_label">Nôl negeseuon hyd at</string>
+    <string name="account_settings_autodownload_message_size_label">Estyn negeseuon hyd at</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
     <string name="account_settings_autodownload_message_size_4">4 KiB</string>
@@ -374,7 +374,7 @@
     <string name="account_settings_message_age_1">y 2 ddiwrnod diwethaf</string>
     <string name="account_settings_message_age_2">y 3 diwrnod diwethaf</string>
     <string name="account_settings_message_age_7">yr wythnos diwethaf</string>
-    <string name="account_settings_message_age_14">y 2 wythnos diwethaf</string>
+    <string name="account_settings_message_age_14">y pythefnos diwethaf</string>
     <string name="account_settings_message_age_21">y 3 wythnos diwethaf</string>
     <string name="account_settings_message_age_1_month">y mis diwethaf</string>
     <string name="account_settings_message_age_2_months">y 2 fis diwethaf</string>
@@ -388,7 +388,7 @@
     <string name="folder_settings_in_top_group_label">Dangos yn y grŵp uchaf</string>
     <string name="folder_settings_clear_local_folder_action">Clirio negeseuon lleol</string>
     <string name="account_settings_incoming_label">Gweinydd Derbyn</string>
-    <string name="account_settings_incoming_summary">Ffurfweddu\'r gweinydd Derbyn</string>
+    <string name="account_settings_incoming_summary">Ffurfweddu\'r gweinydd derbyn</string>
     <string name="account_settings_outgoing_label">Gweinydd Anfon</string>
     <string name="account_settings_outgoing_summary">Ffurfweddu\'r gweinydd Anfon (SMTP)</string>
     <string name="account_settings_name_label">Eich enw</string>
@@ -977,4 +977,7 @@
     <string name="animation_setting_off">I Ffwrdd</string>
     <string name="animation_setting_follow_system">Defnyddio rhagosodiad y system</string>
     <string name="no_network_message_will_be_sent_later_toast">All-lein. Bydd y neges yn cael ei hanfon pan fydd cysylltiad ar gael</string>
+    <string name="global_settings_privacy_incognito_keyboard">Bysellfwrdd cudd</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Gofyn i\'r bysellfwrdd i beidio â dysgu o\'r hyn rydych yn ei deipio wrth ysgrifennu neges</string>
+    <string name="sort_by_indicator">•</string>
 </resources>

@@ -15,9 +15,9 @@ import com.fsck.k9.mail.folders.FolderFetcherException
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.legacy.logging.Log
 
 class SpecialFoldersViewModel(
     private val formUiModel: SpecialFoldersContract.FormUiModel,

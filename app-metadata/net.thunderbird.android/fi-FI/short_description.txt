@@ -1,0 +1,1 @@
+Thunderbird on 100% avoimen lähdekoodin, tietosuojaan keskittyvä sovellus.

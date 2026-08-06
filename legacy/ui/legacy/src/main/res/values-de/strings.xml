@@ -90,7 +90,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Kein Betreff)</string>
     <string name="general_no_sender">Kein Absender</string>
-    <string name="status_loading_more">Nachrichten werden geladen\u2026</string>
+    <string name="status_loading_more">Nachrichten werden geladen…</string>
     <string name="status_network_error">Verbindungsfehler</string>
     <string name="status_invalid_id_error">Nachricht nicht gefunden</string>
     <string name="status_loading_error">Nachrichtenladefehler</string>
@@ -284,7 +284,7 @@
     <string name="idle_refresh_period_24min">Alle 24 Minuten</string>
     <string name="idle_refresh_period_36min">Alle 36 Minuten</string>
     <string name="idle_refresh_period_48min">Alle 48 Minuten</string>
-    <string name="idle_refresh_period_60min">Jede Stunde</string>
+    <string name="idle_refresh_period_60min">Alle 60 Minuten</string>
     <string name="account_setup_options_mail_display_count_10">10 Nachrichten</string>
     <string name="account_setup_options_mail_display_count_25">25 Nachrichten</string>
     <string name="account_setup_options_mail_display_count_50">50 Nachrichten</string>
@@ -355,9 +355,9 @@
     <string name="account_settings_crypto_encrypt_all_drafts">Alle Entwürfe verschlüsselt speichern</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle Entwürfe werden verschlüsselt gespeichert</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Entwürfe nur verschlüsseln, wenn Verschlüsselung aktiviert ist</string>
-    <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
-    <string name="account_settings_mail_display_count_label">Anzahl anzuzeigender Nachrichten</string>
-    <string name="account_settings_autodownload_message_size_label">Nachrichten automatisch laden bis</string>
+    <string name="account_settings_mail_check_frequency_label">Häufigkeit der Ordnerabfrage</string>
+    <string name="account_settings_mail_display_count_label">Lokale Ordnergröße</string>
+    <string name="account_settings_autodownload_message_size_label">Nachrichten abrufen bis zu</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
     <string name="account_settings_autodownload_message_size_4">4 KiB</string>
@@ -372,20 +372,20 @@
     <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
     <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
     <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
-    <string name="account_settings_autodownload_message_size_any">Keine Beschränkung</string>
-    <string name="account_settings_message_age_label">Nachrichten synchronisieren</string>
-    <string name="account_settings_message_age_any">Alle (keine Beschränkung)</string>
-    <string name="account_settings_message_age_0">von heute</string>
-    <string name="account_settings_message_age_1">der letzten 2 Tage</string>
-    <string name="account_settings_message_age_2">der letzten 3 Tage</string>
+    <string name="account_settings_autodownload_message_size_any">jede Größe (unbegrenzt)</string>
+    <string name="account_settings_message_age_label">Nachrichten synchronisieren von</string>
+    <string name="account_settings_message_age_any">jederzeit (unbegrenzt)</string>
+    <string name="account_settings_message_age_0">heute</string>
+    <string name="account_settings_message_age_1">den letzten 2 Tagen</string>
+    <string name="account_settings_message_age_2">den letzten 3 Tagen</string>
     <string name="account_settings_message_age_7">der letzten Woche</string>
-    <string name="account_settings_message_age_14">der letzten 2 Wochen</string>
-    <string name="account_settings_message_age_21">der letzten 3 Wochen</string>
-    <string name="account_settings_message_age_1_month">des letzten Monats</string>
-    <string name="account_settings_message_age_2_months">der letzten 2 Monate</string>
-    <string name="account_settings_message_age_3_months">der letzten 3 Monate</string>
-    <string name="account_settings_message_age_6_months">der letzten 6 Monate</string>
-    <string name="account_settings_message_age_1_year">des letzten Jahres</string>
+    <string name="account_settings_message_age_14">den letzten 2 Wochen</string>
+    <string name="account_settings_message_age_21">den letzten 3 Wochen</string>
+    <string name="account_settings_message_age_1_month">dem letzten Monat</string>
+    <string name="account_settings_message_age_2_months">den letzten 2 Monaten</string>
+    <string name="account_settings_message_age_3_months">den letzten 3 Monaten</string>
+    <string name="account_settings_message_age_6_months">den letzten 6 Monaten</string>
+    <string name="account_settings_message_age_1_year">dem letzten Jahr</string>
     <string name="account_settings_sync_remote_deletetions_label">Löschungen vom Server übernehmen</string>
     <string name="account_settings_sync_remote_deletetions_summary">Nachrichten löschen, wenn sie vom Server gelöscht wurden</string>
     <string name="account_settings_openpgp_missing">Fehlende OpenPGP-App – wurde sie deinstalliert?</string>
@@ -727,7 +727,7 @@
     <string name="crypto_msg_encrypted_insecure">aber die Verschlüsselung wird nicht als sicher angesehen</string>
     <string name="locked_attach_unlock">Entsperren</string>
     <string name="locked_attach_unencrypted">Dieser Teil wurde nicht verschlüsselt und könnte unsicher sein.</string>
-    <string name="message_progress_text">Wird geladen …</string>
+    <string name="message_progress_text">Wird geladen …</string>
     <string name="messageview_decrypt_cancelled">Entschlüsselung abgebrochen.</string>
     <string name="messageview_decrypt_retry">Wiederholen</string>
     <string name="messageview_decrypt_incomplete">Verschlüsselte Nachricht muss für die Entschlüsselung heruntergeladen werden.</string>
@@ -778,12 +778,7 @@
     <string name="ac_transfer_finish">Um abzuschließen, öffne die Nachricht auf einem anderen Gerät und gib den Setup-Code ein.</string>
     <string name="ac_transfer_show_code">Setup-Code anzeigen</string>
     <string name="ac_transfer_msg_subject">Autocrypt-Setup-Nachricht</string>
-    <string name="ac_transfer_msg_body">Diese Nachricht enthält alle Informationen, um deine Autocrypt-Einstellungen zusammen mit deinem geheimen Schlüssel von deinem ursprünglichen Gerät sicher zu übertragen.
-
-Um dein neues Gerät für Autocrypt einzurichten, folge bitte den Anweisungen, die auf dem neuen Gerät angezeigt werden.
-
-Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schlüssel nutzen. Wenn du das tun möchtest, solltest du dir das Passwort notieren und sicher verwahren.
-</string>
+    <string name="ac_transfer_msg_body">Diese Nachricht enthält alle Informationen, um deine Autocrypt-Einstellungen zusammen mit deinem geheimen Schlüssel von deinem ursprünglichen Gerät sicher zu übertragen. Um dein neues Gerät für Autocrypt einzurichten, folge bitte den Anweisungen, die auf dem neuen Gerät angezeigt werden. Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schlüssel nutzen. Wenn du das tun möchtest, solltest du dir das Passwort notieren und sicher verwahren.</string>
     <string name="ac_transfer_error_send">Beim Senden der Nachricht trat ein Fehler auf. Bitte überprüfe deine Netzwerkverbindung und die Konfiguration deines Postausgangsservers.</string>
     <string name="switch_on">An</string>
     <string name="switch_off">Aus</string>
@@ -916,7 +911,7 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="general_settings_message_list_date_time_format_title">Datums-/Zeitformat</string>
     <string name="general_settings_message_list_date_time_format_contextual">Kontextbezogen</string>
     <string name="general_settings_message_list_date_time_format_full">Vollständig</string>
-    <string name="sort_by_then_by">Dann nach …</string>
+    <string name="sort_by_then_by">Dann nach …</string>
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
     <plurals name="message_view_attachment_summary">
         <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Anhang (<xliff:g id="size">%2$s</xliff:g>)</item>
@@ -953,4 +948,7 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="animation_setting_on">Ein</string>
     <string name="animation_setting_off">Aus</string>
     <string name="animation_setting_follow_system">Systemstandard verwenden</string>
+    <string name="sort_by_indicator">•</string>
+    <string name="global_settings_privacy_incognito_keyboard">Inkognito-Tastatur</string>
+    <string name="global_settings_privacy_incognito_keyboard_detail">Die Tastatur daran hindern, beim Verfassen von Nachrichten aus deinen Eingaben zu lernen</string>
 </resources>

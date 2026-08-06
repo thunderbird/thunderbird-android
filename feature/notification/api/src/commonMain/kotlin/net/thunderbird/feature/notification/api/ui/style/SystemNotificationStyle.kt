@@ -53,7 +53,6 @@ sealed interface SystemNotificationStyle {
  * }
  * ```
  */
-@NotificationStyleMarker
 fun systemNotificationStyle(
     builder: @NotificationStyleMarker SystemNotificationStyleBuilder.() -> Unit,
 ): SystemNotificationStyle {

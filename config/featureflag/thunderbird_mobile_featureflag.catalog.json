@@ -1,0 +1,93 @@
+{
+  "$schema": "thunderbird_mobile_featureflag.schema.json",
+  "version": "2026-07-30.1",
+  "flags": [
+    {
+      "key": "archive_marks_as_read",
+      "default": true,
+      "description": "Marks message as read when archived."
+    },
+    {
+      "key": "disable_font_size_config",
+      "default": true,
+      "description": "Disables legacy font-size configuration UI."
+    },
+    {
+      "key": "email_notification_default",
+      "default": true,
+      "description": "Default email-notification behaviour for new accounts."
+    },
+    {
+      "key": "display_in_app_notifications",
+      "default": false,
+      "description": "Enables in-app notifications."
+    },
+    {
+      "key": "use_notification_sender_for_system_notifications",
+      "default": false,
+      "description": "Uses NotificationSender for system notifications instead of the legacy controller."
+    },
+    {
+      "key": "use_compose_for_message_list_items",
+      "default": false,
+      "description": "Renders the legacy message-list items using Jetpack Compose."
+    },
+    {
+      "key": "message_view_action_export_eml",
+      "default": false,
+      "description": "Adds the 'Export EML' message action."
+    },
+    {
+      "key": "enable_avatar_customization",
+      "default": true,
+      "description": "Enables avatar customization in account settings."
+    },
+    {
+      "key": "use_new_message_reader_css_styles",
+      "default": true,
+      "description": "Uses new message-reader CSS styles.",
+      "time_to_promote": "2026-12-31"
+    },
+    {
+      "key": "enable_message_list_new_state",
+      "default": false,
+      "description": "Enables the new message-list state."
+    },
+    {
+      "key": "use_compose_for_message_reader",
+      "default": false,
+      "description": "Renders the message reader using Jetpack Compose."
+    },
+    {
+      "key": "thundermail_onboarding_enabled",
+      "default": true,
+      "description": "Enables Thundermail onboarding flow.",
+      "time_to_promote": "2026-12-31"
+    }
+  ],
+  "overrides": {
+    "thunderbird": {
+      "debug": {
+        "display_in_app_notifications": true,
+        "use_notification_sender_for_system_notifications": true,
+        "message_view_action_export_eml": true
+      },
+      "daily": {
+        "display_in_app_notifications": true,
+        "message_view_action_export_eml": true
+      },
+      "beta": {
+        "display_in_app_notifications": true
+      },
+      "release": {}
+    },
+    "k9": {
+      "debug": {
+        "display_in_app_notifications": true,
+        "use_notification_sender_for_system_notifications": true,
+        "message_view_action_export_eml": true
+      },
+      "release": {}
+    }
+  }
+}

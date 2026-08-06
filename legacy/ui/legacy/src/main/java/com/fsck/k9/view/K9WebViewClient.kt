@@ -17,7 +17,7 @@ import com.fsck.k9.helper.ClipboardManager
 import com.fsck.k9.mailstore.AttachmentResolver
 import com.fsck.k9.ui.R
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 /**
  * [WebViewClient] that intercepts requests for `cid:` URIs to load the respective body part.

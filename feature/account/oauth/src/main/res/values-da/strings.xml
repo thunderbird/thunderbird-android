@@ -4,4 +4,6 @@
     <string name="account_oauth_loading_error">OAuth login mislykkedes</string>
     <string name="account_oauth_loading_message">Logger ind med OAuth</string>
     <string name="account_oauth_sign_in_button">Log ind</string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 er på nuværende tidspunkt ikke understøttet hos denne udbyder.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">support artikel</string>
 </resources>

@@ -7,6 +7,7 @@ dependencies {
     api(projects.mail.common)
     implementation(projects.core.common)
     implementation(projects.feature.mail.folder.api)
+    implementation(projects.legacy.logging)
 
     implementation(libs.jzlib)
     implementation(libs.jutf7)

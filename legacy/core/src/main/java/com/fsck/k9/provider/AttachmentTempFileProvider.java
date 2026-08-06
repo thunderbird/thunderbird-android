@@ -19,7 +19,7 @@ import androidx.annotation.WorkerThread;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import app.k9mail.legacy.di.DI;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 import com.fsck.k9.K9;
 import net.thunderbird.core.preference.GeneralSettingsManager;

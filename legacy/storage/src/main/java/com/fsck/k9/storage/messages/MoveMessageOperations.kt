@@ -7,7 +7,7 @@ import app.k9mail.core.android.common.database.getLongOrNull
 import app.k9mail.core.android.common.database.getStringOrNull
 import com.fsck.k9.mailstore.LockableDatabase
 import java.util.UUID
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
 

@@ -7,16 +7,14 @@
     <string name="notification_channel_miscellaneous_title">Diversi</string>
     <string name="notification_channel_miscellaneous_description">Nutificazioni diverse tale chì sbaglii, ecc.</string>
     <string name="notification_notify_error_title">Sbagliu di nutificazione</string>
-    <string name="notification_notify_error_text">Un sbagliu hè accadutu pruvendu di creà una nutificazione di sistema per un messaghju novu. A ragione prubabile hè l’assenza di sonu di nutificazione.
-\n
-\nPicchichjà per apre i parametri di nutificazione.</string>
+    <string name="notification_notify_error_text">Un sbagliu hè accadutu pruvendu di creà una nutificazione di sistema per un messaghju novu. A ragione prubabile hè l’assenza di sonu di nutificazione. \n \nPicchichjà per apre i parametri di nutificazione.</string>
     <string name="notification_authentication_error_title">Fiascu d’autenticazione</string>
     <string name="notification_certificate_error_public">Sbagliu di certificatu</string>
     <string name="notification_certificate_error_title">Sbagliu di certificatu per %1$s</string>
     <string name="notification_certificate_error_text">Verificate i vostri parametri di servitore</string>
     <string name="notification_bg_sync_ticker">Rileva di i messaghji : %1$s:%2$s</string>
     <string name="notification_bg_sync_title">Rileva di i messaghji</string>
-    <string name="notification_bg_send_ticker">Inviu di i messaghji : %1$s</string>
+    <string name="notification_bg_send_ticker">Inviu di i messaghji : %1$s</string>
     <string name="notification_bg_send_title">Inviu di i messaghji</string>
     <string name="send_failure_subject">Fiascu per mandà certi messaghji</string>
     <string name="notification_additional_messages">+ %1$d di più nant’à %2$s</string>
@@ -38,7 +36,7 @@
     <string name="notification_action_spam">Merzaghju</string>
     <string name="notification_authentication_incoming_server_error_text">Fiascu d’autenticazione per %1$s. Mittite à livellu i vostri parametri di servitore d’entrata.</string>
     <string name="notification_authentication_outgoing_server_error_text">Fiascu d’autenticazione per %1$s. Mittite à livellu i vostri parametri di servitore d’esciuta.</string>
-    <string name="notification_bg_sync_text">%1$s : %2$s</string>
+    <string name="notification_bg_sync_text">%1$s : %2$s</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one">%1$d messaghju novu</item>
         <item quantity="other">%1$d messaghji novi</item>

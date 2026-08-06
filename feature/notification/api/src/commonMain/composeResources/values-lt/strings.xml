@@ -7,9 +7,7 @@
     <string name="notification_channel_miscellaneous_title">Įvairūs</string>
     <string name="notification_channel_miscellaneous_description">Įvairūs pranešimai, pavyzdžiui, apie klaidas ir pan.</string>
     <string name="notification_notify_error_title">Pranešimo klaida</string>
-    <string name="notification_notify_error_text">Bandant sukurti sistemos pranešimą apie naują laišką, įvyko klaida. Tikėtina priežastis – trūkstamas pranešimo garsas.
-\n
-\nBakstelėkite pranešimų nustatymams atverti.</string>
+    <string name="notification_notify_error_text">Bandant sukurti sistemos pranešimą apie naują laišką, įvyko klaida. Tikėtina priežastis – trūkstamas pranešimo garsas. \n \nBakstelėkite pranešimų nustatymams atverti.</string>
     <string name="notification_authentication_error_title">Autentifikavimas nepavyko</string>
     <string name="notification_certificate_error_public">Sertifikato klaida</string>
     <string name="notification_certificate_error_title">Sertifikato klaida %1$s</string>

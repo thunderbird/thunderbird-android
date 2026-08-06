@@ -10,7 +10,7 @@
     <string name="account_setup_options_email_signature_error_blank">Nazwa podpisu e-mail nie może być pusta.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">Wymagane jest zatwierdzenie konfiguracji.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Otrzymaliśmy konfigurację Twojego serwera poczty e-mail za pośrednictwem połączenia, które nie jest tak bezpieczne, jak byśmy tego chcieli. Oznacza to, że istnieje niewielka szansa, że ktoś mógł je zmienić. Czy możesz dokładnie sprawdzić podaną konfigurację, aby upewnić się, że jest taka, jak powinna\?</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Otrzymaliśmy konfigurację Twojego serwera poczty e-mail za pośrednictwem połączenia, które nie jest tak bezpieczne, jak byśmy tego chcieli. Oznacza to, że istnieje niewielka szansa, że ktoś mógł je zmienić. Czy możesz dokładnie sprawdzić podaną konfigurację, aby upewnić się, że jest taka, jak powinna?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Edytuj konfigurację</string>
     <string name="account_setup_error_unknown">Nieznany błąd</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
@@ -20,7 +20,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Adres e-mail jest wymagany.</string>
     <string name="account_setup_auto_discovery_loading_error">Nie udało się wczytać konfiguracji poczty e-mail</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ufam tej konfiguracji</string>
-    <string name="account_setup_error_network">Błąd sieci. Sprawdź stan połączenia i spróbuj ponownie.</string>
+    <string name="account_setup_error_network">Błąd sieci. Sprawdź stan połączenia i spróbuj ponownie.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Nie jest rozpoznawany jako prawidłowy adres e-mail.</string>
     <string name="account_setup_options_email_check_frequency_never">Nigdy</string>
     <string name="account_setup_auto_discovery_loading_message">Sprawdzanie konfiguracji…</string>
@@ -35,7 +35,7 @@
     <string name="account_setup_special_folders_success_message">Wszystkie foldery specjalne zostały skonfigurowane automatycznie przez serwer.</string>
     <string name="account_setup_special_folders_folder_automatic">Automatyczny (%s)</string>
     <string name="account_setup_special_folders_drafts_folder_label">Folder wersji roboczych</string>
-    <string name="account_setup_special_folders_error_message">Nie udało się pobrać listy folderów z serwera</string>
+    <string name="account_setup_special_folders_error_message">Nie udało się pobrać listy folderów z serwera</string>
     <string name="account_setup_special_folders_loading_message">Pobieranie listy folderów…</string>
     <string name="account_setup_special_folders_form_description">Określ foldery specjalne dla swojego konta.</string>
     <string name="account_setup_special_folders_sent_folder_label">Folder wysłanych</string>
@@ -43,7 +43,7 @@
     <string name="account_setup_special_folders_trash_folder_label">Folder kosza</string>
     <string name="account_setup_special_folders_archive_folder_label">Folder archiwum</string>
     <string name="account_setup_special_folders_spam_folder_label">Folder spamu</string>
-    <string name="account_setup_special_folders_form_description_automatic">Pozycja „Automatyczny” będzie podążać automatycznie za zmianami wprowadzonymi przez serwer. Bieżąca wartość serwera jest wyświetlana w nawiasach.</string>
+    <string name="account_setup_special_folders_form_description_automatic">Pozycja „Automatyczny” będzie podążać automatycznie za zmianami wprowadzonymi przez serwer. Bieżąca wartość serwera jest wyświetlana w nawiasach.</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">Hasło jest wymagane.</string>
     <plurals name="account_setup_options_email_check_frequency_minutes">
         <item quantity="one">Co minutę</item>
@@ -63,6 +63,6 @@
         <item quantity="many">%d wiadomości</item>
         <item quantity="other">%d wiadomości</item>
     </plurals>
-    <string name="account_setup_options_your_name_label">Imię i nazwisko</string>
-    <string name="account_setup_options_your_name_error_required">Imię i nazwisko jest wymagane.</string>
+    <string name="account_setup_options_your_name_label">Imię i nazwisko</string>
+    <string name="account_setup_options_your_name_error_required">Imię i nazwisko jest wymagane.</string>
 </resources>

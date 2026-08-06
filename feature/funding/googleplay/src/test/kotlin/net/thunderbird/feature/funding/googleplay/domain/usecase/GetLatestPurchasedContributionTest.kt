@@ -119,6 +119,23 @@ internal class GetLatestPurchasedContributionTest {
     }
 
     @Test
+    fun `return null if there are only expired one-time contributions`() = runTest {
+        // Given
+        val expiredOneTimePurchase = FakeData.purchasedOneTimeContribution.copy(
+            purchaseDate = EXPIRED_ONE_TIME_PURCHASE_DATE,
+        )
+        repository.purchasedFlow = flowOf(Outcome.success(listOf(expiredOneTimePurchase)))
+
+        // When
+        val result = testSubject().first()
+
+        // Then
+        assertThat(result).isInstanceOf(Outcome.Success::class)
+        val data = (result as Outcome.Success).data
+        assertThat(data).isNull()
+    }
+
+    @Test
     fun `return the latest one-time contribution if there are only expired recurring contributions`() = runTest {
         // Given
         val expiredRecurringPurchase = FakeData.purchasedRecurringContribution.copy(
@@ -177,10 +194,11 @@ internal class GetLatestPurchasedContributionTest {
         private val VALID_PURCHASE_DATE_MINUS_1_DAY =
             CURRENT_TIME.minus(1.days).toLocalDateTime(TimeZone.currentSystemDefault())
 
-        private val VALIDITY_PERIOD = 90.days
-
         private val INVALID_PURCHASE_DATE = CURRENT_TIME.minus(
-            VALIDITY_PERIOD + 1.seconds,
+            90.days + 1.seconds,
+        ).toLocalDateTime(TimeZone.currentSystemDefault())
+        private val EXPIRED_ONE_TIME_PURCHASE_DATE = CURRENT_TIME.minus(
+            30.days + 1.seconds,
         ).toLocalDateTime(TimeZone.currentSystemDefault())
     }
 }

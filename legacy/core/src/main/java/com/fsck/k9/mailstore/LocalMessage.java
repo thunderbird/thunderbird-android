@@ -22,7 +22,7 @@ import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType;
 import net.thunderbird.core.android.account.LegacyAccountDto;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;
 

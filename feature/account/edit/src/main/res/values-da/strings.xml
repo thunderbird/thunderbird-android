@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_edit_save_server_settings_loading_message">Gemmer server indstillinger…</string>
+    <string name="account_edit_save_server_settings_error_message">Kunne ikke gemme server indstillinger</string>
+    <string name="account_edit_save_server_settings_success_message">Server indstillinger gemt</string>
 </resources>

@@ -311,7 +311,7 @@
     <string name="account_settings_crypto">Crioptografachd</string>
     <string name="account_settings_crypto_app">Aplacaid OpenPGP</string>
     <string name="account_settings_crypto_key">An iuchair agam</string>
-    <string name="account_settings_mail_check_frequency_label">Dè cho tric ’s a dh’iarras sinn am post\?</string>
+    <string name="account_settings_mail_check_frequency_label">Dè cho tric ’s a dh’iarras sinn am post?</string>
     <string name="account_settings_mail_display_count_label">Meud a’ phasgain ionadail</string>
     <string name="account_settings_autodownload_message_size_label">Faigh teachdaireachdan suas ri</string>
     <string name="account_settings_autodownload_message_size_1">1KB</string>
@@ -482,30 +482,30 @@
     <string name="font_size_larger">Nas motha</string>
     <string name="error_activity_not_found">Cha deach aplacaid iomchaidh a lorg dhan ghnìomh seo.</string>
     <string name="send_failed_reason">Dh’fhàillig a chur: %s</string>
-    <string name="save_or_discard_draft_message_dlg_title">A bheil thu airson dreachd na teachdaireachd a shàbhaladh\?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">A bheil thu airson an teachdaireachd seo a shàbhaladh no a thilgeil air falbh\?</string>
-    <string name="confirm_discard_draft_message_title">A bheil thu airson an teachdaireachd seo a thilgeil air falbh\?</string>
-    <string name="confirm_discard_draft_message">A bheil thu cinnteach gu bheil thu airson an teachdaireachd seo a thilgeil air falbh\?</string>
+    <string name="save_or_discard_draft_message_dlg_title">A bheil thu airson dreachd na teachdaireachd a shàbhaladh?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">A bheil thu airson an teachdaireachd seo a shàbhaladh no a thilgeil air falbh?</string>
+    <string name="confirm_discard_draft_message_title">A bheil thu airson an teachdaireachd seo a thilgeil air falbh?</string>
+    <string name="confirm_discard_draft_message">A bheil thu cinnteach gu bheil thu airson an teachdaireachd seo a thilgeil air falbh?</string>
     <string name="dialog_confirm_delete_title">Dearbh an sguabadh às</string>
-    <string name="dialog_confirm_delete_message">A bheil thu cinnteach gu bheil thu airson an teachdaireachd seo a sguabadh às\?</string>
+    <string name="dialog_confirm_delete_message">A bheil thu cinnteach gu bheil thu airson an teachdaireachd seo a sguabadh às?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a sguabadh às\?</item>
-        <item quantity="two">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> theachdaireachd a sguabadh às\?</item>
-        <item quantity="few">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachdan a sguabadh às\?</item>
-        <item quantity="other">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a sguabadh às\?</item>
+        <item quantity="one">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a sguabadh às?</item>
+        <item quantity="two">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> theachdaireachd a sguabadh às?</item>
+        <item quantity="few">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachdan a sguabadh às?</item>
+        <item quantity="other">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a sguabadh às?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Tha</string>
     <string name="dialog_confirm_delete_cancel_button">Chan eil</string>
     <string name="dialog_confirm_mark_all_as_read_title">Comharraich gun deach gach teachdaireachd a leughadh</string>
-    <string name="dialog_confirm_mark_all_as_read_message">A bheil thu airson comharradh gun deach na teachdaireachdan uile seo a leughadh\?</string>
+    <string name="dialog_confirm_mark_all_as_read_message">A bheil thu airson comharradh gun deach na teachdaireachdan uile seo a leughadh?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Tha</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Chan eil</string>
     <string name="dialog_confirm_spam_title">Dearbh a ghluasad do phasgan an spama</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a ghluasad gu pasgan an spama\?</item>
-        <item quantity="two">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> theachdaireachd a ghluasad gu pasgan an spama\?</item>
-        <item quantity="few">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachdan a ghluasad gu pasgan an spama\?</item>
-        <item quantity="other">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a ghluasad gu pasgan an spama\?</item>
+        <item quantity="one">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a ghluasad gu pasgan an spama?</item>
+        <item quantity="two">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> theachdaireachd a ghluasad gu pasgan an spama?</item>
+        <item quantity="few">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachdan a ghluasad gu pasgan an spama?</item>
+        <item quantity="other">A bheil thu cinnteach gu bheil thu airson <xliff:g id="message_count">%1$d</xliff:g> teachdaireachd a ghluasad gu pasgan an spama?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Tha</string>
     <string name="dialog_confirm_spam_cancel_button">Chan eil</string>
@@ -609,8 +609,7 @@
     <string name="enable_sign_only">Cuir PGP Sign-Only an comas</string>
     <string name="disable_sign_only">Cuir PGP Sign-Only à comas</string>
     <string name="openpgp_inline_title">Am modh PGP/INLINE</string>
-    <string name="openpgp_inline_text">Tha am post-d seo ’ga chur san fhòrmat PGP/INLINE.
-\nCha bu chòir dhut seo a dhèanamh ach airson co-chòrdalachd:</string>
+    <string name="openpgp_inline_text">Tha am post-d seo ’ga chur san fhòrmat PGP/INLINE. \nCha bu chòir dhut seo a dhèanamh ach airson co-chòrdalachd:</string>
     <string name="openpgp_inline_plus_compat">Tha cuid a chliantan ann nach cuir taic ach ris an fhòrmat seo</string>
     <string name="openpgp_inline_minus_transit">Dh’fhaoidte gum bris soidhneadh rè an tar-chuir</string>
     <string name="openpgp_inline_minus_attach">Chan eil taic ri ceanglachain</string>
@@ -668,8 +667,7 @@
     <string name="error_sign_only_no_encryption">Chan eil crioptachadh ri fhaighinn sa mhodh anns nach dèanar ach soidhneadh!</string>
     <string name="unsigned_text_divider_label">Teacsa gun soidhneadh</string>
     <string name="crypto_no_provider_title">Tha am post-d seo crioptaichte</string>
-    <string name="crypto_no_provider_message">Chaidh am post-d seo a chrioptachadh le OpenPGP.
-\nFeumaidh tu aplacaid a tha comasach air OpenPGP a stàladh is a rèiteachadh mus urrainn dhut a leughadh.</string>
+    <string name="crypto_no_provider_message">Chaidh am post-d seo a chrioptachadh le OpenPGP. \nFeumaidh tu aplacaid a tha comasach air OpenPGP a stàladh is a rèiteachadh mus urrainn dhut a leughadh.</string>
     <string name="crypto_no_provider_button">Tagh aplacaid OpenPGP</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->

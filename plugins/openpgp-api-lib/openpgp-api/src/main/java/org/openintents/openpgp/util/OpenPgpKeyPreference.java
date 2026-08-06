@@ -30,7 +30,7 @@ import android.util.AttributeSet;
 import androidx.core.content.IntentCompat;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback;
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError;

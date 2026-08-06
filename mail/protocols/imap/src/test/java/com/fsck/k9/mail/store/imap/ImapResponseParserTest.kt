@@ -19,8 +19,8 @@ import com.fsck.k9.mail.filter.FixedLengthInputStream
 import com.fsck.k9.mail.filter.PeekableInputStream
 import java.io.ByteArrayInputStream
 import java.io.IOException
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.legacy.logging.Log
 import org.junit.Before
 import org.junit.Test
 

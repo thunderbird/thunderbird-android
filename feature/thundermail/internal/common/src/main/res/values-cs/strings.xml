@@ -5,4 +5,8 @@
     <string name="thundermail_browser_is_not_available">Prohlížeč není dostupný. Zkontrolujte prosím nastavení vašeho zařízení</string>
     <string name="thundermail_operation_was_canceled">Operace byla zrušena</string>
     <string name="thundermail_unknown_error_please_consider_reporting">Neznámá chyba. Zvažte prosím její nahlášení.</string>
+    <string name="thundermail_add_account">Přidat účet</string>
+    <string name="thundermail_add_an_email_account">Přidat e-mailový účet</string>
+    <string name="thundermail_what_is_thundermail">Co je to Thundermail?</string>
+    <string name="thundermail_or_divider">– nebo –</string>
 </resources>

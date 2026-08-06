@@ -14,8 +14,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Effect
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Event
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.ui.contract.mvi.observe
+import net.thunderbird.legacy.logging.Log
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

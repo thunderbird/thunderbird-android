@@ -36,7 +36,7 @@ import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import com.fsck.k9.mailstore.MessageViewInfoExtractor.ViewableExtractedText;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import app.k9mail.html.cleaner.HtmlProcessor;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 import net.thunderbird.core.logging.testing.TestLogger;
 import org.junit.Before;
 import org.junit.Test;

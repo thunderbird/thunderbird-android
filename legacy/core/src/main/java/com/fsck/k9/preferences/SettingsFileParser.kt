@@ -8,7 +8,7 @@ import com.fsck.k9.preferences.SettingsFile.Server
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.UUID
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory

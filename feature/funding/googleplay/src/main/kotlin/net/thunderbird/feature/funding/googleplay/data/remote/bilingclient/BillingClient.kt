@@ -12,10 +12,8 @@ import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesResult
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
-import com.android.billingclient.api.QueryPurchaseHistoryParams
 import com.android.billingclient.api.QueryPurchasesParams
 import com.android.billingclient.api.queryProductDetails
-import com.android.billingclient.api.queryPurchaseHistory
 import com.android.billingclient.api.queryPurchasesAsync
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +37,6 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContrib
 
 internal typealias OneTimeContributionOutcome = Outcome<List<OneTimeContribution>, ContributionError>
 internal typealias RecurringContributionOutcome = Outcome<List<RecurringContribution>, ContributionError>
-internal typealias PurchasedContributionOutcome = Outcome<PurchasedContribution?, ContributionError>
 internal typealias PurchasedContributionsOutcome = Outcome<List<PurchasedContribution>, ContributionError>
 
 @Suppress("TooManyFunctions")
@@ -133,41 +130,6 @@ internal class BillingClient(
             logger.error(
                 message = {
                     "Error loading recurring purchases: ${purchasesResult.billingResult.debugMessage}"
-                },
-            )
-            billingError
-        }
-    }
-
-    override suspend fun loadPurchasedOneTimeContributionHistory(): PurchasedContributionOutcome {
-        val queryPurchaseHistoryParams = QueryPurchaseHistoryParams.newBuilder()
-            .setProductType(ProductType.INAPP)
-            .build()
-
-        val purchasesResult = clientProvider.current.queryPurchaseHistory(queryPurchaseHistoryParams)
-        val purchase = purchasesResult.purchaseHistoryRecordList.orEmpty().firstOrNull()
-        val productIds = purchase?.products.orEmpty()
-        loadMissingProducts(ProductType.INAPP, productIds)
-
-        return purchasesResult.billingResult.mapToOutcome {
-            val productId = purchase?.products?.firstOrNull {
-                productCache.hasKey(ContributionId(it))
-            }
-            val productDetails = productId?.let { productCache[ContributionId(it)] }
-
-            if (purchase != null && productDetails != null) {
-                productMapper.mapHistoryToPurchasedContribution(
-                    purchase = purchase,
-                    productDetails = productDetails,
-                )
-            } else {
-                logger.error(message = { "No recent purchase found: ${purchasesResult.billingResult.debugMessage}" })
-                null
-            }
-        }.mapFailure { billingError, _ ->
-            logger.error(
-                message = {
-                    "Error loading one-time purchase history: ${purchasesResult.billingResult.debugMessage}"
                 },
             )
             billingError

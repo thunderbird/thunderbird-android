@@ -5,4 +5,8 @@
     <string name="thundermail_browser_is_not_available">Brskalnik ni na voljo. Preverite nastavitve naprave.</string>
     <string name="thundermail_operation_was_canceled">Opravile je bilo preklicano.</string>
     <string name="thundermail_unknown_error_please_consider_reporting">Neznana napaka. Prosimo, razmislite o pošiljanju poročila.</string>
+    <string name="thundermail_add_account">Dodaj račun</string>
+    <string name="thundermail_add_an_email_account">Dodaj e-poštni račun</string>
+    <string name="thundermail_what_is_thundermail">Kaj je Thundermail?</string>
+    <string name="thundermail_or_divider">– ali –</string>
 </resources>

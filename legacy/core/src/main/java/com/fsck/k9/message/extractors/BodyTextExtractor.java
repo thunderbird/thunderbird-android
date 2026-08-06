@@ -2,7 +2,7 @@ package com.fsck.k9.message.extractors;
 
 
 import androidx.annotation.NonNull;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;

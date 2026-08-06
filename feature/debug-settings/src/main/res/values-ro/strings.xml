@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="debug_settings_screen_title">Ecranul cu opțiuni de depanare secrete</string>
+    <string name="debug_settings_notifications_loading">Se încarcă…</string>
+    <string name="debug_settings_notifications_trigger_notification">Declanșează o notificare</string>
+    <string name="debug_settings_notifications_single_mail_sender">Expeditor</string>
+    <string name="debug_settings_notifications_single_mail_subject">Subiect</string>
+    <string name="debug_settings_notifications_single_mail_summary">Rezumat</string>
+    <string name="debug_settings_notifications_single_mail_preview">Previzualizare</string>
+    <string name="debug_settings_notifications_common_notification_information">Informații generale privind notificările</string>
+    <string name="debug_settings_notifications_in_app_notification">Notificare în aplicație</string>
+    <string name="debug_settings_notifications_title">Notificări</string>
+    <string name="debug_settings_notifications_system_notification">Notificare de sistem</string>
+    <string name="debug_settings_notifications_preparing_notification">Se pregătește notificarea %1$s</string>
+    <string name="debug_settings_notification_status_log">Jurnalul stării notificărilor</string>
+    <string name="debug_settings_notifications_status">"Starea: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Șterge jurnalul de stare</string>
+    <string name="debug_settings_feature_flag_unsaved_changes">Modificări nesalvate</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_content_text">Aveți modificări nesalvate. Sunteți sigur că doriți să ieșiți?</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_stay_button">Rămâneți</string>
+    <string name="debug_settings_feature_flag_unsaved_changes_leave_button">Ieșiți</string>
+    <string name="debug_settings_feature_flag_restore_default_values">Restaurează valorile implicite</string>
+    <string name="debug_settings_feature_flag_apply_changes">Aplică modificările</string>
+    <string name="debug_settings_feature_flag_modified_indicator">"* "</string>
+    <string name="debug_settings_feature_flag_overridden">"suprascris; "</string>
+    <string name="debug_settings_feature_flag_default_value">valoarea implicită: %1$b</string>
+    <string name="debug_settings_feature_flag_title">Indicatori de funcționalitate</string>
 </resources>

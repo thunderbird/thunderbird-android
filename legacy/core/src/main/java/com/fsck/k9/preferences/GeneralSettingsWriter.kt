@@ -1,11 +1,11 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.Preferences
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.PreferenceChangePublisher
 import net.thunderbird.core.preference.getPreferenceScope
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler
+import net.thunderbird.legacy.logging.Log
 
 internal class GeneralSettingsWriter(
     private val preferences: Preferences,

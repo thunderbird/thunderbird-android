@@ -71,7 +71,7 @@
     <string name="prefs_title">პარამეტრები</string>
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(საგნის გარეშე)</string>
-    <string name="status_loading_more">მესიჯების ჩატვირთვა\u2026</string>
+    <string name="status_loading_more">მესიჯების ჩატვირთვა…</string>
     <string name="status_network_error">კავშირის შეცდომა</string>
     <string name="status_invalid_id_error">მესიჯი ვერ მოიძებნა</string>
     <string name="status_loading_error">მესიჯის ჩატვირთვის შეცდომა</string>
@@ -106,7 +106,7 @@
     <string name="debug_enable_debug_logging_summary">დამატებითი სადიაგნოსტიკო ინფორმაციის ლოგირება</string>
     <string name="debug_enable_sensitive_logging_title">მგრძნობიარე ინფორმაციის ლოგირება</string>
     <string name="debug_enable_sensitive_logging_summary">შესაძლოა გამოჩნდეს პაროლები ლოგში.</string>
-    <string name="message_list_load_more_messages_action">მეტი მესიჯის ჩატვირთვა </string>
+    <string name="message_list_load_more_messages_action">მეტი მესიჯის ჩატვირთვა</string>
     <string name="message_to_fmt">ვის:<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_compose_subject_hint">საგანი</string>
     <string name="message_compose_content_hint">მესიჯის ტექსტი</string>
@@ -286,7 +286,7 @@
     <string name="account_settings_incoming_label">შემავალი სერვერი</string>
     <string name="account_settings_incoming_summary">შემავალი საფოსტო სერვერის გამართვა</string>
     <string name="account_settings_outgoing_label">გამავალი სერვერი</string>
-    <string name="account_settings_outgoing_summary">გამართეთ გამავალი საფოსტო (SMTP) სერვერი </string>
+    <string name="account_settings_outgoing_summary">გამართეთ გამავალი საფოსტო (SMTP) სერვერი</string>
     <string name="account_settings_name_label">თქვენი სახელი</string>
     <string name="account_settings_vibrate_enable">ვიბრაცია</string>
     <string name="account_settings_notification_light_account_color">ანგარიშის ფერი</string>
@@ -454,7 +454,7 @@
     <string name="toast_account_not_found">შიდა შეცდომა: არასწორი ანგარიში!</string>
     <string name="toast_openpgp_provider_error">შეცდომა %s-თან დაკავშირებისას!</string>
     <string name="ac_transfer_will_be_sent">მესიჯი გაიგზავნება თქვენს მისამართზე:</string>
-    <string name="ac_transfer_sending_to">ეგზავნება მესიჯი: </string>
+    <string name="ac_transfer_sending_to">ეგზავნება მესიჯი:</string>
     <string name="ac_transfer_msg_subject">ავტოშიფრაციის გამართვის მესიჯი</string>
     <string name="ac_transfer_error_send">მესიჯის გაგზავნისას მოხდა შეცდომა. გთხოვთ, შეამოწმეთ ქსელთან კავშირი და გამავალი სერვერის კონფიგურაცია.</string>
     <string name="switch_on">ჩართვა</string>

@@ -26,6 +26,7 @@ dependencies {
     api(projects.legacy.di)
     api(projects.legacy.mailstore)
     api(projects.legacy.message)
+    implementation(projects.legacy.logging)
     implementation(projects.feature.notification.api)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)

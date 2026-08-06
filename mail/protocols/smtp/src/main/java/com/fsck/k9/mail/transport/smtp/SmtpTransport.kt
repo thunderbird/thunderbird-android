@@ -36,7 +36,7 @@ import java.security.GeneralSecurityException
 import java.util.Locale
 import javax.net.ssl.SSLException
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import org.apache.commons.io.IOUtils
 import org.jetbrains.annotations.VisibleForTesting
 

@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto"
     >
 
+    <!-- TODO(#6476): Remove android:enableOnBackInvokedCallback once predictive back is supported -->
     <application
         android:allowBackup="false"
         android:hasFragileUserData="false"
         android:networkSecurityConfig="@xml/network_security_config"
         android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="false"
+        android:intentMatchingFlags="enforceIntentFilter"
+        tools:targetApi="36"
         >
 
         <activity

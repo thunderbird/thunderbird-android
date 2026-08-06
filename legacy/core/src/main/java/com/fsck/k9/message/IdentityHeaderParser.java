@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import android.net.Uri;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 import com.fsck.k9.mail.filter.Base64;
 

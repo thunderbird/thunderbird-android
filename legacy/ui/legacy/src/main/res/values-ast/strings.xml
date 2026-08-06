@@ -95,7 +95,7 @@
     <string name="account_setup_options_mail_display_count_all">tolos mensaxes</string>
     <string name="account_setup_options_mail_display_count_10">10 mensaxes</string>
     <string name="account_setup_options_mail_display_count_5000">5000 mensaxes</string>
-    <string name="account_setup_options_mail_display_count_10000">10 000 mensaxes</string>
+    <string name="account_setup_options_mail_display_count_10000">10 000 mensaxes</string>
     <string name="account_setup_options_mail_display_count_50">50 mensaxes</string>
     <string name="messagelist_preferences">Llistes de mensaxes</string>
 </resources>

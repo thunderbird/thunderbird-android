@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_tfa_onetime_l_description">Ви є важливою причиною того, що ми можемо робити те, що ми робимо! Завдяки вашій щедрості, ми можемо братися за більші проєкти та досягати нових цілей разом.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xs_title">Суттєвий Щомісячний Внесок</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Не зараз</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">Опрацювання оплати…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">Скасувати</string>
 </resources>

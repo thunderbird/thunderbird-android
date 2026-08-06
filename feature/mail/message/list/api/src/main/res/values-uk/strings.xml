@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">Вибрати</string>
     <string name="swipe_action_deselect">Скасувати вибір</string>
@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">Спам</string>
     <string name="swipe_action_move">Перемістити…</string>
     <string name="actionbar_selected">Вибрано <xliff:g id="selection_count">%d</xliff:g></string>
+    <string name="sort_by">Сортувати за…</string>
+    <string name="sort_by_date_asc">За датою (спочатку старіші)</string>
+    <string name="sort_by_date_desc">За датою (спочатку новіші)</string>
+    <string name="sort_by_arrival_asc">За надходженням (спочатку старіші)</string>
+    <string name="sort_by_arrival_desc">За надходженням (спочатку новіші)</string>
+    <string name="sort_by_subject_asc">За темою (А-Я)</string>
+    <string name="sort_by_subject_desc">За темою (Я-А)</string>
+    <string name="sort_by_sender_asc">За відправником (А-Я)</string>
+    <string name="sort_by_sender_desc">За відправником (Я-А)</string>
+    <string name="sort_by_flag_asc">Спочатку із зірочкою</string>
+    <string name="sort_by_flag_desc">Спочатку без зірочки</string>
+    <string name="sort_by_unread_asc">Спочатку непрочитані</string>
+    <string name="sort_by_unread_desc">Спочатку прочитані</string>
+    <string name="sort_by_attach_asc">Спочатку з вкладеннями</string>
+    <string name="sort_by_attach_desc">Спочатку без вкладень</string>
 </resources>

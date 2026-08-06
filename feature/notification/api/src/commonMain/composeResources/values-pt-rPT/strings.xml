@@ -7,8 +7,7 @@
     <string name="notification_channel_miscellaneous_title">Diversos</string>
     <string name="notification_channel_miscellaneous_description">Notificações várias como erros, etc.</string>
     <string name="notification_notify_error_title">Erro de notificação</string>
-    <string name="notification_notify_error_text">Occoreu um erro ao tentar criar uma notificação do sistema para uma nova mensagem. A causa mais provavel é a falta de um som de notificação.\n\nToque para abrir as definições de notificação
-.</string>
+    <string name="notification_notify_error_text">Occoreu um erro ao tentar criar uma notificação do sistema para uma nova mensagem. A causa mais provavel é a falta de um som de notificação.\n\nToque para abrir as definições de notificação .</string>
     <string name="notification_authentication_error_title">A autenticação falhou</string>
     <string name="notification_certificate_error_public">Erro de certificado</string>
     <string name="notification_certificate_error_title">Erro de certificado para %1$s</string>

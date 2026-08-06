@@ -18,8 +18,8 @@ import com.fsck.k9.mail.testing.security.SimpleTrustedSocketFactory
 import com.fsck.k9.mail.transport.mockServer.MockSmtpServer
 import java.net.UnknownHostException
 import kotlin.test.Test
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.legacy.logging.Log
 import okio.ByteString.Companion.encodeUtf8
 import org.junit.Before
 

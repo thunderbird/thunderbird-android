@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.mail.filter.Base64;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 public class StorageMigrationTo2 {

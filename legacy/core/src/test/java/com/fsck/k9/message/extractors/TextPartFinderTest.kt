@@ -40,6 +40,15 @@ class TextPartFinderTest {
     }
 
     @Test
+    fun `empty text_plain part`() {
+        val part = createEmptyPart("text/plain")
+
+        val result = textPartFinder.findFirstTextPart(part)
+
+        assertThat(result).isNull()
+    }
+
+    @Test
     fun `multipart_alternative text_plain and text_html`() {
         val expected = createTextPart("text/plain")
         val part = createMultipart(
@@ -210,11 +219,11 @@ class TextPartFinderTest {
 
     @Test
     fun `multipart_alternative containing empty text_plain and text_html`() {
-        val expected = createEmptyPart("text/plain")
+        val expected = createTextPart("text/html", "fallback")
         val part = createMultipart(
             "multipart/alternative",
+            createEmptyPart("text/plain"),
             expected,
-            createTextPart("text/html"),
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -224,11 +233,11 @@ class TextPartFinderTest {
 
     @Test
     fun `multipart_mixed containing empty text_html and text_plain`() {
-        val expected = createEmptyPart("text/html")
+        val expected = createTextPart("text/plain", "fallback")
         val part = createMultipart(
             "multipart/mixed",
+            createEmptyPart("text/html"),
             expected,
-            createTextPart("text/plain"),
         )
 
         val result = textPartFinder.findFirstTextPart(part)
@@ -238,13 +247,30 @@ class TextPartFinderTest {
 
     @Test
     fun `multipart_mixed containing multipart_alternative and text_plain`() {
-        val expected = createEmptyPart("text/plain")
+        val expected = createTextPart("text/plain", "text")
         val part = createMultipart(
             "multipart/mixed",
             createMultipart(
                 "multipart/alternative",
                 createPart("image/jpeg"),
                 createPart("image/png"),
+            ),
+            expected,
+        )
+
+        val result = textPartFinder.findFirstTextPart(part)
+
+        assertThat(result).isEqualTo(expected)
+    }
+
+    @Test
+    fun `multipart_alternative containing multipart_related with empty text_plain and text_html`() {
+        val expected = createTextPart("text/html", "fallback")
+        val part = createMultipart(
+            "multipart/alternative",
+            createMultipart(
+                "multipart/related",
+                createEmptyPart("text/plain"),
             ),
             expected,
         )

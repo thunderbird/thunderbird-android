@@ -2,7 +2,7 @@
 
 * Issue: [#11079](https://github.com/thunderbird/thunderbird-android/issues/11079)
 * Technical design: [Changelog System Replacement](../technical-designs/0001-changelog-system-replacement.md)
-* Status: **Proposed**
+* Status: **Accepted**
 
 ## Summary
 

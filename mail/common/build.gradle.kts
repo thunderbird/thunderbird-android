@@ -6,7 +6,7 @@ plugins {
 dependencies {
     api(libs.jetbrains.annotations)
 
-    api(projects.core.logging.implLegacy)
+    implementation(projects.legacy.logging)
     implementation(projects.core.common)
     implementation(projects.feature.mail.folder.api)
 

@@ -34,4 +34,5 @@
     <string name="account_server_settings_incoming_imap_send_client_info_label">发送客户端信息</string>
     <string name="account_server_settings_password_authentication_failed">身份验证失败！</string>
     <string name="account_server_settings_password_authentication_unable_to_start">无法启动生物识别验证提示。</string>
+    <string name="account_server_settings_password_input_label">密码</string>
 </resources>

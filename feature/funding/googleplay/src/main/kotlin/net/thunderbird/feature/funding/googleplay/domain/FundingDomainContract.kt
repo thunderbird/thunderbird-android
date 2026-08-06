@@ -85,7 +85,7 @@ internal interface FundingDomainContract {
         /**
          * Get purchased contributions.
          *
-         * @return Outcome flow containing a list of recurring contributions or an error if the operation fails.
+         * @return Outcome flow containing a list of purchased contributions or an error if the operation fails.
          */
         fun getAllPurchased(): Flow<Outcome<List<PurchasedContribution>, ContributionError>>
 

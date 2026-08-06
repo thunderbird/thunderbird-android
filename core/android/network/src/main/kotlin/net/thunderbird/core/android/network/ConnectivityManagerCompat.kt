@@ -1,6 +1,7 @@
 package net.thunderbird.core.android.network
 
 import android.os.Build
+import net.thunderbird.core.logging.Logger
 import android.net.ConnectivityManager as AndroidConnectivityManager
 
 /**
@@ -11,9 +12,17 @@ import android.net.ConnectivityManager as AndroidConnectivityManager
  */
 internal fun connectivityManagerCompat(
     connectivityManager: AndroidConnectivityManager,
+    logger: Logger,
 ): ConnectivityManager {
     return when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> ConnectivityManagerApi24(connectivityManager)
-        else -> ConnectivityManagerApi23(connectivityManager)
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> ConnectivityManagerApi24(
+            systemConnectivityManager = connectivityManager,
+            logger = logger,
+        )
+
+        else -> ConnectivityManagerApi23(
+            systemConnectivityManager = connectivityManager,
+            logger = logger,
+        )
     }
 }

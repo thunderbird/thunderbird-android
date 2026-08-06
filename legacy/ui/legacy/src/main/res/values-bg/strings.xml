@@ -88,7 +88,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Без тема)</string>
     <string name="general_no_sender">Без изпращач</string>
-    <string name="status_loading_more">Зарежда съобщенията\u2026</string>
+    <string name="status_loading_more">Зарежда съобщенията…</string>
     <string name="status_network_error">Грешка при свързване</string>
     <string name="status_invalid_id_error">Съобщението не е намерено</string>
     <string name="status_loading_error">Грешка при зареждане на съобщението</string>
@@ -613,7 +613,7 @@
     <string name="address_type_mobile">Мобилен</string>
     <string name="compose_error_no_draft_folder">Липсва папка чернови за този профил!</string>
     <string name="compose_error_no_key_configured">Няма зададен ключ за този профил! Моля, проверете настройките си.</string>
-    <string name="error_crypto_provider_incompatible">Доставчика на крипто имзползва несъвместима версия.  Моля, прегледайте настройките си!</string>
+    <string name="error_crypto_provider_incompatible">Доставчика на крипто имзползва несъвместима версия. Моля, прегледайте настройките си!</string>
     <string name="error_crypto_provider_connect">Неуспешна връзка с доставчика на шифроване, проверете настройките си или натиснете иконата за повторен опит!</string>
     <string name="error_crypto_provider_ui_required">Неуспешно шифроване от край-до-край, моля прегледайте настройките</string>
     <string name="error_crypto_inline_attach">Режимът PGP/INLINE не поддържа прикачени файлове!</string>
@@ -636,7 +636,7 @@
     <string name="openpgp_dialog_sign_only_text">В този режим, Вашият PGP ключ ще бъде използван за създаването на електронен подпис на некриптиран имейл.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Това не криптира имейла, но потвърждава, че е изпратен от Вашия ключ.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Подписите може да не работят, когато са изпратени на списък от получатели.</string>
-    <string name="openpgp_dialog_sign_only_minus_attach">В някои приложения подписите може да са под формата на  прикачен файл \'signature.asc\'.</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">В някои приложения подписите може да са под формата на прикачен файл \'signature.asc\'.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Криптирани съобщения винаги включват подпис.</string>
     <string name="crypto_msg_title_plaintext">Обикновен текст</string>
     <string name="crypto_msg_unencrypted_sign_error">\"от край\" - \"до край\" подписа съдържа грешка</string>
@@ -721,12 +721,7 @@
     <string name="ac_transfer_finish">За да завършите, отворете съобщението на друго устройство и въведете кодът за достъп.</string>
     <string name="ac_transfer_show_code">Показване на код за достъп</string>
     <string name="ac_transfer_msg_subject">Autocrypt съобщение с настройки</string>
-    <string name="ac_transfer_msg_body">Това съобщение съдържа всичката информация за трансфериране на Autocrypt настройките и съответния таен ключ от оригиналното устройство.
-
-За да се настрои ново устройство за Autocrypt, моля следвайте инструкциите, които ще се появят на новото устройство
-
-Може да запазите това съобщение за резерва за тайния си ключ. Ако решите да направите това е най-добре да запиште паролата и да я подсигурите.
-</string>
+    <string name="ac_transfer_msg_body">Това съобщение съдържа всичката информация за трансфериране на Autocrypt настройките и съответния таен ключ от оригиналното устройство. За да се настрои ново устройство за Autocrypt, моля следвайте инструкциите, които ще се появят на новото устройство Може да запазите това съобщение за резерва за тайния си ключ. Ако решите да направите това е най-добре да запиште паролата и да я подсигурите.</string>
     <string name="ac_transfer_error_send">Възникна грешка при изпращане на съобщението. Моля, проверете връзката си с интернет или настройките на изходящия сървър.</string>
     <string name="switch_on">Включерно</string>
     <string name="switch_off">Изключено</string>
@@ -810,9 +805,7 @@
     <string name="show_starred_count_title">Брой важни съобщения</string>
     <string name="account_settings_vibrate_pattern_4">Шаблон 4</string>
     <string name="debug_export_logs_success">Изнасянето е успешно. Журналите може да съдържат лична информация. Внимавайте кому ги пращате.</string>
-    <string name="notification_notify_error_text">Възникна грешка при създаването на известие за ново съобщение. Причината най-вероятно е липсващ звук за известия.
-\n
-\nДокоснете тук, за да отворите настройките на известията.</string>
+    <string name="notification_notify_error_text">Възникна грешка при създаването на известие за ново съобщение. Причината най-вероятно е липсващ звук за известия. \n \nДокоснете тук, за да отворите настройките на известията.</string>
     <string name="debug_export_logs_title">Изнасяне на журналите</string>
     <string name="general_settings_show_compose_button_title">Плаващ бутон за съобщение</string>
     <string name="general_settings_contact_name_color_label">Цвят на контакта</string>

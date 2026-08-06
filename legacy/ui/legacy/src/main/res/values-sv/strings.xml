@@ -91,12 +91,11 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Inget ämne)</string>
     <string name="general_no_sender">Ingen avsändare</string>
-    <string name="status_loading_more">Läser in meddelanden\u2026</string>
+    <string name="status_loading_more">Läser in meddelanden…</string>
     <string name="status_network_error">Anslutningsfel</string>
     <string name="status_invalid_id_error">Meddelandet hittades inte</string>
     <string name="status_loading_error">Inläsningsfel av meddelande</string>
-    <string name="load_more_messages_fmt">Läs in ytterligare
-    upp till <xliff:g id="messages_to_load">%d</xliff:g></string>
+    <string name="load_more_messages_fmt">Läs in ytterligare upp till <xliff:g id="messages_to_load">%d</xliff:g></string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -479,7 +478,7 @@
     <string name="account_delete_dlg_title">Ta bort konto</string>
     <string name="folder_list_filter_hint">Mappnamn innehåller</string>
     <string name="account_settings_signature__location_label">Placering av signatur</string>
-    <string name="account_settings_signature__location_before_quoted_text">Före citerat meddelande </string>
+    <string name="account_settings_signature__location_before_quoted_text">Före citerat meddelande</string>
     <string name="account_settings_signature__location_after_quoted_text">Efter citerat meddelande</string>
     <string name="setting_theme_global">Använd apptema</string>
     <string name="setting_theme_dark">Mörkt</string>
@@ -778,12 +777,7 @@
     <string name="ac_transfer_finish">För att slutföra, öppna meddelandet på din andra enhet och ange inställningskoden.</string>
     <string name="ac_transfer_show_code">Visa inställningskod</string>
     <string name="ac_transfer_msg_subject">Autocrypt-inställningsmeddelande</string>
-    <string name="ac_transfer_msg_body">Detta meddelande innehåller all information för att överföra dina Autocrypt-inställningar tillsammans med din hemliga nyckel säkert från din ursprungliga enhet.
-
-För att ställa in din nya enhet för Autocrypt, följ instruktionerna som bör presenteras av din nya enhet.
-
-Du kan behålla detta meddelande och använda det som en säkerhetskopia för din hemliga nyckel. Om du vill göra det ska du skriva ner lösenordet och lagra det säkert.
-</string>
+    <string name="ac_transfer_msg_body">Detta meddelande innehåller all information för att överföra dina Autocrypt-inställningar tillsammans med din hemliga nyckel säkert från din ursprungliga enhet. För att ställa in din nya enhet för Autocrypt, följ instruktionerna som bör presenteras av din nya enhet. Du kan behålla detta meddelande och använda det som en säkerhetskopia för din hemliga nyckel. Om du vill göra det ska du skriva ner lösenordet och lagra det säkert.</string>
     <string name="ac_transfer_error_send">Ett fel uppstod under tiden meddelandet skickades. Kontrollera din nätverksanslutning och utgående serverkonfiguration.</string>
     <string name="switch_on">På</string>
     <string name="switch_off">Av</string>

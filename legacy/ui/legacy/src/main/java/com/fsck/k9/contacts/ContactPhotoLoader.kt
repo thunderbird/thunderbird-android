@@ -4,7 +4,7 @@ import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import app.k9mail.core.android.common.contact.ContactRepository
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 internal class ContactPhotoLoader(
     private val contentResolver: ContentResolver,

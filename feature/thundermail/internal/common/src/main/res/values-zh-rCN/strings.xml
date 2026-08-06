@@ -5,4 +5,8 @@
     <string name="thundermail_browser_is_not_available">浏览器不可用。请验证您的设备配置</string>
     <string name="thundermail_operation_was_canceled">操作已取消</string>
     <string name="thundermail_unknown_error_please_consider_reporting">未知错误。请考虑提交报告。</string>
+    <string name="thundermail_add_account">添加账号</string>
+    <string name="thundermail_add_an_email_account">添加电子邮件账号</string>
+    <string name="thundermail_what_is_thundermail">什么是 Thundermail？</string>
+    <string name="thundermail_or_divider">– 或 –</string>
 </resources>

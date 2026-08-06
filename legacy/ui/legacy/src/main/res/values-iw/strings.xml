@@ -111,13 +111,12 @@
     <string name="notification_certificate_error_title">בעיה בתעודה עבור <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">בדוק את הגדרות השרת</string>
     <string name="notification_authentication_error_title">נכשל באימות</string>
-    <string name="notification_authentication_error_text">האימות נכשל עבור <xliff:g id="account">%s</xliff:g>.
-עדכן את הגדרות השרת.</string>
+    <string name="notification_authentication_error_text">האימות נכשל עבור <xliff:g id="account">%s</xliff:g>. עדכן את הגדרות השרת.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_bg_sync_ticker">בודק דואל: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">בודק דוא\"ל</string>
-    <string name="notification_bg_send_ticker">שולח דוא"ל: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_ticker">שולח דוא\"ל: <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">שולח דוא\"ל</string>
     <string name="notification_bg_title_separator">:</string>
     <string name="notification_channel_push_description">מוצג בעת המתנה להודעות חדשות</string>
@@ -130,8 +129,7 @@
     <string name="debug_enable_sensitive_logging_title">יומן מידע רגיש</string>
     <string name="debug_enable_sensitive_logging_summary">עשוי להציג סיסמאות ביומן.</string>
     <string name="debug_export_logs_title">ייצא לוגים</string>
-    <string name="debug_export_logs_success">ייצוא הושלם. היומנים עלולים להכיל מידע רגיש.
-היזהרו עם מי שאתם משתפים אותם.</string>
+    <string name="debug_export_logs_success">ייצוא הושלם. היומנים עלולים להכיל מידע רגיש. היזהרו עם מי שאתם משתפים אותם.</string>
     <string name="debug_export_logs_failure">ייצוא נכשל.</string>
     <string name="message_list_load_more_messages_action">טען עוד הודעות</string>
     <string name="message_to_fmt">ל:<xliff:g id="counterParty">%s</xliff:g></string>
@@ -267,10 +265,10 @@
     <string name="account_settings_notify_self_summary">הצג התראה להודעות ששלחתי</string>
     <string name="account_notify_contacts_mail_only_label">אנשי קשר בלבד</string>
     <string name="account_settings_ignore_chat_messages_label">התעלם מהודעות צ\'אט</string>
-    <string name="account_settings_show_pictures_label">הצג תמונות תמיד</string>
+    <string name="account_settings_show_pictures_label">תמיד הצג תמונות</string>
     <string name="account_settings_show_pictures_never">לא</string>
-    <string name="account_settings_show_pictures_only_from_contacts">מאנשי הקשר</string>
-    <string name="account_settings_show_pictures_always">מכולם</string>
+    <string name="account_settings_show_pictures_only_from_contacts">מאנשי קשר</string>
+    <string name="account_settings_show_pictures_always">מכל אחד</string>
     <string name="account_settings_composition">שולח דואר</string>
     <string name="account_settings_default_quoted_text_shown_label">צטט את ההודעה המקורית במענה</string>
     <string name="account_settings_default_quoted_text_shown_summary">במענה להודעות, ההודעה המקורית תוצג בתגובה שלך.</string>
@@ -315,7 +313,7 @@
     <string name="account_settings_incoming_label">שרת הודעות נכנסות</string>
     <string name="account_settings_incoming_summary">הגדר את שרת הדואר הנכנס</string>
     <string name="account_settings_outgoing_label">שרת דואר יוצא</string>
-    <string name="account_settings_outgoing_summary">הגדר את שרת הדואר היוצא (SMTP) </string>
+    <string name="account_settings_outgoing_summary">הגדר את שרת הדואר היוצא (SMTP)</string>
     <string name="account_settings_name_label">השם שלך</string>
     <string name="notifications_title">התראות</string>
     <string name="account_settings_vibration">רטט</string>
@@ -376,7 +374,7 @@
     <string name="sort_unread_last">הודעות שנקראו ראשונות</string>
     <string name="sort_attach_first">הודעות עם קבצים מצורפים ראשונות</string>
     <string name="sort_unattached_first">הודעות בלי קבצים מצורפים ראשונות</string>
-    <string name="sort_by">מיון לפי …</string>
+    <string name="sort_by">סדר לפי…</string>
     <string name="sort_by_date">תאריך</string>
     <string name="sort_by_subject">נושא</string>
     <string name="sort_by_sender">שולח</string>
@@ -535,9 +533,7 @@
     <string name="unsubscribe_action">ביטול הרשמה</string>
     <string name="status_loading_error">שגיאה בטעינת הודעה</string>
     <string name="notification_notify_error_title">שגיאת התראה</string>
-    <string name="notification_notify_error_text">אירעה שגיאה בעת נסיון יצירת התראת מערכת עבור הודעה חדשה. הסיבה ככל הנראה היא צליל התראה חסר.
-\n
-\nלחץ כדי לפתוח הגדרות התראה.</string>
+    <string name="notification_notify_error_text">אירעה שגיאה בעת נסיון יצירת התראת מערכת עבור הודעה חדשה. הסיבה ככל הנראה היא צליל התראה חסר. \n \nלחץ כדי לפתוח הגדרות התראה.</string>
     <string name="notification_channel_push_title">סנכרן (דחיפה)</string>
     <string name="notification_channel_messages_description">התראות הקשורות להודעות</string>
     <string name="compose_error_incomplete_recipient">שדה נמען מכיל קלט חלקי!</string>
@@ -564,7 +560,7 @@
     <string name="global_settings_privacy_hide_useragent_detail">הסר סוכן־משתמש של K-9 מכותרות הדואר</string>
     <string name="quiet_time_notification_description">השבת לחלוטין התראות בזמן שקט</string>
     <string name="account_settings_ignore_chat_messages_summary">הסתר התראות של הודעות השייכות לצ\'אט דוא\"ל</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">סמן כנקרא כשנפתח</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">סימון כנקרא בפתיחה</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">כשנמחקת הודעה סמן שנקראה</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">סמן הודעה כנקראה כאשר היא נמחקת</string>
     <string name="account_settings_automatic_special_folder">אוטומטי (%s)</string>
@@ -584,9 +580,9 @@
     </plurals>
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">מביא תוצאה %1$d מתוך %2$d</item>
-        <item quantity="two">מביא %1$d תוצאות מתוך%2$d</item>
-        <item quantity="many">מביא %1$d תוצאות מתוך%2$d</item>
-        <item quantity="other">מביא %1$d תוצאות מתוך%2$d</item>
+        <item quantity="two">מביא %1$d תוצאות מתוך %2$d</item>
+        <item quantity="many">מביא %1$d תוצאות מתוך %2$d</item>
+        <item quantity="other">מביא %1$d תוצאות מתוך %2$d</item>
     </plurals>
     <string name="upgrade_databases_unspecified">משדרג מסדי נתונים…</string>
     <string name="upgrade_database_format">משדרג מסד נתונים של חשבון \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -615,7 +611,7 @@
     <string name="openpgp_dialog_sign_only_minus_attach">חתימות אולי יוצגו כצרופת \'signature.asc\' אצל לקוחות (clients) מסויימים.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">הודעות מוצפנות תמיד כוללות חתימה.</string>
     <string name="account_notify_contacts_mail_only_summary">הצג התראות רק להודעות מאנשי קשר מוכרים</string>
-    <string name="account_settings_mark_message_as_read_on_view_summary">סמן הודעה כנקראה כשהיא נפתחת לצפיה</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">סימון הודעה כנקראה כאשר היא נפתחת לצפייה</string>
     <string name="confirm_discard_draft_message">בטוח שברצונך לבטל הודעה זו?</string>
     <string name="dialog_confirm_empty_trash_title">אשר ריקון פריטים שנמחקו</string>
     <string name="webview_empty_message">אין טקסט</string>
@@ -654,7 +650,7 @@
     <string name="webview_contextmenu_phone_clipboard_label">מספר טלפון</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">מגבלת חיפוש בשרת</string>
+    <string name="account_settings_remote_search_num_label">מגבלות חיפוש בשרת</string>
     <string name="global_settings_threaded_view_label">תצוגת שֶׁזֶר (Threaded view)</string>
     <string name="upgrade_databases_title">משדרג מסדי נתונים</string>
     <string name="global_settings_background_as_unread_indicator_summary">רקע אחר יצביע על כך שההודעה נקראה</string>
@@ -703,14 +699,12 @@
     <string name="address_type_home">בית</string>
     <string name="address_type_work">עבודה</string>
     <string name="error_crypto_provider_connect">לא יכול להתחבר לספק Crypto, בדוק את ההגדרות שלך או לחץ על איקון Crypto כדי לנסות שוב!</string>
-    <string name="openpgp_inline_text">הדוא\"ל נשלח בפורמט PGP/INLINE.
-\nצריך להשתמש בו רק עבור תאימות:</string>
+    <string name="openpgp_inline_text">הדוא\"ל נשלח בפורמט PGP/INLINE. \nצריך להשתמש בו רק עבור תאימות:</string>
     <string name="openpgp_sign_only_ok">הבנתי!</string>
     <string name="openpgp_dialog_sign_only_text">במצב זה, יהיה שימוש במפתח ה־PGP שלך על מנת ליצור חתימה מוצפנת של דוא\"ל לא מוצפן.</string>
     <string name="account_settings_crypto_hide_sign_only_on">רק חתימות מוצפנות יוצגו</string>
     <string name="account_settings_crypto_hide_sign_only_off">כל החתימות יוצגו</string>
-    <string name="crypto_no_provider_message">הדוא\"ל הזה הוצפן עם OpenPGP.
-\nעל מנת לקרוא אותו, עליך להתקין ולהגדיר יישומון OpenPGP תואם.</string>
+    <string name="crypto_no_provider_message">הדוא\"ל הזה הוצפן עם OpenPGP. \nעל מנת לקרוא אותו, עליך להתקין ולהגדיר יישומון OpenPGP תואם.</string>
     <string name="openpgp_enabled_error_title">הצפנה לא אפשרית</string>
     <string name="openpgp_description_text3">הצפנה תופיע רק אם היא נתמכת ע\"י כל הנמענים, והם שלחו לך דוא\"ל בעבר.</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">הגדרת התראות שגיאה ומצב</string>
@@ -803,7 +797,7 @@
     <string name="account_settings_notification_light_cyan">ציאן</string>
     <string name="openpgp_description_text2">להפעיל או לכבות הצפנה בלחיצה על האיקון הזה.</string>
     <string name="openpgp_enabled_error_gotit">הבנתי</string>
-    <string name="account_settings_reading_mail">קריאת דואר</string>
+    <string name="account_settings_reading_mail">קריאת מייל</string>
     <string name="locked_attach_unlock">פתח נעילה</string>
     <string name="message_progress_text">טוען…</string>
     <string name="openpgp_description_text1">הצפנת הודעות מוודאת שהן יוכלו להיקרא ע\"י הנמען, ולא ע\"י אף אחד אחר.</string>
@@ -937,6 +931,7 @@
     <plurals name="message_view_attachment_summary">
         <item quantity="one">צרופה<xliff:g id="count">%1$d</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</item>
         <item quantity="two"><xliff:g id="count">%1$d</xliff:g> צרופות (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="many"><xliff:g id="count">%1$d</xliff:g> צרופות (<xliff:g id="size">%2$s</xliff:g>)</item>
         <item quantity="other"><xliff:g id="count">%1$d</xliff:g> צרופות (<xliff:g id="size">%2$s</xliff:g>)</item>
     </plurals>
     <string name="message_view_single_attachment_summary"><xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
@@ -947,4 +942,29 @@
     <string name="general_settings_message_list_date_time_format_iso">ISO</string>
     <string name="sort_by_then_by">ואז לפי…</string>
     <string name="no_network_message_will_be_sent_later_toast">לא מקוון. ההודעה תישלח כשיתאפשר חיבור</string>
+    <string name="changelog_latest_label_text">חדש ביותר</string>
+    <string name="changelog_type_new_text">חדש</string>
+    <string name="changelog_type_changed_text">שונה</string>
+    <string name="changelog_type_fixed_text">תוקן</string>
+    <string name="notification_actions_settings_title">פעולות התרעה</string>
+    <string name="notification_actions_settings_summary">בחרו אילו פעולות יופיעו בהתרעות מייל</string>
+    <string name="notification_summary_delete_title">הצג מחיקה בהתרעה על מספר הודעות</string>
+    <string name="notification_summary_delete_summary">מוסיף פעולת מחיקה להתרעות שמסכמות מספר הודעות חדשות</string>
+    <string name="notification_show_contact_picture_title">הצג תמונות איש קשר בהתרעות</string>
+    <string name="notification_show_contact_picture_summary">הצג אווטאר של השולח בהתרעות הודעה חדשה</string>
+    <string name="notification_actions_settings_description">סדר מחדש פעולות התרעה.</string>
+    <string name="notification_actions_cutoff_description">הצד חיתוך פעולות</string>
+    <string name="notification_actions_cutoff_state">פעולות מעל קו זה מוצגות בהתרעה</string>
+    <string name="notification_actions_shown_state">מוצג בהתרעה</string>
+    <string name="notification_actions_hidden_state">לא מוצג בהתרעה</string>
+    <string name="accessibility_move_up">העבר למעלה</string>
+    <string name="accessibility_move_down">העבר למטה</string>
+    <string name="accessibility_move_item_up">העבר <xliff:g id="item">%1$s</xliff:g> למעלה</string>
+    <string name="accessibility_move_item_down">העבר <xliff:g id="item">%1$s</xliff:g> למטה</string>
+    <string name="accessibility_move_cutoff_up">העבר חיתוך פעולות מוצגות למעלה</string>
+    <string name="accessibility_move_cutoff_down">העבר חיתוך פעולות מוצגות למטה</string>
+    <string name="notification_action_star">כוכב</string>
+    <string name="animation_setting_on">פועל</string>
+    <string name="animation_setting_off">כבוי</string>
+    <string name="animation_setting_follow_system">השתמש בברירת מחדל של המערכת</string>
 </resources>

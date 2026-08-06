@@ -91,7 +91,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(بدون موضوع)</string>
     <string name="general_no_sender">بدون فرستنده</string>
-    <string name="status_loading_more">بارگیری پیام‌ها\u2026</string>
+    <string name="status_loading_more">بارگیری پیام‌ها…</string>
     <string name="status_network_error">خطای اتصال</string>
     <string name="status_invalid_id_error">پیام یافت نشد</string>
     <string name="status_loading_error">خطای بارگیری پیام</string>
@@ -121,9 +121,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">خطای آگاهی‌ها</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">هنگام ساخت هشدار برای پیام جدید سامانه خطایی رخ داد. اغلب خطا به علت عدم وجود آهنگ هشدارها است.
-\n
-\n برای بازکردن تنظیمات آگاهی‌ها، بزنید.</string>
+    <string name="notification_notify_error_text">هنگام ساخت هشدار برای پیام جدید سامانه خطایی رخ داد. اغلب خطا به علت عدم وجود آهنگ هشدارها است. \n \n برای بازکردن تنظیمات آگاهی‌ها، بزنید.</string>
     <string name="notification_bg_sync_ticker">بررسی کردن نامه: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">بررسی کردن نامه</string>
     <string name="notification_bg_send_ticker">فرستادن نامه: <xliff:g id="account">%s</xliff:g></string>
@@ -444,7 +442,7 @@
     <string name="edit_identity_description_hint">(اختیاری)</string>
     <string name="edit_identity_name_label">نام شما</string>
     <string name="edit_identity_name_hint">(اختیاری)</string>
-    <string name="edit_identity_email_label">نشانی رایانامه </string>
+    <string name="edit_identity_email_label">نشانی رایانامه</string>
     <string name="edit_identity_email_hint">(لازم)</string>
     <string name="edit_identity_reply_to_label">نشانی «پاسخ به»</string>
     <string name="edit_identity_reply_to_hint">(اختیاری)</string>
@@ -681,7 +679,7 @@
     <string name="disable_inline_pgp">غیرفعال‌سازی PGP/INLINE</string>
     <string name="enable_sign_only">فعال‌سازی PGP Sign-Only</string>
     <string name="disable_sign_only">غیرفعال‌سازی PGP Sign-Only</string>
-    <string name="openpgp_inline_title">حالت PGP/INLINE </string>
+    <string name="openpgp_inline_title">حالت PGP/INLINE</string>
     <string name="openpgp_inline_text">رایانامه در قالب PGP/INLINE ارسال شد.\nفقط برای سازگاری باید از این استفاده شود:</string>
     <string name="openpgp_inline_plus_compat">بعضی کارخواه‌ها فقط این قالب را پشتیبانی می‌کنند</string>
     <string name="openpgp_inline_minus_transit">ممکن است امضاها در حین انتقال شکسته شوند</string>
@@ -770,7 +768,7 @@
     <string name="account_settings_crypto_encrypt_subject_subtitle">شاید برخی گیرندگان از آن پشتیبانی نکنند</string>
     <string name="toast_account_not_found">خطای داخلی: حساب نامعتبر است!</string>
     <string name="toast_openpgp_provider_error">خطا در اتصال به %s!</string>
-    <string name="ac_transfer_setting_title">ارسال پیام راه‌انداز Autocrypt </string>
+    <string name="ac_transfer_setting_title">ارسال پیام راه‌انداز Autocrypt</string>
     <string name="ac_transfer_setting_summary">راه‌انداز سرتاسر را به‌طور ایمن با سایر دستگاه‌ها به‌اشتراک بگذار</string>
     <string name="ac_transfer_title">پیام راه‌انداز Autocrypt</string>
     <string name="ac_transfer_intro">یک پیام راه‌انداز Autocrypt، راه‌انداز سرتاسر شما را به‌طور ایمن با سایر دستگاه‌ها به‌اشتراک می‌گذارد.</string>
@@ -781,12 +779,7 @@
     <string name="ac_transfer_finish">برای پایان پیام را روی دیگر افزاره‌تان گشوده و کد برپایی را وارد کنید.</string>
     <string name="ac_transfer_show_code">نمایش کد راه‌انداز</string>
     <string name="ac_transfer_msg_subject">پیام راه‌انداز Autocrypt</string>
-    <string name="ac_transfer_msg_body">این پیام حاوی تمام اطلاعات لازم برای انتقال امن تنظیمات Autocrypt و کلید سرّی‌تان از دستگاه اصلی‌تان است.
-
-برای اینکه دستگاه جدیدتان را برای Autocrypt آماده کنید، لطفاً دستورالعمل‌هایی که روی دستگاه جدید به شما ارائه می‌شود را دنبال کنید.
-
-می‌توانید این پیام را پیش خود نگه دارید و آن را به‌عنوان پشتیبان کلید سرّی‌تان به‌کار ببرید. برای انجام این کار باید گذرواژه را یادداشت و در جای امنی نگهداری کنید.
-</string>
+    <string name="ac_transfer_msg_body">این پیام حاوی تمام اطلاعات لازم برای انتقال امن تنظیمات Autocrypt و کلید سرّی‌تان از دستگاه اصلی‌تان است. برای اینکه دستگاه جدیدتان را برای Autocrypt آماده کنید، لطفاً دستورالعمل‌هایی که روی دستگاه جدید به شما ارائه می‌شود را دنبال کنید. می‌توانید این پیام را پیش خود نگه دارید و آن را به‌عنوان پشتیبان کلید سرّی‌تان به‌کار ببرید. برای انجام این کار باید گذرواژه را یادداشت و در جای امنی نگهداری کنید.</string>
     <string name="ac_transfer_error_send">هنگام ارسال پیام خطایی رخ داد. لطفاً اتصال شبکه‌تان و پیکربندی کارساز خروجی را بررسی کنید.</string>
     <string name="switch_on">روشن</string>
     <string name="switch_off">خاموش</string>
@@ -845,7 +838,7 @@
     <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_copy_name_and_email_address">رونوشت از نام و نشانی رایانامه</string>
     <!--A user visible label for the email address copied to the clipboard-->
-    <string name="clipboard_label_email_address">نشانی رایانامه </string>
+    <string name="clipboard_label_email_address">نشانی رایانامه</string>
     <!--A user visible label for the name and email address copied to the clipboard-->
     <string name="clipboard_label_name_and_email_address">نام و نشانی رایانامه</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
@@ -895,12 +888,12 @@
     <string name="debug_invalidate_access_token_local">آزمون: بی‌اعتباری ژتون دسترسی (محلی)</string>
     <string name="debug_invalidate_access_token_server">آزمون: بی‌اعتباری ژتون دسترسی (کارساز)</string>
     <string name="debug_force_auth_failure">آزمون: اجبار شکست فوری</string>
-    <string name="debug_invalidate_access_token_already_modified">ژتون دسترسی ذخیره شده از پیش تغییر کرده.</string>
+    <string name="debug_invalidate_access_token_already_modified">ژتون دسترسی ذخیره شده از پیش تغییر کرده.</string>
     <string name="global_settings_messageview_body_content_type_text_plain">متن خام (text/plain)</string>
     <string name="set_format_html_action">استفاده از قالب‌بندی اصلی</string>
-    <string name="set_format_html_condensed_action">نمایش قالب بسته</string>
-    <string name="set_format_plain_action">نمایش پیام بدون قالب بندی</string>
-    <string name="set_format_plain_condensed_action">نمایش بدون قالب بندی</string>
+    <string name="set_format_html_condensed_action">نمایش قالب بسته</string>
+    <string name="set_format_plain_action">نمایش پیام بدون قالب بندی</string>
+    <string name="set_format_plain_condensed_action">نمایش بدون قالب بندی</string>
     <string name="global_settings_messageview_body_content_type_title">گونهٔ محتوای بدنه</string>
     <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
     <string name="account_setup_auto_select_folder">گزینش خودکار شاخه</string>
@@ -908,11 +901,11 @@
     <string name="expand_folders">گسترش شاخه‌ها</string>
     <string name="debug_invalidate_access_token_done">ژتون دسترسی از اعتبار ساقط شد. درخواست بعدی باز خواهد خواند.</string>
     <string name="debug_invalidate_access_token_unavailable">هیچ ژتون OAuthای برای این حساب موجود نیست.</string>
-    <string name="debug_invalidate_access_token_local_done">درخواست نامعتبر سازی محلی شد. درخواست بعدی ژتونی جدید واخواهد کشید.</string>
-    <string name="debug_invalidate_access_token_server_done">ژتون دسترسی ذخیره شده خراب شد. درخواست بعدی شکست خورده و سپس بازخواهد خوانده شد.</string>
+    <string name="debug_invalidate_access_token_local_done">درخواست نامعتبر سازی محلی شد. درخواست بعدی ژتونی جدید واخواهد کشید.</string>
+    <string name="debug_invalidate_access_token_server_done">ژتون دسترسی ذخیره شده خراب شد. درخواست بعدی شکست خورده و سپس بازخواهد خوانده شد.</string>
     <string name="debug_force_auth_failure_done">وضعیت OAuth پاک شد. درخواست بعدی شکست خواهد خورد.</string>
     <string name="debug_force_auth_failure_unavailable">هیچ پیکربندی OAuthای برای این حساب موجود نیست.</string>
-    <string name="debug_invalidate_access_token_cannot_modify">نتوانست ژتون دسترسی ذخیره شده را دستگاری کند. آزمودن نامعتبر سازی محلی.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">نتوانست ژتون دسترسی ذخیره شده را دستگاری کند. آزمودن نامعتبر سازی محلی.</string>
     <string name="debug_feature_flags">اشکال‌زدایی: پرچم‌های ویژگی</string>
     <string name="print_message_action">چاپ</string>
     <string name="general_settings_message_list_date_time_format_title">قالب تاریخ و زمان</string>
@@ -930,12 +923,12 @@
     <string name="accessibility_move_down">جابه‌جایی به پایین</string>
     <string name="notification_actions_settings_description">تغییر ترتیب کنش‌های آگاهی.</string>
     <string name="message_view_single_attachment_summary">‫‏<xliff:g id="name">%1$s</xliff:g> (<xliff:g id="size">%2$s</xliff:g>)</string>
-    <string name="notification_actions_shown_state">نمایش داده در آگاهی</string>
+    <string name="notification_actions_shown_state">نمایش داده در آگاهی</string>
     <string name="accessibility_move_item_up">جابه‌جایی <xliff:g id="item">%1$s</xliff:g> به بالا</string>
     <string name="accessibility_move_item_down">جابه‌جایی <xliff:g id="item">%1$s</xliff:g> به پایین</string>
     <string name="notification_summary_delete_title">نمایش حذف روی آگاهی‌های چندپیامه</string>
-    <string name="notification_actions_hidden_state">نمایش نداده در آگاهی</string>
-    <string name="notification_actions_settings_summary">گزینش کنش‌های نمایش داده در آگاهی‌های رایانامه</string>
+    <string name="notification_actions_hidden_state">نمایش نداده در آگاهی</string>
+    <string name="notification_actions_settings_summary">گزینش کنش‌های نمایش داده در آگاهی‌های رایانامه</string>
     <string name="no_network_message_will_be_sent_later_toast">برون‌خط. پیام‌ها پس از موجود شدن اتّصال فرستاده خواهند شد</string>
     <string name="notification_actions_cutoff_state">کنش‌های بالای این خط در آگاهی نشان داده خواهند شد</string>
     <plurals name="message_view_attachment_summary">
