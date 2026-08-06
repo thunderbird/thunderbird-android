@@ -16,7 +16,9 @@ kotlin {
         compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
         minSdk = ThunderbirdProjectConfig.Android.sdkMin
 
-        withHostTest { }
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
 
         compilerOptions {
             jvmTarget.set(ThunderbirdProjectConfig.Compiler.jvmTarget)
