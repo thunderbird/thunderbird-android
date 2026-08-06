@@ -3,6 +3,7 @@ package net.thunderbird.core.featureflag.model
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 
 /**
  * Represents a complete feature flag configuration catalog.
@@ -13,6 +14,7 @@ import kotlinx.serialization.Serializable
  */
 @OptIn(ExperimentalSerializationApi::class)
 @Serializable
+@JsonIgnoreUnknownKeys
 data class FeatureFlagCatalog(
     val version: String,
     val flags: List<FlagRegistry>,

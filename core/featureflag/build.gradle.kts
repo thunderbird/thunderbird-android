@@ -10,6 +10,12 @@ kotlin {
         // Required so the generated `res/raw` catalog is merged into the module's Android resources.
         androidResources.enable = true
     }
+
+    sourceSets {
+        androidHostTest.dependencies {
+            implementation(libs.robolectric)
+        }
+    }
 }
 
 codeCoverage {

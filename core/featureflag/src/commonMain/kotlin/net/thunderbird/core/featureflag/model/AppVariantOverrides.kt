@@ -34,7 +34,8 @@ typealias FlagOverrides = Map<String, Boolean>
  *
  * @param wrapper Map containing variant names as keys and their corresponding FlagOverrides.
  */
-abstract class BaseAppVariantOverrides(wrapper: Map<String, FlagOverrides>) : AppVariantOverrides,
+abstract class BaseAppVariantOverrides(wrapper: AppVariantOverridesRawType) :
+    AppVariantOverrides,
     AppVariantOverridesRawType by wrapper {
     override val debug: FlagOverrides by wrapper
     override val release: FlagOverrides by wrapper
