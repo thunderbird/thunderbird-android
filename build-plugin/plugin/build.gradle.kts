@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.networknt.jsonSchemaValidator)
 
+    testImplementation(gradleTestKit())
     testImplementation(libs.junit)
     testImplementation(libs.assertk)
 }
