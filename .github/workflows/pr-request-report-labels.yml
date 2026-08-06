@@ -54,4 +54,4 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           IDENTIFIER: "<!-- pr-report-label-validation-comment -->"
         run: |
-          ./scripts/ci/manage-pr-comment.sh "$PR_NUMBER" "$IDENTIFIER" "" "valid"
+          ./scripts/ci/manage-pr-comment.sh "$PR_NUMBER" "$IDENTIFIER" "" "valid" "✅ **Validation Passed**: All report and feature-flag labels are correctly set."
