@@ -42,6 +42,7 @@ val navigationDropDownDrawerModule: Module = module {
             notificationStream = get(),
             featureFlagProvider = get(),
             avatarMapper = get(),
+            unifiedFolderRepository = get(),
         )
     }
 
