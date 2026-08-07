@@ -898,6 +898,26 @@ public class MimeTypeUtil {
         return DEFAULT_ATTACHMENT_MIME_TYPE;
     }
 
+    /**
+     * Returns a MIME type that is consistent with the extension of {@code displayName}.
+     *
+     * <p>This is used when creating a document via the Storage Access Framework. If the declared MIME type does not
+     * round-trip to the display name's extension, the provider appends the declared type's preferred extension (e.g.
+     * saving {@code appointment.ics} declared as {@code text/plain} would produce {@code appointment.ics.txt}). By
+     * passing a MIME type derived from the extension, the provider keeps the filename unchanged.
+     *
+     * <p>When the display name has no extension, there is nothing to preserve, so the declared MIME type (or
+     * {@link #DEFAULT_ATTACHMENT_MIME_TYPE} when it is {@code null}) is returned and the provider may add a suitable
+     * extension.
+     */
+    public static String getMimeTypeForFilename(String displayName, String declaredMimeType) {
+        if (displayName != null && displayName.lastIndexOf('.') != -1) {
+            return getMimeTypeByExtension(displayName);
+        }
+
+        return declaredMimeType != null ? declaredMimeType : DEFAULT_ATTACHMENT_MIME_TYPE;
+    }
+
     public static String getExtensionByMimeType(@NotNull String mimeType) {
         String lowerCaseMimeType = mimeType.toLowerCase(Locale.US);
         for (String[] contentTypeMapEntry : MIME_TYPE_BY_EXTENSION_MAP) {
