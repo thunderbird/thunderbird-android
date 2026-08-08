@@ -92,8 +92,9 @@ koinBom = "4.2.2"
 konsist = "0.17.3"
 kotlinBom = "2.4.10"
 kotlinKsp = "2.3.10"
-kotlinxCoroutines = "1.11.0"
+kotlinpoet = "2.3.0"
 kotlinxCollectionsImmutable = "0.5.1"
+kotlinxCoroutines = "1.11.0"
 kotlinxDateTime = "0.8.0"
 kotlinxIoCore = "0.9.1"
 kotlinxSerialization = "1.11.0"
@@ -110,6 +111,7 @@ mockito = "5.23.0"
 mockitoKotlin = "6.3.0"
 moshi = "1.15.2"
 mozillaAndroidComponents = "145.0.1"
+jsonSchemaValidator = "3.0.6"
 okhttp = "5.4.0"
 okio = "3.18.0"
 preferencesFix = "1.1.0"
@@ -146,6 +148,8 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 # Build plugins
 tb-app-badging = { id = "net.thunderbird.gradle.plugin.app.badging" }
 tb-app-versioning = { id = "net.thunderbird.gradle.plugin.app.versioning" }
+tb-featureflag-root = { id = "net.thunderbird.gradle.plugin.featureflag.root" }
+tb-featureflag-library = { id = "net.thunderbird.gradle.plugin.featureflag.library" }
 tb-quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
 tb-quality-detekt = { id = "net.thunderbird.gradle.plugin.quality.detekt" }
 tb-quality-spotless = { id = "net.thunderbird.gradle.plugin.quality.spotless" }
@@ -267,6 +271,7 @@ kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
+kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
@@ -292,6 +297,7 @@ moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 mozilla-components-glean = { module = "org.mozilla.components:service-glean", version.ref = "mozillaAndroidComponents" }
 mozilla-components-fetch-okhttp = { module = "org.mozilla.components:lib-fetch-okhttp", version.ref = "mozillaAndroidComponents" }
+networknt-jsonSchemaValidator = { module = "com.networknt:json-schema-validator", version.ref = "jsonSchemaValidator" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 okhttp-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }

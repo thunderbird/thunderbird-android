@@ -1,7 +1,22 @@
 package net.thunderbird.core.featureflag
 
-@JvmInline
-value class FeatureFlagKey(val key: String) {
+/**
+ * Represents a unique identifier for a feature flag with an optional description.
+ *
+ * Typically implemented as an enum or sealed class to provide a type-safe catalog
+ * of all available feature flags in the application.
+ */
+interface FeatureFlagKey {
+    /**
+     * The unique identifier or name associated with this instance.
+     */
+    val key: String
+
+    /**
+     * Returns a human-readable description of this element, or null if no description is available.
+     */
+    val description: String? get() = null
+
     companion object Keys {
         /**
          * DO NOT ADD NEW FEATURE FLAGS HERE.
@@ -16,4 +31,10 @@ value class FeatureFlagKey(val key: String) {
     }
 }
 
-fun String.toFeatureFlagKey(): FeatureFlagKey = FeatureFlagKey(this)
+@JvmInline
+value class LegacyFeatureFlagKey(override val key: String) : FeatureFlagKey
+
+@Deprecated(message = "Use GeneratedFeatureFlagKey enum instead.")
+fun FeatureFlagKey(key: String): FeatureFlagKey = key.toFeatureFlagKey()
+
+fun String.toFeatureFlagKey(): FeatureFlagKey = LegacyFeatureFlagKey(this)
