@@ -37,6 +37,10 @@ dependencies {
     compileOnly(plugin(libs.plugins.kover))
     implementation(libs.diff.utils)
     compileOnly(libs.kotlinx.datetime)
+
+    testImplementation(gradleTestKit())
+    testImplementation(libs.junit)
+    testImplementation(libs.assertk)
 }
 
 kotlin {
