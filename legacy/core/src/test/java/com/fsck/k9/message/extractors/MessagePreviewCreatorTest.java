@@ -21,20 +21,23 @@ import static org.mockito.Mockito.when;
 
 public class MessagePreviewCreatorTest {
     private TextPartFinder textPartFinder;
+    private HTMLPartFinder htmlPartFinder;
     private PreviewTextExtractor previewTextExtractor;
     private MessagePreviewCreator previewCreator;
 
     @Before
     public void setUp() throws Exception {
         textPartFinder = mock(TextPartFinder.class);
+        htmlPartFinder = mock(HTMLPartFinder.class);
         previewTextExtractor = mock(PreviewTextExtractor.class);
 
-        previewCreator = new MessagePreviewCreator(textPartFinder, previewTextExtractor);
+        previewCreator = new MessagePreviewCreator(textPartFinder, htmlPartFinder, previewTextExtractor);
     }
 
     @Test
     public void createPreview_withoutTextPart() {
         Message message = createDummyMessage();
+        when(htmlPartFinder.findFirstHTMLPart(message)).thenReturn(null);
         when(textPartFinder.findFirstTextPart(message)).thenReturn(null);
 
         PreviewResult result = previewCreator.createPreview(message);
@@ -48,6 +51,7 @@ public class MessagePreviewCreatorTest {
     public void createPreview_withEmptyTextPart() throws Exception {
         Message message = createDummyMessage();
         Part textPart = createEmptyPart("text/plain");
+        when(htmlPartFinder.findFirstHTMLPart(message)).thenReturn(null);
         when(textPartFinder.findFirstTextPart(message)).thenReturn(textPart);
 
         PreviewResult result = previewCreator.createPreview(message);
@@ -61,8 +65,23 @@ public class MessagePreviewCreatorTest {
     public void createPreview_withTextPart() throws Exception {
         Message message = createDummyMessage();
         Part textPart = createTextPart("text/plain");
+        when(htmlPartFinder.findFirstHTMLPart(message)).thenReturn(null);
         when(textPartFinder.findFirstTextPart(message)).thenReturn(textPart);
         when(previewTextExtractor.extractPreview(textPart)).thenReturn("expected");
+
+        PreviewResult result = previewCreator.createPreview(message);
+
+        assertTrue(result.isPreviewTextAvailable());
+        assertEquals(PreviewType.TEXT, result.getPreviewType());
+        assertEquals("expected", result.getPreviewText());
+    }
+
+    @Test
+    public void createPreview_withHTMLPart() throws Exception {
+        Message message = createDummyMessage();
+        Part htmlPart = createTextPart("text/html");
+        when(htmlPartFinder.findFirstHTMLPart(message)).thenReturn(htmlPart);
+        when(previewTextExtractor.extractPreview(htmlPart)).thenReturn("expected");
 
         PreviewResult result = previewCreator.createPreview(message);
 
@@ -75,6 +94,7 @@ public class MessagePreviewCreatorTest {
     public void createPreview_withPreviewTextExtractorThrowing() throws Exception {
         Message message = createDummyMessage();
         Part textPart = createTextPart("text/plain");
+        when(htmlPartFinder.findFirstHTMLPart(message)).thenReturn(null);
         when(textPartFinder.findFirstTextPart(message)).thenReturn(textPart);
         when(previewTextExtractor.extractPreview(textPart)).thenThrow(new PreviewExtractionException(""));
 
@@ -88,6 +108,7 @@ public class MessagePreviewCreatorTest {
     public void createPreview_withPreviewTextExtractorThrowingUnexpectedException() throws Exception {
         Message message = createDummyMessage();
         Part textPart = createTextPart("text/plain");
+        when(htmlPartFinder.findFirstHTMLPart(message)).thenReturn(null);
         when(textPartFinder.findFirstTextPart(message)).thenReturn(textPart);
         when(previewTextExtractor.extractPreview(textPart)).thenThrow(new IllegalStateException(""));
 
