@@ -110,6 +110,7 @@ mockito = "5.23.0"
 mockitoKotlin = "6.3.0"
 moshi = "1.15.2"
 mozillaAndroidComponents = "145.0.1"
+jsonSchemaValidator = "3.0.6"
 okhttp = "5.4.0"
 okio = "3.18.0"
 preferencesFix = "1.1.0"
@@ -146,6 +147,7 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 # Build plugins
 tb-app-badging = { id = "net.thunderbird.gradle.plugin.app.badging" }
 tb-app-versioning = { id = "net.thunderbird.gradle.plugin.app.versioning" }
+tb-featureflag = { id = "net.thunderbird.gradle.plugin.featureflag" }
 tb-quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
 tb-quality-detekt = { id = "net.thunderbird.gradle.plugin.quality.detekt" }
 tb-quality-spotless = { id = "net.thunderbird.gradle.plugin.quality.spotless" }
@@ -292,6 +294,7 @@ moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 mozilla-components-glean = { module = "org.mozilla.components:service-glean", version.ref = "mozillaAndroidComponents" }
 mozilla-components-fetch-okhttp = { module = "org.mozilla.components:lib-fetch-okhttp", version.ref = "mozillaAndroidComponents" }
+networknt-jsonSchemaValidator = { module = "com.networknt:json-schema-validator", version.ref = "jsonSchemaValidator" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 okhttp-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
