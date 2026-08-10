@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="23.0b1" versioncode="58" date="2026-08-10">
+        <change>Fixed: Signature field only accepted single-line text in Composition defaults</change>
+    </release>
     <release version="22.0b2" versioncode="57" date="2026-07-27">
         <change>Fixed: Could not empty the Trash folder using the Empty Trash action</change>
     </release>
