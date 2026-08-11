@@ -1,8 +1,14 @@
 package net.thunderbird.gradle.plugin.featureflag
 
+import javax.inject.Inject
+import net.thunderbird.gradle.plugin.featureflag.task.FeatureFlagKeyEnumsExtension
+import org.gradle.api.Action
 import org.gradle.api.GradleException
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Nested
+import org.gradle.kotlin.dsl.newInstance
 
 /**
  * Extension for configuring the Feature Flag plugin.
@@ -15,10 +21,17 @@ import org.gradle.api.provider.Property
  * @property schema The JSON schema file used to validate the catalog.
  * @property validateFormats Whether to validate format constraints in the schema. Defaults to true.
  */
-abstract class FeatureFlagPluginExtension {
+abstract class FeatureFlagPluginExtension @Inject constructor(objects: ObjectFactory) {
     abstract val catalog: RegularFileProperty
     abstract val schema: RegularFileProperty
     abstract val validateFormats: Property<Boolean>
+
+    @get:Nested
+    internal val featureFlagKeys: FeatureFlagKeyEnumsExtension = objects.newInstance<FeatureFlagKeyEnumsExtension>()
+
+    fun featureFlagKeys(action: Action<FeatureFlagKeyEnumsExtension>) {
+        action.execute(featureFlagKeys)
+    }
 
     /**
      * Validates that required configuration properties are present.

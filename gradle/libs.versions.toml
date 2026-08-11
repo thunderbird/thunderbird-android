@@ -92,8 +92,9 @@ koinBom = "4.2.2"
 konsist = "0.17.3"
 kotlinBom = "2.4.10"
 kotlinKsp = "2.3.10"
-kotlinxCoroutines = "1.11.0"
+kotlinpoet = "2.3.0"
 kotlinxCollectionsImmutable = "0.5.1"
+kotlinxCoroutines = "1.11.0"
 kotlinxDateTime = "0.8.0"
 kotlinxIoCore = "0.9.1"
 kotlinxSerialization = "1.11.0"
@@ -147,7 +148,8 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 # Build plugins
 tb-app-badging = { id = "net.thunderbird.gradle.plugin.app.badging" }
 tb-app-versioning = { id = "net.thunderbird.gradle.plugin.app.versioning" }
-tb-featureflag = { id = "net.thunderbird.gradle.plugin.featureflag" }
+tb-featureflag-root = { id = "net.thunderbird.gradle.plugin.featureflag.root" }
+tb-featureflag-library = { id = "net.thunderbird.gradle.plugin.featureflag.library" }
 tb-quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
 tb-quality-detekt = { id = "net.thunderbird.gradle.plugin.quality.detekt" }
 tb-quality-spotless = { id = "net.thunderbird.gradle.plugin.quality.spotless" }
@@ -269,6 +271,7 @@ kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
+kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
