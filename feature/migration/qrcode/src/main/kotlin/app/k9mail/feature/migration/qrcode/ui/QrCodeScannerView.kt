@@ -47,6 +47,10 @@ private fun buildString(text: DisplayText): String {
             stringResource(R.string.migration_qrcode_scanning_instructions)
         }
 
+        DisplayText.UnsupportedQrCode -> {
+            stringResource(R.string.migration_qrcode_unsupported_code)
+        }
+
         is DisplayText.ProgressText -> {
             stringResource(R.string.migration_qrcode_scanning_progress, text.scannedCount, text.totalCount)
         }

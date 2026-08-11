@@ -14,10 +14,10 @@
 #   - net.thunderbird.android.beta
 #
 # Usage:
-#   python scripts/changelog/migrate_changelog_to_json.py <applicationid> <version>
+#   python scripts/changelog/generate_changelog_json.py <applicationid> <version> <versioncode>
 #
 # Example:
-#   python scripts/changelog/migrate_changelog_to_json.py net.thunderbird.android 11.0
+#   python scripts/changelog/generate_changelog_json.py net.thunderbird.android 11.0 3320
 
 import argparse
 import json
@@ -108,7 +108,7 @@ def load_release_notes(version: str, notesrepo: str, notesbranch: str) -> dict:
     response.raise_for_status()
     return yaml.safe_load(response.text)
 
-def extract_release(version: str, application: str, yaml_content: dict) -> dict:
+def extract_release(version: str, versioncode: int, application: str, yaml_content: dict) -> dict:
     release_info = next(
         (r for r in yaml_content["release"]["releases"] if r["version"] == version),
         None,
@@ -147,6 +147,7 @@ def extract_release(version: str, application: str, yaml_content: dict) -> dict:
     return {
         "schemaVersion": 1,
         "version": version,
+        "versioncode": versioncode,
         "date": release_info["release_date"],
         "notes": notes,
     }
@@ -187,6 +188,7 @@ def write_release_file(release_data: dict, output_dir: Path) -> str:
 def create_index_entry(release_data: dict, resource_name: str) -> dict:
     return {
         "version": release_data["version"],
+        "versioncode": release_data["versioncode"],
         "date": release_data["date"],
         "resourceName": resource_name,
     }
@@ -223,7 +225,7 @@ def main():
         ],
     )
     parser.add_argument("version")
-    parser.add_argument("versioncode", nargs="?", default="0")
+    parser.add_argument("versioncode", type=int)
     parser.add_argument(
         "--repository", "-r",
         default="thunderbird/thunderbird-notes",
@@ -255,6 +257,7 @@ def main():
 
     release_data = extract_release(
         args.version,
+        args.versioncode,
         application,
         yaml_content,
     )
