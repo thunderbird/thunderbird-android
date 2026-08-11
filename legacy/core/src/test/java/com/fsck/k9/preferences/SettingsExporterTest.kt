@@ -7,6 +7,9 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.ServerSettings
 import java.io.ByteArrayOutputStream
 import org.jdom2.Document
 import org.jdom2.input.SAXBuilder
@@ -64,6 +67,27 @@ class SettingsExporterTest : K9RobolectricTest() {
         assertThat(document.rootElement.getChild("global")).isNull()
     }
 
+    @Test
+    fun exportPreferences_exportsUseRecipientAddressForReply() {
+        val account = preferences.newAccount().apply {
+            email = "user@example.org"
+            incomingServerSettings = SERVER_SETTINGS.copy(type = "imap")
+            outgoingServerSettings = SERVER_SETTINGS.copy(type = "smtp")
+            useRecipientAddressForReply = true
+        }
+        preferences.saveAccount(account)
+
+        val document = exportPreferences(false, setOf(account.uuid))
+
+        val exportedSetting = document.rootElement
+            .getChild("accounts")
+            .getChild("account")
+            .getChild("settings")
+            .getChildren("value")
+            .first { it.getAttributeValue("key") == "useRecipientAddressForReply" }
+        assertThat(exportedSetting.text).isEqualTo("true")
+    }
+
     private fun exportPreferences(globalSettings: Boolean, accounts: Set<String>): Document {
         return ByteArrayOutputStream().use { outputStream ->
             settingsExporter.exportPreferences(outputStream, globalSettings, accounts, includePasswords = false)
@@ -73,5 +97,18 @@ class SettingsExporterTest : K9RobolectricTest() {
 
     private fun parseXml(xml: ByteArray): Document {
         return SAXBuilder().build(xml.inputStream())
+    }
+
+    private companion object {
+        val SERVER_SETTINGS = ServerSettings(
+            type = "imap",
+            host = "mail.example.org",
+            port = 993,
+            connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = "user@example.org",
+            password = null,
+            clientCertificateAlias = null,
+        )
     }
 }

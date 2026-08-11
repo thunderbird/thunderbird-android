@@ -291,6 +291,14 @@ open class LegacyAccountDto(
 
     @get:Synchronized
     @set:Synchronized
+    var useRecipientAddressForReply = false
+
+    @get:Synchronized
+    @set:Synchronized
+    var recipientAddressReplyDomain = ""
+
+    @get:Synchronized
+    @set:Synchronized
     var quoteStyle = QuoteStyle.PREFIX
 
     @get:Synchronized

@@ -590,6 +590,9 @@
     <string name="account_settings_composition_title">Message composition options</string>
     <string name="account_settings_composition_label">Composition defaults</string>
     <string name="account_settings_composition_summary">Set your default From, Bcc and signature</string>
+    <string name="account_settings_use_recipient_address_for_reply_label">Reply from recipient address</string>
+    <string name="account_settings_use_recipient_address_for_reply_summary">Use the address that received the message when it matches the default identity’s domain. This supports catch-all addresses.</string>
+    <string name="account_settings_recipient_address_reply_domain_label">Catch-all reply domain</string>
 
     <string name="account_settings_identities_label">Manage identities</string>
     <string name="account_settings_identities_summary">Set up alternate \'From\' addresses and signatures</string>

@@ -16,6 +16,7 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_SORT_TYPE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_STRIP_SIGNATURE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_SYNC_INTERVAL
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_USE_RECIPIENT_ADDRESS_FOR_REPLY
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_VISIBLE_LIMIT
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
@@ -93,6 +94,8 @@ internal class DefaultAccountDefaultsProvider(
         messageFormat = DEFAULT_MESSAGE_FORMAT
         isMessageFormatAuto = DEFAULT_MESSAGE_FORMAT_AUTO
         isMessageReadReceipt = DEFAULT_MESSAGE_READ_RECEIPT
+        useRecipientAddressForReply = DEFAULT_USE_RECIPIENT_ADDRESS_FOR_REPLY
+        recipientAddressReplyDomain = ""
         quoteStyle = DEFAULT_QUOTE_STYLE
         quotePrefix = DEFAULT_QUOTE_PREFIX
         isDefaultQuotedTextShown = DEFAULT_QUOTED_TEXT_SHOWN

@@ -151,6 +151,14 @@ class LegacyAccountStorageHandler(
                 keyGen.create("messageReadReceipt"),
                 AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_READ_RECEIPT,
             )
+            useRecipientAddressForReply = storage.getBoolean(
+                keyGen.create("useRecipientAddressForReply"),
+                AccountDefaultsProvider.Companion.DEFAULT_USE_RECIPIENT_ADDRESS_FOR_REPLY,
+            )
+            recipientAddressReplyDomain = storage.getStringOrDefault(
+                keyGen.create("recipientAddressReplyDomain"),
+                "",
+            )
             quoteStyle = getEnumStringPref<QuoteStyle>(
                 storage,
                 keyGen.create("quoteStyle"),
@@ -385,6 +393,8 @@ class LegacyAccountStorageHandler(
             }
             editor.putBoolean(keyGen.create("messageFormatAuto"), messageFormatAuto)
             editor.putBoolean(keyGen.create("messageReadReceipt"), isMessageReadReceipt)
+            editor.putBoolean(keyGen.create("useRecipientAddressForReply"), useRecipientAddressForReply)
+            editor.putString(keyGen.create("recipientAddressReplyDomain"), recipientAddressReplyDomain)
             editor.putString(keyGen.create("quoteStyle"), quoteStyle.name)
             editor.putString(keyGen.create("quotePrefix"), quotePrefix)
             editor.putBoolean(keyGen.create("defaultQuotedTextShown"), isDefaultQuotedTextShown)
@@ -523,6 +533,8 @@ class LegacyAccountStorageHandler(
         editor.remove(keyGen.create("inboxFolderName"))
         editor.remove(keyGen.create("messageFormat"))
         editor.remove(keyGen.create("messageReadReceipt"))
+        editor.remove(keyGen.create("useRecipientAddressForReply"))
+        editor.remove(keyGen.create("recipientAddressReplyDomain"))
         editor.remove(keyGen.create("notifyMailCheck"))
         editor.remove(keyGen.create("inboxFolderId"))
         editor.remove(keyGen.create("outboxFolderId"))

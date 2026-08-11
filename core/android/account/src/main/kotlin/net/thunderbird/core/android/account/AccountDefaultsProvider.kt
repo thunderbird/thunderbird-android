@@ -25,6 +25,7 @@ interface AccountDefaultsProvider {
 
         const val DEFAULT_MESSAGE_FORMAT_AUTO = false
         const val DEFAULT_MESSAGE_READ_RECEIPT = false
+        const val DEFAULT_USE_RECIPIENT_ADDRESS_FOR_REPLY = false
         const val DEFAULT_QUOTED_TEXT_SHOWN = true
         const val DEFAULT_QUOTE_PREFIX = ">"
 

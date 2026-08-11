@@ -516,6 +516,12 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         updateFrom();
         replyToPresenter.setIdentity(identity);
 
+        if ((action == Action.REPLY || action == Action.REPLY_ALL) && !relatedMessageProcessed) {
+            // The source message is loaded asynchronously. Don't briefly show the default
+            // identity before we can select the identity used for the reply.
+            chooseIdentityView.setVisibility(View.INVISIBLE);
+        }
+
         if (!relatedMessageProcessed) {
             if (action == Action.REPLY || action == Action.REPLY_ALL ||
                     action == Action.FORWARD || action == Action.FORWARD_AS_ATTACHMENT ||
@@ -1482,7 +1488,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         quotedMessagePresenter.initFromReplyToMessage(messageViewInfo, action);
 
         if (action == Action.REPLY || action == Action.REPLY_ALL) {
-            setIdentityFromMessage(message);
+            setIdentityFromMessage(message, true);
+            chooseIdentityView.setVisibility(View.VISIBLE);
         }
 
     }
@@ -1515,11 +1522,12 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             quotedMessagePresenter.processMessageToForward(messageViewInfo);
             attachmentPresenter.processMessageToForward(messageViewInfo);
         }
-        setIdentityFromMessage(message);
+        setIdentityFromMessage(message, false);
     }
 
-    private void setIdentityFromMessage(Message message) {
-        Identity useIdentity = IdentityHelper.getRecipientIdentityFromMessage(account, message);
+    private void setIdentityFromMessage(Message message, boolean allowRecipientAddressForReply) {
+        Identity useIdentity = IdentityHelper.getRecipientIdentityFromMessage(
+                account, message, allowRecipientAddressForReply);
         Identity defaultIdentity = account.getIdentity(0);
         if (useIdentity != defaultIdentity) {
             switchToIdentity(useIdentity);
@@ -1837,6 +1845,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         @Override
         public void onMessageDataLoadFailed() {
             internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
+            chooseIdentityView.setVisibility(View.VISIBLE);
             Toast.makeText(MessageCompose.this, R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
         }
 
@@ -1844,6 +1853,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         public void onMessageViewInfoLoadFinished(MessageViewInfo messageViewInfo) {
             internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
             loadLocalMessageForDisplay(messageViewInfo, action);
+            if (action == Action.REPLY || action == Action.REPLY_ALL) {
+                chooseIdentityView.setVisibility(View.VISIBLE);
+            }
 
             if(!recipientPresenter.isToAddressAdded()) {
                 recipientMvpView.requestFocusOnToField();
@@ -1857,6 +1869,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         @Override
         public void onMessageViewInfoLoadFailed(MessageViewInfo messageViewInfo) {
             internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_OFF);
+            chooseIdentityView.setVisibility(View.VISIBLE);
             Toast.makeText(MessageCompose.this, R.string.status_invalid_id_error, Toast.LENGTH_LONG).show();
         }
 

@@ -79,6 +79,8 @@ data class LegacyAccount(
     val messageFormat: MessageFormat = MessageFormat.HTML,
     val isMessageFormatAuto: Boolean = false,
     val isMessageReadReceipt: Boolean = false,
+    val useRecipientAddressForReply: Boolean = false,
+    val recipientAddressReplyDomain: String = "",
     val quoteStyle: QuoteStyle = QuoteStyle.PREFIX,
     val quotePrefix: String? = null,
     val isDefaultQuotedTextShown: Boolean = false,

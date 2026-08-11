@@ -74,6 +74,8 @@ internal class DefaultLegacyAccountDataMapper : LegacyAccountDataMapper {
             messageFormat = dto.messageFormat,
             isMessageFormatAuto = dto.isMessageFormatAuto,
             isMessageReadReceipt = dto.isMessageReadReceipt,
+            useRecipientAddressForReply = dto.useRecipientAddressForReply,
+            recipientAddressReplyDomain = dto.recipientAddressReplyDomain,
             quoteStyle = dto.quoteStyle,
             quotePrefix = dto.quotePrefix,
             isDefaultQuotedTextShown = dto.isDefaultQuotedTextShown,
@@ -180,6 +182,8 @@ internal class DefaultLegacyAccountDataMapper : LegacyAccountDataMapper {
             messageFormat = domain.messageFormat
             isMessageFormatAuto = domain.isMessageFormatAuto
             isMessageReadReceipt = domain.isMessageReadReceipt
+            useRecipientAddressForReply = domain.useRecipientAddressForReply
+            recipientAddressReplyDomain = domain.recipientAddressReplyDomain
             quoteStyle = domain.quoteStyle
             quotePrefix = domain.quotePrefix
             isDefaultQuotedTextShown = domain.isDefaultQuotedTextShown

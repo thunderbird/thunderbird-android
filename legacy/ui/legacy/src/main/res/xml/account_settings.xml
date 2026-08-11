@@ -64,6 +64,20 @@
             android:title="@string/account_settings_message_read_receipt_label"
             />
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="use_recipient_address_for_reply"
+            android:summary="@string/account_settings_use_recipient_address_for_reply_summary"
+            android:title="@string/account_settings_use_recipient_address_for_reply_label"
+            />
+
+        <com.takisoft.preferencex.AutoSummaryEditTextPreference
+            android:dependency="use_recipient_address_for_reply"
+            android:dialogTitle="@string/account_settings_recipient_address_reply_domain_label"
+            android:key="recipient_address_reply_domain"
+            android:title="@string/account_settings_recipient_address_reply_domain_label"
+            />
+
         <ListPreference
             android:entries="@array/quote_style_entries"
             android:entryValues="@array/quote_style_values"

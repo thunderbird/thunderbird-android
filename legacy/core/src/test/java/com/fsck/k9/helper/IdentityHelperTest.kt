@@ -115,7 +115,155 @@ class IdentityHelperTest : RobolectricTest() {
         assertThat(identity.email).isEqualTo(DEFAULT_ADDRESS)
     }
 
+    @Test
+    fun getRecipientIdentityFromMessage_withOptionDisabled_ignoresSameDomainRecipient() {
+        val message = messageWithRecipients(RecipientType.TO to "catch-all@catch-all.example")
+
+        val identity = IdentityHelper.getRecipientIdentityFromMessage(
+            account = account,
+            message = message,
+            allowRecipientAddressForReply = true,
+        )
+
+        assertThat(identity.email).isEqualTo(DEFAULT_ADDRESS)
+    }
+
+    @Test
+    fun getRecipientIdentityFromMessage_forReply_usesSameDomainRecipient() {
+        account.useRecipientAddressForReply = true
+        val message = messageWithRecipients(RecipientType.TO to "catch-all@catch-all.example")
+
+        val identity = IdentityHelper.getRecipientIdentityFromMessage(
+            account = account,
+            message = message,
+            allowRecipientAddressForReply = true,
+        )
+
+        assertThat(identity.email).isEqualTo("catch-all@catch-all.example")
+    }
+
+    @Test
+    fun getRecipientIdentityFromMessage_forReplyAll_usesSameDomainRecipient() {
+        account.useRecipientAddressForReply = true
+        val message = messageWithRecipients(RecipientType.CC to "catch-all@catch-all.example")
+
+        val identity = IdentityHelper.getRecipientIdentityFromMessage(
+            account = account,
+            message = message,
+            allowRecipientAddressForReply = true,
+        )
+
+        assertThat(identity.email).isEqualTo("catch-all@catch-all.example")
+    }
+
+    @Test
+    fun getRecipientIdentityFromMessage_forForward_doesNotUseSameDomainRecipient() {
+        account.useRecipientAddressForReply = true
+        val message = messageWithRecipients(RecipientType.TO to "catch-all@catch-all.example")
+
+        val identity = IdentityHelper.getRecipientIdentityFromMessage(account, message)
+
+        assertThat(identity.email).isEqualTo(DEFAULT_ADDRESS)
+    }
+
+    @Test
+    fun getRecipientIdentityFromMessage_forForward_preservesExactIdentitySelection() {
+        account.useRecipientAddressForReply = true
+        val message = messageWithRecipients(RecipientType.TO to IDENTITY_1_ADDRESS)
+
+        val identity = IdentityHelper.getRecipientIdentityFromMessage(account, message)
+
+        assertThat(identity.email).isEqualTo(IDENTITY_1_ADDRESS)
+    }
+
+    @Test
+    fun getRecipientIdentityFromMessage_forReply_preservesExactForeignDomainIdentitySelection() {
+        account.useRecipientAddressForReply = true
+        val foreignIdentity = newIdentity("Foreign identity", "configured@other.example")
+        account.replaceIdentities(account.identities + foreignIdentity)
+        val message = messageWithRecipients(RecipientType.TO to "configured@other.example")
+
+        val identity = IdentityHelper.getRecipientIdentityFromMessage(account, message, true)
+
+        assertThat(identity).isEqualTo(foreignIdentity)
+    }
+
+    @Test
+    fun getRecipientIdentityFromMessage_forReply_ignoresForeignDomainRecipient() {
+        account.useRecipientAddressForReply = true
+        val message = messageWithRecipients(RecipientType.TO to "catch-all@other.example")
+
+        val identity = IdentityHelper.getRecipientIdentityFromMessage(account, message, true)
+
+        assertThat(identity.email).isEqualTo(DEFAULT_ADDRESS)
+    }
+
+    @Test
+    fun getRecipientIdentityFromMessage_forReply_matchesDomainCaseInsensitively() {
+        account.useRecipientAddressForReply = true
+        val message = messageWithRecipients(RecipientType.TO to "catch-all@CATCH-ALL.EXAMPLE")
+
+        val identity = IdentityHelper.getRecipientIdentityFromMessage(account, message, true)
+
+        assertThat(identity.email).isEqualTo("catch-all@CATCH-ALL.EXAMPLE")
+    }
+
+    @Test
+    fun getRecipientIdentityFromMessage_forReply_inheritsConfiguredIdentityMetadata() {
+        account.useRecipientAddressForReply = true
+        val defaultIdentity = Identity(
+            description = "Default description",
+            name = "Trusted name",
+            email = DEFAULT_ADDRESS,
+            signature = "Default signature",
+            signatureUse = true,
+            replyTo = "reply-to@example.org",
+        )
+        account.replaceIdentities(listOf(defaultIdentity))
+        val message = MimeMessage().apply {
+            addHeader(
+                "To",
+                AddressHeaderBuilder.createHeaderValue(arrayOf(Address("catch-all@catch-all.example", "Untrusted name"))),
+            )
+        }
+
+        val identity = IdentityHelper.getRecipientIdentityFromMessage(account, message, true)
+
+        assertThat(identity).isEqualTo(defaultIdentity.copy(email = "catch-all@catch-all.example"))
+    }
+
+    @Test
+    fun getRecipientIdentityFromMessage_forReply_usesFirstEligibleRecipientInHeader() {
+        account.useRecipientAddressForReply = true
+        val message = MimeMessage().apply {
+            addHeader(
+                "To",
+                AddressHeaderBuilder.createHeaderValue(
+                    arrayOf(Address("first@catch-all.example"), Address("second@catch-all.example")),
+                ),
+            )
+        }
+
+        val identity = IdentityHelper.getRecipientIdentityFromMessage(account, message, true)
+
+        assertThat(identity.email).isEqualTo("first@catch-all.example")
+    }
+
+    @Test
+    fun getRecipientIdentityFromMessage_forReply_preservesHeaderPrecedenceForDynamicAddress() {
+        account.useRecipientAddressForReply = true
+        val message = messageWithRecipients(
+            RecipientType.TO to "to@catch-all.example",
+            RecipientType.CC to IDENTITY_2_ADDRESS,
+        )
+
+        val identity = IdentityHelper.getRecipientIdentityFromMessage(account, message, true)
+
+        assertThat(identity.email).isEqualTo("to@catch-all.example")
+    }
+
     private fun createDummyAccount() = LegacyAccountDto(UUID.randomUUID().toString()).apply {
+        recipientAddressReplyDomain = "catch-all.example"
         replaceIdentities(
             listOf(
                 newIdentity("Default", DEFAULT_ADDRESS),

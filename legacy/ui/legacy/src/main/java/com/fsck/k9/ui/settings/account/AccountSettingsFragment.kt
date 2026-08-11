@@ -99,6 +99,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         initializeSearch()
         initializeIncomingServer()
         initializeComposition()
+        initializeRecipientAddressReplyDomain()
         initializeManageIdentities()
         initializeUploadSentMessages(account)
         initializeOutgoingServer()
@@ -212,6 +213,14 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private fun initializeComposition() {
         findPreference<Preference>(PREFERENCE_COMPOSITION)?.onClick {
             AccountSetupComposition.actionEditCompositionSettings(requireActivity(), accountUuid)
+        }
+    }
+
+    private fun initializeRecipientAddressReplyDomain() {
+        findPreference<Preference>(PREFERENCE_RECIPIENT_ADDRESS_REPLY_DOMAIN)?.setOnPreferenceChangeListener { _, value ->
+            val normalized = RecipientAddressReplyDomain.normalize(value.toString()) ?: return@setOnPreferenceChangeListener false
+            dataStore.putString(PREFERENCE_RECIPIENT_ADDRESS_REPLY_DOMAIN, normalized)
+            true
         }
     }
 
@@ -526,6 +535,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_SEARCH = "search"
         private const val PREFERENCE_INCOMING_SERVER = "incoming"
         private const val PREFERENCE_COMPOSITION = "composition"
+        private const val PREFERENCE_RECIPIENT_ADDRESS_REPLY_DOMAIN = "recipient_address_reply_domain"
         private const val PREFERENCE_MANAGE_IDENTITIES = "manage_identities"
         private const val PREFERENCE_OUTGOING_SERVER = "outgoing"
         private const val PREFERENCE_UPLOAD_SENT_MESSAGES = "upload_sent_messages"

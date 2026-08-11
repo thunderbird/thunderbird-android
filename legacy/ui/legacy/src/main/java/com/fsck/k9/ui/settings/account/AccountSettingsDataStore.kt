@@ -35,6 +35,7 @@ class AccountSettingsDataStore(
             "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc
             "message_read_receipt" -> account.isMessageReadReceipt
+            "use_recipient_address_for_reply" -> account.useRecipientAddressForReply
             "default_quoted_text_shown" -> account.isDefaultQuotedTextShown
             "reply_after_quote" -> account.isReplyAfterQuote
             "strip_signature" -> account.isStripSignature
@@ -60,6 +61,7 @@ class AccountSettingsDataStore(
             "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions = value
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc = value
             "message_read_receipt" -> account.isMessageReadReceipt = value
+            "use_recipient_address_for_reply" -> account.useRecipientAddressForReply = value
             "default_quoted_text_shown" -> account.isDefaultQuotedTextShown = value
             "reply_after_quote" -> account.isReplyAfterQuote = value
             "strip_signature" -> account.isStripSignature = value
@@ -126,6 +128,7 @@ class AccountSettingsDataStore(
             "idle_refresh_period" -> account.idleRefreshMinutes.toString()
             "message_format" -> account.messageFormat.name
             "quote_style" -> account.quoteStyle.name
+            "recipient_address_reply_domain" -> account.recipientAddressReplyDomain
             "account_quote_prefix" -> account.quotePrefix
             "auto_select_folder" -> {
                 loadSpecialFolder(account.autoExpandFolderId, SpecialFolderSelection.MANUAL)
@@ -163,6 +166,9 @@ class AccountSettingsDataStore(
             "idle_refresh_period" -> account.idleRefreshMinutes = value.toInt()
             "message_format" -> account.messageFormat = MessageFormat.valueOf(value)
             "quote_style" -> account.quoteStyle = QuoteStyle.valueOf(value)
+            "recipient_address_reply_domain" -> {
+                RecipientAddressReplyDomain.normalize(value)?.let { account.recipientAddressReplyDomain = it }
+            }
             "account_quote_prefix" -> account.quotePrefix = value
             "auto_select_folder" -> account.autoExpandFolderId = extractFolderId(value)
             "archive_folder" -> saveSpecialFolderSelection(value, account::setArchiveFolderId)
@@ -286,5 +292,28 @@ class AccountSettingsDataStore(
 
             messagingController.refreshFolderList(account)
         }
+    }
+}
+
+internal object RecipientAddressReplyDomain {
+    fun normalize(value: String): String? {
+        val domain = value.trim()
+        if (domain.isEmpty() || domain.length > 253 || domain.any { it.isWhitespace() } ||
+            domain.contains('@') || domain.contains('/') || domain.contains(':') || domain.endsWith('.')
+        ) {
+            return null
+        }
+
+        val labels = domain.split('.')
+        if (labels.size < 2 || labels.any { label ->
+                label.isEmpty() || label.length > 63 ||
+                    !label.first().isLetterOrDigit() || !label.last().isLetterOrDigit() ||
+                    label.any { character -> !character.isLetterOrDigit() && character != '-' }
+            }
+        ) {
+            return null
+        }
+
+        return domain.lowercase()
     }
 }

@@ -113,6 +113,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
         assertThat(result.messageFormat).isEqualTo(MessageFormat.TEXT)
         assertThat(result.isMessageFormatAuto).isEqualTo(true)
         assertThat(result.isMessageReadReceipt).isEqualTo(true)
+        assertThat(result.useRecipientAddressForReply).isEqualTo(true)
         assertThat(result.quoteStyle).isEqualTo(QuoteStyle.HEADER)
         assertThat(result.quotePrefix).isEqualTo("quotePrefix")
         assertThat(result.isDefaultQuotedTextShown).isEqualTo(true)
@@ -257,6 +258,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
                 messageFormat = MessageFormat.TEXT
                 isMessageFormatAuto = true
                 isMessageReadReceipt = true
+                useRecipientAddressForReply = true
                 quoteStyle = QuoteStyle.HEADER
                 quotePrefix = "quotePrefix"
                 isDefaultQuotedTextShown = true
@@ -371,6 +373,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
                 messageFormat = MessageFormat.TEXT,
                 isMessageFormatAuto = true,
                 isMessageReadReceipt = true,
+                useRecipientAddressForReply = true,
                 quoteStyle = QuoteStyle.HEADER,
                 quotePrefix = "quotePrefix",
                 isDefaultQuotedTextShown = true,

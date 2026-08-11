@@ -47,6 +47,7 @@ import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAU
 import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_REPLY_AFTER_QUOTE;
 import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_SORT_ASCENDING;
 import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_STRIP_SIGNATURE;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_USE_RECIPIENT_ADDRESS_FOR_REPLY;
 import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_VISIBLE_LIMIT;
 import static net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.FOLDER_PATH_DELIMITER_KEY;
 import static net.thunderbird.feature.mail.folder.api.FolderPathDelimiterKt.FOLDER_DEFAULT_PATH_DELIMITER;
@@ -156,6 +157,12 @@ class AccountSettingsDescriptions {
         ));
         s.put("messageReadReceipt", Settings.versions(
                 new V(1, new BooleanSetting(DEFAULT_MESSAGE_READ_RECEIPT))
+        ));
+        s.put("useRecipientAddressForReply", Settings.versions(
+                new V(112, new BooleanSetting(DEFAULT_USE_RECIPIENT_ADDRESS_FOR_REPLY))
+        ));
+        s.put("recipientAddressReplyDomain", Settings.versions(
+                new V(112, new StringSetting(""))
         ));
         s.put("notifyMailCheck", Settings.versions(
                 new V(1, new BooleanSetting(false))

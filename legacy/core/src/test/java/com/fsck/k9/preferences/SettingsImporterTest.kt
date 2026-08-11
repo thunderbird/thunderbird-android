@@ -339,4 +339,50 @@ class SettingsImporterTest : K9RobolectricTest() {
             settingsImporter.getImportStreamContents(inputStream)
         }.isInstanceOf<SettingsImportExportException>()
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `importSettings should import use recipient address for reply from version 112`() =
+        runTest(UnconfinedTestDispatcher()) {
+            val accountUuid = UUID.randomUUID().toString()
+            val inputStream =
+                """
+                <k9settings format="1" version="112">
+                  <accounts>
+                    <account uuid="$accountUuid">
+                      <name>Account</name>
+                      <incoming-server type="IMAP">
+                        <connection-security>SSL_TLS_REQUIRED</connection-security>
+                        <username>user@example.org</username>
+                        <authentication-type>PLAIN</authentication-type>
+                        <password>password</password>
+                        <host>mail.example.org</host>
+                        <port>993</port>
+                      </incoming-server>
+                      <outgoing-server type="SMTP">
+                        <connection-security>SSL_TLS_REQUIRED</connection-security>
+                        <username>user@example.org</username>
+                        <authentication-type>PLAIN</authentication-type>
+                        <password>password</password>
+                        <host>mail.example.org</host>
+                        <port>465</port>
+                      </outgoing-server>
+                      <settings>
+                        <value key="useRecipientAddressForReply">true</value>
+                      </settings>
+                      <identities>
+                        <identity>
+                          <email>user@example.org</email>
+                        </identity>
+                      </identities>
+                    </account>
+                  </accounts>
+                </k9settings>
+                """.trimIndent().byteInputStream()
+
+            val results = settingsImporter.importSettings(inputStream, globalSettings = false, listOf(accountUuid))
+
+            assertThat(results.erroneousAccounts).isEmpty()
+            assertThat(Preferences.getPreferences().getAccounts().single().useRecipientAddressForReply).isTrue()
+        }
 }
