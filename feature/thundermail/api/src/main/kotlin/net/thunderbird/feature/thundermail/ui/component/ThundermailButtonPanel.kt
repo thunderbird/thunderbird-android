@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,7 +34,10 @@ fun ThundermailButtonPanel(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             FlowRow(
-                horizontalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = BoltTheme.spacings.double,
+                    alignment = Alignment.CenterHorizontally,
+                ),
                 verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
             ) {
                 ButtonOutlined(
@@ -52,7 +53,6 @@ fun ThundermailButtonPanel(
                     ),
                     icon = Icons.Filled.Thundermail,
                 )
-                Spacer(modifier = Modifier.width(BoltTheme.spacings.double))
                 ButtonOutlined(
                     text = stringResource(R.string.feature_thundermail_button_panel_scan_qr_code),
                     onClick = onScanQrCodeClick,
