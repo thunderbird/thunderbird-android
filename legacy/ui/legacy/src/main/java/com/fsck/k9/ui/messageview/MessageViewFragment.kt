@@ -229,7 +229,7 @@ class MessageViewFragment :
         messageTopView.setShowAccountIndicator(showAccountIndicator)
 
         val sizeFormatter = SizeFormatter(resources)
-        val composeView = messageTopView.findViewById<ComposeView>(R.id.attachment_bottom_sheet_compose_view)
+        val composeView = messageTopView.findViewById<ComposeView>(R.id.bottom_sheet_compose_view)
         composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
