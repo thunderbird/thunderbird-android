@@ -19,6 +19,7 @@ permissions:
 jobs:
   autoclose:
     name: Escalate and close stale non-compliant PRs
+    if: github.repository == 'thunderbird/thunderbird-android'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: botmobile
