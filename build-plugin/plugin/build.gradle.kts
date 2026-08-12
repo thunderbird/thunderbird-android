@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.networknt.jsonSchemaValidator)
     implementation(libs.kotlinpoet)
 
+    testImplementation(gradleTestKit())
     testImplementation(libs.junit)
     testImplementation(libs.assertk)
 }
