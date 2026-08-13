@@ -60,6 +60,10 @@ kotlin {
 
 configureKotlinJavaCompatibility()
 
+tasks.withType<Test>().configureEach {
+    jvmArgs(ThunderbirdProjectConfig.Testing.robolectricJvmArgs)
+}
+
 tasks.register("testsOnCi") {
     dependsOn(
         tasks.withType<Test>()
