@@ -305,11 +305,6 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Rehydrate the camera-capture handler's URI so the pending
-        // camera result can still be attached after process death. See
-        // issue #11296: without this the handler is a fresh singleton and
-        // getCapturedImageUri() used to throw.
         cameraCaptureHandler.restoreInstanceState(savedInstanceState);
 
         if (databaseUpgradeInterceptor.checkAndHandleUpgrade(this, getIntent())) {
@@ -987,12 +982,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             }
 
             if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-                android.net.Uri capturedImageUri = cameraCaptureHandler.getCapturedImageUri();
+                final Uri capturedImageUri = cameraCaptureHandler.getCapturedImageUri();
                 if (capturedImageUri == null) {
-                    // The URI wasn't restored after process death (issue
-                    // #11296). We can't attach an image we no longer know
-                    // the location of; surface a message instead of
-                    // crashing.
                     Toast.makeText(this, R.string.camera_capture_lost, Toast.LENGTH_LONG).show();
                     return;
                 }

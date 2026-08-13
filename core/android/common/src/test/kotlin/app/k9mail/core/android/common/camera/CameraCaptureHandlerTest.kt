@@ -4,12 +4,12 @@ import android.net.Uri
 import android.os.Bundle
 import app.k9mail.core.android.common.camera.CameraCaptureHandler.Companion.STATE_KEY_CAPTURED_IMAGE_URI
 import app.k9mail.core.android.common.camera.io.CaptureImageFileWriter
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.robolectric.RobolectricTestRunner
-import kotlin.test.assertEquals
-import kotlin.test.assertNull
 
 // Coverage for the process-death regression tracked in issue #11296:
 // the captured-image URI was held in memory only, so an activity result
