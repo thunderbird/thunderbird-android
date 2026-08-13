@@ -580,9 +580,9 @@
     </plurals>
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">מביא תוצאה %1$d מתוך %2$d</item>
-        <item quantity="two">מביא %1$d תוצאות מתוך %2$d</item>
-        <item quantity="many">מביא %1$d תוצאות מתוך %2$d</item>
-        <item quantity="other">מביא %1$d תוצאות מתוך %2$d</item>
+        <item quantity="two">מביא %1$d תוצאות מתוך%2$d</item>
+        <item quantity="many">מביא %1$d תוצאות מתוך%2$d</item>
+        <item quantity="other">מביא %1$d תוצאות מתוך%2$d</item>
     </plurals>
     <string name="upgrade_databases_unspecified">משדרג מסדי נתונים…</string>
     <string name="upgrade_database_format">משדרג מסד נתונים של חשבון \"<xliff:g id="account">%s</xliff:g>\"</string>
