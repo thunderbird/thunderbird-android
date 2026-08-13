@@ -17,6 +17,10 @@ kotlin {
     }
 
     sourceSets {
+        commonMain.dependencies {
+            api(projects.core.configstore.api)
+            implementation(projects.core.logging.api)
+        }
         androidHostTest.dependencies {
             implementation(libs.robolectric)
         }
