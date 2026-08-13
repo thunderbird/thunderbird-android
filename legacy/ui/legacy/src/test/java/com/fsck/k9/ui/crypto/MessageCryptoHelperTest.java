@@ -18,10 +18,12 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import com.fsck.k9.mailstore.MessageCryptoAnnotations;
+import net.thunderbird.core.android.testing.RobolectricPendingWorkRule;
 import net.thunderbird.core.android.testing.RobolectricTest;
 import net.thunderbird.legacy.logging.Log;
 import net.thunderbird.core.logging.testing.TestLogger;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.openintents.openpgp.IOpenPgpService2;
@@ -33,7 +35,6 @@ import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpSinkResultCallback;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSink;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.LooperMode;
 
 import static com.fsck.k9.mail.testing.message.TestMessageConstructionUtils.bodypart;
 import static com.fsck.k9.mail.testing.message.TestMessageConstructionUtils.messageFromBody;
@@ -52,8 +53,10 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("unchecked")
-@LooperMode(LooperMode.Mode.LEGACY)
 public class MessageCryptoHelperTest extends RobolectricTest {
+    @Rule
+    public final RobolectricPendingWorkRule pendingWork = new RobolectricPendingWorkRule();
+
     private MessageCryptoHelper messageCryptoHelper;
     private OpenPgpApi openPgpApi;
     private Intent capturedApiIntent;
@@ -63,7 +66,7 @@ public class MessageCryptoHelperTest extends RobolectricTest {
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         Log.logger = new TestLogger();
         openPgpApi = mock(OpenPgpApi.class);
         autocryptOperations = mock(AutocryptOperations.class);
@@ -85,6 +88,7 @@ public class MessageCryptoHelperTest extends RobolectricTest {
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, false);
+        pendingWork.idleMainLooper();
 
         ArgumentCaptor<MessageCryptoAnnotations> captor = ArgumentCaptor.forClass(MessageCryptoAnnotations.class);
         verify(messageCryptoCallback).onCryptoOperationsFinished(captor.capture());
@@ -108,6 +112,7 @@ public class MessageCryptoHelperTest extends RobolectricTest {
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, false);
+        pendingWork.idleMainLooper();
 
 
         ArgumentCaptor<MessageCryptoAnnotations> captor = ArgumentCaptor.forClass(MessageCryptoAnnotations.class);
@@ -133,6 +138,7 @@ public class MessageCryptoHelperTest extends RobolectricTest {
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, true);
+        pendingWork.idleMainLooper();
 
         assertPartAnnotationHasState(message, messageCryptoCallback, CryptoError.OPENPGP_SIGNED_BUT_INCOMPLETE, null,
                 null, null, null);
@@ -149,6 +155,7 @@ public class MessageCryptoHelperTest extends RobolectricTest {
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, false);
+        pendingWork.idleMainLooper();
 
         assertPartAnnotationHasState(
                 message, messageCryptoCallback, CryptoError.OPENPGP_ENCRYPTED_BUT_INCOMPLETE, null, null, null, null);
@@ -165,6 +172,7 @@ public class MessageCryptoHelperTest extends RobolectricTest {
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, false);
+        pendingWork.idleMainLooper();
 
         assertPartAnnotationHasState(message, messageCryptoCallback, CryptoError.ENCRYPTED_BUT_UNSUPPORTED, null, null,
                 null, null);
@@ -181,6 +189,7 @@ public class MessageCryptoHelperTest extends RobolectricTest {
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, true);
+        pendingWork.idleMainLooper();
 
         assertPartAnnotationHasState(message, messageCryptoCallback, CryptoError.SIGNED_BUT_UNSUPPORTED, null, null,
                 null, null);
@@ -221,6 +230,7 @@ public class MessageCryptoHelperTest extends RobolectricTest {
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, false);
+        pendingWork.idleMainLooper();
 
         assertReturnsWithNoCryptoAnnotations(messageCryptoCallback);
     }
@@ -236,6 +246,7 @@ public class MessageCryptoHelperTest extends RobolectricTest {
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, false);
+        pendingWork.idleMainLooper();
 
         assertReturnsWithNoCryptoAnnotations(messageCryptoCallback);
     }
@@ -280,6 +291,7 @@ public class MessageCryptoHelperTest extends RobolectricTest {
     private void processEncryptedMessageAndCaptureMocks(Message message, Body encryptedBody, OutputStream outputStream)
             throws Exception {
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, false);
+        pendingWork.idleMainLooper();
 
         ArgumentCaptor<Intent> intentCaptor = ArgumentCaptor.forClass(Intent.class);
         ArgumentCaptor<OpenPgpDataSource> dataSourceCaptor = ArgumentCaptor.forClass(OpenPgpDataSource.class);
@@ -298,6 +310,7 @@ public class MessageCryptoHelperTest extends RobolectricTest {
     private void processSignedMessageAndCaptureMocks(Message message, BodyPart signedBodyPart,
             OutputStream outputStream) throws Exception {
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, true);
+        pendingWork.idleMainLooper();
 
         ArgumentCaptor<Intent> intentCaptor = ArgumentCaptor.forClass(Intent.class);
         ArgumentCaptor<OpenPgpDataSource> dataSourceCaptor = ArgumentCaptor.forClass(OpenPgpDataSource.class);

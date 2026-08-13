@@ -14,6 +14,7 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import kotlinx.coroutines.flow.Flow;
+import net.thunderbird.core.android.testing.RobolectricPendingWorkRule;
 import net.thunderbird.core.android.testing.RobolectricTest;
 import net.thunderbird.core.android.account.QuoteStyle;
 import com.fsck.k9.CoreResourceProvider;
@@ -43,10 +44,9 @@ import net.thunderbird.core.preference.notification.NotificationPreference;
 import net.thunderbird.core.preference.privacy.PrivacySettings;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.robolectric.Robolectric;
-import org.robolectric.annotation.LooperMode;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -58,8 +58,10 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 
-@LooperMode(LooperMode.Mode.LEGACY)
 public class MessageBuilderTest extends RobolectricTest {
+    @Rule
+    public final RobolectricPendingWorkRule pendingWork = new RobolectricPendingWorkRule();
+
     private static final String TEST_MESSAGE_TEXT = "soviet message\r\ntext ☭";
     private static final String TEST_ATTACHMENT_TEXT = "text data in attachment";
     private static final String TEST_SUBJECT = "test_subject";
@@ -263,6 +265,7 @@ public class MessageBuilderTest extends RobolectricTest {
         MessageBuilder messageBuilder = createSimpleMessageBuilder();
 
         messageBuilder.buildAsync(callback);
+        pendingWork.runAllTasks();
 
         MimeMessage message = getMessageFromCallback();
         assertEquals("text/plain", message.getMimeType());
@@ -283,6 +286,7 @@ public class MessageBuilderTest extends RobolectricTest {
         messageBuilder.setAttachments(Collections.singletonList(attachment));
 
         messageBuilder.buildAsync(callback);
+        pendingWork.runAllTasks();
 
         MimeMessage message = getMessageFromCallback();
         assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_ATTACH, getMessageContents(message));
@@ -298,6 +302,7 @@ public class MessageBuilderTest extends RobolectricTest {
         messageBuilder.setAttachments(Collections.singletonList(attachment));
 
         messageBuilder.buildAsync(callback);
+        pendingWork.runAllTasks();
 
         MimeMessage message = getMessageFromCallback();
         assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_LONG_FILE_NAME,
@@ -312,6 +317,7 @@ public class MessageBuilderTest extends RobolectricTest {
         messageBuilder.setAttachments(Collections.singletonList(attachment));
 
         messageBuilder.buildAsync(callback);
+        pendingWork.runAllTasks();
 
         MimeMessage message = getMessageFromCallback();
         assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_ATTACH_NON_ASCII_FILENAME,
@@ -323,6 +329,7 @@ public class MessageBuilderTest extends RobolectricTest {
         MessageBuilder messageBuilder = createHtmlMessageBuilder();
 
         messageBuilder.buildAsync(callback);
+        pendingWork.runAllTasks();
 
         MimeMessage message = getMessageFromCallback();
         assertEquals(MimeMultipart.class, message.getBody().getClass());
@@ -344,6 +351,7 @@ public class MessageBuilderTest extends RobolectricTest {
         MessageBuilder messageBuilder = createHtmlMessageBuilder().setInlineAttachments(inlineAttachments);
 
         messageBuilder.buildAsync(callback);
+        pendingWork.runAllTasks();
 
         MimeMessage message = getMessageFromCallback();
         assertEquals(MimeMultipart.class, message.getBody().getClass());
@@ -368,6 +376,7 @@ public class MessageBuilderTest extends RobolectricTest {
         messageBuilder.setAttachments(Collections.singletonList(attachment));
 
         messageBuilder.buildAsync(callback);
+        pendingWork.runAllTasks();
 
         MimeMessage message = getMessageFromCallback();
         assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_MESSAGE_ATTACH,
@@ -379,10 +388,9 @@ public class MessageBuilderTest extends RobolectricTest {
         MessageBuilder messageBuilder = createSimpleMessageBuilder();
         Callback anotherCallback = mock(Callback.class);
 
-        Robolectric.getBackgroundThreadScheduler().pause();
         messageBuilder.buildAsync(callback);
         messageBuilder.detachCallback();
-        Robolectric.getBackgroundThreadScheduler().unPause();
+        pendingWork.runAllTasks();
         messageBuilder.reattachCallback(anotherCallback);
 
         verifyNoMoreInteractions(callback);
@@ -400,6 +408,7 @@ public class MessageBuilderTest extends RobolectricTest {
         };
 
         messageBuilder.buildAsync(callback);
+        pendingWork.runAllTasks();
 
         verify(callback).onMessageBuildException(any(MessagingException.class));
         verifyNoMoreInteractions(callback);
@@ -415,10 +424,9 @@ public class MessageBuilderTest extends RobolectricTest {
             }
         };
 
-        Robolectric.getBackgroundThreadScheduler().pause();
         messageBuilder.buildAsync(callback);
         messageBuilder.detachCallback();
-        Robolectric.getBackgroundThreadScheduler().unPause();
+        pendingWork.runAllTasks();
         messageBuilder.reattachCallback(anotherCallback);
 
         verifyNoMoreInteractions(callback);
