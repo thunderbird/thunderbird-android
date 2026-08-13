@@ -21,6 +21,9 @@ kotlin {
             api(projects.core.configstore.api)
             implementation(projects.core.logging.api)
         }
+        commonTest.dependencies {
+            implementation(projects.core.logging.testing)
+        }
         androidHostTest.dependencies {
             implementation(libs.robolectric)
         }
