@@ -1,8 +1,10 @@
 package com.fsck.k9.ui.base
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.LayoutRes
@@ -15,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.displayCutout
 import androidx.core.view.WindowInsetsCompat.Type.ime
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
+import androidx.core.view.children
 import androidx.core.view.updatePadding
 import androidx.lifecycle.asLiveData
 import com.fsck.k9.controller.push.PushController
@@ -134,8 +137,36 @@ abstract class BaseActivity(
                 bottom = max(insets.bottom, imeInsets.bottom),
             )
 
+            hideActionModeStatusGuard()
+
             WindowInsetsCompat.CONSUMED
         }
+    }
+
+    /**
+     * Hides the status bar guard AppCompat draws while a contextual action mode is visible.
+     *
+     * With `windowActionModeOverlay` enabled, AppCompat offsets the contextual action bar below the status bar and
+     * fills the space that is left over with an opaque view. It picks the colour of that view from the deprecated
+     * `SYSTEM_UI_FLAG_LIGHT_STATUS_BAR` flag. On API 35 and above nothing sets that flag any more, because
+     * `WindowInsetsControllerCompat` then applies the appearance only through `setSystemBarsAppearance()` instead of
+     * mirroring it onto the old flag, so the guard always ends up black and hides the clock and the status icons.
+     * This window is drawn edge-to-edge and the AppBarLayout behind the guard already covers that area, so the guard
+     * just needs to get out of the way.
+     *
+     * AppCompat updates the guard from its own insets listener on the sub decor, which runs before the insets reach the
+     * layout installed by [setLayout]. Doing this from there means the guard is cleared again every time AppCompat
+     * recolours it.
+     */
+    private fun hideActionModeStatusGuard() {
+        val subDecor = findViewById<View>(android.R.id.content)?.parent as? ViewGroup ?: return
+
+        // AppCompat adds the guard as an id-less, plain View child of the sub decor. The children it puts there
+        // otherwise are the content frame and the contextual action bar, which are both ViewGroups with an id.
+        // If that ever stops being unambiguous, leave every one of them alone rather than recolour a guess.
+        subDecor.children
+            .singleOrNull { it.javaClass == View::class.java && it.id == View.NO_ID }
+            ?.setBackgroundColor(Color.TRANSPARENT)
     }
 
     protected fun recreateCompat() {
