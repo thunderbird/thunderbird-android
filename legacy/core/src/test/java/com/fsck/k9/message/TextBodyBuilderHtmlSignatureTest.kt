@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer
 import net.thunderbird.legacy.logging.Log
 import org.junit.Before
 import org.junit.Test
@@ -44,19 +45,23 @@ class TextBodyBuilderHtmlSignatureTest {
     }
 
     @Test
-    fun `buildTextHtml should remove script tags when signature is html`() {
+    fun `buildTextHtml should use sanitized signature when signature is html`() {
         // Arrange
         // language=html
-        // language=html
         val htmlSignature = """<p>Hi</p><script>alert('xss')</script>"""
-        val testSubject = createTestSubject(signature = htmlSignature, signatureIsHtml = true)
+        // language=html
+        val sanitizedSignature = "<p>Hi</p>"
+        val testSubject = createTestSubject(
+            signature = htmlSignature,
+            signatureIsHtml = true,
+            sanitizedSignature = sanitizedSignature,
+        )
 
         // Act
         val result = testSubject.buildTextHtml().rawText
 
         // Assert
-        // language=html
-        assertThat(result).contains("<p>Hi</p>")
+        assertThat(result).contains(sanitizedSignature)
         assertThat(result).doesNotContain("<script>")
         assertThat(result).doesNotContain("alert")
     }
@@ -97,8 +102,13 @@ class TextBodyBuilderHtmlSignatureTest {
         signature: String,
         signatureIsHtml: Boolean,
         messageContent: String = MESSAGE_CONTENT,
+        sanitizedSignature: String = signature,
     ): TextBodyBuilder {
-        return TextBodyBuilder(messageContent, FakeGeneralSettingsManager()).apply {
+        return TextBodyBuilder(
+            messageContent,
+            FakeGeneralSettingsManager(),
+            FakeHtmlSignatureSanitizer(sanitizedSignature),
+        ).apply {
             setAppendSignature(true)
             setIncludeQuotedText(false)
             setSignatureIsHtml(signatureIsHtml)
@@ -109,6 +119,12 @@ class TextBodyBuilderHtmlSignatureTest {
     private companion object {
         const val MESSAGE_CONTENT = "hello"
     }
+}
+
+private class FakeHtmlSignatureSanitizer(
+    private val sanitizedSignature: String,
+) : HtmlSignatureSanitizer {
+    override fun sanitize(html: String): String = sanitizedSignature
 }
 
 private class FakeGeneralSettingsManager(

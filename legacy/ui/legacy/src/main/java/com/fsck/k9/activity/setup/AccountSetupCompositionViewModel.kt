@@ -2,21 +2,31 @@ package com.fsck.k9.activity.setup
 
 import com.fsck.k9.EmailAddressValidator
 import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Effect
+import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Effect.Back
+import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Effect.DoneUpdatingAccount
+import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Effect.ToggleSaveButtonEnabled
 import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Event
 import com.fsck.k9.activity.setup.AccountSetupCompositionContract.State
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.helper.DisplayHtmlUiFactory
+import com.fsck.k9.view.WebViewConfigProvider
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
+import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer
 
 class AccountSetupCompositionViewModel(
     private val legacyAccountManager: LegacyAccountManager,
     private val resources: StringsResourceManager,
     private val emailAddressValidator: EmailAddressValidator,
+    private val webViewConfigProvider: WebViewConfigProvider,
+    displayHtmlUiFactory: DisplayHtmlUiFactory,
+    private val htmlSignatureSanitizer: HtmlSignatureSanitizer,
     accountUuid: String,
 ) : BaseViewModel<State, Event, Effect>(initialState = State.EMPTY) {
+    private val displayHtml = displayHtmlUiFactory.createForMessageCompose()
     private val signatureLocations = persistentListOf(
         Pair(1, resources.stringResource(R.string.account_settings_signature__location_before_quoted_text)),
         Pair(2, resources.stringResource(R.string.account_settings_signature__location_after_quoted_text)),
@@ -38,9 +48,9 @@ class AccountSetupCompositionViewModel(
             is Event.SenderEmailChange -> updateState { state ->
                 account = account.copy(email = event.email)
                 if (emailAddressValidator.isValidAddressOnly(event.email)) {
-                    emitEffect(Effect.ToggleSaveButtonEnabled(true))
+                    emitEffect(ToggleSaveButtonEnabled(true))
                 } else {
-                    emitEffect(Effect.ToggleSaveButtonEnabled(false))
+                    emitEffect(ToggleSaveButtonEnabled(false))
                 }
                 state.copy(senderEmail = account.email)
             }
@@ -62,17 +72,22 @@ class AccountSetupCompositionViewModel(
 
             is Event.SignatureChange -> updateState { state ->
                 account = account.copy(signature = event.signature)
-                state.copy(signature = account.signature ?: "")
+                state.copy(
+                    signature = account.signature ?: "",
+                    signaturePreviewHtmlText = account.signature?.buildSignatureHtmlPreviewText(),
+                )
             }
 
             is Event.SavePressed -> {
                 saveAccount()
-                emitEffect(Effect.DoneUpdatingAccount)
+                emitEffect(DoneUpdatingAccount)
             }
 
             is Event.BackPressed -> {
-                emitEffect(Effect.Back)
+                emitEffect(Back)
             }
+
+            is Event.OnFormatSignatureAsHtmlCheck -> handleOnFormatSignatureAsHtmlCheck(event)
         }
     }
 
@@ -90,11 +105,24 @@ class AccountSetupCompositionViewModel(
                 } else {
                     Pair(2, resources.stringResource(R.string.account_settings_signature__location_after_quoted_text))
                 },
+                saveSignatureAsHtml = account.signatureIsHtml,
+                signaturePreviewHtmlText = account.signature?.buildSignatureHtmlPreviewText(),
+                webViewConfig = webViewConfigProvider.createForMessageCompose(),
             )
         }
     }
 
     private fun saveAccount() {
         legacyAccountManager.saveAccount(account)
+    }
+
+    private fun handleOnFormatSignatureAsHtmlCheck(event: Event.OnFormatSignatureAsHtmlCheck) {
+        account = account.copy(signatureIsHtml = event.checked)
+        updateState { it.copy(saveSignatureAsHtml = event.checked) }
+    }
+
+    private fun String?.buildSignatureHtmlPreviewText(): String? {
+        val sanitized = htmlSignatureSanitizer.sanitize(html = this ?: return null)
+        return displayHtml.wrapStatusMessage(sanitized)
     }
 }

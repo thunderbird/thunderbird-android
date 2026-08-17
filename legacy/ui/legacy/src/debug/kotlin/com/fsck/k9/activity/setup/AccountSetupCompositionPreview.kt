@@ -12,20 +12,22 @@ import net.thunderbird.components.ui.bolt.PreviewWithThemesLightDark
 internal fun AccountSetupCompositionUseSignaturePreview() {
     PreviewWithThemesLightDark {
         AccountSetupCompositionScreen(
-            senderName = "John Doe",
-            senderEmail = "john_doe@gmail.com",
-            bccEmail = "john_22@gmail.com",
+            state = AccountSetupCompositionContract.State(
+                senderName = "John Doe",
+                senderEmail = "john_doe@gmail.com",
+                bccEmail = "john_22@gmail.com",
+                useSignature = true,
+                signature = "John",
+                signatureLocations = persistentListOf(
+                    Pair(1, stringResource(R.string.account_settings_signature__location_before_quoted_text)),
+                    Pair(2, stringResource(R.string.account_settings_signature__location_after_quoted_text)),
+                ),
+                selectedSignatureLocations = Pair(
+                    1,
+                    stringResource(R.string.account_settings_signature__location_before_quoted_text),
+                ),
+            ),
             saveActionEnabled = false,
-            useSignature = true,
-            signature = "John",
-            signatureLocations = persistentListOf(
-                Pair(1, stringResource(R.string.account_settings_signature__location_before_quoted_text)),
-                Pair(2, stringResource(R.string.account_settings_signature__location_after_quoted_text)),
-            ),
-            selectedSignatureLocations = Pair(
-                1,
-                stringResource(R.string.account_settings_signature__location_before_quoted_text),
-            ),
             onEvent = {},
         )
     }
@@ -36,20 +38,23 @@ internal fun AccountSetupCompositionUseSignaturePreview() {
 internal fun AccountSetupCompositionDontUseSignaturePreview() {
     PreviewWithThemesLightDark {
         AccountSetupCompositionScreen(
-            senderName = "John Doe",
-            senderEmail = "john_doe@gmail.com",
-            bccEmail = "john_22@gmail.com",
-            useSignature = false,
+            state = AccountSetupCompositionContract.State(
+                senderName = "John Doe",
+                senderEmail = "john_doe@gmail.com",
+                bccEmail = "john_22@gmail.com",
+                useSignature = false,
+                signature = "John",
+                signatureLocations = persistentListOf(
+                    Pair(1, stringResource(R.string.account_settings_signature__location_before_quoted_text)),
+                    Pair(2, stringResource(R.string.account_settings_signature__location_after_quoted_text)),
+                ),
+                selectedSignatureLocations = Pair(
+                    1,
+                    stringResource(R.string.account_settings_signature__location_before_quoted_text),
+                ),
+                saveSignatureAsHtml = false,
+            ),
             saveActionEnabled = true,
-            signature = "John",
-            signatureLocations = persistentListOf(
-                Pair(1, stringResource(R.string.account_settings_signature__location_before_quoted_text)),
-                Pair(2, stringResource(R.string.account_settings_signature__location_after_quoted_text)),
-            ),
-            selectedSignatureLocations = Pair(
-                1,
-                stringResource(R.string.account_settings_signature__location_before_quoted_text),
-            ),
             onEvent = {},
         )
     }

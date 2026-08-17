@@ -186,7 +186,7 @@ class TextBodyBuilder {
     private String getSignature() {
         String signature = "";
         if (!isEmpty(mSignature)) {
-            String plainSignature = mSignatureIsHtml
+            final String plainSignature = mSignatureIsHtml
                     ? HtmlConverter.htmlToText(mSignature)
                     : mSignature;
             signature = "\r\n" + plainSignature;

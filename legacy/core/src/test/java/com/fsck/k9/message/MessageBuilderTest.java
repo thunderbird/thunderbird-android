@@ -400,7 +400,8 @@ public class MessageBuilderTest extends RobolectricTest {
 
     @Test
     public void buildWithException_shouldThrow() throws MessagingException {
-        MessageBuilder messageBuilder = new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider, fakeSettingsManager) {
+        MessageBuilder messageBuilder = new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider,
+                fakeSettingsManager, html -> html) {
             @Override
             protected void buildMessageInternal() {
                 queueMessageBuildException(new MessagingException("expected error"));
@@ -417,7 +418,8 @@ public class MessageBuilderTest extends RobolectricTest {
     @Test
     public void buildWithException_detachAndReattach_shouldThrow() throws MessagingException {
         Callback anotherCallback = mock(Callback.class);
-        MessageBuilder messageBuilder = new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider, fakeSettingsManager) {
+        MessageBuilder messageBuilder = new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider,
+                fakeSettingsManager, html -> html) {
             @Override
             protected void buildMessageInternal() {
                 queueMessageBuildException(new MessagingException("expected error"));
@@ -491,7 +493,8 @@ public class MessageBuilderTest extends RobolectricTest {
 
     private MessageBuilder createSimpleMessageBuilder() {
         Identity identity = createIdentity();
-        return new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider, fakeSettingsManager)
+        return new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider, fakeSettingsManager,
+                html -> html)
                 .setSubject(TEST_SUBJECT)
                 .setSentDate(SENT_DATE)
                 .setHideTimeZone(true)

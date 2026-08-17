@@ -10,6 +10,9 @@ val setUpModule = module {
             accountUuid = accountId,
             resources = get(),
             emailAddressValidator = get(),
+            webViewConfigProvider = get(),
+            displayHtmlUiFactory = get(),
+            htmlSignatureSanitizer = get(),
         )
     }
 }
