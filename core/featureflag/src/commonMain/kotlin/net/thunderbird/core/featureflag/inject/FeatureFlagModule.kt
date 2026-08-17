@@ -27,7 +27,7 @@ val featureFlagModule = module {
     single {
         BundledCatalogFeatureFlagProvider(
             dataSource = get<FeatureFlagCatalogDataSource>(
-                named(FeatureFlagCatalogDataSource.InjectQualifiers.Local),
+                named(InjectQualifier.Local),
             ),
             logger = get(),
         )
