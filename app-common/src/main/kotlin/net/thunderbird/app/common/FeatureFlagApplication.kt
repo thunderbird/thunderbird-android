@@ -19,9 +19,9 @@ abstract class FeatureFlagApplication : BaseApplication() {
     private val featureFlagProvider: DataSourceCatalogFeatureFlagProvider by inject()
 
     private val featureFlagScope = CoroutineScope(
-        SupervisorJob() + Dispatchers.Default +
+        SupervisorJob() + Dispatchers.Main +
             CoroutineExceptionHandler { _, throwable ->
-                logger.error(throwable = throwable) { "Failed to initialize Feature flags" }
+                logger.error(throwable = throwable) { "[feature-flag] Failed to initialize Feature flags" }
             },
     )
 
