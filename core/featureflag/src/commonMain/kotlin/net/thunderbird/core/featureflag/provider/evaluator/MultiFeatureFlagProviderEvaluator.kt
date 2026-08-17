@@ -29,7 +29,8 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
 ) : BaseCatalogFeatureFlagProvider(
     providerName = "multi_provider",
     logger = logger,
-), MultiFeatureFlagProviderEvaluator {
+),
+    MultiFeatureFlagProviderEvaluator {
 
     override fun provide(key: FeatureFlagKey): FeatureFlagResult {
         for (provider in providers) {

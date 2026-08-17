@@ -83,6 +83,6 @@ class RuntimeDebugOverrideFeatureFlagProvider(
         return """
             |feature-flag provider '${metadata.name}':
             |   resolvedFlags = $resolvedFlags,
-            """.trimMargin()
+        """.trimMargin()
     }
 }
