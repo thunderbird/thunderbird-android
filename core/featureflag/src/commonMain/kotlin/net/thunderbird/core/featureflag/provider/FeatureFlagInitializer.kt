@@ -17,7 +17,7 @@ import net.thunderbird.core.featureflag.provider.context.ImmutableFeatureFlagCon
  * @param extras Optional additional attributes to include in the feature flag evaluation context.
  */
 suspend fun initializeFeatureFlags(
-    provider: BaseCatalogFeatureFlagProvider,
+    provider: DataSourceCatalogFeatureFlagProvider,
     featureFlagConfigStore: ConfigStore<FeatureFlagConfigData>,
     app: String,
     buildType: String,

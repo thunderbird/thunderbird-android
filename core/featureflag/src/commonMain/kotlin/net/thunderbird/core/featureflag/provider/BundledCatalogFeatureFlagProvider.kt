@@ -16,7 +16,7 @@ class BundledCatalogFeatureFlagProvider(
     dataSource: FeatureFlagCatalogDataSource,
     logger: Logger,
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
-) : BaseCatalogFeatureFlagProvider(
+) : DataSourceCatalogFeatureFlagProvider(
     dataSource = dataSource,
     providerName = "bundled_catalog",
     logger = logger,
@@ -24,6 +24,14 @@ class BundledCatalogFeatureFlagProvider(
 ),
     BundledFeatureFlagDefaults {
     override fun defaults(): Map<String, Boolean> = resolvedFlags()
+
+    override fun toString(): String {
+        return """
+            |feature-flag provider '${metadata.name}':
+            |   resolvedFlags = $resolvedFlags,
+            |   defaults = ${defaults()}
+        """.trimMargin()
+    }
 }
 
 /**

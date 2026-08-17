@@ -1,14 +1,13 @@
 package net.thunderbird.app.common
 
 import android.os.Build
-import kotlin.getValue
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigStore
-import net.thunderbird.core.featureflag.provider.BaseCatalogFeatureFlagProvider
+import net.thunderbird.core.featureflag.provider.DataSourceCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext.Value
 import net.thunderbird.core.featureflag.provider.initializeFeatureFlags
 import org.koin.android.ext.android.inject
@@ -16,8 +15,8 @@ import org.koin.android.ext.android.inject
 abstract class FeatureFlagApplication : BaseApplication() {
     protected abstract val appName: String
     protected abstract val appVersion: String
-    private val featureFlagProvider: BaseCatalogFeatureFlagProvider by inject()
     private val targetingKeyStore: FeatureFlagConfigStore by inject()
+    private val featureFlagProvider: DataSourceCatalogFeatureFlagProvider by inject()
 
     private val featureFlagScope = CoroutineScope(
         SupervisorJob() + Dispatchers.Default +
