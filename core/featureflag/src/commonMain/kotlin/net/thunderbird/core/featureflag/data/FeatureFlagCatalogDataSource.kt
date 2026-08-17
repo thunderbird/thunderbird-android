@@ -17,8 +17,12 @@ interface FeatureFlagCatalogDataSource {
      * @return A Flow that emits the feature flag catalog containing flag definitions and overrides.
      */
     fun load(): Flow<FeatureFlagCatalog>
-}
 
-internal expect class LocalFeatureFlagCatalogDataSource : FeatureFlagCatalogDataSource {
-    override fun load(): Flow<FeatureFlagCatalog>
+    /**
+     * Dependency injection qualifiers for distinguishing between local and remote data source implementations.
+     *
+     * Used to differentiate between [FeatureFlagCatalogDataSource] instances that load catalogs
+     * from local bundled resources versus remote servers during dependency injection.
+     */
+    enum class InjectQualifiers { Local, Remote }
 }
