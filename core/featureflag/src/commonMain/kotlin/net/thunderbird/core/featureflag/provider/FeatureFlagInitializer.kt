@@ -5,11 +5,12 @@ import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigData
 import net.thunderbird.core.featureflag.data.configstore.resolveTargetingKey
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext.Value
 import net.thunderbird.core.featureflag.provider.context.ImmutableFeatureFlagContext
+import net.thunderbird.core.featureflag.provider.evaluator.MultiFeatureFlagProviderEvaluator
 
 /**
  * Initializes a catalog-based feature flag provider with application context and targeting configuration.
  *
- * @param provider The catalog feature flag provider to initialize.
+ * @param evaluator The catalog feature flag provider evaluator to initialize.
  * @param featureFlagConfigStore Configuration store containing the persistent targeting key.
  * @param app The application identifier used for feature flag targeting and build variant resolution.
  * @param buildType The build type (e.g., debug, release) used for variant-specific flag overrides.
@@ -17,14 +18,14 @@ import net.thunderbird.core.featureflag.provider.context.ImmutableFeatureFlagCon
  * @param extras Optional additional attributes to include in the feature flag evaluation context.
  */
 suspend fun initializeFeatureFlags(
-    provider: DataSourceCatalogFeatureFlagProvider,
+    evaluator: MultiFeatureFlagProviderEvaluator,
     featureFlagConfigStore: ConfigStore<FeatureFlagConfigData>,
     app: String,
     buildType: String,
     appVersion: String,
     extras: Map<String, Value> = emptyMap(),
 ) {
-    provider.initialize(
+    evaluator.initialize(
         initialContext = ImmutableFeatureFlagContext(
             targetingKey = featureFlagConfigStore.resolveTargetingKey().toString(),
             attributes = mapOf(
