@@ -6,12 +6,14 @@ import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigStore
 import net.thunderbird.core.featureflag.provider.BaseCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.BundledCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.BundledFeatureFlagDefaults
+import net.thunderbird.core.featureflag.provider.DataSourceCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.ProviderMetadata
 import net.thunderbird.core.featureflag.serialization.DefaultFeatureFlagCatalogJsonParser
 import net.thunderbird.core.featureflag.serialization.FeatureFlagCatalogJsonParser
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import org.koin.plugin.module.dsl.bind
 
 val featureFlagModule = module {
     factory<FeatureFlagCatalogJsonParser> { DefaultFeatureFlagCatalogJsonParser(registrySerializer = get()) }
@@ -29,7 +31,7 @@ val featureFlagModule = module {
             ),
             logger = get(),
         )
-    }
+    }.bind(DataSourceCatalogFeatureFlagProvider::class)
     single<BundledFeatureFlagDefaults> { get<BundledCatalogFeatureFlagProvider>() }
     single<BaseCatalogFeatureFlagProvider> {
         // TODO(#11332): Later replaced by MultiFeatureFlagProviderEvaluator
