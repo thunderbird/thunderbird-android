@@ -8,6 +8,7 @@ import net.thunderbird.android.auth.TbOAuthConfigurationFactory
 import net.thunderbird.android.dev.developmentModuleAdditions
 import net.thunderbird.android.feature.featureModule
 import net.thunderbird.android.featureflag.TbFeatureFlagFactory
+import net.thunderbird.android.featureflag.thunderbirdFeatureFlagModule
 import net.thunderbird.android.provider.providerModule
 import net.thunderbird.android.widget.provider.MessageListWidgetProvider
 import net.thunderbird.android.widget.provider.UnreadWidgetProvider
@@ -19,6 +20,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val appModule = module {
+    includes(thunderbirdFeatureFlagModule)
     includes(appCommonModule)
 
     includes(widgetModule)
