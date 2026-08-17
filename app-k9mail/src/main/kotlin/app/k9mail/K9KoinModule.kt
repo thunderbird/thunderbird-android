@@ -5,6 +5,7 @@ import app.k9mail.dev.developmentModuleAdditions
 import app.k9mail.feature.featureModule
 import app.k9mail.feature.widget.shortcut.LauncherShortcutActivity
 import app.k9mail.featureflag.K9FeatureFlagFactory
+import app.k9mail.featureflag.k9MailFeatureFlagModule
 import app.k9mail.provider.providerModule
 import app.k9mail.widget.widgetModule
 import com.fsck.k9.AppConfig
@@ -20,6 +21,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val appModule = module {
+    includes(k9MailFeatureFlagModule)
     includes(appCommonModule)
 
     includes(widgetModule)
