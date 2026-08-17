@@ -11,4 +11,10 @@ import kotlinx.serialization.Serializable
  *  [EmptyAppVariantOverride] if running inside K-9 mail.
  */
 @Serializable
-data class FlagRegistryOverride(val k9: AppVariantOverrides, val thunderbird: AppVariantOverrides)
+data class FlagRegistryOverride(val k9: AppVariantOverrides, val thunderbird: AppVariantOverrides) {
+    operator fun get(key: String): AppVariantOverrides? = when (key) {
+        ::k9.name -> k9
+        ::thunderbird.name -> thunderbird
+        else -> null
+    }
+}

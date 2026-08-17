@@ -42,7 +42,7 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
     private val notificationChannelManager: NotificationChannelManager by inject()
     private val messageListWidgetManager: MessageListWidgetManager by inject()
     private val workManagerConfigurationProvider: WorkManagerConfigurationProvider by inject()
-    private val logger: Logger by inject()
+    protected val logger: Logger by inject()
     private val syncDebugFileLogSink: FileLogSink by inject(named("syncDebug"))
 
     private val appCoroutineScope: CoroutineScope = MainScope()
