@@ -1,6 +1,7 @@
 package net.thunderbird.feature.mail.message.reader.impl.ui
 
 import kotlinx.collections.immutable.toPersistentList
+import net.thunderbird.feature.mail.message.reader.api.domain.MessageReaderAction
 import net.thunderbird.feature.mail.message.reader.api.domain.mapper.AttachmentViewInfoMapper
 import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract
 
@@ -10,6 +11,24 @@ class MessageReaderViewModel(
     override fun event(event: MessageReaderViewContract.Event<MailPart>) {
         when (event) {
             is MessageReaderViewContract.Event.UpdateAttachments -> updateAttachments(event)
+
+            is MessageReaderViewContract.Event.CloseMessageReaderBottomSheet<*> -> updateState {
+                it.copy(showReaderActionsBottomSheet = false)
+            }
+
+            is MessageReaderViewContract.Event.OnMessageReaderBottomSheetActionClick<*> ->
+                handleOnMessageReaderBottomSheetActionClick(event.action)
+
+            is MessageReaderViewContract.Event.OpenMessageReaderBottomSheet<*> -> updateState {
+                it.copy(showReaderActionsBottomSheet = true)
+            }
+        }
+    }
+
+    private fun handleOnMessageReaderBottomSheetActionClick(action: MessageReaderAction) {
+        when (action) {
+            MessageReaderAction.Reply -> emitEffect(MessageReaderViewContract.Effect.TriggerOnReplyListener)
+            MessageReaderAction.ReplyAll -> emitEffect(MessageReaderViewContract.Effect.TriggerOnReplyAllListener)
         }
     }
 
