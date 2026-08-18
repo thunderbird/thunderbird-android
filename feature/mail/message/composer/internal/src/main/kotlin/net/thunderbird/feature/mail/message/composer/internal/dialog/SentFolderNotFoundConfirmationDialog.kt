@@ -1,0 +1,56 @@
+package net.thunderbird.feature.mail.message.composer.internal.dialog
+
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import net.thunderbird.components.ui.bolt.atom.button.ButtonText
+import net.thunderbird.components.ui.bolt.atom.icon.Icon
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
+import net.thunderbird.components.ui.bolt.organism.BasicDialog
+import net.thunderbird.components.ui.bolt.theme.BoltTheme
+import net.thunderbird.feature.mail.message.composer.internal.R
+
+@Composable
+internal fun SentFolderNotFoundConfirmationDialog(
+    showDialog: Boolean,
+    onAssignSentFolderClick: () -> Unit,
+    onSendAndDeleteClick: () -> Unit,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    if (showDialog) {
+        BasicDialog(
+            headlineText = stringResource(R.string.sent_folder_not_found_dialog_title),
+            supportingText = stringResource(R.string.sent_folder_not_found_dialog_supporting_text),
+            content = {
+                ButtonText(
+                    onClick = onAssignSentFolderClick,
+                    text = stringResource(R.string.sent_folder_not_found_dialog_assign_folder_action),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Folder,
+                            contentDescription = null,
+                            modifier = Modifier.padding(end = BoltTheme.spacings.half),
+                        )
+                    },
+                )
+            },
+            buttons = {
+                ButtonText(
+                    text = stringResource(R.string.sent_folder_not_found_dialog_cancel_action),
+                    onClick = onDismiss,
+                )
+                ButtonText(
+                    text = stringResource(R.string.sent_folder_not_found_dialog_send_and_delete_action),
+                    onClick = onSendAndDeleteClick,
+                    color = BoltTheme.colors.error,
+                )
+            },
+            onDismissRequest = onDismiss,
+            contentPadding = PaddingValues(horizontal = BoltTheme.spacings.default),
+            modifier = modifier,
+        )
+    }
+}

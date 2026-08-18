@@ -50,7 +50,7 @@ dependencies {
     implementation(projects.feature.navigation.drawer.api)
     implementation(projects.feature.mail.message.list.api)
     implementation(projects.feature.mail.message.reader.api)
-    implementation(projects.feature.mail.message.composer)
+    implementation(projects.feature.mail.message.composer.api)
 
     testImplementation(projects.core.testing)
     testImplementation(libs.tb.mobile.components.ui.testing)
