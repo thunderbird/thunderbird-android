@@ -62,7 +62,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.activity.compose.MessageComposeInAppNotificationFragment;
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
 import com.fsck.k9.ui.settings.account.AccountSettingsFragment;
+import com.fsck.k9.message.html.DisplayHtml;
 import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer;
+import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
+import com.fsck.k9.view.MessageWebView;
+import com.fsck.k9.view.WebViewConfigProvider;
 import kotlin.Unit;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import app.k9mail.legacy.di.DI;
@@ -231,9 +235,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final MessagingController messagingController = DI.get(MessagingController.class);
     private final Preferences preferences = DI.get(Preferences.class);
     private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
-    private final com.fsck.k9.view.WebViewConfigProvider webViewConfigProvider =
-            DI.get(com.fsck.k9.view.WebViewConfigProvider.class);
     private final WebViewConfigProvider webViewConfigProvider = DI.get(WebViewConfigProvider.class);
+    private final DisplayHtml displayHtml = DI.get(DisplayHtmlUiFactory.class).createForMessageCompose();
     private final HtmlSignatureSanitizer htmlSignatureSanitizer = DI.get(HtmlSignatureSanitizer.class);
 
     private final IntentDataMapper indentDataMapper = DI.get(IntentDataMapper.class);
@@ -293,7 +296,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private MaterialTextView chooseIdentityView;
     private EditText subjectView;
     private EditText signatureView;
-    private com.fsck.k9.view.MessageWebView signatureHtmlPreview;
+    private MessageWebView signatureHtmlPreview;
     private EditText messageContentView;
     private LinearLayout attachmentsView;
 
@@ -385,8 +388,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         EditText lowerSignature = findViewById(R.id.lower_signature);
         applyIncognitoKeyboardSetting(upperSignature);
         applyIncognitoKeyboardSetting(lowerSignature);
-        com.fsck.k9.view.MessageWebView upperSignaturePreview = findViewById(R.id.upper_signature_html_preview);
-        com.fsck.k9.view.MessageWebView lowerSignaturePreview = findViewById(R.id.lower_signature_html_preview);
+        final MessageWebView upperSignaturePreview = findViewById(R.id.upper_signature_html_preview);
+        final MessageWebView lowerSignaturePreview = findViewById(R.id.lower_signature_html_preview);
 
 
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
@@ -1129,12 +1132,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             // raw HTML so signatureView.getText() continues to feed the outgoing message.
             if (identity.getSignatureIsHtml() && signature != null) {
                 signatureView.setVisibility(View.GONE);
-                String sanitized = com.fsck.k9.message.html.HtmlSignatureSanitizer.sanitize(signature);
-                String document = "<!DOCTYPE html><html><head>" +
-                        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" +
-                        "<style>body{margin:12px;word-wrap:break-word;}img{max-width:100%;height:auto;}</style>" +
-                        "</head><body>" + sanitized + "</body></html>";
                 final String sanitizedSignature = htmlSignatureSanitizer.sanitize(signature);
+                final String document = displayHtml.wrapMessageContent(sanitizedSignature);
                 signatureHtmlPreview.displayHtmlContentWithInlineAttachments(document, null, null);
                 signatureHtmlPreview.setVisibility(View.VISIBLE);
             } else {
