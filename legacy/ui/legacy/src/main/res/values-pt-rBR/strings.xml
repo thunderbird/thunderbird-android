@@ -320,7 +320,7 @@
     <string name="account_settings_notification_channels_label">Categorias de notificação</string>
     <string name="account_settings_open_notification_settings_messages_summary">Configura as notificações para novas mensagens</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Configura as notificações de erros e status</string>
-    <string name="account_settings_show_pictures_label">Sempre exibir imagens</string>
+    <string name="account_settings_show_pictures_label">Sempre exibir as imagens</string>
     <string name="account_settings_show_pictures_never">Não</string>
     <string name="account_settings_show_pictures_only_from_contacts">Dos contatos</string>
     <string name="account_settings_show_pictures_always">De qualquer um</string>
