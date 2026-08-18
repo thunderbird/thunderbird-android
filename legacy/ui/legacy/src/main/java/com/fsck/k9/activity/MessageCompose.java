@@ -62,6 +62,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.activity.compose.MessageComposeInAppNotificationFragment;
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
 import com.fsck.k9.ui.settings.account.AccountSettingsFragment;
+import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer;
 import kotlin.Unit;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import app.k9mail.legacy.di.DI;
@@ -231,6 +232,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
     private final com.fsck.k9.view.WebViewConfigProvider webViewConfigProvider =
             DI.get(com.fsck.k9.view.WebViewConfigProvider.class);
+    private final HtmlSignatureSanitizer htmlSignatureSanitizer = DI.get(HtmlSignatureSanitizer.class);
 
     private final IntentDataMapper indentDataMapper = DI.get(IntentDataMapper.class);
 
@@ -1141,6 +1143,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                         "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" +
                         "<style>body{margin:12px;word-wrap:break-word;}img{max-width:100%;height:auto;}</style>" +
                         "</head><body>" + sanitized + "</body></html>";
+                final String sanitizedSignature = htmlSignatureSanitizer.sanitize(signature);
                 signatureHtmlPreview.displayHtmlContentWithInlineAttachments(document, null, null);
                 signatureHtmlPreview.setVisibility(View.VISIBLE);
             } else {

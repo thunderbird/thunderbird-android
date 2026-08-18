@@ -1,11 +1,10 @@
 package com.fsck.k9.message;
 
 
+import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer;
 import net.thunderbird.legacy.logging.Log;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.message.html.HtmlConverter;
-import com.fsck.k9.message.html.HtmlSignatureSanitizer;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
@@ -27,11 +26,14 @@ class TextBodyBuilder {
     private String mSignature;
     private String mQuotedText;
     private InsertableHtmlContent mQuotedTextHtml;
-    private GeneralSettingsManager generalSettingsManager;
+    private final GeneralSettingsManager generalSettingsManager;
+    private final HtmlSignatureSanitizer htmlSignatureSanitizer;
 
-    public TextBodyBuilder(String messageContent, GeneralSettingsManager generalSettingsManager) {
+    public TextBodyBuilder(String messageContent, GeneralSettingsManager generalSettingsManager,
+        HtmlSignatureSanitizer htmlSignatureSanitizer) {
         mMessageContent = messageContent;
         this.generalSettingsManager = generalSettingsManager;
+        this.htmlSignatureSanitizer = htmlSignatureSanitizer;
     }
 
     /**
@@ -197,7 +199,7 @@ class TextBodyBuilder {
         String signature = "";
         if (!isEmpty(mSignature)) {
             signature = mSignatureIsHtml
-                    ? HtmlSignatureSanitizer.sanitize(mSignature)
+                    ? htmlSignatureSanitizer.sanitize(mSignature)
                     : HtmlConverter.textToHtmlFragment(mSignature);
         }
         return signature;

@@ -1,15 +1,15 @@
-package com.fsck.k9.message.html
+package net.thunderbird.feature.mail.message.composer.signature
 
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.doesNotContain
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
-import org.junit.Test
+import kotlin.test.Test
 
-class HtmlSignatureSanitizerTest {
+class DefaultHtmlSignatureSanitizerTest {
 
-    private val testSubject = HtmlSignatureSanitizer
+    private val testSubject = DefaultHtmlSignatureSanitizer()
 
     @Test
     fun `sanitize should return empty string when input is empty`() {
