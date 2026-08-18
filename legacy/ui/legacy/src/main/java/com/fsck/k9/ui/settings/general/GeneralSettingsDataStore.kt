@@ -57,6 +57,7 @@ class GeneralSettingsDataStore(
             "threaded_view" -> inboxSettings.isThreadedViewEnabled
             "messageview_fixedwidth_font" -> visualSettings.isUseMessageViewFixedWidthFont
             "messageview_autofit_width" -> visualSettings.isAutoFitWidth
+            "messageview_bottom_action_bar" -> visualSettings.isMessageViewBottomActionBar
             "drawerExpandAllFolder" -> visualSettings.drawerExpandAllFolder
             "quiet_time_enabled" -> notificationSettings.isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !notificationSettings.isNotificationDuringQuietTimeEnabled
@@ -101,6 +102,7 @@ class GeneralSettingsDataStore(
             "threaded_view" -> setIsThreadedViewEnabled(isThreadedViewEnabled = value)
             "messageview_fixedwidth_font" -> setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont = value)
             "messageview_autofit_width" -> setIsAutoFitWidth(isAutoFitWidth = value)
+            "messageview_bottom_action_bar" -> setIsMessageViewBottomActionBar(isMessageViewBottomActionBar = value)
             "quiet_time_enabled" -> setIsQuietTimeEnabled(isQuietTimeEnabled = value)
             "disable_notifications_during_quiet_time" -> setIsNotificationDuringQuietTimeEnabled(!value)
             "notification_summary_delete" -> setIsSummaryDeleteActionEnabled(isSummaryDeleteActionEnabled = value)
@@ -636,6 +638,19 @@ class GeneralSettingsDataStore(
                 display = settings.display.copy(
                     visualSettings = settings.display.visualSettings.copy(
                         isAutoFitWidth = isAutoFitWidth,
+                    ),
+                ),
+            )
+        }
+    }
+
+    private fun setIsMessageViewBottomActionBar(isMessageViewBottomActionBar: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        isMessageViewBottomActionBar = isMessageViewBottomActionBar,
                     ),
                 ),
             )

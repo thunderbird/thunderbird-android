@@ -29,6 +29,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
+import com.google.android.material.appbar.MaterialToolbar
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -166,6 +171,8 @@ class MessageViewFragment :
 
     private var isActive: Boolean = false
 
+    private var bottomActionBar: MaterialToolbar? = null
+
     private val attachmentListBottomSheetState = MutableStateFlow(persistentListOf<AttachmentListItemModel>())
 
     private val interactionSettings: InteractionSettings
@@ -195,6 +202,9 @@ class MessageViewFragment :
 
         showAccountIndicator = arguments?.getBoolean(ARG_SHOW_ACCOUNT_INDICATOR)
             ?: error("Missing argument: '$ARG_SHOW_ACCOUNT_INDICATOR'")
+
+        account = accountManager.getAccount(messageReference.accountUuid)
+            ?: error("Account ${messageReference.accountUuid} not found")
 
         if (savedInstanceState != null) {
             wasMessageMarkedAsOpened = savedInstanceState.getBoolean(STATE_WAS_MESSAGE_MARKED_AS_OPENED)
@@ -275,17 +285,49 @@ class MessageViewFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val isBottomActionBar = generalSettingsManager.getConfig()
+            .display.visualSettings.isMessageViewBottomActionBar
+
+        bottomActionBar = view.findViewById<MaterialToolbar>(R.id.bottom_action_bar)?.apply {
+            if (isBottomActionBar) {
+                isVisible = true
+                setNavigationIcon(Icons.Outlined.ArrowBack)
+                setNavigationOnClickListener {
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+                menu.clear()
+                inflateMenu(R.menu.message_view_option_menu)
+                setOnMenuItemClickListener { menuItem ->
+                    selectMenuItem(menuItem)
+                }
+
+                ViewCompat.setOnApplyWindowInsetsListener(this) { v, windowInsets ->
+                    val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+                    v.updatePadding(bottom = insets.bottom)
+                    windowInsets
+                }
+            } else {
+                isVisible = false
+            }
+        }
+
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     if (!isActive) return
-                    menuInflater.inflate(R.menu.message_view_option_menu, menu)
+                    if (!isBottomActionBar) {
+                        menuInflater.inflate(R.menu.message_view_option_menu, menu)
+                    }
                 }
 
                 override fun onPrepareMenu(menu: Menu) {
-                    if (!isActive) return
-                    prepareMenu(menu)
+                    if (!isActive || !::account.isInitialized) return
+                    if (!isBottomActionBar) {
+                        prepareMenu(menu)
+                    } else {
+                        bottomActionBar?.let { prepareMenu(it.menu) }
+                    }
                 }
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -320,6 +362,12 @@ class MessageViewFragment :
     override fun setMenuVisibility(menuVisible: Boolean) {
         isActive = menuVisible
 
+        val isBottomActionBar = generalSettingsManager.getConfig()
+            .display.visualSettings.isMessageViewBottomActionBar
+        if (isBottomActionBar && isAdded && ::account.isInitialized) {
+            bottomActionBar?.let { prepareMenu(it.menu) }
+        }
+
         super.setMenuVisibility(menuVisible)
 
         if (menuVisible) {
@@ -349,21 +397,23 @@ class MessageViewFragment :
 
     @Suppress("LongMethod")
     private fun prepareMenu(menu: Menu) {
-        menu.findItem(R.id.delete).apply {
+        if (!isAdded || !::account.isInitialized) return
+
+        menu.findItem(R.id.delete)?.apply {
             isVisible = generalSettingsManager.getConfig()
                 .display.visualSettings.isMessageViewDeleteActionVisible
             isEnabled = !isDeleteMenuItemDisabled
         }
 
         val showToggleUnread = !isOutbox
-        menu.findItem(R.id.toggle_unread).isVisible = showToggleUnread
+        menu.findItem(R.id.toggle_unread)?.isVisible = showToggleUnread
 
         if (showToggleUnread) {
             // Set title of menu item to toggle the read state of the currently displayed message
             if (isMessageRead) {
-                menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_unread_action)
+                menu.findItem(R.id.toggle_unread)?.setTitle(R.string.mark_as_unread_action)
             } else {
-                menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action)
+                menu.findItem(R.id.toggle_unread)?.setTitle(R.string.mark_as_read_action)
             }
 
             val drawableId = if (isMessageRead) {
@@ -372,74 +422,77 @@ class MessageViewFragment :
                 Icons.Outlined.MarkEmailRead
             }
 
-            val drawable = ContextCompat.getDrawable(requireContext(), drawableId)
-            menu.findItem(R.id.toggle_unread).icon = drawable
+            val currentContext = context ?: return
+            val drawable = ContextCompat.getDrawable(currentContext, drawableId)
+            menu.findItem(R.id.toggle_unread)?.icon = drawable
         }
 
         if (isMoveCapable) {
             val canMessageBeArchived = canMessageBeArchived()
             val canMessageBeMovedToSpam = canMessageBeMovedToSpam()
-            menu.findItem(R.id.move).isVisible =
+            menu.findItem(R.id.move)?.isVisible =
                 generalSettingsManager.getConfig().display.visualSettings.isMessageViewMoveActionVisible
 
-            menu.findItem(R.id.archive).isVisible =
+            menu.findItem(R.id.archive)?.isVisible =
                 canMessageBeArchived &&
                 generalSettingsManager.getConfig()
                     .display
                     .visualSettings
                     .isMessageViewArchiveActionVisible
 
-            menu.findItem(R.id.spam).isVisible =
+            menu.findItem(R.id.spam)?.isVisible =
                 canMessageBeMovedToSpam &&
                 generalSettingsManager.getConfig()
                     .display
                     .visualSettings
                     .isMessageViewSpamActionVisible
 
-            menu.findItem(R.id.refile_move).isVisible = true
-            menu.findItem(R.id.refile_archive).isVisible = canMessageBeArchived
-            menu.findItem(R.id.refile_spam).isVisible = canMessageBeMovedToSpam
+            menu.findItem(R.id.refile_move)?.isVisible = true
+            menu.findItem(R.id.refile_archive)?.isVisible = canMessageBeArchived
+            menu.findItem(R.id.refile_spam)?.isVisible = canMessageBeMovedToSpam
 
-            menu.findItem(R.id.refile).isVisible = true
+            menu.findItem(R.id.refile)?.isVisible = true
         } else {
-            menu.findItem(R.id.move).isVisible = false
-            menu.findItem(R.id.archive).isVisible = false
-            menu.findItem(R.id.spam).isVisible = false
+            menu.findItem(R.id.move)?.isVisible = false
+            menu.findItem(R.id.archive)?.isVisible = false
+            menu.findItem(R.id.spam)?.isVisible = false
 
-            menu.findItem(R.id.refile).isVisible = false
+            menu.findItem(R.id.refile)?.isVisible = false
         }
 
-        menu.findItem(R.id.set_format_plain).isVisible = !isRenderPlainFormat()
-        menu.findItem(R.id.set_format_html).isVisible = isRenderPlainFormat()
+        menu.findItem(R.id.set_format_plain)?.isVisible = !isRenderPlainFormat()
+        menu.findItem(R.id.set_format_html)?.isVisible = isRenderPlainFormat()
 
         if (isCopyCapable) {
-            menu.findItem(R.id.copy).isVisible = generalSettingsManager.getConfig()
+            menu.findItem(R.id.copy)?.isVisible = generalSettingsManager.getConfig()
                 .display.visualSettings.isMessageViewCopyActionVisible
-            menu.findItem(R.id.refile_copy).isVisible = true
+            menu.findItem(R.id.refile_copy)?.isVisible = true
         } else {
-            menu.findItem(R.id.copy).isVisible = false
-            menu.findItem(R.id.refile_copy).isVisible = false
+            menu.findItem(R.id.copy)?.isVisible = false
+            menu.findItem(R.id.refile_copy)?.isVisible = false
         }
 
-        menu.findItem(R.id.move_to_drafts).isVisible = isOutbox
-        menu.findItem(R.id.unsubscribe).isVisible = canMessageBeUnsubscribed()
-        menu.findItem(R.id.show_headers).isVisible = true
-        menu.findItem(R.id.export_eml).isVisible =
+        menu.findItem(R.id.move_to_drafts)?.isVisible = isOutbox
+        menu.findItem(R.id.unsubscribe)?.isVisible = canMessageBeUnsubscribed()
+        menu.findItem(R.id.show_headers)?.isVisible = true
+        menu.findItem(R.id.export_eml)?.isVisible =
             featureFlagProvider.provide(MessageViewFeatureFlags.ActionExportEml).isEnabled()
         menu.findItem(R.id.print)?.isVisible = true
-        menu.findItem(R.id.view_compose).isVisible = true
+        menu.findItem(R.id.view_compose)?.isVisible = true
 
         val toggleTheme = menu.findItem(R.id.toggle_message_view_theme)
-        if (generalSettingsManager.getConfig().display.coreSettings.fixedMessageViewTheme) {
-            toggleTheme.isVisible = false
-        } else {
-            // Set title of menu item to switch to dark/light theme
-            if (themeManager.messageViewTheme === Theme.DARK) {
-                toggleTheme.setTitle(R.string.message_view_theme_action_light)
+        if (toggleTheme != null) {
+            if (generalSettingsManager.getConfig().display.coreSettings.fixedMessageViewTheme) {
+                toggleTheme.isVisible = false
             } else {
-                toggleTheme.setTitle(R.string.message_view_theme_action_dark)
+                // Set title of menu item to switch to dark/light theme
+                if (themeManager.messageViewTheme === Theme.DARK) {
+                    toggleTheme.setTitle(R.string.message_view_theme_action_light)
+                } else {
+                    toggleTheme.setTitle(R.string.message_view_theme_action_dark)
+                }
+                toggleTheme.isVisible = true
             }
-            toggleTheme.isVisible = true
         }
     }
 
@@ -1240,6 +1293,11 @@ class MessageViewFragment :
 
     private fun invalidateMenu() {
         activity?.invalidateMenu()
+        val isBottomActionBar = generalSettingsManager.getConfig()
+            .display.visualSettings.isMessageViewBottomActionBar
+        if (isBottomActionBar && isAdded && ::account.isInitialized) {
+            bottomActionBar?.let { prepareMenu(it.menu) }
+        }
     }
 
     companion object {

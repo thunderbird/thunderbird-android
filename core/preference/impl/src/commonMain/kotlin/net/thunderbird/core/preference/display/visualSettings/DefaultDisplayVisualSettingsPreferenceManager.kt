@@ -99,6 +99,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
             DisplayVisualSettingKey.MessageViewSpamActionVisible.value,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_SPAM_ACTION_VISIBLE,
         ),
+        isMessageViewBottomActionBar = storage.getBoolean(
+            DisplayVisualSettingKey.MessageViewBottomActionBar.value,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_BOTTOM_ACTION_BAR,
+        ),
     )
 
     private fun writeConfig(config: DisplayVisualSettings) {
@@ -136,6 +140,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
                 storageEditor.putBoolean(
                     DisplayVisualSettingKey.MessageViewSpamActionVisible.value,
                     config.isMessageViewSpamActionVisible,
+                )
+                storageEditor.putBoolean(
+                    DisplayVisualSettingKey.MessageViewBottomActionBar.value,
+                    config.isMessageViewBottomActionBar,
                 )
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }

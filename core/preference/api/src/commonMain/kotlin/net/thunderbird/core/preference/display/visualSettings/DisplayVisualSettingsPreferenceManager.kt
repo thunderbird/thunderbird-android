@@ -14,6 +14,7 @@ enum class DisplayVisualSettingKey(val value: String) {
     MessageViewMoveActionVisible("messageViewMoveActionVisible"),
     MessageViewCopyActionVisible("messageViewCopyActionVisible"),
     MessageViewSpamActionVisible("messageViewSpamActionVisible"),
+    MessageViewBottomActionBar("messageViewBottomActionBar"),
 }
 
 interface DisplayVisualSettingsPreferenceManager : PreferenceManager<DisplayVisualSettings>

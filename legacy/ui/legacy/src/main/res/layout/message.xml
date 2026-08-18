@@ -132,4 +132,14 @@ the 'message view theme' setting).
         android:layout_height="wrap_content"
         />
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/bottom_action_bar"
+        style="?attr/toolbarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
 </com.fsck.k9.ui.messageview.MessageTopView>

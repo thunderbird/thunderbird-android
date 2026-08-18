@@ -377,6 +377,12 @@
                 android:key="messageview_body_content_type"
                 app:useSimpleSummaryProvider="true"
                 android:title="@string/global_settings_messageview_body_content_type_title" />
+
+            <CheckBoxPreference
+                android:key="messageview_bottom_action_bar"
+                android:summary="@string/global_settings_messageview_bottom_action_bar_summary"
+                android:title="@string/global_settings_messageview_bottom_action_bar_label"
+                />
         </PreferenceCategory>
 
     </PreferenceScreen>
