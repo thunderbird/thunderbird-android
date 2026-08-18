@@ -13,9 +13,9 @@ import org.junit.Test
 
 private const val IDENTITY_EMAIL_ADDRESS = "myself@domain.example"
 
-class ReplyActionStrategyTest {
+class LegacyReplyActionStrategyTest {
     private val account = createAccount()
-    private val replyActionStrategy = ReplyActionStrategy(ReplyToParser())
+    private val replyActionStrategy = LegacyReplyActionStrategy(ReplyToParser())
 
     @Test
     fun `message sent to only our identity`() {

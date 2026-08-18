@@ -25,6 +25,9 @@ kotlin {
                 exclude(group = "io.ktor")
                 exclude(group = "org.jetbrains.skiko")
             }
+
+            // Enable Android Studio Composable preview
+            implementation(libs.jetbrains.compose.ui.tooling)
         }
 
         commonTest.dependencies {

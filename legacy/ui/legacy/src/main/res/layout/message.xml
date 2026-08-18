@@ -127,7 +127,7 @@ the 'message view theme' setting).
         />
 
     <androidx.compose.ui.platform.ComposeView
-        android:id="@+id/attachment_bottom_sheet_compose_view"
+        android:id="@+id/bottom_sheet_compose_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
