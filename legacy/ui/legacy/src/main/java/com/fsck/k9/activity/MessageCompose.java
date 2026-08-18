@@ -141,6 +141,7 @@ import net.thunderbird.core.outcome.OutcomeKt;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
 import net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragmentFactory;
+import net.thunderbird.feature.mail.message.composer.signature.SignaturePreviewWebView;
 import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed;
 import net.thunderbird.feature.notification.api.content.NotificationFactoryCoroutineCompat;
 import net.thunderbird.feature.notification.api.content.SentFolderNotFoundNotification;
@@ -232,6 +233,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
     private final com.fsck.k9.view.WebViewConfigProvider webViewConfigProvider =
             DI.get(com.fsck.k9.view.WebViewConfigProvider.class);
+    private final WebViewConfigProvider webViewConfigProvider = DI.get(WebViewConfigProvider.class);
     private final HtmlSignatureSanitizer htmlSignatureSanitizer = DI.get(HtmlSignatureSanitizer.class);
 
     private final IntentDataMapper indentDataMapper = DI.get(IntentDataMapper.class);
@@ -516,19 +518,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             upperSignature.setVisibility(View.GONE);
             upperSignaturePreview.setVisibility(View.GONE);
         }
-        signatureHtmlPreview.configure(webViewConfigProvider.createForMessageCompose());
-        // Override MessageWebView's inbound-mail defaults: the signature is the user's own
-        // content, so allow remote images, and render at natural device size rather than
-        // the 980px "wide viewport" that would shrink short signatures.
-        signatureHtmlPreview.blockNetworkData(false);
-        signatureHtmlPreview.getSettings().setUseWideViewPort(false);
-        signatureHtmlPreview.getSettings().setLoadWithOverviewMode(false);
-        signatureHtmlPreview.setWebViewClient(new android.webkit.WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
-                return true;
-            }
-        });
+        SignaturePreviewWebView.configureForSignaturePreview(
+                signatureHtmlPreview, webViewConfigProvider.createForMessageCompose());
         updateSignature();
         signatureView.addTextChangedListener(signTextWatcher);
 
