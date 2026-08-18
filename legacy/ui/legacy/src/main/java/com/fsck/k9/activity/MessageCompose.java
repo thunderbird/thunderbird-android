@@ -109,7 +109,6 @@ import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.helper.Utility;
 import net.thunderbird.core.android.network.ConnectivityManager;
 import net.thunderbird.core.common.mail.Flag;
-import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import net.thunderbird.core.common.exception.MessagingException;
@@ -1597,15 +1596,19 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         Identity newIdentity = new Identity();
         if (k9identity.containsKey(IdentityField.SIGNATURE)) {
+            final String signatureIsHtml = k9identity.get(IdentityField.SIGNATURE_IS_HTML);
             newIdentity = newIdentity
                     .withSignatureUse(true)
-                    .withSignature(k9identity.get(IdentityField.SIGNATURE));
+                    .withSignature(k9identity.get(IdentityField.SIGNATURE))
+                    .withSignatureIsHtml(!"".equals(signatureIsHtml) && Boolean.parseBoolean(signatureIsHtml));
             signatureChanged = true;
         } else {
             if (message instanceof LocalMessage) {
                 newIdentity = newIdentity.withSignatureUse(((LocalMessage) message).getFolder().getSignatureUse());
             }
-            newIdentity = newIdentity.withSignature(identity.getSignature());
+            newIdentity = newIdentity
+                    .withSignature(identity.getSignature())
+                    .withSignatureIsHtml(identity.getSignatureIsHtml());
         }
 
         if (k9identity.containsKey(IdentityField.NAME)) {
@@ -1621,27 +1624,6 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         } else {
             newIdentity = newIdentity.withEmail(identity.getEmail());
         }
-
-        // The draft's identity header does not encode whether the signature is HTML, so
-        // inherit the flag from the matching account identity (looked up by email) so that
-        // multi-identity accounts preserve each identity's setting. If no match, fall back
-        // to the currently-loaded default identity.
-        Identity matchedIdentity = null;
-        String draftEmail = newIdentity.getEmail();
-        if (draftEmail != null) {
-            try {
-                Address[] parsed = Address.parse(draftEmail);
-                if (parsed.length > 0) {
-                    matchedIdentity = account.findIdentity(parsed[0]);
-                }
-            } catch (Exception e) {
-                // Ignore — fall back to default identity below.
-            }
-        }
-        boolean signatureIsHtml = matchedIdentity != null
-                ? matchedIdentity.getSignatureIsHtml()
-                : identity.getSignatureIsHtml();
-        newIdentity = newIdentity.withSignatureIsHtml(signatureIsHtml);
 
         if (k9identity.containsKey(IdentityField.ORIGINAL_MESSAGE)) {
             relatedMessageReference = null;
