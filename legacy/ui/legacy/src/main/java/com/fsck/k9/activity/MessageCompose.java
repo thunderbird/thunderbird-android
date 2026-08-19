@@ -139,7 +139,6 @@ import com.google.android.material.textview.MaterialTextView;
 import net.thunderbird.core.android.account.MessageFormat;
 import net.thunderbird.core.android.contact.ContactIntentHelper;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
-import net.thunderbird.core.featureflag.compat.FeatureFlagProviderCompat;
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey;
 import net.thunderbird.core.outcome.OutcomeKt;
 import net.thunderbird.core.preference.GeneralSettingsManager;
