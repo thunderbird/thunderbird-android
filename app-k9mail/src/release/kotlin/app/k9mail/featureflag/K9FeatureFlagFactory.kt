@@ -6,7 +6,6 @@ import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagFactory
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
-import net.thunderbird.core.featureflag.toFeatureFlagKey
 
 /**
  * Feature flags for K-9 Mail (release)
@@ -16,7 +15,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
         emit(
             listOf(
                 FeatureFlag(GeneratedFeatureFlagKey.ARCHIVE_MARKS_AS_READ, enabled = true),
-                FeatureFlag("disable_font_size_config".toFeatureFlagKey(), enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.DISABLE_FONT_SIZE_CONFIG, enabled = true),
                 FeatureFlag(GeneratedFeatureFlagKey.EMAIL_NOTIFICATION_DEFAULT, enabled = true),
                 FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = false),
                 FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = false),

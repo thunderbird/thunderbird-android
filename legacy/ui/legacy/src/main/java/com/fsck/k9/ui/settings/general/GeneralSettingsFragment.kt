@@ -27,7 +27,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -96,7 +96,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
             true
         }
         findPreference<Preference>("sync_debug_logging")?.onPreferenceChangeListener = listener
-        featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
+        featureFlagProvider.provide(GeneratedFeatureFlagKey.DISABLE_FONT_SIZE_CONFIG)
             .onEnabled {
                 val parentPreference = findPreference<PreferenceCategory>("global_preferences")
                 val fontSizePreferenceScreen = findPreference<PreferenceScreen>("font_size")
