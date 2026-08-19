@@ -22,6 +22,7 @@ kotlin {
             implementation(projects.core.logging.api)
         }
         commonTest.dependencies {
+            implementation(projects.core.configstore.testing)
             implementation(projects.core.logging.testing)
         }
         androidHostTest.dependencies {

@@ -7,16 +7,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigStore
-import net.thunderbird.core.featureflag.provider.DataSourceCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext.Value
+import net.thunderbird.core.featureflag.provider.evaluator.MultiFeatureFlagProviderEvaluator
 import net.thunderbird.core.featureflag.provider.initializeFeatureFlags
 import org.koin.android.ext.android.inject
 
 abstract class FeatureFlagApplication : BaseApplication() {
     protected abstract val appName: String
     protected abstract val appVersion: String
+    private val evaluator: MultiFeatureFlagProviderEvaluator by inject()
     private val targetingKeyStore: FeatureFlagConfigStore by inject()
-    private val featureFlagProvider: DataSourceCatalogFeatureFlagProvider by inject()
 
     private val featureFlagScope = CoroutineScope(
         SupervisorJob() + Dispatchers.Main +
@@ -29,7 +29,7 @@ abstract class FeatureFlagApplication : BaseApplication() {
         super.onCreate()
         featureFlagScope.launch {
             initializeFeatureFlags(
-                provider = featureFlagProvider,
+                evaluator = evaluator,
                 featureFlagConfigStore = targetingKeyStore,
                 app = appName,
                 buildType = BuildConfig.BUILD_TYPE,
