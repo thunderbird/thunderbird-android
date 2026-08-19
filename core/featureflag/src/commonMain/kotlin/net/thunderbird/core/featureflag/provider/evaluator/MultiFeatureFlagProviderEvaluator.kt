@@ -32,7 +32,7 @@ interface MultiFeatureFlagProviderEvaluator : CatalogFeatureFlagProvider {
 internal class DefaultMultiFeatureFlagProviderEvaluator(
     private val providers: List<CatalogFeatureFlagProvider>,
     private val logger: Logger,
-    private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main,
+    mainDispatcher: CoroutineDispatcher = Dispatchers.Main,
 ) : BaseCatalogFeatureFlagProvider(
     providerName = "multi_provider",
     logger = logger,
