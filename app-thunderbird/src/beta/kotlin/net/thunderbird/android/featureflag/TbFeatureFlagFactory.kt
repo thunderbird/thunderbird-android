@@ -8,7 +8,6 @@ import net.thunderbird.core.featureflag.FeatureFlagFactory
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.featureflag.toFeatureFlagKey
-import net.thunderbird.feature.thundermail.featureflag.ThundermailFeatureFlags
 
 /**
  * Feature flags for Thunderbird Beta
@@ -28,7 +27,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag(GeneratedFeatureFlagKey.USE_NEW_MESSAGE_READER_CSS_STYLES, enabled = true),
                 FeatureFlag(GeneratedFeatureFlagKey.ENABLE_MESSAGE_LIST_NEW_STATE, enabled = false),
                 FeatureFlag(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_READER, enabled = false),
-                FeatureFlag(ThundermailFeatureFlags.ThundermailOnboardingEnabled, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.THUNDERMAIL_ONBOARDING_ENABLED, enabled = true),
             ),
         )
     }
