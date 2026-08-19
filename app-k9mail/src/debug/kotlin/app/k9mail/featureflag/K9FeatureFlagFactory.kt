@@ -12,7 +12,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
     override fun getCatalog(): Flow<List<FeatureFlag>> = flow {
         emit(
             listOf(
-                FeatureFlag("archive_marks_as_read".toFeatureFlagKey(), enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.ARCHIVE_MARKS_AS_READ, enabled = true),
                 FeatureFlag("disable_font_size_config".toFeatureFlagKey(), enabled = true),
                 FeatureFlag(GeneratedFeatureFlagKey.EMAIL_NOTIFICATION_DEFAULT, enabled = true),
                 FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = false),
