@@ -46,7 +46,7 @@ class RuntimeDebugOverrideFeatureFlagProvider(
     override var resolvedFlags: FlagOverrides = data.value.overrides
     val overrides: FlagOverrides get() = resolvedFlags
 
-    override fun initialize(initialContext: FeatureFlagContext) {
+    override suspend fun initialize(initialContext: FeatureFlagContext) {
         super.initialize(initialContext)
         updateState { CatalogFeatureFlagProvider.State.Resolved }
     }

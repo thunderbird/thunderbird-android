@@ -26,7 +26,7 @@ interface MultiFeatureFlagProviderEvaluator : CatalogFeatureFlagProvider {
      *
      * @param initialContext The evaluation context containing targeting key and attributes for flag resolution.
      */
-    fun initialize(initialContext: FeatureFlagContext)
+    suspend fun initialize(initialContext: FeatureFlagContext)
 }
 
 internal class DefaultMultiFeatureFlagProviderEvaluator(
@@ -77,7 +77,7 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
 
     override val metadata: ProviderMetadata = CatalogProviderMetadata(name = "multi_provider")
 
-    override fun initialize(initialContext: FeatureFlagContext) {
+    override suspend fun initialize(initialContext: FeatureFlagContext) {
         super.initialize(initialContext)
         val bundledCatalogProvider =
             checkNotNull(providers.filterIsInstance<DataSourceCatalogFeatureFlagProvider>().singleOrNull()) {

@@ -63,7 +63,7 @@ abstract class BaseCatalogFeatureFlagProvider internal constructor(
      * @param initialContext The evaluation context containing targeting key and attributes for flag resolution.
      */
     @CallSuper
-    open fun initialize(initialContext: FeatureFlagContext) {
+    open suspend fun initialize(initialContext: FeatureFlagContext) {
         context = initialContext
     }
 
