@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.flow
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagFactory
 import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.featureflag.toFeatureFlagKey
-import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 import net.thunderbird.feature.mail.message.list.MessageListFeatureFlags
 import net.thunderbird.feature.mail.message.reader.api.MessageReaderFeatureFlags
 import net.thunderbird.feature.thundermail.featureflag.ThundermailFeatureFlags
@@ -26,7 +26,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = true),
                 FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
                 FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = true),
-                FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.ENABLE_AVATAR_CUSTOMIZATION, enabled = true),
                 // TODO(#10498): Remove when UseNewMessageReaderCssStyles is no longer required
                 FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
                 FeatureFlag(MessageListFeatureFlags.EnableMessageListNewState, enabled = false),
