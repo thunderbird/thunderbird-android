@@ -11,13 +11,12 @@ import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
-import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
-import net.thunderbird.feature.mail.message.list.MessageListFeatureFlags
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.sql.SqlWhereClause
+import net.thunderbird.legacy.logging.Log
 
 @Suppress("LongParameterList")
 class MessageListLoader(
@@ -66,7 +65,7 @@ class MessageListLoader(
             outboxFolderManager,
             contactLetterBitmapCreator = contactLetterBitmapCreator.takeIf {
                 featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS).isEnabled() ||
-                    featureFlagProvider.provide(MessageListFeatureFlags.EnableMessageListNewState).isEnabled()
+                    featureFlagProvider.provide(GeneratedFeatureFlagKey.ENABLE_MESSAGE_LIST_NEW_STATE).isEnabled()
             },
         )
 
