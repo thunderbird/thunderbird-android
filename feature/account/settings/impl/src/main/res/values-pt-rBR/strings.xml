@@ -23,4 +23,16 @@
     <string name="account_settings_general_avatar_icon_description">Escolha um dos ícones para usar como seu avatar.</string>
     <string name="account_settings_avatar_error_unsupported_format">Apenas imagens JPEG são suportadas.</string>
     <string name="account_settings_avatar_hint_jpeg_only">Apenas JPEG</string>
+    <string name="account_settings_show_pictures_label">Sempre exibir as imagens</string>
+    <string name="account_settings_reading_mail">Leitura das mensagens</string>
+    <string name="account_settings_fetching_mail">Busca das mensagens</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Marcar como lida ao abrir</string>
+    <string name="account_settings_mark_message_as_read_on_view_summary">Marca a mensagem como lida quando ela for aberta para visualização</string>
+    <string name="account_settings_show_pictures_never">Não</string>
+    <string name="account_settings_show_pictures_only_from_contacts">Dos contatos</string>
+    <string name="account_settings_show_pictures_always">De qualquer um</string>
+    <string name="account_settings_remove_account_action">Remover a conta</string>
+    <string name="account_settings_okay_action">Ok</string>
+    <string name="account_settings_cancel_action">Cancelar</string>
+    <string name="account_settings_account_delete_dlg_title">Remover a conta</string>
 </resources>

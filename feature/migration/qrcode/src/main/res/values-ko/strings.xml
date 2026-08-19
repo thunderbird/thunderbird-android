@@ -6,4 +6,5 @@
     <string name="migration_qrcode_scanning_progress">%1$s/%2$s 스캔 완료</string>
     <string name="migration_qrcode_scanning_instructions">Thunderbird 데스크톱에서 나타나는 QR 코드에 맞추세요</string>
     <string name="migration_qrcode_done_button_text">완료</string>
+    <string name="migration_qrcode_unsupported_code">QR 코드를 감지했지만, 잘못되었거나 지원하지 않는 데이터가 들어 있습니다.</string>
 </resources>
