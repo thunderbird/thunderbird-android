@@ -27,11 +27,13 @@ jobs:
       GH_REPO: ${{ github.repository }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
 
       - name: App token generate
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1  # v3.2.0
-        if: ${{ vars.BOT_CLIENT_ID }}
         id: app-token
         with:
           client-id: ${{ vars.BOT_CLIENT_ID }}
@@ -39,7 +41,7 @@ jobs:
 
       - name: Assert Sentinel label exists (fail loud)
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           set -euo pipefail
           # shellcheck source=scripts/ci/pr-sentinel/lib.sh disable=SC1091
@@ -48,7 +50,7 @@ jobs:
 
       - name: Escalate / close labeled PRs
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           DRY_RUN_INPUT: ${{ github.event.inputs.dry_run }}
         run: |
           set -euo pipefail
