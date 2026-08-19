@@ -17,7 +17,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag(GeneratedFeatureFlagKey.ARCHIVE_MARKS_AS_READ, enabled = true),
                 FeatureFlag(GeneratedFeatureFlagKey.DISABLE_FONT_SIZE_CONFIG, enabled = true),
                 FeatureFlag(GeneratedFeatureFlagKey.EMAIL_NOTIFICATION_DEFAULT, enabled = true),
-                FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = false),
+                FeatureFlag(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS, enabled = false),
                 FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = false),
                 FeatureFlag(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS, enabled = false),
                 FeatureFlag(GeneratedFeatureFlagKey.MESSAGE_VIEW_ACTION_EXPORT_EML, enabled = false),
