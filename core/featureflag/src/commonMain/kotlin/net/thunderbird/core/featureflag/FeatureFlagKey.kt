@@ -17,8 +17,3 @@ interface FeatureFlagKey {
      */
     val description: String? get() = null
 }
-
-@JvmInline
-value class LegacyFeatureFlagKey(override val key: String) : FeatureFlagKey
-
-fun String.toFeatureFlagKey(): FeatureFlagKey = LegacyFeatureFlagKey(this)
