@@ -14,12 +14,9 @@ import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.legacyCoreModules
 import com.fsck.k9.preferences.K9StoragePersister
 import com.fsck.k9.storage.messages.FakeLocalMessageUidPrefixProvider
-import kotlinx.coroutines.flow.emptyFlow
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
-import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.LogLevelManager
 import net.thunderbird.core.logging.LogLevelProvider
@@ -27,15 +24,14 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.composite.CompositeLogSink
 import net.thunderbird.core.logging.composite.CompositeLogSinkManager
 import net.thunderbird.core.logging.file.FileLogSink
-import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogLevelManager
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider
+import net.thunderbird.legacy.logging.Log
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
 class TestApp : Application() {
@@ -80,14 +76,6 @@ val testModule = module {
     single<StoragePersister> { K9StoragePersister(get(), get()) }
     single { mock<BackendManager>() }
     single<AccountDefaultsProvider> { mock<AccountDefaultsProvider>() }
-    single<FeatureFlagProvider> {
-        InMemoryFeatureFlagProvider(
-            featureFlagFactory = mock {
-                on { getCatalog() } doReturn emptyFlow()
-            },
-            featureFlagOverrides = mock(),
-        )
-    }
     single<LegacyAccountManager> { mock() }
     single<NotificationIconResourceProvider> {
         object : NotificationIconResourceProvider {

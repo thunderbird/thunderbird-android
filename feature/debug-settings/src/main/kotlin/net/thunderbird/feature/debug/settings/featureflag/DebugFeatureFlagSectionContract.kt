@@ -2,7 +2,6 @@ package net.thunderbird.feature.debug.settings.featureflag
 
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
-import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 
