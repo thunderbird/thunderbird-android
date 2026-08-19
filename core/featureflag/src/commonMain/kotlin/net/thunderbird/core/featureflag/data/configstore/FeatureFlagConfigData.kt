@@ -4,6 +4,7 @@ import kotlin.uuid.Uuid
 import kotlinx.coroutines.flow.first
 import net.thunderbird.core.configstore.ConfigKey
 import net.thunderbird.core.configstore.ConfigStore
+import net.thunderbird.core.featureflag.model.FlagOverrides
 
 /**
  * Data class representing the configuration for feature flags.
@@ -13,6 +14,7 @@ import net.thunderbird.core.configstore.ConfigStore
  */
 data class FeatureFlagConfigData(
     val targetingKey: Uuid? = null,
+    val overrides: FlagOverrides = emptyMap(),
 ) {
     companion object {
         val DEFAULT = FeatureFlagConfigData()
@@ -21,6 +23,9 @@ data class FeatureFlagConfigData(
 
 internal object FeatureFlagConfigKeys {
     val TARGETING_KEY = ConfigKey.StringKey("targeting_key")
+
+    /** JSON-encoded [FlagOverrides], since the backend only supports scalar values. */
+    val OVERRIDES = ConfigKey.StringKey("overrides")
 }
 
 /**
