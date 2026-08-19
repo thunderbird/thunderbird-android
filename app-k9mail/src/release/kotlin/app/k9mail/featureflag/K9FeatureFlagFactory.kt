@@ -17,7 +17,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
             listOf(
                 FeatureFlag("archive_marks_as_read".toFeatureFlagKey(), enabled = true),
                 FeatureFlag("disable_font_size_config".toFeatureFlagKey(), enabled = true),
-                FeatureFlag("email_notification_default".toFeatureFlagKey(), enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.EMAIL_NOTIFICATION_DEFAULT, enabled = true),
                 FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = false),
                 FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = false),
                 FeatureFlag(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS, enabled = false),
