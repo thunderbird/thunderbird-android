@@ -34,7 +34,4 @@ interface FeatureFlagKey {
 @JvmInline
 value class LegacyFeatureFlagKey(override val key: String) : FeatureFlagKey
 
-@Deprecated(message = "Use GeneratedFeatureFlagKey enum instead.")
-fun FeatureFlagKey(key: String): FeatureFlagKey = key.toFeatureFlagKey()
-
 fun String.toFeatureFlagKey(): FeatureFlagKey = LegacyFeatureFlagKey(this)

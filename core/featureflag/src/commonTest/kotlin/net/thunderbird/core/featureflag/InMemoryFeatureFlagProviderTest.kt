@@ -17,7 +17,7 @@ class InMemoryFeatureFlagProviderTest {
 
     @Test
     fun `should return FeatureFlagResult#Enabled when feature is enabled`() {
-        val feature1Key = FeatureFlagKey("feature1")
+        val feature1Key = TestingFeatureFlagKey("feature1")
         val featureFlagProvider = InMemoryFeatureFlagProvider(
             featureFlagFactory = { flowOf(listOf(FeatureFlag(key = feature1Key, enabled = true))) },
             featureFlagOverrides = FakeFeatureFlagOverrides(),
@@ -31,7 +31,7 @@ class InMemoryFeatureFlagProviderTest {
 
     @Test
     fun `should return FeatureFlagResult#Disabled when feature is disabled`() {
-        val feature1Key = FeatureFlagKey("feature1")
+        val feature1Key = TestingFeatureFlagKey("feature1")
         val featureFlagProvider = InMemoryFeatureFlagProvider(
             featureFlagFactory = { flowOf(listOf(FeatureFlag(key = feature1Key, enabled = false))) },
             featureFlagOverrides = FakeFeatureFlagOverrides(),
@@ -45,8 +45,8 @@ class InMemoryFeatureFlagProviderTest {
 
     @Test
     fun `should return FeatureFlagResult#Unavailable when feature is not found`() {
-        val feature1Key = FeatureFlagKey("feature1")
-        val feature2Key = FeatureFlagKey("feature2")
+        val feature1Key = TestingFeatureFlagKey("feature1")
+        val feature2Key = TestingFeatureFlagKey("feature2")
         val featureFlagProvider = InMemoryFeatureFlagProvider(
             featureFlagFactory = { flowOf(listOf(FeatureFlag(key = feature1Key, enabled = false))) },
             featureFlagOverrides = FakeFeatureFlagOverrides(),
@@ -61,7 +61,7 @@ class InMemoryFeatureFlagProviderTest {
     @Test
     fun `should return FeatureFlagResult#Enabled when feature is disabled by default but overridden`() {
         // Arrange
-        val key = FeatureFlagKey("feature1")
+        val key = TestingFeatureFlagKey("feature1")
         val featureFlagProvider = InMemoryFeatureFlagProvider(
             featureFlagFactory = { flowOf(listOf(FeatureFlag(key = key, enabled = false))) },
             featureFlagOverrides = FakeFeatureFlagOverrides(
@@ -81,7 +81,7 @@ class InMemoryFeatureFlagProviderTest {
     @Test
     fun `should return FeatureFlagResult#Disabled when feature is enabled by default but overridden`() {
         // Arrange
-        val key = FeatureFlagKey("feature1")
+        val key = TestingFeatureFlagKey("feature1")
         val featureFlagProvider = InMemoryFeatureFlagProvider(
             featureFlagFactory = { flowOf(listOf(FeatureFlag(key = key, enabled = true))) },
             featureFlagOverrides = FakeFeatureFlagOverrides(
