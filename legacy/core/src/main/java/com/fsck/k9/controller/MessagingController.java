@@ -86,7 +86,6 @@ import net.thunderbird.core.common.exception.MessagingException;
 import net.thunderbird.core.common.exception.ThrowableExtensions;
 import net.thunderbird.core.common.mail.Flag;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
-import net.thunderbird.core.featureflag.compat.FeatureFlagProviderCompat;
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey;
 import net.thunderbird.core.logging.Logger;
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager;
@@ -725,8 +724,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             });
         }
 
-        if (FeatureFlagProviderCompat.provide(featureFlagProvider,
-            "use_notification_sender_for_system_notifications").isDisabled()) {
+        if (featureFlagProvider
+            .provide(GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS)
+            .isDisabled()) {
             Log.d("handleAuthenticationFailure: sending system notification via old notification controller");
             notificationController.showAuthenticationErrorNotification(account, incoming);
         }
