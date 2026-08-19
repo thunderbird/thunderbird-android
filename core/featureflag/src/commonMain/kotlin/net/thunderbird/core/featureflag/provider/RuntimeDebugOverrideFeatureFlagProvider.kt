@@ -48,7 +48,7 @@ class RuntimeDebugOverrideFeatureFlagProvider(
 
     override fun initialize(initialContext: FeatureFlagContext) {
         super.initialize(initialContext)
-        resolve(initialContext)
+        updateState { CatalogFeatureFlagProvider.State.Resolved }
     }
 
     /** Sets the override for [key] to [enabled] and persists it. */

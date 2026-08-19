@@ -1,5 +1,11 @@
 package net.thunderbird.core.featureflag.provider.evaluator
 
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.featureflag.provider.BaseCatalogFeatureFlagProvider
@@ -26,11 +32,35 @@ interface MultiFeatureFlagProviderEvaluator : CatalogFeatureFlagProvider {
 internal class DefaultMultiFeatureFlagProviderEvaluator(
     private val providers: List<CatalogFeatureFlagProvider>,
     private val logger: Logger,
+    private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main,
 ) : BaseCatalogFeatureFlagProvider(
     providerName = "multi_provider",
     logger = logger,
 ),
     MultiFeatureFlagProviderEvaluator {
+    private val scope: CoroutineScope = CoroutineScope(mainDispatcher)
+
+    init {
+        scope.launch {
+            combine(
+                flows = providers.map { provider -> provider.state.map { provider.metadata.name to it } },
+            ) { providerStates -> providerStates }
+                .collect { providerStates ->
+                    var resolved = 0
+                    for ((provider, state) in providerStates) {
+                        logger.verbose { "[feature-flag][${metadata.name}] provider '$provider' state: $state" }
+                        if (state == CatalogFeatureFlagProvider.State.Resolved) {
+                            resolved++
+                        }
+                    }
+
+                    val isResolved = resolved == providers.size
+                    if (isResolved) {
+                        updateState { CatalogFeatureFlagProvider.State.Resolved }
+                    }
+                }
+        }
+    }
 
     override fun provide(key: FeatureFlagKey): FeatureFlagResult {
         for (provider in providers) {
@@ -55,6 +85,11 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
             }
 
         bundledCatalogProvider.initialize(initialContext)
+
+        providers
+            .filterNot { it == bundledCatalogProvider }
+            .filterIsInstance<BaseCatalogFeatureFlagProvider>()
+            .forEach { it.initialize(initialContext) }
     }
 
     override fun toString(): String = "feature-flag provider '${metadata.name}': ${providers.size} providers"
