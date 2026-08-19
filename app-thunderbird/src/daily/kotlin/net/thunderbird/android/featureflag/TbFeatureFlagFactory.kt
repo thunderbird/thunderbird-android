@@ -26,7 +26,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS, enabled = false),
                 FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = true),
                 FeatureFlag(GeneratedFeatureFlagKey.ENABLE_AVATAR_CUSTOMIZATION, enabled = true),
-                FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.USE_NEW_MESSAGE_READER_CSS_STYLES, enabled = true),
                 FeatureFlag(GeneratedFeatureFlagKey.ENABLE_MESSAGE_LIST_NEW_STATE, enabled = false),
                 FeatureFlag(MessageReaderFeatureFlags.UseComposeForMessageReader, enabled = false),
                 FeatureFlag(ThundermailFeatureFlags.ThundermailOnboardingEnabled, enabled = true),
