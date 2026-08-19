@@ -15,6 +15,7 @@ import com.fsck.k9.ui.settings.AboutViewModel
 import com.fsck.k9.ui.share.ShareIntentBuilder
 import net.thunderbird.core.common.inject.getList
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.feature.mail.message.list.MessageListFeatureFlags
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named

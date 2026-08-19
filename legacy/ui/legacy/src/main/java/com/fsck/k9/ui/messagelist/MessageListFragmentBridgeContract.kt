@@ -4,6 +4,7 @@ import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.FragmentActivity
 import app.k9mail.legacy.message.controller.MessageReference
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.feature.mail.message.list.MessageListFeatureFlags
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 

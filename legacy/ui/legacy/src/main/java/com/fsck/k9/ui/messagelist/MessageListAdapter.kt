@@ -25,7 +25,7 @@ import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
-import net.thunderbird.feature.mail.message.list.MessageListFeatureFlags.UseComposeForMessageListItems
+import net.thunderbird.feature.mail.message.list.GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 
@@ -212,7 +212,7 @@ class MessageListAdapter internal constructor(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageListViewHolder {
         return when (viewType) {
             TYPE_MESSAGE -> {
-                val result = featureFlagProvider.provide(UseComposeForMessageListItems)
+                val result = featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS)
                 if (result.isEnabled()) {
                     createComposableMessageViewHolder(parent)
                 } else {
@@ -269,7 +269,7 @@ class MessageListAdapter internal constructor(
             TYPE_MESSAGE -> {
                 val messageListItem = getItem(position)
                 val formattedMessageListItem = messageListItem.withFormattedDate()
-                val result = featureFlagProvider.provide(UseComposeForMessageListItems)
+                val result = featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS)
                 if (result.isEnabled()) {
                     val messageViewHolder = holder as ComposableMessageViewHolder
                     messageViewHolder.bind(
@@ -369,7 +369,7 @@ class MessageListAdapter internal constructor(
     }
 
     private fun getItemFromView(view: View): MessageListItem? {
-        if (featureFlagProvider.provide(UseComposeForMessageListItems).isEnabled()) {
+        if (featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS).isEnabled()) {
             val messageViewHolder = view.tag as ComposableMessageViewHolder
             return getItemById(messageViewHolder.uniqueId)
         } else {
