@@ -25,7 +25,6 @@ interface FeatureFlagKey {
          * they belong to, to avoid tight coupling.
          * See `docs/architecture/feature-flags.md` for more details.
          */
-        val DisplayInAppNotifications = "display_in_app_notifications".toFeatureFlagKey()
         val UseNotificationSenderForSystemNotifications =
             "use_notification_sender_for_system_notifications".toFeatureFlagKey()
     }

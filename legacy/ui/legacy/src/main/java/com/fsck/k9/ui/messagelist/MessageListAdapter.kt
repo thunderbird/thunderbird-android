@@ -20,12 +20,11 @@ import com.fsck.k9.ui.messagelist.item.FooterViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageListViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageViewHolderColors
-import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
-import net.thunderbird.feature.mail.message.list.GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 
@@ -155,7 +154,8 @@ class MessageListAdapter internal constructor(
     }
 
     private val isInAppNotificationEnabled: Boolean
-        get() = featureFlagProvider.provide(FeatureFlagKey.DisplayInAppNotifications) == FeatureFlagResult.Enabled
+        get() = featureFlagProvider
+            .provide(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS) == FeatureFlagResult.Enabled
 
     init {
         setHasStableIds(true)
@@ -396,10 +396,10 @@ private class MessageListDiffCallback(
         val newItem = newMessageList[newItemPosition]
         return when (oldItem) {
             is MessageListViewItem.InAppNotificationBannerList
-            if newItem is MessageListViewItem.InAppNotificationBannerList -> true
+                if newItem is MessageListViewItem.InAppNotificationBannerList -> true
 
             is MessageListViewItem.Message
-            if newItem is MessageListViewItem.Message -> oldItem.item.uniqueId == newItem.item.uniqueId
+                if newItem is MessageListViewItem.Message -> oldItem.item.uniqueId == newItem.item.uniqueId
 
             is MessageListViewItem.Footer if newItem is MessageListViewItem.Footer -> true
             else -> false
