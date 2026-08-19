@@ -128,7 +128,7 @@ kotlin {
 The feature flags for each build are provided by Koin. You’ll get an instance of the `FeatureFlagProvider` for your build with `val featureFlagProvider = get<FeatureFlagProvider>()`. From there, you can access your feature flag with the key like so:
 
 ```kotlin
-if (featureFlagProvider.provide(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles).isEnabled()) {
+if (featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_NEW_MESSAGE_READER_CSS_STYLES).isEnabled()) {
     // Do the thing
 }
 ```

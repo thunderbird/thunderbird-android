@@ -28,7 +28,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag(GeneratedFeatureFlagKey.ENABLE_AVATAR_CUSTOMIZATION, enabled = true),
                 // TODO(#10498): Clean up all the legacy code that is wrapped with UseNewMessageReaderCssStyles
                 //  once it no longer required
-                FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.USE_NEW_MESSAGE_READER_CSS_STYLES, enabled = true),
                 FeatureFlag(GeneratedFeatureFlagKey.ENABLE_MESSAGE_LIST_NEW_STATE, enabled = false),
                 FeatureFlag(MessageReaderFeatureFlags.UseComposeForMessageReader, enabled = false),
                 FeatureFlag(ThundermailFeatureFlags.ThundermailOnboardingEnabled, enabled = true),

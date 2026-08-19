@@ -24,7 +24,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = true),
                 FeatureFlag(GeneratedFeatureFlagKey.ENABLE_AVATAR_CUSTOMIZATION, enabled = true),
                 // TODO(#10498): Remove when UseNewMessageReaderCssStyles is no longer required
-                FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.USE_NEW_MESSAGE_READER_CSS_STYLES, enabled = true),
                 FeatureFlag(GeneratedFeatureFlagKey.ENABLE_MESSAGE_LIST_NEW_STATE, enabled = false),
                 FeatureFlag(MessageReaderFeatureFlags.UseComposeForMessageReader, enabled = false),
                 FeatureFlag(ThundermailFeatureFlags.ThundermailOnboardingEnabled, enabled = true),
