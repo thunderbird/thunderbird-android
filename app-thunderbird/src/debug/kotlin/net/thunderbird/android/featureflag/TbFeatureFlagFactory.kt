@@ -1,6 +1,5 @@
 package net.thunderbird.android.featureflag
 
-import com.fsck.k9.ui.messageview.MessageViewFeatureFlags
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import net.thunderbird.core.featureflag.FeatureFlag
@@ -22,7 +21,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
                 FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = true),
                 FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = true),
                 FeatureFlag(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS, enabled = false),
-                FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.MESSAGE_VIEW_ACTION_EXPORT_EML, enabled = true),
                 FeatureFlag(GeneratedFeatureFlagKey.ENABLE_AVATAR_CUSTOMIZATION, enabled = true),
                 // TODO(#10498): Remove when UseNewMessageReaderCssStyles is no longer required
                 FeatureFlag(GeneratedFeatureFlagKey.USE_NEW_MESSAGE_READER_CSS_STYLES, enabled = true),
