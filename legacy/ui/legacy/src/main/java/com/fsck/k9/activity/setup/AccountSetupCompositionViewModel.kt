@@ -1,6 +1,7 @@
 package com.fsck.k9.activity.setup
 
 import com.fsck.k9.EmailAddressValidator
+import com.fsck.k9.activity.account.identity.LegacyIdentitySignatureWebViewConfigurator
 import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Effect
 import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Effect.Back
 import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Effect.DoneUpdatingAccount
@@ -8,25 +9,19 @@ import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Effect.ToggleS
 import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Event
 import com.fsck.k9.activity.setup.AccountSetupCompositionContract.State
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.helper.DisplayHtmlUiFactory
-import com.fsck.k9.view.WebViewConfigProvider
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
-import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer
 
-class AccountSetupCompositionViewModel(
+internal class AccountSetupCompositionViewModel(
     private val legacyAccountManager: LegacyAccountManager,
     private val resources: StringsResourceManager,
     private val emailAddressValidator: EmailAddressValidator,
-    private val webViewConfigProvider: WebViewConfigProvider,
-    displayHtmlUiFactory: DisplayHtmlUiFactory,
-    private val htmlSignatureSanitizer: HtmlSignatureSanitizer,
+    private val legacyIdentitySignatureWebViewConfigurator: LegacyIdentitySignatureWebViewConfigurator,
     accountUuid: String,
 ) : BaseViewModel<State, Event, Effect>(initialState = State.EMPTY) {
-    private val displayHtml = displayHtmlUiFactory.createForMessageCompose()
     private val signatureLocations = persistentListOf(
         Pair(1, resources.stringResource(R.string.account_settings_signature__location_before_quoted_text)),
         Pair(2, resources.stringResource(R.string.account_settings_signature__location_after_quoted_text)),
@@ -107,7 +102,7 @@ class AccountSetupCompositionViewModel(
                 },
                 saveSignatureAsHtml = account.signatureIsHtml,
                 signaturePreviewHtmlText = account.signature?.buildSignatureHtmlPreviewText(),
-                webViewConfig = webViewConfigProvider.createForMessageCompose(),
+                webViewConfig = legacyIdentitySignatureWebViewConfigurator.buildWebConfig(),
             )
         }
     }
@@ -121,8 +116,6 @@ class AccountSetupCompositionViewModel(
         updateState { it.copy(saveSignatureAsHtml = event.checked) }
     }
 
-    private fun String?.buildSignatureHtmlPreviewText(): String? {
-        val sanitized = htmlSignatureSanitizer.sanitize(html = this ?: return null)
-        return displayHtml.wrapStatusMessage(sanitized)
-    }
+    private fun String?.buildSignatureHtmlPreviewText(): String? =
+        legacyIdentitySignatureWebViewConfigurator.buildSignatureHtmlPreviewText(signature = this)
 }

@@ -10,6 +10,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,12 +33,12 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.fsck.k9.activity.account.identity.LegacyIdentitySignatureWebViewConfigurator
 import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Effect
 import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Event
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.view.MessageWebView
-import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import net.thunderbird.components.ui.bolt.atom.DividerHorizontal
 import net.thunderbird.components.ui.bolt.atom.RadioGroup
@@ -46,6 +47,7 @@ import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
 import net.thunderbird.components.ui.bolt.atom.button.ButtonText
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextLabelSmall
 import net.thunderbird.components.ui.bolt.atom.textfield.TextFieldOutlined
 import net.thunderbird.components.ui.bolt.atom.textfield.TextFieldOutlinedEmailAddress
 import net.thunderbird.components.ui.bolt.molecule.input.CheckboxInput
@@ -60,8 +62,6 @@ import net.thunderbird.feature.mail.message.composer.signature.configureForSigna
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-
-private val PREVIEW_DEBOUNCE = 300.milliseconds
 
 class AccountSetupComposition : BaseActivity() {
 
@@ -196,7 +196,7 @@ private fun SignatureContent(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
+        verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.default),
         modifier = modifier,
     ) {
         CheckboxInput(
@@ -211,6 +211,11 @@ private fun SignatureContent(
                 checked = state.saveSignatureAsHtml,
                 onCheckedChange = { onEvent(Event.OnFormatSignatureAsHtmlCheck(it)) },
             )
+            TextLabelSmall(
+                text = stringResource(R.string.account_settings_signature_is_html_summary),
+                modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
+            )
+            Spacer(modifier = Modifier.height(BoltTheme.spacings.default))
             TextFieldOutlined(
                 isSingleLine = false,
                 label = stringResource(
@@ -324,7 +329,7 @@ private fun SignatureHtmlPreview(
     // Reloading the WebView on every keystroke makes editing a long signature stutter.
     var debouncedSignature by remember { mutableStateOf(signaturePreviewHtmlText) }
     LaunchedEffect(signaturePreviewHtmlText) {
-        delay(PREVIEW_DEBOUNCE)
+        delay(LegacyIdentitySignatureWebViewConfigurator.PREVIEW_DEBOUNCE)
         debouncedSignature = signaturePreviewHtmlText
     }
 
