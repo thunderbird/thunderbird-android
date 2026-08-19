@@ -17,7 +17,7 @@ First, a quick overview on the classes you'll be working with to create your fea
 - `FeatureFlag`
   - Package: `net.thunderbird.core.featureflag`
   - Data class, takes a `FeatureFlagKey` and an `enabled` boolean, defaults to false
-  - Example: `FeatureFlag(MessageReaderFeatureFlags.UseComposeForMessageReader)`
+  - Example: `FeatureFlag(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_READER)`
     - This would be set automatically to false
 - `FeatureFlagKey`
   - Passed in to the `FeatureFlag` class as the first parameter
@@ -85,7 +85,7 @@ override fun getCatalog(): Flow<List<FeatureFlag>> = flow {
     emit(
         listOf(
             ...
-            FeatureFlag(MessageReaderFeatureFlags.UseComposeForMessageReader, enabled = false),
+            FeatureFlag(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_READER, enabled = false),
         ),
     )
 }

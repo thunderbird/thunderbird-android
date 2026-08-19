@@ -8,7 +8,6 @@ import net.thunderbird.core.featureflag.FeatureFlagFactory
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.featureflag.toFeatureFlagKey
-import net.thunderbird.feature.mail.message.reader.api.MessageReaderFeatureFlags
 import net.thunderbird.feature.thundermail.featureflag.ThundermailFeatureFlags
 
 class K9FeatureFlagFactory : FeatureFlagFactory {
@@ -26,7 +25,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
                 // TODO(#10498): Remove when UseNewMessageReaderCssStyles is no longer required
                 FeatureFlag(GeneratedFeatureFlagKey.USE_NEW_MESSAGE_READER_CSS_STYLES, enabled = true),
                 FeatureFlag(GeneratedFeatureFlagKey.ENABLE_MESSAGE_LIST_NEW_STATE, enabled = false),
-                FeatureFlag(MessageReaderFeatureFlags.UseComposeForMessageReader, enabled = false),
+                FeatureFlag(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_READER, enabled = false),
                 FeatureFlag(ThundermailFeatureFlags.ThundermailOnboardingEnabled, enabled = true),
             ),
         )
