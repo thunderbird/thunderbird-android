@@ -49,7 +49,7 @@ First, a quick overview on the classes you'll be working with to create your fea
   - Creates a flow for `getCatalog()` so updates to the flags can trigger downstream listeners/collectors
   - You can set up feature flags in specific classes, but they still have to be named individually here, for example, these are feature flags related to MessageList:
     - `FeatureFlag(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS, enabled = false),`
-    - `FeatureFlag(MessageListFeatureFlags.EnableMessageListNewState, enabled = false),`
+    - `FeatureFlag(GeneratedFeatureFlagKey.ENABLE_MESSAGE_LIST_NEW_STATE, enabled = false),`
       - These are both defined in the `MessageListFeatureFlags` object in the `net.thunderbird.feature.mail.message.list` package
 - `K9FeatureFlagFactory`
   - Package: `app.k9mail.featureflag`
