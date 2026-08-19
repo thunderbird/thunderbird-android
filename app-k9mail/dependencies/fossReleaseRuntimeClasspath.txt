@@ -198,6 +198,12 @@ co.touchlab:stately-strict:2.1.0
 com.beetstra.jutf7:jutf7:1.0.0
 com.eygraber:uri-kmp-android:0.0.21
 com.eygraber:uri-kmp:0.0.21
+com.fleeksoft.charset:charset-android:0.0.8
+com.fleeksoft.charset:charset:0.0.8
+com.fleeksoft.io:io-core-android:0.0.8
+com.fleeksoft.io:io-core:0.0.8
+com.fleeksoft.ksoup:ksoup-android:0.2.6
+com.fleeksoft.ksoup:ksoup:0.2.6
 com.github.ByteHamster:SearchPreference:2.7.3
 com.github.bumptech.glide:annotations:4.16.0
 com.github.bumptech.glide:disklrucache:4.16.0
