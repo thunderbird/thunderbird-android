@@ -3,6 +3,8 @@ package net.thunderbird.feature.mail.message.composer.inject
 import net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragment
 import net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragmentFactory
 import net.thunderbird.feature.mail.message.composer.html.MessageComposerHtmlSettingsProvider
+import net.thunderbird.feature.mail.message.composer.signature.DefaultHtmlSignatureSanitizer
+import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer
 import org.koin.dsl.module
 
 val featureMessageComposerModule = module {
@@ -10,4 +12,5 @@ val featureMessageComposerModule = module {
         SentFolderNotFoundConfirmationDialogFragment.Factory
     }
     factory<MessageComposerHtmlSettingsProvider> { MessageComposerHtmlSettingsProvider(themeManager = get()) }
+    single<HtmlSignatureSanitizer> { DefaultHtmlSignatureSanitizer() }
 }

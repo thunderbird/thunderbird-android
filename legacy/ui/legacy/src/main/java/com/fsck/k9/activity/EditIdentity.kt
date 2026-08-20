@@ -9,17 +9,23 @@ import androidx.core.content.IntentCompat
 import androidx.core.os.BundleCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.fsck.k9.EmailAddressValidator
 import com.fsck.k9.Preferences
+import com.fsck.k9.activity.account.identity.LegacyIdentitySignatureWebViewConfigurator
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.google.android.material.checkbox.MaterialCheckBox
+import kotlinx.coroutines.flow.update
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
 import org.koin.android.ext.android.inject
 
 class EditIdentity : BaseActivity() {
     private val emailAddressValidator: EmailAddressValidator by inject()
+    private val legacyIdentitySignatureWebViewConfigurator: LegacyIdentitySignatureWebViewConfigurator by inject()
 
     private lateinit var account: LegacyAccountDto
     private lateinit var identity: Identity
@@ -30,6 +36,7 @@ class EditIdentity : BaseActivity() {
     private lateinit var replyTo: EditText
     private lateinit var signatureUse: MaterialCheckBox
     private lateinit var signature: EditText
+    private lateinit var signatureIsHtml: MaterialCheckBox
     private lateinit var signatureLayout: View
 
     private var identityIndex: Int = 0
@@ -65,7 +72,14 @@ class EditIdentity : BaseActivity() {
         replyTo = findViewById(R.id.reply_to)
         signatureUse = findViewById(R.id.signature_use)
         signature = findViewById(R.id.signature)
+        signatureIsHtml = findViewById(R.id.signature_is_html)
         signatureLayout = findViewById(R.id.signature_layout)
+        legacyIdentitySignatureWebViewConfigurator.configureWebView(
+            scope = lifecycleScope,
+            lifecycle = lifecycle,
+            webview = findViewById(R.id.signature_html_preview),
+            signatureEditText = signature,
+        )
 
         description.setText(identity.description)
         name.setText(identity.name)
@@ -87,6 +101,8 @@ class EditIdentity : BaseActivity() {
         } else {
             signatureLayout.isVisible = false
         }
+
+        signatureIsHtml.isChecked = identity.signatureIsHtml
 
         setTextChangedListeners()
         validateFields()
@@ -119,6 +135,7 @@ class EditIdentity : BaseActivity() {
             name = name.text.toString().takeUnless { it.isBlank() },
             signatureUse = signatureUse.isChecked,
             signature = signature.text.toString(),
+            signatureIsHtml = signatureIsHtml.isChecked,
             replyTo = replyTo.text.toString().trim().takeUnless { it.isBlank() },
         )
 

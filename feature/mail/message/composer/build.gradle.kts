@@ -7,6 +7,9 @@ android {
 }
 
 dependencies {
+    api(projects.core.android.webkit.api)
+
+    implementation(libs.ksoup)
     implementation(projects.core.common)
     implementation(projects.core.ui.theme.api)
     implementation(projects.feature.notification.api)
