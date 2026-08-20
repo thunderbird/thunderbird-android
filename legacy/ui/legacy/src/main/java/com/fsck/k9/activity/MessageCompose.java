@@ -305,6 +305,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cameraCaptureHandler.restoreInstanceState(savedInstanceState);
 
         if (databaseUpgradeInterceptor.checkAndHandleUpgrade(this, getIntent())) {
             finish();
@@ -723,6 +724,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         recipientPresenter.onSaveInstanceState(outState);
         quotedMessagePresenter.onSaveInstanceState(outState);
         attachmentPresenter.onSaveInstanceState(outState);
+        cameraCaptureHandler.saveInstanceState(outState);
     }
 
     @Override
@@ -980,8 +982,13 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             }
 
             if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+                final Uri capturedImageUri = cameraCaptureHandler.getCapturedImageUri();
+                if (capturedImageUri == null) {
+                    Toast.makeText(this, R.string.camera_capture_lost, Toast.LENGTH_LONG).show();
+                    return;
+                }
                 Intent intent = new Intent();
-                intent.setData(cameraCaptureHandler.getCapturedImageUri());
+                intent.setData(capturedImageUri);
                 attachmentPresenter.onActivityResult(resultCode, REQUEST_CODE_ATTACHMENT_URI, intent);
                 return;
             }
