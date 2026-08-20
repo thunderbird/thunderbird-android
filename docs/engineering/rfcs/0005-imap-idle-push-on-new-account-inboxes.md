@@ -1,7 +1,7 @@
 # RFC 0005: Enable IMAP IDLE ("Push") for the Inbox by Default on Newly Added IMAP Accounts
 
 - Issue: [#11320](https://github.com/thunderbird/thunderbird-android/issues/11320)
-- Status: **Proposed**
+- Status: **Accepted**
 
 ## Summary
 
