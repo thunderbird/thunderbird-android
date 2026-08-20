@@ -1,16 +1,10 @@
 package net.thunderbird.android.featureflag
 
-import com.fsck.k9.ui.messageview.MessageViewFeatureFlags
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagFactory
-import net.thunderbird.core.featureflag.FeatureFlagKey
-import net.thunderbird.core.featureflag.toFeatureFlagKey
-import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
-import net.thunderbird.feature.mail.message.list.MessageListFeatureFlags
-import net.thunderbird.feature.mail.message.reader.api.MessageReaderFeatureFlags
-import net.thunderbird.feature.thundermail.featureflag.ThundermailFeatureFlags
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 
 /**
  * Feature flags for Thunderbird Debug
@@ -19,19 +13,19 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
     override fun getCatalog(): Flow<List<FeatureFlag>> = flow {
         emit(
             listOf(
-                FeatureFlag("archive_marks_as_read".toFeatureFlagKey(), enabled = true),
-                FeatureFlag("disable_font_size_config".toFeatureFlagKey(), enabled = true),
-                FeatureFlag("email_notification_default".toFeatureFlagKey(), enabled = true),
-                FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = true),
-                FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = true),
-                FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
-                FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = true),
-                FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.ARCHIVE_MARKS_AS_READ, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.DISABLE_FONT_SIZE_CONFIG, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.EMAIL_NOTIFICATION_DEFAULT, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.USE_NOTIFICATION_SENDER_FOR_SYSTEM_NOTIFICATIONS, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS, enabled = false),
+                FeatureFlag(GeneratedFeatureFlagKey.MESSAGE_VIEW_ACTION_EXPORT_EML, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.ENABLE_AVATAR_CUSTOMIZATION, enabled = true),
                 // TODO(#10498): Remove when UseNewMessageReaderCssStyles is no longer required
-                FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
-                FeatureFlag(MessageListFeatureFlags.EnableMessageListNewState, enabled = false),
-                FeatureFlag(MessageReaderFeatureFlags.UseComposeForMessageReader, enabled = false),
-                FeatureFlag(ThundermailFeatureFlags.ThundermailOnboardingEnabled, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.USE_NEW_MESSAGE_READER_CSS_STYLES, enabled = true),
+                FeatureFlag(GeneratedFeatureFlagKey.ENABLE_MESSAGE_LIST_NEW_STATE, enabled = false),
+                FeatureFlag(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_READER, enabled = false),
+                FeatureFlag(GeneratedFeatureFlagKey.THUNDERMAIL_ONBOARDING_ENABLED, enabled = true),
             ),
         )
     }

@@ -17,7 +17,7 @@ First, a quick overview on the classes you'll be working with to create your fea
 - `FeatureFlag`
   - Package: `net.thunderbird.core.featureflag`
   - Data class, takes a `FeatureFlagKey` and an `enabled` boolean, defaults to false
-  - Example: `FeatureFlag(MessageReaderFeatureFlags.UseComposeForMessageReader)`
+  - Example: `FeatureFlag(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_READER)`
     - This would be set automatically to false
 - `FeatureFlagKey`
   - Passed in to the `FeatureFlag` class as the first parameter
@@ -48,8 +48,8 @@ First, a quick overview on the classes you'll be working with to create your fea
   - Different versions in different directories to define the build. Each build will use the `TbFeatureFlagFactory` from its own directory. See the "[How to Add a Feature Flag](#how-to-add-a-feature-flag)" section below to find all of the factory locations you'll have to change to create a new flag
   - Creates a flow for `getCatalog()` so updates to the flags can trigger downstream listeners/collectors
   - You can set up feature flags in specific classes, but they still have to be named individually here, for example, these are feature flags related to MessageList:
-    - `FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),`
-    - `FeatureFlag(MessageListFeatureFlags.EnableMessageListNewState, enabled = false),`
+    - `FeatureFlag(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_LIST_ITEMS, enabled = false),`
+    - `FeatureFlag(GeneratedFeatureFlagKey.ENABLE_MESSAGE_LIST_NEW_STATE, enabled = false),`
       - These are both defined in the `MessageListFeatureFlags` object in the `net.thunderbird.feature.mail.message.list` package
 - `K9FeatureFlagFactory`
   - Package: `app.k9mail.featureflag`
@@ -85,7 +85,7 @@ override fun getCatalog(): Flow<List<FeatureFlag>> = flow {
     emit(
         listOf(
             ...
-            FeatureFlag(MessageReaderFeatureFlags.UseComposeForMessageReader, enabled = false),
+            FeatureFlag(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_READER, enabled = false),
         ),
     )
 }
@@ -128,7 +128,7 @@ kotlin {
 The feature flags for each build are provided by Koin. You’ll get an instance of the `FeatureFlagProvider` for your build with `val featureFlagProvider = get<FeatureFlagProvider>()`. From there, you can access your feature flag with the key like so:
 
 ```kotlin
-if (featureFlagProvider.provide(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles).isEnabled()) {
+if (featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_NEW_MESSAGE_READER_CSS_STYLES).isEnabled()) {
     // Do the thing
 }
 ```

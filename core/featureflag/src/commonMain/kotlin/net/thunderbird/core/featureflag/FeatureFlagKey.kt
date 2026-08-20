@@ -16,25 +16,4 @@ interface FeatureFlagKey {
      * Returns a human-readable description of this element, or null if no description is available.
      */
     val description: String? get() = null
-
-    companion object Keys {
-        /**
-         * DO NOT ADD NEW FEATURE FLAGS HERE.
-         *
-         * New feature flags should be added to an object in the `:api` module of the feature
-         * they belong to, to avoid tight coupling.
-         * See `docs/architecture/feature-flags.md` for more details.
-         */
-        val DisplayInAppNotifications = "display_in_app_notifications".toFeatureFlagKey()
-        val UseNotificationSenderForSystemNotifications =
-            "use_notification_sender_for_system_notifications".toFeatureFlagKey()
-    }
 }
-
-@JvmInline
-value class LegacyFeatureFlagKey(override val key: String) : FeatureFlagKey
-
-@Deprecated(message = "Use GeneratedFeatureFlagKey enum instead.")
-fun FeatureFlagKey(key: String): FeatureFlagKey = key.toFeatureFlagKey()
-
-fun String.toFeatureFlagKey(): FeatureFlagKey = LegacyFeatureFlagKey(this)
