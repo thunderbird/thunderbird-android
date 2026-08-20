@@ -24,58 +24,77 @@ features are incomplete.
 If you’re making something that’s too large for a single pull request, or believe it needs to be tested alongside
 existing code, a feature flag is the perfect way to get started.
 
-## Important Feature Flag Classes
+## The Feature Flag architecture
 
-First, a quick overview on the classes you'll be working with to create your feature flag.
+First, a quick overview on what the Feature Flag architecture looks like will help you to understand how to work with
+it.
 
-- `FeatureFlag`
-    - Package: `net.thunderbird.core.featureflag`
-    - Data class, takes a `FeatureFlagKey` and an `enabled` boolean, defaults to false
-    - Example: `FeatureFlag(MessageReaderFeatureFlags.UseComposeForMessageReader)`
-        - This would be set automatically to false
+### The Feature Flag Catalog
+
+We use a JSON catalog to define our feature flags and in which app or build type they are enabled or not. This catalog
+is defined
+at [config/featureflag/thunderbird_mobile_featureflag.catalog.json](../../config/featureflag/thunderbird_mobile_featureflag.catalog.json)
+and you don't need to include it inside the app's module, as our architecture will import it right after the project is
+configured.
+
+There is also a [`JSON Schema]`(../../config/featureflag/thunderbird_mobile_featureflag.schema.json), which will help
+you
+to validate if the flags you are defining are correct. Nonetheless, if some requirement isn't covered by the schema,
+the [
+`FeatureFlagRootPlugin`](../../build-plugin/plugin/src/main/kotlin/net/thunderbird/gradle/plugin/featureflag/FeatureFlagRootPlugin.kt)
+will make sure all the catalog definition is valid.
+
+### Important Feature Flag Classes
+
+First, a quick overview on the classes the feature flag architecture provides. Although you rarely need to perform a
+change on those classes, it is always good to know how they work:
+
 - `FeatureFlagKey`
-    - Passed in to the `FeatureFlag` class as the first parameter
-    - Defines the string that will serve as the key for a feature flag
-    - Constructor takes in a single string to use as the key
-    - The preferred pattern would be to place keys in the `:api` module for your feature, not in this class (
-      see [How to Add a Feature Flag](#how-to-add-a-feature-flag)).
-    - Has a utility function for Strings, `String.toFeatureFlagKey` which is just `FeatureFlagKey(this)`
-    - Can pass in a pre-defined string or a string literal along with the `toFeatureFlag()` extension function to
-      generate aa `FeatureFlagKey`
-    - Example: `val myFeatureFlagKey = "my_feature_flag_key".toFeatureFlagKey()`
-- `DefaultFeatureFlagOverrides`
-    - Implements the `FeatureFlagOverrides` interface
-    - Creates a catalog of all available feature flags for a particular build/application/module
-    - Mostly used for its `getCatalog()` function, which returns a `Flow<List<FeatureFlag>>`
-    - Also has the ability to get/set individual feature flags by `FeatureFlagKey`, as well as clear one feature flag or
-      all of them in the collection
-- `FeatureFlagFactory`
-    - Interface that has to be implemented in each application/module
-    - K9: `single<FeatureFlagFactory> { K9FeatureFlagFactory() }`
-        - `app.k9mail.featureflag` package
-        - `appModule` defines it in the `K9KoinModule` file
-    - Thunderbird: `single<FeatureFlagFactory> { TbFeatureFlagFactory() }`
-        - Located in `net.thunderbird.android.featureflag` package
-        - in the `appModule` definition, `ThunderbirdKoinModule.kt`
-    - The classes implementing it will be where your feature flags "live," where you define them and where they're set.
-- `TbFeatureFlagFactory`
-    - Implementation of `FeatureFlagFactory` for the Thunderbird App
-    - Contains the feature flags for the Thunderbird app
-    - Package: `net.thunderbird.android.featureflag`
-    - Different versions in different directories to define the build. Each build will use the `TbFeatureFlagFactory`
-      from its own directory. See the "[How to Add a Feature Flag](#how-to-add-a-feature-flag)" section below to find
-      all of the factory locations you'll have to change to create a new flag
-    - Creates a flow for `getCatalog()` so updates to the flags can trigger downstream listeners/collectors
-    - You can set up feature flags in specific classes, but they still have to be named individually here, for example,
-      these are feature flags related to MessageList:
-        - `FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),`
-        - `FeatureFlag(MessageListFeatureFlags.EnableMessageListNewState, enabled = false),`
-            - These are both defined in the `MessageListFeatureFlags` object in the
-              `net.thunderbird.feature.mail.message.list` package
-- `K9FeatureFlagFactory`
-    - Package: `app.k9mail.featureflag`
-    - This is the same as the `TbFeatureFlagFactory` class, implementing the `FeatureFlagFactory` interface for the K9
-      app
+  - An interface that defines the key and the description—if present—of a feature flag
+  - **MUST** not be implemented outside the `:core:featureflag` project, unless in tests
+  - Used by [
+    `FeatureFlagLibraryPlugin`](../../build-plugin/plugin/src/main/kotlin/net/thunderbird/gradle/plugin/featureflag/FeatureFlagLibraryPlugin.kt)
+    automatically generate the `GeneratedFeatureFlagKey` enum class;
+    see [How to Add a Feature Flag](#how-to-add-a-feature-flag)).
+- `FeatureFlagProvider`
+  - The very base interface that provides whether a Feature Flag is enabled, disabled or unavailable
+  - Is the interface you will be injecting in your class to verify a `FeatureFlagKey`
+  - Example:
+
+    ```kotlin
+    class MyViewModel: ViewModel() {
+        private val featureFlagProvider: FeatureFlagProvider by inject()
+        fun awesomeGuardedLogic() {
+            if (featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_READER).isEnabled()) {
+                // Do the thing!
+            }
+        }
+    }
+    ```
+- `CatalogFeatureFlagProvider` and `BaseCatalogFeatureFlagProvider`
+  - The interface and abstract class for every flag provider that is based on a JSON catalog
+  - Every flag provider we have in the codebase will use implement or extend it
+  - While the `CatalogFeatureFlagProvider` defines what the contract for a provider based on a JSON catalog,
+  - The `BaseCatalogFeatureFlagProvider` defines the base definition for the `provide` method and an initialization
+    method.
+- `DataSourceCatalogFeatureFlagProvider`
+  - An abstract class that defines how a provider that depends on a data source is initialized
+  - This is the base class for the providers that either fetch the JSON catalog from local and, eventually, remotely.
+  - `RuntimeDebugOverrideFeatureFlagProvider`
+  - Extends `BaseCatalogFeatureFlagProvider` abstract class
+  - The provider that allows us to override any feature flag in a debuggable app.
+  - It also saves the current overrides using a [`ConfigStore`](../../core/configstore/api/src/commonMain/kotlin/net/thunderbird/core/configstore/ConfigStore.kt),
+    so in the next time we open the app, it persists our flag overrides.
+- `BundledCatalogFeatureFlagProvider`
+  - Extends the `DataSourceCatalogFeatureFlagProvider` abstract class
+  - The provider which fetches the bundled JSON catalog delivered with the app
+  - It also keeps track of the default flags; used in the [`DebugFeatureFlagSectionViewModel`](../../feature/debug-settings/src/main/kotlin/net/thunderbird/feature/debug/settings/featureflag/DebugFeatureFlagSectionViewModel.kt)
+    to restore the default values.
+- `MultiFeatureFlagProviderEvaluator`
+  - Is the Feature Flag Provider used to evaluate the flag resolution and deliver the correct value
+  - It stores a `List` of `CatalogFeatureFlagProvider` and choose the correct one when the `provide` function is
+    called
+  - Its instance is the one delivered to who ever injects a `FeatureFlagProvider`.
 
 ## How to Add a Feature Flag
 
@@ -83,65 +102,85 @@ Now that you're ready to add your own feature flag to the app, you need to answe
 feature flag definition, where do you generate the feature flag itself, and how do you provide it to the apps. Here's
 how to do those steps.
 
-#### Decide Where Your Feature Flag Belongs
+#### Where Your Feature Flag Belongs
 
-Place your feature flag in the feature you’re working on. For example, a MessageList feature flag object,
-`MessageListFeatureFlags`, lives in the `net.thunderbird.feature.mail.message.list` package. It’s specifically in
-`feature/mail/message/list/api/src/main/kotlin/net/thunderbird/feature/mail/message/list/MessageListFeatureFlags.kt`.
-Note that it’s placed in the api directory.
+All Feature Flags **MUST** be defined in the JSON Catalog located
+at [config/featureflag/thunderbird_mobile_featureflag.catalog.json](../../config/featureflag/thunderbird_mobile_featureflag.catalog.json).
 
 #### Make the Feature Flag
 
-If there’s already an object, you can simply add a new `FeatureFlagKey(val key: String)` object, like so:
-`val UseComposeForMessageReader = FeatureFlagKey("use_compose_for_message_reader")`. Otherwise, you’ll want to make a
-simple object to hold your feature flag (or flags). That might look something like this:
+Inside the JSON Catalog, you must first add the flag definition inside the `flags` array:
 
-```kotlin
-object MessageReaderFeatureFlags {
-    val UseComposeForMessageReader = FeatureFlagKey("use_compose_for_message_reader")
+```json
+{
+    "$schema": "thunderbird_mobile_featureflag.schema.json",
+    "version": "2026-07-30.1",
+    "flags": [
+        {
+            "key": "my_new_flag",
+            "default": false,
+            "description": "A developer friendly information of what the flag refers to",
+            "time_to_promote": "2030-12-31"
+        }
+    ],
+    "overrides": {
+        "thunderbird": {
+            "debug": {
+                "my_new_flag": true
+            }
+        },
+        "k9": {
+            "debug": {
+                "my_new_flag": true
+            }
+        }
+    }
 }
 ```
 
-#### Add Your Feature Flag to the Providers
+- **Required fields:** only `key` and `default` are required in the key definition; however we strongly advise you to
+  fill the others, as it will give the maintainers more context of what is your feature about.
+- **Optional fields:**
+  - `description`: The description is helpful to explain to others maintainers what the flag is about and what are the
+    consequences of enabling or disabling it. The description is displayed bellow the feature key in the
+    `SecretDebugScreen`
+  - `time_to_promote`: Help us to track if a feature should be promoted to `daily`, `beta`, or `release`; in the
+    future, the plan is to use this field to create warnings in the codebase where the feature is already on release,
+    but the feature flag is still in the app, helping to remove dead code.
 
-Your feature flag will have to be in every app the feature will be available as well as all the build types. That
-includes release and debug, even if you won’t be adding it to a release build for some time.
-Remember, we also will want to set the default value to turn the feature off.
+Also remember to update the `version` field whenever you add a new flag. Lastly, make sure you enable in the apps and
+build type.
 
-You’ll be adding your `FeatureFlag` to the `FeatureFlagFactory` implementation for your build. This will include a line
-like this in the `getCatalog()` function:
+#### Overriding a Feature Flag for in an App or a Build Type
 
-```kotlin
-override fun getCatalog(): Flow<List<FeatureFlag>> = flow {
-    emit(
-        listOf(
-            ...
-            FeatureFlag (MessageReaderFeatureFlags.UseComposeForMessageReader,
-        enabled = false
-    ),
-    ),
-    )
-}
+The ideal is to always create the new Feature Flag as disabled by default, as shown in the example in the previous
+section. However, how do you may want to enable it by default on `debug` for both TfA and K9.
+
+To enabled—or disable—a feature flag, it is just a matter of adding its key inside the `override.<app>.<build_type>`,
+with the value you want to use.
+
+For example, in the previous section catalog snippet, the `my_new_flag` is defined as `false` by default, but both TfA
+and K9 overrides it for `debug`.
+
+This means the flag, once running the app on a debuggable app, will be enabled, but when running in the others (TfA
+Daily, TfA Beta, TfA and K9-Mail) it will be Disabled.
+
+The order of evaluation is:
+
+```mermaid
+flowchart TD
+    RT --> OV --> DF
+    RT[Runtime Overrided Value]
+    OV[Overrided Value]
+    DF[DefaultValue]
 ```
 
-Here are the locations you might have to add it to currently. However, as time goes on, we may have other build flavors
-and apps to add it to, so be sure to check.
+#### Do I need to add the Feature Flag to the Providers?
 
-**For Thunderbird:**
+The answer is: NO! The new Feature Flag architecture will take care of mapping the new key once the project is
+configured and to include it to the `GeneratedFeatureFlagKey`.
 
-- `app-thunderbird/src/release/kotlin/net/thunderbird/android/featureflag/TbFeatureFlagFactory.kt`
-- `app-thunderbird/src/beta/kotlin/net/thunderbird/android/featureflag/TbFeatureFlagFactory.kt`
-- `app-thunderbird/src/daily/kotlin/net/thunderbird/android/featureflag/TbFeatureFlagFactory.kt`
-- `app-thunderbird/src/debug/kotlin/net/thunderbird/android/featureflag/TbFeatureFlagFactory.kt`
-
-**For K9 Mail:**
-
-- `app-k9mail/src/release/kotlin/app/k9mail/featureflag/K9FeatureFlagFactory.kt`
-- `app-k9mail/src/debug/kotlin/app/k9mail/featureflag/K9FeatureFlagFactory.kt`
-
-Creating a feature flag to start your work is enough to create a pull request. Doing work in small parts like this is
-what feature flags enable, and it’s perfectly acceptable to submit a pull request for feature flags alone, as long as
-you’re linking to the full project in the description so a reviewer knows what you intend to use the flag for.
+Make sure to always run Gradle sync after updating the catalog, so the new key is ready for use.
 
 #### Ensure Your Flag Is Part of the Build
 
@@ -168,7 +207,7 @@ build with `val featureFlagProvider = get<FeatureFlagProvider>()`. From there, y
 key like so:
 
 ```kotlin
-if (featureFlagProvider.provide(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles).isEnabled()) {
+if (featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_READER).isEnabled()) {
     // Do the thing
 }
 ```
@@ -176,7 +215,7 @@ if (featureFlagProvider.provide(MessageReaderFeatureFlags.UseNewMessageReaderCss
 You can certainly store the value separately as well
 
 ```kotlin
-val composeForMessageReader = featureFlagProvider.provide(UseComposeForMessageReader)
+val composeForMessageReader = featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_COMPOSE_FOR_MESSAGE_READER)
 ...
 if (composeForMessageReader.isEnabled()) {
     // Do the thing
