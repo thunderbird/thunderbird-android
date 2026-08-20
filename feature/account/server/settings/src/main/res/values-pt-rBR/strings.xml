@@ -34,4 +34,5 @@
     <string name="account_server_settings_incoming_imap_send_client_info_label">Enviar informações do cliente</string>
     <string name="account_server_settings_password_authentication_failed">Autenticação falhou!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Não é possível iniciar o prompt biométrico.</string>
+    <string name="account_server_settings_password_input_label">Senha</string>
 </resources>
