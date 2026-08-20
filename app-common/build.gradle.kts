@@ -61,6 +61,7 @@ dependencies {
 
     implementation(projects.feature.thundermail.internal.common)
 
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.lifecycle.process)
 
