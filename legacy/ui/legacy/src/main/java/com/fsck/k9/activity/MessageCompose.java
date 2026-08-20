@@ -1567,6 +1567,15 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         if (identityHeaders.length > 0 && identityHeaders[0] != null) {
             k9identity = IdentityHeaderParser.parse(identityHeaders[0]);
+        } else {
+            // This message has no identity metadata because it wasn't saved as a draft. That's
+            // true of any message we sent (including one stuck in the Outbox after a failed
+            // send), and also of any message we received. Fall back to matching the message's
+            // sender against the account's identities.
+            Identity senderIdentity = IdentityHelper.getSenderIdentityFromMessage(account, message);
+            if (senderIdentity != null) {
+                identity = senderIdentity;
+            }
         }
 
         Identity newIdentity = new Identity();
