@@ -8,19 +8,19 @@ import androidx.compose.ui.text.style.TextAlign
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 
 @Composable
-fun TextDisplayMediumAutoResize(
+fun TextBodyLargeAutoResize(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
     textAlign: TextAlign? = null,
     softWrap: Boolean = false,
     maxLines: Int = 1,
-    minFontSizeModifier: Float = 0.35f,
+    minFontSizeModifier: Float = 0.75f,
 ) {
     TextAutoResize(
         text = text,
         modifier = modifier,
-        style = BoltTheme.typography.displayMedium,
+        style = BoltTheme.typography.bodyLarge,
         color = color,
         textAlign = textAlign,
         softWrap = softWrap,
@@ -30,19 +30,19 @@ fun TextDisplayMediumAutoResize(
 }
 
 @Composable
-fun TextDisplayMediumAutoResize(
+fun TextBodyLargeAutoResize(
     text: AnnotatedString,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
     textAlign: TextAlign? = null,
     softWrap: Boolean = false,
     maxLines: Int = 1,
-    minFontSizeModifier: Float = 0.35f,
+    minFontSizeModifier: Float = 0.75f,
 ) {
     TextAutoResize(
         text = text,
         modifier = modifier,
-        style = BoltTheme.typography.displayMedium,
+        style = BoltTheme.typography.bodyLarge,
         color = color,
         textAlign = textAlign,
         softWrap = softWrap,
