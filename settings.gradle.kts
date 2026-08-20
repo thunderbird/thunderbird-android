@@ -119,7 +119,8 @@ include(
 include(
     ":feature:mail:account:api",
     ":feature:mail:folder:api",
-    ":feature:mail:message:composer",
+    ":feature:mail:message:composer:api",
+    ":feature:mail:message:composer:internal",
     ":feature:mail:message:list:api",
     ":feature:mail:message:list:internal",
     ":feature:mail:message:export:api",

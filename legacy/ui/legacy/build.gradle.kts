@@ -38,7 +38,7 @@ dependencies {
     implementation(projects.feature.settings.import)
     implementation(projects.feature.telemetry.api)
     implementation(projects.feature.mail.message.list.api)
-    implementation(projects.feature.mail.message.composer)
+    implementation(projects.feature.mail.message.composer.api)
     implementation(projects.feature.mail.message.export.api)
     implementation(projects.feature.mail.message.reader.api)
 
