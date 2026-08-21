@@ -10,10 +10,12 @@ import org.intellij.lang.annotations.Language
 internal class DefaultGlobalCssStyleProvider private constructor(
     cssClassNameProvider: CssClassNameProvider,
     cssVariableNameProvider: CssVariableNameProvider,
+    useDarkMode: Boolean,
 ) : GlobalCssStyleProvider {
     @Language("HTML")
     override val style: String = """
         |<style>
+        |${if (useDarkMode) "  :root { color-scheme: only light; }" else ""}
         |  body { font-size: 0.9rem; }
         |  .clear:after {
         |    content: "";
@@ -51,6 +53,7 @@ internal class DefaultGlobalCssStyleProvider private constructor(
         override fun create(htmlSettings: HtmlSettings): CssStyleProvider = DefaultGlobalCssStyleProvider(
             cssClassNameProvider = cssClassNameProvider,
             cssVariableNameProvider = cssVariableNameProvider,
+            useDarkMode = htmlSettings.useDarkMode,
         )
     }
 }
