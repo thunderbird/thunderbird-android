@@ -654,6 +654,7 @@
     <string name="fetching_attachment_dialog_title_send">Nachricht senden</string>
     <string name="fetching_attachment_dialog_title_save">Entwurf speichern</string>
     <string name="fetching_attachment_dialog_message">Anhang wird heruntergeladen…</string>
+    <string name="message_compose_encrypting_message">Nachricht verschlüsseln…</string>
     <!--Note: This references message_view_download_remainder-->
     <string name="preview_encrypted">*Verschlüsselt*</string>
     <string name="add_from_contacts">Vom Adressbuch hinzufügen</string>

@@ -207,6 +207,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             "com.fsck.k9.activity.MessageCompose.activeInAppNotifications";
 
     private static final String FRAGMENT_WAITING_FOR_ATTACHMENT = "waitingForAttachment";
+    private static final String FRAGMENT_ENCRYPTING_MESSAGE = "encryptingMessage";
 
     private static final int MSG_PROGRESS_ON = 1;
     private static final int MSG_PROGRESS_OFF = 2;
@@ -922,7 +923,34 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             sendMessageHasBeenTriggered = true;
             changesMadeSinceLastSave = false;
             setProgressBarIndeterminateVisibility(true);
+            showEncryptedMessageProgressIndicatorIfNeeded();
             currentMessageBuilder.buildAsync(this);
+        }
+    }
+
+    private void showEncryptedMessageProgressIndicatorIfNeeded() {
+        ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
+        boolean hasAttachments = !attachmentPresenter.getAttachments().isEmpty();
+        if (cryptoStatus == null || !cryptoStatus.isEncryptionEnabled() || !hasAttachments) {
+            return;
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.findFragmentByTag(FRAGMENT_ENCRYPTING_MESSAGE) != null) {
+            return;
+        }
+
+        ProgressDialogFragment fragment = ProgressDialogFragment.Companion.newInstance(
+                getString(R.string.fetching_attachment_dialog_title_send),
+                getString(R.string.message_compose_encrypting_message));
+        fragment.setCancelable(false);
+        fragment.show(fragmentManager, FRAGMENT_ENCRYPTING_MESSAGE);
+    }
+
+    private void dismissEncryptedMessageProgressIndicator() {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_ENCRYPTING_MESSAGE);
+        if (fragment instanceof ProgressDialogFragment) {
+            ((ProgressDialogFragment) fragment).dismiss();
         }
     }
 
@@ -978,6 +1006,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                             "this is an illegal state!");
                     return;
                 }
+                showEncryptedMessageProgressIndicatorIfNeeded();
                 currentMessageBuilder.onActivityResult(requestCode, resultCode, data, this);
                 return;
             }
@@ -1785,6 +1814,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     @Override
     public void onMessageBuildSuccess(MimeMessage message, boolean isDraft) {
+        dismissEncryptedMessageProgressIndicator();
         String plaintextSubject =
                 (currentMessageBuilder instanceof PgpMessageBuilder) ? currentMessageBuilder.getSubject() : null;
 
@@ -1809,6 +1839,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     @Override
     public void onMessageBuildCancel() {
+        dismissEncryptedMessageProgressIndicator();
         sendMessageHasBeenTriggered = false;
         currentMessageBuilder = null;
         setProgressBarIndeterminateVisibility(false);
@@ -1816,6 +1847,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     @Override
     public void onMessageBuildException(MessagingException me) {
+        dismissEncryptedMessageProgressIndicator();
         Log.e(me, "Error sending message");
         Toast.makeText(MessageCompose.this,
                 getString(R.string.send_failed_reason, me.getLocalizedMessage()), Toast.LENGTH_LONG).show();
@@ -1826,6 +1858,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     @Override
     public void onMessageBuildReturnPendingIntent(PendingIntent pendingIntent, int requestCode) {
+        dismissEncryptedMessageProgressIndicator();
         requestCode |= REQUEST_MASK_MESSAGE_BUILDER;
         try {
             OpenPgpIntentStarter.startIntentSenderForResult(this, pendingIntent.getIntentSender(), requestCode);
