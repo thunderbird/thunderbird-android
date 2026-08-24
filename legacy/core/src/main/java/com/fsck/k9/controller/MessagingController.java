@@ -220,7 +220,10 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             featureFlagProvider,
             new ArchiveFolderResolver(
                 folderIdResolver,
-                new BackendStorageArchiveFolderCreator(backendStorageFactory)
+                new BackendStorageArchiveFolderCreator(
+                    backendStorageFactory,
+                    syncDebugLogger
+                )
             )
         );
     }

@@ -5,10 +5,11 @@ import com.fsck.k9.backend.api.createFolder
 import com.fsck.k9.backend.api.updateFolders
 import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.Logger
 
 internal class BackendStorageArchiveFolderCreator(
     private val backendStorageFactory: BackendStorageFactory,
+    private val logger: Logger,
 ) : ArchiveFolderCreator {
     @Suppress("TooGenericExceptionCaught")
     override fun createFolder(account: LegacyAccountDto, folderInfo: FolderInfo): Long? {
@@ -18,7 +19,7 @@ internal class BackendStorageArchiveFolderCreator(
                 createFolder(folderInfo)
             }
         } catch (e: Exception) {
-            Log.e(e, "Failed to create archive subfolder: ${folderInfo.serverId}")
+            logger.error(throwable = e) { "Failed to create archive subfolder: ${folderInfo.serverId}" }
             null
         }
     }
