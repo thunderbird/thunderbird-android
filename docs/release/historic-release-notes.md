@@ -1,3 +1,5 @@
+# Historic Release Notes
+
 ## K-9 Mail 6.x Release Notes
 
 Historical change logs for K-9 Mail 6.x branches:
