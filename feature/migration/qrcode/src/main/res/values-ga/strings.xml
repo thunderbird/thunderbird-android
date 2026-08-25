@@ -6,4 +6,5 @@
     <string name="migration_qrcode_permission_denied_message">Téigh chuig socruithe Android, tapáil ceadanna, agus ceadaigh rochtain ar an gceamara.</string>
     <string name="migration_qrcode_go_to_settings_button_text">Téigh go dtí socruithe</string>
     <string name="migration_qrcode_scanning_instructions">Ailínigh an cód QR a cuireadh ar fáil ó Thunderbird Desktop</string>
+    <string name="migration_qrcode_unsupported_code">Braitheadh an cód QR, ach tá sonraí neamhbhailí nó neamhtacaithe ann.</string>
 </resources>
