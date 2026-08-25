@@ -4,15 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,27 +19,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import net.thunderbird.components.ui.bolt.atom.Checkbox
-import net.thunderbird.components.ui.bolt.atom.RadioGroup
+import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Effect
+import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Event
+import com.fsck.k9.activity.setup.signature.SignatureContent
+import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.BaseActivity
 import net.thunderbird.components.ui.bolt.atom.Surface
 import net.thunderbird.components.ui.bolt.atom.button.ButtonIcon
 import net.thunderbird.components.ui.bolt.atom.button.ButtonText
-import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
-import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
-import net.thunderbird.components.ui.bolt.atom.textfield.TextFieldOutlined
+import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.textfield.TextFieldOutlinedEmailAddress
 import net.thunderbird.components.ui.bolt.molecule.input.TextInput
 import net.thunderbird.components.ui.bolt.organism.TopAppBar
 import net.thunderbird.components.ui.bolt.template.Scaffold
-import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Effect
-import com.fsck.k9.activity.setup.AccountSetupCompositionContract.Event
-import com.fsck.k9.ui.R
-import com.fsck.k9.ui.base.BaseActivity
-import kotlinx.collections.immutable.PersistentList
-import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.ui.contract.mvi.observe
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
@@ -72,15 +63,9 @@ class AccountSetupComposition : BaseActivity() {
 
             themeProvider.WithTheme {
                 AccountSetupCompositionScreen(
-                    senderName = state.value.senderName,
-                    senderEmail = state.value.senderEmail,
-                    onEvent = { event -> dispatch(event) },
-                    bccEmail = state.value.bccEmail,
-                    useSignature = state.value.useSignature,
+                    state = state.value,
                     saveActionEnabled = saveActionEnabled,
-                    signature = state.value.signature,
-                    signatureLocations = state.value.signatureLocations,
-                    selectedSignatureLocations = state.value.selectedSignatureLocations,
+                    onEvent = { event -> dispatch(event) },
                 )
             }
         }
@@ -98,39 +83,17 @@ class AccountSetupComposition : BaseActivity() {
     }
 }
 
-@Suppress("LongMethod", "LongParameterList")
 @Composable
 fun AccountSetupCompositionScreen(
-    senderName: String,
-    senderEmail: String,
-    bccEmail: String,
-    useSignature: Boolean,
-    signature: String,
+    state: AccountSetupCompositionContract.State,
     saveActionEnabled: Boolean,
-    signatureLocations: PersistentList<Pair<Int, String>>,
-    selectedSignatureLocations: Pair<Int, String>,
     onEvent: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = stringResource(R.string.account_settings_composition_label),
-                navigationIcon = {
-                    ButtonIcon(
-                        onClick = { onEvent(Event.BackPressed) },
-                        imageVector = Icons.Outlined.ArrowBack,
-                    )
-                },
-                actions = {
-                    ButtonText(
-                        enabled = saveActionEnabled,
-                        onClick = { onEvent(Event.SavePressed) },
-                        text = stringResource(R.string.edit_identity_save),
-                    )
-                },
-            )
+            AccountSetupCompositionTopBar(onEvent, saveActionEnabled)
         },
     ) { innerPadding ->
         Surface(
@@ -139,19 +102,20 @@ fun AccountSetupCompositionScreen(
                 .padding(innerPadding)
                 .consumeWindowInsets(innerPadding),
         ) {
-            val scrollState = rememberScrollState()
             Column(
-                modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.double),
             ) {
                 TextInput(
-                    text = senderName,
+                    text = state.senderName,
                     onTextChange = { onEvent(Event.SenderNameChange(it)) },
                     label = stringResource(id = R.string.account_settings_name_label),
                     keyboardOptions = KeyboardOptions(autoCorrectEnabled = false),
                 )
                 TextFieldOutlinedEmailAddress(
-                    value = senderEmail,
+                    value = state.senderEmail,
                     onValueChange = { onEvent(Event.SenderEmailChange(it)) },
                     label = stringResource(id = R.string.account_settings_email_label),
                     modifier = Modifier
@@ -159,52 +123,46 @@ fun AccountSetupCompositionScreen(
                         .fillMaxWidth(),
                 )
                 TextFieldOutlinedEmailAddress(
-                    value = bccEmail,
+                    value = state.bccEmail,
                     onValueChange = { onEvent(Event.BccEmailChange(it)) },
                     label = stringResource(id = R.string.account_settings_always_bcc_label),
                     modifier = Modifier
                         .padding(horizontal = BoltTheme.spacings.double)
                         .fillMaxWidth(),
                 )
-                Row(
+                SignatureContent(
+                    state = state,
+                    onEvent = onEvent,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(
-                            enabled = true,
-                            onClick = {
-                                onEvent(Event.UseSignatureChange(!useSignature))
-                            },
-                        ),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Checkbox(checked = useSignature, onCheckedChange = { onEvent(Event.UseSignatureChange(it)) })
-                    TextBodySmall(text = stringResource(R.string.account_settings_signature_use_label))
-                }
-                if (useSignature) {
-                    TextFieldOutlined(
-                        isSingleLine = false,
-                        label = stringResource(id = R.string.account_settings_signature_label),
-                        value = signature,
-                        onValueChange = { onEvent(Event.SignatureChange(it)) },
-                        modifier = Modifier
-                            .padding(horizontal = BoltTheme.spacings.double)
-                            .fillMaxWidth(),
-                    )
-                    Spacer(modifier = Modifier.height(BoltTheme.spacings.half))
-                    TextBodyLarge(
-                        text = stringResource(R.string.account_settings_signature__location_label),
-                        modifier = Modifier.padding(horizontal = BoltTheme.spacings.double),
-                    )
-
-                    RadioGroup(
-                        onClick = { onEvent(Event.SignatureLocationChange(it)) },
-                        options = signatureLocations,
-                        optionTitle = { it.second },
-                        selectedOption = selectedSignatureLocations,
-                        modifier = Modifier.padding(horizontal = BoltTheme.spacings.default),
-                    )
-                }
+                        .padding(bottom = BoltTheme.spacings.quadruple)
+                        .imePadding(),
+                )
             }
         }
     }
+}
+
+@Composable
+private fun AccountSetupCompositionTopBar(
+    onEvent: (Event) -> Unit,
+    saveActionEnabled: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    TopAppBar(
+        title = stringResource(R.string.account_settings_composition_label),
+        navigationIcon = {
+            ButtonIcon(
+                onClick = { onEvent(Event.BackPressed) },
+                imageVector = Icons.Outlined.ArrowBack,
+            )
+        },
+        actions = {
+            ButtonText(
+                enabled = saveActionEnabled,
+                onClick = { onEvent(Event.SavePressed) },
+                text = stringResource(R.string.edit_identity_save),
+            )
+        },
+        modifier = modifier,
+    )
 }

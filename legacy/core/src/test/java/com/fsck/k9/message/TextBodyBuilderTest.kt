@@ -163,7 +163,7 @@ class TextBodyBuilderTest(val testData: TestData) {
         toTest = TextBodyBuilder(
             MESSAGE_TEXT,
             mock { on { getConfig() } doReturn GeneralSettings(platformConfigProvider = FakePlatformConfigProvider()) },
-        )
+        ) { error("HTML signature sanitizer called unexpectedly") }
         toTest.setAppendSignature(testData.appendSignature)
         toTest.setIncludeQuotedText(testData.includeQuotedText)
         toTest.setInsertSeparator(testData.insertSeparator)

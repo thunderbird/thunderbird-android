@@ -8,6 +8,7 @@
     android:minHeight="?android:listPreferredItemHeight"
     android:gravity="center"
     android:orientation="horizontal"
+    android:background="@drawable/recipient_dropdown_item_background"
     >
 
     <de.hdodenhof.circleimageview.CircleImageView

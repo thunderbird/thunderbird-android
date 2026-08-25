@@ -4,7 +4,7 @@ import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.FragmentActivity
 import app.k9mail.legacy.message.controller.MessageReference
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.feature.mail.message.list.MessageListFeatureFlags
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 
 /**
@@ -74,14 +74,14 @@ interface MessageListFragmentBridgeContract {
      *
      * This interface is a temporary solution to toggle between different fragment implementations
      * based on a feature flag. It allows for the creation of either a modern [MessageListFragment] or a
-     * [LegacyMessageListFragment] depending on the state of [MessageListFeatureFlags.EnableMessageListNewState].
+     * [LegacyMessageListFragment] depending on the state of [GeneratedFeatureFlagKey.ENABLE_MESSAGE_LIST_NEW_STATE].
      */
     interface Factory {
         /**
          * Creates a new instance of a class that inherits from [MessageListFragmentBridgeContract].
          *
          * The specific implementation returned ([MessageListFragment] or [LegacyMessageListFragment]) is determined
-         * by the [MessageListFeatureFlags.EnableMessageListNewState] feature flag.
+         * by the [GeneratedFeatureFlagKey.ENABLE_MESSAGE_LIST_NEW_STATE] feature flag.
          *
          * @param search The search query that defines which messages to display.
          * @param isThreadDisplay `true` if the fragment is used to display a single thread, `false` otherwise.

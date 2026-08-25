@@ -44,7 +44,7 @@ dependencies {
     implementation(projects.feature.account.settings.api)
     implementation(projects.feature.account.setup)
     implementation(projects.feature.mail.account.api)
-    implementation(projects.feature.mail.message.composer)
+    implementation(projects.feature.mail.message.composer.internal)
     implementation(projects.feature.migration.provider)
     implementation(projects.feature.notification.api)
     implementation(projects.feature.notification.impl)
@@ -61,6 +61,7 @@ dependencies {
 
     implementation(projects.feature.thundermail.internal.common)
 
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.lifecycle.process)
 

@@ -62,6 +62,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.activity.compose.MessageComposeInAppNotificationFragment;
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
 import com.fsck.k9.ui.settings.account.AccountSettingsFragment;
+import com.fsck.k9.message.html.DisplayHtml;
+import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer;
+import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
+import com.fsck.k9.view.MessageWebView;
+import com.fsck.k9.view.WebViewConfigProvider;
 import kotlin.Unit;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import app.k9mail.legacy.di.DI;
@@ -134,11 +139,12 @@ import com.google.android.material.textview.MaterialTextView;
 import net.thunderbird.core.android.account.MessageFormat;
 import net.thunderbird.core.android.contact.ContactIntentHelper;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
-import net.thunderbird.core.featureflag.compat.FeatureFlagProviderCompat;
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey;
 import net.thunderbird.core.outcome.OutcomeKt;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
 import net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragmentFactory;
+import net.thunderbird.feature.mail.message.composer.signature.SignaturePreviewWebView;
 import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed;
 import net.thunderbird.feature.notification.api.content.NotificationFactoryCoroutineCompat;
 import net.thunderbird.feature.notification.api.content.SentFolderNotFoundNotification;
@@ -228,6 +234,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final MessagingController messagingController = DI.get(MessagingController.class);
     private final Preferences preferences = DI.get(Preferences.class);
     private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
+    private final WebViewConfigProvider webViewConfigProvider = DI.get(WebViewConfigProvider.class);
+    private final DisplayHtml displayHtml = DI.get(DisplayHtmlUiFactory.class).createForMessageCompose();
+    private final HtmlSignatureSanitizer htmlSignatureSanitizer = DI.get(HtmlSignatureSanitizer.class);
 
     private final IntentDataMapper indentDataMapper = DI.get(IntentDataMapper.class);
 
@@ -286,6 +295,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private MaterialTextView chooseIdentityView;
     private EditText subjectView;
     private EditText signatureView;
+    private MessageWebView signatureHtmlPreview;
     private EditText messageContentView;
     private LinearLayout attachmentsView;
 
@@ -305,6 +315,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cameraCaptureHandler.restoreInstanceState(savedInstanceState);
 
         if (databaseUpgradeInterceptor.checkAndHandleUpgrade(this, getIntent())) {
             finish();
@@ -377,6 +388,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         EditText lowerSignature = findViewById(R.id.lower_signature);
         applyIncognitoKeyboardSetting(upperSignature);
         applyIncognitoKeyboardSetting(lowerSignature);
+        final MessageWebView upperSignaturePreview = findViewById(R.id.upper_signature_html_preview);
+        final MessageWebView lowerSignaturePreview = findViewById(R.id.lower_signature_html_preview);
 
 
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
@@ -499,16 +512,23 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         if (account.isSignatureBeforeQuotedText()) {
             signatureView = upperSignature;
+            signatureHtmlPreview = upperSignaturePreview;
             lowerSignature.setVisibility(View.GONE);
+            lowerSignaturePreview.setVisibility(View.GONE);
         } else {
             signatureView = lowerSignature;
+            signatureHtmlPreview = lowerSignaturePreview;
             upperSignature.setVisibility(View.GONE);
+            upperSignaturePreview.setVisibility(View.GONE);
         }
+        SignaturePreviewWebView.configureForSignaturePreview(
+                signatureHtmlPreview, webViewConfigProvider.createForMessageCompose());
         updateSignature();
         signatureView.addTextChangedListener(signTextWatcher);
 
         if (!identity.getSignatureUse()) {
             signatureView.setVisibility(View.GONE);
+            signatureHtmlPreview.setVisibility(View.GONE);
         }
 
         requestReadReceipt = account.isMessageReadReceipt();
@@ -723,6 +743,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         recipientPresenter.onSaveInstanceState(outState);
         quotedMessagePresenter.onSaveInstanceState(outState);
         attachmentPresenter.onSaveInstanceState(outState);
+        cameraCaptureHandler.saveInstanceState(outState);
     }
 
     @Override
@@ -980,8 +1001,13 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             }
 
             if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+                final Uri capturedImageUri = cameraCaptureHandler.getCapturedImageUri();
+                if (capturedImageUri == null) {
+                    Toast.makeText(this, R.string.camera_capture_lost, Toast.LENGTH_LONG).show();
+                    return;
+                }
                 Intent intent = new Intent();
-                intent.setData(cameraCaptureHandler.getCapturedImageUri());
+                intent.setData(capturedImageUri);
                 attachmentPresenter.onActivityResult(resultCode, REQUEST_CODE_ATTACHMENT_URI, intent);
                 return;
             }
@@ -1107,9 +1133,22 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         if (identity.getSignatureUse()) {
             String signature = CrLfConverter.toLf(identity.getSignature());
             signatureView.setText(signature);
-            signatureView.setVisibility(View.VISIBLE);
+            // The plain EditText can't render HTML, so for HTML signatures we hide it and
+            // show a rendered preview in a WebView instead. The EditText still holds the
+            // raw HTML so signatureView.getText() continues to feed the outgoing message.
+            if (identity.getSignatureIsHtml() && signature != null) {
+                signatureView.setVisibility(View.GONE);
+                final String sanitizedSignature = htmlSignatureSanitizer.sanitize(signature);
+                final String document = displayHtml.wrapMessageContent(sanitizedSignature);
+                signatureHtmlPreview.displayHtmlContentWithInlineAttachments(document, null, null);
+                signatureHtmlPreview.setVisibility(View.VISIBLE);
+            } else {
+                signatureHtmlPreview.setVisibility(View.GONE);
+                signatureView.setVisibility(View.VISIBLE);
+            }
         } else {
             signatureView.setVisibility(View.GONE);
+            signatureHtmlPreview.setVisibility(View.GONE);
         }
     }
 
@@ -1564,15 +1603,19 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         Identity newIdentity = new Identity();
         if (k9identity.containsKey(IdentityField.SIGNATURE)) {
+            final String signatureIsHtml = k9identity.get(IdentityField.SIGNATURE_IS_HTML);
             newIdentity = newIdentity
                     .withSignatureUse(true)
-                    .withSignature(k9identity.get(IdentityField.SIGNATURE));
+                    .withSignature(k9identity.get(IdentityField.SIGNATURE))
+                    .withSignatureIsHtml(!"".equals(signatureIsHtml) && Boolean.parseBoolean(signatureIsHtml));
             signatureChanged = true;
         } else {
             if (message instanceof LocalMessage) {
                 newIdentity = newIdentity.withSignatureUse(((LocalMessage) message).getFolder().getSignatureUse());
             }
-            newIdentity = newIdentity.withSignature(identity.getSignature());
+            newIdentity = newIdentity
+                    .withSignature(identity.getSignature())
+                    .withSignatureIsHtml(identity.getSignatureIsHtml());
         }
 
         if (k9identity.containsKey(IdentityField.NAME)) {
@@ -1904,8 +1947,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     }
 
     private void initializeInAppNotificationFragment() {
-        if (FeatureFlagProviderCompat
-            .provide(featureFlagProvider, "display_in_app_notifications")
+        if (featureFlagProvider
+            .provide(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS)
             .isDisabledOrUnavailable()) {
             return;
         }

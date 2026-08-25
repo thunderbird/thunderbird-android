@@ -16,8 +16,8 @@ import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextBodySmall
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.feature.thundermail.R
-import net.thunderbird.feature.thundermail.featureflag.ThundermailFeatureFlags
 import org.koin.compose.koinInject
 
 @Composable
@@ -27,7 +27,7 @@ fun ThundermailButtonPanel(
     modifier: Modifier = Modifier,
     featureFlagProvider: FeatureFlagProvider = koinInject(),
 ) {
-    if (featureFlagProvider.provide(ThundermailFeatureFlags.ThundermailOnboardingEnabled).isEnabled()) {
+    if (featureFlagProvider.provide(GeneratedFeatureFlagKey.THUNDERMAIL_ONBOARDING_ENABLED).isEnabled()) {
         Column(
             modifier = modifier,
             verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.quadruple),

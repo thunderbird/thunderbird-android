@@ -1,7 +1,7 @@
 # RFC 0005: Enable IMAP IDLE ("Push") for the Inbox by Default on Newly Added IMAP Accounts
 
 - Issue: [#11320](https://github.com/thunderbird/thunderbird-android/issues/11320)
-- Status: **Proposed**
+- Status: **Accepted**
 
 ## Summary
 
@@ -11,22 +11,30 @@ notifications when they receive new emails in as close to instant as we can get 
 
 ## Motivation
 
-Users complain that their emails do not show up on time. When they learn they can activate IMAP IDLE, which we call "
-push" to the end user, they find that the setting is buried in an unexpected place. They may also misconfigure it,
+Users complain that their emails do not show up on time. When they learn they can already activate IMAP IDLE, which we
+call "push" to the end user, they find that the setting is buried in an unexpected place. They may also misconfigure it,
 causing their email to stop working altogether. While IMAP IDLE works on a per-folder basis, the end user doesn't want
 to have to think about this level of detail. They don't want to have to figure out server capacities for open sockets
-and pick their most important folders. They just want their new mail when it comes in. Therefore, we'll turn on IMAP
-IDLE on their Inbox, what they'll see as "push," which will give them a notification or instant syncing of their inbox
-when changes appear in that folder on the server. Most users will never feel the need to change this setting, and will
-believe it's working as it was always intended.
+and pick their most important folders. They just want their new mail when it comes in. Therefore, we'll activate
+our existing IMAP IDLE implementation for their Inbox, what they'll see as "push," which will give them a notification
+or instant syncing of their inbox when changes appear in that folder on the server. Most users will never feel the
+need to change this setting, and will believe it's working as it was always intended.
 
 ## Proposal
 
+We will enable our existing push service for IMAP accounts during account creation for new accounts or those imported
+via a QR code. We will not change the settings for users who are importing from a file, as we can't tell if they chose
+to disable push previously. If a user is not importing folder settings, and they're adding a new account, we will enable
+our existing IMAP IDLE sync, "Push" on their Inbox folder, which we'll identify during setup.
+
+#### Method
+
 Whether or not a folder has push enabled is a boolean stored locally in `FolderDetails.isPushEnabled`, with those
-details saved to the device's storage in `FolderSettingsDataStore`. We'd update the folder's details to contain
-`isPushEnabled = true` when creating a folder details instance for the account's inbox folder. This alone will not
-enable IMAP IDLE folder syncing though. Without `canScheduleExactAlarms()` returning true, we can set up an IMAP
-IDLE socket, but it cannot refresh at least every 29 minutes, as is required for the
+details saved to the device's storage in `FolderSettingsDataStore`. With this proposed change, we will update the
+folder's details to contain `isPushEnabled = true` when creating a folder details instance for the account's inbox
+folder.
+This alone will not enable IMAP IDLE folder syncing though. Without `canScheduleExactAlarms()` returning true,
+we can set up an IMAP IDLE socket, but it cannot refresh at least every 29 minutes, as is required for the
 [IMAP IDLE spec](https://datatracker.ietf.org/doc/html/rfc2177). We will need to ensure that we have some form of
 fallback here, including fetch, for accounts that have enabled "push" IMAP IDLE syncing without the necessary
 permissions to keep the socket open. Fetching can serve as a fallback, if we have the necessary permissions for that
@@ -43,31 +51,7 @@ deal of dependency changes to make the information available.
 We may also want to ensure we do this after getting all necessary permissions to keep an IMAP IDLE socket open, or
 simply ensure we have a good enough fetch fallback available so that push syncing will be enabled after a user has
 granted the permission. This will require further technical investigation, but these are
-potentially issues that exist today in our current implementation. The user can currently enable IMAP IDLE push syncing
-in the app without granting the necessary permissions to do so. We may want to consider breaking this up into two tasks,
-the first to add the default-on feature for IMAP IDLE syncing, and the second to ensure there are better fallbacks
-in place for instances of the user not giving us the necessary permissions. This may include a warning, fallback to
-fetching, or simply letting it be a manual-only sync, relying on our existing help articles to explain why these
-permissions are necessary for background email syncing. The main focus here is to enable our most responsive
-syncing method by default, not fix existing fallback issues. Still, it's something worth examining and ensuring
-that it works as expected, as we'll be rolling this feature out to far more users than before. This feature was not
-easy to find, and therefore only a small percentage of users may have been using it. Now, every new account with
-IMAP IDLE capabilities will have it on by default. That could increase the number of affected users to a level that
-will require our attention, rather than simply offering support staff or help articles to affected users.
-
-#### User Flow, Google Play, and Documentation
-
-In Google Play, we need to make a declaration for Foreground Services (FGS) we use. "Push" uses a `specialUse` FGS.
-We define this in the manifest under the name `com.fsck.k9.controller.push.PushService`, a sspecific type of
-`dataSync|specialUse`. The property we set up states "This service is used to maintain a continuous connection to an 
-IMAP server to be able to provide instant notifications to the user when a new email arrives. Firebase Cloud 
-Messaging is not suitable for this task, neither are mechanisms like AndroidX WorkManager. Other foreground service 
-types aren't a good fit for this use case." This remains true, but we may need to update that the service will be
-enabled by default if a user is setting up an account that can use IMAP IDLE syncing and has given us the necessary
-permissions to do so. We will also likely have to update our documentation with the flow for turning this off, as
-it's enabled by default and the user will not have interacted with the setting to enable it previously. Finally,
-we'll have to update the video we provide to Google Play showing how this service is deactivated, should a user
-choose to do so. Without taking these steps, we could face a risk of a rejection from the Google Play Store.
+potentially issues that exist today in our current implementation.
 
 ## Alternatives Considered
 
@@ -107,6 +91,24 @@ likely have an account where they receive many emails, but not all at once, such
 minutes. Someone with such a setup could turn off the setting where it exists today. In a future project, we'll
 make these settings even easier to access.
 
+In Google Play, we need to make a declaration for Foreground Services (FGS) we use. "Push" uses a `specialUse` FGS.
+We define this in the manifest under the name `com.fsck.k9.controller.push.PushService`, a specific type of
+`dataSync|specialUse`. The property we set up states:
+
+> "This service is used to maintain a continuous connection to an IMAP server to be able to provide instant notifications
+>
+>> to the user when a new email arrives. Firebase Cloud Messaging is not suitable for this task, neither are mechanisms
+>> like AndroidX WorkManager. Other foreground service types aren't a good fit for this use case."
+
+This remains true, but Google may ask us to update the statement pointing out that the existing service will be
+enabled by default if a user is setting up an account that can use IMAP IDLE syncing and has given us the necessary
+permissions to do so. We will also possibly have to update our documentation with the flow for turning this off, as
+it's enabled by default and the user will not have interacted with the setting to enable it previously. Finally,
+we'll have to update the video we provide to Google Play showing how this service is deactivated, should a user
+choose to do so. Without taking these steps, we could face a risk of a rejection from the Google Play Store, though
+we will wait to see what Google has to say about the change. Because IMAP IDLE, "Push," is an existing feature, already
+cleared for a special use case, we may not need to make any changes here.
+
 ## Open Questions
 
 It's rather unfortunate that there's no way to be sure of how many sockets we can keep open for each server. Some are as
@@ -124,13 +126,15 @@ activating IMAP IDLE on the Inbox folder may be sufficient to solve user complai
 We call this "push," which is most closely related to notifications and push notifications go through a server we
 wouldn't own and therefore wouldn't be private. But these are not push notifications. We instead are using IMAP IDLE
 to keep a socket open, then notifying the user locally when the server is updated. As a result, we're not using a
-push service, and, if the user has notifications disabled, we could still be doing the (near) real-time syncing. We
-may want to consider documenting this feature better, and removing the "push" toggle, instead using a "real time 
+push service, and, if the user has notifications disabled, we could still be doing the (near) real-time syncing.
+
+We may want to consider documenting this feature better, and removing the "push" toggle, instead using an "instant
 syncing" toggle that, when turned off, will allow the user to select a fetch interval. This is a more accurate
 representation of what "push" is, a replacement for fetching, not a replacement for notifications. As we reconfigure
-the notification settings, this will be something we can consider. However, the scope of this change is to only add
-the IMAP IDLE service as something that is activated by default if we can during account setup. Dramatic changes to
-our settings, verbiage, and subsequent documentation is out of scope for this task.
+the notification settings, this will be something we can consider. However, the scope of this change is to only activate
+the existing IMAP IDLE service by default on the user's inbox if we can during account setup. Dramatic changes to
+our settings, verbiage, and subsequent documentation is out of scope for this task, but will be part of "Phase 2" of
+the notification settings improvement project.
 
 ## Outcome
 

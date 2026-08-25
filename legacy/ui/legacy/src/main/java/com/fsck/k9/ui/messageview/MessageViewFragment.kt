@@ -83,6 +83,7 @@ import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.interaction.InteractionSettings
@@ -454,7 +455,7 @@ class MessageViewFragment :
         menu.findItem(R.id.unsubscribe).isVisible = canMessageBeUnsubscribed()
         menu.findItem(R.id.show_headers).isVisible = true
         menu.findItem(R.id.export_eml).isVisible =
-            featureFlagProvider.provide(MessageViewFeatureFlags.ActionExportEml).isEnabled()
+            featureFlagProvider.provide(GeneratedFeatureFlagKey.MESSAGE_VIEW_ACTION_EXPORT_EML).isEnabled()
         menu.findItem(R.id.print)?.isVisible = true
         menu.findItem(R.id.view_compose).isVisible = true
 
@@ -499,7 +500,7 @@ class MessageViewFragment :
             }
 
             R.id.export_eml -> if (
-                featureFlagProvider.provide(MessageViewFeatureFlags.ActionExportEml).isEnabled()
+                featureFlagProvider.provide(GeneratedFeatureFlagKey.MESSAGE_VIEW_ACTION_EXPORT_EML).isEnabled()
             ) {
                 onExportEml()
             } else {

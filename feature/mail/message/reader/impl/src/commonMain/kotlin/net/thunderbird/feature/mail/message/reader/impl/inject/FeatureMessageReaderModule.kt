@@ -2,7 +2,7 @@ package net.thunderbird.feature.mail.message.reader.impl.inject
 
 import net.thunderbird.core.common.inject.factoryListOf
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.feature.mail.message.reader.api.MessageReaderFeatureFlags
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.feature.mail.message.reader.api.css.CssVariableNameProvider
 import net.thunderbird.feature.mail.message.reader.api.css.GlobalCssStyleProvider
 import net.thunderbird.feature.mail.message.reader.api.css.PlainTextMessagePreElementCssStyleProvider
@@ -27,7 +27,7 @@ val featureMessageReaderModule = module {
     single<CssVariableNameProvider> { DefaultCssVariableNameProvider(get()) }
     factory<GlobalCssStyleProvider.Factory> {
         val featureFlagProvider = get<FeatureFlagProvider>()
-        if (featureFlagProvider.provide(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles).isEnabled()) {
+        if (featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_NEW_MESSAGE_READER_CSS_STYLES).isEnabled()) {
             DefaultGlobalCssStyleProvider.Factory(
                 cssClassNameProvider = get(),
                 cssVariableNameProvider = get(),

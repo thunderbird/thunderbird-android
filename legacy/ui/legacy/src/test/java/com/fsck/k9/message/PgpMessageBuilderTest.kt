@@ -43,7 +43,6 @@ import com.fsck.k9.mail.testing.assertk.value
 import com.fsck.k9.message.MessageBuilder.Callback
 import com.fsck.k9.message.quote.InsertableHtmlContent
 import com.fsck.k9.view.RecipientSelectView
-import com.google.common.annotations.Beta
 import java.io.OutputStream
 import java.util.Date
 import kotlinx.coroutines.flow.Flow
@@ -52,11 +51,11 @@ import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.testing.RobolectricPendingWorkRule
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.privacy.PrivacySettings
+import net.thunderbird.legacy.logging.Log
 import org.apache.james.mime4j.util.MimeUtil
 import org.junit.Before
 import org.junit.Rule
@@ -83,7 +82,6 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
     @get:Rule
     val pendingWork = RobolectricPendingWorkRule()
 
-
     private val defaultCryptoStatus = ComposeCryptoStatus(
         OpenPgpProviderState.OK,
         TEST_KEY_ID,
@@ -108,7 +106,6 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         `when`(autocryptOpenPgpApiInteractor.getKeyMaterialForKeyId(openPgpApi, TEST_KEY_ID, SENDER_EMAIL))
             .thenReturn(AUTOCRYPT_KEY_MATERIAL)
     }
-
 
     @Test
     @Throws(MessagingException::class)
@@ -803,7 +800,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
                 autocryptOpenPgpApiInteractor,
                 resourceProvider,
                 fakeGeneralSettingsManager,
-            )
+            ) { error("HTML signature sanitizer called unexpectedly") }
             builder.setOpenPgpApi(openPgpApi)
 
             val identity = Identity(

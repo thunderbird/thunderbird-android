@@ -74,7 +74,14 @@ class ReplyToPresenterTest : RobolectricTest() {
 
     @Test
     fun testSetIdentity_identityWithOneReplyTo_expectSetReplyTo() {
-        val identity = Identity("a", "b", "x@y.z", null, false, REPLY_TO_ADDRESS)
+        val identity = Identity(
+            description = "a",
+            name = "b",
+            email = "x@y.z",
+            signature = null,
+            signatureUse = false,
+            replyTo = REPLY_TO_ADDRESS,
+        )
 
         replyToPresenter.setIdentity(identity)
 
@@ -84,7 +91,14 @@ class ReplyToPresenterTest : RobolectricTest() {
     @Test
     fun testSetIdentity_identityWithMultipleReplyTo_expectSetReplyTo() {
         val replyTo = "$REPLY_TO_ADDRESS, $REPLY_TO_ADDRESS_2"
-        val identity = Identity("a", "b", "x@y.z", null, false, replyTo)
+        val identity = Identity(
+            description = "a",
+            name = "b",
+            email = "x@y.z",
+            signature = null,
+            signatureUse = false,
+            replyTo = replyTo,
+        )
 
         replyToPresenter.setIdentity(identity)
 
@@ -94,7 +108,14 @@ class ReplyToPresenterTest : RobolectricTest() {
     @Test
     fun testOnSwitchIdentity_newIdentityWithoutReplyTo_expectRemoveReplyToOfOldIdentity() {
         val replyToOne = "$REPLY_TO_ADDRESS, $REPLY_TO_ADDRESS_2"
-        val identityOne = Identity("a", "b", "x@y.z", null, false, replyToOne)
+        val identityOne = Identity(
+            description = "a",
+            name = "b",
+            email = "x@y.z",
+            signature = null,
+            signatureUse = false,
+            replyTo = replyToOne,
+        )
         val identityTwo = Identity()
 
         replyToPresenter.setIdentity(identityOne)
@@ -106,9 +127,23 @@ class ReplyToPresenterTest : RobolectricTest() {
     @Test
     fun testOnSwitchIdentity_identityWithSubsetOfOldIdentity_expectRemoveThenAdd() {
         val replyToOne = "$REPLY_TO_ADDRESS, $REPLY_TO_ADDRESS_2"
-        val identityOne = Identity("a", "b", "x@y.z", null, false, replyToOne)
+        val identityOne = Identity(
+            description = "a",
+            name = "b",
+            email = "x@y.z",
+            signature = null,
+            signatureUse = false,
+            replyTo = replyToOne,
+        )
         val replyToTwo = "$REPLY_TO_ADDRESS, $REPLY_TO_ADDRESS_3"
-        val identityTwo = Identity("c", "d", "x@y.z", null, false, replyToTwo)
+        val identityTwo = Identity(
+            description = "c",
+            name = "d",
+            email = "x@y.z",
+            signature = null,
+            signatureUse = false,
+            replyTo = replyToTwo,
+        )
 
         replyToPresenter.setIdentity(identityOne)
         replyToPresenter.setIdentity(identityTwo)

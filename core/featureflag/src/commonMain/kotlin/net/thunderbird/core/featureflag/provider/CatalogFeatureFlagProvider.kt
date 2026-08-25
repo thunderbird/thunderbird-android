@@ -63,7 +63,7 @@ abstract class BaseCatalogFeatureFlagProvider internal constructor(
      * @param initialContext The evaluation context containing targeting key and attributes for flag resolution.
      */
     @CallSuper
-    open fun initialize(initialContext: FeatureFlagContext) {
+    open suspend fun initialize(initialContext: FeatureFlagContext) {
         context = initialContext
     }
 
@@ -77,7 +77,7 @@ abstract class BaseCatalogFeatureFlagProvider internal constructor(
     protected fun resolvedFlags(): Map<String, Boolean> = resolvedFlags
 
     protected fun resolve(context: FeatureFlagContext?): Map<String, Boolean> {
-        state.update { State.ResolvingFlags }
+        updateState { State.ResolvingFlags }
         logger.verbose { "[feature-flag] resolving feature flag catalog for '${metadata.name}' provider" }
         val catalog = catalog ?: return emptyMap()
         val base = catalog.flags.associate { it.key to it.default }
@@ -93,7 +93,11 @@ abstract class BaseCatalogFeatureFlagProvider internal constructor(
         }
         val resolvedFlags = base + overrides
         logger.verbose { "[feature-flag][${metadata.name}] resolved flags: $resolvedFlags" }
-        state.update { State.Resolved }
+        updateState { State.Resolved }
         return resolvedFlags
+    }
+
+    protected fun updateState(function: (State) -> State) {
+        state.update(function)
     }
 }

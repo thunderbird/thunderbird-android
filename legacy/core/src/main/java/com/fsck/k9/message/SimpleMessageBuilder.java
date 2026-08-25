@@ -11,6 +11,7 @@ import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
 import net.thunderbird.core.preference.GeneralSettingsManager;
+import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer;
 
 
 public class SimpleMessageBuilder extends MessageBuilder {
@@ -20,7 +21,9 @@ public class SimpleMessageBuilder extends MessageBuilder {
         BoundaryGenerator boundaryGenerator = BoundaryGenerator.getInstance();
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
         GeneralSettingsManager settingsManager = DI.get(GeneralSettingsManager.class);
-        return new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider, settingsManager);
+        final HtmlSignatureSanitizer htmlSignatureSanitizer = DI.get(HtmlSignatureSanitizer.class);
+        return new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider, settingsManager,
+            htmlSignatureSanitizer);
     }
 
     @VisibleForTesting
@@ -28,9 +31,10 @@ public class SimpleMessageBuilder extends MessageBuilder {
         MessageIdGenerator messageIdGenerator,
         BoundaryGenerator boundaryGenerator,
         CoreResourceProvider resourceProvider,
-        GeneralSettingsManager settingsManager
+        GeneralSettingsManager settingsManager,
+        HtmlSignatureSanitizer htmlSignatureSanitizer
         ) {
-        super(messageIdGenerator, boundaryGenerator, resourceProvider, settingsManager);
+        super(messageIdGenerator, boundaryGenerator, resourceProvider, settingsManager, htmlSignatureSanitizer);
     }
 
     @Override

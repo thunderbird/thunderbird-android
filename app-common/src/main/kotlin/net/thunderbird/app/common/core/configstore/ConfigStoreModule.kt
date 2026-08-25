@@ -6,13 +6,14 @@ import net.thunderbird.core.configstore.backend.ConfigBackendFileManager
 import net.thunderbird.core.configstore.backend.ConfigBackendProvider
 import net.thunderbird.core.configstore.backend.DataStoreConfigBackendFactory
 import net.thunderbird.core.configstore.backend.DefaultConfigBackendProvider
+import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
 val appCommonCoreConfigStoreModule = module {
 
     single<ConfigBackendFileManager> {
         AndroidConfigBackendFileManager(
-            context = get(),
+            context = androidApplication(),
         )
     }
 

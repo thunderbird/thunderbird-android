@@ -14,6 +14,7 @@ import androidx.compose.ui.text.withStyle
 import net.thunderbird.components.ui.bolt.atom.icon.Icon
 import net.thunderbird.components.ui.bolt.atom.icon.Icons
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyLarge
+import net.thunderbird.components.ui.bolt.atom.text.TextBodyLargeAutoResize
 import net.thunderbird.components.ui.bolt.atom.text.TextBodyMedium
 import net.thunderbird.components.ui.bolt.organism.drawer.NavigationDrawerItem
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
@@ -84,12 +85,14 @@ private fun AccountLabel(
         verticalArrangement = Arrangement.spacedBy(BoltTheme.spacings.half),
         modifier = modifier.fillMaxWidth(),
     ) {
-        TextBodyLarge(
+        TextBodyLargeAutoResize(
             text = buildAnnotatedString {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                     append(name)
                 }
             },
+            softWrap = true,
+            maxLines = 2,
         )
         if (account is MailDisplayAccount && account.name != account.email) {
             TextBodyMedium(

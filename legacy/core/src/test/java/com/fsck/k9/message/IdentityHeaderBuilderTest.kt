@@ -4,17 +4,26 @@ import android.net.Uri
 import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.contains
+import assertk.assertions.isEqualTo
 import assertk.assertions.isGreaterThan
 import com.fsck.k9.mail.internet.MimeHeaderChecker
 import com.fsck.k9.mail.internet.TextBody
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.testing.RobolectricTest
+import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.legacy.logging.Log
+import org.junit.Before
 import org.junit.Test
 
 private const val IDENTITY_HEADER = "X-K9mail-Identity"
 
 class IdentityHeaderBuilderTest : RobolectricTest() {
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
+
     @Test
     fun `valid unstructured header field value`() {
         val signature = "a".repeat(1000)
@@ -53,6 +62,27 @@ class IdentityHeaderBuilderTest : RobolectricTest() {
         assertThat(identityHeader).containsParameter(IdentityField.NAME, "")
     }
 
+    @Test
+    fun `HTML signature format should survive identity header round trip`() {
+        // Arrange
+        val testSubject = IdentityHeaderBuilder()
+            .setIdentity(createIdentity(signatureUse = true, signatureIsHtml = true))
+            .setSignature("<strong>Signature</strong>")
+            .setSignatureChanged(true)
+            .setBody(TextBody("irrelevant"))
+            .setQuoteStyle(QuoteStyle.PREFIX)
+            .setMessageFormat(SimpleMessageFormat.HTML)
+            .setQuoteTextMode(QuotedTextMode.NONE)
+
+        // Act
+        val identityHeader = testSubject.build()
+        val result = IdentityHeaderParser.parse(identityHeader)
+        val signatureIsHtml = result[IdentityField.SIGNATURE_IS_HTML]
+
+        // Assert
+        assertThat(signatureIsHtml).isEqualTo("true")
+    }
+
     private fun assertIsValidHeader(identityHeader: String) {
         try {
             MimeHeaderChecker.checkHeader(IDENTITY_HEADER, identityHeader)
@@ -68,10 +98,17 @@ class IdentityHeaderBuilderTest : RobolectricTest() {
         email: String? = null,
         signature: String? = null,
         signatureUse: Boolean = false,
+        signatureIsHtml: Boolean = false,
         replyTo: String? = null,
-    ): Identity {
-        return Identity(description, name, email, signature, signatureUse, replyTo)
-    }
+    ): Identity = Identity(
+        description = description,
+        name = name,
+        email = email,
+        signature = signature,
+        signatureUse = signatureUse,
+        signatureIsHtml = signatureIsHtml,
+        replyTo = replyTo,
+    )
 }
 
 private fun Assert<String>.containsParameter(identityField: IdentityField, value: String) = given { actual ->

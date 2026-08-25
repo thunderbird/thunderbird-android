@@ -18,8 +18,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.feature.account.storage.mapper.AvatarDataMapper
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
@@ -75,7 +75,10 @@ internal class GetDisplayAccounts(
     }
 
     private fun List<LegacyAccountDto>.associateWithAuthErrorIndication(): Flow<Map<LegacyAccountDto, Boolean>> {
-        return if (featureFlagProvider.provide(FeatureFlagKey.DisplayInAppNotifications).isDisabledOrUnavailable()) {
+        return if (
+            featureFlagProvider.provide(GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS)
+                .isDisabledOrUnavailable()
+        ) {
             flowOf(associateWith { false })
         } else {
             val uuids = map { it.uuid }

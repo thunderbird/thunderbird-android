@@ -1,12 +1,11 @@
 package net.thunderbird.core.featureflag.provider
 
+import java.io.IOException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.first
 import net.thunderbird.core.featureflag.data.FeatureFlagCatalogDataSource
 import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
@@ -33,18 +32,15 @@ abstract class DataSourceCatalogFeatureFlagProvider internal constructor(
      *
      * @param initialContext The evaluation context containing targeting key and attributes for flag resolution.
      */
-    override fun initialize(initialContext: FeatureFlagContext) {
+    override suspend fun initialize(initialContext: FeatureFlagContext) {
         super.initialize(initialContext)
-        loadCatalog()
-            .onEach { bundledCatalog ->
-                catalog = bundledCatalog
-                resolvedFlags = resolve(context)
-                logger.verbose { "[feature-flag] Resolved feature flags: $resolvedFlags" }
-            }
-            .catch { cause ->
-                logger.error(throwable = cause) { "[feature-flag] Failed to load feature flag catalog." }
-            }
-            .launchIn(scope)
+        try {
+            catalog = loadCatalog()
+            resolvedFlags = resolve(context)
+            logger.verbose { "[feature-flag] Resolved feature flags: $resolvedFlags" }
+        } catch (e: IOException) {
+            logger.error(throwable = e) { "[feature-flag] Failed to load feature flag catalog." }
+        }
     }
 
     /**
@@ -52,5 +48,5 @@ abstract class DataSourceCatalogFeatureFlagProvider internal constructor(
      *
      * @return A Flow that emits the feature flag catalog containing flag definitions and overrides.
      */
-    open fun loadCatalog(): Flow<FeatureFlagCatalog> = dataSource.load()
+    open suspend fun loadCatalog(): FeatureFlagCatalog = dataSource.load().first()
 }
