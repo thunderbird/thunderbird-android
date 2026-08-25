@@ -11,8 +11,8 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.mail.folder.api.ArchiveGranularity
+import net.thunderbird.legacy.logging.Log
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
