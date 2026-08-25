@@ -1,5 +1,6 @@
 package net.thunderbird.core.featureflag.provider
 
+import app.cash.turbine.test
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.containsOnly
@@ -93,9 +94,12 @@ class RuntimeDebugOverrideFeatureFlagProviderTest {
             testSubject.setOverride(key = MESSAGE_VIEW_ACTION_EXPORT_EML, enabled = true)
 
             // Assert
-            assertThat(configStore.current.overrides).containsOnly(MESSAGE_VIEW_ACTION_EXPORT_EML.key to true)
-            assertThat(testSubject.overrides).containsOnly(MESSAGE_VIEW_ACTION_EXPORT_EML.key to true)
-            assertThat(testSubject.provide(MESSAGE_VIEW_ACTION_EXPORT_EML)).isEqualTo(FeatureFlagResult.Enabled)
+            testSubject.overrides.test {
+                val overrides = awaitItem()
+                assertThat(configStore.current.overrides).containsOnly(MESSAGE_VIEW_ACTION_EXPORT_EML.key to true)
+                assertThat(overrides).containsOnly(MESSAGE_VIEW_ACTION_EXPORT_EML.key to true)
+                assertThat(testSubject.provide(MESSAGE_VIEW_ACTION_EXPORT_EML)).isEqualTo(FeatureFlagResult.Enabled)
+            }
         }
 
     @Test
@@ -153,10 +157,13 @@ class RuntimeDebugOverrideFeatureFlagProviderTest {
             testSubject.clearAllOverrides()
 
             // Assert
-            assertThat(configStore.current.overrides).isEmpty()
-            assertThat(configStore.current.targetingKey).isEqualTo(TARGETING_UUID)
-            assertThat(testSubject.overrides).isEmpty()
-            assertThat(testSubject.provide(MESSAGE_VIEW_ACTION_EXPORT_EML)).isEqualTo(FeatureFlagResult.Unavailable)
+            testSubject.overrides.test {
+                val overrides = awaitItem()
+                assertThat(configStore.current.overrides).isEmpty()
+                assertThat(configStore.current.targetingKey).isEqualTo(TARGETING_UUID)
+                assertThat(overrides).isEmpty()
+                assertThat(testSubject.provide(MESSAGE_VIEW_ACTION_EXPORT_EML)).isEqualTo(FeatureFlagResult.Unavailable)
+            }
         }
 
     @Test
@@ -170,9 +177,12 @@ class RuntimeDebugOverrideFeatureFlagProviderTest {
             val recreatedTestSubject = createTestSubject(configStore)
 
             // Assert
-            assertThat(recreatedTestSubject.overrides).containsOnly(MESSAGE_VIEW_ACTION_EXPORT_EML.key to true)
-            assertThat(recreatedTestSubject.provide(MESSAGE_VIEW_ACTION_EXPORT_EML))
-                .isEqualTo(FeatureFlagResult.Enabled)
+            recreatedTestSubject.overrides.test {
+                val overrides = awaitItem()
+                assertThat(overrides).containsOnly(MESSAGE_VIEW_ACTION_EXPORT_EML.key to true)
+                assertThat(recreatedTestSubject.provide(MESSAGE_VIEW_ACTION_EXPORT_EML))
+                    .isEqualTo(FeatureFlagResult.Enabled)
+            }
         }
 
     @Test

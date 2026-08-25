@@ -10,14 +10,14 @@ interface DebugFeatureFlagSectionContract {
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 
     data class State(
-        val defaults: ImmutableMap<FeatureFlagKey, FeatureFlag> = persistentMapOf(),
+        val defaults: ImmutableMap<FeatureFlagKey, Boolean> = persistentMapOf(),
         val overrides: ImmutableMap<FeatureFlagKey, Boolean> = persistentMapOf(),
         val pendingOverrides: ImmutableMap<FeatureFlagKey, Boolean> = persistentMapOf(),
     )
 
     sealed interface Event {
         data object RestoreDefaults : Event
-        data class OnToggle(val flag: FeatureFlag) : Event
+        data class OnToggle(val key: FeatureFlagKey) : Event
         data object ApplyChanges : Event
     }
 

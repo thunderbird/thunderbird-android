@@ -20,8 +20,8 @@ val featureDebugSettingsModule = module {
     }
     viewModel {
         DebugFeatureFlagSectionViewModel(
-            featureFlagFactory = get(),
-            featureFlagOverrides = get(),
+            bundleDefaults = get(),
+            runtimeProvider = get(),
         )
     }
 }
