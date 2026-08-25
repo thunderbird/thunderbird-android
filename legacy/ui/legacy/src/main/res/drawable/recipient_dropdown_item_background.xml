@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Marks the recipient completion suggestion that the keyboard has selected.
+
+    The selection has to be drawn by the row rather than by the list selector. ListView.setupChild() calls
+    child.setSelected() on the row, which is correct from the first selection onwards, whereas the selector's
+    drawable state is the list's own state (AbsListView.getDrawableStateForSelector) and DropDownListView
+    reports itself as focused for as long as the popup exists, so a stateful selector cannot tell a selected
+    row from a cleared one. The list selector is deliberately left alone, so touch feedback is unchanged.
+
+    The fill on its own is only 1.22:1 against the popup background in the light theme, so the outline carries
+    the contrast: colorPrimary is 7.7:1 there and 14.1:1 in the dark theme. colorSecondaryContainer, the
+    Material token for a selected list item, is not usable here because the rows take their text colour from
+    textColorPrimaryRecipientDropdown, which is pinned to black in the light theme and reaches only 3.3:1 on it.
+
+    Note that state_selected also propagates to the row's TextViews. It does not change their colour today
+    because @android:color/primary_text_* matches its state_window_focused="false" entry first, and this popup
+    is never focusable, but making the popup focusable would turn the selected row's text black on black.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_selected="true">
+        <inset android:inset="2dp">
+            <shape android:shape="rectangle">
+                <solid android:color="?attr/colorSurfaceContainerHighest" />
+                <stroke
+                    android:width="2dp"
+                    android:color="?attr/colorPrimary"
+                    />
+                <corners android:radius="4dp" />
+            </shape>
+        </inset>
+    </item>
+
+    <item>
+        <color android:color="@android:color/transparent" />
+    </item>
+
+</selector>
