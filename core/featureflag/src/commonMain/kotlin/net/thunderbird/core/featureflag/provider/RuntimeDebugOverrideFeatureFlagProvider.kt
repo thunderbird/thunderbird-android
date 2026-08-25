@@ -3,8 +3,10 @@ package net.thunderbird.core.featureflag.provider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import net.thunderbird.core.featureflag.FeatureFlagKey
@@ -44,7 +46,7 @@ class RuntimeDebugOverrideFeatureFlagProvider(
         )
 
     override var resolvedFlags: FlagOverrides = data.value.overrides
-    val overrides: FlagOverrides get() = resolvedFlags
+    val overrides: Flow<FlagOverrides> = data.map { it.overrides }
 
     override suspend fun initialize(initialContext: FeatureFlagContext) {
         super.initialize(initialContext)

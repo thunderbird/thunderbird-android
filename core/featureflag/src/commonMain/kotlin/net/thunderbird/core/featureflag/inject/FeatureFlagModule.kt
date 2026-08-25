@@ -15,7 +15,6 @@ import net.thunderbird.core.featureflag.serialization.FeatureFlagCatalogJsonPars
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import org.koin.plugin.module.dsl.bind
 
 val featureFlagModule = module {
     factory<FeatureFlagCatalogJsonParser> { DefaultFeatureFlagCatalogJsonParser(registrySerializer = get()) }
@@ -25,15 +24,20 @@ val featureFlagModule = module {
             provider = get(),
         )
     }
-    single<CatalogFeatureFlagProvider>(named(InjectQualifier.Local)) {
+    single {
         BundledCatalogFeatureFlagProvider(
             dataSource = get<FeatureFlagCatalogDataSource>(
                 named(InjectQualifier.Local),
             ),
             logger = get(),
         )
-    }.bind(BundledCatalogFeatureFlagProvider::class)
-    single<BundledFeatureFlagDefaults> { get<BundledCatalogFeatureFlagProvider>() }
+    }
+    single<CatalogFeatureFlagProvider>(named(InjectQualifier.Local)) {
+        get<BundledCatalogFeatureFlagProvider>()
+    }
+    single<BundledFeatureFlagDefaults> {
+        get<BundledCatalogFeatureFlagProvider>()
+    }
     single<MultiFeatureFlagProviderEvaluator> {
         DefaultMultiFeatureFlagProviderEvaluator(
             providers = buildList {
