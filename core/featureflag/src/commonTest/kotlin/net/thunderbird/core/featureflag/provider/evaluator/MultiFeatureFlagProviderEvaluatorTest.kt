@@ -3,9 +3,14 @@ package net.thunderbird.core.featureflag.provider.evaluator
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
+import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.setMain
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey.MESSAGE_VIEW_ACTION_EXPORT_EML
@@ -15,6 +20,12 @@ import net.thunderbird.core.featureflag.provider.ProviderMetadata
 import net.thunderbird.core.logging.testing.TestLogger
 
 class MultiFeatureFlagProviderEvaluatorTest {
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @BeforeTest
+    fun setup() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+    }
 
     @Test
     fun `provide should return Enabled when the first provider returns Enabled`() {

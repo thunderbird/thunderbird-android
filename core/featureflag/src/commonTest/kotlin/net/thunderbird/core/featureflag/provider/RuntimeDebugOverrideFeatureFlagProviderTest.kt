@@ -200,7 +200,7 @@ class RuntimeDebugOverrideFeatureFlagProviderTest {
         )
     }
 
-    private fun TestScope.createTestSubject(
+    private suspend fun TestScope.createTestSubject(
         configStore: FeatureFlagConfigStore,
     ): RuntimeDebugOverrideFeatureFlagProvider = RuntimeDebugOverrideFeatureFlagProvider(
         configStore = configStore,
