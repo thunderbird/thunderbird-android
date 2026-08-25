@@ -37,4 +37,22 @@ object IdentityHelper {
 
         return recipient ?: account.getIdentity(0)
     }
+
+    /**
+     * Find the identity a message was sent from.
+     *
+     * @param account
+     * The account the message belongs to.
+     * @param message
+     * The message to get the sender from.
+     *
+     * @return The identity the message was sent from, or `null` if it couldn't be determined which
+     * identity sent this message.
+     *
+     * @see LegacyAccountDto.findIdentity
+     */
+    @JvmStatic
+    fun getSenderIdentityFromMessage(account: LegacyAccountDto, message: Message): Identity? {
+        return message.from.firstNotNullOfOrNull { address -> account.findIdentity(address) }
+    }
 }
