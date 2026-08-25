@@ -965,4 +965,10 @@
     <string name="global_settings_privacy_incognito_keyboard">Klawiatura incognito</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">Poproś klawiaturę, aby nie uczyła się tego, co wpisujesz podczas tworzenia wiadomości</string>
     <string name="sort_by_indicator">•</string>
+    <string name="account_settings_signature_is_html_label">Zapisz podpis jako HTML</string>
+    <string name="account_settings_signature_is_html_summary">Zinterpretuj podpis jako HTML. Skrypty i procedury obsługi zdarzeń zostaną usunięte ze względów bezpieczeństwa.</string>
+    <string name="account_settings_signature_preview">Podgląd podpisu</string>
+    <string name="account_settings_signature_clear_label">Wyczyść podpis</string>
+    <string name="camera_capture_lost">Zrobione zdjęcie zostało utracone, ponieważ aplikacja została zamknięta. Spróbuj ponownie.</string>
+    <string name="account_settings_signature_html_label">Podpis HTML</string>
 </resources>
