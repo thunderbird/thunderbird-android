@@ -13,6 +13,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.featureflag.TestingFeatureFlagKey
 import net.thunderbird.core.featureflag.data.FeatureFlagCatalogDataSource
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey.ARCHIVE_MARKS_AS_READ
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey.DISPLAY_IN_APP_NOTIFICATIONS
@@ -166,7 +167,7 @@ class BundledCatalogFeatureFlagProviderTest {
             testSubject.initialize(initialContext = context())
 
             // Act
-            val result = testSubject.provide(FeatureFlagKey("unknown_feature_flag"))
+            val result = testSubject.provide(TestingFeatureFlagKey("unknown_feature_flag"))
 
             // Assert
             assertThat(result).isEqualTo(FeatureFlagResult.Unavailable)

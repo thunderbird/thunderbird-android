@@ -25,7 +25,7 @@ import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
@@ -48,14 +48,14 @@ internal class DefaultAccountDefaultsProvider(
             isNotifySelfNewMail = storage.getBoolean("${account.uuid}.notifySelfNewMail", true)
         } else {
             isNotifyNewMail = featureFlagProvider.provide(
-                "email_notification_default".toFeatureFlagKey(),
+                GeneratedFeatureFlagKey.EMAIL_NOTIFICATION_DEFAULT,
             ).whenEnabledOrNot(
                 onEnabled = { true },
                 onDisabledOrUnavailable = { false },
             )
 
             isNotifySelfNewMail = featureFlagProvider.provide(
-                "email_notification_default".toFeatureFlagKey(),
+                GeneratedFeatureFlagKey.EMAIL_NOTIFICATION_DEFAULT,
             ).whenEnabledOrNot(
                 onEnabled = { true },
                 onDisabledOrUnavailable = { false },
