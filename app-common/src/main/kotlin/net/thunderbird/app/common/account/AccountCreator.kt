@@ -50,6 +50,7 @@ internal class AccountCreator(
     private val getFolderIdsForTypeUseCase: GetFolderIdsForTypeUseCase,
     private val setPushForFolderUseCase: SetPushForFolderUseCase,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val featureFlagProvider: FeatureFlagProvider,
 ) : AccountSetupExternalContract.AccountCreator {
 
     @Suppress("TooGenericExceptionCaught")
