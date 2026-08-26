@@ -22,4 +22,8 @@ internal val providerModule = module {
     single<NotificationIconResourceProvider> {
         K9AppNotificationIconProvider()
     }
+
+    single<ChangelogConfigProvider> {
+        K9ChangelogConfigProvider()
+    }
 }
