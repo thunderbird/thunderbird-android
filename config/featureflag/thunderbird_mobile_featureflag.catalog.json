@@ -63,6 +63,11 @@
       "default": true,
       "description": "Enables Thundermail onboarding flow.",
       "time_to_promote": "2026-12-31"
+    },
+    {
+      "key": "push_enabled_on_inbox_by_default",
+      "default": false,
+      "description": "Enables push syncing on a new account's inbox when creating the account. Not for imports."
     }
   ],
   "overrides": {
@@ -70,7 +75,8 @@
       "debug": {
         "display_in_app_notifications": true,
         "use_notification_sender_for_system_notifications": true,
-        "message_view_action_export_eml": true
+        "message_view_action_export_eml": true,
+        "push_enabled_on_inbox_by_default": true
       },
       "daily": {
         "display_in_app_notifications": true,
@@ -85,7 +91,8 @@
       "debug": {
         "display_in_app_notifications": true,
         "use_notification_sender_for_system_notifications": true,
-        "message_view_action_export_eml": true
+        "message_view_action_export_eml": true,
+        "push_enabled_on_inbox_by_default": true
       },
       "release": {}
     }
