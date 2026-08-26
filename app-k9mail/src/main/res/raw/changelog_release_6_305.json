@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "6.305",
+  "versioncode": 33005,
+  "date": "2022-09-17",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed a bug that could lead to a crash when opening the message list",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

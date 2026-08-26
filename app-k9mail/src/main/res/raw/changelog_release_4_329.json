@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "version": "4.329",
+  "versioncode": 17030,
+  "date": "2013-03-14",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Changed the notification icon (Android 2.3+ only)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Restored showing the unread count on top of notification icons (Android 2.x only)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Show preview text of the latest message in a thread",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed 'empty trash' functionality for POP3 accounts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added work-around for the auto-scroll issue of the message view on Jelly Bean",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed navigation when coming from a notification",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't return to home screen after forwarding/replying to a message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed button bar style in account setup screens (Android 3+)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Highlight selected message in the message list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added a series of predefined account colors that will be used before resorting to random colors",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Hide delete policy option not applicable to POP3 accounts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Fall back to character set ISO-2022-JP when ISO-2022-JP-2 is not available",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated Korean, Danish, Finnish translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "More bug fixes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

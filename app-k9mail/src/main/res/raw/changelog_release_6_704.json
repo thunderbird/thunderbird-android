@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "6.704",
+  "versioncode": 37004,
+  "date": "2023-05-23",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Changed primary action in message view header from \"reply all\" to \"reply\"",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed the app so it runs on devices that don't support home screen widgets",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where \"Cannot connect to crypto provider\" was displayed when the problem wasn't the crypto provider",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "5.711",
+  "versioncode": 27011,
+  "date": "2020-05-08",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed some bugs with periodic mail sync (mail was usually checked too often)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a couple of bugs where unnecessary data was kept in the local database",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where a special folder wasn't removed locally when removed from the server",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug when creating signed-only messages with 'encrypt message subjects' enabled",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Lots of internal changes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

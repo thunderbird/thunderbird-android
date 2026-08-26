@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "5.724",
+  "versioncode": 27024,
+  "date": "2020-11-01",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed crash when trying to forward or reply to a message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when trying to compose a message from a search view",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when message list couldn't be loaded",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when setting up an account didn't work right away, e.g. wrong password was entered",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

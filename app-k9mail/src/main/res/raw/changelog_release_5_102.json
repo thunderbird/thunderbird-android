@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "5.102",
+  "versioncode": 23020,
+  "date": "2014-11-28",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Improved 'open' functionality for attachments",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed APG legacy interface",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug in Russian translation",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

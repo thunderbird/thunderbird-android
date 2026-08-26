@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "5.717",
+  "versioncode": 27017,
+  "date": "2020-06-19",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed display of text/plain parts containing text in a right-to-left language",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't retry remote commands that failed with an error",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't use default signature when setting up a new account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug that caused new message notifications to be skipped",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug when uploading messages via IMAP failed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed various bugs with POP3 accounts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

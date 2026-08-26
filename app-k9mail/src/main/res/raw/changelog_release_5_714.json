@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "5.714",
+  "versioncode": 27014,
+  "date": "2020-05-13",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "IMAP: Fixed refreshing the folder list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Keep drawer open after selecting an account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Increased the size of the progress bar shown when refreshing a folder",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Some smaller bug fixes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

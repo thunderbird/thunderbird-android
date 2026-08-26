@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.737",
+  "versioncode": 27037,
+  "date": "2021-06-26",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed a bug in the network connectivity detection code for Push",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

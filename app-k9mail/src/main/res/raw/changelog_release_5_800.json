@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "version": "5.800",
+  "versioncode": 28000,
+  "date": "2021-07-24",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Major redesign of the user interface",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed periodic background sync and push implementations to work much more reliably",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Deprecated support for the WebDAV protocol; new accounts can no longer be added",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "K-9 Mail now requires Android 5.0 and newer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for Autocrypt setup message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for encrypted subjects",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't use default signature when setting up a new account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Allow installation on external media (Android 6+ with adopted storage)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed keyboard shortcuts for menu items; on some devices they conflicted with system shortcuts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed the broken option to store the message database on external storage",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed the 'remote control' interface third-party apps could use to change some settings in K-9 Mail",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "A lot of other bug fixes, internal changes, and improvements",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Check out the changelog entries for 5.7xx versions for a lot more details",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

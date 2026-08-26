@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "5.200",
+  "versioncode": 23200,
+  "date": "2016-12-26",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug with status display of signed messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

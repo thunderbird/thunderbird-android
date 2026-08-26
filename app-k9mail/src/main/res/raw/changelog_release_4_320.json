@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "4.320",
+  "versioncode": 17021,
+  "date": "2013-01-11",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added 'Account settings' back to the account context menu",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added 'Refresh' and 'Settings' back to the folder context menu",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Minor bug fixes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

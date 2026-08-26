@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "5.103",
+  "versioncode": 23030,
+  "date": "2014-12-06",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added ability to customize lock screen notifications (Android 5.0+ only)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug where a certificate error was wrongly reported",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translation",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

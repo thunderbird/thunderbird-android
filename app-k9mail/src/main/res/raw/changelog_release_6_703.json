@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "6.703",
+  "versioncode": 37003,
+  "date": "2023-05-08",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Internal changes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

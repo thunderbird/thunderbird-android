@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "Beta",
+  "versioncode": 1,
+  "date": "",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Beta snapshot of current development at github.com/thunderbird/thunderbird-android",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "6.717",
+  "versioncode": 37017,
+  "date": "2024-02-16",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed order of autoconfig discovery steps",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed default display count to 100",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Enabled notifications for new accounts by default",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Reverted the change to handling mailto: URIs introduced in K-9 Mail 6.716 because of unintended side effects",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug to make \"colorize contacts\" work again in message view",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

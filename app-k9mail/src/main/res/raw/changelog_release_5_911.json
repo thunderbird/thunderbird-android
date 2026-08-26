@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "5.911",
+  "versioncode": 29011,
+  "date": "2022-02-12",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Reworked the user interface for the vibration pattern setting",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Reworked the notification light color setting",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved display of accounts without a name",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Tapping a \"send failure\" notification will now open the Outbox folder",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that led to some messages not being displayed properly",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed various smaller bugs related to notifications",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed the way settings are stored; this might fix the bug where all accounts are lost",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

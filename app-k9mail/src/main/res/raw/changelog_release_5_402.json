@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.402",
+  "versioncode": 23620,
+  "date": "2018-01-04",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed display issues with certain messages",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}
