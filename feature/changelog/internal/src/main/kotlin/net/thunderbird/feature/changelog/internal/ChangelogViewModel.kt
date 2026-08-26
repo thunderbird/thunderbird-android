@@ -1,7 +1,6 @@
 package net.thunderbird.feature.changelog.internal
 
 import androidx.lifecycle.viewModelScope
-import de.cketti.changelog.ReleaseItem
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.combine
@@ -29,10 +28,11 @@ class ChangelogViewModel(
             loadState()
         }
     }
+
     private suspend fun loadState() {
         combine(
             generalSettingsManager.getConfigFlow(),
-            changeLogManager.changeLogFlow,
+            changeLogManager.changelogFlow,
         ) { settings, changeLog ->
             Pair(settings, changeLog)
         }.collect { (settings, changeLog) ->
@@ -43,7 +43,11 @@ class ChangelogViewModel(
                         changeLog.changeLog
                     } else {
                         changeLog.recentChanges
-                    }.map { it.toReleaseUiModelList(it.versionCode == changeLog.currentVersionCode) }.toImmutableList(),
+                    }.map {
+                        it.toReleaseUiModelList(
+                            it.versionCode == changeLog.getCurrentVersionCode(),
+                        )
+                    }.toImmutableList(),
                 )
             }
         }
