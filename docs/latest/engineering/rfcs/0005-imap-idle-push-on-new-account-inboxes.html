@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Architecture Decision Records - Thunderbird for Android - Developer Documentation</title>
+        <title>0005: Enable IMAP IDLE (&quot;Push&quot;) for the Inbox by Default on Newly Added IMAP Accounts - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -145,7 +145,7 @@
                         <a href="https://github.com/thunderbird/thunderbird-android/" title="Git repository" aria-label="Git repository">
                             <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./engineering/adr/README.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./engineering/rfcs/0005-imap-idle-push-on-new-account-inboxes.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -179,75 +179,133 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="architecture-decision-records"><a class="header" href="#architecture-decision-records">Architecture Decision Records</a></h1>
-<p>ADRs are short text documents that serve as a historical context for the architecture decisions we make over the
-course of the project.</p>
-<h2 id="what-is-an-adr"><a class="header" href="#what-is-an-adr">What is an ADR?</a></h2>
-<p>An Architecture Decision Record (ADR) is a document that captures an important architectural decision made along
-with its context and outcomes. ADRs record the decision making process and allow others to understand the
-rationale behind decisions, providing insight and facilitating future decision-making processes.</p>
-<p>ADRs are part of our broader <a href="../README.html">engineering process</a>, which also includes <a href="../rfcs/README.html">RFCs</a> for technical direction and <a href="../technical-designs/README.html">Technical Designs</a> for implementation details.</p>
-<h2 id="format-of-an-adr"><a class="header" href="#format-of-an-adr">Format of an ADR</a></h2>
-<p>We adhere to Michael Nygard’s <a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions">ADR format proposal</a>,
-where each ADR document should contain:</p>
-<ol>
-<li><strong>Title</strong>: A short descriptive name for the decision.</li>
-<li><strong>Issue</strong>: A link to the issue that prompted the decision.</li>
-<li><strong>Status</strong>: The current status of the decision (proposed, accepted, rejected, obsolete).</li>
-<li><strong>Context</strong>: The context that motivates this decision.</li>
-<li><strong>Decision</strong>: The change that we’re proposing and/or doing.</li>
-<li><strong>Outcomes</strong>: What becomes easier or more difficult to do and any risks introduced as a result of the decision.</li>
-</ol>
-<h2 id="creating-a-new-adr"><a class="header" href="#creating-a-new-adr">Creating a New ADR</a></h2>
-<p>When creating a new ADR, please follow the provided <a href="0000-adr-template.html">ADR template file</a> and ensure that your
-document is clear and concise.</p>
-<p>Once you are ready to propose your ADR, you should:</p>
-<ol>
-<li>Create an issue in the repository, get consensus from at least one other project contributor.</li>
-<li>Make a post on <a href="https://thunderbird.topicbox.com/groups/mobile-planning">the mobile-planning list</a>
-to announce your ADR. You can use the below template as needed.</li>
-<li>Create a pull request in the repository linking the issue.</li>
-<li>Make a decision together with mobile module owners, the PR will be merged when accepted.</li>
-</ol>
-<h2 id="directory-structure"><a class="header" href="#directory-structure">Directory Structure</a></h2>
-<p>The ADRs will be stored in <code>docs/engineering/adr</code>, and each ADR will be a file named <code>NNNN-title-with-dashes.md</code>
-where <code>NNNN</code> is a four-digit number that is increased by 1 for every new ADR.</p>
-<h2 id="adr-life-cycle"><a class="header" href="#adr-life-cycle">ADR Life Cycle</a></h2>
-<p>The life cycle of an ADR is as follows:</p>
-<ol>
-<li><strong>Proposed</strong>: The ADR is under consideration.</li>
-<li><strong>Accepted</strong>: The decision described in the ADR has been accepted and should be adhered to, unless it is obsoleted by another ADR.</li>
-<li><strong>Rejected</strong>: The decision described in the ADR has been rejected.</li>
-<li><strong>Obsolete</strong>: The ADR has been replaced by another ADR or RFC, or is outdated because the underlying functionality or dependency no longer exists.</li>
-</ol>
-<p>Each ADR will have a status indicating its current life-cycle stage. An ADR can be updated over time, either to change
-the status or to add more information.</p>
-<h2 id="contributions"><a class="header" href="#contributions">Contributions</a></h2>
-<p>We welcome contributions in the form of new ADRs or updates to existing ones. Please ensure all contributions follow
-the standard format and provide clear and concise information.</p>
-<h2 id="appendix-intent-to-adopt-template"><a class="header" href="#appendix-intent-to-adopt-template">Appendix: Intent to Adopt Template</a></h2>
-<p>You may use this template in your Intent to Adopt email as noted above. Tweak it as you feel is useful.</p>
+                        <h1 id="rfc-0005-enable-imap-idle-push-for-the-inbox-by-default-on-newly-added-imap-accounts"><a class="header" href="#rfc-0005-enable-imap-idle-push-for-the-inbox-by-default-on-newly-added-imap-accounts">RFC 0005: Enable IMAP IDLE (“Push”) for the Inbox by Default on Newly Added IMAP Accounts</a></h1>
+<ul>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11320">#11320</a></li>
+<li>Status: <strong>Accepted</strong></li>
+</ul>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>When a user adds a new account, if it is an IMAP account and IMAP IDLE is supported on the server, we will turn on
+“push” syncing for the inbox folder using IMAP IDLE. If they choose to enable notifications, they’ll receive
+notifications when they receive new emails in as close to instant as we can get it without a true push service.</p>
+<h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
+<p>Users complain that their emails do not show up on time. When they learn they can already activate IMAP IDLE, which we
+call “push” to the end user, they find that the setting is buried in an unexpected place. They may also misconfigure it,
+causing their email to stop working altogether. While IMAP IDLE works on a per-folder basis, the end user doesn’t want
+to have to think about this level of detail. They don’t want to have to figure out server capacities for open sockets
+and pick their most important folders. They just want their new mail when it comes in. Therefore, we’ll activate
+our existing IMAP IDLE implementation for their Inbox, what they’ll see as “push,” which will give them a notification
+or instant syncing of their inbox when changes appear in that folder on the server. Most users will never feel the
+need to change this setting, and will believe it’s working as it was always intended.</p>
+<h2 id="proposal"><a class="header" href="#proposal">Proposal</a></h2>
+<p>We will enable our existing push service for IMAP accounts during account creation for new accounts or those imported
+via a QR code. We will not change the settings for users who are importing from a file, as we can’t tell if they chose
+to disable push previously. If a user is not importing folder settings, and they’re adding a new account, we will enable
+our existing IMAP IDLE sync, “Push” on their Inbox folder, which we’ll identify during setup.</p>
+<h4 id="method"><a class="header" href="#method">Method</a></h4>
+<p>Whether or not a folder has push enabled is a boolean stored locally in <code>FolderDetails.isPushEnabled</code>, with those
+details saved to the device’s storage in <code>FolderSettingsDataStore</code>. With this proposed change, we will update the
+folder’s details to contain <code>isPushEnabled = true</code> when creating a folder details instance for the account’s inbox
+folder.
+This alone will not enable IMAP IDLE folder syncing though. Without <code>canScheduleExactAlarms()</code> returning true,
+we can set up an IMAP IDLE socket, but it cannot refresh at least every 29 minutes, as is required for the
+<a href="https://datatracker.ietf.org/doc/html/rfc2177">IMAP IDLE spec</a>. We will need to ensure that we have some form of
+fallback here, including fetch, for accounts that have enabled “push” IMAP IDLE syncing without the necessary
+permissions to keep the socket open. Fetching can serve as a fallback, if we have the necessary permissions for that
+as well.</p>
+<p>The exact process to create a new <code>FolderDetails</code> instance when generating a new account, and not any time an instance
+is created, would require further investigation. It will likely involve getting server capabilities in the
+<code>AccountCreator.create</code> function, checking for the <code>Capabilities.IDLE</code> server setting enabled in the
+<code>RealImapConnection.isIdleCapable</code> property, and then getting the specific Inbox folder (<code>LegacyAccount.inboxFolderId</code>)
+and enabling the <code>isPushEnabled</code> variable. However, we will still have to determine where is the most efficient way to
+do this in that it is set up during account creation, before the user’s inbox has loaded, and does not require a great
+deal of dependency changes to make the information available.</p>
+<p>We may also want to ensure we do this after getting all necessary permissions to keep an IMAP IDLE socket open, or
+simply ensure we have a good enough fetch fallback available so that push syncing will be enabled after a user has
+granted the permission. This will require further technical investigation, but these are
+potentially issues that exist today in our current implementation.</p>
+<h2 id="alternatives-considered"><a class="header" href="#alternatives-considered">Alternatives Considered</a></h2>
+<p>Initially, we had hoped to enable IMAP IDLE on <strong>all</strong> folders that could support it. However, there are limits to the
+number of folders that can be synced through IDLE sockets with IMAP. The limit is server-specific, and some may fail
+silently. Others present an error that reports they have too many connections. An end user who isn’t aware of the
+limitations of IMAP IDLE would not know what this means, and would therefore not be able to solve the issue without our
+help. The end result would be issues for most—if not all—users who set up an IMAP account using Thunderbird or K-9 that
+would completely disable their account until we can walk them through the many steps to fix it.</p>
+<p>We <em>could</em> solve this by including some information in the Folder Settings view on the limits of folder syncing, but the
+goal here is to reduce the need of users to change these settings at all.</p>
+<p>By defaulting push notifications on for newly added accounts, users won’t need to set up individual folders to sync
+because they’ll
+get their messages when expected. If they have a more complex setup or want to increase the sync time of items in other
+folders, they can still do so manually. When we make this process easier later this year, we’ll want to notify the user
+that activating push on too many folders may break their connection to the server. Changing these user-facing settings
+menus is out of scope for this specific project, but will be part of future notification settings improvements. We may
+potentially perform a fetch on all folders when we notice a change on the inbox, which would have the same effect as
+syncing with all folders as the message would likely first appear in their inbox before sorting anyway, but this may be
+an option we want to present to the user, as it could cause battery drain and use larger amounts of data than IMAP IDLE
+would alone.</p>
+<h2 id="risks--drawbacks"><a class="header" href="#risks--drawbacks">Risks &amp; Drawbacks</a></h2>
+<p>IMAP IDLE keeps a socket open to receive information from the server when there are changes to the folders they’re
+watching. This will be the Inbox folder. If a user receives many email messages throughout the day, it could potentially
+lead to more fetches, and more battery usage. In my personal testing, there seemed to be no difference in battery
+consumption between fetching all folders every 15 minutes and turning on IMAP IDLE for multiple accounts, and push on
+for multiple folders as well, more than our end users would get with the default settings proposed here. Users can turn
+the feature off if it becomes an issue, but IMAP IDLE was made specifically to reduce the need to sync with a server
+frequently and reduce both battery usage and network bandwidth. As a result, it may reduce battery consumption for
+our users. IMAP IDLE can reduce periodic polling, but its net battery impact depends on connection stability,
+network conditions, server behavior, account count, and incoming-mail volume. Those who see an increase would
+likely have an account where they receive many emails, but not all at once, such as automated emails every few<br>minutes. Someone with such a setup could turn off the setting where it exists today. In a future project, we’ll
+make these settings even easier to access.</p>
+<p>In Google Play, we need to make a declaration for Foreground Services (FGS) we use. “Push” uses a <code>specialUse</code> FGS.
+We define this in the manifest under the name <code>com.fsck.k9.controller.push.PushService</code>, a specific type of
+<code>dataSync|specialUse</code>. The property we set up states:</p>
 <blockquote>
-<p>Hello everyone,</p>
-<p>I’m writing to share an intent to adopt a new architecture decision: [ADR-[Number]] [Title of ADR]</p>
-<p>This change addresses [brief summary of the problem] and proposes [brief description of the approach].</p>
-<p>This decision is based on [briefly mention motivating factors, constraints, or technical context].</p>
-<p>You can read the full proposal here: [link to ADR]</p>
-<p>If you have feedback or concerns, please respond in the linked issue. We plan to finalize the
-decision after [proposed date], factoring in discussion at that time.</p>
-<p>Thanks,
-[Your Name]</p>
+<p>“This service is used to maintain a continuous connection to an IMAP server to be able to provide instant notifications</p>
+<blockquote>
+<p>to the user when a new email arrives. Firebase Cloud Messaging is not suitable for this task, neither are mechanisms
+like AndroidX WorkManager. Other foreground service types aren’t a good fit for this use case.“</p>
 </blockquote>
-
+</blockquote>
+<p>This remains true, but Google may ask us to update the statement pointing out that the existing service will be
+enabled by default if a user is setting up an account that can use IMAP IDLE syncing and has given us the necessary
+permissions to do so. We will also possibly have to update our documentation with the flow for turning this off, as
+it’s enabled by default and the user will not have interacted with the setting to enable it previously. Finally,
+we’ll have to update the video we provide to Google Play showing how this service is deactivated, should a user
+choose to do so. Without taking these steps, we could face a risk of a rejection from the Google Play Store, though
+we will wait to see what Google has to say about the change. Because IMAP IDLE, “Push,” is an existing feature, already
+cleared for a special use case, we may not need to make any changes here.</p>
+<h2 id="open-questions"><a class="header" href="#open-questions">Open Questions</a></h2>
+<p>It’s rather unfortunate that there’s no way to be sure of how many sockets we can keep open for each server. Some are as
+little as 2-4, while others can support IMAP IDLE for 8 folders. There’s no way to test this besides creating a failure
+state. We could do so, keep a list of the maximum number of connections and, if a user has fewer folders than that,
+enable IMAP IDLE syncing on each of their folders. However, a vast majority of our users will only need this on the
+inbox and perhaps, if they do server-side filtering, an “important” or “flagged” folder. But by doing a full fetch on
+each change on the Inbox, we may actually resolve this, as the emails will likely end up in the inbox first, before
+sorting, and then the filtering or automation they’re doing could place the email elsewhere. Either way, we’d trigger a
+sync because we’re waiting for updates to the inbox. We may want to revisit this idea later, but, for now, simply
+activating IMAP IDLE on the Inbox folder may be sufficient to solve user complaints.</p>
+<h4 id="future-considerations"><a class="header" href="#future-considerations">Future Considerations</a></h4>
+<p>We call this “push,” which is most closely related to notifications and push notifications go through a server we
+wouldn’t own and therefore wouldn’t be private. But these are not push notifications. We instead are using IMAP IDLE
+to keep a socket open, then notifying the user locally when the server is updated. As a result, we’re not using a
+push service, and, if the user has notifications disabled, we could still be doing the (near) real-time syncing.</p>
+<p>We may want to consider documenting this feature better, and removing the “push” toggle, instead using an “instant
+syncing” toggle that, when turned off, will allow the user to select a fetch interval. This is a more accurate
+representation of what “push” is, a replacement for fetching, not a replacement for notifications. As we reconfigure
+the notification settings, this will be something we can consider. However, the scope of this change is to only activate
+the existing IMAP IDLE service by default on the user’s inbox if we can during account setup. Dramatic changes to
+our settings, verbiage, and subsequent documentation is out of scope for this task, but will be part of “Phase 2” of
+the notification settings improvement project.</p>
+<h2 id="outcome"><a class="header" href="#outcome">Outcome</a></h2>
+<footer id="last-change">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../engineering/rfcs/0005-imap-idle-push-on-new-account-inboxes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../engineering/rfcs/0004-feature-flag-new-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../../engineering/adr/0000-adr-template.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../engineering/adr/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -257,11 +315,11 @@ decision after [proposed date], factoring in discussion at that time.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../engineering/rfcs/0005-imap-idle-push-on-new-account-inboxes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../engineering/rfcs/0004-feature-flag-new-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../../engineering/adr/0000-adr-template.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../engineering/adr/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
