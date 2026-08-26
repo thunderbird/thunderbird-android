@@ -23,6 +23,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
@@ -41,6 +43,7 @@ internal class AccountCreator(
     private val avatarMonogramCreator: AvatarMonogramCreator,
     private val unifiedInboxConfigurator: UnifiedInboxConfigurator,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val featureFlagProvider: FeatureFlagProvider,
 ) : AccountSetupExternalContract.AccountCreator {
 
     @Suppress("TooGenericExceptionCaught")
@@ -102,6 +105,13 @@ internal class AccountCreator(
         Core.setServicesEnabled(context)
 
         messagingController.refreshFolderListBlocking(newAccount)
+
+        featureFlagProvider.provide(GeneratedFeatureFlagKey.PUSH_ENABLED_ON_INBOX_BY_DEFAULT)
+            .onEnabled {
+                // The AccountCreator is only called when not importing settings.
+                // We can update inbox push here by default.
+                // TODO Get inbox and update
+            }
 
         if (account.options.checkFrequencyInMinutes == -1) {
             messagingController.checkMail(newAccount, false, true, false, null)
