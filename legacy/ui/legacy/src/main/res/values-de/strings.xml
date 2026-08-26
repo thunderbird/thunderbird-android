@@ -951,4 +951,10 @@
     <string name="sort_by_indicator">•</string>
     <string name="global_settings_privacy_incognito_keyboard">Inkognito-Tastatur</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">Die Tastatur daran hindern, beim Verfassen von Nachrichten aus deinen Eingaben zu lernen</string>
+    <string name="camera_capture_lost">Das aufgenommene Bild ging verloren, da die App geschlossen wurde. Bitte versuche es erneut.</string>
+    <string name="account_settings_signature_html_label">HTML-Signatur</string>
+    <string name="account_settings_signature_is_html_label">Signatur als HTML speichern</string>
+    <string name="account_settings_signature_is_html_summary">Die Signatur wird als HTML interpretiert. Skripte und Ereignishandler werden aus Sicherheitsgründen entfernt.</string>
+    <string name="account_settings_signature_preview">Signaturvorschau</string>
+    <string name="account_settings_signature_clear_label">Signatur löschen</string>
 </resources>
