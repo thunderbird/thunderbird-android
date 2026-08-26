@@ -9,12 +9,12 @@ android {
 
 dependencies {
     implementation(projects.core.ui.contract)
+    implementation(projects.core.logging.api)
     implementation(projects.core.ui.navigation)
     implementation(projects.core.ui.compose.common)
     implementation(projects.core.preference.api)
     implementation(projects.feature.changelog.api)
-
-    implementation(libs.ckchangelog.core)
+    implementation(libs.kotlinx.serialization.json)
 }
 codeCoverage {
     branchCoverage = 0
