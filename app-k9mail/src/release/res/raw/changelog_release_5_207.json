@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.207",
+  "versioncode": 23270,
+  "date": "2017-04-13",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Improved speed of local message search",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

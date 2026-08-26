@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "5.400",
+  "versioncode": 23600,
+  "date": "2017-12-27",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Avoid crash on Android 8.1",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added Albanian translation",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

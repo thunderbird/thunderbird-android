@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.208",
+  "versioncode": 23271,
+  "date": "2017-08-28",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug where automatic synchronization wouldn't restart after the device exited doze mode",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

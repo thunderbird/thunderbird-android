@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "5.104",
+  "versioncode": 23040,
+  "date": "2015-03-13",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed crash when selecting multiple messages on Android 5.1",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed settings export",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed some layout bugs",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added Serbian translation",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated several translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

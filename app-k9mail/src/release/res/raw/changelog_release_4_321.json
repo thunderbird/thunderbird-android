@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "version": "4.321",
+  "versioncode": 17022,
+  "date": "2013-01-16",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed some bugs related to message threading",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved search for folders in the folder list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for wrapping long folder names in the folder list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added a progress indicator for remote searches",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Reworked messagelist progress indicators",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved notifications on SSL certificate validation failures",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated Finnish, French, Spanish translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Fixes to the new notificiations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improvements to database upgrade infrastructure",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added the ability to search all local messages from the folder list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added button to show this about screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Close thread view when last message has been moved/deleted",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Performance improvements",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "6.301",
+  "versioncode": 33001,
+  "date": "2022-08-09",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed crash when viewing a message and OpenKeychain needed to display its user interface, e.g. to ask for a password",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "When composing a message containing consecutive spaces convert them to non-breaking spaces in the generated HTML part of the message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where moving a message to another folder wouldn't update the apps search index",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed small bug where not all cached values were removed when using \"clear local messages\"",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

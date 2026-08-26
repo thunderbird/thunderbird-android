@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "4.323",
+  "versioncode": 17024,
+  "date": "2013-02-05",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Bug fixes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updates to Finnish and French translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Put back prev/next buttons in non-split message views",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

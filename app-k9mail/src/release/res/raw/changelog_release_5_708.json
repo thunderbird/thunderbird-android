@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "5.708",
+  "versioncode": 27008,
+  "date": "2020-03-19",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Long-press on message in message list now selects the message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Click on contact picture in message list now selects the message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that disabled auto-completion when composing messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed dark/light theme issues",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed 'Gestures' setting",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Renamed \"send again\" to \"edit as new message\"",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "5.716",
+  "versioncode": 27016,
+  "date": "2020-06-04",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug that hid folders in the drawer behind the sticky footer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when server contains a folder named 'Outbox'",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Avoid crash when adding an attachment fails",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed support for using Shift JIS charsets when sending a message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

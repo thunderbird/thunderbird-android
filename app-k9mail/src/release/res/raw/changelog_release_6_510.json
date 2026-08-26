@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "6.510",
+  "versioncode": 35010,
+  "date": "2023-03-17",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Made small changes to the appearance of the message list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added a font size setting for the account name when viewing a message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Use colored navigation bar on Android 8.1 and above",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed status bar color on Android 5",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "IMAP: Fixed a bug where sometimes an authentication error was silently ignored",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

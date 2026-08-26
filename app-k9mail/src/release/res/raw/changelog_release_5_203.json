@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "5.203",
+  "versioncode": 23230,
+  "date": "2017-01-17",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug with pinch to zoom gesture",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added setting for disabling 'mark all as read' confirmation dialog",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Update full text search index when removing messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed display bug when replying to messages using dark theme",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't hide Cc and Bcc if 'Always show Cc/Bcc' is enabled",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Allow sending signed-only PGP/INLINE messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't save drafts when message could be sent encrypted",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "More bug fixes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "6.705",
+  "versioncode": 37005,
+  "date": "2023-06-12",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Adding to contacts should now allow you again to add the email address to an existing contact",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed display issue with recipients in message view screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed appearance of \"Sign in with Google\" button",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bugs with importing and exporting identities",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Manually entering names containing non-latin characters is now possible when composing messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "The app will no longer ask to save a draft when no changes have been made to an existing draft message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

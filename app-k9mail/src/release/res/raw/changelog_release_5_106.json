@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.106",
+  "versioncode": 23060,
+  "date": "2015-05-02",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed a bug where messages where not always displayed on Android 5.x",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

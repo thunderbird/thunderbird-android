@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.502",
+  "versioncode": 25020,
+  "date": "2018-03-11",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

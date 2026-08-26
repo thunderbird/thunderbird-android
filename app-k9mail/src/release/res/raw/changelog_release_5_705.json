@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "5.705",
+  "versioncode": 27005,
+  "date": "2020-02-06",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug that prevented contact pictures from being displayed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Display progress bar when syncing a folder",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed deleting messages when there's no Trash folder (IMAP)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a crash when encountering messages without a subject",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that could lead to two message lists being displayed on top of each other",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Stop trying to open external links inside the app when there's no app installed to handle the content",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "A lot of internal changes and improvements",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

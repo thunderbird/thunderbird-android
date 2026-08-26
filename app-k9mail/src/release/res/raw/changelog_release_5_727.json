@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "5.727",
+  "versioncode": 27027,
+  "date": "2021-01-25",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Updated \"About\" screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed appearance of \"Changelog\" screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added \"User forum\" link to the \"Settings\" screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Cleaned up some of the icons used in the app",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug when going back to previous steps when setting up an account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

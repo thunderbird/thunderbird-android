@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "6.801",
+  "versioncode": 38001,
+  "date": "2024-03-11",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added DNSSEC support when looking for server settings during setup",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Made a change to prevent some software keyboards from capitalizing/auto-correcting email addresses in account setup",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a crash when a very long subject was used",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed displaying OAuth 2.0 error messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed rare crash when downloading an attachment",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added code to disallow line breaks in single line text inputs",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

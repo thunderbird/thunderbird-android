@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.806",
+  "versioncode": 28006,
+  "date": "2021-08-30",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed the check for missing outgoing server credentials, again… hopefully 🤞",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

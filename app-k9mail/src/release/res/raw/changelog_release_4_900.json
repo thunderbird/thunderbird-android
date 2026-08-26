@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "version": "4.900",
+  "versioncode": 21003,
+  "date": "2014-01-22",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Fix issue 6064: Inline images don't display on KitKat",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Update list of German Internet providers",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add provider Outlook.sk and Azet.sk to provider list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Update Brazilian Portuguese, Czech, Danish, Dutch, French, Greek, Hungarian, Polish, Russian, Slovak, Spanish, and Ukrainian translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Fix POP3 STLS command",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Use a locale-specific date in the header of a quoted message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Account preferences clean-up",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Make IMAP autoconfig recognize \"Draft\" as drafts folder",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add posteo.de to providers.xml",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Return proper error message when certificate couldn't be verified against global key store",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add support for bitcoin URIs",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Change the way we harden SSL/TLS sockets. Disallow a couple of weak ciphers, bring known ones in a defined order and sort unknown ciphers at the end. Also re-enable SSLv3 because it's still used a lot.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Implement pruning of old certificates from LocalKeyStore. Certificates are deleted whenever server settings are changed or an account is deleted.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Fix inadequate certificate validation. Proper host name validation was not being performed for certificates kept in the local keystore.  If an attacker could convince a user to accept and store an attacker's certificate, then that certificate could be used for MITM attacks, giving the attacker access to all connections to all servers in all accounts in K-9.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Users can now use different certificates for different servers on the same host (listening to different ports).",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "The above changes mean that users might have to re-accept certificates that they had previously accepted and are still using (but only if the certificate's Subject doesn't match the host that they are connecting to).",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Make sure to return different colors for senders with different name, but the same mail address (e.g. mails sent by certain issue tracking systems).",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "With the new webview scrollview combo we've got loadinoverviewmode seems to behave better.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Fix file selection for import Using FLAG_ACTIVITY_NO_HISTORY will cause the file selection to fail when KitKat's \"Open from\" activity opens a third-party activity.",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

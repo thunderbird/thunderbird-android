@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "releases":[
+    {
+      "version": "Daily",
+      "versioncode": 1,
+      "date": "",
+      "resourceName": "changelog_release_daily"
+    }
+  ]
+}

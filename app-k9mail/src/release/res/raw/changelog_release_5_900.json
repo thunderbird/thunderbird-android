@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "version": "5.900",
+  "versioncode": 29000,
+  "date": "2021-09-09",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Experimental: Added a toolbar with a \"check mail\" button to the navigation drawer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Experimental: Tweaked the mark as unread toolbar icon",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't show notifications for new messages when syncing a folder for the first time",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Optionally show starred message count in navigation drawer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Require the user to authenticate before unmasking server passwords",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Properly decode format=flowed body before including the text in a reply",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added a setting to suppress notifications for chat messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Small change to the user interface for searching messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Make sure attachment box isn't cut off on small screens",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

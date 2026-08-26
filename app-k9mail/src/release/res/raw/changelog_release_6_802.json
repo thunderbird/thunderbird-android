@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "6.802",
+  "versioncode": 38002,
+  "date": "2024-04-05",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Push: Notify user if permission to schedule exact alarms is missing",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Renamed \"Send client ID\" setting to \"Send client information\"",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "IMAP: Added support for the \\NonExistent LIST response attribute",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "IMAP: Issue EXPUNGE command after moving without MOVE extension",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations; added Hebrew translation",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

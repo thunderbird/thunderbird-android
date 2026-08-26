@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "4.903",
+  "versioncode": 21006,
+  "date": "2014-03-06",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Offer encrypted connection by default when manually setting up an account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Simplified options for authentication and security",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed auto-configuration settings for all providers that didn't support encrypted connections",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved compatibility with IMAP (proxy) servers",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "More small fixes and improvements",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

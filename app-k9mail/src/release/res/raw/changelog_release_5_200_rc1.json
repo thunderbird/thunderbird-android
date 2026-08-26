@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "version": "5.200-RC1",
+  "versioncode": 23190,
+  "date": "2016-12-09",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added support for PGP/MIME",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for bundled notifications on Android 7+ and Android Wear",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "New option: only notify for messages from contacts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Ask for confirmation on \"mark all as read\"",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for sub-folders (WebDAV)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for List-Post header",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for Server Name Indication",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Disabled support for SSLv3 protocol/ciphers and all RC4 ciphers",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed support for APG (use OpenKeychain instead)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added server settings for more providers",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added translations: Bulgarian, Persian (Farsi), Croatian, Portuguese, Romanian, Slovenian, Serbian",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Lots of smaller bug fixes and features",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}
