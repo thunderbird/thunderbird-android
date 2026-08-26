@@ -29,7 +29,7 @@ communicating with an external host to fetch the data.
 The app should also keep track of possible changes in the current remote feature flag, and react accordingly whenever a
 flag has it's state changed.
 
-this RFC propose to keep using our current architecture, without integrating or adding a new one at this time.
+This RFC propose to keep using our current architecture, without integrating or adding a new one at this time.
 
 ### Fallback Strategy
 
