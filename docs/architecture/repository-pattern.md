@@ -36,17 +36,61 @@ This makes the scope visible to callers and supports a consolidated database wit
 
 Repository I/O uses coroutines:
 
-- A one-shot fallible operation is a `suspend fun` returning `Outcome<VALUE, ERROR>`.
-- A reactive fallible operation returns `Flow<Outcome<VALUE, ERROR>>`.
-- `ERROR` is a domain-specific sealed type. Do not expose database, HTTP, or platform exceptions from a contract.
+- A one-shot operation is a `suspend fun`.
+- A reactive operation returns a `Flow`.
+
+Choose the return type based on the contract rather than the current implementation. An expected recoverable failure is
+a normal condition that the caller can handle, such as unavailable storage, a network failure, a rejected operation, or
+a missing required entity. Return a value directly only when the contract can always provide a meaningful result,
+possibly by using a default.
 
 Use [`net.thunderbird.core.outcome.Outcome`](../../core/outcome/src/commonMain/kotlin/net/thunderbird/core/outcome/Outcome.kt)
-for repository results.
+for fallible repository results. `ERROR` is a domain-specific sealed type. Do not expose database, HTTP, or platform
+exceptions from a contract.
 
-Use `Outcome.Success(Unit)` when an operation completes successfully and has no value to return. Use
-`Outcome.Success(null)` when a lookup completes successfully but no matching entity exists. Use `Outcome.Failure(...)`
-when the operation cannot produce the required result. An API that requires an entity represents a missing entity as a
-domain failure. A private in-memory helper with no expected failure may return a concrete value directly.
+Fallible contracts use `Outcome`:
+
+|    Contract    |         Return type          |
+|----------------|------------------------------|
+| Required value | `Outcome<Type, Error>`       |
+| Optional value | `Outcome<Type?, Error>`      |
+| Collection     | `Outcome<List<Type>, Error>` |
+| No value       | `Outcome<Unit, Error>`       |
+| Reactive value | `Flow<Outcome<Type, Error>>` |
+
+Non-fallible contracts return values directly:
+
+|    Contract    | Return type  |
+|----------------|--------------|
+| Required value | `Type`       |
+| Optional value | `Type?`      |
+| Collection     | `List<Type>` |
+| No value       | `Unit`       |
+| Reactive value | `Flow<Type>` |
+
+For fallible operations, use `Outcome.Success(Unit)` when an operation completes successfully and has no value to
+return. Use `Outcome.Success(null)` when a lookup completes successfully but no matching entity exists. Use
+`Outcome.Failure(...)` when the operation cannot produce the required result. An API that requires an entity represents
+a missing entity as a domain failure.
+
+For example, this repository always returns settings by falling back to defaults, while an update can fail:
+
+```kotlin
+interface DisplaySettingsRepository {
+    suspend fun getById(
+        accountId: AccountId,
+    ): DisplaySettings
+
+    fun observeById(
+        accountId: AccountId,
+    ): Flow<DisplaySettings>
+
+    suspend fun update(
+        accountId: AccountId,
+        settings: DisplaySettings,
+    ): Outcome<Unit, DisplaySettingsError>
+}
+```
 
 ## Read method naming
 
@@ -59,17 +103,17 @@ Use these names for read methods:
   - `observeByCriteria()` reads at most one entity for an immutable, domain-specific criteria type.
   - `observeAllByCriteria()` reads multiple entities for an immutable, domain-specific criteria type.
 - One-shot reads:
-  - Optional singular reads use `findById()`, `findBy<Identifier>()`, or `findByCriteria()`. Return
+  - Optional singular reads use `findById()`, `findBy<Identifier>()`, or `findByCriteria()`. Return `null` directly or
     `Outcome.Success(null)` when no entity exists.
-  - Collection reads use `findAll()` or `findAllByCriteria()`. Return `Outcome.Success(emptyList())` when no entities
-    exist.
-  - Required singular reads use `getById()`. Absence is represented as a failure.
+  - Collection reads use `findAll()` or `findAllByCriteria()`. Return an empty list directly or
+    `Outcome.Success(emptyList())` when no entities exist.
+  - Required singular reads use `getById()`. A direct return guarantees a meaningful value. A fallible return represents
+    absence as a domain failure.
   - Criteria methods accept an immutable, domain-specific criteria type.
 
-Reactive reads use the same absence semantics as one-shot reads. A singular `Flow<Outcome<Type?, Error>>` emits
-`Outcome.Success(null)` when absence is valid. A singular `Flow<Outcome<Type, Error>>` emits a domain failure when the
-contract requires the entity. A collection `Flow<Outcome<List<Type>, Error>>` emits `Outcome.Success(emptyList())` when
-no entities exist.
+Reactive reads use the same absence semantics as one-shot reads. An optional singular read emits `null` directly or
+`Outcome.Success(null)`. A required singular read emits a value directly or a domain failure. A collection read emits an
+empty list directly or `Outcome.Success(emptyList())` when no entities exist.
 
 ## Mutation methods
 
