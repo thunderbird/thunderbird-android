@@ -49,7 +49,7 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
                 .collect { providerStates ->
                     var resolved = 0
                     for ((provider, state) in providerStates) {
-                        logger.verbose { "[feature-flag][${metadata.name}] provider '$provider' state: $state" }
+                        logger.verbose { "$logPrefix provider '$provider' state: $state" }
                         if (state == CatalogFeatureFlagProvider.State.Resolved) {
                             resolved++
                         }
@@ -81,6 +81,7 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
         val bundledCatalogProvider =
             checkNotNull(providers.filterIsInstance<DataSourceCatalogFeatureFlagProvider>().singleOrNull()) {
                 "[feature-flag] A MultiFeatureFlagProviderEvaluator requires a one CatalogFeatureFlagProvider"
+                "$logPrefix A MultiFeatureFlagProviderEvaluator requires a one BundledCatalogFeatureFlagProvider"
             }
 
         bundledCatalogProvider.initialize(initialContext)
