@@ -80,7 +80,8 @@ abstract class BaseCatalogFeatureFlagProvider internal constructor(
     protected fun resolve(context: FeatureFlagContext?): Map<String, Boolean> {
         updateState { State.ResolvingFlags }
         logger.verbose { "[feature-flag] resolving feature flag catalog for '${metadata.name}' provider" }
-        val catalog = catalog ?: return emptyMap()
+        val catalog = catalog
+            ?: return emptyMap<String, Boolean>().also { updateState { State.Resolved } }
         val base = catalog.flags.associate { it.key to it.default }
         logger.verbose { "$logPrefix base flags: $base" }
 

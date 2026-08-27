@@ -1,5 +1,10 @@
 package net.thunderbird.core.featureflag.data.configstore
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.serialization.json.Json
 import net.thunderbird.core.configstore.BaseConfigStore
 import net.thunderbird.core.configstore.Config
@@ -41,6 +46,7 @@ private class FeatureFlagConfigDefinition(override val id: ConfigId) : ConfigDef
     override val keys: List<ConfigKey<*>> = listOf(
         FeatureFlagConfigKeys.TARGETING_KEY,
         FeatureFlagConfigKeys.OVERRIDES,
+        FeatureFlagConfigKeys.REMOTE_CATALOG_CONFIG_KEY,
     )
     private val json = Json {
         encodeDefaults = true

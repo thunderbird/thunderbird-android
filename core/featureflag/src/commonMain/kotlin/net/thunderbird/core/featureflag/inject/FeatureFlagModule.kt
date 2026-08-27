@@ -11,6 +11,7 @@ import net.thunderbird.core.featureflag.model.FlagRegistryOverride
 import net.thunderbird.core.featureflag.provider.BundledCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.BundledFeatureFlagDefaults
 import net.thunderbird.core.featureflag.provider.CatalogFeatureFlagProvider
+import net.thunderbird.core.featureflag.provider.RemoteCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.evaluator.DefaultMultiFeatureFlagProviderEvaluator
 import net.thunderbird.core.featureflag.provider.evaluator.MultiFeatureFlagProviderEvaluator
 import net.thunderbird.core.featureflag.serialization.DefaultFeatureFlagCatalogJsonParser
@@ -53,12 +54,22 @@ val featureFlagModule = module {
     single<BundledFeatureFlagDefaults> {
         get<BundledCatalogFeatureFlagProvider>()
     }
+    single {
+        RemoteCatalogFeatureFlagProvider(
+            dataSource = get(named(InjectQualifier.Remote)),
+            logger = get(),
+        )
+    }
+    single<CatalogFeatureFlagProvider>(named(InjectQualifier.Remote)) {
+        get<RemoteCatalogFeatureFlagProvider>()
+    }
+
     single<MultiFeatureFlagProviderEvaluator> {
         DefaultMultiFeatureFlagProviderEvaluator(
             providers = buildList {
                 getOrNull<CatalogFeatureFlagProvider>(named(InjectQualifier.InMemory))
                     ?.let { add(it) }
-                // add(get<CatalogFeatureFlagProvider>(named(InjectQualifier.Remote)))
+                add(get<CatalogFeatureFlagProvider>(named(InjectQualifier.Remote)))
                 add(get<CatalogFeatureFlagProvider>(named(InjectQualifier.Local)))
             },
             logger = get(),
