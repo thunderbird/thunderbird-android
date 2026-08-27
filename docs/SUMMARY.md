@@ -22,6 +22,7 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
   - [Module Organization](architecture/module-organization.md)
   - [Module Structure](architecture/module-structure.md)
   - [Feature Modules](architecture/feature-modules.md)
+  - [Repository Pattern](architecture/repository-pattern.md)
   - [UI Architecture](architecture/ui-architecture.md)
   - [Theme System](architecture/theme-system.md)
   - [Design System](architecture/design-system.md)
