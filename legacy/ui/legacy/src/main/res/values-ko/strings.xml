@@ -949,4 +949,10 @@
     <string name="global_settings_privacy_incognito_keyboard">시크릿 키보드</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">메시지를 작성할 때 키보드가 해당 내용으로 학습하지 않도록 요청</string>
     <string name="sort_by_indicator">•</string>
+    <string name="camera_capture_lost">앱이 닫혀서 촬영한 사진이 사라졌습니다. 다시 시도해 주세요.</string>
+    <string name="account_settings_signature_html_label">HTML 서명</string>
+    <string name="account_settings_signature_is_html_label">서명을 HTML로 저장</string>
+    <string name="account_settings_signature_is_html_summary">서명을 HTML로 해석합니다. 스크립트와 이벤트 핸들러는 보안을 위해 제거됩니다.</string>
+    <string name="account_settings_signature_preview">서명 미리보기</string>
+    <string name="account_settings_signature_clear_label">서명 지우기</string>
 </resources>
