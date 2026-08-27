@@ -2,6 +2,7 @@ package net.thunderbird.core.featureflag.data.configstore
 
 import kotlin.uuid.Uuid
 import kotlinx.coroutines.flow.first
+import kotlinx.serialization.Serializable
 import net.thunderbird.core.configstore.ConfigKey
 import net.thunderbird.core.configstore.ConfigStore
 import net.thunderbird.core.featureflag.model.FlagOverrides
@@ -12,7 +13,10 @@ import net.thunderbird.core.featureflag.model.FlagOverrides
  * @property targetingKey A random UUID used only for rollout/experiment bucketing — never PII.
  *  A `null` value means no key has been generated yet.
  */
-data class FeatureFlagConfigData(
+@Serializable
+@ConsistentCopyVisibility
+data class FeatureFlagConfigData internal constructor(
+    val remoteCatalogConfig: RemoteCatalogConfig = RemoteCatalogConfig(),
     val targetingKey: Uuid? = null,
     val overrides: FlagOverrides = emptyMap(),
 ) {
@@ -22,6 +26,7 @@ data class FeatureFlagConfigData(
 }
 
 internal object FeatureFlagConfigKeys {
+    val REMOTE_CATALOG_CONFIG_KEY = ConfigKey.StringKey("remote_catalog_config_key")
     val TARGETING_KEY = ConfigKey.StringKey("targeting_key")
 
     /** JSON-encoded [FlagOverrides], since the backend only supports scalar values. */
@@ -34,11 +39,12 @@ internal object FeatureFlagConfigKeys {
  * @param transform A function that takes the current configuration, or default if null,
  * and returns a new configuration.
  */
-suspend fun ConfigStore<FeatureFlagConfigData>.safeUpdate(transform: (FeatureFlagConfigData) -> FeatureFlagConfigData) =
-    update { nullableConfig ->
-        val config = nullableConfig ?: FeatureFlagConfigData.DEFAULT
-        transform(config)
-    }
+internal suspend fun ConfigStore<FeatureFlagConfigData>.safeUpdate(
+    transform: (FeatureFlagConfigData) -> FeatureFlagConfigData,
+) = update { nullableConfig ->
+    val config = nullableConfig ?: FeatureFlagConfigData.DEFAULT
+    transform(config)
+}
 
 /** Returns the persisted per-install targeting key, generating and persisting one on first use. */
 internal suspend fun ConfigStore<FeatureFlagConfigData>.resolveTargetingKey(): Uuid {

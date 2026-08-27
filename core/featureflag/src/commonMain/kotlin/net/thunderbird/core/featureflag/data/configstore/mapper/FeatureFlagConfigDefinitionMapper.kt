@@ -7,10 +7,13 @@ import net.thunderbird.core.configstore.Config
 import net.thunderbird.core.configstore.ConfigMapper
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigData
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigKeys
+import net.thunderbird.core.featureflag.data.configstore.RemoteCatalogConfig
 import net.thunderbird.core.featureflag.model.FlagOverrides
 
 internal class FeatureFlagConfigDefinitionMapper(private val json: Json) : ConfigMapper<FeatureFlagConfigData> {
     override fun toConfig(obj: FeatureFlagConfigData): Config = Config().apply {
+        this[FeatureFlagConfigKeys.REMOTE_CATALOG_CONFIG_KEY] = json.encodeToString(obj.remoteCatalogConfig)
+
         if (obj.targetingKey != null) {
             this[FeatureFlagConfigKeys.TARGETING_KEY] = obj.targetingKey.toString()
         }
@@ -21,9 +24,15 @@ internal class FeatureFlagConfigDefinitionMapper(private val json: Json) : Confi
     }
 
     override fun fromConfig(config: Config): FeatureFlagConfigData = FeatureFlagConfigData(
+        remoteCatalogConfig = config.decodeRemoteCatalogConfig(),
         targetingKey = config.decodeTargetingKey(),
         overrides = config.decodeOverrides(),
     )
+
+    private fun Config.decodeRemoteCatalogConfig(): RemoteCatalogConfig =
+        this[FeatureFlagConfigKeys.REMOTE_CATALOG_CONFIG_KEY]
+            ?.let { jsonString -> json.decodeFromString(jsonString) }
+            ?: RemoteCatalogConfig()
 
     private fun Config.decodeTargetingKey(): Uuid? = this[FeatureFlagConfigKeys.TARGETING_KEY]?.let(Uuid::parse)
 
