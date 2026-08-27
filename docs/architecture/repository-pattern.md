@@ -103,12 +103,14 @@ Use these names for read methods:
   - `observeByCriteria()` reads at most one entity for an immutable, domain-specific criteria type.
   - `observeAllByCriteria()` reads multiple entities for an immutable, domain-specific criteria type.
 - One-shot reads:
-  - Optional singular reads use `findById()`, `findBy<Identifier>()`, or `findByCriteria()`. Return `null` directly or
-    `Outcome.Success(null)` when no entity exists.
+  - Optional singular reads use `findById()`, `findBy<Identifier>()`, or `findByCriteria()`. They always return a
+    nullable entity, either as `Type?` or `Outcome<Type?, Error>`. Return `null` directly or `Outcome.Success(null)`
+    when no entity exists.
   - Collection reads use `findAll()` or `findAllByCriteria()`. Return an empty list directly or
     `Outcome.Success(emptyList())` when no entities exist.
-  - Required singular reads use `getById()`. A direct return guarantees a meaningful value. A fallible return represents
-    absence as a domain failure.
+  - Required singular reads use `getById()` or `getBy<Identifier>()`. They always return a non-null entity, either as
+    `Type` or `Outcome<Type, Error>`. A direct return guarantees a meaningful value. A fallible return represents absence
+    as a domain failure.
   - Criteria methods accept an immutable, domain-specific criteria type.
 
 Reactive reads use the same absence semantics as one-shot reads. An optional singular read emits `null` directly or
@@ -123,7 +125,7 @@ new contracts. Use `clear<Scope>()` only for explicitly scoped bulk removal, suc
 Within a focused repository contract, method names describe the operation and must not repeat the aggregate named by the
 repository. For example, use `DraftRepository.create()`, `FolderQueryRepository.findById()`, and
 `FolderQueryRepository.findByServerId()`, not `createDraft()`, `findByFolderId()`, or `findFolderByServerId()`. Use
-`FolderQueryRepository.getById()` only for a required lookup by the main identifier.
+`FolderQueryRepository.getById()` or `FolderQueryRepository.getByServerId()` for required lookups.
 
 Avoid repository methods whose names start with `set`. Multiple independent setters expose invalid intermediate state
 and usually mean the API is acting as a mutable state holder. Represent values that change together as an immutable
