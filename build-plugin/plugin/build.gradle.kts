@@ -34,6 +34,7 @@ dependencies {
     implementation(plugin(libs.plugins.dependency.check))
     implementation(plugin(libs.plugins.detekt))
     implementation(plugin(libs.plugins.spotless))
+    implementation(plugin(libs.plugins.buildconfig))
 
     compileOnly(plugin(libs.plugins.kover))
     implementation(libs.diff.utils)
