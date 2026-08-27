@@ -9,9 +9,9 @@ import kotlinx.coroutines.launch
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.featureflag.provider.BaseCatalogFeatureFlagProvider
+import net.thunderbird.core.featureflag.provider.BundledCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.CatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.CatalogProviderMetadata
-import net.thunderbird.core.featureflag.provider.DataSourceCatalogFeatureFlagProvider
 import net.thunderbird.core.featureflag.provider.ProviderMetadata
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
 import net.thunderbird.core.logging.Logger
@@ -79,8 +79,7 @@ internal class DefaultMultiFeatureFlagProviderEvaluator(
     override suspend fun initialize(initialContext: FeatureFlagContext) {
         super.initialize(initialContext)
         val bundledCatalogProvider =
-            checkNotNull(providers.filterIsInstance<DataSourceCatalogFeatureFlagProvider>().singleOrNull()) {
-                "[feature-flag] A MultiFeatureFlagProviderEvaluator requires a one CatalogFeatureFlagProvider"
+            checkNotNull(providers.filterIsInstance<BundledCatalogFeatureFlagProvider>().singleOrNull()) {
                 "$logPrefix A MultiFeatureFlagProviderEvaluator requires a one BundledCatalogFeatureFlagProvider"
             }
 
