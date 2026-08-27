@@ -1,7 +1,5 @@
 package net.thunderbird.core.featureflag.data.configstore
 
-import kotlin.uuid.Uuid
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import net.thunderbird.core.configstore.BaseConfigStore
 import net.thunderbird.core.configstore.Config
@@ -13,7 +11,7 @@ import net.thunderbird.core.configstore.ConfigMigration
 import net.thunderbird.core.configstore.ConfigMigrationResult
 import net.thunderbird.core.configstore.ConfigStore
 import net.thunderbird.core.configstore.backend.ConfigBackendProvider
-import net.thunderbird.core.featureflag.model.FlagOverrides
+import net.thunderbird.core.featureflag.data.configstore.mapper.FeatureFlagConfigDefinitionMapper
 
 /**
  * A configuration store specialized for managing feature flag configuration data.
@@ -44,29 +42,12 @@ private class FeatureFlagConfigDefinition(override val id: ConfigId) : ConfigDef
         FeatureFlagConfigKeys.TARGETING_KEY,
         FeatureFlagConfigKeys.OVERRIDES,
     )
-
-    override val mapper: ConfigMapper<FeatureFlagConfigData> = object : ConfigMapper<FeatureFlagConfigData> {
-        override fun toConfig(obj: FeatureFlagConfigData): Config = Config().apply {
-            if (obj.targetingKey != null) {
-                this[FeatureFlagConfigKeys.TARGETING_KEY] = obj.targetingKey.toString()
-            }
-            // Written even when empty: the backend only overwrites the keys it is handed, so omitting
-            // this would leave the previously persisted overrides in place.
-            this[FeatureFlagConfigKeys.OVERRIDES] = json.encodeToString(obj.overrides)
-        }
-
-        override fun fromConfig(config: Config): FeatureFlagConfigData = FeatureFlagConfigData(
-            targetingKey = config[FeatureFlagConfigKeys.TARGETING_KEY]?.let(Uuid::parse),
-            overrides = config[FeatureFlagConfigKeys.OVERRIDES]?.let { rawJson -> decodeOverrides(rawJson) }.orEmpty(),
-        )
+    private val json = Json {
+        encodeDefaults = true
+        ignoreUnknownKeys = true
     }
 
-    /** Overrides are debug-only state, so unreadable data is dropped instead of failing the store. */
-    private fun decodeOverrides(rawJson: String): FlagOverrides = try {
-        json.decodeFromString<FlagOverrides>(rawJson)
-    } catch (_: SerializationException) {
-        emptyMap()
-    }
+    override val mapper: ConfigMapper<FeatureFlagConfigData> = FeatureFlagConfigDefinitionMapper(json)
 
     override val migration: ConfigMigration = object : ConfigMigration {
         override suspend fun migrate(
@@ -74,9 +55,5 @@ private class FeatureFlagConfigDefinition(override val id: ConfigId) : ConfigDef
             newVersion: Int,
             current: Config,
         ): ConfigMigrationResult = ConfigMigrationResult.NoOp
-    }
-
-    private companion object {
-        val json = Json
     }
 }
