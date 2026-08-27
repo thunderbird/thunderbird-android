@@ -34,7 +34,7 @@ internal object FeatureFlagConfigKeys {
  * @param transform A function that takes the current configuration, or default if null,
  * and returns a new configuration.
  */
-suspend fun ConfigStore<FeatureFlagConfigData>.update(transform: (FeatureFlagConfigData) -> FeatureFlagConfigData) =
+suspend fun ConfigStore<FeatureFlagConfigData>.safeUpdate(transform: (FeatureFlagConfigData) -> FeatureFlagConfigData) =
     update { nullableConfig ->
         val config = nullableConfig ?: FeatureFlagConfigData.DEFAULT
         transform(config)

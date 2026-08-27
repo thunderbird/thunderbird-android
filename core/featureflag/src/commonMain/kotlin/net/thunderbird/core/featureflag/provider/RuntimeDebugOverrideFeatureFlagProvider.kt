@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.stateIn
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigData
 import net.thunderbird.core.featureflag.data.configstore.FeatureFlagConfigStore
-import net.thunderbird.core.featureflag.data.configstore.update
+import net.thunderbird.core.featureflag.data.configstore.safeUpdate
 import net.thunderbird.core.featureflag.model.FlagOverrides
 import net.thunderbird.core.featureflag.provider.context.FeatureFlagContext
 import net.thunderbird.core.logging.Logger
@@ -57,7 +57,7 @@ class RuntimeDebugOverrideFeatureFlagProvider(
     suspend fun setOverride(key: FeatureFlagKey, enabled: Boolean) {
         val key = key.key
         logger.verbose { "[feature-flag] overriding '$key' with '$enabled' value" }
-        configStore.update { current: FeatureFlagConfigData ->
+        configStore.safeUpdate { current: FeatureFlagConfigData ->
             current.copy(overrides = current.overrides + (key to enabled))
         }
     }
@@ -66,7 +66,7 @@ class RuntimeDebugOverrideFeatureFlagProvider(
     suspend fun clearOverride(key: FeatureFlagKey) {
         val key = key.key
         logger.verbose { "[feature-flag] clearing '$key' override" }
-        configStore.update { current: FeatureFlagConfigData ->
+        configStore.safeUpdate { current: FeatureFlagConfigData ->
             current.copy(overrides = current.overrides - key)
         }
     }
@@ -76,7 +76,7 @@ class RuntimeDebugOverrideFeatureFlagProvider(
         logger.verbose { "[feature-flag] clearing all flag overrides" }
         // Only the overrides are dropped; clearing the whole store would also discard the
         // per-install targeting key used for rollout bucketing.
-        configStore.update { current: FeatureFlagConfigData ->
+        configStore.safeUpdate { current: FeatureFlagConfigData ->
             current.copy(overrides = emptyMap())
         }
     }

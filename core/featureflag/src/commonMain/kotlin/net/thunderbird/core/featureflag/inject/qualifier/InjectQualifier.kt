@@ -7,3 +7,6 @@ package net.thunderbird.core.featureflag.inject.qualifier
  * injecting dependencies through a dependency injection framework.
  */
 enum class InjectQualifier { InMemory, Local, Remote }
+
+internal const val FEATURE_FLAG_JSON_QUALIFIER =
+    "net.thunderbird.core.featureflag.inject.qualifier.FEATURE_FLAG_JSON_QUALIFIER"
