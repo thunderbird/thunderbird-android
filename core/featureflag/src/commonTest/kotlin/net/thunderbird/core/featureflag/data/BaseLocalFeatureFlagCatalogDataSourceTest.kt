@@ -22,11 +22,14 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
 import net.thunderbird.core.featureflag.model.AppVariantOverridesRawType
 import net.thunderbird.core.featureflag.model.BaseAppVariantOverrides
 import net.thunderbird.core.featureflag.model.FeatureFlagCatalog
 import net.thunderbird.core.featureflag.model.FlagAttributeType
 import net.thunderbird.core.featureflag.model.FlagRegistry
+import net.thunderbird.core.featureflag.model.FlagRegistryOverride
 import net.thunderbird.core.featureflag.serialization.DefaultFeatureFlagCatalogJsonParser
 import net.thunderbird.core.featureflag.serialization.FeatureFlagCatalogJsonParser
 import net.thunderbird.core.featureflag.serialization.FlagRegistryOverrideSerializer
@@ -173,10 +176,19 @@ internal abstract class BaseLocalFeatureFlagCatalogDataSourceTest {
 }
 
 private fun createJsonParser(): FeatureFlagCatalogJsonParser = DefaultFeatureFlagCatalogJsonParser(
-    registrySerializer = FlagRegistryOverrideSerializer(
-        k9Factory = { wrapper -> FakeAppVariantOverrides(wrapper) },
-        thunderbirdFactory = { wrapper -> FakeAppVariantOverrides(wrapper) },
-    ),
+    json = Json {
+        serializersModule = SerializersModule {
+            contextual(
+                kClass = FlagRegistryOverride::class,
+                serializer = FlagRegistryOverrideSerializer(
+                    k9Factory = { wrapper -> FakeAppVariantOverrides(wrapper) },
+                    thunderbirdFactory = { wrapper -> FakeAppVariantOverrides(wrapper) },
+                ),
+            )
+        }
+
+        ignoreUnknownKeys = false
+    },
 )
 
 private class FakeFeatureFlagCatalogJsonParser(
