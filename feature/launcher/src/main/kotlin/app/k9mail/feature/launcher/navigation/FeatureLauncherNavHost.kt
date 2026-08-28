@@ -161,6 +161,9 @@ private fun NavGraphBuilder.registerThundermailNavigation(
                 is ThundermailRoute.SignInWithThundermail ->
                     navController.navigate(ThundermailRoute.SignInWithThundermail)
 
+                is ThundermailRoute.ScanQrCode ->
+                    navController.navigate(ThundermailRoute.ScanQrCode)
+
                 else -> Unit
             }
         },
