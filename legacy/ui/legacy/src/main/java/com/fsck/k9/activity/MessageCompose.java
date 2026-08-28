@@ -55,6 +55,7 @@ import androidx.core.os.BundleCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
+import app.k9mail.legacy.mailstore.MessageStoreManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.activity.compose.MessageComposeInAppNotificationFragment;
@@ -186,6 +187,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private static final String STATE_KEY_SOURCE_MESSAGE_PROCED =
             "com.fsck.k9.activity.MessageCompose.stateKeySourceMessageProced";
     private static final String STATE_KEY_DRAFT_ID = "com.fsck.k9.activity.MessageCompose.draftId";
+    private static final String STATE_KEY_RESTORE_FROM_DRAFT =
+            "com.fsck.k9.activity.MessageCompose.restoreFromDraft";
     private static final String STATE_IDENTITY_CHANGED =
             "com.fsck.k9.activity.MessageCompose.identityChanged";
     private static final String STATE_IDENTITY =
@@ -224,6 +227,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private final MessageLoaderHelperFactory messageLoaderHelperFactory = DI.get(MessageLoaderHelperFactory.class);
     private final DefaultFolderProvider defaultFolderProvider = DI.get(DefaultFolderProvider.class);
     private final MessagingController messagingController = DI.get(MessagingController.class);
+    private final MessageStoreManager messageStoreManager = DI.get(MessageStoreManager.class);
     private final Preferences preferences = DI.get(Preferences.class);
     private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
 
@@ -286,6 +290,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private EditText signatureView;
     private EditText messageContentView;
     private LinearLayout attachmentsView;
+    private View composerContent;
 
     private String referencedMessageIds;
     private String repliedToMessageId;
@@ -299,6 +304,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     private boolean sendMessageHasBeenTriggered = false;
     private boolean ignoreSentFolderNotAssigned = false;
+    private Integer pendingAttachmentPickerRequestCode;
+    private boolean restoringFromDraft;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -320,7 +327,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         LayoutInflater themedLayoutInflater = LayoutInflater.from(themeContext);
         contentContainer.setLayoutInflater(themedLayoutInflater);
-        contentContainer.inflate();
+        composerContent = contentContainer.inflate();
 
         initializeActionBar();
 
@@ -344,6 +351,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             changesMadeSinceLastSave = false;
             finish();
             return;
+        }
+
+        restoringFromDraft = restoreDraftReference(savedInstanceState);
+        if (restoringFromDraft) {
+            composerContent.setSaveFromParentEnabled(false);
         }
 
         initializeInAppNotificationFragment();
@@ -419,7 +431,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         subjectView.setOnFocusChangeListener(this);
         messageContentView.setOnFocusChangeListener(this);
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null && !restoringFromDraft) {
             /*
              * This data gets used in onCreate, so grab it here instead of onRestoreInstanceState
              */
@@ -462,7 +474,9 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             recipientPresenter.initFromTrustIdAction(intentData.getTrustId());
         }
 
-        if (intentData.getStartedByExternalIntent()) {
+        if (restoringFromDraft) {
+            action = Action.EDIT_DRAFT;
+        } else if (intentData.getStartedByExternalIntent()) {
             action = Action.COMPOSE;
             changesMadeSinceLastSave = true;
         } else {
@@ -556,7 +570,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         setTitle();
 
-        currentMessageBuilder = (MessageBuilder) getLastCustomNonConfigurationInstance();
+        RetainedState retainedState = (RetainedState) getLastCustomNonConfigurationInstance();
+        currentMessageBuilder = retainedState != null ? retainedState.messageBuilder : null;
+        if (retainedState != null) {
+            quotedMessagePresenter.restoreState(retainedState.quotedMessageState);
+        }
         if (currentMessageBuilder != null) {
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.reattachCallback(this);
@@ -611,6 +629,26 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         if (accountUuid != null) {
             account = preferences.getAccount(accountUuid);
         }
+    }
+
+    private boolean restoreDraftReference(Bundle savedInstanceState) {
+        if (savedInstanceState == null || !savedInstanceState.getBoolean(STATE_KEY_RESTORE_FROM_DRAFT)) {
+            return false;
+        }
+
+        draftMessageId = savedInstanceState.getLong(STATE_KEY_DRAFT_ID);
+        Long draftsFolderId = account.getDraftsFolderId();
+        if (draftsFolderId == null) {
+            return false;
+        }
+
+        String messageServerId = messageStoreManager.getMessageStore(account).getMessageServerId(draftMessageId);
+        if (messageServerId == null) {
+            return false;
+        }
+
+        relatedMessageReference = new MessageReference(account.getUuid(), draftsFolderId, messageServerId);
+        return true;
     }
 
     @Override
@@ -700,23 +738,27 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        boolean canRestoreFromDraft = draftMessageId != null && !changesMadeSinceLastSave;
         outState.putBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, relatedMessageProcessed);
         if (draftMessageId != null) {
             outState.putLong(STATE_KEY_DRAFT_ID, draftMessageId);
         }
-        outState.putParcelable(STATE_IDENTITY, identity);
-        outState.putBoolean(STATE_IDENTITY_CHANGED, identityChanged);
-        outState.putString(STATE_IN_REPLY_TO, repliedToMessageId);
-        outState.putString(STATE_REFERENCES, referencedMessageIds);
+        outState.putBoolean(STATE_KEY_RESTORE_FROM_DRAFT, canRestoreFromDraft);
         outState.putBoolean(STATE_KEY_READ_RECEIPT, requestReadReceipt);
-        outState.putBoolean(STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE, changesMadeSinceLastSave);
         outState.putBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT, alreadyNotifiedUserOfEmptySubject);
         outState.putIntegerArrayList(STATE_ACTIVE_IN_APP_NOTIFICATIONS, new ArrayList<>(activeInAppNotifications));
 
-        replyToPresenter.onSaveInstanceState(outState);
-        recipientPresenter.onSaveInstanceState(outState);
-        quotedMessagePresenter.onSaveInstanceState(outState);
-        attachmentPresenter.onSaveInstanceState(outState);
+        if (!canRestoreFromDraft) {
+            outState.putParcelable(STATE_IDENTITY, identity);
+            outState.putBoolean(STATE_IDENTITY_CHANGED, identityChanged);
+            outState.putString(STATE_IN_REPLY_TO, repliedToMessageId);
+            outState.putString(STATE_REFERENCES, referencedMessageIds);
+            outState.putBoolean(STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE, changesMadeSinceLastSave);
+            replyToPresenter.onSaveInstanceState(outState);
+            recipientPresenter.onSaveInstanceState(outState);
+            quotedMessagePresenter.onSaveInstanceState(outState);
+            attachmentPresenter.onSaveInstanceState(outState);
+        }
     }
 
     @Override
@@ -724,7 +766,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         if (currentMessageBuilder != null) {
             currentMessageBuilder.detachCallback();
         }
-        return currentMessageBuilder;
+        return new RetainedState(currentMessageBuilder, quotedMessagePresenter.retainState());
     }
 
     @Override
@@ -735,31 +777,31 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         requestReadReceipt = savedInstanceState.getBoolean(STATE_KEY_READ_RECEIPT);
 
-        replyToPresenter.onRestoreInstanceState(savedInstanceState);
-        recipientPresenter.onRestoreInstanceState(savedInstanceState);
-        quotedMessagePresenter.onRestoreInstanceState(savedInstanceState);
-        attachmentPresenter.onRestoreInstanceState(savedInstanceState);
-
-        if (savedInstanceState.containsKey(STATE_KEY_DRAFT_ID)) {
-            draftMessageId = savedInstanceState.getLong(STATE_KEY_DRAFT_ID);
-        } else {
-            draftMessageId = null;
+        if (!restoringFromDraft) {
+            replyToPresenter.onRestoreInstanceState(savedInstanceState);
+            recipientPresenter.onRestoreInstanceState(savedInstanceState);
+            quotedMessagePresenter.onRestoreInstanceState(savedInstanceState);
+            attachmentPresenter.onRestoreInstanceState(savedInstanceState);
         }
-        identity = BundleCompat.getParcelable(savedInstanceState, STATE_IDENTITY, Identity.class);
-        identityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
-        repliedToMessageId = savedInstanceState.getString(STATE_IN_REPLY_TO);
-        referencedMessageIds = savedInstanceState.getString(STATE_REFERENCES);
-        changesMadeSinceLastSave = savedInstanceState.getBoolean(STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE);
+
+        if (!restoringFromDraft) {
+            draftMessageId = savedInstanceState.containsKey(STATE_KEY_DRAFT_ID) ?
+                    savedInstanceState.getLong(STATE_KEY_DRAFT_ID) : null;
+            identity = BundleCompat.getParcelable(savedInstanceState, STATE_IDENTITY, Identity.class);
+            identityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
+            repliedToMessageId = savedInstanceState.getString(STATE_IN_REPLY_TO);
+            referencedMessageIds = savedInstanceState.getString(STATE_REFERENCES);
+            changesMadeSinceLastSave = savedInstanceState.getBoolean(STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE);
+
+            updateFrom();
+            updateMessageFormat();
+        }
         alreadyNotifiedUserOfEmptySubject = savedInstanceState.getBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT);
         final List<Integer> activeInAppNotifications = savedInstanceState
                 .getIntegerArrayList(STATE_ACTIVE_IN_APP_NOTIFICATIONS);
         if (activeInAppNotifications != null && !activeInAppNotifications.isEmpty()) {
             this.activeInAppNotifications.addAll(activeInAppNotifications);
         }
-
-        updateFrom();
-
-        updateMessageFormat();
     }
 
     private void setTitle() {
@@ -941,6 +983,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         isInSubActivity = false;
+        composerContent.setSaveFromParentEnabled(true);
 
         // Only if none of the high 16 bits are set it might be one of our request codes
         if ((requestCode & REQUEST_CODE_MASK) == 0) {
@@ -1744,6 +1787,18 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         }
     }
 
+    private static final class RetainedState {
+        private final MessageBuilder messageBuilder;
+        private final QuotedMessagePresenter.RetainedState quotedMessageState;
+
+        private RetainedState(
+                MessageBuilder messageBuilder,
+                QuotedMessagePresenter.RetainedState quotedMessageState) {
+            this.messageBuilder = messageBuilder;
+            this.quotedMessageState = quotedMessageState;
+        }
+    }
+
     @Override
     public void onMessageBuildCancel() {
         sendMessageHasBeenTriggered = false;
@@ -1940,6 +1995,18 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
     };
 
+    private void launchAttachmentPicker(int requestCode) {
+        composerContent.setSaveFromParentEnabled(false);
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        isInSubActivity = true;
+
+        startActivityForResult(Intent.createChooser(intent, null), requestCode);
+    }
+
     AttachmentMvpView attachmentMvpView = new AttachmentMvpView() {
         private HashMap<Uri, View> attachmentViews = new HashMap<>();
 
@@ -1981,13 +2048,17 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         public void showPickAttachmentDialog(int requestCode) {
             requestCode |= REQUEST_MASK_ATTACHMENT_PRESENTER;
 
-            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-            i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            i.addCategory(Intent.CATEGORY_OPENABLE);
-            i.setType("*/*");
-            isInSubActivity = true;
+            if (account.hasDraftsFolder() && (draftMessageId == null || changesMadeSinceLastSave)) {
+                pendingAttachmentPickerRequestCode = requestCode;
+                performSaveAfterChecks();
+                if (currentMessageBuilder == null) {
+                    pendingAttachmentPickerRequestCode = null;
+                    MessageCompose.this.launchAttachmentPicker(requestCode);
+                }
+                return;
+            }
 
-            startActivityForResult(Intent.createChooser(i, null), requestCode);
+            MessageCompose.this.launchAttachmentPicker(requestCode);
         }
 
         @Override
@@ -2100,6 +2171,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                             MessageCompose.this,
                             getString(R.string.message_saved_toast),
                             Toast.LENGTH_LONG).show();
+                    if (pendingAttachmentPickerRequestCode != null) {
+                        int requestCode = pendingAttachmentPickerRequestCode;
+                        pendingAttachmentPickerRequestCode = null;
+                        launchAttachmentPicker(requestCode);
+                    }
                     break;
                 case MSG_DISCARDED_DRAFT:
                     Toast.makeText(

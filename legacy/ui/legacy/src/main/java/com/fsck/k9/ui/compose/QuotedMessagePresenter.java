@@ -35,13 +35,9 @@ import net.thunderbird.core.preference.GeneralSettingsManager;
 
 
 public class QuotedMessagePresenter {
-    private static final String STATE_KEY_HTML_QUOTE = "state:htmlQuote";
     private static final String STATE_KEY_QUOTED_TEXT_MODE = "state:quotedTextShown";
     private static final String STATE_KEY_QUOTED_TEXT_FORMAT = "state:quotedTextFormat";
     private static final String STATE_KEY_FORCE_PLAIN_TEXT = "state:forcePlainText";
-
-    // Keep the serialized quote well below the Binder transaction limit.
-    static final int MAX_QUOTED_HTML_CHARACTERS = 256 * 1024;
 
     private static final int UNKNOWN_LENGTH = 0;
 
@@ -153,24 +149,10 @@ public class QuotedMessagePresenter {
     }
 
     public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(STATE_KEY_QUOTED_TEXT_MODE, quotedTextMode);
-        if (shouldPersistQuotedHtml(quotedHtmlContent, MAX_QUOTED_HTML_CHARACTERS)) {
-            outState.putSerializable(STATE_KEY_HTML_QUOTE, quotedHtmlContent);
-        }
-        outState.putSerializable(STATE_KEY_QUOTED_TEXT_FORMAT, quotedTextFormat);
-        outState.putBoolean(STATE_KEY_FORCE_PLAIN_TEXT, forcePlainText);
-    }
-
-    static boolean shouldPersistQuotedHtml(InsertableHtmlContent quotedHtmlContent, int maxCharacters) {
-        return quotedHtmlContent == null || quotedHtmlContent.getQuotedContent().length() <= maxCharacters;
+        saveState(outState, quotedTextMode, quotedTextFormat, forcePlainText);
     }
 
     public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        quotedHtmlContent = BundleCompat.INSTANCE.getSerializable(
-            savedInstanceState,
-            STATE_KEY_HTML_QUOTE,
-            InsertableHtmlContent.class
-        );
         quotedTextFormat = BundleCompat.getSerializable(
             savedInstanceState,
             STATE_KEY_QUOTED_TEXT_FORMAT,
@@ -186,10 +168,49 @@ public class QuotedMessagePresenter {
                 QuotedTextMode.class
             )
         );
+    }
 
+    static void saveState(
+            Bundle outState,
+            QuotedTextMode quotedTextMode,
+            SimpleMessageFormat quotedTextFormat,
+            boolean forcePlainText) {
+        outState.putSerializable(STATE_KEY_QUOTED_TEXT_MODE, quotedTextMode);
+        outState.putSerializable(STATE_KEY_QUOTED_TEXT_FORMAT, quotedTextFormat);
+        outState.putBoolean(STATE_KEY_FORCE_PLAIN_TEXT, forcePlainText);
+    }
+
+    public RetainedState retainState() {
+        return new RetainedState(quotedTextMode, quotedTextFormat, quotedHtmlContent, forcePlainText);
+    }
+
+    public void restoreState(RetainedState state) {
+        quotedTextMode = state.quotedTextMode;
+        quotedTextFormat = state.quotedTextFormat;
+        quotedHtmlContent = state.quotedHtmlContent;
+        forcePlainText = state.forcePlainText;
+
+        showOrHideQuotedText(quotedTextMode);
         if (quotedHtmlContent != null && quotedHtmlContent.getQuotedContent() != null) {
-            // we don't have the part here, but inline-displayed images are cached by the webview
             view.setQuotedHtml(quotedHtmlContent.getQuotedContent(), null);
+        }
+    }
+
+    public static final class RetainedState {
+        private final QuotedTextMode quotedTextMode;
+        private final SimpleMessageFormat quotedTextFormat;
+        private final InsertableHtmlContent quotedHtmlContent;
+        private final boolean forcePlainText;
+
+        private RetainedState(
+                QuotedTextMode quotedTextMode,
+                SimpleMessageFormat quotedTextFormat,
+                InsertableHtmlContent quotedHtmlContent,
+                boolean forcePlainText) {
+            this.quotedTextMode = quotedTextMode;
+            this.quotedTextFormat = quotedTextFormat;
+            this.quotedHtmlContent = quotedHtmlContent;
+            this.forcePlainText = forcePlainText;
         }
     }
 
