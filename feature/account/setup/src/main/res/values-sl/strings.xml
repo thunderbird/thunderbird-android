@@ -4,7 +4,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-poštni naslov je zahtevan podatek.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Nastavitve za vaš e-.poštni strežnik smo prejeli preko povezave, ki tako varna, kot bi si želeli. To pomeni, da obstaja zelo majhna možnost, da jo je lahko nekdo spremenil. Preverite dobljene nastavitve, da se prepričate o njihovi ustreznosti.</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Nastavitve za vaš e-.poštni strežnik smo prejeli preko povezave, ki ni tako varna, kot bi si želeli. To pomeni, da obstaja zelo majhna možnost, da jo je lahko nekdo spremenil. Preverite dobljene nastavitve, da se prepričate o njihovi ustreznosti.</string>
     <string name="account_setup_special_folders_loading_message">Pridobivanje seznama map …</string>
     <plurals name="account_setup_options_email_check_frequency_hours">
         <item quantity="one">Vsako uro</item>
