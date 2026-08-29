@@ -324,7 +324,7 @@
     <string name="account_settings_show_pictures_always">Od kogarkoli</string>
     <string name="account_settings_composition">Pošiljanje pošte</string>
     <string name="account_settings_default_quoted_text_shown_label">Ob odgovarjanju navedi tudi izvirno sporočilo</string>
-    <string name="account_settings_default_quoted_text_shown_summary">V odgovor vključi izvirno sporočilo</string>
+    <string name="account_settings_default_quoted_text_shown_summary">V odgovor vključi izvirno sporočilo.</string>
     <string name="account_settings_reply_after_quote_label">Odgovor začni za navedenem izvirnem besedilom</string>
     <string name="account_settings_reply_after_quote_summary">Izvirno sporočilo bo navedeno nad besedilom odgovora.</string>
     <string name="account_settings_strip_signature_label">Ob odgovarjanju odstrani predhodne podpise sporočila</string>
