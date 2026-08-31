@@ -3,25 +3,40 @@
 This guide defines the repository API conventions used by the project. It supports
 [ADR-0010](../engineering/adr/0010-adopt-project-wide-repository-pattern.md).
 
+## Core concepts
+
+A **repository contract** describes the domain data and operations available to a caller. In Kotlin, it is usually an
+interface. The contract defines what an operation needs, what it returns, and which domain failures a caller can handle,
+but not whether the data comes from a database, a network service, or another source.
+
+A **repository implementation** is a class that fulfills that contract. It contains the implementation details and may
+coordinate local storage, remote services, mapping, and synchronization. Callers depend on the contract rather than the
+implementation, so these details can change without changing the callers.
+
+An **aggregate** is a group of related domain data that changes together. A **focused contract** provides the operations
+for one coherent responsibility involving that data. A **facade** is an interface that combines multiple focused
+contracts for callers that genuinely need all of them; it does not define additional methods.
+
+In this guide, **API** usually refers to an area's `:api` module. It contains contracts and the types needed to use them.
+The corresponding `:internal` module contains their implementations and other details that callers must not depend on.
+
 ## Responsibility and ownership
 
-A repository is a domain-facing contract that hides how data is read, stored, or synchronized. Its implementation may
-coordinate local storage and remote services, but UI state and UI-specific business logic belong elsewhere.
+A repository is domain-facing and hides how data is read, stored, or synchronized. UI state and UI-specific business
+logic belong elsewhere.
 
 Split contracts by responsibility before grouping them by aggregate. Do not create one interface per database table or
-one interface per SQL operation. An optional aggregate-named facade may compose focused contracts, but it must not add
-methods. A caller depends on the narrowest contract it needs.
+one interface per SQL operation. A caller depends on the narrowest focused contract it needs. Add an aggregate-named
+facade only when callers genuinely need all of its focused contracts.
 
-An aggregate is a group of related domain data that changes together. A facade is an interface that combines focused
-contracts for callers that need all of them.
+Expose a repository contract from an `:api` module only when another area needs that stable contract. Place the shared
+contract, criteria, errors, and domain models in that module. Keep repository implementations, data sources, mappers,
+and storage models in the area's `:internal` module.
 
-Expose a repository contract from an `:api` module only when another area needs that stable contract. Keep
-implementations, data sources, mappers, and storage details in `:internal`. Bind them in an application composition
-module as required by [ADR-0009](../engineering/adr/0009-api-internal-split.md).
-
-Place shared repository contracts, criteria, errors, and domain models in the area's `:api` module. Place repository
-implementations, data sources, mappers, and storage models in its `:internal` module. Bind contracts to implementations
-in `:app-common` or an app-specific composition module.
+Bind the contract to its implementation in `:app-common` or an app-specific composition module. Dependency injection
+then provides the implementation when a caller requests the contract, without exposing the implementation to that
+caller. This maintains the API/internal boundary defined by
+[ADR-0009](../engineering/adr/0009-api-internal-split.md).
 
 ## Scope and identifiers
 
@@ -39,10 +54,11 @@ Repository I/O uses coroutines:
 - A one-shot operation is a `suspend fun`.
 - A reactive operation returns a `Flow`.
 
-Choose the return type based on the contract rather than the current implementation. An expected recoverable failure is
-a normal condition that the caller can handle, such as unavailable storage, a network failure, a rejected operation, or
-a missing required entity. Return a value directly only when the contract can always provide a meaningful result,
-possibly by using a default.
+Choose the return type based on the guarantees and failures the repository contract exposes to callers, rather than the
+behavior of its current data source or a legacy implementation. Use a fallible return type when an operation can
+encounter an expected, recoverable condition that the caller needs to handle, such as unavailable storage, a network
+failure, a rejected operation, or a missing required entity. Return a value directly only when the contract guarantees
+a meaningful result, possibly by using a default.
 
 Use [`net.thunderbird.core.outcome.Outcome`](../../core/outcome/src/commonMain/kotlin/net/thunderbird/core/outcome/Outcome.kt)
 for fallible repository results. `ERROR` is a domain-specific sealed type. Do not expose database, HTTP, or platform
