@@ -163,8 +163,6 @@ Validation before cutover and the archive from step 1 cover that risk instead.
 
 ## Open Questions
 
-- Should migration require a pre-flight free-space check with a stated minimum headroom, and should a failed check block
-  migration or only warn?
 - Does declining the POP3 archive require a durable record of the user's acknowledgement?
 
 The technical design owns implementation questions, including driver configuration, the identifier mapping inventory,
