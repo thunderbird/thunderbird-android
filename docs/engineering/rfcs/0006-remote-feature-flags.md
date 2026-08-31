@@ -1,7 +1,7 @@
 # RFC 0006: Remote Feature Flags
 
 - Issue: [#11253](https://github.com/thunderbird/thunderbird-android/issues/11253)
-- Status: **Proposed**
+- Status: **Accepted**
 
 ## Summary
 
