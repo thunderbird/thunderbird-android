@@ -26,10 +26,10 @@ class DefaultFolderPushTrackingRepository(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : FolderPushTrackingRepository {
     override fun observeEnabled(accountId: AccountId): Flow<Outcome<Boolean, FolderError>> = callbackFlow {
-        logger.verbose { "[repository] starting observing push enabled for account '$accountId'" }
+        logger.verbose { "[repository][folder-push-tracking] starting observing push enabled for account '$accountId'" }
         val messageStore = messageStoreManager.getMessageStore(accountId)
         val enabled = isEnabled(accountId, messageStore)
-        logger.verbose { "[repository] push enabled = '$enabled' for account id '$accountId'" }
+        logger.verbose { "[repository][folder-push-tracking] push enabled = '$enabled' for account id '$accountId'" }
         send(enabled)
 
         val listener = FolderSettingsChangedListener {
@@ -38,7 +38,7 @@ class DefaultFolderPushTrackingRepository(
         messageStore.addFolderSettingsChangedListener(listener)
 
         awaitClose {
-            logger.verbose { "[repository] stop observing push enabled for account '$accountId'" }
+            logger.verbose { "[repository][folder-push-tracking] stop observing push enabled for account '$accountId'" }
             messageStore.removeFolderSettingsChangedListener(listener)
         }
     }
@@ -46,7 +46,7 @@ class DefaultFolderPushTrackingRepository(
         .distinctUntilChanged()
         .catch { throwable ->
             logger.error(throwable = throwable) {
-                "[repository] Failed to observe push enabled for account id: $accountId"
+                "[repository][folder-push-tracking] Failed to observe push enabled for account id: $accountId"
             }
             when (throwable) {
                 is IllegalStateException -> emit(Outcome.failure(FolderError.AccountNotFound))
@@ -58,19 +58,23 @@ class DefaultFolderPushTrackingRepository(
         return try {
             isEnabled(accountId, messageStoreManager.getMessageStore(accountId))
         } catch (e: IllegalStateException) {
-            logger.error(throwable = e) { "[repository] Failed to disable push for account id: $accountId" }
+            logger.error(throwable = e) {
+                "[repository][folder-push-tracking] Failed to disable push for account id: $accountId"
+            }
             Outcome.failure(FolderError.AccountNotFound)
         }
     }
 
     override suspend fun disable(accountId: AccountId): Outcome<Unit, FolderError> = try {
-        logger.verbose { "[repository] disabling push enabled for account '$accountId'" }
+        logger.verbose { "[repository][folder-push-tracking] disabling push enabled for account '$accountId'" }
         val messageStore = messageStoreManager.getMessageStore(accountId)
         messageStore.setPushDisabled()
-        logger.verbose { "[repository] push disabled for account '$accountId'" }
+        logger.verbose { "[repository][folder-push-tracking] push disabled for account '$accountId'" }
         Outcome.success()
     } catch (e: IllegalStateException) {
-        logger.error(throwable = e) { "[repository] Failed to disable push for account id: $accountId" }
+        logger.error(throwable = e) {
+            "[repository][folder-push-tracking] Failed to disable push for account id: $accountId"
+        }
         Outcome.failure(FolderError.AccountNotFound)
     }
 

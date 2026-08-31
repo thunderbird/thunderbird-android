@@ -6,6 +6,7 @@ import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderPushTrackingRepository
 
 /**
  * Provides access to local and remote folder information and management.
@@ -15,7 +16,7 @@ import net.thunderbird.feature.mail.folder.api.RemoteFolder
  *       and per-flag mutations), which makes it hard to test and evolve.
  */
 @Suppress("TooManyFunctions")
-interface FolderRepository {
+interface FolderRepository : FolderPushTrackingRepository {
     /**
      * Returns a [Folder] for the given [accountId] and [folderId].
      *
@@ -129,25 +130,4 @@ interface FolderRepository {
      * @param enable Whether notifications are enabled.
      */
     fun setNotificationsEnabled(accountId: AccountId, folderId: Long, enable: Boolean)
-
-    /**
-     * Disables push for the given [accountId].
-     *
-     * @param accountId The account identifier.
-     */
-    fun setPushDisabled(accountId: AccountId)
-
-    /**
-     * Returns `true` if there's at least one folder with push enabled for the given [accountId].
-     *
-     * @param accountId The account identifier.
-     */
-    fun hasPushEnabledFolder(accountId: AccountId): Boolean
-
-    /**
-     * Returns a [Flow] that emits `true` if there's at least one folder with push enabled for the given [accountId].
-     *
-     * @param accountId The account identifier.
-     */
-    fun hasPushEnabledFolderFlow(accountId: AccountId): Flow<Boolean>
 }

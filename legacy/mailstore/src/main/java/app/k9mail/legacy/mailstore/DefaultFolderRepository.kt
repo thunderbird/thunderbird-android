@@ -21,14 +21,16 @@ import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderPushTrackingRepository
 
 @Suppress("TooManyFunctions")
 class DefaultFolderRepository(
     private val accountManager: LegacyAccountManager,
     private val messageStoreManager: MessageStoreManager,
     private val outboxFolderManager: OutboxFolderManager,
+    private val aggregateRepositories: AggregateRepositories,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : FolderRepository {
+) : FolderRepository, FolderPushTrackingRepository by aggregateRepositories.folderPushTrackingRepository {
     override suspend fun getFolder(accountId: AccountId, folderId: Long): Folder? {
         val account = getAccountById(accountId)
         val messageStore = messageStoreManager.getMessageStore(accountId)
@@ -166,34 +168,6 @@ class DefaultFolderRepository(
         messageStore.setNotificationsEnabled(folderId, enable)
     }
 
-    override fun setPushDisabled(accountId: AccountId) {
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-        messageStore.setPushDisabled()
-    }
-
-    override fun hasPushEnabledFolder(accountId: AccountId): Boolean {
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-        return messageStore.hasPushEnabledFolder()
-    }
-
-    override fun hasPushEnabledFolderFlow(accountId: AccountId): Flow<Boolean> {
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-        return callbackFlow {
-            send(hasPushEnabledFolder(accountId))
-
-            val listener = FolderSettingsChangedListener {
-                trySendBlocking(hasPushEnabledFolder(accountId))
-            }
-            messageStore.addFolderSettingsChangedListener(listener)
-
-            awaitClose {
-                messageStore.removeFolderSettingsChangedListener(listener)
-            }
-        }.buffer(capacity = Channel.CONFLATED)
-            .distinctUntilChanged()
-            .flowOn(ioDispatcher)
-    }
-
     private fun FolderDetailsAccessor.getFolderType(account: LegacyAccount, outboxFolderId: Long): FolderType =
         if (id == outboxFolderId) {
             FolderType.OUTBOX
@@ -205,3 +179,7 @@ class DefaultFolderRepository(
         accountManager.getById(accountId).firstOrNull()
             ?: error("Account not found: $accountId")
 }
+
+class AggregateRepositories(
+    val folderPushTrackingRepository: FolderPushTrackingRepository,
+)

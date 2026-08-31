@@ -1,9 +1,11 @@
 package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.mailstore.AggregateRepositories
 import app.k9mail.legacy.mailstore.DefaultFolderRepository
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.mailstore.MessageStoreManager
+import app.k9mail.legacy.mailstore.folder.push.DefaultFolderPushTrackingRepository
 import com.fsck.k9.mailstore.folder.DefaultOutboxFolderManager
 import com.fsck.k9.message.extractors.AttachmentCounter
 import com.fsck.k9.message.extractors.MessageFulltextCreator
@@ -12,14 +14,21 @@ import kotlin.time.ExperimentalTime
 import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.core.common.cache.TimeLimitedCache
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderPushTrackingRepository
 import org.koin.dsl.module
 
 val mailStoreModule = module {
+    single<FolderPushTrackingRepository> {
+        DefaultFolderPushTrackingRepository(logger = get(), messageStoreManager = get())
+    }
     single<FolderRepository> {
         DefaultFolderRepository(
             accountManager = get(),
             messageStoreManager = get(),
             outboxFolderManager = get(),
+            aggregateRepositories = AggregateRepositories(
+                folderPushTrackingRepository = get(),
+            ),
         )
     }
     single { MessageViewInfoExtractorFactory(get(), get(), get()) }
@@ -55,7 +64,7 @@ val mailStoreModule = module {
             logger = get(),
             accountManager = get(),
             localStoreProvider = get(),
-            outboxFolderIdCache = @OptIn(ExperimentalTime::class)TimeLimitedCache(),
+            outboxFolderIdCache = @OptIn(ExperimentalTime::class) TimeLimitedCache(),
         )
     }
 }
