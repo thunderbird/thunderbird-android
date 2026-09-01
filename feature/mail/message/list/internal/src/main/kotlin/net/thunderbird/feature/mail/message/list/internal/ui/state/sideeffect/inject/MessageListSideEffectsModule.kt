@@ -54,6 +54,7 @@ internal val messageListSideEffectsModule = module {
                 folderId = args.folderId,
                 logger = get(),
                 folderRepository = get(),
+                remoteFolderQueryRepository = get(),
                 profileRepository = get(),
             )
         },

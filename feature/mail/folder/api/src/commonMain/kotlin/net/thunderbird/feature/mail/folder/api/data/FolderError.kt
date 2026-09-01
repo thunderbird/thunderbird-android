@@ -5,4 +5,5 @@ sealed interface FolderError {
     data object NotFound : FolderError
     data object Unavailable : FolderError
     data class FailedPrecondition(val message: String, val throwable: Throwable? = null) : FolderError
+    data class FailedToQueryDatabase(val message: String, val throwable: Throwable) : FolderError
 }
