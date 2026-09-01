@@ -1,25 +1,19 @@
-package app.k9mail.legacy.mailstore
+package net.thunderbird.feature.mail.folder.api.data.repository
 
+import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.Folder
-import net.thunderbird.feature.mail.folder.api.data.repository.PushFolderTrackingRepository
+import net.thunderbird.feature.mail.folder.api.FolderServerId
+import net.thunderbird.feature.mail.folder.api.data.FolderError
 
-/**
- * Provides access to local and remote folder information and management.
- *
- * TODO: Refactor FolderRepository into focused contracts.
- *       Problem: This interface mixes unrelated responsibilities (read models, remote listing, push tracking,
- *       and per-flag mutations), which makes it hard to test and evolve.
- */
-@Suppress("TooManyFunctions")
-interface FolderRepository : PushFolderTrackingRepository {
+interface FolderQueryRepository {
     /**
      * Returns a [Folder] for the given [accountId] and [folderId].
      *
      * @param accountId The account identifier.
      * @param folderId The folder identifier.
      */
-    suspend fun getFolder(accountId: AccountId, folderId: Long): Folder?
+    suspend fun findById(accountId: AccountId, folderId: Long): Outcome<Folder?, FolderError>
 
     /**
      * Returns the server ID for the given [accountId] and [folderId].
@@ -27,7 +21,7 @@ interface FolderRepository : PushFolderTrackingRepository {
      * @param accountId The account identifier.
      * @param folderId The folder identifier.
      */
-    fun getFolderServerId(accountId: AccountId, folderId: Long): String?
+    suspend fun findFolderServerIdById(accountId: AccountId, folderId: Long): Outcome<FolderServerId?, FolderError>
 
     /**
      * Returns the folder ID for the given [accountId] and [folderServerId].
@@ -35,7 +29,7 @@ interface FolderRepository : PushFolderTrackingRepository {
      * @param accountId The account identifier.
      * @param folderServerId The folder server identifier.
      */
-    fun getFolderId(accountId: AccountId, folderServerId: String): Long?
+    suspend fun findIdByServerId(accountId: AccountId, folderServerId: FolderServerId): Outcome<Long?, FolderError>
 
     /**
      * Returns `true` if the folder with [folderId] is present for the given [accountId].
@@ -43,5 +37,5 @@ interface FolderRepository : PushFolderTrackingRepository {
      * @param accountId The account identifier.
      * @param folderId The folder identifier.
      */
-    fun isFolderPresent(accountId: AccountId, folderId: Long): Boolean
+    suspend fun isPresent(accountId: AccountId, folderId: Long): Boolean
 }

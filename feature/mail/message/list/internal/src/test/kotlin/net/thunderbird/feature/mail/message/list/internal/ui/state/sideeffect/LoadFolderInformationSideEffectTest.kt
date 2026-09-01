@@ -4,7 +4,6 @@ package net.thunderbird.feature.mail.message.list.internal.ui.state.sideeffect
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import app.k9mail.legacy.mailstore.FolderRepository
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
@@ -30,8 +29,9 @@ import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.profile.AccountProfileRepository
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderQueryRepository
-import net.thunderbird.feature.mail.message.list.internal.fakes.FakeFolderRepository
+import net.thunderbird.feature.mail.message.list.internal.fakes.FakeFolderQueryRepository
 import net.thunderbird.feature.mail.message.list.internal.fakes.FakeRemoteFolderQueryRepository
 import net.thunderbird.feature.mail.message.list.internal.fakes.RecordingSuspendFunction
 import net.thunderbird.feature.mail.message.list.ui.event.FolderEvent
@@ -52,7 +52,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
             val testSubject = createTestSubject(
                 accountIds = setOf(accountId),
                 folderId = folderId,
-                folderRepository = createFolderRepository(
+                folderQueryRepository = createFolderQueryRepository(
                     accountId = accountId,
                     folderId = folderId,
                     folder = folder,
@@ -151,7 +151,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
             accountIds = setOf(firstAccountId, secondAccountId),
             folderId = folderId,
             dispatch = dispatch.function,
-            folderRepository = createFolderRepository(
+            folderQueryRepository = createFolderQueryRepository(
                 accountId = firstAccountId,
                 folderId = folderId,
                 folder = folder,
@@ -192,7 +192,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
         val folderId = 7L
         val folder = createMailFolder(id = folderId, name = "Local", isLocalOnly = true)
         val dispatch = RecordingSuspendFunction<MessageListEvent>()
-        val folderRepository = createFolderRepository(
+        val folderQueryRepository = createFolderQueryRepository(
             accountId = accountId,
             folderId = folderId,
             folder = folder,
@@ -202,7 +202,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
             accountIds = setOf(accountId),
             folderId = folderId,
             dispatch = dispatch.function,
-            folderRepository = folderRepository,
+            folderQueryRepository = folderQueryRepository,
             profileRepository = FakeAccountProfileRepository(
                 profiles = listOf(createAccountProfile(accountId = accountId, expectedColor)),
             ),
@@ -241,7 +241,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
             type = FolderType.INBOX,
         )
         val dispatch = RecordingSuspendFunction<MessageListEvent>()
-        val folderRepository = createFolderRepository(
+        val folderQueryRepository = createFolderQueryRepository(
             accountId = accountId,
             folderId = folderId,
             folder = folder,
@@ -255,7 +255,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
             accountIds = setOf(accountId),
             folderId = folderId,
             dispatch = dispatch.function,
-            folderRepository = folderRepository,
+            folderQueryRepository = folderQueryRepository,
             remoteFolderQueryRepository = remoteFolderQueryRepository,
             profileRepository = FakeAccountProfileRepository(
                 profiles = listOf(createAccountProfile(accountId = accountId, expectedColor)),
@@ -294,7 +294,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
             accountIds = setOf(accountId),
             folderId = folderId,
             dispatch = dispatch.function,
-            folderRepository = createFolderRepository(
+            folderQueryRepository = createFolderQueryRepository(
                 accountId = accountId,
                 folderId = folderId,
                 folder = folder,
@@ -337,7 +337,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
         val accountId = AccountIdFactory.create()
         val folderId = 10L
         val dispatch = RecordingSuspendFunction<MessageListEvent>()
-        val folderRepository = createFolderRepository(
+        val folderQueryRepository = createFolderQueryRepository(
             accountId = accountId,
             folderId = folderId,
             folder = null,
@@ -346,7 +346,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
             accountIds = setOf(accountId),
             folderId = folderId,
             dispatch = dispatch.function,
-            folderRepository = folderRepository,
+            folderQueryRepository = folderQueryRepository,
         )
 
         // Act
@@ -374,7 +374,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
                 type = FolderType.INBOX,
             )
             val dispatch = RecordingSuspendFunction<MessageListEvent>()
-            val folderRepository = createFolderRepository(
+            val folderQueryRepository = createFolderQueryRepository(
                 accountId = accountId,
                 folderId = folderId,
                 folder = folder,
@@ -388,7 +388,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
                 accountIds = setOf(accountId),
                 folderId = folderId,
                 dispatch = dispatch.function,
-                folderRepository = folderRepository,
+                folderQueryRepository = folderQueryRepository,
                 remoteFolderQueryRepository = remoteFolderQueryRepository,
                 profileRepository = FakeAccountProfileRepository(
                     profiles = listOf(createAccountProfile(accountId = accountId, expectedColor)),
@@ -422,7 +422,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
             accountIds = setOf(AccountIdFactory.create()),
             folderId = 1L,
             logger = TestLogger(),
-            folderRepository = createFolderRepository(
+            folderQueryRepository = createFolderQueryRepository(
                 accountId = AccountIdFactory.create(),
                 folderId = 1L,
                 folder = null,
@@ -447,7 +447,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
         folderId: Long? = 1L,
         dispatch: suspend (MessageListEvent) -> Unit = {},
         logger: Logger = TestLogger(),
-        folderRepository: FolderRepository = FakeFolderRepository(),
+        folderQueryRepository: FolderQueryRepository = FakeFolderQueryRepository(),
         remoteFolderQueryRepository: RemoteFolderQueryRepository = FakeRemoteFolderQueryRepository(),
         profileRepository: AccountProfileRepository = FakeAccountProfileRepository(
             profiles = accountIds.map(::createAccountProfile),
@@ -457,16 +457,16 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
         folderId = folderId,
         dispatch = dispatch,
         logger = logger,
-        folderRepository = folderRepository,
+        folderQueryRepository = folderQueryRepository,
         remoteFolderQueryRepository = remoteFolderQueryRepository,
         profileRepository = profileRepository,
     )
 
-    private fun createFolderRepository(
+    private fun createFolderQueryRepository(
         accountId: AccountId,
         folderId: Long,
         folder: MailFolder?,
-    ): FolderRepository = FakeFolderRepository(
+    ): FolderQueryRepository = FakeFolderQueryRepository(
         localFolders = mapOf(accountId to listOfNotNull(folder?.copy(id = folderId))),
     )
 

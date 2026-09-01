@@ -1,7 +1,6 @@
 package app.k9mail.feature.widget.unread
 
 import android.content.Context
-import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.message.controller.MessageCounts
 import app.k9mail.legacy.message.controller.MessageCountsProvider
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
@@ -15,8 +14,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.Folder
+import net.thunderbird.feature.mail.folder.api.FolderServerId
 import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.api.data.FolderError
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
 import org.junit.Before
@@ -37,7 +41,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     private val preferences = createPreferences()
     private val messageCountsProvider = createMessageCountsProvider()
     private val defaultFolderStrategy = createDefaultFolderStrategy()
-    private val folderRepository = createFolderRepository()
+    private val folderQueryRepository = createFolderQueryRepository()
     private val folderNameFormatter = createFolderNameFormatter()
     private val coreResourceProvider = createCoreResourceProvider()
     private val provider = UnreadWidgetDataProvider(
@@ -45,7 +49,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         preferences,
         messageCountsProvider,
         defaultFolderStrategy,
-        folderRepository,
+        folderQueryRepository,
         folderNameFormatter,
         coreResourceProvider,
         logger = TestLogger(),
@@ -158,10 +162,23 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         on { getDefaultFolder(account) } doReturn FOLDER_ID
     }
 
-    private fun createFolderRepository(): FolderRepository {
-        return mock {
-            on { getFolder(account.id, FOLDER_ID) } doReturn FOLDER
+    private fun createFolderQueryRepository(): FolderQueryRepository = object : FolderQueryRepository {
+        override suspend fun findById(accountId: AccountId, folderId: Long): Outcome<Folder?, FolderError> {
+            val folder = FOLDER.takeIf { accountId == account.id && folderId == FOLDER_ID }
+            return Outcome.success(folder)
         }
+
+        override suspend fun findFolderServerIdById(
+            accountId: AccountId,
+            folderId: Long,
+        ): Outcome<FolderServerId?, FolderError> = Outcome.success(null)
+
+        override suspend fun findIdByServerId(
+            accountId: AccountId,
+            folderServerId: FolderServerId,
+        ): Outcome<Long?, FolderError> = Outcome.success(null)
+
+        override suspend fun isPresent(accountId: AccountId, folderId: Long): Boolean = false
     }
 
     private fun createFolderNameFormatter(): FolderNameFormatter = mock {

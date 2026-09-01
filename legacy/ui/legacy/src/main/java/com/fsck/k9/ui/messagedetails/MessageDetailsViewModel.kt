@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactPermissionResolver
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.helper.ClipboardManager
@@ -29,13 +28,15 @@ import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
+import net.thunderbird.core.outcome.fold
 import net.thunderbird.feature.mail.folder.api.Folder
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 
 @Suppress("TooManyFunctions", "LongParameterList")
 internal class MessageDetailsViewModel(
     private val resources: Resources,
     private val messageRepository: MessageRepository,
-    private val folderRepository: FolderRepository,
+    private val folderQueryRepository: FolderQueryRepository,
     private val contactSettingsProvider: ContactSettingsProvider,
     private val contactRepository: ContactRepository,
     private val contactPermissionResolver: ContactPermissionResolver,
@@ -77,7 +78,8 @@ internal class MessageDetailsViewModel(
                 val account = accountManager.getAccount(messageReference.accountUuid) ?: error("Account not found")
                 val messageDetails = messageRepository.getMessageDetails(messageReference)
 
-                val folder = folderRepository.getFolder(account.id, folderId = messageReference.folderId)
+                val folder = folderQueryRepository.findById(account.id, folderId = messageReference.folderId)
+                    .fold(onSuccess = { it }, onFailure = { null })
 
                 val senderList = messageDetails.sender?.let { listOf(it) } ?: emptyList()
                 val messageDetailsUi = MessageDetailsUi(
