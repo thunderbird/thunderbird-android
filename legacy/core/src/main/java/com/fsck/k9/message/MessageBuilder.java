@@ -75,6 +75,9 @@ public abstract class MessageBuilder {
     private MessageReference messageReference;
     private boolean isDraft;
     private boolean isPgpInlineEnabled;
+    private boolean compressImageAttachments;
+    private int imageCompressionJpegQuality;
+    private int imageCompressionLongestEdge;
 
     private final GeneralSettingsManager settingsManager;
     private final HtmlSignatureSanitizer htmlSignatureSanitizer;
@@ -253,11 +256,19 @@ public abstract class MessageBuilder {
                 continue;
             }
 
-            Body body = new TempFileBody(attachment.getFileName());
+            ImageAttachmentCompressor.CompressedAttachment compressedAttachment = compressImageAttachments
+                    ? new ImageAttachmentCompressor(imageCompressionJpegQuality, imageCompressionLongestEdge)
+                    .compress(attachment)
+                    : null;
+            Body body = new TempFileBody(compressedAttachment != null
+                    ? compressedAttachment.file.getAbsolutePath()
+                    : attachment.getFileName());
             MimeBodyPart bp = MimeBodyPart.create(body);
 
-            addContentType(bp, attachment.getContentType(), attachment.getName());
-            addContentDisposition(bp, "attachment", attachment.getName(), attachment.getSize());
+            addContentType(bp, compressedAttachment != null ? "image/jpeg" : attachment.getContentType(),
+                    compressedAttachment != null ? compressedAttachment.name : attachment.getName());
+            addContentDisposition(bp, "attachment", compressedAttachment != null ? compressedAttachment.name : attachment.getName(),
+                    compressedAttachment != null ? compressedAttachment.file.length() : attachment.getSize());
 
             mp.addBodyPart(bp);
         }
@@ -513,6 +524,13 @@ public abstract class MessageBuilder {
 
     public MessageBuilder setIsPgpInlineEnabled(boolean isPgpInlineEnabled) {
         this.isPgpInlineEnabled = isPgpInlineEnabled;
+        return this;
+    }
+
+    public MessageBuilder setImageAttachmentCompression(boolean enabled, int jpegQuality, int longestEdge) {
+        compressImageAttachments = enabled;
+        imageCompressionJpegQuality = jpegQuality;
+        imageCompressionLongestEdge = longestEdge;
         return this;
     }
 

@@ -6,6 +6,7 @@ import net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSetting
 import net.thunderbird.core.preference.display.miscSettings.DisplayMiscSettingKey
 import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingKey
 import net.thunderbird.core.preference.display.visualSettings.message.list.DisplayMessageListSettingKey
+import net.thunderbird.core.preference.imageCompression.ImageCompressionSettingKey
 import net.thunderbird.core.preference.interaction.InteractionSettingKey
 import net.thunderbird.core.preference.network.NetworkSettingKey
 import net.thunderbird.core.preference.notification.NotificationSettingKey
@@ -17,6 +18,7 @@ object PreferenceScopeRegistry {
 
         DebugSettingKey.entries.forEach { put(it.value, PreferenceScope.DEBUGGING) }
         InteractionSettingKey.entries.forEach { put(it.value, PreferenceScope.INTERACTION) }
+        ImageCompressionSettingKey.entries.forEach { put(it.value, PreferenceScope.IMAGE_COMPRESSION) }
         NetworkSettingKey.entries.forEach { put(it.value, PreferenceScope.NETWORK) }
         NotificationSettingKey.entries.forEach { put(it.value, PreferenceScope.NOTIFICATION) }
         PrivacySettingKey.entries.forEach { put(it.value, PreferenceScope.PRIVACY) }

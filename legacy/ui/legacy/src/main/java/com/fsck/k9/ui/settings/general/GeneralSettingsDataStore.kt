@@ -181,6 +181,8 @@ class GeneralSettingsDataStore(
             "message_list_density" -> messageListSettings.uiDensity.toString()
             "post_remove_navigation" -> interactionSettings.messageViewPostRemoveNavigation
             "post_mark_as_unread_navigation" -> interactionSettings.messageViewPostMarkAsUnreadNavigation.name
+            "image_compression_jpeg_quality" -> config.imageCompression.jpegQuality.toString()
+            "image_compression_longest_edge" -> config.imageCompression.longestEdge.toString()
             else -> defValue
         }
     }
@@ -224,6 +226,10 @@ class GeneralSettingsDataStore(
             "message_list_density" -> updateMessageListDensity(value)
             "post_remove_navigation" -> setMessageViewPostRemoveNavigation(value)
             "post_mark_as_unread_navigation" -> setMessageViewPostMarkAsUnreadNavigation(value)
+            "image_compression_jpeg_quality" -> value.toIntOrNull()?.takeIf { it in 1..100 }?.let(::setImageCompressionJpegQuality)
+                ?: return
+            "image_compression_longest_edge" -> value.toIntOrNull()?.takeIf { it > 0 }?.let(::setImageCompressionLongestEdge)
+                ?: return
             else -> return
         }
 
@@ -319,6 +325,20 @@ class GeneralSettingsDataStore(
                     ),
                 ),
             )
+        }
+    }
+
+    private fun setImageCompressionJpegQuality(value: Int) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(imageCompression = settings.imageCompression.copy(jpegQuality = value))
+        }
+    }
+
+    private fun setImageCompressionLongestEdge(value: Int) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(imageCompression = settings.imageCompression.copy(longestEdge = value))
         }
     }
 

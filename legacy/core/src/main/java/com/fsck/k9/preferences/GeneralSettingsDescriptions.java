@@ -162,6 +162,12 @@ class GeneralSettingsDescriptions {
             new V(1, new BooleanSetting(false)),
             new V(69, null)
         ));
+        s.put("imageCompressionJpegQuality", Settings.versions(
+            new V(112, new IntegerRangeSetting(1, 100, 85))
+        ));
+        s.put("imageCompressionLongestEdge", Settings.versions(
+            new V(112, new IntegerRangeSetting(1, Integer.MAX_VALUE, 1920))
+        ));
         s.put("language", Settings.versions(
             new V(1, new LanguageSetting())
         ));

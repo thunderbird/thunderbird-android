@@ -206,6 +206,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private static final String STATE_IN_REPLY_TO = "com.fsck.k9.activity.MessageCompose.inReplyTo";
     private static final String STATE_REFERENCES = "com.fsck.k9.activity.MessageCompose.references";
     private static final String STATE_KEY_READ_RECEIPT = "com.fsck.k9.activity.MessageCompose.messageReadReceipt";
+    private static final String STATE_KEY_COMPRESS_IMAGES = "com.fsck.k9.activity.MessageCompose.compressImages";
+    private static final String PREFERENCE_COMPRESS_IMAGES = "compressImages";
     private static final String STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE = "com.fsck.k9.activity.MessageCompose.changesMadeSinceLastSave";
     private static final String STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT = "alreadyNotifiedUserOfEmptySubject";
     private static final String STATE_ACTIVE_IN_APP_NOTIFICATIONS =
@@ -300,6 +302,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     private Action action;
 
     private boolean requestReadReceipt = false;
+    private boolean compressImages = false;
 
     private MaterialTextView chooseIdentityView;
     private EditText subjectView;
@@ -370,6 +373,8 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             finish();
             return;
         }
+
+        compressImages = getPreferences(MODE_PRIVATE).getBoolean(PREFERENCE_COMPRESS_IMAGES, false);
 
         initializeInAppNotificationFragment();
 
@@ -765,6 +770,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         outState.putString(STATE_IN_REPLY_TO, repliedToMessageId);
         outState.putString(STATE_REFERENCES, referencedMessageIds);
         outState.putBoolean(STATE_KEY_READ_RECEIPT, requestReadReceipt);
+        outState.putBoolean(STATE_KEY_COMPRESS_IMAGES, compressImages);
         outState.putBoolean(STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE, changesMadeSinceLastSave);
         outState.putBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT, alreadyNotifiedUserOfEmptySubject);
         outState.putIntegerArrayList(STATE_ACTIVE_IN_APP_NOTIFICATIONS, new ArrayList<>(activeInAppNotifications));
@@ -791,6 +797,7 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         attachmentsView.removeAllViews();
 
         requestReadReceipt = savedInstanceState.getBoolean(STATE_KEY_READ_RECEIPT);
+        compressImages = savedInstanceState.getBoolean(STATE_KEY_COMPRESS_IMAGES);
 
         replyToPresenter.onRestoreInstanceState(savedInstanceState);
         recipientPresenter.onRestoreInstanceState(savedInstanceState);
@@ -869,6 +876,12 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
                 .setMessageReference(relatedMessageReference)
                 .setDraft(isDraft)
                 .setIsPgpInlineEnabled(cryptoStatus.isPgpInlineModeEnabled());
+
+        if (!isDraft) {
+            int jpegQuality = generalSettingsManager.getConfig().getImageCompression().getJpegQuality();
+            int longestEdge = generalSettingsManager.getConfig().getImageCompression().getLongestEdge();
+            builder.setImageAttachmentCompression(compressImages, jpegQuality, longestEdge);
+        }
 
         quotedMessagePresenter.builderSetProperties(builder);
 
@@ -1250,11 +1263,13 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
     @Override
     public void onAttachmentAdded() {
         changesMadeSinceLastSave = true;
+        invalidateOptionsMenu();
     }
 
     @Override
     public void onAttachmentRemoved() {
         changesMadeSinceLastSave = true;
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -1281,6 +1296,10 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
             prepareToFinish(true);
         } else if (id == R.id.send) {
             checkToSendMessage();
+        } else if (id == R.id.compress_images) {
+            compressImages = !item.isChecked();
+            item.setChecked(compressImages);
+            getPreferences(MODE_PRIVATE).edit().putBoolean(PREFERENCE_COMPRESS_IMAGES, compressImages).apply();
         } else if (id == R.id.save) {
             checkToSaveDraftAndSave();
         } else if (id == R.id.discard) {
@@ -1337,6 +1356,11 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
         super.onPrepareOptionsMenu(menu);
 
         recipientPresenter.onPrepareOptionsMenu(menu);
+
+        MenuItem compressImagesMenuItem = menu.findItem(R.id.compress_images);
+        boolean hasCompressibleAttachment = attachmentPresenter.hasCompressibleAttachment();
+        compressImagesMenuItem.setEnabled(hasCompressibleAttachment);
+        compressImagesMenuItem.setChecked(hasCompressibleAttachment && compressImages);
 
         return true;
     }

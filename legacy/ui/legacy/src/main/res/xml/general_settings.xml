@@ -66,6 +66,29 @@
                 />
 
             <PreferenceScreen
+                android:key="image_compression_preferences"
+                android:title="@string/image_compression_settings_title"
+                android:summary="@string/image_compression_settings_summary"
+                >
+
+                <EditTextPreference
+                    android:inputType="number"
+                    android:key="image_compression_jpeg_quality"
+                    android:title="@string/image_compression_jpeg_quality_title"
+                    android:dialogTitle="@string/image_compression_jpeg_quality_title"
+                    app:useSimpleSummaryProvider="true"
+                    />
+
+                <EditTextPreference
+                    android:inputType="number"
+                    android:key="image_compression_longest_edge"
+                    android:title="@string/image_compression_longest_edge_title"
+                    android:dialogTitle="@string/image_compression_longest_edge_title"
+                    app:useSimpleSummaryProvider="true"
+                    />
+            </PreferenceScreen>
+
+            <PreferenceScreen
                 android:key="font_size"
                 android:summary="@string/font_size_settings_description"
                 android:title="@string/font_size_settings_title"

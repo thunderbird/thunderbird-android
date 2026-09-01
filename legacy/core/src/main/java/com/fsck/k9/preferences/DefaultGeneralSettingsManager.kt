@@ -25,6 +25,7 @@ import net.thunderbird.core.preference.display.miscSettings.DisplayMiscSettingsP
 import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsPreferenceManager
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
+import net.thunderbird.core.preference.imageCompression.ImageCompressionSettingsPreferenceManager
 import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
@@ -58,6 +59,7 @@ internal class DefaultGeneralSettingsManager(
     private val networkSettingsPreferenceManager: NetworkSettingsPreferenceManager,
     private val debuggingSettingsPreferenceManager: DebuggingSettingsPreferenceManager,
     private val interactionSettingsPreferenceManager: InteractionSettingsPreferenceManager,
+    private val imageCompressionSettingsPreferenceManager: ImageCompressionSettingsPreferenceManager,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val platformConfigProvider: PlatformConfigProvider,
     private val logger: Logger,
@@ -125,6 +127,9 @@ internal class DefaultGeneralSettingsManager(
         .combine(interactionSettingsPreferenceManager.getConfigFlow()) { generalSettings, interactionSettings ->
             generalSettings.copy(interaction = interactionSettings)
         }
+        .combine(imageCompressionSettingsPreferenceManager.getConfigFlow()) { generalSettings, imageCompressionSettings ->
+            generalSettings.copy(imageCompression = imageCompressionSettings)
+        }
         .stateIn(
             scope = coroutineScope,
             started = SharingStarted.WhileSubscribed(),
@@ -179,6 +184,7 @@ internal class DefaultGeneralSettingsManager(
                 networkSettingsPreferenceManager.save(config.network)
                 debuggingSettingsPreferenceManager.save(config.debugging)
                 interactionSettingsPreferenceManager.save(config.interaction)
+                imageCompressionSettingsPreferenceManager.save(config.imageCompression)
             }
         }
     }

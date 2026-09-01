@@ -64,4 +64,10 @@
         android:title="@string/disable_inline_pgp"
         app:showAsAction="never"
         />
+    <item
+        android:id="@+id/compress_images"
+        android:title="@string/compress_images_action"
+        android:checkable="true"
+        app:showAsAction="never"
+        />
 </menu>

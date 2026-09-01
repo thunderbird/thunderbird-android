@@ -22,6 +22,7 @@ import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.activity.misc.InlineAttachment;
+import com.fsck.k9.helper.MimeTypeUtil;
 import app.k9mail.legacy.message.controller.MessageReference;
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
@@ -140,6 +141,17 @@ public class AttachmentPresenter {
 
     public List<com.fsck.k9.message.Attachment> getAttachments() {
         return new ArrayList<>(attachments.values());
+    }
+
+    public boolean hasCompressibleAttachment() {
+        for (Attachment attachment : attachments.values()) {
+            String contentType = attachment.getContentType();
+            if (contentType != null && !MimeTypeUtil.isSameMimeType(contentType, "image/png") &&
+                    MimeTypeUtil.isSupportedImageType(contentType)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Map<String, com.fsck.k9.message.Attachment> getInlineAttachments() {

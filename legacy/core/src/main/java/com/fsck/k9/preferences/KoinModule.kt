@@ -21,6 +21,8 @@ import net.thunderbird.core.preference.display.visualSettings.message.list.Defau
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.core.preference.interaction.DefaultInteractionSettingsPreferenceManager
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
+import net.thunderbird.core.preference.imageCompression.DefaultImageCompressionSettingsPreferenceManager
+import net.thunderbird.core.preference.imageCompression.ImageCompressionSettingsPreferenceManager
 import net.thunderbird.core.preference.network.DefaultNetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.DefaultNotificationPreferenceManager
@@ -95,6 +97,13 @@ val preferencesModule = module {
             preferenceChangeBroker = get(),
         )
     }
+    single<ImageCompressionSettingsPreferenceManager> {
+        DefaultImageCompressionSettingsPreferenceManager(
+            logger = get(),
+            storageProvider = get(),
+            preferenceChangeBroker = get(),
+        )
+    }
     single<DisplaySettingsPreferenceManager> {
         DefaultDisplaySettingsPreferenceManager(
             logger = get(),
@@ -144,6 +153,7 @@ val preferencesModule = module {
             networkSettingsPreferenceManager = get(),
             debuggingSettingsPreferenceManager = get(),
             interactionSettingsPreferenceManager = get(),
+            imageCompressionSettingsPreferenceManager = get(),
             platformConfigProvider = get(),
             logger = get(),
         )
