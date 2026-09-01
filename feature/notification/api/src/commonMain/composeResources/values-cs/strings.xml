@@ -7,9 +7,7 @@
     <string name="notification_channel_miscellaneous_title">Různé</string>
     <string name="notification_channel_miscellaneous_description">Různá oznámení, jako chyby atd.</string>
     <string name="notification_notify_error_title">Chyba oznámení</string>
-    <string name="notification_notify_error_text">Vyskytla se chyba při vytvoření systémového oznámení pro novou zprávu. Důvodem je nejspíš chybějící zvuk oznámení.
-\n
-\nKlepnutím otevřete nastavení oznámení.</string>
+    <string name="notification_notify_error_text">Vyskytla se chyba při vytvoření systémového oznámení pro novou zprávu. Důvodem je nejspíš chybějící zvuk oznámení. \n \nKlepnutím otevřete nastavení oznámení.</string>
     <string name="notification_authentication_error_title">Přihlášení se nezdařilo</string>
     <string name="notification_certificate_error_public">Chyba certifikátu</string>
     <string name="notification_certificate_error_title">Chyba certifikátu účtu %1$s</string>

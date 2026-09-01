@@ -22,7 +22,6 @@ import org.koin.core.scope.Scope
  * @param qualifier Optional [Qualifier] to distinguish this list from others of the same type.
  *                  If null, a default qualifier based on the type [T] will be used.
  */
-@KoinDslMarker
 inline fun <reified T> Module.singleListOf(vararg items: Definition<T>, qualifier: Qualifier? = null) {
     single(qualifier ?: defaultListQualifier<T>(), createdAtStart = true) { parameters ->
         items.map { definition -> definition(this, parameters) }
@@ -41,7 +40,6 @@ inline fun <reified T> Module.singleListOf(vararg items: Definition<T>, qualifie
  * @param qualifier Optional [Qualifier] to distinguish this list from others of the same type.
  *                  If null, a default qualifier based on the type [T] will be used.
  */
-@KoinDslMarker
 inline fun <reified T> Module.factoryListOf(vararg items: Definition<T>, qualifier: Qualifier? = null) {
     factory(qualifier ?: defaultListQualifier<T>()) { parametersHolder ->
         items.map { definition -> definition(this, parametersHolder) }

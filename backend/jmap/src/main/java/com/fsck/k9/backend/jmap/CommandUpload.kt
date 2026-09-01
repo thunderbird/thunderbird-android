@@ -3,7 +3,7 @@ package com.fsck.k9.backend.jmap
 import com.fsck.k9.mail.Message
 import com.squareup.moshi.Moshi
 import net.thunderbird.core.common.exception.MessagingException
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient

@@ -25,5 +25,5 @@ package net.thunderbird.feature.notification.api.ui.style
  * ```
  */
 @DslMarker
-@Target(AnnotationTarget.TYPE, AnnotationTarget.FUNCTION)
+@Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS)
 internal annotation class NotificationStyleMarker

@@ -4,7 +4,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.mail.FolderType
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 

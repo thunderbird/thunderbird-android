@@ -92,7 +92,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Sem assunto)</string>
     <string name="general_no_sender">Sem remetente</string>
-    <string name="status_loading_more">A carregar mensagens\u2026</string>
+    <string name="status_loading_more">A carregar mensagens…</string>
     <string name="status_network_error">Erro de ligação</string>
     <string name="status_invalid_id_error">Mensagem não encontrada</string>
     <string name="status_loading_error">Erro ao carregar mensagem</string>
@@ -123,8 +123,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Erro de notificação</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Occoreu um erro ao tentar criar uma notificação do sistema para uma nova mensagem. A causa mais provavel é a falta de um som de notificação.\n\nToque para abrir as definições de notificação
-.</string>
+    <string name="notification_notify_error_text">Occoreu um erro ao tentar criar uma notificação do sistema para uma nova mensagem. A causa mais provavel é a falta de um som de notificação.\n\nToque para abrir as definições de notificação .</string>
     <string name="notification_bg_sync_ticker">A verificar correio: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">A verificar correio</string>
     <string name="notification_bg_send_ticker">A enviar correio: <xliff:g id="account">%s</xliff:g></string>
@@ -162,7 +161,7 @@
     <string name="compose_error_incomplete_recipient">O campo de destinatário está incompleto!</string>
     <string name="error_contact_address_not_found">Não foi possível encontrar um endereço de email para este contacto.</string>
     <string name="message_compose_attachments_skipped_toast">Alguns anexos não podem ser encaminhados porque não foram transferidos.</string>
-    <string name="message_compose_attachments_forward_toast">Esta mensagem não pode ser encaminhada porque alguns anexos não foram transferidos. </string>
+    <string name="message_compose_attachments_forward_toast">Esta mensagem não pode ser encaminhada porque alguns anexos não foram transferidos.</string>
     <string name="message_compose_show_quoted_text_action">Incluir mensagem citada</string>
     <string name="message_compose_description_delete_quoted_text">Remover texto citado</string>
     <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>
@@ -392,7 +391,7 @@
     <string name="account_settings_message_age_1_year">o último ano</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronizar as eliminações do servidor</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove as mensagens quando eliminadas no servidor</string>
-    <string name="account_settings_openpgp_missing">Falta uma aplicação OpenPGP; foi desinstalada? </string>
+    <string name="account_settings_openpgp_missing">Falta uma aplicação OpenPGP; foi desinstalada?</string>
     <string name="folder_settings_title">Configurações da pasta</string>
     <string name="folder_settings_in_top_group_label">Mostrar no grupo do topo</string>
     <string name="folder_settings_clear_local_folder_action">Apagar mensagens locais</string>
@@ -599,7 +598,7 @@
     <string name="webview_contextmenu_link_share_action">Partilhar hiperligação</string>
     <string name="webview_contextmenu_link_copy_action">Copiar hiperligação para a área de transferência</string>
     <string name="webview_contextmenu_link_clipboard_label">Hiperligação</string>
-    <string name="webview_contextmenu_link_text_copy_action"> Copiar texto do apontador para a área de transferência</string>
+    <string name="webview_contextmenu_link_text_copy_action">Copiar texto do apontador para a área de transferência</string>
     <string name="webview_contextmenu_link_text_clipboard_label">Texto do apontador</string>
     <string name="webview_contextmenu_image_title">Imagem</string>
     <string name="webview_contextmenu_image_view_action">Ver imagem</string>
@@ -786,12 +785,7 @@
     <string name="ac_transfer_finish">Para terminar, abra a mensagem no outro dispositivo seu e introduza o código de configuração.</string>
     <string name="ac_transfer_show_code">Mostrar o código de configuração</string>
     <string name="ac_transfer_msg_subject">Mensagem de configuração de auto-encriptação</string>
-    <string name="ac_transfer_msg_body">Esta mensagem contém todas as informações necessárias para transferir as suas configurações de auto-encriptação juntamente com sua chave secreta, de forma segura, a partir do seu dispositivo original
-
-Para configurar o seu novo dispositivo para auto-encriptação, siga as instruções que apresentadas pelo seu novo dispositivo.
-
-Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua chave secreta. Caso queira fazer isso, deve anotar a palavra-passe e armazená-la num local seguro.
-</string>
+    <string name="ac_transfer_msg_body">Esta mensagem contém todas as informações necessárias para transferir as suas configurações de auto-encriptação juntamente com sua chave secreta, de forma segura, a partir do seu dispositivo original Para configurar o seu novo dispositivo para auto-encriptação, siga as instruções que apresentadas pelo seu novo dispositivo. Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua chave secreta. Caso queira fazer isso, deve anotar a palavra-passe e armazená-la num local seguro.</string>
     <string name="ac_transfer_error_send">Ocorreu um erro durante o envio da mensagem. Verifique a conectividade da sua rede e as configurações do servidor de saída.</string>
     <string name="switch_on">Ativado</string>
     <string name="switch_off">Desativado</string>

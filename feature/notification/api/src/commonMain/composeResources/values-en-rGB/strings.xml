@@ -7,9 +7,7 @@
     <string name="notification_channel_miscellaneous_title">Miscellaneous</string>
     <string name="notification_channel_miscellaneous_description">Miscellaneous notifications like errors etc.</string>
     <string name="notification_notify_error_title">Notification error</string>
-    <string name="notification_notify_error_text">An error has occurred while trying to create a system notification for a new message. The reason is most likely a missing notification sound.
-\n
-\nTap to open notification settings.</string>
+    <string name="notification_notify_error_text">An error has occurred while trying to create a system notification for a new message. The reason is most likely a missing notification sound. \n \nTap to open notification settings.</string>
     <string name="notification_authentication_error_title">Authentication failed</string>
     <string name="notification_certificate_error_public">Certificate error</string>
     <string name="notification_certificate_error_title">Certificate error for %1$s</string>

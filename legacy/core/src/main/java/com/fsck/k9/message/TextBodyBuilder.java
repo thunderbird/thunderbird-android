@@ -1,7 +1,7 @@
 package com.fsck.k9.message;
 
 
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.message.html.HtmlConverter;

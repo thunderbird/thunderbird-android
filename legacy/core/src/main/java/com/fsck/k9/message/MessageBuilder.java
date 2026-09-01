@@ -15,7 +15,7 @@ import com.fsck.k9.mail.internet.AddressHeaderBuilder;
 import com.fsck.k9.mail.internet.Headers;
 import net.thunderbird.core.android.account.Identity;
 import net.thunderbird.core.android.account.QuoteStyle;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 import com.fsck.k9.K9;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.mail.Address;

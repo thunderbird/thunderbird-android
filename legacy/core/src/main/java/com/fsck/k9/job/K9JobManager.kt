@@ -5,7 +5,7 @@ import androidx.work.WorkManager
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 class K9JobManager(
     private val workManager: WorkManager,

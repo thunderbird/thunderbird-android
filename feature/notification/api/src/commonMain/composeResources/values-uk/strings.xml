@@ -3,7 +3,7 @@
     <string name="notification_channel_push_title">Синхронізація (Push)</string>
     <string name="notification_channel_push_description">Показується під час очікування нових повідомлень</string>
     <string name="notification_channel_messages_title">Повідомлення</string>
-    <string name="notification_channel_messages_description">Сповіщення, пов\'язані з повідомленнями</string>
+    <string name="notification_channel_messages_description">Сповіщення, пов\\'язані з повідомленнями</string>
     <string name="notification_channel_miscellaneous_title">Різне</string>
     <string name="notification_channel_miscellaneous_description">Різноманітні сповіщення, такі як помилки тощо.</string>
     <string name="notification_notify_error_title">Помилка сповіщення</string>
@@ -12,7 +12,7 @@
     <string name="notification_certificate_error_public">Помилка сертифіката</string>
     <string name="notification_certificate_error_title">Помилка сертифіката для %1$s</string>
     <string name="notification_certificate_error_text">Перевірте налаштування вашого сервера</string>
-    <string name="notification_bg_sync_ticker">Перевірка пошти: %1$s:%2$s</string>
+    <string name="notification_bg_sync_ticker">Перевірка пошти: %1$s: %2$s</string>
     <string name="notification_bg_sync_title">Перевірка пошти</string>
     <string name="notification_bg_send_ticker">Надсилання листа: %1$s</string>
     <string name="notification_bg_send_title">Надсилання листа</string>

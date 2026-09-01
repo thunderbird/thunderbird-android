@@ -13,6 +13,7 @@ import net.thunderbird.feature.notification.api.ui.style.SnackbarDuration
  * Builder for creating [InAppNotificationStyle] instances.
  * This interface defines the methods available for configuring the style of an in-app notification.
  */
+@NotificationStyleMarker
 class InAppNotificationStyleBuilder internal constructor() {
     private var style: InAppNotificationStyle = InAppNotificationStyle.Undefined
 
@@ -37,7 +38,6 @@ class InAppNotificationStyleBuilder internal constructor() {
      * - Non-error messages such as warnings, success confirmations, or informational notices (these will use a
      * different component and are not part of the in-app error banner pattern)
      */
-    @NotificationStyleMarker
     fun bannerInline() {
         checkSingleStyleEntry<BannerInlineNotification>()
         style = BannerInlineNotification
@@ -67,7 +67,6 @@ class InAppNotificationStyleBuilder internal constructor() {
      * - Warnings that must interrupt the user’s flow or require immediate action (consider using
      * a [DialogNotification] in these cases)
      */
-    @NotificationStyleMarker
     fun bannerGlobal(priority: NotificationPriority = NotificationPriority.Min) {
         checkSingleStyleEntry<BannerGlobalNotification>()
         style = BannerGlobalNotification(priority = priority)
@@ -88,7 +87,6 @@ class InAppNotificationStyleBuilder internal constructor() {
      * - Account sync error feedback in the Unified Inbox (use a [BannerInlineNotification] or
      * [BannerGlobalNotification] for that context)
      */
-    @NotificationStyleMarker
     fun snackbar(duration: SnackbarDuration = SnackbarDuration.Short) {
         checkSingleStyleEntry<SnackbarNotification>()
         style = SnackbarNotification(duration)
@@ -110,7 +108,6 @@ class InAppNotificationStyleBuilder internal constructor() {
      * - Requesting background activity permission related to battery saver, since the app cannot reliably detect
      * the current permission state
      */
-    @NotificationStyleMarker
     fun dialog() {
         checkSingleStyleEntry<DialogNotification>()
         style = DialogNotification

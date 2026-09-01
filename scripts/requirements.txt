@@ -18,3 +18,7 @@ Jinja2==3.1.6
 # Required by: scripts/ci/setup_release_automation, scripts/ci/render-notes.py
 # HTTP library for GitHub API interactions
 requests==2.34.2
+
+# Required by: scripts/changelog/generate_changelog_json.py
+# JSON Schema validator (used with Draft202012Validator)
+jsonschema==4.26.0

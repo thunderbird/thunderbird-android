@@ -11,7 +11,7 @@ import androidx.loader.content.AsyncTaskLoader;
 
 import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.message.Attachment.LoadingState;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.internet.MimeUtility;

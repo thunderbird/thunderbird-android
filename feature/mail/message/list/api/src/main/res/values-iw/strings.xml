@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="swipe_action_select">בחר</string>
     <string name="swipe_action_deselect">בטל בחירה</string>
@@ -13,4 +13,19 @@
     <string name="swipe_action_spam">דואר זבל</string>
     <string name="swipe_action_move">העבר…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> נבחרו</string>
+    <string name="sort_by">סדר לפי…</string>
+    <string name="sort_by_date_asc">תאריך (ישן ביותר קודם)</string>
+    <string name="sort_by_date_desc">תאריך (חדש ביותר קודם)</string>
+    <string name="sort_by_arrival_asc">הגעה (ישן ביותר קודם)</string>
+    <string name="sort_by_arrival_desc">הגעה (חדש ביותר קודם)</string>
+    <string name="sort_by_subject_asc">נושא (א-ת)</string>
+    <string name="sort_by_subject_desc">נושא (ת-א)</string>
+    <string name="sort_by_sender_asc">שולח (א-ת)</string>
+    <string name="sort_by_sender_desc">שולח (ת-א)</string>
+    <string name="sort_by_flag_asc">מסומן בכוכב קודם</string>
+    <string name="sort_by_flag_desc">לא מסומן בכוכב קודם</string>
+    <string name="sort_by_unread_asc">לא נקרא קודם</string>
+    <string name="sort_by_unread_desc">נקרא קודם</string>
+    <string name="sort_by_attach_asc">עם קבצים מצורפים קודם</string>
+    <string name="sort_by_attach_desc">ללא קבצים מצורפים קודם</string>
 </resources>

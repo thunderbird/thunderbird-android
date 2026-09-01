@@ -123,9 +123,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Error de notificació</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">S\'ha produït un error en intentar crear una notificació del sistema per a un missatge nou. El motiu més probable és que falti un so de notificació.
-\n
-\nToqueu per obrir la configuració de notificació.</string>
+    <string name="notification_notify_error_text">S\'ha produït un error en intentar crear una notificació del sistema per a un missatge nou. El motiu més probable és que falti un so de notificació. \n \nToqueu per obrir la configuració de notificació.</string>
     <string name="notification_bg_sync_ticker">S\'està comprovant el correu: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">S\'està comprovant el correu</string>
     <string name="notification_bg_send_ticker">S\'està enviant correu: <xliff:g id="account">%s</xliff:g></string>
@@ -393,7 +391,7 @@
     <string name="account_settings_message_age_1_year">del darrer any</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronitza els elements suprimits al servidor</string>
     <string name="account_settings_sync_remote_deletetions_summary">Elimina els missatges quan se suprimeixin al servidor</string>
-    <string name="account_settings_openpgp_missing">Falta una aplicació d\'OpenPGP. S\'ha desinstal·lat\?</string>
+    <string name="account_settings_openpgp_missing">Falta una aplicació d\'OpenPGP. S\'ha desinstal·lat?</string>
     <string name="folder_settings_title">Configuració de les carpetes</string>
     <string name="folder_settings_in_top_group_label">Mostra al grup superior</string>
     <string name="folder_settings_clear_local_folder_action">Neteja els missatges locals</string>
@@ -555,16 +553,16 @@
     <string name="font_size_larger">Més gros</string>
     <string name="error_activity_not_found">No s\'ha trobat cap aplicació idònia per a aquesta acció.</string>
     <string name="send_failed_reason">Ha fallat l\'enviament: %s</string>
-    <string name="save_or_discard_draft_message_dlg_title">Deso l\'esborrany\?</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">Deso o descarto aquest missatge\?</string>
-    <string name="save_or_discard_draft_message_changes">Voleu desar o descartar els canvis\?</string>
-    <string name="confirm_discard_draft_message_title">Descarto el missatge\?</string>
-    <string name="confirm_discard_draft_message">Segur que voleu descartar aquest missatge\?</string>
+    <string name="save_or_discard_draft_message_dlg_title">Deso l\'esborrany?</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">Deso o descarto aquest missatge?</string>
+    <string name="save_or_discard_draft_message_changes">Voleu desar o descartar els canvis?</string>
+    <string name="confirm_discard_draft_message_title">Descarto el missatge?</string>
+    <string name="confirm_discard_draft_message">Segur que voleu descartar aquest missatge?</string>
     <string name="dialog_confirm_clear_local_folder_title">Voleu netejar els missatges locals?</string>
     <string name="dialog_confirm_clear_local_folder_message">Això eliminarà tots els missatges locals de la carpeta. No se suprimirà cap missatge del servidor.</string>
     <string name="dialog_confirm_clear_local_folder_action">Neteja els missatges</string>
     <string name="dialog_confirm_delete_title">Confirmeu l\'eliminació</string>
-    <string name="dialog_confirm_delete_message">Voleu suprimir aquest missatge\?</string>
+    <string name="dialog_confirm_delete_message">Voleu suprimir aquest missatge?</string>
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Realment voleu suprimir aquest missatge?</item>
         <item quantity="many">Realment voleu suprimir <xliff:g id="message_count">%1$d</xliff:g> missatges?</item>
@@ -573,9 +571,9 @@
     <string name="dialog_confirm_delete_confirm_button">Sí</string>
     <string name="dialog_confirm_delete_cancel_button">No</string>
     <string name="dialog_confirm_mark_all_as_read_title">Confirmeu marcar-ho tot com a llegit</string>
-    <string name="dialog_confirm_mark_all_as_read_message">Voleu marcar tots els missatges com a llegits\?</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Voleu marcar tots els missatges com a llegits?</string>
     <string name="dialog_confirm_empty_trash_title">Confirmeu buidar la paperera</string>
-    <string name="dialog_confirm_empty_trash_message">Voleu buidar la carpeta de la paperera\?</string>
+    <string name="dialog_confirm_empty_trash_message">Voleu buidar la carpeta de la paperera?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Sí</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">No</string>
     <string name="dialog_confirm_spam_title">Confirmeu moure-ho a la carpeta brossa</string>
@@ -688,8 +686,7 @@
     <string name="enable_sign_only">Habilita PGP de només signar</string>
     <string name="disable_sign_only">Inhabilita PGP de només signar</string>
     <string name="openpgp_inline_title">Mode PGP/INLINE</string>
-    <string name="openpgp_inline_text">El missatge s\'envia en format PGP/INLINE.
-\nAixò només s\'hauria de fer servir per compatibilitat:</string>
+    <string name="openpgp_inline_text">El missatge s\'envia en format PGP/INLINE. \nAixò només s\'hauria de fer servir per compatibilitat:</string>
     <string name="openpgp_inline_plus_compat">Alguns clients només admeten aquest format</string>
     <string name="openpgp_inline_minus_transit">Les signatures es poden trencar durant el trànsit</string>
     <string name="openpgp_inline_minus_attach">Els adjunts no s\'admeten</string>
@@ -750,8 +747,7 @@
     <string name="error_sign_only_no_encryption">Encriptació no disponible en mode de només signar!</string>
     <string name="unsigned_text_divider_label">Text no signat</string>
     <string name="crypto_no_provider_title">Aquest missatge està encriptat</string>
-    <string name="crypto_no_provider_message">Aquest missatge ha estat encriptat amb OpenPGP.
-\nPer llegir-lo, us caldrà instal·lar i configurar una aplicació d\'OpenPGP compatible.</string>
+    <string name="crypto_no_provider_message">Aquest missatge ha estat encriptat amb OpenPGP. \nPer llegir-lo, us caldrà instal·lar i configurar una aplicació d\'OpenPGP compatible.</string>
     <string name="crypto_no_provider_button">Ves a la configuració</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->

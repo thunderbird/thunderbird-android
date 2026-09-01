@@ -93,12 +93,11 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Тэма адсутнічае)</string>
     <string name="general_no_sender">Адпраўнік не вызначаны</string>
-    <string name="status_loading_more">Загрузка лістоў\u2026</string>
+    <string name="status_loading_more">Загрузка лістоў…</string>
     <string name="status_network_error">Памылка злучэння</string>
     <string name="status_invalid_id_error">Ліст не знойдзены</string>
     <string name="status_loading_error">Не ўдалося загрузіць ліст</string>
-    <string name="load_more_messages_fmt">Загрузіць да
-    <xliff:g id="messages_to_load">%d</xliff:g> наступных</string>
+    <string name="load_more_messages_fmt">Загрузіць да <xliff:g id="messages_to_load">%d</xliff:g> наступных</string>
     <string name="size_format_gigabytes">%.1f Гб</string>
     <string name="size_format_megabytes">%.1f Мб</string>
     <string name="size_format_kilobytes">%.1f Кб</string>
@@ -107,7 +106,7 @@
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> новы ліст</item>
         <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> новыя лісты</item>
         <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> новых лістоў</item>
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> новыя лісты</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> новых лістоў</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> яшчэ <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Адказаць</string>
@@ -792,13 +791,7 @@
     <string name="ac_transfer_finish">Каб скончыць, адкрыйце ліст на іншай прыладзе і ўвядзіце код усталёўкі.</string>
     <string name="ac_transfer_show_code">Паказаць код усталёўкі</string>
     <string name="ac_transfer_msg_subject">Наладжванне аўтаматычнага шыфравання</string>
-    <string name="ac_transfer_msg_body">Гэты ліст змяшчае ўсе звесткі, якія неабходныя для пераносу налад узаемнага аўтаматычнага шыфравання разам з сакрэтным ключом з зыходнай прылады.
-
-
-Для наладжвання ўзаемнага аўтаматычнага шыфравання на новай прыладзе выконвайце інструкцыі, якія паказваюцца на новай прыладзе.
-
-
-Вы можаце пакінуць гэты ліст як рэзервовую копію вашага сакрэтнага ключа. Запішыце і надзейна захавайце пароль.</string>
+    <string name="ac_transfer_msg_body">Гэты ліст змяшчае ўсе звесткі, якія неабходныя для пераносу налад узаемнага аўтаматычнага шыфравання разам з сакрэтным ключом з зыходнай прылады. Для наладжвання ўзаемнага аўтаматычнага шыфравання на новай прыладзе выконвайце інструкцыі, якія паказваюцца на новай прыладзе. Вы можаце пакінуць гэты ліст як рэзервовую копію вашага сакрэтнага ключа. Запішыце і надзейна захавайце пароль.</string>
     <string name="ac_transfer_error_send">Падчас адпраўлення ліста адбылася памылка. Калі ласка, праверце злучэнне і канфігурацыю сервера выходнай пошты.</string>
     <string name="switch_on">Укл</string>
     <string name="switch_off">Выкл</string>

@@ -7,7 +7,12 @@ import com.android.billingclient.api.PurchasesUpdatedListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.core.common.cache.Cache
+import net.thunderbird.core.configstore.ConfigDefinition
+import net.thunderbird.core.configstore.ConfigMapper
+import net.thunderbird.core.configstore.ConfigMigration
+import net.thunderbird.core.configstore.ConfigStore
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.funding.googleplay.data.local.configstore.ContributionConfig
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 import net.thunderbird.feature.funding.googleplay.domain.entity.Contribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId
@@ -15,10 +20,30 @@ import net.thunderbird.feature.funding.googleplay.domain.entity.OneTimeContribut
 import net.thunderbird.feature.funding.googleplay.domain.entity.PurchasedContribution
 import net.thunderbird.feature.funding.googleplay.domain.entity.RecurringContribution
 import com.android.billingclient.api.BillingClient as GoogleBillingClient
+import net.thunderbird.feature.funding.googleplay.data.local.configstore.ContributionPurchase as ContributionPurchaseConfig
 
 internal interface FundingDataContract {
 
+    interface Local {
+        interface ContributionConfigMapper : ConfigMapper<ContributionConfig>
+        interface ContributionConfigDefinition : ConfigDefinition<ContributionConfig>
+        interface ContributionConfigMigration : ConfigMigration
+        interface ContributionConfigStore : ConfigStore<ContributionConfig>
+
+        interface ContributionPurchaseDataSource {
+            fun get(): Flow<Outcome<PurchasedContribution?, ContributionError>>
+
+            suspend fun update(purchase: PurchasedContribution): Outcome<Unit, ContributionError>
+        }
+    }
+
     interface Mapper {
+        interface ContributionPurchase {
+            fun mapToContributionPurchase(purchasedContribution: PurchasedContribution): ContributionPurchaseConfig
+
+            fun mapToPurchasedContribution(contributionPurchase: ContributionPurchaseConfig): PurchasedContribution
+        }
+
         interface Product {
             fun mapToContribution(product: ProductDetails): Contribution
 
@@ -39,6 +64,11 @@ internal interface FundingDataContract {
 
     interface Remote {
         interface ContributionDataSource {
+
+            /**
+             * Purchase result received asynchronously from Google Play Billing.
+             */
+            val purchasedContribution: StateFlow<Outcome<PurchasedContribution?, ContributionError>>
 
             /**
              * Get all one-time contributions for the given product IDs.
@@ -171,11 +201,6 @@ internal interface FundingDataContract {
              *  Load purchased recurring contributions.
              */
             suspend fun loadPurchasedRecurringContributions(): Outcome<List<PurchasedContribution>, ContributionError>
-
-            /**
-             * Load the most recent one-time contribution.
-             */
-            suspend fun loadPurchasedOneTimeContributionHistory(): Outcome<PurchasedContribution?, ContributionError>
 
             /**
              * Purchase a contribution.

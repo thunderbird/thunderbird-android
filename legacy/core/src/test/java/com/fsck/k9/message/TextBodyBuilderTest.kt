@@ -4,7 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.message.quote.InsertableHtmlContent
 import com.fsck.k9.notification.FakePlatformConfigProvider
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.GeneralSettings
 import org.junit.Test

@@ -4,10 +4,10 @@ import app.k9mail.feature.account.setup.domain.usecase.ValidateEmailAddress.Vali
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.legacy.logging.Log
 import org.junit.Before
 import org.junit.Test
 

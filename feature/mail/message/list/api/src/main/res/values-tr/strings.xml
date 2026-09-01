@@ -14,4 +14,18 @@
     <string name="swipe_action_move">Taşı…</string>
     <string name="actionbar_selected">%d tane seçildi</string>
     <string name="sort_by">Sırala…</string>
+    <string name="sort_by_date_asc">Tarih (önce en eski)</string>
+    <string name="sort_by_date_desc">Tarih (önce en yeni)</string>
+    <string name="sort_by_arrival_asc">Geliş (önce en eski)</string>
+    <string name="sort_by_arrival_desc">Geliş (önce en yeni)</string>
+    <string name="sort_by_subject_asc">Konu (A-Z)</string>
+    <string name="sort_by_subject_desc">Konu (Z-A)</string>
+    <string name="sort_by_sender_asc">Gönderen (A-Z)</string>
+    <string name="sort_by_sender_desc">Gönderen (Z-A)</string>
+    <string name="sort_by_flag_asc">Önce yıldızlı</string>
+    <string name="sort_by_flag_desc">Önce yıldızsız</string>
+    <string name="sort_by_unread_asc">Önce okunmayan</string>
+    <string name="sort_by_unread_desc">Önce okunan</string>
+    <string name="sort_by_attach_asc">Önce eki olanlar</string>
+    <string name="sort_by_attach_desc">Önce eki olmayanlar</string>
 </resources>

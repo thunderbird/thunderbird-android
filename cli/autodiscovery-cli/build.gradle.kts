@@ -11,6 +11,7 @@ application {
 dependencies {
     implementation(projects.feature.autodiscovery.api)
     implementation(projects.feature.autodiscovery.autoconfig)
+    implementation(projects.legacy.logging)
 
     implementation(libs.clikt)
     implementation(libs.kxml2)

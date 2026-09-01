@@ -107,9 +107,7 @@
     <string name="message_compose_quote_header_cc">सीसी:</string>
     <string name="notification_notify_error_title">नोटिफिकेशन गड़बड़</string>
     <string name="debug_export_logs_success">एक्सपोर्ट पूरा हुआ। लॉग में प्राइवेट जानकारी हो सकती है। सिर्फ भरोसेमंद लोगों को ही भेजें।</string>
-    <string name="notification_notify_error_text">एक नए मैसेज के लिए सिस्टम नोटिफिकेशन बनाते टाइम एक गड़बड़ हुई। इसका वजह किसी नोटिफिकेशन आवाज़ का गुम होना होना चाहिए।
-\n
-\nनोटिफिकेशन सेटिंग खोलने के लिए दबाएं।</string>
+    <string name="notification_notify_error_text">एक नए मैसेज के लिए सिस्टम नोटिफिकेशन बनाते टाइम एक गड़बड़ हुई। इसका वजह किसी नोटिफिकेशन आवाज़ का गुम होना होना चाहिए। \n \nनोटिफिकेशन सेटिंग खोलने के लिए दबाएं।</string>
     <string name="debug_export_logs_title">लॉग एक्सपोर्ट करें</string>
     <string name="message_compose_content_hint">मैसेज टेक्सट</string>
     <string name="message_compose_quote_header_separator">-------- पुराना मैसेज--------</string>

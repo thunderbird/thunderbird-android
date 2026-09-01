@@ -25,7 +25,7 @@
     <string name="push_notification_state_alarm_permission_missing">Alarmak programatzeko baimena falta da</string>
     <string name="push_notification_info">Sakatu informazio gehiago lortzeko.</string>
     <string name="push_notification_grant_alarm_permission">Sakatu baimena emateko.</string>
-    <string name="push_info_disable_push_action">Desgaitu \"Push\"a</string>
+    <string name="push_info_disable_push_action">Desgaitu \\"Push\\"a</string>
     <string name="notification_action_reply">Erantzun</string>
     <string name="notification_action_mark_as_read">Markatu irakurritako gisa</string>
     <string name="notification_action_mark_all_as_read">Markatu denak irakurritako gisa</string>

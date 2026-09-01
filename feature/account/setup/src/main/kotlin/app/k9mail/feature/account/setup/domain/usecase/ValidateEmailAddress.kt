@@ -5,11 +5,11 @@ import net.thunderbird.core.common.mail.EmailAddressParserError
 import net.thunderbird.core.common.mail.EmailAddressParserException
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.core.common.mail.toUserEmailAddress
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.validation.ValidationError
 import net.thunderbird.core.validation.ValidationOutcome
 import net.thunderbird.core.validation.ValidationSuccess
+import net.thunderbird.legacy.logging.Log
 
 /**
  * Validate an email address that the user wants to add to an account.

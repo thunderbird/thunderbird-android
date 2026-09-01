@@ -7,9 +7,7 @@
     <string name="notification_channel_miscellaneous_title">その他</string>
     <string name="notification_channel_miscellaneous_description">エラーなどその他さまざまな通知</string>
     <string name="notification_notify_error_title">通知エラー</string>
-    <string name="notification_notify_error_text">新着メッセージのシステム通知の作成中にエラーが発生しました。通知サウンドが存在しないことが原因と思われます。
-\n
-\nタップして通知設定を開いてください。</string>
+    <string name="notification_notify_error_text">新着メッセージのシステム通知の作成中にエラーが発生しました。通知サウンドが存在しないことが原因と思われます。 \n \nタップして通知設定を開いてください。</string>
     <string name="notification_authentication_error_title">認証に失敗しました</string>
     <string name="notification_certificate_error_public">証明書エラー</string>
     <string name="notification_certificate_error_title">%1$s の証明書エラー</string>

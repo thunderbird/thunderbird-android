@@ -20,7 +20,7 @@ import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mailstore.MigrationsHelper
 import net.thunderbird.core.android.account.FolderMode
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Before
 import org.junit.Test

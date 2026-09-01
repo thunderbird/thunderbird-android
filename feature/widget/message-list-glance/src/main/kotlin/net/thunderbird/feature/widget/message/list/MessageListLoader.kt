@@ -7,10 +7,10 @@ import com.fsck.k9.search.getLegacyAccounts
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.account.SortType
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.display.visualSettings.message.list.MessageListPreferencesManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.search.legacy.sql.SqlWhereClause
+import net.thunderbird.legacy.logging.Log
 
 internal class MessageListLoader(
     private val accountManager: LegacyAccountManager,

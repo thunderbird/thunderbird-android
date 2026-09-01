@@ -8,7 +8,7 @@ import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.mailstore.MigrationsHelper;
 import com.fsck.k9.storage.migrations.Migrations;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {

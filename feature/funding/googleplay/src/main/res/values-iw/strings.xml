@@ -54,4 +54,6 @@
     <string name="funding_googleplay_contribution_reminder_negative_button">לא כרגע</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xl_description">התמיכה שלך מעוררת השראה! ועוזרת לנו לפרוץ גבולות ולהשיג את המטרות שלנו.</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">כן</string>
+    <string name="funding_googleplay_contribution_footer_payment_processing_button">מעבד רכישה…</string>
+    <string name="funding_googleplay_contribution_footer_payment_cancel_button">ביטול</string>
 </resources>

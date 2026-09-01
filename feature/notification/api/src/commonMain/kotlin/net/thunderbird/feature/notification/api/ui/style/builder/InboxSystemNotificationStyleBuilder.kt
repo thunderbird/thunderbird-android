@@ -1,5 +1,6 @@
 package net.thunderbird.feature.notification.api.ui.style.builder
 
+import net.thunderbird.feature.notification.api.ui.style.NotificationStyleMarker
 import net.thunderbird.feature.notification.api.ui.style.SystemNotificationStyle
 import org.jetbrains.annotations.VisibleForTesting
 
@@ -13,6 +14,7 @@ private const val MAX_LINES_ERROR_MESSAGE = "The maximum number of lines for a i
  * This style is used to display a list of items in the notification's content.
  * It is commonly used for email or messaging apps.
  */
+@NotificationStyleMarker
 class InboxSystemNotificationStyleBuilder internal constructor(
     private var bigContentTitle: String? = null,
     private var summary: String? = null,

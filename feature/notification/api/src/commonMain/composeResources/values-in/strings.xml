@@ -7,9 +7,7 @@
     <string name="notification_channel_miscellaneous_title">Lain-lain</string>
     <string name="notification_channel_miscellaneous_description">Notifikasi lainnya seperti kesalahan, dll.</string>
     <string name="notification_notify_error_title">Kesalahan notifikasi</string>
-    <string name="notification_notify_error_text">Kesalahan telah terjadi saat mencoba untuk membuat notifikasi sistem untuk pesan baru. Kemungkinan besar penyebabnya yaitu hilangnya suara notifikasi.
-\n
-\nKetuk untuk membuka pengaturan notifikasi.</string>
+    <string name="notification_notify_error_text">Kesalahan telah terjadi saat mencoba untuk membuat notifikasi sistem untuk pesan baru. Kemungkinan besar penyebabnya yaitu hilangnya suara notifikasi. \n \nKetuk untuk membuka pengaturan notifikasi.</string>
     <string name="notification_authentication_error_title">Autentikasi gagal</string>
     <string name="notification_certificate_error_public">Kesalahan sertifikat</string>
     <string name="notification_certificate_error_title">Kesalahan sertifikat untuk %1$s</string>

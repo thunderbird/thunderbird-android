@@ -1,7 +1,7 @@
 package com.fsck.k9.backend.jmap
 
 import java.net.UnknownHostException
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import rs.ltt.jmap.client.JmapClient
 import rs.ltt.jmap.client.api.EndpointNotFoundException
 import rs.ltt.jmap.client.api.UnauthorizedException

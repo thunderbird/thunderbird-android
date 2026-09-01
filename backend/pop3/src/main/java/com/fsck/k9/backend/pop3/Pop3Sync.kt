@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.exception.rootCauseMessage
 import net.thunderbird.core.common.mail.Flag
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 @Suppress("TooManyFunctions")
 internal class Pop3Sync(

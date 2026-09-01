@@ -30,7 +30,7 @@ import com.fsck.k9.message.quote.TextQuoteCreator;
 import com.fsck.k9.message.signature.HtmlSignatureRemover;
 import com.fsck.k9.message.signature.TextSignatureRemover;
 import net.thunderbird.core.android.account.QuoteStyle;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 
 

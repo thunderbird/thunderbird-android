@@ -91,12 +91,11 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(ekkert viðfangsefni)</string>
     <string name="general_no_sender">Enginn sendandi</string>
-    <string name="status_loading_more">Hleð inn skilaboðum\u2026</string>
+    <string name="status_loading_more">Hleð inn skilaboðum…</string>
     <string name="status_network_error">Villa í tengingu</string>
     <string name="status_invalid_id_error">Skilaboðin fundust ekki</string>
     <string name="status_loading_error">Villa við að hlaða inn skilaboðum</string>
-    <string name="load_more_messages_fmt">Hlaða inn allt
-    að <xliff:g id="messages_to_load">%d</xliff:g> til viðbótar</string>
+    <string name="load_more_messages_fmt">Hlaða inn allt að <xliff:g id="messages_to_load">%d</xliff:g> til viðbótar</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -524,7 +523,7 @@
     <string name="integrated_inbox_detail">Öll skilaboð í sameinuðum möppum</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Sameina</string>
     <string name="account_settings_no_folder_selected">Engin</string>
-    <string name="account_settings_automatic_special_folder">Sjálfvirkt  (%s)</string>
+    <string name="account_settings_automatic_special_folder">Sjálfvirkt (%s)</string>
     <string name="font_size_settings_title">Leturstærð</string>
     <string name="font_size_settings_description">Stilla stærð á letri</string>
     <string name="font_size_message_list">Skilaboðalistar</string>
@@ -780,12 +779,7 @@
     <string name="ac_transfer_finish">Til að ljúka uppsetningunni, opnaðu skilaboðin á hinu tækinu þínu og settu inn uppsetningarkóðann.</string>
     <string name="ac_transfer_show_code">Birta uppsetningarkóða</string>
     <string name="ac_transfer_msg_subject">Autocrypt uppsetningarpóstur</string>
-    <string name="ac_transfer_msg_body">Þessi skilaboð innihalda allar nauðsynlegar upplýsingar til að yfirfæra Autocrypt stillingarnar þínar ásamt leynilyklinum þínum af upprunalega tækinu þínu.
-
-Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum sem nýja tækið ætti að birta þér.
-
-Þú getur geymt þessi skilaboð og notað þau sem öryggisafrit fyrir leynilykilinn þinn. Ef þú ætlar að gera það, skaltu skrifa niður lykilorðið og geyma það á öruggum stað.
-</string>
+    <string name="ac_transfer_msg_body">Þessi skilaboð innihalda allar nauðsynlegar upplýsingar til að yfirfæra Autocrypt stillingarnar þínar ásamt leynilyklinum þínum af upprunalega tækinu þínu. Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum sem nýja tækið ætti að birta þér. Þú getur geymt þessi skilaboð og notað þau sem öryggisafrit fyrir leynilykilinn þinn. Ef þú ætlar að gera það, skaltu skrifa niður lykilorðið og geyma það á öruggum stað.</string>
     <string name="ac_transfer_error_send">Villa kom upp við að senda skilaboðin. Athugaðu internettenginguna þína og uppsetningu þjóns fyrir útsendan póst.</string>
     <string name="switch_on">Kveikt</string>
     <string name="switch_off">Slökkt</string>

@@ -13,9 +13,7 @@
     <string name="account_server_validation_error_server">サーバーエラー</string>
     <string name="account_server_validation_error_missing_server_capability">サーバーの機能が不足しています</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">クライアント証明書にアクセスできませんでした</string>
-    <string name="account_server_validation_error_missing_server_capability_details">この機能がサーバーにありません:
-\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">この機能がサーバーにありません: \n%s</string>
     <string name="account_server_validation_error_client_certificate_expired">このクライアント証明書の有効期限は満了しました</string>
-    <string name="account_server_validation_error_details">詳細:
-\n%s</string>
+    <string name="account_server_validation_error_details">詳細: \n%s</string>
 </resources>

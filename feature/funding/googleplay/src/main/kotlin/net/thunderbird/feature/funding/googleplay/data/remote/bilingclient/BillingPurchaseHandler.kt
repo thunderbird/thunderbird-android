@@ -52,7 +52,7 @@ internal class BillingPurchaseHandler(
         purchases: List<Purchase>,
     ): List<PurchasedContribution> {
         return purchases.flatMap { purchase ->
-            handleRecurringPurchase(clientProvider.current, purchase)
+            handleRecurringPurchase(clientProvider, purchase)
         }
     }
 
@@ -80,12 +80,16 @@ internal class BillingPurchaseHandler(
     }
 
     private fun handleRecurringPurchase(
-        billingClient: BillingClient,
+        clientProvider: Remote.BillingClientProvider,
         purchase: Purchase,
     ): List<PurchasedContribution> {
         coroutineScope.launch {
             // TODO verify purchase with public key
-            acknowledgePurchase(billingClient, purchase)
+            if (!purchase.isAcknowledged) {
+                acknowledgePurchase(clientProvider.current, purchase)
+            } else {
+                logger.debug(message = { "purchase already acknowledged" })
+            }
         }
 
         return extractRecurringContributions(purchase)
@@ -109,7 +113,7 @@ internal class BillingPurchaseHandler(
                     logger.error(message = { "acknowledgePurchase failed: ${acknowledgeResult.debugMessage}" })
                 }
             } else {
-                logger.error(message = { "purchase already acknowledged" })
+                logger.debug(message = { "purchase already acknowledged" })
             }
         } else {
             logger.error(message = { "purchase not purchased" })

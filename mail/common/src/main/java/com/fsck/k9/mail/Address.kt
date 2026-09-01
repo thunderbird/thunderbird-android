@@ -4,7 +4,7 @@ import com.fsck.k9.mail.helper.Rfc822Tokenizer
 import com.fsck.k9.mail.helper.TextUtils.isEmpty
 import java.io.Serializable
 import java.util.regex.Pattern
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import org.apache.james.mime4j.MimeException
 import org.apache.james.mime4j.codec.DecodeMonitor
 import org.apache.james.mime4j.codec.EncoderUtil

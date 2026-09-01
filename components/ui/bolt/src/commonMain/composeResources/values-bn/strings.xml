@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="bolt_molecule_error_view_button_retry">পুনরায় চেষ্টা</string>
     <string name="bolt_atom_password_textfield_hide_password">পাসওয়ার্ড লুকাও</string>
     <string name="bolt_atom_password_textfield_show_password">পাসওয়ার্ড দেখাও</string>
-    <string name="bolt_molecule_password_input_label">পাসওয়ার্ড</string>
     <string name="bolt_molecule_email_address_input_label">ইমেইল ঠিকানা</string>
+    <string name="bolt_molecule_error_view_button_retry">পুনরায় চেষ্টা</string>
+    <string name="bolt_molecule_password_input_label">পাসওয়ার্ড</string>
+    <string name="bolt_molecule_swipeable_row_end_to_start_accessibility_description">বাম: %1$s</string>
+    <string name="bolt_molecule_swipeable_row_start_to_end_accessibility_description">ডান: %1$s</string>
+    <string name="bolt_organism_thundermail_button_panel_scan_qr_code">কিউআর কোড স্ক্যান করুন</string>
+    <string name="bolt_organism_thundermail_button_panel_sign_in">Thundermail দিয়ে সাইন ইন করুন</string>
+    <string name="bolt_organism_thundermail_button_panel_sign_in_or">বা</string>
 </resources>

@@ -81,12 +81,11 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Tidak ada subjek)</string>
     <string name="general_no_sender">Tidak ada pengirim</string>
-    <string name="status_loading_more">Memuat pesan\u2026</string>
+    <string name="status_loading_more">Memuat pesan…</string>
     <string name="status_network_error">Galat sambungan</string>
     <string name="status_invalid_id_error">Pesan tidak ditemukan</string>
     <string name="status_loading_error">Kesalahan pemuatan pesan</string>
-    <string name="load_more_messages_fmt">Muat sampai
-    dengan <xliff:g id="messages_to_load">%d</xliff:g> lagi</string>
+    <string name="load_more_messages_fmt">Muat sampai dengan <xliff:g id="messages_to_load">%d</xliff:g> lagi</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -616,8 +615,7 @@
     <string name="enable_sign_only">Aktifkan PGP Sign-Only</string>
     <string name="disable_sign_only">Nonktifkan PGP Sign-Only</string>
     <string name="openpgp_inline_title">Mode PGP/INLINE</string>
-    <string name="openpgp_inline_text">Surel dikirim dalam format PGP/INLINE.
-\nHal ini hanya boleh digunakan untuk kompatibilitas:</string>
+    <string name="openpgp_inline_text">Surel dikirim dalam format PGP/INLINE. \nHal ini hanya boleh digunakan untuk kompatibilitas:</string>
     <string name="openpgp_inline_plus_compat">Beberapa klien hanya mendukung format ini</string>
     <string name="openpgp_inline_minus_transit">Tanda tangan bisa rusak saat transit</string>
     <string name="openpgp_inline_minus_attach">Lampiran tidak didukung</string>
@@ -678,8 +676,7 @@
     <string name="error_sign_only_no_encryption">Enkripsi tidak tersedia dalam mode tanda tangan saja!</string>
     <string name="unsigned_text_divider_label">Teks yang tidak ditandai</string>
     <string name="crypto_no_provider_title">Surel ini dienkripsi</string>
-    <string name="crypto_no_provider_message">Surel ini telah dienkripsi dengan OpenPGP.
-\nUntuk membacanya, Anda perlu menginstal dan mengatur Aplikasi OpenPGP yang kompatibel.</string>
+    <string name="crypto_no_provider_message">Surel ini telah dienkripsi dengan OpenPGP. \nUntuk membacanya, Anda perlu menginstal dan mengatur Aplikasi OpenPGP yang kompatibel.</string>
     <string name="crypto_no_provider_button">Pergi ke Pengaturan</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -779,9 +776,7 @@
     <string name="unsubscribe_action">Berhenti berlangganan</string>
     <string name="copy_subject_to_clipboard">Teks subjek disalin ke papan klip</string>
     <string name="notification_certificate_error_public">Kesalahan sertifikat</string>
-    <string name="notification_notify_error_text">Kesalahan telah terjadi saat mencoba untuk membuat notifikasi sistem untuk pesan baru. Kemungkinan besar penyebabnya yaitu hilangnya suara notifikasi.
-\n
-\nKetuk untuk membuka pengaturan notifikasi.</string>
+    <string name="notification_notify_error_text">Kesalahan telah terjadi saat mencoba untuk membuat notifikasi sistem untuk pesan baru. Kemungkinan besar penyebabnya yaitu hilangnya suara notifikasi. \n \nKetuk untuk membuka pengaturan notifikasi.</string>
     <string name="debug_export_logs_success">Ekspor berhasil. Log mungkin berisi informasi sensitif. Berhati-hatilah kepada siapa Anda mengirimkannya.</string>
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="message_view_me_text">saya</string>

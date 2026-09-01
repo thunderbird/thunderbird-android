@@ -14,8 +14,6 @@
     <string name="account_server_validation_error_client_certificate_expired">Klientský certifikát je již neplatný</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Klientský certifikát není přístupný</string>
     <string name="account_server_validation_error_missing_server_capability">Chybějící funkcionalita</string>
-    <string name="account_server_validation_error_missing_server_capability_details">Serveru chybí tato funkcionalita:
-\n%s</string>
-    <string name="account_server_validation_error_details">Detaily:
-\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Serveru chybí tato funkcionalita: \n%s</string>
+    <string name="account_server_validation_error_details">Detaily: \n%s</string>
 </resources>

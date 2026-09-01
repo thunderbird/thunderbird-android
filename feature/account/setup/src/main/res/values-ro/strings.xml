@@ -10,7 +10,7 @@
     <string name="account_setup_options_email_signature_error_blank">Numele semnăturii de e-mail nu poate fi necompletat.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">Este necesar să se aprobe configurația.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Am primit configurația pentru serverul de e-mail printr-o conexiune care nu este atât de sigură pe cât ne-am dori. Aceasta înseamnă că există o mică șansă ca cineva s-o fi modificat. Ai putea verifica din nou configurația furnizată pentru a te asigura că este așa cum ar trebui să fie\?</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Am primit configurația pentru serverul de e-mail printr-o conexiune care nu este atât de sigură pe cât ne-am dori. Aceasta înseamnă că există o mică șansă ca cineva s-o fi modificat. Ai putea verifica din nou configurația furnizată pentru a te asigura că este așa cum ar trebui să fie?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Editare configurație</string>
     <string name="account_setup_error_unknown">Eroare necunoscută</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>

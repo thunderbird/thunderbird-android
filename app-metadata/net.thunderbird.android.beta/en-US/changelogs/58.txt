@@ -1,0 +1,4 @@
+Thunderbird version 23.0b1
+
+Fixed:
+- Signature field only accepted single-line text in Composition defaults

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Синхронизирай (Push)</string>
     <string name="notification_channel_push_description">Да се показва докато чака за нови съобщения</string>
@@ -7,9 +7,7 @@
     <string name="notification_channel_miscellaneous_title">Разни</string>
     <string name="notification_channel_miscellaneous_description">Разни известия като грешки и т.н.</string>
     <string name="notification_notify_error_title">Грешка при известие</string>
-    <string name="notification_notify_error_text">Възникна грешка при създаването на известие за ново съобщение. Причината най-вероятно е липсващ звук за известия.
-\n
-\nДокоснете тук, за да отворите настройките на известията.</string>
+    <string name="notification_notify_error_text">Възникна грешка при създаването на известие за ново съобщение. Причината най-вероятно е липсващ звук за известия. \n \nДокоснете тук, за да отворите настройките на известията.</string>
     <string name="notification_authentication_error_title">Неуспешна идентификация</string>
     <string name="notification_certificate_error_public">Грешка в сертификата</string>
     <string name="notification_certificate_error_title">Грешка в сертификата на %1$s</string>

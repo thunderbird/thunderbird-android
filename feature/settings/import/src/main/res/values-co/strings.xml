@@ -26,12 +26,12 @@
         <item quantity="one">Per pudè impiegà u contu \"<xliff:g id="account">%s</xliff:g>\" ci vole à pruvede a parolla d’intesa di u servitore.</item>
         <item quantity="other">Per pudè impiegà u contu \"<xliff:g id="account">%s</xliff:g>\" ci vole à pruvede e parolle d’intesa di u servitore.</item>
     </plurals>
-    <string name="settings_import_server_name_format">Nome di u servitore : <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_server_name_format">Nome di u servitore : <xliff:g id="hostname">%s</xliff:g></string>
     <string name="settings_import_oauth_description">Per impiegà stu contu, ci vole à cunnettesi è cuncede à l’appiecazione l’accessu à a vostra messaghjeria.</string>
     <string name="settings_import_oauth_sign_in">Cunnettesi</string>
     <string name="settings_import_oauth_sign_in_with_google">Cunnettesi cù Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autorizazione abbandunata</string>
-    <string name="settings_import_oauth_error_oauth_flow_failed">Fiascu di l’autorizazione cù quellu sbagliu : <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Fiascu di l’autorizazione cù quellu sbagliu : <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">Attualmente, OAuth 2.0 ùn hè micca accettatu cù stu furnidore.</string>
     <string name="settings_import_pick_app_button">Impurtà da l’appiecazione</string>
     <string name="settings_import_pick_app_dialog_title">Impurtà da l’appiecazione</string>

@@ -34,4 +34,5 @@
     <string name="account_server_settings_authentication_password_cleartext">평문 비밀번호</string>
     <string name="account_server_settings_password_authentication_failed">인증에 실패했습니다!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">생체 인식 요청을 시작할 수 없습니다.</string>
+    <string name="account_server_settings_password_input_label">비밀번호</string>
 </resources>

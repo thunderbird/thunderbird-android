@@ -28,7 +28,7 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
-import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.legacy.logging.Log;
 
 
 /**

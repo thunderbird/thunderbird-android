@@ -10,7 +10,7 @@ import com.fsck.k9.mailstore.AttachmentResolver
 import kotlin.math.roundToInt
 import net.thunderbird.core.android.common.view.showInDarkMode
 import net.thunderbird.core.android.common.view.showInLightMode
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

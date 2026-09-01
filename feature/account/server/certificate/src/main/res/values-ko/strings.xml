@@ -9,8 +9,7 @@
     <string name="account_server_certificate_subject">서버</string>
     <string name="account_server_certificate_issuer">발급자</string>
     <string name="account_server_certificate_warning_title">경고</string>
-    <string name="account_server_certificate_unknown_error_description_format">잠재적인 보안 위협을 감지하여 <xliff:g id="serverName">%s</xliff:g>에 연결하지 않았습니다.
-\n계속 진행할 경우, 공격자가 비밀번호나 이메일과 같은 정보를 탈취하려 할 수 있습니다.</string>
+    <string name="account_server_certificate_unknown_error_description_format">잠재적인 보안 위협을 감지하여 <xliff:g id="serverName">%s</xliff:g>에 연결하지 않았습니다. \n계속 진행할 경우, 공격자가 비밀번호나 이메일과 같은 정보를 탈취하려 할 수 있습니다.</string>
     <string name="account_server_certificate_button_continue">위험을 감수하고 계속 진행</string>
     <string name="account_server_certificate_unknown_error_subtitle">인증서 오류</string>
     <string name="account_server_certificate_fingerprints_section">지문</string>

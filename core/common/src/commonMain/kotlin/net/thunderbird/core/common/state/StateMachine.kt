@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.common.state.StateMachine.Transition
+import net.thunderbird.core.common.state.builder.StateMachineBuilderDsl
 import net.thunderbird.core.common.state.builder.StateMachineDebugger
 import net.thunderbird.core.logging.Logger
 
@@ -33,6 +34,7 @@ internal typealias TransactionKey<TState, TEvent> = Pair<KClass<out TState>, KCl
  * @param TState The base sealed interface for all possible states.
  * @param TEvent The base sealed interface for all possible events.
  */
+@StateMachineBuilderDsl
 interface StateMachine<TState : Any, TEvent : Any> {
     val currentState: StateFlow<TState>
     val currentStateSnapshot: TState get() = currentState.value

@@ -4,7 +4,7 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
 import app.k9mail.core.android.common.database.getStringOrThrow
 import app.k9mail.core.android.common.database.map
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.legacy.logging.Log
 
 class DefaultStorageMigrationHelper : StorageMigrationHelper {
     override fun readAllValues(db: SQLiteDatabase): Map<String, String> {
