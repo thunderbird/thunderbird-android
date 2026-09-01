@@ -1,6 +1,7 @@
 package app.k9mail.legacy.mailstore
 
 import app.k9mail.legacy.mailstore.RemoteFolderTypeMapper.toFolderType
+import app.k9mail.legacy.mailstore.folder.extension.getFolderType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -17,11 +18,9 @@ import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.Folder
-import net.thunderbird.feature.mail.folder.api.FolderDetails
-import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
-import net.thunderbird.feature.mail.folder.api.data.repository.FolderPushTrackingRepository
+import net.thunderbird.feature.mail.folder.api.data.repository.PushFolderTrackingRepository
 
 @Suppress("TooManyFunctions")
 class DefaultFolderRepository(
@@ -30,7 +29,7 @@ class DefaultFolderRepository(
     private val outboxFolderManager: OutboxFolderManager,
     private val aggregateRepositories: AggregateRepositories,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : FolderRepository, FolderPushTrackingRepository by aggregateRepositories.folderPushTrackingRepository {
+) : FolderRepository, PushFolderTrackingRepository by aggregateRepositories.pushFolderTrackingRepository {
     override suspend fun getFolder(accountId: AccountId, folderId: Long): Folder? {
         val account = getAccountById(accountId)
         val messageStore = messageStoreManager.getMessageStore(accountId)
@@ -41,28 +40,6 @@ class DefaultFolderRepository(
                 name = folder.name,
                 type = folder.getFolderType(account, outboxFolderId),
                 isLocalOnly = folder.isLocalOnly,
-            )
-        }
-    }
-
-    override suspend fun getFolderDetails(accountId: AccountId, folderId: Long): FolderDetails? {
-        val account = getAccountById(accountId)
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-        val outboxFolderId = outboxFolderManager.getOutboxFolderId(accountId)
-        return messageStore.getFolder(folderId) { folder ->
-            FolderDetails(
-                folder = Folder(
-                    id = folder.id,
-                    name = folder.name,
-                    type = folder.getFolderType(account, outboxFolderId),
-                    isLocalOnly = folder.isLocalOnly,
-                ),
-                isInTopGroup = folder.isInTopGroup,
-                isIntegrate = folder.isIntegrate,
-                isSyncEnabled = folder.isSyncEnabled,
-                isVisible = folder.isVisible,
-                isNotificationsEnabled = folder.isNotificationsEnabled,
-                isPushEnabled = folder.isPushEnabled,
             )
         }
     }
@@ -143,43 +120,11 @@ class DefaultFolderRepository(
         return messageStore.getFolder(folderId) { true } ?: false
     }
 
-    override fun updateFolderDetails(accountId: AccountId, folderDetails: FolderDetails) {
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-        messageStore.updateFolderSettings(folderDetails)
-    }
-
-    override fun setIncludeInUnifiedInbox(accountId: AccountId, folderId: Long, includeInUnifiedInbox: Boolean) {
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-        messageStore.setIncludeInUnifiedInbox(folderId, includeInUnifiedInbox)
-    }
-
-    override fun setVisible(accountId: AccountId, folderId: Long, visible: Boolean) {
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-        messageStore.setVisible(folderId, visible)
-    }
-
-    override fun setSyncEnabled(accountId: AccountId, folderId: Long, enable: Boolean) {
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-        messageStore.setSyncEnabled(folderId, enable)
-    }
-
-    override fun setNotificationsEnabled(accountId: AccountId, folderId: Long, enable: Boolean) {
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-        messageStore.setNotificationsEnabled(folderId, enable)
-    }
-
-    private fun FolderDetailsAccessor.getFolderType(account: LegacyAccount, outboxFolderId: Long): FolderType =
-        if (id == outboxFolderId) {
-            FolderType.OUTBOX
-        } else {
-            FolderTypeMapper.folderTypeOf(account, id)
-        }
-
     private suspend fun getAccountById(accountId: AccountId): LegacyAccount =
         accountManager.getById(accountId).firstOrNull()
             ?: error("Account not found: $accountId")
 }
 
 class AggregateRepositories(
-    val folderPushTrackingRepository: FolderPushTrackingRepository,
+    val pushFolderTrackingRepository: PushFolderTrackingRepository,
 )

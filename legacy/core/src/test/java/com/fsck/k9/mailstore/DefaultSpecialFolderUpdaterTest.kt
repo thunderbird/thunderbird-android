@@ -18,6 +18,7 @@ import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.mail.Protocols
+import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
@@ -28,6 +29,9 @@ import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
+import net.thunderbird.feature.mail.folder.api.data.FolderError
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
+import net.thunderbird.feature.mail.folder.api.data.repository.PartialUpdatableFolderDetails
 import org.junit.Test
 
 @OptIn(ExperimentalUuidApi::class, ExperimentalCoroutinesApi::class)
@@ -36,6 +40,7 @@ class DefaultSpecialFolderUpdaterTest {
     private val account = createAccount(accountId)
     private val accountManager = FakeLegacyAccountManager(initialAccounts = listOf(account))
     private val folderRepository = FakeFolderRepository()
+    private val folderDetailsRepository = FakeFolderDetailsRepository()
     private val specialFolderSelectionStrategy = SpecialFolderSelectionStrategy()
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -45,6 +50,7 @@ class DefaultSpecialFolderUpdaterTest {
     private val subject = DefaultSpecialFolderUpdater(
         accountManager = accountManager,
         folderRepository = folderRepository,
+        folderDetailsRepository = folderDetailsRepository,
         specialFolderSelectionStrategy = specialFolderSelectionStrategy,
         accountId = accountId,
         coroutineScope = coroutineScope,
@@ -204,7 +210,6 @@ class DefaultSpecialFolderUpdaterTest {
         var remoteFolders: List<RemoteFolder> = emptyList()
 
         override suspend fun getFolder(accountId: AccountId, folderId: Long): Folder? = null
-        override suspend fun getFolderDetails(accountId: AccountId, folderId: Long): FolderDetails? = null
         override fun getRemoteFolders(accountId: AccountId): List<RemoteFolder> = remoteFolders
         override fun getRemoteFolderDetails(accountId: AccountId): List<RemoteFolderDetails> = emptyList()
         override fun getPushFoldersFlow(
@@ -215,21 +220,30 @@ class DefaultSpecialFolderUpdaterTest {
         override fun getFolderServerId(accountId: AccountId, folderId: Long): String? = null
         override fun getFolderId(accountId: AccountId, folderServerId: String): Long? = null
         override fun isFolderPresent(accountId: AccountId, folderId: Long): Boolean = false
-        override fun updateFolderDetails(accountId: AccountId, folderDetails: FolderDetails) = Unit
-        override fun setIncludeInUnifiedInbox(
-            accountId: AccountId,
-            folderId: Long,
-            includeInUnifiedInbox: Boolean,
-        ) = Unit
+        override fun observeEnabled(accountId: AccountId): Flow<Outcome<Boolean, FolderError>> {
+            TODO("Not yet implemented")
+        }
 
-        override fun setVisible(accountId: AccountId, folderId: Long, visible: Boolean) = Unit
-        override fun setSyncEnabled(accountId: AccountId, folderId: Long, enable: Boolean) = Unit
-        override fun setNotificationsEnabled(accountId: AccountId, folderId: Long, enable: Boolean) = Unit
-        override fun setPushDisabled(accountId: AccountId) = Unit
-        override fun hasPushEnabledFolder(accountId: AccountId): Boolean = false
-        override fun hasPushEnabledFolderFlow(
+        override suspend fun isEnabled(accountId: AccountId): Outcome<Boolean, FolderError> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun disable(accountId: AccountId): Outcome<Unit, FolderError> {
+            TODO("Not yet implemented")
+        }
+    }
+
+    private class FakeFolderDetailsRepository : FolderDetailsRepository {
+        override suspend fun findById(accountId: AccountId, folderId: Long): Outcome<FolderDetails?, FolderError> =
+            Outcome.success(null)
+
+        override suspend fun update(accountId: AccountId, folderDetails: FolderDetails): Outcome<Unit, FolderError> =
+            Outcome.success(Unit)
+
+        override suspend fun update(
             accountId: AccountId,
-        ): Flow<Boolean> = throw UnsupportedOperationException()
+            partialUpdate: PartialUpdatableFolderDetails,
+        ): Outcome<Unit, FolderError> = Outcome.success(Unit)
     }
 
     private class FakeLegacyAccountManager(

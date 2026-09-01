@@ -15,6 +15,8 @@ import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
+import net.thunderbird.feature.mail.folder.api.data.repository.PartialUpdatableFolderDetails
 
 /**
  * Updates special folders in [LegacyAccountDto] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they
@@ -25,6 +27,7 @@ import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
 class DefaultSpecialFolderUpdater(
     private val accountManager: LegacyAccountManager,
     private val folderRepository: FolderRepository,
+    private val folderDetailsRepository: FolderDetailsRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
     private val accountId: AccountId,
     private val coroutineScope: CoroutineScope,
@@ -43,7 +46,7 @@ class DefaultSpecialFolderUpdater(
         }
     }
 
-    private fun updateSpecialFoldersSynchronous() {
+    private suspend fun updateSpecialFoldersSynchronous() {
         var account: LegacyAccount = getAccountById(accountId)
         val folders = folderRepository.getRemoteFolders(accountId)
 
@@ -62,7 +65,7 @@ class DefaultSpecialFolderUpdater(
         updateAccount(account)
     }
 
-    private fun updateInbox(account: LegacyAccount, folders: List<RemoteFolder>): LegacyAccount {
+    private suspend fun updateInbox(account: LegacyAccount, folders: List<RemoteFolder>): LegacyAccount {
         val oldInboxId = account.inboxFolderId
         val newInboxId = folders.firstOrNull { it.type == FolderType.INBOX }?.id
         if (newInboxId == oldInboxId) return account
@@ -70,20 +73,28 @@ class DefaultSpecialFolderUpdater(
         val updated = account.copy(inboxFolderId = newInboxId)
 
         if (oldInboxId != null && folders.any { it.id == oldInboxId }) {
-            folderRepository.setIncludeInUnifiedInbox(accountId, oldInboxId, false)
+            val partialUpdate = PartialUpdatableFolderDetails(
+                folderId = oldInboxId,
+                includeInUnifiedInbox = false,
+            )
+            folderDetailsRepository.update(accountId, partialUpdate)
         }
 
         if (newInboxId != null) {
-            folderRepository.setIncludeInUnifiedInbox(accountId, newInboxId, true)
-            folderRepository.setVisible(accountId, newInboxId, true)
-            folderRepository.setSyncEnabled(accountId, newInboxId, true)
-            folderRepository.setNotificationsEnabled(accountId, newInboxId, true)
+            val partialUpdate = PartialUpdatableFolderDetails(
+                folderId = newInboxId,
+                includeInUnifiedInbox = true,
+                visible = true,
+                syncEnabled = true,
+                notificationsEnabled = true,
+            )
+            folderDetailsRepository.update(accountId, partialUpdate)
         }
 
         return updated
     }
 
-    private fun updateSpecialFolderSynchronous(
+    private suspend fun updateSpecialFolderSynchronous(
         account: LegacyAccount,
         type: FolderType,
         folders: List<RemoteFolder>,
@@ -150,7 +161,7 @@ class DefaultSpecialFolderUpdater(
         }
     }
 
-    private fun setSpecialFolderSynchronous(
+    private suspend fun setSpecialFolderSynchronous(
         account: LegacyAccount,
         type: FolderType,
         folderId: Long?,
@@ -198,7 +209,8 @@ class DefaultSpecialFolderUpdater(
         }
 
         if (folderId != null) {
-            folderRepository.setVisible(accountId, folderId, true)
+            val partialUpdate = PartialUpdatableFolderDetails(folderId = folderId, visible = true)
+            folderDetailsRepository.update(accountId, partialUpdate)
         }
 
         return updatedAccount
@@ -225,6 +237,7 @@ class DefaultSpecialFolderUpdater(
     class Factory(
         private val accountManager: LegacyAccountManager,
         private val folderRepository: FolderRepository,
+        private val folderDetailsRepository: FolderDetailsRepository,
         private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
         private val coroutineScope: CoroutineScope,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -232,6 +245,7 @@ class DefaultSpecialFolderUpdater(
         override fun create(accountId: AccountId): SpecialFolderUpdater = DefaultSpecialFolderUpdater(
             accountManager = accountManager,
             folderRepository = folderRepository,
+            folderDetailsRepository = folderDetailsRepository,
             specialFolderSelectionStrategy = specialFolderSelectionStrategy,
             accountId = accountId,
             coroutineScope = coroutineScope,

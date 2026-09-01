@@ -4,23 +4,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.SingleLiveEvent
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.legacy.logging.Log
+import net.thunderbird.core.outcome.fold
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderDetails
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
+import net.thunderbird.legacy.logging.Log
 
 private const val NO_FOLDER_ID = 0L
 
 class FolderSettingsViewModel(
     private val preferences: Preferences,
-    private val folderRepository: FolderRepository,
+    private val folderDetailsRepository: FolderDetailsRepository,
     private val messagingController: MessagingController,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
     private val actionLiveData = SingleLiveEvent<Action>()
     private var folderSettingsLiveData: LiveData<FolderSettingsResult>? = null
@@ -43,7 +46,7 @@ class FolderSettingsViewModel(
     ): LiveData<FolderSettingsResult> {
         return liveData(context = viewModelScope.coroutineContext) {
             val account = loadAccount(accountUuid)
-            val folderDetails = folderRepository.loadFolderDetails(account, folderId)
+            val folderDetails = folderDetailsRepository.loadFolderDetails(account, folderId)
             if (folderDetails == null) {
                 Log.w("Folder with ID $folderId not found")
                 emit(FolderNotFound)
@@ -55,22 +58,21 @@ class FolderSettingsViewModel(
 
             val folderSettingsData = FolderSettingsData(
                 folder = folderDetails.folder,
-                dataStore = FolderSettingsDataStore(folderRepository, account.id, folderDetails),
+                dataStore = FolderSettingsDataStore(folderDetailsRepository, account.id, folderDetails),
             )
             emit(folderSettingsData)
         }
     }
 
-    private suspend fun loadAccount(accountUuid: String): LegacyAccountDto {
-        return withContext(Dispatchers.IO) {
-            preferences.getAccount(accountUuid) ?: error("Missing account: $accountUuid")
-        }
+    private suspend fun loadAccount(accountUuid: String): LegacyAccountDto = withContext(ioDispatcher) {
+        preferences.getAccount(accountUuid) ?: error("Missing account: $accountUuid")
     }
 
-    private suspend fun FolderRepository.loadFolderDetails(account: LegacyAccountDto, folderId: Long): FolderDetails? {
-        return withContext(Dispatchers.IO) {
-            getFolderDetails(account.id, folderId)
-        }
+    private suspend fun FolderDetailsRepository.loadFolderDetails(
+        account: LegacyAccountDto,
+        folderId: Long,
+    ): FolderDetails? = withContext(ioDispatcher) {
+        findById(account.id, folderId).fold(onSuccess = { it }, onFailure = { null })
     }
 
     fun showClearFolderConfirmationDialog() {

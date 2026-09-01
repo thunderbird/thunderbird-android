@@ -28,7 +28,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
-class DefaultFolderPushTrackingRepositoryTest {
+class DefaultPushFolderTrackingRepositoryTest {
     private val account = LegacyAccountDto(ACCOUNT_ID_RAW)
     private val accountId = account.id
     private val messageStore = mock<ListenableMessageStore>()
@@ -37,7 +37,7 @@ class DefaultFolderPushTrackingRepositoryTest {
         messageStoresByUuid = mapOf(account.uuid to messageStore),
     )
     private val messageStoreManager = MessageStoreManager(accountManager, messageStoreFactory)
-    private val testSubject = DefaultFolderPushTrackingRepository(
+    private val testSubject = DefaultPushFolderTrackingRepository(
         logger = TestLogger(),
         messageStoreManager = messageStoreManager,
         ioDispatcher = Dispatchers.Unconfined,

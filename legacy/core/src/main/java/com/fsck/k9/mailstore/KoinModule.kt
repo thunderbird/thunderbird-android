@@ -5,7 +5,8 @@ import app.k9mail.legacy.mailstore.DefaultFolderRepository
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.mailstore.MessageStoreManager
-import app.k9mail.legacy.mailstore.folder.push.DefaultFolderPushTrackingRepository
+import app.k9mail.legacy.mailstore.folder.DefaultFolderDetailsRepository
+import app.k9mail.legacy.mailstore.folder.push.DefaultPushFolderTrackingRepository
 import com.fsck.k9.mailstore.folder.DefaultOutboxFolderManager
 import com.fsck.k9.message.extractors.AttachmentCounter
 import com.fsck.k9.message.extractors.MessageFulltextCreator
@@ -14,12 +15,21 @@ import kotlin.time.ExperimentalTime
 import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.core.common.cache.TimeLimitedCache
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
-import net.thunderbird.feature.mail.folder.api.data.repository.FolderPushTrackingRepository
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
+import net.thunderbird.feature.mail.folder.api.data.repository.PushFolderTrackingRepository
 import org.koin.dsl.module
 
 val mailStoreModule = module {
-    single<FolderPushTrackingRepository> {
-        DefaultFolderPushTrackingRepository(logger = get(), messageStoreManager = get())
+    single<PushFolderTrackingRepository> {
+        DefaultPushFolderTrackingRepository(logger = get(), messageStoreManager = get())
+    }
+    single<FolderDetailsRepository> {
+        DefaultFolderDetailsRepository(
+            logger = get(),
+            accountManager = get(),
+            outboxFolderManager = get(),
+            messageStoreManager = get(),
+        )
     }
     single<FolderRepository> {
         DefaultFolderRepository(
@@ -27,7 +37,7 @@ val mailStoreModule = module {
             messageStoreManager = get(),
             outboxFolderManager = get(),
             aggregateRepositories = AggregateRepositories(
-                folderPushTrackingRepository = get(),
+                pushFolderTrackingRepository = get(),
             ),
         )
     }
