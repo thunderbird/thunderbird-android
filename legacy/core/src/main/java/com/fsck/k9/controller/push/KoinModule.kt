@@ -12,6 +12,7 @@ internal val controllerPushModule = module {
             backendManager = get(),
             messagingController = get(),
             folderRepository = get(),
+            pushFoldersQueryRepository = get(),
             logger = get(),
         )
     }
