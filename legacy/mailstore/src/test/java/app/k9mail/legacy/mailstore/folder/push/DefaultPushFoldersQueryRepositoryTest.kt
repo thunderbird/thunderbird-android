@@ -1,13 +1,10 @@
 package app.k9mail.legacy.mailstore.folder.push
 
 import app.cash.turbine.test
-import app.k9mail.legacy.mailstore.FolderDetailsAccessor
-import app.k9mail.legacy.mailstore.FolderMapper
 import app.k9mail.legacy.mailstore.FolderSettingsChangedListener
 import app.k9mail.legacy.mailstore.ListenableMessageStore
 import app.k9mail.legacy.mailstore.MessageStoreFactory
 import app.k9mail.legacy.mailstore.MessageStoreManager
-import app.k9mail.legacy.mailstore.MoreMessages
 import app.k9mail.legacy.mailstore.RemoteFolderDetails
 import assertk.assertFailure
 import assertk.assertThat
@@ -27,21 +24,20 @@ import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.data.FolderError
-import org.mockito.kotlin.any
+import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderDetailsRepository
 import org.mockito.kotlin.argumentCaptor
-import org.mockito.kotlin.doThrow
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
 
 private const val INBOX_FOLDER_ID = 1L
 private const val ARCHIVE_FOLDER_ID = 2L
 
+@Suppress("MaxLineLength")
 class DefaultPushFoldersQueryRepositoryTest {
     private val account = LegacyAccountDto(ACCOUNT_ID_RAW)
     private val accountId = account.id
@@ -51,18 +47,22 @@ class DefaultPushFoldersQueryRepositoryTest {
         messageStoresByUuid = mapOf(account.uuid to messageStore),
     )
     private val messageStoreManager = MessageStoreManager(accountManager, messageStoreFactory)
+    private val remoteFolderDetailsRepository = FakeRemoteFolderDetailsRepository()
     private val testSubject = DefaultPushFoldersQueryRepository(
         logger = TestLogger(),
         messageStoreManager = messageStoreManager,
+        remoteFolderDetailsRepository = remoteFolderDetailsRepository,
         ioDispatcher = Dispatchers.Unconfined,
     )
 
     @Test
-    fun `getAllByAccountId should return Success with push enabled folders`() {
+    fun `getAllByAccountId should return Success with push enabled folders`() = runTest {
         // Arrange
-        stubGetFolders(
-            FakeFolderDetailsAccessor(id = INBOX_FOLDER_ID, name = "Inbox", isPushEnabled = true),
-            FakeFolderDetailsAccessor(id = ARCHIVE_FOLDER_ID, name = "Archive", isPushEnabled = false),
+        remoteFolderDetailsRepository.outcome = Outcome.success(
+            listOf(
+                createRemoteFolderDetails(id = INBOX_FOLDER_ID, name = "Inbox", isPushEnabled = true),
+                createRemoteFolderDetails(id = ARCHIVE_FOLDER_ID, name = "Archive", isPushEnabled = false),
+            ),
         )
 
         // Act
@@ -84,10 +84,10 @@ class DefaultPushFoldersQueryRepositoryTest {
     }
 
     @Test
-    fun `getAllByAccountId should return Failure with NotFound when there are no push enabled folders`() {
+    fun `getAllByAccountId should return Failure with NotFound when there are no push enabled folders`() = runTest {
         // Arrange
-        stubGetFolders(
-            FakeFolderDetailsAccessor(id = INBOX_FOLDER_ID, name = "Inbox", isPushEnabled = false),
+        remoteFolderDetailsRepository.outcome = Outcome.success(
+            listOf(createRemoteFolderDetails(id = INBOX_FOLDER_ID, name = "Inbox", isPushEnabled = false)),
         )
 
         // Act
@@ -98,9 +98,9 @@ class DefaultPushFoldersQueryRepositoryTest {
     }
 
     @Test
-    fun `getAllByAccountId should return Failure with NotFound when there are no folders at all`() {
+    fun `getAllByAccountId should return Failure with NotFound when there are no folders at all`() = runTest {
         // Arrange
-        stubGetFolders()
+        remoteFolderDetailsRepository.outcome = Outcome.success(emptyList())
 
         // Act
         val result = testSubject.getAllByAccountId(accountId)
@@ -110,33 +110,38 @@ class DefaultPushFoldersQueryRepositoryTest {
     }
 
     @Test
-    fun `getAllByAccountId should throw when account does not exist`() {
-        // Arrange
-        val unknownAccountId = AccountIdFactory.of(ACCOUNT_ID_OTHER_RAW)
+    fun `getAllByAccountId should return Failure with NotFound when the folder details repository returns AccountNotFound`() =
+        runTest {
+            // Arrange
+            remoteFolderDetailsRepository.outcome = Outcome.failure(FolderError.AccountNotFound)
 
-        // Act & Assert
-        assertFailure {
-            testSubject.getAllByAccountId(unknownAccountId)
-        }.isInstanceOf<IllegalStateException>()
-    }
+            // Act
+            val result = testSubject.getAllByAccountId(accountId)
+
+            // Assert
+            assertThat(result).isEqualTo(Outcome.failure(FolderError.NotFound))
+        }
 
     @Test
-    fun `getAllByAccountId should rethrow MessagingException thrown by the message store`() {
-        // Arrange
-        val exception = MessagingException("failed to fetch folders")
-        doThrow(exception).whenever(messageStore).getFolders<RemoteFolderDetails>(any(), any())
+    fun `getAllByAccountId should rethrow the throwable when the folder details repository returns FailedToQueryDatabase`() =
+        runTest {
+            // Arrange
+            val exception = MessagingException("failed to fetch folders")
+            remoteFolderDetailsRepository.outcome = Outcome.failure(
+                FolderError.FailedToQueryDatabase(message = "Failed to query database.", throwable = exception),
+            )
 
-        // Act & Assert
-        assertFailure {
-            testSubject.getAllByAccountId(accountId)
-        }.isEqualTo(exception)
-    }
+            // Act & Assert
+            assertFailure {
+                testSubject.getAllByAccountId(accountId)
+            }.isEqualTo(exception)
+        }
 
     @Test
     fun `observeAllByAccountId should emit the current push folders on subscription`() = runTest {
         // Arrange
-        stubGetFolders(
-            FakeFolderDetailsAccessor(id = INBOX_FOLDER_ID, name = "Inbox", isPushEnabled = true),
+        remoteFolderDetailsRepository.outcome = Outcome.success(
+            listOf(createRemoteFolderDetails(id = INBOX_FOLDER_ID, name = "Inbox", isPushEnabled = true)),
         )
 
         // Act & Assert
@@ -160,8 +165,8 @@ class DefaultPushFoldersQueryRepositoryTest {
     @Test
     fun `observeAllByAccountId should emit an updated result when folder settings change`() = runTest {
         // Arrange
-        stubGetFolders(
-            FakeFolderDetailsAccessor(id = INBOX_FOLDER_ID, name = "Inbox", isPushEnabled = false),
+        remoteFolderDetailsRepository.outcome = Outcome.success(
+            listOf(createRemoteFolderDetails(id = INBOX_FOLDER_ID, name = "Inbox", isPushEnabled = false)),
         )
         val listenerCaptor = argumentCaptor<FolderSettingsChangedListener>()
 
@@ -170,8 +175,8 @@ class DefaultPushFoldersQueryRepositoryTest {
             assertThat(awaitItem()).isEqualTo(Outcome.failure(FolderError.NotFound))
 
             verify(messageStore).addFolderSettingsChangedListener(listenerCaptor.capture())
-            stubGetFolders(
-                FakeFolderDetailsAccessor(id = INBOX_FOLDER_ID, name = "Inbox", isPushEnabled = true),
+            remoteFolderDetailsRepository.outcome = Outcome.success(
+                listOf(createRemoteFolderDetails(id = INBOX_FOLDER_ID, name = "Inbox", isPushEnabled = true)),
             )
             listenerCaptor.firstValue.onFolderSettingsChanged()
 
@@ -194,8 +199,8 @@ class DefaultPushFoldersQueryRepositoryTest {
     @Test
     fun `observeAllByAccountId should not emit duplicate consecutive results`() = runTest {
         // Arrange
-        stubGetFolders(
-            FakeFolderDetailsAccessor(id = INBOX_FOLDER_ID, name = "Inbox", isPushEnabled = true),
+        remoteFolderDetailsRepository.outcome = Outcome.success(
+            listOf(createRemoteFolderDetails(id = INBOX_FOLDER_ID, name = "Inbox", isPushEnabled = true)),
         )
         val listenerCaptor = argumentCaptor<FolderSettingsChangedListener>()
 
@@ -214,8 +219,8 @@ class DefaultPushFoldersQueryRepositoryTest {
     @Test
     fun `observeAllByAccountId should remove the folder settings listener when the flow is cancelled`() = runTest {
         // Arrange
-        stubGetFolders(
-            FakeFolderDetailsAccessor(id = INBOX_FOLDER_ID, name = "Inbox", isPushEnabled = true),
+        remoteFolderDetailsRepository.outcome = Outcome.success(
+            listOf(createRemoteFolderDetails(id = INBOX_FOLDER_ID, name = "Inbox", isPushEnabled = true)),
         )
         val listenerCaptor = argumentCaptor<FolderSettingsChangedListener>()
 
@@ -241,33 +246,26 @@ class DefaultPushFoldersQueryRepositoryTest {
         }
     }
 
-    private fun stubGetFolders(vararg accessors: FolderDetailsAccessor) {
-        whenever(messageStore.getFolders<RemoteFolderDetails>(eq(true), any())).thenAnswer { invocation ->
-            val mapper = invocation.getArgument<FolderMapper<RemoteFolderDetails>>(1)
-            accessors.map { mapper.map(it) }
-        }
-    }
+    private fun createRemoteFolderDetails(
+        id: Long,
+        name: String,
+        isPushEnabled: Boolean,
+    ): RemoteFolderDetails = RemoteFolderDetails(
+        folder = RemoteFolder(id = id, serverId = "serverId", name = name, type = FolderType.REGULAR),
+        isInTopGroup = false,
+        isIntegrate = false,
+        isSyncEnabled = true,
+        isVisible = true,
+        isNotificationsEnabled = true,
+        isPushEnabled = isPushEnabled,
+    )
 }
 
-private class FakeFolderDetailsAccessor(
-    override val id: Long,
-    override val name: String = "Folder",
-    override val serverId: String? = "serverId",
-    override val type: com.fsck.k9.mail.FolderType = com.fsck.k9.mail.FolderType.REGULAR,
-    override val isLocalOnly: Boolean = false,
-    override val isInTopGroup: Boolean = false,
-    override val isIntegrate: Boolean = false,
-    override val isSyncEnabled: Boolean = true,
-    override val isVisible: Boolean = true,
-    override val isNotificationsEnabled: Boolean = true,
-    override val isPushEnabled: Boolean = false,
-    override val visibleLimit: Int = 25,
-    override val moreMessages: MoreMessages = MoreMessages.UNKNOWN,
-    override val lastChecked: Long? = null,
-    override val unreadMessageCount: Int = 0,
-    override val starredMessageCount: Int = 0,
-) : FolderDetailsAccessor {
-    override fun serverIdOrThrow(): String = serverId ?: error("serverId is null")
+private class FakeRemoteFolderDetailsRepository(
+    var outcome: Outcome<List<RemoteFolderDetails>, FolderError> = Outcome.success(emptyList()),
+) : RemoteFolderDetailsRepository {
+    override suspend fun getAllByAccountId(accountId: AccountId): Outcome<List<RemoteFolderDetails>, FolderError> =
+        outcome
 }
 
 private class FakePushFoldersLegacyAccountDtoManager(
@@ -289,6 +287,6 @@ private class FakePushFoldersLegacyAccountDtoManager(
 private class FakePushFoldersMessageStoreFactory(
     private val messageStoresByUuid: Map<String, ListenableMessageStore>,
 ) : MessageStoreFactory {
-    override fun create(account: LegacyAccountDto): ListenableMessageStore = messageStoresByUuid.getValue(account.uuid)
+    override fun create(account: LegacyAccountDto): ListenableMessageStore =
+        messageStoresByUuid.getValue(account.uuid)
 }
-

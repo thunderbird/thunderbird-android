@@ -30,7 +30,7 @@ class SettingsExporter(
     private val filePrefixProvider: FilePrefixProvider,
 ) {
     @Throws(SettingsImportExportException::class)
-    fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
+    suspend fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
         try {
             contentResolver.openOutputStream(uri, "wt")!!.use { outputStream ->
                 exportPreferences(outputStream, includeGlobals, accountUuids, includePasswords = false)
@@ -41,7 +41,7 @@ class SettingsExporter(
     }
 
     @Throws(SettingsImportExportException::class)
-    fun exportPreferences(
+    suspend fun exportPreferences(
         outputStream: OutputStream,
         includeGlobals: Boolean,
         accountUuids: Set<String>,
@@ -123,7 +123,7 @@ class SettingsExporter(
     }
 
     @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth")
-    private fun writeAccount(
+    private suspend fun writeAccount(
         serializer: XmlSerializer,
         account: LegacyAccountDto,
         prefs: Map<String, Any>,

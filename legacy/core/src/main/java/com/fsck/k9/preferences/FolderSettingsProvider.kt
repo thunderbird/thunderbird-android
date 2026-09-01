@@ -1,12 +1,15 @@
 package com.fsck.k9.preferences
 
-import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.mailstore.RemoteFolderDetails
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.outcome.fold
+import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderDetailsRepository
 
-class FolderSettingsProvider(private val folderRepository: FolderRepository) {
-    fun getFolderSettings(account: LegacyAccountDto): List<FolderSettings> {
-        return folderRepository.getRemoteFolderDetails(account.id)
+class FolderSettingsProvider(private val remoteFolderDetailsRepository: RemoteFolderDetailsRepository) {
+    suspend fun getFolderSettings(account: LegacyAccountDto): List<FolderSettings> {
+        return remoteFolderDetailsRepository
+            .getAllByAccountId(account.id)
+            .fold(onSuccess = { it }, onFailure = { emptyList() })
             .filterNot { it.containsOnlyDefaultValues() }
             .map { it.toFolderSettings() }
     }
