@@ -91,10 +91,10 @@ The migration runs before normal mail access is available. A dedicated migration
 Android migration activity or introduce a suitable replacement, shows non-sensitive progress and a clear completion or
 failure state. A migration gate holds startup, sync, and other background mail work until migration completes or fails.
 
-1. Create and verify the required RFC 0008 archive for POP3 accounts. The user may decline it after an explicit warning
-   and continue at their own risk. IMAP export is optional.
-2. Check available storage against the required headroom and fail with an actionable error when it is insufficient.
-   Then create an unpublished global database.
+1. Calculate the required storage headroom and compare it with available space. If space is insufficient, block the
+   migration and report how much additional space is needed.
+2. Create and verify the required RFC 0008 archive for POP3 accounts. The user may decline it after an explicit warning
+   and continue at their own risk. IMAP export is optional. Then create an unpublished global database.
 3. Read legacy databases and attachment directories without modifying them. Import every durable record.
 4. Copy each attachment to its target and validate it. If validation fails, record the failure in the migration result
    and fail the migration.
@@ -113,6 +113,24 @@ references use the global identifier model.
 
 Before step 6, global data is not visible to normal mail code. Any failure before that step keeps legacy storage
 authoritative. A later retry starts with a new unpublished import.
+
+### Pre-flight storage check
+
+The pre-flight check runs as the first foreground migration phase, before creating the unpublished database. It
+inventories the legacy databases and file-backed attachments, then calculates the additional space needed while legacy
+and global storage coexist. Required headroom includes the estimated global database, copied attachments, rebuilt search
+data, SQLite transaction and temporary-file growth, and a safety margin. If an RFC 0008 archive is written to the same
+volume, its estimated size is also included.
+
+Migration starts only when available space on the target volume meets the calculated headroom. If it does not, the
+migration screen shows the required, available, and additional space in user-readable units and provides a retry action.
+A warning with an option to continue is not sufficient because running out of space makes successful migration
+impossible.
+
+Available space can change after pre-flight. Write failures caused by exhausted storage fail the unpublished import
+without changing the authoritative store. Restart recovery removes the incomplete target before another pre-flight check
+and retry. The estimator and safety margin are verified against migration fixtures representing the largest supported
+legacy schema and attachment layouts.
 
 ### Android execution and progress
 
@@ -202,6 +220,8 @@ Automated tests cover:
 - schema creation, migration, and restart recovery
 - every durable table and attachment type in the inventory
 - POP3 archive gating and IMAP optional export
+- headroom calculation, insufficient-space blocking, and user-visible required-space reporting
+- storage exhaustion after pre-flight without publishing the incomplete target
 - migration continuing after the activity is backgrounded or its task is dismissed
 - consistency between in-app progress, foreground notification progress, and the durable migration state
 - foreground service completion, failure, platform timeout, and user-stop handling
