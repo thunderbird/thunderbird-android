@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="thundermail_redirecting">Omdirigerar till Thundermail...</string>
+    <string name="thundermail_redirecting">Omdirigerar till Thundermail…</string>
     <string name="thundermail_something_went_wrong">Något gick fel</string>
     <string name="thundermail_browser_is_not_available">Webbläsaren är inte tillgänglig. Vänligen verifiera din enhets konfiguration</string>
     <string name="thundermail_operation_was_canceled">Operationen avbröts</string>
     <string name="thundermail_unknown_error_please_consider_reporting">Okänt fel. Vänligen överväg att rapportera.</string>
+    <string name="thundermail_add_account">Lägg till konto</string>
+    <string name="thundermail_add_an_email_account">Lägg till ett e-postkonto</string>
+    <string name="thundermail_what_is_thundermail">Vad är Thundermail?</string>
+    <string name="thundermail_or_divider">– eller –</string>
 </resources>

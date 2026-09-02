@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Kom igång</string>
-    <string name="onboarding_welcome_import_button">Importera inställningar</string>
+    <string name="onboarding_welcome_import_button">Importera K-9-inställningar</string>
     <string name="onboarding_welcome_text">En e-postapp med öppen källkod, integritetsfokuserad och annonsfri för Android.</string>
     <string name="onboarding_welcome_developed_by">Utvecklad av ett dedikerat team på MZLA Technologies och en global gemenskap av volontärer. En del av Mozilla-familjen.</string>
 </resources>
