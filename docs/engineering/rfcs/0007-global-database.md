@@ -73,10 +73,10 @@ policy.
 
 The migration has one authoritative mail store at a time:
 
-1. For every POP3 account, create and verify the portable mail archive defined by RFC 0008. A user may decline the
+1. Calculate and display the required storage headroom. Do not start the migration when available space is insufficient.
+2. For every POP3 account, create and verify the portable mail archive defined by RFC 0008. A user may decline the
    archive after an explicit warning and continue at their own risk. For IMAP accounts, offer the same archive as an
    optional action.
-2. Check available storage against the required headroom. Fail with an actionable error when it is insufficient.
 3. Read legacy storage without modifying it. Import durable data into an unpublished global database.
 4. Rebuild derived data, then validate the imported database, queued operations, attachments, and representative search
    queries.
@@ -85,6 +85,11 @@ The migration has one authoritative mail store at a time:
 
 Before cutover, legacy storage remains authoritative. After cutover, global storage remains authoritative. There are no
 dual reads, dual writes, or fallback to legacy storage.
+
+The free-space check is a blocking pre-flight requirement, not a warning. Migration temporarily needs enough storage for
+the legacy and global stores to coexist, along with working space for database transactions and rebuilt data. If the
+check fails, the app tells the user how much additional space is required and asks them to free storage before retrying.
+The technical design defines the headroom calculation and runtime handling if available space changes during migration.
 
 Failures before cutover leave legacy storage authoritative and report an actionable error locally. The user can retry
 the migration without losing access to the legacy data. An attachment that fails to copy or validate is recorded in the
