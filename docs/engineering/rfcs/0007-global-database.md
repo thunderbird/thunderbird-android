@@ -5,7 +5,7 @@
 - Related RFC: [UUIDv7 Identifier Migration](0009-uuidv7-identifier-migration.md)
 - Repository pattern: [ADR 0010 proposal](https://github.com/thunderbird/thunderbird-android/pull/11452)
 - Portable data format: [RFC 0008: Portable Profile Data Format](0008-portable-profile-data-format.md)
-- Status: **Proposed**
+- Status: **Accepted**
 - Backend decision: **Room 3 selected by the
   [completed database spike](https://github.com/thunderbird/thunderbird-android/issues/11195)**
 
