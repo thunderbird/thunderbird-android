@@ -114,6 +114,24 @@ references use the global identifier model.
 Before step 6, global data is not visible to normal mail code. Any failure before that step keeps legacy storage
 authoritative. A later retry starts with a new unpublished import.
 
+### Android execution and progress
+
+The user starts migration from the visible migration screen. Android then runs the migration orchestration in a
+foreground service with the `dataSync` service type. The service owns the operation independently of the activity and
+continues when the app is backgrounded or its task is dismissed. It enters the foreground immediately and keeps an
+ongoing notification visible while migration is running.
+
+The service writes non-sensitive phase, progress, completion, and failure state to one durable migration-state source.
+The migration screen observes that source and updates continuously while visible. The foreground notification reads the
+same state, displays current progress, and opens the migration screen when tapped. When migration finishes, the service
+stops foreground execution and posts a completion or actionable failure notification.
+
+The Android application declares only the foreground service permissions required for a user-initiated `dataSync`
+operation. Starting the service must comply with the platform's background-start restrictions. Platform time limits,
+system process termination, and an explicit user force-stop can still interrupt it. The service therefore improves
+continuity but does not replace the recovery guarantees below. After a force-stop, work cannot continue until Android
+allows the app to run again.
+
 ### Interruption and recovery
 
 The migration must tolerate process termination at every step, including termination after the app is backgrounded. The
@@ -184,6 +202,9 @@ Automated tests cover:
 - schema creation, migration, and restart recovery
 - every durable table and attachment type in the inventory
 - POP3 archive gating and IMAP optional export
+- migration continuing after the activity is backgrounded or its task is dismissed
+- consistency between in-app progress, foreground notification progress, and the durable migration state
+- foreground service completion, failure, platform timeout, and user-stop handling
 - process termination during every migration phase, including immediately before and after durable cutover
 - rejection and removal of an incomplete unpublished database after restart
 - validation, interruption, retry, and cleanup failure
