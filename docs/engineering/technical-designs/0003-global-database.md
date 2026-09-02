@@ -100,7 +100,7 @@ failure state. A migration gate holds startup, sync, and other background mail w
    and fail the migration.
 5. Rebuild derived data, validate the imported database, and reopen it.
 6. Establish the durable cutover state and switch repository bindings to the global implementation.
-7. Remove confirmed legacy database and attachment artifacts.
+7. Start post-cutover cleanup of all legacy database and attachment artifacts.
 
 The import writes folder and message identifier mappings before importing dependents. After all message records for an
 account are available, it builds cross-folder `ThreadId` memberships from their threading headers and records the
@@ -112,10 +112,40 @@ legacyFolderId, UID)`, through the compatibility mapping until that support is i
 references use the global identifier model.
 
 Before step 6, global data is not visible to normal mail code. Any failure before that step keeps legacy storage
-authoritative. A later retry starts with a new unpublished import. A cleanup failure after cutover leaves global storage
-authoritative and records the remaining cleanup work.
+authoritative. A later retry starts with a new unpublished import.
 
-The legacy storage implementation stays in the codebase, unbound and unused, and a later release removes it.
+### Interruption and recovery
+
+The migration must tolerate process termination at every step, including termination after the app is backgrounded. The
+import database and copied attachments remain unpublished until validation and cutover complete. Each startup reads the
+durable migration phase before binding mail repositories.
+
+If the process stopped before cutover, startup keeps legacy storage authoritative, removes the incomplete unpublished
+database and copied artifacts, and starts a fresh import when the migration is retried. SQLite transactions protect
+individual writes, while discarding the unpublished target prevents a partially imported database from being reused.
+
+Cutover commits the validated state as one durable operation. If that operation did not commit, startup uses legacy
+storage. If it committed, startup uses the global store and may resume cleanup. Legacy deletion cannot begin before this
+state is durable, so process termination cannot leave startup choosing between two authoritative stores.
+
+### Post-cutover cleanup
+
+Cutover atomically makes the global store authoritative and records cleanup as pending. Only then can an idempotent
+cleanup job delete the legacy per-account databases and attachment directories. The job also deletes orphaned artifacts
+left behind by accounts that were removed before migration.
+
+Cleanup is complete only after the job verifies that all known legacy artifacts are absent. If deletion fails or the app
+stops during cleanup, the state remains pending and the job retries on a later startup or scheduled background run. A
+retry resumes cleanup without repeating the data migration. The job never reads legacy mail into the global store and
+mail repositories never bind to legacy storage after cutover.
+
+A pending cleanup does not block normal mail access. The migration is reported as successful, with a separate notice
+that storage cleanup is incomplete and may temporarily use additional device storage. Cleanup failures and retry state
+use non-sensitive error codes and do not include paths or account data.
+
+The app does not restore legacy storage after cutover because the global store may already contain new mail or user
+actions. Switching back could discard those changes or create conflicting sources of truth. The legacy storage
+implementation stays in the codebase, unbound and unused, until a later release removes it.
 
 ## Validation
 
@@ -154,7 +184,10 @@ Automated tests cover:
 - schema creation, migration, and restart recovery
 - every durable table and attachment type in the inventory
 - POP3 archive gating and IMAP optional export
+- process termination during every migration phase, including immediately before and after durable cutover
+- rejection and removal of an incomplete unpublished database after restart
 - validation, interruption, retry, and cleanup failure
+- cleanup of orphaned account artifacts, restart-safe retries, and completion verification
 - migration-gate behavior for startup and background work
 - report redaction
 - the guarantee that partial global data is never visible to normal callers
@@ -167,5 +200,5 @@ Automated tests cover:
 
 - Which supported legacy schema versions require dedicated fixtures?
 - Which Room driver and locations apply on Android and JVM desktop?
-- How should post-cutover cleanup retry a locked legacy artifact?
+- How long must compatibility mappings support pre-cutover external message references after migration?
 
