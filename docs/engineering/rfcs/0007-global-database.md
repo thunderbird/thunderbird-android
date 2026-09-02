@@ -2,6 +2,7 @@
 
 - Issue: [#11104](https://github.com/thunderbird/thunderbird-android/issues/11104)
 - Technical design: [Global Database](../technical-designs/0003-global-database.md)
+- Related RFC: [UUIDv7 Identifier Migration](0009-uuidv7-identifier-migration.md)
 - Repository pattern: [ADR 0010 proposal](https://github.com/thunderbird/thunderbird-android/pull/11452)
 - Portable data format: [RFC 0008: Portable Profile Data Format](0008-portable-profile-data-format.md)
 - Status: **Proposed**
@@ -80,17 +81,19 @@ The migration has one authoritative mail store at a time:
 4. Rebuild derived data, then validate the imported database, queued operations, attachments, and representative search
    queries.
 5. Set the durable cutover state and switch repository bindings to the global implementation.
-6. Remove legacy database and attachment artifacts.
+6. Remove all legacy database and attachment artifacts, including data left behind by previously deleted accounts.
 
 Before cutover, legacy storage remains authoritative. After cutover, global storage remains authoritative. There are no
 dual reads, dual writes, or fallback to legacy storage.
 
-Cutover removes legacy mail data. The legacy storage implementation stays in the codebase, unbound and unused, and a
-later release removes it.
+Failures before cutover leave legacy storage authoritative and report an actionable error locally. The user can retry
+the migration without losing access to the legacy data. An attachment that fails to copy or validate is recorded in the
+migration result and fails the migration. Insufficient free space is the expected cause.
 
-Failures before cutover leave legacy storage available and report an actionable error locally. An attachment that fails
-to copy or validate is recorded in the migration result and fails the migration. Insufficient free space is the expected
-cause. A cleanup failure after cutover does not restore legacy storage.
+After successful cutover, cleanup removes all legacy mail data, including artifacts left behind by previously deleted
+accounts. A cleanup failure does not block normal use of the global store or make legacy storage authoritative again.
+The technical design defines cleanup state, retries, and user feedback. The legacy storage implementation stays in the
+codebase, unbound and unused, until a later release removes it.
 
 ### Migration gate and reporting
 
@@ -114,6 +117,7 @@ This RFC does not:
 - move account settings or profile runtime storage into the global database
 - introduce profiles or synchronization
 - define portable-data or backup formats. RFC 0008 owns that work.
+- select or migrate UUID identifier formats. RFC 0009 owns that work
 - add remote synchronization, telemetry, or remote migration reporting
 - add iOS or Web persistence support
 
