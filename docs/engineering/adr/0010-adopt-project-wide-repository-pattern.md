@@ -23,8 +23,8 @@ Each repository contract must:
 1. Have one coherent responsibility and one reason to change.
 2. Be independent of data-source implementation details and platform types such as `android.*` and `Cursor`.
 3. Receive all identifiers required to scope an operation explicitly. An account-scoped operation always receives an
-   `AccountId`, even when it also receives an aggregate identifier such as `FolderId`. Repositories must not be bound
-   to a single account or entity instance.
+   `AccountId`, even when it also receives an entity identifier such as `FolderId`. Repositories must not be bound to a
+   single account or entity instance.
 4. Be exposed from an `:api` module only when it is an intentionally shared, stable contract. Implementations, data
    sources, mappers, and database details remain internal, as defined by [ADR-0009](0009-api-internal-split.md).
 
@@ -32,7 +32,7 @@ Repository APIs use Coroutines. The project `Outcome` type and a domain-specific
 recoverable failures. Repository contracts do not expose database, HTTP, or platform exceptions.
 
 The detailed [Repository Pattern guide](../../architecture/repository-pattern.md) defines naming, reactive and one-shot
-API shapes, aggregate updates, and examples. Migrate legacy access one use case at a time, introducing a focused
+API shapes, atomic updates, and examples. Migrate legacy access one use case at a time, introducing a focused
 contract and error type first. Implementations or `:app-common` adapters preserve the contract while the backing data
 moves to the consolidated schema.
 
@@ -42,7 +42,7 @@ moves to the consolidated schema.
 
 - Domain code can evolve independently from the current per-account database and its eventual consolidated replacement.
 - Focused contracts avoid overly broad interfaces, make dependencies clearer, and are easier to fake in tests.
-- Explicit account and aggregate identifiers make account filtering reviewable and support safe database consolidation.
+- Explicit account and entity identifiers make account filtering reviewable and support safe database consolidation.
 - KMP-safe contracts can move to shared source sets without exposing Android implementation details.
 
 ### Negative Outcomes

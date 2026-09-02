@@ -13,9 +13,8 @@ A **repository implementation** is a class that fulfills that contract. It conta
 coordinate local storage, remote services, mapping, and synchronization. Callers depend on the contract rather than the
 implementation, so these details can change without changing the callers.
 
-An **aggregate** is a group of related domain data that changes together. A **focused contract** provides the operations
-for one coherent responsibility involving that data. A **facade** is an interface that combines multiple focused
-contracts for callers that genuinely need all of them; it does not define additional methods.
+A **focused contract** provides the operations for one coherent domain responsibility. Focused contracts are independent
+APIs. Callers use one or more focused contracts directly, according to their responsibilities.
 
 In this guide, **API** usually refers to an area's `:api` module. It contains contracts and the types needed to use them.
 The corresponding `:internal` module contains their implementations and other details that callers must not depend on.
@@ -25,9 +24,8 @@ The corresponding `:internal` module contains their implementations and other de
 A repository is domain-facing and hides how data is read, stored, or synchronized. UI state and UI-specific business
 logic belong elsewhere.
 
-Split contracts by responsibility before grouping them by aggregate. Do not create one interface per database table or
-one interface per SQL operation. A caller depends on the narrowest focused contract it needs. Add an aggregate-named
-facade only when callers genuinely need all of its focused contracts.
+Define contracts by domain responsibility. Do not create one interface per database table or one interface per SQL
+operation. A caller depends on the narrowest focused contracts it needs.
 
 Expose a repository contract from an `:api` module only when another area needs that stable contract. Place the shared
 contract, criteria, errors, and domain models in that module. Keep repository implementations, data sources, mappers,
@@ -113,7 +111,7 @@ interface DisplaySettingsRepository {
 Use these names for read methods:
 
 - Reactive reads:
-  - `observeById()` reads one entity by the aggregate's main identifier.
+  - `observeById()` reads one entity by its main identifier.
   - `observeBy<Identifier>()` reads one entity by another identifier, such as `observeByServerId()`.
   - `observeAll()` reads all entities in scope.
   - `observeByCriteria()` reads at most one entity for an immutable, domain-specific criteria type.
@@ -135,17 +133,19 @@ empty list directly or `Outcome.Success(emptyList())` when no entities exist.
 
 ## Mutation methods
 
-Use `create()`, `update()`, and `delete()` for aggregate lifecycle operations. Do not add a generic `save()` method to
-new contracts. Use `clear<Scope>()` only for explicitly scoped bulk removal, such as `clearCache()`.
+Use `create()`, `update()`, and `delete()` for lifecycle operations. Do not add a generic `save()` method to new
+contracts. Use `clear<Scope>()` only for explicitly scoped bulk removal, such as `clearCache()`.
 
-Within a focused repository contract, method names describe the operation and must not repeat the aggregate named by the
-repository. For example, use `DraftRepository.create()`, `FolderQueryRepository.findById()`, and
+Within a focused repository contract, method names describe the operation and must not repeat the domain concern named
+by the repository. For example, use `DraftRepository.create()`, `FolderQueryRepository.findById()`, and
 `FolderQueryRepository.findByServerId()`, not `createDraft()`, `findByFolderId()`, or `findFolderByServerId()`. Use
-`FolderQueryRepository.getById()` or `FolderQueryRepository.getByServerId()` for required lookups.
+`FolderQueryRepository.getById()` or `FolderQueryRepository.getByServerId()` for required lookups. Method names are
+unambiguous within their focused contract. The repository contract name identifies the concern and is not repeated in
+its method names.
 
 Avoid repository methods whose names start with `set`. Multiple independent setters expose invalid intermediate state
-and usually mean the API is acting as a mutable state holder. Represent values that change together as an immutable
-aggregate and update them atomically. A setup draft or UI-only mutable state belongs in a `Store` or `StateHolder`, not
+and usually mean the API is acting as a mutable state holder. Group values that change together in an immutable value
+and update them atomically. A setup draft or UI-only mutable state belongs in a `Store` or `StateHolder`, not
 a repository.
 
 ```kotlin
@@ -194,8 +194,8 @@ interface DraftRepository {
 
 ## Folder contract example
 
-The following example starts with the focused contracts new code should depend on. The existing `FolderRepository`
-legacy facade is shown last for callers that genuinely need every contract.
+The following example shows independent, focused folder contracts. Consumers depend directly on the contracts matching
+their responsibilities.
 
 ```kotlin
 enum class UnifiedInboxFilter {
@@ -256,20 +256,14 @@ interface FolderPushTrackingRepository {
         accountId: AccountId,
     ): Outcome<Unit, FolderError>
 }
-
-interface FolderRepository :
-    FolderQueryRepository,
-    RemoteFolderRepository,
-    FolderPushTrackingRepository,
-    FolderSettingsRepository
 ```
 
 In `FolderCriteria`, `UnifiedInboxFilter.ANY` means that the query does not filter on unified inbox inclusion. The
 criteria contains filters only. Scope identifiers such as `AccountId` and `FolderId` remain explicit parameters rather
 than becoming part of the criteria.
 
-For example, a screen that renders folder preferences depends only on `FolderSettingsRepository`, not on
-`FolderRepository`. The implementation may use any storage technology, as long as it maintains the contract.
+For example, a screen that renders folder preferences depends only on `FolderSettingsRepository`. The implementation
+may use any storage technology, as long as it maintains the contract.
 
 ## Testing repository consumers
 
