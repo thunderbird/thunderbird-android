@@ -32,6 +32,59 @@ The [legacy table inventory](0003-global-database/legacy-table-inventory.md) def
 downloaded attachments. Legacy keeps a body part on disk above a size threshold and as a `message_parts` BLOB at or
 below it. The migration preserves that split rather than changing where content lives.
 
+### Identifier model
+
+Global identifiers are opaque, application-profile-scoped domain values. They identify local records in the global
+database and are stable while that record exists, including across application restart and database-schema upgrades.
+They are not protocol identifiers, portable-profile identifiers, or synchronization identifiers. In particular, an
+IMAP UID, a folder server ID, and an RFC 5322 `Message-ID` header must not be used as a global database identifier.
+
+|   Identifier   |         Owner         |                                                                                                                                            Meaning and boundary                                                                                                                                             |
+|----------------|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `AccountId`    | `feature:account:api` | The existing UUID-backed account identifier. Global-mail records retain its existing persisted value to establish account scope. Cutover neither replaces nor regenerates it. Account settings and profile runtime state remain outside the global mail database.                                           |
+| `FolderId`     | Mail domain           | Identifies one local folder record across all accounts. It replaces the legacy account-local folder number at repository boundaries.                                                                                                                                                                        |
+| `MessageId`    | Mail domain           | Identifies one local message record across all accounts. A message copied to another folder is a separate local record and therefore has a separate `MessageId`.                                                                                                                                            |
+| `ThreadId`     | Mail domain           | Identifies one account-scoped conversation, which can contain local message records from Inbox, Sent, Archive, and other folders. It is a durable conversation aggregate, not a legacy numeric thread-root key. Thread operations use `ThreadId`. Operations on an individual local record use `MessageId`. |
+| `AttachmentId` | Mail domain           | An opaque attachment-access URI or equivalent reference. It resolves unambiguously after cutover and is not a raw message-part primary key. Message-part keys stay internal unless a future focused attachment contract requires one.                                                                       |
+
+RFC 0009 owns the UUID representation and generation policy for `FolderId`, `MessageId`, and `ThreadId`. These types,
+along with `AccountId` and `AttachmentId`, are the only identifiers that cross the mail repository boundary for this
+design. Repository contracts never expose legacy numeric IDs or persistence keys.
+
+The thread builder uses the imported messages' threading headers across all folders of the same account. When a newly
+observed message joins two conversations, the builder selects one existing `ThreadId` deterministically, merges the
+memberships, and rewrites the other conversation's internal references in the same transaction. A `ThreadId` is not a
+protocol identifier and is not used for server operations.
+
+Room entities may have a separate persistence-local integer surrogate key. Those keys preserve compatible relationships
+and support SQLite features such as FTS, and never appear in a repository contract. In particular, FTS4 `docid` remains
+an integer internal search-document key mapped to a `MessageId`. A UUID-backed `MessageId` is never stored directly as
+`docid`.
+
+### Identifier mapping and internal keys
+
+For imported data, the migrator records an account-qualified source key before linking dependent rows:
+
+| Logical record  |                     Source key                      | Target domain identifier |                                            Required dependent rewrite                                             |
+|-----------------|-----------------------------------------------------|--------------------------|-------------------------------------------------------------------------------------------------------------------|
+| Folder          | `(AccountId, legacy folder id)`                     | `FolderId`               | folder extra values, message folder references, queued-command folder references                                  |
+| Message         | `(AccountId, legacy message id)`                    | `MessageId`              | outbox state, notifications, full-text mapping, message part root, thread message reference                       |
+| Thread          | `(AccountId, legacy folder id, legacy thread root)` | `ThreadId`               | rebuild cross-folder memberships from message threading headers and rewrite threaded-list and thread-cache values |
+| Message part    | `(AccountId, legacy message-part id)`               | internal only            | part root and parent references, message root-part reference, attachment-file lookup and URI resolution           |
+| Pending command | `(AccountId, legacy command id)`                    | internal only            | command row identity and serialized folder references                                                             |
+
+The exact physical representation is internal, but it must enforce uniqueness of every source key and reject an import
+that maps one source key to multiple targets. Several legacy folder-local thread roots may map to one `ThreadId` when
+the imported messages form one cross-folder conversation. Account-qualified mappings remain available until validation
+has completed and all durable queue, notification, attachment, and supported legacy external references have been
+translated. The implementation may retain them longer for compatibility. Their retention period and removal test are
+part of the migration implementation plan.
+
+`notifications.notification_id` is an Android application notification ID, not a mail-domain identifier. It must remain
+unique across the application notification namespace. Import validates that constraint and allocates a replacement when
+preserving a legacy value would collide. The notification's relationship to its message is rewritten through
+`MessageId` and the internal message key.
+
 ## Migration
 
 The migration runs before normal mail access is available. A dedicated migration screen, which could reuse the existing
@@ -49,6 +102,15 @@ failure state. A migration gate holds startup, sync, and other background mail w
 6. Establish the durable cutover state and switch repository bindings to the global implementation.
 7. Remove confirmed legacy database and attachment artifacts.
 
+The import writes folder and message identifier mappings before importing dependents. After all message records for an
+account are available, it builds cross-folder `ThreadId` memberships from their threading headers and records the
+legacy folder-local thread-root mappings before rewriting threaded-list and cache values. It then validates all
+rewritten relationships before the global database is published. It translates serialized pending-command folder
+references to `FolderId` or to the chosen internal mapping before the command is eligible to execute. It also accepts
+supported pre-cutover message references, such as notification or activity references containing `(AccountId,
+legacyFolderId, UID)`, through the compatibility mapping until that support is intentionally retired. Newly created
+references use the global identifier model.
+
 Before step 6, global data is not visible to normal mail code. Any failure before that step keeps legacy storage
 authoritative. A later retry starts with a new unpublished import. A cleanup failure after cutover leaves global storage
 authoritative and records the remaining cleanup work.
@@ -65,6 +127,12 @@ Cutover requires all of the following:
 - file-backed attachments, meaning parts with `data_location = 2`, are present and valid
 - database integrity checks pass after reopen
 - search is rebuilt and representative queries match
+- every source key maps to exactly one target, all dependent keys resolve, and no internal legacy numeric key crosses a
+  repository boundary
+- messages from Inbox, Sent, and other folders join the same `ThreadId` when their threading headers identify one
+  conversation, without joining messages from different accounts
+- attachment URIs resolve to the same imported part after restart
+- notification IDs are unique in the application namespace after import
 - the durable cutover state remains readable after reopen
 
 ## Diagnostics
@@ -90,11 +158,14 @@ Automated tests cover:
 - migration-gate behavior for startup and background work
 - report redaction
 - the guarantee that partial global data is never visible to normal callers
+- identifier-mapping completeness, duplicate-key rejection, pending-command payload translation, attachment URI
+  resolution, and notification-ID collision handling
+- cross-folder thread construction, including a conversation spanning Inbox and Sent and a merge of two existing
+  conversations
 
 ## Open technical questions
 
 - Which supported legacy schema versions require dedicated fixtures?
 - Which Room driver and locations apply on Android and JVM desktop?
-- Which global identifier representation and mapping retention period are required?
 - How should post-cutover cleanup retry a locked legacy artifact?
 
