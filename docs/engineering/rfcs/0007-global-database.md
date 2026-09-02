@@ -46,6 +46,28 @@ Every durable legacy mail record, queued operation, and downloaded attachment is
 indexes, is rebuilt as part of the migration. The technical design owns the table-by-table migration inventory that
 records which legacy tables are copied, rebuilt, or excluded.
 
+### Global identifiers
+
+In this RFC, "global" means unique across the mail records of all accounts in one application profile. It does not mean
+an identifier shared across devices or provided by a mail server. In particular, IMAP UIDs, server folder IDs, and RFC
+5322 `Message-ID` headers retain their protocol-specific scopes and are not global database identifiers.
+
+The global store uses these identifiers at repository boundaries:
+
+- `AccountId` is the existing UUID-backed account identifier. The global mail database uses it to retain account scope
+  and does not replace or regenerate it during cutover.
+- `FolderId` identifies one local folder record across all accounts, replacing the legacy account-local folder number.
+- `MessageId` identifies one local message record across all accounts. Copies of a message in different folders are
+  separate local records and have separate identifiers.
+- `ThreadId` identifies a conversation within one account. A conversation can contain message records from multiple
+  folders, such as Inbox and Sent.
+- `AttachmentId` is an opaque reference used to access an attachment. It is not a raw message-part database key.
+
+These domain identifiers are stable for the lifetime of their local records. Repository contracts do not expose legacy
+numeric IDs or persistence keys. The database may still use internal surrogate keys where required. The technical design
+defines identifier ownership and migration mappings. RFC 0009 separately defines UUID representation and generation
+policy.
+
 ### Migration and cutover
 
 The migration has one authoritative mail store at a time:
@@ -134,8 +156,8 @@ Validation before cutover and the archive from step 1 cover that risk instead.
   migration or only warn?
 - Does declining the POP3 archive require a durable record of the user's acknowledgement?
 
-The technical design owns implementation questions, including module placement, driver configuration, global
-identifiers, the migration inventory, the migration screen, source-schema support, and the cleanup retry strategy.
+The technical design owns implementation questions, including driver configuration, the identifier mapping inventory,
+the migration screen, source-schema support, and the cleanup retry strategy.
 
 ## Outcome
 
