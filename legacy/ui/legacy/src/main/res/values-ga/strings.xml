@@ -911,4 +911,10 @@
     <string name="global_settings_privacy_incognito_keyboard">Méarchlár neamhchiontach</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">Iarr ar an méarchlár gan foghlaim ón méid a chlóscríobhann tú agus tú ag scríobh teachtaireachtaí</string>
     <string name="sort_by_indicator">•</string>
+    <string name="camera_capture_lost">Cailleadh an íomhá a gabhadh mar gur dúnadh an aip. Déan iarracht arís.</string>
+    <string name="account_settings_signature_html_label">Síniú HTML</string>
+    <string name="account_settings_signature_is_html_label">Sábháil síniú mar HTML</string>
+    <string name="account_settings_signature_is_html_summary">Léirmhínigh an síniú mar HTML. Bainfear scripteanna agus láimhseálaithe imeachtaí ar mhaithe le slándáil.</string>
+    <string name="account_settings_signature_preview">Réamhamharc sínithe</string>
+    <string name="account_settings_signature_clear_label">Síniú Glan</string>
 </resources>

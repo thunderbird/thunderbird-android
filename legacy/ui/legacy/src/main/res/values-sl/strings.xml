@@ -324,7 +324,7 @@
     <string name="account_settings_show_pictures_always">Od kogarkoli</string>
     <string name="account_settings_composition">Pošiljanje pošte</string>
     <string name="account_settings_default_quoted_text_shown_label">Ob odgovarjanju navedi tudi izvirno sporočilo</string>
-    <string name="account_settings_default_quoted_text_shown_summary">V odgovor vključi izvirno sporočilo</string>
+    <string name="account_settings_default_quoted_text_shown_summary">V odgovor vključi izvirno sporočilo.</string>
     <string name="account_settings_reply_after_quote_label">Odgovor začni za navedenem izvirnem besedilom</string>
     <string name="account_settings_reply_after_quote_summary">Izvirno sporočilo bo navedeno nad besedilom odgovora.</string>
     <string name="account_settings_strip_signature_label">Ob odgovarjanju odstrani predhodne podpise sporočila</string>
@@ -966,4 +966,10 @@
     <string name="global_settings_privacy_incognito_keyboard">Zasebna tipkovnica</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">Zahtevajte od tipkovnice, da se pri sestavljanju sporočil ne uči od vašega tipkanja.</string>
     <string name="sort_by_indicator">•</string>
+    <string name="camera_capture_lost">Zajeta slika je bila izgubljena, ker je bil program zaprt. Poizkusite znova.</string>
+    <string name="account_settings_signature_html_label">Podpis HTML</string>
+    <string name="account_settings_signature_is_html_label">Shrani podpis kot HTML.</string>
+    <string name="account_settings_signature_is_html_summary">Podpis obravnavaj kot HTML. Zaradi varnosti bodo odstranjeni skripti in upravljalniki dogodkov.</string>
+    <string name="account_settings_signature_preview">Predogled podpisa</string>
+    <string name="account_settings_signature_clear_label">Počisti podpis</string>
 </resources>
