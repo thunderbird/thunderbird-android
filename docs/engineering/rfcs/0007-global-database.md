@@ -146,6 +146,8 @@ Validation before cutover and the archive from step 1 cover that risk instead.
 ## Risks & Drawbacks
 
 - Migration requires time and storage, especially for downloaded attachments.
+- The user or operating system can terminate the app during migration, leaving an incomplete global database that must
+  never become authoritative. The migration requires interruption-safe state tracking and restart recovery.
 - Rebuilding the search index during migration adds time proportional to locally stored mail.
 - A device without enough free space cannot migrate until space is freed.
 - After cutover, locally stored mail exists only in the global database and in any archive the user created.
