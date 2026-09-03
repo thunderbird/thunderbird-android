@@ -216,6 +216,20 @@ class DefaultFolderDetailsRepositoryTest {
     }
 
     @Test
+    fun `partial update should update unified inbox inclusion when provided`() = runTest {
+        // Arrange
+        val partialUpdate = PartialUpdatableFolderDetails(
+            folderId = REGULAR_FOLDER_ID,
+            includeInUnifiedInbox = true,
+        )
+        // Act
+        val result = testSubject.update(accountId, partialUpdate)
+        // Assert
+        verify(messageStore).setIncludeInUnifiedInbox(REGULAR_FOLDER_ID, true)
+        assertThat(result).isEqualTo(Outcome.success(Unit))
+    }
+
+    @Test
     fun `partial update should apply all fields when all are provided`() = runTest {
         // Arrange
         val partialUpdate = PartialUpdatableFolderDetails(
@@ -394,5 +408,6 @@ private class FakeOutboxFolderManager(
     override suspend fun getOutboxFolderId(accountId: AccountId, createIfMissing: Boolean): Long = outboxFolderId
     override suspend fun createOutboxFolder(accountId: AccountId): Outcome<Long, Exception> =
         error("Not implemented")
+
     override suspend fun hasPendingMessages(accountId: AccountId): Boolean = error("Not implemented")
 }
