@@ -21,7 +21,7 @@ For full details, see:
 - Dependencies must flow in **one direction only**
 - UI built with **Jetpack Compose** + **MVI pattern**
 - Domain logic implemented in **Use Cases**
-- Data handled via **Repository pattern**
+- Data handled via the [**Repository pattern**](../architecture/repository-pattern.md)
 
 ## ⚙️ Dependency Injection
 
