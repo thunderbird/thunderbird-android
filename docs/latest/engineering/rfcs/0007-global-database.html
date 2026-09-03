@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>0004 - Add a Declarative Feature Flag Catalog - Thunderbird for Android - Developer Documentation</title>
+        <title>0007 - Global Database - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -145,7 +145,7 @@
                         <a href="https://github.com/thunderbird/thunderbird-android/" title="Git repository" aria-label="Git repository">
                             <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./engineering/rfcs/0004-feature-flag-new-architecture.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./engineering/rfcs/0007-global-database.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -179,199 +179,144 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="rfc-0004-add-a-declarative-feature-flag-catalog"><a class="header" href="#rfc-0004-add-a-declarative-feature-flag-catalog">RFC 0004: Add a Declarative Feature Flag Catalog</a></h1>
+                        <h1 id="rfc-0007-global-database"><a class="header" href="#rfc-0007-global-database">RFC 0007: Global Database</a></h1>
 <ul>
-<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11222">#11222</a></li>
-<li>Technical design: <a href="../technical-designs/0002-feature-flag-declarative-catalog.html">Technical Design 0002: Declarative Feature Flag Catalog</a></li>
-<li>Status: <strong>Accepted</strong></li>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11104">#11104</a></li>
+<li>Technical design: <a href="../technical-designs/0003-global-database.html">Global Database</a></li>
+<li>Related RFC: <a href="0009-uuidv7-identifier-migration.html">UUIDv7 Identifier Migration</a></li>
+<li>Repository pattern: <a href="https://github.com/thunderbird/thunderbird-android/pull/11452">ADR 0010 proposal</a></li>
+<li>Portable data format: <a href="0008-portable-profile-data-format.html">RFC 0008: Portable Profile Data Format</a></li>
+<li>Status: <strong>Proposed</strong></li>
+<li>Backend decision: <strong>Room 3 selected by the
+<a href="https://github.com/thunderbird/thunderbird-android/issues/11195">completed database spike</a></strong></li>
 </ul>
 <h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
-<p>Replace the six per-app/per-build type <code>FeatureFlagFactory</code> classes with one bundled declarative feature-flag catalog
-for Thunderbird and K-9 Mail.</p>
-<p>The first phase keeps the existing <code>FeatureFlagProvider</code> / <code>FeatureFlagResult</code> API and the current debug override
-mechanism unchanged. It focuses on reducing duplication, validating or generating known keys, and making per-app and
-per-build defaults explicit in a single local catalog.</p>
-<p>Remote updates, OpenFeature integration, rollout targeting, and managed vendors are out of scope for this RFC. Those can
-build on the same catalog in a later phase after privacy, security, and operational requirements are agreed.</p>
+<p>Global Database replaces the legacy per-account mail stores with one Room 3-backed mail database for the application. It
+preserves existing mail behavior and moves production mail access to the global database only after a complete migration
+succeeds.</p>
+<p>The migration imports durable mail data and downloaded attachments, validates the result, establishes the durable
+cutover state, and removes legacy storage. If migration fails before cutover, legacy storage remains authoritative.</p>
 <h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
-<p>Feature flags today are resolved <strong>at build time</strong>: each app per build_type combination ships its own
-<code>FeatureFlagFactory</code> (<code>TbFeatureFlagFactory</code> for debug/daily/beta/release, <code>K9FeatureFlagFactory</code> for debug/release)
-that hardcodes a list of booleans. This has real limitations:</p>
-<ul>
-<li><strong>Duplication and drift.</strong> A single flag is declared in up to six files; values can diverge by accident, and only 3 of
-12 flags currently need to differ across variants.</li>
-<li><strong>Stringly-typed keys.</strong> Some keys are raw strings; the registry is scattered, with a “do not add flags here” comment
-steering contributors toward per-feature <code>:api</code> modules.</li>
-<li><strong>Hardcoded defaults.</strong> The effective default for a flag is embedded in app/build-type source sets instead of being
-visible in one declarative source.</li>
-<li><strong>No clean foundation for future rollout work.</strong> Remote updates, targeting, and experiments need a single validated
-catalog before they can be designed safely.</li>
-</ul>
-<p>We need a small first step that reduces current maintenance cost and creates a stable input for future work without
-changing feature-flag call sites or introducing remote behaviour.</p>
+<p>Legacy mail storage uses one database and one attachment directory per account. This makes unified mail behavior more
+complex and exposes legacy storage types to mail code.</p>
+<p>One global database provides a single local source of truth while keeping callers independent of storage
+implementation. The migration must preserve durable mail data without exposing a partial or mixed store.</p>
 <h2 id="proposal"><a class="header" href="#proposal">Proposal</a></h2>
-<h3 id="the-catalog"><a class="header" href="#the-catalog">The Catalog</a></h3>
-<p>Introduce one bundled, schema-validated catalog that declares:</p>
+<h3 id="storage-boundaries"><a class="header" href="#storage-boundaries">Storage boundaries</a></h3>
 <ul>
-<li>the complete boolean flag registry,</li>
-<li>each flag’s bundled default value,</li>
-<li>per-app/per-build type deviations from that default, and</li>
-<li>the source for validating or generating typed keys.</li>
+<li><code>core:database</code> will provide the domain-neutral Room 3 backend.</li>
+<li><code>core:database</code> owns one coordinated schema and migration history, and composes feature schema contributions
+deterministically.</li>
+<li>The internal mail database module owns mail schema and storage implementations.</li>
+<li>Focused repository contracts are the boundary between mail code and storage. They follow the proposed ADR 0010 and
+do not expose persistence or legacy storage types.</li>
+<li>Application composition selects the active repository implementation.</li>
 </ul>
-<p>The catalog is local-only in this phase. It is packaged with the app and cannot be updated remotely.</p>
-<pre><code class="language-json">{
-    "$schema": "thunderbird_mobile_featureflag.schema.json",
-    "version": "2026-06-18.1",
-    "flags": [
-        {
-            "key": "archive_marks_as_read",
-            "default": false,
-            "description": "Marks message as read when archived."
-        },
-        {
-            "key": "disable_font_size_config",
-            "default": true,
-            "description": "Disables legacy font-size configuration UI."
-        },
-        {
-            "key": "email_notification_default",
-            "default": false,
-            "description": "Default email-notification behaviour for new accounts."
-        }
-    ],
-    "overrides": {
-        "thunderbird": {
-            "debug": {
-                "archive_marks_as_read": true,
-                "disable_font_size_config": true,
-                "email_notification_default": true
-            },
-            "daily": { "disable_font_size_config": true },
-            "beta": {},
-            "release": { "disable_font_size_config": false }
-        },
-        "k9": {
-            "debug": { "archive_marks_as_read": true },
-            "release": { "disable_font_size_config": false }
-        }
-    }
-}
-</code></pre>
-<p>Where:</p>
+<h3 id="global-mail-representation"><a class="header" href="#global-mail-representation">Global mail representation</a></h3>
+<p>The global database keeps the legacy mail-store behavior and schema shape. It makes account scope explicit and adds
+global identifiers only where repository contracts require them. Refining the schema is deferred to a future iteration.</p>
+<p>Every durable legacy mail record, queued operation, and downloaded attachment is included. Derived data, such as search
+indexes, is rebuilt as part of the migration. The technical design owns the table-by-table migration inventory that
+records which legacy tables are copied, rebuilt, or excluded.</p>
+<h3 id="global-identifiers"><a class="header" href="#global-identifiers">Global identifiers</a></h3>
+<p>In this RFC, “global” means unique across the mail records of all accounts in one application profile. It does not mean
+an identifier shared across devices or provided by a mail server. In particular, IMAP UIDs, server folder IDs, and RFC
+5322 <code>Message-ID</code> headers retain their protocol-specific scopes and are not global database identifiers.</p>
+<p>The global store uses these identifiers at repository boundaries:</p>
 <ul>
-<li><code>flags</code>: the single source of truth for which flags exist. Each entry carries a <code>key</code>, a boolean <code>default</code>, and an
-optional <code>description</code>.</li>
-<li><code>overrides</code>: per-<code>app</code> -&gt; per-<code>build_type</code> deviations from a flag’s <code>default</code>. Only flags that differ from the
-default appear here. A flag absent from an override block inherits its <code>default</code>.</li>
+<li><code>AccountId</code> is the existing UUID-backed account identifier. The global mail database uses it to retain account scope
+and does not replace or regenerate it during cutover.</li>
+<li><code>FolderId</code> identifies one local folder record across all accounts, replacing the legacy account-local folder number.</li>
+<li><code>MessageId</code> identifies one local message record across all accounts. Copies of a message in different folders are
+separate local records and have separate identifiers.</li>
+<li><code>ThreadId</code> identifies a conversation within one account. A conversation can contain message records from multiple
+folders, such as Inbox and Sent.</li>
+<li><code>AttachmentId</code> is an opaque reference used to access an attachment. It is not a raw message-part database key.</li>
 </ul>
-<p>The first catalog supports boolean flags only. Multivariate flags are deferred until there is a concrete use case.</p>
-<p>The catalog does not contain an OpenFeature <code>EvaluationContext</code> or a runtime <code>context</code> block. App and build type are
-known by app wiring and <code>BuildConfig</code>; they are used to select the relevant <code>overrides</code> entry when constructing
-the local catalog. Any future evaluation context contract must be named clearly, for example
-<code>evaluationContextContract</code>, and must not be part of a remotely fetched runtime payload unless a later design accepts
-that requirement.</p>
-<h3 id="resolution"><a class="header" href="#resolution">Resolution</a></h3>
-<p>Keep <code>FeatureFlagProvider.provide(key): FeatureFlagResult</code> as the app-facing API. Call sites continue to request flags
-the same way they do today.</p>
-<p>The local catalog-backed implementation resolves a flag in this order:</p>
+<p>These domain identifiers are stable for the lifetime of their local records. Repository contracts do not expose legacy
+numeric IDs or persistence keys. The database may still use internal surrogate keys where required. The technical design
+defines identifier ownership and migration mappings. RFC 0009 separately defines UUID representation and generation
+policy.</p>
+<h3 id="migration-and-cutover"><a class="header" href="#migration-and-cutover">Migration and cutover</a></h3>
+<p>The migration has one authoritative mail store at a time:</p>
 <ol>
-<li>Local debug overrides from <code>FeatureFlagOverrides</code>.</li>
-<li>Bundled <code>overrides</code> for the current app/build type.</li>
-<li>Bundled flag <code>default</code>.</li>
-<li><code>FeatureFlagResult.Unavailable</code>, only when the key is not present in the bundled catalog.</li>
+<li>Calculate and display the required storage headroom. Do not start the migration when available space is insufficient.</li>
+<li>For every POP3 account, create and verify the portable mail archive defined by RFC 0008. A user may decline the
+archive after an explicit warning and continue at their own risk. For IMAP accounts, offer the same archive as an
+optional action.</li>
+<li>Read legacy storage without modifying it. Import durable data into an unpublished global database.</li>
+<li>Rebuild derived data, then validate the imported database, queued operations, attachments, and representative search
+queries.</li>
+<li>Set the durable cutover state and switch repository bindings to the global implementation.</li>
+<li>Remove all legacy database and attachment artifacts, including data left behind by previously deleted accounts.</li>
 </ol>
-<p>This preserves the current developer override behaviour while making the app/build-type defaults explicit and shared.</p>
-<h3 id="implementation-shape"><a class="header" href="#implementation-shape">Implementation Shape</a></h3>
-<p>The technical design should define the exact file location, schema, code generation or validation task, and migration
-steps. The expected direction is:</p>
+<p>Before cutover, legacy storage remains authoritative. After cutover, global storage remains authoritative. There are no
+dual reads, dual writes, or fallback to legacy storage.</p>
+<p>The free-space check is a blocking pre-flight requirement, not a warning. Migration temporarily needs enough storage for
+the legacy and global stores to coexist, along with working space for database transactions and rebuilt data. If the
+check fails, the app tells the user how much additional space is required and asks them to free storage before retrying.
+The technical design defines the headroom calculation and runtime handling if available space changes during migration.</p>
+<p>Failures before cutover leave legacy storage authoritative and report an actionable error locally. The user can retry
+the migration without losing access to the legacy data. An attachment that fails to copy or validate is recorded in the
+migration result and fails the migration. Insufficient free space is the expected cause.</p>
+<p>After successful cutover, cleanup removes all legacy mail data, including artifacts left behind by previously deleted
+accounts. A cleanup failure does not block normal use of the global store or make legacy storage authoritative again.
+The technical design defines cleanup state, retries, and user feedback. The legacy storage implementation stays in the
+codebase, unbound and unused, until a later release removes it.</p>
+<h3 id="migration-gate-and-reporting"><a class="header" href="#migration-gate-and-reporting">Migration gate and reporting</a></h3>
+<p>The migration surfaces progress, failure feedback, retry, and local report export in a dedicated migration screen. That
+screen could reuse the existing Android database-migration activity or introduce a suitable replacement. Startup
+routing and background mail work respect the migration gate. No mail work bypasses it.</p>
+<p>Progress information, failure reports, and logs exclude personally identifiable data. They stay on the device and are
+never uploaded.</p>
+<h3 id="platform-support"><a class="header" href="#platform-support">Platform support</a></h3>
+<p>The global mail schema, repository contracts, and attachment access are KMP-ready for Android and JVM desktop. Legacy
+import is Android-only.</p>
+<h3 id="not-included"><a class="header" href="#not-included">Not included</a></h3>
+<p>This RFC does not:</p>
 <ul>
-<li>Replace the app/build-type factory duplication with a catalog-backed factory or provider.</li>
-<li>Validate that every override key exists in <code>flags</code>.</li>
-<li>Validate that each <code>overrides</code> entry references a supported app and build type.</li>
-<li>Generate or validate typed <code>FeatureFlagKey</code> declarations from the catalog so new keys cannot silently drift.</li>
-<li>Preserve the current debug settings UI and local override storage.</li>
-<li>Keep all feature-flag consumers behind the existing <code>FeatureFlagProvider</code> facade.</li>
+<li>redesign or normalize the legacy mail schema or queue behavior</li>
+<li>move account settings or profile runtime storage into the global database</li>
+<li>introduce profiles or synchronization</li>
+<li>define portable-data or backup formats. RFC 0008 owns that work.</li>
+<li>select or migrate UUID identifier formats. RFC 0009 owns that work</li>
+<li>add remote synchronization, telemetry, or remote migration reporting</li>
+<li>add iOS or Web persistence support</li>
 </ul>
-<h2 id="future-work-remote-catalogs-and-openfeature"><a class="header" href="#future-work-remote-catalogs-and-openfeature">Future Work: Remote Catalogs and OpenFeature</a></h2>
-<p>Remote configuration and OpenFeature adoption are a separate phase. That phase should have its own RFC or technical
-design before implementation.</p>
-<p>The later design must answer at least:</p>
-<ul>
-<li><strong>Evaluation location.</strong> Initial remote-capable work should still be evaluated locally/in-process. The app must not
-send a rollout key or full evaluation context off-device until a separate privacy design is accepted and user consent
-is defined.</li>
-<li><strong>Rollout identifiers.</strong> If a rollout key is introduced, the implementation must define how the key is generated,
-stored, reset, rotated, transmitted, logged, and deleted. Although such a key may be pseudonymous, it can become
-identifying when combined with app version, OS version, IP address, request timing, or other service-side metadata.</li>
-<li><strong>Service-side privacy.</strong> Any remote service that receives or stores rollout keys, derived bucket identifiers, or
-evaluation context must follow equivalent privacy requirements, including retention limits, access controls, metadata
-minimization, and a prohibition on logging raw identifiers.</li>
-<li><strong>Integrity.</strong> Remote catalogs must be signed before they can change behaviour. Unsigned, invalid, expired, or malformed
-catalogs must fall back to bundled defaults.</li>
-<li><strong>Hosting and staleness.</strong> The design must define where catalogs are served from, how freshness is checked, and how the
-app behaves when the remote source is unavailable.</li>
-<li><strong>Vendor choice.</strong> Start with an in-house local evaluator if remote-capable evaluation is needed. Managed vendors need
-a separate privacy and security review before adoption.</li>
-<li><strong>OpenFeature boundary.</strong> OpenFeature may be useful as an evaluation/provider abstraction, but adopting it is not part
-of the local catalog phase.</li>
-</ul>
-<p>If a remote phase is accepted, its intended precedence is:</p>
-<ol>
-<li>Local debug overrides.</li>
-<li>Remote overrides/defaults.</li>
-<li>Bundled variant overrides/defaults.</li>
-<li><code>FeatureFlagResult.Unavailable</code>, only when the key is not present in any accepted catalog.</li>
-</ol>
 <h2 id="alternatives-considered"><a class="header" href="#alternatives-considered">Alternatives Considered</a></h2>
-<ul>
-<li><strong>Keep the build-time factories.</strong>
-<ul>
-<li><strong>Rejected:</strong> cannot satisfy remote fetch, cache, staleness, or rollout; perpetuates the six-file duplication,
-scattered defaults, and key drift risk.</li>
-</ul>
-</li>
-<li><strong>Keep the existing <code>FeatureFlagProvider</code> facade only, without a catalog.</strong>
-<ul>
-<li><strong>Rejected:</strong> the facade already decouples call sites from the implementation, but it does not create a single
-registry, validate keys, or remove duplicated per-app/per-build type definitions.</li>
-</ul>
-</li>
-<li><strong>Adopt OpenFeature and remote updates in this RFC.</strong>
-<ul>
-<li><strong>Rejected for the first phase:</strong> remote updates and targeting require separate privacy, security, signing,
-hosting, staleness, identifier, and service-side data handling decisions. Bundling those decisions with the local
-catalog cleanup slows down the immediate maintenance win.</li>
-</ul>
-</li>
-<li><strong>Use one catalog per app.</strong>
-<ul>
-<li><strong>Rejected:</strong> the current definitions are mostly shared across Thunderbird and K-9 Mail. A single catalog with
-app/build-type overrides better matches the white-label architecture and keeps shared defaults visible.</li>
-</ul>
-</li>
-<li><strong>Add multivariate flags now.</strong>
-<ul>
-<li><strong>Rejected:</strong> there is no concrete use case. Boolean flags cover the current system and keep validation and
-migration smaller.</li>
-</ul>
-</li>
-</ul>
+<h3 id="keep-the-legacy-stores"><a class="header" href="#keep-the-legacy-stores">Keep the legacy stores</a></h3>
+<p>This retains account-specific storage and prevents establishing a single local source of truth for mail data.</p>
+<h3 id="use-sqldelight"><a class="header" href="#use-sqldelight">Use SQLDelight</a></h3>
+<p>The completed database spike compared Room 3 and SQLDelight against the same representative mail, queue, and full-text
+search slice. Both candidates met the architectural baseline, but Room 3 delivered stronger response-time and
+concurrent-write results.</p>
+<h3 id="redesign-the-schema-during-migration"><a class="header" href="#redesign-the-schema-during-migration">Redesign the schema during migration</a></h3>
+<p>Combining a schema redesign with migration would increase risk and make behavior parity harder to verify.</p>
+<h3 id="retain-legacy-storage-after-cutover"><a class="header" href="#retain-legacy-storage-after-cutover">Retain legacy storage after cutover</a></h3>
+<p>Keeping the legacy artifacts would preserve a local recovery path for a defect found after cutover. It would also store
+mail data twice for as long as it is retained, and no code path would read it, because cutover permits no fallback.
+Validation before cutover and the archive from step 1 cover that risk instead.</p>
 <h2 id="risks--drawbacks"><a class="header" href="#risks--drawbacks">Risks &amp; Drawbacks</a></h2>
 <ul>
-<li><strong>Schema and tooling overhead.</strong> A catalog, schema, and validation or generation task add build-time machinery.</li>
-<li><strong>Incorrect shared defaults can affect both apps.</strong> Centralizing defaults improves visibility but increases the impact
-of a mistaken value. Review and validation should make the current app/build-type matrix explicit.</li>
-<li><strong>Debug overrides must not regress.</strong> The current debug settings UI and local override precedence need to be preserved.</li>
-<li><strong>Remote control remains unsolved in this phase.</strong> This RFC intentionally creates the local foundation first. Remote
-behaviour needs follow-up design work before implementation.</li>
+<li>Migration requires time and storage, especially for downloaded attachments.</li>
+<li>The user or operating system can terminate the app during migration, leaving an incomplete global database that must
+never become authoritative. The migration requires interruption-safe state tracking and restart recovery.</li>
+<li>Rebuilding the search index during migration adds time proportional to locally stored mail.</li>
+<li>A device without enough free space cannot migrate until space is freed.</li>
+<li>After cutover, locally stored mail exists only in the global database and in any archive the user created.</li>
+<li>The legacy storage implementation stays in the codebase until a later release removes it.</li>
+<li>A POP3 archive adds a user-visible prerequisite before migration.</li>
+<li>Replacing legacy storage access is broad work.</li>
+<li>The legacy schema retains existing constraints until a later change addresses them.</li>
 </ul>
 <h2 id="open-questions"><a class="header" href="#open-questions">Open Questions</a></h2>
 <ul>
-<li>Where should the bundled catalog and schema live?</li>
-<li>Should the first implementation generate typed keys, validate existing typed keys against the catalog, or do both?</li>
-<li>Should the catalog-backed implementation keep <code>FeatureFlagFactory</code> as the construction point, or introduce a new
-internal resolver behind <code>FeatureFlagProvider</code>?</li>
+<li>Should migration require a pre-flight free-space check with a stated minimum headroom, and should a failed check block
+migration or only warn?</li>
+<li>Does declining the POP3 archive require a durable record of the user’s acknowledgement?</li>
 </ul>
+<p>The technical design owns implementation questions, including driver configuration, the identifier mapping inventory,
+the migration screen, source-schema support, and the cleanup retry strategy.</p>
 <h2 id="outcome"><a class="header" href="#outcome">Outcome</a></h2>
 <p>Filled in when the RFC is accepted, rejected, or obsolete.</p>
 <p>Summarize the final decision and link follow-up work.</p>
@@ -380,11 +325,11 @@ internal resolver behind <code>FeatureFlagProvider</code>?</li>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../engineering/rfcs/0003-render-inline-images-in-plain-text-messages.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../engineering/rfcs/0000-rfc-template.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../../engineering/rfcs/0005-imap-idle-push-on-new-account-inboxes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../engineering/rfcs/0001-changelog-system-replacement.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -394,11 +339,11 @@ internal resolver behind <code>FeatureFlagProvider</code>?</li>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../engineering/rfcs/0003-render-inline-images-in-plain-text-messages.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../engineering/rfcs/0000-rfc-template.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../../engineering/rfcs/0005-imap-idle-push-on-new-account-inboxes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../engineering/rfcs/0001-changelog-system-replacement.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
