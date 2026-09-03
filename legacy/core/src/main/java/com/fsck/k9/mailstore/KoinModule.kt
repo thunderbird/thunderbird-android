@@ -74,7 +74,7 @@ val mailStoreModule = module {
             logger = get(),
             accountManager = get(),
             localStoreProvider = get(),
-            outboxFolderIdCache = @OptIn(ExperimentalTime::class) TimeLimitedCache(),
+            outboxFolderIdCache = TimeLimitedCache(),
         )
     }
 }
