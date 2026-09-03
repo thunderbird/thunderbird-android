@@ -290,6 +290,8 @@ include(
 include(
     ":library:html-cleaner",
     ":library:token-auto-complete",
+    ":library:pii-safe:annotations",
+    ":library:pii-safe:compiler-plugin",
 )
 
 include(

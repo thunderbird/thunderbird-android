@@ -90,6 +90,7 @@ jzlib = "1.0.7"
 koinBom = "4.2.2"
 konsist = "0.17.3"
 kotlinBom = "2.4.10"
+kotlinCompileTesting = "0.13.0"
 kotlinKsp = "2.3.11"
 kotlinpoet = "2.3.0"
 kotlinxCollectionsImmutable = "0.5.2"
@@ -150,6 +151,7 @@ tb-app-badging = { id = "net.thunderbird.gradle.plugin.app.badging" }
 tb-app-versioning = { id = "net.thunderbird.gradle.plugin.app.versioning" }
 tb-featureflag-root = { id = "net.thunderbird.gradle.plugin.featureflag.root" }
 tb-featureflag-library = { id = "net.thunderbird.gradle.plugin.featureflag.library" }
+tb-piisafe = { id = "net.thunderbird.piisafe" }
 tb-quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
 tb-quality-detekt = { id = "net.thunderbird.gradle.plugin.quality.detekt" }
 tb-quality-spotless = { id = "net.thunderbird.gradle.plugin.quality.spotless" }
@@ -267,6 +269,9 @@ koin-test = { module = "io.insert-koin:koin-test" }
 koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4" }
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlinBom" }
+kotlin-compile-testing = { module = "dev.zacsweers.kctfork:core", version.ref = "kotlinCompileTesting" }
+kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler" }
+kotlin-gradle-plugin-api  = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
