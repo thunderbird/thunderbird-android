@@ -63,16 +63,23 @@ else:
 
 if branch == "beta":
     if is_k9:
+        # main carries "a1";
         search_term = r"versionNameSuffix = \"a1\""
+        found_line = find_matching_line(theirs, search_term)
+        if not found_line:
+            raise SystemExit(f"Search term '{search_term}' not found in theirs file.")
+        new_line = "{}{}\n".format(found_line.split("=")[0], '= "b1"')
+        replace_matching_line(ours, search_term, new_line)
     else:
-        search_term = r"versionNameSuffix = \"b[1-9]\""
-    found_line = find_matching_line(theirs, search_term)
-    if found_line:
-        if "b1" not in found_line:
-            new_line = "{}{}\n".format(found_line.split("=")[0], '= "b1"')
+        # beta always starts at "b0"; the shippable build workflow
+        # bumps the suffix per beta release.
+        search_term = r"versionNameSuffix = \"b\d+\""
+        found_line = find_matching_line(ours, search_term)
+        if not found_line:
+            raise SystemExit(f"Search term '{search_term}' not found in merge result.")
+        if '"b0"' not in found_line:
+            new_line = "{}{}\n".format(found_line.split("=")[0], '= "b0"')
             replace_matching_line(ours, search_term, new_line)
-    else:
-        raise SystemExit(f"Search term '{search_term}' not found in theirs file.")
 elif branch == "release":
     search_term = r"versionNameSuffix = \"b[1-9]\""
     found_line = find_matching_line(theirs, search_term)
