@@ -34,7 +34,6 @@ interface FolderDetailsRepository {
 data class PartialUpdatableFolderDetails(
     val folderId: Long,
     val includeInUnifiedInbox: Boolean? = null,
-    val integrate: Boolean? = null,
     val syncEnabled: Boolean? = null,
     val visible: Boolean? = null,
     val notificationsEnabled: Boolean? = null,

@@ -234,7 +234,7 @@ class DefaultFolderDetailsRepositoryTest {
         // Arrange
         val partialUpdate = PartialUpdatableFolderDetails(
             folderId = REGULAR_FOLDER_ID,
-            integrate = true,
+            includeInUnifiedInbox = true,
             syncEnabled = false,
             visible = true,
             notificationsEnabled = false,

@@ -123,15 +123,15 @@ class DefaultFolderDetailsRepository(
         val folderId = folderDetails.folderId
         logger.verbose { "$LOG_ID executing partial update of folder '$folderId'" }
         messageStore.apply {
-            val integrate = folderDetails.integrate
+            val includeInUnifiedInbox = folderDetails.includeInUnifiedInbox
             val syncEnabled = folderDetails.syncEnabled
             val visible = folderDetails.visible
             val notificationsEnabled = folderDetails.notificationsEnabled
             val pushEnabled = folderDetails.isPushEnabled
 
-            if (integrate != null) {
-                logger.verbose { "$LOG_ID updating 'integrate' to '$integrate' of folder '$folderId'" }
-                setIncludeInUnifiedInbox(folderId = folderId, includeInUnifiedInbox = integrate)
+            if (includeInUnifiedInbox != null) {
+                logger.verbose { "$LOG_ID updating 'integrate' to '$includeInUnifiedInbox' of folder '$folderId'" }
+                setIncludeInUnifiedInbox(folderId = folderId, includeInUnifiedInbox = includeInUnifiedInbox)
             }
             if (syncEnabled != null) {
                 logger.verbose { "$LOG_ID updating 'sync_enabled' to '$syncEnabled' of folder '$folderId'" }
