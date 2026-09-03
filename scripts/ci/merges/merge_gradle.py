@@ -8,6 +8,9 @@ import sys
 ours = sys.argv[1]
 theirs = sys.argv[2]
 
+BETA_SUFFIX = r"versionNameSuffix = \"b\d+\""
+MAIN_SUFFIX = r"versionNameSuffix = \"a1\""
+
 
 def get_current_branch():
     result = subprocess.run(
@@ -43,6 +46,24 @@ def replace_matching_line(file_path, search_term, new_line):
                 file.write(line)
 
 
+def set_version_name_suffix(file_path, search_term, suffix):
+    """Rewrites the versionNameSuffix line matching search_term.
+
+    Sets the suffix to `suffix`, or drops the line entirely when `suffix` is
+    None. Raises if the line is missing.
+    """
+    found_line = find_matching_line(file_path, search_term)
+    if not found_line:
+        raise SystemExit(f"Search term '{search_term}' not found in merge result.")
+    if suffix is None:
+        replace_matching_line(file_path, search_term, "")
+        return
+    if f'"{suffix}"' in found_line:
+        return
+    new_line = '{}= "{}"\n'.format(found_line.split("=")[0], suffix)
+    replace_matching_line(file_path, search_term, new_line)
+
+
 branch = get_current_branch()
 
 search_term = "com.fsck.k9"
@@ -62,28 +83,11 @@ else:
     raise SystemExit(f"Search term '{search_term}' not found in ours file.")
 
 if branch == "beta":
-    if is_k9:
-        # main carries "a1";
-        search_term = r"versionNameSuffix = \"a1\""
-        found_line = find_matching_line(theirs, search_term)
-        if not found_line:
-            raise SystemExit(f"Search term '{search_term}' not found in theirs file.")
-        new_line = "{}{}\n".format(found_line.split("=")[0], '= "b1"')
-        replace_matching_line(ours, search_term, new_line)
-    else:
-        # beta always starts at "b0"; the shippable build workflow
-        # bumps the suffix per beta release.
-        search_term = r"versionNameSuffix = \"b\d+\""
-        found_line = find_matching_line(ours, search_term)
-        if not found_line:
-            raise SystemExit(f"Search term '{search_term}' not found in merge result.")
-        if '"b0"' not in found_line:
-            new_line = "{}{}\n".format(found_line.split("=")[0], '= "b0"')
-            replace_matching_line(ours, search_term, new_line)
+    # beta always starts at "b0"; the shippable build workflow bumps the suffix
+    # per beta release. k9 has no beta build, so main carries its suffix in
+    # defaultConfig as "a1" rather than "b0". The suffix is dropped on release
+    # for both apps below.
+    set_version_name_suffix(ours, MAIN_SUFFIX if is_k9 else BETA_SUFFIX, "b0")
 elif branch == "release":
-    search_term = r"versionNameSuffix = \"b[1-9]\""
-    found_line = find_matching_line(theirs, search_term)
-    if found_line:
-        replace_matching_line(ours, search_term, "")
-    else:
-        raise SystemExit(f"Search term '{search_term}' not found in theirs file.")
+    # release ships without a suffix, so drop the line beta was carrying.
+    set_version_name_suffix(ours, BETA_SUFFIX, suffix=None)
