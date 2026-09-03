@@ -38,6 +38,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.BinaryMemoryBody;
 import net.thunderbird.core.preference.GeneralSettingsManager;
+import net.thunderbird.feature.mail.message.composer.signature.HtmlSignatureSanitizer;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.openintents.openpgp.OpenPgpError;
@@ -69,15 +70,17 @@ public class PgpMessageBuilder extends MessageBuilder {
         AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor = AutocryptOpenPgpApiInteractor.getInstance();
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
         GeneralSettingsManager settingsManager = DI.get(GeneralSettingsManager.class);
+        final HtmlSignatureSanitizer htmlSignatureSanitizer = DI.get(HtmlSignatureSanitizer.class);
         return new PgpMessageBuilder(messageIdGenerator, boundaryGenerator, autocryptOperations,
-                autocryptOpenPgpApiInteractor, resourceProvider, settingsManager);
+                autocryptOpenPgpApiInteractor, resourceProvider, settingsManager, htmlSignatureSanitizer);
     }
 
     @VisibleForTesting
     PgpMessageBuilder(MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator,
             AutocryptOperations autocryptOperations, AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor,
-            CoreResourceProvider resourceProvider, GeneralSettingsManager settingsManager) {
-        super(messageIdGenerator, boundaryGenerator, resourceProvider, settingsManager);
+            CoreResourceProvider resourceProvider, GeneralSettingsManager settingsManager,
+            HtmlSignatureSanitizer htmlSignatureSanitizer) {
+        super(messageIdGenerator, boundaryGenerator, resourceProvider, settingsManager, htmlSignatureSanitizer);
 
         this.autocryptOperations = autocryptOperations;
         this.autocryptOpenPgpApiInteractor = autocryptOpenPgpApiInteractor;

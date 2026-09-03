@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
     implementation(projects.core.android.contact)
+    implementation(projects.core.android.webkit.api)
     implementation(projects.feature.changelog.internal)
 
     implementation(projects.core.featureflag)
@@ -37,7 +38,7 @@ dependencies {
     implementation(projects.feature.settings.import)
     implementation(projects.feature.telemetry.api)
     implementation(projects.feature.mail.message.list.api)
-    implementation(projects.feature.mail.message.composer)
+    implementation(projects.feature.mail.message.composer.api)
     implementation(projects.feature.mail.message.export.api)
     implementation(projects.feature.mail.message.reader.api)
 

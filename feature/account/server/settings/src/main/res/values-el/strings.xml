@@ -34,4 +34,5 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">Για να δείτε τον κωδικό πρόσβασής σας εδώ, ενεργοποιήστε το κλείδωμα οθόνης της συσκευής.</string>
     <string name="account_server_settings_password_authentication_failed">Αποτυχία ταυτοποίησης!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Δεν είναι δυνατή η έναρξη του μηνύματος προτροπής για βιομετρικό έλεγχο.</string>
+    <string name="account_server_settings_password_input_label">Συνθηματικό</string>
 </resources>

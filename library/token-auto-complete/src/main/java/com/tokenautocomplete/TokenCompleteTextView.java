@@ -34,6 +34,7 @@ import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputConnectionWrapper;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Filter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -68,7 +69,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
     private boolean initialized = false;
     private boolean performBestGuess = true;
     private boolean savingState = false;
-    private boolean shouldFocusNext = false;
+    private boolean completeOnKeyUp = false;
     private boolean allowCollapse = true;
     private boolean internalEditInProgress = false;
 
@@ -520,23 +521,29 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
 
     @Override
     public boolean onKeyUp(int keyCode, @NonNull KeyEvent event) {
-        boolean handled = super.onKeyUp(keyCode, event);
-        if (shouldFocusNext) {
-            shouldFocusNext = false;
+        // A completion armed by an enter or dpad centre key down is finished off here. It is drained before the
+        // tab key is looked at, so that a tab key up arriving while enter is still held cannot leave it armed to
+        // fire on some later, unrelated key up.
+        if (completeOnKeyUp) {
+            completeOnKeyUp = false;
             handleDone();
         }
-        return handled;
+
+        if (keyCode == KeyEvent.KEYCODE_TAB && event.hasNoModifiers()) {
+            return handleTabInCompletionList();
+        }
+
+        return super.onKeyUp(keyCode, event);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
         boolean handled = false;
         switch (keyCode) {
-            case KeyEvent.KEYCODE_TAB:
             case KeyEvent.KEYCODE_ENTER:
             case KeyEvent.KEYCODE_DPAD_CENTER:
                 if (event.hasNoModifiers()) {
-                    shouldFocusNext = true;
+                    completeOnKeyUp = true;
                     handled = true;
                 }
                 break;
@@ -545,7 +552,43 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
                 break;
         }
 
+        // The tab key is deliberately not handled here. AutoCompleteTextView consumes it while the completion
+        // list is open and leaves it alone otherwise, which is what lets the framework move the focus on to the
+        // next view. Consuming it here would trap the focus in this field.
         return handled || super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * Handles the tab key while the completion list is open.
+     *
+     * {@link android.widget.AutoCompleteTextView} completes straight away on tab, which takes the choice away
+     * from the user as soon as there is more than one suggestion. Instead a single suggestion is completed and
+     * several suggestions move the selection into the list, so it can be walked with tab or the arrow keys and
+     * confirmed with enter.
+     *
+     * @return true if the key was consumed.
+     */
+    private boolean handleTabInCompletionList() {
+        ListAdapter adapter = getAdapter();
+        if (!isPopupShowing() || adapter == null || adapter.getCount() == 0) {
+            return false;
+        }
+
+        if (adapter.getCount() == 1) {
+            // Nothing to choose between, complete the only suggestion and stay in this field.
+            setListSelection(0);
+            performCompletion();
+            return true;
+        }
+
+        if (getListSelection() == ListView.INVALID_POSITION) {
+            // The drop down keeps its selection hidden, and ignores key events, until something is selected.
+            // Selecting the first suggestion here is what makes it navigable in the first place.
+            setListSelection(0);
+        }
+        // With a selection in place the list moves it along itself, so there is nothing left to do but keep
+        // the key away from AutoCompleteTextView's complete-on-tab handling.
+        return true;
     }
 
     @Override

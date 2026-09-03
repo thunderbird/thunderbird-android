@@ -1,19 +1,19 @@
 package net.thunderbird.core.featureflag
 
-@JvmInline
-value class FeatureFlagKey(val key: String) {
-    companion object Keys {
-        /**
-         * DO NOT ADD NEW FEATURE FLAGS HERE.
-         *
-         * New feature flags should be added to an object in the `:api` module of the feature
-         * they belong to, to avoid tight coupling.
-         * See `docs/architecture/feature-flags.md` for more details.
-         */
-        val DisplayInAppNotifications = "display_in_app_notifications".toFeatureFlagKey()
-        val UseNotificationSenderForSystemNotifications =
-            "use_notification_sender_for_system_notifications".toFeatureFlagKey()
-    }
-}
+/**
+ * Represents a unique identifier for a feature flag with an optional description.
+ *
+ * Typically implemented as an enum or sealed class to provide a type-safe catalog
+ * of all available feature flags in the application.
+ */
+interface FeatureFlagKey {
+    /**
+     * The unique identifier or name associated with this instance.
+     */
+    val key: String
 
-fun String.toFeatureFlagKey(): FeatureFlagKey = FeatureFlagKey(this)
+    /**
+     * Returns a human-readable description of this element, or null if no description is available.
+     */
+    val description: String? get() = null
+}

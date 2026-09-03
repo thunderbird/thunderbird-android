@@ -24,8 +24,10 @@ import com.fsck.k9.message.ComposePgpInlineDecider
 import com.fsck.k9.view.RecipientSelectView.Recipient
 import kotlin.test.assertNotNull
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.testing.RobolectricPendingWorkRule
 import org.junit.Before
 import org.junit.Ignore
+import org.junit.Rule
 import org.junit.Test
 import org.koin.test.inject
 import org.mockito.ArgumentMatchers.eq
@@ -40,16 +42,16 @@ import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState
 import org.openintents.openpgp.util.OpenPgpApi
-import org.robolectric.Robolectric
-import org.robolectric.annotation.LooperMode
 
 private val TO_ADDRESS = Address("to@domain.example")
 private val CC_ADDRESS = Address("cc@domain.example")
 private const val CRYPTO_PROVIDER = "crypto_provider"
 private const val CRYPTO_KEY_ID = 123L
 
-@LooperMode(LooperMode.Mode.LEGACY)
 class RecipientPresenterTest : K9RobolectricTest() {
+    @get:Rule
+    val pendingWork = RobolectricPendingWorkRule()
+
     private val openPgpApiManager = mock<OpenPgpApiManager> {
         on { openPgpProviderState } doReturn OpenPgpProviderState.UNCONFIGURED
         on { setOpenPgpProvider(any(), any()) } doAnswer { invocation ->
@@ -70,8 +72,6 @@ class RecipientPresenterTest : K9RobolectricTest() {
 
     @Before
     fun setUp() {
-        Robolectric.getBackgroundThreadScheduler().pause()
-
         recipientPresenter = RecipientPresenter(
             ApplicationProvider.getApplicationContext(),
             mock(),
@@ -95,7 +95,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
         }
 
         recipientPresenter.initFromReplyToMessage(message, false)
-        runBackgroundTask()
+        pendingWork.runNextTask()
 
         verify(recipientMvpView).addRecipients(eq(RecipientType.TO), eq(Recipient(TO_ADDRESS)))
     }
@@ -110,8 +110,8 @@ class RecipientPresenterTest : K9RobolectricTest() {
         }
 
         recipientPresenter.initFromReplyToMessage(message, true)
-        runBackgroundTask()
-        runBackgroundTask()
+        pendingWork.runNextTask()
+        pendingWork.runNextTask()
 
         verify(recipientMvpView).addRecipients(eq(RecipientType.TO), eq(Recipient(TO_ADDRESS)))
         verify(recipientMvpView).addRecipients(eq(RecipientType.CC), eq(Recipient(CC_ADDRESS)))
@@ -214,7 +214,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
 
         setupCryptoProvider(recipientAutocryptStatus)
         recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_ENABLED)
-        runBackgroundTask()
+        pendingWork.runNextTask()
 
         assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.ENABLED_ERROR)
@@ -232,7 +232,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
 
         setupCryptoProvider(recipientAutocryptStatus)
         recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_DISABLED)
-        runBackgroundTask()
+        pendingWork.runNextTask()
 
         assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.AVAILABLE)
@@ -250,7 +250,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
 
         setupCryptoProvider(recipientAutocryptStatus)
         recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_ENABLED)
-        runBackgroundTask()
+        pendingWork.runNextTask()
 
         assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.ENABLED)
@@ -264,7 +264,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
         setupCryptoProvider(noRecipientsAutocryptResult)
 
         recipientPresenter.onMenuSetSignOnly(true)
-        runBackgroundTask()
+        pendingWork.runNextTask()
 
         assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.SIGN_ONLY)
@@ -279,17 +279,13 @@ class RecipientPresenterTest : K9RobolectricTest() {
         setupCryptoProvider(noRecipientsAutocryptResult)
 
         recipientPresenter.onMenuSetPgpInline(true)
-        runBackgroundTask()
+        pendingWork.runNextTask()
 
         assertNotNull(recipientPresenter.currentCachedCryptoStatus) { status ->
             assertThat(status.displayType).isEqualTo(CryptoStatusDisplayType.UNAVAILABLE)
             assertThat(status.isProviderStateOk()).isTrue()
             assertThat(status.isPgpInlineModeEnabled).isTrue()
         }
-    }
-
-    private fun runBackgroundTask() {
-        assertThat(Robolectric.getBackgroundThreadScheduler().runOneTask()).isTrue()
     }
 
     private fun setupCryptoProvider(autocryptStatusResult: RecipientAutocryptStatus) {
@@ -313,6 +309,6 @@ class RecipientPresenterTest : K9RobolectricTest() {
         }
 
         openPgpApiManagerCallback!!.onOpenPgpProviderStatusChanged()
-        runBackgroundTask()
+        pendingWork.runNextTask()
     }
 }

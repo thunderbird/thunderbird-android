@@ -38,6 +38,7 @@ internal interface QrCodeScannerContract {
 
     sealed interface DisplayText {
         data object HelpText : DisplayText
+        data object UnsupportedQrCode : DisplayText
         data class ProgressText(val scannedCount: Int, val totalCount: Int) : DisplayText
     }
 }

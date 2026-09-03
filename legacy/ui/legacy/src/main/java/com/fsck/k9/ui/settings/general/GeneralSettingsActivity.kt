@@ -16,9 +16,8 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.base.extensions.fragmentTransaction
 import com.fsck.k9.ui.base.extensions.fragmentTransactionWithBackStack
-import kotlin.getValue
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import org.koin.android.ext.android.inject
 
 class GeneralSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback, SearchPreferenceResultListener {
@@ -103,7 +102,7 @@ class GeneralSettingsActivity : BaseActivity(), OnPreferenceStartScreenCallback,
             textNoResults = getString(R.string.preference_search_no_results)
 
             index(R.xml.general_settings)
-            featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey()).onEnabled {
+            featureFlagProvider.provide(GeneratedFeatureFlagKey.DISABLE_FONT_SIZE_CONFIG).onEnabled {
                 fontPreferenceKeys.forEach { key ->
                     ignorePreference(key)
                 }

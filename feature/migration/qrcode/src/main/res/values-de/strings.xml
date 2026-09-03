@@ -6,4 +6,5 @@
     <string name="migration_qrcode_scanning_progress">%1$s von %2$s gescannt</string>
     <string name="migration_qrcode_done_button_text">Fertig</string>
     <string name="migration_qrcode_scanning_instructions">QR-Code mit dem von Thunderbird Desktop abgleichen</string>
+    <string name="migration_qrcode_unsupported_code">Der QR-Code wurde erkannt, enthält jedoch ungültige oder nicht unterstützte Daten.</string>
 </resources>

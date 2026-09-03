@@ -1,15 +1,11 @@
 package net.thunderbird.components.ui.bolt.atom.text
 
-import androidx.compose.foundation.text.BasicText
-import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 import net.thunderbird.components.ui.bolt.theme.BoltTheme
-import androidx.compose.material3.Text as Material3Text
 
 @Composable
 fun TextDisplayMediumAutoResize(
@@ -17,20 +13,40 @@ fun TextDisplayMediumAutoResize(
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
     textAlign: TextAlign? = null,
+    softWrap: Boolean = false,
+    maxLines: Int = 1,
+    minFontSizeModifier: Float = 0.35f,
 ) {
-    val style: TextStyle = BoltTheme.typography.displayMedium
-    Material3Text(
+    TextAutoResize(
         text = text,
         modifier = modifier,
-        style = style.merge(
-            color = color,
-            textAlign = textAlign ?: TextAlign.Unspecified,
-        ),
-        softWrap = false,
-        autoSize = TextAutoSize.StepBased(
-            minFontSize = style.fontSize * 0.35f,
-            maxFontSize = BoltTheme.typography.displayMedium.fontSize,
-            stepSize = 0.5.sp,
-        ),
+        style = BoltTheme.typography.displayMedium,
+        color = color,
+        textAlign = textAlign,
+        softWrap = softWrap,
+        maxLines = maxLines,
+        minFontSizeModifier = minFontSizeModifier,
+    )
+}
+
+@Composable
+fun TextDisplayMediumAutoResize(
+    text: AnnotatedString,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    textAlign: TextAlign? = null,
+    softWrap: Boolean = false,
+    maxLines: Int = 1,
+    minFontSizeModifier: Float = 0.35f,
+) {
+    TextAutoResize(
+        text = text,
+        modifier = modifier,
+        style = BoltTheme.typography.displayMedium,
+        color = color,
+        textAlign = textAlign,
+        softWrap = softWrap,
+        maxLines = maxLines,
+        minFontSizeModifier = minFontSizeModifier,
     )
 }

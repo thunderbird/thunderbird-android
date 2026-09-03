@@ -2,13 +2,14 @@ package net.thunderbird.feature.mail.message.reader.impl.inject
 
 import net.thunderbird.core.common.inject.factoryListOf
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.feature.mail.message.reader.api.MessageReaderFeatureFlags
+import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.feature.mail.message.reader.api.css.CssVariableNameProvider
 import net.thunderbird.feature.mail.message.reader.api.css.GlobalCssStyleProvider
 import net.thunderbird.feature.mail.message.reader.api.css.PlainTextMessagePreElementCssStyleProvider
 import net.thunderbird.feature.mail.message.reader.api.css.SignatureCssStyleProvider
 import net.thunderbird.feature.mail.message.reader.api.html.MessageReaderHtmlSettingsProvider
 import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract
+import net.thunderbird.feature.mail.message.reader.api.ui.bridge.MessageReaderBottomSheet
 import net.thunderbird.feature.mail.message.reader.impl.css.DefaultCssVariableNameProvider
 import net.thunderbird.feature.mail.message.reader.impl.css.DefaultGlobalCssStyleProvider
 import net.thunderbird.feature.mail.message.reader.impl.css.DefaultPlainTextMessagePreElementCssStyleProvider
@@ -17,6 +18,7 @@ import net.thunderbird.feature.mail.message.reader.impl.css.LegacyGlobalCssStyle
 import net.thunderbird.feature.mail.message.reader.impl.html.DefaultMessageReaderHtmlSettingsProvider
 import net.thunderbird.feature.mail.message.reader.impl.ui.MailPart
 import net.thunderbird.feature.mail.message.reader.impl.ui.MessageReaderViewModel
+import net.thunderbird.feature.mail.message.reader.impl.ui.molecule.DefaultMessageReaderBottomSheet
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -25,7 +27,7 @@ val featureMessageReaderModule = module {
     single<CssVariableNameProvider> { DefaultCssVariableNameProvider(get()) }
     factory<GlobalCssStyleProvider.Factory> {
         val featureFlagProvider = get<FeatureFlagProvider>()
-        if (featureFlagProvider.provide(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles).isEnabled()) {
+        if (featureFlagProvider.provide(GeneratedFeatureFlagKey.USE_NEW_MESSAGE_READER_CSS_STYLES).isEnabled()) {
             DefaultGlobalCssStyleProvider.Factory(
                 cssClassNameProvider = get(),
                 cssVariableNameProvider = get(),
@@ -44,6 +46,8 @@ val featureMessageReaderModule = module {
         { get<SignatureCssStyleProvider.Factory>() },
         { get<PlainTextMessagePreElementCssStyleProvider.Factory>() },
     )
+
+    single<MessageReaderBottomSheet> { DefaultMessageReaderBottomSheet }
 
     viewModel<MessageReaderViewContract.ViewModel<MailPart>> {
         MessageReaderViewModel(attachmentViewInfoMapper = get())

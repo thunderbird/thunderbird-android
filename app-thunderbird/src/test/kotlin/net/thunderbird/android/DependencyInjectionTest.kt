@@ -25,6 +25,7 @@ import com.fsck.k9.view.MessageWebView
 import kotlin.test.Test
 import net.openid.appauth.AppAuthConfiguration
 import net.thunderbird.core.common.mail.html.HtmlSettings
+import net.thunderbird.core.configstore.ConfigId
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.changelog.internal.ChangelogViewModel
@@ -57,6 +58,7 @@ class DependencyInjectionTest {
                 NotificationManager::class,
                 Resources::class,
                 Storage::class,
+                ConfigId::class,
             ),
             injections = injectedParameters(
                 definition<AccountRemoverWorker>(WorkerParameters::class),

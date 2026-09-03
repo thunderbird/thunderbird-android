@@ -6,4 +6,5 @@
     <string name="migration_qrcode_permission_denied_title">需要相机访问权限</string>
     <string name="migration_qrcode_scanning_progress">扫描了 %2$s 个中的 %1$s 个</string>
     <string name="migration_qrcode_scanning_instructions">对准 Thunderbird 桌面版提供的二维码</string>
+    <string name="migration_qrcode_unsupported_code">已检测到二维码，但其中包含无效或不受支持的数据。</string>
 </resources>

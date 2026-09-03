@@ -952,4 +952,10 @@
     <string name="global_settings_privacy_incognito_keyboard">Privaatne klahvistik</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">Palu klahvistikul mitte jätta meelde seda, mida sa kirjade koostamisel sisestad</string>
     <string name="sort_by_indicator">•</string>
+    <string name="camera_capture_lost">Rakenduse sulgemise tõttu läks hõivatud pilt kaotsi. Palun proovi uuesti.</string>
+    <string name="account_settings_signature_html_label">Allkiri HTML-vormingus</string>
+    <string name="account_settings_signature_is_html_label">Salvesta kirja allkiri HTML-vormingus</string>
+    <string name="account_settings_signature_is_html_summary">Tõlgenda allkirja sisu HTML-ina. Skriptid ja interaktiivne sisu eemaldatakse turvalisuse nimel.</string>
+    <string name="account_settings_signature_preview">Allkirja eelvaade</string>
+    <string name="account_settings_signature_clear_label">Eemalda allkiri</string>
 </resources>

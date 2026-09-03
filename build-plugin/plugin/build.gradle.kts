@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     `kotlin-dsl`
+    alias(libs.plugins.kotlin.serialization)
 }
 
 group = "net.thunderbird.gradle.plugin"
@@ -37,6 +38,13 @@ dependencies {
     compileOnly(plugin(libs.plugins.kover))
     implementation(libs.diff.utils)
     compileOnly(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.networknt.jsonSchemaValidator)
+    implementation(libs.kotlinpoet)
+
+    testImplementation(gradleTestKit())
+    testImplementation(libs.junit)
+    testImplementation(libs.assertk)
 }
 
 kotlin {
@@ -74,6 +82,14 @@ gradlePlugin {
         register("QualitySpotless") {
             id = "net.thunderbird.gradle.plugin.quality.spotless"
             implementationClass = "net.thunderbird.gradle.plugin.quality.spotless.SpotlessPlugin"
+        }
+        register("FeatureFlagRoot") {
+            id = "net.thunderbird.gradle.plugin.featureflag.root"
+            implementationClass = "net.thunderbird.gradle.plugin.featureflag.FeatureFlagRootPlugin"
+        }
+        register("FeatureFlagLibrary") {
+            id = "net.thunderbird.gradle.plugin.featureflag.library"
+            implementationClass = "net.thunderbird.gradle.plugin.featureflag.FeatureFlagLibraryPlugin"
         }
     }
 }
