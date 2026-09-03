@@ -38,10 +38,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c81c1677.js";
+            window.path_to_searchindex_js = "searchindex-d3defe69.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-5fd65761.js"></script>
+        <script src="toc-770c236f.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -234,7 +234,7 @@ the same code and therefore may look and feel similar.</p>
 <li><a href="https://blog.thunderbird.net/2024/09/contribute-to-thunderbird-for-android/">Other ways to help</a></li>
 <li><a href="https://www.mozilla.org/about/governance/policies/participation/">Participation guidelines</a></li>
 </ul>
-<footer id="last-change">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-contributing-to-thunderbird-for-android"><a class="header" href="#-contributing-to-thunderbird-for-android">🤝 Contributing to Thunderbird for Android</a></h1>
 <p>Welcome to the Thunderbird for Android project! We’re excited to have you here and welcome your contributions.</p>
 <h2 id="-new-contributor-essentials"><a class="header" href="#-new-contributor-essentials">🌱 New Contributor Essentials</a></h2>
@@ -316,7 +316,7 @@ development, testing, and review.</p>
 </ul>
 <h2 id="thank-you"><a class="header" href="#thank-you">Thank You!</a></h2>
 <p>Thank you for taking the time to contribute to Thunderbird for Android! We appreciate your help in making the project better and more useful for everyone.</p>
-<footer id="last-change-1">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-1">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-development-environment"><a class="header" href="#-development-environment">🚀 Development Environment</a></h1>
 <p>This guide will help you set up your development environment and get started with contributing to the Thunderbird for
 Android project.</p>
@@ -468,7 +468,7 @@ class ExampleActivity : ComponentActivity() {
 <li>Network activity</li>
 </ul>
 <p>For performance-sensitive code, also consider Baseline Profiles or Macrobenchmark tests.</p>
-<footer id="last-change-2">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-2">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-contribution-workflow"><a class="header" href="#-contribution-workflow">🤝 Contribution Workflow</a></h1>
 <p>The contribution workflow for the Thunderbird for Android project explains the process of contributing code, from
 finding an issue to getting your pull request merged.</p>
@@ -786,7 +786,7 @@ git push --force-with-lease origin fix-issue-123
 <li>Thank others for their help and feedback.</li>
 </ul>
 <p>👉 See <a href="#-code-review-guide">Code review guide</a> for more details.</p>
-<footer id="last-change-3">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-3">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-development-guide"><a class="header" href="#-development-guide">🏗️ Development Guide</a></h1>
 <p>This document summarizes project-specific conventions for developers.</p>
 <p>For full details, see:</p>
@@ -809,7 +809,7 @@ git push --force-with-lease origin fix-issue-123
 <li>Dependencies must flow in <strong>one direction only</strong></li>
 <li>UI built with <strong>Jetpack Compose</strong> + <strong>MVI pattern</strong></li>
 <li>Domain logic implemented in <strong>Use Cases</strong></li>
-<li>Data handled via <strong>Repository pattern</strong></li>
+<li>Data handled via the <a href="#repository-pattern"><strong>Repository pattern</strong></a></li>
 </ul>
 <h2 id="-dependency-injection"><a class="header" href="#-dependency-injection">⚙️ Dependency Injection</a></h2>
 <ul>
@@ -849,7 +849,7 @@ git push --force-with-lease origin fix-issue-123
 <li>❌ Don’t bypass the architecture and layering (e.g., UI calling data sources directly)</li>
 <li>❌ Don’t introduce circular dependencies between modules</li>
 </ul>
-<footer id="last-change-4">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-4">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-code-quality-guide"><a class="header" href="#-code-quality-guide">🔍 Code Quality Guide</a></h1>
 <p>This document provides comprehensive guidelines for maintaining high code quality in the Thunderbird for Android
 project. Following these guidelines ensures that the codebase remains:</p>
@@ -1040,7 +1040,7 @@ The rules are defined in the <code>.editorconfig</code> file and as editorconfig
 <p>The CI configuration is defined in the <code>.github/workflows</code> directory. The main workflow file is <code>android.yml</code>, which
 defines the CI pipeline for Android builds.</p>
 <p>👉 See <a href="#-code-review-guide">Code Review Guide</a> for PR expectations and etiquette.</p>
-<footer id="last-change-5">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-5">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-code-review-guide"><a class="header" href="#-code-review-guide">👁️ Code Review Guide</a></h1>
 <p>This guide outlines best practices for creating and reviewing pull requests (PRs) in the Thunderbird for Android
 project. It is intended to help both authors and reviewers ensure high-quality contributions.</p>
@@ -1079,7 +1079,7 @@ project. It is intended to help both authors and reviewers ensure high-quality c
 <ul>
 <li>Follow modular rules: API vs internal separation; use <code>internal</code> visibility for all code in <code>:internal</code> modules (except for DI).</li>
 <li>Only depend on <code>:feature:foo:api</code> externally; <code>:feature:foo:internal</code> (and legacy <code>:feature:foo:impl</code>) are internal.
-See <a href="engineering/adr/0009-api-internal-split.html">ADR-0009</a> for full module structure and dependency rules.</li>
+See <a href="#featurecore-apiinternal-split-and-dependency-rules">ADR-0009</a> for full module structure and dependency rules.</li>
 <li>Respect MVI/Compose patterns in the UI layer; keep business logic out of UI implementation.</li>
 <li>Prefer constructor injection with Koin; keep constructors simple and dependencies explicit.</li>
 </ul>
@@ -1149,7 +1149,7 @@ See <a href="engineering/adr/0009-api-internal-split.html">ADR-0009</a> for full
 </li>
 <li><strong>Architecture &amp; boundaries</strong>
 <ul>
-<li>Adheres to module API/internal separation per <a href="engineering/adr/0009-api-internal-split.html">ADR-0009</a> and project architecture (UI: Compose/MVI, Domain, Data).</li>
+<li>Adheres to module API/internal separation per <a href="#featurecore-apiinternal-split-and-dependency-rules">ADR-0009</a> and project architecture (UI: Compose/MVI, Domain, Data).</li>
 <li>No cross‑module leaks (check for proper <code>internal</code> visibility in <code>:internal</code> modules); dependencies flow in the right direction.</li>
 <li>Note: The codebase still contains <code>:impl</code> modules during ADR-0009 migration; treat them with the same separation rules as <code>:internal</code>.</li>
 </ul>
@@ -1222,7 +1222,7 @@ See <a href="engineering/adr/0009-api-internal-split.html">ADR-0009</a> for full
 <li>When disagreeing, provide reasoning and seek consensus.</li>
 <li>Use GitHub suggestions for trivial fixes where possible.</li>
 </ul>
-<footer id="last-change-6">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-6">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="git-commit-guide"><a class="header" href="#git-commit-guide">Git Commit Guide</a></h1>
 <p>Use <a href="https://www.conventionalcommits.org/">Conventional Commits</a> to write consistent and meaningful commit messages.
 This makes your work easier to review, track, and maintain for everyone involved in the project.</p>
@@ -1322,7 +1322,7 @@ adding a feature).</li>
 <li>Make each commit purposeful and self-contained.</li>
 <li>Write commits that make collaboration and future development easier for everyone—including you.</li>
 </ul>
-<footer id="last-change-7">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-7">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-testing-guide"><a class="header" href="#-testing-guide">🧪 Testing Guide</a></h1>
 <p>This document outlines the testing practices and guidelines for the Thunderbird for Android project.</p>
 <p><strong>Key Testing Principles:</strong></p>
@@ -1722,7 +1722,7 @@ before requesting an exemption.</p>
 <p>High coverage does not guarantee high-quality tests. Focus on meaningful tests that validate behavior and edge cases
 while meeting the thresholds above.</p>
 </blockquote>
-<footer id="last-change-8">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-8">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-translations-2"><a class="header" href="#-translations-2">🌐 Translations</a></h1>
 <p>This document explains how you can help translate Thunderbird for Android into your language.</p>
 <ul>
@@ -1817,7 +1817,7 @@ Any special notes: [Optional]
 <h2 id="-thank-you"><a class="header" href="#-thank-you">🙏 Thank You!</a></h2>
 <p>Every translation improves Thunderbird for Android for users worldwide.
 We greatly appreciate your help in making the app accessible in more languages!</p>
-<footer id="last-change-9">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-9">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-managing-strings--languages"><a class="header" href="#-managing-strings--languages">📝 Managing Strings &amp; Languages</a></h1>
 <p>This document explains how developers manage our English <strong>source strings</strong> and add/remove <strong>languages</strong> in the
 Thunderbird for Android project.</p>
@@ -2080,7 +2080,7 @@ generate it after adding new strings.</p>
 <p>Automation tools must map between systems.
 See <a href="https://github.com/thunderbird/thunderbird-android/blob/main/cli/translation-cli/src/main/kotlin/net/thunderbird/cli/translation/LanguageCodeLoader.kt#L12-L13">LanguageCodeLoader.kt</a> for an example.</p>
 <p>You could find a more complete list of differences in the <a href="https://developer.android.com/guide/topics/resources/localization#LocaleCodes">Android documentation</a> and <a href="https://developer.android.com/guide/topics/resources/internationalization">Unicode and internationalization support</a></p>
-<footer id="last-change-10">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-10">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="java-to-kotlin-conversion-guide"><a class="header" href="#java-to-kotlin-conversion-guide">Java to Kotlin Conversion Guide</a></h1>
 <p>This guide describes our process for converting Java code to Kotlin.</p>
 <h2 id="why-convert-to-kotlin"><a class="header" href="#why-convert-to-kotlin">Why Convert to Kotlin?</a></h2>
@@ -2125,7 +2125,7 @@ See <a href="https://github.com/thunderbird/thunderbird-android/blob/main/cli/tr
 <li><a href="https://kotlinlang.org/docs/java-interop.html">Calling Java from Kotlin</a></li>
 <li><a href="https://developer.android.com/kotlin?hl=en">Kotlin and Android | Android Developers</a></li>
 </ul>
-<footer id="last-change-11">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-11">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-architecture-1"><a class="header" href="#-architecture-1">🏗️ Architecture</a></h1>
 <p>The application follows a modular architecture with clear separation between different layers and components. The architecture is designed to support both the Thunderbird for Android and K-9 Mail applications while maximizing code reuse, maintainability and enable adoption of Kotlin Multiplatform in the future.</p>
 <h2 id="-key-architectural-principles"><a class="header" href="#-key-architectural-principles">🔑 Key Architectural Principles</a></h2>
@@ -2284,6 +2284,7 @@ allowing for easy testing and reuse.</p>
 <li><strong>🔌 Data Sources</strong>: Provide data from specific sources (API, database, preferences)</li>
 <li><strong>📄 Data Transfer Objects</strong>: Represent data at the data layer</li>
 </ul>
+<p>See the <a href="#repository-pattern">Repository Pattern</a> guide for repository responsibilities and API conventions.</p>
 <p><strong>Pattern: Data Source Pattern</strong></p>
 <ul>
 <li>🔍 Abstracts data sources behind a clean API</li>
@@ -3105,7 +3106,7 @@ showing the dependencies and integration points between modules:</p>
     class FEATURE_TB featureTB
 </pre>
 
-<footer id="last-change-12">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-12">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-module-structure-1"><a class="header" href="#-module-structure-1">📦 Module Structure</a></h1>
 <p>The Thunderbird for Android project is following a modularization approach, where the codebase is divided into multiple
 distinct modules. These modules encapsulate specific functionality and can be developed, tested, and maintained
@@ -3509,7 +3510,7 @@ guidelines on when to create new modules and how to structure them.</p>
 <li><strong>Small Size</strong>: The functionality is small and simple</li>
 <li><strong>Single Responsibility</strong>: The functionality represents a single responsibility</li>
 </ol>
-<footer id="last-change-13">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-13">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-feature-modules-and-extensions"><a class="header" href="#-feature-modules-and-extensions">📦 Feature Modules and Extensions</a></h1>
 <p>The Thunderbird for Android project is organized into multiple feature modules, each encapsulating a specific
 functionality of the application. This document provides an overview of the main feature modules, how they are
@@ -4011,7 +4012,256 @@ relationships between different features:</p>
     class CALENDAR,TODO,SYNC,NOTES,APPOINTMENT extension_module
 </pre>
 
-<footer id="last-change-14">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-14">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<h1 id="repository-pattern"><a class="header" href="#repository-pattern">Repository Pattern</a></h1>
+<p>This guide defines the repository API conventions used by the project. It supports
+<a href="#adr-0010-adopt-project-wide-repository-pattern">ADR-0010</a>.</p>
+<h2 id="core-concepts"><a class="header" href="#core-concepts">Core concepts</a></h2>
+<p>A <strong>repository contract</strong> describes the domain data and operations available to a caller. In Kotlin, it is usually an
+interface. The contract defines what an operation needs, what it returns, and which domain failures a caller can handle,
+but not whether the data comes from a database, a network service, or another source.</p>
+<p>A <strong>repository implementation</strong> is a class that fulfills that contract. It contains the implementation details and may
+coordinate local storage, remote services, mapping, and synchronization. Callers depend on the contract rather than the
+implementation, so these details can change without changing the callers.</p>
+<p>A <strong>focused contract</strong> provides the operations for one coherent domain responsibility. Focused contracts are independent
+APIs. Callers use one or more focused contracts directly, according to their responsibilities.</p>
+<p>In this guide, <strong>API</strong> usually refers to an area’s <code>:api</code> module. It contains contracts and the types needed to use them.
+The corresponding <code>:internal</code> module contains their implementations and other details that callers must not depend on.</p>
+<h2 id="responsibility-and-ownership"><a class="header" href="#responsibility-and-ownership">Responsibility and ownership</a></h2>
+<p>A repository is domain-facing and hides how data is read, stored, or synchronized. UI state and UI-specific business
+logic belong elsewhere.</p>
+<p>Define contracts by domain responsibility. Do not create one interface per database table or one interface per SQL
+operation. A caller depends on the narrowest focused contracts it needs.</p>
+<p>Expose a repository contract from an <code>:api</code> module only when another area needs that stable contract. Place the shared
+contract, criteria, errors, and domain models in that module. Keep repository implementations, data sources, mappers,
+and storage models in the area’s <code>:internal</code> module.</p>
+<p>Bind the contract to its implementation in <code>:app-common</code> or an app-specific composition module. Dependency injection
+then provides the implementation when a caller requests the contract, without exposing the implementation to that
+caller. This maintains the API/internal boundary defined by
+<a href="#featurecore-apiinternal-split-and-dependency-rules">ADR-0009</a>.</p>
+<h2 id="scope-and-identifiers"><a class="header" href="#scope-and-identifiers">Scope and identifiers</a></h2>
+<p>Make the identifiers that scope every operation explicit. For example, an operation on a folder within an account takes
+both <code>AccountId</code> and <code>FolderId</code>. An account-scoped operation continues to take <code>AccountId</code>, even if a folder identifier
+is also supplied. Do not create a repository instance that is permanently bound to one account, folder, or other entity.</p>
+<p>Use domain-specific identifier types such as <code>AccountId</code> and <code>FolderId</code> in new contracts rather than raw primitives.
+This makes the scope visible to callers and supports a consolidated database with one connection for all accounts.</p>
+<h2 id="asynchronous-work-and-results"><a class="header" href="#asynchronous-work-and-results">Asynchronous work and results</a></h2>
+<p>Repository I/O uses coroutines:</p>
+<ul>
+<li>A one-shot operation is a <code>suspend fun</code>.</li>
+<li>A reactive operation returns a <code>Flow</code>.</li>
+</ul>
+<p>Choose the return type based on the guarantees and failures the repository contract exposes to callers, rather than the
+behavior of its current data source or a legacy implementation. Use a fallible return type when an operation can
+encounter an expected, recoverable condition that the caller needs to handle, such as unavailable storage, a network
+failure, a rejected operation, or a missing required entity. Return a value directly only when the contract guarantees
+a meaningful result, possibly by using a default.</p>
+<p>Use <a href="../core/outcome/src/commonMain/kotlin/net/thunderbird/core/outcome/Outcome.kt"><code>net.thunderbird.core.outcome.Outcome</code></a>
+for fallible repository results. <code>ERROR</code> is a domain-specific sealed type. Do not expose database, HTTP, or platform
+exceptions from a contract.</p>
+<p>Fallible contracts use <code>Outcome</code>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Contract</th><th>Return type</th></tr>
+</thead>
+<tbody>
+<tr><td>Required value</td><td><code>Outcome&lt;Type, Error&gt;</code></td></tr>
+<tr><td>Optional value</td><td><code>Outcome&lt;Type?, Error&gt;</code></td></tr>
+<tr><td>Collection</td><td><code>Outcome&lt;List&lt;Type&gt;, Error&gt;</code></td></tr>
+<tr><td>No value</td><td><code>Outcome&lt;Unit, Error&gt;</code></td></tr>
+<tr><td>Reactive value</td><td><code>Flow&lt;Outcome&lt;Type, Error&gt;&gt;</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Non-fallible contracts return values directly:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Contract</th><th>Return type</th></tr>
+</thead>
+<tbody>
+<tr><td>Required value</td><td><code>Type</code></td></tr>
+<tr><td>Optional value</td><td><code>Type?</code></td></tr>
+<tr><td>Collection</td><td><code>List&lt;Type&gt;</code></td></tr>
+<tr><td>No value</td><td><code>Unit</code></td></tr>
+<tr><td>Reactive value</td><td><code>Flow&lt;Type&gt;</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>For fallible operations, use <code>Outcome.Success(Unit)</code> when an operation completes successfully and has no value to
+return. Use <code>Outcome.Success(null)</code> when a lookup completes successfully but no matching entity exists. Use
+<code>Outcome.Failure(...)</code> when the operation cannot produce the required result. An API that requires an entity represents
+a missing entity as a domain failure.</p>
+<p>For example, this repository always returns settings by falling back to defaults, while an update can fail:</p>
+<pre><code class="language-kotlin">interface DisplaySettingsRepository {
+    suspend fun getById(
+        accountId: AccountId,
+    ): DisplaySettings
+
+    fun observeById(
+        accountId: AccountId,
+    ): Flow&lt;DisplaySettings&gt;
+
+    suspend fun update(
+        accountId: AccountId,
+        settings: DisplaySettings,
+    ): Outcome&lt;Unit, DisplaySettingsError&gt;
+}
+</code></pre>
+<h2 id="read-method-naming"><a class="header" href="#read-method-naming">Read method naming</a></h2>
+<p>Use these names for read methods:</p>
+<ul>
+<li>Reactive reads:
+<ul>
+<li><code>observeById()</code> reads one entity by its main identifier.</li>
+<li><code>observeBy&lt;Identifier&gt;()</code> reads one entity by another identifier, such as <code>observeByServerId()</code>.</li>
+<li><code>observeAll()</code> reads all entities in scope.</li>
+<li><code>observeByCriteria()</code> reads at most one entity for an immutable, domain-specific criteria type.</li>
+<li><code>observeAllByCriteria()</code> reads multiple entities for an immutable, domain-specific criteria type.</li>
+</ul>
+</li>
+<li>One-shot reads:
+<ul>
+<li>Optional singular reads use <code>findById()</code>, <code>findBy&lt;Identifier&gt;()</code>, or <code>findByCriteria()</code>. They always return a
+nullable entity, either as <code>Type?</code> or <code>Outcome&lt;Type?, Error&gt;</code>. Return <code>null</code> directly or <code>Outcome.Success(null)</code>
+when no entity exists.</li>
+<li>Collection reads use <code>findAll()</code> or <code>findAllByCriteria()</code>. Return an empty list directly or
+<code>Outcome.Success(emptyList())</code> when no entities exist.</li>
+<li>Required singular reads use <code>getById()</code> or <code>getBy&lt;Identifier&gt;()</code>. They always return a non-null entity, either as
+<code>Type</code> or <code>Outcome&lt;Type, Error&gt;</code>. A direct return guarantees a meaningful value. A fallible return represents absence
+as a domain failure.</li>
+<li>Criteria methods accept an immutable, domain-specific criteria type.</li>
+</ul>
+</li>
+</ul>
+<p>Reactive reads use the same absence semantics as one-shot reads. An optional singular read emits <code>null</code> directly or
+<code>Outcome.Success(null)</code>. A required singular read emits a value directly or a domain failure. A collection read emits an
+empty list directly or <code>Outcome.Success(emptyList())</code> when no entities exist.</p>
+<h2 id="mutation-methods"><a class="header" href="#mutation-methods">Mutation methods</a></h2>
+<p>Use <code>create()</code>, <code>update()</code>, and <code>delete()</code> for lifecycle operations. Do not add a generic <code>save()</code> method to new
+contracts. Use <code>clear&lt;Scope&gt;()</code> only for explicitly scoped bulk removal, such as <code>clearCache()</code>.</p>
+<p>Within a focused repository contract, method names describe the operation and must not repeat the domain concern named
+by the repository. For example, use <code>DraftRepository.create()</code>, <code>FolderQueryRepository.findById()</code>, and
+<code>FolderQueryRepository.findByServerId()</code>, not <code>createDraft()</code>, <code>findByFolderId()</code>, or <code>findFolderByServerId()</code>. Use
+<code>FolderQueryRepository.getById()</code> or <code>FolderQueryRepository.getByServerId()</code> for required lookups. Method names are
+unambiguous within their focused contract. The repository contract name identifies the concern and is not repeated in
+its method names.</p>
+<p>Avoid repository methods whose names start with <code>set</code>. Multiple independent setters expose invalid intermediate state
+and usually mean the API is acting as a mutable state holder. Group values that change together in an immutable value
+and update them atomically. A setup draft or UI-only mutable state belongs in a <code>Store</code> or <code>StateHolder</code>, not
+a repository.</p>
+<pre><code class="language-kotlin">data class FolderSettings(
+    val includeInUnifiedInbox: Boolean,
+    val visible: Boolean,
+    val syncEnabled: Boolean,
+    val notificationsEnabled: Boolean,
+)
+
+interface FolderSettingsRepository {
+    fun observeById(
+        accountId: AccountId,
+        folderId: FolderId,
+    ): Flow&lt;Outcome&lt;FolderSettings, FolderError&gt;&gt;
+
+    suspend fun update(
+        accountId: AccountId,
+        folderId: FolderId,
+        settings: FolderSettings,
+    ): Outcome&lt;Unit, FolderError&gt;
+}
+</code></pre>
+<p>Creation is deliberately different from a generic write. A draft has its own creation lifecycle and identifier, while
+changes to an existing draft use <code>update()</code>:</p>
+<pre><code class="language-kotlin">interface DraftRepository {
+    suspend fun create(
+        accountId: AccountId,
+    ): Outcome&lt;Draft, DraftError&gt;
+
+    suspend fun update(
+        accountId: AccountId,
+        draftId: DraftId,
+        draft: Draft,
+    ): Outcome&lt;Unit, DraftError&gt;
+
+    suspend fun delete(
+        accountId: AccountId,
+        draftId: DraftId,
+    ): Outcome&lt;Unit, DraftError&gt;
+}
+</code></pre>
+<h2 id="folder-contract-example"><a class="header" href="#folder-contract-example">Folder contract example</a></h2>
+<p>The following example shows independent, focused folder contracts. Consumers depend directly on the contracts matching
+their responsibilities.</p>
+<pre><code class="language-kotlin">enum class UnifiedInboxFilter {
+    ANY,
+    INCLUDED,
+    EXCLUDED,
+}
+
+data class FolderCriteria(
+    val unifiedInbox: UnifiedInboxFilter = UnifiedInboxFilter.ANY,
+    val excludeLocalOnly: Boolean = false,
+)
+
+sealed interface FolderError {
+    data object NotFound : FolderError
+    data object Unavailable : FolderError
+}
+
+interface FolderQueryRepository {
+    fun observeById(
+        accountId: AccountId,
+        folderId: FolderId,
+    ): Flow&lt;Outcome&lt;Folder?, FolderError&gt;&gt;
+
+    fun observeAllByCriteria(
+        accountId: AccountId,
+        criteria: FolderCriteria,
+    ): Flow&lt;Outcome&lt;List&lt;FolderDetails&gt;, FolderError&gt;&gt;
+
+    suspend fun findById(
+        accountId: AccountId,
+        folderId: FolderId,
+    ): Outcome&lt;Folder?, FolderError&gt;
+
+    suspend fun getById(
+        accountId: AccountId,
+        folderId: FolderId,
+    ): Outcome&lt;Folder, FolderError&gt;
+
+    suspend fun findByServerId(
+        accountId: AccountId,
+        folderServerId: String,
+    ): Outcome&lt;Folder?, FolderError&gt;
+}
+
+interface RemoteFolderRepository {
+    suspend fun findAll(
+        accountId: AccountId,
+    ): Outcome&lt;List&lt;RemoteFolder&gt;, FolderError&gt;
+}
+
+interface FolderPushTrackingRepository {
+    fun observeEnabled(
+        accountId: AccountId,
+    ): Flow&lt;Outcome&lt;Boolean, FolderError&gt;&gt;
+
+    suspend fun disable(
+        accountId: AccountId,
+    ): Outcome&lt;Unit, FolderError&gt;
+}
+</code></pre>
+<p>In <code>FolderCriteria</code>, <code>UnifiedInboxFilter.ANY</code> means that the query does not filter on unified inbox inclusion. The
+criteria contains filters only. Scope identifiers such as <code>AccountId</code> and <code>FolderId</code> remain explicit parameters rather
+than becoming part of the criteria.</p>
+<p>For example, a screen that renders folder preferences depends only on <code>FolderSettingsRepository</code>. The implementation
+may use any storage technology, as long as it maintains the contract.</p>
+<h2 id="testing-repository-consumers"><a class="header" href="#testing-repository-consumers">Testing repository consumers</a></h2>
+<p>Test consumers with fakes that implement the focused contract. Cover successful values, nullable absence, empty
+collections, and each expected domain failure. Repository implementations must test account filtering and the mapping
+of expected data-source failures to domain errors.</p>
+<footer id="last-change-15">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-ui-architecture-1"><a class="header" href="#-ui-architecture-1">🎨 UI Architecture</a></h1>
 <p>The UI is built using Jetpack Compose with a component-based architecture following a modified Model-View-Intent (MVI) pattern. While we refer to it as MVI, our implementation uses “Events” instead of “Intents” for user interactions and “Actions” for use case calls. This architecture provides a unidirectional data flow, clear separation of concerns, and improved testability.</p>
 <h2 id="-component-hierarchy"><a class="header" href="#-component-hierarchy">📱 Component Hierarchy</a></h2>
@@ -5250,7 +5500,7 @@ updateState { it.copy(isLoading = false, error = "Failed to load settings") }
 <li><strong>🎨 Color Contrast</strong>: Sufficient color contrast for readability</li>
 <li><strong>⌨️ Keyboard Navigation</strong>: Support for keyboard navigation</li>
 </ul>
-<footer id="last-change-15">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-16">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-theming"><a class="header" href="#-theming">🎭 Theming</a></h1>
 <p>This document provides a detailed explanation of the theming system used in our applications. It covers the theme
 architecture, components, customization, and usage.</p>
@@ -5869,7 +6119,7 @@ fun testThemedButton() {
     composeTestRule.onNodeWithText("Click Me").assertExists()
 }
 </code></pre>
-<footer id="last-change-16">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-17">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-design-system"><a class="header" href="#-design-system">🎨 Design System</a></h1>
 <p>The design system is a collection of guidelines, principles, and tools that help teams create consistent and cohesive visual designs and user experiences. It is built using the Atomic Design Methodology.</p>
 <p>The Compose design system is named <a href="https://bolt.thunderbird.net/"><strong>Bolt</strong></a> and lives in the local <code>components/</code>
@@ -5902,7 +6152,7 @@ This can save time and improve the overall quality, as well as facilitate collab
 <li><a href="https://atomicdesign.bradfrost.com/chapter-2/">Atomic Design Methodology | Atomic Design by Brad Frost</a></li>
 <li><a href="https://www.wearemobilefirst.com/blog/atomic-design">Atomic Design: Getting Started | Blog | We Are Mobile First</a></li>
 </ul>
-<footer id="last-change-17">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-18">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="user-flows"><a class="header" href="#user-flows">User Flows</a></h1>
 <p>The user flows diagrams below illustrate typical paths users take through the application, helping developers
 understand how different components interact from a user perspective.</p>
@@ -5916,7 +6166,7 @@ understand how different components interact from a user perspective.</p>
 <p>We plan to test these user flows using <a href="https://maestro.dev/">maestro</a>, a tool for automating UI tests. Maestro allows us to write tests in a
 simple YAML format, making it easy to define user interactions and verify application behavior.</p>
 <p>The current flows could be found in the *<code>ui-flows</code> directory in the repository.</p>
-<footer id="last-change-18">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-19">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-settings-architecture"><a class="header" href="#-settings-architecture">⚙️ Settings Architecture</a></h1>
 <p>This document describes the settings architecture in Thunderbird for Android, explaining how preferences are organized,
 stored, and upgraded.</p>
@@ -6044,7 +6294,7 @@ sequenceDiagram
 <h2 id="-related-documentation"><a class="header" href="#-related-documentation">📚 Related Documentation</a></h2>
 <p>For information on how settings are persisted to the database and how to perform low-level database migrations,
 see the <a href="#preference-migration-guide">Preference Migration Guide</a>.</p>
-<footer id="last-change-19">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-20">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="feature-flags"><a class="header" href="#feature-flags">Feature Flags</a></h1>
 <p>A feature flag can be nothing more than a simple boolean that can enable or disable a feature that we’re working on.
 While some companies may use their feature flags for A/B testing, with timestamps controlling releases, and any other
@@ -6271,7 +6521,7 @@ your feature flag and test your new feature right from here. To access the “Se
 either use the three dot button on the message list screen and select “DEBUG: Feature Flags,” or you can go into the
 side menu, down to Settings, General Settings, Debugging, and tap “Open Secret debug screen.”</p>
 <p>Enjoy testing your new feature!</p>
-<footer id="last-change-20">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-21">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-legacy-module-integration"><a class="header" href="#-legacy-module-integration">🔙 Legacy Module Integration</a></h1>
 <p>This document outlines how existing legacy code is integrated into the new modular architecture of the application and
 the strategy for its migration. The core principle is to isolate legacy code and provide a controlled way for
@@ -6726,7 +6976,7 @@ If <code>:app-common</code> bridges to legacy code, that is an internal detail o
     class LEGACY_CODE legacy_module
 </pre>
 
-<footer id="last-change-21">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-22">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="engineering"><a class="header" href="#engineering">Engineering</a></h1>
 <p>The Engineering section defines the processes and artifacts used to propose, decide, and deliver technical changes. It connects high-level roadmap planning with public delivery work through RFCs, Technical Designs, and Architecture Decision Records (ADRs).</p>
 <p>Use the smallest set of documents and issues that makes the work clear, reviewable, and maintainable.</p>
@@ -7205,7 +7455,7 @@ issues.</li>
 tracked publicly.</li>
 <li>Private roadmap context is not required to understand the public GitHub issues.</li>
 </ul>
-<footer id="last-change-22">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-23">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="milestone-issues"><a class="header" href="#milestone-issues">Milestone Issues</a></h1>
 <p>GitHub Milestone Issues define public delivery outcomes. They are created and managed by core maintainers because they
 depend on GitHub permissions, project metadata, and roadmap coordination.</p>
@@ -7237,7 +7487,7 @@ catch-all GitHub Milestone Issue for community contributions or Android foundati
 <ul>
 <li></li>
 </ul>
-<footer id="last-change-23">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-24">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="user-journeys"><a class="header" href="#user-journeys">User Journeys</a></h1>
 <p>User journeys and user stories describe the user-centered reason for product-visible work. Store them in the repository
 so maintainers and contributors can find the product context alongside the technical documentation.</p>
@@ -7302,7 +7552,7 @@ request and resulting document from the relevant milestone or feature issues.</p
 <p>What research, design review, or user feedback is needed before or during implementation?</p>
 <h2 id="open-questions"><a class="header" href="#open-questions">Open Questions</a></h2>
 <p>What product, UX, or research questions are still unresolved?</p>
-<footer id="last-change-24">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-25">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="engineering-rfcs"><a class="header" href="#engineering-rfcs">Engineering RFCs</a></h1>
 <p>RFCs are planning documents for medium-to-large engineering changes that need review before implementation.</p>
 <h2 id="what-is-an-rfc"><a class="header" href="#what-is-an-rfc">What is an RFC?</a></h2>
@@ -7396,7 +7646,7 @@ the standard format and provide clear and concise information.</p>
 <h2 id="outcome"><a class="header" href="#outcome">Outcome</a></h2>
 <p>Filled in when the RFC is accepted, rejected, or obsolete.</p>
 <p>Summarize the final decision and link follow-up work.</p>
-<footer id="last-change-25">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-26">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="rfc-0006-remote-feature-flags"><a class="header" href="#rfc-0006-remote-feature-flags">RFC 0006: Remote Feature Flags</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11253">#11253</a></li>
@@ -7460,7 +7710,7 @@ an update without downloading the whole catalog
 <h2 id="outcome-1"><a class="header" href="#outcome-1">Outcome</a></h2>
 <p>Filled in when the RFC is accepted, rejected, or obsolete.</p>
 <p>Summarize the final decision and link follow-up work.</p>
-<footer id="last-change-26">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-27">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="rfc-0001-changelog-system-replacement"><a class="header" href="#rfc-0001-changelog-system-replacement">RFC 0001: Changelog System Replacement</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11079">#11079</a></li>
@@ -7530,7 +7780,7 @@ in-app changelog implementation, not to introduce a network-delivered changelog 
 <h2 id="outcome-2"><a class="header" href="#outcome-2">Outcome</a></h2>
 <p>Filled in when the RFC is accepted, rejected, or superseded.</p>
 <p>If accepted, implementation follows the linked technical design.</p>
-<footer id="last-change-27">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-28">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="rfc-0002-thundermail--add-an-account-interim-screen"><a class="header" href="#rfc-0002-thundermail--add-an-account-interim-screen">RFC 0002: Thundermail – Add an Account interim screen</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11102">#11102</a></li>
@@ -7585,7 +7835,7 @@ adding an account first.</li>
 <h2 id="outcome-3"><a class="header" href="#outcome-3">Outcome</a></h2>
 <p>The team decided to implement the suggested screen. We might have a follow-up task for deleting the
 <code>TbOnboardingMigrationScreen</code> and/or include the <code>Import settings</code> button in another screen.</p>
-<footer id="last-change-28">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-29">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="rfc-0003-render-inline-images-in-plain-text-messages"><a class="header" href="#rfc-0003-render-inline-images-in-plain-text-messages">RFC 0003: Render inline images in plain-text messages</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11179">#11179</a></li>
@@ -7725,7 +7975,7 @@ differently depending on where it is viewed.</p>
 <h2 id="outcome-4"><a class="header" href="#outcome-4">Outcome</a></h2>
 <p><em>To be filled in when the RFC is accepted, rejected, or obsoleted. Summarize the final decision and link follow-up
 work.</em></p>
-<footer id="last-change-29">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-30">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="rfc-0004-add-a-declarative-feature-flag-catalog"><a class="header" href="#rfc-0004-add-a-declarative-feature-flag-catalog">RFC 0004: Add a Declarative Feature Flag Catalog</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11222">#11222</a></li>
@@ -7922,7 +8172,7 @@ internal resolver behind <code>FeatureFlagProvider</code>?</li>
 <h2 id="outcome-5"><a class="header" href="#outcome-5">Outcome</a></h2>
 <p>Filled in when the RFC is accepted, rejected, or obsolete.</p>
 <p>Summarize the final decision and link follow-up work.</p>
-<footer id="last-change-30">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-31">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="rfc-0005-enable-imap-idle-push-for-the-inbox-by-default-on-newly-added-imap-accounts"><a class="header" href="#rfc-0005-enable-imap-idle-push-for-the-inbox-by-default-on-newly-added-imap-accounts">RFC 0005: Enable IMAP IDLE (“Push”) for the Inbox by Default on Newly Added IMAP Accounts</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11320">#11320</a></li>
@@ -8040,7 +8290,7 @@ the existing IMAP IDLE service by default on the user’s inbox if we can during
 our settings, verbiage, and subsequent documentation is out of scope for this task, but will be part of “Phase 2” of
 the notification settings improvement project.</p>
 <h2 id="outcome-6"><a class="header" href="#outcome-6">Outcome</a></h2>
-<footer id="last-change-31">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-32">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="architecture-decision-records"><a class="header" href="#architecture-decision-records">Architecture Decision Records</a></h1>
 <p>ADRs are short text documents that serve as a historical context for the architecture decisions we make over the
 course of the project.</p>
@@ -8122,7 +8372,53 @@ decision after [proposed date], factoring in discussion at that time.</p>
 <li>outcome 1</li>
 <li>outcome 2</li>
 </ul>
-<footer id="last-change-32">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-33">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<h1 id="adr-0010-adopt-project-wide-repository-pattern"><a class="header" href="#adr-0010-adopt-project-wide-repository-pattern">ADR 0010: Adopt project-wide Repository pattern</a></h1>
+<ul>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11440">#11440</a></li>
+<li>Status: <strong>Proposed</strong></li>
+</ul>
+<h2 id="context-1"><a class="header" href="#context-1">Context</a></h2>
+<p>Data access is spread across the codebase and is often coupled to business logic. The current per-account database
+model makes cross-account features, including unified inbox pagination and unified folders, difficult to implement and
+prevents a gradual migration to a consolidated database.</p>
+<p>Repository-shaped APIs are inconsistent. Some expose mutable state through setters, and <code>FolderRepository</code> combines
+local queries, remote queries, push tracking, and folder preference mutation in one interface. New work must not
+replicate these broad, data-source-shaped interfaces.</p>
+<h2 id="decision-1"><a class="header" href="#decision-1">Decision</a></h2>
+<p>Adopt focused, KMP-safe repository contracts project-wide. Repositories isolate domain code from data-source
+implementations and may coordinate local storage, remote services, and synchronization. They do not contain UI logic.</p>
+<p>Each repository contract must:</p>
+<ol>
+<li>Have one coherent responsibility and one reason to change.</li>
+<li>Be independent of data-source implementation details and platform types such as <code>android.*</code> and <code>Cursor</code>.</li>
+<li>Receive all identifiers required to scope an operation explicitly. An account-scoped operation always receives an
+<code>AccountId</code>, even when it also receives an entity identifier such as <code>FolderId</code>. Repositories must not be bound to a
+single account or entity instance.</li>
+<li>Be exposed from an <code>:api</code> module only when it is an intentionally shared, stable contract. Implementations, data
+sources, mappers, and database details remain internal, as defined by <a href="#featurecore-apiinternal-split-and-dependency-rules">ADR-0009</a>.</li>
+</ol>
+<p>Repository APIs use Coroutines. The project <code>Outcome</code> type and a domain-specific error type represent expected,
+recoverable failures. Repository contracts do not expose database, HTTP, or platform exceptions.</p>
+<p>The detailed <a href="#repository-pattern">Repository Pattern guide</a> defines naming, reactive and one-shot
+API shapes, atomic updates, and examples. Migrate legacy access one use case at a time, introducing a focused
+contract and error type first. Implementations or <code>:app-common</code> adapters preserve the contract while the backing data
+moves to the consolidated schema.</p>
+<h2 id="outcomes-1"><a class="header" href="#outcomes-1">Outcomes</a></h2>
+<h3 id="positive-outcomes-1"><a class="header" href="#positive-outcomes-1">Positive Outcomes</a></h3>
+<ul>
+<li>Domain code can evolve independently from the current per-account database and its eventual consolidated replacement.</li>
+<li>Focused contracts avoid overly broad interfaces, make dependencies clearer, and are easier to fake in tests.</li>
+<li>Explicit account and entity identifiers make account filtering reviewable and support safe database consolidation.</li>
+<li>KMP-safe contracts can move to shared source sets without exposing Android implementation details.</li>
+</ul>
+<h3 id="negative-outcomes-1"><a class="header" href="#negative-outcomes-1">Negative Outcomes</a></h3>
+<ul>
+<li>The migration touches many call sites and requires old and new data-access paths to coexist temporarily.</li>
+<li><code>Outcome</code> and domain error types add API and call-site verbosity.</li>
+<li>A missed <code>account_id</code> filter can still fail silently. Implementation-level safeguards and tests remain necessary.</li>
+</ul>
+<footer id="last-change-34">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="switch-from-java-to-kotlin"><a class="header" href="#switch-from-java-to-kotlin">Switch from Java to Kotlin</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7221">#7221</a></li>
@@ -8131,29 +8427,29 @@ decision after [proposed date], factoring in discussion at that time.</p>
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-1"><a class="header" href="#context-1">Context</a></h2>
+<h2 id="context-2"><a class="header" href="#context-2">Context</a></h2>
 <p>We’ve been using Java as our primary language for Android development. While Java has served us well, it has certain
 limitations in terms of null safety, verbosity, functional programming, and more. Kotlin, officially supported by
 Google for Android development, offers solutions to many of these issues and provides more modern language features
 that can improve productivity, maintainability, and overall code quality.</p>
-<h2 id="decision-1"><a class="header" href="#decision-1">Decision</a></h2>
+<h2 id="decision-2"><a class="header" href="#decision-2">Decision</a></h2>
 <p>Switch our primary programming language for Android development from Java to Kotlin. This will involve rewriting our
 existing Java codebase in Kotlin and writing all new code in Kotlin. To facilitate the transition, we will gradually
 refactor our existing Java codebase to Kotlin.</p>
-<h2 id="outcomes-1"><a class="header" href="#outcomes-1">Outcomes</a></h2>
-<h3 id="positive-outcomes-1"><a class="header" href="#positive-outcomes-1">Positive Outcomes</a></h3>
+<h2 id="outcomes-2"><a class="header" href="#outcomes-2">Outcomes</a></h2>
+<h3 id="positive-outcomes-2"><a class="header" href="#positive-outcomes-2">Positive Outcomes</a></h3>
 <ul>
 <li>Improved null safety, reducing potential for null pointer exceptions.</li>
 <li>Increased code readability and maintainability due to less verbose syntax.</li>
 <li>Availability of modern language features such as coroutines for asynchronous programming, and extension functions.</li>
 <li>Officially supported by Google for Android development, ensuring future-proof development.</li>
 </ul>
-<h3 id="negative-outcomes-1"><a class="header" href="#negative-outcomes-1">Negative Outcomes</a></h3>
+<h3 id="negative-outcomes-2"><a class="header" href="#negative-outcomes-2">Negative Outcomes</a></h3>
 <ul>
 <li>The process of refactoring existing Java code to Kotlin can be time-consuming.</li>
 <li>Potential for introduction of new bugs during refactoring.</li>
 </ul>
-<footer id="last-change-33">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-35">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="ui---wrap-material-components-in-atomic-design-system"><a class="header" href="#ui---wrap-material-components-in-atomic-design-system">UI - Wrap Material Components in Atomic Design System</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7221">#7221</a></li>
@@ -8162,32 +8458,32 @@ refactor our existing Java codebase to Kotlin.</p>
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-2"><a class="header" href="#context-2">Context</a></h2>
+<h2 id="context-3"><a class="header" href="#context-3">Context</a></h2>
 <p>As we continued developing our Jetpack Compose application, we found a need to increase the consistency, reusability,
 and maintainability of our user interface (UI) components. We have been using Material components directly throughout our
 application. This lead to a lack of uniformity and increases the complexity of changes as the same modifications had to
 be implemented multiple times across different screens.</p>
-<h2 id="decision-2"><a class="header" href="#decision-2">Decision</a></h2>
+<h2 id="decision-3"><a class="header" href="#decision-3">Decision</a></h2>
 <p>To address these challenges, we’ve decided to adopt an
 <a href="engineering/design-system.html">Atomic Design System</a> as a foundation for our application UI.
 This system encapsulates Material components within our own <a href="../components/ui/bolt/README.html">components</a>,
 organized into categories of <em>atoms</em>, <em>molecules</em>, and <em>organisms</em>. We also defined <em>templates</em> as layout structures
 that can be flexibly combined to construct <em>pages</em>. These components collectively form the building blocks that we are
 using to construct our application’s UI.</p>
-<h2 id="outcomes-2"><a class="header" href="#outcomes-2">Outcomes</a></h2>
-<h3 id="positive-outcomes-2"><a class="header" href="#positive-outcomes-2">Positive Outcomes</a></h3>
+<h2 id="outcomes-3"><a class="header" href="#outcomes-3">Outcomes</a></h2>
+<h3 id="positive-outcomes-3"><a class="header" href="#positive-outcomes-3">Positive Outcomes</a></h3>
 <ul>
 <li>Increased reusability of components across the application, reducing code duplication.</li>
 <li>More consistent UI and uniform styling across the entire application.</li>
 <li>Improved maintainability, as changes to a component only need to be made in one place.</li>
 </ul>
-<h3 id="negative-outcomes-2"><a class="header" href="#negative-outcomes-2">Negative Outcomes</a></h3>
+<h3 id="negative-outcomes-3"><a class="header" href="#negative-outcomes-3">Negative Outcomes</a></h3>
 <ul>
 <li>Initial effort and time investment needed to implement the atomic design system.</li>
 <li>Developers need to adapt to the new system and learn how to use it effectively.</li>
 <li>Potential for over-complication if simple components are excessively broken down into atomic parts.</li>
 </ul>
-<footer id="last-change-34">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-36">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="switch-test-assertions-from-truth-to-assertk"><a class="header" href="#switch-test-assertions-from-truth-to-assertk">Switch Test Assertions from Truth to assertk</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7242">#7242</a></li>
@@ -8196,32 +8492,32 @@ using to construct our application’s UI.</p>
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-3"><a class="header" href="#context-3">Context</a></h2>
+<h2 id="context-4"><a class="header" href="#context-4">Context</a></h2>
 <p>Our project has been using the Truth testing library for writing tests. While Truth has served us well, it is primarily
 designed for Java and lacks some features that make our Kotlin tests more idiomatic and expressive. As our codebase is
 <a href="#switch-from-java-to-kotlin">primarily Kotlin</a>, we have been looking for a testing library that is more aligned
 with Kotlin’s features and idioms.</p>
-<h2 id="decision-3"><a class="header" href="#decision-3">Decision</a></h2>
+<h2 id="decision-4"><a class="header" href="#decision-4">Decision</a></h2>
 <p>We have decided to use <a href="https://github.com/willowtreeapps/assertk">assertk</a> as the default assertions framework for
 writing tests in our project. assertk provides a fluent API that is very similar to Truth, making the transition easier.
 Moreover, it is designed to work well with Kotlin, enabling us to leverage Kotlin-specific features in our tests.</p>
 <p>We’ve further committed to converting all pre-existing tests from Truth to assertk.</p>
-<h2 id="outcomes-3"><a class="header" href="#outcomes-3">Outcomes</a></h2>
+<h2 id="outcomes-4"><a class="header" href="#outcomes-4">Outcomes</a></h2>
 <p><strong>Note</strong>: The migration of all Truth tests to assertk has already been completed.</p>
-<h3 id="positive-outcomes-3"><a class="header" href="#positive-outcomes-3">Positive Outcomes</a></h3>
+<h3 id="positive-outcomes-4"><a class="header" href="#positive-outcomes-4">Positive Outcomes</a></h3>
 <ul>
 <li><strong>Ease of Transition</strong>: The syntax of assertk is very similar to Truth, which makes the migration process smoother.</li>
 <li><strong>Kotlin-Friendly</strong>: assertk is designed specifically for Kotlin, allowing us to write more idiomatic and
 expressive Kotlin tests.</li>
 </ul>
-<h3 id="negative-outcomes-3"><a class="header" href="#negative-outcomes-3">Negative Outcomes</a></h3>
+<h3 id="negative-outcomes-4"><a class="header" href="#negative-outcomes-4">Negative Outcomes</a></h3>
 <ul>
 <li><strong>Dependency</strong>: While we are replacing one library with another, introducing a new library always carries the risk
 of bugs or future deprecation.</li>
 <li><strong>Migration Effort</strong>: Existing tests written using Truth will need to be migrated to use assertk, requiring some
 effort, although mitigated by the similar syntax.</li>
 </ul>
-<footer id="last-change-35">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-37">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="naming-conventions-for-interfaces-and-their-implementations"><a class="header" href="#naming-conventions-for-interfaces-and-their-implementations">Naming Conventions for Interfaces and Their Implementations</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7794">#7794</a></li>
@@ -8230,7 +8526,7 @@ effort, although mitigated by the similar syntax.</li>
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-4"><a class="header" href="#context-4">Context</a></h2>
+<h2 id="context-5"><a class="header" href="#context-5">Context</a></h2>
 <p>When there’s an interface that has multiple implementations it’s often easy enough to give meaningful names to both the
 interface and the implementations (e.g. the interface <code>Backend</code> with the implementations <code>ImapBackend</code> and
 <code>Pop3Backend</code>). Naming becomes harder when the interface mainly exists to allow having isolated unit tests and the
@@ -8238,7 +8534,7 @@ production code contains exactly one implementation of the interface.
 Prior to this ADR we didn’t have any naming guidelines and the names varied widely. Often when there was only one
 (production) implementation, the class name used one of the prefixes <code>Default</code>, <code>Real</code>, or <code>K9</code>. None of these had any
 special meaning and it wasn’t clear which one to pick when creating a new interface/class pair.</p>
-<h2 id="decision-4"><a class="header" href="#decision-4">Decision</a></h2>
+<h2 id="decision-5"><a class="header" href="#decision-5">Decision</a></h2>
 <p>We’ll be using the following guidelines for naming interfaces and their implementation classes:</p>
 <ol>
 <li><strong>Interface Naming:</strong> Name interfaces as if they were classes, using a clear and descriptive name. Avoid using the
@@ -8254,17 +8550,17 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <li><strong>Flexibility:</strong> If no brief descriptive name fits and there is only one production implementation, use the prefix
 <code>Default</code>, like <code>DefaultImapFolder</code>.</li>
 </ol>
-<h2 id="outcomes-4"><a class="header" href="#outcomes-4">Outcomes</a></h2>
-<h3 id="positive-outcomes-4"><a class="header" href="#positive-outcomes-4">Positive Outcomes</a></h3>
+<h2 id="outcomes-5"><a class="header" href="#outcomes-5">Outcomes</a></h2>
+<h3 id="positive-outcomes-5"><a class="header" href="#positive-outcomes-5">Positive Outcomes</a></h3>
 <ul>
 <li>Improved code readability and maintainability through consistent naming.</li>
 <li>Reduced confusion and misunderstandings by using clear and descriptive names.</li>
 </ul>
-<h3 id="negative-outcomes-4"><a class="header" href="#negative-outcomes-4">Negative Outcomes</a></h3>
+<h3 id="negative-outcomes-5"><a class="header" href="#negative-outcomes-5">Negative Outcomes</a></h3>
 <ul>
 <li>Initial effort is required to rename existing classes that do not follow these naming conventions.</li>
 </ul>
-<footer id="last-change-36">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-38">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module"><a class="header" href="#central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module">Central Management of Android Project Dependencies and Gradle Configurations via Build-Plugin Module</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7803">#7803</a></li>
@@ -8273,29 +8569,29 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-5"><a class="header" href="#context-5">Context</a></h2>
+<h2 id="context-6"><a class="header" href="#context-6">Context</a></h2>
 <p>In our Android project, managing dependencies and configurations directly within each module’s <code>build.gradle.kts</code> file has historically led to inconsistencies, duplication, and difficulty in updates. This challenge was particularly noticeable when maintaining the project configuration. By centralizing this setup in a <code>build-plugin</code> module, we can encapsulate and reuse Gradle logic, streamline the build process, and ensure consistency across all project modules and ease maintainability of our codebase.</p>
-<h2 id="decision-5"><a class="header" href="#decision-5">Decision</a></h2>
+<h2 id="decision-6"><a class="header" href="#decision-6">Decision</a></h2>
 <p>To address these challenges, we have decided to establish a <code>build-plugin</code> module within our project. This module will serve as the foundation for all common Gradle configurations, dependency management, and custom plugins, allowing for simplified configuration across various project modules and plugins. Key components of this module include:</p>
 <ul>
 <li><strong>Custom Plugins:</strong> A suite of custom plugins that configure Gradle for different project aspects, ensuring each project type has tailored and streamlined build processes. These plugins should cover Android application, Android library, Jetpack Compose and Java modules.</li>
 <li><strong>Dependency Management:</strong> Utilizing the <a href="https://docs.gradle.org/current/userguide/platforms.html">Gradle Version Catalog</a> to centrally manage and update all dependencies and plugins, ensuring that every module uses the same versions and reduces the risk of conflicts.</li>
 <li><strong>Common Configuration Settings:</strong> Establishing common configurations for Java, Kotlin, and Android to reduce the complexity and variability in setup across different modules.</li>
 </ul>
-<h2 id="outcomes-5"><a class="header" href="#outcomes-5">Outcomes</a></h2>
-<h3 id="positive-outcomes-5"><a class="header" href="#positive-outcomes-5">Positive Outcomes</a></h3>
+<h2 id="outcomes-6"><a class="header" href="#outcomes-6">Outcomes</a></h2>
+<h3 id="positive-outcomes-6"><a class="header" href="#positive-outcomes-6">Positive Outcomes</a></h3>
 <ol>
 <li><strong>Consistency Across Modules:</strong> All project modules will use the same versions of dependencies and plugins, reducing the risk of conflicts and enhancing uniformity. They will also share common configurations, ensuring consistency in the build process.</li>
 <li><strong>Ease of Maintenance:</strong> Centralizing dependency versions in the Gradle Version Catalog allows for simple and quick updates to libraries and tools across all project modules from a single source.</li>
 <li><strong>Simplified Configuration Process:</strong> The custom plugins within the <code>build-plugin</code> module provides a streamlined way to apply settings and dependencies uniformly, enhancing productivity and reducing setup complexity.</li>
 </ol>
-<h3 id="negative-outcomes-5"><a class="header" href="#negative-outcomes-5">Negative Outcomes</a></h3>
+<h3 id="negative-outcomes-6"><a class="header" href="#negative-outcomes-6">Negative Outcomes</a></h3>
 <ol>
 <li><strong>Initial Overhead:</strong> The setup of the build-plugin module with a Gradle Version Catalog and the migration of existing configurations required an initial investment of time and resources, but this has been completed.</li>
 <li><strong>Complexity for New Developers:</strong> The centralized build architecture, particularly with the use of a Gradle Version Catalog, may initially seem daunting to new team members who are unfamiliar with this level of abstraction.</li>
 <li><strong>Dependency on the Build-Plugin Module:</strong> The entire project becomes reliant on the stability and accuracy of the <code>build-plugin</code> module. Errors within this module or the catalog could impact the build process across all modules.</li>
 </ol>
-<footer id="last-change-37">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-39">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="white-label-architecture"><a class="header" href="#white-label-architecture">White Label Architecture</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/7807">#7807</a></li>
@@ -8305,26 +8601,26 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-6"><a class="header" href="#context-6">Context</a></h2>
+<h2 id="context-7"><a class="header" href="#context-7">Context</a></h2>
 <p>Our project hosts two separate applications, K-9 Mail and Thunderbird for Android, which share a significant amount of functionality. Despite their common features, each app requires distinct branding elements such as app names, themes, and specific strings.</p>
-<h2 id="decision-6"><a class="header" href="#decision-6">Decision</a></h2>
+<h2 id="decision-7"><a class="header" href="#decision-7">Decision</a></h2>
 <p>We have decided to adopt a modular white-label architecture, where each application is developed as a separate module that relies on a shared codebase. This structure allows us to streamline configuration details specific to each brand either during build or at runtime. This is how we structure the modules:</p>
 <h3 id="application-modules"><a class="header" href="#application-modules">Application Modules</a></h3>
 <p>There will be 2 separate modules for each of the two applications: <strong>Thunderbird for Android</strong> will be located in <code>app-thunderbird</code> and <strong>K-9 Mail</strong> in <code>app-k9mail</code>. These modules will contain app-specific implementations, configurations, resources, and startup logic. They should solely depend on the <code>app-common</code> module for shared functionalities and may selectively integrate other modules when needed to configure app-specific functionality.</p>
 <h3 id="app-common-module"><a class="header" href="#app-common-module">App Common Module</a></h3>
 <p>A central module named <code>app-common</code> acts as the central integration point for shared code among the applications. This module contains the core functionality, shared resources, and configurations that are common to both apps. It should be kept as lean as possible to avoid unnecessary dependencies and ensure that it remains focused on shared functionality.</p>
-<h2 id="outcomes-6"><a class="header" href="#outcomes-6">Outcomes</a></h2>
-<h3 id="positive-outcomes-6"><a class="header" href="#positive-outcomes-6">Positive Outcomes</a></h3>
+<h2 id="outcomes-7"><a class="header" href="#outcomes-7">Outcomes</a></h2>
+<h3 id="positive-outcomes-7"><a class="header" href="#positive-outcomes-7">Positive Outcomes</a></h3>
 <ul>
 <li>Enhanced maintainability due to a shared codebase for common functionalities, reducing code duplication.</li>
 <li>Increased agility in developing and deploying new features across both applications, as common enhancements need to be implemented only once.</li>
 </ul>
-<h3 id="negative-outcomes-6"><a class="header" href="#negative-outcomes-6">Negative Outcomes</a></h3>
+<h3 id="negative-outcomes-7"><a class="header" href="#negative-outcomes-7">Negative Outcomes</a></h3>
 <ul>
 <li>Potential for configuration complexities as differentiations increase between the two applications.</li>
 <li>Higher initial setup time and learning curve for new developers due to the modular and decoupled architecture.</li>
 </ul>
-<footer id="last-change-38">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-40">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/7852">#7852</a></li>
@@ -8334,9 +8630,9 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-7"><a class="header" href="#context-7">Context</a></h2>
+<h2 id="context-8"><a class="header" href="#context-8">Context</a></h2>
 <p>The project consists of two distinct applications. To improve maintainability and streamline development, we propose a modular structure using Gradle. This structure is designed to enable clear separation of concerns, facilitate scalable growth, and ensure efficient dependency management. It consists of various module types such as <code>app</code>, <code>app-common</code>, <code>feature</code>, <code>core</code>, and <code>library</code> modules, promoting enhanced modular reusability.</p>
-<h2 id="decision-7"><a class="header" href="#decision-7">Decision</a></h2>
+<h2 id="decision-8"><a class="header" href="#decision-8">Decision</a></h2>
 <p>To achieve the goals outlined in the context, we have decided to adopt the following modular structure:</p>
 <ol>
 <li><strong>App Modules</strong>:
@@ -8475,20 +8771,20 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
     class LEGACY legacy
 </pre>
 
-<h2 id="outcomes-7"><a class="header" href="#outcomes-7">Outcomes</a></h2>
-<h3 id="positive-outcomes-7"><a class="header" href="#positive-outcomes-7">Positive Outcomes</a></h3>
+<h2 id="outcomes-8"><a class="header" href="#outcomes-8">Outcomes</a></h2>
+<h3 id="positive-outcomes-8"><a class="header" href="#positive-outcomes-8">Positive Outcomes</a></h3>
 <ul>
 <li>Improved modularity facilitates easier code maintenance and scaling.</li>
 <li>Clear separation of concerns reduces dependencies and potential conflicts between modules.</li>
 <li>Enhanced reusability of the <code>feature</code>, <code>core</code> and <code>library</code> modules across different parts of the application or even in different projects.</li>
 </ul>
-<h3 id="negative-outcomes-7"><a class="header" href="#negative-outcomes-7">Negative Outcomes</a></h3>
+<h3 id="negative-outcomes-8"><a class="header" href="#negative-outcomes-8">Negative Outcomes</a></h3>
 <ul>
 <li>Initial complexity in setting up and managing multiple modules may increase the learning curve and setup time for new developers.</li>
 <li>Over-modularization can lead to excessive abstraction, potentially impacting runtime performance and complicating the debugging process.</li>
 <li>Legacy modules may require additional effort to migrate to the new structure, potentially causing delays in the adoption of the new architecture.</li>
 </ul>
-<footer id="last-change-39">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-41">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="change-shared-modules-package-to-netthunderbird"><a class="header" href="#change-shared-modules-package-to-netthunderbird">Change Shared Modules package to <code>net.thunderbird</code></a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/9012">#9012</a></li>
@@ -8497,7 +8793,7 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
-<h2 id="context-8"><a class="header" href="#context-8">Context</a></h2>
+<h2 id="context-9"><a class="header" href="#context-9">Context</a></h2>
 <p>The Thunderbird Android project is a white-label version of K-9 Mail, and both apps — <code>app-thunderbird</code> and <code>app-kmail</code>
 — coexist in the same repository. They have distinct application IDs and branding, but share a significant portion of
 the code through common modules.</p>
@@ -8506,7 +8802,7 @@ K-9 Mail. While K-9 will remain available for some time, the project’s primary
 <p>To reflect this shift, establish clearer ownership, and prepare for future development (including cross-platform code
 integration), we will rename the packages in shared modules from <code>app.k9mail</code> and <code>com.fsck</code> to <code>net.thunderbird</code>.
 The actual application IDs and package names of <code>app-thunderbird</code> and <code>app-k9mail</code> must remain <strong>unchanged</strong>.</p>
-<h2 id="decision-8"><a class="header" href="#decision-8">Decision</a></h2>
+<h2 id="decision-9"><a class="header" href="#decision-9">Decision</a></h2>
 <p>We decided to rename the base package in all shared modules from <code>app.k9mail</code> and <code>com.fsck</code> to <code>net.thunderbird</code>.</p>
 <p>Specifically:</p>
 <ul>
@@ -8517,22 +8813,191 @@ The actual application IDs and package names of <code>app-thunderbird</code> and
 </ul>
 <p>This change will establish a clearer identity for the shared code, align with Thunderbird’s branding, and prepare the
 project for cross-platform development.</p>
-<h2 id="outcomes-8"><a class="header" href="#outcomes-8">Outcomes</a></h2>
-<h3 id="positive-outcomes-8"><a class="header" href="#positive-outcomes-8">Positive Outcomes</a></h3>
+<h2 id="outcomes-9"><a class="header" href="#outcomes-9">Outcomes</a></h2>
+<h3 id="positive-outcomes-9"><a class="header" href="#positive-outcomes-9">Positive Outcomes</a></h3>
 <ul>
 <li>Shared code reflects Thunderbird branding and identity</li>
 <li>Reduces confusion when navigating codebase shared by both apps</li>
 <li>Sets the foundation for cross-platform compatibility and future modularization</li>
 <li>Helps reinforce long-term direction of the project toward Thunderbird</li>
 </ul>
-<h3 id="negative-outcomes-8"><a class="header" href="#negative-outcomes-8">Negative Outcomes</a></h3>
+<h3 id="negative-outcomes-9"><a class="header" href="#negative-outcomes-9">Negative Outcomes</a></h3>
 <ul>
 <li>Large-scale refactoring required across multiple modules</li>
 <li>Risk of introducing regressions during package renaming</li>
 <li>Potential for disruption in local development setups (e.g., IDE caching, broken imports)</li>
 <li>Contributors familiar with the old structure may need time to adjust</li>
 </ul>
-<footer id="last-change-40">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-42">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<h1 id="featurecore-apiinternal-split-and-dependency-rules"><a class="header" href="#featurecore-apiinternal-split-and-dependency-rules">Feature/Core API/Internal split and dependency rules</a></h1>
+<ul>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/10197">#10197</a></li>
+<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/10198">#10198</a></li>
+</ul>
+<h2 id="status-8"><a class="header" href="#status-8">Status</a></h2>
+<ul>
+<li><strong>Accepted</strong></li>
+</ul>
+<h2 id="context-10"><a class="header" href="#context-10">Context</a></h2>
+<p>Thunderbird for Android uses a modular architecture. Many feature and core areas are split into <code>api</code> (public contracts)
+and <code>impl</code> (implementation) modules, e.g. <code>:feature:account:settings:api</code> and <code>:feature:account:settings:impl</code>.</p>
+<p>Over time, the main friction was ambiguity in naming and ownership:</p>
+<ul>
+<li>Inconsistent use of <code>api</code> in package names made it unclear whether a type was part of a public contract.</li>
+<li>Lack of a clear convention for naming feature-internal packages (<code>impl</code>, <code>internal</code>, or none) led to confusion.</li>
+<li>Team wasn’t aligned on what belongs in <code>api</code> (stable contracts) vs. what should stay internal to the feature.</li>
+</ul>
+<p>To improve clarity and discoverability, we rename <code>impl</code> modules to <code>internal</code> and formalize module, package, and
+content rules for both API and internal code — for both feature and core modules.</p>
+<h2 id="decision-10"><a class="header" href="#decision-10">Decision</a></h2>
+<ul>
+<li><code>:feature:*:api</code> modules define the public contracts exposed to other features.</li>
+<li><code>:feature:*:impl</code> modules are renamed to <code>:feature:*:internal</code>, marking them as private implementation details.</li>
+<li><code>:core:*:api</code> modules define public contracts exposed to feature and other core modules.</li>
+<li><code>:core:*:impl</code> modules are renamed to <code>:core:*:internal</code>, marking them as private implementation details.</li>
+<li>Other modules must only declare dependencies on <code>:feature:*:api</code> or <code>:core:*:api</code> of other areas. Depending on
+<code>:feature:*:internal</code> or <code>:core:*:internal</code> from a different area is prohibited.</li>
+<li>Binding of contracts to implementations happens in central composition modules (application assembly): <code>:app-common</code>
+and the app-specific modules <code>:app-k9mail</code> and <code>:app-thunderbird</code>.</li>
+<li><strong>Strict Visibility</strong>: Within <code>:feature:*:internal</code> and <code>:core:*:internal</code> modules, use the <code>internal</code> visibility modifier for all code that is not strictly required to be <code>public</code> for dependency injection or application composition. This ensures that implementation details are not accessible directly even when a module has a dependency on the <code>internal</code> module.</li>
+</ul>
+<h3 id="what-goes-into-api-vs-internal"><a class="header" href="#what-goes-into-api-vs-internal">What goes into API vs. Internal</a></h3>
+<p>Put only stable, intentionally shared contracts in <code>api</code>:</p>
+<ul>
+<li>Public interfaces and abstractions other features depend on (e.g., repositories, use cases, service interfaces).</li>
+<li>Data contracts exchanged across features (DTOs/value objects).</li>
+<li>Navigation contracts and events that other features can trigger/observe.</li>
+<li>DI entry points/interfaces needed by composition modules (<code>:app-common</code>, app modules).</li>
+</ul>
+<p>Keep everything else in <code>internal</code>:</p>
+<ul>
+<li>Implementations of the above contracts (repositories, data sources, mappers, use case implementations).</li>
+<li>UI implementations, view models, and UI state models scoped to the feature.</li>
+<li>Feature-scoped DI wiring, modules, and factories.</li>
+<li>Experimental or volatile details that must not be exposed as public API.</li>
+</ul>
+<p>Notes for core modules:</p>
+<ul>
+<li>The same rules apply. Core <code>api</code> exposes stable, shared infrastructure contracts (e.g., logging, networking abstractions, serialization, clock, crypto interfaces). Core <code>internal</code> contains their implementations and wiring.</li>
+</ul>
+<h3 id="module-naming-rules"><a class="header" href="#module-naming-rules">Module naming rules</a></h3>
+<ul>
+<li>Standard two-module shape for a feature area:
+<ul>
+<li><code>:feature:&lt;area&gt;[:&lt;subarea&gt;]:api</code></li>
+<li><code>:feature:&lt;area&gt;[:&lt;subarea&gt;]:internal</code> (formerly <code>impl</code>)</li>
+</ul>
+</li>
+<li>Standard two-module shape for a core area:
+<ul>
+<li><code>:core:&lt;area&gt;[:&lt;subarea&gt;]:api</code></li>
+<li><code>:core:&lt;area&gt;[:&lt;subarea&gt;]:internal</code> (formerly <code>impl</code>)</li>
+</ul>
+</li>
+<li>If there are multiple implementation variants, suffix the <code>internal</code> module with a qualifier, e.g. rename
+<code>:feature:mail:message:export:impl-eml</code> to <code>:feature:mail:message:export:internal-eml</code>.</li>
+<li>Library/legacy modules may adopt this pattern later but are currently out of scope for this ADR.</li>
+</ul>
+<h3 id="package-naming-rules"><a class="header" href="#package-naming-rules">Package naming rules</a></h3>
+<ul>
+<li>For features, in <code>:feature:*:api</code>, use <code>net.thunderbird.feature.&lt;area&gt;[.&lt;subarea&gt;]</code>, e.g.:
+<code>net.thunderbird.feature.account.settings</code>, <code>net.thunderbird.feature.mail.message.reader</code>.</li>
+<li>For features, in <code>:feature:*:internal</code>, mirror the API package structure but place all implementation under an
+<code>.internal</code> segment, e.g.: <code>net.thunderbird.feature.account.settings.internal</code>,
+<code>net.thunderbird.feature.mail.message.reader.internal.data</code>, <code>net.thunderbird.feature.mail.message.reader.internal.domain</code>.</li>
+<li>For core, in <code>:core:*:api</code>, use <code>net.thunderbird.core.&lt;area&gt;[.&lt;subarea&gt;]</code>, e.g.: <code>net.thunderbird.core.network</code>.</li>
+<li>For core, in <code>:core:*:internal</code>, mirror the API package structure and place implementation under <code>.internal</code>, e.g.:
+<code>net.thunderbird.core.network.internal</code>, <code>net.thunderbird.core.crypto.internal</code>.</li>
+<li>Multiple variants (several implementations of the same contract): reflect the module qualifier after the <code>.internal</code>
+segment.
+<ul>
+<li>Mapping: <code>:…:internal-&lt;variant&gt;</code> → package <code>…internal.&lt;variant&gt;</code>.</li>
+<li>Feature examples:
+<ul>
+<li>Module <code>:feature:mail:message:export:internal-eml</code> → package root
+<code>net.thunderbird.feature.mail.message.export.internal.eml</code> (e.g., <code>…internal.eml.data</code>, <code>…internal.eml.domain</code>).</li>
+<li>If a PDF exporter exists: <code>:feature:mail:message:export:internal-pdf</code> →
+<code>net.thunderbird.feature.mail.message.export.internal.pdf</code>.</li>
+</ul>
+</li>
+<li>Core examples:
+<ul>
+<li>Module <code>:core:network:internal-okhttp</code> → <code>net.thunderbird.core.network.internal.okhttp</code>.</li>
+<li>Module <code>:core:crypto:internal-bouncycastle</code> → <code>net.thunderbird.core.crypto.internal.bouncycastle</code>.</li>
+</ul>
+</li>
+<li>Keep variant tokens lowercase and alphanumeric. Use dot separators for dimension/value patterns (see below). Avoid
+kebab-case in package names.</li>
+</ul>
+</li>
+<li>Multi-dimension variants: when a variant expresses a dimension and a value, prefer <code>internal.&lt;dimension&gt;.&lt;value&gt;</code>.
+<ul>
+<li>Examples: <code>net.thunderbird.core.storage.internal.database.sqlite</code>,
+<code>net.thunderbird.feature.search.internal.engine.lucene</code>.</li>
+<li>Prefer at most two levels under <code>.internal</code> for the variant part to keep packages readable.</li>
+</ul>
+</li>
+</ul>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<ul>
+<li>Avoid adding <code>.api</code> to package names for new code — the module already is the API.</li>
+<li>Prefer small focused API packages with narrow sets of contracts; keep type stability in mind when promoting code to API.</li>
+<li>API packages should remain variant-agnostic in almost all cases; concrete variants live under <code>.internal.&lt;variant&gt;</code>.</li>
+</ul>
+</blockquote>
+<h3 id="dependency-rules-gradle"><a class="header" href="#dependency-rules-gradle">Dependency rules (Gradle)</a></h3>
+<ul>
+<li>Feature-to-feature dependencies must target <code>:feature:*:api</code> only.</li>
+<li>Feature-to-core dependencies must target <code>:core:*:api</code> only.</li>
+<li>Core-to-core dependencies must target <code>:core:*:api</code> only.</li>
+<li>Core modules must not depend on <code>:feature:*</code> modules.</li>
+<li><code>:feature:*:internal</code> and <code>:core:*:internal</code> dependencies are only allowed from:
+<ul>
+<li>the same area’s <code>api</code> module (when strictly necessary), and</li>
+<li>composition modules: <code>:app-common</code>, <code>:app-k9mail</code>, <code>:app-thunderbird</code>.</li>
+</ul>
+</li>
+<li>Build logic will add a check that fails the build if a module depends on a <code>:*:internal</code> outside of these exceptions.</li>
+</ul>
+<h3 id="migration-plan"><a class="header" href="#migration-plan">Migration plan</a></h3>
+<ol>
+<li>Rename modules in Gradle from <code>impl</code> to <code>internal</code>:
+<ul>
+<li>Examples in <code>settings.gradle.kts</code> to update:
+<ul>
+<li><code>:feature:account:avatar:impl</code> → <code>:feature:account:avatar:internal</code></li>
+<li><code>:feature:account:settings:impl</code> → <code>:feature:account:settings:internal</code></li>
+<li><code>:feature:mail:message:export:impl-eml</code> → <code>:feature:mail:message:export:internal-eml</code></li>
+<li><code>:core:&lt;area&gt;:impl</code> → <code>:core:&lt;area&gt;:internal</code> (and for subareas accordingly)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Adjust <code>namespace</code> in <code>build.gradle.kts</code> and Kotlin/Java <code>package</code> declarations to include <code>.internal</code>.</li>
+<li>Update imports and references after package moves.</li>
+<li>Add build-plugin check to disallow external dependencies on <code>:feature:*:internal</code> and <code>:core:*:internal</code> (enforced
+in the root build).</li>
+<li>Move all composition wiring (DI, factory bindings, navigation registrations) to <code>:app-common</code> or app modules.</li>
+<li>When in doubt, prefer starting in <code>internal</code>. Promote types to <code>api</code> only once they’re needed and stable.</li>
+</ol>
+<h2 id="outcomes-10"><a class="header" href="#outcomes-10">Outcomes</a></h2>
+<h3 id="positive-outcomes-10"><a class="header" href="#positive-outcomes-10">Positive Outcomes</a></h3>
+<ul>
+<li>Explicit and discoverable boundary between public and internal code.</li>
+<li>Stronger enforcement of architectural intent; easier refactors.</li>
+<li>Package-level naming makes internal code clearly visible as non-public.</li>
+<li>Works cleanly with KMP source sets (common/platform-specific).</li>
+<li>Reduced confusion around whether a type is public or internal.</li>
+<li>Clear criteria for placing types in <code>api</code> vs. <code>internal</code> improves consistency.</li>
+</ul>
+<h3 id="negative-outcomes-10"><a class="header" href="#negative-outcomes-10">Negative Outcomes</a></h3>
+<ul>
+<li>Requires renaming existing modules and packages, plus updating imports.</li>
+<li>Slight learning overhead for contributors until the pattern becomes familiar.</li>
+<li>Temporary churn in open branches during the migration window.</li>
+</ul>
+<footer id="last-change-43">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="technical-designs"><a class="header" href="#technical-designs">Technical Designs</a></h1>
 <p>Technical design documents describe implementation details that are too large or too specific for an RFC.</p>
 <h2 id="what-is-a-technical-design"><a class="header" href="#what-is-a-technical-design">What is a Technical Design?</a></h2>
@@ -8611,7 +9076,7 @@ contributions follow the standard format and provide clear and concise informati
 <h2 id="open-technical-questions"><a class="header" href="#open-technical-questions">Open Technical Questions</a></h2>
 <p>List unresolved implementation-level questions.</p>
 <p>Do not repeat product, scope, or direction questions from the RFC.</p>
-<footer id="last-change-41">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-44">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="technical-design-0001-changelog-system-replacement"><a class="header" href="#technical-design-0001-changelog-system-replacement">Technical Design 0001: Changelog System Replacement</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11079">#11079</a></li>
@@ -9096,7 +9561,7 @@ python -m jsonschema -i app-thunderbird/src/release/res/raw/changelog_release_21
 </ul>
 <h2 id="open-technical-questions-1"><a class="header" href="#open-technical-questions-1">Open Technical Questions</a></h2>
 <p>None.</p>
-<footer id="last-change-42">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-45">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="technical-design-0002-declarative-feature-flag-catalog"><a class="header" href="#technical-design-0002-declarative-feature-flag-catalog">Technical Design 0002: Declarative Feature Flag Catalog</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11252">#11252</a></li>
@@ -9505,7 +9970,7 @@ phase, or is that deferred until the field has a consumer?</li>
 implementation) since it is consumed by both a Gradle plugin and a KMP module’s packaged resources; confirm no
 module-local location is preferred before this ships.</li>
 </ul>
-<footer id="last-change-43">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-46">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="installing-adb-android-debug-bridge"><a class="header" href="#installing-adb-android-debug-bridge">Installing ADB (Android Debug Bridge)</a></h1>
 <p><a href="https://developer.android.com/tools/adb">Android Debug Bridge (<strong>adb</strong>)</a> is a versatile command-line tool that lets you communicate with an Android-powered
 device connected to a computer via USB. One of its useful features is the ability to capture a debug log (<code>logcat</code>).</p>
@@ -9558,7 +10023,7 @@ from any terminal or command prompt.</p>
 <p>When you’re done using adb, you can simply disconnect your device. If you want to stop the adb server, run:</p>
 <pre><code class="language-bash">adb kill-server
 </code></pre>
-<footer id="last-change-44">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-47">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="collecting-debug-logs"><a class="header" href="#collecting-debug-logs">Collecting Debug Logs</a></h1>
 <p>Thunderbird for Android can produce debug logs to help diagnose problems and errors. This guide explains how to enable
 logging, reproduce the issue, collect logs, and share them with the team.</p>
@@ -9692,7 +10157,7 @@ placeholders like <code>redacted-pii</code>.</li>
 adb start-server
 </code></pre>
 <p>On <em>Windows</em>, install OEM USB drivers if your device isn’t detected.</p>
-<footer id="last-change-45">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-48">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="find-your-app-version"><a class="header" href="#find-your-app-version">Find Your App Version</a></h1>
 <p>For <a href="https://github.com/k9mail/k-9/issues/new/choose">bug reports</a> it’s important for the developers to know which
 version of Thunderbird you’re using. This is especially true if you attach debug logs, since they show exactly which
@@ -9732,7 +10197,7 @@ adb shell dumpsys package com.fsck.k9 | grep versionName
 <h2 id="special-note-for-custom-builds"><a class="header" href="#special-note-for-custom-builds">Special Note for Custom Builds</a></h2>
 <p>If you’ve built your own version of the app from the source repository, please include the commit hash in your bug
 report along with the version number.</p>
-<footer id="last-change-46">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-49">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="developer-documentation"><a class="header" href="#developer-documentation">Developer Documentation</a></h1>
 <p>Developer focused documentation for contributing to the codebase. It’s dedicated to providing essential guides,
 checklists, and architectural notes to help you navigate the codebase and contribute safely.</p>
@@ -9954,7 +10419,7 @@ are on or switch to later.</p>
 </li>
 <li>The migration history is now linear and consistent across all branches, preventing future conflicts.</li>
 </ul>
-<footer id="last-change-47">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-50">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="foldable-device-support"><a class="header" href="#foldable-device-support">Foldable Device Support</a></h1>
 <h2 id="overview-2"><a class="header" href="#overview-2">Overview</a></h2>
 <p>This document describes the foldable device support implementation for Thunderbird Android. The feature automatically switches between single-pane and split-view layouts based on the device’s fold state.</p>
@@ -10163,7 +10628,7 @@ androidx-window = { module = "androidx.window:window", version.ref = "androidxWi
 <li><a href="https://developer.android.com/reference/androidx/window/layout/WindowInfoTracker">WindowInfoTracker API</a></li>
 <li><a href="https://developer.android.com/reference/androidx/window/layout/FoldingFeature">FoldingFeature</a></li>
 </ul>
-<footer id="last-change-48">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-51">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="preference-migration-guide"><a class="header" href="#preference-migration-guide">Preference Migration Guide</a></h1>
 <p>This document explains how to update and migrate preferences in Thunderbird for Android.</p>
 <h2 id="overview-3"><a class="header" href="#overview-3">Overview</a></h2>
@@ -10305,7 +10770,7 @@ for (uuid in accountUuids) {
 </code></pre>
 <h3 id="deleting-obsolete-keys"><a class="header" href="#deleting-obsolete-keys">Deleting Obsolete Keys</a></h3>
 <p>Simply use <code>migrationsHelper.writeValue(db, "obsolete_key", null)</code>.</p>
-<footer id="last-change-49">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-52">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="thunderbird-mobile-components"><a class="header" href="#thunderbird-mobile-components">Thunderbird Mobile Components</a></h1>
 <p><a href="https://github.com/thunderbird/thunderbird-mobile-components"><code>thunderbird-mobile-components</code></a> contains shared
 Thunderbird mobile components that can be versioned, built, tested, and released independently from Thunderbird for
@@ -10349,7 +10814,7 @@ is the project path inside the <code>components</code> build:</p>
 </code></pre>
 <p>Do not add a broad dependency on all components. Add new coordinates and substitutions only for component groups that
 Thunderbird for Android actually consumes.</p>
-<footer id="last-change-50">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-53">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="releases"><a class="header" href="#releases">Releases</a></h1>
 <p>Thunderbird for Android follows a release train model to ensure timely and predictable releases. This model allows for regular feature rollouts, stability improvements, and bug fixes.</p>
 <h2 id="branches-in-the-release-train-model"><a class="header" href="#branches-in-the-release-train-model">Branches in the Release Train Model</a></h2>
@@ -10678,7 +11143,7 @@ Daily builds are scheduled with the <a href="https://github.com/thunderbird/thun
 <ul>
 <li>Crash rates, GitHub issues, install base, and reviews</li>
 </ul>
-<footer id="last-change-51">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-54">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="release-automation-setup"><a class="header" href="#release-automation-setup">Release Automation Setup</a></h1>
 <p>Release automation is triggered by the workflow_dispatch event on the “Shippable Build &amp; Signing”
 workflow. GitHub environments are used to set configuration variables and secrets for each
@@ -10776,7 +11241,7 @@ to upload the release with limited permissions.</p>
 <li>MATRIX_NOTIFY_USER_MAP: A json object that maps github usernames to matrix ids</li>
 </ul>
 <p>If you leave out this environment, no notifications will be sent.</p>
-<footer id="last-change-52">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-55">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="developer-release-checklist"><a class="header" href="#developer-release-checklist">Developer Release Checklist</a></h1>
 <p>This checklist is for developers. It summarizes what you (as a contributor/feature owner) should do before the scheduled merges in our release train:</p>
 <ul>
@@ -10896,7 +11361,7 @@ to upload the release with limited permissions.</p>
 <p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
 <p>Merge-day coordination (branch locks, Matrix announcements, running scripts) is handled by release drivers. See <a href="#merge-process">Merge Process</a> for details.</p>
 </blockquote>
-<footer id="last-change-53">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-56">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="release-testing-checklist"><a href="#release-testing-checklist" class="header">Release Testing Checklist</a></h1>
 <h3 id="release-manual-testing-checklist"><a class="header" href="#release-manual-testing-checklist">Release Manual Testing Checklist</a></h3>
 <p>Purpose</p>
@@ -11227,7 +11692,7 @@ to upload the release with limited permissions.</p>
 <ul>
 <li>Include timestamps, steps, expected vs actual, screenshots, and logs as needed</li>
 </ul>
-<footer id="last-change-54">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-57">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="create-k-9-mail-releases"><a class="header" href="#create-k-9-mail-releases">Create K-9 Mail releases</a></h1>
 <div class="warning">
 This document contains the historical manual release process for K-9 Mail. Please use the <a href="#release-automation-setup">automated process</a> instead.
@@ -11559,7 +12024,7 @@ URL)</p>
 <li>Check <a href="https://fdroidstatus.org/status/fdroid">F-Droid Status</a> for any issues.</li>
 <li>Check <a href="https://monitor.f-droid.org/builds">F-Droid Monitor</a> for any errors mentioning <code>com.fsck.k9</code>.</li>
 </ul>
-<footer id="last-change-55">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-58">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="-threat-modeling-guide"><a class="header" href="#-threat-modeling-guide">📖 Threat Modeling Guide</a></h1>
 <p>This guide walks you through how to apply the <strong>STRIDE</strong> methodology for identifying and addressing security risks in
 Thunderbird’s mobile clients. Each step includes <strong>examples</strong> specific to Android/iOS email handling. Use it during
@@ -11989,7 +12454,7 @@ logs/metrics (if enabled), cryptographic keyrings</li>
 <li><strong>Medium</strong>: Notification spam floods, retry storms.</li>
 <li><strong>Low</strong>: Repudiation of notification receipt.</li>
 </ul>
-<footer id="last-change-56">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer><div style="break-before: page; page-break-before: always;"></div>
+<footer id="last-change-59">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer><div style="break-before: page; page-break-before: always;"></div>
 <h1 id="how-to-document"><a class="header" href="#how-to-document">How to Document</a></h1>
 <p>This guide provides detailed instructions for contributing to and maintaining the documentation for the Thunderbird for Android project. It explains the tools used, the structure of the documentation, and guidelines for creating and editing content.</p>
 <p>We use <a href="https://rust-lang.github.io/mdBook/">mdbook</a> to generate the documentation. The source files for the documentation are located in the <code>docs/</code> directory.</p>
@@ -12064,7 +12529,7 @@ respective section.</p>
 <pre><code class="language-shell">mdbook serve docs --open
 </code></pre>
 <p>The <code>mdbook serve docs</code> command will serve the book at <a href="http://localhost:3000">http://localhost:3000</a> and rebuild the documentation on changes. The <code>--open</code> option will open the book in your web browser and is optional.</p>
-<footer id="last-change-57">Last change: <time datetime="2026-08-26">2026-08-26</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/9d948ce">9d948ce</a></footer>
+<footer id="last-change-60">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

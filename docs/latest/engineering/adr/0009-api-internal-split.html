@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>0007 - Project Structure - Thunderbird for Android - Developer Documentation</title>
+        <title>0009 - Feature/Core API/Internal split and dependency rules - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -145,7 +145,7 @@
                         <a href="https://github.com/thunderbird/thunderbird-android/" title="Git repository" aria-label="Git repository">
                             <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./engineering/adr/0007-project-structure.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./engineering/adr/0009-api-internal-split.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -179,179 +179,184 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h1>
+                        <h1 id="featurecore-apiinternal-split-and-dependency-rules"><a class="header" href="#featurecore-apiinternal-split-and-dependency-rules">Feature/Core API/Internal split and dependency rules</a></h1>
 <ul>
-<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/7852">#7852</a></li>
-<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7829">#7829</a></li>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/10197">#10197</a></li>
+<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/10198">#10198</a></li>
 </ul>
 <h2 id="status"><a class="header" href="#status">Status</a></h2>
 <ul>
 <li><strong>Accepted</strong></li>
 </ul>
 <h2 id="context"><a class="header" href="#context">Context</a></h2>
-<p>The project consists of two distinct applications. To improve maintainability and streamline development, we propose a modular structure using Gradle. This structure is designed to enable clear separation of concerns, facilitate scalable growth, and ensure efficient dependency management. It consists of various module types such as <code>app</code>, <code>app-common</code>, <code>feature</code>, <code>core</code>, and <code>library</code> modules, promoting enhanced modular reusability.</p>
+<p>Thunderbird for Android uses a modular architecture. Many feature and core areas are split into <code>api</code> (public contracts)
+and <code>impl</code> (implementation) modules, e.g. <code>:feature:account:settings:api</code> and <code>:feature:account:settings:impl</code>.</p>
+<p>Over time, the main friction was ambiguity in naming and ownership:</p>
+<ul>
+<li>Inconsistent use of <code>api</code> in package names made it unclear whether a type was part of a public contract.</li>
+<li>Lack of a clear convention for naming feature-internal packages (<code>impl</code>, <code>internal</code>, or none) led to confusion.</li>
+<li>Team wasn’t aligned on what belongs in <code>api</code> (stable contracts) vs. what should stay internal to the feature.</li>
+</ul>
+<p>To improve clarity and discoverability, we rename <code>impl</code> modules to <code>internal</code> and formalize module, package, and
+content rules for both API and internal code — for both feature and core modules.</p>
 <h2 id="decision"><a class="header" href="#decision">Decision</a></h2>
-<p>To achieve the goals outlined in the context, we have decided to adopt the following modular structure:</p>
+<ul>
+<li><code>:feature:*:api</code> modules define the public contracts exposed to other features.</li>
+<li><code>:feature:*:impl</code> modules are renamed to <code>:feature:*:internal</code>, marking them as private implementation details.</li>
+<li><code>:core:*:api</code> modules define public contracts exposed to feature and other core modules.</li>
+<li><code>:core:*:impl</code> modules are renamed to <code>:core:*:internal</code>, marking them as private implementation details.</li>
+<li>Other modules must only declare dependencies on <code>:feature:*:api</code> or <code>:core:*:api</code> of other areas. Depending on
+<code>:feature:*:internal</code> or <code>:core:*:internal</code> from a different area is prohibited.</li>
+<li>Binding of contracts to implementations happens in central composition modules (application assembly): <code>:app-common</code>
+and the app-specific modules <code>:app-k9mail</code> and <code>:app-thunderbird</code>.</li>
+<li><strong>Strict Visibility</strong>: Within <code>:feature:*:internal</code> and <code>:core:*:internal</code> modules, use the <code>internal</code> visibility modifier for all code that is not strictly required to be <code>public</code> for dependency injection or application composition. This ensures that implementation details are not accessible directly even when a module has a dependency on the <code>internal</code> module.</li>
+</ul>
+<h3 id="what-goes-into-api-vs-internal"><a class="header" href="#what-goes-into-api-vs-internal">What goes into API vs. Internal</a></h3>
+<p>Put only stable, intentionally shared contracts in <code>api</code>:</p>
+<ul>
+<li>Public interfaces and abstractions other features depend on (e.g., repositories, use cases, service interfaces).</li>
+<li>Data contracts exchanged across features (DTOs/value objects).</li>
+<li>Navigation contracts and events that other features can trigger/observe.</li>
+<li>DI entry points/interfaces needed by composition modules (<code>:app-common</code>, app modules).</li>
+</ul>
+<p>Keep everything else in <code>internal</code>:</p>
+<ul>
+<li>Implementations of the above contracts (repositories, data sources, mappers, use case implementations).</li>
+<li>UI implementations, view models, and UI state models scoped to the feature.</li>
+<li>Feature-scoped DI wiring, modules, and factories.</li>
+<li>Experimental or volatile details that must not be exposed as public API.</li>
+</ul>
+<p>Notes for core modules:</p>
+<ul>
+<li>The same rules apply. Core <code>api</code> exposes stable, shared infrastructure contracts (e.g., logging, networking abstractions, serialization, clock, crypto interfaces). Core <code>internal</code> contains their implementations and wiring.</li>
+</ul>
+<h3 id="module-naming-rules"><a class="header" href="#module-naming-rules">Module naming rules</a></h3>
+<ul>
+<li>Standard two-module shape for a feature area:
+<ul>
+<li><code>:feature:&lt;area&gt;[:&lt;subarea&gt;]:api</code></li>
+<li><code>:feature:&lt;area&gt;[:&lt;subarea&gt;]:internal</code> (formerly <code>impl</code>)</li>
+</ul>
+</li>
+<li>Standard two-module shape for a core area:
+<ul>
+<li><code>:core:&lt;area&gt;[:&lt;subarea&gt;]:api</code></li>
+<li><code>:core:&lt;area&gt;[:&lt;subarea&gt;]:internal</code> (formerly <code>impl</code>)</li>
+</ul>
+</li>
+<li>If there are multiple implementation variants, suffix the <code>internal</code> module with a qualifier, e.g. rename
+<code>:feature:mail:message:export:impl-eml</code> to <code>:feature:mail:message:export:internal-eml</code>.</li>
+<li>Library/legacy modules may adopt this pattern later but are currently out of scope for this ADR.</li>
+</ul>
+<h3 id="package-naming-rules"><a class="header" href="#package-naming-rules">Package naming rules</a></h3>
+<ul>
+<li>For features, in <code>:feature:*:api</code>, use <code>net.thunderbird.feature.&lt;area&gt;[.&lt;subarea&gt;]</code>, e.g.:
+<code>net.thunderbird.feature.account.settings</code>, <code>net.thunderbird.feature.mail.message.reader</code>.</li>
+<li>For features, in <code>:feature:*:internal</code>, mirror the API package structure but place all implementation under an
+<code>.internal</code> segment, e.g.: <code>net.thunderbird.feature.account.settings.internal</code>,
+<code>net.thunderbird.feature.mail.message.reader.internal.data</code>, <code>net.thunderbird.feature.mail.message.reader.internal.domain</code>.</li>
+<li>For core, in <code>:core:*:api</code>, use <code>net.thunderbird.core.&lt;area&gt;[.&lt;subarea&gt;]</code>, e.g.: <code>net.thunderbird.core.network</code>.</li>
+<li>For core, in <code>:core:*:internal</code>, mirror the API package structure and place implementation under <code>.internal</code>, e.g.:
+<code>net.thunderbird.core.network.internal</code>, <code>net.thunderbird.core.crypto.internal</code>.</li>
+<li>Multiple variants (several implementations of the same contract): reflect the module qualifier after the <code>.internal</code>
+segment.
+<ul>
+<li>Mapping: <code>:…:internal-&lt;variant&gt;</code> → package <code>…internal.&lt;variant&gt;</code>.</li>
+<li>Feature examples:
+<ul>
+<li>Module <code>:feature:mail:message:export:internal-eml</code> → package root
+<code>net.thunderbird.feature.mail.message.export.internal.eml</code> (e.g., <code>…internal.eml.data</code>, <code>…internal.eml.domain</code>).</li>
+<li>If a PDF exporter exists: <code>:feature:mail:message:export:internal-pdf</code> →
+<code>net.thunderbird.feature.mail.message.export.internal.pdf</code>.</li>
+</ul>
+</li>
+<li>Core examples:
+<ul>
+<li>Module <code>:core:network:internal-okhttp</code> → <code>net.thunderbird.core.network.internal.okhttp</code>.</li>
+<li>Module <code>:core:crypto:internal-bouncycastle</code> → <code>net.thunderbird.core.crypto.internal.bouncycastle</code>.</li>
+</ul>
+</li>
+<li>Keep variant tokens lowercase and alphanumeric. Use dot separators for dimension/value patterns (see below). Avoid
+kebab-case in package names.</li>
+</ul>
+</li>
+<li>Multi-dimension variants: when a variant expresses a dimension and a value, prefer <code>internal.&lt;dimension&gt;.&lt;value&gt;</code>.
+<ul>
+<li>Examples: <code>net.thunderbird.core.storage.internal.database.sqlite</code>,
+<code>net.thunderbird.feature.search.internal.engine.lucene</code>.</li>
+<li>Prefer at most two levels under <code>.internal</code> for the variant part to keep packages readable.</li>
+</ul>
+</li>
+</ul>
+<blockquote class="blockquote-tag blockquote-tag-note">
+<p class="blockquote-tag-title"><svg viewbox="0 0 16 16" width="18" height="18"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<ul>
+<li>Avoid adding <code>.api</code> to package names for new code — the module already is the API.</li>
+<li>Prefer small focused API packages with narrow sets of contracts; keep type stability in mind when promoting code to API.</li>
+<li>API packages should remain variant-agnostic in almost all cases; concrete variants live under <code>.internal.&lt;variant&gt;</code>.</li>
+</ul>
+</blockquote>
+<h3 id="dependency-rules-gradle"><a class="header" href="#dependency-rules-gradle">Dependency rules (Gradle)</a></h3>
+<ul>
+<li>Feature-to-feature dependencies must target <code>:feature:*:api</code> only.</li>
+<li>Feature-to-core dependencies must target <code>:core:*:api</code> only.</li>
+<li>Core-to-core dependencies must target <code>:core:*:api</code> only.</li>
+<li>Core modules must not depend on <code>:feature:*</code> modules.</li>
+<li><code>:feature:*:internal</code> and <code>:core:*:internal</code> dependencies are only allowed from:
+<ul>
+<li>the same area’s <code>api</code> module (when strictly necessary), and</li>
+<li>composition modules: <code>:app-common</code>, <code>:app-k9mail</code>, <code>:app-thunderbird</code>.</li>
+</ul>
+</li>
+<li>Build logic will add a check that fails the build if a module depends on a <code>:*:internal</code> outside of these exceptions.</li>
+</ul>
+<h3 id="migration-plan"><a class="header" href="#migration-plan">Migration plan</a></h3>
 <ol>
-<li><strong>App Modules</strong>:
+<li>Rename modules in Gradle from <code>impl</code> to <code>internal</code>:
 <ul>
-<li><code>app-thunderbird</code> and <code>app-k9mail</code> are the modules for the two applications, Thunderbird for Android and K-9 Mail respectively. These modules will contain app-specific implementations, configurations, resources, and startup logic. They should solely depend on the <code>app-common</code> module for shared functionalities and may selectively integrate <code>feature</code> and <code>core</code> to setup app-specific needs.</li>
+<li>Examples in <code>settings.gradle.kts</code> to update:
+<ul>
+<li><code>:feature:account:avatar:impl</code> → <code>:feature:account:avatar:internal</code></li>
+<li><code>:feature:account:settings:impl</code> → <code>:feature:account:settings:internal</code></li>
+<li><code>:feature:mail:message:export:impl-eml</code> → <code>:feature:mail:message:export:internal-eml</code></li>
+<li><code>:core:&lt;area&gt;:impl</code> → <code>:core:&lt;area&gt;:internal</code> (and for subareas accordingly)</li>
 </ul>
 </li>
-<li><strong>App Common Module</strong>:
-<ul>
-<li><code>app-common</code>: Acts as the central hub for shared code between both applications. This module serves as the primary “glue” that binds various <code>feature</code> modules together, providing a seamless integration point. While it can depend on <code>library</code> modules for additional functionalities, its main purpose is to orchestrate the interactions among the <code>feature</code> and <code>core</code> modules, ensuring similar functionality across both applications. This module should be kept lean to avoid unnecessary dependencies and ensure it remains focused on shared functionality.</li>
 </ul>
 </li>
-<li><strong>Feature Modules</strong>:
-<ul>
-<li><code>feature:*</code>: These are independent feature modules, that encapsulate distinct user-facing features. They are designed to be reusable and can be integrated into any application module as needed. They maintain dependencies on <code>core</code> modules and may interact with other <code>feature</code> or <code>library</code> modules.</li>
-</ul>
-</li>
-<li><strong>Core Module</strong>:
-<ul>
-<li><code>core:*</code>: The core modules contain essential utilities and base classes used across the entire project. These modules are grouped by their functionality (e.g., networking, database management, theming, common utilities). This segmentation allows for cleaner dependency management and specialization within foundational aspects.</li>
-</ul>
-</li>
-<li><strong>Library Modules</strong>:
-<ul>
-<li><code>library:*</code> These modules are for specific implementations that might be used across various features or applications. They could be third-party integrations or complex utilities and eventually shared across multiple projects.</li>
-</ul>
-</li>
+<li>Adjust <code>namespace</code> in <code>build.gradle.kts</code> and Kotlin/Java <code>package</code> declarations to include <code>.internal</code>.</li>
+<li>Update imports and references after package moves.</li>
+<li>Add build-plugin check to disallow external dependencies on <code>:feature:*:internal</code> and <code>:core:*:internal</code> (enforced
+in the root build).</li>
+<li>Move all composition wiring (DI, factory bindings, navigation registrations) to <code>:app-common</code> or app modules.</li>
+<li>When in doubt, prefer starting in <code>internal</code>. Promote types to <code>api</code> only once they’re needed and stable.</li>
 </ol>
-<pre class="mermaid">graph TD
-    subgraph APP[App]
-        APP_K9["`
-            **:app-k9mail**
-            K-9 Mail
-        `"]
-        APP_TB["`
-            **:app-thunderbird**
-            Thunderbird for Android
-        `"]
-    end
-
-    subgraph COMMON[App Common]
-        APP_COMMON["`
-            **:app-common**
-            Integration Code
-        `"]
-    end
-
-    subgraph FEATURE[Feature]
-        FEATURE1[Feature 1]
-        FEATURE2[Feature 2]
-    end
-
-    subgraph CORE[Core]
-        CORE1[Core 1]
-        CORE2[Core 2]
-    end
-
-    subgraph LIBRARY[Library]
-        LIB1[Library 1]
-        LIB2[Library 2]
-    end
-
-    APP --&gt; |depends on| COMMON
-    COMMON --&gt; |integrates| FEATURE
-    FEATURE --&gt; |uses| CORE
-    FEATURE --&gt; |uses| LIBRARY
-
-    classDef module fill:yellow
-    classDef app fill:azure
-    classDef app_common fill:#ddd
-    class APP_K9 app
-    class APP_TB app
-    class APP_COMMON app_common
-</pre>
-
-<h3 id="legacy-modules"><a class="header" href="#legacy-modules">Legacy Modules</a></h3>
-<p>Modules that are still required for the project to function, but don’t follow the new project structure.</p>
-<p>These modules should not be used for new development.</p>
-<p>The goal is to migrate the functionality of these modules to the new structure over time. By placing them under the <code>legacy</code> module, we can easily identify and manage them.</p>
-<pre class="mermaid">graph TD
-    subgraph APP[App]
-        APP_K9["`
-            **:app-k9mail**
-            K-9 Mail
-        `"]
-        APP_TB["`
-            **:app-thunderbird**
-            Thunderbird for Android
-        `"]
-    end
-
-    subgraph COMMON[App Common]
-        APP_COMMON["`
-            **:app-common**
-            Integration Code
-        `"]
-    end
-
-    subgraph FEATURE[Feature]
-        FEATURE1[Feature 1]
-        FEATURE2[Feature 2]
-        FEATURE3[Feature from Legacy]
-    end
-
-    subgraph CORE[Core]
-        CORE1[Core 1]
-        CORE2[Core 2]
-        CORE3[Core from Legacy]
-    end
-
-    subgraph LIBRARY[Library]
-        LIB1[Library 1]
-        LIB2[Library 2]
-    end
-
-    APP --&gt; |depends on| COMMON
-    COMMON --&gt; |integrates| FEATURE
-    FEATURE --&gt; |uses| CORE
-    FEATURE --&gt; |uses| LIBRARY
-
-    subgraph LEGACY[Legacy]
-        LEG[Legacy Code]
-    end
-
-    COMMON -.-&gt; |integrates| LEGACY
-    LEG -.-&gt; |migrate to| FEATURE3
-    LEG -.-&gt; |migrate to| CORE3
-
-    classDef module fill:yellow
-    classDef app fill:azure
-    classDef app_common fill:#ddd
-    classDef legacy fill:#F99
-    class APP_K9 app
-    class APP_TB app
-    class APP_COMMON app_common
-    class LEGACY legacy
-</pre>
-
 <h2 id="outcomes"><a class="header" href="#outcomes">Outcomes</a></h2>
 <h3 id="positive-outcomes"><a class="header" href="#positive-outcomes">Positive Outcomes</a></h3>
 <ul>
-<li>Improved modularity facilitates easier code maintenance and scaling.</li>
-<li>Clear separation of concerns reduces dependencies and potential conflicts between modules.</li>
-<li>Enhanced reusability of the <code>feature</code>, <code>core</code> and <code>library</code> modules across different parts of the application or even in different projects.</li>
+<li>Explicit and discoverable boundary between public and internal code.</li>
+<li>Stronger enforcement of architectural intent; easier refactors.</li>
+<li>Package-level naming makes internal code clearly visible as non-public.</li>
+<li>Works cleanly with KMP source sets (common/platform-specific).</li>
+<li>Reduced confusion around whether a type is public or internal.</li>
+<li>Clear criteria for placing types in <code>api</code> vs. <code>internal</code> improves consistency.</li>
 </ul>
 <h3 id="negative-outcomes"><a class="header" href="#negative-outcomes">Negative Outcomes</a></h3>
 <ul>
-<li>Initial complexity in setting up and managing multiple modules may increase the learning curve and setup time for new developers.</li>
-<li>Over-modularization can lead to excessive abstraction, potentially impacting runtime performance and complicating the debugging process.</li>
-<li>Legacy modules may require additional effort to migrate to the new structure, potentially causing delays in the adoption of the new architecture.</li>
+<li>Requires renaming existing modules and packages, plus updating imports.</li>
+<li>Slight learning overhead for contributors until the pattern becomes familiar.</li>
+<li>Temporary churn in open branches during the migration window.</li>
 </ul>
 <footer id="last-change">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../engineering/adr/0006-white-label-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../engineering/adr/0008-change-shared-modules-package-name.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../../engineering/adr/0008-change-shared-modules-package-name.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../engineering/technical-designs/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -361,11 +366,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../engineering/adr/0006-white-label-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../engineering/adr/0008-change-shared-modules-package-name.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../../engineering/adr/0008-change-shared-modules-package-name.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../engineering/technical-designs/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>0007 - Project Structure - Thunderbird for Android - Developer Documentation</title>
+        <title>Repository Pattern - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -12,35 +12,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../../favicon-de23e50b.svg">
-        <link rel="shortcut icon" href="../../favicon-8114d1fc.png">
-        <link rel="stylesheet" href="../../css/variables-bb060dd9.css">
-        <link rel="stylesheet" href="../../css/general-0d197534.css">
-        <link rel="stylesheet" href="../../css/chrome-2bf922bf.css">
-        <link rel="stylesheet" href="../../css/print-9e4910d8.css" media="print">
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-bb060dd9.css">
+        <link rel="stylesheet" href="../css/general-0d197534.css">
+        <link rel="stylesheet" href="../css/chrome-2bf922bf.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../../fonts/fonts-868d674e.css">
+        <link rel="stylesheet" href="../fonts/fonts-868d674e.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="mdbook-highlight-css" href="../../highlight-493f70e1.css">
-        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../../tomorrow-night-4c0ae647.css">
-        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../../ayu-highlight-3fdfc3ac.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="../../assets/additional/css/last-changed-baed6e4e.css">
-        <link rel="stylesheet" href="../../assets/additional/css/navigation-c5b35b00.css">
+        <link rel="stylesheet" href="../assets/additional/css/last-changed-baed6e4e.css">
+        <link rel="stylesheet" href="../assets/additional/css/navigation-c5b35b00.css">
 
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "../../";
+            const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-d3defe69.js";
+            window.path_to_searchindex_js = "../searchindex-d3defe69.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-770c236f.js"></script>
+        <script src="../toc-770c236f.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -107,7 +107,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
             <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -139,13 +139,13 @@
                     <h1 class="menu-title">Thunderbird for Android - Developer Documentation</h1>
 
                     <div class="right-buttons">
-                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
                         <a href="https://github.com/thunderbird/thunderbird-android/" title="Git repository" aria-label="Git repository">
                             <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./engineering/adr/0007-project-structure.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./architecture/repository-pattern.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -179,179 +179,264 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h1>
+                        <h1 id="repository-pattern"><a class="header" href="#repository-pattern">Repository Pattern</a></h1>
+<p>This guide defines the repository API conventions used by the project. It supports
+<a href="../engineering/adr/0010-adopt-project-wide-repository-pattern.html">ADR-0010</a>.</p>
+<h2 id="core-concepts"><a class="header" href="#core-concepts">Core concepts</a></h2>
+<p>A <strong>repository contract</strong> describes the domain data and operations available to a caller. In Kotlin, it is usually an
+interface. The contract defines what an operation needs, what it returns, and which domain failures a caller can handle,
+but not whether the data comes from a database, a network service, or another source.</p>
+<p>A <strong>repository implementation</strong> is a class that fulfills that contract. It contains the implementation details and may
+coordinate local storage, remote services, mapping, and synchronization. Callers depend on the contract rather than the
+implementation, so these details can change without changing the callers.</p>
+<p>A <strong>focused contract</strong> provides the operations for one coherent domain responsibility. Focused contracts are independent
+APIs. Callers use one or more focused contracts directly, according to their responsibilities.</p>
+<p>In this guide, <strong>API</strong> usually refers to an area’s <code>:api</code> module. It contains contracts and the types needed to use them.
+The corresponding <code>:internal</code> module contains their implementations and other details that callers must not depend on.</p>
+<h2 id="responsibility-and-ownership"><a class="header" href="#responsibility-and-ownership">Responsibility and ownership</a></h2>
+<p>A repository is domain-facing and hides how data is read, stored, or synchronized. UI state and UI-specific business
+logic belong elsewhere.</p>
+<p>Define contracts by domain responsibility. Do not create one interface per database table or one interface per SQL
+operation. A caller depends on the narrowest focused contracts it needs.</p>
+<p>Expose a repository contract from an <code>:api</code> module only when another area needs that stable contract. Place the shared
+contract, criteria, errors, and domain models in that module. Keep repository implementations, data sources, mappers,
+and storage models in the area’s <code>:internal</code> module.</p>
+<p>Bind the contract to its implementation in <code>:app-common</code> or an app-specific composition module. Dependency injection
+then provides the implementation when a caller requests the contract, without exposing the implementation to that
+caller. This maintains the API/internal boundary defined by
+<a href="../engineering/adr/0009-api-internal-split.html">ADR-0009</a>.</p>
+<h2 id="scope-and-identifiers"><a class="header" href="#scope-and-identifiers">Scope and identifiers</a></h2>
+<p>Make the identifiers that scope every operation explicit. For example, an operation on a folder within an account takes
+both <code>AccountId</code> and <code>FolderId</code>. An account-scoped operation continues to take <code>AccountId</code>, even if a folder identifier
+is also supplied. Do not create a repository instance that is permanently bound to one account, folder, or other entity.</p>
+<p>Use domain-specific identifier types such as <code>AccountId</code> and <code>FolderId</code> in new contracts rather than raw primitives.
+This makes the scope visible to callers and supports a consolidated database with one connection for all accounts.</p>
+<h2 id="asynchronous-work-and-results"><a class="header" href="#asynchronous-work-and-results">Asynchronous work and results</a></h2>
+<p>Repository I/O uses coroutines:</p>
 <ul>
-<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/7852">#7852</a></li>
-<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7829">#7829</a></li>
+<li>A one-shot operation is a <code>suspend fun</code>.</li>
+<li>A reactive operation returns a <code>Flow</code>.</li>
 </ul>
-<h2 id="status"><a class="header" href="#status">Status</a></h2>
+<p>Choose the return type based on the guarantees and failures the repository contract exposes to callers, rather than the
+behavior of its current data source or a legacy implementation. Use a fallible return type when an operation can
+encounter an expected, recoverable condition that the caller needs to handle, such as unavailable storage, a network
+failure, a rejected operation, or a missing required entity. Return a value directly only when the contract guarantees
+a meaningful result, possibly by using a default.</p>
+<p>Use <a href="../../core/outcome/src/commonMain/kotlin/net/thunderbird/core/outcome/Outcome.kt"><code>net.thunderbird.core.outcome.Outcome</code></a>
+for fallible repository results. <code>ERROR</code> is a domain-specific sealed type. Do not expose database, HTTP, or platform
+exceptions from a contract.</p>
+<p>Fallible contracts use <code>Outcome</code>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Contract</th><th>Return type</th></tr>
+</thead>
+<tbody>
+<tr><td>Required value</td><td><code>Outcome&lt;Type, Error&gt;</code></td></tr>
+<tr><td>Optional value</td><td><code>Outcome&lt;Type?, Error&gt;</code></td></tr>
+<tr><td>Collection</td><td><code>Outcome&lt;List&lt;Type&gt;, Error&gt;</code></td></tr>
+<tr><td>No value</td><td><code>Outcome&lt;Unit, Error&gt;</code></td></tr>
+<tr><td>Reactive value</td><td><code>Flow&lt;Outcome&lt;Type, Error&gt;&gt;</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Non-fallible contracts return values directly:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Contract</th><th>Return type</th></tr>
+</thead>
+<tbody>
+<tr><td>Required value</td><td><code>Type</code></td></tr>
+<tr><td>Optional value</td><td><code>Type?</code></td></tr>
+<tr><td>Collection</td><td><code>List&lt;Type&gt;</code></td></tr>
+<tr><td>No value</td><td><code>Unit</code></td></tr>
+<tr><td>Reactive value</td><td><code>Flow&lt;Type&gt;</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>For fallible operations, use <code>Outcome.Success(Unit)</code> when an operation completes successfully and has no value to
+return. Use <code>Outcome.Success(null)</code> when a lookup completes successfully but no matching entity exists. Use
+<code>Outcome.Failure(...)</code> when the operation cannot produce the required result. An API that requires an entity represents
+a missing entity as a domain failure.</p>
+<p>For example, this repository always returns settings by falling back to defaults, while an update can fail:</p>
+<pre><code class="language-kotlin">interface DisplaySettingsRepository {
+    suspend fun getById(
+        accountId: AccountId,
+    ): DisplaySettings
+
+    fun observeById(
+        accountId: AccountId,
+    ): Flow&lt;DisplaySettings&gt;
+
+    suspend fun update(
+        accountId: AccountId,
+        settings: DisplaySettings,
+    ): Outcome&lt;Unit, DisplaySettingsError&gt;
+}
+</code></pre>
+<h2 id="read-method-naming"><a class="header" href="#read-method-naming">Read method naming</a></h2>
+<p>Use these names for read methods:</p>
 <ul>
-<li><strong>Accepted</strong></li>
-</ul>
-<h2 id="context"><a class="header" href="#context">Context</a></h2>
-<p>The project consists of two distinct applications. To improve maintainability and streamline development, we propose a modular structure using Gradle. This structure is designed to enable clear separation of concerns, facilitate scalable growth, and ensure efficient dependency management. It consists of various module types such as <code>app</code>, <code>app-common</code>, <code>feature</code>, <code>core</code>, and <code>library</code> modules, promoting enhanced modular reusability.</p>
-<h2 id="decision"><a class="header" href="#decision">Decision</a></h2>
-<p>To achieve the goals outlined in the context, we have decided to adopt the following modular structure:</p>
-<ol>
-<li><strong>App Modules</strong>:
+<li>Reactive reads:
 <ul>
-<li><code>app-thunderbird</code> and <code>app-k9mail</code> are the modules for the two applications, Thunderbird for Android and K-9 Mail respectively. These modules will contain app-specific implementations, configurations, resources, and startup logic. They should solely depend on the <code>app-common</code> module for shared functionalities and may selectively integrate <code>feature</code> and <code>core</code> to setup app-specific needs.</li>
+<li><code>observeById()</code> reads one entity by its main identifier.</li>
+<li><code>observeBy&lt;Identifier&gt;()</code> reads one entity by another identifier, such as <code>observeByServerId()</code>.</li>
+<li><code>observeAll()</code> reads all entities in scope.</li>
+<li><code>observeByCriteria()</code> reads at most one entity for an immutable, domain-specific criteria type.</li>
+<li><code>observeAllByCriteria()</code> reads multiple entities for an immutable, domain-specific criteria type.</li>
 </ul>
 </li>
-<li><strong>App Common Module</strong>:
+<li>One-shot reads:
 <ul>
-<li><code>app-common</code>: Acts as the central hub for shared code between both applications. This module serves as the primary “glue” that binds various <code>feature</code> modules together, providing a seamless integration point. While it can depend on <code>library</code> modules for additional functionalities, its main purpose is to orchestrate the interactions among the <code>feature</code> and <code>core</code> modules, ensuring similar functionality across both applications. This module should be kept lean to avoid unnecessary dependencies and ensure it remains focused on shared functionality.</li>
+<li>Optional singular reads use <code>findById()</code>, <code>findBy&lt;Identifier&gt;()</code>, or <code>findByCriteria()</code>. They always return a
+nullable entity, either as <code>Type?</code> or <code>Outcome&lt;Type?, Error&gt;</code>. Return <code>null</code> directly or <code>Outcome.Success(null)</code>
+when no entity exists.</li>
+<li>Collection reads use <code>findAll()</code> or <code>findAllByCriteria()</code>. Return an empty list directly or
+<code>Outcome.Success(emptyList())</code> when no entities exist.</li>
+<li>Required singular reads use <code>getById()</code> or <code>getBy&lt;Identifier&gt;()</code>. They always return a non-null entity, either as
+<code>Type</code> or <code>Outcome&lt;Type, Error&gt;</code>. A direct return guarantees a meaningful value. A fallible return represents absence
+as a domain failure.</li>
+<li>Criteria methods accept an immutable, domain-specific criteria type.</li>
 </ul>
 </li>
-<li><strong>Feature Modules</strong>:
-<ul>
-<li><code>feature:*</code>: These are independent feature modules, that encapsulate distinct user-facing features. They are designed to be reusable and can be integrated into any application module as needed. They maintain dependencies on <code>core</code> modules and may interact with other <code>feature</code> or <code>library</code> modules.</li>
 </ul>
-</li>
-<li><strong>Core Module</strong>:
-<ul>
-<li><code>core:*</code>: The core modules contain essential utilities and base classes used across the entire project. These modules are grouped by their functionality (e.g., networking, database management, theming, common utilities). This segmentation allows for cleaner dependency management and specialization within foundational aspects.</li>
-</ul>
-</li>
-<li><strong>Library Modules</strong>:
-<ul>
-<li><code>library:*</code> These modules are for specific implementations that might be used across various features or applications. They could be third-party integrations or complex utilities and eventually shared across multiple projects.</li>
-</ul>
-</li>
-</ol>
-<pre class="mermaid">graph TD
-    subgraph APP[App]
-        APP_K9["`
-            **:app-k9mail**
-            K-9 Mail
-        `"]
-        APP_TB["`
-            **:app-thunderbird**
-            Thunderbird for Android
-        `"]
-    end
+<p>Reactive reads use the same absence semantics as one-shot reads. An optional singular read emits <code>null</code> directly or
+<code>Outcome.Success(null)</code>. A required singular read emits a value directly or a domain failure. A collection read emits an
+empty list directly or <code>Outcome.Success(emptyList())</code> when no entities exist.</p>
+<h2 id="mutation-methods"><a class="header" href="#mutation-methods">Mutation methods</a></h2>
+<p>Use <code>create()</code>, <code>update()</code>, and <code>delete()</code> for lifecycle operations. Do not add a generic <code>save()</code> method to new
+contracts. Use <code>clear&lt;Scope&gt;()</code> only for explicitly scoped bulk removal, such as <code>clearCache()</code>.</p>
+<p>Within a focused repository contract, method names describe the operation and must not repeat the domain concern named
+by the repository. For example, use <code>DraftRepository.create()</code>, <code>FolderQueryRepository.findById()</code>, and
+<code>FolderQueryRepository.findByServerId()</code>, not <code>createDraft()</code>, <code>findByFolderId()</code>, or <code>findFolderByServerId()</code>. Use
+<code>FolderQueryRepository.getById()</code> or <code>FolderQueryRepository.getByServerId()</code> for required lookups. Method names are
+unambiguous within their focused contract. The repository contract name identifies the concern and is not repeated in
+its method names.</p>
+<p>Avoid repository methods whose names start with <code>set</code>. Multiple independent setters expose invalid intermediate state
+and usually mean the API is acting as a mutable state holder. Group values that change together in an immutable value
+and update them atomically. A setup draft or UI-only mutable state belongs in a <code>Store</code> or <code>StateHolder</code>, not
+a repository.</p>
+<pre><code class="language-kotlin">data class FolderSettings(
+    val includeInUnifiedInbox: Boolean,
+    val visible: Boolean,
+    val syncEnabled: Boolean,
+    val notificationsEnabled: Boolean,
+)
 
-    subgraph COMMON[App Common]
-        APP_COMMON["`
-            **:app-common**
-            Integration Code
-        `"]
-    end
+interface FolderSettingsRepository {
+    fun observeById(
+        accountId: AccountId,
+        folderId: FolderId,
+    ): Flow&lt;Outcome&lt;FolderSettings, FolderError&gt;&gt;
 
-    subgraph FEATURE[Feature]
-        FEATURE1[Feature 1]
-        FEATURE2[Feature 2]
-    end
+    suspend fun update(
+        accountId: AccountId,
+        folderId: FolderId,
+        settings: FolderSettings,
+    ): Outcome&lt;Unit, FolderError&gt;
+}
+</code></pre>
+<p>Creation is deliberately different from a generic write. A draft has its own creation lifecycle and identifier, while
+changes to an existing draft use <code>update()</code>:</p>
+<pre><code class="language-kotlin">interface DraftRepository {
+    suspend fun create(
+        accountId: AccountId,
+    ): Outcome&lt;Draft, DraftError&gt;
 
-    subgraph CORE[Core]
-        CORE1[Core 1]
-        CORE2[Core 2]
-    end
+    suspend fun update(
+        accountId: AccountId,
+        draftId: DraftId,
+        draft: Draft,
+    ): Outcome&lt;Unit, DraftError&gt;
 
-    subgraph LIBRARY[Library]
-        LIB1[Library 1]
-        LIB2[Library 2]
-    end
+    suspend fun delete(
+        accountId: AccountId,
+        draftId: DraftId,
+    ): Outcome&lt;Unit, DraftError&gt;
+}
+</code></pre>
+<h2 id="folder-contract-example"><a class="header" href="#folder-contract-example">Folder contract example</a></h2>
+<p>The following example shows independent, focused folder contracts. Consumers depend directly on the contracts matching
+their responsibilities.</p>
+<pre><code class="language-kotlin">enum class UnifiedInboxFilter {
+    ANY,
+    INCLUDED,
+    EXCLUDED,
+}
 
-    APP --&gt; |depends on| COMMON
-    COMMON --&gt; |integrates| FEATURE
-    FEATURE --&gt; |uses| CORE
-    FEATURE --&gt; |uses| LIBRARY
+data class FolderCriteria(
+    val unifiedInbox: UnifiedInboxFilter = UnifiedInboxFilter.ANY,
+    val excludeLocalOnly: Boolean = false,
+)
 
-    classDef module fill:yellow
-    classDef app fill:azure
-    classDef app_common fill:#ddd
-    class APP_K9 app
-    class APP_TB app
-    class APP_COMMON app_common
-</pre>
+sealed interface FolderError {
+    data object NotFound : FolderError
+    data object Unavailable : FolderError
+}
 
-<h3 id="legacy-modules"><a class="header" href="#legacy-modules">Legacy Modules</a></h3>
-<p>Modules that are still required for the project to function, but don’t follow the new project structure.</p>
-<p>These modules should not be used for new development.</p>
-<p>The goal is to migrate the functionality of these modules to the new structure over time. By placing them under the <code>legacy</code> module, we can easily identify and manage them.</p>
-<pre class="mermaid">graph TD
-    subgraph APP[App]
-        APP_K9["`
-            **:app-k9mail**
-            K-9 Mail
-        `"]
-        APP_TB["`
-            **:app-thunderbird**
-            Thunderbird for Android
-        `"]
-    end
+interface FolderQueryRepository {
+    fun observeById(
+        accountId: AccountId,
+        folderId: FolderId,
+    ): Flow&lt;Outcome&lt;Folder?, FolderError&gt;&gt;
 
-    subgraph COMMON[App Common]
-        APP_COMMON["`
-            **:app-common**
-            Integration Code
-        `"]
-    end
+    fun observeAllByCriteria(
+        accountId: AccountId,
+        criteria: FolderCriteria,
+    ): Flow&lt;Outcome&lt;List&lt;FolderDetails&gt;, FolderError&gt;&gt;
 
-    subgraph FEATURE[Feature]
-        FEATURE1[Feature 1]
-        FEATURE2[Feature 2]
-        FEATURE3[Feature from Legacy]
-    end
+    suspend fun findById(
+        accountId: AccountId,
+        folderId: FolderId,
+    ): Outcome&lt;Folder?, FolderError&gt;
 
-    subgraph CORE[Core]
-        CORE1[Core 1]
-        CORE2[Core 2]
-        CORE3[Core from Legacy]
-    end
+    suspend fun getById(
+        accountId: AccountId,
+        folderId: FolderId,
+    ): Outcome&lt;Folder, FolderError&gt;
 
-    subgraph LIBRARY[Library]
-        LIB1[Library 1]
-        LIB2[Library 2]
-    end
+    suspend fun findByServerId(
+        accountId: AccountId,
+        folderServerId: String,
+    ): Outcome&lt;Folder?, FolderError&gt;
+}
 
-    APP --&gt; |depends on| COMMON
-    COMMON --&gt; |integrates| FEATURE
-    FEATURE --&gt; |uses| CORE
-    FEATURE --&gt; |uses| LIBRARY
+interface RemoteFolderRepository {
+    suspend fun findAll(
+        accountId: AccountId,
+    ): Outcome&lt;List&lt;RemoteFolder&gt;, FolderError&gt;
+}
 
-    subgraph LEGACY[Legacy]
-        LEG[Legacy Code]
-    end
+interface FolderPushTrackingRepository {
+    fun observeEnabled(
+        accountId: AccountId,
+    ): Flow&lt;Outcome&lt;Boolean, FolderError&gt;&gt;
 
-    COMMON -.-&gt; |integrates| LEGACY
-    LEG -.-&gt; |migrate to| FEATURE3
-    LEG -.-&gt; |migrate to| CORE3
-
-    classDef module fill:yellow
-    classDef app fill:azure
-    classDef app_common fill:#ddd
-    classDef legacy fill:#F99
-    class APP_K9 app
-    class APP_TB app
-    class APP_COMMON app_common
-    class LEGACY legacy
-</pre>
-
-<h2 id="outcomes"><a class="header" href="#outcomes">Outcomes</a></h2>
-<h3 id="positive-outcomes"><a class="header" href="#positive-outcomes">Positive Outcomes</a></h3>
-<ul>
-<li>Improved modularity facilitates easier code maintenance and scaling.</li>
-<li>Clear separation of concerns reduces dependencies and potential conflicts between modules.</li>
-<li>Enhanced reusability of the <code>feature</code>, <code>core</code> and <code>library</code> modules across different parts of the application or even in different projects.</li>
-</ul>
-<h3 id="negative-outcomes"><a class="header" href="#negative-outcomes">Negative Outcomes</a></h3>
-<ul>
-<li>Initial complexity in setting up and managing multiple modules may increase the learning curve and setup time for new developers.</li>
-<li>Over-modularization can lead to excessive abstraction, potentially impacting runtime performance and complicating the debugging process.</li>
-<li>Legacy modules may require additional effort to migrate to the new structure, potentially causing delays in the adoption of the new architecture.</li>
-</ul>
+    suspend fun disable(
+        accountId: AccountId,
+    ): Outcome&lt;Unit, FolderError&gt;
+}
+</code></pre>
+<p>In <code>FolderCriteria</code>, <code>UnifiedInboxFilter.ANY</code> means that the query does not filter on unified inbox inclusion. The
+criteria contains filters only. Scope identifiers such as <code>AccountId</code> and <code>FolderId</code> remain explicit parameters rather
+than becoming part of the criteria.</p>
+<p>For example, a screen that renders folder preferences depends only on <code>FolderSettingsRepository</code>. The implementation
+may use any storage technology, as long as it maintains the contract.</p>
+<h2 id="testing-repository-consumers"><a class="header" href="#testing-repository-consumers">Testing repository consumers</a></h2>
+<p>Test consumers with fakes that implement the focused contract. Cover successful values, nullable absence, empty
+collections, and each expected domain failure. Repository implementations must test account filtering and the mapping
+of expected data-source failures to domain errors.</p>
 <footer id="last-change">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/0553a6b">0553a6b</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../engineering/adr/0006-white-label-architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../architecture/feature-modules.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../../engineering/adr/0008-change-shared-modules-package-name.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../architecture/ui-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -361,11 +446,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../engineering/adr/0006-white-label-architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../architecture/feature-modules.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../../engineering/adr/0008-change-shared-modules-package-name.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../architecture/ui-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
@@ -385,18 +470,18 @@
         </script>
 
 
-        <script src="../../elasticlunr-ef4e11c1.min.js"></script>
-        <script src="../../mark-09e88c2c.min.js"></script>
-        <script src="../../searcher-09f2665d.js"></script>
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
 
-        <script src="../../clipboard-1626706a.min.js"></script>
-        <script src="../../highlight-abc7f01d.js"></script>
-        <script src="../../book-7163d6e2.js"></script>
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-7163d6e2.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="../../assets/additional/js/mermaid-217b66ef.min.js"></script>
-        <script src="../../assets/additional/js/mermaid-init-73b11a66.js"></script>
-        <script src="../../assets/additional/js/navigation-dde10ad4.js"></script>
+        <script src="../assets/additional/js/mermaid-217b66ef.min.js"></script>
+        <script src="../assets/additional/js/mermaid-init-73b11a66.js"></script>
+        <script src="../assets/additional/js/navigation-dde10ad4.js"></script>
 
 
 
