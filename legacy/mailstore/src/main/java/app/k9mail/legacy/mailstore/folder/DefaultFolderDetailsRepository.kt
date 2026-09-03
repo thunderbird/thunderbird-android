@@ -17,6 +17,7 @@ import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.folder.api.data.FolderError
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
 import net.thunderbird.feature.mail.folder.api.data.repository.PartialUpdatableFolderDetails
+import net.thunderbird.feature.mail.folder.api.toStringPiiSafe
 
 private const val LOG_ID = "[repository][folder-details]"
 
@@ -57,10 +58,7 @@ class DefaultFolderDetailsRepository(
                 )
             }
 
-            logger.verbose {
-                "$LOG_ID folder details = $folderDetails"
-            }
-
+            logger.verbose { "$LOG_ID folder details = ${folderDetails?.toStringPiiSafe()}" }
             Outcome.success(folderDetails)
         }
 
@@ -77,9 +75,7 @@ class DefaultFolderDetailsRepository(
                 Outcome.success()
             } catch (e: IllegalStateException) {
                 logger.error(throwable = e) {
-                    "$LOG_ID Failed to update folder with id '${
-                        folderDetails.folder.id
-                    }' and account id '$accountId'"
+                    "$LOG_ID Failed to update folder with id '${folderDetails.folder.id}' and account id '$accountId'"
                 }
                 Outcome.failure(FolderError.AccountNotFound)
             } catch (e: IllegalArgumentException) {
@@ -109,9 +105,7 @@ class DefaultFolderDetailsRepository(
                 Outcome.success()
             } catch (e: IllegalStateException) {
                 logger.error(throwable = e) {
-                    "$LOG_ID Failed to update folder with id '${
-                        partialUpdate.folderId
-                    }' and account id '$accountId'"
+                    "$LOG_ID Failed to update folder with id '${partialUpdate.folderId}' and account id '$accountId'"
                 }
                 Outcome.failure(FolderError.AccountNotFound)
             } catch (e: IllegalArgumentException) {
@@ -136,21 +130,15 @@ class DefaultFolderDetailsRepository(
             val pushEnabled = folderDetails.isPushEnabled
 
             if (integrate != null) {
-                logger.verbose {
-                    "$LOG_ID updating 'integrate' to '$integrate' of folder '$folderId'"
-                }
+                logger.verbose { "$LOG_ID updating 'integrate' to '$integrate' of folder '$folderId'" }
                 setIncludeInUnifiedInbox(folderId = folderId, includeInUnifiedInbox = integrate)
             }
             if (syncEnabled != null) {
-                logger.verbose {
-                    "$LOG_ID updating 'sync_enabled' to '$syncEnabled' of folder '$folderId'"
-                }
+                logger.verbose { "$LOG_ID updating 'sync_enabled' to '$syncEnabled' of folder '$folderId'" }
                 setSyncEnabled(folderId = folderId, enable = syncEnabled)
             }
             if (visible != null) {
-                logger.verbose {
-                    "$LOG_ID updating 'visible' to '$visible' of folder '$folderId'"
-                }
+                logger.verbose { "$LOG_ID updating 'visible' to '$visible' of folder '$folderId'" }
                 setVisible(folderId = folderId, visible = visible)
             }
             if (notificationsEnabled != null) {
@@ -161,9 +149,7 @@ class DefaultFolderDetailsRepository(
                 setNotificationsEnabled(folderId = folderId, enable = notificationsEnabled)
             }
             if (pushEnabled != null) {
-                logger.verbose {
-                    "$LOG_ID updating 'push_enabled' to '$pushEnabled' of folder '$folderId'"
-                }
+                logger.verbose { "$LOG_ID updating 'push_enabled' to '$pushEnabled' of folder '$folderId'" }
                 setPushEnabled(folderId = folderId, enable = pushEnabled)
             }
         }
