@@ -5,7 +5,7 @@
 - Related RFC: [UUIDv7 Identifier Migration](0009-uuidv7-identifier-migration.md)
 - Repository pattern: [ADR 0010 proposal](https://github.com/thunderbird/thunderbird-android/pull/11452)
 - Portable data format: [RFC 0008: Portable Profile Data Format](0008-portable-profile-data-format.md)
-- Status: **Proposed**
+- Status: **Accepted**
 - Backend decision: **Room 3 selected by the
   [completed database spike](https://github.com/thunderbird/thunderbird-android/issues/11195)**
 
@@ -102,12 +102,14 @@ codebase, unbound and unused, until a later release removes it.
 
 ### Migration gate and reporting
 
-The migration surfaces progress, failure feedback, retry, and local report export in a dedicated migration screen. That
-screen could reuse the existing Android database-migration activity or introduce a suitable replacement. Startup
-routing and background mail work respect the migration gate. No mail work bypasses it.
+The migration surfaces progress, failure feedback, retry, and local report export in a dedicated migration screen. On
+Android, a user-initiated data synchronization foreground service continues the migration when the app leaves the
+foreground and provides progress and completion through a persistent notification. The in-app screen and notification
+show the same migration state.
 
-Progress information, failure reports, and logs exclude personally identifiable data. They stay on the device and are
-never uploaded.
+Startup routing and background mail work respect the migration gate. No mail work bypasses it. Progress information,
+failure reports, notifications, and logs exclude personally identifiable data. They stay on the device and are never
+uploaded.
 
 ### Platform support
 
@@ -153,6 +155,8 @@ Validation before cutover and the archive from step 1 cover that risk instead.
 - Migration requires time and storage, especially for downloaded attachments.
 - The user or operating system can terminate the app during migration, leaving an incomplete global database that must
   never become authoritative. The migration requires interruption-safe state tracking and restart recovery.
+- Android can limit foreground service execution, and a user can explicitly stop the app. Long migrations therefore
+  cannot rely on the service alone and must remain safe to retry after interruption.
 - Rebuilding the search index during migration adds time proportional to locally stored mail.
 - A device without enough free space cannot migrate until space is freed.
 - After cutover, locally stored mail exists only in the global database and in any archive the user created.
@@ -163,8 +167,6 @@ Validation before cutover and the archive from step 1 cover that risk instead.
 
 ## Open Questions
 
-- Should migration require a pre-flight free-space check with a stated minimum headroom, and should a failed check block
-  migration or only warn?
 - Does declining the POP3 archive require a durable record of the user's acknowledgement?
 
 The technical design owns implementation questions, including driver configuration, the identifier mapping inventory,
