@@ -4,7 +4,7 @@
 - RFC: [RFC 0008: Portable Profile Data Format](../rfcs/0008-portable-profile-data-format.md)
 - Mail archive compatibility target: [draft-ietf-mailmaint-pdparchive-01: Personal Data Portability Archive](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01)
 - Full-backup encryption: [NIST SP 800-38D: Galois/Counter Mode](https://csrc.nist.gov/pubs/sp/800/38/d/final)
-- Status: **Proposed**
+- Status: **Accepted**
 
 ## Summary
 
