@@ -1,6 +1,7 @@
 name: Bug report
 description: Let us know about crashes or existing functionality not working like it should
 labels: [ "type: bug", "unconfirmed" ]
+type: Bug
 body:
   - type: markdown
     attributes:
