@@ -33,3 +33,15 @@ internal fun TestFirExtensionRegistrar(
     vararg checkersFactory: (FirSession) -> FirAdditionalCheckersExtension,
 ): TestFirExtensionRegistrar = TestFirExtensionRegistrar(checkersFactory = checkersFactory.toList())
 
+/**
+ * Creates a [TestFirExtensionRegistrar] that registers only the given [FirDeclarationGenerationExtension] factories.
+ *
+ * @param declarationGenerationFactory Factories of the declaration generation extensions to register.
+ * @return A registrar exposing the given declaration generation extensions and no checkers.
+ */
+@JvmName("TestFirExtensionRegistrarWithDeclarationGenerationsFactory")
+internal fun TestFirExtensionRegistrar(
+    vararg declarationGenerationFactory: (FirSession) -> FirDeclarationGenerationExtension,
+): TestFirExtensionRegistrar = TestFirExtensionRegistrar(
+    declarationGenerationFactory = declarationGenerationFactory.toList(),
+)
