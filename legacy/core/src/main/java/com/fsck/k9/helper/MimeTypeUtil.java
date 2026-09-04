@@ -4,6 +4,7 @@ package com.fsck.k9.helper;
 import java.util.Locale;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 public class MimeTypeUtil {
@@ -910,6 +911,7 @@ public class MimeTypeUtil {
      * {@link #DEFAULT_ATTACHMENT_MIME_TYPE} when it is {@code null}) is returned and the provider may add a suitable
      * extension.
      */
+    @Nullable
     public static String getMimeTypeForFilename(String displayName, String declaredMimeType) {
         if (displayName != null && displayName.lastIndexOf('.') != -1) {
             return getMimeTypeByExtension(displayName);

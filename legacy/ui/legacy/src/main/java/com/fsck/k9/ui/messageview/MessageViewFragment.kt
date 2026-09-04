@@ -51,7 +51,6 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.helper.HttpsUnsubscribeUri
 import com.fsck.k9.helper.MailtoUnsubscribeUri
-import com.fsck.k9.helper.MimeTypeUtil
 import com.fsck.k9.helper.UnsubscribeUri
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
@@ -1254,7 +1253,7 @@ class MessageViewFragment :
             createDocumentLauncher.launch(
                 input = CreateDocumentResultContract.Input(
                     title = attachment.displayName ?: getString(MessageReaderR.string.unnamed_attachment_title),
-                    mimeType = MimeTypeUtil.getMimeTypeForFilename(attachment.displayName, attachment.mimeType),
+                    mimeType = requireNotNull(attachment.mimeType) { "Attachment MIME type must not be null" },
                 ),
             )
         } catch (_: ActivityNotFoundException) {

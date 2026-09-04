@@ -91,14 +91,24 @@ public class AttachmentInfoExtractorTest extends RobolectricTest {
     @Test
     public void extractInfoForDb__withContentTypeAndName__shouldReturnNamedAttachment() throws Exception {
         MimeBodyPart part = new MimeBodyPart();
-        part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, TEST_MIME_TYPE + "; name=\"filename.ext\"");
+        part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, TEST_MIME_TYPE + "; name=\"filename.txt\"");
 
         AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
 
         assertEquals(Uri.EMPTY, attachmentViewInfo.internalUri);
         assertEquals(TEST_MIME_TYPE, attachmentViewInfo.mimeType);
-        assertEquals("filename.ext", attachmentViewInfo.displayName);
+        assertEquals("filename.txt", attachmentViewInfo.displayName);
         assertFalse(attachmentViewInfo.inlineAttachment);
+    }
+
+    @Test
+    public void extractInfoForDb__withMismatchedMimeTypeAndName__shouldReturnMimeTypeForName() throws Exception {
+        MimeBodyPart part = new MimeBodyPart();
+        part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, TEST_MIME_TYPE + "; name=\"appointment.ics\"");
+
+        AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
+
+        assertEquals("text/calendar", attachmentViewInfo.mimeType);
     }
 
     @Test
