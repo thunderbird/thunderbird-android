@@ -26,8 +26,8 @@ class AccountBackendPusherCallback(
         messagingController.handleException(account, exception)
     }
 
-    override fun onPushNotSupported() {
+    override suspend fun onPushNotSupported() {
         logger.verbose(TAG) { "Push not supported for account $accountId. Disabling push." }
-        folderRepository.setPushDisabled(accountId)
+        folderRepository.disable(accountId)
     }
 }

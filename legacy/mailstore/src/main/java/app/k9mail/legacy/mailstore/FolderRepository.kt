@@ -4,8 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.Folder
-import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
+import net.thunderbird.feature.mail.folder.api.data.repository.PushFolderTrackingRepository
 
 /**
  * Provides access to local and remote folder information and management.
@@ -15,7 +15,7 @@ import net.thunderbird.feature.mail.folder.api.RemoteFolder
  *       and per-flag mutations), which makes it hard to test and evolve.
  */
 @Suppress("TooManyFunctions")
-interface FolderRepository {
+interface FolderRepository : PushFolderTrackingRepository {
     /**
      * Returns a [Folder] for the given [accountId] and [folderId].
      *
@@ -23,14 +23,6 @@ interface FolderRepository {
      * @param folderId The folder identifier.
      */
     suspend fun getFolder(accountId: AccountId, folderId: Long): Folder?
-
-    /**
-     * Returns a [FolderDetails] for the given [accountId] and [folderId].
-     *
-     * @param accountId The account identifier.
-     * @param folderId The folder identifier.
-     */
-    suspend fun getFolderDetails(accountId: AccountId, folderId: Long): FolderDetails?
 
     /**
      * Returns a list of [RemoteFolder]s for the given [accountId].
@@ -85,69 +77,4 @@ interface FolderRepository {
      * @param folderId The folder identifier.
      */
     fun isFolderPresent(accountId: AccountId, folderId: Long): Boolean
-
-    /**
-     * Updates the folder details for the given [accountId].
-     *
-     * @param accountId The account identifier.
-     * @param folderDetails The folder details to update.
-     */
-    fun updateFolderDetails(accountId: AccountId, folderDetails: FolderDetails)
-
-    /**
-     * Sets whether the folder with [folderId] should be included in the unified inbox.
-     *
-     * @param accountId The account identifier.
-     * @param folderId The folder identifier.
-     * @param includeInUnifiedInbox Whether to include the folder in the unified inbox.
-     */
-    fun setIncludeInUnifiedInbox(accountId: AccountId, folderId: Long, includeInUnifiedInbox: Boolean)
-
-    /**
-     * Sets whether the folder with [folderId] is visible.
-     *
-     * @param accountId The account identifier.
-     * @param folderId The folder identifier.
-     * @param visible Whether the folder is visible.
-     */
-    fun setVisible(accountId: AccountId, folderId: Long, visible: Boolean)
-
-    /**
-     * Sets whether synchronization is enabled for the folder with [folderId].
-     *
-     * @param accountId The account identifier.
-     * @param folderId The folder identifier.
-     * @param enable Whether synchronization is enabled.
-     */
-    fun setSyncEnabled(accountId: AccountId, folderId: Long, enable: Boolean)
-
-    /**
-     * Sets whether notifications are enabled for the folder with [folderId].
-     *
-     * @param accountId The account identifier.
-     * @param folderId The folder identifier.
-     * @param enable Whether notifications are enabled.
-     */
-    fun setNotificationsEnabled(accountId: AccountId, folderId: Long, enable: Boolean)
-
-    /**
-     * Disables push for the given [accountId].
-     *
-     * @param accountId The account identifier.
-     */
-    fun setPushDisabled(accountId: AccountId)
-
-    /**
-     * Returns `true` if there's at least one folder with push enabled for the given [accountId].
-     *
-     * @param accountId The account identifier.
-     */
-    fun hasPushEnabledFolder(accountId: AccountId): Boolean
-
-    /**
-     * Returns a [Flow] that emits `true` if there's at least one folder with push enabled for the given [accountId].
-     *
-     * @param accountId The account identifier.
-     */
-    fun hasPushEnabledFolderFlow(accountId: AccountId): Flow<Boolean>
 }

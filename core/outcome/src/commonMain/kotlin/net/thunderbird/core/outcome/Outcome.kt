@@ -52,6 +52,13 @@ sealed interface Outcome<out SUCCESS, out FAILURE> {
          * @param error The error of the failed outcome.
          */
         fun <FAILURE> failure(error: FAILURE): Outcome<Nothing, FAILURE> = Failure(error)
+
+        /**
+         * A convenience function for Unit success outcome.
+         *
+         * @return a [Success] outcome that doesn't have any data.
+         */
+        fun success(): Outcome<Unit, Nothing> = success(Unit)
     }
 }
 

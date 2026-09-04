@@ -18,6 +18,7 @@ internal val appCommonFeatureMailModule = module {
         DefaultSpecialFolderUpdater.Factory(
             accountManager = get(),
             folderRepository = get(),
+            folderDetailsRepository = get(),
             specialFolderSelectionStrategy = get(),
             coroutineScope = get(named("AppCoroutineScope")),
         )
