@@ -9,6 +9,8 @@ import org.jetbrains.kotlin.name.FqName
 internal object ProjectFqNames {
     val PiiSafeAnnotationsPackageFqName = FqName("net.thunderbird.piisafe.annotation")
     val PiiSafeHasPiiFqName = FqName("net.thunderbird.piisafe.annotation.PiiSafe.HasPii")
+    val PiiSafeMaskFqName = FqName("net.thunderbird.piisafe.annotation.PiiSafe.Mask")
+    val PiiSafeHideFqName = FqName("net.thunderbird.piisafe.annotation.PiiSafe.Hide")
 }
 
 /**
