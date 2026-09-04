@@ -10,7 +10,7 @@ internal class PiiSafeFirCheckers(session: FirSession) : FirAdditionalCheckersEx
     override val declarationCheckers: DeclarationCheckers = object : DeclarationCheckers() {
         override val classCheckers: Set<FirDeclarationChecker<FirClass>> = setOf(
             HasPiiRequiresAnnotatedPropertyChecker(),
-            HasPiiPropagationChecker(),
+            HasPiiPropagationChecker(session),
         )
     }
 }
