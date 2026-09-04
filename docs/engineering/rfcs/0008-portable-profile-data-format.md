@@ -3,7 +3,7 @@
 - Issue: [#11466](https://github.com/thunderbird/thunderbird-android/issues/11466)
 - Related milestone: [Global Database #10374](https://github.com/thunderbird/thunderbird-android/issues/10374)
 - Technical design: [Portable Profile Data Format](../technical-designs/0004-portable-profile-data-format.md)
-- Mail archive compatibility target: [draft-ietf-mailmaint-pdparchive-02: Personal Data Portability Archive](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-02)
+- Mail archive compatibility target: [draft-ietf-mailmaint-pdparchive-01: Personal Data Portability Archive](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01)
 - Mail message format: [RFC 5322: Internet Message Format](https://www.rfc-editor.org/info/rfc5322/)
 - MIME: [RFC 2045: Multipurpose Internet Mail Extensions](https://www.rfc-editor.org/info/rfc2045/)
 - Full-backup encryption: [NIST SP 800-38D: Galois/Counter Mode](https://csrc.nist.gov/pubs/sp/800/38/d/final)
@@ -134,7 +134,7 @@ It remains useful for its narrower mail-export use cases, not for profile portab
 - Which user settings and account/folder choices are portable and syncable, and which are explicitly device-local?
 - What field-group conflict presentation is appropriate when an imported record conflicts with local profile data?
 - Which passphrase key-derivation function and parameter policy should the first encrypted-backup envelope use?
-- Which PDPArchive `-02` target-client combinations are supported by the first release, and how are later revisions
+- Which PDPArchive `-01` target-client combinations are supported by the first release, and how are later revisions
   introduced?
 
 ## Outcome
