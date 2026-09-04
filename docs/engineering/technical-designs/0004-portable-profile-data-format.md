@@ -2,6 +2,7 @@
 
 - Related milestone: [Global Database #10374](https://github.com/thunderbird/thunderbird-android/issues/10374)
 - RFC: [RFC 0008: Portable Profile Data Format](../rfcs/0008-portable-profile-data-format.md)
+- Related RFC: [RFC 0009: UUIDv7 Identifier Migration](../rfcs/0009-uuidv7-identifier-migration.md)
 - Mail archive compatibility target: [draft-ietf-mailmaint-pdparchive-01: Personal Data Portability Archive](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01)
 - Full-backup encryption: [NIST SP 800-38D: Galois/Counter Mode](https://csrc.nist.gov/pubs/sp/800/38/d/final)
 - Status: **Accepted**
@@ -81,8 +82,9 @@ Every Thunderbird-owned JSON record uses this logical envelope:
 The portable account ID is stable across export/import and is distinct from the application-profile-scoped `AccountId`
 used by the Global Database. Portable record identifiers are also distinct from local `FolderId`, `MessageId`, and
 `ThreadId` values. Import maps a portable account ID to a user-selected existing account or allocates a new local
-`AccountId`. Existing local identifiers are never rewritten. Import never treats a legacy database ID, account number,
-row ID, or local mail-domain identifier as portable identity.
+`AccountId`. Existing local identifiers are never rewritten. A newly allocated local identifier uses the active factory
+generation policy defined by RFC 0009, without exposing that UUID representation as part of the portable format. Import
+never treats a legacy database ID, account number, row ID, or local mail-domain identifier as portable identity.
 
 `originId` is an opaque installation identity used to identify a revision's origin and order revisions produced by that
 same origin. It is not a global last-writer-wins tiebreaker. Tombstones let a later sync service
@@ -174,6 +176,8 @@ Automated verification must cover:
   records.
 - stable account identity, same-origin revision ordering, cross-origin conflict detection, and tombstone behavior across
   export/import fixtures.
+- preservation of existing local identifiers and allocation of new local identifiers through the active RFC 0009 factory
+  policy without leaking local UUID representation into the portable format.
 - selective import and conflict preview without writes before confirmation.
 - credential, OAuth-token, private-key, queue, migration-state, and device-local-state exclusion.
 - AES-256-GCM encrypted-backup round trips, incorrect-passphrase and tamper rejection, and cross-device import.
