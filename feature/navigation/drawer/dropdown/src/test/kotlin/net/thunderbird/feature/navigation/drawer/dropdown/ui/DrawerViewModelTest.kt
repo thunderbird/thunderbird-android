@@ -289,6 +289,7 @@ internal class DrawerViewModelTest {
             isEqualTo(Effect.CloseDrawer)
         }
     }
+
     @Test
     fun `should not emit CloseDrawer effect after emitting OpenAccount if AutoExpandFolder is None`() = runMviTest {
         val displayAccounts = createDisplayAccountList(1) + createDisplayAccount(
