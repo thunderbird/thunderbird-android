@@ -88,6 +88,7 @@ import net.thunderbird.core.common.mail.Flag;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey;
 import net.thunderbird.core.logging.Logger;
+import net.thunderbird.feature.mail.folder.api.FolderDetails;
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager;
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManagerKt;
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider;
@@ -707,6 +708,10 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private void updateFolderStatus(LegacyAccountDto account, long folderId, String status) {
         MessageStore messageStore = messageStoreManager.getMessageStore(account);
         messageStore.setStatus(folderId, status);
+    }
+
+    public MessageStore getMessageStore(LegacyAccountDto account) {
+        return messageStoreManager.getMessageStore(account);
     }
 
     public void handleAuthenticationFailure(LegacyAccountDto account, boolean incoming) {

@@ -6,17 +6,21 @@ import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
+import app.k9mail.feature.account.setup.domain.usecase.GetSpecialFolderOptions
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.account.DeletePolicyProvider
 import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.folders.FolderFetcher
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.createExtra
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientInfo
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
+import com.fsck.k9.preferences.FolderSettingsProvider
 import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +32,7 @@ import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.legacy.logging.Log
 
@@ -42,8 +47,8 @@ internal class AccountCreator(
     private val deletePolicyProvider: DeletePolicyProvider,
     private val avatarMonogramCreator: AvatarMonogramCreator,
     private val unifiedInboxConfigurator: UnifiedInboxConfigurator,
-    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val featureFlagProvider: FeatureFlagProvider,
+    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AccountSetupExternalContract.AccountCreator {
 
     @Suppress("TooGenericExceptionCaught")
@@ -110,7 +115,19 @@ internal class AccountCreator(
             .onEnabled {
                 // The AccountCreator is only called when not importing settings.
                 // We can update inbox push here by default.
-                // TODO Get inbox and update
+                // TODO Get Inbox folderDetails, then updateFolderSettings
+                // TODO make a use case for getting a folder's settings by type
+                val inboxFolderID: Long? =
+                    messagingController.getMessageStore(newAccount).getFolders(true) { folderDetails ->
+                        if (folderDetails.type == FolderType.INBOX) {
+                            folderDetails.id
+                        } else {
+                            null
+                        }
+                    }.firstOrNull()
+                if (inboxFolderID != null) {
+                    messagingController.getMessageStore(newAccount).setPushEnabled(inboxFolderID, true)
+                }
             }
 
         if (account.options.checkFrequencyInMinutes == -1) {
