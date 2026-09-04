@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>0004 - Naming Conventions for Interfaces and Their Implementations - Thunderbird for Android - Developer Documentation</title>
+        <title>0003 - Global Database - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -145,7 +145,7 @@
                         <a href="https://github.com/thunderbird/thunderbird-android/" title="Git repository" aria-label="Git repository">
                             <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./engineering/adr/0004-naming-conventions-for-interfaces-and-their-implementations.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/docs/./engineering/technical-designs/0003-global-database.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
                         </a>
 
@@ -179,58 +179,231 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="naming-conventions-for-interfaces-and-their-implementations"><a class="header" href="#naming-conventions-for-interfaces-and-their-implementations">Naming Conventions for Interfaces and Their Implementations</a></h1>
+                        <h1 id="technical-design-global-database"><a class="header" href="#technical-design-global-database">Technical Design: Global Database</a></h1>
 <ul>
-<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7794">#7794</a></li>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/11293">#11293</a></li>
+<li>RFC: <a href="../rfcs/0007-global-database.html">RFC 0007: Global Database</a></li>
+<li>Repository pattern: <a href="https://github.com/thunderbird/thunderbird-android/pull/11452">ADR 0010 proposal</a></li>
+<li>Portable data format: <a href="../rfcs/0008-portable-profile-data-format.html">RFC 0008: Portable Profile Data Format</a></li>
+<li>Status: <strong>Proposed</strong></li>
 </ul>
-<h2 id="status"><a class="header" href="#status">Status</a></h2>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>Global Database replaces one legacy mail database per account with one Room 3-backed database for the
+application. It keeps legacy mail behavior compatible, imports durable data, validates the result, and cuts over once.</p>
+<h2 id="boundaries"><a class="header" href="#boundaries">Boundaries</a></h2>
 <ul>
-<li><strong>Accepted</strong></li>
+<li><code>core:database</code> provides the domain-neutral Room 3 backend, lifecycle, transactions, migrations, and platform
+support. It composes feature schema contributions deterministically and owns one coordinated schema and migration
+history.</li>
+<li>The internal mail database module owns mail schema, mappings, local data sources, and repository implementations.</li>
+<li>Focused mail repository contracts hide both legacy and global storage from callers.</li>
+<li><code>app-common</code> or an app module binds repository contracts to the active implementation.</li>
 </ul>
-<h2 id="context"><a class="header" href="#context">Context</a></h2>
-<p>When there’s an interface that has multiple implementations it’s often easy enough to give meaningful names to both the
-interface and the implementations (e.g. the interface <code>Backend</code> with the implementations <code>ImapBackend</code> and
-<code>Pop3Backend</code>). Naming becomes harder when the interface mainly exists to allow having isolated unit tests and the
-production code contains exactly one implementation of the interface.
-Prior to this ADR we didn’t have any naming guidelines and the names varied widely. Often when there was only one
-(production) implementation, the class name used one of the prefixes <code>Default</code>, <code>Real</code>, or <code>K9</code>. None of these had any
-special meaning and it wasn’t clear which one to pick when creating a new interface/class pair.</p>
-<h2 id="decision"><a class="header" href="#decision">Decision</a></h2>
-<p>We’ll be using the following guidelines for naming interfaces and their implementation classes:</p>
+<p>The boundary follows ADR 0009. Mail schema and implementation types remain internal. <code>core:database</code> does not own mail
+schema, mail domain types, or mail repositories.</p>
+<h2 id="global-mail-store"><a class="header" href="#global-mail-store">Global mail store</a></h2>
+<p>The global database keeps the legacy mail-store schema and behavior as its starting point. It stores all accounts in one
+database, keeps account-qualified legacy references, and adds global identifiers only where callers need them.</p>
+<p>The <a href="0003-global-database/legacy-table-inventory.html">legacy table inventory</a> defines the exact mapping. It includes
+downloaded attachments. Legacy keeps a body part on disk above a size threshold and as a <code>message_parts</code> BLOB at or
+below it. The migration preserves that split rather than changing where content lives.</p>
+<h3 id="identifier-model"><a class="header" href="#identifier-model">Identifier model</a></h3>
+<p>Global identifiers are opaque, application-profile-scoped domain values. They identify local records in the global
+database and are stable while that record exists, including across application restart and database-schema upgrades.
+They are not protocol identifiers, portable-profile identifiers, or synchronization identifiers. In particular, an
+IMAP UID, a folder server ID, and an RFC 5322 <code>Message-ID</code> header must not be used as a global database identifier.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Identifier</th><th>Owner</th><th>Meaning and boundary</th></tr>
+</thead>
+<tbody>
+<tr><td><code>AccountId</code></td><td><code>feature:account:api</code></td><td>The existing UUID-backed account identifier. Global-mail records retain its existing persisted value to establish account scope. Cutover neither replaces nor regenerates it. Account settings and profile runtime state remain outside the global mail database.</td></tr>
+<tr><td><code>FolderId</code></td><td>Mail domain</td><td>Identifies one local folder record across all accounts. It replaces the legacy account-local folder number at repository boundaries.</td></tr>
+<tr><td><code>MessageId</code></td><td>Mail domain</td><td>Identifies one local message record across all accounts. A message copied to another folder is a separate local record and therefore has a separate <code>MessageId</code>.</td></tr>
+<tr><td><code>ThreadId</code></td><td>Mail domain</td><td>Identifies one account-scoped conversation, which can contain local message records from Inbox, Sent, Archive, and other folders. It is a durable conversation aggregate, not a legacy numeric thread-root key. Thread operations use <code>ThreadId</code>. Operations on an individual local record use <code>MessageId</code>.</td></tr>
+<tr><td><code>AttachmentId</code></td><td>Mail domain</td><td>An opaque attachment-access URI or equivalent reference. It resolves unambiguously after cutover and is not a raw message-part primary key. Message-part keys stay internal unless a future focused attachment contract requires one.</td></tr>
+</tbody>
+</table>
+</div>
+<p>RFC 0009 owns the UUID representation and generation policy for <code>FolderId</code>, <code>MessageId</code>, and <code>ThreadId</code>. These types,
+along with <code>AccountId</code> and <code>AttachmentId</code>, are the only identifiers that cross the mail repository boundary for this
+design. Repository contracts never expose legacy numeric IDs or persistence keys.</p>
+<p>The thread builder uses the imported messages’ threading headers across all folders of the same account. When a newly
+observed message joins two conversations, the builder selects one existing <code>ThreadId</code> deterministically, merges the
+memberships, and rewrites the other conversation’s internal references in the same transaction. A <code>ThreadId</code> is not a
+protocol identifier and is not used for server operations.</p>
+<p>Room entities may have a separate persistence-local integer surrogate key. Those keys preserve compatible relationships
+and support SQLite features such as FTS, and never appear in a repository contract. In particular, FTS4 <code>docid</code> remains
+an integer internal search-document key mapped to a <code>MessageId</code>. A UUID-backed <code>MessageId</code> is never stored directly as
+<code>docid</code>.</p>
+<h3 id="identifier-mapping-and-internal-keys"><a class="header" href="#identifier-mapping-and-internal-keys">Identifier mapping and internal keys</a></h3>
+<p>For imported data, the migrator records an account-qualified source key before linking dependent rows:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Logical record</th><th>Source key</th><th>Target domain identifier</th><th>Required dependent rewrite</th></tr>
+</thead>
+<tbody>
+<tr><td>Folder</td><td><code>(AccountId, legacy folder id)</code></td><td><code>FolderId</code></td><td>folder extra values, message folder references, queued-command folder references</td></tr>
+<tr><td>Message</td><td><code>(AccountId, legacy message id)</code></td><td><code>MessageId</code></td><td>outbox state, notifications, full-text mapping, message part root, thread message reference</td></tr>
+<tr><td>Thread</td><td><code>(AccountId, legacy folder id, legacy thread root)</code></td><td><code>ThreadId</code></td><td>rebuild cross-folder memberships from message threading headers and rewrite threaded-list and thread-cache values</td></tr>
+<tr><td>Message part</td><td><code>(AccountId, legacy message-part id)</code></td><td>internal only</td><td>part root and parent references, message root-part reference, attachment-file lookup and URI resolution</td></tr>
+<tr><td>Pending command</td><td><code>(AccountId, legacy command id)</code></td><td>internal only</td><td>command row identity and serialized folder references</td></tr>
+</tbody>
+</table>
+</div>
+<p>The exact physical representation is internal, but it must enforce uniqueness of every source key and reject an import
+that maps one source key to multiple targets. Several legacy folder-local thread roots may map to one <code>ThreadId</code> when
+the imported messages form one cross-folder conversation. Account-qualified mappings remain available until validation
+has completed and all durable queue, notification, attachment, and supported legacy external references have been
+translated. The implementation may retain them longer for compatibility. Their retention period and removal test are
+part of the migration implementation plan.</p>
+<p><code>notifications.notification_id</code> is an Android application notification ID, not a mail-domain identifier. It must remain
+unique across the application notification namespace. Import validates that constraint and allocates a replacement when
+preserving a legacy value would collide. The notification’s relationship to its message is rewritten through
+<code>MessageId</code> and the internal message key.</p>
+<h2 id="migration"><a class="header" href="#migration">Migration</a></h2>
+<p>The migration runs before normal mail access is available. A dedicated migration screen, which could reuse the existing
+Android migration activity or introduce a suitable replacement, shows non-sensitive progress and a clear completion or
+failure state. A migration gate holds startup, sync, and other background mail work until migration completes or fails.</p>
 <ol>
-<li><strong>Interface Naming:</strong> Name interfaces as if they were classes, using a clear and descriptive name. Avoid using the
-“IInterface” pattern.</li>
-<li><strong>Implementation Naming:</strong> Use a prefix that clearly indicates the relationship between the interface and
-implementation, such as <code>DatabaseMessageStore</code> or <code>InMemoryMessageStore</code> for the <code>MessageStore</code> interface.</li>
-<li><strong>Descriptive Names:</strong> Use descriptive names for interfaces and implementing classes that accurately reflect their
-purpose and functionality.</li>
-<li><strong>Platform-specific Implementations:</strong> Use the platform name as a prefix for interface implementations specific to
-that platform, e.g. <code>AndroidPowerManager</code>.</li>
-<li><strong>App-specific Implementations:</strong> Use the prefix <code>K9</code> for K-9 Mail and <code>Tb</code> for Thunderbird when app-specific
-implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppNameProvider</code>.</li>
-<li><strong>Flexibility:</strong> If no brief descriptive name fits and there is only one production implementation, use the prefix
-<code>Default</code>, like <code>DefaultImapFolder</code>.</li>
+<li>Calculate the required storage headroom and compare it with available space. If space is insufficient, block the
+migration and report how much additional space is needed.</li>
+<li>Create and verify the required RFC 0008 archive for POP3 accounts. The user may decline it after an explicit warning
+and continue at their own risk. IMAP export is optional. Then create an unpublished global database.</li>
+<li>Read legacy databases and attachment directories without modifying them. Import every durable record.</li>
+<li>Copy each attachment to its target and validate it. If validation fails, record the failure in the migration result
+and fail the migration.</li>
+<li>Rebuild derived data, validate the imported database, and reopen it.</li>
+<li>Establish the durable cutover state and switch repository bindings to the global implementation.</li>
+<li>Start post-cutover cleanup of all legacy database and attachment artifacts.</li>
 </ol>
-<h2 id="outcomes"><a class="header" href="#outcomes">Outcomes</a></h2>
-<h3 id="positive-outcomes"><a class="header" href="#positive-outcomes">Positive Outcomes</a></h3>
+<p>The import writes folder and message identifier mappings before importing dependents. After all message records for an
+account are available, it builds cross-folder <code>ThreadId</code> memberships from their threading headers and records the
+legacy folder-local thread-root mappings before rewriting threaded-list and cache values. It then validates all
+rewritten relationships before the global database is published. It translates serialized pending-command folder
+references to <code>FolderId</code> or to the chosen internal mapping before the command is eligible to execute. It also accepts
+supported pre-cutover message references, such as notification or activity references containing <code>(AccountId, legacyFolderId, UID)</code>, through the compatibility mapping until that support is intentionally retired. Newly created
+references use the global identifier model.</p>
+<p>Before step 6, global data is not visible to normal mail code. Any failure before that step keeps legacy storage
+authoritative. A later retry starts with a new unpublished import.</p>
+<h3 id="pre-flight-storage-check"><a class="header" href="#pre-flight-storage-check">Pre-flight storage check</a></h3>
+<p>The pre-flight check runs as the first foreground migration phase, before creating the unpublished database. It
+inventories the legacy databases and file-backed attachments, then calculates the additional space needed while legacy
+and global storage coexist. Required headroom includes the estimated global database, copied attachments, rebuilt search
+data, SQLite transaction and temporary-file growth, and a safety margin. If an RFC 0008 archive is written to the same
+volume, its estimated size is also included.</p>
+<p>Migration starts only when available space on the target volume meets the calculated headroom. If it does not, the
+migration screen shows the required, available, and additional space in user-readable units and provides a retry action.
+A warning with an option to continue is not sufficient because running out of space makes successful migration
+impossible.</p>
+<p>Available space can change after pre-flight. Write failures caused by exhausted storage fail the unpublished import
+without changing the authoritative store. Restart recovery removes the incomplete target before another pre-flight check
+and retry. The estimator and safety margin are verified against migration fixtures representing the largest supported
+legacy schema and attachment layouts.</p>
+<h3 id="android-execution-and-progress"><a class="header" href="#android-execution-and-progress">Android execution and progress</a></h3>
+<p>The user starts migration from the visible migration screen. Android then runs the migration orchestration in a
+foreground service with the <code>dataSync</code> service type. The service owns the operation independently of the activity and
+continues when the app is backgrounded or its task is dismissed. It enters the foreground immediately and keeps an
+ongoing notification visible while migration is running.</p>
+<p>The service writes non-sensitive phase, progress, completion, and failure state to one durable migration-state source.
+The migration screen observes that source and updates continuously while visible. The foreground notification reads the
+same state, displays current progress, and opens the migration screen when tapped. When migration finishes, the service
+stops foreground execution and posts a completion or actionable failure notification.</p>
+<p>The Android application declares only the foreground service permissions required for a user-initiated <code>dataSync</code>
+operation. Starting the service must comply with the platform’s background-start restrictions. Platform time limits,
+system process termination, and an explicit user force-stop can still interrupt it. The service therefore improves
+continuity but does not replace the recovery guarantees below. After a force-stop, work cannot continue until Android
+allows the app to run again.</p>
+<h3 id="interruption-and-recovery"><a class="header" href="#interruption-and-recovery">Interruption and recovery</a></h3>
+<p>The migration must tolerate process termination at every step, including termination after the app is backgrounded. The
+import database and copied attachments remain unpublished until validation and cutover complete. Each startup reads the
+durable migration phase before binding mail repositories.</p>
+<p>If the process stopped before cutover, startup keeps legacy storage authoritative, removes the incomplete unpublished
+database and copied artifacts, and starts a fresh import when the migration is retried. SQLite transactions protect
+individual writes, while discarding the unpublished target prevents a partially imported database from being reused.</p>
+<p>Cutover commits the validated state as one durable operation. If that operation did not commit, startup uses legacy
+storage. If it committed, startup uses the global store and may resume cleanup. Legacy deletion cannot begin before this
+state is durable, so process termination cannot leave startup choosing between two authoritative stores.</p>
+<h3 id="post-cutover-cleanup"><a class="header" href="#post-cutover-cleanup">Post-cutover cleanup</a></h3>
+<p>Cutover atomically makes the global store authoritative and records cleanup as pending. Only then can an idempotent
+cleanup job delete the legacy per-account databases and attachment directories. The job also deletes orphaned artifacts
+left behind by accounts that were removed before migration.</p>
+<p>Cleanup is complete only after the job verifies that all known legacy artifacts are absent. If deletion fails or the app
+stops during cleanup, the state remains pending and the job retries on a later startup or scheduled background run. A
+retry resumes cleanup without repeating the data migration. The job never reads legacy mail into the global store and
+mail repositories never bind to legacy storage after cutover.</p>
+<p>A pending cleanup does not block normal mail access. The migration is reported as successful, with a separate notice
+that storage cleanup is incomplete and may temporarily use additional device storage. Cleanup failures and retry state
+use non-sensitive error codes and do not include paths or account data.</p>
+<p>The app does not restore legacy storage after cutover because the global store may already contain new mail or user
+actions. Switching back could discard those changes or create conflicting sources of truth. The legacy storage
+implementation stays in the codebase, unbound and unused, until a later release removes it.</p>
+<h2 id="validation"><a class="header" href="#validation">Validation</a></h2>
+<p>Cutover requires all of the following:</p>
 <ul>
-<li>Improved code readability and maintainability through consistent naming.</li>
-<li>Reduced confusion and misunderstandings by using clear and descriptive names.</li>
+<li>every configured account was imported</li>
+<li>mapped data and relationships are complete</li>
+<li>queued operations survive restart and remain executable</li>
+<li>file-backed attachments, meaning parts with <code>data_location = 2</code>, are present and valid</li>
+<li>database integrity checks pass after reopen</li>
+<li>search is rebuilt and representative queries match</li>
+<li>every source key maps to exactly one target, all dependent keys resolve, and no internal legacy numeric key crosses a
+repository boundary</li>
+<li>messages from Inbox, Sent, and other folders join the same <code>ThreadId</code> when their threading headers identify one
+conversation, without joining messages from different accounts</li>
+<li>attachment URIs resolve to the same imported part after restart</li>
+<li>notification IDs are unique in the application namespace after import</li>
+<li>the durable cutover state remains readable after reopen</li>
 </ul>
-<h3 id="negative-outcomes"><a class="header" href="#negative-outcomes">Negative Outcomes</a></h3>
+<h2 id="diagnostics"><a class="header" href="#diagnostics">Diagnostics</a></h2>
+<p>Migration reports contain only non-sensitive progress, counts, status, and stable error codes. They do not contain mail
+content, addresses, attachment names, paths, credentials, or tokens. Reports stay local and can be exported by the
+user.</p>
+<h2 id="platform-support"><a class="header" href="#platform-support">Platform support</a></h2>
+<p>The global database, repository contracts, and attachment access support Android and JVM desktop. Legacy storage
+reading and import are Android-only.</p>
+<h2 id="testing"><a class="header" href="#testing">Testing</a></h2>
+<p>Automated tests cover:</p>
 <ul>
-<li>Initial effort is required to rename existing classes that do not follow these naming conventions.</li>
+<li>repository behavior before and after cutover</li>
+<li>schema creation, migration, and restart recovery</li>
+<li>every durable table and attachment type in the inventory</li>
+<li>POP3 archive gating and IMAP optional export</li>
+<li>headroom calculation, insufficient-space blocking, and user-visible required-space reporting</li>
+<li>storage exhaustion after pre-flight without publishing the incomplete target</li>
+<li>migration continuing after the activity is backgrounded or its task is dismissed</li>
+<li>consistency between in-app progress, foreground notification progress, and the durable migration state</li>
+<li>foreground service completion, failure, platform timeout, and user-stop handling</li>
+<li>process termination during every migration phase, including immediately before and after durable cutover</li>
+<li>rejection and removal of an incomplete unpublished database after restart</li>
+<li>validation, interruption, retry, and cleanup failure</li>
+<li>cleanup of orphaned account artifacts, restart-safe retries, and completion verification</li>
+<li>migration-gate behavior for startup and background work</li>
+<li>report redaction</li>
+<li>the guarantee that partial global data is never visible to normal callers</li>
+<li>identifier-mapping completeness, duplicate-key rejection, pending-command payload translation, attachment URI
+resolution, and notification-ID collision handling</li>
+<li>cross-folder thread construction, including a conversation spanning Inbox and Sent and a merge of two existing
+conversations</li>
+</ul>
+<h2 id="open-technical-questions"><a class="header" href="#open-technical-questions">Open technical questions</a></h2>
+<ul>
+<li>Which supported legacy schema versions require dedicated fixtures?</li>
+<li>Which Room driver and locations apply on Android and JVM desktop?</li>
+<li>How long must compatibility mappings support pre-cutover external message references after migration?</li>
 </ul>
 <footer id="last-change">Last change: <time datetime="2026-09-04">2026-09-04</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/b6ccb4c">b6ccb4c</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../engineering/adr/0003-switch-test-assertions-from-truth-to-assertk.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../engineering/technical-designs/0000-technical-design-template.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../../engineering/adr/0005-central-project-configuration.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../engineering/technical-designs/0003-global-database/legacy-table-inventory.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -240,11 +413,11 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../engineering/adr/0003-switch-test-assertions-from-truth-to-assertk.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../engineering/technical-designs/0000-technical-design-template.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../../engineering/adr/0005-central-project-configuration.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../engineering/technical-designs/0003-global-database/legacy-table-inventory.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

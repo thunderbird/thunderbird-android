@@ -37,10 +37,10 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-3d6f2427.js";
+            window.path_to_searchindex_js = "../../searchindex-3f81c790.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc-5643f026.js"></script>
+        <script src="../../toc-25c21b88.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -186,7 +186,7 @@
 <li>Related RFC: <a href="0009-uuidv7-identifier-migration.html">UUIDv7 Identifier Migration</a></li>
 <li>Repository pattern: <a href="https://github.com/thunderbird/thunderbird-android/pull/11452">ADR 0010 proposal</a></li>
 <li>Portable data format: <a href="0008-portable-profile-data-format.html">RFC 0008: Portable Profile Data Format</a></li>
-<li>Status: <strong>Proposed</strong></li>
+<li>Status: <strong>Accepted</strong></li>
 <li>Backend decision: <strong>Room 3 selected by the
 <a href="https://github.com/thunderbird/thunderbird-android/issues/11195">completed database spike</a></strong></li>
 </ul>
@@ -264,11 +264,13 @@ accounts. A cleanup failure does not block normal use of the global store or mak
 The technical design defines cleanup state, retries, and user feedback. The legacy storage implementation stays in the
 codebase, unbound and unused, until a later release removes it.</p>
 <h3 id="migration-gate-and-reporting"><a class="header" href="#migration-gate-and-reporting">Migration gate and reporting</a></h3>
-<p>The migration surfaces progress, failure feedback, retry, and local report export in a dedicated migration screen. That
-screen could reuse the existing Android database-migration activity or introduce a suitable replacement. Startup
-routing and background mail work respect the migration gate. No mail work bypasses it.</p>
-<p>Progress information, failure reports, and logs exclude personally identifiable data. They stay on the device and are
-never uploaded.</p>
+<p>The migration surfaces progress, failure feedback, retry, and local report export in a dedicated migration screen. On
+Android, a user-initiated data synchronization foreground service continues the migration when the app leaves the
+foreground and provides progress and completion through a persistent notification. The in-app screen and notification
+show the same migration state.</p>
+<p>Startup routing and background mail work respect the migration gate. No mail work bypasses it. Progress information,
+failure reports, notifications, and logs exclude personally identifiable data. They stay on the device and are never
+uploaded.</p>
 <h3 id="platform-support"><a class="header" href="#platform-support">Platform support</a></h3>
 <p>The global mail schema, repository contracts, and attachment access are KMP-ready for Android and JVM desktop. Legacy
 import is Android-only.</p>
@@ -301,6 +303,8 @@ Validation before cutover and the archive from step 1 cover that risk instead.</
 <li>Migration requires time and storage, especially for downloaded attachments.</li>
 <li>The user or operating system can terminate the app during migration, leaving an incomplete global database that must
 never become authoritative. The migration requires interruption-safe state tracking and restart recovery.</li>
+<li>Android can limit foreground service execution, and a user can explicitly stop the app. Long migrations therefore
+cannot rely on the service alone and must remain safe to retry after interruption.</li>
 <li>Rebuilding the search index during migration adds time proportional to locally stored mail.</li>
 <li>A device without enough free space cannot migrate until space is freed.</li>
 <li>After cutover, locally stored mail exists only in the global database and in any archive the user created.</li>
@@ -311,8 +315,6 @@ never become authoritative. The migration requires interruption-safe state track
 </ul>
 <h2 id="open-questions"><a class="header" href="#open-questions">Open Questions</a></h2>
 <ul>
-<li>Should migration require a pre-flight free-space check with a stated minimum headroom, and should a failed check block
-migration or only warn?</li>
 <li>Does declining the POP3 archive require a durable record of the user’s acknowledgement?</li>
 </ul>
 <p>The technical design owns implementation questions, including driver configuration, the identifier mapping inventory,
@@ -320,16 +322,16 @@ the migration screen, source-schema support, and the cleanup retry strategy.</p>
 <h2 id="outcome"><a class="header" href="#outcome">Outcome</a></h2>
 <p>Filled in when the RFC is accepted, rejected, or obsolete.</p>
 <p>Summarize the final decision and link follow-up work.</p>
-<footer id="last-change">Last change: <time datetime="2026-09-03">2026-09-03</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/d5afc89">d5afc89</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-09-04">2026-09-04</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/b6ccb4c">b6ccb4c</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../engineering/rfcs/0000-rfc-template.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../engineering/rfcs/0006-remote-feature-flags.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../../engineering/rfcs/0001-changelog-system-replacement.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../engineering/adr/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -339,11 +341,11 @@ the migration screen, source-schema support, and the cleanup retry strategy.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../engineering/rfcs/0000-rfc-template.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../engineering/rfcs/0006-remote-feature-flags.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../../engineering/rfcs/0001-changelog-system-replacement.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../engineering/adr/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
