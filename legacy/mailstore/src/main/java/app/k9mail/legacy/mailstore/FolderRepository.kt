@@ -40,19 +40,6 @@ interface FolderRepository : PushFolderTrackingRepository {
      */
     fun getRemoteFolderDetails(accountId: AccountId): List<RemoteFolderDetails>
 
-    /**
-     * Returns a [Flow] of [RemoteFolder]s for the given [accountId] that should be used for push.
-     *
-     * @param accountId The account identifier.
-     */
-    fun getPushFoldersFlow(accountId: AccountId): Flow<List<RemoteFolder>>
-
-    /**
-     * Returns a list of [RemoteFolder]s for the given [accountId] that should be used for push.
-     *
-     * @param accountId The account identifier.
-     */
-    fun getPushFolders(accountId: AccountId): List<RemoteFolder>
 
     /**
      * Returns the server ID for the given [accountId] and [folderId].

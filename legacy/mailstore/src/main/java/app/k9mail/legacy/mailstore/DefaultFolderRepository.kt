@@ -2,17 +2,7 @@ package app.k9mail.legacy.mailstore
 
 import app.k9mail.legacy.mailstore.RemoteFolderTypeMapper.toFolderType
 import app.k9mail.legacy.mailstore.folder.extension.getFolderType
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.channels.trySendBlocking
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.buffer
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flowOn
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.exception.MessagingException
@@ -28,7 +18,6 @@ class DefaultFolderRepository(
     private val messageStoreManager: MessageStoreManager,
     private val outboxFolderManager: OutboxFolderManager,
     private val aggregateRepositories: AggregateRepositories,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : FolderRepository, PushFolderTrackingRepository by aggregateRepositories.pushFolderTrackingRepository {
     override suspend fun getFolder(accountId: AccountId, folderId: Long): Folder? {
         val account = getAccountById(accountId)
@@ -75,32 +64,6 @@ class DefaultFolderRepository(
                 isPushEnabled = folder.isPushEnabled,
             )
         }
-    }
-
-    override fun getPushFoldersFlow(accountId: AccountId): Flow<List<RemoteFolder>> {
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-        return callbackFlow {
-            send(getPushFolders(accountId))
-
-            val listener = FolderSettingsChangedListener {
-                trySendBlocking(getPushFolders(accountId))
-            }
-            messageStore.addFolderSettingsChangedListener(listener)
-
-            awaitClose {
-                messageStore.removeFolderSettingsChangedListener(listener)
-            }
-        }.buffer(capacity = Channel.CONFLATED)
-            .distinctUntilChanged()
-            .flowOn(ioDispatcher)
-    }
-
-    override fun getPushFolders(accountId: AccountId): List<RemoteFolder> {
-        return getRemoteFolderDetails(accountId)
-            .asSequence()
-            .filter { folderDetails -> folderDetails.isPushEnabled }
-            .map { folderDetails -> folderDetails.folder }
-            .toList()
     }
 
     override fun getFolderServerId(accountId: AccountId, folderId: Long): String? {

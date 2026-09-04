@@ -1,6 +1,5 @@
 package com.fsck.k9.controller.push
 
-import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.api.BackendPusher
 import com.fsck.k9.backend.api.BackendPusherCallback
@@ -10,13 +9,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.outcome.fold
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.api.data.repository.PushFoldersQueryRepository
 
 private const val TAG = "AccountPushController"
 
 internal class AccountPushController(
     private val backendManager: BackendManager,
-    private val folderRepository: FolderRepository,
+    private val pushFoldersQueryRepository: PushFoldersQueryRepository,
     private val backendPusherCallback: BackendPusherCallback,
     private val accountId: AccountId,
     private val logger: Logger,
@@ -58,10 +59,18 @@ internal class AccountPushController(
 
     private fun startListeningForPushFolders() {
         coroutineScope.launch {
-            folderRepository.getPushFoldersFlow(accountId).collect { remoteFolders ->
-                val folderServerIds = remoteFolders.map { it.serverId }
-                updatePushFolders(folderServerIds)
-            }
+            pushFoldersQueryRepository.observeAllByAccountId(accountId)
+                .collect { outcome ->
+                    outcome.fold(
+                        onSuccess = { remoteFolders ->
+                            val folderServerIds = remoteFolders.map { it.serverId }
+                            updatePushFolders(folderServerIds)
+                        },
+                        onFailure = {
+                            logger.error { "Failed to start listening for push folders. Error: $it" }
+                        },
+                    )
+                }
         }
     }
 

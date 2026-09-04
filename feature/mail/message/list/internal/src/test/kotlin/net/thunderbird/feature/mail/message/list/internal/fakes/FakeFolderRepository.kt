@@ -22,10 +22,6 @@ class FakeFolderRepository(
 
     override fun getRemoteFolderDetails(accountId: AccountId): List<RemoteFolderDetails> = error("Not implemented")
 
-    override fun getPushFoldersFlow(accountId: AccountId): Flow<List<RemoteFolder>> = error("Not implemented")
-
-    override fun getPushFolders(accountId: AccountId): List<RemoteFolder> = error("Not implemented")
-
     override fun getFolderServerId(
         accountId: AccountId,
         folderId: Long,
