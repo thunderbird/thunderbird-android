@@ -212,11 +212,6 @@ class DefaultSpecialFolderUpdaterTest {
         override suspend fun getFolder(accountId: AccountId, folderId: Long): Folder? = null
         override fun getRemoteFolders(accountId: AccountId): List<RemoteFolder> = remoteFolders
         override fun getRemoteFolderDetails(accountId: AccountId): List<RemoteFolderDetails> = emptyList()
-        override fun getPushFoldersFlow(
-            accountId: AccountId,
-        ): Flow<List<RemoteFolder>> = throw UnsupportedOperationException()
-
-        override fun getPushFolders(accountId: AccountId): List<RemoteFolder> = emptyList()
         override fun getFolderServerId(accountId: AccountId, folderId: Long): String? = null
         override fun getFolderId(accountId: AccountId, folderServerId: String): Long? = null
         override fun isFolderPresent(accountId: AccountId, folderId: Long): Boolean = false
