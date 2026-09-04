@@ -4,7 +4,7 @@
 - RFC: [RFC 0007: Global Database](../rfcs/0007-global-database.md)
 - Repository pattern: [ADR 0010 proposal](https://github.com/thunderbird/thunderbird-android/pull/11452)
 - Portable data format: [RFC 0008: Portable Profile Data Format](../rfcs/0008-portable-profile-data-format.md)
-- Status: **Proposed**
+- Status: **Accepted**
 
 ## Summary
 
