@@ -81,10 +81,11 @@ Every Thunderbird-owned JSON record uses this logical envelope:
 The portable account ID is stable across export/import and is distinct from the application-profile-scoped `AccountId`
 used by the Global Database. Portable record identifiers are also distinct from local `FolderId`, `MessageId`, and
 `ThreadId` values. Import maps a portable account ID to a user-selected existing account or allocates a new local
-`AccountId`. It never treats a legacy database ID, account number, row ID, or local mail-domain identifier as portable
-identity.
+`AccountId`. Existing local identifiers are never rewritten. Import never treats a legacy database ID, account number,
+row ID, or local mail-domain identifier as portable identity.
 
-`originId` is an opaque installation identity used only for revision ordering. Tombstones let a later sync service
+`originId` is an opaque installation identity used to identify a revision's origin and order revisions produced by that
+same origin. It is not a global last-writer-wins tiebreaker. Tombstones let a later sync service
 propagate account/profile deletion without treating an omitted record as an ambiguous delete. Portable snapshots may
 compact a tombstone only when retaining it cannot change subsequent import or synchronization semantics.
 
@@ -109,10 +110,14 @@ Import first validates the container or authenticated backup envelope, then pars
 storage. It presents a selection and conflict preview before applying user-selected records. Account credentials are
 requested only after configuration import and never read from the archive.
 
-Record identity and revisions make the format sync-ready. A future transport compares records by `recordId`. It uses
-the revision tuple to identify a newer record and tombstones to identify deletion. This design does not select a remote
-transport or silently resolve same-record, divergent user edits. Such conflicts are preserved for explicit import or
-future sync UX. A transport must not alter the JSON payload shape or create a parallel settings representation.
+Record identity and revisions make the format sync-ready. Import compares records by `recordId`. A larger counter from
+the same `originId` identifies a newer revision from that origin, and tombstones identify deletion. Revisions from
+different origins are not ordered using `originId` or `updatedAt`; an import that cannot prove one revision supersedes
+the other reports a conflict and leaves local state unchanged until the user chooses a result.
+
+This design does not select a remote transport or silently resolve same-record, divergent user edits. A future sync
+design must define any additional causal metadata needed for remote replication by versioning this envelope. It must
+not create a parallel settings representation.
 
 ### Integration boundaries
 
