@@ -14,12 +14,14 @@ import com.fsck.k9.account.DeletePolicyProvider
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.folders.FolderFetcher
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.createExtra
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientInfo
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
+import com.fsck.k9.preferences.FolderSettingsProvider
 import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +34,7 @@ import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.legacy.logging.Log
 
