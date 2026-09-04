@@ -1,9 +1,11 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.legacy.mailstore.FolderRepository
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.outcome.fold
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.folder.api.FolderServerId
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 
 /**
  * Update an Account's auto-expand folder after the folder list has been refreshed.
@@ -11,7 +13,7 @@ import net.thunderbird.feature.account.AccountId
 class AutoExpandFolderBackendFoldersRefreshListener(
     private val accountManager: LegacyAccountManager,
     private val accountId: AccountId,
-    private val folderRepository: FolderRepository,
+    private val folderQueryRepository: FolderQueryRepository,
 ) : BackendFoldersRefreshListener {
     private var isFirstSync = false
 
@@ -19,7 +21,7 @@ class AutoExpandFolderBackendFoldersRefreshListener(
         isFirstSync = getAccountById(accountId).inboxFolderId == null
     }
 
-    override fun onAfterFolderListRefresh() {
+    override suspend fun onAfterFolderListRefresh() {
         var account = getAccountById(accountId)
 
         account = checkAutoExpandFolder(account)
@@ -29,21 +31,22 @@ class AutoExpandFolderBackendFoldersRefreshListener(
         updateAccount(account)
     }
 
-    private fun checkAutoExpandFolder(account: LegacyAccount): LegacyAccount {
+    private suspend fun checkAutoExpandFolder(account: LegacyAccount): LegacyAccount {
         var updated = account
 
         updated.importedAutoExpandFolder?.let { folderName ->
             if (folderName.isEmpty()) {
                 updated = updated.copy(autoExpandFolderId = null)
             } else {
-                val folderId = folderRepository.getFolderId(accountId, folderName)
+                val folderId = folderQueryRepository.findIdByServerId(accountId, FolderServerId(folderName))
+                    .fold(onSuccess = { it }, onFailure = { null })
                 updated = updated.copy(autoExpandFolderId = folderId)
             }
             return updated
         }
 
         updated.autoExpandFolderId?.let { autoExpandFolderId ->
-            if (!folderRepository.isFolderPresent(accountId, autoExpandFolderId)) {
+            if (!folderQueryRepository.isPresent(accountId, autoExpandFolderId)) {
                 updated = updated.copy(autoExpandFolderId = null)
             }
         }

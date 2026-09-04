@@ -2,7 +2,6 @@ package app.k9mail.feature.widget.unread
 
 import android.content.Context
 import android.content.Intent
-import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.message.controller.MessageCountsProvider
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.CoreResourceProvider
@@ -13,6 +12,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.outcome.fold
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
 
@@ -24,7 +25,7 @@ class UnreadWidgetDataProvider(
     private val preferences: Preferences,
     private val messageCountsProvider: MessageCountsProvider,
     private val defaultFolderProvider: DefaultFolderProvider,
-    private val folderRepository: FolderRepository,
+    private val folderQueryRepository: FolderQueryRepository,
     private val folderNameFormatter: FolderNameFormatter,
     private val coreResourceProvider: CoreResourceProvider,
     private val logger: Logger,
@@ -103,7 +104,8 @@ class UnreadWidgetDataProvider(
     }
 
     private suspend fun getFolderDisplayName(account: LegacyAccountDto, folderId: Long): String {
-        val folder = folderRepository.getFolder(account.id, folderId)
+        val folder = folderQueryRepository.findById(account.id, folderId)
+            .fold(onSuccess = { it }, onFailure = { null })
         return if (folder != null) {
             folderNameFormatter.displayName(folder)
         } else {

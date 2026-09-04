@@ -4,14 +4,16 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import app.k9mail.feature.widget.unread.UnreadWidgetRepository.Companion.PREFS_VERSION
 import app.k9mail.feature.widget.unread.UnreadWidgetRepository.Companion.PREF_VERSION_KEY
-import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
+import net.thunderbird.core.outcome.fold
+import net.thunderbird.feature.mail.folder.api.FolderServerId
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 
 internal class UnreadWidgetMigrations(
     private val accountRepository: Preferences,
-    private val folderRepository: FolderRepository,
+    private val folderQueryRepository: FolderQueryRepository,
 ) {
-    fun upgradePreferences(preferences: SharedPreferences, version: Int) {
+    suspend fun upgradePreferences(preferences: SharedPreferences, version: Int) {
         if (version < 2) rewriteFolderNameToFolderId(preferences)
 
         preferences.setVersion(PREFS_VERSION)
@@ -22,7 +24,7 @@ internal class UnreadWidgetMigrations(
     }
 
     @Suppress("LoopWithTooManyJumpStatements")
-    private fun rewriteFolderNameToFolderId(preferences: SharedPreferences) {
+    private suspend fun rewriteFolderNameToFolderId(preferences: SharedPreferences) {
         val widgetIds = preferences.all.keys
             .filter { it.endsWith(".folder_name") }
             .map { it.split(".")[1] }
@@ -34,7 +36,8 @@ internal class UnreadWidgetMigrations(
 
                 val folderServerId = preferences.getString("unread_widget.$widgetId.folder_name", null)
                 if (folderServerId != null) {
-                    val folderId = folderRepository.getFolderId(account.id, folderServerId)
+                    val folderId = folderQueryRepository.findIdByServerId(account.id, FolderServerId(folderServerId))
+                        .fold(onSuccess = { it }, onFailure = { null })
                     putString("unread_widget.$widgetId.folder_id", folderId?.toString())
                 }
 
