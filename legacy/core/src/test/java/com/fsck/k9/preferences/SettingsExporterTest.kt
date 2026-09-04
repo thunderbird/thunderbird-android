@@ -8,6 +8,7 @@ import assertk.assertions.isNull
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import java.io.ByteArrayOutputStream
+import kotlinx.coroutines.runBlocking
 import org.jdom2.Document
 import org.jdom2.input.SAXBuilder
 import org.junit.Test
@@ -64,8 +65,8 @@ class SettingsExporterTest : K9RobolectricTest() {
         assertThat(document.rootElement.getChild("global")).isNull()
     }
 
-    private fun exportPreferences(globalSettings: Boolean, accounts: Set<String>): Document {
-        return ByteArrayOutputStream().use { outputStream ->
+    private fun exportPreferences(globalSettings: Boolean, accounts: Set<String>): Document = runBlocking {
+        ByteArrayOutputStream().use { outputStream ->
             settingsExporter.exportPreferences(outputStream, globalSettings, accounts, includePasswords = false)
             parseXml(outputStream.toByteArray())
         }

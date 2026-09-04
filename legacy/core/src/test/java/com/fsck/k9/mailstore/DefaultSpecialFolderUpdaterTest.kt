@@ -1,7 +1,5 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.legacy.mailstore.FolderRepository
-import app.k9mail.legacy.mailstore.RemoteFolderDetails
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
@@ -18,13 +16,13 @@ import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.mail.Protocols
+import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
-import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
@@ -32,6 +30,7 @@ import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.mail.folder.api.data.FolderError
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
 import net.thunderbird.feature.mail.folder.api.data.repository.PartialUpdatableFolderDetails
+import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderQueryRepository
 import org.junit.Test
 
 @OptIn(ExperimentalUuidApi::class, ExperimentalCoroutinesApi::class)
@@ -39,7 +38,7 @@ class DefaultSpecialFolderUpdaterTest {
     private val accountId = AccountIdFactory.create()
     private val account = createAccount(accountId)
     private val accountManager = FakeLegacyAccountManager(initialAccounts = listOf(account))
-    private val folderRepository = FakeFolderRepository()
+    private val remoteFolderQueryRepository = FakeRemoteFolderQueryRepository()
     private val folderDetailsRepository = FakeFolderDetailsRepository()
     private val specialFolderSelectionStrategy = SpecialFolderSelectionStrategy()
 
@@ -49,11 +48,12 @@ class DefaultSpecialFolderUpdaterTest {
 
     private val subject = DefaultSpecialFolderUpdater(
         accountManager = accountManager,
-        folderRepository = folderRepository,
+        remoteFolderQueryRepository = remoteFolderQueryRepository,
         folderDetailsRepository = folderDetailsRepository,
         specialFolderSelectionStrategy = specialFolderSelectionStrategy,
         accountId = accountId,
         coroutineScope = coroutineScope,
+        logger = TestLogger(),
         ioDispatcher = testDispatcher,
     )
 
@@ -67,7 +67,7 @@ class DefaultSpecialFolderUpdaterTest {
         val archiveFolder = createRemoteFolder(id = 5, type = FolderType.ARCHIVE, serverId = "Archive")
         val spamFolder = createRemoteFolder(id = 6, type = FolderType.SPAM, serverId = "Spam")
 
-        folderRepository.remoteFolders =
+        remoteFolderQueryRepository.remoteFolders =
             listOf(inboxFolder, draftsFolder, sentFolder, trashFolder, archiveFolder, spamFolder)
 
         // Act
@@ -88,7 +88,7 @@ class DefaultSpecialFolderUpdaterTest {
         // Arrange
         val inboxFolder = createRemoteFolder(id = 1, type = FolderType.INBOX, serverId = "INBOX")
         val draftsFolder = createRemoteFolder(id = 2, type = FolderType.DRAFTS, serverId = "Drafts")
-        folderRepository.remoteFolders = listOf(inboxFolder, draftsFolder)
+        remoteFolderQueryRepository.remoteFolders = listOf(inboxFolder, draftsFolder)
 
         // Act
         subject.updateSpecialFolders()
@@ -110,7 +110,7 @@ class DefaultSpecialFolderUpdaterTest {
         accountManager.updateSync(accountWithImports)
 
         val draftsFolder = createRemoteFolder(id = 10, type = FolderType.REGULAR, serverId = "ImportedDrafts")
-        folderRepository.remoteFolders = listOf(draftsFolder)
+        remoteFolderQueryRepository.remoteFolders = listOf(draftsFolder)
 
         // Act
         subject.updateSpecialFoldersSync()
@@ -132,7 +132,7 @@ class DefaultSpecialFolderUpdaterTest {
 
         // Remote folders do NOT include ID 99, but has a folder named "Drafts"
         val draftsFolder = createRemoteFolder(id = 2, type = FolderType.DRAFTS, serverId = "Drafts")
-        folderRepository.remoteFolders = listOf(draftsFolder)
+        remoteFolderQueryRepository.remoteFolders = listOf(draftsFolder)
 
         // Act
         subject.updateSpecialFoldersSync()
@@ -153,7 +153,7 @@ class DefaultSpecialFolderUpdaterTest {
 
         val inboxFolder = createRemoteFolder(id = 1, type = FolderType.INBOX, serverId = "INBOX")
         val draftsFolder = createRemoteFolder(id = 2, type = FolderType.DRAFTS, serverId = "Drafts")
-        folderRepository.remoteFolders = listOf(inboxFolder, draftsFolder)
+        remoteFolderQueryRepository.remoteFolders = listOf(inboxFolder, draftsFolder)
 
         // Act
         subject.updateSpecialFoldersSync()
@@ -206,26 +206,11 @@ class DefaultSpecialFolderUpdaterTest {
         return RemoteFolder(id, serverId, "Folder $serverId", type)
     }
 
-    private class FakeFolderRepository : FolderRepository {
+    private class FakeRemoteFolderQueryRepository : RemoteFolderQueryRepository {
         var remoteFolders: List<RemoteFolder> = emptyList()
 
-        override suspend fun getFolder(accountId: AccountId, folderId: Long): Folder? = null
-        override fun getRemoteFolders(accountId: AccountId): List<RemoteFolder> = remoteFolders
-        override fun getRemoteFolderDetails(accountId: AccountId): List<RemoteFolderDetails> = emptyList()
-        override fun getFolderServerId(accountId: AccountId, folderId: Long): String? = null
-        override fun getFolderId(accountId: AccountId, folderServerId: String): Long? = null
-        override fun isFolderPresent(accountId: AccountId, folderId: Long): Boolean = false
-        override fun observeEnabled(accountId: AccountId): Flow<Outcome<Boolean, FolderError>> {
-            TODO("Not yet implemented")
-        }
-
-        override suspend fun isEnabled(accountId: AccountId): Outcome<Boolean, FolderError> {
-            TODO("Not yet implemented")
-        }
-
-        override suspend fun disable(accountId: AccountId): Outcome<Unit, FolderError> {
-            TODO("Not yet implemented")
-        }
+        override suspend fun getAllByAccountId(accountId: AccountId): Outcome<List<RemoteFolder>, FolderError> =
+            Outcome.success(remoteFolders)
     }
 
     private class FakeFolderDetailsRepository : FolderDetailsRepository {

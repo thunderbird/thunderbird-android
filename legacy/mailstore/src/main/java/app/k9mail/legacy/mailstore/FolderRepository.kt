@@ -1,10 +1,7 @@
 package app.k9mail.legacy.mailstore
 
-import kotlinx.coroutines.flow.Flow
-import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.Folder
-import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.data.repository.PushFolderTrackingRepository
 
 /**
@@ -23,23 +20,6 @@ interface FolderRepository : PushFolderTrackingRepository {
      * @param folderId The folder identifier.
      */
     suspend fun getFolder(accountId: AccountId, folderId: Long): Folder?
-
-    /**
-     * Returns a list of [RemoteFolder]s for the given [accountId].
-     *
-     * @param accountId The account identifier.
-     * @throws MessagingException if there's a problem accessing the folders.
-     */
-    @Throws(MessagingException::class)
-    fun getRemoteFolders(accountId: AccountId): List<RemoteFolder>
-
-    /**
-     * Returns a list of [RemoteFolderDetails] for the given [accountId].
-     *
-     * @param accountId The account identifier.
-     */
-    fun getRemoteFolderDetails(accountId: AccountId): List<RemoteFolderDetails>
-
 
     /**
      * Returns the server ID for the given [accountId] and [folderId].

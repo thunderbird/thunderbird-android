@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
@@ -35,7 +36,9 @@ class DefaultPushFolderTrackingRepository(
         send(enabled)
 
         val listener = FolderSettingsChangedListener {
-            trySendBlocking(isEnabled(accountId, messageStore))
+            withContext(ioDispatcher) {
+                trySendBlocking(isEnabled(accountId, messageStore))
+            }
         }
         messageStore.addFolderSettingsChangedListener(listener)
 

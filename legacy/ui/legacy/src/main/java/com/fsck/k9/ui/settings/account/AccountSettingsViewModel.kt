@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.mailstore.SpecialFolderSelectionStrategy
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -13,12 +12,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.outcome.fold
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
+import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderQueryRepository
 
 class AccountSettingsViewModel(
     private val accountManager: LegacyAccountDtoManager,
-    private val folderRepository: FolderRepository,
+    private val remoteFolderQueryRepository: RemoteFolderQueryRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
@@ -69,7 +70,8 @@ class AccountSettingsViewModel(
     private fun loadFolders(account: LegacyAccountDto) {
         viewModelScope.launch {
             val remoteFolderInfo = withContext(backgroundDispatcher) {
-                val folders = folderRepository.getRemoteFolders(account.id)
+                val folders = remoteFolderQueryRepository.getAllByAccountId(account.id)
+                    .fold(onSuccess = { it }, onFailure = { emptyList() })
                     .sortedWith(
                         compareByDescending<RemoteFolder> { it.type == FolderType.INBOX }
                             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.name },
