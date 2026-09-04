@@ -7,7 +7,7 @@
 - Mail message format: [RFC 5322: Internet Message Format](https://www.rfc-editor.org/info/rfc5322/)
 - MIME: [RFC 2045: Multipurpose Internet Mail Extensions](https://www.rfc-editor.org/info/rfc2045/)
 - Full-backup encryption: [NIST SP 800-38D: Galois/Counter Mode](https://csrc.nist.gov/pubs/sp/800/38/d/final)
-- Status: **Proposed**
+- Status: **Accepted**
 
 ## Summary
 
