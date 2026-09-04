@@ -141,7 +141,7 @@ It remains useful for its narrower mail-export use cases, not for profile portab
 
 ## Outcome
 
-Pending review.
-
-If accepted, this RFC authorizes the portable profile-data contract and its standalone import/export and backup work.
+The proposal was accepted. This RFC authorizes the portable profile-data contract and its standalone import/export and
+backup work. Implementation follows
+[Technical Design 0004: Portable Profile Data Format](../technical-designs/0004-portable-profile-data-format.md).
 Remote synchronization remains a follow-up that must use this contract and receive separate review.
