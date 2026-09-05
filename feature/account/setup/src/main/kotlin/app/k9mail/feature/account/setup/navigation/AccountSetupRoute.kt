@@ -6,7 +6,9 @@ import net.thunderbird.core.ui.navigation.Route
 sealed interface AccountSetupRoute : Route {
 
     @Serializable
-    data class AccountSetup(val accountId: String? = null) : AccountSetupRoute {
+    data class AccountSetup(
+        val accountId: String? = null,
+    ) : AccountSetupRoute {
         override val basePath: String = BASE_PATH
 
         override fun route(): String = basePath
