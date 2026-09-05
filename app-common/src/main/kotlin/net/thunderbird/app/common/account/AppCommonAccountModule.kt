@@ -88,6 +88,8 @@ internal val appCommonAccountModule = module {
             avatarMonogramCreator = get(),
             unifiedInboxConfigurator = get(),
             featureFlagProvider = get(),
+            getFolderIdsForTypeUseCase = get(),
+            setPushForFolderUseCase = get(),
         )
     }
 }
