@@ -958,4 +958,5 @@
     <string name="account_settings_signature_is_html_summary">Tõlgenda allkirja sisu HTML-ina. Skriptid ja interaktiivne sisu eemaldatakse turvalisuse nimel.</string>
     <string name="account_settings_signature_preview">Allkirja eelvaade</string>
     <string name="account_settings_signature_clear_label">Eemalda allkiri</string>
+    <string name="message_compose_encrypting_message">Krüptin e-kirja…</string>
 </resources>
