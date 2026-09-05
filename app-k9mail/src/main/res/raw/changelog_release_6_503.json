@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "6.503",
+  "versioncode": 35003,
+  "date": "2023-01-19",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Tweaked theme colors",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for HTML messages using the <base> tag and relative links",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed the logic to skip the trash folder when deleting messages, e.g. when deleting spam",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that could lead to messages not being marked as read on the server when they should have been",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Internal changes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "6.707",
+  "versioncode": 37007,
+  "date": "2023-06-19",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug where navigating to a different screen after using the system back button/gesture could crash the app",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

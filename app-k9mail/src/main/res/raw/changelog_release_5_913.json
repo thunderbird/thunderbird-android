@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "5.913",
+  "versioncode": 29013,
+  "date": "2022-03-11",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Don't create notifications when manually refreshing the message list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed import and export of notification settings",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that could lead to multiple notifications being created for the same message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that sometimes crashed the app after changing the notification sound",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for messages that specified the character set in multiple ways",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "A lot of internal improvements",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

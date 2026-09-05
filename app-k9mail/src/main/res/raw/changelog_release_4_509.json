@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "version": "4.509",
+  "versioncode": 18009,
+  "date": "2013-08-23",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Updates to Catalan, Czech, Dutch, Finnish, French, German, Korean, Spanish and Swedish translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Several performance improvements and crash fixes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "tweak message list item \"read item\" background color so you can see the item divider a bit better",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add back select/deselect action to the message list context menu",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Default message list checkboxes to off again",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "move message list thread count up to the subject line",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "add back stars to the message list UI",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Return to old style color chips for accounts, folders and messages.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Skip incorrectly formatted/parsed LSUB/LIST replies from IMAP servers",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Autoconfigure SSL for provider gmx.de",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Autoconfiguration for a comprehensive list of .ru mail providers.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Use Google's fix for the PRNG mess Source: http://android-developers.blogspot.de/2013/08/some-securerandom-thoughts.html",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add an actionbar item for \"add account\" to the account list (if there's room)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "GMail-app-style generated colorful one-letter contact pictures for pictureless contacts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Tighten up the account list display for narrow-screened devices like the HTC One",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated invalid certificate message to be a bit more user-friendly.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Restore super-dense message list layout when the user has selected 0 lines of message preview and no contact pictures",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Rename \"SSL\" to \"SSL/TLS\" and \"TLS\" to \"STARTTLS\" to better explain what's really going on",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

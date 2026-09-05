@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "6.511",
+  "versioncode": 35011,
+  "date": "2023-03-31",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Swiping between messages should now work more reliably",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed message details layout when contact pictures are disabled",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed disappearing toolbar buttons in the message view screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a couple of rare crashes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

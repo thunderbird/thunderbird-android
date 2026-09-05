@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "6.600",
+  "versioncode": 36000,
+  "date": "2023-04-11",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Redesigned the message view screen; tap the message header containing sender/recipient names to see more details",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added a setting for three different message list densities: compact, default, relaxed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added better support for right-to-left languages when composing messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Search now also considers recipient addresses",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug where notifications would sometimes reappear shortly after having been dismissed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "IMAP: Fixed a bug where sometimes authentication errors were silently ignored",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Various other small bug fixes and improvements; see changes for versions 6.5xx",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

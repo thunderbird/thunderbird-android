@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "6.308",
+  "versioncode": 33008,
+  "date": "2022-10-06",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added swipe actions to the message list screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Changed the minimum size of the message list widget to 2x2 cells",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug where the app would start using the light theme before switching to the dark theme resulting in a brief flash of white",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "More minor bug fixes and improvements",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "version": "4.326",
+  "versioncode": 17027,
+  "date": "2013-02-16",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Korean translation update",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Message header area overhauled",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Holo theme improvements",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Fix several NPEes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Finnish translation update",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improve last folder update time formatting.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Experimental change to move most of our refile buttons into a refile submenu. Specifically to elicit feedback. I don't expect this change to stick around in its current form. But I do want to get a sense of whether it's something that makes people happy or angry",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Clean up date handling",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Update German translation",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add animated notification icon for \"check mail\"",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "There's no good reason to exclude the Subject from the \"full headers\" view, especicially since we now play games with it sometimes showing up in the header and sometimes in the titlebar",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Switch our font sizes to have a \"default\", which is the size described in the XML.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Add optional contact pictures to message list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Remove text selection menu item for JB and higher.  Those versions have text selection support built-in (via long pressing the WebView).",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Move message view theme setting from message view menu to global prefs by default.",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Move \"show all headers\" into the menu (and out of the UI)",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

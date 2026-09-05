@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "6.710",
+  "versioncode": 37010,
+  "date": "2023-08-18",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug where accounts using OAuth weren't set up properly in K-9 Mail 6.709",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Moved \"Show only subscribed folders\" setting to \"Folders\" section",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

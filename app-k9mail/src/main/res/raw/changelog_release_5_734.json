@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "version": "5.734",
+  "versioncode": 27034,
+  "date": "2021-05-01",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added support for reordering accounts (in the settings screen)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added the ability to discard changes and keep the original draft",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Preserve whitespace when converting the message signature to HTML",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Ignore invalid email addresses in the system contacts database",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Clear message view when changing folders in split-screen mode",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Small optimizations to improve the app startup time",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when trying to compose a message from the message list widget",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Lots of internal changes – please report any bugs or odd behavior you encounter",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

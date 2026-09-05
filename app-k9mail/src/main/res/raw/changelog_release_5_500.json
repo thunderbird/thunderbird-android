@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "version": "5.500",
+  "versioncode": 25000,
+  "date": "2018-02-24",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Further improvements to encryption user experience",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added ability to forward a message as attachment",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved the way we display text/plain messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved rendering of RTL text",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Import/Export maintain account ordering",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Altered identity prioritization",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added option for limiting push connections to 5",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added SMTP hostname privacy option",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that caused draft messages to be lost",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug relating to encrypted attached emails",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "More bug fixes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

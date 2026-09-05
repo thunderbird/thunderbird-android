@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.113",
+  "versioncode": 23112,
+  "date": "2016-10-06",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed dark theme",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "version": "5.109",
+  "versioncode": 23090,
+  "date": "2016-05-21",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added support for List-Post header",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for sub-folders (WebDAV)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Display notification on authentication failures",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Protect against the Surreptitious Sharing vulnerability",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Re-enabled search in message bodies",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed support for PGP/INLINE",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where some threads had multiple entries in the message list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed 'reply to all'",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "More bug fixes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

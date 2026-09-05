@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "5.707",
+  "versioncode": 27007,
+  "date": "2020-03-06",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed a bug in the new 'back button opens default folder' code",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a crash on Android 5.x devices with old WebView versions",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed theme issues in some settings screens",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

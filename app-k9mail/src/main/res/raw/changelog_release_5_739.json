@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "5.739",
+  "versioncode": 27039,
+  "date": "2021-07-10",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug that could prevent the device from going to sleep when Push was active",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that lead to Push not being restarted when network connectivity returned",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed some issues with displaying the \"What's new\" notice",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

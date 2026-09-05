@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "4.325",
+  "versioncode": 17026,
+  "date": "2013-02-07",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Bug fixes (threading, checkboxes)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "German translation update",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

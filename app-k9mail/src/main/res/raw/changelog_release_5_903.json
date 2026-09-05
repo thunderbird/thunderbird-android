@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "5.903",
+  "versioncode": 29003,
+  "date": "2021-09-28",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Removed the \"default account\" setting; the first account in the list is now automatically the default account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed the \"hide subject in notifications\" setting; use the \"lock screen notifications\" setting instead",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where the list of displayed folders wasn't updated when a folder was added or removed from the server",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed lock screen notification when there's only one new message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that lead to newly created accounts not having an account color",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

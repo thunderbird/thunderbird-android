@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "version": "6.712",
+  "versioncode": 37012,
+  "date": "2023-11-30",
+  "notes": [
+    {
+      "type": "new",
+      "text": "New server settings screens are now also used when editing an existing account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Made it harder to accidentally trigger swipe actions in the message list screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added option to return to the message list after marking a message as unread in the message view",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Combined settings \"Return to list after delete\" and \"Show next message after delete\" into \"After deleting or moving a message\"",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added screen to ask for Android permissions in the onboarding flow",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for the IMAP MOVE extension",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Tweaked setup theme to more closely match the rest of the app",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed notification sounds on WearOS devices",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when entering an unsupported email address during account setup",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when MX lookup during account setup returns an invalid host name",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Respect app theme and language settings in new account setup",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Set hints for software keyboards not to use auto-correct in server settings text fields",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

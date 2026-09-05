@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "5.730",
+  "versioncode": 27030,
+  "date": "2021-02-16",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug where account wouldn't refresh automatically",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when trying to compose a message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that could have lead to an empty email being sent",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where refresh indicator in drawer disappeared too early",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Back button now opens Unified Inbox before exiting the app",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added translations: Belarusian, British English",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

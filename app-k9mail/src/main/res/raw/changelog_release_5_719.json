@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "version": "5.719",
+  "versioncode": 27019,
+  "date": "2020-10-04",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Show image previews for attachments with application/octet-stream MIME type",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved display of certain HTML messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "When auto-completing email addresses show starred contacts first",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved preview text extraction",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved support for encrypted subjects",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Extended certificate dialog to show SHA-256 and SHA-512 fingerprints",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Use correct OpenPGP key when sending signed-only email after switching identities",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where using certain search text would crash the app",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where state was lost on screen rotation in unread widget configuration",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Many internal changes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

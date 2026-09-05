@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "5.302",
+  "versioncode": 23520,
+  "date": "2017-10-28",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed display errors of plain text messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added translations: Indonesian, Breton",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

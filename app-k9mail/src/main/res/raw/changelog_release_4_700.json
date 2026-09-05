@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "4.700",
+  "versioncode": 19001,
+  "date": "2013-10-11",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Code cleanups",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug that could have caused message drafts to be sent before they were ready",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updates to German, Japanese, Russian, Slovak translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Fix some small bugs in contact picture generation",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Fetch attachments while MessageCompose activity is running",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "5.733",
+  "versioncode": 27033,
+  "date": "2021-03-23",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added support for In-Reply-To parameter in mailto: URIs",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed various display bugs related to the drawer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -15,8 +15,8 @@ class RecentChangesViewModel(
     private val generalSettingsManager: GeneralSettingsManager,
     private val changeLogManager: ChangeLogManager,
 ) : ViewModel() {
-    val shouldShowRecentChangesHint = changeLogManager.changeLogFlow.flatMapLatest { changeLog ->
-        if (changeLog.isFirstRun && !changeLog.isFirstRunEver) {
+    val shouldShowRecentChangesHint = changeLogManager.changelogFlow.flatMapLatest { changeLog ->
+        if (changeLog.isFirstRun() && !changeLog.isFirstRunEver()) {
             getShowRecentChangesFlow()
         } else {
             flowOf(false)

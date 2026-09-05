@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "releases":[
+    {
+      "version": "Debug",
+      "versioncode": 1,
+      "date": "",
+      "resourceName": "changelog_release_debug"
+    }
+  ]
+}

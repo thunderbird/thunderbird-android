@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "5.738",
+  "versioncode": 27038,
+  "date": "2021-07-08",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Inline attachments are now included in forwarded messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Quick access to the \"What's new\" screen when the app was updated",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Close and reopen Push connections when the active network has changed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug that lead to Push not working properly",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed some minor bugs",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "5.702",
+  "versioncode": 27002,
+  "date": "2019-12-13",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "The back button now closes the side drawer instead of exiting the app immediately",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed \"Download complete message\" for POP3 accounts",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that could lead to some messages not being synchronized with an IMAP server",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where sometimes subjects weren't encoded properly",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when changing theme",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "'Manage folders' now displays folders in the same order as the side drawer",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}
