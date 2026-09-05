@@ -291,6 +291,35 @@ internal class DrawerViewModelTest {
     }
 
     @Test
+    fun `should not emit CloseDrawer effect after emitting OpenAccount if AutoExpandFolder is None`() = runMviTest {
+        val displayAccounts = createDisplayAccountList(1) + createDisplayAccount(
+            id = "uuid-1",
+            hasAutoExpandFolder = false,
+        )
+        val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
+        val testSubject = createTestSubject(
+            displayAccountsFlow = getDisplayAccountsFlow,
+        )
+        val turbines = turbinesWithInitialStateCheck(
+            testSubject,
+            State(
+                accounts = displayAccounts.toImmutableList(),
+                selectedAccountId = displayAccounts.first().id,
+            ),
+        )
+        advanceUntilIdle()
+
+        testSubject.event(Event.OnAccountClick(displayAccounts[1]))
+
+        assertThat(turbines.awaitEffectItem()).isEqualTo(
+            Effect.OpenAccount(displayAccounts[1].id),
+        )
+
+        advanceUntilIdle()
+        turbines.effectTurbine.expectNoEvents()
+    }
+
+    @Test
     fun `should collect display folders for selected account`() = runTest {
         val displayAccounts = createDisplayAccountList(3)
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
