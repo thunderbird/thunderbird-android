@@ -1,0 +1,54 @@
+---
+name: Issue - Triage external reports
+
+on:
+  issues:
+    types:
+      - opened
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  issue-triage-external:
+    name: Classify external issues as unconfirmed bugs
+    if: |
+      github.event.issue.author_association != 'OWNER' &&
+      github.event.issue.author_association != 'MEMBER' &&
+      github.event.issue.author_association != 'COLLABORATOR'
+    runs-on: ubuntu-latest
+    environment: botmobile
+    permissions:
+      issues: write
+    steps:
+      - name: App token generate
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1  # v3.2.0
+        if: ${{ vars.BOT_CLIENT_ID }}
+        id: app-token
+        with:
+          client-id: ${{ vars.BOT_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
+      - name: Classify issue
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue edit "$ISSUE_NUMBER" \
+            --repo "$GITHUB_REPOSITORY" \
+            --type "Bug" \
+            --add-label "unconfirmed"
+
+      - name: Explain classification
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          MESSAGE: >-
+            Issues opened by external contributors are initially classified as unconfirmed bugs for maintainer triage.
+            GitHub Feature, Task, and Milestone issues are created and managed by project maintainers. New feature ideas
+            should be proposed through Mozilla Connect as described in the contribution guide.
+        run: |
+          gh issue comment "$ISSUE_NUMBER" \
+            --repo "$GITHUB_REPOSITORY" \
+            --body "$MESSAGE"
