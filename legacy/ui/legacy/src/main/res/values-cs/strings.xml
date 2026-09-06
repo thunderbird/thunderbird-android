@@ -972,4 +972,5 @@
     <string name="account_settings_signature_is_html_summary">Interpretovat podpis jako HTML. Skripty a obslužné rutiny událostí budou z bezpečnostních důvodů odstraněny.</string>
     <string name="account_settings_signature_preview">Náhled podpisu</string>
     <string name="account_settings_signature_clear_label">Vymazat podpis</string>
+    <string name="message_compose_encrypting_message">Šifrování zprávy…</string>
 </resources>
