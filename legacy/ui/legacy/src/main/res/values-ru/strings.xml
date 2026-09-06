@@ -972,4 +972,5 @@
     <string name="account_settings_signature_is_html_summary">Интерпретировать подпись как HTML. Скрипты и обработчики событий будут удалены в целях безопасности.</string>
     <string name="account_settings_signature_preview">Просмотр подписи</string>
     <string name="account_settings_signature_clear_label">Удалить подпись</string>
+    <string name="message_compose_encrypting_message">Шифрование сообщения…</string>
 </resources>
