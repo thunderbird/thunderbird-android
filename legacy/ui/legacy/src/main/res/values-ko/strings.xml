@@ -955,4 +955,5 @@
     <string name="account_settings_signature_is_html_summary">서명을 HTML로 해석합니다. 스크립트와 이벤트 핸들러는 보안을 위해 제거됩니다.</string>
     <string name="account_settings_signature_preview">서명 미리보기</string>
     <string name="account_settings_signature_clear_label">서명 지우기</string>
+    <string name="message_compose_encrypting_message">메시지 암호화 중…</string>
 </resources>
