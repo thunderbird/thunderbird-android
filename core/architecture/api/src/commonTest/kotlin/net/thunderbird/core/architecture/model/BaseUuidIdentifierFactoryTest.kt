@@ -30,14 +30,40 @@ class BaseUuidIdentifierFactoryTest {
     }
 
     @Test
-    fun `given create is called twice then returns different Ids`() {
+    fun `given create is called then returns UUIDv7 Id`() {
         // Arrange + Act
-        val id1 = TestIdFactory.create()
-        val id2 = TestIdFactory.create()
+        val id = TestIdFactory.create()
 
         // Assert
-        assertThat(id1).isNotEqualTo(id2)
-        assertThat(id1.toString()).isNotEqualTo(id2.toString())
+        id.value.toLongs { mostSignificantBits, leastSignificantBits ->
+            val version = (mostSignificantBits ushr 12) and 0x0F
+            val variant = leastSignificantBits ushr 62
+
+            assertThat(version).isEqualTo(7L)
+            assertThat(variant).isEqualTo(2L)
+        }
+    }
+
+    @Test
+    fun `given create is called repeatedly then returns ordered unique Ids`() {
+        // Arrange + Act
+        val ids = List(100) { TestIdFactory.create() }
+
+        // Assert
+        assertThat(ids).isEqualTo(ids.sorted())
+        assertThat(ids.toSet().size).isEqualTo(ids.size)
+    }
+
+    @Test
+    fun `given existing UUID when of is called then returns compatible Id`() {
+        // Arrange
+        val raw = "123e4567-e89b-42d3-a456-426655440000"
+
+        // Act
+        val id = TestIdFactory.of(raw)
+
+        // Assert
+        assertThat(id.value).isEqualTo(Uuid.parse(raw))
     }
 
     @Test

@@ -25,5 +25,5 @@ abstract class BaseUuidIdentifierFactory<T : BaseUuidIdentifier>(
 
     override fun of(raw: String): T = fromUuid(Uuid.parse(raw))
 
-    override fun create(): T = fromUuid(Uuid.random())
+    override fun create(): T = fromUuid(Uuid.generateV7())
 }
