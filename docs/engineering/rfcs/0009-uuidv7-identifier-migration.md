@@ -29,7 +29,7 @@ is stable for its lifetime. It needs its own decision, inventory, failure handli
 
 - `AccountId` remains in `feature:account:api`.
 - `FolderId` belongs to `feature:mail:folder:api`.
-- `MessageId` and `ThreadId` belong to `feature:mail:message:api`.
+- `MessageId`, `ThreadId`, and `AttachmentId` belong to `feature:mail:message:api`.
 - `BaseIdentifier`, `BaseUuidIdentifier`, `IdentifierFactory`, and `BaseUuidIdentifierFactory` remain in
   `core:architecture:api`.
 - No `core:types:api` module is introduced by this RFC.
