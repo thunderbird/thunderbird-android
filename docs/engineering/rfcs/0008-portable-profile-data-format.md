@@ -36,7 +36,9 @@ private keys, device-local state, and runtime queues also must not become portab
 
 The app defines a versioned portable profile-data bundle with these parts:
 
-- **Mail:** RFC 5322/MIME message data and mail metadata following the current PDPArchive draft layout.
+- **Mail:** [RFC 5322](https://www.rfc-editor.org/info/rfc5322/)/[MIME](https://www.rfc-editor.org/info/rfc2045/)
+  message data and mail metadata following the current
+  [PDPArchive draft layout](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01).
 - **Global settings:** portable, user-selected application preferences in a Thunderbird-owned JSON namespace.
 - **Account configuration:** account identity, server endpoints and protocol configuration, identities, sync choices,
   folder choices, and other user-configured account behavior in a new portable shape.
