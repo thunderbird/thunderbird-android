@@ -15,6 +15,8 @@ dependencies {
     implementation(projects.core.preference.api)
     implementation(projects.feature.changelog.api)
     implementation(libs.kotlinx.serialization.json)
+
+    testImplementation(libs.mockito.kotlin)
 }
 codeCoverage {
     branchCoverage = 0
