@@ -28,7 +28,8 @@ is stable for its lifetime. It needs its own decision, inventory, failure handli
 ### Ownership and module placement
 
 - `AccountId` remains in `feature:account:api`.
-- `FolderId`, `MessageId`, and `ThreadId` remain in the mail domain.
+- `FolderId` belongs to `feature:mail:folder:api`.
+- `MessageId` and `ThreadId` belong to `feature:mail:message:api`.
 - `BaseIdentifier`, `BaseUuidIdentifier`, `IdentifierFactory`, and `BaseUuidIdentifierFactory` remain in
   `core:architecture:api`.
 - No `core:types:api` module is introduced by this RFC.
