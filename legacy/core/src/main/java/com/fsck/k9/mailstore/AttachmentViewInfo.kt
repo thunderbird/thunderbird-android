@@ -5,7 +5,7 @@ import androidx.core.net.toUri
 import com.fsck.k9.helper.MimeTypeUtil
 import com.fsck.k9.mail.Part
 import net.thunderbird.feature.mail.message.reader.api.domain.mapper.AttachmentViewInfoMapper
-import net.thunderbird.feature.mail.message.reader.api.ui.attachment.AttachmentId
+import net.thunderbird.feature.mail.message.reader.api.ui.attachment.AttachmentUri
 import net.thunderbird.feature.mail.message.reader.api.ui.attachment.AttachmentUiItem
 
 /**
@@ -77,7 +77,7 @@ class DefaultAttachmentViewInfoMapper(
         return when {
             isSupportedImage && isContentAvailable ->
                 AttachmentUiItem.RemoteImage(
-                    id = AttachmentId(uri),
+                    id = AttachmentUri(uri),
                     url = uri,
                     filename = filename,
                     formattedSize = formattedSize,
@@ -90,7 +90,7 @@ class DefaultAttachmentViewInfoMapper(
 
             isSupportedImage && isInlineAttachment() ->
                 AttachmentUiItem.InlinedImage(
-                    id = AttachmentId(uri),
+                    id = AttachmentUri(uri),
                     rawBase64 = uri,
                     filename = filename,
                     formattedSize = formattedSize,
@@ -102,7 +102,7 @@ class DefaultAttachmentViewInfoMapper(
                 )
 
             isInlineAttachment() -> AttachmentUiItem.InlinedFile(
-                id = AttachmentId(uri),
+                id = AttachmentUri(uri),
                 filename = filename,
                 formattedSize = formattedSize,
                 size = size,
@@ -113,7 +113,7 @@ class DefaultAttachmentViewInfoMapper(
             )
 
             else -> AttachmentUiItem.File(
-                id = AttachmentId(uri),
+                id = AttachmentUri(uri),
                 filename = filename,
                 formattedSize = formattedSize,
                 size = size,
