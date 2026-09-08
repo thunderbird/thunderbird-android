@@ -298,6 +298,7 @@ internal class DrawerViewModelTest {
         )
         val getDisplayAccountsFlow = MutableStateFlow(displayAccounts)
         val testSubject = createTestSubject(
+            initialState = State(showAccountSelection = true),
             displayAccountsFlow = getDisplayAccountsFlow,
         )
         val turbines = turbinesWithInitialStateCheck(
@@ -305,6 +306,7 @@ internal class DrawerViewModelTest {
             State(
                 accounts = displayAccounts.toImmutableList(),
                 selectedAccountId = displayAccounts.first().id,
+                showAccountSelection = true,
             ),
         )
         advanceUntilIdle()
@@ -314,6 +316,7 @@ internal class DrawerViewModelTest {
         assertThat(turbines.awaitEffectItem()).isEqualTo(
             Effect.OpenAccount(displayAccounts[1].id),
         )
+        assertThat(turbines.stateTurbine.awaitItem().showAccountSelection).isEqualTo(false)
 
         advanceUntilIdle()
         turbines.effectTurbine.expectNoEvents()
