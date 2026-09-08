@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "5.732",
+  "versioncode": 27032,
+  "date": "2021-03-04",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed a crash when checking all accounts from the drawer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a crash when configuring the outgoing server to not require sign-in",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug that prevented importing a settings file not containing general settings",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed many issues related to the drawer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a UI glitch when deleting an account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a UI glitch when dismissing the delete confirmation dialog from a notification",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

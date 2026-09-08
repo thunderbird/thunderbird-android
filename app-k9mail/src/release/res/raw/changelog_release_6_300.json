@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "6.300",
+  "versioncode": 33000,
+  "date": "2022-08-04",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added support for swiping between messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed multiple bugs when there are notifications for more than 8 messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug that could lead to broken attachment names when large messages were only partially downloaded (IMAP)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added Western Frisian translation",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

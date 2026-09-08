@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "4.508",
+  "versioncode": 18008,
+  "date": "2013-07-18",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Move 'share' menu item back, at least for the moment",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

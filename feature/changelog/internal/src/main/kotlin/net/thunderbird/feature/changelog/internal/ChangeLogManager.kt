@@ -1,7 +1,5 @@
 package net.thunderbird.feature.changelog.internal
 
-import android.content.Context
-import de.cketti.changelog.ChangeLog
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -11,36 +9,31 @@ import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/**
- * Manages a [de.cketti.changelog.ChangeLog] instance and notifies when its state changes.
- */
 class ChangeLogManager(
-    private val context: Context,
+    private val changelogVersionHistory: ChangelogVersionHistory,
     private val appCoroutineScope: CoroutineScope,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
-    private val mutableChangeLogFlow = MutableSharedFlow<ChangeLog>(replay = 1)
+    private val mutableChangelogVersionHistoryFlow = MutableSharedFlow<ChangelogVersionHistory>(replay = 1)
 
-    val changeLog: ChangeLog by lazy {
-        ChangeLog.newInstance(context).also { changeLog ->
-            mutableChangeLogFlow.tryEmit(changeLog)
-        }
+    val changelog: ChangelogVersionHistory by lazy {
+        mutableChangelogVersionHistoryFlow.tryEmit(changelogVersionHistory)
+        changelogVersionHistory
     }
 
-    val changeLogFlow: Flow<ChangeLog> by lazy {
-        mutableChangeLogFlow.onSubscription {
+    val changelogFlow: Flow<ChangelogVersionHistory> by lazy {
+        mutableChangelogVersionHistoryFlow.onSubscription {
             withContext(backgroundDispatcher) {
                 // Make sure the changeLog property is initialized now if it hasn't happened before
-                changeLog
+                changelog
             }
         }
     }
 
     fun writeCurrentVersion() {
         appCoroutineScope.launch(backgroundDispatcher) {
-            changeLog.writeCurrentVersion()
-
-            mutableChangeLogFlow.emit(changeLog)
+            changelog.writeCurrentVersion()
+            mutableChangelogVersionHistoryFlow.emit(changelog)
         }
     }
 }

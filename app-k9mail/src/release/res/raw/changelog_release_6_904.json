@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "6.904",
+  "versioncode": 39004,
+  "date": "2024-06-27",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed crash when split screen mode is enabled",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

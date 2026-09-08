@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "4.502",
+  "versioncode": 18002,
+  "date": "2013-05-23",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug that prevented moving to previous and next message in some situations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated Japanese, Czech, and Brazilian Portuguese translation",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a couple of bugs",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "6.312",
+  "versioncode": 33012,
+  "date": "2022-11-15",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Tweaked swipe actions in the message list screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug where canceling account setup was showing a new account in the side drawer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

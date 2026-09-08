@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "5.721",
+  "versioncode": 27021,
+  "date": "2020-10-07",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug that lead to the message body not being displayed when it contained a signature ending with a URL",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added 'copy link text to clipboard' option when long-pressing links",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Treat all whitespace as separator when detecting URLs",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

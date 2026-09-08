@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "5.201",
+  "versioncode": 23210,
+  "date": "2016-12-31",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed crash during database upgrade",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed various minor bugs",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "6.509",
+  "versioncode": 35009,
+  "date": "2023-02-28",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Cleaned up the message list design",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added setting for three different message list densities: compact, default, relaxed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Made small changes to the appearance of participant entries in the message details screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added validation for email address fields in \"Edit identity\" screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

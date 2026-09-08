@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "5.726",
+  "versioncode": 27026,
+  "date": "2021-01-06",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Updated password input fields to be able to reveal passwords",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for going back to previous steps when setting up an account",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a couple of crashes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

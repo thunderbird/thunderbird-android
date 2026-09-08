@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "5.304",
+  "versioncode": 23540,
+  "date": "2017-11-10",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug that could cause OpenPGP signature verification to fail when it shouldn't",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

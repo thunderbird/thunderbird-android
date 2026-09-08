@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "5.803",
+  "versioncode": 28003,
+  "date": "2021-08-12",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Don't show the icon for the ongoing Push notification in the status bar (on versions older than Android 8.0)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Directly open system settings for notification categories (Android 8.0 and newer)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a bug where a notification wasn't removed when the associated message was deleted",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Ignore unnecessary spaces when filtering the list of folders",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crypto status icons not being clickable",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

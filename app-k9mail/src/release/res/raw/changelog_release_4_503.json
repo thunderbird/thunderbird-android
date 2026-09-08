@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "version": "4.503",
+  "versioncode": 18003,
+  "date": "2013-07-05",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added additional shortcuts to the Folder list",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Tweaks to checkboxes and color chip display",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added an \"empty trash\" option to the Account context menu",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Never use extended notifications when privacy mode is enabled",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed submenu from the account context menu to work a bug in some Galaxy devices",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Only enable debug logging on debugging builds",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Bumped the minSdkVersion to 8 since we use features from SDK 8",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated Russian, French, Greek, and Brazilian Portuguese translation",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "More bug fixes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

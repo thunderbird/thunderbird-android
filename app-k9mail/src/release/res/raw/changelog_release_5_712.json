@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.712",
+  "versioncode": 27012,
+  "date": "2020-05-08",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed crash on startup with Android 7 and older",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "6.505",
+  "versioncode": 35005,
+  "date": "2023-02-01",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Redesign of the message view screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Internal changes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "5.916",
+  "versioncode": 29016,
+  "date": "2022-04-12",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug that crashed the app when setting a notification sound on certain devices",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when rotating the device while a delete confirmation dialog was showing",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

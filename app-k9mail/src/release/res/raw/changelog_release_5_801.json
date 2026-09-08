@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "5.801",
+  "versioncode": 28001,
+  "date": "2021-07-30",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Tweaked the default font sizes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "The name of the currently selected account is displayed in the top bar below the folder name (when using multiple accounts)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "When selecting an account in the drawer the auto-expand folder is now displayed right away",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for user-installed CAs",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Error notifications now contain the full error text",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed some crashes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

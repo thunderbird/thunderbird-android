@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "6.307",
+  "versioncode": 33007,
+  "date": "2022-09-26",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed the message list background color in the dark theme",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a small display issue where \"Load up to X more\" could have been displayed when it shouldn't have been",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "5.115",
+  "versioncode": 23114,
+  "date": "2016-11-18",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "More user interface tweaks for encryption-related functionality",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Message signing without encryption is now an expert feature that is disabled by default",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for directional pad to move to next/previous message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Worked around a bug when viewing attachments",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed notification grouping on Android Wear and Android 7.0",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed notification actions on Android 7.0",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}
