@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="24.0b1" versioncode="59" date="2026-09-08">
+        <change>New: Signatures can be formatted as HTML for individual identities</change>
+        <change>Fixed: Reply prompts users to choose Reply or Reply All when both are applicable</change>
+        <change>Fixed: Selected compose text was invisible in light theme due to white highlighting</change>
+        <change>Fixed: Status bar icons became unreadable when selecting messages in light theme</change>
+        <change>Fixed: Recipient expander would not collapse after editing message subject or body</change>
+        <change>Fixed: Thunderbird could crash when adding an attachment to a message using the camera</change>
+        <change>Fixed: Save All incorrectly saved each attachment using the content of the last file</change>
+        <change>Fixed: Editing queued mail as new used the default identity instead of the original one</change>
+        <change>Fixed: QR code scanner failed to open when no accounts were configured</change>
+        <change>Fixed: Unsupported QR codes did not display feedback after scanning</change>
+        <change>Fixed: With a hardware keyboard the focus could not leave To, Cc or Bcc</change>
+        <change>Changed: Long account names are resized to fit within two lines in the account drawer</change>
+    </release>
     <release version="23.0b1" versioncode="58" date="2026-08-10">
         <change>Fixed: Signature field only accepted single-line text in Composition defaults</change>
     </release>
