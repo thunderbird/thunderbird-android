@@ -307,6 +307,7 @@ preferencex-datetimepicker = { module = "com.takisoft.preferencex:preferencex-da
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 safeContentResolver = { module = "de.cketti.safecontentresolver:safe-content-resolver-v21", version.ref = "safeContentResolver" }
 searchPreference = { module = "com.github.ByteHamster:SearchPreference", version.ref = "searchPreference" }
+tb-mobile-components-core-outcome = { module = "net.thunderbird.components.core:outcome", version.ref = "tbMobileComponents" }
 tb-mobile-components-ui-bolt = { module = "net.thunderbird.components.ui.bolt:bolt", version.ref = "tbMobileComponents" }
 tb-mobile-components-ui-testing = { module = "net.thunderbird.components.ui:testing", version.ref = "tbMobileComponents" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
@@ -316,6 +317,10 @@ xmlpull = { module = "com.github.cketti:xmlpull-extracted-from-android", version
 zxing = { module = "com.google.zxing:core", version.ref = "zxing" }
 
 [bundles]
+shared-tfa-components = [
+  "tb-mobile-components-core-outcome",
+]
+
 shared-kmp-common = [
   "androidx-annotation",
   "koin-core",

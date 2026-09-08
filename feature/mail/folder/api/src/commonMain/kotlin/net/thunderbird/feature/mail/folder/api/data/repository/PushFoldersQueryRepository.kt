@@ -1,7 +1,7 @@
 package net.thunderbird.feature.mail.folder.api.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.data.FolderError

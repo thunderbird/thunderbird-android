@@ -3,9 +3,9 @@ package net.thunderbird.core.logging.file
 import com.eygraber.uri.Uri
 import com.eygraber.uri.toAndroidUri
 import java.io.File
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.file.FileManager
 import net.thunderbird.core.file.FileOperationError
-import net.thunderbird.core.outcome.Outcome
 
 /**
  * Fake FileManager that captures content copied from a local file source URI.

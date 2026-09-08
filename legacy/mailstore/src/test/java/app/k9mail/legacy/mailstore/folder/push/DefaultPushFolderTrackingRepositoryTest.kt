@@ -20,7 +20,7 @@ import net.thunderbird.core.android.account.AccountsChangeListener
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.data.FolderError
 import org.mockito.kotlin.argumentCaptor

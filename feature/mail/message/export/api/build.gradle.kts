@@ -8,8 +8,6 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.core.outcome)
-
             implementation(libs.uri)
         }
     }

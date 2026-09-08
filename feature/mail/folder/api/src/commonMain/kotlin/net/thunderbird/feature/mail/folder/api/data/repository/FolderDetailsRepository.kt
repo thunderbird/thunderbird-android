@@ -1,6 +1,6 @@
 package net.thunderbird.feature.mail.folder.api.data.repository
 
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.mail.folder.api.data.FolderError

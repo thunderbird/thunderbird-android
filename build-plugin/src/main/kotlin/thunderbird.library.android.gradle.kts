@@ -69,6 +69,10 @@ dependencies {
 
     implementation(libs.bundles.shared.android)
 
+    if (rootProject.name != "components") {
+        implementation(libs.bundles.shared.tfa.components)
+    }
+
     testImplementation(libs.bundles.shared.android.test)
 }
 

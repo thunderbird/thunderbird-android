@@ -11,7 +11,6 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.core.common)
             implementation(projects.core.featureflag)
-            implementation(projects.core.outcome)
         }
         commonTest.dependencies {
             implementation(projects.feature.notification.testing)

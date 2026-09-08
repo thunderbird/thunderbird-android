@@ -36,6 +36,10 @@ kotlin {
             implementation(project.dependencies.platform(libs.kotlin.bom))
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.bundles.shared.kmp.common)
+
+            if (rootProject.name != "components") {
+                implementation(libs.bundles.shared.tfa.components)
+            }
         }
 
         commonTest.dependencies {

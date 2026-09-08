@@ -34,6 +34,11 @@ dependencies {
     implementation(platform(libs.koin.bom))
 
     implementation(libs.bundles.shared.jvm)
+
+    if (rootProject.name != "components") {
+        implementation(libs.bundles.shared.tfa.components)
+    }
+
     testImplementation(libs.bundles.shared.jvm.test)
 }
 

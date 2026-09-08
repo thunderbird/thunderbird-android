@@ -7,7 +7,7 @@ android {
 }
 
 dependencies {
-    api(projects.core.outcome)
+    api(libs.tb.mobile.components.core.outcome)
 
     implementation(projects.core.android.account)
     implementation(projects.core.common)

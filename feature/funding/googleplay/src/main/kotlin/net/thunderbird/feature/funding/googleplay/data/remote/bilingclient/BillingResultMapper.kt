@@ -2,7 +2,7 @@ package net.thunderbird.feature.funding.googleplay.data.remote.bilingclient
 
 import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.android.billingclient.api.BillingResult
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 
 internal fun <T> BillingResult.mapToOutcome(

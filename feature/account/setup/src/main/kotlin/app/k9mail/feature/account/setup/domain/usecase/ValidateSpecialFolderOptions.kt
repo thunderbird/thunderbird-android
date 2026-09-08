@@ -4,7 +4,7 @@ import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOptions
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase.ValidateSpecialFolderOptions.Failure
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.validation.ValidationOutcome
 import net.thunderbird.core.validation.ValidationSuccess
 

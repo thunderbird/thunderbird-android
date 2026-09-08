@@ -8,7 +8,7 @@ import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import dev.forkhandles.fabrikate.Fabrikate
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.validation.ValidationError
 import org.junit.Test
 

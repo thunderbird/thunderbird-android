@@ -4,7 +4,7 @@ import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.folders.FolderServerId
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 
 /**
  * A [RemoteFolderCreator] that does nothing and always returns [RemoteFolderCreationOutcome.Success.AlreadyExists].

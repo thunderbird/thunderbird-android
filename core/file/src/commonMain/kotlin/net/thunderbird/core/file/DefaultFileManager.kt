@@ -1,10 +1,10 @@
 package net.thunderbird.core.file
 
 import com.eygraber.uri.Uri
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.file.command.CopyCommand
 import net.thunderbird.core.file.command.CreateDirectoriesCommand
 import net.thunderbird.core.file.command.DeleteCommand
-import net.thunderbird.core.outcome.Outcome
 
 /**
  * Default implementation that delegates to internal commands.

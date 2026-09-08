@@ -1,6 +1,6 @@
 package net.thunderbird.core.validation.input
 
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.validation.ValidationError
 import net.thunderbird.core.validation.ValidationOutcome
 
