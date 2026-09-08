@@ -5,7 +5,18 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '.idea/**'
+      - '.gitattributes'
+      - '.github/**.json'
+      - '.gitignore'
+      - '.gitmodules'
+      - '**.md'
+      - 'LICENSE'
+      - 'NOTICE'
   pull_request:
+    branches-ignore:
+      - main
     paths-ignore:
       - '.idea/**'
       - '.gitattributes'
