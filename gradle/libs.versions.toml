@@ -40,6 +40,8 @@ androidxLocalBroadcastManager = "1.1.0"
 androidxNavigation = "2.9.8"
 androidxNavigationEvent = "1.0.1"
 androidxRecyclerView = "1.4.0"
+androidxRoom3 = "3.0.2"
+androidxSqlite = "2.7.0"
 androidxPreference = "1.2.1"
 # Pinning on 1.1.0: The 1.2.0 caused the Message List RecyclerView
 # to get a stale state when navigating back from Message Reader.
@@ -132,6 +134,7 @@ android-library = { id = "com.android.library", version.ref = "androidGradlePlug
 android-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }
 android-lint = { id = "com.android.lint", version.ref = "androidGradlePlugin" }
 android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
+androidx-room3 = { id = "androidx.room3", version.ref = "androidxRoom3" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinBom" }
 dependency-check = { id = "com.github.ben-manes.versions", version.ref = "dependencyCheckPlugin" }
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuardPlugin" }
@@ -203,6 +206,11 @@ androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragme
 androidx-navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "androidxNavigation" }
 androidx-preference = { module = "androidx.preference:preference", version.ref = "androidxPreference" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidxRecyclerView" }
+androidx-room3-compiler = { module = "androidx.room3:room3-compiler", version.ref = "androidxRoom3" }
+androidx-room3-runtime = { module = "androidx.room3:room3-runtime", version.ref = "androidxRoom3" }
+androidx-room3-testing = { module = "androidx.room3:room3-testing", version.ref = "androidxRoom3" }
+androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "androidxSqlite" }
+androidx-sqlite-framework = { module = "androidx.sqlite:sqlite-framework", version.ref = "androidxSqlite" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "androidxSwiperefreshlayout" }
 androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTestCore" }
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxTestEspresso" }

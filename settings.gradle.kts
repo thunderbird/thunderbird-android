@@ -187,6 +187,7 @@ include(
     ":core:configstore:impl-backend",
     ":core:configstore:testing",
     ":core:database:api",
+    ":core:database:internal",
     ":core:featureflag",
     ":core:logging:api",
     ":core:logging:config",
