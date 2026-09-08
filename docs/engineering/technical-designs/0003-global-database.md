@@ -214,6 +214,11 @@ user.
 The global database, repository contracts, and attachment access support Android and JVM desktop. Legacy storage
 reading and import are Android-only.
 
+`core:database` uses Room 3 with AndroidX `BundledSQLiteDriver` on both supported platforms. Android opens a named
+file-backed database in the application's private database directory. JVM desktop application composition supplies the
+database file location. The application database assembly owns the composed Room `@Database`, registers the
+deterministically ordered feature migration contributions, and opens it through the shared bootstrap path.
+
 ## Testing
 
 Automated tests cover:
@@ -242,6 +247,5 @@ Automated tests cover:
 ## Open technical questions
 
 - Which supported legacy schema versions require dedicated fixtures?
-- Which Room driver and locations apply on Android and JVM desktop?
 - How long must compatibility mappings support pre-cutover external message references after migration?
 
