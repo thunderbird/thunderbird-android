@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "6.502",
+  "versioncode": 35002,
+  "date": "2023-01-16",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed crash at app startup",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

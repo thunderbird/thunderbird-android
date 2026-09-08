@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "6.900",
+  "versioncode": 39000,
+  "date": "2024-05-15",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Started converting the user interface to Material 3",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for mailto: URI on NFC tag",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added experimental workaround for the app crashing in the background",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Optimized some of the IMAP protocol interactions",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't delay showing the notification when Push is active",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "5.301",
+  "versioncode": 23510,
+  "date": "2017-10-14",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Improved OpenPGP support",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Various bug fixes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

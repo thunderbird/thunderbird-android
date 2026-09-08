@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "6.508",
+  "versioncode": 35008,
+  "date": "2023-02-15",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Removed \"Send…\" submenu from the message view toolbar",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Limit summary notification actions to messages for which individual notifications are currently being displayed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when trying to download an embedded image not using an http(s) URI",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Internal changes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

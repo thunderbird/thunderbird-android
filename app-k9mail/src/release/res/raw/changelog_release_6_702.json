@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "6.702",
+  "versioncode": 37002,
+  "date": "2023-05-02",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed crash when the compose screen goes to the background, e.g. when adding an attachment",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

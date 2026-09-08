@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "5.914",
+  "versioncode": 29014,
+  "date": "2022-03-24",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "The name and description of notification categories are now updated when the app language is changed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where notification settings might not have been properly restored on settings import",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a crash when tapping the unread widget tries to open a folder that no longer exists",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

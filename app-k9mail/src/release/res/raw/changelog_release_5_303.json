@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "version": "5.303",
+  "versioncode": 23530,
+  "date": "2017-11-03",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug that could lead to attachments not being displayed",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where HTML messages weren't displayed correctly",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed crash when encountering invalid email addresses",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

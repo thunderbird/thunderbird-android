@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "6.603",
+  "versioncode": 36003,
+  "date": "2023-10-12",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed settings import/export of identities without a name or description",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

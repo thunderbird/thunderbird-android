@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "version": "5.108",
+  "versioncode": 23080,
+  "date": "2016-03-22",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added rudimentary support for reading and composing PGP/MIME messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for stacked single message notifications on Android Wear",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added setting to disable notifications during quiet time",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added setting to show confirmation dialog when discarding message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added option to copy sender/recipient addresses to clipboard",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Show warning when user tries to send an email without a subject",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "New database structure; temporarily disables fulltext search",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Allow importing of settings created with newer versions of K-9 Mail",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for Server Name Indication",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Disabled support for SSLv3 protocol/ciphers and all RC4 ciphers",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug where third-party apps couldn't delete messages from certain folders",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug in settings export with certain folder names",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "IMAP: Fall back to LOGIN command when AUTHENTICATE PLAIN fails",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added auto-configuration support for more providers",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added translations for Persian (Farsi) and Slovenian",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "More bug fixes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

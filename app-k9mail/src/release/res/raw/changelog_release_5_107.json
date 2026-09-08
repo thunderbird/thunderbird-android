@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.107",
+  "versioncode": 23070,
+  "date": "2015-06-09",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed an issue caused by the latest Android System WebView update",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

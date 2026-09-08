@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "6.706",
+  "versioncode": 37006,
+  "date": "2023-06-16",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed a bug that lead to folders appearing to be empty",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Don't use nickname as display name when auto-completing recipient using the nickname",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

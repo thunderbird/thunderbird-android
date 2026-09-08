@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "version": "6.700",
+  "versioncode": 37000,
+  "date": "2023-04-24",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Don't attempt to open file: URIs in an email; tapping such a link will now copy the URL to the clipboard instead",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a crash when trying to export accounts containing an identity without a sender name",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved logging when exporting settings to a file fails",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed various crashes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

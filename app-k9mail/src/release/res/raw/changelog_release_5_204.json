@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "5.204",
+  "versioncode": 23240,
+  "date": "2017-02-24",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug where not all data was removed for deleted messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved support for messages that didn't display correctly",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed bug with notification actions sometimes not working",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Use \"encrypted.asc\" as filename for PGP/MIME emails",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Many more bug fixes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

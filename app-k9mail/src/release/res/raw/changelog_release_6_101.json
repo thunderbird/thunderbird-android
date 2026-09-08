@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "6.101",
+  "versioncode": 31001,
+  "date": "2022-07-06",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added support for using OAuth 2.0 with personal Microsoft accounts (Office365 accounts don't work yet)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Made the transition of existing Gmail accounts to OAuth 2.0 a bit easier",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed various small UI bugs",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Updated translations",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

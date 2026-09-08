@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "version": "4.324",
+  "versioncode": 17025,
+  "date": "2013-02-06",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Bug fixes",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Improved animations when showing the message list",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

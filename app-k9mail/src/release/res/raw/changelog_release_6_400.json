@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "version": "6.400",
+  "versioncode": 34000,
+  "date": "2022-11-28",
+  "notes": [
+    {
+      "type": "new",
+      "text": "Added swipe actions to the message list screen",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for swiping between messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added a monochromatic app icon for Android 13",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed \"K-9 Accounts\" shortcuts (please remove existing shortcuts and add them again)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed error reporting for (old) send failures",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "A lot of other bug fixes; see changes for versions 6.3xx",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added Western Frisian translation and updated others",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

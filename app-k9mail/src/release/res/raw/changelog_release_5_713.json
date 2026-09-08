@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "version": "5.713",
+  "versioncode": 27013,
+  "date": "2020-05-08",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug where reply/reply all/forward would open an empty new message screen",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

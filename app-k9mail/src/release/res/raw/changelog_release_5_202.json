@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "5.202",
+  "versioncode": 23220,
+  "date": "2017-01-05",
+  "notes": [
+    {
+      "type": "fixed",
+      "text": "Fixed bug where BCC header line was accidentally included in sent messages",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed problem with getting the list of IMAP folders",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Always show subject in message header when split mode is active",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Hide crypto status indicator in contact dropdown when no crypto provider is configured",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed button to expand CC/BCC recipients in dark theme",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed various crashes",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}

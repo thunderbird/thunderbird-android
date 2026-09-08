@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "version": "5.700",
+  "versioncode": 27000,
+  "date": "2019-11-24",
+  "notes": [
+    {
+      "type": "changed",
+      "text": "Major redesign of the user interface",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Temporarily disabled Push (IMAP IDLE) until we can make it work reliable; your accounts will be polled every 15 minutes instead",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Deprecated support for the WebDAV protocol; new accounts can no longer be added",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "K-9 Mail now requires Android 5.0 and newer",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for Autocrypt setup message",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "new",
+      "text": "Added support for encrypted subjects",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Allow installation on external media (Android 6+ with adopted storage)",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed the broken option to store the message database on external storage",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "changed",
+      "text": "Removed the 'remote control' interface third-party apps could use to change some settings in K-9 Mail",
+      "source": "ckchangelog-xml"
+    },
+    {
+      "type": "fixed",
+      "text": "Fixed a lot of bugs and probably introduced some new ones. Please report bugs.",
+      "source": "ckchangelog-xml"
+    }
+  ]
+}
