@@ -799,7 +799,7 @@
     <string name="debug_export_logs_failure">Извоз није успео.</string>
     <string name="message_view_recipients_format">за <xliff:g id="recipients">%s</xliff:g></string>
     <string name="message_view_additional_recipient_prefix">+</string>
-    <string name="message_view_me_text">мене</string>
+    <string name="message_view_to_me_text">мене</string>
     <string name="general_settings_contact_name_color_label">Боја имена контакта</string>
     <string name="general_settings_post_remove_action_title">Након брисања или премештања поруке</string>
     <string name="general_settings_post_remove_action_return_to_list">Врати се на листу порука</string>

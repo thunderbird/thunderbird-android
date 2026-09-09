@@ -557,7 +557,7 @@
     <string name="notification_channel_messages_description">Notifikasjonar relatert til meldingar</string>
     <string name="debug_enable_sensitive_logging_summary">Kan vise passord i loggar.</string>
     <string name="global_settings_show_correspondent_names_label">Vis korrespondentnamn</string>
-    <string name="message_view_me_text">meg</string>
+    <string name="message_view_to_me_text">meg</string>
     <string name="global_settings_flag_summary">Stjerner indikerer flagga meldingar</string>
     <string name="global_settings_preview_lines_label">Førehandsvis linjer</string>
     <string name="global_settings_show_correspondent_names_summary">Vis korrespondentnamn i staden for email-adresser</string>

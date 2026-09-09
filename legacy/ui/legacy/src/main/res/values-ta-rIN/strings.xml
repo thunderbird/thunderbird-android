@@ -239,7 +239,7 @@
     <string name="notification_channel_miscellaneous_description">பிழைகள் போன்ற இதர அறிவிப்புகள்.</string>
     <string name="compose_error_incomplete_recipient">பெறுநரின் புலத்தில் முழுமையற்ற உள்ளீடு உள்ளது!</string>
     <string name="general_settings_right_swipe_title">வலது ச்வைப்</string>
-    <string name="message_view_me_text">நான்</string>
+    <string name="message_view_to_me_text">நான்</string>
     <string name="global_settings_show_correspondent_names_summary">நிருபர் பெயர்களை அவர்களின் மின்னஞ்சல் முகவரிகளைக் காட்டிலும் காண்பி</string>
     <string name="general_settings_message_list_density_title">அடர்த்தி</string>
     <string name="global_settings_privacy_hide_useragent">அஞ்சல் கிளையண்டை மறைக்கவும்</string>

@@ -22,7 +22,7 @@ internal class RealMessageDetailsParticipantFormatter(
     private val contactNameProvider: ContactNameProvider,
     private val showContactNames: Boolean,
     private val contactNameColor: Int?,
-    private val meText: String,
+    private val toMeText: String,
 ) : MessageDetailsParticipantFormatter {
     override fun getDisplayName(address: Address, account: LegacyAccountDto): CharSequence? {
         val identity = account.findIdentity(address)
@@ -74,6 +74,6 @@ internal fun createMessageDetailsParticipantFormatter(
         } else {
             null
         },
-        meText = resources.getString(R.string.message_view_me_text),
+        toMeText = resources.getString(R.string.message_view_to_me_text),
     )
 }
