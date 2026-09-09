@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="23.0" versioncode="31" date="2026-09-08">
+        <change>Fixed: Signature field only accepted single-line text in Composition defaults</change>
+    </release>
     <release version="22.0" versioncode="30" date="2026-08-10">
         <change>New: Incognito Keyboard privacy setting disables Google keyboard from learning words</change>
         <change>New: Thundermail interim screen when adding an account</change>
