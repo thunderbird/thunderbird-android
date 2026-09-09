@@ -5,7 +5,8 @@
 - Format architecture: [Portable Profile Data Format](../../architecture/portable-profile-data-format.md)
 - Standards profile: [Portable Profile Data Standards](../../standards/portable-profile-data.md)
 - Mail archive compatibility target: [draft-ietf-mailmaint-pdparchive-01: Personal Data Portability Archive](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01)
-- Encryption format: [WinZip AES](https://www.winzip.com/en/support/aes-encryption/)
+- Encryption format: [age version 1](https://age-encryption.org/v1)
+- Android/JVM implementation: [Kage v0.7.0](https://github.com/android-password-store/kage/releases/tag/v0.7.0)
 - Status: **Proposed**
 
 ## Summary
@@ -28,25 +29,35 @@ tokens are not exported and imported accounts prompt for authentication when req
 
 ### Archive forms
 
-Every portable profile-data export is a password-protected ZIP64 archive using AES-256 and the
-[WinZip AES encryption specification](https://www.winzip.com/en/support/aes-encryption/). Legacy ZipCrypto is not
-allowed. In a Thunderbird profile export, each included mail account is a self-contained raw PDPArchive account archive
-stored directly under its account directory. In a standalone PDPArchive export, `archive.json` and `mail/` are at the
-ZIP64 root. The app records the exact PDPArchive draft revision in the account metadata and, when present, the
-Thunderbird manifest. An account archive does not depend on Thunderbird settings and can be imported independently after
-decryption and extraction.
+Every portable profile-data export is a binary [age version 1](https://age-encryption.org/v1) file encrypted with the
+user passphrase. Its authenticated plaintext is a ZIP64 archive. In a Thunderbird profile export, each included mail
+account is a self-contained raw PDPArchive account archive stored directly under its account directory. In a standalone
+PDPArchive export, `archive.json` and `mail/` are at the ZIP64 payload root. The app records the exact PDPArchive draft
+revision in the account metadata and, when present, the Thunderbird manifest. An account archive does not depend on
+Thunderbird settings and can be imported independently after age decryption and ZIP extraction.
 
-PDPArchive `-01` defines a raw file layout but does not select a container format or encryption mechanism. Encrypted
-ZIP64 is Thunderbird's convention until the standard settles those concerns. The complete multi-account archive is a
-Thunderbird format that contains PDPArchives. It is not represented as one PDPArchive.
+PDPArchive `-01` defines a raw file layout but does not select a container format or encryption mechanism. An
+age-encrypted ZIP64 payload is Thunderbird's convention until the standard settles those concerns. The complete
+multi-account archive is a Thunderbird format that contains PDPArchives. It is not represented as one PDPArchive.
 
-Android, JVM, iOS, and web use the same encrypted ZIP64 representation through a common Kotlin Multiplatform boundary
-backed by maintained target libraries. Export writes directly to an incomplete output file and publishes it only after
-the archive closes successfully. Import decrypts and validates the selected entries before changing runtime repositories.
-An authentication failure imports nothing.
+Android and JVM use [Kage v0.7.0](https://github.com/android-password-store/kage/releases/tag/v0.7.0) for streaming
+age encryption and decryption. Kage's `ScryptRecipient` and `ScryptIdentity` implement the age passphrase recipient. The
+integration uses raw binary age rather than ASCII armor. Kage currently declares Android API 26 because it uses `java.util.Base64`. Thunderbird supports
+API 23 and contributes a patch that replaces those calls with `kotlin.io.encoding.Base64` and lowers Kage's API check. If
+that patch is not available in an upstream release when implementation begins, Thunderbird may publish a temporary fork
+whose only functional difference is API 23 compatibility. The fork must track upstream security and correctness fixes
+and is retired after the compatible upstream release is adopted.
 
-Portable exports and full backups use the same encrypted ZIP64 representation. They differ in selected content and user
-warning. An export may contain selected mail, settings/profile data, or both. A full backup contains the complete
+The archive writer streams ZIP64 output into Kage's age encryption stream and writes the ciphertext to an incomplete
+output file. It publishes the file only after both layers close successfully. Import decrypts the complete age stream to
+an unpublished temporary ZIP64 file before opening the container. Only successful consumption of the complete stream
+establishes authentication. Import then validates the ZIP container and selected entries before changing runtime
+repositories. An authentication failure deletes the temporary plaintext and imports nothing. Storage estimation includes
+the temporary plaintext required for import. Other platforms use the same age version 1 and ZIP64 representation through
+compatible maintained implementations when those targets are implemented.
+
+Portable exports and full backups use the same age-encrypted ZIP64 representation. They differ in selected content and
+user warning. An export may contain selected mail, settings/profile data, or both. A full backup contains the complete
 selected portable profile-data bundle.
 
 Individual-message and selected-folder EML export are separate mail-export flows. They do not write this bundle, use
@@ -127,9 +138,9 @@ The detailed portable-settings inventory is an acceptance artifact of the implem
 
 ### Import behavior
 
-Import first validates the container or authenticated encryption envelope, then parses all records without changing runtime
-storage. It presents a selection and conflict preview before applying user-selected records. Account credentials are
-requested only after configuration import and never read from the archive.
+Import first authenticates the age envelope and validates the decrypted ZIP64 container, then parses all records without
+changing runtime storage. It presents a selection and conflict preview before applying user-selected records. Account
+credentials are requested only after configuration import and never read from the archive.
 
 Import compares records by `recordId`. When a record already exists, import reports a conflict and leaves local state
 unchanged until the user chooses whether to keep the local record or replace it with the imported record. Import does
@@ -174,10 +185,10 @@ verified archive remains a user-controlled artifact.
 ## Migration and Rollout
 
 1. Define the portable settings/profile inventory and mapping from current account/profile and settings repositories.
-2. Select and review maintained Android, JVM, iOS, and web implementations that support AES-256 encrypted ZIP64
-   archives.
-3. Implement encrypted ZIP64 archives, record codecs, the account-archive writer, cleanup, and untrusted-input validation
-   with fixtures.
+2. Contribute Kage's `kotlin.io.encoding.Base64` API 23 compatibility patch upstream. Use a narrowly maintained
+   compatibility fork only until an upstream release containing the patch is available.
+3. Integrate Kage's streaming age API around the ZIP64 payload, implement record codecs, the account-archive writer,
+   cleanup, and untrusted-input validation with fixtures.
 4. Implement one independently importable full PDPArchive `-01` archive per mail account, including separate Thunderbird
    POP3 and local-only profiles, size estimation, progress reporting, verified publication, and incomplete-output
    cleanup.
@@ -194,13 +205,15 @@ rollout.
 
 Automated verification must cover:
 
-- encrypted Thunderbird envelope round trips containing zero, one, and multiple independently valid PDPArchive account
-  archives and each settings/profile record type.
-- encrypted standalone PDPArchive round trips with `archive.json` and `mail/` at the decrypted ZIP64 payload root.
-- verification that every portable profile-data export is an AES-256 encrypted ZIP64 archive.
+- age-encrypted Thunderbird envelope round trips containing zero, one, and multiple independently valid PDPArchive
+  account archives and each settings/profile record type.
+- age-encrypted standalone PDPArchive round trips with `archive.json` and `mail/` at the decrypted ZIP64 payload root.
+- verification that every portable profile-data export is a binary age version 1 file with a ZIP64 plaintext payload.
 - incorrect-passphrase, tamper, truncation, and malformed-archive rejection.
-- bounded-memory archive writing and reading on Android, JVM, iOS, and web.
-- cross-implementation fixtures with supported independent ZIP tools.
+- bounded-memory archive writing and reading on Android and JVM.
+- Kage encryption and decryption tests on Android API 23, 24, and 25.
+- bidirectional passphrase-encryption fixtures with the reference age implementation and container fixtures with
+  independent ZIP tools.
 - independent extraction and import of every account archive without the Thunderbird envelope.
 - required PDPArchive `archive.json` and `folder.json` fields and exact draft-revision metadata.
 - round-trip import of selected mail, global settings, account configuration, profile, identities, and folder settings.
@@ -214,7 +227,7 @@ Automated verification must cover:
 - stable account and record identity across export and import fixtures.
 - existing-record conflict preview without writes before confirmation.
 - credential, OAuth-token, private-key, queue, migration-state, and device-local-state exclusion.
-- encrypted ZIP64 round trips for every export type and cross-device import.
+- age-encrypted ZIP64 round trips for every export type and cross-device import.
 - archive output and temporary-workspace estimates for same-volume and separate-volume destinations.
 - archive progress propagation to the durable Global Database migration state.
 - verified publication and cleanup of partial output after cancellation, process termination, or write failure.
@@ -228,7 +241,7 @@ Automated verification must cover:
 
 ## Open Technical Questions
 
-- Which maintained AES ZIP implementations satisfy the Android, JVM, iOS, and web security and maintenance requirements?
+- Which age scrypt work factor provides an acceptable passphrase-derivation cost across supported Android devices?
 - Which global preferences and account/folder settings are cross-device meaningful enough for the first inventory?
 - How should an import UI present concurrent same-record changes before a future synchronization service exists?
 - Which upstream PDPArchive revision first defines a standard non-IMAP/POP3 mapping that can replace Thunderbird's

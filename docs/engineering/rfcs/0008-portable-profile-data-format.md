@@ -8,7 +8,7 @@
 - Mail archive compatibility target: [draft-ietf-mailmaint-pdparchive-01: Personal Data Portability Archive](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01)
 - Mail message format: [RFC 5322: Internet Message Format](https://www.rfc-editor.org/info/rfc5322/)
 - MIME: [RFC 2045: Multipurpose Internet Mail Extensions](https://www.rfc-editor.org/info/rfc2045/)
-- Encryption format: [WinZip AES](https://www.winzip.com/en/support/aes-encryption/)
+- Encryption format: [age version 1](https://age-encryption.org/v1)
 - Status: **Accepted**
 
 ## Summary
@@ -19,8 +19,8 @@ project and may extend the record format after separate product, architecture, p
 
 Each mail account is exported as an independently importable PDPArchive account archive. A versioned, encrypted
 Thunderbird envelope packages zero or more raw account archives with Thunderbird-owned settings and profile records
-without changing the PDPArchive contents. Every portable profile-data export is an AES-256 password-protected ZIP64
-archive, including standalone PDPArchive and settings-only exports.
+without changing the PDPArchive contents. Every portable profile-data export is an age version 1 passphrase-encrypted
+file whose authenticated plaintext is a ZIP64 archive, including standalone PDPArchive and settings-only exports.
 
 ## Motivation
 
@@ -49,18 +49,18 @@ The app defines a versioned portable profile-data bundle with these parts:
 - **Account profile:** stable account identifier, display name, color, avatar selection, ordering, and other portable
   profile presentation data in the same new shape.
 
-The Thunderbird envelope has an app format version and generator version and is always a password-protected ZIP64
-archive using [WinZip AES](https://www.winzip.com/en/support/aes-encryption/) with AES-256. Legacy ZipCrypto is not
-allowed. Every account archive records its exact PDPArchive draft revision and is importable after decryption and extraction. Importers tolerate
-unknown fields, reject unknown required format versions safely, and migrate every older version that this app has
-emitted. PDPArchive is the app's versioned mail-archive format. The app maintains adapters as the draft evolves toward
-RFC status.
+The Thunderbird envelope has an app format version and generator version. It is a binary
+[age version 1](https://age-encryption.org/v1) file encrypted with the user passphrase. The authenticated plaintext is a
+ZIP64 archive. Every account archive records its exact PDPArchive draft revision and is importable after age decryption
+and ZIP extraction. Importers tolerate unknown fields, reject unknown required format versions safely, and migrate every
+older version that this app has emitted. PDPArchive is the app's versioned mail-archive format. The app maintains adapters
+as the draft evolves toward RFC status.
 
-PDPArchive `-01` does not select a container or encryption mechanism. ZIP64 is Thunderbird's temporary container
-and encryption convention until the standard settles those concerns. The multi-account Thunderbird envelope
-contains raw PDPArchive account directories but is not itself represented as one PDPArchive. Thunderbird settings remain
-outside account archives. A standalone export uses the same password-protected ZIP64 representation with `archive.json`
-and `mail/` at its root.
+PDPArchive `-01` does not select a container or encryption mechanism. An age-encrypted ZIP64 payload is Thunderbird's
+temporary container and encryption convention until the standard settles those concerns. The multi-account Thunderbird
+envelope contains raw PDPArchive account directories but is not itself represented as one PDPArchive. Thunderbird
+settings remain outside account archives. A standalone export uses the same age-encrypted representation, with
+`archive.json` and `mail/` at the root of its decrypted ZIP64 payload.
 
 PDPArchive also defines standard contact and calendar representations based on
 [JSContact](https://www.rfc-editor.org/info/rfc9553),
@@ -103,10 +103,12 @@ Import previews the contained data and lets the user select what to import. It n
 account or setting. It restores portable configuration without secrets, then asks the user to authenticate accounts as
 needed.
 
-Every portable export, including a standalone PDPArchive, settings-only export, and full app backup, is a
-password-protected ZIP64 archive using WinZip AES with AES-256. Android, JVM, iOS, and web use the same representation
-through a common Kotlin Multiplatform boundary backed by maintained target libraries. No unencrypted export or legacy
-ZipCrypto archive is published.
+Every portable export, including a standalone PDPArchive, settings-only export, and full app backup, is an age version 1
+passphrase-encrypted file containing a ZIP64 payload. Android and JVM use
+[Kage](https://github.com/android-password-store/kage) through a narrow encryption boundary. Thunderbird contributes an
+API 23 compatibility patch upstream and may temporarily maintain a minimal fork containing only that compatibility
+change until an upstream release includes it. Other platforms use compatible maintained age implementations when those
+targets are implemented. No unencrypted portable export is published.
 
 Individual-message and selected-folder EML export are separate mail-export capabilities. They do not act as a fallback
 for this profile-data format, do not gate migration, and do not preserve portable profile-data metadata.
@@ -160,8 +162,10 @@ It remains useful for its narrower mail-export use cases, not for profile portab
   POP3 profile.
 - The new settings and profile contract needs a deliberate inventory to avoid losing a user-visible setting or carrying
   device-local state into portability.
-- AES ZIP compatibility varies between tools. Fixtures must verify the selected target libraries against each other and
-  supported independent ZIP tools.
+- Kage currently declares Android API 26. Supporting the app's API 23 minimum requires an upstream compatibility patch
+  or a narrowly maintained fork, plus API 23 through 25 verification.
+- The age and ZIP layers require separate interoperability fixtures with the reference age implementation and independent
+  ZIP tools.
 - User-facing conflict resolution can be complex when imported configuration differs from existing accounts.
 - All portable bundles add passphrase-loss risk. The app cannot recover an export or backup without its passphrase.
 - Portable exports can contain sensitive mail addresses, server details, and message content even when credentials are
@@ -171,7 +175,7 @@ It remains useful for its narrower mail-export use cases, not for profile portab
 
 - Which user settings and account or folder choices are portable, and which are explicitly device-local?
 - What field-group conflict presentation is appropriate when an imported record conflicts with local profile data?
-- Which maintained AES ZIP implementations satisfy the Android, JVM, iOS, and web security and maintenance requirements?
+- Which age scrypt work factor provides an acceptable passphrase-derivation cost across supported Android devices?
 - Which PDPArchive `-01` target-client combinations are supported by the first release, and how are later revisions
   introduced?
 - Which upstream PDPArchive revision first provides standard POP3 and local-only mappings that can replace Thunderbird's

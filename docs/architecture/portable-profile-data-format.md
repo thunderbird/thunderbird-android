@@ -14,16 +14,14 @@ The format prioritizes interoperability with
 - each exported mail account is independently usable as a PDPArchive full archive.
 - Thunderbird-specific settings remain outside account archives.
 - separate namespaced POP3 and local-only profiles preserve client-held mail without fabricating IMAP metadata.
-- decrypting and unpacking the password-protected ZIP64 archive exposes account archives that can be imported
-  independently.
+- decrypting the age file and unpacking its ZIP64 payload exposes account archives that can be imported independently.
 - draft-specific behavior is isolated so later PDPArchive revisions can be supported through explicit adapters.
 
 PDPArchive `-01` is a work in progress. It defines a raw file layout but does not select a container format, define an
 encryption mechanism, or provide a formal conformance section. In this document, a **PDPArchive account archive** means
 a directory tree that follows the raw layout and JSON requirements of PDPArchive `-01`. Thunderbird packages the tree in
-a password-protected ZIP64 archive using the
-[WinZip AES encryption specification](https://www.winzip.com/en/support/aes-encryption/) until PDPArchive standardizes a
-container and encryption mechanism.
+a ZIP64 archive and encrypts the complete archive using
+[age version 1](https://age-encryption.org/v1) until PDPArchive standardizes a container and encryption mechanism.
 
 ## Format boundaries
 
@@ -38,8 +36,8 @@ import a decrypted and extracted account archive independently. Thunderbird sett
 inserted into an account archive. The POP3 and local-only profiles may add only the namespaced declarations and optional
 metadata defined by this document. These additions are an implementation-specific extension, not a PDPArchive extension mechanism.
 
-A standalone PDPArchive export uses the same mandatory password-protected ZIP64 representation. Its root is the raw
-PDPArchive account archive. The representation is replaced or adapted if PDPArchive standardizes a container and
+A standalone PDPArchive export uses the same mandatory age-encrypted ZIP64 representation. The ZIP64 payload root is the
+raw PDPArchive account archive. The representation is replaced or adapted if PDPArchive standardizes a container and
 encryption mechanism.
 
 A settings-only export contains an encrypted Thunderbird envelope without account archives. It is not itself a
@@ -48,7 +46,7 @@ represented as one multi-account PDPArchive.
 
 ## Thunderbird envelope
 
-The Thunderbird envelope is always a password-protected ZIP64 archive with this logical layout:
+The Thunderbird envelope is always an age-encrypted file whose ZIP64 plaintext has this logical layout:
 
 ```text
 manifest.json
@@ -73,9 +71,9 @@ manually extracted archives identifiable. The label is display-only and MUST NOT
 portable account ID and manifest remain authoritative. Labels MUST be normalized into path-safe segments and duplicate
 labels remain distinguishable through the portable account ID.
 
-The selected ZIP encryption may leave entry names visible. Account labels MUST NOT contain email addresses or server
-names. After extraction, labels and mail data are visible at the user-selected destination and receive the same privacy
-warning.
+Age encrypts the complete ZIP64 payload, including entry names. Account labels MUST NOT contain email addresses or server
+names because labels become visible after decryption and extraction. Labels and mail data at the user-selected
+destination receive the same privacy warning.
 
 `manifest.json` identifies the Thunderbird envelope, not PDPArchive. Version 1 has this logical shape:
 
@@ -105,7 +103,7 @@ warning.
 
 `exportId` is unique to an envelope. It is not a profile or account identity. `createdAt` is an RFC 3339 UTC timestamp.
 A POP3 account archive includes `net.thunderbird.pdpa.pop3-v1` in `extensions`. A local-only account archive includes
-`net.thunderbird.pdpa.local-v1`. AES ZIP authentication protects each encrypted archive entry.
+`net.thunderbird.pdpa.local-v1`. The age envelope authenticates the complete encrypted ZIP64 payload.
 
 Paths in `manifest.json` MUST be relative, normalized, and confined to the envelope. Unknown required envelope versions
 are rejected. Unknown optional fields are preserved when possible and otherwise ignored.
@@ -293,19 +291,21 @@ state, queues, internal database state, migration state, and telemetry.
 Thunderbird records may reference an account only through its portable account ID. They MUST NOT be required to recover
 mail content or standard PDPArchive metadata.
 
-## ZIP encryption
+## age encryption
 
-Every Thunderbird profile export and standalone PDPArchive export is a password-protected ZIP64 archive using AES-256
-and the widely supported
-[WinZip AES encryption specification](https://www.winzip.com/en/support/aes-encryption/). Legacy ZipCrypto MUST NOT be
-used. An unencrypted portable profile-data export MUST NOT be published.
+Every Thunderbird profile export and standalone PDPArchive export is a binary
+[age version 1](https://age-encryption.org/v1) file encrypted with the user passphrase. The authenticated plaintext is a
+ZIP64 archive. ASCII armor and unencrypted portable profile-data exports MUST NOT be published.
 
-Export writes encrypted ZIP entries directly to an incomplete output file and publishes it only after the archive closes
-successfully. Import decrypts and validates every selected entry before changing runtime repositories. Authentication
-failure removes temporary output and imports nothing.
+Export streams the ZIP64 payload through the age encryptor into an incomplete output file and publishes it only after both
+layers close successfully. Import decrypts and authenticates the complete age stream into an unpublished temporary ZIP64
+file before opening and validating selected entries or changing runtime repositories. Authentication failure deletes the
+temporary plaintext and imports nothing. Import storage estimation includes this temporary plaintext.
 
-Android, JVM, iOS, and web use the same encrypted ZIP64 representation through a common Kotlin Multiplatform boundary.
-Each target uses a maintained ZIP implementation rather than implementing archive encryption.
+Android and JVM use [Kage](https://github.com/android-password-store/kage) behind the format boundary. The app's API 23
+minimum is maintained through an upstream Kage compatibility patch or, temporarily, a minimal fork that replaces
+`java.util.Base64` with `kotlin.io.encoding.Base64`. The patch does not alter age cryptography or wire-format behavior.
+Other platforms use compatible maintained age implementations when those targets are implemented.
 
 ## Import and validation
 
@@ -336,11 +336,11 @@ A new PDPArchive revision is enabled only after fixtures verify:
 - folder hierarchy, flags, identifiers, subscription state, and complete message selection.
 - full-account export semantics and rejection of unsupported partial or incremental archives.
 - IMAP, Thunderbird POP3-profile, and Thunderbird local-only-profile behavior.
-- AES-256 encrypted ZIP64 interoperability, incorrect-passphrase rejection, and bounded-memory processing on JVM and
-  Android.
+- binary age version 1 interoperability with the reference age implementation, ZIP64 interoperability with independent
+  ZIP tools, incorrect-passphrase rejection, and bounded-memory processing on JVM and Android API 23 and later.
 - rejection of malformed and resource-exhaustion inputs.
 
 Compatibility claims always name the exact PDPArchive revision. Until the draft selects a container and defines formal
 conformance, documentation says that account archives follow the revision's raw layout using Thunderbird's temporary
-ZIP64 convention rather than claiming compliance with a finalized IETF standard. This claim applies to each decrypted
-and extracted account archive, not to its encrypted ZIP64 transport.
+age-encrypted ZIP64 convention rather than claiming compliance with a finalized IETF standard. This claim applies to
+each decrypted and extracted account archive, not to its encrypted transport.

@@ -1,6 +1,6 @@
 # Standards Profile: Portable Profile Data
 
-- Status: Adopted for full mail-account export and encrypted ZIP64
+- Status: Adopted for full mail-account export and age-encrypted ZIP64
 - Decision: [RFC 0008](../engineering/rfcs/0008-portable-profile-data-format.md)
 - Architecture: [Portable Profile Data Format](../architecture/portable-profile-data-format.md)
 - Technical design: [Technical Design 0004](../engineering/technical-designs/0004-portable-profile-data-format.md)
@@ -14,8 +14,8 @@ Support claims apply to full mail-account archives only. Partial and incremental
 |         ID          |                 Specification                 |  Revision or status   |               Adoption               |             Used by             |                                                Authoritative link                                                |                                                Notes                                                |
 |---------------------|-----------------------------------------------|-----------------------|--------------------------------------|---------------------------------|------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
 | `pdpa-01`           | Personal Data Portability Archive             | Internet-Draft `-01`  | Adopted                              | Raw account archives            | [Draft `-01`](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01)                          | Work in progress with no selected container, encryption mechanism, or formal conformance definition |
-| `winzip-aes`        | WinZip AES Encryption Specification           | AE-1 and AE-2         | Adopted with AES-256                 | ZIP entry encryption            | [WinZip AES](https://www.winzip.com/en/support/aes-encryption/)                                                  | Legacy ZipCrypto is not allowed                                                                     |
-| `zip-6310`          | ZIP File Format Specification                 | APPNOTE 6.3.10        | Adopted temporary convention         | Decrypted container             | [APPNOTE 6.3.10](https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT)                                    | ZIP64 is replaced or adapted if PDPArchive selects a container                                      |
+| `age-v1`            | age File Encryption                           | Version 1             | Adopted with scrypt passphrase mode  | Complete payload encryption     | [age version 1](https://age-encryption.org/v1)                                                                   | Binary format without ASCII armor                                                                   |
+| `zip-6310`          | ZIP File Format Specification                 | APPNOTE 6.3.10        | Adopted temporary convention         | Authenticated plaintext payload | [APPNOTE 6.3.10](https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT)                                    | ZIP64 is replaced or adapted if PDPArchive selects a container                                      |
 | `imf`               | Internet Message Format                       | RFC 5322              | Adopted                              | EML message representation      | [RFC 5322](https://www.rfc-editor.org/rfc/rfc5322.html)                                                          | Governs message syntax                                                                              |
 | `mime-format`       | MIME Part One and Part Two                    | RFC 2045 and RFC 2046 | Adopted                              | EML body and multipart fidelity | [RFC 2045](https://www.rfc-editor.org/rfc/rfc2045.html), [RFC 2046](https://www.rfc-editor.org/rfc/rfc2046.html) | Governs MIME structure and transfer encoding                                                        |
 | `imap4rev2`         | IMAP4rev2                                     | RFC 9051              | Adopted for IMAP archives            | Folder and message metadata     | [RFC 9051](https://www.rfc-editor.org/rfc/rfc9051.html)                                                          | PDPArchive also refers informatively to obsolete IMAP4rev1 terminology                              |
@@ -38,8 +38,8 @@ availability issue. The `$schema` value remains unchanged in exported metadata.
 
 ```mermaid
 graph TD
-    PROFILE[Portable profile data] --> ZIP[ZIP64 APPNOTE 6.3.10]
-    ZIP --> ZIPAES[WinZip AES 256]
+    PROFILE[Portable profile data] --> AGE[age version 1]
+    AGE --> ZIP[ZIP64 APPNOTE 6.3.10]
     PROFILE --> PDPA[PDPArchive draft 01]
     PDPA --> IMF[RFC 5322]
     IMF --> MIME1[RFC 2045]
@@ -90,11 +90,11 @@ unqualified PDPArchive conformance, and neither relies on standardized unknown-m
 
 ### Container and encryption
 
-Encrypted ZIP64 is Thunderbird's container convention because PDPArchive
+An age-encrypted ZIP64 payload is Thunderbird's container convention because PDPArchive
 [section 7.1](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-7.1) and
 [section 7.2](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-7.2) leave the container
-and encryption mechanisms open. Encryption uses AES-256 from the
-[WinZip AES specification](https://www.winzip.com/en/support/aes-encryption/). Legacy ZipCrypto is not supported.
+and encryption mechanisms open. Encryption uses binary [age version 1](https://age-encryption.org/v1) with its scrypt
+passphrase recipient. ASCII armor and legacy ZipCrypto are not supported.
 
 ## Conformance disposition
 
@@ -104,34 +104,37 @@ and encryption mechanisms open. Encryption uses AES-256 from the
 | PDPArchive `-01`        | [Section 6.2](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-6.2)     | Raw datatype and collection layout        | Adopted per account                                                   | Independent extraction and import fixture          |
 | PDPArchive `-01`        | [Section 6.3.1](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-6.3.1) | Mail folders, items, flags, and EML files | Adopted for IMAP and separately profiled for POP3 and local-only mail | IMAP, POP3, and local-only fixtures                |
 | PDPArchive `-01`        | [Section 4.2](https://datatracker.ietf.org/doc/html/draft-ietf-mailmaint-pdparchive-01#section-4.2)     | Partial updates                           | Unsupported                                                           | Reject partial or incremental input as unsupported |
-| WinZip AES              | [AES encryption specification](https://www.winzip.com/en/support/aes-encryption/)                       | AES-256 encrypted ZIP entries             | Adopted                                                               | Cross-target and independent ZIP-tool fixtures     |
-| ZIP APPNOTE 6.3.10      | Section 4.5.3                                                                                           | ZIP64 extended information                | Temporary convention                                                  | ZIP64 boundary and malformed-container fixtures    |
+| age version 1           | [age specification](https://age-encryption.org/v1)                                                      | Binary scrypt passphrase encryption       | Adopted                                                               | Bidirectional reference-age fixtures               |
+| ZIP APPNOTE 6.3.10      | Section 4.5.3                                                                                           | ZIP64 extended information                | Temporary authenticated plaintext payload                             | ZIP64 boundary and malformed-container fixtures    |
 
 ## Implementation and verification status
 
-The format has maintained implementation candidates for every required target. [Zip4j supports AES, ZIP64, JVM, and
-Android](https://github.com/srikanth-lingala/zip4j#features). [ZipArchive supports AES archive creation and extraction on
-iOS](https://github.com/ZipArchive/ZipArchive#ssziparchive). [minizip-ng supports ZIP64 and WinZip
-AES](https://github.com/zlib-ng/minizip-ng#features). [zip.js supports ZIP64, encryption, streaming,
-and web browsers](https://github.com/gildas-lormeau/zip.js#introduction). These are candidates, not selected project
-dependencies. Cross-target fixtures must confirm the exact AES variant and options.
+[Kage v0.7.0](https://github.com/android-password-store/kage/releases/tag/v0.7.0) is the selected age version 1
+implementation for Android and JVM. It supports streaming encryption and decryption and the scrypt passphrase recipient.
+Kage currently declares Android API 26 because of `java.util.Base64`, as recorded in
+[Kage issue #416](https://github.com/android-password-store/kage/issues/416). Thunderbird contributes a patch using the
+stable KMP `kotlin.io.encoding.Base64` API and may temporarily maintain a minimal compatibility fork for API 23 through
+25. The compatibility patch must not alter cryptographic or wire-format behavior. The reference
+[age implementation](https://github.com/FiloSottile/age) provides the independent interoperability boundary. ZIP64
+implementation selection remains TBD.
 
-|               Capability                | Implementation |                  Fixtures                   |   Status    |
-|-----------------------------------------|----------------|---------------------------------------------|-------------|
-| Full IMAP account archive               | TBD            | PDPArchive `-01` fixtures TBD               | Unsupported |
-| Full POP3 account archive               | TBD            | Thunderbird POP3 profile fixtures TBD       | Unsupported |
-| Full local-only account archive         | TBD            | Thunderbird local-only profile fixtures TBD | Unsupported |
-| AES-256 ZIP encryption on JVM           | TBD            | Cross-target and ZIP-tool fixtures TBD      | Unsupported |
-| AES-256 ZIP encryption on Android       | TBD            | Cross-target and ZIP-tool fixtures TBD      | Unsupported |
-| AES-256 ZIP encryption on iOS           | TBD            | Cross-target and ZIP-tool fixtures TBD      | Unsupported |
-| AES-256 ZIP encryption on web           | TBD            | Cross-target and ZIP-tool fixtures TBD      | Unsupported |
-| Contacts and address books              | TBD            | TBD                                         | Deferred    |
-| Events, tasks, and calendar collections | TBD            | TBD                                         | Deferred    |
+|               Capability                |  Implementation   |                  Fixtures                   |   Status    |
+|-----------------------------------------|-------------------|---------------------------------------------|-------------|
+| Full IMAP account archive               | TBD               | PDPArchive `-01` fixtures TBD               | Unsupported |
+| Full POP3 account archive               | TBD               | Thunderbird POP3 profile fixtures TBD       | Unsupported |
+| Full local-only account archive         | TBD               | Thunderbird local-only profile fixtures TBD | Unsupported |
+| age encryption on JVM                   | Kage v0.7.0       | Bidirectional reference-age fixtures TBD    | Unsupported |
+| age encryption on Android API 23+       | Kage v0.7.0 patch | API 23–25 and reference-age fixtures TBD    | Unsupported |
+| ZIP64 payload on JVM                    | TBD               | Independent ZIP-tool fixtures TBD           | Unsupported |
+| ZIP64 payload on Android                | TBD               | Independent ZIP-tool fixtures TBD           | Unsupported |
+| Contacts and address books              | TBD               | TBD                                         | Deferred    |
+| Events, tasks, and calendar collections | TBD               | TBD                                         | Deferred    |
 
 ## Open questions
 
-- Which maintained AES ZIP implementations satisfy security, licensing, and bounded-memory requirements on Android,
-  JVM, iOS, and web?
+- Which maintained ZIP64 implementation satisfies security, licensing, and bounded-memory requirements on Android and
+  JVM?
+- Which age scrypt work factor provides an acceptable passphrase-derivation cost across supported Android devices?
 - Which PDPArchive `-01` importer combinations define the first interoperability test set?
 - Which future PDPArchive revision provides standard POP3 and local-only mappings that replace the Thunderbird profiles?
 - Which future synchronization design, if any, introduces partial archives or additional record metadata?
