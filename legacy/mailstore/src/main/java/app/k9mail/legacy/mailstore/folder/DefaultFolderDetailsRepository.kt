@@ -17,7 +17,6 @@ import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.folder.api.data.FolderError
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
 import net.thunderbird.feature.mail.folder.api.data.repository.PartialUpdatableFolderDetails
-import net.thunderbird.feature.mail.folder.api.toStringPiiSafe
 
 private const val LOG_ID = "[repository][folder-details]"
 
@@ -60,7 +59,7 @@ class DefaultFolderDetailsRepository(
                 )
             }
 
-            logger.verbose { "$LOG_ID folder details = ${folderDetails?.toStringPiiSafe()}" }
+            logger.verbose { "$LOG_ID folder details = $folderDetails" }
             Outcome.success(folderDetails)
         }
 
