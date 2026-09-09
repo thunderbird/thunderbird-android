@@ -174,6 +174,6 @@ the migration screen, source-schema support, and the cleanup retry strategy.
 
 ## Outcome
 
-Filled in when the RFC is accepted, rejected, or obsolete.
-
-Summarize the final decision and link follow-up work.
+The proposal was accepted. Room 3 is the database backend, and implementation follows
+[Technical Design 0003: Global Database](../technical-designs/0003-global-database.md) as part of the
+[Global Database 0.1 milestone](https://github.com/thunderbird/thunderbird-android/issues/10374).
