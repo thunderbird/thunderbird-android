@@ -205,7 +205,7 @@
     <string name="global_settings_confirm_actions_title">Potvrzování akcí</string>
     <string name="global_settings_confirm_actions_summary">Zobrazit dialog, když provádíte zvolené akce</string>
     <string name="global_settings_confirm_action_delete">Smazat</string>
-    <string name="global_settings_confirm_action_delete_starred">Smaž zprávy s hvězdičkou (v zobrazení zpráv)</string>
+    <string name="global_settings_confirm_action_delete_starred">Smazat zprávy s hvězdičkou (v zobrazení zpráv)</string>
     <string name="global_settings_confirm_action_spam">Nevyžádaná</string>
     <string name="global_settings_confirm_menu_discard">Zahodit zprávu</string>
     <string name="global_settings_confirm_menu_mark_all_read">Označit všechny zprávy jako přečtené</string>
@@ -972,4 +972,5 @@
     <string name="account_settings_signature_is_html_summary">Interpretovat podpis jako HTML. Skripty a obslužné rutiny událostí budou z bezpečnostních důvodů odstraněny.</string>
     <string name="account_settings_signature_preview">Náhled podpisu</string>
     <string name="account_settings_signature_clear_label">Vymazat podpis</string>
+    <string name="message_compose_encrypting_message">Šifrování zprávy…</string>
 </resources>

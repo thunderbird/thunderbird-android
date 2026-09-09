@@ -957,4 +957,5 @@
     <string name="account_settings_signature_is_html_summary">İmzayı HTML olarak yorumla. Güvenlik nedeniyle betikler ve olay işleyicileri kaldırılacaktır.</string>
     <string name="account_settings_signature_preview">İmza ön izlemesi</string>
     <string name="account_settings_signature_clear_label">İmzayı Temizle</string>
+    <string name="message_compose_encrypting_message">İleti şifreleniyor…</string>
 </resources>

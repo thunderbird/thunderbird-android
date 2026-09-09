@@ -959,4 +959,11 @@
     <string name="global_settings_privacy_incognito_keyboard">Tastatură incognito</string>
     <string name="global_settings_privacy_incognito_keyboard_detail">Solicită tastaturii să nu memoreze ceea ce tastezi atunci când redactezi mesaje</string>
     <string name="sort_by_indicator">•</string>
+    <string name="camera_capture_lost">Imaginea capturată s-a pierdut deoarece aplicația a fost închisă. Vă rugăm să încercați din nou.</string>
+    <string name="account_settings_signature_html_label">Semnătură HTML</string>
+    <string name="account_settings_signature_is_html_label">Salvează semnătura ca HTML</string>
+    <string name="account_settings_signature_is_html_summary">interpretează semnătura ca HTML. Scripturile și gestionarii de evenimente vor fi eliminați din motive de securitate.</string>
+    <string name="account_settings_signature_preview">Previzualizare semnătură</string>
+    <string name="account_settings_signature_clear_label">Semnătură în clar (necriptată)</string>
+    <string name="message_compose_encrypting_message">Se criptează mesajul…</string>
 </resources>

@@ -971,4 +971,5 @@
     <string name="account_settings_signature_clear_label">Wyczyść podpis</string>
     <string name="camera_capture_lost">Zrobione zdjęcie zostało utracone, ponieważ aplikacja została zamknięta. Spróbuj ponownie.</string>
     <string name="account_settings_signature_html_label">Podpis HTML</string>
+    <string name="message_compose_encrypting_message">Szyfrowanie wiadomości…</string>
 </resources>

@@ -34,4 +34,5 @@
     <string name="account_server_settings_incoming_imap_prefix_label">IMAP-sti prefiks</string>
     <string name="account_server_settings_password_authentication_failed">Autentisering feila!</string>
     <string name="account_server_settings_password_authentication_unable_to_start">Kunne ikkje starte biometrisk førespurnad.</string>
+    <string name="account_server_settings_password_input_label">Passord</string>
 </resources>
