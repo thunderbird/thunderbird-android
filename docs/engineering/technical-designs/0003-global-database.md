@@ -2,6 +2,7 @@
 
 - Issue: [#11293](https://github.com/thunderbird/thunderbird-android/issues/11293)
 - RFC: [RFC 0007: Global Database](../rfcs/0007-global-database.md)
+- Related RFC: [UUIDv7 Identifier Migration](../rfcs/0009-uuidv7-identifier-migration.md)
 - Repository pattern: [ADR 0010 proposal](https://github.com/thunderbird/thunderbird-android/pull/11452)
 - Portable data format: [RFC 0008: Portable Profile Data Format](../rfcs/0008-portable-profile-data-format.md)
 - Status: **Accepted**
