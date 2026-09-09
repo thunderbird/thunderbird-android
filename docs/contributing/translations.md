@@ -5,7 +5,7 @@ This document explains how you can help translate Thunderbird for Android into y
 - All translations for Thunderbird for Android are managed in [Thunderbird for Android Weblate project](https://hosted.weblate.org/projects/thunderbird/thunderbird-android/).
 - The Source language is **English** (American English, represented as `en`).
 - Translations are done only in Weblate, not in this repository.
-- The Thunderbird team regularly syncs Weblate with the repository to pull in translation updates.
+- Weblate stores translation changes in the dedicated [Thunderbird for Android l10n repository](https://github.com/thunderbird/thunderbird-android-l10n), and the Thunderbird team regularly imports them into this repository's `main` branch. Automated imports into `beta` and `release` are not yet enabled.
 
 > [!NOTE]
 > If you are a developer and need to add or manage strings or languages in the codebase, see [managing strings](managing-strings.md).

@@ -13,7 +13,7 @@ Thunderbird for Android project.
 * We use [Compose Multiplatform Resources](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-multiplatform-resources.html) for localizing strings in Kotlin Multiplatform (KMP) modules.
 * **Source language** is **English** (American English, represented as `en`).
 * **Source strings** are modified only in this repository (via pull requests).
-* **Translations** are managed exclusively in [Weblate](https://hosted.weblate.org/projects/thunderbird/thunderbird-android/) and merged into the repository via the [Translation - Update](https://github.com/thunderbird/thunderbird-android/actions/workflows/translation-update.yml) workflow.
+* **Translations** are managed exclusively in [Weblate](https://hosted.weblate.org/projects/thunderbird/thunderbird-android/), stored in the [Thunderbird for Android l10n repository](https://github.com/thunderbird/thunderbird-android-l10n), and imported via the [Translation - Update](https://github.com/thunderbird/thunderbird-android/actions/workflows/l10n-translation-update.yml) workflow.
 * **Languages** are added/removed when they reach 70% translation or fall below 60%.
 
 ## 🔄 Changing Source Strings
@@ -70,18 +70,18 @@ If a **mechanical or global change** to translations is required (for example, r
 
 1. **Lock components in Weblate:**
    Go to the [maintenance page](https://hosted.weblate.org/projects/thunderbird/thunderbird-android/#repository) and lock all components to prevent new translations during the change.
-2. **Commit outstanding changes:**
-   Ensure all pending translations in Weblate are committed to its internal Git repository.
+2. **Push outstanding changes:**
+   Ensure all pending translations in Weblate are committed and pushed to the l10n repository.
 3. **Pull latest translations:**
-   Trigger the [Translation - Update](https://github.com/thunderbird/thunderbird-android/actions/workflows/translation-update.yml) GitHub workflow manually using `workflow_dispatch`.
+   Trigger the [Translation - Update](https://github.com/thunderbird/thunderbird-android/actions/workflows/l10n-translation-update.yml) GitHub workflow manually using `workflow_dispatch`.
 4. **Merge the pull request:**
    Review and merge the resulting PR to ensure your local `main` branch is in sync with Weblate.
 5. **Apply your change:**
-   Apply your mechanical changes to the source and translation files in a new branch and merge it.
-6. **Update Weblate configuration (if needed):**
-   If your change involved moving files or changing directory structures, use the `weblate-cli update` command to ensure Weblate is correctly configured.
+   Coordinate source changes in this repository with translation changes in the l10n repository, using reviewed pull requests.
+6. **Update the l10n mirror and Weblate configuration:**
+   Import the updated source files into the l10n repository. If your change involved moving files or changing directory structures, run the mirror's `scripts/l10n-weblate update` command to update Weblate configuration.
 7. **Unlock components:**
-   Once Weblate has pulled the changes from the repository, unlock the components.
+   Once Weblate has pulled the changes from the l10n repository, unlock the components.
 
 See the [Weblate CLI section](#-weblate-cli) for more details on the tooling.
 
@@ -91,7 +91,7 @@ See the [Weblate CLI section](#-weblate-cli) for more details on the tooling.
    - Android: `res/values/strings.xml`
    - Compose: `src/commonMain/composeResources/values/strings.xml`
 2. **Do not** add translations.
-   * After merge, Weblate will pull the new string.
+   * After merge, the source-import workflow creates a pull request in the l10n repository. Once that pull request is merged, Weblate can pull the new string.
    * Translators can then add translations in Weblate.
 
 ### ✏️ Changing a String
@@ -177,10 +177,16 @@ val messagesCount = getPluralString(Res.plurals.new_messages, count, count)
 
 ## 🔀 Merging Translations
 
-Translations are merged from Weblate via an automated [GitHub workflow](https://github.com/thunderbird/thunderbird-android/actions/workflows/translation-update.yml). This workflow:
-1. Fetches the latest changes from Weblate's Git export.
-2. Creates a pull request with the updated translation files.
-3. Preserves contributor attribution via `Co-authored-by` trailers.
+Weblate commits translations to the dedicated [l10n repository](https://github.com/thunderbird/thunderbird-android-l10n). An automated [GitHub workflow](https://github.com/thunderbird/thunderbird-android/actions/workflows/l10n-translation-update.yml):
+1. Checks out the l10n repository's `main` branch and uses its `scripts/l10n-sync export --branch main` command to select translations belonging to this repository's `main` branch.
+2. Creates a pull request with the updated translation files against this repository's `main` branch, without modifying source-language files.
+3. Links the exact l10n revision in the pull request and commit metadata and preserves contributor attribution via `Co-authored-by` trailers.
+
+The current rollout imports translations into `main` only; automated imports into `beta` and `release` are not enabled.
+
+Source changes reach Weblate through the l10n repository's [Import from Source workflow](https://github.com/thunderbird/thunderbird-android-l10n/actions/workflows/l10n-sync-from-source.yml).
+Review and merge its source-import pull request using the Weblate lock/push/unlock checklist in the pull request body.
+The resulting `l10n-sync-manifest.json` records which files and keys belong to each source branch for later export.
 
 When reviewing and merging these PRs:
 
@@ -226,27 +232,33 @@ This output can be used to update:
 
 #### 🔧 Weblate CLI
 
-Used to manage component configurations and create missing components on Weblate.
+Component management now runs from a checkout of the [l10n repository](https://github.com/thunderbird/thunderbird-android-l10n), not this source repository.
+Its `l10n-config.json` and `l10n-component-config.json` define component discovery and configuration.
+The launcher requires Java 21 and downloads and checksum-verifies the pinned tooling release.
+
+Run these commands from the l10n repository root. Commands are dry runs unless `--apply` is supplied.
 
 ```bash
-# Update managed components with standard configuration
-./scripts/weblate --token <weblate-token> update
+# Preview component configuration updates
+./scripts/l10n-weblate update --token "$WEBLATE_TOKEN"
 
-# Create missing components based on local modules
-./scripts/weblate --token <weblate-token> create
+# Apply reviewed configuration updates
+./scripts/l10n-weblate update --token "$WEBLATE_TOKEN" --apply
 
-# Delete a component by slug
-./scripts/weblate --token <weblate-token> delete --slug <slug>
+# Discover missing components; add --apply after reviewing the dry run
+./scripts/l10n-weblate create --token "$WEBLATE_TOKEN"
 ```
+
+Maintainers can also use the mirror's [Weblate Management workflow](https://github.com/thunderbird/thunderbird-android-l10n/actions/workflows/l10n-weblate-management.yml), which defaults to a dry run.
 
 ##### ➕ Adding a Component
 
 1. Ensure your module follows the standard directory structure for strings.
-2. Run the `create` command to identify and create missing components.
-3. The tool will scan for modules containing `strings.xml` and prompt you to create components for those missing from Weblate.
-4. After creation, add the new component slug to `cli/weblate-cli/managed-components.txt` to keep it updated with future configuration changes.
+2. Import and merge its source files into the l10n repository.
+3. From the l10n repository root, run `scripts/l10n-weblate create --token "$WEBLATE_TOKEN"` to preview missing components.
+4. Review the discovered components, then rerun with `--apply` to create them.
 
-For more details, see the [Weblate CLI README](../../cli/weblate-cli/README.md).
+For more details, see the [l10n repository README](https://github.com/thunderbird/thunderbird-android-l10n#readme) and [shared tooling documentation](https://github.com/thunderbird/thunderbird-mobile-weblate#readme).
 
 ### ➖ Removing a Language
 
