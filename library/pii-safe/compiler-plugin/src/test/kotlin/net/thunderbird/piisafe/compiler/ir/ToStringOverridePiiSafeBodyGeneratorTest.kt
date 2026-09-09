@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
  * Tests for [ToStringOverridePiiSafeBodyGenerator].
  *
  * Each test compiles a small source snippet with the Pii-safe plugin, instantiates the resulting class
- * through reflection, invokes the synthetic `toStringPiiSafe()` member and asserts the rendered string.
+ * through reflection, invokes the synthetic `toString()` member and asserts the rendered string.
  *
  * Expected rendering (per class): `ClassName(prop1 = value1, prop2 = <sensitive>)`
  * - Properties annotated `@PiiSafe.Hide` are omitted entirely.

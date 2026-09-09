@@ -10,6 +10,7 @@ The logging system is organized into several modules:
 - **impl-console**: Console logging implementation
 - **impl-composite**: Composite logging (multiple sinks)
 - **impl-legacy**: Legacy logging system compatibility
+- **pii:compiler-plugin:{api,internal}**: A compiler plugin to automatically hide any PII data
 - **testing**: Testing utilities
 
 ### Core Components
@@ -51,7 +52,7 @@ classDiagram
         ERROR
     }
 
-    Logger <|--  DefaultLogger
+    Logger <|-- DefaultLogger
     DefaultLogger --> LogSink
     LogSink --> LogEvent
     LogSink --> LogLevel
@@ -79,7 +80,6 @@ classDiagram
 
     LogSink <|-- ConsoleLogSink
     LogSink <|-- CompositeLogSink
-
     CompositeLogSink --> LogSinkManager
 
     class LogSinkManager {
@@ -124,7 +124,8 @@ logger.warn { "Warning message" }
 logger.error(throwable = exception) { "Error message with exception" }
 ```
 
-Note that the message parameter is a lambda that returns a String. This allows for lazy evaluation of the message, which can improve performance when the log level is set to filter out certain messages.
+Note that the message parameter is a lambda that returns a String. This allows for lazy evaluation of the message, which
+can improve performance when the log level is set to filter out certain messages.
 
 ### Composite Logging (Multiple Sinks)
 
@@ -176,6 +177,43 @@ class MyCustomLogSink(
 }
 ```
 
+## PII Logging
+
+Data classes that contain PII (Personal Identifiable Information) must be annotated with the `@LoggingPii.HasPii`.
+
+This will allow our Kotlin compiler plugin (`net.thunderbird.logging.pii`) to automatically override the `toString()`
+method of this class and automatically mask/hide any sensitive data that we should not log.
+
+### Basic setup
+
+1. If yet not applied, apply the K2 compiler plugin `net.thunderbird.logging.pii` into the module that contains the PII
+   data
+2. Annotated the data class which contains the PII data with `@LoggingPii.HasPii`; this will make the K2 compiler plugin
+   to auto-generate a `toString()` masking or hiding the properties you want
+3. Annotate any PII data with either `@get:LoggingPii.Mask` or `@get:LoggingPii.Hide`
+    - When annotated with `@get:LoggingPii.Mask`, the property value will be replaced with `<sensitive>`
+    - When annotated with `@get:LoggingPii.Hide`, the property name and value will be removed from the `toString`
+      implementation and a `+x hidden properties` will appear at the end of the `toString`
+
+### Enabling IDE support
+
+When using a custom K2 compiler plugin, we can make our codebase generate compilation errors, via FIR checkers.
+
+FIR checkers deliver the errors reported before the code is built, meaning you would be able to see them while you are
+still code, before triggering the build. However, if IDE support isn't enabled, we'll only see those errors when
+actually building the project.
+
+Additionally, any synthetic method we generate via FIR/IR won't be visible, and will be presented as an error by the
+IDE, unless we enable the IDE to use our custom plugin.
+
+To enable the K2 custom plugins, you must:
+
+1. Open the IDE Registry (Shift + Shift + Search by "Registry")
+2. Disable the `kotlin.k2.only.bundled.compiler.plugins.enabled` flag.
+
+After that, any class that is annotated with the `@LoggingPii.HasPii` will start showing the synthetic `toString()`
+method override, and will be elegible to show errors in case they are present.
+
 ## Best Practices
 
 ### Log Levels
@@ -193,8 +231,8 @@ Use appropriate log levels for different types of messages:
 ### Common Issues
 
 1. **No logs appearing**:
-   - Check that the log level of your sink is appropriate for the messages you're logging
-   - Verify that your logger is properly initialized
+    - Check that the log level of your sink is appropriate for the messages you're logging
+    - Verify that your logger is properly initialized
 
 ### Debugging the Logging System
 
