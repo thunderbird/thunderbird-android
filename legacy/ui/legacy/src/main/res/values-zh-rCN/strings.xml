@@ -951,4 +951,5 @@
     <string name="account_settings_signature_clear_label">清除签名</string>
     <string name="account_settings_signature_is_html_summary">将签名解析为 HTML。出于安全考虑，脚本和事件处理程序将被移除。</string>
     <string name="camera_capture_lost">由于应用已关闭，捕获的图片已丢失。请重试。</string>
+    <string name="message_compose_encrypting_message">正在加密邮件…</string>
 </resources>
