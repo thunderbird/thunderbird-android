@@ -1,0 +1,4 @@
+K-9 Mail version 23.0
+
+Fixed:
+- Signature field only accepted single-line text in Composition defaults

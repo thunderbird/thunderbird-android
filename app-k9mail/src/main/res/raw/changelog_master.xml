@@ -5,6 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="23.0" versioncode="39044" date="2026-09-08">
+        <change>Fixed: Signature field only accepted single-line text in Composition defaults</change>
+    </release>
     <release version="22.0" versioncode="39043" date="2026-08-10">
         <change>New: Incognito Keyboard privacy setting disables Google keyboard from learning words</change>
         <change>New: Thundermail interim screen when adding an account</change>
