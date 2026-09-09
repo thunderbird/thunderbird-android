@@ -2,7 +2,7 @@
 
 - Related RFC: [RFC 0007: Global Database](0007-global-database.md)
 - Related technical design: [Global Database](../technical-designs/0003-global-database.md)
-- Status: **Proposed**
+- Status: **Accepted**
 
 ## Summary
 
@@ -104,7 +104,6 @@ separate.
 
 ## Outcome
 
-Pending review.
-
-If accepted, this RFC authorizes UUIDv7 generation for new UUID-backed identifiers. Any rewrite of existing persisted
-identifiers requires a follow-up technical design and separate approval.
+The proposal was accepted. New UUID-backed identifiers use UUIDv7 through the shared factory abstractions. The Global
+Database migration regenerates existing real account IDs as UUIDv7 and rewrites their persisted references before
+cutover. `UnifiedAccountId`, portable identifiers, and protocol identifiers are not rewritten.
