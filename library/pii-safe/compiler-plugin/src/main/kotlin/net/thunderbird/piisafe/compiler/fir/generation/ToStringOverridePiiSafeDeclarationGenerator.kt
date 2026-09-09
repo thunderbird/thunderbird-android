@@ -22,7 +22,5 @@ internal class ToStringOverridePiiSafeDeclarationGenerator(session: FirSession) 
     override fun getCallableNamesForClass(
         classSymbol: FirClassSymbol<*>,
         context: DeclarationGenerationContext.Member,
-    ): Set<Name> {
-        TODO("Not yet implemented")
-    }
+    ): Set<Name> = emptySet()
 }

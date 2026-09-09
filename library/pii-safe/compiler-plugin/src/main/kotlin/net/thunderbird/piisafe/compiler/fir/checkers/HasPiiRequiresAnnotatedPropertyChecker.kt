@@ -11,6 +11,6 @@ internal class HasPiiRequiresAnnotatedPropertyChecker : FirDeclarationChecker<Fi
 ) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(declaration: FirClass) {
-        TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 }

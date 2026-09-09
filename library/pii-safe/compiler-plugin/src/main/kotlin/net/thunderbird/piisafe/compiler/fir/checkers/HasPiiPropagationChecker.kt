@@ -9,6 +9,6 @@ import org.jetbrains.kotlin.fir.declarations.FirClass
 internal class HasPiiPropagationChecker : FirDeclarationChecker<FirClass>(mppKind = MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)
     override fun check(declaration: FirClass) {
-        TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 }

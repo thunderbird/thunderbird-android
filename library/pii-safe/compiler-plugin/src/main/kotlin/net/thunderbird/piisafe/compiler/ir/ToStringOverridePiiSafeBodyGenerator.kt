@@ -6,6 +6,6 @@ import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 
 internal class ToStringOverridePiiSafeBodyGenerator : IrGenerationExtension {
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
-        TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 }

@@ -24,24 +24,18 @@ object LoggingPii {
     /**
      * Annotation to mark log tags that should be excluded from logging.
      *
-     * When applied to a log tag definition, it indicates that log messages with this tag
-     * should be ignored by the logging system.
-     *
-     * TODO(#11493): The logging compiler plugin will automatically remove it from the
-     *  `toStringPIISafe()` method
+     * When applied to an object property's getter, it indicates that log messages with
+     * this object will hide the property behind a "+x hidden properties".
      */
     @Retention(AnnotationRetention.BINARY)
     @Target(AnnotationTarget.PROPERTY_GETTER)
-    annotation class Ignore
+    annotation class Hide
 
     /**
      * Marks a property or parameter to indicate that its value should be masked or redacted in log output.
      *
-     * This annotation is used to identify sensitive data that should not be logged in plain text,
-     * such as passwords, tokens, or other confidential information.
-     *
-     * TODO(#11493): The logging compiler plugin will automatically mask it with `<sensitive>` in the
-     *  `toStringPIISafe()` method
+     * When applied to an object property's getter, it indicates that log messages with
+     * this object will mask the property behind a "<sensitive>" text.
      */
     @Retention(AnnotationRetention.BINARY)
     @Target(AnnotationTarget.PROPERTY_GETTER)
