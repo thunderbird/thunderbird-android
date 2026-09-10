@@ -8,7 +8,7 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            api(projects.core.outcome)
+            api(libs.tb.mobile.components.core.outcome)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.reflect)

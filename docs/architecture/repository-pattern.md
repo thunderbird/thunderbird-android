@@ -58,7 +58,7 @@ encounter an expected, recoverable condition that the caller needs to handle, su
 failure, a rejected operation, or a missing required entity. Return a value directly only when the contract guarantees
 a meaningful result, possibly by using a default.
 
-Use [`net.thunderbird.core.outcome.Outcome`](../../core/outcome/src/commonMain/kotlin/net/thunderbird/core/outcome/Outcome.kt)
+Use [`net.thunderbird.components.core.outcome.Outcome`](https://github.com/thunderbird/thunderbird-mobile-components/tree/main/components/core/outcome)
 for fallible repository results. `ERROR` is a domain-specific sealed type. Do not expose database, HTTP, or platform
 exceptions from a contract.
 

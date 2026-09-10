@@ -7,10 +7,10 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.components.ui.bolt.resources.Res
 import net.thunderbird.components.ui.bolt.resources.bolt_atom_password_textfield_hide_password
 import net.thunderbird.components.ui.bolt.resources.bolt_atom_password_textfield_show_password
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.server.settings.ui.common.AuthenticationError
 import org.junit.Test
 import net.thunderbird.components.ui.testing.resource.getString as getComposeString

@@ -141,7 +141,7 @@ import net.thunderbird.core.android.account.MessageFormat;
 import net.thunderbird.core.android.contact.ContactIntentHelper;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey;
-import net.thunderbird.core.outcome.OutcomeKt;
+import net.thunderbird.components.core.outcome.OutcomeKt;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
 import net.thunderbird.feature.mail.message.composer.dialog.SentFolderNotFoundConfirmationDialogFragmentFactory;

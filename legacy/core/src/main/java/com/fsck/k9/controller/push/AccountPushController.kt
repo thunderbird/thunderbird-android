@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.outcome.fold
+import net.thunderbird.components.core.outcome.fold
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.data.repository.PushFoldersQueryRepository
 

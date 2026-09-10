@@ -13,7 +13,6 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.core.ui.compose.common)
     implementation(projects.core.ui.navigation)
-    implementation(projects.core.outcome)
     implementation(projects.core.featureflag)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.notification.api)

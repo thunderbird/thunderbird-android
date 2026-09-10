@@ -43,6 +43,12 @@ dependencyResolutionManagement {
                 includeGroup("com.github.cketti")
             }
         }
+        maven(url = "https://central.sonatype.com/repository/maven-snapshots/") {
+            mavenContent {
+                snapshotsOnly()
+                includeGroupAndSubgroups("net.thunderbird.components")
+            }
+        }
         mavenCentral()
     }
 }
@@ -196,7 +202,6 @@ include(
     ":core:mail:mailserver",
     ":core:preference:api",
     ":core:preference:impl",
-    ":core:outcome",
     ":core:testing",
     ":core:validation",
 )

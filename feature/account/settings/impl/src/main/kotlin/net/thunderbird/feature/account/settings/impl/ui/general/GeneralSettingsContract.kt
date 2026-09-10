@@ -2,7 +2,7 @@ package net.thunderbird.feature.account.settings.impl.ui.general
 
 import androidx.compose.runtime.Stable
 import com.eygraber.uri.Uri
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.ui.contract.mvi.UnidirectionalViewModel
 import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.core.validation.input.IntegerInputField

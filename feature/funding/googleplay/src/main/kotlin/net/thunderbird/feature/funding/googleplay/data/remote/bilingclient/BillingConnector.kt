@@ -7,9 +7,9 @@ import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import net.thunderbird.components.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.flatMapSuccess
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.outcome.flatMapSuccess
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 

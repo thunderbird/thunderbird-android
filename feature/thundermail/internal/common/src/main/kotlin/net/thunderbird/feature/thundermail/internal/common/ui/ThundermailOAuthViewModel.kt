@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import net.thunderbird.components.core.outcome.handle
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.outcome.handle
 import net.thunderbird.feature.thundermail.internal.common.domain.CreateAccountStateUseCase
 
 private const val TAG = "ThundermailOAuthViewModel"

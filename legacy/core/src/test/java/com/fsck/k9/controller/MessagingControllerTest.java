@@ -38,7 +38,7 @@ import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.common.mail.Protocols;
 import net.thunderbird.core.logging.Logger;
-import net.thunderbird.core.outcome.Outcome;
+import net.thunderbird.components.core.outcome.Outcome;
 import net.thunderbird.feature.mail.message.list.LocalDeleteOperationDecider;
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager;
 import net.thunderbird.feature.mail.message.list.LocalMessageUidPrefixProvider;

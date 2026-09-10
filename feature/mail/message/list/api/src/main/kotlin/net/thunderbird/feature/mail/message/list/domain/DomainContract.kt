@@ -2,8 +2,8 @@ package net.thunderbird.feature.mail.message.list.domain
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.common.action.SwipeActions
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.FolderServerId
 import net.thunderbird.feature.mail.folder.api.RemoteFolder

@@ -2,8 +2,8 @@ package net.thunderbird.feature.account.settings.impl.domain
 
 import com.eygraber.uri.Uri
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.validation.ValidationError
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.Avatar
