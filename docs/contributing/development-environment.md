@@ -12,6 +12,7 @@ Before you begin, ensure you have the following installed:
 - **[Git](https://git-scm.com/downloads)** - For version control
 - **Gradle** - Use the Gradle wrapper included in this repo (`./gradlew`); no separate install required
 - **Android SDK & command-line tools** – Installed and managed via Android Studio SDK Manager
+- **[ANDROID_HOME](https://developer.android.com/tools/variables#envar)** - Environment variable pointing to your SDK location; restart Android Studio after setting it
 
 ## 🔧 Setting Up the Development Environment
 
