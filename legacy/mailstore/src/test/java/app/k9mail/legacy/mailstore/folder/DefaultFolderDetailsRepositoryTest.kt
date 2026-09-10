@@ -6,6 +6,7 @@ import app.k9mail.legacy.mailstore.ListenableMessageStore
 import app.k9mail.legacy.mailstore.MessageStoreFactory
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.mailstore.MoreMessages
+import app.k9mail.legacy.mailstore.domain.SetPushForFolderUseCase
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
@@ -13,6 +14,8 @@ import assertk.assertions.isNull
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
 import kotlin.test.Test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -281,6 +284,52 @@ class DefaultFolderDetailsRepositoryTest {
             assertThat(result).isInstanceOf(Outcome.Failure::class)
             assertThat((result as Outcome.Failure).error).isInstanceOf(FolderError.FailedPrecondition::class)
         }
+
+    @Test
+    fun `SetPushForFolderUseCase should call setPushEnabled`() = runTest {
+        // Setup fakes
+        var folderAccessor = FakeFolderDetailsAccessor(
+            id = INBOX_FOLDER_ID,
+            isPushEnabled = false,
+        )
+        whenever(messageStore.setPushEnabled(folderId = INBOX_FOLDER_ID, enable = true)).then {
+            folderAccessor = FakeFolderDetailsAccessor(
+                id = INBOX_FOLDER_ID,
+                isPushEnabled = true,
+            )
+        }
+
+        // Get initial values
+        stubGetFolder(INBOX_FOLDER_ID, folderAccessor)
+        var inboxFolderDetails = (testSubject.findById(accountId, INBOX_FOLDER_ID) as Outcome.Success).data
+
+        // Check that push has not been enabled yet
+        assertFalse(
+            "Is push enabled: ${inboxFolderDetails?.isPushEnabled} was supposed to be false " +
+                "before calling SetPushForFolderUseCase.",
+            inboxFolderDetails?.isPushEnabled == true,
+        )
+
+        // Call the same use case used in the account creation function to enable push
+        SetPushForFolderUseCase(
+            messageStoreManager,
+        ).invoke(
+            accountUuid = accountId.value.toString(),
+            folderId = inboxFolderDetails?.folder?.id ?: 0L,
+            enabled = true,
+        )
+
+        // Get updated folder details
+        stubGetFolder(INBOX_FOLDER_ID, folderAccessor)
+        inboxFolderDetails = (testSubject.findById(accountId, INBOX_FOLDER_ID) as Outcome.Success).data
+
+        // Check folder's push settings changed
+        assertTrue(
+            "Is push enabled: ${inboxFolderDetails?.isPushEnabled} was supposed to be true " +
+                "after calling SetPushForFolderUseCase.",
+            inboxFolderDetails?.isPushEnabled == true,
+        )
+    }
 
     private fun stubGetFolder(folderId: Long, accessor: FolderDetailsAccessor) {
         whenever(messageStore.getFolder<FolderDetails?>(eq(folderId), any())).thenAnswer { invocation ->
