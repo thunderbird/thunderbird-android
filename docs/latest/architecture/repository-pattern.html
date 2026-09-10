@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-2c6c7773.js";
+            window.path_to_searchindex_js = "../searchindex-53d21523.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-d919e943.js"></script>
@@ -222,7 +222,7 @@ behavior of its current data source or a legacy implementation. Use a fallible r
 encounter an expected, recoverable condition that the caller needs to handle, such as unavailable storage, a network
 failure, a rejected operation, or a missing required entity. Return a value directly only when the contract guarantees
 a meaningful result, possibly by using a default.</p>
-<p>Use <a href="../../core/outcome/src/commonMain/kotlin/net/thunderbird/core/outcome/Outcome.kt"><code>net.thunderbird.core.outcome.Outcome</code></a>
+<p>Use <a href="https://github.com/thunderbird/thunderbird-mobile-components/tree/main/components/core/outcome"><code>net.thunderbird.components.core.outcome.Outcome</code></a>
 for fallible repository results. <code>ERROR</code> is a domain-specific sealed type. Do not expose database, HTTP, or platform
 exceptions from a contract.</p>
 <p>Fallible contracts use <code>Outcome</code>:</p>
@@ -427,7 +427,7 @@ may use any storage technology, as long as it maintains the contract.</p>
 <p>Test consumers with fakes that implement the focused contract. Cover successful values, nullable absence, empty
 collections, and each expected domain failure. Repository implementations must test account filtering and the mapping
 of expected data-source failures to domain errors.</p>
-<footer id="last-change">Last change: <time datetime="2026-09-09">2026-09-09</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/77f2901">77f2901</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-09-10">2026-09-10</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/ac81cb7">ac81cb7</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

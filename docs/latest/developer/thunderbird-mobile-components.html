@@ -37,7 +37,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-2c6c7773.js";
+            window.path_to_searchindex_js = "../searchindex-53d21523.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-d919e943.js"></script>
@@ -190,15 +190,17 @@ theme support, and common UI support used by Thunderbird for Android.</p>
 <h2 id="coordinates"><a class="header" href="#coordinates">Coordinates</a></h2>
 <p>Dependency aliases are declared in <code>gradle/libs.versions.toml</code>:</p>
 <ul>
+<li><code>libs.tb.mobile.components.core.outcome</code> -&gt; <code>net.thunderbird.components.core:outcome</code></li>
 <li><code>libs.tb.mobile.components.ui.bolt</code> -&gt; <code>net.thunderbird.components.ui.bolt:bolt</code></li>
 </ul>
 <p>Common UI support, design-system components, and theme support are packaged as part of the Bolt artifact.</p>
-<p>Use the aliases when consuming Bolt artifacts:</p>
+<p>Use the aliases when consuming component artifacts:</p>
 <pre><code class="language-kotlin">dependencies {
+    implementation(libs.tb.mobile.components.core.outcome)
     implementation(libs.tb.mobile.components.ui.bolt)
 }
 </code></pre>
-<p>The Bolt component version is managed by <code>libs.versions.tbMobileComponents</code>.</p>
+<p>Component versions are managed by <code>libs.versions.tbMobileComponents</code>.</p>
 <h2 id="local-development"><a class="header" href="#local-development">Local Development</a></h2>
 <p>The root <code>settings.gradle.kts</code> includes the local <code>components/</code> build and substitutes the tracked Bolt coordinates by
 default:</p>
@@ -222,7 +224,7 @@ is the project path inside the <code>components</code> build:</p>
 </code></pre>
 <p>Do not add a broad dependency on all components. Add new coordinates and substitutions only for component groups that
 Thunderbird for Android actually consumes.</p>
-<footer id="last-change">Last change: <time datetime="2026-09-09">2026-09-09</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/77f2901">77f2901</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-09-10">2026-09-10</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/ac81cb7">ac81cb7</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
