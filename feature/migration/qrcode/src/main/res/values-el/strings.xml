@@ -6,4 +6,5 @@
     <string name="migration_qrcode_go_to_settings_button_text">Μετάβαση στις ρυθμίσεις</string>
     <string name="migration_qrcode_scanning_progress">Σαρώθηκαν %1$s από %2$s</string>
     <string name="migration_qrcode_done_button_text">Τέλος</string>
+    <string name="migration_qrcode_unsupported_code">Ο κωδικός QR εντοπίστηκε, αλλά περιέχει δεδομένα που δεν είναι έγκυρα ή δεν υποστηρίζονται.</string>
 </resources>
