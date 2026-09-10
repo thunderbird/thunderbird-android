@@ -1,4 +1,4 @@
-package net.thunderbird.core.logging
+package net.thunderbird.piisafe.annotation
 
 /**
  * Annotations for controlling how Personally Identifiable Information (PII) is handled in logs.
@@ -6,7 +6,7 @@ package net.thunderbird.core.logging
  * This object contains annotations that can be applied to properties or fields to specify
  * how sensitive data should be treated when logging.
  */
-object LoggingPii {
+public object LoggingPii {
     /**
      * Marks a class as containing Personally Identifiable Information (PII).
      *
@@ -19,7 +19,7 @@ object LoggingPii {
      */
     @Retention(AnnotationRetention.BINARY)
     @Target(AnnotationTarget.CLASS)
-    annotation class HasPii(val loggingEnabled: Boolean = true)
+    public annotation class HasPii(val loggingEnabled: Boolean = true)
 
     /**
      * Annotation to mark log tags that should be excluded from logging.
@@ -29,7 +29,7 @@ object LoggingPii {
      */
     @Retention(AnnotationRetention.BINARY)
     @Target(AnnotationTarget.PROPERTY_GETTER)
-    annotation class Hide
+    public annotation class Hide
 
     /**
      * Marks a property or parameter to indicate that its value should be masked or redacted in log output.
@@ -39,5 +39,5 @@ object LoggingPii {
      */
     @Retention(AnnotationRetention.BINARY)
     @Target(AnnotationTarget.PROPERTY_GETTER)
-    annotation class Mask
+    public annotation class Mask
 }
