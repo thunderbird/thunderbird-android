@@ -37,7 +37,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-53d21523.js";
+            window.path_to_searchindex_js = "../../searchindex-0f82740f.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-d919e943.js"></script>
@@ -202,7 +202,8 @@ is stable for its lifetime. It needs its own decision, inventory, failure handli
 <h3 id="ownership-and-module-placement"><a class="header" href="#ownership-and-module-placement">Ownership and module placement</a></h3>
 <ul>
 <li><code>AccountId</code> remains in <code>feature:account:api</code>.</li>
-<li><code>FolderId</code>, <code>MessageId</code>, and <code>ThreadId</code> remain in the mail domain.</li>
+<li><code>FolderId</code> belongs to <code>feature:mail:folder:api</code>.</li>
+<li><code>MessageId</code>, <code>ThreadId</code>, and <code>AttachmentId</code> belong to <code>feature:mail:message:api</code>.</li>
 <li><code>BaseIdentifier</code>, <code>BaseUuidIdentifier</code>, <code>IdentifierFactory</code>, and <code>BaseUuidIdentifierFactory</code> remain in
 <code>core:architecture:api</code>.</li>
 <li>No <code>core:types:api</code> module is introduced by this RFC.</li>
@@ -265,7 +266,7 @@ acceptable?</li>
 <p>Pending review.</p>
 <p>If accepted, this RFC authorizes UUIDv7 generation for new UUID-backed identifiers. Any rewrite of existing persisted
 identifiers requires a follow-up technical design and separate approval.</p>
-<footer id="last-change">Last change: <time datetime="2026-09-10">2026-09-10</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/ac81cb7">ac81cb7</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-09-10">2026-09-10</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/62aa2d8">62aa2d8</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

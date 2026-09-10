@@ -37,7 +37,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-53d21523.js";
+            window.path_to_searchindex_js = "../../searchindex-0f82740f.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-d919e943.js"></script>
@@ -220,15 +220,15 @@ IMAP UID, a folder server ID, and an RFC 5322 <code>Message-ID</code> header mus
 </thead>
 <tbody>
 <tr><td><code>AccountId</code></td><td><code>feature:account:api</code></td><td>The existing UUID-backed account identifier. Global-mail records retain its existing persisted value to establish account scope. Cutover neither replaces nor regenerates it. Account settings and profile runtime state remain outside the global mail database.</td></tr>
-<tr><td><code>FolderId</code></td><td>Mail domain</td><td>Identifies one local folder record across all accounts. It replaces the legacy account-local folder number at repository boundaries.</td></tr>
-<tr><td><code>MessageId</code></td><td>Mail domain</td><td>Identifies one local message record across all accounts. A message copied to another folder is a separate local record and therefore has a separate <code>MessageId</code>.</td></tr>
-<tr><td><code>ThreadId</code></td><td>Mail domain</td><td>Identifies one account-scoped conversation, which can contain local message records from Inbox, Sent, Archive, and other folders. It is a durable conversation aggregate, not a legacy numeric thread-root key. Thread operations use <code>ThreadId</code>. Operations on an individual local record use <code>MessageId</code>.</td></tr>
-<tr><td><code>AttachmentId</code></td><td>Mail domain</td><td>An opaque attachment-access URI or equivalent reference. It resolves unambiguously after cutover and is not a raw message-part primary key. Message-part keys stay internal unless a future focused attachment contract requires one.</td></tr>
+<tr><td><code>FolderId</code></td><td><code>feature:mail:folder:api</code></td><td>Identifies one local folder record across all accounts. It replaces the legacy account-local folder number at repository boundaries.</td></tr>
+<tr><td><code>MessageId</code></td><td><code>feature:mail:message:api</code></td><td>Identifies one local message record across all accounts. A message copied to another folder is a separate local record and therefore has a separate <code>MessageId</code>.</td></tr>
+<tr><td><code>ThreadId</code></td><td><code>feature:mail:message:api</code></td><td>Identifies one account-scoped conversation, which can contain local message records from Inbox, Sent, Archive, and other folders. It is a durable conversation aggregate, not a legacy numeric thread-root key. Thread operations use <code>ThreadId</code>. Operations on an individual local record use <code>MessageId</code>.</td></tr>
+<tr><td><code>AttachmentId</code></td><td><code>feature:mail:message:api</code></td><td>Identifies one persisted attachment record across all accounts. It is distinct from attachment access URIs and internal message-part primary keys.</td></tr>
 </tbody>
 </table>
 </div>
-<p>RFC 0009 owns the UUID representation and generation policy for <code>FolderId</code>, <code>MessageId</code>, and <code>ThreadId</code>. These types,
-along with <code>AccountId</code> and <code>AttachmentId</code>, are the only identifiers that cross the mail repository boundary for this
+<p>RFC 0009 owns the UUID representation and generation policy for <code>FolderId</code>, <code>MessageId</code>, <code>ThreadId</code>, and <code>AttachmentId</code>.
+These types, along with <code>AccountId</code>, are the only identifiers that cross the mail repository boundary for this
 design. Repository contracts never expose legacy numeric IDs or persistence keys.</p>
 <p>The thread builder uses the imported messages’ threading headers across all folders of the same account. When a newly
 observed message joins two conversations, the builder selects one existing <code>ThreadId</code> deterministically, merges the
@@ -249,7 +249,8 @@ an integer internal search-document key mapped to a <code>MessageId</code>. A UU
 <tr><td>Folder</td><td><code>(AccountId, legacy folder id)</code></td><td><code>FolderId</code></td><td>folder extra values, message folder references, queued-command folder references</td></tr>
 <tr><td>Message</td><td><code>(AccountId, legacy message id)</code></td><td><code>MessageId</code></td><td>outbox state, notifications, full-text mapping, message part root, thread message reference</td></tr>
 <tr><td>Thread</td><td><code>(AccountId, legacy folder id, legacy thread root)</code></td><td><code>ThreadId</code></td><td>rebuild cross-folder memberships from message threading headers and rewrite threaded-list and thread-cache values</td></tr>
-<tr><td>Message part</td><td><code>(AccountId, legacy message-part id)</code></td><td>internal only</td><td>part root and parent references, message root-part reference, attachment-file lookup and URI resolution</td></tr>
+<tr><td>Message part</td><td><code>(AccountId, legacy message-part id)</code></td><td>internal only</td><td>part root and parent references, message root-part reference</td></tr>
+<tr><td>Attachment</td><td><code>(AccountId, legacy message-part id)</code></td><td><code>AttachmentId</code></td><td>attachment-file lookup and access URI resolution</td></tr>
 <tr><td>Pending command</td><td><code>(AccountId, legacy command id)</code></td><td>internal only</td><td>command row identity and serialized folder references</td></tr>
 </tbody>
 </table>
@@ -280,7 +281,7 @@ and fail the migration.</li>
 <li>Establish the durable cutover state and switch repository bindings to the global implementation.</li>
 <li>Start post-cutover cleanup of all legacy database and attachment artifacts.</li>
 </ol>
-<p>The import writes folder and message identifier mappings before importing dependents. After all message records for an
+<p>The import writes folder, message, and attachment identifier mappings before importing dependents. After all message records for an
 account are available, it builds cross-folder <code>ThreadId</code> memberships from their threading headers and records the
 legacy folder-local thread-root mappings before rewriting threaded-list and cache values. It then validates all
 rewritten relationships before the global database is published. It translates serialized pending-command folder
@@ -395,7 +396,7 @@ conversations</li>
 <li>Which Room driver and locations apply on Android and JVM desktop?</li>
 <li>How long must compatibility mappings support pre-cutover external message references after migration?</li>
 </ul>
-<footer id="last-change">Last change: <time datetime="2026-09-10">2026-09-10</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/ac81cb7">ac81cb7</a></footer>
+<footer id="last-change">Last change: <time datetime="2026-09-10">2026-09-10</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android//commit/62aa2d8">62aa2d8</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
