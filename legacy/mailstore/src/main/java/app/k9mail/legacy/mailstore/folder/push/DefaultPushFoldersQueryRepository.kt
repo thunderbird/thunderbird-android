@@ -2,7 +2,6 @@ package app.k9mail.legacy.mailstore.folder.push
 
 import app.k9mail.legacy.mailstore.FolderSettingsChangedListener
 import app.k9mail.legacy.mailstore.MessageStoreManager
-import app.k9mail.legacy.mailstore.RemoteFolderDetails
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -49,38 +48,20 @@ class DefaultPushFoldersQueryRepository(
 
     override suspend fun getAllByAccountId(accountId: AccountId): Outcome<List<RemoteFolder>, FolderError> {
         logger.verbose { "$LOG_ID getting push folders for account '$accountId'" }
-        val pushFolders = getAllRemoteFolderDetails(accountId)
-            .asSequence()
-            .filter { folderDetails -> folderDetails.isPushEnabled }
-            .map { folderDetails -> folderDetails.folder }
-            .toList()
 
-        return if (pushFolders.isEmpty()) {
-            logger.warn { "$LOG_ID could not find any push folders with the given account id '$accountId'" }
-            Outcome.failure(FolderError.NotFound)
-        } else {
-            logger.verbose { "$LOG_ID found push folder: $pushFolders" }
-            Outcome.success(pushFolders)
-        }
-    }
+        return remoteFolderDetailsRepository.getAllByAccountId(accountId).fold(
+            onSuccess = { folderDetails ->
+                val pushFolders = folderDetails
+                    .filter { it.isPushEnabled }
+                    .map { it.folder }
 
-    private suspend fun getAllRemoteFolderDetails(accountId: AccountId): List<RemoteFolderDetails> {
-        logger.verbose { "$LOG_ID fetching remote folders details" }
-        val outcome = remoteFolderDetailsRepository.getAllByAccountId(accountId)
-        return outcome.fold(
-            onSuccess = { it },
-            onFailure = { error ->
-                when (error) {
-                    is FolderError.FailedToQueryDatabase -> {
-                        logger.error(throwable = error.throwable) {
-                            "$LOG_ID Failed to get remote folders details for account '$accountId'"
-                        }
-                        throw error.throwable
-                    }
-
-                    else -> emptyList()
+                if (pushFolders.isEmpty()) {
+                    Outcome.failure(FolderError.NotFound)
+                } else {
+                    Outcome.success(pushFolders)
                 }
             },
+            onFailure = { error -> Outcome.failure(error) },
         )
     }
 
