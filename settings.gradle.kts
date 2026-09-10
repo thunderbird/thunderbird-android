@@ -125,6 +125,7 @@ include(
 include(
     ":feature:mail:account:api",
     ":feature:mail:folder:api",
+    ":feature:mail:message:api",
     ":feature:mail:message:composer:api",
     ":feature:mail:message:composer:internal",
     ":feature:mail:message:list:api",
