@@ -1,7 +1,7 @@
 package net.thunderbird.piisafe.compiler
 
-import net.thunderbird.piisafe.annotation.PII_SAFE_PLUGIN_ID
 import net.thunderbird.piisafe.annotation.options.PiiSafeCliOption
+import net.thunderbird.piisafe.compiler.plugin.buildconfig.BuildConfig
 import org.jetbrains.kotlin.compiler.plugin.AbstractCliOption
 import org.jetbrains.kotlin.compiler.plugin.CliOption
 import org.jetbrains.kotlin.compiler.plugin.CommandLineProcessor
@@ -10,7 +10,7 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 
 @OptIn(ExperimentalCompilerApi::class)
 internal class PiiSafeCommandLineProcessor : CommandLineProcessor {
-    override val pluginId: String = PII_SAFE_PLUGIN_ID
+    override val pluginId: String = BuildConfig.PII_SAFE_PLUGIN_ID
     override val pluginOptions: Collection<CliOption> = listOf(
         CliOption(
             optionName = PiiSafeCliOption.ENABLED.optionName,

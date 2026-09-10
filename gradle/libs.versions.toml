@@ -57,6 +57,7 @@ androidxWork = "2.11.2"
 apacheHttpclient5 = "5.6.4"
 appAuth = "0.11.1"
 assertk = "0.28.1"
+buildconfig = "6.0.10"
 circleImageView = "3.1.0"
 clikt = "5.1.0"
 commonsIo = "2.22.0"
@@ -133,6 +134,7 @@ android-library = { id = "com.android.library", version.ref = "androidGradlePlug
 android-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }
 android-lint = { id = "com.android.lint", version.ref = "androidGradlePlugin" }
 android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
+buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinBom" }
 dependency-check = { id = "com.github.ben-manes.versions", version.ref = "dependencyCheckPlugin" }
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuardPlugin" }
