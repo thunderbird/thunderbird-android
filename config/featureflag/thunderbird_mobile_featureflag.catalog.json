@@ -1,6 +1,6 @@
 {
   "$schema": "thunderbird_mobile_featureflag.schema.json",
-  "version": "2026-07-30.1",
+  "version": "2026-09-10.1",
   "flags": [
     {
       "key": "archive_marks_as_read",
