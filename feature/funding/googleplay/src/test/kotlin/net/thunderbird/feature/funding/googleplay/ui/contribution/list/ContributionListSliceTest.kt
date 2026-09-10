@@ -10,8 +10,8 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.UseCase
 import net.thunderbird.feature.funding.googleplay.domain.entity.AvailableContributions
 import net.thunderbird.feature.funding.googleplay.domain.entity.ContributionId

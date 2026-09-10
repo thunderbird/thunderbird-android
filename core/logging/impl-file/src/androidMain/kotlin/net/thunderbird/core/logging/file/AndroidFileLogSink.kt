@@ -19,10 +19,10 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.io.Buffer
 import kotlinx.io.asSink
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.file.FileManager
 import net.thunderbird.core.logging.LogEvent
 import net.thunderbird.core.logging.LogLevel
-import net.thunderbird.core.outcome.Outcome
 
 private const val LOG_BUFFER_COUNT = 4
 

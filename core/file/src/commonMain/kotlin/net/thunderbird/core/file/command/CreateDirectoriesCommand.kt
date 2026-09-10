@@ -2,9 +2,9 @@ package net.thunderbird.core.file.command
 
 import com.eygraber.uri.Uri
 import kotlinx.io.IOException
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.file.FileOperationError
 import net.thunderbird.core.file.FileSystemManager
-import net.thunderbird.core.outcome.Outcome
 
 /**
  * Creates the directory at [dirUri], including any missing parent directories.

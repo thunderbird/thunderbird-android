@@ -5,10 +5,10 @@ import kotlinx.io.Buffer
 import kotlinx.io.IOException
 import kotlinx.io.RawSink
 import kotlinx.io.RawSource
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.file.FileOperationError
 import net.thunderbird.core.file.FileSystemManager
 import net.thunderbird.core.file.WriteMode
-import net.thunderbird.core.outcome.Outcome
 
 /**
  * Copies data from [sourceUri] to [destinationUri] using buffered I/O.

@@ -4,8 +4,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.thunderbird.components.core.outcome.handle
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.outcome.handle
 import net.thunderbird.core.ui.contract.udf.BaseUnidirectionalSlice
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.UseCase

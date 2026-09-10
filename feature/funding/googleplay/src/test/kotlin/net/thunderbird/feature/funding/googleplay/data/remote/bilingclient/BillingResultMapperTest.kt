@@ -10,7 +10,7 @@ import com.android.billingclient.api.BillingResult
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError
 
 internal class BillingResultMapperTest {

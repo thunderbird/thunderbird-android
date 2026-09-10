@@ -4,8 +4,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import net.thunderbird.components.core.outcome.handle
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.outcome.handle
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract

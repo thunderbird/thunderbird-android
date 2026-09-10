@@ -3,7 +3,7 @@ package net.thunderbird.feature.mail.message.list.internal.fakes
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.mailstore.RemoteFolderDetails
 import kotlinx.coroutines.flow.Flow
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.RemoteFolder

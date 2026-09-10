@@ -9,7 +9,7 @@ import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContrac
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Validator
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.ViewModel
 import kotlinx.coroutines.launch
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.ui.contract.mvi.BaseViewModel
 import net.thunderbird.core.validation.input.StringInputField
 

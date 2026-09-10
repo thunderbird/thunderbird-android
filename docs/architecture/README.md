@@ -343,7 +343,8 @@ maintainability an reliability.
 In Thunderbird for Android, several cross-cutting concerns are implemented as dedicated core modules to provide
 standardized solutions that can be reused across the application:
 
-- **⚠️ Error Handling**: Comprehensive error handling (`core/outcome`) transforms exceptions into domain-specific errors and provides user-friendly feedback.
+- **⚠️ Error Handling**: The Thunderbird Mobile Components `outcome` artifact transforms exceptions into domain-specific
+  errors and provides user-friendly feedback.
 - **📋 Logging**: Centralized logging system (`core/logging`) ensures consistent log formatting, levels, and storage.
 - **🔒 Security**: Modules like `core/security` handle encryption, authentication, and secure data storage.
 

@@ -2,7 +2,7 @@ package net.thunderbird.feature.funding.googleplay.data.local
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Local
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Mapper.ContributionPurchase
 import net.thunderbird.feature.funding.googleplay.data.local.configstore.ContributionConfig

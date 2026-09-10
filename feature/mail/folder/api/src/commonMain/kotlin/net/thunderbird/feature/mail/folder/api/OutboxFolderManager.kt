@@ -2,7 +2,7 @@ package net.thunderbird.feature.mail.folder.api
 
 import androidx.annotation.Discouraged
 import kotlinx.coroutines.runBlocking
-import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 

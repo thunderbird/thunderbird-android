@@ -11,9 +11,9 @@ import kotlin.test.BeforeTest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDateTime
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.common.activity.ActivityProvider
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract
 import net.thunderbird.feature.funding.googleplay.data.FundingDataContract.Remote
 import net.thunderbird.feature.funding.googleplay.domain.FundingDomainContract.ContributionError

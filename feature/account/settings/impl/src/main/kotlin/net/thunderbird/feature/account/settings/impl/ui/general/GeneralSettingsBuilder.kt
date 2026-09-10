@@ -5,10 +5,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import net.thunderbird.components.core.outcome.fold
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.keys.GeneratedFeatureFlagKey
-import net.thunderbird.core.outcome.fold
 import net.thunderbird.core.ui.setting.Setting
 import net.thunderbird.core.ui.setting.SettingDecoration
 import net.thunderbird.core.ui.setting.SettingValue

@@ -10,7 +10,6 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.core.common)
             implementation(projects.core.logging.api)
-            implementation(projects.core.outcome)
             implementation(projects.feature.account.api)
             implementation(projects.feature.mail.account.api)
         }
