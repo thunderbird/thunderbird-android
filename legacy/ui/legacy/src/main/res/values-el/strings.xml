@@ -934,4 +934,8 @@
     <string name="notification_actions_cutoff_state">Οι ενέργειες πάνω από αυτή τη γραμμή εμφανίζονται στην ειδοποίηση</string>
     <string name="notification_actions_shown_state">Εμφανίζεται στην ειδοποίηση</string>
     <string name="notification_actions_hidden_state">Δεν εμφανίζεται στην ειδοποίηση</string>
+    <plurals name="message_view_attachment_summary">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> Συνημμένο (<xliff:g id="size">%2$s</xliff:g>)</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> Συνημμένα (<xliff:g id="size">%2$s</xliff:g>)</item>
+    </plurals>
 </resources>
