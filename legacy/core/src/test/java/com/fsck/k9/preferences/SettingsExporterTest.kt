@@ -1,5 +1,7 @@
 package com.fsck.k9.preferences
 
+import android.util.Base64
+import androidx.core.net.toUri
 import app.k9mail.legacy.mailstore.FolderRepository
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -7,14 +9,21 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.ServerSettings
 import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.runBlocking
+import net.thunderbird.core.common.mail.Protocols
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import org.jdom2.Document
 import org.jdom2.input.SAXBuilder
 import org.junit.Test
 import org.koin.core.component.inject
 import org.mockito.kotlin.mock
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.Shadows.shadowOf
 
 class SettingsExporterTest : K9RobolectricTest() {
     private val contentResolver = RuntimeEnvironment.getApplication().contentResolver
@@ -65,6 +74,48 @@ class SettingsExporterTest : K9RobolectricTest() {
         assertThat(document.rootElement.getChild("global")).isNull()
     }
 
+    @Test
+    fun exportPreferences_includesAvatarImageForImageAvatar() {
+        val avatarUri = "content://test/avatar".toUri()
+        val imageBytes = byteArrayOf(1, 2, 3, 4)
+        val expectedEncoded = Base64.encodeToString(imageBytes, Base64.NO_WRAP)
+
+        shadowOf(contentResolver).registerInputStream(avatarUri, imageBytes.inputStream())
+        val mockAccount =preferences.newAccount().apply {
+            incomingServerSettings = SERVER_SETTINGS
+            outgoingServerSettings = SERVER_SETTINGS
+            avatar = AvatarDto(
+                avatarType = AvatarTypeDto.IMAGE,
+                avatarMonogram = null,
+                avatarImageUri = avatarUri.toString(),
+                avatarIconName = null,
+            )
+        }
+        preferences.saveAccount(mockAccount)
+
+        val document = exportPreferences(false, setOf(mockAccount.uuid))
+
+        val account = document.rootElement.getChild("accounts").getChild("account")
+        val avatarImage = account.getChild("avatar-image")
+        assertThat(avatarImage).isNotNull()
+        assertThat(avatarImage.text).isEqualTo(expectedEncoded)
+    }
+
+    @Test
+    fun exportPreferences_omitsAvatarImageForMonogramAvatar() {
+        val account = preferences.newAccount().apply {
+            incomingServerSettings = SERVER_SETTINGS
+            outgoingServerSettings = SERVER_SETTINGS
+            avatar = AvatarDto(AvatarTypeDto.MONOGRAM, "XX", null, null)
+        }
+        preferences.saveAccount(account)
+
+        val document = exportPreferences(false, setOf(account.uuid))
+        val exported = document.rootElement.getChild("accounts").getChild("account")
+        assertThat(exported.getChild("avatar-image")).isNull()
+    }
+
+
     private fun exportPreferences(globalSettings: Boolean, accounts: Set<String>): Document = runBlocking {
         ByteArrayOutputStream().use { outputStream ->
             settingsExporter.exportPreferences(outputStream, globalSettings, accounts, includePasswords = false)
@@ -74,5 +125,18 @@ class SettingsExporterTest : K9RobolectricTest() {
 
     private fun parseXml(xml: ByteArray): Document {
         return SAXBuilder().build(xml.inputStream())
+    }
+
+    companion object {
+        private val SERVER_SETTINGS = ServerSettings(
+            type = Protocols.IMAP,
+            host = "irrelevant",
+            port = 993,
+            connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = "username",
+            password = null,
+            clientCertificateAlias = null,
+        )
     }
 }
