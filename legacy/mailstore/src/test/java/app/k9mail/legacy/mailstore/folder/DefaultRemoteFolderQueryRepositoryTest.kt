@@ -8,6 +8,7 @@ import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.mailstore.MoreMessages
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import kotlin.test.Test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -104,7 +105,8 @@ class DefaultRemoteFolderQueryRepositoryTest {
         val result = testSubject.getAllByAccountId(unknownAccountId)
 
         // Assert
-        assertThat(result).isEqualTo(Outcome.failure(FolderError.AccountNotFound))
+        assertThat(result).isInstanceOf(Outcome.Failure::class)
+        assertThat((result as Outcome.Failure).error).isInstanceOf(FolderError.AccountNotFound::class)
     }
 
     @Test

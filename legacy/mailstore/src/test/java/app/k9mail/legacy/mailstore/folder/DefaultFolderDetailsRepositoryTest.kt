@@ -83,7 +83,8 @@ class DefaultFolderDetailsRepositoryTest {
         val result = testSubject.findById(unknownAccountId, REGULAR_FOLDER_ID)
 
         // Assert
-        assertThat(result).isEqualTo(Outcome.failure(FolderError.AccountNotFound))
+        assertThat(result).isInstanceOf(Outcome.Failure::class)
+        assertThat((result as Outcome.Failure).error).isInstanceOf(FolderError.AccountNotFound::class)
     }
 
     @Test
@@ -180,7 +181,8 @@ class DefaultFolderDetailsRepositoryTest {
         val result = testSubject.update(unknownAccountId, folderDetails)
 
         // Assert
-        assertThat(result).isEqualTo(Outcome.failure(FolderError.AccountNotFound))
+        assertThat(result).isInstanceOf(Outcome.Failure::class)
+        assertThat((result as Outcome.Failure).error).isInstanceOf(FolderError.AccountNotFound::class)
     }
 
     @Test
@@ -263,7 +265,8 @@ class DefaultFolderDetailsRepositoryTest {
         val result = testSubject.update(unknownAccountId, partialUpdate)
 
         // Assert
-        assertThat(result).isEqualTo(Outcome.failure(FolderError.AccountNotFound))
+        assertThat(result).isInstanceOf(Outcome.Failure::class)
+        assertThat((result as Outcome.Failure).error).isInstanceOf(FolderError.AccountNotFound::class)
     }
 
     @Test

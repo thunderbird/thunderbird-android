@@ -70,7 +70,7 @@ internal class LoadFolderInformationSideEffect(
                 remoteFolderQueryRepository
                     .getAllByAccountId(accountId)
                     .fold(onSuccess = { it }, onFailure = { emptyList() })
-                    .firstOrNull { it.id == folderId }
+                    .first { it.id == folderId }
             } else {
                 null
             }

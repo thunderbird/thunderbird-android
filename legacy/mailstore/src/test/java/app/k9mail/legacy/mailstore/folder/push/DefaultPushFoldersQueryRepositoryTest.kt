@@ -6,10 +6,11 @@ import app.k9mail.legacy.mailstore.ListenableMessageStore
 import app.k9mail.legacy.mailstore.MessageStoreFactory
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.mailstore.RemoteFolderDetails
-import assertk.assertFailure
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import assertk.assertions.prop
 import kotlin.test.Test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -17,13 +18,13 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_OTHER_RAW
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
+import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.core.android.account.AccountRemovedListener
 import net.thunderbird.core.android.account.AccountsChangeListener
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.FolderType
@@ -110,31 +111,39 @@ class DefaultPushFoldersQueryRepositoryTest {
     }
 
     @Test
-    fun `getAllByAccountId should return Failure with NotFound when the folder details repository returns AccountNotFound`() =
+    fun `getAllByAccountId should return Failure with AccountNotFound when the folder details repository returns AccountNotFound`() =
         runTest {
             // Arrange
-            remoteFolderDetailsRepository.outcome = Outcome.failure(FolderError.AccountNotFound)
+            val error = FolderError.AccountNotFound(throwable = IllegalStateException("Account not found: $accountId"))
+            remoteFolderDetailsRepository.outcome = Outcome.failure(error)
 
             // Act
             val result = testSubject.getAllByAccountId(accountId)
 
             // Assert
-            assertThat(result).isEqualTo(Outcome.failure(FolderError.NotFound))
+            assertThat(result).isEqualTo(Outcome.failure(error))
         }
 
     @Test
-    fun `getAllByAccountId should rethrow the throwable when the folder details repository returns FailedToQueryDatabase`() =
+    fun `getAllByAccountId should return Failure with FailedToQueryDatabase when the folder details repository returns FailedToQueryDatabase`() =
         runTest {
             // Arrange
             val exception = MessagingException("failed to fetch folders")
-            remoteFolderDetailsRepository.outcome = Outcome.failure(
-                FolderError.FailedToQueryDatabase(message = "Failed to query database.", throwable = exception),
-            )
+            val failure =
+                FolderError.FailedToQueryDatabase(message = "Failed to query database.", throwable = exception)
+            remoteFolderDetailsRepository.outcome = Outcome.failure(failure)
 
-            // Act & Assert
-            assertFailure {
-                testSubject.getAllByAccountId(accountId)
-            }.isEqualTo(exception)
+            // Act
+            val outcome = testSubject.getAllByAccountId(accountId)
+            // Assert
+            assertThat(outcome)
+                .isInstanceOf<Outcome.Failure<FolderError>>()
+                .prop(Outcome.Failure<FolderError>::error).all {
+                    isEqualTo(failure)
+                    isInstanceOf<FolderError.FailedToQueryDatabase>()
+                        .prop(FolderError.FailedToQueryDatabase::throwable)
+                        .isEqualTo(exception)
+                }
         }
 
     @Test

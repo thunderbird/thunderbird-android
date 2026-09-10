@@ -9,7 +9,15 @@ class FolderSettingsProvider(private val remoteFolderDetailsRepository: RemoteFo
     suspend fun getFolderSettings(account: LegacyAccountDto): List<FolderSettings> {
         return remoteFolderDetailsRepository
             .getAllByAccountId(account.id)
-            .fold(onSuccess = { it }, onFailure = { emptyList() })
+            .fold(
+                onSuccess = { it },
+                onFailure = { error ->
+                    when (val throwable = error.throwable) {
+                        null -> error("Unknown error while fetching remote folder details settings. Error: $error")
+                        else -> throw throwable
+                    }
+                },
+            )
             .filterNot { it.containsOnlyDefaultValues() }
             .map { it.toFolderSettings() }
     }

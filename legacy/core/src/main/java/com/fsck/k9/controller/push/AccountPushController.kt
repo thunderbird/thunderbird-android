@@ -8,8 +8,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.components.core.outcome.fold
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.data.repository.PushFoldersQueryRepository
 
@@ -67,7 +67,9 @@ internal class AccountPushController(
                             updatePushFolders(folderServerIds)
                         },
                         onFailure = {
-                            logger.error { "Failed to start listening for push folders. Error: $it" }
+                            logger.error(throwable = it.throwable) {
+                                "Failed to start listening for push folders. Error: $it"
+                            }
                         },
                     )
                 }

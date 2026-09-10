@@ -45,7 +45,7 @@ class DefaultRemoteFolderQueryRepository(
                 logger.error(throwable = e) {
                     "$LOG_ID Failed to get remote folders for account '$accountId'"
                 }
-                Outcome.failure(FolderError.AccountNotFound)
+                Outcome.failure(FolderError.AccountNotFound(throwable = e))
             }
         }
 }

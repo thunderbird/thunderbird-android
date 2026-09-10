@@ -71,7 +71,15 @@ class AccountSettingsViewModel(
         viewModelScope.launch {
             val remoteFolderInfo = withContext(backgroundDispatcher) {
                 val folders = remoteFolderQueryRepository.getAllByAccountId(account.id)
-                    .fold(onSuccess = { it }, onFailure = { emptyList() })
+                    .fold(
+                        onSuccess = { it },
+                        onFailure = { error ->
+                            when (val throwable = error.throwable) {
+                                null -> error("Unknown error while loading folders. Error: $error")
+                                else -> throw throwable
+                            }
+                        },
+                    )
                     .sortedWith(
                         compareByDescending<RemoteFolder> { it.type == FolderType.INBOX }
                             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.name },

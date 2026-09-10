@@ -53,7 +53,7 @@ class DefaultRemoteFolderDetailsRepository(
                 Outcome.failure(FolderError.FailedToQueryDatabase(message = "Failed to query database.", throwable = e))
             } catch (e: IllegalStateException) {
                 logger.error(throwable = e) { "$LOG_ID Failed to get remote folders details for account '$accountId'" }
-                Outcome.failure(FolderError.AccountNotFound)
+                Outcome.failure(FolderError.AccountNotFound(throwable = e))
             }
         }
 }

@@ -67,8 +67,12 @@ class DefaultSpecialFolderUpdater(
 
                 updateAccount(account)
             },
-            onFailure = {
-                logger.error { "Failed to update special folders. Folder error: $it" }
+            onFailure = { error ->
+                logger.error { "Failed to update special folders. Folder error: $error" }
+                when (val throwable = error.throwable) {
+                    null -> error("Unknown error while loading folders. Error: $error")
+                    else -> throw throwable
+                }
             },
         )
     }

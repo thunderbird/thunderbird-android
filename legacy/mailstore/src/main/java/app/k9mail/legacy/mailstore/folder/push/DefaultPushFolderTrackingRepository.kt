@@ -54,7 +54,7 @@ class DefaultPushFolderTrackingRepository(
                 "$LOG_ID Failed to observe push enabled for account id: $accountId"
             }
             when (throwable) {
-                is IllegalStateException -> emit(Outcome.failure(FolderError.AccountNotFound))
+                is IllegalStateException -> emit(Outcome.failure(FolderError.AccountNotFound(throwable)))
             }
         }
         .flowOn(ioDispatcher)
@@ -66,7 +66,7 @@ class DefaultPushFolderTrackingRepository(
             logger.error(throwable = e) {
                 "$LOG_ID Failed to disable push for account id: $accountId"
             }
-            Outcome.failure(FolderError.AccountNotFound)
+            Outcome.failure(FolderError.AccountNotFound(e))
         }
     }
 
@@ -80,7 +80,7 @@ class DefaultPushFolderTrackingRepository(
         logger.error(throwable = e) {
             "$LOG_ID Failed to disable push for account id: $accountId"
         }
-        Outcome.failure(FolderError.AccountNotFound)
+        Outcome.failure(FolderError.AccountNotFound(e))
     }
 
     private fun isEnabled(

@@ -11,6 +11,7 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
@@ -361,7 +362,7 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
     }
 
     @Test
-    fun `handle() should dispatch FolderLoaded with local_folder id when remote folder is missing for non-local folder`() =
+    fun `handle() should throw NoSuchElementException when remote folder data is missing for non-local folder`() =
         runTest {
             // Arrange
             val accountId = AccountIdFactory.create()
@@ -395,24 +396,14 @@ class LoadFolderInformationSideEffectTest : BaseSideEffectHandlerTest() {
                 ),
             )
 
-            // Act
-            testSubject.handle(
-                event = MessageListEvent.LoadConfigurations,
-                oldState = MessageListState.WarmingUp(),
-                newState = MessageListState.WarmingUp(),
-            )
-
-            // Assert
-            assertThat(dispatch.calls).containsExactly(
-                FolderEvent.FolderLoaded(
-                    folder = Folder(
-                        id = "local_folder",
-                        account = Account(id = accountId, color = expectedColor),
-                        name = "Remote",
-                        type = FolderType.INBOX,
-                    ),
-                ),
-            )
+            // Act & Assert
+            assertFailsWith<NoSuchElementException> {
+                testSubject.handle(
+                    event = MessageListEvent.LoadConfigurations,
+                    oldState = MessageListState.WarmingUp(),
+                    newState = MessageListState.WarmingUp(),
+                )
+            }
         }
 
     @Test
