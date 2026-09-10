@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.name.Name
 internal class ToStringOverridePiiSafeDeclarationGenerator(session: FirSession) :
     FirDeclarationGenerationExtension(session) {
     private val hasPiiPredicate = LookupPredicate.create {
-        annotated(FqName("net.thunderbird.core.logging.LoggingPii.HasPii"))
+        annotated(FqName("net.thunderbird.piisafe.annotation.PiiSafe.HasPii"))
     }
 
     override fun FirDeclarationPredicateRegistrar.registerPredicates() {

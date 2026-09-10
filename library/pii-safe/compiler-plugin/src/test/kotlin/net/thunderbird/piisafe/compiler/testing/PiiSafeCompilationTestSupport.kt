@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrarAdapter
 
 @OptIn(ExperimentalCompilerApi::class)
-internal fun compileWithPiiLoggingPlugin(
+internal fun compileWithPiiSafePlugin(
     fileName: String,
     @Language("kotlin")
     source: String,
@@ -26,7 +26,7 @@ internal fun compileWithPiiLoggingPlugin(
 /**
  * A minimal [CompilerPluginRegistrar] for tests that only need to exercise a [firExtensionRegistrar]
  * in isolation, without going through the real
- * [net.thunderbird.piisafe.compiler.PiiLoggingCompilerPluginRegistrar].
+ * [net.thunderbird.piisafe.compiler.PiiSafeCompilerPluginRegistrar].
  */
 @OptIn(ExperimentalCompilerApi::class)
 internal fun testFirRegistrar(firExtensionRegistrar: FirExtensionRegistrar): CompilerPluginRegistrar =

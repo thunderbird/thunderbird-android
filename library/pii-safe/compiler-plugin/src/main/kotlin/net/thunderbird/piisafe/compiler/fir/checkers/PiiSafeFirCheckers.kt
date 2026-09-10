@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.fir.analysis.checkers.declaration.FirDeclarationChec
 import org.jetbrains.kotlin.fir.analysis.extensions.FirAdditionalCheckersExtension
 import org.jetbrains.kotlin.fir.declarations.FirClass
 
-internal class PiiLoggingFirCheckers(session: FirSession) : FirAdditionalCheckersExtension(session) {
+internal class PiiSafeFirCheckers(session: FirSession) : FirAdditionalCheckersExtension(session) {
     override val declarationCheckers: DeclarationCheckers = object : DeclarationCheckers() {
         override val classCheckers: Set<FirDeclarationChecker<FirClass>> = setOf(
             HasPiiRequiresAnnotatedPropertyChecker(),

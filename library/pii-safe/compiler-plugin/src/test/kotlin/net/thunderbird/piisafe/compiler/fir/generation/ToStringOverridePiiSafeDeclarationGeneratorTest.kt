@@ -3,8 +3,8 @@ package net.thunderbird.piisafe.compiler.fir.generation
 import com.tschuchort.compiletesting.KotlinCompilation
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import net.thunderbird.piisafe.compiler.fir.checkers.PiiLoggingFirCheckers
-import net.thunderbird.piisafe.compiler.testing.compileWithPiiLoggingPlugin
+import net.thunderbird.piisafe.compiler.fir.checkers.PiiSafeFirCheckers
+import net.thunderbird.piisafe.compiler.testing.compileWithPiiSafePlugin
 import net.thunderbird.piisafe.compiler.testing.testFirRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.fir.extensions.FirExtensionRegistrar
@@ -15,11 +15,11 @@ class ToStringOverridePiiSafeDeclarationGeneratorTest {
     fun `declaration generation extension compiles a trivial class without diagnostics`() {
         val firExtensionRegistrar = object : FirExtensionRegistrar() {
             override fun ExtensionRegistrarContext.configurePlugin() {
-                +::PiiLoggingFirCheckers
+                +::PiiSafeFirCheckers
                 +::ToStringOverridePiiSafeDeclarationGenerator
             }
         }
-        val result = compileWithPiiLoggingPlugin(
+        val result = compileWithPiiSafePlugin(
             "Plain.kt",
             "class Plain(val value: String)",
             testFirRegistrar(firExtensionRegistrar),
