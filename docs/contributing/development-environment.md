@@ -12,6 +12,7 @@ Before you begin, ensure you have the following installed:
 - **[Git](https://git-scm.com/downloads)** - For version control
 - **Gradle** - Use the Gradle wrapper included in this repo (`./gradlew`); no separate install required
 - **Android SDK & command-line tools** – Installed and managed via Android Studio SDK Manager
+- **[ANDROID_HOME](https://developer.android.com/tools/variables#envar)** - Environment variable pointing to your SDK location; restart Android Studio after setting it
 
 ## 🔧 Setting Up the Development Environment
 
@@ -32,17 +33,6 @@ All contributions happen through a personal fork of the repository.
 2. Select **Open an Existing Project**
 3. Navigate to the cloned repository and open it
 4. Wait for project sync and indexing
-
-**If the sync fails with `SDK location not found`**, the `components/` build needs its own SDK location: Android Studio
-writes `sdk.dir` only into the `local.properties` in the repository root, which that separate included build does not read.
-
-1. Find your SDK path in Android Studio under **Settings/Preferences**, **Languages & Frameworks**, **Android SDK**, shown as **Android SDK Location**
-2. Add `systemProp.android.home=<sdk-path>` to your Gradle user properties file to cover all projects at once, or `sdk.dir=<sdk-path>` to `components/local.properties` for this repository only, creating the file if it does not exist yet
-3. Sync again
-
-The Gradle user properties file is `%USERPROFILE%\.gradle\gradle.properties` on Windows and `~/.gradle/gradle.properties`
-on Linux and macOS. Neither file is committed. In `.properties` files a single backslash is an escape character, so write
-Windows paths with forward slashes.
 
 ### 3. Configure Android Studio
 
