@@ -12,8 +12,8 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.feature.mail.message.reader.api.domain.mapper.AttachmentViewInfoMapper
 import net.thunderbird.feature.mail.message.reader.api.domain.mapper.AttachmentViewInfoMapper.AttachmentMetadata
 import net.thunderbird.feature.mail.message.reader.api.ui.MessageReaderViewContract
-import net.thunderbird.feature.mail.message.reader.api.ui.attachment.AttachmentId
 import net.thunderbird.feature.mail.message.reader.api.ui.attachment.AttachmentUiItem
+import net.thunderbird.feature.mail.message.reader.api.ui.attachment.AttachmentUri
 
 class MessageReaderViewModelTest {
 
@@ -292,7 +292,7 @@ class MessageReaderViewModelTest {
         mimeType: String? = null,
         encrypted: Boolean = false,
     ): AttachmentUiItem<Part> = AttachmentUiItem.File(
-        id = AttachmentId(uri),
+        id = AttachmentUri(uri),
         filename = filename,
         formattedSize = "$size bytes",
         size = size,
@@ -315,7 +315,7 @@ private class FakeAttachmentViewInfoMapper : AttachmentViewInfoMapper<Part> {
     override fun AttachmentMetadata<Part>.toUiItem(encrypted: Boolean): AttachmentUiItem<Part> {
         mappedFilenames += filename
         return AttachmentUiItem.File(
-            id = AttachmentId(uri),
+            id = AttachmentUri(uri),
             filename = filename,
             formattedSize = "${getSize()} bytes",
             size = getSize(),

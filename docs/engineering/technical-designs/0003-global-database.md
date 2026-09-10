@@ -40,16 +40,16 @@ database and are stable while that record exists, including across application r
 They are not protocol identifiers, portable-profile identifiers, or synchronization identifiers. In particular, an
 IMAP UID, a folder server ID, and an RFC 5322 `Message-ID` header must not be used as a global database identifier.
 
-|   Identifier   |         Owner         |                                                                                                                                            Meaning and boundary                                                                                                                                             |
-|----------------|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `AccountId`    | `feature:account:api` | The existing UUID-backed account identifier. Global-mail records retain its existing persisted value to establish account scope. Cutover neither replaces nor regenerates it. Account settings and profile runtime state remain outside the global mail database.                                           |
-| `FolderId`     | Mail domain           | Identifies one local folder record across all accounts. It replaces the legacy account-local folder number at repository boundaries.                                                                                                                                                                        |
-| `MessageId`    | Mail domain           | Identifies one local message record across all accounts. A message copied to another folder is a separate local record and therefore has a separate `MessageId`.                                                                                                                                            |
-| `ThreadId`     | Mail domain           | Identifies one account-scoped conversation, which can contain local message records from Inbox, Sent, Archive, and other folders. It is a durable conversation aggregate, not a legacy numeric thread-root key. Thread operations use `ThreadId`. Operations on an individual local record use `MessageId`. |
-| `AttachmentId` | Mail domain           | An opaque attachment-access URI or equivalent reference. It resolves unambiguously after cutover and is not a raw message-part primary key. Message-part keys stay internal unless a future focused attachment contract requires one.                                                                       |
+|   Identifier   |           Owner            |                                                                                                                                            Meaning and boundary                                                                                                                                             |
+|----------------|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `AccountId`    | `feature:account:api`      | The existing UUID-backed account identifier. Global-mail records retain its existing persisted value to establish account scope. Cutover neither replaces nor regenerates it. Account settings and profile runtime state remain outside the global mail database.                                           |
+| `FolderId`     | `feature:mail:folder:api`  | Identifies one local folder record across all accounts. It replaces the legacy account-local folder number at repository boundaries.                                                                                                                                                                        |
+| `MessageId`    | `feature:mail:message:api` | Identifies one local message record across all accounts. A message copied to another folder is a separate local record and therefore has a separate `MessageId`.                                                                                                                                            |
+| `ThreadId`     | `feature:mail:message:api` | Identifies one account-scoped conversation, which can contain local message records from Inbox, Sent, Archive, and other folders. It is a durable conversation aggregate, not a legacy numeric thread-root key. Thread operations use `ThreadId`. Operations on an individual local record use `MessageId`. |
+| `AttachmentId` | `feature:mail:message:api` | Identifies one persisted attachment record across all accounts. It is distinct from attachment access URIs and internal message-part primary keys.                                                                                                                                                          |
 
-RFC 0009 owns the UUID representation and generation policy for `FolderId`, `MessageId`, and `ThreadId`. These types,
-along with `AccountId` and `AttachmentId`, are the only identifiers that cross the mail repository boundary for this
+RFC 0009 owns the UUID representation and generation policy for `FolderId`, `MessageId`, `ThreadId`, and `AttachmentId`.
+These types, along with `AccountId`, are the only identifiers that cross the mail repository boundary for this
 design. Repository contracts never expose legacy numeric IDs or persistence keys.
 
 The thread builder uses the imported messages' threading headers across all folders of the same account. When a newly
@@ -71,7 +71,8 @@ For imported data, the migrator records an account-qualified source key before l
 | Folder          | `(AccountId, legacy folder id)`                     | `FolderId`               | folder extra values, message folder references, queued-command folder references                                  |
 | Message         | `(AccountId, legacy message id)`                    | `MessageId`              | outbox state, notifications, full-text mapping, message part root, thread message reference                       |
 | Thread          | `(AccountId, legacy folder id, legacy thread root)` | `ThreadId`               | rebuild cross-folder memberships from message threading headers and rewrite threaded-list and thread-cache values |
-| Message part    | `(AccountId, legacy message-part id)`               | internal only            | part root and parent references, message root-part reference, attachment-file lookup and URI resolution           |
+| Message part    | `(AccountId, legacy message-part id)`               | internal only            | part root and parent references, message root-part reference                                                      |
+| Attachment      | `(AccountId, legacy message-part id)`               | `AttachmentId`           | attachment-file lookup and access URI resolution                                                                  |
 | Pending command | `(AccountId, legacy command id)`                    | internal only            | command row identity and serialized folder references                                                             |
 
 The exact physical representation is internal, but it must enforce uniqueness of every source key and reject an import
@@ -103,7 +104,7 @@ failure state. A migration gate holds startup, sync, and other background mail w
 6. Establish the durable cutover state and switch repository bindings to the global implementation.
 7. Start post-cutover cleanup of all legacy database and attachment artifacts.
 
-The import writes folder and message identifier mappings before importing dependents. After all message records for an
+The import writes folder, message, and attachment identifier mappings before importing dependents. After all message records for an
 account are available, it builds cross-folder `ThreadId` memberships from their threading headers and records the
 legacy folder-local thread-root mappings before rewriting threaded-list and cache values. It then validates all
 rewritten relationships before the global database is published. It translates serialized pending-command folder
