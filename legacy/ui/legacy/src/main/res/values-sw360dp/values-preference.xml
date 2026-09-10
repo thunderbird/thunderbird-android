@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-Fixes indentation issues in preference screens
-
-Source: https://stackoverflow.com/a/52960668
--->
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <bool name="config_materialPreferenceIconSpaceReserved" tools:ignore="MissingDefaultResource,PrivateResource">false</bool>
-</resources>

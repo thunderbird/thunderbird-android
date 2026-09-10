@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="toolbarTitleMarginVertical">8dp</dimen>
+
+    <!-- Keyline -->
+    <dimen name="materialKeyline">72dp</dimen>
 </resources>

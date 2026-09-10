@@ -24,6 +24,8 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             tools:navigationIcon="@drawable/ic_arrow_back"
+            app:contentInsetStart="@dimen/materialKeyline"
+            app:contentInsetStartWithNavigation="@dimen/materialKeyline"
             >
 
             <com.fsck.k9.ui.settings.account.AccountSelectionSpinner

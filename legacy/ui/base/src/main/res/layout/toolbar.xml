@@ -2,7 +2,10 @@
 <!-- Don't use a this layout when using a subtitle. See https://issuetracker.google.com/issues/135865267 -->
 <com.google.android.material.appbar.MaterialToolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:contentInsetStart="@dimen/materialKeyline"
+    app:contentInsetStartWithNavigation="@dimen/materialKeyline"
     />

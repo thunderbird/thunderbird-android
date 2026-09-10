@@ -2,6 +2,7 @@
 <com.google.android.material.appbar.MaterialToolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
     style="?attr/toolbarStyle"
     android:layout_width="match_parent"
@@ -9,6 +10,8 @@
     android:layout_alignParentTop="true"
     android:minHeight="?attr/actionBarSize"
     tools:navigationIcon="@drawable/ic_arrow_back"
+    app:contentInsetStart="@dimen/messageListStartKeyline"
+    app:contentInsetStartWithNavigation="@dimen/messageListStartKeyline"
     >
 
     <!-- We're not using MaterialToolbar's title/subtitle support because it is broken when using large system
