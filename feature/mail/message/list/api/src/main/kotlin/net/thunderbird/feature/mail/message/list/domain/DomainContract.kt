@@ -55,7 +55,7 @@ interface DomainContract {
     }
 }
 
-data class AccountFolderError(val exception: Exception)
+data class AccountFolderError(val exception: Throwable)
 
 sealed interface SetAccountFolderOutcome {
     data object Success : SetAccountFolderOutcome

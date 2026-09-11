@@ -33,39 +33,6 @@ class DefaultFolderRepository(
         }
     }
 
-    @Throws(MessagingException::class)
-    override fun getRemoteFolders(accountId: AccountId): List<RemoteFolder> {
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-        return messageStore.getFolders(excludeLocalOnly = true) { folder ->
-            RemoteFolder(
-                id = folder.id,
-                serverId = folder.serverIdOrThrow(),
-                name = folder.name,
-                type = folder.type.toFolderType(),
-            )
-        }
-    }
-
-    override fun getRemoteFolderDetails(accountId: AccountId): List<RemoteFolderDetails> {
-        val messageStore = messageStoreManager.getMessageStore(accountId)
-        return messageStore.getFolders(excludeLocalOnly = true) { folder ->
-            RemoteFolderDetails(
-                folder = RemoteFolder(
-                    id = folder.id,
-                    serverId = folder.serverIdOrThrow(),
-                    name = folder.name,
-                    type = folder.type.toFolderType(),
-                ),
-                isInTopGroup = folder.isInTopGroup,
-                isIntegrate = folder.isIntegrate,
-                isSyncEnabled = folder.isSyncEnabled,
-                isVisible = folder.isVisible,
-                isNotificationsEnabled = folder.isNotificationsEnabled,
-                isPushEnabled = folder.isPushEnabled,
-            )
-        }
-    }
-
     override fun getFolderServerId(accountId: AccountId, folderId: Long): String? {
         val messageStore = messageStoreManager.getMessageStore(accountId)
         return messageStore.getFolder(folderId) { folder ->

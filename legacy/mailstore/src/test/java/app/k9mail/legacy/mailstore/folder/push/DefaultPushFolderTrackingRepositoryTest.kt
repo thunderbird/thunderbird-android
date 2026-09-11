@@ -76,7 +76,8 @@ class DefaultPushFolderTrackingRepositoryTest {
         val result = testSubject.isEnabled(unknownAccountId)
 
         // Assert
-        assertThat(result).isEqualTo(Outcome.failure(FolderError.AccountNotFound))
+        assertThat(result).isInstanceOf(Outcome.Failure::class)
+        assertThat((result as Outcome.Failure).error).isInstanceOf(FolderError.AccountNotFound::class)
     }
 
     @Test
@@ -98,7 +99,8 @@ class DefaultPushFolderTrackingRepositoryTest {
         val result = testSubject.disable(unknownAccountId)
 
         // Assert
-        assertThat(result).isEqualTo(Outcome.failure(FolderError.AccountNotFound))
+        assertThat(result).isInstanceOf(Outcome.Failure::class)
+        assertThat((result as Outcome.Failure).error).isInstanceOf(FolderError.AccountNotFound::class)
     }
 
     @Test

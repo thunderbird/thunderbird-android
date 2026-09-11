@@ -19,5 +19,5 @@ interface PushFoldersQueryRepository {
      *
      * @param accountId The account identifier.
      */
-    fun getAllByAccountId(accountId: AccountId): Outcome<List<RemoteFolder>, FolderError>
+    suspend fun getAllByAccountId(accountId: AccountId): Outcome<List<RemoteFolder>, FolderError>
 }

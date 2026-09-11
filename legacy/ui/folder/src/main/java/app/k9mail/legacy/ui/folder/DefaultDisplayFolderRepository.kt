@@ -6,7 +6,7 @@ import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import java.text.Collator
-import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.feature.mail.folder.api.Folder
@@ -28,7 +29,7 @@ class DefaultDisplayFolderRepository(
     private val messagingController: MessagingControllerRegistry,
     private val messageStoreManager: MessageStoreManager,
     private val outboxFolderManager: OutboxFolderManager,
-    private val coroutineContext: CoroutineContext = Dispatchers.IO,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : DisplayFolderRepository {
     private val sortForDisplay =
         compareByDescending<DisplayFolder> { it.folder.type == FolderType.INBOX }
@@ -88,7 +89,9 @@ class DefaultDisplayFolderRepository(
             messagingController.addListener(folderStatusChangedListener)
 
             val folderSettingsChangedListener = FolderSettingsChangedListener {
-                trySendBlocking(getDisplayFolders(account, outboxFolderId, includeHiddenFolders))
+                withContext(ioDispatcher) {
+                    trySendBlocking(getDisplayFolders(account, outboxFolderId, includeHiddenFolders))
+                }
             }
             messageStore.addFolderSettingsChangedListener(folderSettingsChangedListener)
 
@@ -98,7 +101,7 @@ class DefaultDisplayFolderRepository(
             }
         }.buffer(capacity = Channel.CONFLATED)
             .distinctUntilChanged()
-            .flowOn(coroutineContext)
+            .flowOn(ioDispatcher)
     }
 
     override fun getDisplayFoldersFlow(accountUuid: String): Flow<List<DisplayFolder>> {
