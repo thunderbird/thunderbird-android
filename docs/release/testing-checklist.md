@@ -13,7 +13,7 @@ When to use
 Test environments
 
 - Devices: At least one low-end and one mid/high-end device; 1 emulator
-- OS versions: Last 3 major Android versions supported + Lowest supported (API 21)
+- OS versions: Last 3 major Android versions supported + Lowest supported (Android 6.0 / API 23)
 - Network: Wi‑Fi, LTE/3G, Offline/Airplane; captive portal if available
 - Accounts: At least 2 IMAP accounts (different providers), 1 POP3 if supported; one account with many messages/folders
 - Locales: English + one non‑English (RTL if possible)
