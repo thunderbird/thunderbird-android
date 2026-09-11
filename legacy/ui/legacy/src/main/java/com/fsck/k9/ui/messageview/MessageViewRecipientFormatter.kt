@@ -91,6 +91,6 @@ internal fun createMessageViewRecipientFormatter(
         } else {
             null
         },
-        meText = resources.getString(R.string.message_view_me_text),
+        meText = resources.getString(R.string.message_view_to_me_text),
     )
 }

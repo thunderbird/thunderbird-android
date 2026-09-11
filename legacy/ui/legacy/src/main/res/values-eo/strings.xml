@@ -793,7 +793,7 @@
     <string name="new_messages_title">Novaj mesaĝoj</string>
     <string name="notification_certificate_error_public">Atestila eraro</string>
     <string name="debug_export_logs_failure">Elportado malsukcesis.</string>
-    <string name="message_view_me_text">mi</string>
+    <string name="message_view_to_me_text">mi</string>
     <string name="unsubscribe_action">Malaboni</string>
     <string name="notification_notify_error_title">Sciiga eraro</string>
     <string name="message_view_show_remote_images_action">Montri forajn bildojn</string>

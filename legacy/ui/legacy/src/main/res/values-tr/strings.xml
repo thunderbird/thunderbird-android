@@ -817,7 +817,7 @@
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <string name="action_copy_email_address">E-posta adresini kopyala</string>
-    <string name="message_view_me_text">ben</string>
+    <string name="message_view_to_me_text">ben</string>
     <string name="action_compose_message_to">Bu kişiye ileti oluştur</string>
     <string name="account_settings_vibrate_pattern_label">Titreşim şablonu</string>
     <string name="message_list_content_description_unread_prefix">okunmadı, %s</string>

@@ -747,7 +747,7 @@
     <string name="notification_certificate_error_public">Sertifikatsfeil</string>
     <string name="general_settings_swipe_action_toggle_read">Marker som lest/ulest</string>
     <string name="action_copy_email_address">Kopier e-postadresse</string>
-    <string name="message_view_me_text">meg</string>
+    <string name="message_view_to_me_text">meg</string>
     <string name="account_settings_notification_channels_label">Merknadskategorier</string>
     <string name="action_compose_message_to">Skriv melding til</string>
     <string name="copy_subject_to_clipboard">Emnetekst kopiert til utklippstavlen</string>

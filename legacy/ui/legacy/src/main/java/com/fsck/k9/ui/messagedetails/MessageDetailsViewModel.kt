@@ -83,12 +83,12 @@ internal class MessageDetailsViewModel(
                 val messageDetailsUi = MessageDetailsUi(
                     date = buildDisplayDate(messageDetails.date),
                     cryptoDetails = cryptoResult?.toCryptoDetails(),
-                    from = messageDetails.from.toParticipants(account),
-                    sender = senderList.toParticipants(account),
-                    replyTo = messageDetails.replyTo.toParticipants(account),
-                    to = messageDetails.to.toParticipants(account),
-                    cc = messageDetails.cc.toParticipants(account),
-                    bcc = messageDetails.bcc.toParticipants(account),
+                    from = messageDetails.from.toParticipants(account, isSender = true),
+                    sender = senderList.toParticipants(account, isSender = true),
+                    replyTo = messageDetails.replyTo.toParticipants(account, isSender = true),
+                    to = messageDetails.to.toParticipants(account, isSender = false),
+                    cc = messageDetails.cc.toParticipants(account, isSender = false),
+                    bcc = messageDetails.bcc.toParticipants(account, isSender = false),
                     folder = folder?.toFolderInfo(),
                 )
 
@@ -125,9 +125,9 @@ internal class MessageDetailsViewModel(
         )
     }
 
-    private fun List<Address>.toParticipants(account: LegacyAccountDto): List<Participant> {
+    private fun List<Address>.toParticipants(account: LegacyAccountDto, isSender: Boolean): List<Participant> {
         return this.map { address ->
-            val displayName = participantFormatter.getDisplayName(address, account)
+            val displayName = participantFormatter.getDisplayName(address, account, isSender)
             val emailAddress = address.address
 
             Participant(

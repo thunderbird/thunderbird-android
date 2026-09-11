@@ -15,19 +15,20 @@ import net.thunderbird.core.preference.display.visualSettings.message.list.Messa
  * Get the display name for a participant to be shown in the message details screen.
  */
 internal interface MessageDetailsParticipantFormatter {
-    fun getDisplayName(address: Address, account: LegacyAccountDto): CharSequence?
+    fun getDisplayName(address: Address, account: LegacyAccountDto, isSender: Boolean): CharSequence?
 }
 
 internal class RealMessageDetailsParticipantFormatter(
     private val contactNameProvider: ContactNameProvider,
     private val showContactNames: Boolean,
     private val contactNameColor: Int?,
-    private val meText: String,
+    private val toMeText: String,
+    private val fromMeText: String,
 ) : MessageDetailsParticipantFormatter {
-    override fun getDisplayName(address: Address, account: LegacyAccountDto): CharSequence? {
+    override fun getDisplayName(address: Address, account: LegacyAccountDto, isSender: Boolean): CharSequence? {
         val identity = account.findIdentity(address)
         if (identity != null) {
-            return getIdentityName(identity, account)
+            return getIdentityName(identity, account, isSender)
         }
 
         return if (showContactNames) {
@@ -37,7 +38,8 @@ internal class RealMessageDetailsParticipantFormatter(
         }
     }
 
-    private fun getIdentityName(identity: Identity, account: LegacyAccountDto): String {
+    private fun getIdentityName(identity: Identity, account: LegacyAccountDto, isSender: Boolean): String {
+        val meText = if (isSender) fromMeText else toMeText
         return if (account.identities.size == 1) {
             meText
         } else {
@@ -74,6 +76,7 @@ internal fun createMessageDetailsParticipantFormatter(
         } else {
             null
         },
-        meText = resources.getString(R.string.message_view_me_text),
+        toMeText = resources.getString(R.string.message_view_to_me_text),
+        fromMeText = resources.getString(R.string.message_view_from_me_text),
     )
 }

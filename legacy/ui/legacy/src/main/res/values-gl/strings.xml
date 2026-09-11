@@ -795,7 +795,7 @@
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="new_messages_title">Novas mensaxes</string>
     <string name="unsubscribe_action">Cancelar a subscrición</string>
-    <string name="message_view_me_text">eu</string>
+    <string name="message_view_to_me_text">eu</string>
     <string name="message_view_show_remote_images_action">Mostra imaxes remotas</string>
     <string name="general_settings_contact_name_color_label">Cor do nome do contacto</string>
     <string name="general_settings_post_remove_action_title">Despois de eliminar ou mover unha mensaxe</string>

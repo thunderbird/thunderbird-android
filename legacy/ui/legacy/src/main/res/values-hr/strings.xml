@@ -750,7 +750,7 @@
     <string name="notification_notify_error_title">Greška u obavijesti</string>
     <string name="message_view_show_remote_images_action">Prikaži slike s udaljenog poslužitelja</string>
     <string name="message_view_additional_recipient_prefix">+</string>
-    <string name="message_view_me_text">mene</string>
+    <string name="message_view_to_me_text">mene</string>
     <string name="general_settings_post_remove_action_show_previous_message">Prikaži prethodnu poruku</string>
     <string name="general_settings_post_mark_as_unread_action_title">Nakon označavanja poruke kao nepročitane</string>
     <string name="general_settings_swipe_actions_title">Akcije povlačenja</string>
