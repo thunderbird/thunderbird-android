@@ -47,7 +47,7 @@ val preferencesModule = module {
             filePrefixProvider = get(),
         )
     }
-    factory { FolderSettingsProvider(folderRepository = get()) }
+    factory { FolderSettingsProvider(remoteFolderDetailsRepository = get()) }
     factory<LegacyAccountDtoManager> { get<Preferences>() }
     single<PrivacySettingsPreferenceManager> {
         DefaultPrivacySettingsPreferenceManager(

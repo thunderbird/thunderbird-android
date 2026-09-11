@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.components.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
@@ -35,7 +36,9 @@ class DefaultPushFolderTrackingRepository(
         send(enabled)
 
         val listener = FolderSettingsChangedListener {
-            trySendBlocking(isEnabled(accountId, messageStore))
+            withContext(ioDispatcher) {
+                trySendBlocking(isEnabled(accountId, messageStore))
+            }
         }
         messageStore.addFolderSettingsChangedListener(listener)
 
@@ -51,7 +54,7 @@ class DefaultPushFolderTrackingRepository(
                 "$LOG_ID Failed to observe push enabled for account id: $accountId"
             }
             when (throwable) {
-                is IllegalStateException -> emit(Outcome.failure(FolderError.AccountNotFound))
+                is IllegalStateException -> emit(Outcome.failure(FolderError.AccountNotFound(throwable)))
             }
         }
         .flowOn(ioDispatcher)
@@ -63,7 +66,7 @@ class DefaultPushFolderTrackingRepository(
             logger.error(throwable = e) {
                 "$LOG_ID Failed to disable push for account id: $accountId"
             }
-            Outcome.failure(FolderError.AccountNotFound)
+            Outcome.failure(FolderError.AccountNotFound(e))
         }
     }
 
@@ -77,7 +80,7 @@ class DefaultPushFolderTrackingRepository(
         logger.error(throwable = e) {
             "$LOG_ID Failed to disable push for account id: $accountId"
         }
-        Outcome.failure(FolderError.AccountNotFound)
+        Outcome.failure(FolderError.AccountNotFound(e))
     }
 
     private fun isEnabled(

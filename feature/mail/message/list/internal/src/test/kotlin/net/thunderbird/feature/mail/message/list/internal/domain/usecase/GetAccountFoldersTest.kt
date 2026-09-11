@@ -1,6 +1,5 @@
 package net.thunderbird.feature.mail.message.list.internal.domain.usecase
 
-import app.k9mail.legacy.mailstore.FolderRepository
 import assertk.all
 import assertk.assertFailure
 import assertk.assertThat
@@ -21,9 +20,7 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.message.list.domain.AccountFolderError
-import org.mockito.kotlin.any
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
+import net.thunderbird.feature.mail.message.list.internal.fakes.FakeRemoteFolderQueryRepository
 
 private val VALID_ACCOUNT_ID = AccountIdFactory.create()
 private val INVALID_ACCOUNT_ID = AccountIdFactory.create()
@@ -243,14 +240,10 @@ class GetAccountFoldersTest {
         folders: List<RemoteFolder>,
         exception: Exception? = null,
     ): GetAccountFolders {
-        val folderRepository = mock<FolderRepository>()
-        if (exception != null) {
-            whenever(folderRepository.getRemoteFolders(any()))
-                .thenThrow(exception)
-        } else {
-            whenever(folderRepository.getRemoteFolders(any()))
-                .thenReturn(folders)
-        }
-        return GetAccountFolders(folderRepository, ioDispatcher = UnconfinedTestDispatcher())
+        val remoteFolderQueryRepository = FakeRemoteFolderQueryRepository(
+            remoteFolders = mapOf(VALID_ACCOUNT_ID to folders, INVALID_ACCOUNT_ID to folders),
+            exception = exception,
+        )
+        return GetAccountFolders(remoteFolderQueryRepository, ioDispatcher = UnconfinedTestDispatcher())
     }
 }

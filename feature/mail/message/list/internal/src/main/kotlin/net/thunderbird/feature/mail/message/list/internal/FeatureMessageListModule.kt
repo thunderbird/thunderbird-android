@@ -24,7 +24,7 @@ import org.koin.dsl.module
 
 val featureMessageListModule = module {
     includes(messageListSideEffectsModule)
-    factory<DomainContract.UseCase.GetAccountFolders> { GetAccountFolders(folderRepository = get()) }
+    factory<DomainContract.UseCase.GetAccountFolders> { GetAccountFolders(remoteFolderQueryRepository = get()) }
     factory<DomainContract.UseCase.CreateArchiveFolder> {
         CreateArchiveFolder(
             accountManager = get(),
