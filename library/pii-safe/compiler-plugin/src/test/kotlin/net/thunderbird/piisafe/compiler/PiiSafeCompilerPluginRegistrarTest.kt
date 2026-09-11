@@ -1,8 +1,9 @@
 package net.thunderbird.piisafe.compiler
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.tschuchort.compiletesting.KotlinCompilation
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import net.thunderbird.piisafe.compiler.testing.compileWithPiiSafePlugin
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 
@@ -23,6 +24,6 @@ class PiiSafeCompilerPluginRegistrarTest {
             registrar = PiiSafeCompilerPluginRegistrar(),
         )
 
-        assertEquals(KotlinCompilation.ExitCode.OK, result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
     }
 }

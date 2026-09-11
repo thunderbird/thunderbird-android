@@ -1,7 +1,8 @@
 package net.thunderbird.piisafe.compiler
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.config.CompilerConfiguration
 
@@ -14,7 +15,6 @@ class PiiSafeCommandLineProcessorTest {
         val option = processor.pluginOptions.single { it.optionName == "enabled" }
 
         processor.processOption(option = option, value = "false", configuration = configuration)
-
-        assertEquals(expected = false, actual = configuration[PiiSafeConfigurationKeys.ENABLED])
+        assertThat(configuration[PiiSafeConfigurationKeys.ENABLED]).isEqualTo(false)
     }
 }
