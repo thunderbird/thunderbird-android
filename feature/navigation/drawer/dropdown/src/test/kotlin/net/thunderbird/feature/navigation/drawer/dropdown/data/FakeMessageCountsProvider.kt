@@ -10,12 +10,13 @@ import net.thunderbird.feature.search.legacy.SearchAccount
 
 internal class FakeMessageCountsProvider(
     private val messageCounts: MessageCounts,
+    private val accountMessageCounts: Map<String, MessageCounts> = emptyMap(),
 ) : MessageCountsProvider {
     var recordedSearch: LocalMessageSearch =
         LocalMessageSearch()
 
     override fun getMessageCounts(account: LegacyAccountDto): MessageCounts {
-        TODO("Not yet implemented")
+        return checkNotNull(accountMessageCounts[account.uuid])
     }
 
     override fun getMessageCounts(searchAccount: SearchAccount): MessageCounts {
