@@ -11,6 +11,7 @@ interface ValidatedSettings {
         val settings: InternalSettingsMap,
         val identities: List<Identity>,
         val folders: List<Folder>,
+        val avatarImage: String?
     )
 
     data class Server(
