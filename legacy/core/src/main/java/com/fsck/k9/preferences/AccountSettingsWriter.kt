@@ -1,8 +1,14 @@
 package com.fsck.k9.preferences
 
+import android.R.attr.mimeType
+import android.content.ClipData.newUri
 import android.content.Context
+import android.net.Uri
+import android.util.Base64
+import com.eygraber.uri.toKmpUri
 import com.fsck.k9.Core
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
+import java.io.File
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
@@ -21,6 +27,7 @@ import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StorageProvider
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.avatar.AvatarImageRepository
 import net.thunderbird.feature.account.storage.legacy.serializer.ServerSettingsDtoSerializer
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
@@ -48,6 +55,7 @@ internal class AccountSettingsWriter(
     private val clock: Clock,
     private val generalSettingsManager: GeneralSettingsManager,
     serverSettingsDtoSerializer: ServerSettingsDtoSerializer,
+    private val avatarImageRepository: AvatarImageRepository,
     private val context: Context,
 ) {
     private val folderSettingsWriter = FolderSettingsWriter(generalSettingsManager)
@@ -62,7 +70,21 @@ internal class AccountSettingsWriter(
         val accountName = getUniqueAccountName(originalAccountName)
         val writtenAccount = AccountDescription(accountName, accountId.toString())
 
-        val importedAccount = createAccount(account, accountId, accountName)
+        var avatarImageUri: String? = null
+        val base64 = account.avatarImage
+        if (base64 != null) {
+            val bytes = Base64.decode(base64, Base64.NO_WRAP)
+            val tempFile = File(context.cacheDir, "avatar_import_$accountId").apply { writeBytes(bytes) }
+            try {
+                val tempUri = Uri.fromFile(tempFile)
+                val newUri = avatarImageRepository.update(accountId, tempUri.toKmpUri())
+                avatarImageUri = newUri.toString()
+            } finally {
+                tempFile.delete()
+            }
+        }
+
+        val importedAccount = createAccount(account, accountId, accountName, avatarImageUri)
         // A failed folder-settings commit must not leave an account behind that a retry would duplicate.
         writeFolders(accountId, account.folders)
         accountManager.create(importedAccount)
@@ -81,7 +103,12 @@ internal class AccountSettingsWriter(
         }
 
     @Suppress("LongMethod")
-    private fun createAccount(account: ValidatedSettings.Account, accountId: AccountId, name: String): LegacyAccount {
+    private fun createAccount(
+        account: ValidatedSettings.Account,
+        accountId: AccountId,
+        name: String,
+        avatarImageUri: String?,
+    ): LegacyAccount {
         val settings = account.settings
         fun bool(key: String): Boolean = settings[key] as? Boolean
             ?: (AccountSettingsDescriptions.SETTINGS[key]?.lastEntry()?.value?.defaultValue as Boolean)
@@ -104,7 +131,7 @@ internal class AccountSettingsWriter(
             accountId = accountId,
             avatarType = settings.enum("avatarType", AvatarTypeDto.MONOGRAM),
             avatarMonogram = string("avatarMonogram"),
-            avatarImageUri = string("avatarImageUri"),
+            avatarImageUri = avatarImageUri ?: string("avatarImageUri"),
             avatarIconName = string("avatarIconName"),
         )
         val sortType = settings.enum("sortTypeEnum", SortType.SORT_DATE)
