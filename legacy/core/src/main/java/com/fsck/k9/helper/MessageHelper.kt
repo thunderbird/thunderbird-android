@@ -153,10 +153,10 @@ class MessageHelper(
                 }
             }
             val personal = address.personal
-            return if (!personal.isNullOrEmpty() && !isSpoofAddress(personal)) {
-                personal
-            } else {
-                address.address
+            return when {
+                personal.isNullOrEmpty() -> address.address
+                isSpoofAddress(personal) -> "$personal <${address.address}>"
+                else -> personal
             }
         }
 
