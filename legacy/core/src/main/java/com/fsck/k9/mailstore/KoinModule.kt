@@ -1,8 +1,6 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.legacy.mailstore.AggregateRepositories
-import app.k9mail.legacy.mailstore.DefaultFolderRepository
-import app.k9mail.legacy.mailstore.FolderRepository
+import app.k9mail.legacy.mailstore.DefaultFolderQueryRepository
 import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.mailstore.folder.DefaultFolderDetailsRepository
@@ -18,6 +16,7 @@ import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.core.common.cache.TimeLimitedCache
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.folder.api.data.repository.FolderDetailsRepository
+import net.thunderbird.feature.mail.folder.api.data.repository.FolderQueryRepository
 import net.thunderbird.feature.mail.folder.api.data.repository.PushFolderTrackingRepository
 import net.thunderbird.feature.mail.folder.api.data.repository.PushFoldersQueryRepository
 import net.thunderbird.feature.mail.folder.api.data.repository.RemoteFolderDetailsRepository
@@ -59,14 +58,12 @@ val mailStoreModule = module {
     single<RemoteFolderQueryRepository> {
         DefaultRemoteFolderQueryRepository(logger = get(), messageStoreManager = get())
     }
-    single<FolderRepository> {
-        DefaultFolderRepository(
+    single<FolderQueryRepository> {
+        DefaultFolderQueryRepository(
+            logger = get(),
             accountManager = get(),
             messageStoreManager = get(),
             outboxFolderManager = get(),
-            aggregateRepositories = AggregateRepositories(
-                pushFolderTrackingRepository = get(),
-            ),
         )
     }
     single { MessageViewInfoExtractorFactory(get(), get(), get()) }
@@ -76,7 +73,7 @@ val mailStoreModule = module {
         K9BackendStorageFactory(
             preferences = get(),
             accountManager = get(),
-            folderRepository = get(),
+            folderQueryRepository = get(),
             messageStoreManager = get(),
             specialFolderUpdaterFactory = get(),
             saveMessageDataCreator = get(),
