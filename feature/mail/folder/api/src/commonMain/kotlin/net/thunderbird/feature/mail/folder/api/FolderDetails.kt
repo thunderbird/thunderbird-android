@@ -1,8 +1,8 @@
 package net.thunderbird.feature.mail.folder.api
 
-import net.thunderbird.core.logging.LoggingPii
+import net.thunderbird.piisafe.annotation.PiiSafe
 
-@LoggingPii.HasPii
+@PiiSafe.HasPii
 data class FolderDetails(
     override val folder: Folder,
     override val isInTopGroup: Boolean,
@@ -13,7 +13,7 @@ data class FolderDetails(
     override val isPushEnabled: Boolean,
 ) : BaseFolderDetails<Folder>
 
-@LoggingPii.HasPii
+@PiiSafe.HasPii
 data class RemoteFolderDetails(
     override val folder: RemoteFolder,
     override val isInTopGroup: Boolean,
