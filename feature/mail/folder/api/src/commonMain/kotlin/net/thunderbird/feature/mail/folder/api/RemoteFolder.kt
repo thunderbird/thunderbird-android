@@ -1,13 +1,13 @@
 package net.thunderbird.feature.mail.folder.api
 
-import net.thunderbird.core.logging.LoggingPii
+import net.thunderbird.piisafe.annotation.PiiSafe
 
-@LoggingPii.HasPii
+@PiiSafe.HasPii
 data class RemoteFolder(
     val id: Long,
-    @get:LoggingPii.Mask
+    @get:PiiSafe.Mask
     val serverId: String,
-    @get:LoggingPii.Mask
+    @get:PiiSafe.Mask
     val name: String,
     val type: FolderType,
 )

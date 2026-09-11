@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.networknt.jsonSchemaValidator)
     implementation(libs.kotlinpoet)
+    compileOnly(libs.kotlin.gradle.plugin.api)
 
     testImplementation(gradleTestKit())
     testImplementation(libs.junit)
@@ -90,6 +91,10 @@ gradlePlugin {
         register("FeatureFlagLibrary") {
             id = "net.thunderbird.gradle.plugin.featureflag.library"
             implementationClass = "net.thunderbird.gradle.plugin.featureflag.FeatureFlagLibraryPlugin"
+        }
+        register("PiiSafe") {
+            id = "net.thunderbird.piisafe"
+            implementationClass = "net.thunderbird.gradle.plugin.piisafe.PiiSafeGradleSubplugin"
         }
     }
 }
