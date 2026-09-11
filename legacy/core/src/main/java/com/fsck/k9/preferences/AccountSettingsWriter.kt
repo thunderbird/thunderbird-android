@@ -1,15 +1,23 @@
 package com.fsck.k9.preferences
 
+import android.R.attr.mimeType
+import android.content.ClipData.newUri
 import android.content.Context
+import android.net.Uri
+import android.util.Base64
+import com.eygraber.uri.toKmpUri
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
+import java.io.File
 import java.util.UUID
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.avatar.AvatarImageRepository
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.ACCOUNT_DESCRIPTION_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.INCOMING_SERVER_SETTINGS_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.OUTGOING_SERVER_SETTINGS_KEY
@@ -23,6 +31,7 @@ constructor(
     private val clock: Clock,
     private val generalSettingsManager: GeneralSettingsManager,
     serverSettingsDtoSerializer: ServerSettingsDtoSerializer,
+    private val avatarImageRepository: AvatarImageRepository,
     private val context: Context,
 ) {
     private val identitySettingsWriter = IdentitySettingsWriter(generalSettingsManager)
@@ -50,6 +59,18 @@ constructor(
 
         // Convert account settings to the string representation used in preference storage
         val stringSettings = AccountSettingsDescriptions.convert(account.settings)
+        val base64 = account.avatarImage
+        if (base64 != null) {
+            val bytes = Base64.decode(base64, Base64.NO_WRAP)
+            val tempFile = File(context.cacheDir, "avatar_import_$accountUuid").apply { writeBytes(bytes) }
+            try {
+                val tempUri = Uri.fromFile(tempFile)
+                val newUri = avatarImageRepository.update(AccountIdFactory.of(accountUuid), tempUri.toKmpUri())
+                stringSettings["avatarImageUri"] = newUri.toString()
+            } finally {
+                tempFile.delete()
+            }
+        }
 
         for ((accountKey, value) in stringSettings) {
             editor.putStringWithLogging(
