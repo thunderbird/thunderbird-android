@@ -917,4 +917,5 @@
     <string name="account_settings_signature_is_html_summary">Léirmhínigh an síniú mar HTML. Bainfear scripteanna agus láimhseálaithe imeachtaí ar mhaithe le slándáil.</string>
     <string name="account_settings_signature_preview">Réamhamharc sínithe</string>
     <string name="account_settings_signature_clear_label">Síniú Glan</string>
+    <string name="message_compose_encrypting_message">Ag criptiú na teachtaireachta…</string>
 </resources>
