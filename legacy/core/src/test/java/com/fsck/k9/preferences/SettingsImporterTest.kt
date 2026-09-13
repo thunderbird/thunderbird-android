@@ -10,7 +10,6 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
-import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import assertk.assertions.prop
 import com.eygraber.uri.Uri
@@ -29,6 +28,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import org.mockito.kotlin.wheneverBlocking
 
 class SettingsImporterTest : K9RobolectricTest() {
@@ -353,7 +353,7 @@ class SettingsImporterTest : K9RobolectricTest() {
             "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
         val newAvatarUri = Uri.parse("file:///data/account_avatars/imported.png")
         val avatarImageRepository = get<AvatarImageRepository>()
-        wheneverBlocking { avatarImageRepository.update(any(), any()) }.thenReturn(newAvatarUri)
+        whenever { avatarImageRepository.update(any(), any()) }.thenReturn(newAvatarUri)
 
         val accountUuid = UUID.randomUUID().toString()
         val inputStream =
