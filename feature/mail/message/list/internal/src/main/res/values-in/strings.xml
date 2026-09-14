@@ -1,3 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    </resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">Jangan tampilkan pesan ini lagi</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">Email tidak dapat diarsipkan</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Konfigurasikan folder arsip sekarang</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Lewati untuk saat ini</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Atur folder arsip</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">Ups, terjadi kesalahan saat mengambil folder akun!</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Rincian kesalahan: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Buat folder baru</string>
+    <string name="setup_archive_folder_dialog_done">Selesai</string>
+    <string name="setup_archive_folder_dialog_cancel">Batal</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Buat dan atur folder baru]]></string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">Tidak dapat menemukan akun yang terkait dengan UUID \'%1$s\'</string>
+    <string name="setup_archive_folder_unhandled_error">Kesalahan yang tidak tertangani: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Menyinkronkan…</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">Folder lokal dibuat. Memulai sinkronisasi…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Folder jarak jauh dibuat.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">Membuat folder di penyedia email…</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">Memperbarui aturan folder khusus…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">Akun (%1$s) tidak ditemukan</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">Gagal membuat folder lokal \'%1$s\'.</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Gagal menyinkronkan folder \'%1$s\' dengan folder jarak jauh. Pesan: %2$s</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Nama folder tidak boleh kosong</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Nama folder \'%1$s\' tidak valid</string>
+    <string name="message_list_state_new_message_description">Baru</string>
+    <string name="message_list_state_read_message_description">Dibaca</string>
+    <string name="message_list_state_unread_message_description">Belum dibaca</string>
+    <string name="message_list_state_active_new_message_description">Aktif, Baru</string>
+    <string name="message_list_state_active_read_message_description">Aktif, Dibaca</string>
+    <string name="message_list_state_active_unread_message_description">Aktif, Belum dibaca</string>
+    <string name="message_list_state_selected_new_message_description">Dipilih, Baru</string>
+    <string name="message_list_state_selected_read_message_description">Dipilih, Dibaca</string>
+    <string name="message_list_state_selected_unread_message_description">Dipilih, Belum dibaca</string>
+</resources>
