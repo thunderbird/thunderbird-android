@@ -51,6 +51,10 @@ internal class K9FundingSettings(
         }
     }
 
+    override fun incrementReminderShownCount() {
+        setReminderShownCount(getReminderShownCount() + 1)
+    }
+
     override fun getActivityCounterInMillis(): Long = K9.fundingActivityCounterInMillis
 
     override fun setActivityCounterInMillis(activeTime: Long) {
