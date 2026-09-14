@@ -189,6 +189,10 @@ private fun SignatureHtmlPreview(
     var contentHeight by remember { mutableStateOf(0.dp) }
     val animatedContentHeight by animateDpAsState(contentHeight)
 
+    // AndroidView's update block also runs for unrelated recompositions, e.g. height and window inset changes.
+    // Reloading the document in those cases can produce a new, incorrect content height while rotating the device.
+    val loadState = remember { SignaturePreviewLoadState() }
+
     AndroidView(
         factory = { context ->
             MessageWebView(context).apply {
@@ -196,10 +200,24 @@ private fun SignatureHtmlPreview(
             }
         },
         update = { webView ->
-            webView.displayHtmlContentWithInlineAttachments(debouncedSignature, null) {
-                contentHeight = webView.contentHeight.dp
+            if (loadState.shouldLoad(debouncedSignature)) {
+                contentHeight = 0.dp
+                webView.displayHtmlContentWithInlineAttachments(debouncedSignature, null) {
+                    contentHeight = webView.contentHeight.dp
+                }
             }
         },
         modifier = modifier.height(animatedContentHeight),
     )
+}
+
+internal class SignaturePreviewLoadState {
+    private var loadedSignature: String? = null
+
+    fun shouldLoad(signature: String): Boolean {
+        if (signature == loadedSignature) return false
+
+        loadedSignature = signature
+        return true
+    }
 }
