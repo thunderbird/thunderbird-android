@@ -1,12 +1,14 @@
 package net.thunderbird.piisafe.compiler.ir
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import com.tschuchort.compiletesting.JvmCompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import net.thunderbird.piisafe.compiler.fir.TestFirExtensionRegistrar
 import net.thunderbird.piisafe.compiler.fir.generation.ToStringOverridePiiSafeDeclarationGenerator
 import net.thunderbird.piisafe.compiler.fir.generation.ToStringOverridePiiSafeDeclarationGenerator.Companion.TO_STRING_METHOD_NAME
+import net.thunderbird.piisafe.compiler.testing.compile
 import net.thunderbird.piisafe.compiler.testing.compileWithPiiSafePlugin
 import net.thunderbird.piisafe.compiler.testing.testIrRegistrar
 import org.intellij.lang.annotations.Language
@@ -32,7 +34,7 @@ class ToStringOverridePiiSafeBodyGeneratorTest {
         val result = compile(fileName = "PlainUser.kt", source = "data class PlainUser(val name: String)")
 
         // Assert
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
     }
 
     @Test
@@ -52,8 +54,8 @@ class ToStringOverridePiiSafeBodyGeneratorTest {
         val actual = result.executeToStringPiiSafe("User", String::class.java to "alice@example.com")
 
         // Assert
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
-        assertEquals(expected = """User(email = <sensitive>)""", actual = actual)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
+        assertThat(actual).isEqualTo("User(email = <sensitive>)")
     }
 
     @Test
@@ -77,8 +79,8 @@ class ToStringOverridePiiSafeBodyGeneratorTest {
         )
 
         // Assert
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
-        assertEquals(expected = """User(name = Alice, email = <sensitive>)""", actual = actual)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
+        assertThat(actual).isEqualTo("User(name = Alice, email = <sensitive>)")
     }
 
     @Test
@@ -102,8 +104,8 @@ class ToStringOverridePiiSafeBodyGeneratorTest {
         )
 
         // Assert
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
-        assertEquals(expected = """User(name = Alice, +1 hidden properties)""", actual = actual)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
+        assertThat(actual).isEqualTo("User(name = Alice, +1 hidden properties)")
     }
 
     @Test
@@ -127,8 +129,8 @@ class ToStringOverridePiiSafeBodyGeneratorTest {
         )
 
         // Assert
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
-        assertEquals(expected = "User(+2 hidden properties)", actual = actual)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
+        assertThat(actual).isEqualTo("User(+2 hidden properties)")
     }
 
     @Test
@@ -152,8 +154,8 @@ class ToStringOverridePiiSafeBodyGeneratorTest {
         )
 
         // Assert
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
-        assertEquals(expected = """Message(id = 42, body = <sensitive>)""", actual = actual)
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
+        assertThat(actual).isEqualTo("Message(id = 42, body = <sensitive>)")
     }
 
     @Test
@@ -182,11 +184,24 @@ class ToStringOverridePiiSafeBodyGeneratorTest {
         )
 
         // Assert
-        assertEquals(expected = KotlinCompilation.ExitCode.OK, actual = result.exitCode)
-        assertEquals(
-            expected = """Account(username = alice, email = <sensitive>, +1 hidden properties)""",
-            actual = actual,
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
+        assertThat(actual).isEqualTo("Account(username = alice, email = <sensitive>, +1 hidden properties)")
+    }
+
+    @Test
+    fun `body generator should include only primary constructor properties in the synthetic toString`() {
+        // Arrange
+        val result = compile(fixtureName = "PrimaryConstructorPropertiesOnly.fixture.kt")
+
+        // Act
+        val actual = result.executeToStringPiiSafe(
+            "Session",
+            String::class.java to "sensitive@data.com",
         )
+
+        // Assert
+        assertThat(result.exitCode).isEqualTo(KotlinCompilation.ExitCode.OK)
+        assertThat(actual).isEqualTo("Session(email = <sensitive>)")
     }
 
     private fun compile(fileName: String, @Language("kotlin") source: String): JvmCompilationResult =

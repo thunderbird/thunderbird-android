@@ -4,16 +4,12 @@ import com.tschuchort.compiletesting.JvmCompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import net.thunderbird.piisafe.compiler.fir.TestFirExtensionRegistrar
-import net.thunderbird.piisafe.compiler.fir.generation.ToStringOverridePiiSafeDeclarationGenerator
 import net.thunderbird.piisafe.compiler.testing.call
 import net.thunderbird.piisafe.compiler.testing.callStatic
 import net.thunderbird.piisafe.compiler.testing.captured
-import net.thunderbird.piisafe.compiler.testing.compileWithPiiSafePlugin
+import net.thunderbird.piisafe.compiler.testing.compile
 import net.thunderbird.piisafe.compiler.testing.construct
-import net.thunderbird.piisafe.compiler.testing.fixture
 import net.thunderbird.piisafe.compiler.testing.loadClass
-import net.thunderbird.piisafe.compiler.testing.testIrRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 
 /**
@@ -232,16 +228,6 @@ class LoggerCallToStringTest {
         // Assert
         assertEquals(expected = "Items: {a=1, b=2}", actual = actual)
     }
-
-    private fun compile(fixtureName: String): JvmCompilationResult =
-        compileWithPiiSafePlugin(
-            fileName = fixtureName,
-            source = fixture(fixtureName),
-            registrar = testIrRegistrar(
-                TestFirExtensionRegistrar(::ToStringOverridePiiSafeDeclarationGenerator),
-                ToStringOverridePiiSafeBodyGenerator(),
-            ),
-        )
 
     private fun JvmCompilationResult.invokeLogUser(): String? {
         val user = loadClass("User").construct("Alice", "alice@example.com")

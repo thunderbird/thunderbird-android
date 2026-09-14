@@ -13,13 +13,18 @@ import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.expressions.IrConstKind
 import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.IrGetValue
+import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrGetValueImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl
 import org.jetbrains.kotlin.ir.expressions.impl.IrStringConcatenationImpl
+import org.jetbrains.kotlin.ir.symbols.IrValueParameterSymbol
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.util.hasAnnotation
+import org.jetbrains.kotlin.ir.util.primaryConstructor
+import org.jetbrains.kotlin.ir.util.properties
 
 internal class ToStringOverridePiiSafeTransformer(override val pluginContext: IrPluginContext) : IrScopedTransformer() {
 
@@ -65,9 +70,7 @@ internal class ToStringOverridePiiSafeTransformer(override val pluginContext: Ir
         simpleFunction: IrSimpleFunction,
     ): List<IrExpression> = buildList {
         val className = name.asString()
-        val expressions = declarations
-            .asSequence()
-            .filterIsInstance<IrProperty>()
+        val expressions = primaryConstructorProperties
             .mapNotNull { property ->
                 property.getter?.let { getter ->
                     property to when {
@@ -133,4 +136,16 @@ internal class ToStringOverridePiiSafeTransformer(override val pluginContext: Ir
     ) {
         "Property '$name' does not contain getter."
     }
+
+    @OptIn(UnsafeDuringIrConstructionAPI::class)
+    private val IrClass.primaryConstructorProperties: Sequence<IrProperty>
+        get() = properties
+            .filter { property ->
+                when (val initializer = property.backingField?.initializer?.expression) {
+                    null -> false
+                    !is IrGetValue -> false
+                    else if initializer.origin != IrStatementOrigin.INITIALIZE_PROPERTY_FROM_PARAMETER -> false
+                    else -> (initializer.symbol as? IrValueParameterSymbol)?.owner?.parent == primaryConstructor
+                }
+            }
 }

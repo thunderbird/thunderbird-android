@@ -1,5 +1,11 @@
 package net.thunderbird.piisafe.compiler.testing
 
+import com.tschuchort.compiletesting.JvmCompilationResult
+import net.thunderbird.piisafe.compiler.fir.TestFirExtensionRegistrar
+import net.thunderbird.piisafe.compiler.fir.generation.ToStringOverridePiiSafeDeclarationGenerator
+import net.thunderbird.piisafe.compiler.ir.ToStringOverridePiiSafeBodyGenerator
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
+
 /**
  * Reads a `.kt` fixture file used as compilation input by a `kotlin-compile-testing` test, so large
  * source snippets can live as plain, syntax-highlighted Kotlin files instead of inline string literals
@@ -16,3 +22,14 @@ internal fun Any.fixture(name: String): String {
     }
     return stream.bufferedReader().use { it.readText() }
 }
+
+@OptIn(ExperimentalCompilerApi::class)
+internal fun Any.compile(fixtureName: String): JvmCompilationResult =
+    compileWithPiiSafePlugin(
+        fileName = fixtureName,
+        source = fixture(fixtureName),
+        registrar = testIrRegistrar(
+            TestFirExtensionRegistrar(::ToStringOverridePiiSafeDeclarationGenerator),
+            ToStringOverridePiiSafeBodyGenerator(),
+        ),
+    )
